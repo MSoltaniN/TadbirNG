@@ -237,26 +237,9 @@ export class AppComponent implements AfterViewInit, OnInit {
     var element: any = event.target;
     if ((event.key == 'ي') || (event.key == 'ك') && (element.parentNode.className == 'k-filtercell-wrapper')) {      
 
-      event.target.addEventListener('blur', function (evt) {        
+      event.target.addEventListener('blur', function () {        
         this.value = this.value.toString().replaceBadChars(this.value.toString());
-      });     
-
-      //setTimeout(() => {
-      //  var element: any = event.target;
-      //  var replaceKey = (event.key == 'ك') ? 'ک' : 'ی';
-
-      //  var start = element.selectionStart;
-      //  var end = element.selectionEnd;
-      //  var oldValue = element.value;
-
-      //  var newValue = oldValue.slice(0, start) + replaceKey + oldValue.slice(end)
-      //  element.value = newValue;
-        
-      //  // replace cursor
-      //  element.selectionStart = element.selectionEnd = start + 1;        
-      //}, 500);
-
-      //event.preventDefault();
+      });          
 
     }
   }  

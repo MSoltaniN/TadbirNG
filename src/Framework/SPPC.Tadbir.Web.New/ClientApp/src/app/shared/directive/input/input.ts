@@ -17,12 +17,9 @@ export class InputDirective implements OnInit, OnChanges {
   }
 
   @HostListener('change')
-  onChange() {
-    debugger;
-    console.log('in change InputTextFilterDirective');
+  onChange() {   
 
-    this.currentElement.value = this.currentElement.value.replace('ي', 'ی');
-    this.currentElement.value = this.currentElement.value.replace('ك', 'ک');
+    this.currentElement.value = this.currentElement.value.replaceBadChars(this.currentElement.value);
 
     var controlName = "";
     if (this.currentElement.attributes["formcontrolname"]) {
@@ -33,8 +30,13 @@ export class InputDirective implements OnInit, OnChanges {
     Object.values(component).forEach((item:any) => {
       if (item && item.controls) {
         if (item.controls[controlName]) {
-          item.controls[controlName].setValue(item.controls[controlName].value.replace('ي', 'ی'));
-          item.controls[controlName].setValue(item.controls[controlName].value.replace('ك', 'ک'));          
+          var value = item.controls[controlName].value.toString();
+          var newValue = value.replaceBadChars(value);
+
+          item.controls[controlName].setValue(newValue);
+          item.controls[controlName].value = newValue;
+
+          console.log('replace bad chars');
         }
       }
     });

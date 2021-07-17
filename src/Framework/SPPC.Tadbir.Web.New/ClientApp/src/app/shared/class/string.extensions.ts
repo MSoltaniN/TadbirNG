@@ -1,7 +1,14 @@
 String.prototype.replaceBadChars = function (value: string): string {
 
-  value = value.replace('ي', 'ی');
-  value = value.replace('ك', 'ک');
+  var chars = value.split('');
+  var newValue = '';
+  chars.forEach((char) => {
+    var newChar = char;
+    newChar = newChar.replace('ي', 'ی');
+    newChar = newChar.replace('ك', 'ک');
 
-  return value;
+    newValue += newChar;
+  });
+  
+  return newValue;
 };

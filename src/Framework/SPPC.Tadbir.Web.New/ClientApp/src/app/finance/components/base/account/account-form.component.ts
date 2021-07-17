@@ -423,6 +423,8 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   onSave(e: any): void {
     e.preventDefault();
 
+    console.log('onSave');
+
     var accountValue = this.accountForm.value;
     var featureValue = this.featuresForm.value;
 
