@@ -7,6 +7,7 @@ import { String } from '@sppc/shared/class/source';
 import { GridOrderBy } from "@sppc/shared/class/grid.orderby";
 import { FilterExpression } from "@sppc/shared/class/filterExpression";
 import { Injectable } from "@angular/core";
+import { OperationId } from "../enum/operationId";
 
 
 
@@ -57,7 +58,7 @@ export class BaseService<T = void | any> extends EnviromentComponent{
    * @param orderby مرتب سازی
    * @param filters فیلتر
    */
-  public getAllForReport(apiUrl: string, orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, operationId: number = 1) {
+  public getAllForReport(apiUrl: string, orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, operationId: number = OperationId.Print) {
 
     var sort = new Array<GridOrderBy>();
     if (orderby && orderby.length > 0) {
@@ -82,7 +83,7 @@ export class BaseService<T = void | any> extends EnviromentComponent{
    * @param orderby مرتب سازی
    * @param filters فیلتر
    */
-  public getAllByParamsForReport(apiUrl: string, params: any,orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, operationId: number = 1) {
+  public getAllByParamsForReport(apiUrl: string, params: any, orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, operationId: number = OperationId.Print) {
 
     var sort = new Array<GridOrderBy>();
     if (orderby && orderby.length > 0) {
@@ -117,7 +118,7 @@ export class BaseService<T = void | any> extends EnviromentComponent{
    * @param filter فیلتر اطلاعات گرید
    * @param quickFilter فیلتر سریع
    */
-  public getAll(apiUrl: string, start?: number, count?: number, orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, listChangedValue?: boolean) {
+  public getAll(apiUrl: string, start?: number, count?: number, orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, listChangedValue?: boolean, operationId: number = OperationId.None) {
 
     var gridPaging = { pageIndex: start, pageSize: count };
     var sort = new Array<GridOrderBy>();
@@ -130,7 +131,7 @@ export class BaseService<T = void | any> extends EnviromentComponent{
     if (listChangedValue == undefined)
       listChangedValue = true;
 
-    var postItem = { paging: gridPaging, filter: filter, quickFilter: quickFilter, sortColumns: sort, listChanged: listChangedValue };
+    var postItem = { paging: gridPaging, filter: filter, quickFilter: quickFilter, sortColumns: sort, listChanged: listChangedValue, operation: operationId };
     var searchHeaders = this.httpHeaders;
     var postBody = JSON.stringify(postItem);
     var base64Body = btoa(encodeURIComponent(postBody));
@@ -148,7 +149,7 @@ export class BaseService<T = void | any> extends EnviromentComponent{
    * @param apiUrl آدرس‌ کامل api
    * @param params پارامتر های فرم   
    */
-  public getAllByParams(apiUrl: string, params: any, start?: number, count?: number, orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, listChangedValue?: boolean) {
+  public getAllByParams(apiUrl: string, params: any, start?: number, count?: number, orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, listChangedValue?: boolean, operationId: number = OperationId.None) {
 
     var searchHeaders = this.httpHeaders;  
 
@@ -163,7 +164,7 @@ export class BaseService<T = void | any> extends EnviromentComponent{
     if (listChangedValue == undefined)
       listChangedValue = true;
 
-    var postItem = { paging: gridPaging, filter: filter, quickFilter: quickFilter, sortColumns: sort, listChanged: listChangedValue };
+    var postItem = { paging: gridPaging, filter: filter, quickFilter: quickFilter, sortColumns: sort, listChanged: listChangedValue, operation: operationId };
     
     
     if (searchHeaders) {
