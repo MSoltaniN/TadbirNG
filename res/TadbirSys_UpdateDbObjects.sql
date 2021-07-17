@@ -9187,3 +9187,20 @@ INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, O
 INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (30, NULL, 2, 57, 1)
 SET IDENTITY_INSERT [Config].[SysLogSetting] OFF
+
+-- 1.1.1159
+UPDATE [Metadata].[Command]
+SET PermissionID = 45
+WHERE CommandID = 13
+
+UPDATE [Metadata].[Command]
+SET PermissionID = 60
+WHERE CommandID = 14
+
+UPDATE [Metadata].[Command]
+SET PermissionID = 179
+WHERE CommandID = 48
+
+UPDATE [Metadata].[Command]
+SET PermissionID = 189
+WHERE CommandID = 49
