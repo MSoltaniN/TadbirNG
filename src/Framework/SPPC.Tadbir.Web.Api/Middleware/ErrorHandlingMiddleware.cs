@@ -28,13 +28,15 @@ namespace SPPC.Tadbir.Web.Api.Middleware
         /// </summary>
         /// <param name="next">درخواست جاری (بعدی) که باید توسط سرویس پردازش شود</param>
         /// <param name="localizer">امکان ترجمه متن های چندزبانه را از روی کلید متنی فراهم می کند</param>
-        /// <param name="dbConsole"></param>
+        /// <param name="dbConsole">امکان ارسال دستورات مستقیم به دیتابیس را فراهم می کند</param>
+        /// <param name="token">امکان کار با توکن امنیتی برنامه را فراهم می کند</param>
         public ErrorHandlingMiddleware(RequestDelegate next, IStringLocalizer<AppStrings> localizer,
-            ISqlConsole dbConsole)
+            ISqlConsole dbConsole, ITokenService token)
         {
             _next = next;
             _localizer = localizer;
             _dbConsole = dbConsole;
+            _token = token;
         }
 
         /// <summary>
@@ -53,7 +55,12 @@ namespace SPPC.Tadbir.Web.Api.Middleware
             }
         }
 
-        private static SecurityContext GetSecurityContext(HttpContext httpContext)
+        private static string FromNullableId(int? id)
+        {
+            return id.HasValue ? id.ToString() : "NULL";
+        }
+
+        private ISecurityContext GetSecurityContext(HttpContext httpContext)
         {
             var context = httpContext.Request.Headers[AppConstants.ContextHeaderName];
             if (String.IsNullOrEmpty(context))
@@ -61,18 +68,7 @@ namespace SPPC.Tadbir.Web.Api.Middleware
                 return null;
             }
 
-            return SecurityContextFromTicket(context);
-        }
-
-        private static SecurityContext SecurityContextFromTicket(string ticket)
-        {
-            var json = Encoding.UTF8.GetString(Transform.FromBase64String(ticket));
-            return JsonHelper.To<SecurityContext>(json);
-        }
-
-        private static string FromNullableId(int? id)
-        {
-            return id.HasValue ? id.ToString() : "NULL";
+            return _token.GetSecurityContext(context);
         }
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
@@ -128,5 +124,6 @@ namespace SPPC.Tadbir.Web.Api.Middleware
         private readonly RequestDelegate _next;
         private readonly IStringLocalizer<AppStrings> _localizer;
         private readonly ISqlConsole _dbConsole;
+        private readonly ITokenService _token;
     }
 }
