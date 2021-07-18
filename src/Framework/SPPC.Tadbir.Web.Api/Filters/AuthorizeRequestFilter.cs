@@ -102,7 +102,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
         {
             var securityContext = _tokenService.GetSecurityContext(authTicket);
             bool isAuthorized = securityContext.IsInRole(AppConstants.AdminRoleId);
-            if (_requiredPermissions != null)
+            if (!isAuthorized && _requiredPermissions != null)
             {
                 isAuthorized = isAuthorized ||
                     securityContext.HasPermissions(_requiredPermissions);

@@ -2,11 +2,9 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
-using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Domain;
