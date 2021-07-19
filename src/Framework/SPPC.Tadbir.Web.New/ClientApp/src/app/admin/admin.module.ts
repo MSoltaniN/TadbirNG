@@ -23,6 +23,7 @@ import { ViewRowPermissionComponent } from '@sppc/admin/components/viewRowPermis
 import { ViewRowPermissionSingleFormComponent } from '@sppc/admin/components/viewRowPermission/viewRowPermission-single-form.component';
 import { ViewRowPermissionMultipleFormComponent } from '@sppc/admin/components/viewRowPermission/viewRowPermission-multiple-form.component';
 import { LogSettingComponent } from '@sppc/admin/components/operationLogs/operationLogs-setting.component';
+import { RoleCompanyFormComponent } from '@sppc/admin/components/role/role-company-form.component';
 
 
 
@@ -34,7 +35,7 @@ import { LogSettingComponent } from '@sppc/admin/components/operationLogs/operat
   ],
   declarations: [OperationLogsComponent, OperationLogsDetailComponent, OperationLogsDetailComponent, RoleComponent, RoleFormComponent, RoleBranchFormComponent, RoleDetailFormComponent,
     RoleFiscalPeriodFormComponent, RoleUserFormComponent, UserComponent, UserFormComponent, UserRolesFormComponent, ChangePasswordComponent, ViewRowPermissionComponent,
-    ViewRowPermissionSingleFormComponent, ViewRowPermissionMultipleFormComponent, LogSettingComponent],
+    ViewRowPermissionSingleFormComponent, ViewRowPermissionMultipleFormComponent, LogSettingComponent, RoleCompanyFormComponent],
   entryComponents: [],
   providers: [OperationLogService, RoleService, UserService, ViewRowPermissionService]
 })
