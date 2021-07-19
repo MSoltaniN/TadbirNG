@@ -1,7 +1,7 @@
-<kendo-dialog *ngIf="usersList" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (keydown.esc)="escPress()"
+<kendo-dialog *ngIf="companyList" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (keydown.esc)="escPress()"
               (close)="closeForm()" [minWidth]="250" [width]="450">
   <kendo-dialog-titlebar>
-    {{ getTitleText('RoleUsers.RoleUsersTitle' | translate) }}
+    {{ getTitleText('RoleCompanies.RoleCompaniesTitle' | translate) }}
   </kendo-dialog-titlebar>
 
   <div *ngIf="errorMessages">
@@ -14,7 +14,7 @@
   <div class="panel panel-primary">
     <div class="panel-body">
 
-      <kendo-grid id="gridRoleUserFormData" [data]="gridData"
+      <kendo-grid id="gridRoleCompaniesFormData" [data]="gridData"
                   [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
                   [selectedKeys]="selectedRows"
                   [kendoGridSelectBy]="selectionKey">
@@ -24,7 +24,7 @@
 
         <kendo-grid-checkbox-column showSelectAll="true" width="40"></kendo-grid-checkbox-column>
 
-        <kendo-grid-column sppc-grid-column="RoleUsers.name">
+        <kendo-grid-column sppc-grid-column="RoleCompanies.name">
         </kendo-grid-column>
 
       </kendo-grid>

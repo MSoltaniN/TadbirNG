@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { RowArgs } from '@progress/kendo-angular-grid';
-import { RTL } from '@progress/kendo-angular-l10n';
 import { Layout } from '@sppc/env/environment';
 import { DetailComponent } from '@sppc/shared/class';
 import { RelatedItems } from '@sppc/shared/models';
@@ -12,7 +11,7 @@ export function getLayoutModule(layout: Layout) {
 
 
 @Component({
-  selector: 'app-role-company-form',
+  selector: 'role-company-form-component',
   templateUrl: './role-company-form.component.html'  
 })
 export class RoleCompanyFormComponent extends DetailComponent {
@@ -24,26 +23,25 @@ export class RoleCompanyFormComponent extends DetailComponent {
   public model: RelatedItems;
 
 
-  @Input() public usersList: boolean = false;
-  //@Input() public errorMessage: string = '';
+  @Input() public companyList: boolean;
   @Input() public roleName: string = '';
 
-  @Input() public set roleUser(roleUser: RelatedItems) {
-    this.model = roleUser;
+  @Input() public set roleCompany(roleCompany: RelatedItems) {
+    this.model = roleCompany;
     this.selectedRows = [];
-    if (roleUser != undefined) {
-      this.gridData = roleUser.relatedItems;
+    if (roleCompany != undefined) {
+      this.gridData = roleCompany.relatedItems;
 
-      for (let userItem of this.gridData) {
-        if (userItem.isSelected) {
-          this.selectedRows.push(userItem.id)
+      for (let companyItem of this.gridData) {
+        if (companyItem.isSelected) {
+          this.selectedRows.push(companyItem.id)
         }
       }
     }
   }
 
-  @Output() cancelRoleUsers: EventEmitter<any> = new EventEmitter();
-  @Output() saveRoleUsers: EventEmitter<RelatedItems> = new EventEmitter();
+  @Output() cancelRoleCompanies: EventEmitter<any> = new EventEmitter();
+  @Output() saveRoleCompanies: EventEmitter<RelatedItems> = new EventEmitter();
   ////create properties
 
   //////Events
@@ -51,11 +49,11 @@ export class RoleCompanyFormComponent extends DetailComponent {
     e.preventDefault();
     this.model.relatedItems.forEach(f => f.isSelected = false);
 
-    for (let userSelected of this.selectedRows) {
-      let userIndex = this.model.relatedItems.findIndex(f => f.id == userSelected);
-      this.model.relatedItems[userIndex].isSelected = true;
+    for (let companySelected of this.selectedRows) {
+      let companyIndex = this.model.relatedItems.findIndex(f => f.id == companySelected);
+      this.model.relatedItems[companyIndex].isSelected = true;
     }
-    this.saveRoleUsers.emit(this.model);
+    this.saveRoleCompanies.emit(this.model);
   }
 
   public onCancel(e: any): void {
@@ -64,9 +62,9 @@ export class RoleCompanyFormComponent extends DetailComponent {
   }
 
   private closeForm(): void {
-    this.usersList = false;
+    this.companyList = false;
     this.selectedRows = [];
-    this.cancelRoleUsers.emit();
+    this.cancelRoleCompanies.emit();
   }
 
   escPress() {

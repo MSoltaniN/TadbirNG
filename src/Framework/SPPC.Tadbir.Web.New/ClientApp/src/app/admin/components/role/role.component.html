@@ -101,12 +101,13 @@
 
     </kendo-grid-column>
 
-    <kendo-grid-command-column media="(min-width: 450px)" [width]="300">
+    <kendo-grid-command-column media="(min-width: 450px)" [width]="330">
       <ng-template kendoGridCellTemplate let-role>
         <button kendoButton (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
         <button kendoButton SppcPermissionCheck="AssignUsers" (sppcClick)="userHandler(role.id,role.name)" [primary]="true">{{ 'Role.Users' | translate }}</button>
         <button kendoButton SppcPermissionCheck="AssignBranches" (sppcClick)="branchHandler(role.id,role.name)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
         <button kendoButton SppcPermissionCheck="AssignFiscalPeriods" (sppcClick)="fiscalPeriodHandler(role.id,role.name)" [primary]="true">{{ 'Role.FiscalPeriod' | translate }}</button>
+        <button kendoButton *ngIf="IsAdmin" (click)="companiesHandler(role.id,role.name)" [primary]="true">{{ 'Role.Companies' | translate }}</button>
       </ng-template>
     </kendo-grid-command-column>
 
@@ -121,6 +122,10 @@
                           (saveRoleUsers)="saveRoleUsersHandler($event)"
                           (cancelRoleUsers)="cancelRoleUsersHandler()">
 </role-user-form-component>
+<role-company-form-component [companyList]="companyList" [roleCompany]="roleCompaniesData" [errorMessages]="errorMessages" [roleName]="roleName"
+                          (saveRoleCompanies)="saveRoleCompaniesHandler($event)"
+                          (cancelRoleCompanies)="cancelRoleCompaniesHandler()">
+</role-company-form-component>
 <role-branch-form-component [inputRoleBranches]="roleBranches" [roleBranches]="roleBranchesData" [errorMessages]="errorMessages" [roleName]="roleName"
                             (saveRoleBranches)="saveRoleBranchesHandler($event)"
                             (cancelRoleBranches)="cancelRoleBranchesHandler()">

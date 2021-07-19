@@ -980,7 +980,8 @@
     "Detail": "Detail",
     "FiscalPeriod": "Fiscal Period",
     "RecordNotFound": "This role has no permission",
-    "RoleDetail": "Role Detail"
+    "RoleDetail": "Role Detail",
+    "Companies": "Companies"
   },
   "RoleUsers": {
     "Name": "Name",
@@ -996,6 +997,12 @@
     "Description": "Description",
     "RoleBranchesTitle": "Branches accessible by '{0}'",
     "RecordNotFound": "This role has no branch"
+  },
+  "RoleCompanies": {
+    "Name": " Company Name",
+    "Description": "Description",
+    "RoleCompaniesTitle": "Companies accessible by '{0}'",
+    "RecordNotFound": "This role has no company"
   },
   "RoleFiscalPeriod": {
     "Name": "Fiscal Period Name",
