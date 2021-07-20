@@ -4,6 +4,38 @@ using System.Collections.Generic;
 namespace SPPC.Tadbir.Security
 {
     /// <summary>
+    /// فلگ های مشترک تعریف شده برای دسترسی های مشاهده ای فهرست های اطلاعاتی را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum ViewPermissions
+    {
+        /// <summary>
+        /// نداشتن دسترسی مشاهده فهرست اطلاعاتی
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده فهرست اطلاعاتی
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی فیلتر پیشرفته فهرست اطلاعاتی
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
+        /// دسترسی چاپ فهرست اطلاعاتی
+        /// </summary>
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال فهرست اطلاعاتی به اکسل
+        /// </summary>
+        Export = 0x8
+    }
+
+    /// <summary>
     /// فلگ های تعریف شده برای دسترسی های امنیتی به یک سرفصل حسابداری را تعریف می کند
     /// </summary>
     [Flags]

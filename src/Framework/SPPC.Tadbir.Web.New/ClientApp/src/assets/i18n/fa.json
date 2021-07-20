@@ -462,7 +462,7 @@
     "CostCenter": "مرکز هزینه",
     "Project": "پروژه",
     "VoucherStatus": "وضعیت اسناد",
-    "FilterByRef": "رفرنس برابر با",            
+    "FilterByRef": "رفرنس برابر با",
     "Closing": "در نظر گرفتن سند اختتامیه",
     "SelectCostCenter": "لطفا مرکز هزینه را انتخاب کنید",
     "SelectProject": "لطفا پروژه را انتخاب کنید",
@@ -1102,7 +1102,8 @@
     "Detail": "جزئیات",
     "FiscalPeriod": "دوره مالی",
     "RecordNotFound": "این نقش هیچ دسترسی ندارد",
-    "RoleDetail": "جزئیات نقش"
+    "RoleDetail": "جزئیات نقش",
+    "Companies": "شرکت"
   },
   "RoleUsers": {
     "Name": "نام و نام خانوادگی",
@@ -1118,6 +1119,12 @@
     "Description": "توضیحات",
     "RoleBranchesTitle": "شعب قابل دسترسی توسط '{0}'",
     "RecordNotFound": "این نقش به هیچ شعبه ای دسترسی ندارد"
+  },
+  "RoleCompanies": {
+    "Name": "نام شرکت",
+    "Description": "توضیحات",
+    "RoleCompaniesTitle": "شرکت قابل دسترسی توسط '{0}'",
+    "RecordNotFound": "این نقش به هیچ شرکتی دسترسی ندارد"
   },
   "RoleFiscalPeriod": {
     "Name": "نام دوره مالی",

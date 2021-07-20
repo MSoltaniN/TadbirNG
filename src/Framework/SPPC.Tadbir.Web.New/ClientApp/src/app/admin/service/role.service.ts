@@ -90,11 +90,30 @@ export class RoleService extends BaseService {
             .catch(this.handleError);
     }
 
+    modifiedRoleCompanies(roleCompanies: RelatedItems) {
+      var body = JSON.stringify(roleCompanies);
+
+      var options = { headers: this.httpHeaders };
+
+      var url = String.Format(RoleApi.RoleCompanies, roleCompanies.id);
+
+      return this.http.put(url, body, options)
+        .map(res => res)
+        .catch(this.handleError);
+    }
+
     getRoleBranches(roleId: number) {
         var url = String.Format(RoleApi.RoleBranches, roleId);
         var options = { headers: this.httpHeaders };
         return this.http.get(url, options)
             .map(response => <any>(<Response>response));
+    }
+
+    getRoleCompanies(roleId: number) {
+      var url = String.Format(RoleApi.RoleCompanies, roleId);
+      var options = { headers: this.httpHeaders };
+      return this.http.get(url, options)
+        .map(response => <any>(<Response>response));
     }
 
     modifiedRoleBranches(roleBranches: RelatedItems) {

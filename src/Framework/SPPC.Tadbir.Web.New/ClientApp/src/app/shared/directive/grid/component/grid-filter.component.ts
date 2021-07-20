@@ -89,7 +89,10 @@ export class GridFilterComponent extends BaseComponent implements OnInit, OnDest
   @HostListener('document:keydown', ['$event'])
   handleClick(event: KeyboardEvent) {    
     if (this.grid.wrapper.nativeElement.offsetParent.contains(event.target)) {
-        if (event.key == 'Enter') {
+      if (event.key == 'Enter') {
+          var element : any = event.target;          
+          element.value = element.value.replaceBadChars(element.value);
+
           var filterInput = false;
           var element: any = event.srcElement;
           var object = element;

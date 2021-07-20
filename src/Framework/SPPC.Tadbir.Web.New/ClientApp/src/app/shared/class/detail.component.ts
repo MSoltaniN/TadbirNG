@@ -1,8 +1,8 @@
 import { BaseComponent } from "./base.component";
-import { Injectable, Renderer2, Optional, Inject, Host, Input, HostListener } from "@angular/core";
+import { Injectable, Renderer2, Optional, Inject, Host, Input, HostListener, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from '@ngx-translate/core';
-import { FormGroup, FormControl, ValidatorFn, Validators } from "@angular/forms";
+import { FormGroup, FormControl, ValidatorFn, Validators, AsyncValidatorFn } from "@angular/forms";
 import { Property } from "./metadata/property";
 import { String } from './source';
 import { MetaDataService, BrowserStorageService, SessionKeys } from "../services";
@@ -64,11 +64,11 @@ export class DetailComponent extends BaseComponent  {
     }
     else {
       this.fillFormValidators();
-    }
+    }   
 
     return this.form;
 
-  }
+  }  
 
   private fillFormValidators() {
     var p: Property | undefined = undefined;
@@ -182,3 +182,4 @@ export class DetailComponent extends BaseComponent  {
   
 
 }
+

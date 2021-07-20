@@ -237,7 +237,10 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
             where TViewModel : class, new()
         {
-            return await Repository.GetAllOperationQuery<Voucher>(ViewId.Voucher)
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            return await repository.GetEntityQuery()
+                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && v.SubjectType != (short)SubjectType.Draft)
                 .Select(item => Mapper.Map<TViewModel>(item))
                 .Apply(gridOptions, false)
                 .CountAsync();
