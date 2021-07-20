@@ -956,7 +956,8 @@
     "Description": "شرح",
     "NotFoundData": "شرکتی وجود ندارد",
     "SuccessInitialCompany": "مراحل ایجاد شرکت با موفقیت انجام شد.",
-    "CreateCompany": "ایجاد شرکت"
+    "CreateCompany": "ایجاد شرکت",
+    "Role": "نقش"
   },
   "AccountGroup": {
     "New": "گروه حساب جدید",
@@ -1125,6 +1126,12 @@
     "Description": "توضیحات",
     "RoleCompaniesTitle": "شرکت قابل دسترسی توسط '{0}'",
     "RecordNotFound": "این نقش به هیچ شرکتی دسترسی ندارد"
+  },
+  "CompanyRoles": {
+    "Name": "نام نقش",
+    "Description": "توضیحات",
+    "CompanyRolesTitle": "نقش قابل دسترسی توسط '{0}'",
+    "RecordNotFound": "این شرکت به هیچ نقشی دسترسی ندارد"
   },
   "RoleFiscalPeriod": {
     "Name": "نام دوره مالی",

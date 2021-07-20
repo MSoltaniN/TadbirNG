@@ -37,7 +37,7 @@ input[type=text],.ddl-acc,textarea { width: 100%; } /deep/ .k-dialog-buttongroup
 .dialog-body{ width: 800px } .dialog-body hr{ border-top: dashed 1px #eee; }
 @media screen and (max-width:800px) {
   .dialog-body{
-    width: 90%;
+    width: 99%;
     min-width: 250px;
   }
 }

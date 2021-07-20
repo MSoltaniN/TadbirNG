@@ -26,7 +26,7 @@ interface Item {
 .dialog-body{ width: 800px } .dialog-body hr{ border-top: dashed 1px #eee; }
 @media screen and (max-width:800px) {
   .dialog-body{
-    width: 90%;
+    width: 99%;
     min-width: 250px;
   }
 }

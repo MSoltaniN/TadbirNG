@@ -102,6 +102,12 @@
 
     </kendo-grid-column>
 
+    <kendo-grid-command-column media="(min-width: 450px)" [width]="80">
+      <ng-template kendoGridCellTemplate let-company>
+        <button kendoButton *ngIf="IsAdmin" (click)="rolesHandler(company.id,company.name)" [primary]="true">{{ 'Company.Role' | translate }}</button>
+      </ng-template>
+    </kendo-grid-command-column>
+
   </kendo-grid>
 </div>
 
@@ -109,6 +115,11 @@
                         (save)="saveHandler($event)"
                         (cancel)="cancelHandler()">
 </company-form-component>-->
+
+<company-role-component [roleList]="roleList" [companyRole]="companyRolesData" [errorMessages]="errorMessages" [companyName]="companyName"
+                             (saveCompanyRoles)="saveCompanyRoles($event)"
+                             (cancelCompanyRoles)="cancelCompanyRoles()">
+</company-role-component>
 
 <kendo-dialog title="{{'Company.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
   <p>

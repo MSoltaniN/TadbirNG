@@ -19,48 +19,66 @@
   div .navbar-collapse collapse {
     overflow-y: scroll !important;
     max-height: 300px !important;
+  } 
+  
+}
+
+@media (max-width: 500px) {
+  /deep/ .k-dialog {
+    position: absolute !important;
+    top: 100px !important;
+    left: 5px !important;
+    width: 98% !important;
+    min-width: 0px !important;
+  }
+}
+
+@media (min-width:501px) and (max-width:767px) {
+  /deep/ .k-dialog {
+    position: absolute !important;
+    top: 80px !important;
+    left: 5% !important;
+    width: 65% !important;
+    min-width: 0px !important;
   }
 }
 
 
 
 
-
-
-/*.body-content 
+  /*.body-content 
 {
     height:90%;
 }*/
-.footer {
-  position: fixed;
-  background: #fff;
-  padding: 7px;
-  color: #444;
-  border-top: 1px solid #d2d6de;
-  width: 100%;
-  bottom: 0;
-  font-family: SPPC !important;
-}
-
-
-
-
-kendo-pager {
-  z-index: 0 !important;
-}
-
-/deep/ .spinner {
-  z-index: 100010 !important;
-}
-
-
-@media(min-width:450px)
-{
-  /deep/ .k-grid-header-wrap table,
-  /deep/ .k-grid-table-wrap table,
-  /deep/ .k-grid-footer-wrap table {
-    width: min-content !important;
-    min-width:300px!important;
+  .footer {
+    position: fixed;
+    background: #fff;
+    padding: 7px;
+    color: #444;
+    border-top: 1px solid #d2d6de;
+    width: 100%;
+    bottom: 0;
+    font-family: SPPC !important;
   }
-}
+
+
+
+
+  kendo-pager {
+    z-index: 0 !important;
+  }
+
+  /deep/ .spinner {
+    z-index: 100010 !important;
+  }
+
+
+  @media(min-width:450px) {
+    /deep/ .k-grid-header-wrap table,
+    /deep/ .k-grid-table-wrap table,
+    /deep/ .k-grid-footer-wrap table {
+      width: min-content !important;
+      min-width: 300px !important;
+    }
+  }
 

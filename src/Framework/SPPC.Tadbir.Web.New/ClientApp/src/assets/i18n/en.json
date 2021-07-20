@@ -837,7 +837,8 @@
     "Description": "Description",
     "NotFoundData": "Not Found Company",
     "SuccessInitialCompany": "The company creation process was completed successfully.",
-    "CreateCompany": "Create Company"
+    "CreateCompany": "Create Company",
+    "Role": "Roles"
   },
   "AccountGroup": {
     "New": "New Account Group",
