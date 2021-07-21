@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
+using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
@@ -16,6 +17,7 @@ namespace SPPC.Tools.LicenseManager
             InitializeComponent();
             License = new LicenseModel();
             Customer = new CustomerModel();
+            _crypto = new CryptoService();
         }
 
         public LicenseModel License { get; set; }
@@ -95,8 +97,8 @@ namespace SPPC.Tools.LicenseManager
                 CustomerKey = License.CustomerKey,
                 LicenseKey = License.LicenseKey
             };
-            string json = JsonHelper.From(instance);
-            File.WriteAllText(path, json);
+            string instanceData = _crypto.Encrypt(JsonHelper.From(instance));
+            File.WriteAllText(path, instanceData);
             CreateApiServiceLicense();
             MessageBox.Show(this, "شناسه برنامه با موفقیت ثبت شد.",
                 "عملیات موفق", MessageBoxButtons.OK, MessageBoxIcon.Exclamation,
@@ -233,52 +235,52 @@ namespace SPPC.Tools.LicenseManager
             var selected = Subsystems.None;
             if (chkAccounting.Checked)
             {
-                selected = selected | Subsystems.Accounting;
+                selected |= Subsystems.Accounting;
             }
 
             if (chkCheque.Checked)
             {
-                selected = selected | Subsystems.Cheque;
+                selected |= Subsystems.Cheque;
             }
 
             if (chkCashFlow.Checked)
             {
-                selected = selected | Subsystems.CashFlow;
+                selected |= Subsystems.CashFlow;
             }
 
             if (chkWagePayment.Checked)
             {
-                selected = selected | Subsystems.WagePayment;
+                selected |= Subsystems.WagePayment;
             }
 
             if (chkPersonnel.Checked)
             {
-                selected = selected | Subsystems.Personnel;
+                selected |= Subsystems.Personnel;
             }
 
             if (chkInventory.Checked)
             {
-                selected = selected | Subsystems.Inventory;
+                selected |= Subsystems.Inventory;
             }
 
             if (chkPurchase.Checked)
             {
-                selected = selected | Subsystems.Purchase;
+                selected |= Subsystems.Purchase;
             }
 
             if (chkSales.Checked)
             {
-                selected = selected | Subsystems.Sales;
+                selected |= Subsystems.Sales;
             }
 
             if (chkWarehousing.Checked)
             {
-                selected = selected | Subsystems.Warehousing;
+                selected |= Subsystems.Warehousing;
             }
 
             if (chkBudgeting.Checked)
             {
-                selected = selected | Subsystems.Budgeting;
+                selected |= Subsystems.Budgeting;
             }
 
             return (int)selected;
@@ -288,7 +290,7 @@ namespace SPPC.Tools.LicenseManager
         {
             var path = ConfigurationManager.AppSettings["WebApiLicensePath"];
             var license = GetLicenseData();
-            var json = JsonHelper.From(license, true);
+            var json = JsonHelper.From(license);
             File.WriteAllText(path, json);
             return;
         }
@@ -306,6 +308,7 @@ namespace SPPC.Tools.LicenseManager
             };
         }
 
+        private readonly ICryptoService _crypto;
         private ILicenseService _service;
     }
 }

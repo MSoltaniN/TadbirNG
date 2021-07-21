@@ -50,8 +50,7 @@ namespace SPPC.Licensing.Persistence
 
         public LicenseModel GetActivatedLicense(ActivationModel activation)
         {
-            var license = default(LicenseModel);
-            license = GetLicense(activation?.InstanceKey?.LicenseKey, activation?.InstanceKey?.CustomerKey);
+            var license = GetLicense(activation?.InstanceKey?.LicenseKey, activation?.InstanceKey?.CustomerKey);
             if (license != null)
             {
                 var repository = UnitOfWork.GetRepository<LicenseModel>();

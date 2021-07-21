@@ -72,6 +72,10 @@
       <Project>{18c0b0da-db22-4482-b6b7-b98d4decd8b4}</Project>
       <Name>SPPC.Framework.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Framework.Cryptography\SPPC.Framework.Cryptography.csproj">
+      <Project>{1607d275-f638-4094-8be7-1341ce5a82d6}</Project>
+      <Name>SPPC.Framework.Cryptography</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
       <Project>{10A16ED5-F293-471C-8790-73122CFA1E56}</Project>
       <Name>SPPC.Framework.Interfaces</Name>

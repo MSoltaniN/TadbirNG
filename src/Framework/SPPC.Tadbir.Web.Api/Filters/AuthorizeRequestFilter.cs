@@ -98,6 +98,20 @@ namespace SPPC.Tadbir.Web.Api.Filters
             return !String.IsNullOrEmpty(authTicket);
         }
 
+        private static GridOptions GetGridOptions(ActionExecutingContext actionContext)
+        {
+            var request = actionContext.HttpContext.Request;
+            var options = request.Headers[AppConstants.GridOptionsHeaderName];
+            if (String.IsNullOrEmpty(options))
+            {
+                return new GridOptions();
+            }
+
+            var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
+            var json = WebUtility.UrlDecode(urlEncoded);
+            return JsonHelper.To<GridOptions>(json);
+        }
+
         private bool IsAuthorized(string authTicket, ActionExecutingContext actionContext)
         {
             var securityContext = _tokenService.GetSecurityContext(authTicket);
@@ -161,20 +175,6 @@ namespace SPPC.Tadbir.Web.Api.Filters
             }
 
             return isAuthorized;
-        }
-
-        private GridOptions GetGridOptions(ActionExecutingContext actionContext)
-        {
-            var request = actionContext.HttpContext.Request;
-            var options = request.Headers[AppConstants.GridOptionsHeaderName];
-            if (String.IsNullOrEmpty(options))
-            {
-                return new GridOptions();
-            }
-
-            var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
-            var json = WebUtility.UrlDecode(urlEncoded);
-            return JsonHelper.To<GridOptions>(json);
         }
 
         private readonly ILicenseUtility _licenseUtility;
