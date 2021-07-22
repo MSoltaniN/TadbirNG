@@ -3,14 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>SPPC.Tadbir</RootNamespace>
-    <Version>1.1.0</Version>
-    <Authors>Babak Eslamieh</Authors>
-    <Company>SPPC</Company>
-    <Product>Framework</Product>
-    <Copyright>TODO: Add copyright notice</Copyright>
-    <Description>TODO: Add product description</Description>
-    <AssemblyVersion>1.1.183.0</AssemblyVersion>
-    <FileVersion>1.1.183.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -19,50 +11,18 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\bin\Debug\netstandard2.0\</OutputPath>
-    <DocumentationFile>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.Interfaces.xml</DocumentationFile>
+    <OutputPath>..\..\..\bin\Debug\</OutputPath>
+    <DocumentationFile>..\..\..\bin\Debug\SPPC.Tadbir.Interfaces.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\..\bin\Release\netstandard2.0\</OutputPath>
+    <OutputPath>..\..\..\bin\Release\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Reporting\**" />
     <EmbeddedResource Remove="Reporting\**" />
     <None Remove="Reporting\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Api\InventoryApi.cs" />
-    <Compile Remove="Api\LookupApi.Inventory.cs" />
-    <Compile Remove="Api\LookupApi.Procurement.cs" />
-    <Compile Remove="Api\RequisitionApi.cs" />
-    <Compile Remove="Api\SecurityApi.cs" />
-    <Compile Remove="Class1.cs" />
-    <Compile Remove="Persistence\IAccountRepository.Generated.cs" />
-    <Compile Remove="Persistence\IInventoryRepository.cs" />
-    <Compile Remove="Persistence\IMetadataDecorator.cs" />
-    <Compile Remove="Persistence\IRequisitionRepository.cs" />
-    <Compile Remove="Persistence\IWorkflowRepository.cs" />
-    <Compile Remove="Persistence\IWorkItemRepository.cs" />
-    <Compile Remove="Security\AccountPermission.cs" />
-    <Compile Remove="Security\BranchPermission.cs" />
-    <Compile Remove="Security\BusinessPartnerPermission.cs" />
-    <Compile Remove="Security\BusinessUnitPermission.cs" />
-    <Compile Remove="Security\CostCenterPermission.cs" />
-    <Compile Remove="Security\CurrencyPermission.cs" />
-    <Compile Remove="Security\DetailAccountPermission.cs" />
-    <Compile Remove="Security\FiscalPeriodPermission.cs" />
-    <Compile Remove="Security\Permissions.cs" />
-    <Compile Remove="Security\ProductInventoryPermission.cs" />
-    <Compile Remove="Security\ProjectPermission.cs" />
-    <Compile Remove="Security\RequisitionPermission.cs" />
-    <Compile Remove="Security\RolePermission.cs" />
-    <Compile Remove="Security\UserPermission.cs" />
-    <Compile Remove="Security\VoucherPermission.cs" />
-    <Compile Remove="Service\IInventoryService.cs" />
-    <Compile Remove="Service\IRequisitionService.cs" />
   </ItemGroup>
 
   <ItemGroup>

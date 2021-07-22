@@ -2,14 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.1.0</Version>
-    <Authors>Babak Eslamieh</Authors>
-    <Company>SPPC</Company>
-    <Product>Framework</Product>
-    <Copyright>TODO: Add copyright notice</Copyright>
-    <Description>TODO: Add product description</Description>
-    <AssemblyVersion>1.1.183.0</AssemblyVersion>
-    <FileVersion>1.1.183.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -18,46 +10,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.Model.xml</DocumentationFile>
-    <OutputPath>..\..\..\bin\Debug\netstandard2.0\</OutputPath>
+    <DocumentationFile>..\..\..\bin\Debug\SPPC.Tadbir.Model.xml</DocumentationFile>
+    <OutputPath>..\..\..\bin\Debug\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\..\bin\Release\netstandard2.0\</OutputPath>
+    <OutputPath>..\..\..\bin\Release\</OutputPath>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Inventory\**" />
-    <Compile Remove="Procurement\**" />
-    <Compile Remove="Sales\**" />
-    <Compile Remove="Warehousing\**" />
-    <EmbeddedResource Remove="Inventory\**" />
-    <EmbeddedResource Remove="Procurement\**" />
-    <EmbeddedResource Remove="Sales\**" />
-    <EmbeddedResource Remove="Warehousing\**" />
-    <None Remove="Inventory\**" />
-    <None Remove="Procurement\**" />
-    <None Remove="Sales\**" />
-    <None Remove="Warehousing\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Class1.cs" />
-    <Compile Remove="Contact\BusinessPartner.Generated.cs" />
-    <Compile Remove="Contact\Customer.cs" />
-    <Compile Remove="Contact\Customer.Generated.cs" />
-    <Compile Remove="Core\DocumentStatus.cs" />
-    <Compile Remove="Core\DocumentType.cs" />
-    <Compile Remove="Core\ServiceJob.Generated.cs" />
-    <Compile Remove="Corporate\BusinessUnit.Generated.cs" />
-    <Compile Remove="Finance\FullAccount.cs" />
-    <Compile Remove="Finance\FullAccount.Generated.cs" />
-    <Compile Remove="Finance\FullDetail.Generated.cs" />
-    <Compile Remove="Finance\FullDetailType.Generated.cs" />
-    <Compile Remove="Finance\Transaction.Generated.cs" />
-    <Compile Remove="Finance\TransactionLine.cs" />
-    <Compile Remove="Finance\TransactionLine.Generated.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />

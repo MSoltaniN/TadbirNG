@@ -2,14 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Authors>Babak Eslamieh</Authors>
-    <Company>SPPC</Company>
-    <Product>Framework</Product>
-    <AssemblyVersion>1.1.183.0</AssemblyVersion>
-    <FileVersion>1.1.183.0</FileVersion>
-    <Description>TODO: Add product description</Description>
-    <Copyright>TODO: Add copyright notice</Copyright>
-    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -18,50 +10,14 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.ViewModel.xml</DocumentationFile>
-    <OutputPath>..\..\..\bin\Debug\netstandard2.0\</OutputPath>
+    <DocumentationFile>..\..\..\bin\Debug\SPPC.Tadbir.ViewModel.xml</DocumentationFile>
+    <OutputPath>..\..\..\bin\Debug\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\..\bin\Release\netstandard2.0\</OutputPath>
+    <OutputPath>..\..\..\bin\Release\</OutputPath>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Procurement\**" />
-    <Compile Remove="Sales\**" />
-    <Compile Remove="UI\**" />
-    <Compile Remove="Warehousing\**" />
-    <EmbeddedResource Remove="Procurement\**" />
-    <EmbeddedResource Remove="Sales\**" />
-    <EmbeddedResource Remove="UI\**" />
-    <EmbeddedResource Remove="Warehousing\**" />
-    <None Remove="Procurement\**" />
-    <None Remove="Sales\**" />
-    <None Remove="UI\**" />
-    <None Remove="Warehousing\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Auth\RoleBranchesViewModel.cs" />
-    <Compile Remove="Auth\RoleUsersViewModel.cs" />
-    <Compile Remove="Class1.cs" />
-    <Compile Remove="Contact\BusinessPartnerViewModel.Generated.cs" />
-    <Compile Remove="Contact\CustomerViewModel.Generated.cs" />
-    <Compile Remove="Core\ServiceJobViewModel.Generated.cs" />
-    <Compile Remove="Corporate\BusinessUnitViewModel.Generated.cs" />
-    <Compile Remove="Finance\FullDetailTypeViewModel.Generated.cs" />
-    <Compile Remove="Finance\FullDetailViewModel.Generated.cs" />
-    <Compile Remove="Finance\TransactionFullViewModel.cs" />
-    <Compile Remove="Finance\TransactionLineFullViewModel.cs" />
-    <Compile Remove="Finance\TransactionLineViewModel.cs" />
-    <Compile Remove="Finance\TransactionLineViewModel.Generated.cs" />
-    <Compile Remove="Finance\TransactionSummaryViewModel.cs" />
-    <Compile Remove="Finance\TransactionViewModel.cs" />
-    <Compile Remove="Finance\TransactionViewModel.Generated.cs" />
-    <Compile Remove="Reporting\ProfitLossByBranchesViewModel.cs" />
-    <Compile Remove="Reporting\ProfitLossByFiscalPeriodsViewModel.cs" />
-    <Compile Remove="Reporting\ProfitLossByProjectsViewModel.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />

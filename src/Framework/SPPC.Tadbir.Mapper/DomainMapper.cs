@@ -20,7 +20,6 @@ using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Reporting;
-using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Config;
@@ -29,7 +28,6 @@ using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Reporting;
-using SPPC.Tadbir.ViewModel.Workflow;
 
 namespace SPPC.Tadbir.Mapper
 {
@@ -79,7 +77,6 @@ namespace SPPC.Tadbir.Mapper
             MapSecurityTypes(mapperConfig);
             MapFinanceTypes(mapperConfig);
             MapCorporateTypes(mapperConfig);
-            MapWorkflowTypes(mapperConfig);
             MapConfigTypes(mapperConfig);
             MapCoreTypes(mapperConfig);
             MapMetadataTypes(mapperConfig);
@@ -342,74 +339,6 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Branch, RelatedItemViewModel>();
             mapperConfig.CreateMap<Branch, AccountItemBriefViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
-        }
-
-        private static void MapWorkflowTypes(IMapperConfigurationExpression mapperConfig)
-        {
-            mapperConfig.CreateMap<WorkItem, WorkItemViewModel>();
-            mapperConfig.CreateMap<WorkItem, InboxItemViewModel>()
-                .ForMember(dest => dest.EntityNo, opts => opts.Ignore())
-                .ForMember(
-                    dest => dest.CreatedBy,
-                    opts => opts.MapFrom(
-                        src => String.Format("{0} {1}", src.CreatedBy.Person.FirstName, src.CreatedBy.Person.LastName)))
-                .ForMember(
-                    dest => dest.DocumentId,
-                    opts => opts.MapFrom(
-                        src => (src.Documents.Count > 0) ? src.Documents[0].Document.Id : 0))
-                .ForMember(
-                    dest => dest.EntityId,
-                    opts => opts.MapFrom(
-                        src => (src.Documents.Count > 0) ? src.Documents[0].EntityId : 0))
-                .ForMember(
-                    dest => dest.Date,
-                    opts => opts.MapFrom(
-                        src => JalaliDateTime.FromDateTime(src.Date).ToShortDateString()));
-            mapperConfig.CreateMap<WorkItemViewModel, WorkItem>()
-                .AfterMap((viewModel, model) => model.CreatedBy.Id = viewModel.CreatedById)
-                .AfterMap((viewModel, model) => model.Target.Id = viewModel.TargetId);
-            mapperConfig.CreateMap<WorkItemDocumentViewModel, WorkItemDocument>()
-                .AfterMap((viewModel, model) => model.WorkItem.Id = viewModel.WorkItemId)
-                .AfterMap((viewModel, model) => model.Document.Id = viewModel.DocumentId);
-            mapperConfig.CreateMap<WorkItemViewModel, WorkItemHistory>()
-                .ForMember(dest => dest.Id, opts => opts.Ignore())
-                .ForMember(dest => dest.Action, opts => opts.MapFrom(src => src.PreviousAction))
-                .AfterMap((viewModel, model) => model.Document.Id = viewModel.DocumentId)
-                .AfterMap((viewModel, model) => model.User.Id = viewModel.CreatedById)
-                .AfterMap((viewModel, model) =>
-                    model.Role = (viewModel.TargetId > 0)
-                        ? new Role()
-                        {
-                            Id = viewModel.TargetId
-                        }
-                        : null);
-            mapperConfig.CreateMap<WorkItemHistory, HistoryItemViewModel>()
-                .ForMember(
-                    dest => dest.UserFullName,
-                    opts => opts.MapFrom(
-                        src => String.Format("{0} {1}", src.User.Person.FirstName, src.User.Person.LastName)));
-            mapperConfig.CreateMap<WorkItemHistory, OutboxItemViewModel>()
-                .ForMember(dest => dest.EntityNo, opts => opts.Ignore())
-                .ForMember(
-                    dest => dest.Date,
-                    opts => opts.MapFrom(
-                        src => JalaliDateTime.FromDateTime(src.Date).ToShortDateString()));
-
-            mapperConfig.CreateMap<Dictionary<string, object>, WorkflowInstanceViewModel>()
-                .ForMember(dest => dest.InstanceId, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "InstanceId")))
-                .ForMember(dest => dest.DocumentType, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "DocumentType")))
-                .ForMember(dest => dest.DocumentId, opts => opts.MapFrom(src => ValueOrDefault<int>(src, "DocumentId")))
-                .ForMember(dest => dest.WorkflowName, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "WorkflowName")))
-                .ForMember(dest => dest.EditionName, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "EditionName")))
-                .ForMember(dest => dest.State, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "State")))
-                .ForMember(dest => dest.LastActor, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "LastActor")))
-                .ForMember(
-                    dest => dest.LastActionDate,
-                    opts => opts.MapFrom(src =>
-                        ValueOrDefault<DateTime>(src, "LastActionDate") == default(DateTime)
-                            ? String.Empty
-                            : JalaliDateTime.FromDateTime(ValueOrDefault<DateTime>(src, "LastActionDate"))
-                                .ToString()));
         }
 
         private static void MapCoreTypes(IMapperConfigurationExpression mapperConfig)

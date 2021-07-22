@@ -7,7 +7,6 @@ using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
-using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Persistence.Mapping;
 using SPPC.Tadbir.Persistence.Mapping.Finance;
 
@@ -94,9 +93,6 @@ namespace SPPC.Tadbir.Persistence
             UserSettingMap.BuildMapping(modelBuilder.Entity<UserSetting>());
             ViewRowPermissionMap.BuildMapping(modelBuilder.Entity<ViewRowPermission>());
             ViewSettingMap.BuildMapping(modelBuilder.Entity<ViewSetting>());
-            WorkItemMap.BuildMapping(modelBuilder.Entity<WorkItem>());
-            WorkItemDocumentMap.BuildMapping(modelBuilder.Entity<WorkItemDocument>());
-            WorkItemHistoryMap.BuildMapping(modelBuilder.Entity<WorkItemHistory>());
         }
 
         /// <summary>
