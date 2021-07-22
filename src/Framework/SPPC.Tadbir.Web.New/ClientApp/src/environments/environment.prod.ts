@@ -180,5 +180,6 @@ export class Layout {
 
 export const environment = {
   production: true,
-  BaseUrl: '185.231.115.236:3003'  //BaseUrl: 'http://130.185.76.7:9095'
+  //Please dont change BaseUrl variable , If do you need to change this variable after changing and using this file please undo this file !!!
+  BaseUrl: 'http://130.185.76.7:9095'  
 };
