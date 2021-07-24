@@ -70,6 +70,8 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
   numberValue1: number;
   numberValue2: number;
 
+  oldSingleFormSelectedModel: ItemInfo | undefined;
+
   public ngOnInit(): void {
   }
 
@@ -91,6 +93,8 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
       { value: "ViewRowPermission.DdlPermissionItems.MaxQuantityValue", key: PermissionType.MaxQuantityValue }
     ];
   }
+
+  
 
   handleRoleChange(item: any) {
     this.viewRowPermissionService.getById(String.Format(RoleApi.RowAccessSettings, item)).subscribe(res => {
@@ -126,6 +130,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
   openSingleForm() {
     this.errorMessages = undefined;
     this.updateDataItem();
+    this.oldSingleFormSelectedModel = this.singleFormSelectedModel;
     this.isActiveSingleForm = true;
   }
 
@@ -137,6 +142,11 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
   saveSingleFormHandler(model: Item) {
     this.singleFormSelectedModel = model;
     this.singleFormSelectedValue = model.value;
+    if (this.oldSingleFormSelectedModel && this.oldSingleFormSelectedModel != this.singleFormSelectedModel) {      
+      var oldRowPermission = this.dataItem.rowPermissions.find(f => f.viewId == this.oldSingleFormSelectedModel.key);
+      oldRowPermission.accessMode = "Default";
+    }    
+
     this.view_Id = model.key;
     var rowPermission = this.dataItem.rowPermissions.find(f => f.viewId == this.view_Id);
     if (rowPermission) {
@@ -211,9 +221,8 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
     this.isActiveSingleForm = false;
   }
 
-  openMultipleForm() {
+  openMultipleForm() {   
     this.errorMessages = undefined;
-
     this.entity = this.singleFormSelectedModel;
     var row = this.dataItem.rowPermissions.find(f => f.viewId == this.view_Id);
     if (row)
@@ -245,7 +254,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
     this.viewRowPermissionService.edit<RowPermissionsForRoleInfo>(String.Format(RoleApi.RowAccessSettings, this.ddlSelectedRole), this.dataItem).subscribe(res => {
 
       this.showMessage(this.updateMsg, MessageType.Succes);
-
+      this.oldSingleFormSelectedModel = undefined;
       this.singleFormSelectedValue = '';
       this.ddlPermissionTypeSelected = 0;
 
@@ -257,7 +266,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
   }
 
   updateDataItem() {
-    if (this.view_Id > -1) {
+    if (this.view_Id > -1) {      
       let rowPermissionsArray: Array<ViewRowPermissionInfo> = this.dataItem.rowPermissions;
       var rowPermissionItem = rowPermissionsArray.find(f => f.viewId == this.view_Id);
       if (rowPermissionItem) {
