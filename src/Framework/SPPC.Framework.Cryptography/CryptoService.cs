@@ -113,9 +113,8 @@ namespace SPPC.Framework.Cryptography
         {
             Verify.ArgumentNotNullOrEmptyString(cipher, nameof(cipher));
 
-            byte[] key, iv;
             byte[] cipherBytes = Transform.FromBase64String(cipher);
-            byte[] unwrappedCipher = UnwrapCipher(cipherBytes, out key, out iv);
+            byte[] unwrappedCipher = UnwrapCipher(cipherBytes, out byte[] key, out byte[] iv);
             string data;
             using (Aes aes = Aes.Create())
             {

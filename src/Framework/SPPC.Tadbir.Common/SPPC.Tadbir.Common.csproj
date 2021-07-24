@@ -3,14 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>SPPC.Tadbir</RootNamespace>
-    <AssemblyVersion>1.1.183.0</AssemblyVersion>
-    <FileVersion>1.1.183.0</FileVersion>
-    <Company>SPPC</Company>
-    <Product>Framework</Product>
-    <Authors>Babak Eslamieh</Authors>
-    <Description>TODO: Add product description</Description>
-    <Copyright>TODO: Add copyright notice</Copyright>
-    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -19,19 +11,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\bin\Debug\netstandard2.0\</OutputPath>
-    <DocumentationFile>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.Common.xml</DocumentationFile>
+    <OutputPath>..\..\..\bin\Debug\</OutputPath>
+    <DocumentationFile>..\..\..\bin\Debug\SPPC.Tadbir.Common.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\..\bin\Release\netstandard2.0\</OutputPath>
+    <OutputPath>..\..\..\bin\Release\</OutputPath>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Class1.cs" />
-    <Compile Remove="Domain\VoucherAction.cs" />
-    <Compile Remove="Domain\VoucherStatus.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />

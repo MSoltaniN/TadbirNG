@@ -55,9 +55,9 @@ namespace SPPC.Tools.TadbirActivator
         private void Activate_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-            var activation = GetActivationData();
             try
             {
+                var activation = GetActivationData();
                 string license = Service.GetActivatedLicense(activation);
                 if (String.IsNullOrEmpty(license))
                 {

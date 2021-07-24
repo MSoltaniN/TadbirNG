@@ -2,14 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <Version>1.1.0</Version>
-    <Authors>Babak Eslamieh</Authors>
-    <Company>SPPC</Company>
-    <Product>Framework</Product>
-    <Description>TODO: Add product description</Description>
-    <Copyright>TODO: Add copyright notice</Copyright>
-    <AssemblyVersion>1.1.183.0</AssemblyVersion>
-    <FileVersion>1.1.183.0</FileVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
@@ -24,32 +16,12 @@
     <ServerGarbageCollection>false</ServerGarbageCollection>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Resources\Types\**" />
-    <Compile Remove="Utility\**" />
-    <Content Remove="Resources\Types\**" />
-    <Content Remove="Utility\**" />
-    <EmbeddedResource Remove="Resources\Types\**" />
-    <EmbeddedResource Remove="Utility\**" />
-    <None Remove="Resources\Types\**" />
-    <None Remove="Utility\**" />
-  </ItemGroup>
-
   <Target Name="PostBuild" BeforeTargets="PostBuildEvent">
     <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ngdes.exe -cmd:refdb " />
   </Target>
 
   <ItemGroup>
-    <Compile Remove="Controllers\CartableController.cs" />
-    <Compile Remove="Controllers\InventoriesController.cs" />
-    <Compile Remove="Controllers\LookupController.Finance.cs" />
-    <Compile Remove="Controllers\RequisitionsController.cs" />
-    <Compile Remove="Controllers\ValuesController.cs" />
     <Compile Remove="Report.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Resources\Reporting\Template\QuickReport.A4.Rtl.mrt" />
   </ItemGroup>
 
   <ItemGroup>

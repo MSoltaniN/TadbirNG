@@ -7,22 +7,15 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <CodeAnalysisRuleSet>..\..\..\misc\assets\CodeAnalysis4Test.ruleset</CodeAnalysisRuleSet>
-    <Authors>Babak Eslamieh</Authors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\testbin\Debug\netcoreapp2.0\</OutputPath>
+    <OutputPath>..\..\..\testbin\Debug\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\..\testbin\Release\netcoreapp2.0\</OutputPath>
+    <OutputPath>..\..\..\testbin\Release\</OutputPath>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Api\LookupControllerTests.cs" />
-    <Compile Remove="Api\TransactionsControllerTests.cs" />
-    <Compile Remove="Class1.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
@@ -39,6 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Tadbir.Mapper\SPPC.Tadbir.Mapper.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Persistence\SPPC.Tadbir.Persistence.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj" />
   </ItemGroup>
 

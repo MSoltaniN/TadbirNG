@@ -1,15 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.1.0</Version>
-    <Authors>Babak Eslamieh</Authors>
-    <Company>SPPC</Company>
-    <Product>Framework</Product>
-    <Description>TODO: Add product description</Description>
-    <Copyright>TODO: Add copyright notice</Copyright>
-    <AssemblyVersion>1.1.183.0</AssemblyVersion>
-    <FileVersion>1.1.183.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -18,52 +10,13 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\bin\Debug\netstandard2.0\</OutputPath>
-    <DocumentationFile>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.Persistence.xml</DocumentationFile>
+    <OutputPath>..\..\..\bin\Debug\</OutputPath>
+    <DocumentationFile>..\..\..\bin\Debug\SPPC.Tadbir.Persistence.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\..\bin\Release\netstandard2.0\</OutputPath>
+    <OutputPath>..\..\..\bin\Release\</OutputPath>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Mapping\Inventory\**" />
-    <Compile Remove="Mapping\Procurement\**" />
-    <Compile Remove="Mapping\Sales\**" />
-    <Compile Remove="Mapping\Warehousing\**" />
-    <EmbeddedResource Remove="Mapping\Inventory\**" />
-    <EmbeddedResource Remove="Mapping\Procurement\**" />
-    <EmbeddedResource Remove="Mapping\Sales\**" />
-    <EmbeddedResource Remove="Mapping\Warehousing\**" />
-    <None Remove="Mapping\Inventory\**" />
-    <None Remove="Mapping\Procurement\**" />
-    <None Remove="Mapping\Sales\**" />
-    <None Remove="Mapping\Warehousing\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Class1.cs" />
-    <Compile Remove="Mapping\Contact\BusinessPartnerMap.cs" />
-    <Compile Remove="Mapping\Contact\CustomerMap.cs" />
-    <Compile Remove="Mapping\Core\ServiceJobMap.cs" />
-    <Compile Remove="Mapping\Corporate\Branch.cs" />
-    <Compile Remove="Mapping\Corporate\BusinessUnitMap.cs" />
-    <Compile Remove="Mapping\Finance\FullAccountMap.cs" />
-    <Compile Remove="Mapping\Finance\FullDetailMap.cs" />
-    <Compile Remove="Mapping\Finance\FullDetailTypeMap.cs" />
-    <Compile Remove="Mapping\Finance\TransactionLineMap.cs" />
-    <Compile Remove="Mapping\Finance\TransactionMap.cs" />
-    <Compile Remove="Repository\AccountBookRepository.cs" />
-    <Compile Remove="Repository\BalanceByAccountRepository.cs" />
-    <Compile Remove="Repository\BalanceSheetRepository.cs" />
-    <Compile Remove="Repository\InventoryRepository.cs" />
-    <Compile Remove="Repository\MetadataDecorator.cs" />
-    <Compile Remove="Repository\ProfitLossRepository.cs" />
-    <Compile Remove="Repository\RequisitionRepository.cs" />
-    <Compile Remove="Repository\SimpleLoggingRepository.cs" />
-    <Compile Remove="Repository\WorkflowRepository.cs" />
-    <Compile Remove="Repository\WorkItemRepository.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
@@ -79,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SPPC.Framework.Model\SPPC.Framework.Model.csproj" />
     <ProjectReference Include="..\SPPC.Framework.Persistence\SPPC.Framework.Persistence.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Configuration\SPPC.Tadbir.Configuration.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.CrossCutting\SPPC.Tadbir.CrossCutting.csproj" />
