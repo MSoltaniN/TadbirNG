@@ -347,7 +347,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/reports/voucher/sum-by-date
         [HttpGet]
         [Route(ReportApi.EnvironmentVoucherSummaryByDateUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.Print)]
         public async Task<IActionResult> GetEnvironmentVoucherSummaryByDateAsync()
         {
             int itemCount = await _repository.GetVoucherSummaryByDateCountAsync(GridOptions);
@@ -361,30 +361,52 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         ///
         /// </summary>
         /// <returns></returns>
-        // GET: api/reports/voucher/std-form
+        // GET: api/reports/voucher/{voucherId:min(1)}/std-form
         [HttpGet]
         [Route(ReportApi.VoucherStandardFormUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetStandardVoucherFormAsync()
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Print)]
+        public async Task<IActionResult> GetStandardVoucherFormAsync(int voucherId)
         {
-            var standardForm = await _repository.GetStandardVoucherFormAsync(GridOptions);
-            Localize(standardForm);
-            return JsonReadResult(standardForm);
+            return await GetStandardFormAsync(voucherId);
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
-        // GET: api/reports/voucher/std-form-detail
+        // GET: api/reports/voucher/{voucherId:min(1)}/std-form-detail
         [HttpGet]
         [Route(ReportApi.VoucherStandardFormWithDetailUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetStandardVoucherFormWithDetailAsync()
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Print)]
+        public async Task<IActionResult> GetStandardVoucherFormWithDetailAsync(int voucherId)
         {
-            var formWithDetail = await _repository.GetStandardVoucherFormAsync(GridOptions, true);
-            Localize(formWithDetail);
-            return JsonReadResult(formWithDetail);
+            return await GetStandardFormAsync(voucherId, true);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/reports/voucher/draft/{voucherId:min(1)}/std-form
+        [HttpGet]
+        [Route(ReportApi.DraftVoucherStandardFormUrl)]
+        [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Print)]
+        public async Task<IActionResult> GetStandardDraftVoucherFormAsync(int voucherId)
+        {
+            return await GetStandardFormAsync(voucherId);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/reports/voucher/draft/{voucherId:min(1)}/std-form-detail
+        [HttpGet]
+        [Route(ReportApi.DraftVoucherStandardFormWithDetailUrl)]
+        [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Print)]
+        public async Task<IActionResult> GetStandardDraftVoucherFormWithDetailAsync(int voucherId)
+        {
+            return await GetStandardFormAsync(voucherId, true);
         }
 
         #endregion
@@ -1037,6 +1059,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         #endregion
+
+        private async Task<IActionResult> GetStandardFormAsync(int voucherId, bool withDetail = false)
+        {
+            var standardForm = await _repository.GetStandardVoucherFormAsync(voucherId, withDetail);
+            Localize(standardForm);
+            return JsonReadResult(standardForm);
+        }
 
         private async Task<int> GetCurrentLocaleIdAsync()
         {

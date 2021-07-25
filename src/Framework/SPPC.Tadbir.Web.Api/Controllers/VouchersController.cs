@@ -483,27 +483,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PostNewArticleAsync(
             int voucherId, [FromBody] VoucherLineViewModel article)
         {
-            var result = VoucherLineValidationResultAsync(article);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = await FullAccountValidationResult(article.FullAccount, _relationRepository);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = BranchValidationResult(article);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            var lineRepository = await GetLineRepositoryFromVoucherAsync(voucherId);
-            var outputLine = await lineRepository.SaveArticleAsync(article);
-            return StatusCode(StatusCodes.Status201Created, outputLine);
+            return await InsertArticleAsync(voucherId, article);
         }
 
         /// <summary>
@@ -519,21 +499,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedArticleAsync(
             int articleId, [FromBody] VoucherLineViewModel article)
         {
-            var result = VoucherLineValidationResultAsync(article, articleId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = BranchValidationResult(article);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            var lineRepository = await GetLineRepositoryAsync(articleId);
-            var outputLine = await lineRepository.SaveArticleAsync(article);
-            return JsonReadResult(outputLine);
+            return await UpdateArticleAsync(articleId, article);
         }
 
         /// <summary>
@@ -572,15 +538,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)(VoucherPermissions.Edit | VoucherPermissions.DeleteLine))]
         public async Task<IActionResult> DeleteExistingArticleAsync(int articleId)
         {
-            var result = await ValidateLineDeleteResultAsync(articleId);
-            if (result != null)
-            {
-                return BadRequestResult(result.ErrorMessage);
-            }
-
-            var lineRepository = await GetLineRepositoryAsync(articleId);
-            await lineRepository.DeleteArticleAsync(articleId);
-            return StatusCode(StatusCodes.Status204NoContent);
+            return await DeleteArticleAsync(articleId);
         }
 
         /// <summary>
@@ -596,18 +554,136 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingArticlesAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null || actionDetail.Items.Count == 0)
-            {
-                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
+            return await DeleteArticlesAsync(actionDetail);
+        }
 
-            var lineRepository = await GetLineRepositoryAsync(actionDetail.Items[0]);
-            return await GroupDeleteLineResultAsync(actionDetail, lineRepository.DeleteArticlesAsync);
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل مالی داده شده را برای یک سند پیش نویس ایجاد می کند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی پیش نویس</param>
+        /// <param name="article">اطلاعات کامل آرتیکل مالی جدید</param>
+        /// <returns>اطلاعات آرتیکل مالی بعد از ایجاد در دیتابیس</returns>
+        // POST: api/vouchers/draft/{voucherId:min(1)}/articles
+        [HttpPost]
+        [Route(VoucherApi.DraftVoucherArticlesUrl)]
+        [AuthorizeRequest(SecureEntity.DraftVoucher, (int)(DraftVoucherPermissions.Edit | DraftVoucherPermissions.CreateLine))]
+        public async Task<IActionResult> PostNewDraftArticleAsync(
+            int voucherId, [FromBody] VoucherLineViewModel article)
+        {
+            return await InsertArticleAsync(voucherId, article);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل مالی مشخص شده با شناسه دیتابیسی را اصلاح می کند
+        /// </summary>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل مالی مورد نظر برای اصلاح</param>
+        /// <param name="article">اطلاعات اصلاح شده آرتیکل مالی</param>
+        /// <returns>اطلاعات آرتیکل مالی بعد از اصلاح در دیتابیس</returns>
+        // PUT: api/vouchers/draft/articles/{articleId:min(1)}
+        [HttpPut]
+        [Route(VoucherApi.DraftVoucherArticleUrl)]
+        [AuthorizeRequest(SecureEntity.DraftVoucher, (int)(DraftVoucherPermissions.Edit | DraftVoucherPermissions.EditLine))]
+        public async Task<IActionResult> PutModifiedDraftArticleAsync(
+            int articleId, [FromBody] VoucherLineViewModel article)
+        {
+            return await UpdateArticleAsync(articleId, article);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل مالی مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل مالی مورد نظر برای حذف</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // DELETE: api/vouchers/draft/articles/{articleId:min(1)}
+        [HttpDelete]
+        [Route(VoucherApi.DraftVoucherArticleUrl)]
+        [AuthorizeRequest(SecureEntity.DraftVoucher, (int)(DraftVoucherPermissions.Edit | DraftVoucherPermissions.DeleteLine))]
+        public async Task<IActionResult> DeleteExistingDraftArticleAsync(int articleId)
+        {
+            return await DeleteArticleAsync(articleId);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل های مالی داده شده را - در صورت امکان - حذف می کند
+        /// </summary>
+        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // PUT: api/vouchers/draft/articles
+        [HttpPut]
+        [Route(VoucherApi.AllDraftVoucherArticlesUrl)]
+        [AuthorizeRequest(SecureEntity.DraftVoucher, (int)(DraftVoucherPermissions.Edit | DraftVoucherPermissions.DeleteLine))]
+        public async Task<IActionResult> PutExistingDraftArticlesAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            return await DeleteArticlesAsync(actionDetail);
         }
 
         #endregion
 
         #region Voucher Operations - Single
+
+        /// <summary>
+        /// به روش آسنکرون، سند مالی پیش نویس مشخص شده با شناسه دیتابیسی را اصلاح می کند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی پیش نویس مورد نظر برای اصلاح</param>
+        /// <param name="voucher">اطلاعات اصلاح شده سند مالی پیش نویس</param>
+        /// <returns>اطلاعات سند مالی پیش نویس بعد از اصلاح در دیتابیس</returns>
+        // PUT: api/vouchers/draft/{voucherId:int}
+        [HttpPut]
+        [Route(VoucherApi.DraftVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Edit)]
+        public async Task<IActionResult> PutModifiedDraftVoucherAsync(
+            int voucherId, [FromBody] VoucherViewModel voucher)
+        {
+            return await SaveVoucherAsync(voucherId, voucher);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سند مالی پیش نویس مشخص شده با شناسه دیتابیسی را حذف می کند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی پیش نویس مورد نظر برای حذف</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // DELETE: api/vouchers/draft/{voucherId:int}
+        [HttpDelete]
+        [Route(VoucherApi.DraftVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Delete)]
+        public async Task<IActionResult> DeleteExistingDraftVoucherAsync(int voucherId)
+        {
+            return await DeleteVoucherAsync(voucherId);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، وضعیت ثبت سند پیش نویس مشخص شده را به ثبت عادی تغییر می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند پیش نویس مورد نظر برای ثبت</param>
+        /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
+        /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
+        // PUT: api/vouchers/draft/{voucherId:int}/check
+        [HttpPut]
+        [Route(VoucherApi.CheckDraftVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Check)]
+        public async Task<IActionResult> PutExistingDraftVoucherAsChecked(int voucherId)
+        {
+            return await CheckVoucherAsync(voucherId);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سند پیش نویس با وضعیت ثبت عادی را برگشت داده و وضعیتش را به ثبت نشده تغییر می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند پیش نویس مورد نظر برای برگشت از ثبت</param>
+        /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
+        /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
+        // PUT: api/vouchers/draft/{voucherId:int}/check/undo
+        [HttpPut]
+        [Route(VoucherApi.UndoCheckDraftVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.UndoCheck)]
+        public async Task<IActionResult> PutExistingDraftVoucherAsUnchecked(int voucherId)
+        {
+            return await UncheckVoucherAsync(voucherId);
+        }
 
         /// <summary>
         /// به روش آسنکرون، سند مالی داده شده را ایجاد می کند
@@ -650,35 +726,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedVoucherAsync(
             int voucherId, [FromBody] VoucherViewModel voucher)
         {
-            var result = await VoucherValidationResultAsync(voucher, voucherId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = BranchValidationResult(voucher);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = CheckedValidationResult(voucher);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            if (voucher.SaveCount == 0)
-            {
-                await _repository.SetVoucherDailyNoAsync(voucher);
-            }
-
-            var repository = GetVoucherRepository((SubjectType)voucher.SubjectType);
-            var outputVoucher = await repository.SaveVoucherAsync(voucher);
-            result = (outputVoucher != null)
-                ? Ok(outputVoucher)
-                : NotFound() as IActionResult;
-            return result;
+            return await SaveVoucherAsync(voucherId, voucher);
         }
 
         /// <summary>
@@ -693,15 +741,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingVoucherAsync(int voucherId)
         {
-            var result = await ValidateDeleteResultAsync(voucherId);
-            if (result != null)
-            {
-                return BadRequestResult(result.ErrorMessage);
-            }
-
-            var repository = await GetVoucherRepositoryAsync(voucherId);
-            await repository.DeleteVoucherAsync(voucherId);
-            return StatusCode(StatusCodes.Status204NoContent);
+            return await DeleteVoucherAsync(voucherId);
         }
 
         /// <summary>
@@ -716,15 +756,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Check)]
         public async Task<IActionResult> PutExistingVoucherAsChecked(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Check);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            var repository = await GetVoucherRepositoryAsync(voucherId);
-            await repository.SetVoucherStatusAsync(voucherId, DocumentStatusId.Checked);
-            return Ok();
+            return await CheckVoucherAsync(voucherId);
         }
 
         /// <summary>
@@ -739,15 +771,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.UndoCheck)]
         public async Task<IActionResult> PutExistingVoucherAsUnchecked(int voucherId)
         {
-            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoCheck);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            var repository = await GetVoucherRepositoryAsync(voucherId);
-            await repository.SetVoucherStatusAsync(voucherId, DocumentStatusId.NotChecked);
-            return Ok();
+            return await UncheckVoucherAsync(voucherId);
         }
 
         /// <summary>
@@ -910,6 +934,51 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Voucher Operations - Group
 
         /// <summary>
+        /// به روش آسنکرون، اسناد مالی پیش نویس داده شده را - در صورت امکان - حذف می کند
+        /// </summary>
+        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // PUT: api/vouchers/draft
+        [HttpPut]
+        [Route(VoucherApi.EnvironmentDraftVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Delete)]
+        public async Task<IActionResult> PutExistingDraftVouchersAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            return await DeleteVouchersAsync(actionDetail);
+        }
+
+        /// <summary>
+        /// ثبت گروهی اسناد پیش نویس
+        /// </summary>
+        /// <param name="actionDetail">لیست شناسه اسناد انتخاب شده </param>
+        /// <returns></returns>
+        // PUT: api/vouchers/draft/check
+        [HttpPut]
+        [Route(VoucherApi.CheckDraftVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.DraftVouchers, (int)ManageDraftVouchersPermissions.GroupCheck)]
+        public async Task<IActionResult> PutExistingDraftVouchersAsChecked([FromBody] ActionDetailViewModel actionDetail)
+        {
+            return await CheckVouchersAsync(actionDetail);
+        }
+
+        /// <summary>
+        /// برگشت از ثبت گروهی اسناد پیش نویس
+        /// </summary>
+        /// <param name="actionDetail">لیست شناسه اسناد انتخاب شده</param>
+        /// <returns></returns>
+        // PUT: api/vouchers/draft/check/undo
+        [HttpPut]
+        [Route(VoucherApi.UndoCheckDraftVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.DraftVouchers, (int)ManageDraftVouchersPermissions.GroupUndoCheck)]
+        public async Task<IActionResult> PutExistingDraftVouchersAsUnchecked(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            return await UncheckVouchersAsync(actionDetail);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اسناد مالی داده شده را - در صورت امکان - حذف می کند
         /// </summary>
         /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
@@ -922,13 +991,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingVouchersAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null || actionDetail.Items.Count == 0)
-            {
-                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            var repository = await GetVoucherRepositoryAsync(actionDetail.Items[0]);
-            return await GroupDeleteResultAsync(actionDetail, repository.DeleteVouchersAsync);
+            return await DeleteVouchersAsync(actionDetail);
         }
 
         /// <summary>
@@ -941,13 +1004,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.GroupCheck)]
         public async Task<IActionResult> PutExistingVouchersAsChecked([FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null)
-            {
-                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            return await GroupStatusChangeResultAsync(
-                actionDetail.Items, AppStrings.Check, DocumentStatusId.Checked);
+            return await CheckVouchersAsync(actionDetail);
         }
 
         /// <summary>
@@ -960,13 +1017,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.GroupUndoCheck)]
         public async Task<IActionResult> PutExistingVouchersAsUnchecked([FromBody] ActionDetailViewModel actionDetail)
         {
-            if (actionDetail == null)
-            {
-                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
-            }
-
-            return await GroupStatusChangeResultAsync(
-                actionDetail.Items, AppStrings.UndoCheck, DocumentStatusId.NotChecked);
+            return await UncheckVouchersAsync(actionDetail);
         }
 
         /// <summary>
@@ -1210,6 +1261,183 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             await _repository.SetVouchersConfirmApproveStatusAsync(validated, isConfirmed);
             return Ok(notValidated);
         }
+
+        #region Common Voucher/Article Helper Methods
+
+        private async Task<IActionResult> SaveVoucherAsync(int voucherId, VoucherViewModel voucher)
+        {
+            var result = await VoucherValidationResultAsync(voucher, voucherId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = BranchValidationResult(voucher);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = CheckedValidationResult(voucher);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (voucher.SaveCount == 0)
+            {
+                await _repository.SetVoucherDailyNoAsync(voucher);
+            }
+
+            var repository = GetVoucherRepository((SubjectType)voucher.SubjectType);
+            var outputVoucher = await repository.SaveVoucherAsync(voucher);
+            result = (outputVoucher != null)
+                ? Ok(outputVoucher)
+                : NotFound() as IActionResult;
+            return result;
+        }
+
+        private async Task<IActionResult> DeleteVoucherAsync(int voucherId)
+        {
+            var result = await ValidateDeleteResultAsync(voucherId);
+            if (result != null)
+            {
+                return BadRequestResult(result.ErrorMessage);
+            }
+
+            var repository = await GetVoucherRepositoryAsync(voucherId);
+            await repository.DeleteVoucherAsync(voucherId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        private async Task<IActionResult> CheckVoucherAsync(int voucherId)
+        {
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.Check);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = await GetVoucherRepositoryAsync(voucherId);
+            await repository.SetVoucherStatusAsync(voucherId, DocumentStatusId.Checked);
+            return Ok();
+        }
+
+        private async Task<IActionResult> UncheckVoucherAsync(int voucherId)
+        {
+            var result = await VoucherActionValidationResultAsync(voucherId, AppStrings.UndoCheck);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = await GetVoucherRepositoryAsync(voucherId);
+            await repository.SetVoucherStatusAsync(voucherId, DocumentStatusId.NotChecked);
+            return Ok();
+        }
+
+        private async Task<IActionResult> DeleteVouchersAsync(ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null || actionDetail.Items.Count == 0)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var repository = await GetVoucherRepositoryAsync(actionDetail.Items[0]);
+            return await GroupDeleteResultAsync(actionDetail, repository.DeleteVouchersAsync);
+        }
+
+        private async Task<IActionResult> CheckVouchersAsync(ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            return await GroupStatusChangeResultAsync(
+                actionDetail.Items, AppStrings.Check, DocumentStatusId.Checked);
+        }
+
+        private async Task<IActionResult> UncheckVouchersAsync(ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            return await GroupStatusChangeResultAsync(
+                actionDetail.Items, AppStrings.UndoCheck, DocumentStatusId.NotChecked);
+        }
+
+        private async Task<IActionResult> InsertArticleAsync(int voucherId, VoucherLineViewModel article)
+        {
+            var result = VoucherLineValidationResultAsync(article);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = await FullAccountValidationResult(article.FullAccount, _relationRepository);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = BranchValidationResult(article);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var lineRepository = await GetLineRepositoryFromVoucherAsync(voucherId);
+            var outputLine = await lineRepository.SaveArticleAsync(article);
+            return StatusCode(StatusCodes.Status201Created, outputLine);
+        }
+
+        private async Task<IActionResult> UpdateArticleAsync(int articleId, VoucherLineViewModel article)
+        {
+            var result = VoucherLineValidationResultAsync(article, articleId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = BranchValidationResult(article);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var lineRepository = await GetLineRepositoryAsync(articleId);
+            var outputLine = await lineRepository.SaveArticleAsync(article);
+            return JsonReadResult(outputLine);
+        }
+
+        private async Task<IActionResult> DeleteArticleAsync(int articleId)
+        {
+            var result = await ValidateLineDeleteResultAsync(articleId);
+            if (result != null)
+            {
+                return BadRequestResult(result.ErrorMessage);
+            }
+
+            var lineRepository = await GetLineRepositoryAsync(articleId);
+            await lineRepository.DeleteArticleAsync(articleId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        private async Task<IActionResult> DeleteArticlesAsync(ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null || actionDetail.Items.Count == 0)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var lineRepository = await GetLineRepositoryAsync(actionDetail.Items[0]);
+            return await GroupDeleteLineResultAsync(actionDetail, lineRepository.DeleteArticlesAsync);
+        }
+
+        #endregion
 
         private IActionResult BasicValidationResult<TModel>(TModel model, string modelType, int modelId = 0)
         {

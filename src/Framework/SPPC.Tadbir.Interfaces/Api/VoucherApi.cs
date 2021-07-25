@@ -179,6 +179,36 @@ namespace SPPC.Tadbir.Api
         public const string NewDraftVoucherUrl = "vouchers/draft/new";
 
         /// <summary>
+        /// API client URL for all available articles in draft vouchers
+        /// </summary>
+        public const string AllDraftVoucherArticles = "vouchers/draft/articles";
+
+        /// <summary>
+        /// API server route URL for all available articles in draft vouchers
+        /// </summary>
+        public const string AllDraftVoucherArticlesUrl = "vouchers/draft/articles";
+
+        /// <summary>
+        /// API client URL for articles of a draft voucher specified by identifier
+        /// </summary>
+        public const string DraftVoucherArticles = "vouchers/draft/{0}/articles";
+
+        /// <summary>
+        /// API server route URL for articles of a draft voucher specified by identifier
+        /// </summary>
+        public const string DraftVoucherArticlesUrl = "vouchers/draft/{voucherId:min(1)}/articles";
+
+        /// <summary>
+        /// API client URL for an article of a draft voucher specified by identifier
+        /// </summary>
+        public const string DraftVoucherArticle = "vouchers/draft/articles/{0}";
+
+        /// <summary>
+        /// API server route URL for an article of a draft voucher specified by identifier
+        /// </summary>
+        public const string DraftVoucherArticleUrl = "vouchers/draft/articles/{articleId:min(1)}";
+
+        /// <summary>
         /// API client URL for a single draft voucher specified by number
         /// </summary>
         public const string DraftVoucherByNo = "vouchers/draft/by-no/{0}";
@@ -377,6 +407,26 @@ namespace SPPC.Tadbir.Api
         public const string UndoApproveVoucherUrl = "vouchers/{voucherId:min(1)}/approve/undo";
 
         /// <summary>
+        /// API client URL for checking (changing document status to Checked) a single draft voucher specified by identifier
+        /// </summary>
+        public const string CheckDraftVoucher = "vouchers/draft/{0}/check";
+
+        /// <summary>
+        /// API server route URL for checking (changing document status to Checked) a single draft voucher specified by identifier
+        /// </summary>
+        public const string CheckDraftVoucherUrl = "vouchers/draft/{voucherId:min(1)}/check";
+
+        /// <summary>
+        /// API client URL for undoing check for a single draft voucher specified by identifier
+        /// </summary>
+        public const string UndoCheckDraftVoucher = "vouchers/draft/{0}/check/undo";
+
+        /// <summary>
+        /// API server route URL for undoing check for a single draft voucher specified by identifier
+        /// </summary>
+        public const string UndoCheckDraftVoucherUrl = "vouchers/draft/{voucherId:min(1)}/check/undo";
+
+        /// <summary>
         /// API client URL for normalizing (changing Draft type to Normal) a single voucher specified by identifier
         /// </summary>
         public const string NormalizeVoucher = "vouchers/{0}/normalize";
@@ -459,6 +509,26 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for approving multiple vouchers
         /// </summary>
         public const string ApproveVouchersUrl = "vouchers/approve";
+
+        /// <summary>
+        /// API client URL for checking (changing document status to Checked) multiple vouchers
+        /// </summary>
+        public const string CheckDraftVouchers = "vouchers/draft/check";
+
+        /// <summary>
+        /// API server route URL for checking (changing document status to Checked) multiple vouchers
+        /// </summary>
+        public const string CheckDraftVouchersUrl = "vouchers/draft/check";
+
+        /// <summary>
+        /// API client URL for undoing check (changing document status to NotChecked) in multiple vouchers
+        /// </summary>
+        public const string UndoCheckDraftVouchers = "vouchers/draft/check/undo";
+
+        /// <summary>
+        /// API server route URL for undoing check (changing document status to NotChecked) in multiple vouchers
+        /// </summary>
+        public const string UndoCheckDraftVouchersUrl = "vouchers/draft/check/undo";
 
         /// <summary>
         /// API client URL for normalizing (changing Draft type to Normal) multiple vouchers

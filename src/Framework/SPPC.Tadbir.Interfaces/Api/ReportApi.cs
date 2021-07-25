@@ -141,22 +141,42 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for Voucher Standard Form report
         /// </summary>
-        public const string VoucherStandardForm = "reports/voucher/std-form";
+        public const string VoucherStandardForm = "reports/voucher/{0}/std-form";
 
         /// <summary>
         /// API server route URL for Voucher Standard Form report
         /// </summary>
-        public const string VoucherStandardFormUrl = "reports/voucher/std-form";
+        public const string VoucherStandardFormUrl = "reports/voucher/{voucherId:min(1)}/std-form";
 
         /// <summary>
         /// API client URL for Voucher Standard Form With Detail report
         /// </summary>
-        public const string VoucherStandardFormWithDetail = "reports/voucher/std-form-detail";
+        public const string VoucherStandardFormWithDetail = "reports/voucher/{0}/std-form-detail";
 
         /// <summary>
         /// API server route URL for Voucher Standard Form With Detail report
         /// </summary>
-        public const string VoucherStandardFormWithDetailUrl = "reports/voucher/std-form-detail";
+        public const string VoucherStandardFormWithDetailUrl = "reports/voucher/{voucherId:min(1)}/std-form-detail";
+
+        /// <summary>
+        /// API client URL for Draft Voucher Standard Form report
+        /// </summary>
+        public const string DraftVoucherStandardForm = "reports/voucher/draft/{0}/std-form";
+
+        /// <summary>
+        /// API server route URL for Draft Voucher Standard Form report
+        /// </summary>
+        public const string DraftVoucherStandardFormUrl = "reports/voucher/draft/{voucherId:min(1)}/std-form";
+
+        /// <summary>
+        /// API client URL for Draft Voucher Standard Form With Detail report
+        /// </summary>
+        public const string DraftVoucherStandardFormWithDetail = "reports/voucher/draft/{0}/std-form-detail";
+
+        /// <summary>
+        /// API server route URL for Draft Voucher Standard Form With Detail report
+        /// </summary>
+        public const string DraftVoucherStandardFormWithDetailUrl = "reports/voucher/draft/{voucherId:min(1)}/std-form-detail";
 
         #endregion
     }
