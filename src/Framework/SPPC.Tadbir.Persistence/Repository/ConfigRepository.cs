@@ -273,7 +273,7 @@ namespace SPPC.Tadbir.Persistence
             await UnitOfWork.CommitAsync();
 
             var configValues = JsonHelper.To<SystemConfig>(systemConfig.Values);
-            await ProcessConfigChangeAsync(oldValues, configValues);
+            await LogConfigChangeAsync(oldValues, configValues);
             if (configValues.UsesDefaultCoding && !await IsDefinedAccountAsync())
             {
                 await InitializeDefaultAccounts();
@@ -456,15 +456,17 @@ namespace SPPC.Tadbir.Persistence
             await SaveViewTreeConfigAsync(configItems);
         }
 
-        private async Task ProcessConfigChangeAsync(SystemConfig oldConfig, SystemConfig newConfig)
+        private async Task LogConfigChangeAsync(SystemConfig oldConfig, SystemConfig newConfig)
         {
-            string description = String.Empty;
+            string description;
             if (oldConfig.DefaultCalendar != newConfig.DefaultCalendar)
             {
                 description = String.Format("{0} : {1} , {2} : {3}",
                     AppStrings.Old, GetCalendarName(oldConfig.DefaultCalendar),
                     AppStrings.New, GetCalendarName(newConfig.DefaultCalendar));
-                await OnSourceActionAsync(OperationId.CalendarChange, Context.Localize(description));
+                OnEntityAction(OperationId.CalendarChange);
+                Log.Description = Context.Localize(description);
+                await TrySaveLogAsync();
             }
 
             if (oldConfig.DefaultCurrencyNameKey != newConfig.DefaultCurrencyNameKey)
@@ -472,7 +474,9 @@ namespace SPPC.Tadbir.Persistence
                 description = String.Format("{0} : {1} , {2} : {3}",
                     AppStrings.Old, oldConfig.DefaultCurrencyNameKey,
                     AppStrings.New, newConfig.DefaultCurrencyNameKey);
-                await OnSourceActionAsync(OperationId.CurrencyChange, Context.Localize(description));
+                OnEntityAction(OperationId.CurrencyChange);
+                Log.Description = Context.Localize(description);
+                await TrySaveLogAsync();
             }
 
             if (oldConfig.DefaultDecimalCount != newConfig.DefaultDecimalCount)
@@ -480,7 +484,9 @@ namespace SPPC.Tadbir.Persistence
                 description = String.Format("{0} : {1} , {2} : {3}",
                     AppStrings.Old, oldConfig.DefaultDecimalCount,
                     AppStrings.New, newConfig.DefaultDecimalCount);
-                await OnSourceActionAsync(OperationId.DecimalCountChange, Context.Localize(description));
+                OnEntityAction(OperationId.DecimalCountChange);
+                Log.Description = Context.Localize(description);
+                await TrySaveLogAsync();
             }
 
             if (oldConfig.UsesDefaultCoding != newConfig.UsesDefaultCoding)
@@ -488,7 +494,9 @@ namespace SPPC.Tadbir.Persistence
                 description = String.Format("{0} : {1} , {2} : {3}",
                     AppStrings.Old, GetYesNo(oldConfig.UsesDefaultCoding),
                     AppStrings.New, GetYesNo(newConfig.UsesDefaultCoding));
-                await OnSourceActionAsync(OperationId.DefaultCodingChange, Context.Localize(description));
+                OnEntityAction(OperationId.DefaultCodingChange);
+                Log.Description = Context.Localize(description);
+                await TrySaveLogAsync();
             }
         }
 

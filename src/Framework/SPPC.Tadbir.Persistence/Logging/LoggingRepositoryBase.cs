@@ -113,7 +113,6 @@ namespace SPPC.Tadbir.Persistence
         internal async Task OnEnvironmentChangeAsync(
             CompanyLoginViewModel currentLogin, CompanyLoginViewModel newLogin)
         {
-            string description = String.Empty;
             Log = new OperationLogViewModel()
             {
                 Date = DateTime.Now.Date,
@@ -125,6 +124,7 @@ namespace SPPC.Tadbir.Persistence
                 UserId = currentLogin.UserId
             };
 
+            string description;
             if (currentLogin.CompanyId == 0
                 || currentLogin.CompanyId != newLogin.CompanyId)
             {

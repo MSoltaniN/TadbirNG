@@ -1970,3 +1970,8 @@ UPDATE [Config].[Setting]
 SET [Values] = '{"openingAsFirstVoucher":false,"startTurnoverAsInitBalance":false}',
   DefaultValues = '{"openingAsFirstVoucher":false,"startTurnoverAsInitBalance":false}'
 WHERE ModelType = 'FinanceReportConfig'
+
+-- 1.1.1163
+UPDATE [Config].[LogSetting]
+SET SourceID = NULL, EntityTypeID = 15
+WHERE OperationID IN(31,32,33,34)

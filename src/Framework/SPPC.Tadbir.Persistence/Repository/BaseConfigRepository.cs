@@ -14,7 +14,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات پایه مورد نیاز برای ذخیره و بازیابی تنظیمات را پیاده سازی می کند
     /// </summary>
-    public class BaseConfigRepository : LoggingRepositoryBase, IBaseConfigRepository
+    public class BaseConfigRepository : EntityLoggingRepository<Setting, SettingBriefViewModel>, IBaseConfigRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -35,7 +35,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Setting>();
             var allConfig = await repository
                 .GetAllAsync();
-            await OnSourceActionAsync(OperationId.View);
+            await ReadAsync(null);
             return allConfig
                 .Where(cfg => cfg.IsStandalone
                     && !(cfg.Type == (short)ConfigType.User && cfg.ScopeType < (short)ConfigScopeType.Entity))
@@ -65,6 +65,8 @@ namespace SPPC.Tadbir.Persistence
                 repository.Update(cfg);
             });
             await UnitOfWork.CommitAsync();
+            OnEntityAction(OperationId.Save);
+            await TrySaveLogAsync();
         }
 
         /// <summary>
@@ -103,6 +105,11 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return configByType;
+        }
+
+        internal override int? EntityType
+        {
+            get { return (int)EntityTypeId.Setting; }
         }
     }
 }

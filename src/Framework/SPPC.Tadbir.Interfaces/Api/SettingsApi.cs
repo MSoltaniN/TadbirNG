@@ -97,16 +97,6 @@ namespace SPPC.Tadbir.Api
         public const string QuickReportSettingsByUserAndViewUrl = "settings/qreport/users/{userId:min(1)}/views/{viewId:min(1)}";
 
         /// <summary>
-        /// API client URL for workflow settings
-        /// </summary>
-        public const string WorkflowSettings = "settings/workflows";
-
-        /// <summary>
-        /// API server route URL for workflow settings
-        /// </summary>
-        public const string WorkflowSettingsUrl = "settings/workflows";
-
-        /// <summary>
         /// API client URL for settings of all hierarchy views
         /// </summary>
         public const string ViewTreeSettings = "settings/views/tree";
