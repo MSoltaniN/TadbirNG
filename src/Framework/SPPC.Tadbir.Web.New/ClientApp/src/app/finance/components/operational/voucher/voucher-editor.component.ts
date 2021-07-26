@@ -506,7 +506,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   checkHandler() {
+
     var apiUrl = String.Format(this.voucherModel.statusId == DocumentStatusValue.NotChecked ? VoucherApi.CheckVoucher : VoucherApi.UndoCheckVoucher, this.voucherModel.id);
+    if (this.subjectMode == 1) {
+      apiUrl = String.Format(this.voucherModel.statusId == DocumentStatusValue.NotChecked ? VoucherApi.CheckDraftVoucher : VoucherApi.UndoCheckDraftVoucher, this.voucherModel.id);
+    }
 
     this.voucherService.changeVoucherStatus(apiUrl).subscribe(res => {
 
