@@ -204,6 +204,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
             else
             {
+                var result = await ClosingVoucherValidationResultAsync();
+                if (result is BadRequestObjectResult)
+                {
+                    return result;
+                }
+
                 bool hasPrevious = await _repository.HasPreviousClosingVoucherAsync();
                 bool needsPrompt = !hasPrevious;
                 return Json(needsPrompt);
@@ -918,11 +924,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Normalize)]
         public async Task<IActionResult> PutExistingDraftVoucherAsNormalized(int voucherId)
         {
-            bool isChecked = await _repository.IsCurrentSpecialVoucherCheckedAsync(
-                VoucherOriginId.ClosingVoucher);
-            if (isChecked)
+            var result = await ClosingVoucherValidationResultAsync();
+            if (result is BadRequestObjectResult)
             {
-                return BadRequestResult(_strings[AppStrings.CurrentClosingVoucherIsChecked]);
+                return result;
             }
 
             await _draftRepository.NormalizeVoucherAsync(voucherId);
@@ -1617,12 +1622,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
             else
             {
-                bool isChecked = await _repository.IsCurrentSpecialVoucherCheckedAsync(
-                    VoucherOriginId.ClosingVoucher);
-                if (isChecked)
+                var result = await ClosingVoucherValidationResultAsync();
+                if (result is BadRequestObjectResult)
                 {
-                    return BadRequestResult(_strings[AppStrings.CurrentClosingVoucherIsChecked]);
+                    return result;
                 }
+            }
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> ClosingVoucherValidationResultAsync()
+        {
+            bool isChecked = await _repository.IsCurrentSpecialVoucherCheckedAsync(
+                VoucherOriginId.ClosingVoucher);
+            if (isChecked)
+            {
+                return BadRequestResult(_strings[AppStrings.CurrentClosingVoucherIsChecked]);
             }
 
             return Ok();

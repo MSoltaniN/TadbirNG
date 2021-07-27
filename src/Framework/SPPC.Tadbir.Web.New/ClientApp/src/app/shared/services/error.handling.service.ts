@@ -15,7 +15,6 @@ export class ErrorHandlingService {
   }
 
   public handleError(error: Error | any) {
-    debugger;
     if (error.statusCode == 400) {
       if (error.type) {
         switch (error.type) {
