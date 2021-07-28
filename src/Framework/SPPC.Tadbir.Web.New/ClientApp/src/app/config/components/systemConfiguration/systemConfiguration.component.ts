@@ -68,7 +68,7 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
     var configValue = JSON.parse(JSON.stringify(setting.values));
     this.selectedCalendar = configValue.defaultCalendar;
     this.selectedCurrencyName = configValue.defaultCurrencyNameKey;
-    this.useDefaultCoding = configValue.isUseDefaultCoding;
+    this.useDefaultCoding = configValue.usesDefaultCoding;
     this.decimalCount = configValue.defaultDecimalCount;
   }
 
@@ -126,6 +126,7 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
   }
 
   saveSystemConfig() {
+    debugger;
     this.isRefreshTreeView = false;
     if (this.viewTreeValue)
       this.saveViewTreeConfig();
@@ -144,7 +145,7 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
     var configValue = JSON.parse(JSON.stringify(this.systemConfigModel.values));
     configValue.defaultCalendar = this.selectedCalendar;
     configValue.defaultCurrencyNameKey = this.selectedCurrencyName;
-    configValue.isUseDefaultCoding = this.useDefaultCoding;
+    configValue.usesDefaultCoding = this.useDefaultCoding;
     configValue.defaultDecimalCount = this.decimalCount;
 
     this.systemConfigModel.values = configValue;
