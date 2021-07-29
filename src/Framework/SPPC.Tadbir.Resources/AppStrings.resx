@@ -3504,4 +3504,10 @@
   <data name="CompanyAccess" xml:space="preserve">
     <value>دسترسی به شرکت</value>
   </data>
+  <data name="InactiveAccountCantHaveChildren" xml:space="preserve">
+    <value>حساب والد '{0}' غیرفعال شده و نمی توان برای آن حساب زیرمجموعه تعریف کرد.</value>
+  </data>
+  <data name="ParentAccountCantBeInactive" xml:space="preserve">
+    <value>حساب '{0}' دارای زیرمجموعه است و نمی توان آن را غیرفعال کرد.</value>
+  </data>
 </root>

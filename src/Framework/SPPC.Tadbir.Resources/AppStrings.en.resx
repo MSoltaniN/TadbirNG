@@ -3513,4 +3513,10 @@
   <data name="CompanyAccess" xml:space="preserve">
     <value>Company access</value>
   </data>
+  <data name="InactiveAccountCantHaveChildren" xml:space="preserve">
+    <value>Parent account '{0}' is inactive and cannot have child accounts.</value>
+  </data>
+  <data name="ParentAccountCantBeInactive" xml:space="preserve">
+    <value>Account '{0}' has child accounts and cannot be inactive.</value>
+  </data>
 </root>

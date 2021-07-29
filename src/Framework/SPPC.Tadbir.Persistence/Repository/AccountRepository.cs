@@ -53,6 +53,24 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، کلیه حساب های قابل انتخاب در دوره مالی و شعبه جاری برنامه را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از حساب های قابل انتخاب در دوره مالی و شعبه جاری برنامه</returns>
+        /// <remarks>این متد حسابهای غیرفعال در دوره مالی جاری برنامه را از فهرست خروجی فیلتر می کند</remarks>
+        public async Task<PagedList<AccountViewModel>> GetAccountsLookupAsync(GridOptions gridOptions = null)
+        {
+            var inactiveAccountIds = await GetInactiveAccountIdsAsync();
+            var accounts = await Repository
+                .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
+                .Where(acc => !inactiveAccountIds.Contains(acc.Id))
+                .Select(item => Mapper.Map<AccountViewModel>(item))
+                .ToListAsync();
+            return new PagedList<AccountViewModel>(accounts, gridOptions);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، حساب با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه عددی یکی از حساب های موجود</param>
@@ -161,9 +179,10 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountFullDataViewModel> SaveAccountAsync(AccountFullDataViewModel accountFullView)
         {
             Verify.ArgumentNotNull(accountFullView, "accountFullView");
-            Account account = default(Account);
-            CustomerTaxInfoViewModel customerTax = default(CustomerTaxInfoViewModel);
-            AccountOwnerViewModel accountOwner = default(AccountOwnerViewModel);
+            Account account;
+            var customerTax = default(CustomerTaxInfoViewModel);
+            var accountOwner = default(AccountOwnerViewModel);
+
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             var accountView = accountFullView.Account;
             if (accountView.Id == 0)
@@ -172,6 +191,7 @@ namespace SPPC.Tadbir.Persistence
                 await InsertAsync(repository, account);
                 await UpdateLevelUsageAsync(account.Level);
                 await InsertAccountCurrencyAsync(accountView, account);
+                await HandleActiveStateChangeAsync(account);
             }
             else
             {
@@ -186,6 +206,7 @@ namespace SPPC.Tadbir.Persistence
                     }
 
                     await UpdateAccountCurrencyAsync(accountView, account);
+                    await HandleActiveStateChangeAsync(account);
 
                     if (accountFullView.CustomerTaxInfo != null)
                     {
@@ -268,6 +289,7 @@ namespace SPPC.Tadbir.Persistence
 
                     level = Math.Max(level, account.Level);
                     account.AccountCurrencies.Clear();
+                    await HandleInactiveAccountDeleteAsync(account);
                     await DeleteNoLogAsync(repository, account);
                 }
             }
@@ -472,6 +494,7 @@ namespace SPPC.Tadbir.Persistence
 
             var account = await repository.GetByIDWithTrackingAsync(
                 accountId,
+                acc => acc.Children,
                 acc => acc.CustomerTaxInfo,
                 acc => acc.AccountOwner.AccountHolders);
 
@@ -716,6 +739,54 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return currencyId;
+        }
+
+        private async Task HandleActiveStateChangeAsync(Account account)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<InactiveAccount>();
+            var inactive = await repository.GetSingleByCriteriaAsync(acc => acc.AccountId == account.Id
+                && acc.FiscalPeriodId == UserContext.FiscalPeriodId);
+            if (inactive != null && account.IsActive)
+            {
+                repository.Delete(inactive);
+                await UnitOfWork.CommitAsync();
+            }
+            else if (inactive == null && !account.IsActive)
+            {
+                inactive = new InactiveAccount()
+                {
+                    AccountId = account.Id,
+                    FiscalPeriodId = UserContext.FiscalPeriodId
+                };
+                repository.Insert(inactive);
+                await UnitOfWork.CommitAsync();
+            }
+        }
+
+        private async Task HandleInactiveAccountDeleteAsync(Account account)
+        {
+            if (!account.IsActive)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<InactiveAccount>();
+                var inactiveItems = await repository.GetByCriteriaAsync(
+                    acc => acc.AccountId == account.Id);
+                foreach (var item in inactiveItems)
+                {
+                    repository.Delete(item);
+                }
+
+                await UnitOfWork.CommitAsync();
+            }
+        }
+
+        private async Task<List<int>> GetInactiveAccountIdsAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<InactiveAccount>();
+            return await repository
+                .GetEntityQuery()
+                .Where(acc => acc.FiscalPeriodId == UserContext.FiscalPeriodId)
+                .Select(acc => acc.AccountId)
+                .ToListAsync();
         }
 
         private readonly ISystemRepository _system;

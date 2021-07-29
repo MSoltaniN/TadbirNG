@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -145,6 +144,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 fiscalPeriod = Mapper.Map<FiscalPeriod>(fiscalPeriodView);
                 await InsertAsync(repository, fiscalPeriod);
+                await CopyInactiveAccountsAsync(fiscalPeriod.Id);
             }
             else
             {
@@ -445,6 +445,33 @@ namespace SPPC.Tadbir.Persistence
             else
             {
                 return fp => true;
+            }
+        }
+
+        private async Task CopyInactiveAccountsAsync(int fpId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var previous = await repository
+                .GetEntityQuery()
+                .Where(fp => fp.Id < fpId)
+                .OrderByDescending(fp => fp.Id)
+                .FirstOrDefaultAsync();
+            if (previous != null)
+            {
+                var accountRepository = UnitOfWork.GetAsyncRepository<InactiveAccount>();
+                var inactiveItems = await accountRepository.GetByCriteriaAsync(
+                    acc => acc.FiscalPeriodId == previous.Id);
+                foreach (var item in inactiveItems)
+                {
+                    var newItem = new InactiveAccount()
+                    {
+                        AccountId = item.AccountId,
+                        FiscalPeriodId = fpId
+                    };
+                    accountRepository.Insert(newItem);
+                }
+
+                await UnitOfWork.CommitAsync();
             }
         }
     }

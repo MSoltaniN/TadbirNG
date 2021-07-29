@@ -9204,3 +9204,20 @@ WHERE CommandID = 48
 UPDATE [Metadata].[Command]
 SET PermissionID = 189
 WHERE CommandID = 49
+
+-- 1.1.1166
+UPDATE [Metadata].[View]
+SET EntityName = 'Company'
+WHERE Name = 'CompanyDb'
+
+UPDATE [Metadata].[View]
+SET EntityName = 'ItemBalance'
+WHERE ViewID >= 43 AND ViewID <= 57
+
+UPDATE [Metadata].[View]
+SET EntityName = 'AccountCollection'
+WHERE Name = 'AccountCollectionAccount'
+
+UPDATE [Metadata].[View]
+SET SearchUrl = '/accounts/lookup'
+WHERE Name = 'Account'

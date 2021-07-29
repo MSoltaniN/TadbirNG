@@ -49,7 +49,7 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public virtual string EntityName { get; set; }
+        public string EntityName { get; set; }
 
         /// <summary>
         /// نوع موجودیت مرتبط با این نمای اطلاعاتی : پایه، عملیاتی و غیره
@@ -80,7 +80,7 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// آدرس مورد نیاز برای خواندن رکوردهای موجودیت با فیلتر سطر و شعبه از سرویس وب
         /// </summary>
         [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public virtual string SearchUrl { get; set; }
+        public string SearchUrl { get; set; }
         
         /// <summary>
         /// تاریخ آخرین تغییر
