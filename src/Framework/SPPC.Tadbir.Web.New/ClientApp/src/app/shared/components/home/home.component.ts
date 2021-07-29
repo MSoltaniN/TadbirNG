@@ -140,6 +140,10 @@ export class HomeComponent extends DefaultComponent implements OnInit {
     });
   }
 
+  openVouchers() {
+    this.router.navigate(['/finance/voucher']);
+  }
+
   openingVoucherCancel() {
     this.voucherService.getOpeningVoucher(false).subscribe(result => {
       this.close();

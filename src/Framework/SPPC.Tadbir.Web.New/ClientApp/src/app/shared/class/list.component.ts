@@ -25,7 +25,10 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
   permission: Permissions;
   filterDialogRef: DialogRef;
   excelFileName: string;
-  
+
+  exportAccessed: boolean;
+  printAccessed: boolean;
+  filterAccessed: boolean;
 
   /**این تابع قبل از نمایش تنظیمات گزارش فوری اجرا میشود*/
   public onBeforeQuickReportSetting() {
@@ -44,9 +47,9 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
 
   showAdvanceFilterComponent(viewId: number, onOk: EventEmitter<any>, onCancel: EventEmitter<any>) {    
     (async () => {
-      var entityName = await this.getEntityName(viewId);
-      var code = <number>GlobalPermissions.Filter
-      if (!this.isAccess(entityName, code)) {
+
+      this.getGlobalPermissions();
+      if (!this.filterAccessed) {
         this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
         return;
       }
@@ -80,9 +83,9 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
 
   showReportManager(viewId: number, parent: any, reportSetting: any, reportManager: any) {     
     (async () => {
-      var entityName = await this.getEntityName(viewId);
-      var code = <number>GlobalPermissions.Print
-      if (!this.isAccess(entityName, code)) {
+     
+      this.getGlobalPermissions();
+      if (!this.printAccessed) {
         this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
         return;
       }
@@ -96,12 +99,24 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
       }     
     })(); 
   }
+  
+
+  getGlobalPermissions() {
+    (async () => {
+      if (this.viewId) {
+        var entityName = await this.getEntityName(this.viewId);
+        var code = <number>GlobalPermissions.Export;
+        this.exportAccessed = this.isAccess(entityName, code);
+      }
+    })();  
+  }
 
   showQuickReportSetting(viewId: number, parent: any, reportSetting: any, reportManager:any) {    
     (async () => {
       var entityName = await this.getEntityName(viewId);
-      var code = <number>GlobalPermissions.Print;
-      if (!this.isAccess(entityName, code)) {
+
+      this.getGlobalPermissions();
+      if (!this.printAccessed) {
         this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
         return;
       }
