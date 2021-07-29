@@ -165,7 +165,7 @@ export class DefaultComponent extends BaseComponent {
     }
   }
 
-  async getEntityName(viewId: number): Promise<string> {
+  async getEntityName(viewId: number): Promise<string> {    
     var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '', this.currentlang);
 
     if (viewId) {
