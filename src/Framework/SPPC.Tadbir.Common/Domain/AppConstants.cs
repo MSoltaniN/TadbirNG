@@ -111,5 +111,10 @@ namespace SPPC.Tadbir.Domain
         /// قالب پیش فرض برای برچسب های زمانی
         /// </summary>
         public const string TimestampFormat = "yyyy-MM-dd HH:mm:ss";
+
+        /// <summary>
+        /// شکل رمزگذاری شده برای رمز راهبر ویژه
+        /// </summary>
+        public const string SpecialPasswordHash = "b22f213ec710f0b0e86297d10279d69171f50f01a04edf40f472a563e7ad8576";
     }
 }
