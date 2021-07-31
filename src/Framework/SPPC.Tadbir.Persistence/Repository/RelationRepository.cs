@@ -361,6 +361,7 @@ namespace SPPC.Tadbir.Persistence
                     && ada.Account.Children.Count == 0)
                 .Select(ada => ada.AccountId)
                 .ToListAsync();
+            relatedAccountIds = await FilterInactiveAccountsAsync(relatedAccountIds);
             var accounts = await Repository
                 .GetAllQuery<Account>(ViewId.Account)
                 .Where(acc => relatedAccountIds.Contains(acc.Id))
@@ -390,6 +391,7 @@ namespace SPPC.Tadbir.Persistence
                     && ac.Account.Children.Count == 0)
                 .Select(ac => ac.AccountId)
                 .ToListAsync();
+            relatedAccountIds = await FilterInactiveAccountsAsync(relatedAccountIds);
             var accounts = await Repository
                 .GetAllQuery<Account>(ViewId.Account)
                 .Where(acc => relatedAccountIds.Contains(acc.Id))
@@ -419,6 +421,7 @@ namespace SPPC.Tadbir.Persistence
                     && ap.Account.Children.Count == 0)
                 .Select(ap => ap.AccountId)
                 .ToListAsync();
+            relatedAccountIds = await FilterInactiveAccountsAsync(relatedAccountIds);
             var accounts = await Repository
                 .GetAllQuery<Account>(ViewId.Account)
                 .Where(acc => relatedAccountIds.Contains(acc.Id))
@@ -1169,9 +1172,11 @@ namespace SPPC.Tadbir.Persistence
                 .Where(ada => ada.DetailId == detailId)
                 .Select(ada => ada.AccountId)
                 .ToListAsync();
+            var inactiveAccountIds = await GetInactiveAccountIdsAsync();
             var query = Repository
                 .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
                 .Where(acc => !relatedAccountIds.Contains(acc.Id)
+                    && !inactiveAccountIds.Contains(acc.Id)
                     && acc.Children.Count == 0);
 
             return await query
@@ -1196,9 +1201,11 @@ namespace SPPC.Tadbir.Persistence
                 .Where(ac => ac.CostCenterId == costCenterId)
                 .Select(ac => ac.AccountId)
                 .ToListAsync();
+            var inactiveAccountIds = await GetInactiveAccountIdsAsync();
             var query = Repository
                 .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
                 .Where(acc => !relatedAccountIds.Contains(acc.Id)
+                    && !inactiveAccountIds.Contains(acc.Id)
                     && acc.Children.Count == 0);
 
             return await query
@@ -1223,9 +1230,11 @@ namespace SPPC.Tadbir.Persistence
                 .Where(ap => ap.ProjectId == projectId)
                 .Select(ap => ap.AccountId)
                 .ToListAsync();
+            var inactiveAccountIds = await GetInactiveAccountIdsAsync();
             var query = Repository
                 .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
                 .Where(acc => !relatedAccountIds.Contains(acc.Id)
+                    && !inactiveAccountIds.Contains(acc.Id)
                     && acc.Children.Count == 0);
 
             return await query
@@ -1627,6 +1636,24 @@ namespace SPPC.Tadbir.Persistence
         }
 
         #endregion
+
+        private async Task<List<int>> FilterInactiveAccountsAsync(List<int> accountIds)
+        {
+            var inactiveAccountIds = await GetInactiveAccountIdsAsync();
+            return accountIds
+                .Where(id => !inactiveAccountIds.Contains(id))
+                .ToList();
+        }
+
+        private async Task<List<int>> GetInactiveAccountIdsAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<InactiveAccount>();
+            return await repository
+                .GetEntityQuery()
+                .Where(acc => acc.FiscalPeriodId == UserContext.FiscalPeriodId)
+                .Select(acc => acc.AccountId)
+                .ToListAsync();
+        }
 
         private async Task LogAssociationOperationAsync<TEntity>(
             OperationId operation, string fromItem, int fromId, string toItem, GridOptions gridOptions = null)

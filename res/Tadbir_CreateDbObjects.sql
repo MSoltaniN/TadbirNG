@@ -664,6 +664,18 @@ CREATE TABLE [Finance].[AccountProject] (
 )
 GO
 
+CREATE TABLE [Finance].[InactiveAccount] (
+    [InactiveAccountID]  INT              IDENTITY (1, 1) NOT NULL,
+    [AccountID]          INT              NOT NULL,
+    [FiscalPeriodID]     INT              NOT NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_InactiveAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Finance_InactiveAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_InactiveAccount] PRIMARY KEY CLUSTERED ([InactiveAccountID] ASC)
+    , CONSTRAINT [FK_Finance_InactiveAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
+    , CONSTRAINT [FK_Finance_InactiveAccount_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+)
+GO
+
 CREATE TABLE [Core].[Filter] (
     [FilterID]       INT              IDENTITY (1, 1) NOT NULL,
     [ViewId]         INT              NOT NULL,
@@ -1511,4 +1523,4 @@ GO
 
 -- TODO: Add new database scripts BEFORE this command and update [Version] field with each change in database version
 INSERT INTO [Core].[Version] ([VersionID],[Number])
-VALUES(1, '1.1.1149')
+VALUES(1, '1.1.1166')

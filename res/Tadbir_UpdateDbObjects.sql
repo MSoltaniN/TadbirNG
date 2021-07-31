@@ -1975,3 +1975,16 @@ WHERE ModelType = 'FinanceReportConfig'
 UPDATE [Config].[LogSetting]
 SET SourceID = NULL, EntityTypeID = 15
 WHERE OperationID IN(31,32,33,34)
+
+-- 1.1.1166
+CREATE TABLE [Finance].[InactiveAccount] (
+    [InactiveAccountID]  INT              IDENTITY (1, 1) NOT NULL,
+    [AccountID]          INT              NOT NULL,
+    [FiscalPeriodID]     INT              NOT NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_InactiveAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Finance_InactiveAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_InactiveAccount] PRIMARY KEY CLUSTERED ([InactiveAccountID] ASC)
+    , CONSTRAINT [FK_Finance_InactiveAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
+    , CONSTRAINT [FK_Finance_InactiveAccount_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+)
+GO
