@@ -6,7 +6,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '@progress/kendo-angular-dialog';
 import { Layout, MessageType } from '@sppc/env/environment';
-import { MetaDataService, BrowserStorageService, LookupService } from '@sppc/shared/services';
+import { MetaDataService, BrowserStorageService, LookupService, ErrorHandlingService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { DefaultComponent } from '@sppc/shared/class';
 import { VoucherService } from '@sppc/finance/service';
@@ -61,7 +61,7 @@ export class HomeComponent extends DefaultComponent implements OnInit {
   closingTmpData: any;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute, public router: Router, public bStorageService: BrowserStorageService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, private dialogService: DialogService,public voucherService: VoucherService) {
+    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, private dialogService: DialogService, public voucherService: VoucherService, public errorHandlingService: ErrorHandlingService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
   }
 
@@ -119,8 +119,15 @@ export class HomeComponent extends DefaultComponent implements OnInit {
     this.voucherService.getOpeningVoucher(true).subscribe(result => {
       this.close();
       this.router.navigate([this.returnUrl], { queryParams: { no: result.no } });
-    }, (msg) => {
-        this.showMessage(msg, MessageType.Warning);
+    }, (err) => {
+        if (err.statusCode == 400) {
+          this.showMessage(this.errorHandlingService.handleError(err), MessageType.Warning);          
+        }
+
+        if (err.value) {
+          this.showMessage(err.value, MessageType.Warning);          
+        }
+
         this.router.navigate(['/finance/voucher']);
       }
     );
@@ -134,8 +141,15 @@ export class HomeComponent extends DefaultComponent implements OnInit {
     this.voucherService.getClosingAccountsVoucher(this.closingTmpData).subscribe(result => {
       this.close();
       this.router.navigate([this.returnUrl], { queryParams: { no: result.no } });
-    }, (msg) => {
-        this.showMessage(msg, MessageType.Warning);
+    }, (err) => {
+        if (err.statusCode == 400) {
+          this.showMessage(this.errorHandlingService.handleError(err), MessageType.Warning);
+        }
+
+        if (err.value) {
+          this.showMessage(err.value, MessageType.Warning);
+        }
+
         this.router.navigate(['/finance/voucher']);
     });
   }
@@ -148,8 +162,15 @@ export class HomeComponent extends DefaultComponent implements OnInit {
     this.voucherService.getOpeningVoucher(false).subscribe(result => {
       this.close();
       this.router.navigate([this.returnUrl], { queryParams: { no: result.no } });
-    }, (msg) => {
-        this.showMessage(msg, MessageType.Warning);
+    }, (err) => {
+        if (err.statusCode == 400) {
+          this.showMessage(this.errorHandlingService.handleError(err), MessageType.Warning);
+        }
+
+        if (err.value) {
+          this.showMessage(err.value, MessageType.Warning);
+        }
+
         this.router.navigate(['/finance/voucher']);
     });
   }
