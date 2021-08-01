@@ -223,7 +223,7 @@
     <value>رمز ورود قدیم صحیح نیست.</value>
   </data>
   <data name="InvalidPasswordMessage" xml:space="preserve">
-    <value>رمز ورود وارد شده نادرست است.</value>
+    <value>رمز وارد شده نادرست است.</value>
   </data>
   <data name="InvalidUserNameMessage" xml:space="preserve">
     <value>کاربری با نام کاربری داده شده یافت نشد.</value>

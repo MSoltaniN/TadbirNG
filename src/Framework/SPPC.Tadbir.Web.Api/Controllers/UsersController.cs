@@ -426,32 +426,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="specialPassword"></param>
         /// <returns></returns>
-        // GET: api/users/specialpassword/{specialpassword}
-        [HttpGet]
-        [Route(UserApi.CheckSpecialPasswordUrl)]
+        // PUT: api/users/admin/special-pass
+        [HttpPut]
+        [Route(UserApi.SpecialPasswordUrl)]
         [AuthorizeRequest]
-        public async Task<IActionResult> CheckSpecialPasswordAsync(string specialPassword)
+        public IActionResult PutSpecialPassword([FromBody] string specialPassword)
         {
-            if (specialPassword == null)
-            {
-                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Password));
-            }
-
-            var userId = SecurityContext.User.Id;
-            UserViewModel currentUser = null;
-            if (userId != 0)
-            {
-                 currentUser = await _repository.GetUserAsync(userId);
-            }
-
-            if (currentUser == null)
-            {
-                return BadRequestResult(_strings.Format(AppStrings.InvalidUserNameMessage));
-            }
-
-            // SpecialPassword Hash--temporary
-            // if (!CheckPassword(user.SepecialPassword, login.Password))
-            if (!CheckPassword("b22f213ec710f0b0e86297d10279d69171f50f01a04edf40f472a563e7ad8576", specialPassword))
+            if (!CheckPassword(AppConstants.SpecialPasswordHash, specialPassword))
             {
                 return BadRequestResult(_strings.Format(AppStrings.InvalidPasswordMessage));
             }
