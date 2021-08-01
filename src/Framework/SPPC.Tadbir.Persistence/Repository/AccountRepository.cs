@@ -48,6 +48,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
                 .Select(item => Mapper.Map<AccountViewModel>(item))
                 .ToListAsync();
+            await UpdateInactiveAccountsAsync(accounts);
             await ReadAsync(gridOptions);
             return new PagedList<AccountViewModel>(accounts, gridOptions);
         }
@@ -85,6 +86,45 @@ namespace SPPC.Tadbir.Persistence
                 item = Mapper.Map<AccountViewModel>(account);
                 item.GroupId = GetAccountGroupId(repository, account);
                 item.CurrencyId = await GetAccountCurrencyIdAsync(account.Id);
+            }
+
+            return item;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، حساب با سایر مشخصات حساب را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <returns></returns>
+        public async Task<AccountFullDataViewModel> GetAccountFullDataAsync(int accountId)
+        {
+            AccountFullDataViewModel item = null;
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+
+            var account = await repository.GetByIDWithTrackingAsync(
+                accountId,
+                acc => acc.Children,
+                acc => acc.CustomerTaxInfo,
+                acc => acc.AccountOwner.AccountHolders);
+
+            if (account != null)
+            {
+                item = Mapper.Map<AccountFullDataViewModel>(account);
+                item.Account.GroupId = GetAccountGroupId(repository, account);
+                item.Account.CurrencyId = await GetAccountCurrencyIdAsync(account.Id);
+
+                var inactiveAccounts = await GetInactiveAccountIdsAsync();
+                item.Account.IsActive = !inactiveAccounts.Contains(account.Id);
+            }
+
+            if (!await IsCommercialDebtorAndCreditorAsync(accountId))
+            {
+                item.CustomerTaxInfo = null;
+            }
+
+            if (!await IsBankSubSetAsync(accountId))
+            {
+                item.AccountOwner = null;
             }
 
             return item;
@@ -482,42 +522,6 @@ namespace SPPC.Tadbir.Persistence
             return await query.CountAsync();
         }
 
-        /// <summary>
-        /// به روش آسنکرون، حساب با سایر مشخصات حساب را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
-        /// <returns></returns>
-        public async Task<AccountFullDataViewModel> GetAccountFullDataAsync(int accountId)
-        {
-            AccountFullDataViewModel item = null;
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-
-            var account = await repository.GetByIDWithTrackingAsync(
-                accountId,
-                acc => acc.Children,
-                acc => acc.CustomerTaxInfo,
-                acc => acc.AccountOwner.AccountHolders);
-
-            if (account != null)
-            {
-                item = Mapper.Map<AccountFullDataViewModel>(account);
-                item.Account.GroupId = GetAccountGroupId(repository, account);
-                item.Account.CurrencyId = await GetAccountCurrencyIdAsync(account.Id);
-            }
-
-            if (!await IsCommercialDebtorAndCreditorAsync(accountId))
-            {
-                item.CustomerTaxInfo = null;
-            }
-
-            if (!await IsBankSubSetAsync(accountId))
-            {
-                item.AccountOwner = null;
-            }
-
-            return item;
-        }
-
         internal override int? EntityType
         {
             get { return (int)EntityTypeId.Account; }
@@ -776,6 +780,15 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 await UnitOfWork.CommitAsync();
+            }
+        }
+
+        private async Task UpdateInactiveAccountsAsync(List<AccountViewModel> accounts)
+        {
+            var inactiveAccountIds = await GetInactiveAccountIdsAsync();
+            foreach (var account in accounts)
+            {
+                account.IsActive = !inactiveAccountIds.Contains(account.Id);
             }
         }
 
