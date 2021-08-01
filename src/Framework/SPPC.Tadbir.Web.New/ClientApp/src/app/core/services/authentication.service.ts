@@ -12,8 +12,7 @@ import { UserApi } from '@sppc/admin/service/api';
 import { String } from '@sppc/shared/class/source';
 import { CompanyLogin } from '@sppc/shared/models';
 import { LookupApi } from '@sppc/shared/services/api';
-import { BaseService } from '@sppc/shared/class';
-import { extend } from 'webdriver-js-extender';
+import { BaseService } from '@sppc/shared/class/base.service';
 
 
 export class ContextInfo implements Context {

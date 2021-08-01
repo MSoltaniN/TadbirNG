@@ -53,6 +53,7 @@ export const Metadatas = {
 
 
 export const Entities = {
+  None : '',
   Voucher: 'Voucher',
   Account: 'Account',
   VoucherLine: 'VoucherLine',
