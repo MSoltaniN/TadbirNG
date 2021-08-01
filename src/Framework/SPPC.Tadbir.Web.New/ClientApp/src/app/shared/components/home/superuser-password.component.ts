@@ -17,7 +17,8 @@ export class SuperuserPasswordComponent extends DetailComponent implements OnIni
   @Output() cancel: EventEmitter<any> = new EventEmitter();
 
   showGetPasswordModal: boolean;
-  specialPassword: string = null;
+  specialPassword: string;
+  value: string;
   showErrorMessage: boolean = false;
 
   constructor(public bStorageService: BrowserStorageService,
