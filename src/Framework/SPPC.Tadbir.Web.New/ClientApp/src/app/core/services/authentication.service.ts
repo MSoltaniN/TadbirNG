@@ -188,9 +188,11 @@ export class AuthenticationService extends BaseService {
     header = header.append('Content-Type', 'application/json; charset=utf-8');
     header = header.append('X-Tadbir-AuthTicket', ticket);
 
+    var body = JSON.stringify(specialPassword);
+
     if (ticket == '') return Observable.empty<Response>();
-    var url = String.Format(UserApi.CheckSpecialPassword, specialPassword);
-    return this.http.get(url, { headers: header })
+    var url = UserApi.SpecialPassword;
+    return this.http.put(url,body,{ headers: header })
       .map(response => <any>(<Response>response));
   }
 }
