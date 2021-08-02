@@ -340,7 +340,8 @@ namespace SPPC.Tadbir.Persistence
                 .Select(co => Mapper.Map<RelatedItemViewModel>(co))
                 .ToArray();
             var companyRepository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var allCompanies = await companyRepository.GetAllAsync();
+            var allCompanies = await companyRepository
+                .GetByCriteriaAsync(co => co.IsActive);
             var disabledCompanies = allCompanies
                 .Select(co => Mapper.Map<RelatedItemViewModel>(co))
                 .Except(enabledCompanies, new EntityEqualityComparer<RelatedItemViewModel>())
