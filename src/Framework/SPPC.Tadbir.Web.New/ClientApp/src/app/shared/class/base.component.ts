@@ -2,9 +2,8 @@ import { ToastrService } from 'ngx-toastr';
 import { EnviromentComponent } from '@sppc/shared/class/enviroment.component';
 import { BrowserStorageService } from '@sppc/shared/services/browserStorage.service';
 import { MessageType, MessagePosition } from '@sppc/env/environment';
-import { HostListener } from '@angular/core';
-import { ShortcutCommand } from '../models/shortcutCommand';
-
+import { MessageBoxService } from '@sppc/shared/services/message.service';
+import { ServiceLocator } from '@sppc/service.locator';
 
 
 export class BaseComponent extends EnviromentComponent {
@@ -21,50 +20,19 @@ export class BaseComponent extends EnviromentComponent {
   /** this message show in confirm messagebox */
   public deleteConfirmMsg: string;
 
-  
+  private messageBoxService: MessageBoxService;
 
   constructor(public toastrService: ToastrService, public bStorageService: BrowserStorageService) {
-    super(bStorageService);    
+    super(bStorageService);
+
+    this.messageBoxService = ServiceLocator.injector.get(MessageBoxService);
+    //this.messageBoxService = new MessageBoxService(toastrService);
   } 
 
-
-  /**
-   * show message box on screen
-   * @param text is the text of message
-   * @param type is type of message like Info,Succes,Warning
-   * @param title is title of message window
-   * @param position is position of message window in screen
-   */
   public showMessage(text: string, type: MessageType = MessageType.Info, title: string = '', position: MessagePosition = MessagePosition.TopLeft) {
-    var pos: MessagePosition = position;
-
-    var lang = localStorage.getItem('lang');
-    if (lang != 'fa')
-      pos = MessagePosition.TopRight;
-
-    var posCss = 'toast-top-left'
-    switch (pos) {
-      case MessagePosition.TopRight:
-        posCss = 'toast-top-right';
-        break;
-      case MessagePosition.TopCenter:
-        posCss = 'toast-top-center';
-        break;
-    }
-
-    switch (type) {
-      case MessageType.Info:
-        this.toastrService.info(text, title, { positionClass: posCss, enableHtml: true });
-        break;
-      case MessageType.Warning:
-        this.toastrService.warning(text, title, { positionClass: posCss, enableHtml: true  });
-        break;
-      case MessageType.Succes:
-        this.toastrService.success(text, title, { positionClass: posCss, enableHtml: true});        
-        break;
-    }
-
+    this.messageBoxService.showMessage(text, type, title, position);
   }
+ 
 
 
   

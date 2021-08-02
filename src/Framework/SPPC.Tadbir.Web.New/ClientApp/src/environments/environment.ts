@@ -9,7 +9,8 @@ import { Injectable } from "@angular/core";
 export enum MessageType {
   Info,
   Succes,
-  Warning
+  Warning,
+  Error
 }
 
 

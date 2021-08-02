@@ -30,6 +30,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             this.toastrService.error(error.error.messages[0]);
             return Observable.throw(undefined);
           }
+
+          if (error.error == null && error.status == 401) {            
+            return Observable.throw(error);
+          }
           //else if (!error.error && error && !this.sharingDataService.supressShowError) {
           //  this.toastrService.error(error.message);
           //  return Observable.throw(error);
