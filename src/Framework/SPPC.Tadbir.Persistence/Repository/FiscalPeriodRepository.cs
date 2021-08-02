@@ -168,6 +168,7 @@ namespace SPPC.Tadbir.Persistence
             var fiscalPeriod = await repository.GetByIDAsync(fperiodId);
             if (fiscalPeriod != null)
             {
+                await DeleteInactiveAccounts(fperiodId);
                 await DeleteAsync(repository, fiscalPeriod);
             }
         }
@@ -193,6 +194,7 @@ namespace SPPC.Tadbir.Persistence
                 var fiscalPeriod = await repository.GetByIDAsync(item);
                 if (fiscalPeriod != null)
                 {
+                    await DeleteInactiveAccounts(item);
                     await DeleteNoLogAsync(repository, fiscalPeriod);
                 }
             }
@@ -473,6 +475,18 @@ namespace SPPC.Tadbir.Persistence
 
                 await UnitOfWork.CommitAsync();
             }
+        }
+
+        private async Task DeleteInactiveAccounts(int fpId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<InactiveAccount>();
+            var inactiveItems = await repository.GetByCriteriaAsync(acc => acc.FiscalPeriodId == fpId);
+            foreach (var inactiveItem in inactiveItems)
+            {
+                repository.Delete(inactiveItem);
+            }
+
+            await UnitOfWork.CommitAsync();
         }
     }
 }
