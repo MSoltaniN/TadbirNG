@@ -18,6 +18,10 @@ export class MessageBoxService {
   * @param position is position of message window in screen
   */
   public showMessage(text: string, type: MessageType = MessageType.Info, title: string = '', position: MessagePosition = MessagePosition.TopLeft) {
+
+    if (text == '' || text == undefined || text == null)
+      return;
+
     var pos: MessagePosition = position;
 
     var lang = localStorage.getItem('lang');

@@ -25,30 +25,32 @@ export class ErrorHandlingService {
   }
 
   public handleError(error: Error | any) {
-    if (error.statusCode == 400) {
-      if (error.type) {
-        switch (error.type) {
-          case ErrorType.RuntimeException:
-            this.messageBoxService.showMessage(error.messages[0], MessageType.Warning);
-            break;
-          case ErrorType.ValidationError:
-            return error.messages;                         
+    if (error) {
+      if (error.statusCode == 400) {
+        if (error.type) {
+          switch (error.type) {
+            case ErrorType.RuntimeException:
+              this.messageBoxService.showMessage(error.messages[0], MessageType.Warning);
+              break;
+            case ErrorType.ValidationError:
+              return error.messages;
+          }
+          return;
         }
+      }
+
+      if (error.statusCode == 500) {
+        this.messageBoxService.showMessage(error.Message, MessageType.Error);
         return;
       }
-    }
 
-    if (error.statusCode == 500) {      
-      this.messageBoxService.showMessage(error.Message, MessageType.Error);      
-      return;
-    }
+      if (error.status == 401) {
+        return this.accessDeniedMsg;
+      }
 
-    if (error.status == 401) {      
-      return this.accessDeniedMsg;
-    }
-
-    if (error && error.type == 'error') {
-      return this.globalErrorMessage;      
+      if (error && error.type == 'error') {
+        return this.globalErrorMessage;
+      }
     }
 
     return undefined;
