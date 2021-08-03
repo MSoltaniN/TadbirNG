@@ -25,15 +25,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         ///
         /// </summary>
         /// <param name="repository"></param>
-        /// <param name="config"></param>
         /// <param name="strings"></param>
         /// <param name="tokenService"></param>
-        public LookupController(ILookupRepository repository, IConfigRepository config,
+        public LookupController(ILookupRepository repository,
             IStringLocalizer<AppStrings> strings, ITokenService tokenService)
             : base(strings, tokenService)
         {
             _repository = repository;
-            _configRepository = config;
             _strings = strings;
         }
 
@@ -511,6 +509,5 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private readonly ILookupRepository _repository;
-        private readonly IConfigRepository _configRepository;
     }
 }

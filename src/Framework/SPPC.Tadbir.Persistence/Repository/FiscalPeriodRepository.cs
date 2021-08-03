@@ -145,6 +145,7 @@ namespace SPPC.Tadbir.Persistence
                 fiscalPeriod = Mapper.Map<FiscalPeriod>(fiscalPeriodView);
                 await InsertAsync(repository, fiscalPeriod);
                 await CopyInactiveAccountsAsync(fiscalPeriod.Id);
+                await CopyInactiveCurrenciesAsync(fiscalPeriod.Id);
             }
             else
             {
@@ -168,7 +169,8 @@ namespace SPPC.Tadbir.Persistence
             var fiscalPeriod = await repository.GetByIDAsync(fperiodId);
             if (fiscalPeriod != null)
             {
-                await DeleteInactiveAccounts(fperiodId);
+                await DeleteInactiveAccountsAsync(fperiodId);
+                await DeleteInactiveCurrenciesAsync(fperiodId);
                 await DeleteAsync(repository, fiscalPeriod);
             }
         }
@@ -194,7 +196,8 @@ namespace SPPC.Tadbir.Persistence
                 var fiscalPeriod = await repository.GetByIDAsync(item);
                 if (fiscalPeriod != null)
                 {
-                    await DeleteInactiveAccounts(item);
+                    await DeleteInactiveAccountsAsync(item);
+                    await DeleteInactiveCurrenciesAsync(item);
                     await DeleteNoLogAsync(repository, fiscalPeriod);
                 }
             }
@@ -477,10 +480,49 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private async Task DeleteInactiveAccounts(int fpId)
+        private async Task CopyInactiveCurrenciesAsync(int fpId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var previous = await repository
+                .GetEntityQuery()
+                .Where(fp => fp.Id < fpId)
+                .OrderByDescending(fp => fp.Id)
+                .FirstOrDefaultAsync();
+            if (previous != null)
+            {
+                var currencyRepository = UnitOfWork.GetAsyncRepository<InactiveCurrency>();
+                var inactiveItems = await currencyRepository.GetByCriteriaAsync(
+                    acc => acc.FiscalPeriodId == previous.Id);
+                foreach (var item in inactiveItems)
+                {
+                    var newItem = new InactiveCurrency()
+                    {
+                        CurrencyId = item.CurrencyId,
+                        FiscalPeriodId = fpId
+                    };
+                    currencyRepository.Insert(newItem);
+                }
+
+                await UnitOfWork.CommitAsync();
+            }
+        }
+
+        private async Task DeleteInactiveAccountsAsync(int fpId)
         {
             var repository = UnitOfWork.GetAsyncRepository<InactiveAccount>();
             var inactiveItems = await repository.GetByCriteriaAsync(acc => acc.FiscalPeriodId == fpId);
+            foreach (var inactiveItem in inactiveItems)
+            {
+                repository.Delete(inactiveItem);
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
+        private async Task DeleteInactiveCurrenciesAsync(int fpId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<InactiveCurrency>();
+            var inactiveItems = await repository.GetByCriteriaAsync(curr => curr.FiscalPeriodId == fpId);
             foreach (var inactiveItem in inactiveItems)
             {
                 repository.Delete(inactiveItem);

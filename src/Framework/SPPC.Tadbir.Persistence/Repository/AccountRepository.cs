@@ -294,6 +294,7 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 account.AccountCurrencies.Clear();
+                await HandleInactiveAccountDeleteAsync(account);
                 await DeleteAsync(repository, account);
                 await UpdateLevelUsageAsync(account.Level);
             }
