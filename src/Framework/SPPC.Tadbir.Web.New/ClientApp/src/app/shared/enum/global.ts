@@ -4,5 +4,6 @@ export enum ReloadStatusType {
   AfterFilter = 2,
   AfterSort = 3,
   AfterEdit = 4,
-  AfterInsert = 5
+  AfterInsert = 5,
+  AfterAdvanceFilter = 6
 }
