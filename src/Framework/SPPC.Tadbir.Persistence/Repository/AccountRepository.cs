@@ -86,6 +86,9 @@ namespace SPPC.Tadbir.Persistence
                 item = Mapper.Map<AccountViewModel>(account);
                 item.GroupId = GetAccountGroupId(repository, account);
                 item.CurrencyId = await GetAccountCurrencyIdAsync(account.Id);
+
+                var inactiveAccounts = await GetInactiveAccountIdsAsync();
+                item.IsActive = !inactiveAccounts.Contains(account.Id);
             }
 
             return item;
