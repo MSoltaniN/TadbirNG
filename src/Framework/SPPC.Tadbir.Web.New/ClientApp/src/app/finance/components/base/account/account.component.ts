@@ -18,6 +18,7 @@ import { SelectFormComponent } from '@sppc/shared/controls';
 import { Account } from '@sppc/finance/models';
 import { AccountFullData } from '@sppc/finance/models/accountFullData';
 import { ReloadOption } from '@sppc/shared/class/reload-option';
+import { OperationId } from '@sppc/shared/enum/operationId';
 
 
 //#endregion
@@ -276,6 +277,8 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
   }
 
   onAdvanceFilterOk(): any {
+    this.enableViewListChanged(this.viewId);
+    this.operationId = OperationId.Filter;
     this.reloadGrid();
   }
 }

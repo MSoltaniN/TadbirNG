@@ -22,6 +22,7 @@ import { ReportManagementComponent } from '@sppc/shared/components/reportManagem
 import { CompanyLoginInfo, AuthenticationService, ContextInfo } from '@sppc/core';
 import { UserService } from '@sppc/admin/service';
 import { Router } from '@angular/router';
+import { OperationId } from '@sppc/shared/enum/operationId';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -188,6 +189,8 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
   }
 
   onAdvanceFilterOk() {
+    this.enableViewListChanged(this.viewId);
+    this.operationId = OperationId.Filter;
     this.reloadGrid();
   }
 

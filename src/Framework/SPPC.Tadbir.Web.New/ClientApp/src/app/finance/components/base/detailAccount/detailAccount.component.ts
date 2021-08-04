@@ -14,6 +14,7 @@ import { DialogService } from '@progress/kendo-angular-dialog';
 import { SettingService } from '@sppc/config/service';
 import { DetailAccountFormComponent } from './detailAccount-form.component';
 import { ViewName, DetailAccountPermissions } from '@sppc/shared/security';
+import { OperationId } from '@sppc/shared/enum/operationId';
 
 
 
@@ -161,6 +162,8 @@ export class DetailAccountComponent extends AutoGridExplorerComponent<DetailAcco
   }
 
   onAdvanceFilterOk(): any {
+    this.enableViewListChanged(this.viewId);
+    this.operationId = OperationId.Filter;
     this.reloadGrid();
   }
 

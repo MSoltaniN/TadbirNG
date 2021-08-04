@@ -14,6 +14,7 @@ import { SettingService } from '@sppc/config/service';
 import { CostCenterFormComponent } from './costCenter-form.component';
 import { String, AutoGridExplorerComponent } from '@sppc/shared/class';
 import { ViewName, CostCenterPermissions } from '@sppc/shared/security';
+import { OperationId } from '@sppc/shared/enum/operationId';
 
 
 
@@ -161,6 +162,8 @@ export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> i
   }
 
   onAdvanceFilterOk(): any {
+    this.enableViewListChanged(this.viewId);
+    this.operationId = OperationId.Filter;
     this.reloadGrid();
   }
 

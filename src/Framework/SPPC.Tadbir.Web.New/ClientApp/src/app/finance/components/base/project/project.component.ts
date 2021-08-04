@@ -14,6 +14,7 @@ import { GridService, MetaDataService, BrowserStorageService } from '@sppc/share
 import { SettingService } from '@sppc/config/service';
 import { ProjectFormComponent } from './project-form.component';
 import { ViewName, ProjectPermissions } from '@sppc/shared/security';
+import { OperationId } from '@sppc/shared/enum/operationId';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -160,6 +161,8 @@ export class ProjectComponent extends AutoGridExplorerComponent<Project> impleme
   //}
 
   onAdvanceFilterOk(): any {
+    this.enableViewListChanged(this.viewId);
+    this.operationId = OperationId.Filter;
     this.reloadGrid();
   }
 

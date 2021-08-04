@@ -41,14 +41,14 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
     super(toastrService, translate, bStorageService, renderer, metadataService, settingService, '', undefined);
 
     this.dialogService = ServiceLocator.injector.get(DialogService);
-    this.permission = new Permissions();    
+    this.permission = new Permissions();
+    this.getGlobalPermissions();
   }
  
 
   showAdvanceFilterComponent(viewId: number, onOk: EventEmitter<any>, onCancel: EventEmitter<any>) {    
     (async () => {
-
-      this.getGlobalPermissions();
+      
       if (!this.filterAccessed) {
         this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
         return;
@@ -83,8 +83,7 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
 
   showReportManager(viewId: number, parent: any, reportSetting: any, reportManager: any) {     
     (async () => {
-     
-      this.getGlobalPermissions();
+           
       if (!this.printAccessed) {
         this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
         return;
@@ -107,15 +106,23 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
         var entityName = await this.getEntityName(this.viewId);
         var code = <number>GlobalPermissions.Export;
         this.exportAccessed = this.isAccess(entityName, code);
+
+        code = <number>GlobalPermissions.Filter;
+        this.filterAccessed = this.isAccess(entityName, code);
+
+        code = <number>GlobalPermissions.Print;
+        this.printAccessed = this.isAccess(entityName, code);
       }
+
+
     })();  
   }
 
   showQuickReportSetting(viewId: number, parent: any, reportSetting: any, reportManager:any) {    
     (async () => {
-      var entityName = await this.getEntityName(viewId);
+      //var entityName = await this.getEntityName(viewId);
 
-      this.getGlobalPermissions();
+      //this.getGlobalPermissions();
       if (!this.printAccessed) {
         this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
         return;
