@@ -49,6 +49,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllQuery<Currency>(ViewId.Currency, curr => curr.Branch)
                 .Select(item => Mapper.Map<CurrencyViewModel>(item))
                 .ToListAsync();
+            await UpdateInactiveCurrenciesAsync(currencies);
             await ReadAsync(gridOptions);
             return new PagedList<CurrencyViewModel>(currencies, gridOptions);
         }
@@ -66,6 +67,8 @@ namespace SPPC.Tadbir.Persistence
             if (currency != null)
             {
                 item = Mapper.Map<CurrencyViewModel>(currency);
+                var inactiveIds = await GetInactiveCurrencyIdsAsync();
+                item.IsActive = !inactiveIds.Contains(item.Id);
             }
 
             return item;
@@ -178,6 +181,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 currencyModel = Mapper.Map<Currency>(currency);
                 await InsertAsync(repository, currencyModel);
+                await HandleActiveStateChangeAsync(currencyModel);
             }
             else
             {
@@ -185,6 +189,7 @@ namespace SPPC.Tadbir.Persistence
                 if (currencyModel != null)
                 {
                     await UpdateAsync(repository, currencyModel, currency);
+                    await HandleActiveStateChangeAsync(currencyModel);
                 }
             }
 
@@ -202,6 +207,7 @@ namespace SPPC.Tadbir.Persistence
             if (currency != null)
             {
                 currency.Rates.Clear();
+                await HandleInactiveCurrencyDeleteAsync(currency);
                 await DeleteAsync(repository, currency);
             }
         }
@@ -219,6 +225,7 @@ namespace SPPC.Tadbir.Persistence
                 if (currency != null)
                 {
                     currency.Rates.Clear();
+                    await HandleInactiveCurrencyDeleteAsync(currency);
                     await DeleteNoLogAsync(repository, currency);
                 }
             }
@@ -407,6 +414,63 @@ namespace SPPC.Tadbir.Persistence
         private void InsertProvinceAsync(IAsyncRepository<Province> repository, Province entity)
         {
             repository.Insert(entity);
+        }
+
+        private async Task HandleActiveStateChangeAsync(Currency currency)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<InactiveCurrency>();
+            var inactive = await repository.GetSingleByCriteriaAsync(curr => curr.CurrencyId == currency.Id
+                && curr.FiscalPeriodId == UserContext.FiscalPeriodId);
+            if (inactive != null && currency.IsActive)
+            {
+                repository.Delete(inactive);
+                await UnitOfWork.CommitAsync();
+            }
+            else if (inactive == null && !currency.IsActive)
+            {
+                inactive = new InactiveCurrency()
+                {
+                    CurrencyId = currency.Id,
+                    FiscalPeriodId = UserContext.FiscalPeriodId
+                };
+                repository.Insert(inactive);
+                await UnitOfWork.CommitAsync();
+            }
+        }
+
+        private async Task HandleInactiveCurrencyDeleteAsync(Currency currency)
+        {
+            if (!currency.IsActive)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<InactiveCurrency>();
+                var inactiveItems = await repository.GetByCriteriaAsync(
+                    curr => curr.CurrencyId == currency.Id);
+                foreach (var item in inactiveItems)
+                {
+                    repository.Delete(item);
+                }
+
+                await UnitOfWork.CommitAsync();
+            }
+        }
+
+        private async Task UpdateInactiveCurrenciesAsync(List<CurrencyViewModel> currencies)
+        {
+            var inactiveIds = await GetInactiveCurrencyIdsAsync();
+            foreach (var currency in currencies)
+            {
+                currency.IsActive = !inactiveIds.Contains(currency.Id);
+            }
+        }
+
+        private async Task<List<int>> GetInactiveCurrencyIdsAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<InactiveCurrency>();
+            return await repository
+                .GetEntityQuery()
+                .Where(curr => curr.FiscalPeriodId == UserContext.FiscalPeriodId)
+                .Select(curr => curr.CurrencyId)
+                .ToListAsync();
         }
 
         private readonly ISystemRepository _system;
