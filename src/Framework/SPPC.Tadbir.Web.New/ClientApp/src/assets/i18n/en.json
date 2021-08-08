@@ -868,7 +868,8 @@
     "NotFoundData": "Not Found Branch",
     "LedgerBranch": "Branches",
     "CreateBranch": "Create Branch",
-    "ChangeBranch": "Change Branch"
+    "ChangeBranch": "Change Branch",
+    "BranchIsNotAccess": "The created branch will not be visible until the current user is granted access"
   },
   "Voucher": {
     "New": "New Voucher",

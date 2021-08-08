@@ -987,7 +987,8 @@
     "NotFoundData": "شعبه ای وجود ندارد",
     "LedgerBranch": "شعب سطح اول",
     "CreateBranch": "ایجاد شعبه",
-    "ChangeBranch": "تغییر شعبه"
+    "ChangeBranch": "تغییر شعبه",
+    "BranchIsNotAccess": "شعبه ایجاد شده تا پیش از اعطای دسترسی به کاربر جاری قابل مشاهده نخواهد بود."
   },
   "Voucher": {
     "New": "سند جدید",
