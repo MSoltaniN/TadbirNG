@@ -3510,4 +3510,7 @@
   <data name="ParentAccountCantBeInactive" xml:space="preserve">
     <value>حساب '{0}' دارای زیرمجموعه است و نمی توان آن را غیرفعال کرد.</value>
   </data>
+  <data name="CantManageCollectionFromBranch" xml:space="preserve">
+    <value>تعریف حساب برای این مجموعه حساب فقط از بالاترین شعبه امکانپذیر است.</value>
+  </data>
 </root>

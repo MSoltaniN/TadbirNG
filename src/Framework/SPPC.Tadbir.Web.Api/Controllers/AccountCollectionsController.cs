@@ -59,9 +59,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="collectionId"></param>
         /// <returns></returns>
-        // Get: api/acccollections/collection/{collectionId:min(1)}
+        // Get: api/acccollections/{collectionId:min(1)}/accounts
         [HttpGet]
-        [Route(AccountCollectionApi.AccountCollectionAccountUrl)]
+        [Route(AccountCollectionApi.AccountCollectionAccountsUrl)]
         [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.View)]
         public async Task<IActionResult> GetAccountCollectionAccountAsync(int collectionId)
         {
@@ -76,13 +76,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="collectionId"></param>
         /// <param name="accCollections"></param>
         /// <returns></returns>
-        // POST: api/acccollections/collection/{collectionId:min(1)}
+        // POST: api/acccollections/{collectionId:min(1)}/accounts
         [HttpPost]
-        [Route(AccountCollectionApi.AccountCollectionAccountUrl)]
+        [Route(AccountCollectionApi.AccountCollectionAccountsUrl)]
         [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.Save)]
         public async Task<IActionResult> PostAccountCollectionAccountAsync(
             int collectionId, [FromBody]List<AccountCollectionAccountViewModel> accCollections)
         {
+            bool canManage = await _repository.CanBranchManageCollectionAsync(
+                SecurityContext.User.BranchId, collectionId);
+            if (!canManage)
+            {
+                return BadRequestResult(_strings[AppStrings.CantManageCollectionFromBranch]);
+            }
+
             await _repository.AddCollectionAccountsAsync(collectionId, accCollections);
             return Ok();
         }
