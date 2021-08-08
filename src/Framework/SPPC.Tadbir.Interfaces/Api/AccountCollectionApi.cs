@@ -22,11 +22,11 @@
         /// <summary>
         /// API client URL for account collection items
         /// </summary>
-        public const string AccountCollectionAccount = "acccollections/collection/{0}";
+        public const string AccountCollectionAccounts = "acccollections/{0}/accounts";
 
         /// <summary>
         /// API server route URL for account collection items
         /// </summary>
-        public const string AccountCollectionAccountUrl = "acccollections/collection/{collectionId:min(1)}";
+        public const string AccountCollectionAccountsUrl = "acccollections/{collectionId:min(1)}/accounts";
     }
 }

@@ -17,6 +17,6 @@ export class AccountCollectionApi {
     // acccollections
     public static AccountCollections = environment.BaseUrl + "/acccollections";
 
-    // acccollections/collection/{collectionId:min(1)}
-    public static AccountCollectionAccount = environment.BaseUrl + "/acccollections/collection/{0}";
+    // acccollections/{collectionId:min(1)}/accounts
+    public static AccountCollectionAccounts = environment.BaseUrl + "/acccollections/{0}/accounts";
 }

@@ -3519,4 +3519,7 @@
   <data name="ParentAccountCantBeInactive" xml:space="preserve">
     <value>Account '{0}' has child accounts and cannot be inactive.</value>
   </data>
+  <data name="CantManageCollectionFromBranch" xml:space="preserve">
+    <value>Adding an account to this collection can only be done from root branch.</value>
+  </data>
 </root>

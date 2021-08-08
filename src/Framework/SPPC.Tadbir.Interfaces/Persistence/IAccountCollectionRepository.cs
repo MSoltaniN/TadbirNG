@@ -20,14 +20,22 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="collectionId">شناسه یکتای مجموعه حساب</param>
         /// <returns>مجموعه ای از حساب های انتخاب شده در یک مجموعه حساب</returns>
-        Task<IList<AccountViewModel>> GetCollectionAccountsAsync(int collectionId);
+        Task<IList<AccountCollectionAccountViewModel>> GetCollectionAccountsAsync(int collectionId);
 
         /// <summary>
         /// به روش آسنکرون، حساب های یک مجموعه حساب را اضافه میکند
         /// </summary>
-        /// <param name="accCollectionsList">اطلاعات حساب های یک مجموعه حساب</param>
+        /// <param name="accounts">اطلاعات حساب های یک مجموعه حساب</param>
         /// <param name="collectionId">شناسه یکتای مجموعه حساب انتخاب شده</param>
-        /// <returns></returns>
-        Task AddCollectionAccountsAsync(int collectionId, IList<AccountCollectionAccountViewModel> accCollectionsList);
+        Task AddCollectionAccountsAsync(int collectionId, IList<AccountCollectionAccountViewModel> accounts);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که شعبه داده شده امکان تعریف حساب برای مجموعه حساب را دارد یا نه
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
+        /// <param name="collectionId">شناسه دیتابیسی مجموعه حساب مورد نظر</param>
+        /// <returns>برای مجموعه حسابهای تک حسابی، شعبه داده شده باید بالاترین شعبه در ساختار درختی باشد.
+        /// ولی برای سایر مجموعه حسابها هر شعبه ای می تواند حسابهای مجموعه حساب را تعیین کند</returns>
+        Task<bool> CanBranchManageCollectionAsync(int branchId, int collectionId);
     }
 }
