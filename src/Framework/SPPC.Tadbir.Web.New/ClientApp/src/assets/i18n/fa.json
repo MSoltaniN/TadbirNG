@@ -843,6 +843,7 @@
     },
     "Description": "توضیحات",
     "TitleText": "لیست تنظیمات",
+    "DefaultCalendar": "تقویم پیش فرض",
     "DefaultBtn": "تنظیمات پیش فرض",
     "PersianCalendar": "تقویم شمسی",
     "ADCalendar": "تقویم میلادی",
