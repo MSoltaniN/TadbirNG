@@ -103,7 +103,7 @@
         </auto-generated-grid-setting>
         <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
 
-        <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [quickReportDisabled]="true" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
+        <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [quickReportDisabled]="true" [advanceFilterDisabled]="true" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
         <button kendoButton class="sppc-float-diff" [disabled]="selectedRows.length != 1" EntityName="AccountBook" SppcPermissionCheck="View" (sppcClick)="showAccountBook()"
                 [icon]="'dictionary-add'" title="{{ 'Balance.AccountBook' | translate }}" type="button"></button>
       </div>
