@@ -9221,3 +9221,19 @@ WHERE Name = 'AccountCollectionAccount'
 UPDATE [Metadata].[View]
 SET SearchUrl = '/accounts/lookup'
 WHERE Name = 'Account'
+
+-- 1.1.1175
+Update Metadata.Command Set RouteUrl = '/admin/changePassword' Where TitleKey = 'ChangePassword'
+Update Metadata.Command Set IconName = 'folder-close' Where RouteUrl is Null
+Update Metadata.Command Set IconName = 'th-large' Where TitleKey = 'AccountGroup'
+Update Metadata.Command Set IconName = 'th-list' Where TitleKey = 'Account'
+Update Metadata.Command Set IconName = 'th' Where TitleKey = 'DetailAccount'
+Update Metadata.Command Set IconName = 'tower' Where TitleKey = 'CostCenter'
+Update Metadata.Command Set IconName = 'file' Where TitleKey = 'Project'
+Update Metadata.Command Set IconName = 'transfer' Where TitleKey = 'AccountRelations'
+Update Metadata.Command Set IconName = 'usd' Where TitleKey = 'Currency'
+Update Metadata.Command Set IconName = 'plus' Where TitleKey = 'NewVoucher'
+Update Metadata.Command Set IconName = 'search' Where TitleKey = 'VoucherByNo'
+Update Metadata.Command Set IconName = 'lock' Where TitleKey = 'RowAccessSettings'
+Update Metadata.Command Set IconName = 'wrench' Where TitleKey = 'Settings'
+
