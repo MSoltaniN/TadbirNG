@@ -2001,3 +2001,8 @@ CREATE TABLE [Finance].[InactiveCurrency] (
     , CONSTRAINT [FK_Finance_InactiveCurrency_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
 )
 GO
+
+-- 1.1.1174
+UPDATE [Finance].[VoucherLine]
+SET Mark = NULL
+WHERE Mark = ''
