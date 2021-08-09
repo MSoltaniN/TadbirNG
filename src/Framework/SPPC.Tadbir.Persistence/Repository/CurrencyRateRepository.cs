@@ -88,7 +88,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<CurrencyRateViewModel> SaveCurrencyRateAsync(CurrencyRateViewModel currencyRate)
         {
             Verify.ArgumentNotNull(currencyRate, nameof(currencyRate));
-            CurrencyRate rateModel = default(CurrencyRate);
+            CurrencyRate rateModel;
             var repository = UnitOfWork.GetAsyncRepository<CurrencyRate>();
             if (currencyRate.Id == 0)
             {
