@@ -1005,6 +1005,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var item = new JournalItemViewModel()
             {
+                Id = _utility.ValueOrDefault<int>(row, "Id"),
                 RowNo = _utility.ValueOrDefault<int>(row, "RowNum"),
                 VoucherNo = _utility.ValueOrDefault<int>(row, "No"),
                 AccountFullCode = _utility.ValueOrDefault(row, "AccountFullCode"),
