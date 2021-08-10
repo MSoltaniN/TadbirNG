@@ -22,6 +22,8 @@ export class AccountCollectionInfo implements AccountCollection {
 export class AccountCollectionAccountInfo implements AccountCollectionAccount {
   id: number = 0;
   accountId: number;
+  accountFullCode: string;
+  accountName: string;
   fiscalPeriodId: number;
   branchId: number;
   collectionId: number;
