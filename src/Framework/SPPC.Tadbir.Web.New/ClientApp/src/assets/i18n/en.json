@@ -122,7 +122,7 @@
     "Previous": "Previous",
     "NextStep": "Next Step",
     "PreviousStep": "Previous Step",
-    "ComingBack": "Coming Back"
+    "ComingBack": "Return"
   },
   "GridSetting": {
     "Visibility": "Visibility",
@@ -687,33 +687,33 @@
     "AccountLevel": "Account Level",
     "SelectedAccounts": "Selected Accounts",
     "SelectableAccounts": "Selectable Accounts",
-    "MultiSelectValidation": "For this account set only one account can be selected",
-    "SelectValidation": "This account can not be selected",
-    "LeafAccountsValidation": "Please choose the last level account",
-    "NonLeafAccountsValidation": "Please select an account except the last level",
-    "SelectLevel": "Please select account level",
-    "SelectCollection": "Please select account collection",
-    "SelectedAccount": "This account is selected",
-    "AccountViewAccess": "You do not have access to viewing selected accounts",
-    "AccountRemoveAccess": "This account is defined in the above branches and can not be deleted"
+    "MultiSelectValidation": "For this account set only one account can be selected.",
+    "SelectValidation": "This account can not be selected.",
+    "LeafAccountsValidation": "Please choose the last level account.",
+    "NonLeafAccountsValidation": "Please select an account except the last level.",
+    "SelectLevel": "Please select account level.",
+    "SelectCollection": "Please select account collection.",
+    "SelectedAccount": "This account is selected.",
+    "AccountViewAccess": "You do not have access to viewing selected accounts.",
+    "AccountRemoveAccess": "This account is defined in the above branches and can not be deleted."
   },
   "Settings": {
     "AccountRelation": {
-      "LeafAccounts": "Create relations at the latest account level",
-      "LeafDetails": "Create relations at the latest floating account level",
-      "LeafCostCenters": "Create relations at the latest cost center level",
-      "LeafProjects": "Create relations at the latest project level"
+      "LeafAccounts": "Create relations at the lowest account level",
+      "LeafDetails": "Create relations at the lowest detail account level",
+      "LeafCostCenters": "Create relations at the lowest cost center level",
+      "LeafProjects": "Create relations at the lowest project level"
     },
     "DateRanges": {
-      "DefaultDateRanges": "Historical Default Range",
-      "FiscalStartToCurrent": "The beginning of the fiscal period till today",
-      "FiscalStartToFiscalEnd": "Initially until the end of the fiscal period",
-      "CurrentToCurrent": "Current to current"
+      "DefaultDateRanges": "Default Date Range",
+      "FiscalStartToCurrent": "Fiscal year start to current date",
+      "FiscalStartToFiscalEnd": "Fiscal year start to fiscal year end",
+      "CurrentToCurrent": "Current date to current date"
     },
     "NumberDisplay": {
-      "decimalPrecision": "Number of decimal precision",
+      "decimalPrecision": "Current decimal precision",
       "maxPrecision": "Maximum decimal precision",
-      "useSeparator": "Use the separator",
+      "useSeparator": "Use separator",
       "separatorMode": "Separator settings",
       "separatorSymbol": "Separator symbol",
       "UseDefault": "Operating system settings",
@@ -725,10 +725,11 @@
     },
     "Description": "Description",
     "TitleText": "Settings List",
+    "DefaultCalendar": "Default Calendar",
     "DefaultBtn": "Default Settings",
     "PersianCalendar": "Persian Calendar",
-    "ADCalendar": "AD Calendar",
-    "DefaultCoding": "Basic coding suggested by the system (If selected, all Accounting will be automatically defined)"
+    "ADCalendar": "Gregorian Calendar",
+    "DefaultCoding": "Basic coding suggested by the system (If selected, default accounts will be automatically created)"
   },
   "ViewRowPermission": {
     "DdlPermissionItems": {
