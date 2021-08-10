@@ -268,7 +268,7 @@
                                 [value]="selectedAccountLevel"
                                 [(ngModel)]="selectedAccountLevel"
                                 [disabled]="!chbAccount"
-                                (ngModelChange)="changeParam()">
+                                (ngModelChange)="changeParam();onChangeAccountLevel();">
             </kendo-dropdownlist>
 
             <input type="text" class="k-textbox sppc-float" [ngModel]="selectedAccount?.fullCode" title="{{selectedAccount?.fullCode}}" readonly />
