@@ -291,7 +291,7 @@
                                 [value]="selectedDetailAccountLevel"
                                 [(ngModel)]="selectedDetailAccountLevel"
                                 [disabled]="!chbDetailAccount"
-                                (ngModelChange)="changeParam();">
+                                (ngModelChange)="changeParam();onChangeDetailAccountLevel();">
             </kendo-dropdownlist>
 
             <input type="text" class="k-textbox sppc-float" [ngModel]="selectedDetailAccount?.fullCode" title="{{selectedDetailAccount?.fullCode}}" readonly />
@@ -314,7 +314,7 @@
                                 [value]="selectedCCenterLevel"
                                 [(ngModel)]="selectedCCenterLevel"
                                 [disabled]="!chbCCenter"
-                                (ngModelChange)="changeParam()">
+                                (ngModelChange)="changeParam();onChangeCCenterLevel();">
             </kendo-dropdownlist>
 
             <input type="text" class="k-textbox sppc-float" [ngModel]="selectedCCenter?.fullCode" title="{{selectedAccount?.fullCode}}" readonly />
@@ -337,7 +337,7 @@
                                 [value]="selectedProjectLevel"
                                 [(ngModel)]="selectedProjectLevel"
                                 [disabled]="!chbProject"
-                                (ngModelChange)="changeParam()">
+                                (ngModelChange)="changeParam();onChangeProjectLevel();">
             </kendo-dropdownlist>
 
             <input type="text" class="k-textbox sppc-float" [ngModel]="selectedProject?.fullCode" title="{{selectedAccount?.fullCode}}" readonly />
