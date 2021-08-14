@@ -54,6 +54,18 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// </summary>
         public int StatusCode { get; set; }
 
+        /// <summary>
+        /// نمایش متنی از این آبجکت ساخته و برمی گرداند
+        /// </summary>
+        /// <returns>نمایش متنی این آبجکت</returns>
+        public override string ToString()
+        {
+            string mainMessage = Messages.Count > 0
+                ? Messages[0]
+                : String.Empty;
+            return mainMessage;
+        }
+
         private ErrorType _type;
     }
 }
