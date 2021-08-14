@@ -536,26 +536,27 @@ INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (8, N'ViewRow
 SET IDENTITY_INSERT [Metadata].[EntityType] OFF
 
 SET IDENTITY_INSERT [Metadata].[Operation] ON
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (1, N'View')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (2, N'Create')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (3, N'Edit')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (4, N'Delete')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (5, N'Filter')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (6, N'Print')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (7, N'Save')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (8, N'Archive')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (1, N'View')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (2, N'Create')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (3, N'Edit')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (4, N'Delete')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (5, N'Filter')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (6, N'Print')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (7, N'Save')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (8, N'Archive')
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES(21, N'GroupDelete')
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES(22, N'FailedLogin')
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES(23, N'CompanyLogin')
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES(24, N'SwitchFiscalPeriod')
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES(25, N'SwitchBranch')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (26, N'AssignRole')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (27, N'AssignUser')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (28, N'BranchAccess')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (29, N'FiscalPeriodAccess')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (30, N'ViewArchive')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (35, N'RoleAccess')
-INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (57, N'CompanyAccess')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (26, N'AssignRole')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (27, N'AssignUser')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (28, N'BranchAccess')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (29, N'FiscalPeriodAccess')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (30, N'ViewArchive')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (35, N'RoleAccess')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (57, N'CompanyAccess')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (58, N'PrintPreview')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON
@@ -625,6 +626,8 @@ INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, O
     VALUES (29, NULL, 1, 35, 1)
 INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (30, NULL, 2, 57, 1)
+INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (31, NULL, 5, 58, 1)
 SET IDENTITY_INSERT [Config].[SysLogSetting] OFF
 
 

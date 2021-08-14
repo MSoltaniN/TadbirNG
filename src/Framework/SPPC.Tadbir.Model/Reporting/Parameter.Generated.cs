@@ -36,7 +36,6 @@ namespace SPPC.Tadbir.Model.Reporting
             MaxValue = String.Empty;
             DescriptionKey = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -93,10 +92,5 @@ namespace SPPC.Tadbir.Model.Reporting
         /// گزارش سیستمی یا ذخیره شده مرجع که این پارامتر در آن استفاده می شود
         /// </summary>
         public virtual Report Report { get; set; }
-
-        private void InitReferences()
-        {
-            Report = new Report();
-        }
     }
 }

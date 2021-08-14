@@ -296,6 +296,11 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// کد عملیاتی تعیین دسترسی به شرکت
         /// </summary>
-        CompanyAccess = 57
+        CompanyAccess = 57,
+
+        /// <summary>
+        /// کد عملیاتی پیش نمایش چاپ
+        /// </summary>
+        PrintPreview = 58
     }
 }

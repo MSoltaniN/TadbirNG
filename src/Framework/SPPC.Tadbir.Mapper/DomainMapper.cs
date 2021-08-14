@@ -562,6 +562,9 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Report, PrintInfoViewModel>()
                 .ForMember(dest => dest.Template, opts => opts.Ignore());
             mapperConfig.CreateMap<Report, ReportSummaryViewModel>();
+            mapperConfig.CreateMap<Parameter, Parameter>()
+                .ForMember(dest => dest.Id, opts => opts.UseValue(0))
+                .ForMember(dest => dest.Report, opts => opts.UseValue((Report)null));
 
             mapperConfig.CreateMap<Voucher, VoucherSummaryViewModel>()
                 .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.Date.Date.ToShortDateString(false)))
@@ -618,14 +621,6 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.PeriodTurnoverItem1, opts => opts.MapFrom(src => src.PeriodTurnover))
                 .ForMember(dest => dest.EndBalanceItem1, opts => opts.MapFrom(src => src.EndBalance))
                 .ForMember(dest => dest.BalanceItem1, opts => opts.MapFrom(src => src.Balance));
-        }
-
-        private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)
-        {
-            var value = (dictionary.ContainsKey(key))
-                ? (TValue)dictionary[key]
-                : default(TValue);
-            return value;
         }
 
         private static TConfig MapConfigType<TConfig>(Setting setting)

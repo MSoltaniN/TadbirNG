@@ -5,8 +5,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Reporting;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -14,14 +15,16 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز در زیرساخت مدیریت گزارشات را پیاده سازی می کند
     /// </summary>
-    public class ReportSystemRepository : RepositoryBase, IReportSystemRepository
+    public class ReportSystemRepository
+        : SystemEntityLoggingRepository<LocalReport, LocalReportViewModel>, IReportSystemRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز برای عملیات دیتابیسی را فراهم می کند</param>
-        public ReportSystemRepository(IRepositoryContext context)
-            : base(context)
+        /// <param name="log">امکان ایجاد لاگ های عملیاتی و سیستمی را فراهم می کند</param>
+        public ReportSystemRepository(IRepositoryContext context, IOperationLogRepository log)
+            : base(context, log)
         {
             UnitOfWork.UseSystemContext();
         }
@@ -173,34 +176,28 @@ namespace SPPC.Tadbir.Persistence
                     report.ReportId, rep => rep.LocalReports, rep => rep.Parameters);
                 if (existing != null)
                 {
-                    var userReport = Mapper.Map<Report>(existing);
-                    userReport.Id = 0;
-                    userReport.IsSystem = false;
-                    userReport.IsDefault = false;
-                    userReport.CreatedById = UserContext.Id;
+                    var userReport = CloneReport(existing);
                     repository.Insert(userReport);
                     await UnitOfWork.CommitAsync();
 
                     Array.ForEach(existing.LocalReports.ToArray(), rep =>
                     {
-                        var clone = Mapper.Map<LocalReport>(rep);
-                        clone.Id = 0;
-                        clone.Caption = (rep.LocaleId == report.LocaleId)
-                            ? report.Caption
-                            : String.Format("Copy of '{0}'", rep.Caption);
-                        clone.ReportId = 0;
-                        clone.Locale = null;
+                        var clone = CloneLocalReport(userReport.Id, rep, report);
                         userReport.LocalReports.Add(clone);
                     });
                     Array.ForEach(existing.Parameters.ToArray(), param =>
                     {
                         var clone = Mapper.Map<Parameter>(param);
-                        clone.Id = 0;
-                        clone.ReportId = 0;
+                        clone.ReportId = userReport.Id;
                         userReport.Parameters.Add(clone);
                     });
                     repository.Update(userReport, rep => rep.LocalReports, rep => rep.Parameters);
                     await UnitOfWork.CommitAsync();
+
+                    var original = existing.LocalReports
+                        .Where(rep => rep.LocaleId == report.LocaleId)
+                        .Single();
+                    await LogReportOperationAsync(original, report);
                 }
             }
             else
@@ -213,6 +210,7 @@ namespace SPPC.Tadbir.Persistence
                     existing.Template = report.Template;
                     repository.Update(existing);
                     await UnitOfWork.CommitAsync();
+                    await LogReportOperationAsync(existing, report);
                 }
             }
         }
@@ -298,6 +296,11 @@ namespace SPPC.Tadbir.Persistence
             return (count > 0);
         }
 
+        internal override int? EntityType
+        {
+            get { return (int?)SysEntityTypeId.UserReport; }
+        }
+
         private static void Localize(int localeId, List<Report> reports, List<TreeItemViewModel> tree)
         {
             foreach (var node in tree)
@@ -310,6 +313,32 @@ namespace SPPC.Tadbir.Persistence
                     .Single();
                 node.Caption = localReport.Caption;
             }
+        }
+
+        private Report CloneReport(Report report)
+        {
+            return new Report()
+            {
+                Code = report.Code,
+                CreatedById = UserContext.Id,
+                ParentId = report.ParentId,
+                ServiceUrl = report.ServiceUrl,
+                SubsystemId = report.SubsystemId,
+                ViewId = report.ViewId
+            };
+        }
+
+        private LocalReport CloneLocalReport(int reportId, LocalReport original, LocalReportViewModel copy)
+        {
+            return new LocalReport()
+            {
+                Caption = (original.LocaleId == copy.LocaleId)
+                    ? copy.Caption
+                    : String.Format("Copy of '{0}'", original.Caption),
+                ReportId = reportId,
+                LocaleId = original.LocaleId,
+                Template = original.Template
+            };
         }
 
         private async Task<IList<TreeItemViewModel>> GetReportTreeByCriteriaAsync(
@@ -352,6 +381,14 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return reportView;
+        }
+
+        private async Task LogReportOperationAsync(LocalReport original, LocalReportViewModel modified)
+        {
+            OnEntityAction(OperationId.Design);
+            Log.Description = String.Format(Context.Localize(AppStrings.ReportDesignDetails),
+                original.Caption, modified.Caption);
+            await TrySaveLogAsync();
         }
 
         private const int _quickReportId = 43;
