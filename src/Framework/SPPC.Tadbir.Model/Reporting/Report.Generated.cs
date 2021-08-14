@@ -29,8 +29,6 @@ namespace SPPC.Tadbir.Model.Reporting
         {
             Code = String.Empty;
             ServiceUrl = String.Empty;
-            //Template = String.Empty;
-            //TemplateLtr = String.Empty;
             ResourceKeys = String.Empty;
             ModifiedDate = DateTime.Now;
             InitReferences();
@@ -103,10 +101,8 @@ namespace SPPC.Tadbir.Model.Reporting
 
         private void InitReferences()
         {
-            CreatedBy = new User();
             LocalReports = new List<LocalReport>();
             Parameters = new List<Parameter>();
-            View = new ReportView();
         }
     }
 }

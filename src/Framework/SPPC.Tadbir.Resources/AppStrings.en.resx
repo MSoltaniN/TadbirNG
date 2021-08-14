@@ -3522,4 +3522,10 @@
   <data name="CantManageCollectionFromBranch" xml:space="preserve">
     <value>Adding an account to this collection can only be done from root branch.</value>
   </data>
+  <data name="PrintPreview" xml:space="preserve">
+    <value>Print Preview</value>
+  </data>
+  <data name="ReportDesignDetails" xml:space="preserve">
+    <value>Designing report template - Original caption : '{0}' - New caption : '{1}'</value>
+  </data>
 </root>

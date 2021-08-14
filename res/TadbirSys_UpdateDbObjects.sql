@@ -9237,3 +9237,19 @@ Update Metadata.Command Set IconName = 'search' Where TitleKey = 'VoucherByNo'
 Update Metadata.Command Set IconName = 'lock' Where TitleKey = 'RowAccessSettings'
 Update Metadata.Command Set IconName = 'wrench' Where TitleKey = 'Settings'
 
+-- 1.1.1176
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (10, N'Design')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (58, N'PrintPreview')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+SET IDENTITY_INSERT [Metadata].[EntityType] ON
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name]) VALUES (9, N'UserReport')
+SET IDENTITY_INSERT [Metadata].[EntityType] OFF
+
+SET IDENTITY_INSERT [Config].[SysLogSetting] ON
+INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (31, NULL, 5, 58, 1)
+INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (32, NULL, 9, 10, 1)
+SET IDENTITY_INSERT [Config].[SysLogSetting] OFF

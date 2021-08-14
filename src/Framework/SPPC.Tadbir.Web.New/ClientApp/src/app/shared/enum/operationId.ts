@@ -5,5 +5,6 @@ export enum OperationId {
   Print = 6,
   UndoFinalize = 18,
   GroupUndoFinalize = 49,
-  Export = 54
+  Export = 54,
+  PrintPreview = 58
 }

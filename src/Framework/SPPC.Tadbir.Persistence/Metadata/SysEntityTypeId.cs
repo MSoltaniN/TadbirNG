@@ -10,6 +10,7 @@ namespace SPPC.Tadbir.Persistence
         Setting = 4,
         SysOperationLog = 5,
         User = 6,
-        ViewRowPermission = 8
+        ViewRowPermission = 8,
+        UserReport = 9
     }
 }
