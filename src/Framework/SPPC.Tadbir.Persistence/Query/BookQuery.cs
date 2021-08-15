@@ -13,7 +13,7 @@ FROM [Finance].[VoucherLine] vl
 WHERE v.Date >= '{2}' AND v.Date <= '{3}' AND acc.FullCode LIKE '{4}%' AND {{0}}";
 
         internal const string ByRow = @"
-SELECT v.Date, v.No, vl.Description, vl.Debit, vl.Credit, vl.Mark
+SELECT v.Date, v.No, vl.Description, vl.Debit, vl.Credit, vl.Mark, vl.VoucherLineID AS [Id]
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{0}] acc ON vl.{1}ID = acc.{0}ID
@@ -21,7 +21,7 @@ WHERE v.Date >= '{2}' AND v.Date <= '{3}' AND acc.FullCode LIKE '{4}%' AND {{0}}
 ORDER BY v.Date, v.No, vl.RowNo";
 
         internal const string ByRowByBranch = @"
-SELECT v.Date, v.No, vl.Description, vl.Debit, vl.Credit, vl.Mark, br.Name AS BranchName
+SELECT v.Date, v.No, vl.Description, vl.Debit, vl.Credit, vl.Mark, br.Name AS BranchName, vl.VoucherLineID AS [Id]
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{0}] acc ON vl.{1}ID = acc.{0}ID

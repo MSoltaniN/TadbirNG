@@ -368,6 +368,7 @@ namespace SPPC.Tadbir.Persistence
         {
             return new AccountBookItemViewModel()
             {
+                Id = _utility.ValueOrDefault<int>(row, "Id"),
                 VoucherDate = _utility.ValueOrDefault<DateTime>(row, "Date"),
                 VoucherNo = _utility.ValueOrDefault<int>(row, "No"),
                 LineCount = _utility.ValueOrDefault<int>(row, "LineCount"),
