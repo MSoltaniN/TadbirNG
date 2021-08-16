@@ -189,7 +189,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if (this.model) {
+    if (this.model) {      
       this.accountModel = this.model.account;
       this.customerTaxModel = this.model.customerTaxInfo;
       this.accountOwnerModel = this.model.accountOwner;
@@ -439,19 +439,16 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     this.accountModel.isActive = featureValue.isActive;
     this.accountModel.isCurrencyAdjustable = featureValue.isCurrencyAdjustable;
 
-    if (this.accountModel.id > 0) {
-      if (this.accountModel.level > 0)
-        this.accountModel.groupId = undefined;
-    }
-    else {
+    if (this.accountModel.id <= 0) {
       this.accountModel.branchId = this.BranchId;
       this.accountModel.fiscalPeriodId = this.FiscalPeriodId;
       this.accountModel.companyId = this.CompanyId;
       this.accountModel.parentId = this.parent ? this.parent.id : undefined;
-      this.accountModel.level = this.level;
-      if (this.accountModel.level > 0)
-        this.accountModel.groupId = undefined;
+      this.accountModel.level = this.level;      
     }
+
+    if (this.accountModel.level > 0)
+      this.accountModel.groupId = undefined;
 
     var resultModel = new AccountFullDataInfo();
 
