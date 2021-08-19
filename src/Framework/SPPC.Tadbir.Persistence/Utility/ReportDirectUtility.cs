@@ -10,9 +10,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
-using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -21,7 +19,7 @@ namespace SPPC.Tadbir.Persistence.Utility
     /// <summary>
     ///
     /// </summary>
-    public class ReportDirectUtility : IReportDirectUtility
+    public class ReportDirectUtility : RepositoryBase, IReportDirectUtility
     {
         /// <summary>
         ///
@@ -29,44 +27,9 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="context"></param>
         /// <param name="system"></param>
         public ReportDirectUtility(IRepositoryContext context, ISystemRepository system)
+            : base(context)
         {
-            _context = context;
             _system = system;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="branchId"></param>
-        /// <returns></returns>
-        public IEnumerable<int> GetChildTree(int branchId)
-        {
-            var tree = new List<int>();
-            var repository = UnitOfWork.GetRepository<Branch>();
-            var branch = repository.GetByID(branchId, br => br.Children);
-            AddChildren(branch, tree);
-            return tree;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="branchId"></param>
-        /// <returns></returns>
-        public IEnumerable<int> GetParentTree(int branchId)
-        {
-            var tree = new List<int>();
-            var repository = UnitOfWork.GetRepository<Branch>();
-            var branch = repository.GetByIDWithTracking(branchId);
-            var currentBranch = branch;
-            while (currentBranch != null)
-            {
-                tree.Add(currentBranch.Id);
-                repository.LoadReference(currentBranch, br => br.Parent);
-                currentBranch = currentBranch.Parent;
-            }
-
-            return tree;
         }
 
         /// <summary>
@@ -422,7 +385,7 @@ namespace SPPC.Tadbir.Persistence.Utility
             if (!String.IsNullOrEmpty(componentName))
             {
                 string command = String.Format(AccountItemQuery.ItemLookup,
-                    length, componentName, _context.UserContext.FiscalPeriodId);
+                    length, componentName, UserContext.FiscalPeriodId);
                 query = new ReportQuery(command);
             }
 
@@ -531,7 +494,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         public IEnumerable<AccountItemBriefViewModel> GetUsableAccounts(
             AccountCollectionId collectionId, bool withRelations = false, int? branchId = null)
         {
-            _context.DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+            DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             int inBranchId = branchId ?? UserContext.BranchId;
             var accounts = GetInheritedAccounts(collectionId, inBranchId);
             if (accounts.Count() == 0)
@@ -554,7 +517,7 @@ namespace SPPC.Tadbir.Persistence.Utility
                 cmdBuilder.AppendFormat(" AND ({0})", filter);
             }
 
-            var result = _context.DbConsole.ExecuteQuery(cmdBuilder.ToString());
+            var result = DbConsole.ExecuteQuery(cmdBuilder.ToString());
             return result.Rows
                 .Cast<DataRow>()
                 .Select(row => GetAccountInfo(row));
@@ -569,15 +532,15 @@ namespace SPPC.Tadbir.Persistence.Utility
         public IEnumerable<AccountItemBriefViewModel> GetInheritedAccounts(
             AccountCollectionId collectionId, int branchId)
         {
-            _context.DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+            DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             var accounts = new List<AccountItemBriefViewModel>();
             var parentTree = GetParentTree(branchId);
             foreach (int parentId in parentTree)
             {
                 var query = new ReportQuery(String.Format(
-                    AccountItemQuery.CollectionAccounts, _context.UserContext.FiscalPeriodId,
+                    AccountItemQuery.CollectionAccounts, UserContext.FiscalPeriodId,
                     parentId, (int)collectionId));
-                var result = _context.DbConsole.ExecuteQuery(query.Query);
+                var result = DbConsole.ExecuteQuery(query.Query);
                 if (result.Rows.Count > 0)
                 {
                     accounts.AddRange(result.Rows
@@ -692,19 +655,9 @@ namespace SPPC.Tadbir.Persistence.Utility
             return builder.ToString();
         }
 
-        private IAppUnitOfWork UnitOfWork
-        {
-            get { return _context.UnitOfWork; }
-        }
-
         private IConfigRepository Config
         {
             get { return _system.Config; }
-        }
-
-        private UserContextViewModel UserContext
-        {
-            get { return _context.UserContext; }
         }
 
         private AccountItemBriefViewModel GetAccountInfo(DataRow row)
@@ -715,17 +668,6 @@ namespace SPPC.Tadbir.Persistence.Utility
                 Name = ValueOrDefault(row, "Name"),
                 FullCode = ValueOrDefault(row, "FullCode")
             };
-        }
-
-        private void AddChildren(Branch branch, IList<int> children)
-        {
-            var repository = UnitOfWork.GetRepository<Branch>();
-            foreach (var child in branch.Children)
-            {
-                children.Add(child.Id);
-                var item = repository.GetByID(child.Id, br => br.Children);
-                AddChildren(item, children);
-            }
         }
 
         private async Task<IEnumerable<TreeEntity>> GetNotUsedItemsAsync(
@@ -775,7 +717,6 @@ namespace SPPC.Tadbir.Persistence.Utility
         private const string EndsWithRegex = @"\.EndsWith\('(\w{1,})'\)";
         private const string ContainsRegex = @"\.Contains\('(\w{1,})'\)";
         private const string NotContainsRegex = @"\.IndexOf\('(\w{1,})'\) = -1";
-        private readonly IRepositoryContext _context;
         private readonly ISystemRepository _system;
     }
 }

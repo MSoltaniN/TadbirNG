@@ -12,7 +12,6 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
-using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Metadata;
 
 namespace SPPC.Tadbir.Persistence
@@ -378,41 +377,6 @@ namespace SPPC.Tadbir.Persistence
                 Operator = GridFilterOperator.IsLessOrEqualTo,
                 Value = value.ToString()
             };
-        }
-
-        private IEnumerable<int> GetParentTree(int branchId)
-        {
-            var tree = new List<int>();
-            var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            int? parentId = branchId;
-            while (parentId != null)
-            {
-                tree.Add(parentId.Value);
-                var parent = repository.GetByID(parentId.Value);
-                parentId = parent.ParentId;
-            }
-
-            return tree;
-        }
-
-        private IEnumerable<int> GetChildTree(int branchId)
-        {
-            var tree = new List<int>();
-            var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            var branch = repository.GetByID(branchId, br => br.Children);
-            AddChildren(branch, tree);
-            return tree;
-        }
-
-        private void AddChildren(Branch branch, IList<int> children)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            foreach (var child in branch.Children)
-            {
-                children.Add(child.Id);
-                var item = repository.GetByID(child.Id, br => br.Children);
-                AddChildren(item, children);
-            }
         }
     }
 }
