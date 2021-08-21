@@ -53,6 +53,9 @@ export class BreadCumbComponent implements OnInit {
       case "voucher":
         this.getText("Entity.Voucher");
         break;
+      case "vouchereditor":
+        this.getText("Entity.VoucherEditor");
+        break;
       case "user":
         this.getText("Entity.User");
         break;
