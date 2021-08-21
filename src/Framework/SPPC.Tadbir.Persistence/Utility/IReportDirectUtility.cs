@@ -19,20 +19,6 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <summary>
         ///
         /// </summary>
-        /// <param name="branchId"></param>
-        /// <returns></returns>
-        IEnumerable<int> GetChildTree(int branchId);
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="branchId"></param>
-        /// <returns></returns>
-        IEnumerable<int> GetParentTree(int branchId);
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="viewId"></param>
         /// <returns></returns>
         string GetItemName(int viewId);

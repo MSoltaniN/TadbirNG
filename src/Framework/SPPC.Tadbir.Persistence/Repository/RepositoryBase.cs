@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Config;
+using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 
@@ -110,6 +111,65 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             var company = await repository.GetByIDAsync(companyId);
             return BuildConnectionString(company);
+        }
+
+        /// <summary>
+        /// شعبه های زیرمجموعه شعبه داده شده را به صورت مجموعه ای از
+        /// شناسه های دیتابیسی خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه والد مورد نظر</param>
+        /// <returns>مجموعه شناسه های دیتابیسی شعبه های زیرمجموعه</returns>
+        public IEnumerable<int> GetChildTree(int branchId)
+        {
+            return GetChildTreeAsync(branchId).Result;
+        }
+
+        /// <summary>
+        /// شعبه های والد شعبه داده شده را به صورت مجموعه ای از
+        /// شناسه های دیتابیسی خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه زیرمجموعه مورد نظر</param>
+        /// <returns>مجموعه شناسه های دیتابیسی شعبه های والد</returns>
+        public IEnumerable<int> GetParentTree(int branchId)
+        {
+            return GetParentTreeAsync(branchId).Result;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، شعبه های زیرمجموعه شعبه داده شده را به صورت مجموعه ای از
+        /// شناسه های دیتابیسی خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه والد مورد نظر</param>
+        /// <returns>مجموعه شناسه های دیتابیسی شعبه های زیرمجموعه</returns>
+        public async Task<IEnumerable<int>> GetChildTreeAsync(int branchId)
+        {
+            var tree = new List<int>();
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
+            var branch = await repository.GetByIDAsync(branchId, br => br.Children);
+            AddChildren(branch, tree);
+            return tree;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، شعبه های والد شعبه داده شده را به صورت مجموعه ای از
+        /// شناسه های دیتابیسی خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه زیرمجموعه مورد نظر</param>
+        /// <returns>مجموعه شناسه های دیتابیسی شعبه های والد</returns>
+        public async Task<IEnumerable<int>> GetParentTreeAsync(int branchId)
+        {
+            var tree = new List<int>();
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
+            var branch = await repository.GetByIDWithTrackingAsync(branchId);
+            var currentBranch = branch;
+            while (currentBranch != null)
+            {
+                tree.Add(currentBranch.Id);
+                repository.LoadReference(currentBranch, br => br.Parent);
+                currentBranch = currentBranch.Parent;
+            }
+
+            return tree;
         }
 
         /// <summary>
@@ -232,10 +292,15 @@ namespace SPPC.Tadbir.Persistence
                 .ToArray();
         }
 
-        private static string GetDecodedValue(string encoded)
+        private void AddChildren(Branch branch, IList<int> children)
         {
-            var bytes = Transform.FromBase64String(encoded);
-            return Encoding.UTF8.GetString(bytes);
+            var repository = UnitOfWork.GetRepository<Branch>();
+            foreach (var child in branch.Children)
+            {
+                children.Add(child.Id);
+                var item = repository.GetByID(child.Id, br => br.Children);
+                AddChildren(item, children);
+            }
         }
 
         private const string _branchReferenceScript = @"

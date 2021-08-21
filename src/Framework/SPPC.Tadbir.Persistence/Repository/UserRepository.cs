@@ -391,6 +391,10 @@ namespace SPPC.Tadbir.Persistence
             userContext.FiscalPeriodName = newLogin.FiscalPeriodName;
             userContext.InventoryMode = newLogin.InventoryMode;
             userContext.BranchName = newLogin.BranchName;
+            UnitOfWork.UseCompanyContext();
+            userContext.ChildBranches.Clear();
+            userContext.ChildBranches.AddRange(await GetChildTreeAsync(userContext.BranchId));
+            UnitOfWork.UseSystemContext();
             await OnEnvironmentChangeAsync(currentLogin, newLogin);
         }
 
