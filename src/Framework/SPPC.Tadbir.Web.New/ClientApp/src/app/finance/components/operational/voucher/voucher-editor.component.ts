@@ -16,9 +16,6 @@ import { ViewName } from '@sppc/shared/security';
 import { LookupApi } from '@sppc/shared/services/api';
 import { Item } from '@sppc/shared/models';
 import { InventoryBalance } from '@sppc/finance/models/inventoryBalance';
-import { setTime } from '@progress/kendo-angular-dateinputs/dist/es2015/util';
-import { debug } from 'util';
-
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -109,6 +106,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   draftTitle: string;
   normalTitle: string;
   entityNamePermission: string;
+  breadcrumbResourceName: string;
 
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
     public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService,
@@ -131,7 +129,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.initVoucherForm(this.voucherItem);
       this.isShowBreadcrumb = false;
       this.subjectMode = this.voucherItem.subjectType;
-      if (this.subjectMode == 1) this.entityNamePermission = "DraftVoucher";
+      if (this.subjectMode == 1) this.entityNamePermission = "DraftVoucher";      
       this.getVoucherType();
     }
     else {      
