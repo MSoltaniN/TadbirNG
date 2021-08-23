@@ -1,5 +1,5 @@
 
-<app-bread-cumb entityTypeName="VoucherEditor" *ngIf="isShowBreadcrumb"></app-bread-cumb>
+<app-bread-cumb entityTypeName="{{subjectMode === 1 ? 'DraftVoucherEditor' : 'VoucherEditor'}}" *ngIf="isShowBreadcrumb"></app-bread-cumb>
 
 <div class="panel-body" style="padding-top: 0">
 
