@@ -3528,4 +3528,7 @@
   <data name="ReportDesignDetails" xml:space="preserve">
     <value>Designing report template - Original caption : '{0}' - New caption : '{1}'</value>
   </data>
+  <data name="SessionIsExpired" xml:space="preserve">
+    <value>Your application session is expired. Please log in again.</value>
+  </data>
 </root>

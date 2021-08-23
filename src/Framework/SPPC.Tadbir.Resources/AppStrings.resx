@@ -3519,4 +3519,7 @@
   <data name="ReportDesignDetails" xml:space="preserve">
     <value>طراحی قالب گزارش - عنوان اصلی : '{0}' - عنوان جدید : '{1}'</value>
   </data>
+  <data name="SessionIsExpired" xml:space="preserve">
+    <value>جلسه کاری شما در برنامه منقضی شده است. لطفاً دوباره وارد برنامه شوید.</value>
+  </data>
 </root>
