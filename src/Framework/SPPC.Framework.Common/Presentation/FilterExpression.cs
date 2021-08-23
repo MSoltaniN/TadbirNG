@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace SPPC.Framework.Presentation
@@ -38,6 +37,20 @@ namespace SPPC.Framework.Presentation
         /// عبارات فیلتر اضافه که توسط عملگرهای منطقی "و" و "یا" قابل ترکیب با عبارت اصلی هستند
         /// </summary>
         public IList<FilterExpression> Children { get; private set; }
+
+        /// <summary>
+        /// مجموعه ای از تمام عبارات فیلتر ساده را از ساختار درختی عبارات فیلتر موجود ساخته و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه عبارات فیلتر ساده</returns>
+        public IEnumerable<GridFilter> GetAllFilters()
+        {
+            var allFilters = new List<GridFilter>
+            {
+                Filter
+            };
+            allFilters.AddRange(GetChildFilters(this));
+            return allFilters;
+        }
 
         /// <summary>
         /// یک رشته متنی شامل مقادیر این نمونه ساخته و برمی گرداند
@@ -144,6 +157,21 @@ namespace SPPC.Framework.Presentation
             }
 
             return builder.ToString();
+        }
+
+        private IEnumerable<GridFilter> GetChildFilters(FilterExpression expression)
+        {
+            var childFilters = new List<GridFilter>();
+            foreach (var child in expression.Children)
+            {
+                childFilters.Add(child.Filter);
+                if (child.Children.Count > 0)
+                {
+                    childFilters.AddRange(GetChildFilters(child));
+                }
+            }
+
+            return childFilters;
         }
     }
 }
