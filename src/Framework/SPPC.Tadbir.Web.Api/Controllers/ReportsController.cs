@@ -11,10 +11,12 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -37,15 +39,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="repository"></param>
         /// <param name="sysRepository"></param>
         /// <param name="system"></param>
+        /// <param name="authorize"></param>
         /// <param name="strings"></param>
         /// <param name="tokenService"></param>
         public ReportsController(IReportRepository repository, IReportSystemRepository sysRepository,
-            ISystemConfigRepository system, IStringLocalizer<AppStrings> strings, ITokenService tokenService)
+            ISystemConfigRepository system, IAuthorizeRequest authorize,
+            IStringLocalizer<AppStrings> strings, ITokenService tokenService)
             : base(strings, tokenService)
         {
             _repository = repository;
             _sysRepository = sysRepository;
             _configRepository = system;
+            _authorize = authorize;
         }
 
         #region Report Management API
@@ -364,7 +369,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/reports/voucher/{voucherId:min(1)}/std-form
         [HttpGet]
         [Route(ReportApi.VoucherStandardFormUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Print)]
         public async Task<IActionResult> GetStandardVoucherFormAsync(int voucherId)
         {
             return await GetStandardFormAsync(voucherId);
@@ -377,34 +381,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/reports/voucher/{voucherId:min(1)}/std-form-detail
         [HttpGet]
         [Route(ReportApi.VoucherStandardFormWithDetailUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Print)]
         public async Task<IActionResult> GetStandardVoucherFormWithDetailAsync(int voucherId)
-        {
-            return await GetStandardFormAsync(voucherId, true);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        // GET: api/reports/voucher/draft/{voucherId:min(1)}/std-form
-        [HttpGet]
-        [Route(ReportApi.DraftVoucherStandardFormUrl)]
-        [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Print)]
-        public async Task<IActionResult> GetStandardDraftVoucherFormAsync(int voucherId)
-        {
-            return await GetStandardFormAsync(voucherId);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        // GET: api/reports/voucher/draft/{voucherId:min(1)}/std-form-detail
-        [HttpGet]
-        [Route(ReportApi.DraftVoucherStandardFormWithDetailUrl)]
-        [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Print)]
-        public async Task<IActionResult> GetStandardDraftVoucherFormWithDetailAsync(int voucherId)
         {
             return await GetStandardFormAsync(voucherId, true);
         }
@@ -1063,6 +1040,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<IActionResult> GetStandardFormAsync(int voucherId, bool withDetail = false)
         {
             var standardForm = await _repository.GetStandardVoucherFormAsync(voucherId, withDetail);
+            var result = GetAuthorizationResult((SubjectType)standardForm.SubjectType);
+            if (result != null)
+            {
+                return result;
+            }
+
             Localize(standardForm);
             return JsonReadResult(standardForm);
         }
@@ -1114,18 +1097,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 standardVoucher.Date = JalaliDateTime
                     .FromDateTime(now.Parse(standardVoucher.Date, false))
                     .ToShortDateString();
-            }
-        }
-
-        private void Localize(ReportViewModel report)
-        {
-            if (report != null)
-            {
-                if (report.ResourceKeys != null)
-                {
-                    var keys = report.ResourceKeys.Split(',');
-                    Array.ForEach(keys, key => report.ResourceMap.Add(key, _strings[key]));
-                }
             }
         }
 
@@ -1184,8 +1155,28 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        private IActionResult GetAuthorizationResult(SubjectType subject)
+        {
+            var permission = new PermissionBriefViewModel();
+            if (subject == SubjectType.Normal)
+            {
+                permission.EntityName = SecureEntity.Voucher;
+                permission.Flags = (int)VoucherPermissions.Print;
+            }
+            else
+            {
+                permission.EntityName = SecureEntity.DraftVoucher;
+                permission.Flags = (int)DraftVoucherPermissions.Print;
+            }
+
+            var permissions = new PermissionBriefViewModel[] { permission };
+            _authorize.SetRequiredPermissions(permissions);
+            return _authorize.GetAuthorizationResult(Request);
+        }
+
         private readonly IReportRepository _repository;
         private readonly IReportSystemRepository _sysRepository;
         private readonly ISystemConfigRepository _configRepository;
+        private readonly IAuthorizeRequest _authorize;
     }
 }

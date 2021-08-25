@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
+using SPPC.Framework.Cryptography;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Auth;
 
@@ -16,11 +17,10 @@ namespace SPPC.Tadbir.Service
         /// Initializes a new instance of the <see cref=" SecurityContextManager"/> class, using given Web context.
         /// </summary>
         /// <param name="httpContextAccessor">An object that provides current Web application context</param>
-        /// <param name="contextEncoder">An object used for encoding and decoding <see cref="SecurityContext"/> objects</param>
-        public SecurityContextManager(IHttpContextAccessor httpContextAccessor, ITextEncoder<SecurityContext> contextEncoder)
+        /// <param name="serializer">Serializer used for encoding and decoding objects</param>
+        public SecurityContextManager(IHttpContextAccessor httpContextAccessor, IEncodedSerializer serializer)
         {
-            _httpContextAccessor = httpContextAccessor;
-            _contextEncoder = contextEncoder;
+            _serializer = serializer;
             _httpContext = httpContextAccessor.HttpContext;
             _rootUrl = AppConstants.AppRoot;
         }
@@ -59,7 +59,7 @@ namespace SPPC.Tadbir.Service
             var context = new SecurityContext(userContext);
             _httpContext.Response.Cookies.Append(
                 AppConstants.ContextCookieName,
-                _contextEncoder.Encode(context),
+                _serializer.Serialize(context),
                 new CookieOptions() { Path = _rootUrl });
         }
 
@@ -69,7 +69,7 @@ namespace SPPC.Tadbir.Service
             var contextCookie = _httpContext.Request.Cookies[AppConstants.ContextCookieName];
             if (contextCookie != null)
             {
-                current = _contextEncoder.Decode(contextCookie);
+                current = _serializer.Deserialize<SecurityContext>(contextCookie);
             }
 
             return current;
@@ -83,13 +83,11 @@ namespace SPPC.Tadbir.Service
 
         private void ClearContext()
         {
-            var cookie = _httpContext.Request.Cookies[AppConstants.ContextCookieName];
             _httpContext.Response.Cookies.Delete(AppConstants.ContextCookieName);
         }
 
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly HttpContext _httpContext;
-        private readonly ITextEncoder<SecurityContext> _contextEncoder;
+        private readonly IEncodedSerializer _serializer;
         private readonly string _rootUrl;
     }
 }

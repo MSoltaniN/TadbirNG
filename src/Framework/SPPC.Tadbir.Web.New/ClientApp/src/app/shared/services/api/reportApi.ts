@@ -50,9 +50,9 @@ export class ReportApi {
     // reports/voucher/sum-by-date
     public static EnvironmentVoucherSummaryByDate = environment.BaseUrl + "/reports/voucher/sum-by-date";
 
-    // reports/voucher/std-form
-    public static VoucherStandardForm = environment.BaseUrl + "/reports/voucher/std-form";
+    // reports/voucher/{voucherId:min(1)}/std-form
+    public static VoucherStandardForm = environment.BaseUrl + "/reports/voucher/{0}/std-form";
 
-    // reports/voucher/std-form-detail
-    public static VoucherStandardFormWithDetail = environment.BaseUrl + "/reports/voucher/std-form-detail";
+    // reports/voucher/{voucherId:min(1)}/std-form-detail
+    public static VoucherStandardFormWithDetail = environment.BaseUrl + "/reports/voucher/{0}/std-form-detail";
 }

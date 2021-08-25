@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SPPC.Tadbir.Persistence.Utility
+namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// امکان مدیریت اطلاعات را در حافظه کش فراهم می کند
