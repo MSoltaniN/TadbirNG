@@ -38,6 +38,7 @@
               (dataStateChange)="onDataStateChange()"
               (cellClick)="onCellClick($event)"
               (dblclick)="rowDoubleClickHandler()"
+              (excelExport)="onExcelExport($event)"
               sppc-auto-generated-grid-reorder
               sppc-auto-generated-grid-resize>
     <kendo-grid-excel [fileName]="excelFileName" [fetchData]="allData"></kendo-grid-excel>
