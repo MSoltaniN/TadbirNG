@@ -12,7 +12,7 @@ import { VoucherApi } from '@sppc/finance/service/api';
 import { Voucher } from '@sppc/finance/models';
 import { MetaDataService, BrowserStorageService, LookupService, ErrorHandlingService } from '@sppc/shared/services';
 import { DocumentStatusValue, VoucherOperations, VoucherSubjectTypes } from '@sppc/finance/enum';
-import { ViewName } from '@sppc/shared/security';
+import { ViewName, DraftVoucherPermissions, VoucherPermissions } from '@sppc/shared/security';
 import { LookupApi } from '@sppc/shared/services/api';
 import { Item } from '@sppc/shared/models';
 import { InventoryBalance } from '@sppc/finance/models/inventoryBalance';
@@ -411,7 +411,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   onSave(e?: any): void {
-    if (this.editForm.valid) {
+    if (this.editForm.valid && this.checkEditPermission()) {      
 
       let model: Voucher = this.editForm.value;
       model.branchId = this.BranchId;
@@ -695,6 +695,21 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
     return false;
   }
+
+  checkEditPermission() {
+    if (this.subjectMode == 1 && !this.isAccess(Entities.DraftVoucher, DraftVoucherPermissions.View)) {
+      this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
+      return false;
+    }
+
+    if (this.subjectMode == 0 && !this.isAccess(Entities.Voucher, VoucherPermissions.View)) {
+      this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
+      return false;
+    }
+
+    return true;
+  }
+
 }
 
 
