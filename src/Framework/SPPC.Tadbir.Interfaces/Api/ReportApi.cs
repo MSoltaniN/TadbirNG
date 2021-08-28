@@ -158,26 +158,6 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string VoucherStandardFormWithDetailUrl = "reports/voucher/{voucherId:min(1)}/std-form-detail";
 
-        /// <summary>
-        /// API client URL for Draft Voucher Standard Form report
-        /// </summary>
-        public const string DraftVoucherStandardForm = "reports/voucher/draft/{0}/std-form";
-
-        /// <summary>
-        /// API server route URL for Draft Voucher Standard Form report
-        /// </summary>
-        public const string DraftVoucherStandardFormUrl = "reports/voucher/draft/{voucherId:min(1)}/std-form";
-
-        /// <summary>
-        /// API client URL for Draft Voucher Standard Form With Detail report
-        /// </summary>
-        public const string DraftVoucherStandardFormWithDetail = "reports/voucher/draft/{0}/std-form-detail";
-
-        /// <summary>
-        /// API server route URL for Draft Voucher Standard Form With Detail report
-        /// </summary>
-        public const string DraftVoucherStandardFormWithDetailUrl = "reports/voucher/draft/{voucherId:min(1)}/std-form-detail";
-
         #endregion
     }
 }

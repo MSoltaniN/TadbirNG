@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
 using SPPC.Framework.Common;
+using SPPC.Framework.Cryptography;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Auth;
 
@@ -16,11 +17,10 @@ namespace SPPC.Tadbir.Service
         /// Initializes a new instance of the <see cref=" ServiceContextManager"/> class, using given Web context.
         /// </summary>
         /// <param name="httpContextAccessor">An object that provides current Web application context</param>
-        /// <param name="contextEncoder">An object used for encoding and decoding <see cref="SecurityContext"/> objects</param>
-        public ServiceContextManager(IHttpContextAccessor httpContextAccessor, ITextEncoder<SecurityContext> contextEncoder)
+        /// <param name="serializer">Serializer used for encoding and decoding objects</param>
+        public ServiceContextManager(IHttpContextAccessor httpContextAccessor, IEncodedSerializer serializer)
         {
-            _httpContextAccessor = httpContextAccessor;
-            _contextEncoder = contextEncoder;
+            _serializer = serializer;
             _httpContext = httpContextAccessor.HttpContext;
         }
 
@@ -49,7 +49,7 @@ namespace SPPC.Tadbir.Service
         {
             Verify.ArgumentNotNull(userContext, "userContext");
             var context = new SecurityContext(userContext);
-            _httpContext.Response.Headers.Add(AppConstants.ContextHeaderName, _contextEncoder.Encode(context));
+            _httpContext.Response.Headers.Add(AppConstants.ContextHeaderName, _serializer.Serialize(context));
         }
 
         private ISecurityContext GetCurrentContext()
@@ -57,7 +57,8 @@ namespace SPPC.Tadbir.Service
             ISecurityContext current = null;
             if (_httpContext.Request.Headers.ContainsKey(AppConstants.ContextHeaderName))
             {
-                current = _contextEncoder.Decode(_httpContext.Request.Headers[AppConstants.ContextHeaderName]);
+                current = _serializer.Deserialize<SecurityContext>(
+                    _httpContext.Request.Headers[AppConstants.ContextHeaderName]);
             }
 
             return current;
@@ -74,8 +75,7 @@ namespace SPPC.Tadbir.Service
             return current;
         }
 
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly HttpContext _httpContext;
-        private readonly ITextEncoder<SecurityContext> _contextEncoder;
+        private readonly IEncodedSerializer _serializer;
     }
 }

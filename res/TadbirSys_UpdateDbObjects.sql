@@ -9253,3 +9253,12 @@ INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, O
 INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (32, NULL, 9, 10, 1)
 SET IDENTITY_INSERT [Config].[SysLogSetting] OFF
+
+-- 1.1.1182
+UPDATE [Reporting].[Report]
+SET ServiceUrl = 'reports/voucher/{0}/std-form'
+WHERE Code = 'Voucher-Std-Form'
+
+UPDATE [Reporting].[Report]
+SET ServiceUrl = 'reports/voucher/{0}/std-form-detail'
+WHERE Code = 'Voucher-Std-Form-Detail'

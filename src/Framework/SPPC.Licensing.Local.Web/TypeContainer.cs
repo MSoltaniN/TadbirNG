@@ -20,10 +20,9 @@ namespace SPPC.Licensing.Local.Web
         /// </summary>
         /// <param name="services">مجموعه سرویس های مورد استفاده در سرویس وب</param>
         /// <param name="configuration">تنظیمات زیرساختی سرویس وب</param>
-        public TypeContainer(IServiceCollection services, IConfiguration configuration)
+        public TypeContainer(IServiceCollection services)
         {
             _services = services;
-            _configuration = configuration;
         }
 
         /// <summary>
@@ -51,6 +50,5 @@ namespace SPPC.Licensing.Local.Web
         }
 
         private readonly IServiceCollection _services;
-        private readonly IConfiguration _configuration;
     }
 }
