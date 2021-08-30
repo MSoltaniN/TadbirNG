@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SPPC.Licensing.Model;
 
 namespace SPPC.Licensing.Persistence
 {
     public interface ILicenseRepository
     {
-        void InsertCustomer(CustomerModel customer);
-
         int GetLicenseId(string customerKey, string licenseKey);
 
         LicenseModel GetLicense(string licenseKey, string customerKey);
 
-        LicenseModel GetActivatedLicense(ActivationModel activation);
+        LicenseModel GetActivatedLicense(InternalActivationModel activation);
 
-        void InsertLicense(LicenseModel license);
+        Task InsertLicenseAsync(LicenseModel license);
+
+        Task UpdateLicenseAsync(LicenseModel license);
 
         string GetEncryptedLicense(LicenseModel license);
 

@@ -6,12 +6,12 @@ namespace SPPC.Licensing.Service
 {
     public interface ILicenseService
     {
-        string InsertCustomer(CustomerModel customer);
+        IList<LicenseModel> GetLicenses(int? customerId = null);
 
         string InsertLicense(LicenseModel license);
 
-        string GetActivatedLicense(ActivationModel activation);
+        string UpdateLicense(LicenseModel license);
 
-        string GetLicense(string licenseCheck);
+        string DeleteLicense(int licenseId);
     }
 }

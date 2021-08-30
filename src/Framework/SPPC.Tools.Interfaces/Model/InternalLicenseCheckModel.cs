@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPPC.Licensing.Model;
 
 namespace SPPC.Licensing.Model
 {
-    public class LicenseCheckModel
+    public class InternalLicenseCheckModel
     {
-        public string InstanceKey { get; set; }
+        public InstanceModel Instance { get; set; }
 
         public string HardwardKey { get; set; }
 

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Local.Persistence;
-using SPPC.Licensing.Service;
 using SPPC.Tadbir.Licensing;
 
 namespace SPPC.Licensing.Local.Web
@@ -45,7 +41,6 @@ namespace SPPC.Licensing.Local.Web
         private void AddUtilityTypes()
         {
             _services.AddTransient<IApiClient, ServiceClient>();
-            _services.AddTransient<ILicenseService, LicenseService>();
             _services.AddTransient<ILicenseUtility, LicenseUtility>();
         }
 

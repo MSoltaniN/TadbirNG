@@ -11,6 +11,22 @@ namespace SPPC.Licensing.Local.Persistence
         /// <summary>
         ///
         /// </summary>
+        public static string UniqueKey
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(_uniqueKey))
+                {
+                    _uniqueKey = GetSystemUniqueId();
+                }
+
+                return _uniqueKey;
+            }
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <returns></returns>
         public static string GetProcessorId()
         {
@@ -48,7 +64,7 @@ namespace SPPC.Licensing.Local.Persistence
         ///
         /// </summary>
         /// <returns></returns>
-        public static string GetSystemUniqueId()
+        private static string GetSystemUniqueId()
         {
             string uniqueId = String.Empty;
             var items = new string[]
@@ -68,5 +84,7 @@ namespace SPPC.Licensing.Local.Persistence
 
             return uniqueId;
         }
+
+        private static string _uniqueKey;
     }
 }

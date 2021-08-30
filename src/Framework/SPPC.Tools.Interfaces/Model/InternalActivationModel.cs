@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace SPPC.Licensing.Model
 {
-    public class ActivationModel
+    public class InternalActivationModel
     {
-        public string InstanceKey { get; set; }
+        public InstanceModel Instance { get; set; }
 
         public string HardwareKey { get; set; }
 

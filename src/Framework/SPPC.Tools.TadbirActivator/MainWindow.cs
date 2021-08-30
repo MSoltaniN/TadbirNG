@@ -12,7 +12,7 @@ using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
 using SPPC.Licensing.Local.Persistence;
 using SPPC.Tools.TadbirActivator.Properties;
-using SPPC.Licensing.Service;
+using SPPC.Tadbir.Licensing;
 
 namespace SPPC.Tools.TadbirActivator
 {
@@ -21,6 +21,7 @@ namespace SPPC.Tools.TadbirActivator
         public MainWindow()
         {
             InitializeComponent();
+            _crypto = new CryptoService();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -38,14 +39,15 @@ namespace SPPC.Tools.TadbirActivator
             txtLicenseInfo.Text = licenseInfo;
         }
 
-        private ILicenseService Service
+        private ILicenseUtility Service
         {
             get
             {
                 if (_service == null)
                 {
                     string root = ConfigurationManager.AppSettings["OnlineServerRoot"];
-                    _service = new LicenseService(new ServiceClient(root));
+                    _service = new LicenseUtility(
+                        new ServiceClient(root), _crypto, new DigitalSigner(_crypto), new CertificateManager());
                 }
 
                 return _service;
@@ -188,28 +190,22 @@ namespace SPPC.Tools.TadbirActivator
             var activation = new ActivationModel()
             {
                 InstanceKey = GetInstanceId(),
-                HardwareKey = HardwareKey.GetSystemUniqueId(),
+                HardwareKey = HardwareKey.UniqueKey,
             };
 
             var manager = new CertificateManager();
-            _certificate = manager.GetFromStore(Constants.IssuerName);
-            if (_certificate == null)
-            {
-                _certificate = manager.GenerateSelfSigned(Constants.IssuerName, Constants.SubjectName);
-            }
-
+            _certificate = manager.GenerateSelfSigned(Constants.IssuerName, Constants.SubjectName);
             activation.ClientKey = Convert.ToBase64String(_certificate.GetPublicKey());
             return activation;
         }
 
-        private InstanceModel GetInstanceId()
+        private string GetInstanceId()
         {
-            var instance = new InstanceModel();
+            string instance = null;
             using (StreamReader reader = new StreamReader(
                 GetType().Assembly.GetManifestResourceStream("SPPC.Tools.TadbirActivator.instance.id")))
             {
-                var json = reader.ReadToEnd();
-                instance = JsonHelper.To<InstanceModel>(json);
+                instance = reader.ReadToEnd();
             }
 
             return instance;
@@ -224,7 +220,8 @@ namespace SPPC.Tools.TadbirActivator
             File.WriteAllBytes(path, certificateBytes);
         }
 
-        private ILicenseService _service;
+        private readonly ICryptoService _crypto;
+        private ILicenseUtility _service;
         private X509Certificate2 _certificate;
     }
 }
