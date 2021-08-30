@@ -6,7 +6,7 @@
 
 <report-viewer id='compviewer'></report-viewer>
 <report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
-                    [Filter]="defaultFilter" [QuickFilter]="reportFilter" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl" [MetadataType]="metadataType"></report-management>
+                    [Filter]="defaultFilter" [QuickFilter]="reportQuickFilter" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl" [MetadataType]="metadataType"></report-management>
 
 <app-bread-cumb [entityTypeName]="entityTypeName"></app-bread-cumb>
 <report-setting></report-setting>
@@ -112,7 +112,7 @@
                                    (columnsList)="getColumns($event)">
       </auto-generated-grid-setting>
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-      <left-action-toolbar class="sppc-float-diff" [advanceFilterDisabled]="true" (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
+      <left-action-toolbar class="sppc-float-diff" [advanceFilterDisabled]="false" (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
       <div class="col-xs-12 col-sm-2 voucher-top-filter">
         <kendo-dropdownlist [data]="branchScope" class="ddl-branch-type"
                             [textField]="'value'"
