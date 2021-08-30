@@ -1,22 +1,25 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Framework.Cryptography;
+using SPPC.Framework.Helpers;
+using SPPC.Licensing.Api;
 using SPPC.Licensing.Model;
 using SPPC.Licensing.Persistence;
-using SPPC.Tadbir.Api;
+using SPPC.Licensing.Service;
 
 namespace SPPC.Licensing.Web.Controllers
 {
     [Produces("application/json")]
     public class LicenseController : Controller
     {
-        public LicenseController(ILicenseRepository repository, ILicenseUtility utility,
-            IEncodedSerializer serializer)
+        public LicenseController(ILicenseRepository repository, ICryptoService crypto,
+            ILicenseManager manager)
         {
             _repository = repository;
-            _utility = utility;
-            _serializer = serializer;
+            _crypto = crypto;
+            _manager = manager;
         }
 
         // GET: api/license
@@ -24,47 +27,66 @@ namespace SPPC.Licensing.Web.Controllers
         [Route(LicenseApi.LicenseUrl)]
         public IActionResult GetAppLicense()
         {
-            _utility.LicenseCheck = GetLicenseCheckData();
-            var result = GetValidationResult(_utility.LicenseCheck, out bool succeeded);
+            var licenseCheck = GetLicenseCheckData();
+            var result = GetValidationResult(licenseCheck, out bool succeeded);
             if (!succeeded)
             {
                 return result;
             }
 
-            string signature = _utility.GetActiveLicense();
+            string signature = _manager.GetActiveLicense();
             return Ok(signature);
+        }
+
+        // GET: api/license/{instanceKey}
+        [HttpGet]
+        [Route(LicenseApi.LicenseByKeyUrl)]
+        public IActionResult GetAppLicenseByInstance(string instanceKey)
+        {
+            if (String.IsNullOrEmpty(instanceKey))
+            {
+                return BadRequest("Application instance was not specified.");
+            }
+
+            return Ok();
         }
 
         // PUT: api/license/activate
         [HttpPut]
         [Route(LicenseApi.ActivateLicenseUrl)]
-        public IActionResult PutLicenseAsActivated([FromBody] ActivationModel activation)
+        public async Task<IActionResult> PutLicenseAsActivatedAsync([FromBody] ActivationModel activation)
         {
             if (activation == null)
             {
                 return BadRequest("Activation data is missing.");
             }
 
-            if (!EnsureValidRequest(activation))
+            string json = _crypto.Decrypt(activation.InstanceKey);
+            var internalActivation = new InternalActivationModel()
+            {
+                Instance = JsonHelper.To<InstanceModel>(json),
+                HardwareKey = activation.HardwareKey,
+                ClientKey = activation.ClientKey
+            };
+            if (!EnsureValidRequest(internalActivation))
             {
                 return BadRequest("Activation failed because license information is invalid.");
             }
 
-            var status = _repository.GetActivationStatus(activation.InstanceKey?.LicenseKey);
+            var status = _repository.GetActivationStatus(internalActivation.Instance?.LicenseKey);
             if (status.Value)
             {
                 return Ok(String.Empty);
             }
 
-            var activatedLicense = _repository.GetActivatedLicense(activation);
-            var encrypted = _repository.GetEncryptedLicense(activatedLicense);
-            return Ok(encrypted);
+            var activatedLicense = await _manager.ActivateLicenseAsync(activation);
+            return Ok(activatedLicense);
         }
 
         // POST: api/licenses
         [HttpPost]
         [Route(LicenseApi.LicensesUrl)]
-        public IActionResult PostNewLicense([FromBody] LicenseModel license)
+        public async Task<IActionResult> PostNewLicenseAsync([FromBody] LicenseModel license)
         {
             if (license == null)
             {
@@ -76,14 +98,14 @@ namespace SPPC.Licensing.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            _repository.InsertLicense(license);
+            await _repository.InsertLicenseAsync(license);
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        private bool EnsureValidRequest(ActivationModel activation)
+        private bool EnsureValidRequest(InternalActivationModel activation)
         {
             int licenseId = _repository.GetLicenseId(
-                activation.InstanceKey?.CustomerKey, activation.InstanceKey?.LicenseKey);
+                activation.Instance?.CustomerKey, activation.Instance?.LicenseKey);
             return licenseId > 0;
         }
 
@@ -93,7 +115,8 @@ namespace SPPC.Licensing.Web.Controllers
             var header = Request.Headers[Constants.LicenseCheckHeaderName];
             if (!String.IsNullOrEmpty(header))
             {
-                licenseCheck = _serializer.Deserialize<LicenseCheckModel>(header);
+                string json = _crypto.Decrypt(header);
+                licenseCheck = JsonHelper.To<LicenseCheckModel>(json);
             }
 
             return licenseCheck;
@@ -107,7 +130,7 @@ namespace SPPC.Licensing.Web.Controllers
                 return BadRequest();
             }
 
-            var status = _utility.ValidateLicense();
+            var status = _manager.ValidateLicense(licenseCheck);
             if (status == LicenseStatus.NoLicense)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -128,7 +151,7 @@ namespace SPPC.Licensing.Web.Controllers
         }
 
         private readonly ILicenseRepository _repository;
-        private readonly ILicenseUtility _utility;
-        private readonly IEncodedSerializer _serializer;
+        private readonly ILicenseManager _manager;
+        private readonly ICryptoService _crypto;
     }
 }

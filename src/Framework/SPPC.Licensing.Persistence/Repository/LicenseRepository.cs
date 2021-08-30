@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Persistence;
 using SPPC.Licensing.Model;
@@ -13,16 +14,6 @@ namespace SPPC.Licensing.Persistence
             UnitOfWork = unitOfWork;
             _serializer = serializer;
             _crypto = crypto;
-        }
-
-        public void InsertCustomer(CustomerModel customer)
-        {
-            if (customer.Id == 0)
-            {
-                var repository = UnitOfWork.GetRepository<CustomerModel>();
-                repository.Insert(customer);
-                UnitOfWork.Commit();
-            }
         }
 
         public int GetLicenseId(string customerKey, string licenseKey)
@@ -48,9 +39,9 @@ namespace SPPC.Licensing.Persistence
             return license;
         }
 
-        public LicenseModel GetActivatedLicense(ActivationModel activation)
+        public LicenseModel GetActivatedLicense(InternalActivationModel activation)
         {
-            var license = GetLicense(activation?.InstanceKey?.LicenseKey, activation?.InstanceKey?.CustomerKey);
+            var license = GetLicense(activation?.Instance?.LicenseKey, activation?.Instance?.CustomerKey);
             if (license != null)
             {
                 var repository = UnitOfWork.GetRepository<LicenseModel>();
@@ -65,9 +56,9 @@ namespace SPPC.Licensing.Persistence
             return license;
         }
 
-        public void InsertLicense(LicenseModel license)
+        public async Task InsertLicenseAsync(LicenseModel license)
         {
-            var customerRepository = UnitOfWork.GetRepository<CustomerModel>();
+            var customerRepository = UnitOfWork.GetAsyncRepository<CustomerModel>();
             int customerId = customerRepository
                 .GetEntityQuery()
                 .Where(cus => cus.CustomerKey == license.CustomerKey)
@@ -78,8 +69,15 @@ namespace SPPC.Licensing.Persistence
                 license.CustomerId = customerId;
                 var repository = UnitOfWork.GetRepository<LicenseModel>();
                 repository.Insert(license);
-                UnitOfWork.Commit();
+                await UnitOfWork.CommitAsync();
             }
+        }
+
+        public async Task UpdateLicenseAsync(LicenseModel license)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<LicenseModel>();
+            repository.Update(license);
+            await UnitOfWork.CommitAsync();
         }
 
         public string GetEncryptedLicense(LicenseModel license)

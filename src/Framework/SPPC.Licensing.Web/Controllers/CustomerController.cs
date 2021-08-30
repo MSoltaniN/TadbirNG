@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Licensing.Api;
 using SPPC.Licensing.Model;
@@ -9,7 +10,7 @@ namespace SPPC.Licensing.Web.Controllers
     [Produces("application/json")]
     public class CustomerController : Controller
     {
-        public CustomerController(ILicenseRepository repository)
+        public CustomerController(ICustomerRepository repository)
         {
             _repository = repository;
         }
@@ -17,7 +18,7 @@ namespace SPPC.Licensing.Web.Controllers
         // POST: api/customers
         [HttpPost]
         [Route(CustomerApi.CustomersUrl)]
-        public IActionResult PostNewCustomer([FromBody] CustomerModel customer)
+        public async Task<IActionResult> PostNewCustomer([FromBody] CustomerModel customer)
         {
             if (customer == null)
             {
@@ -29,10 +30,10 @@ namespace SPPC.Licensing.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            _repository.InsertCustomer(customer);
+            await _repository.SaveCustomerAsync(customer);
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        private readonly ILicenseRepository _repository;
+        private readonly ICustomerRepository _repository;
     }
 }
