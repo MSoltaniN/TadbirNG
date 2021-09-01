@@ -28,7 +28,7 @@ namespace SPPC.Licensing.Service
                 license.ClientKey = activation.ClientKey;
                 license.Secret = GetNewLicenseSecret();
                 license.IsActivated = true;
-                await _repository.UpdateLicenseAsync(license);
+                await _repository.SaveLicenseAsync(license);
             }
 
             return _crypto.Encrypt(JsonHelper.From(license, false));
@@ -159,7 +159,7 @@ namespace SPPC.Licensing.Service
         private readonly IDigitalSigner _signer;
         private InternalLicenseCheckModel _licenseCheck;
         private LicenseModel _license;
-        private X509Certificate2 _certificate;
+        private X509Certificate2 _certificate = new X509Certificate2();
         private bool _disposed = false;
     }
 }

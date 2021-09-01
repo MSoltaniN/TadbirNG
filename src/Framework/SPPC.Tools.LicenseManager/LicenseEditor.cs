@@ -19,12 +19,10 @@ namespace SPPC.Tools.LicenseManager
             base.OnLoad(e);
             LoadCustomers();
             SetupBindings();
-            LoadDefaults();
+            SetSubsystems();
         }
 
         public LicenseModel License { get; set; }
-
-        public string CustomerKey { get; set; }
 
         private ICustomerService CustomerService
         {
@@ -64,32 +62,33 @@ namespace SPPC.Tools.LicenseManager
             spnUserCount.DataBindings.Add("Value", License, "UserCount");
             dtpStartDate.DataBindings.Add("Value", License, "StartDate");
             dtpEndDate.DataBindings.Add("Value", License, "EndDate");
-        }
-
-        private void LoadDefaults()
-        {
-            cmbCustomer.SelectedValue = CustomerKey;
-            cmbEdition.SelectedIndex = 0;
-            chkAccounting.Checked = true;
+            cmbEdition.DataBindings.Add("SelectedItem", License, "Edition");
+            chkIsActivated.DataBindings.Add("Checked", License, "IsActivated");
         }
 
         private bool SaveLicense()
         {
+            License.ActiveModules = GetSubsystems();
             if (!ValidateLicense())
             {
                 return false;
             }
 
-            License.CustomerKey = CustomerKey;
+            License.CustomerId = Int32.Parse(cmbCustomer.SelectedValue.ToString());
             License.LicenseKey = Guid.NewGuid().ToString();
-            License.Edition = cmbEdition.SelectedItem.ToString();
             return true;
         }
 
         private bool ValidateLicense()
         {
             // Validate License...
-            License.ActiveModules = GetSubsystems();
+            if (cmbCustomer.SelectedIndex == -1)
+            {
+                string message = String.Format("مشتری انتخاب نشده است.");
+                MessageBox.Show(this, message, "پیغام خطا", MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.RtlReading);
+            }
             if (License.ActiveModules == (int)Subsystems.None)
             {
                 string message = String.Format("زیرسیستمی انتخاب نشده است.");
@@ -99,6 +98,22 @@ namespace SPPC.Tools.LicenseManager
             }
 
             return true;
+        }
+
+        private void SetSubsystems()
+        {
+            cmbCustomer.SelectedValue = License.CustomerId.ToString();
+            var modules = (Subsystems)License.ActiveModules;
+            chkAccounting.Checked = HasModule(modules, Subsystems.Accounting);
+            chkCheque.Checked = HasModule(modules, Subsystems.Cheque);
+            chkCashFlow.Checked = HasModule(modules, Subsystems.CashFlow);
+            chkWagePayment.Checked = HasModule(modules, Subsystems.WagePayment);
+            chkPersonnel.Checked = HasModule(modules, Subsystems.Personnel);
+            chkInventory.Checked = HasModule(modules, Subsystems.Inventory);
+            chkPurchase.Checked = HasModule(modules, Subsystems.Purchase);
+            chkSales.Checked = HasModule(modules, Subsystems.Sales);
+            chkWarehousing.Checked = HasModule(modules, Subsystems.Warehousing);
+            chkBudgeting.Checked = HasModule(modules, Subsystems.Budgeting);
         }
 
         private int GetSubsystems()
@@ -157,14 +172,11 @@ namespace SPPC.Tools.LicenseManager
             return (int)selected;
         }
 
-        private ICustomerService _customerService;
-
-        private void CustomerCombo_SelectedIndexChanged(object sender, EventArgs e)
+        private bool HasModule(Subsystems modules, Subsystems module)
         {
-            if (cmbCustomer.SelectedIndex != -1)
-            {
-                CustomerKey = cmbCustomer.SelectedItem.ToString();
-            }
+            return (modules & module) != 0;
         }
+
+        private ICustomerService _customerService;
     }
 }

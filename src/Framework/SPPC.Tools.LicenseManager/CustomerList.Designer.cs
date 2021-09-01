@@ -31,6 +31,8 @@ namespace SPPC.Tools.LicenseManager
         {
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabCustomers = new System.Windows.Forms.TabPage();
+            this.btnExit = new System.Windows.Forms.Button();
+            this.btnDisplayCustomers = new System.Windows.Forms.Button();
             this.btnCustomerLicenses = new System.Windows.Forms.Button();
             this.btnEditCustomer = new System.Windows.Forms.Button();
             this.btnNewCustomer = new System.Windows.Forms.Button();
@@ -63,9 +65,12 @@ namespace SPPC.Tools.LicenseManager
             this.tabMain.SelectedIndex = 0;
             this.tabMain.Size = new System.Drawing.Size(758, 529);
             this.tabMain.TabIndex = 0;
+            this.tabMain.SelectedIndexChanged += new System.EventHandler(this.MainTab_SelectedIndexChanged);
             // 
             // tabCustomers
             // 
+            this.tabCustomers.Controls.Add(this.btnExit);
+            this.tabCustomers.Controls.Add(this.btnDisplayCustomers);
             this.tabCustomers.Controls.Add(this.btnCustomerLicenses);
             this.tabCustomers.Controls.Add(this.btnEditCustomer);
             this.tabCustomers.Controls.Add(this.btnNewCustomer);
@@ -78,10 +83,33 @@ namespace SPPC.Tools.LicenseManager
             this.tabCustomers.Text = "مشتریان";
             this.tabCustomers.UseVisualStyleBackColor = true;
             // 
+            // btnExit
+            // 
+            this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnExit.Location = new System.Drawing.Point(6, 455);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(111, 34);
+            this.btnExit.TabIndex = 5;
+            this.btnExit.Text = "خروج";
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.ExitButton_Click);
+            // 
+            // btnDisplayCustomers
+            // 
+            this.btnDisplayCustomers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDisplayCustomers.Location = new System.Drawing.Point(633, 455);
+            this.btnDisplayCustomers.Name = "btnDisplayCustomers";
+            this.btnDisplayCustomers.Size = new System.Drawing.Size(111, 34);
+            this.btnDisplayCustomers.TabIndex = 1;
+            this.btnDisplayCustomers.Text = "نمایش";
+            this.btnDisplayCustomers.UseVisualStyleBackColor = true;
+            this.btnDisplayCustomers.Click += new System.EventHandler(this.DisplayCustomersButton_Click);
+            // 
             // btnCustomerLicenses
             // 
             this.btnCustomerLicenses.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCustomerLicenses.Location = new System.Drawing.Point(341, 455);
+            this.btnCustomerLicenses.Location = new System.Drawing.Point(224, 455);
             this.btnCustomerLicenses.Name = "btnCustomerLicenses";
             this.btnCustomerLicenses.Size = new System.Drawing.Size(147, 34);
             this.btnCustomerLicenses.TabIndex = 4;
@@ -92,7 +120,7 @@ namespace SPPC.Tools.LicenseManager
             // btnEditCustomer
             // 
             this.btnEditCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEditCustomer.Location = new System.Drawing.Point(494, 455);
+            this.btnEditCustomer.Location = new System.Drawing.Point(377, 455);
             this.btnEditCustomer.Name = "btnEditCustomer";
             this.btnEditCustomer.Size = new System.Drawing.Size(111, 34);
             this.btnEditCustomer.TabIndex = 3;
@@ -103,7 +131,7 @@ namespace SPPC.Tools.LicenseManager
             // btnNewCustomer
             // 
             this.btnNewCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNewCustomer.Location = new System.Drawing.Point(611, 455);
+            this.btnNewCustomer.Location = new System.Drawing.Point(494, 455);
             this.btnNewCustomer.Name = "btnNewCustomer";
             this.btnNewCustomer.Size = new System.Drawing.Size(133, 34);
             this.btnNewCustomer.TabIndex = 2;
@@ -123,10 +151,13 @@ namespace SPPC.Tools.LicenseManager
             this.grdCustomers.MultiSelect = false;
             this.grdCustomers.Name = "grdCustomers";
             this.grdCustomers.ReadOnly = true;
+            this.grdCustomers.RowHeadersVisible = false;
             this.grdCustomers.RowHeadersWidth = 51;
             this.grdCustomers.RowTemplate.Height = 24;
+            this.grdCustomers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdCustomers.Size = new System.Drawing.Size(738, 434);
-            this.grdCustomers.TabIndex = 1;
+            this.grdCustomers.TabIndex = 0;
+            this.grdCustomers.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.CustomersGrid_ColumnAdded);
             // 
             // tabLicenses
             // 
@@ -222,23 +253,29 @@ namespace SPPC.Tools.LicenseManager
             this.grdLicenses.MultiSelect = false;
             this.grdLicenses.Name = "grdLicenses";
             this.grdLicenses.ReadOnly = true;
+            this.grdLicenses.RowHeadersVisible = false;
             this.grdLicenses.RowHeadersWidth = 51;
             this.grdLicenses.RowTemplate.Height = 24;
+            this.grdLicenses.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdLicenses.Size = new System.Drawing.Size(738, 394);
             this.grdLicenses.TabIndex = 2;
+            this.grdLicenses.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.LicensesGrid_ColumnAdded);
+            this.grdLicenses.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.LicensesGrid_DataBindingComplete);
             // 
             // CustomerList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnExit;
             this.ClientSize = new System.Drawing.Size(782, 553);
             this.Controls.Add(this.tabMain);
             this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
             this.Name = "CustomerList";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ابزار مدیریت مجوزهای تدبیر - پردازش موازی سامان";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.tabMain.ResumeLayout(false);
             this.tabCustomers.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grdCustomers)).EndInit();
@@ -265,5 +302,7 @@ namespace SPPC.Tools.LicenseManager
         private System.Windows.Forms.Label lblCustomer;
         private System.Windows.Forms.DataGridView grdLicenses;
         private System.Windows.Forms.Button btnSaveInstance;
+        private System.Windows.Forms.Button btnDisplayCustomers;
+        private System.Windows.Forms.Button btnExit;
     }
 }

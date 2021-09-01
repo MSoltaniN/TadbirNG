@@ -20,7 +20,11 @@ namespace SPPC.Licensing.Service
 
         public IList<LicenseModel> GetLicenses(int? customerId = null)
         {
-            throw new NotImplementedException();
+            string url = customerId.HasValue
+                ? String.Format(LicenseApi.LicensesByCustomer, customerId.Value)
+                : LicenseApi.Licenses;
+            var licenses = _apiClient.Get<IList<LicenseModel>>(url);
+            return licenses;
         }
 
         public string InsertLicense(LicenseModel license)
@@ -38,7 +42,15 @@ namespace SPPC.Licensing.Service
 
         public string UpdateLicense(LicenseModel license)
         {
-            throw new NotImplementedException();
+            string error = String.Empty;
+            Verify.ArgumentNotNull(license, nameof(license));
+            var response = _apiClient.Update(license, LicenseApi.License, license.Id);
+            if (!response.Succeeded)
+            {
+                error = response.Message;
+            }
+
+            return error;
         }
 
         public string DeleteLicense(int licenseId)

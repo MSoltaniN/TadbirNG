@@ -24,7 +24,7 @@ namespace SPPC.Licensing.Web.Controllers
 
         // GET: api/license
         [HttpGet]
-        [Route(LicenseApi.LicenseUrl)]
+        [Route(LicenseApi.LicenseQueryUrl)]
         public IActionResult GetAppLicense()
         {
             var licenseCheck = GetLicenseCheckData();
@@ -36,19 +36,6 @@ namespace SPPC.Licensing.Web.Controllers
 
             string signature = _manager.GetActiveLicense();
             return Ok(signature);
-        }
-
-        // GET: api/license/{instanceKey}
-        [HttpGet]
-        [Route(LicenseApi.LicenseByKeyUrl)]
-        public IActionResult GetAppLicenseByInstance(string instanceKey)
-        {
-            if (String.IsNullOrEmpty(instanceKey))
-            {
-                return BadRequest("Application instance was not specified.");
-            }
-
-            return Ok();
         }
 
         // PUT: api/license/activate
@@ -83,6 +70,24 @@ namespace SPPC.Licensing.Web.Controllers
             return Ok(activatedLicense);
         }
 
+        // GET: api/licenses
+        [HttpGet]
+        [Route(LicenseApi.LicensesUrl)]
+        public async Task<IActionResult> GetAllLicensesAsync()
+        {
+            var licenses = await _repository.GetLicensesAsync();
+            return Json(licenses);
+        }
+
+        // GET: api/licenses/by-customer/{customerId:min(1)}
+        [HttpGet]
+        [Route(LicenseApi.LicensesByCustomerUrl)]
+        public async Task<IActionResult> GetCustomerLicensesAsync(int customerId)
+        {
+            var licenses = await _repository.GetLicensesAsync(customerId);
+            return Json(licenses);
+        }
+
         // POST: api/licenses
         [HttpPost]
         [Route(LicenseApi.LicensesUrl)]
@@ -98,8 +103,33 @@ namespace SPPC.Licensing.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _repository.InsertLicenseAsync(license);
+            await _repository.SaveLicenseAsync(license);
             return StatusCode(StatusCodes.Status201Created);
+        }
+
+        // PUT: api/licenses/{licenseId:min(1)}
+        [HttpPut]
+        [Route(LicenseApi.LicenseUrl)]
+        public async Task<IActionResult> PutModifiedLicenseAsync(
+            int licenseId, [FromBody] LicenseModel license)
+        {
+            if (license == null)
+            {
+                return BadRequest("Request failed because license data is missing or malformed.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (license.Id != licenseId)
+            {
+                return BadRequest("Request failed due to conflicting request data.");
+            }
+
+            await _repository.SaveLicenseAsync(license);
+            return Ok();
         }
 
         private bool EnsureValidRequest(InternalActivationModel activation)

@@ -41,12 +41,12 @@ namespace SPPC.Licensing.Local.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس را با پیاده سازی پیش فرض ساخته و برمی گرداند
         /// </summary>
+        /// <param name="webRoot">آدرس اصلی سرویس آنلاین کنترل لایسنس تدبیر</param>
         /// <returns>نمونه جدید با پیاده سازی پیش فرض برای همه وابستگی های کلاس</returns>
-        public static ILicenseUtility CreateDefault()
+        public static ILicenseUtility CreateDefault(string webRoot)
         {
             var crypto = new CryptoService();
-            var apiClient = new ServiceClient();
-            return new LicenseUtility(apiClient,
+            return new LicenseUtility(new ServiceClient(webRoot),
                 crypto, new DigitalSigner(crypto), new CertificateManager());
         }
 

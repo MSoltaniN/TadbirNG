@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SPPC.Framework.Cryptography;
+using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Common;
 using SPPC.Framework.Persistence;
 using SPPC.Licensing.Model;
 
@@ -9,11 +11,9 @@ namespace SPPC.Licensing.Persistence
 {
     public class LicenseRepository : ILicenseRepository
     {
-        public LicenseRepository(IUnitOfWork unitOfWork, IEncodedSerializer serializer, ICryptoService crypto)
+        public LicenseRepository(IUnitOfWork unitOfWork)
         {
             UnitOfWork = unitOfWork;
-            _serializer = serializer;
-            _crypto = crypto;
         }
 
         public int GetLicenseId(string customerKey, string licenseKey)
@@ -39,51 +39,37 @@ namespace SPPC.Licensing.Persistence
             return license;
         }
 
-        public LicenseModel GetActivatedLicense(InternalActivationModel activation)
+        public async Task<IList<LicenseModel>> GetLicensesAsync(int? customerId = null)
         {
-            var license = GetLicense(activation?.Instance?.LicenseKey, activation?.Instance?.CustomerKey);
-            if (license != null)
+            var repository = UnitOfWork.GetAsyncRepository<LicenseModel>();
+            var query = repository.GetEntityQuery();
+            if (customerId.HasValue)
             {
-                var repository = UnitOfWork.GetRepository<LicenseModel>();
-                license.HardwareKey = activation.HardwareKey;
-                license.ClientKey = activation.ClientKey;
-                license.Secret = GetNewLicenseSecret();
-                license.IsActivated = true;
-                repository.Update(license);
-                UnitOfWork.Commit();
+                query = query.Where(lic => lic.CustomerId == customerId.Value);
             }
 
-            return license;
+            return await query.ToListAsync();
         }
 
-        public async Task InsertLicenseAsync(LicenseModel license)
+        public async Task SaveLicenseAsync(LicenseModel license)
         {
-            var customerRepository = UnitOfWork.GetAsyncRepository<CustomerModel>();
-            int customerId = customerRepository
-                .GetEntityQuery()
-                .Where(cus => cus.CustomerKey == license.CustomerKey)
-                .Select(cus => cus.Id)
-                .FirstOrDefault();
-            if (customerId > 0 && license.Id == 0)
+            Verify.ArgumentNotNull(license, nameof(license));
+            var repository = UnitOfWork.GetAsyncRepository<LicenseModel>();
+            if (license.Id == 0)
             {
-                license.CustomerId = customerId;
-                var repository = UnitOfWork.GetRepository<LicenseModel>();
                 repository.Insert(license);
                 await UnitOfWork.CommitAsync();
             }
-        }
-
-        public async Task UpdateLicenseAsync(LicenseModel license)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<LicenseModel>();
-            repository.Update(license);
-            await UnitOfWork.CommitAsync();
-        }
-
-        public string GetEncryptedLicense(LicenseModel license)
-        {
-            var base64 = _serializer.Serialize(license);
-            return _crypto.Encrypt(base64);
+            else
+            {
+                var existing = await repository.GetByIDAsync(license.Id);
+                if (existing != null)
+                {
+                    UpdateValues(license, existing);
+                    repository.Update(license);
+                    await UnitOfWork.CommitAsync();
+                }
+            }
         }
 
         public bool? GetActivationStatus(string licenseKey)
@@ -97,15 +83,15 @@ namespace SPPC.Licensing.Persistence
             return isActivated;
         }
 
-        private static string GetNewLicenseSecret()
-        {
-            var secret = RandomGenerator.Generate(16);
-            return Convert.ToBase64String(secret);
-        }
-
         private IUnitOfWork UnitOfWork { get; }
 
-        private readonly IEncodedSerializer _serializer;
-        private readonly ICryptoService _crypto;
+        private static void UpdateValues(LicenseModel license, LicenseModel existing)
+        {
+            existing.UserCount = license.UserCount;
+            existing.Edition = license.Edition;
+            existing.StartDate = license.StartDate;
+            existing.EndDate = license.EndDate;
+            existing.ActiveModules = license.ActiveModules;
+        }
     }
 }

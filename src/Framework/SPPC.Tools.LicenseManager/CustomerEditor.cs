@@ -24,7 +24,7 @@ namespace SPPC.Tools.LicenseManager
         {
             base.OnLoad(e);
             SetupBindings();
-            LoadDefaults();
+            //LoadDefaults();
         }
 
         private void SaveCustomerButton_Click(object sender, EventArgs e)
@@ -46,12 +46,8 @@ namespace SPPC.Tools.LicenseManager
             txtWorkPhone.DataBindings.Add("Text", Customer, "WorkPhone");
             txtWorkFax.DataBindings.Add("Text", Customer, "WorkFax");
             txtCellPhone.DataBindings.Add("Text", Customer, "CellPhone");
-        }
-
-        private void LoadDefaults()
-        {
-            cmbEmployeeCount.SelectedIndex = 3;
-            cmbIndustry.SelectedIndex = 1;
+            cmbIndustry.DataBindings.Add("SelectedItem", Customer, "Industry");
+            cmbEmployeeCount.DataBindings.Add("SelectedItem", Customer, "EmployeeCount");
         }
 
         private bool SaveCustomer()

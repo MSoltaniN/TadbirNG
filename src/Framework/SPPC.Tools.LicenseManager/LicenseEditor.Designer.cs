@@ -52,6 +52,7 @@ namespace SPPC.Tools.LicenseManager
             this.btnSaveLicense = new System.Windows.Forms.Button();
             this.cmbCustomer = new System.Windows.Forms.ComboBox();
             this.lblCustomer = new System.Windows.Forms.Label();
+            this.chkIsActivated = new System.Windows.Forms.CheckBox();
             this.grpSubsystems.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spnUserCount)).BeginInit();
             this.SuspendLayout();
@@ -253,7 +254,7 @@ namespace SPPC.Tools.LicenseManager
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.btnCancel.Location = new System.Drawing.Point(138, 478);
+            this.btnCancel.Location = new System.Drawing.Point(138, 533);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(110, 36);
             this.btnCancel.TabIndex = 12;
@@ -265,7 +266,7 @@ namespace SPPC.Tools.LicenseManager
             this.btnSaveLicense.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSaveLicense.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnSaveLicense.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.btnSaveLicense.Location = new System.Drawing.Point(12, 478);
+            this.btnSaveLicense.Location = new System.Drawing.Point(12, 533);
             this.btnSaveLicense.Name = "btnSaveLicense";
             this.btnSaveLicense.Size = new System.Drawing.Size(120, 36);
             this.btnSaveLicense.TabIndex = 11;
@@ -281,7 +282,6 @@ namespace SPPC.Tools.LicenseManager
             this.cmbCustomer.Name = "cmbCustomer";
             this.cmbCustomer.Size = new System.Drawing.Size(307, 26);
             this.cmbCustomer.TabIndex = 1;
-            this.cmbCustomer.SelectedIndexChanged += new System.EventHandler(this.CustomerCombo_SelectedIndexChanged);
             // 
             // lblCustomer
             // 
@@ -292,13 +292,24 @@ namespace SPPC.Tools.LicenseManager
             this.lblCustomer.TabIndex = 0;
             this.lblCustomer.Text = "انتخاب مشتری :";
             // 
+            // chkIsActivated
+            // 
+            this.chkIsActivated.Enabled = false;
+            this.chkIsActivated.Location = new System.Drawing.Point(28, 480);
+            this.chkIsActivated.Name = "chkIsActivated";
+            this.chkIsActivated.Size = new System.Drawing.Size(215, 27);
+            this.chkIsActivated.TabIndex = 13;
+            this.chkIsActivated.Text = "فعالسازی شده";
+            this.chkIsActivated.UseVisualStyleBackColor = true;
+            // 
             // LicenseEditor
             // 
             this.AcceptButton = this.btnSaveLicense;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(494, 522);
+            this.ClientSize = new System.Drawing.Size(494, 577);
+            this.Controls.Add(this.chkIsActivated);
             this.Controls.Add(this.cmbCustomer);
             this.Controls.Add(this.lblCustomer);
             this.Controls.Add(this.btnCancel);
@@ -354,5 +365,6 @@ namespace SPPC.Tools.LicenseManager
         private System.Windows.Forms.Button btnSaveLicense;
         private System.Windows.Forms.ComboBox cmbCustomer;
         private System.Windows.Forms.Label lblCustomer;
+        private System.Windows.Forms.CheckBox chkIsActivated;
     }
 }

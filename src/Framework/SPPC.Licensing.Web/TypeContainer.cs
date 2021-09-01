@@ -59,6 +59,7 @@ namespace SPPC.Licensing.Web
         private void AddUtilityTypes()
         {
             _services.AddTransient<ILicenseService, LicenseService>();
+            _services.AddTransient<ILicenseManager, LicenseManager>();
         }
 
         private readonly IServiceCollection _services;

@@ -11,13 +11,9 @@ namespace SPPC.Licensing.Persistence
 
         LicenseModel GetLicense(string licenseKey, string customerKey);
 
-        LicenseModel GetActivatedLicense(InternalActivationModel activation);
+        Task<IList<LicenseModel>> GetLicensesAsync(int? customerId = null);
 
-        Task InsertLicenseAsync(LicenseModel license);
-
-        Task UpdateLicenseAsync(LicenseModel license);
-
-        string GetEncryptedLicense(LicenseModel license);
+        Task SaveLicenseAsync(LicenseModel license);
 
         bool? GetActivationStatus(string licenseKey);
     }

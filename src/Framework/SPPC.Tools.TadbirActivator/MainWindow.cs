@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
-using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
 using SPPC.Licensing.Local.Persistence;
 using SPPC.Tools.TadbirActivator.Properties;
@@ -21,7 +20,6 @@ namespace SPPC.Tools.TadbirActivator
         public MainWindow()
         {
             InitializeComponent();
-            _crypto = new CryptoService();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -46,8 +44,7 @@ namespace SPPC.Tools.TadbirActivator
                 if (_service == null)
                 {
                     string root = ConfigurationManager.AppSettings["OnlineServerRoot"];
-                    _service = new LicenseUtility(
-                        new ServiceClient(root), _crypto, new DigitalSigner(_crypto), new CertificateManager());
+                    _service = LicenseUtility.CreateDefault(root);
                 }
 
                 return _service;
@@ -213,14 +210,12 @@ namespace SPPC.Tools.TadbirActivator
 
         private void ExportCertificate(string root, string licenseData)
         {
-            var utility = LicenseUtility.CreateDefault();
             string path = Path.Combine(root, Constants.CertificateFile);
-            var license = utility.LoadLicense(licenseData);
+            var license = Service.LoadLicense(licenseData);
             var certificateBytes = _certificate.Export(X509ContentType.Pkcs12, license.Secret);
             File.WriteAllBytes(path, certificateBytes);
         }
 
-        private readonly ICryptoService _crypto;
         private ILicenseUtility _service;
         private X509Certificate2 _certificate;
     }

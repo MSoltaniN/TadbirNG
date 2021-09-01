@@ -21,17 +21,20 @@ namespace SPPC.Licensing.Service
 
         public IList<CustomerModel> GetCustomers()
         {
-            throw new NotImplementedException();
+            var customers = _apiClient.Get<IList<CustomerModel>>(CustomerApi.Customers);
+            return customers;
         }
 
         public IList<KeyValue> GetCustomerLookup()
         {
-            throw new NotImplementedException();
+            var lookup = _apiClient.Get<IList<KeyValue>>(CustomerApi.CustomerLookup);
+            return lookup;
         }
 
         public CustomerModel GetCustomer(int customerId)
         {
-            throw new NotImplementedException();
+            var customer = _apiClient.Get<CustomerModel>(CustomerApi.Customer, customerId);
+            return customer;
         }
 
         public string InsertCustomer(CustomerModel customer)
@@ -49,7 +52,15 @@ namespace SPPC.Licensing.Service
 
         public string UpdateCustomer(CustomerModel customer)
         {
-            throw new NotImplementedException();
+            string error = String.Empty;
+            Verify.ArgumentNotNull(customer, nameof(customer));
+            var response = _apiClient.Update(customer, CustomerApi.Customer, customer.Id);
+            if (!response.Succeeded)
+            {
+                error = response.Message;
+            }
+
+            return error;
         }
 
         public string DeleteCustomer(int customerId)

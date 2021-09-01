@@ -15,22 +15,12 @@ namespace SPPC.Licensing.Api
         /// <summary>
         /// API client URL for the application license requested from a licensing service
         /// </summary>
-        public const string License = "license";
+        public const string LicenseQuery = "license";
 
         /// <summary>
         /// API server route URL for the application license requested from a licensing service
         /// </summary>
-        public const string LicenseUrl = "license";
-
-        /// <summary>
-        /// API client URL for the application license specified by instance key
-        /// </summary>
-        public const string LicenseByKey = "license/{0}";
-
-        /// <summary>
-        /// API server route URL for the application license specified by instance key
-        /// </summary>
-        public const string LicenseByKeyUrl = "license/{instanceKey}";
+        public const string LicenseQueryUrl = "license";
 
         /// <summary>
         /// API client URL for activating the application license (online server only)
@@ -51,5 +41,25 @@ namespace SPPC.Licensing.Api
         /// API server route URL for all application licenses
         /// </summary>
         public const string LicensesUrl = "licenses";
+
+        /// <summary>
+        /// API client URL for an application license specified by unique identifier
+        /// </summary>
+        public const string License = "licenses/{0}";
+
+        /// <summary>
+        /// API server route URL for an application license specified by unique identifier
+        /// </summary>
+        public const string LicenseUrl = "licenses/{licenseId:min(1)}";
+
+        /// <summary>
+        /// API client URL for all application licenses issued to a specific customer
+        /// </summary>
+        public const string LicensesByCustomer = "licenses/by-customer/{0}";
+
+        /// <summary>
+        /// API server route URL for all application licenses issued to a specific customer
+        /// </summary>
+        public const string LicensesByCustomerUrl = "licenses/by-customer/{customerId:min(1)}";
     }
 }
