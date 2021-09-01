@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from "@angular/common/http";
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { retry, catchError, map } from 'rxjs/operators';
 import { Observable } from "rxjs";
 import { ToastrService } from "ngx-toastr";
 import { DialogService, DialogCloseResult } from "@progress/kendo-angular-dialog";
 import { Router } from "@angular/router";
-import { BrowserStorageService } from "../services";
+import { BrowserStorageService, SessionKeys } from "../services";
 import { TranslateService } from "@ngx-translate/core";
 
 @Injectable()
@@ -29,7 +29,44 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(request)
+
+    var clonedHeaders = request.headers;
+    var currentContext = this.bStorageService.getCurrentUser();
+    var token = currentContext ? currentContext.ticket : '';
+    //Add license value to each request
+    //var license = this.bStorageService.getSession(SessionKeys.License);  
+
+    if (!clonedHeaders.has('Content-Type')) {
+      clonedHeaders = clonedHeaders.append('Content-Type', 'application/json; charset=utf-8');
+    }
+
+    if (!clonedHeaders.has('Accept-Language')) {
+      var currentLanguage = this.bStorageService.getLanguage();
+
+      if (currentLanguage == 'en')
+        clonedHeaders = clonedHeaders.append('Accept-Language', 'en-US,en');
+
+      if (currentLanguage == 'fa')
+        clonedHeaders = clonedHeaders.append('Accept-Language', 'fa-IR,fa');
+    }
+
+    //if (!clonedHeaders.has('X-Tadbir-License')) {
+    //  if (license != null && license != "") {
+    //    clonedHeaders = clonedHeaders.append('X-Tadbir-License', license);
+    //  }
+    //}
+
+    if (!clonedHeaders.has('X-Tadbir-AuthTicket')) {
+      if (token != null && token != "") {
+        clonedHeaders = clonedHeaders.append('X-Tadbir-AuthTicket', token);
+      }
+    }
+
+    const clonedRequest = request.clone({
+      headers: clonedHeaders
+    });
+
+    return next.handle(clonedRequest)
       .pipe(
         retry(0),
         catchError((error: HttpErrorResponse) => {

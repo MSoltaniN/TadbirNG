@@ -118,21 +118,12 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         this.authenticationService.login(this.model.username, this.model.password, this.model.remember)
             .subscribe(
             data => {
-
-                //this.router.navigate([this.returnUrl]);
-                
-                //if(localStorage.getItem('currentContext') != undefined)
                 if (this.authenticationService.islogin())
                 {     
-                    this.parent.step1 = false;
-                    this.parent.step2 = true;
-                
-                   
+                  this.parent.step1 = false;
+                  this.parent.step2 = true;
 
-                    ////type Activity = typeof Metadatas;
-                    //Object.values(Metadatas).map(val => {
-                    //  //this.saveMetadataInCache(val);
-                    //});
+                  //TODO: write codes for check license-server
                 }
             },
             error => {

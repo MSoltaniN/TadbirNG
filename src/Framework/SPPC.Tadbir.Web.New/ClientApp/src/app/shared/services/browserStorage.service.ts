@@ -33,6 +33,7 @@ export const SessionKeys = {
   OperationLog: 'OperationLog',
   BalanceSheet: 'BalanceSheet',
   Shortcut: 'shortcut',
+  License:'license'
 }
 
 
