@@ -332,9 +332,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(_strings.Format(AppStrings.InvalidPasswordMessage));
             }
 
-            await _repository.UpdateUserLastLoginAsync(user.Id);
             string userTicket = await GetUserTicketAsync(user.Id);
             Response.Headers.Add(AppConstants.ContextHeaderName, userTicket);
+            await _repository.UpdateUserLastLoginAsync(user.Id);
             return Ok();
         }
 

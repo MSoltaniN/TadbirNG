@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
+using SPPC.Framework.Service;
 using SPPC.Licensing.Local.Persistence;
 using SPPC.Tadbir.CrossCutting;
 using SPPC.Tadbir.CrossCutting.Redis;
@@ -168,6 +169,7 @@ namespace SPPC.Tadbir.Web.Api
         private void AddUtilityTypes()
         {
             _services.AddTransient<IDomainMapper, DomainMapper>();
+            _services.AddTransient<IApiClient, ServiceClient>();
             _services.AddTransient<ILicenseUtility, LicenseUtility>();
             _services.AddTransient<IDigitalSigner, DigitalSigner>();
             _services.AddTransient<ICertificateManager, CertificateManager>();
