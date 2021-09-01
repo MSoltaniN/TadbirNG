@@ -225,7 +225,7 @@ namespace SPPC.Framework.Service
 
             if (disposing)
             {
-                _httpClient.Dispose();
+                _httpClient?.Dispose();
                 _disposed = true;
             }
         }
