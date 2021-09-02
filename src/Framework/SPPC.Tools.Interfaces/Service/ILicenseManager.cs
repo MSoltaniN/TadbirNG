@@ -9,7 +9,7 @@ namespace SPPC.Licensing.Service
     {
         Task<string> ActivateLicenseAsync(ActivationModel activation);
 
-        LicenseStatus ValidateLicense(LicenseCheckModel licenseCheck);
+        Task<LicenseStatus> ValidateLicenseAsync(LicenseCheckModel licenseCheck);
 
         string GetActiveLicense();
     }

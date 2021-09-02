@@ -11,6 +11,8 @@ namespace SPPC.Licensing.Persistence
 
         LicenseModel GetLicense(string licenseKey, string customerKey);
 
+        Task<LicenseFileModel> GetLicenseFileDataAsync(string licenseKey, string customerKey);
+
         Task<IList<LicenseModel>> GetLicensesAsync(int? customerId = null);
 
         Task SaveLicenseAsync(LicenseModel license);

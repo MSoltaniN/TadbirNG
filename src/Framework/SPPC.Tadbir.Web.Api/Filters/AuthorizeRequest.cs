@@ -55,9 +55,8 @@ namespace SPPC.Tadbir.Web.Api.Filters
             ////if (!CheckLicense(httpRequest))
             ////{
             ////    string reason = "Access denied because license is missing, invalid or tampered.";
-            ////    actionContext.Result = new BadRequestObjectResult(reason);
+            ////    result = new BadRequestObjectResult(reason);
             ////}
-
             if (!IsValidRequest(httpRequest, out string authTicket))
             {
                 // If custom authorization ticket header is not found in request, return Bad Request (400) response...
@@ -135,7 +134,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
             bool validated = false;
             if (!String.IsNullOrEmpty(httpRequest.Headers[AppConstants.LicenseHeaderName]))
             {
-                signature = httpRequest.Headers[AppConstants.LicenseHeaderName].First();
+                signature = httpRequest.Headers[AppConstants.LicenseHeaderName];
                 string license = File.ReadAllText(_licensePath, Encoding.UTF8);
                 _licenseUtility.LicensePath = Path.Combine(_serverRoot, Constants.LicenseFile);
                 validated = _licenseUtility.ValidateSignature(license, signature);
@@ -172,7 +171,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
             return isAuthorized;
         }
 
-        private readonly string _licensePath = @"wwwroot\static\license";
+        private readonly string _licensePath = @"wwwroot\license";
         private readonly string _serverRoot = @"..\SPPC.Licensing.Local.Web\wwwroot";
         private readonly ITokenService _tokenService;
         private readonly ILicenseUtility _licenseUtility;

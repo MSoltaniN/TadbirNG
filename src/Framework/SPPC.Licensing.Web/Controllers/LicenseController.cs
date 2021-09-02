@@ -25,11 +25,11 @@ namespace SPPC.Licensing.Web.Controllers
         // GET: api/license
         [HttpGet]
         [Route(LicenseApi.LicenseQueryUrl)]
-        public IActionResult GetAppLicense()
+        public async Task<IActionResult> GetAppLicenseAsync()
         {
             var licenseCheck = GetLicenseCheckData();
-            var result = GetValidationResult(licenseCheck, out bool succeeded);
-            if (!succeeded)
+            var result = await GetValidationResultAsync(licenseCheck);
+            if (!(result is OkResult))
             {
                 return result;
             }
@@ -152,15 +152,14 @@ namespace SPPC.Licensing.Web.Controllers
             return licenseCheck;
         }
 
-        private IActionResult GetValidationResult(LicenseCheckModel licenseCheck, out bool succeeded)
+        private async Task<IActionResult> GetValidationResultAsync(LicenseCheckModel licenseCheck)
         {
-            succeeded = false;
             if (licenseCheck == null)
             {
                 return BadRequest();
             }
 
-            var status = _manager.ValidateLicense(licenseCheck);
+            var status = await _manager.ValidateLicenseAsync(licenseCheck);
             if (status == LicenseStatus.NoLicense)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
@@ -176,7 +175,6 @@ namespace SPPC.Licensing.Web.Controllers
                 return Unauthorized();
             }
 
-            succeeded = true;
             return Ok();
         }
 

@@ -144,8 +144,7 @@ namespace SPPC.Licensing.Local.Persistence
             _signer.Certificate = _certificate;
             var ignored = new string[]
             {
-                "Id", "CustomerId", "CustomerKey", "LicenseKey", "HardwareKey",
-                "ClientKey", "Secret", "Customer", "RowGuid", "ModifiedDate", "IsActivated"
+                "CustomerKey", "LicenseKey", "HardwareKey", "ClientKey", "Secret", "IsActivated"
             };
             string license = JsonHelper.From(_license, true, ignored);
             var licenseBytes = Encoding.UTF8.GetBytes(license);
@@ -157,10 +156,10 @@ namespace SPPC.Licensing.Local.Persistence
         /// </summary>
         /// <param name="licenseData">اطلاعات رمزنگاری مجوز</param>
         /// <returns>اطلاعات رمزگشایی شده مجوز به صورت مدل اطلاعاتی مجوز</returns>
-        public LicenseModel LoadLicense(string licenseData)
+        public LicenseFileModel LoadLicense(string licenseData)
         {
             var json = _crypto.Decrypt(licenseData);
-            return JsonHelper.To<LicenseModel>(json);
+            return JsonHelper.To<LicenseFileModel>(json);
         }
 
         /// <summary>
@@ -262,7 +261,7 @@ namespace SPPC.Licensing.Local.Persistence
         private readonly ICryptoService _crypto;
         private readonly IDigitalSigner _signer;
         private readonly ICertificateManager _manager;
-        private LicenseModel _license;
+        private LicenseFileModel _license;
         private X509Certificate2 _certificate;
         private InstanceModel _instance;
     }

@@ -35,4 +35,8 @@
     <Folder Include="Service\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="DeviceId" Version="5.0.0" />
+  </ItemGroup>
+
 </Project>

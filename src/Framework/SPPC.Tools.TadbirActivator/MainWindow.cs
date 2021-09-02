@@ -102,6 +102,8 @@ namespace SPPC.Tools.TadbirActivator
                 var builder = new StringBuilder();
                 builder.AppendFormat("{0} : {1}", Resources.CompanyName, license.CustomerName);
                 builder.AppendLine();
+                builder.AppendFormat("{0} : {1}", Resources.ContactName, license.ContactName);
+                builder.AppendLine();
                 builder.AppendFormat("{0} : {1}", Resources.AppEdition, license.Edition);
                 builder.AppendLine();
                 builder.AppendFormat("{0} : {1}", Resources.UserCount, license.UserCount);

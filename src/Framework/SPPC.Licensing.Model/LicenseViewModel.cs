@@ -15,6 +15,11 @@ namespace SPPC.Licensing.Model
         [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string CustomerName { get; set; }
 
+        [Display(Name = "نام صاحب مجوز")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public string ContactName { get; set; }
+
         public int UserCount { get; set; }
 
         [Display(Name = "ویرایش برنامه")]

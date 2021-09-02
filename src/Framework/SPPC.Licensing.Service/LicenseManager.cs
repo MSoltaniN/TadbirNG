@@ -31,10 +31,12 @@ namespace SPPC.Licensing.Service
                 await _repository.SaveLicenseAsync(license);
             }
 
-            return _crypto.Encrypt(JsonHelper.From(license, false));
+            var licenseFile = await _repository.GetLicenseFileDataAsync(
+                license.LicenseKey, license.CustomerKey);
+            return _crypto.Encrypt(JsonHelper.From(licenseFile, false));
         }
 
-        public LicenseStatus ValidateLicense(LicenseCheckModel licenseCheck)
+        public async Task<LicenseStatus> ValidateLicenseAsync(LicenseCheckModel licenseCheck)
         {
             _licenseCheck = new InternalLicenseCheckModel()
             {
@@ -43,7 +45,7 @@ namespace SPPC.Licensing.Service
                 Instance = JsonHelper.To<InstanceModel>(_crypto.Decrypt(licenseCheck.InstanceKey))
             };
             var status = LicenseStatus.OK;
-            if (!EnsureLicenseExists())
+            if (!await EnsureLicenseExistsAsync())
             {
                 status = LicenseStatus.NoLicense;
             }
@@ -86,10 +88,11 @@ namespace SPPC.Licensing.Service
             return Convert.ToBase64String(secret);
         }
 
-        private bool EnsureLicenseExists()
+        private async Task<bool> EnsureLicenseExistsAsync()
         {
             var instance = _licenseCheck.Instance;
-            _license = _repository.GetLicense(instance?.LicenseKey, instance?.CustomerKey);
+            _license = await _repository.GetLicenseFileDataAsync(
+                instance?.LicenseKey, instance?.CustomerKey);
             return _license != null;
         }
 
@@ -158,7 +161,7 @@ namespace SPPC.Licensing.Service
         private readonly ICryptoService _crypto;
         private readonly IDigitalSigner _signer;
         private InternalLicenseCheckModel _licenseCheck;
-        private LicenseModel _license;
+        private LicenseFileModel _license;
         private X509Certificate2 _certificate = new X509Certificate2();
         private bool _disposed = false;
     }

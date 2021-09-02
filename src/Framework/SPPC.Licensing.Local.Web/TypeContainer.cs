@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Local.Persistence;
@@ -16,9 +17,10 @@ namespace SPPC.Licensing.Local.Web
         /// </summary>
         /// <param name="services">مجموعه سرویس های مورد استفاده در سرویس وب</param>
         /// <param name="configuration">تنظیمات زیرساختی سرویس وب</param>
-        public TypeContainer(IServiceCollection services)
+        public TypeContainer(IServiceCollection services, IConfiguration configuration)
         {
             _services = services;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -40,10 +42,17 @@ namespace SPPC.Licensing.Local.Web
 
         private void AddUtilityTypes()
         {
-            _services.AddTransient<IApiClient, ServiceClient>();
+            _services.AddTransient<IApiClient>(provider =>
+            {
+                return new ServiceClient()
+                {
+                    ServiceRoot = _configuration["ServerRoot"]
+                };
+            });
             _services.AddTransient<ILicenseUtility, LicenseUtility>();
         }
 
         private readonly IServiceCollection _services;
+        private readonly IConfiguration _configuration;
     }
 }

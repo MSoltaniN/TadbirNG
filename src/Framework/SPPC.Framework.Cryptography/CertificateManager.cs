@@ -36,10 +36,8 @@ namespace SPPC.Framework.Cryptography
         public X509Certificate2 GenerateSelfSigned(string issuerName, string subjectName)
         {
             AsymmetricKeyParameter myCAprivateKey = null;
-            var root = GenerateRoot(issuerName, ref myCAprivateKey);
-            AddToStore(root, StoreName.Root, StoreLocation.CurrentUser);
-            X509Certificate2 selfSigned = GenerateSelfSigned(subjectName, issuerName, myCAprivateKey);
-            AddToStore(selfSigned, StoreName.My, StoreLocation.CurrentUser);
+            GenerateRoot(issuerName, ref myCAprivateKey);
+            var selfSigned = GenerateSelfSigned(subjectName, issuerName, myCAprivateKey);
             return selfSigned;
         }
 

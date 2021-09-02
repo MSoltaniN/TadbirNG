@@ -48,7 +48,7 @@ namespace SPPC.Tadbir.Licensing
         /// </summary>
         /// <param name="licenseData">اطلاعات رمزنگاری مجوز</param>
         /// <returns>اطلاعات رمزگشایی شده مجوز به صورت مدل اطلاعاتی مجوز</returns>
-        LicenseModel LoadLicense(string licenseData);
+        LicenseFileModel LoadLicense(string licenseData);
 
         /// <summary>
         ///

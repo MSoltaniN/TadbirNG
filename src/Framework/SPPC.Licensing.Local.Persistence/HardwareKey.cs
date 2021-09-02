@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Text;
+using DeviceId;
+using DeviceId.Encoders;
+using DeviceId.Formatters;
 
 namespace SPPC.Licensing.Local.Persistence
 {
@@ -17,72 +20,23 @@ namespace SPPC.Licensing.Local.Persistence
             {
                 if (String.IsNullOrEmpty(_uniqueKey))
                 {
-                    _uniqueKey = GetSystemUniqueId();
+                    _uniqueKey = Encode(new DeviceIdBuilder()
+                        .AddProcessorId()
+                        .AddMotherboardSerialNumber()
+                        .AddSystemUUID()
+                        .AddSystemDriveSerialNumber()
+                        .UseFormatter(new StringDeviceIdFormatter(new PlainTextDeviceIdComponentEncoder()))
+                        .ToString());
                 }
 
                 return _uniqueKey;
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public static string GetProcessorId()
+        private static string Encode(string value)
         {
-            return Guid.NewGuid().ToString("N");
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public static string GetVolumeSerial()
-        {
-            return Guid.NewGuid().ToString("N");
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public static string GetMainBoardSerial()
-        {
-            return Guid.NewGuid().ToString("N");
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public static string GetFirstMacAddress()
-        {
-            return Guid.NewGuid().ToString("N");
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        private static string GetSystemUniqueId()
-        {
-            string uniqueId = String.Empty;
-            var items = new string[]
-            {
-                GetProcessorId(),
-                GetVolumeSerial(),
-                GetMainBoardSerial(),
-                GetFirstMacAddress()
-            };
-
-            if (items.Length > 0)
-            {
-                uniqueId = Convert.ToBase64String(
-                    Encoding.UTF8.GetBytes(
-                        String.Join("$", items)));
-            }
-
-            return uniqueId;
+            var bytes = Encoding.UTF8.GetBytes(value);
+            return Convert.ToBase64String(bytes);
         }
 
         private static string _uniqueKey;
