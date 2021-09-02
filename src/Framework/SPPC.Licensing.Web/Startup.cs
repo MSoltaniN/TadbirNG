@@ -28,6 +28,11 @@ namespace SPPC.Licensing.Web
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(
+                options => options
+                    .WithOrigins("*")
+                    .AllowAnyMethod()
+                    .WithHeaders("Content-Type", "Accept-Language", "X-Tadbir-Instance"));
             app.UseMvc();
         }
 
@@ -35,6 +40,7 @@ namespace SPPC.Licensing.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddCors();
 
             var container = new TypeContainer(services, Configuration);
             container.AddServices();

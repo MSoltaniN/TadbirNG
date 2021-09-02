@@ -75,8 +75,11 @@ namespace SPPC.Tools.TadbirActivator
                     MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.RtlReading);
             }
-            catch
+            catch(Exception ex)
             {
+                var message = String.Format("Error : {1}{0}{0}StackTrace : {2}",
+                    Environment.NewLine, ex.Message, ex.StackTrace);
+                MessageBox.Show(message);
                 MessageBox.Show(this, Resources.Error_NoInternet, Resources.ErrorMessage,
                     MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.RtlReading);

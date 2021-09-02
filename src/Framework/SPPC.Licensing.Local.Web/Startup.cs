@@ -22,6 +22,12 @@ namespace SPPC.Licensing.Local.Web
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(
+                options => options
+                    .WithOrigins("*")
+                    .AllowAnyMethod()
+                    .WithExposedHeaders("X-Tadbir-License")
+                    .WithHeaders("Content-Type", "Accept-Language", "X-Tadbir-Instance"));
             app.UseMvc();
         }
 
@@ -29,6 +35,7 @@ namespace SPPC.Licensing.Local.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddCors();
 
             var container = new TypeContainer(services, Configuration);
             container.AddServices();
