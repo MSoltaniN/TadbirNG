@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SPPC.Licensing.Model;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Licensing.Local.Web
 {
@@ -26,8 +28,8 @@ namespace SPPC.Licensing.Local.Web
                 options => options
                     .WithOrigins("*")
                     .AllowAnyMethod()
-                    .WithExposedHeaders("X-Tadbir-License")
-                    .WithHeaders("Content-Type", "Accept-Language", "X-Tadbir-Instance"));
+                    .WithHeaders("Content-Type", "Accept-Language",
+                        Constants.InstanceHeaderName, AppConstants.ContextHeaderName));
             app.UseMvc();
         }
 

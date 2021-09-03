@@ -34,8 +34,8 @@ namespace SPPC.Licensing.Web.Controllers
                 return result;
             }
 
-            string signature = _manager.GetActiveLicense();
-            return Ok(signature);
+            string license = _manager.GetActiveLicense();
+            return Ok(license);
         }
 
         // PUT: api/license/activate

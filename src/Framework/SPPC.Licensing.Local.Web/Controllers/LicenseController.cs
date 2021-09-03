@@ -32,8 +32,8 @@ namespace SPPC.Licensing.Local.Web.Controllers
                 return result;
             }
 
-            SetLicense(_utility.GetActiveLicense());
-            return Ok();
+            var license = _utility.GetActiveLicense();
+            return Ok(license);
         }
 
         // GET: api/license/online
@@ -49,8 +49,8 @@ namespace SPPC.Licensing.Local.Web.Controllers
             }
 
             var licenseCheck = GetLicenseCheck(instance);
-            SetLicense(_utility.GetLicense(licenseCheck));
-            return Ok();
+            var license = _utility.GetLicense(licenseCheck);
+            return Ok(license);
         }
 
         private IActionResult GetValidationResult(string instance, out bool succeeded)
@@ -104,11 +104,6 @@ namespace SPPC.Licensing.Local.Web.Controllers
 
             succeeded = true;
             return Ok();
-        }
-
-        private void SetLicense(string signature)
-        {
-            Response.Headers.Add(Constants.LicenseHeaderName, signature);
         }
 
         private LicenseCheckModel GetLicenseCheck(string instance)
