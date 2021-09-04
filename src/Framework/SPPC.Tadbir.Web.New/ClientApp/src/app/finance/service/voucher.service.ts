@@ -124,7 +124,7 @@ export class VoucherService extends BaseService {
       .map(response => <any>(<Response>response));
   }
 
-  public getStatusFilter(voucherStatus:string,forVoucherEntity:boolean=false) {
+  public getStatusFilter(voucherStatus:string,branchId:string = undefined,forVoucherEntity:boolean=false) {
     let statusFilter: Filter[] = [];    
     var statusKey = "";
     var urlKey = "";
@@ -134,24 +134,28 @@ export class VoucherService extends BaseService {
     switch (voucherStatus) {
       case "2": {
         statusFilter.push(new Filter(entity + "StatusId", "1", "== {0}", "System.Int32"));
+        statusFilter.push(new Filter(entity +"BranchId", branchId, " == {0}", "System.Int32"));
         statusKey = VoucherMessageResource.NotCommitted;
         urlKey = "/#/finance/voucher/committed";
         break;
       }
       case "3": {
         statusFilter.push(new Filter(entity + "StatusId", "3", "!= {0}", "System.Int32"));
+        statusFilter.push(new Filter(entity + "BranchId", branchId, " == {0}", "System.Int32"));
         statusKey = VoucherMessageResource.NotFinalized;
         urlKey = "/#/finance/voucher/finalized";
         break;
       }
       case "4": {
         statusFilter.push(new Filter(entity + "ConfirmedById", "", "== null", ""));
+        statusFilter.push(new Filter(entity + "BranchId", branchId, " == {0}", "System.Int32"));
         statusKey = VoucherMessageResource.NotConfirmed;
         urlKey = "/#/finance/voucher/confirmed";
         break;
       }
       case "5": {        
         statusFilter.push(new Filter(entity + "ApprovedById", "", "== null", ""));
+        statusFilter.push(new Filter(entity + "BranchId", branchId, " == {0}", "System.Int32"));
         statusKey = VoucherMessageResource.NotApproved;
         urlKey = "/#/finance/voucher/approved";
         break;

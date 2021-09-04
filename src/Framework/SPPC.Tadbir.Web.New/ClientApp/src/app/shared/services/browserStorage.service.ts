@@ -87,6 +87,17 @@ export class BrowserStorageService {
     return null;
   }
 
+  getLicense():string {
+    if (localStorage.getItem(SessionKeys.License))
+      return localStorage.getItem(SessionKeys.License);
+
+    return null;
+  }
+
+  setLicense(value:string) {
+    localStorage.setItem(SessionKeys.License, value);    
+  }
+
   getFiscalPeriod(): string {
     if (this.isRememberMe())
       return localStorage.getItem(SessionKeys.FiscalPeriod);
