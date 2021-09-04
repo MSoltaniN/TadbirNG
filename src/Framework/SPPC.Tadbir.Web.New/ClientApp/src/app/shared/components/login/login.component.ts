@@ -7,9 +7,10 @@ import {LoginContainerComponent} from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
 //import { DOCUMENT } from '@angular/common';
 import { AuthenticationService } from '@sppc/core';
-import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
+import { MetaDataService, BrowserStorageService, SessionKeys, LicenseService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { DOCUMENT } from '@angular/platform-browser';
+import { LicenseApi } from '@sppc/shared/services/api/licenseApi';
 
 
 
@@ -39,7 +40,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         private router: Router,
       private authenticationService: AuthenticationService, public toastrService: ToastrService, public bStorageService: BrowserStorageService,
         public translate: TranslateService, @Host() public parent: LoginContainerComponent, public renderer: Renderer2,
-        public metadata: MetaDataService, public settingService: SettingService, @Inject(DOCUMENT) public document
+        public metadata: MetaDataService, public settingService: SettingService, @Inject(DOCUMENT) public document,private licenseService:LicenseService
         ) 
     {
       super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
@@ -119,11 +120,26 @@ export class LoginComponent extends DefaultComponent implements OnInit {
             .subscribe(
             data => {
                 if (this.authenticationService.islogin())
-                {     
-                  this.parent.step1 = false;
-                  this.parent.step2 = true;
-
+                {
+                  debugger;
                   //TODO: write codes for check license-server
+                  if (this.bStorageService.getCurrentUser().lastLoginDate == null || this.bStorageService.getLicense() == null) {
+                    this.licenseService.GetAppLicense(LicenseApi.LicenseUrl).subscribe((res) => {
+
+                      this.bStorageService.setLicense(res);
+
+                      this.parent.step1 = false;
+                      this.parent.step2 = true;
+                    });
+                  }
+
+                  if (this.bStorageService.getCurrentUser().lastLoginDate != null && this.bStorageService.getLicense() != null) 
+                  {
+                    this.parent.step1 = false;
+                    this.parent.step2 = true;
+                  }
+                  
+                  
                 }
             },
             error => {

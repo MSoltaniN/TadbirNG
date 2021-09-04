@@ -34,7 +34,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     var currentContext = this.bStorageService.getCurrentUser();
     var token = currentContext ? currentContext.ticket : '';
     //Add license value to each request
-    //var license = this.bStorageService.getSession(SessionKeys.License);  
+    var license = this.bStorageService.getSession(SessionKeys.License);  
 
     if (!clonedHeaders.has('Content-Type')) {
       clonedHeaders = clonedHeaders.append('Content-Type', 'application/json; charset=utf-8');
@@ -50,11 +50,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         clonedHeaders = clonedHeaders.append('Accept-Language', 'fa-IR,fa');
     }
 
-    //if (!clonedHeaders.has('X-Tadbir-License')) {
-    //  if (license != null && license != "") {
-    //    clonedHeaders = clonedHeaders.append('X-Tadbir-License', license);
-    //  }
-    //}
+    if (!clonedHeaders.has('X-Tadbir-License')) {
+      if (license != null && license != "") {
+        clonedHeaders = clonedHeaders.append('X-Tadbir-License', license);
+      }
+    }
 
     if (!clonedHeaders.has('X-Tadbir-AuthTicket')) {
       if (token != null && token != "") {

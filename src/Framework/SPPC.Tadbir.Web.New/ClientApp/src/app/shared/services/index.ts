@@ -8,3 +8,4 @@ export * from './reporting.service';
 export * from './sppc-message.service';
 export * from './advance-filter.service';
 export * from './error.handling.service';
+export * from './license.service';

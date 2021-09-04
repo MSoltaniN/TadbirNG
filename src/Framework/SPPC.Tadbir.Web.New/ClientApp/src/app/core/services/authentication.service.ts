@@ -29,6 +29,7 @@ export class ContextInfo implements Context {
   fiscalPeriodName: string;
   permissions: PermissionBrief[];
   roles: number[];
+  lastLoginDate: string = null;
 }
 
 export class CompanyLoginInfo implements CompanyLogin {
@@ -63,6 +64,7 @@ export class AuthenticationService extends BaseService {
 
             user.ticket = ticket;
             user.userName = username;
+            user.lastLoginDate = contextInfo.TadbirContext.LastLoginDate;
             //user.roles = contextInfo.user.roles;
             user.roles = contextInfo.TadbirContext.Roles;
             this.bStorageService.setContext(user, remember);
