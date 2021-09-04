@@ -10,6 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\tadbir.lic" />
+    <Content Remove="wwwroot\tadbir.pfx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
   </ItemGroup>
 

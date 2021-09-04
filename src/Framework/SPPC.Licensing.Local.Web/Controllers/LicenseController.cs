@@ -25,15 +25,22 @@ namespace SPPC.Licensing.Local.Web.Controllers
         [Route(LicenseApi.LicenseUrl)]
         public IActionResult GetAppLicense()
         {
-            string instance = GetInstance();
-            var result = GetValidationResult(instance, out bool succeeded);
-            if (!succeeded)
+            try
             {
-                return result;
-            }
+                string instance = GetInstance();
+                var result = GetValidationResult(instance, out bool succeeded);
+                if (!succeeded)
+                {
+                    return result;
+                }
 
-            var license = _utility.GetActiveLicense();
-            return Ok(license);
+                var license = _utility.GetActiveLicense();
+                return Ok(license);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.ToString());
+            }
         }
 
         // GET: api/license/online
@@ -41,16 +48,23 @@ namespace SPPC.Licensing.Local.Web.Controllers
         [Route(LicenseApi.OnlineLicenseUrl)]
         public IActionResult GetOnlineAppLicense()
         {
-            string instance = GetInstance();
-            var result = GetQuickValidationResult(instance, out bool succeeded);
-            if (!succeeded)
+            try
             {
-                return result;
-            }
+                string instance = GetInstance();
+                var result = GetQuickValidationResult(instance, out bool succeeded);
+                if (!succeeded)
+                {
+                    return result;
+                }
 
-            var licenseCheck = GetLicenseCheck(instance);
-            var license = _utility.GetLicense(licenseCheck);
-            return Ok(license);
+                var licenseCheck = GetLicenseCheck(instance);
+                var license = _utility.GetLicense(licenseCheck);
+                return Ok(license);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.ToString());
+            }
         }
 
         private IActionResult GetValidationResult(string instance, out bool succeeded)
