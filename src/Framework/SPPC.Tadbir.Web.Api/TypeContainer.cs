@@ -169,8 +169,13 @@ namespace SPPC.Tadbir.Web.Api
         private void AddUtilityTypes()
         {
             _services.AddTransient<IDomainMapper, DomainMapper>();
-            _services.AddTransient<IApiClient, ServiceClient>();
-            _services.AddTransient<ILicenseUtility, LicenseUtility>();
+            _services.AddTransient<IApiClient>(provider =>
+            {
+                return new ServiceClient()
+                {
+                    ServiceRoot = _configuration["ServerRoot"]
+                };
+            });
             _services.AddTransient<IDigitalSigner, DigitalSigner>();
             _services.AddTransient<ICertificateManager, CertificateManager>();
             _services.AddTransient<IEncodedSerializer, JsonSerializer>();

@@ -29,7 +29,7 @@ namespace SPPC.Licensing.Local.Web
                     .WithOrigins("*")
                     .AllowAnyMethod()
                     .WithHeaders("Content-Type", "Accept-Language",
-                        Constants.InstanceHeaderName, AppConstants.ContextHeaderName,Constants.LicenseHeaderName));
+                        Constants.InstanceHeaderName, AppConstants.ContextHeaderName, Constants.LicenseHeaderName));
             app.UseMvc();
         }
 

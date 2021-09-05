@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SPPC.Licensing.Local.Persistence;
 using SPPC.Licensing.Model;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Licensing;
 
 namespace SPPC.Licensing.Local.Web.Controllers
@@ -65,6 +66,21 @@ namespace SPPC.Licensing.Local.Web.Controllers
             {
                 return StatusCode(500, e.ToString());
             }
+        }
+
+        // GET: api/license/validate
+        [HttpPut]
+        [Route(LicenseApi.ValidateLicenseUrl)]
+        public IActionResult PutLicenseValidation([FromBody] string license)
+        {
+            string signature = GetLicense();
+            if (license == null || String.IsNullOrEmpty(signature))
+            {
+                return BadRequest();
+            }
+
+            bool validated = _utility.ValidateSignature(license, signature);
+            return Ok(validated);
         }
 
         private IActionResult GetValidationResult(string instance, out bool succeeded)
@@ -135,6 +151,11 @@ namespace SPPC.Licensing.Local.Web.Controllers
         private string GetInstance()
         {
             return Request.Headers[Constants.InstanceHeaderName];
+        }
+
+        private string GetLicense()
+        {
+            return Request.Headers[AppConstants.LicenseHeaderName];
         }
 
         private readonly string _webRoot;
