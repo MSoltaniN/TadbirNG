@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Helpers;
+using SPPC.Licensing.Model;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
@@ -45,6 +47,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(summaries);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/dashboard/license
+        [Route(DashboardApi.LicenseInfoUrl)]
+        public IActionResult GetLicenseInfo()
+        {
+            string licenseData = System.IO.File.ReadAllText(_licensePath);
+            var license = JsonHelper.To<LicenseFileModel>(licenseData);
+            return Json(license);
+        }
+
         private Calendar GetCurrentCalendar()
         {
             string language = GetPrimaryRequestLanguage();
@@ -64,5 +79,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private readonly IDashboardRepository _repository;
+        private readonly string _licensePath = @".\wwwroot\license";
     }
 }

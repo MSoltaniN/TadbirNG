@@ -15,7 +15,7 @@ export class DashboardService extends BaseService {
   }
 
     getDashboardInfo() {
-        var url = DashboardApi.SummariesUrl;
+        var url = DashboardApi.Summaries;
         var options = { headers: this.httpHeaders };
         return this.http.get(url, options)
             .map(response => <any>(<Response>response));

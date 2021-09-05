@@ -14,7 +14,9 @@ import { environment } from "@sppc/env/environment";
 
 export class DashboardApi {
 
-    // summaries
-    public static SummariesUrl = environment.BaseUrl + "/dashboard/summaries";;
-   
+    // dashboard/summaries
+    public static Summaries = environment.BaseUrl + "/dashboard/summaries";
+
+    // dashboard/license
+    public static LicenseInfo = environment.BaseUrl + "/dashboard/license";
 }
