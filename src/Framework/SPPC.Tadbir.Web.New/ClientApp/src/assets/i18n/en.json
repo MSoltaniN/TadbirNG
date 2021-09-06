@@ -12,6 +12,14 @@
     "PleaseLoadData": "Please click the calculate button before Export",
     "Version": "Version"
   },
+  "LicenseInfo": {
+    "CustomerName": "Customer Name",
+    "ContactName": "Contact Name",
+    "Edition": "Edition",
+    "UserCount": "User Count",
+    "StartDate": "Start Date",
+    "EndDate": "End Date"
+  },
   "Enviroment": {
     "FiscalPeriod": "Fiscal Period",
     "Company": "Company",
@@ -922,7 +930,7 @@
     "Version": "Version",
     "VoucherNotFound": "Voucher Not Found",
     "VoucherDeleted": "Voucher have been deleted",
-    "VouchersDeleted": "Vouchers have been deleted",    
+    "VouchersDeleted": "Vouchers have been deleted",
     "SaveChanges": "Do you want to save changes?",
     "VoucherDetail": "Voucher Detail",
     "OpeningVoucher": "No closing voucher could be found in the previous fiscal period. This operation creates an opening voucher having a line for each account and each valid relation between floating levels, with zero turnover. Are you sure you want to issue the opening voucher?",

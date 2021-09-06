@@ -190,7 +190,7 @@ export const environment = {
   FiscalPeriodId: 1,
   LicenseServerUrl: "http://localhost:7473",
   InstanceKey: "Qe2XSr9+vnUsmW7PUX1CbsXZoXxwolNgS/7frHEhjuNTVvDXC2th4L+GKaHek3DoBAwSUIPDVS5bkq6gUuGd6p3AX1bFdokhw56iS6Q/xVNKm/QgPjuKLOoG0pI8xMn9DM6tssGy2ORtOGTDUQtkNFePNX885Pp3xmcydRiNu59WiB+aKngWIEXc5Lx8vIjb1DzzLn24EHD98I0Ag9TQag==",
-  Version: "1.1.1215.0"
+  Version: "1.1.1216.0"
 };
 
 
