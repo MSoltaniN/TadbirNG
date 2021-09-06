@@ -69,7 +69,8 @@
     "OperationSuccessful": "Operation successful",
     "VoucherDeleteConfirm": "are you sure to delete voucher?",
     "DeleteOperationSuccessful": "delete operation successful",
-    "GlobalErrorMessage": "An error occurred while performing the operation"
+    "GlobalErrorMessage": "An error occurred while performing the operation",
+    "LicenseError": "Software license control encountered an error! Please contact the system administrator."
   },
   "Report": {
     "ReportViewer": "View of",

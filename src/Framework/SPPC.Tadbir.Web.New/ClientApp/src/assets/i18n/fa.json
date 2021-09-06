@@ -10,7 +10,7 @@
     "Level": "سطح",
     "AccessDenied": "شما اجازه دسترسی ندارید",
     "PleaseLoadData": "لطفا قبل از تهیه خروجی دکمه محاسبه را کلیک کنید",
-    "Version": "نسخه"
+    "Version": "نسخه"    
   },
   "LicenseInfo": {
     "CustomerName": "نام مشتری",
@@ -69,7 +69,8 @@
     "OperationSuccessful": "عملیات با موفقیت انجام شد",
     "VoucherDeleteConfirm": "آیا برای حذف سند اطمینان دارید؟",
     "DeleteOperationSuccessful": "عملیات حذف با موفقیت انجام شد",
-    "GlobalErrorMessage": "خطایی در هنگام اجرای عملیات رخ داده است"
+    "GlobalErrorMessage": "خطایی در هنگام اجرای عملیات رخ داده است",
+    "LicenseError": "کنترل مجوز نرم افزار با خطا مواجه شد ! لطفا با مدیر سیستم تماس بگیرید."
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",

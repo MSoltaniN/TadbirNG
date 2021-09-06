@@ -11,6 +11,7 @@ import { MetaDataService, BrowserStorageService, SessionKeys, LicenseService, Da
 import { SettingService } from '@sppc/config/service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { LicenseApi } from '@sppc/shared/services/api/licenseApi';
+import { MessageType } from '@sppc/env/environment';
 
 
 
@@ -97,9 +98,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
             .subscribe(
             data => {
                 if (this.authenticationService.islogin())
-                {
-                  debugger;
-                  //TODO: write codes for check license-server
+                { 
                   if (this.bStorageService.getCurrentUser().lastLoginDate == null || this.bStorageService.getLicense() == null) {
                     this.licenseService.GetAppLicense(LicenseApi.LicenseUrl).subscribe((res) => {
 
@@ -111,6 +110,12 @@ export class LoginComponent extends DefaultComponent implements OnInit {
                       this.dashborardService.getLincenseInfo().subscribe((info) => {
                         this.bStorageService.setLicenseInfo(info);
                       });
+
+                    },
+                    error => {
+                      this.bStorageService.removeCurrentContext();                      
+                      this.showMessage(this.getText("Messages.LicenseError"), MessageType.Error);
+                      this.loading = false;
                     });
                   }
 
