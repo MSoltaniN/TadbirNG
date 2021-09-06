@@ -106,6 +106,7 @@ import { ShortcutService } from './services/shortcut.service';
 import { ShareDataService } from './services/share-data.service';
 import { SuperuserPasswordComponent } from '@sppc/shared/components/home/superuser-password.component';
 import { MessageBoxService } from './services/message.service';
+import { LicenseInfoComponent } from '@sppc/shared/components/dashboard/license-info.component';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -147,10 +148,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     SppcFullAccountComponent, SppcGridDatepicker, SppcGridDateFilter, FilterDatePickerDirective, SppcAutoGridFilter, SppcGridFilter, SelectFormComponent, DynamicTabsDirective,
     TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput, SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective,
     FullCodeTestDirective, SpccOnlyNumberDirective, SppcPermissionCheckDirective, SppcTimepicker, AdvanceFilterComponent,
-    NotFoundComponent, ClosingTmpComponent, ErrorListComponent, LeftActionToolbarComponent, QuickReportPageSettingComponent, InputDirective, SuperuserPasswordComponent
+    NotFoundComponent, ClosingTmpComponent, ErrorListComponent, LeftActionToolbarComponent, QuickReportPageSettingComponent, InputDirective, SuperuserPasswordComponent, LicenseInfoComponent
   ],
 
-  entryComponents: [TabComponent, SppcGridDatepicker, SelectFormComponent, AdvanceFilterComponent, ErrorListComponent, QuickReportPageSettingComponent, SuperuserPasswordComponent],
+  entryComponents: [TabComponent, SppcGridDatepicker, SelectFormComponent, AdvanceFilterComponent, ErrorListComponent, QuickReportPageSettingComponent, SuperuserPasswordComponent, LicenseInfoComponent],
 
   //providers: [BrowserStorageService, DashboardService, GridService, LookupService, MetaDataService, ReportingService, 
   //  { provide: MessageService, useClass: GridMessageService },

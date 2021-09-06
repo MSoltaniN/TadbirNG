@@ -1,0 +1,28 @@
+<div class="dialog-body">
+  <div style="padding:10px;" (keydown.esc)="escPress()">
+    <div class="form-group col-md-12 col-xs-12">
+      <label for="customerName" class="control-label col-md-4 col-xs-4 sppc-float">{{ 'LicenseInfo.CustomerName' | translate }}</label>
+      <input type="text" name="customerName" class="k-textbox col-md-8 col-xs-8" readonly [value]="customerName" />
+    </div>
+    <div class="form-group col-md-12 col-xs-12">
+      <label for="contactName" class="control-label col-md-4 col-xs-4 sppc-float">{{ 'LicenseInfo.ContactName' | translate }}</label>
+      <input type="text" name="contactName" class="k-textbox col-md-8 col-xs-8" readonly [value]="contactName" />
+    </div>
+    <div class="form-group col-md-12 col-xs-12">
+      <label for="edition" class="control-label col-md-4 col-xs-4 sppc-float">{{ 'LicenseInfo.Edition' | translate }}</label>
+      <input type="text" name="edition" class="k-textbox col-md-8 col-xs-8" readonly [value]="edition" />
+    </div>
+    <div class="form-group col-md-12 col-xs-12">
+      <label for="userCount" class="control-label col-md-4 col-xs-4 sppc-float">{{ 'LicenseInfo.UserCount' | translate }}</label>
+      <input type="text" name="userCount" class="k-textbox col-md-8 col-xs-8" readonly [value]="userCount" />
+    </div>
+    <div class="form-group col-md-12 col-xs-12">
+      <label for="startDate" class="control-label col-md-4 col-xs-4 sppc-float">{{ 'LicenseInfo.StartDate' | translate }}</label>
+      <input type="text" name="startDate" class="k-textbox col-md-8 col-xs-8" readonly [value]="startDate" />
+    </div>
+    <div class="form-group col-md-12 col-xs-12">
+      <label for="endDate" class="control-label col-md-4 col-xs-4 sppc-float">{{ 'LicenseInfo.EndDate' | translate }}</label>
+      <input type="text" name="endDate" class="k-textbox col-md-8 col-xs-8" readonly [value]="endDate" />
+    </div>
+  </div>
+</div>

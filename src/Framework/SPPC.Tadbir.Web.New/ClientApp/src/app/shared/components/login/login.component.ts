@@ -7,7 +7,7 @@ import {LoginContainerComponent} from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
 //import { DOCUMENT } from '@angular/common';
 import { AuthenticationService } from '@sppc/core';
-import { MetaDataService, BrowserStorageService, SessionKeys, LicenseService } from '@sppc/shared/services';
+import { MetaDataService, BrowserStorageService, SessionKeys, LicenseService, DashboardService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { LicenseApi } from '@sppc/shared/services/api/licenseApi';
@@ -40,8 +40,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         private router: Router,
       private authenticationService: AuthenticationService, public toastrService: ToastrService, public bStorageService: BrowserStorageService,
         public translate: TranslateService, @Host() public parent: LoginContainerComponent, public renderer: Renderer2,
-        public metadata: MetaDataService, public settingService: SettingService, @Inject(DOCUMENT) public document,private licenseService:LicenseService
-        ) 
+        public metadata: MetaDataService, public settingService: SettingService, @Inject(DOCUMENT) public document,private licenseService:LicenseService,private dashborardService:DashboardService) 
     {
       super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
         this.lang = this.currentlang;
@@ -74,29 +73,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
           if (this.document.getElementById('sppcFont').getAttribute('href') != 'assets/resources/IranSans-en.css')
               this.document.getElementById('sppcFont').setAttribute('href', 'assets/resources/IranSans-en.css');
-        }
-
-        // if(language == 'fa')
-        // {
-        //     if(this.document.getElementById('adminlte').getAttribute('href') != '../assets/dist/css/AdminLTE.Rtl.css')
-        //        this.document.getElementById('adminlte').setAttribute('href', '../assets/dist/css/AdminLTE.Rtl.css');
-        //     // this.cssUrl = '../assets/dist/css/AdminLTE.Rtl.css';
-        // }
-        // else
-        // {
-        //    if(this.document.getElementById('adminlte').getAttribute('href') != '../assets/dist/css/AdminLTE.min.css')
-        //        this.document.getElementById('adminlte').setAttribute('href', '../assets/dist/css/AdminLTE.min.css');
-        //     //this.cssUrl = '../assets/dist/css/AdminLTE.min.css';
-        // }
-    
-      
-      
-        
-        // if(this.currentlang == 'fa')
-        //     this.document.getElementById('adminlte').setAttribute('href', 'assets/dist/css/AdminLTE.Rtl.css');
-        //  else
-        //     this.document.getElementById('adminlte').setAttribute('href', 'assets/dist/css/AdminLTE.min.css');
-
+        }      
     }
 
     disableLink(fileName : string)
@@ -130,6 +107,10 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
                       this.parent.step1 = false;
                       this.parent.step2 = true;
+
+                      this.dashborardService.getLincenseInfo().subscribe((info) => {
+                        this.bStorageService.setLicenseInfo(info);
+                      });
                     });
                   }
 

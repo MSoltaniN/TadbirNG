@@ -200,3 +200,22 @@ a.circle {
     margin-top:10px;
     font-size:14px;
 }
+
+
+.ver-info {
+  z-index: 810;
+  position: absolute;
+  right: 0;
+  bottom: 15px;
+  direction: rtl;
+  float: right;
+}
+
+.ver {
+  color: white;
+  font-size:15px;
+  padding-right:70px;
+  text-decoration:underline;
+  cursor:pointer;
+}
+

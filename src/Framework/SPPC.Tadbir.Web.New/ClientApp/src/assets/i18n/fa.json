@@ -9,7 +9,16 @@
     "NotViewAccess": "شما دسترسی دیدن اطلاعات را ندارید",
     "Level": "سطح",
     "AccessDenied": "شما اجازه دسترسی ندارید",
-    "PleaseLoadData": "لطفا قبل از تهیه خروجی دکمه محاسبه را کلیک کنید"
+    "PleaseLoadData": "لطفا قبل از تهیه خروجی دکمه محاسبه را کلیک کنید",
+    "Version": "نسخه"
+  },
+  "LicenseInfo": {
+    "CustomerName": "نام مشتری",
+    "ContactName": "نام صاحب مجوز",
+    "Edition": "ویرایش برنامه",
+    "UserCount": "تعداد کاربر",
+    "StartDate": "شروع قرارداد",
+    "EndDate": "پایان قرارداد"
   },
   "Enviroment": {
     "FiscalPeriod": "دوره مالی",

@@ -13,8 +13,6 @@ import { RelatedItemsInfo, UserService, UserInfo } from '@sppc/admin/service';
 import { UserApi } from '@sppc/admin/service/api';
 import { ViewName } from '@sppc/shared/security';
 import { RelatedItems } from '@sppc/shared/models';
-import { ReloadOption } from '@sppc/shared/class/reload-option';
-import { reject } from 'q';
 import { ResultOption } from '@sppc/shared/class/result.option';
 
 

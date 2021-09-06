@@ -33,7 +33,8 @@ export const SessionKeys = {
   OperationLog: 'OperationLog',
   BalanceSheet: 'BalanceSheet',
   Shortcut: 'shortcut',
-  License:'license'
+  License: 'license',
+  LicenseInfo: 'license-info'
 }
 
 
@@ -96,6 +97,18 @@ export class BrowserStorageService {
 
   setLicense(value:string) {
     localStorage.setItem(SessionKeys.License, value);    
+  }
+
+  setLicenseInfo(linceseInfo: any) {
+    var licenseInfoString = JSON.stringify(linceseInfo);
+    localStorage.setItem(SessionKeys.LicenseInfo, licenseInfoString);
+  }
+
+  getLicenseInfo(): any {
+    if (localStorage.getItem(SessionKeys.LicenseInfo)) {
+      return JSON.parse(localStorage.getItem(SessionKeys.LicenseInfo));
+    }
+    return null;
   }
 
   getFiscalPeriod(): string {
