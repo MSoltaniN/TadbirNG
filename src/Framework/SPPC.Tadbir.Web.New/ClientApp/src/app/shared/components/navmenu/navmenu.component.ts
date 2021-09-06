@@ -143,6 +143,10 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
     dialogRef.result.subscribe(() => {
       dialogRef.close();
     });
+
+    dialogRef.content.instance.cancel.subscribe((res) => {
+      dialogRef.close();
+    });
   }
 
   isCollapsed: boolean = true;

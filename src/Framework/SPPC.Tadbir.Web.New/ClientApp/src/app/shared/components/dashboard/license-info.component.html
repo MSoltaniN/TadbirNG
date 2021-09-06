@@ -1,5 +1,5 @@
-<div class="dialog-body">
-  <div style="padding:10px;" (keydown.esc)="escPress()">
+<div class="dialog-body" (keydown.esc)="escPress()">
+  <div style="padding:10px;">
     <div class="form-group col-md-12 col-xs-12">
       <label for="customerName" class="control-label col-md-4 col-xs-4 sppc-float">{{ 'LicenseInfo.CustomerName' | translate }}</label>
       <input type="text" name="customerName" class="k-textbox col-md-8 col-xs-8" readonly [value]="customerName" />

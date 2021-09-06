@@ -34,7 +34,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     var currentContext = this.bStorageService.getCurrentUser();
     var token = currentContext ? currentContext.ticket : '';
     //Add license value to each request
-    var license = this.bStorageService.getSession(SessionKeys.License);  
+    var license = this.bStorageService.getLicense();  
 
     if (!clonedHeaders.has('Content-Type')) {
       clonedHeaders = clonedHeaders.append('Content-Type', 'application/json; charset=utf-8');

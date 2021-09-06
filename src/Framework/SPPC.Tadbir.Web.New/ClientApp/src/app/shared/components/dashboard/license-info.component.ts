@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { BrowserStorageService } from '@sppc/shared/services';
 import * as moment from 'jalali-moment';
 
@@ -8,6 +8,7 @@ import * as moment from 'jalali-moment';
   styleUrls: ['./license-info.component.css']
 })
 export class LicenseInfoComponent implements OnInit {
+  @Output() cancel: EventEmitter<any> = new EventEmitter();
 
   constructor(private bStorageService: BrowserStorageService) { }
 
@@ -29,4 +30,7 @@ export class LicenseInfoComponent implements OnInit {
     this.endDate = moment(licenseInfo.endDate).locale('fa').format("YYYY/MM/DD");
   }
 
+  escPress() {
+    this.cancel.emit();
+  }
 }
