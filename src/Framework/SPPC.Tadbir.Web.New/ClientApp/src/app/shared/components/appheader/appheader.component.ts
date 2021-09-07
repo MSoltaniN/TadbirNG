@@ -19,19 +19,12 @@ export class AppheaderComponent implements OnInit {
   menuList: Array<Command> = new Array<Command>();
   public icons: { [id: string]: string; } = {};
 
-  constructor(public bStorageService: BrowserStorageService) {
+  constructor(public bStorageService: BrowserStorageService) {}
 
-    var branchId: number = 0;
-    var companyId: number = 0;
-    var fpId: number = 0;
-    var ticket: string = "";
-
+  ngOnInit() {
+    
     var currentContext = this.bStorageService.getCurrentUser();
     if (currentContext) {
-      branchId = currentContext ? currentContext.branchId : 0;
-      companyId = currentContext ? currentContext.companyId : 0;
-      fpId = currentContext ? currentContext.fpId : 0;
-      ticket = currentContext ? currentContext.ticket : "";
       this.userName = currentContext && currentContext.userName ? currentContext.userName.toString() : "";
       this.fiscalPeriodName = currentContext && currentContext.fiscalPeriodName ? currentContext.fiscalPeriodName.toString() : "";
       this.branchName = currentContext && currentContext.branchName ? currentContext.branchName.toString() : "";
@@ -44,19 +37,10 @@ export class AppheaderComponent implements OnInit {
     if (profileMenus)
       this.menuList = JSON.parse(profileMenus);
     this.profileItems = new Array<Command>();
-    for (let item of this.menuList) {
-      // if (parent.id == 15)
-      // {
-
-      //for (let item of parent.children) {
-      this.profileItems.push(item);
-      //}
-      //}
+    for (let item of this.menuList) {     
+      this.profileItems.push(item);     
     }
 
-  }
-
-  ngOnInit() {
   }
 
 }
