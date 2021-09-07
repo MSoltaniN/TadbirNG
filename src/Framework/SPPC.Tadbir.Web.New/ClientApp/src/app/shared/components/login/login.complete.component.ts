@@ -250,7 +250,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
       this.authenticationService.getFiscalPeriodById(currentUser.fpId, this.Ticket).subscribe(res => {
         this.bStorageService.setFiscalPeriod(res);
       })
-    }
+    }    
 
     this.userService.getCurrentUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
       this.bStorageService.setCurrentContext(currentUser);
@@ -278,10 +278,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
     });
 
-    this.userService.getDefaultUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
-      this.bStorageService.setProfile(res);
-
-    });
+    
 
 
 
