@@ -202,7 +202,16 @@ a.circle {
 }
 
 
-.ver-info {
+/deep/ body.tLtr .ver-info {
+  z-index: 810;
+  position: absolute;
+  left: 50px;
+  bottom: 15px;
+  direction: rtl;
+  float: right;
+}
+
+/deep/ body.tRtl .ver-info {
   z-index: 810;
   position: absolute;
   right: 0;

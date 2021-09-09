@@ -186,5 +186,5 @@ export const environment = {
   BaseUrl: 'http://130.185.76.7:8884',
   LicenseServerUrl: "http://130.185.76.7:8886",
   InstanceKey: "Qe2XSr9+vnUsmW7PUX1CbsXZoXxwolNgS/7frHEhjuNTVvDXC2th4L+GKaHek3DoBAwSUIPDVS5bkq6gUuGd6p3AX1bFdokhw56iS6Q/xVNKm/QgPjuKLOoG0pI8xMn9DM6tssGy2ORtOGTDUQtkNFePNX885Pp3xmcydRiNu59WiB+aKngWIEXc5Lx8vIjb1DzzLn24EHD98I0Ag9TQag==",
-  Version: "1.1.1220.0"
+  Version: "1.1.1221.0"
 };
