@@ -1,7 +1,7 @@
 <report-management></report-management>
-<aside class="main-sidebar">
+<aside class="main-sidebar" >
   <section class="sidebar">
-    <ul class="sidebar-menu tree" id='main-menu' data-widget="tree">
+    <ul class="sidebar-menu tree" id='main-menu'  data-widget="tree">
       <!--(window:keypress)="doSomething($event)"-->
       <li *ngFor="let cmd of menuList;" class="parent treeview" [ngClass]="{'menu-open':searchActiveMenu(cmd.id) === true,'active':cmd.routeUrl === this.currentRoute}"
           [ngStyle]="{'display':searchActiveMenu(cmd.id) === true ? 'block':'' }">

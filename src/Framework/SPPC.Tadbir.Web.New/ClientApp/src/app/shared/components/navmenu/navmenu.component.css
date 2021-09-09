@@ -219,3 +219,18 @@ a.circle {
   cursor:pointer;
 }
 
+@media (min-width: 767px) {
+  #main-menu {
+    height: 86vh!important;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+}
+
+@media (max-width: 767px) {
+  #main-menu {
+    height: 75vh!important;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+}
