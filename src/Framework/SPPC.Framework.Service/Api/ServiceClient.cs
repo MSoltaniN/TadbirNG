@@ -245,6 +245,10 @@ namespace SPPC.Framework.Service
             {
                 serviceResponse = new ServiceResponse(ServiceResult.ServerError, String.Empty);
             }
+            else if (response.StatusCode == HttpStatusCode.Forbidden)
+            {
+                serviceResponse = new ServiceResponse(ServiceResult.AccessDenied, "Access denied.");
+            }
             else if (!response.IsSuccessStatusCode && response.StatusCode != HttpStatusCode.NotFound)
             {
                 throw new HttpRequestException("Error occurred while executing Web API request.");

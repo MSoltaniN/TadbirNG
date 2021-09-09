@@ -24,7 +24,7 @@ namespace SPPC.Licensing.Web.Controllers
             return Json(allCustomers);
         }
 
-        // GET: api/customers/{customrId:int(1)}
+        // GET: api/customers/{customerId:int(1)}
         [HttpGet]
         [Route(CustomerApi.CustomerUrl)]
         public async Task<IActionResult> GetCustomerAsync(int customerId)

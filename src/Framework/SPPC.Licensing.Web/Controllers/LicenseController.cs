@@ -70,6 +70,8 @@ namespace SPPC.Licensing.Web.Controllers
             return Ok(activatedLicense);
         }
 
+        #region License Management Methods
+
         // GET: api/licenses
         [HttpGet]
         [Route(LicenseApi.LicensesUrl)]
@@ -132,6 +134,8 @@ namespace SPPC.Licensing.Web.Controllers
             return Ok();
         }
 
+        #endregion
+
         private bool EnsureValidRequest(InternalActivationModel activation)
         {
             int licenseId = _repository.GetLicenseId(
@@ -160,19 +164,9 @@ namespace SPPC.Licensing.Web.Controllers
             }
 
             var status = await _manager.ValidateLicenseAsync(licenseCheck);
-            if (status == LicenseStatus.NoLicense)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-            else if (status == LicenseStatus.NoCertificate
-                || status == LicenseStatus.BadCertificate
-                || status == LicenseStatus.HardwareMismatch)
+            if (status == LicenseStatus.OK)
             {
                 return StatusCode(StatusCodes.Status403Forbidden);
-            }
-            else if (status == LicenseStatus.Expired)
-            {
-                return Unauthorized();
             }
 
             return Ok();
