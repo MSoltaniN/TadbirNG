@@ -8,6 +8,7 @@ using SPPC.Licensing.Model;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Licensing;
+using SPPC.Tadbir.Resources;
 
 namespace SPPC.Licensing.Local.Web.Controllers
 {
@@ -60,7 +61,15 @@ namespace SPPC.Licensing.Local.Web.Controllers
 
                 var licenseCheck = GetLicenseCheck(instance);
                 var license = _utility.GetLicense(licenseCheck);
-                return Ok(license);
+
+                if (!String.IsNullOrEmpty(license))
+                {
+                    return Ok(license);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden, AppStrings.InvalidOrExpiredLicense);
+                }
             }
             catch (Exception e)
             {
@@ -68,7 +77,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
             }
         }
 
-        // GET: api/license/validate
+        // PUT: api/license/validate
         [HttpPut]
         [Route(LicenseApi.ValidateLicenseUrl)]
         public IActionResult PutLicenseValidation([FromBody] string license)
@@ -92,21 +101,9 @@ namespace SPPC.Licensing.Local.Web.Controllers
             }
 
             var status = _utility.ValidateLicense(instance);
-            if (status == LicenseStatus.NoLicense
-                || status == LicenseStatus.Corrupt)
+            if (status != LicenseStatus.OK)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-            else if (status == LicenseStatus.NoCertificate
-                || status == LicenseStatus.BadCertificate
-                || status == LicenseStatus.HardwareMismatch)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden);
-            }
-            else if (status == LicenseStatus.InstanceMismatch
-                || status == LicenseStatus.Expired)
-            {
-                return Unauthorized();
+                return StatusCode(StatusCodes.Status403Forbidden, AppStrings.InvalidOrExpiredLicense);
             }
 
             succeeded = true;
@@ -122,14 +119,9 @@ namespace SPPC.Licensing.Local.Web.Controllers
             }
 
             var status = _utility.QuickValidateLicense(instance);
-            if (status == LicenseStatus.NoLicense
-                || status == LicenseStatus.Corrupt)
+            if (status != LicenseStatus.OK)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-            else if (status == LicenseStatus.NoCertificate)
-            {
-                return StatusCode(StatusCodes.Status403Forbidden);
+                return StatusCode(StatusCodes.Status403Forbidden, AppStrings.InvalidOrExpiredLicense);
             }
 
             succeeded = true;

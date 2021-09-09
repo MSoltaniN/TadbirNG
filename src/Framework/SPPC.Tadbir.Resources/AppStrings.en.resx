@@ -3531,4 +3531,7 @@
   <data name="SessionIsExpired" xml:space="preserve">
     <value>Your application session is expired. Please log in again.</value>
   </data>
+  <data name="InvalidOrExpiredLicense" xml:space="preserve">
+    <value>Your application license is invalid or expired. Please contact your software vendor.</value>
+  </data>
 </root>

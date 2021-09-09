@@ -3522,4 +3522,7 @@
   <data name="SessionIsExpired" xml:space="preserve">
     <value>جلسه کاری شما در برنامه منقضی شده است. لطفاً دوباره وارد برنامه شوید.</value>
   </data>
+  <data name="InvalidOrExpiredLicense" xml:space="preserve">
+    <value>مجوز برنامه شما غیرمعتبر یا منقضی است. لطفاً با فروشنده نرم افزار خود تماس بگیرید.</value>
+  </data>
 </root>
