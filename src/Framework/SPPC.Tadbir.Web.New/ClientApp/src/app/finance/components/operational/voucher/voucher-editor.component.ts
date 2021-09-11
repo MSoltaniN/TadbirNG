@@ -689,21 +689,26 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   get isVoucherConfirmed(): boolean {
-
     if (this.voucherModel)
       return this.voucherModel.statusId > 1;
 
     return false;
   }
 
-  checkEditPermission() {
-    if (this.subjectMode == 1 && !this.isAccess(Entities.DraftVoucher, DraftVoucherPermissions.View)) {
-      this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
+  get hasEditAccess(): boolean {
+    return this.checkEditPermission(false);
+  }
+
+  checkEditPermission(showMessage:boolean = true) {
+    if (this.subjectMode == 1 && !this.isAccess(Entities.DraftVoucher, DraftVoucherPermissions.Edit)) {
+      if (showMessage)
+        this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
       return false;
     }
 
-    if (this.subjectMode == 0 && !this.isAccess(Entities.Voucher, VoucherPermissions.View)) {
-      this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
+    if (this.subjectMode == 0 && !this.isAccess(Entities.Voucher, VoucherPermissions.Edit)) {
+      if (showMessage)
+        this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
       return false;
     }
 

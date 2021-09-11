@@ -130,34 +130,40 @@ export class VoucherService extends BaseService {
     var urlKey = "";
     var entity = "Voucher";
     if (!forVoucherEntity) entity = "";
+    var condition: string = "";
+    if (branchId) condition = "?branchId=" + branchId;
 
     switch (voucherStatus) {
       case "2": {
         statusFilter.push(new Filter(entity + "StatusId", "1", "== {0}", "System.Int32"));
-        statusFilter.push(new Filter(entity +"BranchId", branchId, " == {0}", "System.Int32"));
-        statusKey = VoucherMessageResource.NotCommitted;
-        urlKey = "/#/finance/voucher/committed";
+        if (branchId)
+          statusFilter.push(new Filter(entity + "BranchId", branchId, " == {0}", "System.Int32"));
+        statusKey = VoucherMessageResource.NotCommitted;        
+        urlKey = "/#/finance/voucher/committed" + condition;
         break;
       }
       case "3": {
         statusFilter.push(new Filter(entity + "StatusId", "3", "!= {0}", "System.Int32"));
-        statusFilter.push(new Filter(entity + "BranchId", branchId, " == {0}", "System.Int32"));
+        if (branchId)
+          statusFilter.push(new Filter(entity + "BranchId", branchId, " == {0}", "System.Int32"));
         statusKey = VoucherMessageResource.NotFinalized;
-        urlKey = "/#/finance/voucher/finalized";
+        urlKey = "/#/finance/voucher/finalized" + condition;
         break;
       }
       case "4": {
         statusFilter.push(new Filter(entity + "ConfirmedById", "", "== null", ""));
-        statusFilter.push(new Filter(entity + "BranchId", branchId, " == {0}", "System.Int32"));
+        if (branchId)
+          statusFilter.push(new Filter(entity + "BranchId", branchId, " == {0}", "System.Int32"));
         statusKey = VoucherMessageResource.NotConfirmed;
-        urlKey = "/#/finance/voucher/confirmed";
+        urlKey = "/#/finance/voucher/confirmed" + condition;
         break;
       }
       case "5": {        
         statusFilter.push(new Filter(entity + "ApprovedById", "", "== null", ""));
-        statusFilter.push(new Filter(entity + "BranchId", branchId, " == {0}", "System.Int32"));
+        if (branchId)
+          statusFilter.push(new Filter(entity + "BranchId", branchId, " == {0}", "System.Int32"));
         statusKey = VoucherMessageResource.NotApproved;
-        urlKey = "/#/finance/voucher/approved";
+        urlKey = "/#/finance/voucher/approved" + condition;
         break;
       }
       default:
