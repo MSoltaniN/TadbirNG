@@ -41,6 +41,7 @@
     </Compile>
     <Compile Include="Api\CustomerApi.cs" />
     <Compile Include="Api\LicenseApi.cs" />
+    <Compile Include="VersionInfo.cs" />
     <Compile Include="Model\InternalActivationModel.cs" />
     <Compile Include="Model\InternalLicenseCheckModel.cs" />
     <Compile Include="Persistence\ICustomerRepository.cs" />

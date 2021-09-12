@@ -78,10 +78,10 @@ INSERT [dbo].[License] ([LicenseID], [CustomerID], [CustomerKey], [LicenseKey], 
     VALUES (1, 1, N'7b9782da-8558-4243-a6de-3c61a3278c4c', N'3dfde58e-2dd9-48cc-b024-5f878d60355d', 10, N'Enterprise', '2021-09-01', '2022-09-01', 1023, 0)
 INSERT [dbo].[License] ([LicenseID], [CustomerID], [CustomerKey], [LicenseKey], [UserCount], [Edition], [StartDate], [EndDate], [ActiveModules], [IsActivated])
     VALUES (2, 2, N'32f700af-493e-4a46-a191-2acb333bc02e', N'c66d116a-71fb-4515-a578-4a7f19248a86', 40, N'Enterprise', '2020-11-18', '2021-11-18', 511, 0)
-INSERT [dbo].[License] ([LicenseID], [CustomerID], [CustomerKey], [LicenseKey], [HardwareKey], [ClientKey], [Secret], [UserCount], [Edition], [StartDate], [EndDate], [ActiveModules], [IsActivated])
-    VALUES (3, 3, N'b247dc03-a649-4c49-ba1c-48cd527e02ab', N'77d7095d-1ea3-474d-8b3d-b2b4e2e6cd31', NULL, NULL, NULL, 25, N'Professional', '2020-12-01', '2021-12-01', 511, 0)
-INSERT [dbo].[License] ([LicenseID], [CustomerID], [CustomerKey], [LicenseKey], [HardwareKey], [ClientKey], [Secret], [UserCount], [Edition], [StartDate], [EndDate], [ActiveModules], [IsActivated])
-    VALUES (4, 1, N'7b9782da-8558-4243-a6de-3c61a3278c4c', N'74f62ef4-b3f3-4141-89bb-1633baf2fa7b', NULL, NULL, NULL, 25, N'Standard', '2021-09-05', '2022-09-05', 31, 0)
+INSERT [dbo].[License] ([LicenseID], [CustomerID], [CustomerKey], [LicenseKey], [UserCount], [Edition], [StartDate], [EndDate], [ActiveModules], [IsActivated])
+    VALUES (3, 3, N'b247dc03-a649-4c49-ba1c-48cd527e02ab', N'77d7095d-1ea3-474d-8b3d-b2b4e2e6cd31', 25, N'Professional', '2020-12-01', '2021-12-01', 511, 0)
+INSERT [dbo].[License] ([LicenseID], [CustomerID], [CustomerKey], [LicenseKey], [UserCount], [Edition], [StartDate], [EndDate], [ActiveModules], [IsActivated])
+    VALUES (4, 1, N'7b9782da-8558-4243-a6de-3c61a3278c4c', N'74f62ef4-b3f3-4141-89bb-1633baf2fa7b', 25, N'Standard', '2021-09-05', '2022-09-05', 31, 0)
 SET IDENTITY_INSERT [dbo].[License] OFF
 
 SET QUOTED_IDENTIFIER OFF

@@ -43,6 +43,7 @@
     </Compile>
     <Compile Include="ApiModel.cs" />
     <Compile Include="AppSettingsModel.cs" />
+    <Compile Include="ClientInstanceModel.cs" />
     <Compile Include="ColumnMetaModel.cs" />
     <Compile Include="CompanyDbModel.cs" />
     <Compile Include="ConfigurationCatalog.cs" />

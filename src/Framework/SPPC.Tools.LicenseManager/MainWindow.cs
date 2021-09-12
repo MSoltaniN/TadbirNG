@@ -9,6 +9,9 @@ using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
 using SPPC.Licensing.Service;
 using SPPC.Tools.LicenseManager.Properties;
+using SPPC.Tools.Model;
+using SPPC.Tools.Transforms.Templates;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.LicenseManager
 {
@@ -201,25 +204,29 @@ namespace SPPC.Tools.LicenseManager
 
         private void SaveInstanceButton_Click(object sender, EventArgs e)
         {
+            if (grdLicenses.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
             if (!ValidateSaveInstance())
             {
                 return;
             }
 
             var license = grdLicenses.SelectedRows[0].DataBoundItem as LicenseModel;
-            var customer = CustomerService.GetCustomer(license.CustomerId);
-            string path = ConfigurationManager.AppSettings["InstanceIdPath"];
-            var instance = new InstanceModel()
+            string instance = GetInstanceKey(license);
+            if (CreateClientInstance(instance))
             {
-                CustomerKey = license.CustomerKey,
-                LicenseKey = license.LicenseKey
-            };
-            string instanceData = _crypto.Encrypt(JsonHelper.From(instance, false));
-            File.WriteAllText(path, instanceData);
-            CreateApiServiceLicense(license, customer);
-            MessageBox.Show(this, "شناسه برنامه با موفقیت ثبت شد.",
-                "عملیات موفق", MessageBoxButtons.OK, MessageBoxIcon.Information,
-                MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+                string path = ConfigurationManager.AppSettings["InstanceIdPath"];
+                File.WriteAllText(path, instance);
+                var customer = CustomerService.GetCustomer(license.CustomerId);
+                CreateApiServiceLicense(license, customer);
+
+                MessageBox.Show(this, "شناسه برنامه با موفقیت ثبت شد.",
+                    "عملیات موفق", MessageBoxButtons.OK, MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+            }
         }
 
         private void CustomerCombo_SelectedIndexChanged(object sender, EventArgs e)
@@ -388,6 +395,37 @@ namespace SPPC.Tools.LicenseManager
             return (modules & module) != 0;
         }
 
+        private string GetInstanceKey(LicenseModel license)
+        {
+            var instance = new InstanceModel()
+            {
+                CustomerKey = license.CustomerKey,
+                LicenseKey = license.LicenseKey
+            };
+            return _crypto.Encrypt(JsonHelper.From(instance, false));
+        }
+
+        private bool CreateClientInstance(string instance)
+        {
+            var editor = new InstanceInfoEditor()
+            {
+                Instance = new ClientInstanceModel()
+                {
+                    Key = instance,
+                    Version = VersionInfo.GetAppVersion()
+                }
+            };
+            var result = editor.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                string path = ConfigurationManager.AppSettings["ClientInstanceIdPath"];
+                var template = new TsInstanceFromValues(editor.Instance);
+                File.WriteAllText(path, template.TransformText());
+            }
+
+            return result == DialogResult.OK;
+        }
+
         private void CreateApiServiceLicense(LicenseModel license, CustomerModel customer)
         {
             var path = ConfigurationManager.AppSettings["WebApiLicensePath"];
@@ -426,6 +464,11 @@ namespace SPPC.Tools.LicenseManager
                 MessageBoxOptions.RtlReading);
 
             return response == DialogResult.Yes;
+        }
+
+        private string GetCurrentVersion()
+        {
+            return String.Empty;
         }
 
         private ICustomerService _customerService;

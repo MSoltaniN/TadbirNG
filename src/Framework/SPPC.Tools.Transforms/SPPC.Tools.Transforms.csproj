@@ -97,12 +97,18 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Templates\TsConstTypeFromCsValueClass.Custom.cs" />
+    <Compile Include="Templates\TsInstanceFromValues.Custom.cs" />
     <Compile Include="Templates\TsPermissionsFromCsPermissions.cs">
       <DependentUpon>TsPermissionsFromCsPermissions.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Templates\TsPermissionsFromCsPermissions.Custom.cs" />
+    <Compile Include="Templates\TsInstanceFromValues.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TsInstanceFromValues.tt</DependentUpon>
+    </Compile>
     <Compile Include="Utility\ITextTemplate.cs" />
     <Compile Include="Utility\NamespaceUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -159,6 +165,10 @@
     <Content Include="Templates\TsConstTypeFromCsValueClass.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TsConstTypeFromCsValueClass.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\TsInstanceFromValues.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TsInstanceFromValues.cs</LastGenOutput>
     </Content>
     <None Include="packages.config" />
     <None Include="Templates\TsPermissionsFromCsPermissions.tt">

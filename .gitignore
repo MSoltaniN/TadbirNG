@@ -14,7 +14,9 @@ src/**/appsettings.Development.json
 /doc/**/~$*
 
 # Ignore all uploaded files
-/src/**/Upload/*.*
-/src/Framework/SPPC.Licensing.Local.Web/wwwroot/tadbir.lic
-src/Framework/SPPC.Tadbir.Web.Api/wwwroot/license
-src/Framework/SPPC.Tools.TadbirActivator/instance.id
+src/**/Upload/*.*
+
+# Ignore instance-specific files
+src/**/license
+src/**/instance.*
+src/**/tadbir.lic

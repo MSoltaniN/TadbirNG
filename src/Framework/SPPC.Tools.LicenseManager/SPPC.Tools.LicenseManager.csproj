@@ -57,6 +57,12 @@
     <Compile Include="CustomerEditor.Designer.cs">
       <DependentUpon>CustomerEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="InstanceInfoEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstanceInfoEditor.Designer.cs">
+      <DependentUpon>InstanceInfoEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +84,9 @@
     </Compile>
     <EmbeddedResource Include="CustomerEditor.resx">
       <DependentUpon>CustomerEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstanceInfoEditor.resx">
+      <DependentUpon>InstanceInfoEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
@@ -132,6 +141,14 @@
     <ProjectReference Include="..\SPPC.Tools.Interfaces\SPPC.Tools.Interfaces.csproj">
       <Project>{bd6a9e5b-fa96-4a8a-9e63-39943446ad65}</Project>
       <Name>SPPC.Tools.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tools.Model\SPPC.Tools.Model.csproj">
+      <Project>{51242DCB-F03E-4A84-B9FF-434D62F4778A}</Project>
+      <Name>SPPC.Tools.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tools.Transforms\SPPC.Tools.Transforms.csproj">
+      <Project>{9b4b433a-a376-4d2d-9092-f215bddbae7e}</Project>
+      <Name>SPPC.Tools.Transforms</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
