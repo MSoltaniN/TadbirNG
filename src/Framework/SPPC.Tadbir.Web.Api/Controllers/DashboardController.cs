@@ -79,6 +79,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private readonly IDashboardRepository _repository;
+#if DEBUG
+        private readonly string _licensePath = @".\wwwroot\license.Development.json";
+#else
         private readonly string _licensePath = @".\wwwroot\license";
+#endif
     }
 }
