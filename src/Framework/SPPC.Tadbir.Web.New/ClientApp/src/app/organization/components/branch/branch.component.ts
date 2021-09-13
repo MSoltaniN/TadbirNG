@@ -7,7 +7,7 @@ import { DialogService } from '@progress/kendo-angular-dialog';
 import { BranchFormComponent } from './branch-form.component';
 import { BranchRolesFormComponent } from './branch-roles-form.component';
 import { String, AutoGridExplorerComponent, Filter, FilterExpressionOperator } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { BranchService, BranchInfo } from '@sppc/organization/service';
 import { BranchApi, } from '@sppc/organization/service/api';
 import { Branch } from '@sppc/organization/models';

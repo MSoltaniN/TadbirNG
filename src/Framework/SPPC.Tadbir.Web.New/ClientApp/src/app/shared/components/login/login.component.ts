@@ -11,7 +11,7 @@ import { MetaDataService, BrowserStorageService, SessionKeys, LicenseService, Da
 import { SettingService } from '@sppc/config/service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { LicenseApi } from '@sppc/shared/services/api/licenseApi';
-import { MessageType } from '@sppc/env/environment';
+import { MessageType } from '@sppc/shared/enum/metadata';
 
 
 

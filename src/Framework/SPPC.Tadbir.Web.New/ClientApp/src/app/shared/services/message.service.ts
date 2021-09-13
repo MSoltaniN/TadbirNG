@@ -1,5 +1,5 @@
 import { ToastrService } from "ngx-toastr";
-import { MessagePosition, MessageType } from "@sppc/env/environment";
+import { MessagePosition, MessageType } from "@sppc/shared/enum/metadata";
 import { Injectable } from "@angular/core";
 
 @Injectable()

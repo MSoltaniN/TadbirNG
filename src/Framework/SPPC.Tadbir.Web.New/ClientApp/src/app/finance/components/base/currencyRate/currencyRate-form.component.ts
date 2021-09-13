@@ -5,7 +5,7 @@ import { DetailComponent } from '@sppc/shared/class';
 import { CurrencyRate } from '@sppc/finance/models';
 import { CurrencyService } from '@sppc/finance/service';
 import { BrowserStorageService, MetaDataService, LookupService } from '@sppc/shared/services';
-import { Entities } from '@sppc/env/environment';
+import { Entities } from '@sppc/shared/enum/metadata';
 import { ViewName } from '@sppc/shared/security';
 
 

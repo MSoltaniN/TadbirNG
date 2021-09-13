@@ -3,7 +3,7 @@ import { Response } from "@angular/http";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import { ColumnViewDeviceConfig, ListFormViewConfig, ColumnViewConfig, QuickSearchConfig, QuickSearchColumnConfig } from "@sppc/shared/models";
-import { ColumnVisibility } from "@sppc/env/environment";
+import { ColumnVisibility } from "@sppc/shared/enum/metadata";
 //import { String, BaseService } from '@sppc/shared/class';
 import { String } from '@sppc/shared/class/source';
 import { BaseService } from '@sppc/shared/class/base.service';

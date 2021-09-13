@@ -3,7 +3,7 @@ import { DetailComponent } from '@sppc/shared/class/detail.component';
 import { BrowserStorageService, MetaDataService, ErrorHandlingService } from '@sppc/shared/services';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { Entities, MessageType } from '@sppc/env/environment.prod';
+import { Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { ViewName } from '@sppc/shared/security';
 import { AuthenticationService } from '@sppc/core/services/authentication.service';
 

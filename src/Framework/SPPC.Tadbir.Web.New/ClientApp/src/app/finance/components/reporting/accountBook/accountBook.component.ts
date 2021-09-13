@@ -11,7 +11,7 @@ import { VoucherService, VoucherLineService } from '@sppc/finance/service';
 import { AccountBookApi, VoucherApi } from '@sppc/finance/service/api';
 import { MetaDataService, ReportingService, GridService, BrowserStorageService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { VoucherEditorComponent } from '../../operational/voucher/voucher-editor.component';
 import { VoucherStatusResource, BranchScopeResource, AccountBookDisplayTypeResource, AccountBookDisplayType, ArticleTypesResource, ArticleTypesResourceKey } from '@sppc/finance/enum';
 import { SelectFormComponent, SppcDateRangeSelector } from '@sppc/shared/controls';

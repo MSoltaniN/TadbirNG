@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
 import { CurrencyFormComponent } from './currency-form.component';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { MetaDataService, GridService, BrowserStorageService } from '@sppc/shared/services';
 import { Currency } from '@sppc/finance/models';
 import { CurrencyService, CurrencyEntity } from '@sppc/finance/service';

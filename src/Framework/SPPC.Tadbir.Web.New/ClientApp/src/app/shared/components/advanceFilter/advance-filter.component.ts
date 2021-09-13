@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer2, NgZone, ChangeDetectorRef, Output, EventEmitter, ViewChild, ElementRef, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { FilterColumn, Item, NumberOperatorResource, StringOperatorResource, LoginOperatorResource, FilterRow, Guid, Braces, GroupFilter, FilterViewModel } from '@sppc/shared/models';
-import { Layout } from '@sppc/env/environment';
+import { Layout } from '@sppc/shared/enum/metadata';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { BrowserStorageService } from '@sppc/shared/services/browserStorage.service';
 import { GridService } from '@sppc/shared/services/grid.service';
@@ -12,7 +12,7 @@ import { FilterExpression } from '@sppc/shared/class/filterExpression';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { SettingService } from '@sppc/config/service/settings.service';
-import { MessageType } from '@sppc/env/environment.prod';
+import { MessageType } from '@sppc/shared/enum/metadata';
 import { RowArgs } from '@progress/kendo-angular-grid';
 
 export function getLayoutModule(layout: Layout) {

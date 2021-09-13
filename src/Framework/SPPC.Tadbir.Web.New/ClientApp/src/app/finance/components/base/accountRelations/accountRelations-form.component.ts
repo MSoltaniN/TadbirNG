@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
-import { Layout, Entities } from '@sppc/env/environment';
+import { Layout, Entities } from '@sppc/shared/enum/metadata';
 import { BrowserStorageService, MetaDataService } from '@sppc/shared/services';
 import { AccountItemBriefInfo, AccountItemRelationsInfo, AccountRelationsService } from '@sppc/finance/service';
 import { AccountRelationApi } from '@sppc/finance/service/api';

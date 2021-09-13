@@ -2,7 +2,7 @@
 import { EnviromentComponent } from "./enviroment.component"
 import { Component } from '@angular/core';
 import { RTL } from '@progress/kendo-angular-l10n';
-import { Layout } from '@sppc/env/environment';
+import { Layout } from '@sppc/shared/enum/metadata';
 import { BrowserStorageService } from "../services";
 
 

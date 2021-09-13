@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HttpClient } from "@angular/common/http";
 import * as moment from 'jalali-moment';
 import { MetaDataService, ReportingService, ParameterInfo, BrowserStorageService } from '@sppc/shared/services';
-import { Entities } from '@sppc/env/environment';
+import { Entities } from '@sppc/shared/enum/metadata';
 import { SettingService } from '@sppc/config/service';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { ReportsQueries } from '../reportManagement/reports.queries';

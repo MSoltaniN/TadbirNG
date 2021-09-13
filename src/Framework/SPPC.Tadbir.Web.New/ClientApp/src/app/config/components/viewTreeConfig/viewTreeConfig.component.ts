@@ -6,7 +6,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { RowClassArgs } from '@progress/kendo-angular-grid';
 import { String, DefaultComponent } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { ViewTreeLevelConfig, ViewTreeConfig } from '@sppc/config/models';
 import { SettingService } from '@sppc/config/service';

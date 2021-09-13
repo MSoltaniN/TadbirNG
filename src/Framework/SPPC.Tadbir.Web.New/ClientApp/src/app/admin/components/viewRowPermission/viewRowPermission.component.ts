@@ -4,7 +4,7 @@ import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { String, DefaultComponent } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { MetaDataService, BrowserStorageService, ErrorHandlingService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { ItemInfo, Item, RowPermissionsForRoleInfo, ViewRowPermissionInfo, ViewRowPermissionService } from '@sppc/admin/service';

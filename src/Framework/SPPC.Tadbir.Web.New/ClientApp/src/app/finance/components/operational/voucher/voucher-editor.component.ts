@@ -6,7 +6,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
 import { String, DetailComponent } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { VoucherService, VoucherInfo, InventoryBalanceInfo } from '@sppc/finance/service';
 import { VoucherApi } from '@sppc/finance/service/api';
 import { Voucher } from '@sppc/finance/models';

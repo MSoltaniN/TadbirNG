@@ -5,7 +5,7 @@ import { RTL } from "@progress/kendo-angular-l10n";
 import { ToastrService } from "ngx-toastr";
 import { GridComponent } from "@progress/kendo-angular-grid";
 import { TranslateService } from '@ngx-translate/core';
-import { Layout } from "@sppc/env/environment";
+import { Layout } from "@sppc/shared/enum/metadata";
 import { BrowserStorageService } from "@sppc/shared/services";
 import { SettingService } from "@sppc/config/service";
 import { BaseComponent } from "@sppc/shared/class";

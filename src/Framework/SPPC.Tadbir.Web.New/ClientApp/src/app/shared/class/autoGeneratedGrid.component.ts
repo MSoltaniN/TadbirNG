@@ -17,7 +17,7 @@ import { Permissions, GlobalPermissions } from "@sppc/shared/security/permission
 import { ColumnViewConfig, ListFormViewConfig, Error, FilterRow, GroupFilter, Item, IEntity, ErrorType } from "@sppc/shared/models";
 import { ErrorHandlingService, MetaDataService } from "@sppc/shared/services";
 import { GridService } from "@sppc/shared/services/grid.service";
-import { MessageType } from "@sppc/env/environment";
+import { MessageType } from "@sppc/shared/enum/metadata";
 import { DialogRef, DialogService } from "@progress/kendo-angular-dialog";
 import { ServiceLocator } from "@sppc/service.locator";
 import { ExcelExportData } from "@progress/kendo-angular-excel-export";

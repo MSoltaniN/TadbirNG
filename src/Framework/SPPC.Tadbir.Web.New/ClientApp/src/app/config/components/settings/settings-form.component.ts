@@ -3,7 +3,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
-import { Layout, Entities } from '@sppc/env/environment';
+import { Layout, Entities } from '@sppc/shared/enum/metadata';
 import { BrowserStorageService, MetaDataService } from '@sppc/shared/services';
 import { SettingBriefInfo } from '@sppc/config/service';
 import { DetailComponent } from '@sppc/shared/class';

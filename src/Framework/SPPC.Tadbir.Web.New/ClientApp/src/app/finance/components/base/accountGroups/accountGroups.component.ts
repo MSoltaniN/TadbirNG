@@ -10,7 +10,7 @@ import { AccountFormComponent } from '../account/account-form.component';
 import { AccountGroupsFormComponent } from './accountGroups-form.component';
 import { ContextMenuComponent } from '@progress/kendo-angular-menu';
 import { ColumnBase } from '@progress/kendo-angular-grid';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { GridService, MetaDataService, BrowserStorageService, ReportingService } from '@sppc/shared/services';
 import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';

@@ -4,7 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
 import { String, DetailComponent, FilterExpression, FilterExpressionBuilder, Filter } from '@sppc/shared/class';
-import { Layout, Entities, environment } from '@sppc/env/environment';
+import { environment } from "@sppc/env/environment";
+import { Layout, Entities } from '@sppc/shared/enum/metadata';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { ItemInfo, ViewRowPermissionInfo, ViewRowPermissionService } from '@sppc/admin/service';
 

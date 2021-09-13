@@ -6,7 +6,7 @@ import { MetaDataService, BrowserStorageService, ReportingService, GridService, 
 import { SettingService } from '@sppc/config/service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
-import { Entities, MessageType, Layout } from '@sppc/env/environment';
+import { Entities, MessageType, Layout } from '@sppc/shared/enum/metadata';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ViewName, BalanceByAccountPermissions } from '@sppc/shared/security';
 import { VoucherApi, BalanceByAccountApi } from '@sppc/finance/service/api';

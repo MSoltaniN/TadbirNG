@@ -19,7 +19,7 @@ import { ViewTreeConfig, ViewTreeLevelConfig } from '@sppc/config/models';
 import { MetaDataService } from "@sppc/shared/services/metadata.service";
 import { GridService } from "@sppc/shared/services/grid.service";
 import {  BrowserStorageService } from "@sppc/shared/services/browserStorage.service";
-import { Entities, MessageType } from "@sppc/env/environment";
+import { Entities, MessageType } from "@sppc/shared/enum/metadata";
 import { ReloadOption } from "./reload-option";
 import { ErrorHandlingService } from "../services";
 import { ServiceLocator } from "@sppc/service.locator";

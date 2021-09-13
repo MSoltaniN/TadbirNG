@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
-import { Layout, Entities } from '@sppc/env/environment';
+import { Layout, Entities } from '@sppc/shared/enum/metadata';
 import { BranchService } from '@sppc/organization/service';
 import { DetailComponent } from '@sppc/shared/class';
 import { RelatedItems } from '@sppc/shared/models';

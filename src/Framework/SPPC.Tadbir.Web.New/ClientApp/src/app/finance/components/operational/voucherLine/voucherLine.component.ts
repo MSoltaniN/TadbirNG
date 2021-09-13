@@ -11,9 +11,9 @@ import { VoucherLineService, VoucherService, VoucherLineInfo } from '@sppc/finan
 import { VoucherApi } from '@sppc/finance/service/api';
 import { VoucherLine, Voucher } from '@sppc/finance/models';
 import { SettingService } from '@sppc/config/service';
-import { Entities } from '@sppc/env/environment';
+import { Entities } from '@sppc/shared/enum/metadata';
 import { VoucherLineFormComponent } from './voucherLine-form.component';
-import { MessageType } from '@sppc/env/environment';
+import { MessageType } from '@sppc/shared/enum/metadata';
 import { DocumentStatusValue } from '@sppc/finance/enum';
 import { ViewName, VoucherPermissions } from '@sppc/shared/security';
 import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';

@@ -4,7 +4,7 @@ import { ToastrService } from "ngx-toastr";
 import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { MessageBoxService } from "./message.service";
-import { MessageType } from "@sppc/env/environment";
+import { MessageType } from "@sppc/shared/enum/metadata";
 
 @Injectable()
 export class ErrorHandlingService {

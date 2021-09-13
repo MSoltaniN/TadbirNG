@@ -5,7 +5,7 @@ import { OperationLog } from '@sppc/admin/models/index';
 import { DefaultComponent } from '@sppc/shared/class';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
-import { Entities } from '@sppc/env/environment';
+import { Entities } from '@sppc/shared/enum/metadata';
 import { ViewName } from '@sppc/shared/security';
 
 

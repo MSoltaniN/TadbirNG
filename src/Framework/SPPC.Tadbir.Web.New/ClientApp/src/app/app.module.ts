@@ -2,7 +2,7 @@
 import { Headers, RequestOptions, BaseRequestOptions, Http, HttpModule } from '@angular/http';
 import { APP_BASE_HREF, Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { TextMaskModule } from 'angular2-text-mask';
-import { Layout } from '@sppc/env/environment';
+import { Layout } from '@sppc/shared/enum/metadata';
 //import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
 import { HotkeyModule } from 'angular2-hotkeys';
 //import compress package

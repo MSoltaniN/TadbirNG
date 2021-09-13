@@ -2,7 +2,7 @@ import { RTL } from "@progress/kendo-angular-l10n";
 import { Component, OnInit, Host, OnDestroy, Input, Output, EventEmitter } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from '@ngx-translate/core';
-import { Layout, ColumnVisibility } from "@sppc/env/environment";
+import { Layout, ColumnVisibility } from "@sppc/shared/enum/metadata";
 import { ListFormViewConfig, ColumnViewConfig, ColumnViewDeviceConfig } from "@sppc/shared/models";
 import { SettingViewModelInfo, SettingService, ListFormViewConfigInfo } from "@sppc/config/service";
 import { BaseComponent, DefaultComponent, Property, String } from "@sppc/shared/class";

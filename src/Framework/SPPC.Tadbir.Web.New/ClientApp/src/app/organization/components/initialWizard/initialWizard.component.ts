@@ -12,7 +12,7 @@ import { BranchFormComponent } from '../branch/branch-form.component';
 import { FiscalPeriodFormComponent } from '../fiscalPeriod/fiscalPeriod-form.component';
 import { CompanyDb, Branch, FiscalPeriod } from '@sppc/organization/models';
 import { CompanyApi, FiscalPeriodApi, BranchApi } from '@sppc/organization/service/api';
-import { MessageType } from '@sppc/env/environment';
+import { MessageType } from '@sppc/shared/enum/metadata';
 import { ViewName } from '@sppc/shared/security';
 
 

@@ -2,7 +2,7 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import "rxjs/Rx";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { Layout, Entities } from '@sppc/env/environment';
+import { Layout, Entities } from '@sppc/shared/enum/metadata';
 import { DefaultComponent } from '@sppc/shared/class';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';

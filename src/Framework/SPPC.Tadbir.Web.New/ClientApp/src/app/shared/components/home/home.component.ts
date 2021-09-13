@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from '@progress/kendo-angular-dialog';
-import { Layout, MessageType } from '@sppc/env/environment';
+import { Layout, MessageType } from '@sppc/shared/enum/metadata';
 import { MetaDataService, BrowserStorageService, LookupService, ErrorHandlingService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { DefaultComponent } from '@sppc/shared/class';

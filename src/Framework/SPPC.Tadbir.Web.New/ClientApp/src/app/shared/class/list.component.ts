@@ -10,7 +10,7 @@ import { AdvanceFilterComponent } from "@sppc/shared/components/advanceFilter/ad
 import { Permissions, GlobalPermissions } from "@sppc/shared/security/permissions";
 import { FilterExpression } from '@sppc/shared/class/filterExpression';
 import { FilterRow } from "@sppc/shared/models";
-import { MessageType, Entities } from '@sppc/env/environment';
+import { MessageType, Entities } from '@sppc/shared/enum/metadata';
 import * as moment from 'jalali-moment';
 import { ViewName } from "@sppc/shared/security";
 

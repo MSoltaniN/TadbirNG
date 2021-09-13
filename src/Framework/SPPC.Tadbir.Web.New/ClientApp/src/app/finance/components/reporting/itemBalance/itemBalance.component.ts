@@ -8,7 +8,7 @@ import { MetaDataService, BrowserStorageService, ReportingService, GridService, 
 import { SettingService } from '@sppc/config/service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
-import { Entities, MessageType, Layout } from '@sppc/env/environment';
+import { Entities, MessageType, Layout } from '@sppc/shared/enum/metadata';
 import { ViewName, ItemBalancePermissions, AccountPermissions, AccountBookPermissions } from '@sppc/shared/security';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
 import { GridComponent, ColumnBase, RowArgs } from '@progress/kendo-angular-grid';

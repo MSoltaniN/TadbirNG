@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Renderer2 } from '@angular/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TranslateService } from '@ngx-translate/core';
-import { Layout, MessageType, MessagePosition } from '@sppc/env/environment';
+import { Layout, MessageType, MessagePosition } from '@sppc/shared/enum/metadata';
 import { AuthenticationService, ContextInfo, CompanyLoginInfo } from '@sppc/core';
 import { MetaDataService, BrowserStorageService, SessionKeys } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';

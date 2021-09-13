@@ -3,7 +3,7 @@ import { String } from '@sppc/shared/class/source';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { DetailComponent } from '@sppc/shared/class';
 import { Permission } from '@sppc/core';
-import { Layout } from '@sppc/env/environment';
+import { Layout } from '@sppc/shared/enum/metadata';
 import { RoleDetails } from '@sppc/admin/models';
 import { TreeNodeInfo } from '@sppc/shared/models';
 

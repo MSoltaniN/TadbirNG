@@ -4,7 +4,7 @@ import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { MetaDataService, GridService, BrowserStorageService, LookupService } from '@sppc/shared/services';
 import { Currency, CurrencyRate, CurrencyInfo } from '@sppc/finance/models';
 import { CurrencyService, CurrencyRateInfo } from '@sppc/finance/service';

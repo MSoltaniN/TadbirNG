@@ -1,6 +1,6 @@
 import { Component, OnInit, Host, Input, EventEmitter, Output } from '@angular/core';
 import { BaseComponent } from '@sppc/shared/class';
-import { Layout } from '@sppc/env/environment';
+import { Layout } from '@sppc/shared/enum/metadata';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';

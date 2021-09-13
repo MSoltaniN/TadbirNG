@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as moment from 'jalali-moment';
 import { BrowserStorageService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
-import { MessageType } from '@sppc/env/environment';
+import { MessageType } from '@sppc/shared/enum/metadata';
 import { BaseComponent } from '@sppc/shared/class';
 import { SppcDatepicker } from '../datepicker/sppc-datepicker';
 import { async } from '@angular/core/testing';

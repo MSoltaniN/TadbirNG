@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { DetailComponent } from '@sppc/shared/class';
 import { MetaDataService, BrowserStorageService, ErrorHandlingService } from '@sppc/shared/services';
-import { MessageType, Entities } from '@sppc/env/environment';
+import { MessageType, Entities } from '@sppc/shared/enum/metadata';
 import { UserService } from '@sppc/admin/service';
 import { UserProfile } from '@sppc/shared/models';
 import { ViewName } from '@sppc/shared/security';
