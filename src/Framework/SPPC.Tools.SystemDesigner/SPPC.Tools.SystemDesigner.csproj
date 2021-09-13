@@ -51,6 +51,7 @@
       <HintPath>..\..\..\lib\System.Data.SqlClient.4.6.1\lib\net461\System.Data.SqlClient.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -60,6 +61,7 @@
       <Link>FrameworkSolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Cli\CliRunner.cs" />
+    <Compile Include="Cli\Commands\DeployActivatorCommand.cs" />
     <Compile Include="Cli\Commands\GenerateCsModelCommand.cs" />
     <Compile Include="Cli\Commands\GenerateJsResourceCommand.cs" />
     <Compile Include="Cli\Commands\GenerateKeyClassCommand.cs" />

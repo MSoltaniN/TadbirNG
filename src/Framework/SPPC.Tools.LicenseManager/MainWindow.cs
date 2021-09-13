@@ -219,6 +219,12 @@ namespace SPPC.Tools.LicenseManager
             if (CreateClientInstance(instance))
             {
                 string path = ConfigurationManager.AppSettings["InstanceIdPath"];
+                if (File.Exists(path))
+                {
+                    string folder = Path.GetDirectoryName(path);
+                    File.Move(path, Path.Combine(folder, "_instance.id"));
+                }
+
                 File.WriteAllText(path, instance);
                 var customer = CustomerService.GetCustomer(license.CustomerId);
                 CreateApiServiceLicense(license, customer);
