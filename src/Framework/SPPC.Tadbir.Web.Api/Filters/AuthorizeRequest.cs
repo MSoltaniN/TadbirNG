@@ -171,7 +171,11 @@ namespace SPPC.Tadbir.Web.Api.Filters
             return isAuthorized;
         }
 
+#if DEBUG
+        private readonly string _licensePath = @".\wwwroot\license.Development.json";
+#else
         private readonly string _licensePath = @".\wwwroot\license";
+#endif
         private readonly ITokenService _tokenService;
         private readonly IApiClient _apiClient;
         private IEnumerable<PermissionBriefViewModel> _requiredPermissions;

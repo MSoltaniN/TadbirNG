@@ -435,10 +435,14 @@ namespace SPPC.Tools.LicenseManager
         private void CreateApiServiceLicense(LicenseModel license, CustomerModel customer)
         {
             var path = ConfigurationManager.AppSettings["WebApiLicensePath"];
+            var devPath = String.Format("{0}.Development.json", path);
             var licenseData = GetLicenseData(license, customer);
             var json = JsonHelper.From(licenseData);
             File.WriteAllText(path, json);
-            return;
+            if (!File.Exists(devPath))
+            {
+                File.WriteAllText(devPath, json);
+            }
         }
 
         private LicenseViewModel GetLicenseData(LicenseModel license, CustomerModel customer)
@@ -470,11 +474,6 @@ namespace SPPC.Tools.LicenseManager
                 MessageBoxOptions.RtlReading);
 
             return response == DialogResult.Yes;
-        }
-
-        private string GetCurrentVersion()
-        {
-            return String.Empty;
         }
 
         private ICustomerService _customerService;

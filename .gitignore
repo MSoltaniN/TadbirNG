@@ -17,6 +17,6 @@ src/**/appsettings.Development.json
 src/**/Upload/*.*
 
 # Ignore instance-specific files
-src/**/license
+src/**/license.Development.json
 src/**/instance.*
 src/**/tadbir.lic

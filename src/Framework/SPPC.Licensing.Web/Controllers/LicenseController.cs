@@ -164,7 +164,7 @@ namespace SPPC.Licensing.Web.Controllers
             }
 
             var status = await _manager.ValidateLicenseAsync(licenseCheck);
-            if (status == LicenseStatus.OK)
+            if (status != LicenseStatus.OK)
             {
                 return StatusCode(StatusCodes.Status403Forbidden);
             }
