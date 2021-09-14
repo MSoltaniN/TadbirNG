@@ -172,8 +172,10 @@ export class DetailComponent extends BaseComponent  {
 
       var shortcutCommand = this.shortcutService.searchShortcutCommand(ctrl, shift, alt, key, shortcuts);
       if (shortcutCommand) {
-        if (this[shortcutCommand.method] != undefined)        
+        if (this[shortcutCommand.method] != undefined) {
           this[shortcutCommand.method]();
+          event.preventDefault();
+        }
       }
 
     }

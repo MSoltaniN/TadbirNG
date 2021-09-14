@@ -20,7 +20,7 @@
             <!--<a [routerLink]="innerCmd.routeUrl ? [innerCmd.routeUrl] : []">-->
             <a href="javascript:;" (click)="onClickMenu(innerCmd)">
               <span class="glyphicon glyphicon-{{innerCmd.iconName}}"></span>
-              <span class="menuitem child">
+              <span class="menuitem child" title="{{innerCmd.hotKey}}" >
                 {{
                   innerCmd.title
                 }}
@@ -35,7 +35,7 @@
                 <!--<a [routerLink]="cmd3.routeUrl ? [cmd3.routeUrl] : []">-->
                 <a href="javascript:;" (click)="onClickMenu(cmd3)">
                   <span class="glyphicon glyphicon-{{cmd3.iconName}}"></span>
-                  <span class="menuitem child">
+                  <span class="menuitem child" title="{{cmd3.hotKey}}">
                     {{ cmd3.title }}
                   </span>
                   <span class="pull-right-container" *ngIf="cmd3.children.length > 0">
@@ -48,7 +48,7 @@
                     <!--<a [routerLink]="cmd4.routeUrl ? [cmd4.routeUrl] : []">-->
                     <a href="javascript:;" (click)="onClickMenu(cmd4)">
                       <span class="glyphicon glyphicon-{{cmd4.iconName}}"></span>
-                      <span class="menuitem child">
+                      <span class="menuitem child" title="{{cmd4.hotKey}}">
                         {{ cmd4.title }}
                       </span>
                     </a>
