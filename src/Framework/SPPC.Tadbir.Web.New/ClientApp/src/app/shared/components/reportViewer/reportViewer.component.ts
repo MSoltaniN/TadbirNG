@@ -85,7 +85,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/IranSans/ttf/IRANSansWeb_Bold.ttf", "IRANSansWeb", Stimulsoft.System.Drawing.FontStyle.Bold);
     }
     //Stimulsoft.System.Drawing.FontStyle.Italic
-    this.addViewerEvents(this.viewer);
+    this.addViewerEvents();
   }
 
   fillResourceVariables(reportObject: Report, stiReport: any) {
@@ -186,8 +186,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
     console.log('Rendering the viewer to selected element');
     this.viewer.renderHtml(this.Id);
-
-    this.addViewerEvents();
+    
   }
 
   addViewerEvents() {
