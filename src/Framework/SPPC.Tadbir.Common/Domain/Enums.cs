@@ -142,7 +142,12 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// تقویم میلادی
         /// </summary>
-        Gregorian = 1
+        Gregorian = 1,
+
+        /// <summary>
+        /// تقویم پیش فرض در زبان جاری برنامه
+        /// </summary>
+        Default = 2
     }
 
     /// <summary>

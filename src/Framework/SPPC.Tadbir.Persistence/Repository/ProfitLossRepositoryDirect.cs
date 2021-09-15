@@ -753,8 +753,8 @@ namespace SPPC.Tadbir.Persistence
             var fiscalPeriod = await repository.GetByIDAsync(fiscalPeriodId);
             adjusted.FiscalPeriodId = fiscalPeriodId;
 
-            int calendarType = await Config.GetCurrentCalendarAsync();
-            if (calendarType == (int)CalendarType.Jalali)
+            var calendarType = await Config.GetCurrentCalendarAsync();
+            if (calendarType == CalendarType.Jalali)
             {
                 var periodStart = JalaliDateTime.FromDateTime(fiscalPeriod.StartDate);
                 adjusted.FromDate = MapJalaliDateToYear(parameters.FromDate, periodStart.Year);

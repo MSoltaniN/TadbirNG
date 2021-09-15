@@ -260,8 +260,8 @@ namespace SPPC.Tadbir.Persistence
             };
             items.AddRange(GetQueryResult(fullCode, VoucherOriginId.OpeningVoucher, parameters));
 
-            int calendarType = await Config.GetCurrentCalendarAsync();
-            Calendar calendar = (calendarType == (int)CalendarType.Jalali)
+            var calendarType = await Config.GetCurrentCalendarAsync();
+            Calendar calendar = (calendarType == CalendarType.Jalali)
                 ? new PersianCalendar() as Calendar
                 : new GregorianCalendar();
 

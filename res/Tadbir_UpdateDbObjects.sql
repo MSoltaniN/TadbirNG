@@ -2056,3 +2056,9 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (193, 1, 3, 13, NULL, 58, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.1.1201
+UPDATE [Config].[Setting]
+SET [Values] = N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}',
+DefaultValues = N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}'
+WHERE ModelType = 'SystemConfig'
