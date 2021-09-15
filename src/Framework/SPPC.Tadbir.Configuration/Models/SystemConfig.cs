@@ -1,4 +1,6 @@
-﻿namespace SPPC.Tadbir.Configuration.Models
+﻿using System.Collections.Generic;
+
+namespace SPPC.Tadbir.Configuration.Models
 {
     /// <summary>
     /// تنظیمات مربوط به پیکربندی سیستم را نگهداری میکند
@@ -10,6 +12,7 @@
         /// </summary>
         public SystemConfig()
         {
+            DefaultCalendars = new List<DefaultCalendarConfig>();
         }
 
         /// <summary>
@@ -25,7 +28,7 @@
         /// <summary>
         /// تقویم پیش فرض
         /// </summary>
-        public int DefaultCalendar { get; set; }
+        public IEnumerable<DefaultCalendarConfig> DefaultCalendars { get; }
 
         /// <summary>
         /// آیا از کدینگ پیش فرض استفاده شود؟

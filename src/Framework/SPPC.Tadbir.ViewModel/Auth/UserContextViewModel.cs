@@ -81,7 +81,12 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// <summary>
         /// تاریخ و ساعت آخرین ورود کاربر به برنامه
         /// </summary>
-        public virtual DateTime? LastLoginDate { get; set; }
+        public DateTime? LastLoginDate { get; set; }
+
+        /// <summary>
+        /// زبان جاری برنامه که موقع ورود به برنامه انتخاب شده است
+        /// </summary>
+        public string Language { get; set; }
 
         /// <summary>
         /// مجموعه شناسه های دیتابیسی نقش های تخصیص یافته به این کاربر

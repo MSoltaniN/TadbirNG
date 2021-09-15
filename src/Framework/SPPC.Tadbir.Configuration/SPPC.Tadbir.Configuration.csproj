@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj" />
   </ItemGroup>
 
 </Project>

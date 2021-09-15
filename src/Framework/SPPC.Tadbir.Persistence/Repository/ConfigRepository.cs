@@ -66,10 +66,19 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، نوع تقویم پیش فرض برنامه را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مقدار عددی متناظر با نوع شمارشی موجود برای تقویم پیش فرض</returns>
-        public async Task<int> GetCurrentCalendarAsync()
+        public async Task<CalendarType> GetCurrentCalendarAsync()
         {
+            var calendar = CalendarType.Jalali;
             var systemConfig = await GetConfigByTypeAsync<SystemConfig>();
-            return systemConfig.DefaultCalendar;
+            var config = systemConfig.DefaultCalendars
+                .Where(cfg => cfg.Language == UserContext.Language)
+                .SingleOrDefault();
+            if (config != null)
+            {
+                calendar = config.Calendar;
+            }
+
+            return calendar;
         }
 
         /// <summary>
@@ -80,8 +89,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<string> GetDateDisplayAsync(DateTime date)
         {
             string dateDisplay = date.ToShortDateString(false);
-            var systemConfig = await GetConfigByTypeAsync<SystemConfig>();
-            if (systemConfig.DefaultCalendar == (int)CalendarType.Jalali)
+            var calendar = await GetCurrentCalendarAsync();
+            if (calendar == CalendarType.Jalali)
             {
                 dateDisplay = JalaliDateTime
                     .FromDateTime(date)
@@ -347,16 +356,20 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private static string GetCalendarName(int calendar)
-        {
-            return (calendar == (int)CalendarType.Gregorian)
-                ? AppStrings.Gregorian
-                : AppStrings.Persian;
-        }
-
         private static string GetYesNo(bool value)
         {
             return value ? AppStrings.BooleanYes : AppStrings.BooleanNo;
+        }
+
+        private bool IsCalendarChanged(SystemConfig old, SystemConfig current)
+        {
+            var oldConfig = old.DefaultCalendars
+                .Where(cfg => cfg.Language == UserContext.Language)
+                .SingleOrDefault();
+            var currentConfig = current.DefaultCalendars
+                .Where(cfg => cfg.Language == UserContext.Language)
+                .SingleOrDefault();
+            return oldConfig.Calendar != currentConfig.Calendar;
         }
 
         private async Task<bool> IsDefinedAccountAsync()
@@ -364,6 +377,16 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             var query = repository.GetEntityQuery();
             return await query.CountAsync() > 0 ? true : false;
+        }
+
+        private string GetCalendarName(SystemConfig config)
+        {
+            var calendarConfig = config.DefaultCalendars
+                .Where(cfg => cfg.Language == UserContext.Language)
+                .SingleOrDefault();
+            return (calendarConfig.Calendar == CalendarType.Gregorian)
+                ? AppStrings.Gregorian
+                : AppStrings.Persian;
         }
 
         private async Task InitializeDefaultAccounts()
@@ -459,11 +482,11 @@ namespace SPPC.Tadbir.Persistence
         private async Task LogConfigChangeAsync(SystemConfig oldConfig, SystemConfig newConfig)
         {
             string description;
-            if (oldConfig.DefaultCalendar != newConfig.DefaultCalendar)
+            if (IsCalendarChanged(oldConfig, newConfig))
             {
                 description = String.Format("{0} : {1} , {2} : {3}",
-                    AppStrings.Old, GetCalendarName(oldConfig.DefaultCalendar),
-                    AppStrings.New, GetCalendarName(newConfig.DefaultCalendar));
+                    AppStrings.Old, GetCalendarName(oldConfig),
+                    AppStrings.New, GetCalendarName(newConfig));
                 OnEntityAction(OperationId.CalendarChange);
                 Log.Description = Context.Localize(description);
                 await TrySaveLogAsync();

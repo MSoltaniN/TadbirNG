@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Config;
 
 namespace SPPC.Tadbir.Persistence
@@ -22,7 +23,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، نوع تقویم پیش فرض برنامه را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مقدار عددی متناظر با نوع شمارشی موجود برای تقویم پیش فرض</returns>
-        Task<int> GetCurrentCalendarAsync();
+        Task<CalendarType> GetCurrentCalendarAsync();
 
         /// <summary>
         /// به روش آسنکرون، تاریخ داده شده را با توجه به تنظیمات تقویم پیش فرض به صورت رشته متنی برمی گرداند
