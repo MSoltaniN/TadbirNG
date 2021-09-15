@@ -105,6 +105,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
-        private IMetadataRepository _repository;
+        private readonly IMetadataRepository _repository;
     }
 }

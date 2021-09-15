@@ -9262,3 +9262,8 @@ WHERE Code = 'Voucher-Std-Form'
 UPDATE [Reporting].[Report]
 SET ServiceUrl = 'reports/voucher/{0}/std-form-detail'
 WHERE Code = 'Voucher-Std-Form-Detail'
+
+-- 1.1.1202
+UPDATE [Metadata].[Column]
+SET [Type] = 2
+WHERE DotNetType LIKE 'System.Date%'

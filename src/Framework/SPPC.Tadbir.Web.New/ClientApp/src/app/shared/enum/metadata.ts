@@ -9,7 +9,6 @@ export enum MessageType {
   Error
 }
 
-
 export const Metadatas = {
   Voucher: 'vouchers',
   Account: 'accounts',
@@ -41,7 +40,6 @@ export const Metadatas = {
   VoucherLineDetail: 'VoucherLineDetail',
   ItemBalance:'ItemBalance'
 }
-
 
 export const Entities = {
   None : '',
@@ -131,7 +129,6 @@ export const CustomForm =
   ProfitLoss: "1"
 }
 
-
 export const ColumnVisibility =
 {
   Default: "Default",
@@ -140,7 +137,6 @@ export const ColumnVisibility =
   Visible: "Visible",
   Hidden: "Hidden"
 }
-
 
 export enum MessagePosition {
   TopLeft,
@@ -153,6 +149,10 @@ export enum MessagePosition {
   BottomRight
 }
 
+export enum CalendarType {
+  Jalali = 0,
+  Gregorian = 1
+}
 
 @Injectable()
 export class Layout {

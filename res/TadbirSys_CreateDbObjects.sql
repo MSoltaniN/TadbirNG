@@ -2075,6 +2075,9 @@ INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Typ
     VALUES (685, 3, 'BranchName', NULL, NULL, 'System.String', 'nvarchar', 'string', 64, 0, 0, 0, 1, 1, 'Hidden', 14, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
+UPDATE [Metadata].[Column]
+SET [Type] = 2
+WHERE DotNetType LIKE 'System.Date%'
 
 -- Create configuration records...
 SET IDENTITY_INSERT [Config].[Setting] ON
