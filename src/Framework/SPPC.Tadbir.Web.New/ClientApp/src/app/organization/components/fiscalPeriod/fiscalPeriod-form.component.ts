@@ -84,7 +84,7 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
 
   getEndDate(): Date {
     if (this.CurrentLanguage == "fa") {
-      return new Date(new Date().getFullYear() + 1, 2, 19, 0, 0, 0);
+      return new Date(new Date().getFullYear() + 1, 2, 20, 0, 0, 0);
     }
     else {
       return new Date(new Date().getFullYear(), 11, 31, 0, 0, 0);
