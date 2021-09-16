@@ -301,28 +301,6 @@ namespace SPPC.Tadbir.Persistence
             return currencyViewModel;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، استان و شهرها را در شرکت جاری به روزرسانی می کند
-        /// TODO: موقتی میباشد
-        /// </summary>
-        /// <param name="mdbPath">مسیر فایل بانک اطلاعاتی اکسس مرتبط با استان و شهر</param>
-        public async Task UpdateZoneAsync(string mdbPath)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Province>();
-            var zoneItems = await _access.GetAllAsync<ZoneViewModel>(mdbPath, "Zone");
-
-            var provinceGroup = zoneItems.GroupBy(item => item.ProvinceCode);
-
-            foreach (var itemGroup in provinceGroup)
-            {
-                var province = Mapper.Map<Province>(itemGroup.First());
-                province.Cities = itemGroup.Select(item => Mapper.Map<City>(item)).ToList();
-                repository.Insert(province, pro => pro.Cities);
-            }
-
-            await UnitOfWork.CommitAsync();
-        }
-
         internal override int? EntityType
         {
             get { return (int)EntityTypeId.Currency; }

@@ -30,11 +30,6 @@ export class AccountInfo implements Account {
   name: string;
   level: number = 0;
   description?: string;
-  //constructor(public id: number = 0, public code: string = "", public name: string = "", public groupId?: number,
-  //      public fiscalPeriodId: number = 0, public description?: string = "", public branchScope: number = 0,
-  //      public branchId: number = 0, public level: number = 0, public fullCode: string = "",
-  //      public childCount: number = 0, public parentId: number = 0, public companyId: number = 0) { }
-
 }
 
 export class CustomerTaxInfoModel implements CustomerTaxInfo {
@@ -110,16 +105,5 @@ export class AccountService extends BaseService {
     var options = { headers: this.httpHeaders };
     return this.http.get(url, options)
       .map(response => <any>(<Response>response));
-  }
-
-  postFile(file: File) {
-    var currentContext = this.bStorageService.getCurrentUser();
-    const formData: FormData = new FormData();
-    formData.append(file.name, file, file.name);
-    formData.append("X-Tadbir-AuthTicket", currentContext ? currentContext.ticket : "");
-
-    const uploadReq = new HttpRequest('POST', CurrencyApi.Zone, formData, { reportProgress: true, });
-
-    return this.http.request(uploadReq);
   }
 }

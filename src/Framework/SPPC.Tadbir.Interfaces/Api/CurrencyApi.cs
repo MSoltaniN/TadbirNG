@@ -117,17 +117,5 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for delete selected rates of a currency
         /// </summary>
         public const string DeleteCurrencyRatesUrl = "currency/rates";
-
-        /// <summary>
-        /// TODO: Temporary
-        /// API client URL for provinces and cities
-        /// </summary>
-        public const string Zone = "currency/zone";
-
-        /// <summary>
-        /// TODO: Temporary
-        /// API server route URL for provinces and cities
-        /// </summary>
-        public const string ZoneUrl = "currency/zone";
     }
 }

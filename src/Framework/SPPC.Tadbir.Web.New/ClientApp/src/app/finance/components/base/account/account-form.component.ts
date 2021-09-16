@@ -100,7 +100,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
   isDisableCustomerTaxTab: boolean = false;
   isDisableAccountOwnerTab: boolean = false;
-  uploadTab: boolean = false;
 
   accountModel: Account;
   customerTaxModel: CustomerTaxInfo;
@@ -113,7 +112,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   @Input() public parent: Account;
   @Input() public model: AccountFullData;
   @Input() public isNew: boolean = false;
-  //@Input() public errorMessage: string = '';
 
   @Output() save: EventEmitter<AccountFullData> = new EventEmitter();
   @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -360,10 +358,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     this.lookupService.getModels(LookupApi.Provinces).subscribe(res => {
       if (res.length) {
         this.filteredProcinces = this.provincesList = res;
-        this.uploadTab = false;
-      }
-      else {
-        this.uploadTab = true;
       }
 
       if (!this.isNew && this.customerTaxModel && this.customerTaxModel.id > 0) {

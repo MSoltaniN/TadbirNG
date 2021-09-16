@@ -538,20 +538,6 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<ProvinceViewModel, Province>();
             mapperConfig.CreateMap<CityViewModel, City>();
 
-            mapperConfig.CreateMap<DbDataReader, ZoneViewModel>()
-                .ForMember(dest => dest.ProvinceName, opts => opts.MapFrom(src => src[2]))
-                .ForMember(dest => dest.ProvinceCode, opts => opts.MapFrom(src => src[3]))
-                .ForMember(dest => dest.CityName, opts => opts.MapFrom(src => src[1]))
-                .ForMember(dest => dest.CityCode, opts => opts.MapFrom(src => src[0]));
-
-            mapperConfig.CreateMap<ZoneViewModel, Province>()
-               .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.ProvinceName))
-               .ForMember(dest => dest.Code, opts => opts.MapFrom(src => src.ProvinceCode));
-
-            mapperConfig.CreateMap<ZoneViewModel, City>()
-               .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.CityName))
-               .ForMember(dest => dest.Code, opts => opts.MapFrom(src => src.CityCode));
-
             mapperConfig.CreateMap<ShortcutCommand, ShortcutCommandViewModel>();
         }
 

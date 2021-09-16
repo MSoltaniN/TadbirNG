@@ -15,12 +15,12 @@ using System;
 namespace SPPC.Tadbir.Model.Metadata
 {
     /// <summary>
-    /// شهر یک استان را نگهداری میکند
+    /// اطلاعات یکی از شهرهای یک استان را نگهداری می کند
     /// </summary>
     public partial class City : CoreEntity
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="City"/> class.
+        /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         public City()
         {
@@ -31,17 +31,17 @@ namespace SPPC.Tadbir.Model.Metadata
         }
 
         /// <summary>
-        /// Gets or sets the نام شهر
+        /// نام شهر
         /// </summary>
         public virtual string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the کد شهر
+        /// کد شهر
         /// </summary>
         public virtual string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets the استان مربوط به این شهر
+        /// استان مربوط به این شهر
         /// </summary>
         public virtual Province Province { get; set; }
 
