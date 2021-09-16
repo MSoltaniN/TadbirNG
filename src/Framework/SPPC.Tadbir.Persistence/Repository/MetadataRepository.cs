@@ -336,7 +336,7 @@ namespace SPPC.Tadbir.Persistence
                     var columnCalendar = (CalendarType)Enum.Parse(typeof(CalendarType), col.Type);
                     if (columnCalendar == CalendarType.Default)
                     {
-                        col.Type = ((int)calendar).ToString();
+                        col.Type = calendar.ToString();
                     }
                 }
             });

@@ -9265,5 +9265,10 @@ WHERE Code = 'Voucher-Std-Form-Detail'
 
 -- 1.1.1202
 UPDATE [Metadata].[Column]
-SET [Type] = 2
+SET [Type] = '2'
+WHERE DotNetType LIKE 'System.Date%'
+
+-- 1.1.1203
+UPDATE [Metadata].[Column]
+SET [Type] = 'Default'
 WHERE DotNetType LIKE 'System.Date%'

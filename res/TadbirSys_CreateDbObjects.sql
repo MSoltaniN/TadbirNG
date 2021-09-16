@@ -2076,7 +2076,7 @@ INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Typ
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 UPDATE [Metadata].[Column]
-SET [Type] = 2
+SET [Type] = 'Default'
 WHERE DotNetType LIKE 'System.Date%'
 
 -- Create configuration records...
