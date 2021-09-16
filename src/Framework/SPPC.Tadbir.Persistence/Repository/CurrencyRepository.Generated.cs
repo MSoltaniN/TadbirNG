@@ -411,11 +411,6 @@ namespace SPPC.Tadbir.Persistence
             return Mapper.Map<CurrencyViewModel>(currencyModel);
         }
 
-        private void InsertProvinceAsync(IAsyncRepository<Province> repository, Province entity)
-        {
-            repository.Insert(entity);
-        }
-
         private async Task HandleActiveStateChangeAsync(Currency currency)
         {
             var repository = UnitOfWork.GetAsyncRepository<InactiveCurrency>();

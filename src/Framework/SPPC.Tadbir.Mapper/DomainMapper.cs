@@ -535,6 +535,9 @@ namespace SPPC.Tadbir.Mapper
                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Code))
                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
 
+            mapperConfig.CreateMap<ProvinceViewModel, Province>();
+            mapperConfig.CreateMap<CityViewModel, City>();
+
             mapperConfig.CreateMap<DbDataReader, ZoneViewModel>()
                 .ForMember(dest => dest.ProvinceName, opts => opts.MapFrom(src => src[2]))
                 .ForMember(dest => dest.ProvinceCode, opts => opts.MapFrom(src => src[3]))

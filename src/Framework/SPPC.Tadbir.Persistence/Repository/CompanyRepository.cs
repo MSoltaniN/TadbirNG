@@ -10,15 +10,18 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SPPC.Framework.Common;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
+using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Config;
+using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -90,6 +93,7 @@ namespace SPPC.Tadbir.Persistence
                 CreateDatabase(companyView, webRoot);
                 company = Mapper.Map<CompanyDb>(companyView);
                 await InsertAsync(repository, company);
+                await ImportStatesAndCitiesAsync(company.Id, webRoot);
             }
             else
             {
@@ -343,7 +347,7 @@ namespace SPPC.Tadbir.Persistence
             var sqlBuilder = new StringBuilder();
             if (!IsDuplicateDatabaseName(company.DbName))
             {
-                var scriptPath = Path.Combine(webRoot, @"static\Tadbir_CreateDbObjects.sql");
+                var scriptPath = Path.Combine(webRoot, "static", "Tadbir_CreateDbObjects.sql");
                 if (!File.Exists(scriptPath))
                 {
                     throw ExceptionBuilder.NewGenericException<FileNotFoundException>();
@@ -398,6 +402,35 @@ namespace SPPC.Tadbir.Persistence
             string connection = _appConfig.GetConnectionString("TadbirSysApi");
             var sqlBuilder = new SqlConnectionStringBuilder(connection);
             company.Server = sqlBuilder.DataSource;
+        }
+
+        private async Task ImportStatesAndCitiesAsync(int companyId, string webRoot)
+        {
+            await SetCurrentCompanyAsync(companyId);
+            UnitOfWork.UseCompanyContext();
+            var stateRepository = UnitOfWork.GetAsyncRepository<Province>();
+            string path = Path.Combine(webRoot, "static", "ir-states.json");
+            var states = JsonHelper.To<IEnumerable<ProvinceViewModel>>(File.ReadAllText(path));
+            foreach (var state in states)
+            {
+                state.Id = 0;
+                stateRepository.Insert(Mapper.Map<Province>(state));
+            }
+
+            await UnitOfWork.CommitAsync();
+
+            var cityRepository = UnitOfWork.GetAsyncRepository<City>();
+            path = Path.Combine(webRoot, "static", "ir-cities.json");
+            var cities = JsonHelper.To<IEnumerable<CityViewModel>>(File.ReadAllText(path));
+            foreach (var city in cities)
+            {
+                city.Id = 0;
+                cityRepository.Insert(Mapper.Map<City>(city));
+            }
+
+            await UnitOfWork.CommitAsync();
+            UnitOfWork.UseSystemContext();
+            await SetCurrentCompanyAsync(UserContext.CompanyId);
         }
 
         private bool IsDuplicateDatabaseName(string dbName)
