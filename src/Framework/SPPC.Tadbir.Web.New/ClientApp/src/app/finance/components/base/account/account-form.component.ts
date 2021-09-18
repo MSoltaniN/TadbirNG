@@ -521,29 +521,29 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       return true;
   }  
 
-  onFileChange(event: any) {
-    if (event.target.files && event.target.files.length > 0) {
-      let file = event.target.files[0];
-      var fileExtension = file.name.split('.').pop();
-      var accessExtensions = ["accda", "accdb", "accde", "accdr", "accdt", "mdb", "mde", "mdf", "mda"];
-      if (accessExtensions.filter(f => f == fileExtension.toLowerCase()).length > 0) {
+  //onFileChange(event: any) {
+  //  if (event.target.files && event.target.files.length > 0) {
+  //    let file = event.target.files[0];
+  //    var fileExtension = file.name.split('.').pop();
+  //    var accessExtensions = ["accda", "accdb", "accde", "accdr", "accdt", "mdb", "mde", "mdf", "mda"];
+  //    if (accessExtensions.filter(f => f == fileExtension.toLowerCase()).length > 0) {
 
-        this.accountService.postFile(file).subscribe(res => {
-          this.myInputVariable.nativeElement.value = "";
+  //      this.accountService.postFile(file).subscribe(res => {
+  //        this.myInputVariable.nativeElement.value = "";
 
-          if (res.type === HttpEventType.UploadProgress)
-            this.progress = Math.round(100 * res.loaded / res.total);
-          else
-            if (res.type === HttpEventType.Response) {
-              this.showMessage(this.getText("Messages.UploadSuccessful"), MessageType.Succes);
-              this.getProvince();
-            }
-        })
-      }
-      else {
-        this.showMessage(this.getText("Messages.IncorrectFileFormat"), MessageType.Warning);
-      }
+  //        if (res.type === HttpEventType.UploadProgress)
+  //          this.progress = Math.round(100 * res.loaded / res.total);
+  //        else
+  //          if (res.type === HttpEventType.Response) {
+  //            this.showMessage(this.getText("Messages.UploadSuccessful"), MessageType.Succes);
+  //            this.getProvince();
+  //          }
+  //      })
+  //    }
+  //    else {
+  //      this.showMessage(this.getText("Messages.IncorrectFileFormat"), MessageType.Warning);
+  //    }
 
-    }
-  }
+  //  }
+  //}
 }

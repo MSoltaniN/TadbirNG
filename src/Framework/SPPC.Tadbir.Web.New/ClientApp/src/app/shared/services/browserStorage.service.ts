@@ -101,12 +101,12 @@ export class BrowserStorageService {
 
   setLicenseInfo(linceseInfo: any) {
     var licenseInfoString = JSON.stringify(linceseInfo);
-    localStorage.setItem(SessionKeys.LicenseInfo, licenseInfoString);
+    sessionStorage.setItem(SessionKeys.LicenseInfo, licenseInfoString);
   }
 
   getLicenseInfo(): any {
     if (localStorage.getItem(SessionKeys.LicenseInfo)) {
-      return JSON.parse(localStorage.getItem(SessionKeys.LicenseInfo));
+      return JSON.parse(sessionStorage.getItem(SessionKeys.LicenseInfo));
     }
     return null;
   }

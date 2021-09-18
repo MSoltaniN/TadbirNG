@@ -566,8 +566,18 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
         serviceUrl = this.changeServiceUrl(serviceUrl, params);
       }
 
-      if (urlParameters.length > 0) {
+      if (urlParameters && urlParameters.length > 0) 
         serviceUrl = this.replaceServiceUrlParams(serviceUrl, urlParameters);
+      
+      if (params && params.length > 0) {
+        var routeParameters = new Array<ReportParamComponent>();
+        params.filter(p => p.controlType != 'QueryString').forEach(function (p) {          
+          var param = new ReportParamComponent();
+          param.ParamValue = p.value;
+          routeParameters.push(param);          
+        });
+
+        serviceUrl = this.replaceServiceUrlParams(serviceUrl, routeParameters);
       }
     }
 
