@@ -42,10 +42,15 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
         public async Task<PagedList<ProjectViewModel>> GetProjectsAsync(GridOptions gridOptions = null)
         {
-            var projects = await Repository
-                .GetAllQuery<Project>(ViewId.Project, prj => prj.Children)
-                .Select(item => Mapper.Map<ProjectViewModel>(item))
-                .ToListAsync();
+            var projects = new List<ProjectViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                projects = await Repository
+                    .GetAllQuery<Project>(ViewId.Project, prj => prj.Children)
+                    .Select(item => Mapper.Map<ProjectViewModel>(item))
+                    .ToListAsync();
+            }
+
             await ReadAsync(gridOptions);
             return new PagedList<ProjectViewModel>(projects, gridOptions);
         }

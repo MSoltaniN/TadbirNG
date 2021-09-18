@@ -60,13 +60,37 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، تمامی ارزهای استفاده شده در آرتیکل های سند را به همراه مجموع بدهکار و بستانکار برمی گرداند
         /// </summary>
-        /// <param name="bookParam">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
+        /// <param name="parameters">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
         /// <returns>اطلاعات دفتر عملیات ارزی برای کلیه ارزها</returns>
         public async Task<CurrencyBookViewModel> GetCurrencyBookAllCurrenciesAsync(
-            CurrencyBookParameters bookParam)
+            CurrencyBookParameters parameters)
+        {
+            var book = new CurrencyBookViewModel();
+            var sourceList = GetSourceList(parameters.Mode);
+
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
+            {
+                book = await GetSummaryBookAsync(parameters, true, false);
+            }
+
+            await OnSourceActionAsync(parameters.GridOptions, sourceList);
+            return book;
+        }
+
+        internal override OperationSourceId OperationSource
+        {
+            get { return OperationSourceId.CurrencyBook; }
+        }
+
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
+        private static SourceListId GetSourceList(AccountBookMode mode)
         {
             var sourceList = SourceListId.None;
-            switch (bookParam.Mode)
+            switch (mode)
             {
                 case AccountBookMode.ByRows:
                     sourceList = SourceListId.CurrencyBookByRow;
@@ -84,18 +108,7 @@ namespace SPPC.Tadbir.Persistence
                     break;
             }
 
-            await OnSourceActionAsync(bookParam.GridOptions, sourceList);
-            return await GetSummaryBookAsync(bookParam, true, false);
-        }
-
-        internal override OperationSourceId OperationSource
-        {
-            get { return OperationSourceId.CurrencyBook; }
-        }
-
-        private ISecureRepository Repository
-        {
-            get { return _system.Repository; }
+            return sourceList;
         }
 
         private static IEnumerable<CurrencyBookItemViewModel> GetAggregatedBookItems(
@@ -182,32 +195,31 @@ namespace SPPC.Tadbir.Persistence
         private async Task<CurrencyBookViewModel> GetCurrencyBookDataAsync(
             CurrencyBookParameters parameters)
         {
-            var currencyBook = default(CurrencyBookViewModel);
-            var sourceList = SourceListId.None;
-            switch (parameters.Mode)
+            var book = new CurrencyBookViewModel();
+            var sourceList = GetSourceList(parameters.Mode);
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
             {
-                case AccountBookMode.ByRows:
-                    currencyBook = await GetSimpleBookAsync(parameters);
-                    sourceList = SourceListId.CurrencyBookByRow;
-                    break;
-                case AccountBookMode.VoucherSum:
-                    currencyBook = await GetSummaryBookAsync(parameters, false, true);
-                    sourceList = SourceListId.CurrencyBookVoucherSum;
-                    break;
-                case AccountBookMode.DailySum:
-                    currencyBook = await GetSummaryBookAsync(parameters, false, false);
-                    sourceList = SourceListId.CurrencyBookDailySum;
-                    break;
-                case AccountBookMode.MonthlySum:
-                    currencyBook = await GetMonthlySummaryBookAsync(parameters);
-                    sourceList = SourceListId.CurrencyBookMonthlySum;
-                    break;
-                default:
-                    break;
+                switch (parameters.Mode)
+                {
+                    case AccountBookMode.ByRows:
+                        book = await GetSimpleBookAsync(parameters);
+                        break;
+                    case AccountBookMode.VoucherSum:
+                        book = await GetSummaryBookAsync(parameters, false, true);
+                        break;
+                    case AccountBookMode.DailySum:
+                        book = await GetSummaryBookAsync(parameters, false, false);
+                        break;
+                    case AccountBookMode.MonthlySum:
+                        book = await GetMonthlySummaryBookAsync(parameters);
+                        break;
+                    default:
+                        break;
+                }
             }
 
             await OnSourceActionAsync(parameters.GridOptions, sourceList);
-            return currencyBook;
+            return book;
         }
 
         private IList<Expression<Func<VoucherLine, bool>>> GetItemCriteria(

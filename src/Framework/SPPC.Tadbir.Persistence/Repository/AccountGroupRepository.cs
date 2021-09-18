@@ -38,11 +38,16 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از اطلاعات نمایشی گروه های حساب</returns>
         public async Task<PagedList<AccountGroupViewModel>> GetAccountGroupsAsync(GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<AccountGroup>();
-            var accGroups = await repository
-                .GetEntityQuery()
-                .Select(grp => Mapper.Map<AccountGroupViewModel>(grp))
-                .ToListAsync();
+            var accGroups = new List<AccountGroupViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<AccountGroup>();
+                accGroups = await repository
+                    .GetEntityQuery()
+                    .Select(grp => Mapper.Map<AccountGroupViewModel>(grp))
+                    .ToListAsync();
+            }
+
             await ReadAsync(gridOptions);
             return new PagedList<AccountGroupViewModel>(accGroups, gridOptions);
         }

@@ -50,7 +50,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه جاری</returns>
         public async Task<PagedList<VoucherViewModel>> GetVouchersAsync(GridOptions gridOptions = null)
         {
-            var vouchers = await GetVoucherItemsAsync(gridOptions);
+            var vouchers = new List<VoucherViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                vouchers.AddRange(await GetVoucherItemsAsync(gridOptions));
+            }
+
             await ReadAsync(gridOptions);
             return new PagedList<VoucherViewModel>(vouchers, gridOptions);
         }

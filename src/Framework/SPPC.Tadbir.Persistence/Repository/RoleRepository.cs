@@ -44,13 +44,17 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>لیست نقش های تعریف شده</returns>
         public async Task<PagedList<RoleViewModel>> GetRolesAsync(GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<Role>();
-            var roles = await repository
-                .GetEntityQuery()
-                .Include(r => r.RolePermissions)
-                    .ThenInclude(rp => rp.Permission)
-                .Select(r => Mapper.Map<RoleViewModel>(r))
-                .ToListAsync();
+            var roles = new List<RoleViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<Role>();
+                roles = await repository
+                    .GetEntityQuery()
+                    .Include(r => r.RolePermissions)
+                        .ThenInclude(rp => rp.Permission)
+                    .Select(r => Mapper.Map<RoleViewModel>(r))
+                    .ToListAsync();
+            }
 
             await ReadAsync(gridOptions);
             return new PagedList<RoleViewModel>(roles, gridOptions);

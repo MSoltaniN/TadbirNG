@@ -43,40 +43,36 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات دفتر روزنامه بر حسب تاریخ</returns>
         public async Task<JournalViewModel> GetJournalByDateAsync(JournalParameters parameters)
         {
-            var journal = default(JournalViewModel);
-            var sourceList = SourceListId.None;
-            switch (parameters.Mode)
+            var journal = new JournalViewModel();
+            var sourceList = GetSourceList(parameters.Mode);
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
             {
-                case JournalMode.ByRows:
-                    sourceList = SourceListId.JournalByDateByRow;
-                    journal = GetJournalByRow(parameters);
-                    break;
-                case JournalMode.ByRowsWithDetail:
-                    sourceList = SourceListId.JournalByDateByRowDetail;
-                    journal = GetJournalByRow(parameters, false, false, true);
-                    break;
-                case JournalMode.ByLedger:
-                    sourceList = SourceListId.JournalByDateByLedger;
-                    journal = await GetJournalByLedgerAsync(parameters);
-                    break;
-                case JournalMode.BySubsidiary:
-                    sourceList = SourceListId.JournalByDateBySubsidiary;
-                    journal = await GetJournalBySubsidiaryAsync(parameters);
-                    break;
-                case JournalMode.LedgerSummary:
-                    sourceList = SourceListId.JournalByDateSummary;
-                    journal = await GetJournalLedgerSummaryAsync(parameters);
-                    break;
-                case JournalMode.LedgerSummaryByDate:
-                    sourceList = SourceListId.JournalByDateSummaryByDate;
-                    journal = await GetJournalLedgerSummaryByDateAsync(parameters);
-                    break;
-                case JournalMode.MonthlyLedgerSummary:
-                    sourceList = SourceListId.JournalByDateSummaryByMonth;
-                    journal = await GetJournalMonthlyLedgerSummaryAsync(parameters);
-                    break;
-                default:
-                    break;
+                switch (parameters.Mode)
+                {
+                    case JournalMode.ByRows:
+                        journal = GetJournalByRow(parameters);
+                        break;
+                    case JournalMode.ByRowsWithDetail:
+                        journal = GetJournalByRow(parameters, false, false, true);
+                        break;
+                    case JournalMode.ByLedger:
+                        journal = await GetJournalByLedgerAsync(parameters);
+                        break;
+                    case JournalMode.BySubsidiary:
+                        journal = await GetJournalBySubsidiaryAsync(parameters);
+                        break;
+                    case JournalMode.LedgerSummary:
+                        journal = await GetJournalLedgerSummaryAsync(parameters);
+                        break;
+                    case JournalMode.LedgerSummaryByDate:
+                        journal = await GetJournalLedgerSummaryByDateAsync(parameters);
+                        break;
+                    case JournalMode.MonthlyLedgerSummary:
+                        journal = await GetJournalMonthlyLedgerSummaryAsync(parameters);
+                        break;
+                    default:
+                        break;
+                }
             }
 
             await OnSourceActionAsync(parameters.GridOptions, sourceList);
@@ -90,40 +86,36 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات دفتر روزنامه بر حسب تاریخ و به تفکیک شعبه</returns>
         public async Task<JournalViewModel> GetJournalByDateByBranchAsync(JournalParameters parameters)
         {
-            var journal = default(JournalViewModel);
-            var sourceList = SourceListId.None;
-            switch (parameters.Mode)
+            var journal = new JournalViewModel();
+            var sourceList = GetSourceList(parameters.Mode);
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
             {
-                case JournalMode.ByRows:
-                    sourceList = SourceListId.JournalByDateByRow;
-                    journal = GetJournalByRow(parameters, false, true, false);
-                    break;
-                case JournalMode.ByRowsWithDetail:
-                    sourceList = SourceListId.JournalByDateByRowDetail;
-                    journal = GetJournalByRow(parameters, false, true, true);
-                    break;
-                case JournalMode.ByLedger:
-                    sourceList = SourceListId.JournalByDateByLedger;
-                    journal = await GetJournalByLedgerAsync(parameters, false, true);
-                    break;
-                case JournalMode.BySubsidiary:
-                    sourceList = SourceListId.JournalByDateBySubsidiary;
-                    journal = await GetJournalBySubsidiaryAsync(parameters, false, true);
-                    break;
-                case JournalMode.LedgerSummary:
-                    sourceList = SourceListId.JournalByDateSummary;
-                    journal = await GetJournalLedgerSummaryAsync(parameters, false, true);
-                    break;
-                case JournalMode.LedgerSummaryByDate:
-                    sourceList = SourceListId.JournalByDateSummaryByDate;
-                    journal = await GetJournalLedgerSummaryByDateAsync(parameters, true);
-                    break;
-                case JournalMode.MonthlyLedgerSummary:
-                    sourceList = SourceListId.JournalByDateSummaryByMonth;
-                    journal = await GetJournalMonthlyLedgerSummaryAsync(parameters, true);
-                    break;
-                default:
-                    break;
+                switch (parameters.Mode)
+                {
+                    case JournalMode.ByRows:
+                        journal = GetJournalByRow(parameters, false, true, false);
+                        break;
+                    case JournalMode.ByRowsWithDetail:
+                        journal = GetJournalByRow(parameters, false, true, true);
+                        break;
+                    case JournalMode.ByLedger:
+                        journal = await GetJournalByLedgerAsync(parameters, false, true);
+                        break;
+                    case JournalMode.BySubsidiary:
+                        journal = await GetJournalBySubsidiaryAsync(parameters, false, true);
+                        break;
+                    case JournalMode.LedgerSummary:
+                        journal = await GetJournalLedgerSummaryAsync(parameters, false, true);
+                        break;
+                    case JournalMode.LedgerSummaryByDate:
+                        journal = await GetJournalLedgerSummaryByDateAsync(parameters, true);
+                        break;
+                    case JournalMode.MonthlyLedgerSummary:
+                        journal = await GetJournalMonthlyLedgerSummaryAsync(parameters, true);
+                        break;
+                    default:
+                        break;
+                }
             }
 
             await OnSourceActionAsync(parameters.GridOptions, sourceList);
@@ -137,32 +129,30 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات دفتر روزنامه بر حسب شماره سند</returns>
         public async Task<JournalViewModel> GetJournalByNoAsync(JournalParameters parameters)
         {
-            var journal = default(JournalViewModel);
-            var sourceList = SourceListId.None;
-            switch (parameters.Mode)
+            var journal = new JournalViewModel();
+            var sourceList = GetSourceList(parameters.Mode, true);
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
             {
-                case JournalMode.ByRows:
-                    sourceList = SourceListId.JournalByNoByRow;
-                    journal = GetJournalByRow(parameters, true);
-                    break;
-                case JournalMode.ByRowsWithDetail:
-                    sourceList = SourceListId.JournalByNoByRowDetail;
-                    journal = GetJournalByRow(parameters, true, false, true);
-                    break;
-                case JournalMode.ByLedger:
-                    sourceList = SourceListId.JournalByNoByLedger;
-                    journal = await GetJournalByLedgerAsync(parameters, true);
-                    break;
-                case JournalMode.BySubsidiary:
-                    sourceList = SourceListId.JournalByNoBySubsidiary;
-                    journal = await GetJournalBySubsidiaryAsync(parameters, true);
-                    break;
-                case JournalMode.LedgerSummary:
-                    sourceList = SourceListId.JournalByNoSummary;
-                    journal = await GetJournalLedgerSummaryAsync(parameters, true);
-                    break;
-                default:
-                    break;
+                switch (parameters.Mode)
+                {
+                    case JournalMode.ByRows:
+                        journal = GetJournalByRow(parameters, true);
+                        break;
+                    case JournalMode.ByRowsWithDetail:
+                        journal = GetJournalByRow(parameters, true, false, true);
+                        break;
+                    case JournalMode.ByLedger:
+                        journal = await GetJournalByLedgerAsync(parameters, true);
+                        break;
+                    case JournalMode.BySubsidiary:
+                        journal = await GetJournalBySubsidiaryAsync(parameters, true);
+                        break;
+                    case JournalMode.LedgerSummary:
+                        journal = await GetJournalLedgerSummaryAsync(parameters, true);
+                        break;
+                    default:
+                        break;
+                }
             }
 
             await OnSourceActionAsync(parameters.GridOptions, sourceList);
@@ -176,41 +166,91 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات دفتر روزنامه بر حسب شماره سند و به تفکیک شعبه</returns>
         public async Task<JournalViewModel> GetJournalByNoByBranchAsync(JournalParameters parameters)
         {
-            var journal = default(JournalViewModel);
-            var sourceList = SourceListId.None;
-            switch (parameters.Mode)
+            var journal = new JournalViewModel();
+            var sourceList = GetSourceList(parameters.Mode, true);
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
             {
-                case JournalMode.ByRows:
-                    sourceList = SourceListId.JournalByNoByRow;
-                    journal = GetJournalByRow(parameters, true, true, false);
-                    break;
-                case JournalMode.ByRowsWithDetail:
-                    sourceList = SourceListId.JournalByNoByRowDetail;
-                    journal = GetJournalByRow(parameters, true, true, true);
-                    break;
-                case JournalMode.ByLedger:
-                    sourceList = SourceListId.JournalByNoByLedger;
-                    journal = await GetJournalByLedgerAsync(parameters, true, true);
-                    break;
-                case JournalMode.BySubsidiary:
-                    sourceList = SourceListId.JournalByNoBySubsidiary;
-                    journal = await GetJournalBySubsidiaryAsync(parameters, true, true);
-                    break;
-                case JournalMode.LedgerSummary:
-                    sourceList = SourceListId.JournalByNoSummary;
-                    journal = await GetJournalLedgerSummaryAsync(parameters, true, true);
-                    break;
-                default:
-                    break;
+                switch (parameters.Mode)
+                {
+                    case JournalMode.ByRows:
+                        journal = GetJournalByRow(parameters, true, true, false);
+                        break;
+                    case JournalMode.ByRowsWithDetail:
+                        journal = GetJournalByRow(parameters, true, true, true);
+                        break;
+                    case JournalMode.ByLedger:
+                        journal = await GetJournalByLedgerAsync(parameters, true, true);
+                        break;
+                    case JournalMode.BySubsidiary:
+                        journal = await GetJournalBySubsidiaryAsync(parameters, true, true);
+                        break;
+                    case JournalMode.LedgerSummary:
+                        journal = await GetJournalLedgerSummaryAsync(parameters, true, true);
+                        break;
+                    default:
+                        break;
+                }
             }
 
             await OnSourceActionAsync(parameters.GridOptions, sourceList);
             return journal;
         }
 
+        internal override OperationSourceId OperationSource
+        {
+            get { return OperationSourceId.Journal; }
+        }
+
         private IConfigRepository Config
         {
             get { return _system.Config; }
+        }
+
+        private static SourceListId GetSourceList(JournalMode mode, bool isByNo = false)
+        {
+            var sourceList = SourceListId.None;
+            switch (mode)
+            {
+                case JournalMode.ByRows:
+                    sourceList = isByNo
+                        ? SourceListId.JournalByNoByRow
+                        : SourceListId.JournalByDateByRow;
+                    break;
+                case JournalMode.ByRowsWithDetail:
+                    sourceList = isByNo
+                        ? SourceListId.JournalByNoByRowDetail
+                        : SourceListId.JournalByDateByRowDetail;
+                    break;
+                case JournalMode.ByLedger:
+                    sourceList = isByNo
+                        ? SourceListId.JournalByNoByLedger
+                        : SourceListId.JournalByDateByLedger;
+                    break;
+                case JournalMode.BySubsidiary:
+                    sourceList = isByNo
+                        ? SourceListId.JournalByNoBySubsidiary
+                        : SourceListId.JournalByDateBySubsidiary;
+                    break;
+                case JournalMode.LedgerSummary:
+                    sourceList = isByNo
+                        ? SourceListId.JournalByNoSummary
+                        : SourceListId.JournalByDateSummary;
+                    break;
+                case JournalMode.LedgerSummaryByDate:
+                    sourceList = isByNo
+                        ? SourceListId.None
+                        : SourceListId.JournalByDateSummaryByDate;
+                    break;
+                case JournalMode.MonthlyLedgerSummary:
+                    sourceList = isByNo
+                        ? SourceListId.None
+                        : SourceListId.JournalByDateSummaryByMonth;
+                    break;
+                default:
+                    break;
+            }
+
+            return sourceList;
         }
 
         private static ReportQuery GetJournalByLevelQuery(

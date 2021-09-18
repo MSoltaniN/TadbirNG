@@ -44,11 +44,16 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<PagedList<AccountViewModel>> GetAccountsAsync(GridOptions gridOptions = null)
         {
-            var accounts = await Repository
-                .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
-                .Select(item => Mapper.Map<AccountViewModel>(item))
-                .ToListAsync();
-            await UpdateInactiveAccountsAsync(accounts);
+            var accounts = new List<AccountViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                accounts = await Repository
+                    .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
+                    .Select(item => Mapper.Map<AccountViewModel>(item))
+                    .ToListAsync();
+                await UpdateInactiveAccountsAsync(accounts);
+            }
+
             await ReadAsync(gridOptions);
             return new PagedList<AccountViewModel>(accounts, gridOptions);
         }

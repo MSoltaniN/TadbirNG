@@ -46,7 +46,12 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ProfitLossViewModel> GetProfitLossAsync(
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
-            var profitLoss = await CalculateProfitLossAsync(parameters, balanceItems);
+            var profitLoss = new ProfitLossViewModel();
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
+            {
+                profitLoss = await CalculateProfitLossAsync(parameters, balanceItems);
+            }
+
             await OnSourceActionAsync(parameters.GridOptions, SourceListId.ProfitLoss);
             return profitLoss;
         }
@@ -62,19 +67,22 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var profitLoss = new ProfitLossViewModel();
-            var profitLossItems = new List<ProfitLossViewModel>();
-            int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
-                ? ViewId.ComparativeProfitLossSimple
-                : ViewId.ComparativeProfitLoss;
-            foreach (int itemId in parameters.CompareItems)
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
             {
-                parameters.CostCenterId = itemId;
-                profitLossItems.Add(await CalculateProfitLossAsync(parameters, balanceItems));
-            }
+                var profitLossItems = new List<ProfitLossViewModel>();
+                int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
+                    ? ViewId.ComparativeProfitLossSimple
+                    : ViewId.ComparativeProfitLoss;
+                foreach (int itemId in parameters.CompareItems)
+                {
+                    parameters.CostCenterId = itemId;
+                    profitLossItems.Add(await CalculateProfitLossAsync(parameters, balanceItems));
+                }
 
-            profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
-            profitLoss.ViewMetadata = await Metadata.GetCompoundViewMetadataAsync(
-                viewId, ViewId.CostCenter, parameters.CompareItems);
+                profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
+                profitLoss.ViewMetadata = await Metadata.GetCompoundViewMetadataAsync(
+                    viewId, ViewId.CostCenter, parameters.CompareItems);
+            }
 
             await OnSourceActionAsync(parameters.GridOptions, SourceListId.ProfitLossByCostCenter);
             return profitLoss;
@@ -91,19 +99,22 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var profitLoss = new ProfitLossViewModel();
-            var profitLossItems = new List<ProfitLossViewModel>();
-            int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
-                ? ViewId.ComparativeProfitLossSimple
-                : ViewId.ComparativeProfitLoss;
-            foreach (int itemId in parameters.CompareItems)
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
             {
-                parameters.ProjectId = itemId;
-                profitLossItems.Add(await CalculateProfitLossAsync(parameters, balanceItems));
-            }
+                var profitLossItems = new List<ProfitLossViewModel>();
+                int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
+                    ? ViewId.ComparativeProfitLossSimple
+                    : ViewId.ComparativeProfitLoss;
+                foreach (int itemId in parameters.CompareItems)
+                {
+                    parameters.ProjectId = itemId;
+                    profitLossItems.Add(await CalculateProfitLossAsync(parameters, balanceItems));
+                }
 
-            profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
-            profitLoss.ViewMetadata = await Metadata.GetCompoundViewMetadataAsync(
-                viewId, ViewId.Project, parameters.CompareItems);
+                profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
+                profitLoss.ViewMetadata = await Metadata.GetCompoundViewMetadataAsync(
+                    viewId, ViewId.Project, parameters.CompareItems);
+            }
 
             await OnSourceActionAsync(parameters.GridOptions, SourceListId.ProfitLossByProject);
             return profitLoss;
@@ -120,19 +131,22 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var profitLoss = new ProfitLossViewModel();
-            var profitLossItems = new List<ProfitLossViewModel>();
-            int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
-                ? ViewId.ComparativeProfitLossSimple
-                : ViewId.ComparativeProfitLoss;
-            foreach (int itemId in parameters.CompareItems)
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
             {
-                parameters.BranchId = itemId;
-                profitLossItems.Add(await CalculateProfitLossAsync(parameters, balanceItems));
-            }
+                var profitLossItems = new List<ProfitLossViewModel>();
+                int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
+                    ? ViewId.ComparativeProfitLossSimple
+                    : ViewId.ComparativeProfitLoss;
+                foreach (int itemId in parameters.CompareItems)
+                {
+                    parameters.BranchId = itemId;
+                    profitLossItems.Add(await CalculateProfitLossAsync(parameters, balanceItems));
+                }
 
-            profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
-            profitLoss.ViewMetadata = await Metadata.GetCompoundViewMetadataAsync(
-                viewId, ViewId.Branch, parameters.CompareItems);
+                profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
+                profitLoss.ViewMetadata = await Metadata.GetCompoundViewMetadataAsync(
+                    viewId, ViewId.Branch, parameters.CompareItems);
+            }
 
             await OnSourceActionAsync(parameters.GridOptions, SourceListId.ProfitLossByBranch);
             return profitLoss;
@@ -149,19 +163,22 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters, IEnumerable<StartEndBalanceViewModel> balanceItems)
         {
             var profitLoss = new ProfitLossViewModel();
-            var profitLossItems = new List<ProfitLossViewModel>();
-            int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
-                ? ViewId.ComparativeProfitLossSimple
-                : ViewId.ComparativeProfitLoss;
-            foreach (int itemId in parameters.CompareItems)
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
             {
-                var adjusted = await GetAdjustedParametersAsync(parameters, itemId);
-                profitLossItems.Add(await CalculateProfitLossAsync(adjusted, balanceItems));
-            }
+                var profitLossItems = new List<ProfitLossViewModel>();
+                int viewId = parameters.FromDate.CompareWith(parameters.ToDate) == 0
+                    ? ViewId.ComparativeProfitLossSimple
+                    : ViewId.ComparativeProfitLoss;
+                foreach (int itemId in parameters.CompareItems)
+                {
+                    var adjusted = await GetAdjustedParametersAsync(parameters, itemId);
+                    profitLossItems.Add(await CalculateProfitLossAsync(adjusted, balanceItems));
+                }
 
-            profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
-            profitLoss.ViewMetadata = await Metadata.GetCompoundViewMetadataAsync(
-                viewId, ViewId.FiscalPeriod, parameters.CompareItems);
+                profitLoss.ComparativeItems.AddRange(MergeItems(profitLossItems));
+                profitLoss.ViewMetadata = await Metadata.GetCompoundViewMetadataAsync(
+                    viewId, ViewId.FiscalPeriod, parameters.CompareItems);
+            }
 
             await OnSourceActionAsync(parameters.GridOptions, SourceListId.ProfitLossByFiscalPeriod);
             return profitLoss;

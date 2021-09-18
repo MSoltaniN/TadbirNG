@@ -163,36 +163,60 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private async Task<AccountBookViewModel> GetAccountBookDataAsync(
-            AccountBookParameters parameters)
+        private static SourceListId GetSourceList(AccountBookMode mode)
         {
-            Verify.ArgumentNotNull(parameters, nameof(parameters));
-            var accountItem = await _utility.GetItemAsync(parameters.ViewId, parameters.ItemId);
-            string fullCode = accountItem?.FullCode ?? String.Empty;
-            DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-
-            var book = default(AccountBookViewModel);
             var sourceList = SourceListId.None;
-            switch (parameters.Mode)
+            switch (mode)
             {
                 case AccountBookMode.ByRows:
-                    book = await GetSimpleBookAsync(fullCode, parameters);
                     sourceList = SourceListId.AccountBookByRow;
                     break;
                 case AccountBookMode.VoucherSum:
-                    book = await GetSummaryBookAsync(fullCode, parameters, true);
                     sourceList = SourceListId.AccountBookVoucherSum;
                     break;
                 case AccountBookMode.DailySum:
-                    book = await GetSummaryBookAsync(fullCode, parameters, false);
                     sourceList = SourceListId.AccountBookDailySum;
                     break;
                 case AccountBookMode.MonthlySum:
-                    book = await GetMonthlySummaryBookAsync(fullCode, parameters);
                     sourceList = SourceListId.AccountBookMonthlySum;
                     break;
                 default:
                     break;
+            }
+
+            return sourceList;
+        }
+
+        private async Task<AccountBookViewModel> GetAccountBookDataAsync(
+            AccountBookParameters parameters)
+        {
+            Verify.ArgumentNotNull(parameters, nameof(parameters));
+            var book = default(AccountBookViewModel);
+            var sourceList = GetSourceList(parameters.Mode);
+
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
+            {
+                var accountItem = await _utility.GetItemAsync(parameters.ViewId, parameters.ItemId);
+                string fullCode = accountItem?.FullCode ?? String.Empty;
+                DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+
+                switch (parameters.Mode)
+                {
+                    case AccountBookMode.ByRows:
+                        book = await GetSimpleBookAsync(fullCode, parameters);
+                        break;
+                    case AccountBookMode.VoucherSum:
+                        book = await GetSummaryBookAsync(fullCode, parameters, true);
+                        break;
+                    case AccountBookMode.DailySum:
+                        book = await GetSummaryBookAsync(fullCode, parameters, false);
+                        break;
+                    case AccountBookMode.MonthlySum:
+                        book = await GetMonthlySummaryBookAsync(fullCode, parameters);
+                        break;
+                    default:
+                        break;
+                }
             }
 
             await OnSourceActionAsync(parameters.GridOptions, sourceList);

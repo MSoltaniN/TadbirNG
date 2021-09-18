@@ -45,17 +45,22 @@ namespace SPPC.Tadbir.Persistence
                 .FirstOrDefaultAsync();
             if (currency != null)
             {
-                var all = await Repository
-                    .GetAllQuery<CurrencyRate>(ViewId.CurrencyRate, rate => rate.Branch)
-                    .Where(rate => rate.CurrencyId == currencyId)
-                    .OrderByDescending(rate => rate.Date)
-                    .ThenByDescending(rate => rate.Time)
-                    .Select(rate => Mapper.Map<CurrencyRateViewModel>(rate))
-                    .ToListAsync();
+                var rates = new List<CurrencyRateViewModel>();
+                if (gridOptions.Operation != (int)OperationId.Print)
+                {
+                    rates = await Repository
+                        .GetAllQuery<CurrencyRate>(ViewId.CurrencyRate, rate => rate.Branch)
+                        .Where(rate => rate.CurrencyId == currencyId)
+                        .OrderByDescending(rate => rate.Date)
+                        .ThenByDescending(rate => rate.Time)
+                        .Select(rate => Mapper.Map<CurrencyRateViewModel>(rate))
+                        .ToListAsync();
+                }
+
                 var description = GetRatesOperationDescription(currency.Name);
                 var options = gridOptions ?? new GridOptions() { Operation = (int)OperationId.ViewRates };
                 await ReadAsync(options, description);
-                return new PagedList<CurrencyRateViewModel>(all, gridOptions);
+                return new PagedList<CurrencyRateViewModel>(rates, gridOptions);
             }
 
             return null;

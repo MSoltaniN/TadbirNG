@@ -52,8 +52,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از شرکت های تعریف شده در برنامه</returns>
         public async Task<PagedList<CompanyDbViewModel>> GetCompaniesAsync(GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var companies = await repository.GetByCriteriaAsync(await GetSecurityFilterAsync());
+            var companies = new List<CompanyDb>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+                companies.AddRange(await repository.GetByCriteriaAsync(await GetSecurityFilterAsync()));
+            }
+
             await ReadAsync(gridOptions);
             return new PagedList<CompanyDbViewModel>(
                 companies.Select(c => Mapper.Map<CompanyDbViewModel>(c)), gridOptions);

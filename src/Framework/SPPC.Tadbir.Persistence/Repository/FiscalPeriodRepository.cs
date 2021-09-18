@@ -44,8 +44,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از دوره های مالی تعریف شده در شرکت جاری</returns>
         public async Task<PagedList<FiscalPeriodViewModel>> GetFiscalPeriodsAsync(GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var fiscalPeriods = await repository.GetByCriteriaAsync(await GetSecurityFilterAsync());
+            var fiscalPeriods = new List<FiscalPeriod>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+                fiscalPeriods.AddRange(await repository.GetByCriteriaAsync(await GetSecurityFilterAsync()));
+            }
+
             await ReadAsync(gridOptions);
             return new PagedList<FiscalPeriodViewModel>(
                 fiscalPeriods.Select(fp => Mapper.Map<FiscalPeriodViewModel>(fp)), gridOptions);

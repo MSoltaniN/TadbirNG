@@ -49,11 +49,16 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>لیست کاربران برنامه</returns>
         public async Task<PagedList<UserViewModel>> GetUsersAsync(GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<User>();
-            var users = await repository
-                .GetEntityQuery(u => u.Person)
-                .Select(user => Mapper.Map<UserViewModel>(user))
-                .ToListAsync();
+            var users = new List<UserViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<User>();
+                users = await repository
+                    .GetEntityQuery(u => u.Person)
+                    .Select(user => Mapper.Map<UserViewModel>(user))
+                    .ToListAsync();
+            }
+
             await ReadAsync(gridOptions);
             return new PagedList<UserViewModel>(users, gridOptions);
         }

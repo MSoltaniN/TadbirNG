@@ -45,11 +45,16 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از ارزها تعریف شده</returns>
         public async Task<PagedList<CurrencyViewModel>> GetCurrenciesAsync(GridOptions gridOptions = null)
         {
-            var currencies = await Repository
-                .GetAllQuery<Currency>(ViewId.Currency, curr => curr.Branch)
-                .Select(item => Mapper.Map<CurrencyViewModel>(item))
-                .ToListAsync();
-            await UpdateInactiveCurrenciesAsync(currencies);
+            var currencies = new List<CurrencyViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                currencies = await Repository
+                    .GetAllQuery<Currency>(ViewId.Currency, curr => curr.Branch)
+                    .Select(item => Mapper.Map<CurrencyViewModel>(item))
+                    .ToListAsync();
+                await UpdateInactiveCurrenciesAsync(currencies);
+            }
+
             await ReadAsync(gridOptions);
             return new PagedList<CurrencyViewModel>(currencies, gridOptions);
         }

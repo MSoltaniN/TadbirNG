@@ -43,10 +43,15 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از تفصیلی های شناور تعریف شده در دوره مالی و شعبه جاری</returns>
         public async Task<PagedList<DetailAccountViewModel>> GetDetailAccountsAsync(GridOptions gridOptions = null)
         {
-            var detailAccounts = await Repository
-                .GetAllQuery<DetailAccount>(ViewId.DetailAccount, facc => facc.Children)
-                .Select(item => Mapper.Map<DetailAccountViewModel>(item))
-                .ToListAsync();
+            var detailAccounts = new List<DetailAccountViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                detailAccounts = await Repository
+                    .GetAllQuery<DetailAccount>(ViewId.DetailAccount, facc => facc.Children)
+                    .Select(item => Mapper.Map<DetailAccountViewModel>(item))
+                    .ToListAsync();
+            }
+
             await ReadAsync(gridOptions);
             return new PagedList<DetailAccountViewModel>(detailAccounts, gridOptions);
         }
