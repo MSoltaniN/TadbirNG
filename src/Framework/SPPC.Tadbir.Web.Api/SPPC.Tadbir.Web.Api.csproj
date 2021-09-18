@@ -16,10 +16,6 @@
     <ServerGarbageCollection>false</ServerGarbageCollection>
   </PropertyGroup>
 
-  <Target Name="PostBuild" BeforeTargets="PostBuildEvent">
-    <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ngdes.exe -cmd:refdb " />
-  </Target>
-
   <ItemGroup>
     <Compile Remove="Report.cs" />
   </ItemGroup>
@@ -71,5 +67,9 @@
   <ItemGroup>
     <Folder Include="wwwroot\Upload\" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ngdes.exe -cmd:refdb" />
+  </Target>
 
 </Project>
