@@ -29,13 +29,10 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="fiscalRepository">امکان کار با اطلاعات دوره مالی را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی و سیستمی را در برنامه فراهم می کند</param>
-        public ConfigRepository(IRepositoryContext context, IFiscalPeriodRepository fiscalRepository,
-            IOperationLogRepository log)
+        public ConfigRepository(IRepositoryContext context, IOperationLogRepository log)
             : base(context, log)
         {
-            _fiscalRepository = fiscalRepository;
         }
 
         /// <summary>
@@ -54,11 +51,12 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                var fp = _fiscalRepository.GetFiscalPeriodAsync(UserContext.FiscalPeriodId).Result;
-                start = fp.StartDate;
+                var repository = UnitOfWork.GetRepository<FiscalPeriod>();
+                var fiscalPeriod = repository.GetByID(UserContext.FiscalPeriodId);
+                start = fiscalPeriod.StartDate;
                 end = (config.DefaultDateRange == DateRangeOptions.FiscalStartToCurrent)
                     ? DateTime.Now
-                    : fp.EndDate;
+                    : fiscalPeriod.EndDate;
             }
         }
 
@@ -523,7 +521,6 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private readonly IFiscalPeriodRepository _fiscalRepository;
         private string _webRootPath;
     }
 }
