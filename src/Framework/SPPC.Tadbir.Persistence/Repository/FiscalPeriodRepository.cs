@@ -29,10 +29,11 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        public FiscalPeriodRepository(IRepositoryContext context, IOperationLogRepository log)
-            : base(context, log)
+        /// <param name="system">امکانات سیستمی برنامه را در اختیار این کلاس قرار می دهد</param>
+        public FiscalPeriodRepository(IRepositoryContext context, ISystemRepository system)
+            : base(context, system.Logger)
         {
+            Config = system.Config;
         }
 
         /// <summary>
@@ -353,13 +354,17 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
         protected override string GetState(FiscalPeriod entity)
         {
+            string startDate = Config.GetDateDisplayAsync(entity.StartDate).Result;
+            string endDate = Config.GetDateDisplayAsync(entity.EndDate).Result;
             return (entity != null)
                 ? String.Format(
-                    "{0} : {1} , {2} : {3} , {4} : {5}",
-                    AppStrings.StartDate, entity.StartDate, AppStrings.EndDate, entity.EndDate,
-                    AppStrings.Description, entity.Description)
+                    "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7}",
+                    AppStrings.Name, entity.Name, AppStrings.StartDate, startDate,
+                    AppStrings.EndDate, endDate, AppStrings.Description, entity.Description)
                 : null;
         }
+
+        private IConfigRepository Config { get; }
 
         private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
         {

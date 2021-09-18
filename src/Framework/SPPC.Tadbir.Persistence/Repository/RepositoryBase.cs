@@ -89,20 +89,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، شرکت جاری در برنامه را به شرکت مشخص شده تغییر می دهد
-        /// </summary>
-        /// <param name="companyId">شناسه دیتابیسی شرکت مورد نظر</param>
-        public async Task SetCurrentCompanyAsync(int companyId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var company = await repository.GetByIDAsync(companyId);
-            if (company != null)
-            {
-                UnitOfWork.SwitchCompany(BuildConnectionString(company));
-            }
-        }
-
-        /// <summary>
         /// به روش آسنکرون، رشته اتصال شرکت را ایجاد میکند
         /// </summary>
         /// <param name="companyId">شناسه یکتای شرکت</param>
@@ -137,12 +123,26 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، شرکت جاری در برنامه را به شرکت مشخص شده تغییر می دهد
+        /// </summary>
+        /// <param name="companyId">شناسه دیتابیسی شرکت مورد نظر</param>
+        protected async Task SetCurrentCompanyAsync(int companyId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var company = await repository.GetByIDAsync(companyId);
+            if (company != null)
+            {
+                UnitOfWork.SwitchCompany(BuildConnectionString(company));
+            }
+        }
+
+        /// <summary>
         /// به روش آسنکرون، شعبه های زیرمجموعه شعبه داده شده را به صورت مجموعه ای از
         /// شناسه های دیتابیسی خوانده و برمی گرداند
         /// </summary>
         /// <param name="branchId">شناسه دیتابیسی شعبه والد مورد نظر</param>
         /// <returns>مجموعه شناسه های دیتابیسی شعبه های زیرمجموعه</returns>
-        public async Task<IEnumerable<int>> GetChildTreeAsync(int branchId)
+        protected async Task<IEnumerable<int>> GetChildTreeAsync(int branchId)
         {
             var tree = new List<int>();
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
@@ -157,7 +157,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="branchId">شناسه دیتابیسی شعبه زیرمجموعه مورد نظر</param>
         /// <returns>مجموعه شناسه های دیتابیسی شعبه های والد</returns>
-        public async Task<IEnumerable<int>> GetParentTreeAsync(int branchId)
+        protected async Task<IEnumerable<int>> GetParentTreeAsync(int branchId)
         {
             var tree = new List<int>();
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
