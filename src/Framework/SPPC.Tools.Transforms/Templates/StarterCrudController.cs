@@ -37,16 +37,17 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.");
             
-            #line 15 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 16 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityArea));
             
             #line default
             #line hidden
             this.Write(";\r\nusing SPPC.Tadbir.Web.Api.Extensions;\r\nusing SPPC.Tadbir.Web.Api.Filters;\r\n\r\n");
             
-            #line 19 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 20 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
 
 var plural = GetPluralName(_model.EntityName);
 var name = String.Format("{0}Controller", plural);
@@ -57,7 +58,7 @@ var name = String.Format("{0}Controller", plural);
             this.Write("namespace SPPC.Tadbir.Web.Api.Controllers\r\n{\r\n    /// <summary>\r\n    /// عملیات س" +
                     "رویس وب برای مدیریت اطلاعات ");
             
-            #line 26 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 27 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPluralPersianName));
             
             #line default
@@ -65,14 +66,14 @@ var name = String.Format("{0}Controller", plural);
             this.Write(" را پیاده سازی می کند\r\n    /// </summary>\r\n    [Produces(\"application/json\")]\r\n  " +
                     "  public class ");
             
-            #line 29 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 30 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write(" : ValidatingController<");
             
-            #line 29 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 30 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
@@ -81,31 +82,38 @@ var name = String.Format("{0}Controller", plural);
                     "سازد\r\n        /// </summary>\r\n        /// <param name=\"repository\">امکان ذخیره و" +
                     " بازیابی اطلاعات ");
             
-            #line 34 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 35 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPluralPersianName));
             
             #line default
             #line hidden
             this.Write(" در دیتابیس را فراهم می کند</param>\r\n        /// <param name=\"strings\">امکان خوان" +
-                    "دن متن های چندزبانه را فراهم می کند</param>\r\n        public ");
+                    "دن متن های چندزبانه را فراهم می کند</param>\r\n        /// <param name=\"tokenServi" +
+                    "ce\">امکان کار با توکن امنیتی برنامه را فراهم می کند</param>\r\n        public ");
             
-            #line 36 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 38 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("(I");
             
-            #line 36 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 38 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
-            this.Write("Repository repository, IStringLocalizer<AppStrings> strings)\r\n            : base(" +
-                    "strings)\r\n        {\r\n            _repository = repository;\r\n        }\r\n\r\n       " +
-                    " /// <summary>\r\n        /// کلید متنی چندزبانه برای موجودیت ");
+            this.Write(@"Repository repository, IStringLocalizer<AppStrings> strings,
+            ITokenService tokenService)
+            : base(strings, tokenService)
+        {
+            _repository = repository;
+        }
+
+        /// <summary>
+        /// کلید متنی چندزبانه برای موجودیت ");
             
-            #line 43 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 46 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPersianName));
             
             #line default
@@ -113,7 +121,7 @@ var name = String.Format("{0}Controller", plural);
             this.Write("\r\n        /// </summary>\r\n        protected override string EntityNameKey\r\n      " +
                     "  {\r\n            get { return AppStrings.");
             
-            #line 47 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 50 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
@@ -121,7 +129,7 @@ var name = String.Format("{0}Controller", plural);
             this.Write("; }\r\n        }\r\n\r\n        /// <summary>\r\n        /// به روش آسنکرون، اطلاعات صفحه" +
                     " بندی شده ");
             
-            #line 51 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 54 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPluralPersianName));
             
             #line default
@@ -129,82 +137,82 @@ var name = String.Format("{0}Controller", plural);
             this.Write(" را خوانده و برمی گرداند\r\n        /// </summary>\r\n        /// <returns>اطلاعات صف" +
                     "حه بندی شده ");
             
-            #line 53 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPluralPersianName));
             
             #line default
             #line hidden
             this.Write("</returns>\r\n        // GET: api/");
             
-            #line 54 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 57 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.ToLower()));
             
             #line default
             #line hidden
             this.Write("\r\n        [HttpGet]\r\n        [Route(");
             
-            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 59 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Api.");
             
-            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 59 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.IsFiscalEntity ? "Environment" : String.Empty));
             
             #line default
             #line hidden
             
-            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 59 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural));
             
             #line default
             #line hidden
             this.Write("Url)]\r\n        [AuthorizeRequest(SecureEntity.");
             
-            #line 57 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 60 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write(", (int)");
             
-            #line 57 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 60 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Permissions.View)]\r\n        public async Task<IActionResult> Get");
             
-            #line 58 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 61 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.IsFiscalEntity ? "Environment" : String.Empty));
             
             #line default
             #line hidden
             
-            #line 58 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 61 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural));
             
             #line default
             #line hidden
             this.Write("Async()\r\n        {\r\n            var ");
             
-            #line 60 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 63 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.ToLower()));
             
             #line default
             #line hidden
             this.Write(" = await _repository.Get");
             
-            #line 60 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 63 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural));
             
             #line default
             #line hidden
             this.Write("Async(GridOptions);\r\n            return JsonListResult(");
             
-            #line 61 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 64 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.ToLower()));
             
             #line default
@@ -212,7 +220,7 @@ var name = String.Format("{0}Controller", plural);
             this.Write(");\r\n        }\r\n\r\n        /// <summary>\r\n        /// به روش آسنکرون، اطلاعات نمایش" +
                     "ی ");
             
-            #line 65 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 68 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPersianName));
             
             #line default
@@ -220,105 +228,105 @@ var name = String.Format("{0}Controller", plural);
             this.Write(" مشخص شده با شناسه دیتابیسی را خوانده و برمی گرداند\r\n        /// </summary>\r\n    " +
                     "    /// <param name=\"");
             
-            #line 67 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 70 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id\">شناسه دیتابیسی ");
             
-            #line 67 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 70 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPersianName));
             
             #line default
             #line hidden
             this.Write(" مورد نظر</param>\r\n        /// <returns>اطلاعات نمایشی ");
             
-            #line 68 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 71 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPersianName));
             
             #line default
             #line hidden
             this.Write(" مورد نظر</returns>\r\n        // GET: api/");
             
-            #line 69 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.ToLower()));
             
             #line default
             #line hidden
             this.Write("/{");
             
-            #line 69 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id:min(1)}\r\n        [HttpGet]\r\n        [Route(");
             
-            #line 71 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 74 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Api.");
             
-            #line 71 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 74 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Url)]\r\n        [AuthorizeRequest(SecureEntity.");
             
-            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 75 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write(", (int)");
             
-            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 75 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Permissions.View)]\r\n        public async Task<IActionResult> Get");
             
-            #line 73 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 76 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async(int ");
             
-            #line 73 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 76 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id)\r\n        {\r\n            var ");
             
-            #line 75 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 78 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write(" = await _repository.Get");
             
-            #line 75 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 78 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 75 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 78 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id);\r\n            return JsonReadResult(");
             
-            #line 76 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 79 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
@@ -326,7 +334,7 @@ var name = String.Format("{0}Controller", plural);
             this.Write(");\r\n        }\r\n\r\n        /// <summary>\r\n        /// به روش آسنکرون، اطلاعات نمایش" +
                     "ی یک ");
             
-            #line 80 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 83 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPersianName));
             
             #line default
@@ -334,90 +342,90 @@ var name = String.Format("{0}Controller", plural);
             this.Write(" جدید را پس از اعتبارسنجی در دیتابیس ذخیره می کند\r\n        /// </summary>\r\n      " +
                     "  /// <param name=\"");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 85 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("\">اطلاعات نمایشی ");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 85 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPersianName));
             
             #line default
             #line hidden
             this.Write(" جدید</param>\r\n        /// <returns>اطلاعات نمایشی ذخیره شده برای ");
             
-            #line 83 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 86 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPersianName));
             
             #line default
             #line hidden
             this.Write("</returns>\r\n        // POST: api/");
             
-            #line 84 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 87 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.ToLower()));
             
             #line default
             #line hidden
             this.Write("\r\n        [HttpPost]\r\n        [Route(");
             
-            #line 86 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 89 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Api.");
             
-            #line 86 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 89 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.IsFiscalEntity ? "Environment" : String.Empty));
             
             #line default
             #line hidden
             
-            #line 86 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 89 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural));
             
             #line default
             #line hidden
             this.Write("Url)]\r\n        [AuthorizeRequest(SecureEntity.");
             
-            #line 87 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 90 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write(", (int)");
             
-            #line 87 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 90 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Permissions.Create)]\r\n        public async Task<IActionResult> PostNew");
             
-            #line 88 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 91 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async([FromBody] ");
             
-            #line 88 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 91 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("ViewModel ");
             
-            #line 88 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 91 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write(")\r\n        {\r\n            var result = BasicValidationResult(");
             
-            #line 90 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 93 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
@@ -426,14 +434,14 @@ var name = String.Format("{0}Controller", plural);
                     "     return result;\r\n            }\r\n\r\n            var outputItem = await _reposi" +
                     "tory.Save");
             
-            #line 96 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 99 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 96 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 99 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
@@ -442,7 +450,7 @@ var name = String.Format("{0}Controller", plural);
                     "     }\r\n\r\n        /// <summary>\r\n        /// به روش آسنکرون، اطلاعات نمایشی اصلا" +
                     "ح شده برای یک ");
             
-            #line 101 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 104 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPersianName));
             
             #line default
@@ -450,119 +458,119 @@ var name = String.Format("{0}Controller", plural);
             this.Write(" موجود را پس از اعتبارسنجی در دیتابیس ذخیره می کند\r\n        /// </summary>\r\n     " +
                     "   /// <param name=\"");
             
-            #line 103 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 106 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id\">شناسه دیتابیسی ");
             
-            #line 103 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 106 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPersianName));
             
             #line default
             #line hidden
             this.Write(" اصلاح شده</param>\r\n        /// <param name=\"");
             
-            #line 104 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 107 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("\">اطلاعات نمایشی اصلاح شده برای ");
             
-            #line 104 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 107 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPersianName));
             
             #line default
             #line hidden
             this.Write("</param>\r\n        /// <returns>اطلاعات نمایشی ذخیره شده برای ");
             
-            #line 105 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 108 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPersianName));
             
             #line default
             #line hidden
             this.Write("</returns>\r\n        // PUT: api/");
             
-            #line 106 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 109 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.ToLower()));
             
             #line default
             #line hidden
             this.Write("/{");
             
-            #line 106 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 109 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id:min(1)}\r\n        [HttpPut]\r\n        [Route(");
             
-            #line 108 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 111 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Api.");
             
-            #line 108 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 111 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Url)]\r\n        [AuthorizeRequest(SecureEntity.");
             
-            #line 109 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 112 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write(", (int)");
             
-            #line 109 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 112 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Permissions.Edit)]\r\n        public async Task<IActionResult> PutModified");
             
-            #line 110 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 113 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async(int ");
             
-            #line 110 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 113 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id, [FromBody] ");
             
-            #line 110 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 113 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("ViewModel ");
             
-            #line 110 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 113 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write(")\r\n        {\r\n            var result = BasicValidationResult(");
             
-            #line 112 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 115 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 112 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 115 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
@@ -571,14 +579,14 @@ var name = String.Format("{0}Controller", plural);
                     "       return result;\r\n            }\r\n\r\n            var outputItem = await _repo" +
                     "sitory.Save");
             
-            #line 118 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 121 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 118 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 121 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
@@ -586,7 +594,7 @@ var name = String.Format("{0}Controller", plural);
             this.Write(");\r\n            return OkReadResult(outputItem);\r\n        }\r\n\r\n        /// <summa" +
                     "ry>\r\n        /// به روش آسنکرون، اطلاعات ");
             
-            #line 123 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 126 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPersianName));
             
             #line default
@@ -594,77 +602,77 @@ var name = String.Format("{0}Controller", plural);
             this.Write(" مشخص شده با شناسه دیتابیسی را پس از اعتبارسنجی از دیتابیس حذف می کند\r\n        //" +
                     "/ </summary>\r\n        /// <param name=\"");
             
-            #line 125 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 128 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id\">شناسه دیتابیسی ");
             
-            #line 125 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 128 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPersianName));
             
             #line default
             #line hidden
             this.Write(" مورد نظر برای حذف</param>\r\n        // DELETE: api/");
             
-            #line 126 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 129 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.ToLower()));
             
             #line default
             #line hidden
             this.Write("/{");
             
-            #line 126 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 129 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id:min(1)}\r\n        [HttpDelete]\r\n        [Route(");
             
-            #line 128 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 131 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Api.");
             
-            #line 128 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 131 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Url)]\r\n        [AuthorizeRequest(SecureEntity.");
             
-            #line 129 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 132 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write(", (int)");
             
-            #line 129 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 132 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Permissions.Delete)]\r\n        public async Task<IActionResult> DeleteExisting");
             
-            #line 130 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 133 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async(int ");
             
-            #line 130 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 133 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write("Id)\r\n        {\r\n            string message = await ValidateDeleteAsync(");
             
-            #line 132 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 135 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
@@ -673,14 +681,14 @@ var name = String.Format("{0}Controller", plural);
                     "     return BadRequestResult(message);\r\n            }\r\n\r\n            await _repo" +
                     "sitory.Delete");
             
-            #line 138 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 141 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 138 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 141 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
@@ -688,7 +696,7 @@ var name = String.Format("{0}Controller", plural);
             this.Write("Id);\r\n            return StatusCode(StatusCodes.Status204NoContent);\r\n        }\r\n" +
                     "\r\n        /// <summary>\r\n        /// به روش آسنکرون، عمل حذف را برای یکی از ");
             
-            #line 143 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 146 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPluralPersianName));
             
             #line default
@@ -696,7 +704,7 @@ var name = String.Format("{0}Controller", plural);
             this.Write(" اعتبارسنجی می کند\r\n        /// </summary>\r\n        /// <param name=\"item\">شناسه " +
                     "دیتابیسی ");
             
-            #line 145 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 148 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPersianName));
             
             #line default
@@ -709,21 +717,21 @@ var name = String.Format("{0}Controller", plural);
             string message = String.Empty;
             var ");
             
-            #line 151 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 154 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write(" = await _repository.Get");
             
-            #line 151 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 154 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async(item);\r\n            if (");
             
-            #line 152 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 155 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
@@ -731,7 +739,7 @@ var name = String.Format("{0}Controller", plural);
             this.Write(" == null)\r\n            {\r\n                message = _strings.Format(AppStrings.It" +
                     "emByIdNotFound, AppStrings.");
             
-            #line 154 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 157 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
@@ -739,7 +747,7 @@ var name = String.Format("{0}Controller", plural);
             this.Write(", item.ToString());\r\n            }\r\n\r\n            return message;\r\n        }\r\n\r\n " +
                     "       private readonly I");
             
-            #line 160 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 163 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default

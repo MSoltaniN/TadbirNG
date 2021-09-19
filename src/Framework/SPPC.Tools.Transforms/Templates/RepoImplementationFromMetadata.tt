@@ -16,8 +16,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.Helpers;
 using SPPC.Tadbir.Model.<#= entity.Area #>;
+using SPPC.Tadbir.Utility;
 <# if(entity.Area != "Auth")
 { #>
 using SPPC.Tadbir.ViewModel.<#= entity.Area #>;
@@ -26,9 +26,9 @@ using SPPC.Tadbir.ViewModel.<#= entity.Area #>;
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    /// عملیات مورد نیاز برای مدیریت <#= entityInfo.PluralName #> را پیاده سازی میکند
+    /// عملیات مورد نیاز برای مدیریت <#= entityInfo.PluralName #> را پیاده سازی می کند
     /// </summary>
-    public class <#= entity.Name #>Repository : LoggingRepository<<#= entity.Name #>, <#= entity.Name #>ViewModel>, I<#= entity.Name #>Repository
+    public class <#= entity.Name #>Repository : EntityLoggingRepository<<#= entity.Name #>, <#= entity.Name #>ViewModel>, I<#= entity.Name #>Repository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -38,31 +38,39 @@ namespace SPPC.Tadbir.Persistence
         public <#= entity.Name #>Repository(IRepositoryContext context, ISystemRepository system)
             : base(context, system.Logger)
         {
+<# if(entityInfo.IsFiscalEntity)
+   { #>
             _system = system;
+<# } #>
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه <#= entityInfo.PluralName #> را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات کلیه <#= entityInfo.PluralName #> را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از <#= entityInfo.PluralName #> تعریف شده</returns>
         public async Task<PagedList<<#= entity.Name #>ViewModel>> Get<#= plural #>Async(GridOptions gridOptions = null)
         {
+            var <#= plural.CamelCase() #> = new List<<#= entity.Name #>ViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
 <# if(entityInfo.IsFiscalEntity)
    { #>
-            var query = Repository.GetAllQuery<#= entity.Name #>(ViewName.<#= entity.Name #>);
-            var <#= plural.CamelCase() #> = await query
-                .Select(item => Mapper.Map<<#= entity.Name #>ViewModel>(item))
-                .ToListAsync();
+                var query = Repository.GetAllQuery<#= entity.Name #>(ViewName.<#= entity.Name #>);
+                var <#= plural.CamelCase() #> = await query
+                    .Select(item => Mapper.Map<<#= entity.Name #>ViewModel>(item))
+                    .ToListAsync();
 <# }
    else
    { #>
-            var repository = UnitOfWork.GetAsyncRepository<<#= entity.Name #>>();
-            var <#= plural.CamelCase() #> = await repository
-                .GetEntityQuery()
-                .Select(item => Mapper.Map<<#= entity.Name #>ViewModel>(item))
-                .ToListAsync();
+                var repository = UnitOfWork.GetAsyncRepository<<#= entity.Name #>>();
+                var <#= plural.CamelCase() #> = await repository
+                    .GetEntityQuery()
+                    .Select(item => Mapper.Map<<#= entity.Name #>ViewModel>(item))
+                    .ToListAsync();
 <# } #>
+            }
+
             await ReadAsync(gridOptions);
             return new PagedList<<#= entity.Name #>ViewModel>(<#= plural.CamelCase() #>, gridOptions);
         }
@@ -93,7 +101,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<<#= entity.Name #>ViewModel> Save<#= entity.Name #>Async(<#= entity.Name #>ViewModel <#= camelCase #>)
         {
             Verify.ArgumentNotNull(<#= camelCase #>, nameof(<#= camelCase #>));
-            <#= entity.Name #> <#= camelCase #>Model = default(<#= entity.Name #>);
+            <#= entity.Name #> <#= camelCase #>Model;
             var repository = UnitOfWork.GetAsyncRepository<<#= entity.Name #>>();
             if (<#= camelCase #>.Id == 0)
             {
@@ -115,8 +123,8 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، <#= entityInfo.SingularName #> مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
-        /// <param name="<#= entity.Name.ToLower() #>Id">شناسه عددی <#= entityInfo.SingularName #> مورد نظر برای حذف</param>
-        public async Task Delete<#= entity.Name #>Async(int <#= entity.Name.ToLower() #>Id)
+        /// <param name="<#= camelCase #>Id">شناسه عددی <#= entityInfo.SingularName #> مورد نظر برای حذف</param>
+        public async Task Delete<#= entity.Name #>Async(int <#= camelCase #>Id)
         {
             var repository = UnitOfWork.GetAsyncRepository<<#= entity.Name #>>();
             var <#= camelCase #> = await repository.GetByIDAsync(<#= camelCase #>Id);
@@ -124,6 +132,25 @@ namespace SPPC.Tadbir.Persistence
             {
                 await DeleteAsync(repository, <#= camelCase #>);
             }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، <#= entityInfo.PluralName #> مشخص شده با شناسه عددی را حذف می کند
+        /// </summary>
+        /// <param name="accountIds">مجموعه ای از شناسه های عددی <#= entityInfo.PluralName #> مورد نظر برای حذف</param>
+        public async Task Delete<#= plural #>Async(IList<int> <#= camelCase #>Ids)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<<#= entity.Name #>>();
+            foreach (int <#= camelCase #>Id in <#= camelCase #>Ids)
+            {
+                var <#= camelCase #> = await repository.GetByIDAsync(<#= camelCase #>Id);
+                if (<#= camelCase #> != null)
+                {
+                    await DeleteNoLogAsync(repository, <#= camelCase #>);
+                }
+            }
+
+            await OnEntityGroupDeleted(<#= camelCase #>Ids);
         }
 
         /// <summary>
@@ -151,6 +178,8 @@ foreach(var property in entity.Properties
         {
             throw new NotImplementedException();
         }
+<# if(entityInfo.IsFiscalEntity)
+   { #>
 
         private ISecureRepository Repository
         {
@@ -158,5 +187,6 @@ foreach(var property in entity.Properties
         }
 
         private readonly ISystemRepository _system;
+<# } #>
     }
 }

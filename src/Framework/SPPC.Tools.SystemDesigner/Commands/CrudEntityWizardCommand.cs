@@ -18,18 +18,26 @@ namespace SPPC.Tools.SystemDesigner.Commands
             {
                 GenerateController();
             }
+
             if (_model.Options.HasModel || _model.Options.HasViewModel
                 || _model.Options.HasDbMapping || _model.Options.HasDbScript)
             {
                 GenerateModelLayer();
             }
+
             if (_model.Options.HasRepoInterface || _model.Options.HasRepoImplementation)
             {
                 GeneratePersistenceLayer();
             }
+
             if(_model.Options.HasApiRouting)
             {
                 GenerateCsApi();
+            }
+
+            if (_model.Options.HasTsApiRouting || _model.Options.HasTsViewModel)
+            {
+                GenerateClientTypes();
             }
         }
 
@@ -61,6 +69,10 @@ namespace SPPC.Tools.SystemDesigner.Commands
             _model.Options.Api.EntityName = _model.EntityInfo.Entity.Name;
             var command = new GenerateCsApiCommand(_model.Options.Api);
             command.Execute();
+        }
+
+        private void GenerateClientTypes()
+        {
         }
 
         private readonly CrudWizardModel _model;

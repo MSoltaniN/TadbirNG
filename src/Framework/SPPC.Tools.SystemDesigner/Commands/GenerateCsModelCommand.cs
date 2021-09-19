@@ -36,14 +36,6 @@ namespace SPPC.Tools.SystemDesigner.Commands
             }
         }
 
-        private Repository LoadXmlMetadataRepository(string path)
-        {
-            var serializer = new BasicXmlSerializer();
-            var repository = serializer.Deserialize(path, typeof(Repository)) as Repository;
-            Array.ForEach(repository.Entities.ToArray(), entity => entity.Repository = repository);
-            return repository;
-        }
-
         private void GeneratePoco(Entity entity)
         {
             string csModelPath = ConfigurationManager.AppSettings["CsModelPath"];

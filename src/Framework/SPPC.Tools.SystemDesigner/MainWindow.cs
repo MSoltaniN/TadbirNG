@@ -62,7 +62,7 @@ namespace SPPC.Tools.SystemDesigner
             {
                 var command = new CrudEntityWizardCommand(form.WizardModel);
                 command.Execute();
-                MessageBox.Show(this, "Wizard completed!", "Success",
+                MessageBox.Show(this, "Wizard completed successfully!", "Success",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }

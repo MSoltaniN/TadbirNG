@@ -8,11 +8,9 @@ var entityInfo = _model;
 var entity = entityInfo.Entity;
 var plural = GetPluralName(entity.Name);
 #>
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.Helpers;
+using SPPC.Tadbir.Utility;
 <# if(entity.Area != "Auth")
 { #>
 using SPPC.Tadbir.ViewModel.<#= entity.Area #>;
@@ -21,12 +19,12 @@ using SPPC.Tadbir.ViewModel.<#= entity.Area #>;
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    /// عملیات مورد نیاز برای مدیریت <#= entityInfo.PluralName #> را تعریف میکند
+    /// عملیات مورد نیاز برای مدیریت <#= entityInfo.PluralName #> را تعریف می کند
     /// </summary>
     public interface I<#= entity.Name #>Repository
     {
         /// <summary>
-        /// به روش آسنکرون، کلیه <#= entityInfo.PluralName #> را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات کلیه <#= entityInfo.PluralName #> را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از <#= entityInfo.PluralName #> تعریف شده</returns>
