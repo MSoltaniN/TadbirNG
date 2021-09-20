@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -61,7 +62,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، نوع تقویم پیش فرض برنامه را خوانده و برمی گرداند
+        /// به روش آسنکرون، نوع تقویم پیش فرض برای زبان جاری برنامه را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مقدار عددی متناظر با نوع شمارشی موجود برای تقویم پیش فرض</returns>
         public async Task<CalendarType> GetCurrentCalendarAsync()
@@ -73,7 +74,7 @@ namespace SPPC.Tadbir.Persistence
                 .SingleOrDefault();
             if (config != null)
             {
-                calendar = config.Calendar;
+                calendar = (CalendarType)config.Calendar;
             }
 
             return calendar;
@@ -268,20 +269,21 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="rootPath">آدرس ریشه نرم افزار در سرور</param>
         public async Task SaveSystemConfigAsync(SettingBriefViewModel configItem, string rootPath)
         {
-            Verify.ArgumentNotNull(configItem, "configItem");
+            Verify.ArgumentNotNull(configItem, nameof(configItem));
             var repository = UnitOfWork.GetAsyncRepository<Setting>();
             _webRootPath = rootPath;
 
             var systemConfig = await repository
                 .GetByIDWithTrackingAsync(configItem.Id);
             var oldValues = JsonHelper.To<SystemConfig>(systemConfig.Values);
+            SetDefaultCalendar(configItem);
             systemConfig.Values = JsonHelper.From(configItem.Values, false);
             repository.Update(systemConfig);
             await UnitOfWork.CommitAsync();
 
-            var configValues = JsonHelper.To<SystemConfig>(systemConfig.Values);
-            await LogConfigChangeAsync(oldValues, configValues);
-            if (configValues.UsesDefaultCoding && !await IsDefinedAccountAsync())
+            var newValues = JsonHelper.To<SystemConfig>(systemConfig.Values);
+            await LogConfigChangeAsync(oldValues, newValues);
+            if (newValues.UsesDefaultCoding && !await IsDefinedAccountAsync())
             {
                 await InitializeDefaultAccounts();
             }
@@ -359,6 +361,13 @@ namespace SPPC.Tadbir.Persistence
             return value ? AppStrings.BooleanYes : AppStrings.BooleanNo;
         }
 
+        private static string GetNullableValue(int? nullable)
+        {
+            return nullable.HasValue
+                ? nullable.Value.ToString()
+                : "NULL";
+        }
+
         private bool IsCalendarChanged(SystemConfig old, SystemConfig current)
         {
             var oldConfig = old.DefaultCalendars
@@ -382,7 +391,7 @@ namespace SPPC.Tadbir.Persistence
             var calendarConfig = config.DefaultCalendars
                 .Where(cfg => cfg.Language == UserContext.Language)
                 .SingleOrDefault();
-            return (calendarConfig.Calendar == CalendarType.Gregorian)
+            return (calendarConfig.Calendar == (int)CalendarType.Gregorian)
                 ? AppStrings.Gregorian
                 : AppStrings.Persian;
         }
@@ -443,29 +452,29 @@ namespace SPPC.Tadbir.Persistence
 
         private void InsertDefaultAccounts(IList<Account> accounts)
         {
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-
-            string script = "SET IDENTITY_INSERT [Finance].[Account] ON\r\n";
-
-            foreach (var item in accounts)
+            var scriptBuilder = new StringBuilder();
+            scriptBuilder.AppendLine("SET IDENTITY_INSERT [Finance].[Account] ON");
+            foreach (var account in accounts)
             {
-                script += string.Format(@"INSERT INTO [Finance].[Account] (AccountID, ParentID, GroupID, FiscalPeriodID, BranchID, BranchScope, Code, FullCode, Name, [Level])
-                                          VALUES({0}, {1}, {2}, {3}, {4}, {5}, N'{6}', N'{7}', N'{8}', {9})",
-                                          item.Id, item.ParentId.HasValue ? item.ParentId.Value.ToString() : "NULL", item.GroupId.HasValue ? item.GroupId.Value.ToString() : "NULL",
-                                          UserContext.FiscalPeriodId, UserContext.BranchId, item.BranchScope, item.Code, item.FullCode, item.Name, item.Level);
-                script += Environment.NewLine;
+                scriptBuilder.AppendFormat(@"
+INSERT INTO [Finance].[Account] (AccountID, ParentID, GroupID, FiscalPeriodID, BranchID, BranchScope, Code, FullCode, Name, [Level])
+VALUES({0}, {1}, {2}, {3}, {4}, {5}, N'{6}', N'{7}', N'{8}', {9})",
+                    account.Id, GetNullableValue(account.ParentId), GetNullableValue(account.GroupId),
+                    UserContext.FiscalPeriodId, UserContext.BranchId, account.BranchScope, account.Code,
+                    account.FullCode, account.Name, account.Level);
+                scriptBuilder.AppendLine();
             }
 
-            script += "SET IDENTITY_INSERT [Finance].[Account] OFF";
-
+            scriptBuilder.AppendLine("SET IDENTITY_INSERT [Finance].[Account] OFF");
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-            DbConsole.ExecuteNonQuery(script);
+            DbConsole.ExecuteNonQuery(scriptBuilder.ToString());
 
             var accCollections = Path.Combine(_webRootPath, @"static\CollectionAccounts.sql");
-            script = File.ReadAllText(accCollections);
-            script = script.Replace("%branchId%", UserContext.BranchId.ToString())
+            scriptBuilder = new StringBuilder(File.ReadAllText(accCollections));
+            scriptBuilder
+                .Replace("%branchId%", UserContext.BranchId.ToString())
                 .Replace("%fiscalPeriodId%", UserContext.FiscalPeriodId.ToString());
-            DbConsole.ExecuteNonQuery(script);
+            DbConsole.ExecuteNonQuery(scriptBuilder.ToString());
         }
 
         private async Task UpdateTreeLevelUsage(ViewTreeFullConfig accountTreeConfig)
@@ -475,6 +484,18 @@ namespace SPPC.Tadbir.Persistence
             accountTreeConfig.Current.Levels[2].IsUsed = true;
             var configItems = new List<ViewTreeFullConfig> { accountTreeConfig };
             await SaveViewTreeConfigAsync(configItems);
+        }
+
+        private void SetDefaultCalendar(SettingBriefViewModel config)
+        {
+            // NOTE: config.Values that comes back from client is NOT SystemConfig, so it needs double conversion...
+            var json = JsonHelper.From(config.Values);
+            var systemConfig = JsonHelper.To<SystemConfig>(json);
+            var calendarConfig = systemConfig.DefaultCalendars
+                .Where(cfg => cfg.Language == UserContext.Language)
+                .Single();
+            calendarConfig.Calendar = systemConfig.DefaultCalendar;
+            config.Values = systemConfig;
         }
 
         private async Task LogConfigChangeAsync(SystemConfig oldConfig, SystemConfig newConfig)

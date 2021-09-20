@@ -13,7 +13,7 @@ namespace SPPC.Tadbir.Configuration.Models
         public DefaultCalendarConfig()
         {
             Language = Languages.Persian;
-            Calendar = CalendarType.Jalali;
+            Calendar = (int)CalendarType.Jalali;
         }
 
         /// <summary>
@@ -24,6 +24,6 @@ namespace SPPC.Tadbir.Configuration.Models
         /// <summary>
         /// تقویم پیش فرض مورد نظر
         /// </summary>
-        public CalendarType Calendar { get; set; }
+        public int Calendar { get; set; }
     }
 }
