@@ -17,6 +17,7 @@ export const SessionKeys = {
   PreviousRoute:'PreviousRoute',
   CurrentSkin: 'currentSkin',
   NumberConfig: 'numberConfig',
+  SystemConfig: 'SystemConfig',
   TestBalanceConfig: 'testBalanceConfig',
   DateRangeConfig: 'DateRangeConfig',
   SelectedDateRange: 'SelectedDateRange',
@@ -268,8 +269,6 @@ export class BrowserStorageService {
 
   getMetadata(metadataKey: string): string {
 
-
-
     var compressedData = localStorage.getItem(metadataKey);
     if (compressedData) {
       var t0 = performance.now();
@@ -318,6 +317,19 @@ export class BrowserStorageService {
 
   setNumberConfig(numConfig: any) {
     localStorage.setItem(SessionKeys.NumberConfig, JSON.stringify(numConfig));
+  }
+
+  getSystemConfig(): string {
+    return localStorage.getItem(SessionKeys.SystemConfig);
+  }
+
+  removeSystemConfig() {
+    if (localStorage.getItem(SessionKeys.SystemConfig))
+      localStorage.removeItem(SessionKeys.SystemConfig);
+  }
+
+  setSystemConfig(systemConfig: string) {
+    localStorage.setItem(SessionKeys.SystemConfig, JSON.stringify(systemConfig));
   }
 
   setTestBalanceConfig(numConfig: any) {

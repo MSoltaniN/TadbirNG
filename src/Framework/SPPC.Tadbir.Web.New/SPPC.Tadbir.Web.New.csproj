@@ -74,6 +74,7 @@
     <None Remove="ClientApp\src\app\admin\models\entityType.ts" />
     <None Remove="ClientApp\src\app\config\models\formLabelConfig.ts" />
     <None Remove="ClientApp\src\app\config\models\formLabelFullConfig.ts" />
+    <None Remove="ClientApp\src\app\config\models\systemConfig.ts" />
     <None Remove="ClientApp\src\app\config\models\testBalanceConfig.ts" />
     <None Remove="ClientApp\src\app\core\models\index.ts" />
     <None Remove="ClientApp\src\app\core\services\index.ts" />
@@ -865,6 +866,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\config\models\systemConfig.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\class\global.d.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\admin\components\operationLogs\operationLogs-setting.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\admin\models\entityType.ts" />

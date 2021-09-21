@@ -1,4 +1,4 @@
-﻿<kendo-dialog *ngIf="active" id="log-detail" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+<kendo-dialog *ngIf="active" id="log-detail" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               (close)="closeForm()">
     <kendo-dialog-titlebar>
         {{ 'OperationLog.DialogTitle' | translate }}
@@ -27,7 +27,7 @@
             <div class="form-group">
                 <label class="control-label">{{ 'OperationLog.Date' | translate }}:</label>
 
-                <span class="k-text-justify">{{ logDetail.date | SppcDate }}</span>
+                <span class="k-text-justify">{{ logDetail.date | SppcDate: item.type : item.scriptType }}</span>
             </div>
         </div>
         <div class="col-xs-12 col-sm-6">

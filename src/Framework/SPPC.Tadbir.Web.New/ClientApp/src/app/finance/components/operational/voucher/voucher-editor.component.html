@@ -117,7 +117,7 @@
 
                 <label for="date" class="control-label">{{ 'Voucher.Date' | translate }}</label>
 
-                <sppc-datepicker [isReadOnly]="isVoucherConfirmed || !hasEditAccess" formControlName="date" [minDate]="FiscalPeriodStartDate" [maxDate]="FiscalPeriodEndDate"></sppc-datepicker>
+                <sppc-datepicker [isReadOnly]="isVoucherConfirmed || !hasEditAccess" formControlName="date" [minDate]="FiscalPeriodStartDate" [maxDate]="FiscalPeriodEndDate" [displayType]="voucherDateType"></sppc-datepicker>
 
               </div>
             </div>

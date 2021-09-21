@@ -235,6 +235,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         this.bStorageService.setUserSetting(res, this.UserId);
     });
 
+    //To fill localstorage before load other component    
+    this.settingService.getSystemConfig();   
+
     this.bStorageService.removeSelectedDateRange();
   }
 

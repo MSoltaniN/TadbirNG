@@ -5,7 +5,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { Layout, Entities } from '@sppc/shared/enum/metadata';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { FiscalPeriod } from '@sppc/organization/models';
-import { DetailComponent } from '@sppc/shared/class';
+import { DetailComponent, Property } from '@sppc/shared/class';
 import { ViewName } from '@sppc/shared/security';
 
 
@@ -42,6 +42,9 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
   @Input() public errorMessage: string;
   @Input() public isWizard: boolean = false;
 
+  private startDateDisplayType:string;
+  private endDateDisplayType: string;
+
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<FiscalPeriod> = new EventEmitter();
   @Output() previousStep: EventEmitter<any> = new EventEmitter();
@@ -55,6 +58,9 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
 
   ngOnInit(): void {
     this.editForm.reset();
+
+    debugger
+    this.setDateDisplayType();
 
     setTimeout(() => {
 
@@ -71,6 +77,11 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
       }
 
     })  
+  }
+
+  setDateDisplayType() {
+    this.startDateDisplayType = this.properties.get(this.metadataKey).filter(p => p.name == "StartDate")[0].type;
+    this.endDateDisplayType = this.properties.get(this.metadataKey).filter(p => p.name == "EndDate")[0].type;
   }
 
   getStartDate(): Date {

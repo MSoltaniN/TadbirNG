@@ -38,8 +38,7 @@ export class AppheaderComponent extends DefaultComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    debugger;
+    
     var currentContext = this.bStorageService.getCurrentUser();
     if (currentContext) {
       this.userName = currentContext && currentContext.userName ? currentContext.userName.toString() : "";

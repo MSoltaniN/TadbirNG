@@ -22,7 +22,7 @@
     <div class="form-group">
       <label for="startDate" class="control-label">{{ 'FiscalPeriod.StartDate' | translate }}</label>
 
-      <sppc-datepicker formControlName="startDate"></sppc-datepicker>
+      <sppc-datepicker formControlName="startDate" [displayType]="startDateType" ></sppc-datepicker>
 
       <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.startDate.valid || editForm.controls.startDate.pristine">
         {{ 'AllValidations.FiscalPeriod.StartDateIsRequired' | translate }}
@@ -32,7 +32,7 @@
     <div class="form-group">
       <label for="endDate" class="control-label">{{ 'FiscalPeriod.EndDate' | translate }}</label>
 
-      <sppc-datepicker formControlName="endDate"></sppc-datepicker>
+      <sppc-datepicker formControlName="endDate" [displayType]="endDateType"></sppc-datepicker>
 
       <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.endDate.valid || editForm.controls.endDate.pristine">
         {{ 'AllValidations.FiscalPeriod.EndDateIsRequired' | translate }}

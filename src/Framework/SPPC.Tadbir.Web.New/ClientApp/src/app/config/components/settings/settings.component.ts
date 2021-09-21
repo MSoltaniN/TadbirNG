@@ -95,8 +95,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
     }
   }
 
-  onSaveSettingsList() {
-
+  onSaveSettingsList() {    
     if (this.lastSelectedType) {
       this.settingForm.updateListHandler();
       this.updateList(this.lastSelectedType);

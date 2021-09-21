@@ -149,9 +149,9 @@ export enum MessagePosition {
   BottomRight
 }
 
-export enum CalendarType {
-  Jalali = 0,
-  Gregorian = 1
+export const CalendarType = {
+  Jalali: "Jalali",
+  Gregorian: "Gregorian"
 }
 
 @Injectable()

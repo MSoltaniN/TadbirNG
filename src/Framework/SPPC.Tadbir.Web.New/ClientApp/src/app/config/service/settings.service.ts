@@ -13,6 +13,7 @@ import { BrowserStorageService } from "@sppc/shared/services/browserStorage.serv
 import { DateRangeType, SettingKey } from "@sppc/shared/enum";
 import { TestBalanceConfig } from "../models/testBalanceConfig";
 import { FormLabelConfig } from "../models/formLabelConfig";
+import { SystemConfig } from "../models/systemConfig";
 
 
 
@@ -360,6 +361,56 @@ export class SettingService extends BaseService {
     }
 
   }
+
+
+  /**
+ * تنظیمات مربوط به تقویم پیش فرض را برمیگرداند
+ */
+
+  async getSystemConfigAsync(): Promise<SystemConfig> {
+    let config: SystemConfig;
+
+    var calConfig = this.bStorageService.getSystemConfig();
+    if (calConfig) {
+      config = JSON.parse(calConfig);
+      return config;
+    }
+    else {
+      const response = await this.getSettingById(SettingKey.SystemConfig).toPromise();
+      if (response) {
+        var res = response.values;
+        this.bStorageService.setSystemConfig(res);
+        return res;
+      }
+    }
+
+  }
+
+  /**
+* تنظیمات مربوط به تقویم پیش فرض را برمیگرداند
+*/
+
+  getSystemConfig(): SystemConfig {
+    let config: SystemConfig;
+
+    var calConfig = this.bStorageService.getSystemConfig();
+    if (calConfig) {
+      config = JSON.parse(calConfig);
+      return config;
+    }
+    else {
+      this.getSettingById(SettingKey.SystemConfig).subscribe((response) => {
+        if (response) {
+          var res = response.values;
+          this.bStorageService.setSystemConfig(res);
+          var systemConfig = <SystemConfig>res;
+          return systemConfig;
+        }
+      });      
+    }
+
+  }
+
 
   /**
    * تنظیمات را با استفاده از شناسه تنظیمات برمیگرداند

@@ -2,6 +2,8 @@ import { Directive, OnInit, ElementRef, ViewContainerRef, Component, Input, View
 import { FilterService, BaseFilterCellComponent } from "@progress/kendo-angular-grid";
 import { CompositeFilterDescriptor } from "@progress/kendo-data-query";
 import { SppcGridDatepicker } from "@sppc/shared/controls/datepicker/sppc-grid-datepicker";
+import { SppcGridFilter } from "..";
+import { Property } from "@sppc/shared/class";
 declare var jquery: any;
 declare var $: any;
 
@@ -70,11 +72,11 @@ export class FilterDatePickerDirective implements OnInit  {
 
     constructor(public con: ViewContainerRef, public el: ElementRef,
         private renderer: Renderer2, private componentFactoryResolver: ComponentFactoryResolver,
-       private appRef: ApplicationRef, private injector: Injector) {
+      private appRef: ApplicationRef, private injector: Injector, private _viewContainerRef: ViewContainerRef) {
         this.conn = con;
         this.elrf = el;
         this.factoryResolver = componentFactoryResolver;
-
+        
        
     }
 
@@ -92,9 +94,11 @@ export class FilterDatePickerDirective implements OnInit  {
 
         if (mainElement)
             mainElement.addEventListener('click', this.clearFilterClick.bind(this));
-
-        setTimeout(() => {
-            this.appendComponent(SppcGridDatepicker, this.elrf.nativeElement.childNodes[1].childNodes[2], this.elrf.nativeElement.childNodes[1]);
+              
+        let property = <Property>this._viewContainerRef["_data"].componentView.parent.component.metaDataItem;
+        
+      setTimeout(() => {
+          this.appendComponent(SppcGridDatepicker, this.elrf.nativeElement.childNodes[1].childNodes[2], this.elrf.nativeElement.childNodes[1], property.type);
         }, 1);
        
     }
@@ -110,7 +114,7 @@ export class FilterDatePickerDirective implements OnInit  {
         
     }
 
-    appendComponent(component: any,before : any , host : any) {
+    appendComponent(component: any,before : any , host : any,displayType:string) {
         const componentRef = this.componentFactoryResolver
             .resolveComponentFactory(component)
             .create(this.injector);
@@ -118,7 +122,7 @@ export class FilterDatePickerDirective implements OnInit  {
 
         (<SppcGridDatepicker>componentRef.instance).destinationElementId = this.hiddenId;
         (<SppcGridDatepicker>componentRef.instance).mode = this.value;
-            
+        (<SppcGridDatepicker>componentRef.instance).displayType = displayType;    
 
         this.appRef.attachView(componentRef.hostView);
 

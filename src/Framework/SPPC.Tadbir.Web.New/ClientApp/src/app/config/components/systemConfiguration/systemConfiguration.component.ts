@@ -6,8 +6,8 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { RowClassArgs } from '@progress/kendo-angular-grid';
 import { String, DefaultComponent } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
-import { MetaDataService, BrowserStorageService, ErrorHandlingService } from '@sppc/shared/services';
+import { Layout, Entities, MessageType, CalendarType } from '@sppc/shared/enum/metadata';
+import { MetaDataService, BrowserStorageService, ErrorHandlingService, SessionKeys } from '@sppc/shared/services';
 import { ViewTreeLevelConfig, ViewTreeConfig } from '@sppc/config/models';
 import { SettingService, SettingBriefInfo } from '@sppc/config/service';
 import { SettingsApi } from '@sppc/config/service/api';
@@ -66,7 +66,8 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
   @Input() public set model(setting: SettingBriefInfo) {
     this.systemConfigModel = setting;
     var configValue = JSON.parse(JSON.stringify(setting.values));
-    this.selectedCalendar = configValue.defaultCalendar;
+
+    this.selectedCalendar = configValue.defaultCalendar;    
     this.selectedCurrencyName = configValue.defaultCurrencyNameKey;
     this.useDefaultCoding = configValue.usesDefaultCoding;
     this.decimalCount = configValue.defaultDecimalCount;
@@ -126,7 +127,7 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
   }
 
   saveSystemConfig() {
-    debugger;
+    
     this.isRefreshTreeView = false;
     if (this.viewTreeValue)
       this.saveViewTreeConfig();
@@ -152,8 +153,37 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
 
     this.settingService.edit<SettingBriefInfo>(SettingsApi.SystemConfig, this.systemConfigModel).subscribe(res => {
       this.showMessage(this.updateMsg, MessageType.Succes);
+      this.bStorageService.setSystemConfig(configValue);      
+      this.updateMetadatas();
       this.isRefreshTreeView = true;
     })
+  }
+
+  /**
+   * بروز رسانی متادیتا هایی که شامل ستون از نوع تاریخ می باشد
+   * */
+  updateMetadatas() {
+   
+    for (var entity in Entities) {
+      var viewId = parseInt(ViewName[entity]);
+      if (viewId > 0) {
+        var metadataKey = String.Format(SessionKeys.MetadataKey, viewId.toString(), this.CurrentLanguage);
+        var metadata = JSON.parse(this.bStorageService.getMetadata(metadataKey));
+        if (metadata && metadata.columns) {
+          metadata.columns.forEach((property) => {
+            if (property.scriptType.toLowerCase() == "date") {
+              this.bStorageService.removeLocalStorage(metadataKey);
+              return;
+            }
+          });
+        }        
+      }
+    }
+    //Object.values(Entities).forEach((entity) => {
+      
+     
+    //});
+    
   }
 
   saveViewTreeConfig() {

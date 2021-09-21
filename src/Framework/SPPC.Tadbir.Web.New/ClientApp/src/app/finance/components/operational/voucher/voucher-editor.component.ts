@@ -107,6 +107,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   normalTitle: string;
   entityNamePermission: string;
   breadcrumbResourceName: string;
+  voucherDateType: string;
 
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
     public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService,
@@ -123,6 +124,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.normalTitle = this.getText("Voucher.DraftVoucher");
     this.voucherOperationsItem = VoucherOperations;
     this.entityNamePermission = "Voucher";
+
+    this.setDateDisplayType();
     this.editForm.reset();    
 
     if (this.voucherItem) {
@@ -234,6 +237,10 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     }
 
     
+  }
+
+  setDateDisplayType() {
+    this.voucherDateType = this.properties.get(this.metadataKey).filter(p => p.name == "Date")[0].type;
   }
 
   openingVoucherQuery() {
