@@ -42,8 +42,8 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
   @Input() public errorMessage: string;
   @Input() public isWizard: boolean = false;
 
-  private startDateDisplayType:string;
-  private endDateDisplayType: string;
+  public startDateDisplayType:string;
+  public endDateDisplayType: string;
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<FiscalPeriod> = new EventEmitter();
