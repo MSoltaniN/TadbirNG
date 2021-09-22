@@ -90,14 +90,14 @@ export class BrowserStorageService {
   }
 
   getLicense():string {
-    if (localStorage.getItem(SessionKeys.License))
-      return localStorage.getItem(SessionKeys.License);
+    if (sessionStorage.getItem(SessionKeys.License))
+      return sessionStorage.getItem(SessionKeys.License);
 
     return null;
   }
 
   setLicense(value:string) {
-    localStorage.setItem(SessionKeys.License, value);    
+    sessionStorage.setItem(SessionKeys.License, value);    
   }
 
   setLicenseInfo(linceseInfo: any) {
@@ -106,7 +106,7 @@ export class BrowserStorageService {
   }
 
   getLicenseInfo(): any {
-    if (localStorage.getItem(SessionKeys.LicenseInfo)) {
+    if (sessionStorage.getItem(SessionKeys.LicenseInfo)) {
       return JSON.parse(sessionStorage.getItem(SessionKeys.LicenseInfo));
     }
     return null;
