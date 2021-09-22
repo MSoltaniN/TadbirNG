@@ -35,6 +35,11 @@ namespace SPPC.Tools.SystemDesigner.Commands
                 GenerateCsApi();
             }
 
+            if (_model.Options.HasPermissionEnum)
+            {
+                GeneratePermissions();
+            }
+
             if (_model.Options.HasTsApiRouting || _model.Options.HasTsViewModel)
             {
                 GenerateClientTypes();
@@ -69,6 +74,10 @@ namespace SPPC.Tools.SystemDesigner.Commands
             _model.Options.Api.EntityName = _model.EntityInfo.Entity.Name;
             var command = new GenerateCsApiCommand(_model.Options.Api);
             command.Execute();
+        }
+
+        private void GeneratePermissions()
+        {
         }
 
         private void GenerateClientTypes()

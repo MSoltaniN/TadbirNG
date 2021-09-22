@@ -57,6 +57,9 @@ namespace SPPC.Tools.SystemDesigner.Wizards.NewCrudEntityWizard
             chkCreate.DataBindings.Add("Checked", Actions, "HasCreate");
             chkModify.DataBindings.Add("Checked", Actions, "HasModify");
             chkDelete.DataBindings.Add("Checked", Actions, "HasDelete");
+            chkFilter.DataBindings.Add("Checked", Actions, "HasFilter");
+            chkPrint.DataBindings.Add("Checked", Actions, "HasPrint");
+            chkExport.DataBindings.Add("Checked", Actions, "HasExport");
         }
 
         private void UpdateActionsList()
