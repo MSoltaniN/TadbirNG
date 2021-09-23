@@ -103,7 +103,9 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Tools.Interfaces", "SPPC.Tools.Interfaces\SPPC.Tools.Interfaces.csproj", "{BD6A9E5B-FA96-4A8A-9E63-39943446AD65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Licensing.Service", "SPPC.Licensing.Service\SPPC.Licensing.Service.csproj", "{8F6B4BCE-C489-4A91-818F-CD3D3C3C2838}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Licensing.Service", "SPPC.Licensing.Service\SPPC.Licensing.Service.csproj", "{8F6B4BCE-C489-4A91-818F-CD3D3C3C2838}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Tools.TadbirActivator.Cli", "SPPC.Tools.TadbirActivator.Cli\SPPC.Tools.TadbirActivator.Cli.csproj", "{C4AC9CA4-7DA1-4B65-97F6-7C70DF974D44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -444,6 +446,16 @@ Global
 		{8F6B4BCE-C489-4A91-818F-CD3D3C3C2838}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8F6B4BCE-C489-4A91-818F-CD3D3C3C2838}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
 		{8F6B4BCE-C489-4A91-818F-CD3D3C3C2838}.Staging|Any CPU.Build.0 = Debug|Any CPU
+		{C4AC9CA4-7DA1-4B65-97F6-7C70DF974D44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4AC9CA4-7DA1-4B65-97F6-7C70DF974D44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4AC9CA4-7DA1-4B65-97F6-7C70DF974D44}.Demo|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4AC9CA4-7DA1-4B65-97F6-7C70DF974D44}.Demo|Any CPU.Build.0 = Debug|Any CPU
+		{C4AC9CA4-7DA1-4B65-97F6-7C70DF974D44}.LiveHost|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4AC9CA4-7DA1-4B65-97F6-7C70DF974D44}.LiveHost|Any CPU.Build.0 = Debug|Any CPU
+		{C4AC9CA4-7DA1-4B65-97F6-7C70DF974D44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4AC9CA4-7DA1-4B65-97F6-7C70DF974D44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4AC9CA4-7DA1-4B65-97F6-7C70DF974D44}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4AC9CA4-7DA1-4B65-97F6-7C70DF974D44}.Staging|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -492,6 +504,7 @@ Global
 		{DB90EFCB-6AED-4E39-8D70-4BB740D2BD91} = {BD98D81E-99E5-4E34-82B7-0653C4103485}
 		{BD6A9E5B-FA96-4A8A-9E63-39943446AD65} = {00536776-D738-45B6-9302-D53EDE84448D}
 		{8F6B4BCE-C489-4A91-818F-CD3D3C3C2838} = {BD98D81E-99E5-4E34-82B7-0653C4103485}
+		{C4AC9CA4-7DA1-4B65-97F6-7C70DF974D44} = {3611D5DD-FD20-4A0D-B650-6D028EF7D78B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1D717D5C-5BCF-401B-A4A8-D0B263F70830}
