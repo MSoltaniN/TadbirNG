@@ -15,21 +15,18 @@ namespace SPPC.Tadbir.Licensing
         string LicensePath { get; set; }
 
         /// <summary>
-        /// اطلاعات نمونه نصب شده برنامه که شامل شناسه مشتری و شناسه مجوز است
-        /// </summary>
-        InstanceModel Instance { get; set; }
-
-        /// <summary>
         /// درستی اطلاعات موجود در فایل مجوز را به طور کامل بررسی می کند
         /// </summary>
+        /// <param name="instance"></param>
         /// <returns>وضعیت بررسی مجوز که نشان می دهد مجوز موجود معتبر هست یا نه</returns>
-        LicenseStatus ValidateLicense();
+        LicenseStatus ValidateLicense(string instance);
 
         /// <summary>
         /// درستی اطلاعات موجود در فایل مجوز را به طور خلاصه بررسی می کند
         /// </summary>
+        /// <param name="instance"></param>
         /// <returns></returns>
-        LicenseStatus QuickValidateLicense();
+        LicenseStatus QuickValidateLicense(string instance);
 
         /// <summary>
         /// درستی اطلاعات متنی مجوز مورد استفاده سرویس را با امضای دیجیتالی داده شده بررسی می کند
@@ -51,6 +48,20 @@ namespace SPPC.Tadbir.Licensing
         /// </summary>
         /// <param name="licenseData">اطلاعات رمزنگاری مجوز</param>
         /// <returns>اطلاعات رمزگشایی شده مجوز به صورت مدل اطلاعاتی مجوز</returns>
-        LicenseModel LoadLicense(string licenseData);
+        LicenseFileModel LoadLicense(string licenseData);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="activation"></param>
+        /// <returns></returns>
+        string GetActivatedLicense(ActivationModel activation);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="licenseCheck"></param>
+        /// <returns></returns>
+        string GetLicense(LicenseCheckModel licenseCheck);
     }
 }

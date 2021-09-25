@@ -6,10 +6,13 @@ import { Location } from '@angular/common';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { AuthenticationService } from '@sppc/core';
-import { MessageType } from '@sppc/env/environment';
+import { environment } from "@sppc/env/environment";
+import { MessageType } from '@sppc/shared/enum/metadata';
 import { DefaultComponent } from '@sppc/shared/class';
 import { Command } from '@sppc/shared/models';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
+import { DialogService } from '@progress/kendo-angular-dialog';
+import { LicenseInfoComponent } from '../dashboard/license-info.component';
 
 
 
@@ -28,13 +31,13 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
   @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
   paths: number[] = [];
   currentRoute: string;
-
+  versionTitle: string;
   @ViewChild('li') menuItems: Array<ElementRef>;
 
   constructor(public toastrService: ToastrService, private authenticationService: AuthenticationService, public bStorageService: BrowserStorageService,
     public translate: TranslateService, public renderer2: Renderer2, public router: Router,
     public metadata: MetaDataService, public el: ElementRef, public settingService: SettingService,
-    public location: Location) {
+    public location: Location, private dialogService: DialogService) {
 
     super(toastrService, translate, bStorageService, renderer2, metadata, settingService, '', undefined);
 
@@ -43,7 +46,9 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
     if (menus)
       this.menuList = JSON.parse(menus);
 
-    this.currentRoute = this.router.url;
+    this.currentRoute = this.router.url;   
+    
+    this.versionTitle = environment.Version;
   }
 
   public expandedSubMenuId: number = -1;
@@ -126,7 +131,24 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
 
   }
 
+  versionInfoClick() {
+    var dialogRef = this.dialogService.open({
+      title: this.getText("App.Name"),
+      content: LicenseInfoComponent,
+      actions: [{ text: this.getText("Buttons.Ok"), primary: true }],
+      width: 480,
+      height: 400,
+      minWidth: 250
+    });
 
+    dialogRef.result.subscribe(() => {
+      dialogRef.close();
+    });
+
+    dialogRef.content.instance.cancel.subscribe((res) => {
+      dialogRef.close();
+    });
+  }
 
   isCollapsed: boolean = true;
 

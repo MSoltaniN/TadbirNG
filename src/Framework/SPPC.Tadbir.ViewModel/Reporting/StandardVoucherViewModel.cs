@@ -34,7 +34,12 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// شرح سند مالی
         /// </summary>
-        public string Description { get; }
+        public string Description { get; set; }
+
+        /// <summary>
+        /// نوع مفهومی سند - مانند سند عادی، سند پیش نویس و غیره
+        /// </summary>
+        public short SubjectType { get; set; }
 
         /// <summary>
         /// مجموعه سطرهای مورد نیاز در فرم مرسوم که ترکیبی از اطلاعات سرفصل ها و آرتیکل ها را شامل می شود

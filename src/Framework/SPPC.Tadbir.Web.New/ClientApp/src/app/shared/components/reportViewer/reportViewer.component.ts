@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HttpClient } from "@angular/common/http";
 import * as moment from 'jalali-moment';
 import { MetaDataService, ReportingService, ParameterInfo, BrowserStorageService } from '@sppc/shared/services';
-import { Entities } from '@sppc/env/environment';
+import { Entities } from '@sppc/shared/enum/metadata';
 import { SettingService } from '@sppc/config/service';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { ReportsQueries } from '../reportManagement/reports.queries';
@@ -85,7 +85,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/IranSans/ttf/IRANSansWeb_Bold.ttf", "IRANSansWeb", Stimulsoft.System.Drawing.FontStyle.Bold);
     }
     //Stimulsoft.System.Drawing.FontStyle.Italic
-
+    this.addViewerEvents();
   }
 
   fillResourceVariables(reportObject: Report, stiReport: any) {
@@ -121,8 +121,6 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
       this.report.render();
       this.viewer.report = this.report;
-
-
 
       console.log('Rendering the viewer to selected element');
       this.viewer.renderHtml('viewer');
@@ -188,6 +186,19 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
     console.log('Rendering the viewer to selected element');
     this.viewer.renderHtml(this.Id);
+    
+  }
+
+  addViewerEvents() {
+    // Assign the onPrintReport event function
+    this.viewer.onPrintReport = function () {
+      console.log('onPrintReport');
+    }
+
+    // Assign the onReportExport event function
+    this.viewer.onEndExportReport = function () {
+      console.log('onEndExportReport');
+    }
   }
 
   showReportViewer(reportTemplate: string, reportData: any, manager: any, isQuickReport: boolean, quickReportViewInfo: QuickReportConfigInfo) {
@@ -302,8 +313,11 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
         this.report.render();
         this.viewer.report = this.report;
 
+        //this.addViewerEvents(this.viewer);
+
         console.log('Rendering the viewer to selected element');
         this.viewer.renderHtml(this.Id);
+
 
       }
       else {

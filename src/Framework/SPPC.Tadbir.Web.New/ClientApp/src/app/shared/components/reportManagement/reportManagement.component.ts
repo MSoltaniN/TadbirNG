@@ -9,7 +9,8 @@ import { TreeViewComponent } from "@progress/kendo-angular-treeview";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { SortDescriptor } from "@progress/kendo-data-query";
 import { GridComponent, ColumnComponent } from "@progress/kendo-angular-grid";
-import { Layout, environment } from '@sppc/env/environment';
+import { environment } from "@sppc/env/environment";
+import { Layout } from '@sppc/shared/enum/metadata';
 import { MetaDataService, BrowserStorageService, ReportingService, LocalReportInfo, ParameterInfo, ErrorHandlingService} from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { ViewIdentifierComponent, ReportParametersComponent, ReportParamComponent, TabInfo } from '..';
@@ -565,8 +566,18 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
         serviceUrl = this.changeServiceUrl(serviceUrl, params);
       }
 
-      if (urlParameters.length > 0) {
+      if (urlParameters && urlParameters.length > 0) 
         serviceUrl = this.replaceServiceUrlParams(serviceUrl, urlParameters);
+      
+      if (params && params.length > 0) {
+        var routeParameters = new Array<ReportParamComponent>();
+        params.filter(p => p.controlType != 'QueryString').forEach(function (p) {          
+          var param = new ReportParamComponent();
+          param.ParamValue = p.value;
+          routeParameters.push(param);          
+        });
+
+        serviceUrl = this.replaceServiceUrlParams(serviceUrl, routeParameters);
       }
     }
 
@@ -666,7 +677,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     return url;
   }
    
-  saveDesignOfReport(id: string) {
+  saveDesignOfReport(id: string) {    
     var designer = new Stimulsoft.Designer.StiDesigner(null, "StiDesigner" + id.replace('designerTab', ''), false);
     designer.invokeSaveReport();
   }
@@ -677,13 +688,17 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
    */
   updateTemplateInTab(designer: any) {
     var tab = this.tabsComponent.dynamicTabs.find(t => t.Id == "designerTab" + this.currentReportId);
-    var designData = designer.report.saveToJsonString();
-    tab.template = designData;
+    if (tab) {
+      var designData = designer.report.saveToJsonString();
+      tab.template = designData;
+    }
   }
 
   /** محیط طراحی گزارش را نمایش میدهد */
   designReport() {
     var current = this.currentReportId;
+    var currentReportName = this.currentReportName;
+
     if (this.qReport)
       current = -100;
 
@@ -725,7 +740,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
       }
 
       rpt.load(reportTemplate);
-
+      rpt._reportFile = currentReportName;
       designer.report = rpt;
 
       designer.renderHtml('designerTab' + current);
@@ -738,8 +753,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     var localId = this.CurrentLanguage == 'fa' ? 2 : 1;
     var thisComponent = this;
     // Assign the onSaveReport event function
-    designer.onSaveReport = function (e: any) {
-
+    designer.onSaveReport = function (e: any) {      
       var jsonStr = e.report.saveToJsonString();
 
       var localReport = new LocalReportInfo();
@@ -748,7 +762,8 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
       localReport.localeId = localId;
       thisComponent.updateTemplateInTab(designer);
 
-      var url = String.Format(ReportApi.Report, thisComponent.currentReportId);
+      //var url = String.Format(ReportApi.Report, thisComponent.currentReportId);
+      var url = String.Format(ReportApi.Report, currentId);
       service.saveReport(url, localReport).subscribe((response: any) => {
 
         thisComponent.showMessage(thisComponent.getText('Report.SaveIsOk'));

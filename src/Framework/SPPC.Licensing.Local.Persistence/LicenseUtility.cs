@@ -5,7 +5,9 @@ using System.Text;
 using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
+using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
+using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Licensing;
 
 namespace SPPC.Licensing.Local.Persistence
@@ -18,16 +20,16 @@ namespace SPPC.Licensing.Local.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
+        /// <param name="apiClient"></param>
         /// <param name="crypto">امکان انجام عملیات رمزنگاری متقارن را فراهم می کند</param>
         /// <param name="signer">امکان انجام عملیات امضای دیجیتالی را فراهم می کند</param>
-        /// <param name="serializer">امکان تبدیل اشیاء سی شارپ به متن کدشده و بالعکس را فراهم می کند</param>
         /// <param name="manager">امکان مدیریت گواهینامه های امنیتی را فراهم می کند </param>
-        public LicenseUtility(ICryptoService crypto, IDigitalSigner signer,
-            IEncodedSerializer serializer, ICertificateManager manager)
+        public LicenseUtility(IApiClient apiClient, ICryptoService crypto, IDigitalSigner signer,
+            ICertificateManager manager)
         {
+            _apiClient = apiClient;
             _crypto = crypto;
             _signer = signer;
-            _serializer = serializer;
             _manager = manager;
         }
 
@@ -37,27 +39,24 @@ namespace SPPC.Licensing.Local.Persistence
         public string LicensePath { get; set; }
 
         /// <summary>
-        /// اطلاعات نمونه نصب شده برنامه که شامل شناسه مشتری و شناسه مجوز است
-        /// </summary>
-        public InstanceModel Instance { get; set; }
-
-        /// <summary>
         /// نمونه جدیدی از این کلاس را با پیاده سازی پیش فرض ساخته و برمی گرداند
         /// </summary>
+        /// <param name="webRoot">آدرس اصلی سرویس آنلاین کنترل لایسنس تدبیر</param>
         /// <returns>نمونه جدید با پیاده سازی پیش فرض برای همه وابستگی های کلاس</returns>
-        public static ILicenseUtility CreateDefault()
+        public static ILicenseUtility CreateDefault(string webRoot)
         {
             var crypto = new CryptoService();
-            return new LicenseUtility(
-                crypto, new DigitalSigner(crypto), new JsonSerializer(), new CertificateManager());
+            return new LicenseUtility(new ServiceClient(webRoot),
+                crypto, new DigitalSigner(crypto), new CertificateManager());
         }
 
         /// <summary>
         /// درستی اطلاعات موجود در فایل مجوز را به طور کامل بررسی می کند
         /// </summary>
         /// <returns>وضعیت بررسی مجوز که نشان می دهد مجوز موجود معتبر هست یا نه</returns>
-        public LicenseStatus ValidateLicense()
+        public LicenseStatus ValidateLicense(string instance)
         {
+            SetInstance(instance);
             var status = LicenseStatus.OK;
             if (!EnsureLicenseExists())
             {
@@ -95,8 +94,9 @@ namespace SPPC.Licensing.Local.Persistence
         /// درستی اطلاعات موجود در فایل مجوز را به طور خلاصه بررسی می کند
         /// </summary>
         /// <returns></returns>
-        public LicenseStatus QuickValidateLicense()
+        public LicenseStatus QuickValidateLicense(string instance)
         {
+            SetInstance(instance);
             var status = LicenseStatus.OK;
             if (!EnsureLicenseExists())
             {
@@ -144,8 +144,7 @@ namespace SPPC.Licensing.Local.Persistence
             _signer.Certificate = _certificate;
             var ignored = new string[]
             {
-                "Id", "CustomerId", "CustomerKey", "LicenseKey", "HardwareKey",
-                "ClientKey", "Secret", "Customer", "RowGuid", "ModifiedDate", "IsActivated"
+                "CustomerKey", "LicenseKey", "HardwareKey", "ClientKey", "Secret", "IsActivated"
             };
             string license = JsonHelper.From(_license, true, ignored);
             var licenseBytes = Encoding.UTF8.GetBytes(license);
@@ -157,10 +156,34 @@ namespace SPPC.Licensing.Local.Persistence
         /// </summary>
         /// <param name="licenseData">اطلاعات رمزنگاری مجوز</param>
         /// <returns>اطلاعات رمزگشایی شده مجوز به صورت مدل اطلاعاتی مجوز</returns>
-        public LicenseModel LoadLicense(string licenseData)
+        public LicenseFileModel LoadLicense(string licenseData)
         {
-            var base64 = _crypto.Decrypt(licenseData);
-            return _serializer.Deserialize<LicenseModel>(base64);
+            var json = _crypto.Decrypt(licenseData);
+            return JsonHelper.To<LicenseFileModel>(json);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="activation"></param>
+        /// <returns></returns>
+        public string GetActivatedLicense(ActivationModel activation)
+        {
+            Verify.ArgumentNotNull(activation, nameof(activation));
+            return _apiClient.Update<ActivationModel, string>(activation, LicenseApi.ActivateLicense);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="licenseCheck"></param>
+        /// <returns></returns>
+        public string GetLicense(LicenseCheckModel licenseCheck)
+        {
+            Verify.ArgumentNotNull(licenseCheck, nameof(licenseCheck));
+            _apiClient.AddHeader(
+                Constants.LicenseCheckHeaderName, _crypto.Encrypt(JsonHelper.From(licenseCheck)));
+            return _apiClient.Get<string>(LicenseApi.License);
         }
 
         private bool EnsureLicenseExists()
@@ -205,14 +228,13 @@ namespace SPPC.Licensing.Local.Persistence
 
         private bool EnsureRunsOnOriginalHardware()
         {
-            var hardwareKey = HardwareKey.GetSystemUniqueId();
-            return String.Compare(_license.HardwareKey, hardwareKey) == 0;
+            return String.Compare(_license.HardwareKey, HardwareKey.UniqueKey) == 0;
         }
 
         private bool EnsureInstanceIsValid()
         {
-            return _license.CustomerKey == Instance.CustomerKey
-                && _license.LicenseKey == Instance.LicenseKey;
+            return _license.CustomerKey == _instance.CustomerKey
+                && _license.LicenseKey == _instance.LicenseKey;
         }
 
         private bool EnsureLicenseNotExpired()
@@ -222,6 +244,12 @@ namespace SPPC.Licensing.Local.Persistence
                 && now <= _license.EndDate;
         }
 
+        private void SetInstance(string instance)
+        {
+            string json = _crypto.Decrypt(instance);
+            _instance = JsonHelper.To<InstanceModel>(json);
+        }
+
         private X509Certificate2 LoadCerificate()
         {
             string root = Path.GetDirectoryName(LicensePath);
@@ -229,11 +257,12 @@ namespace SPPC.Licensing.Local.Persistence
             return _manager.GetFromFile(certificatePath, _license.Secret);
         }
 
+        private readonly IApiClient _apiClient;
         private readonly ICryptoService _crypto;
         private readonly IDigitalSigner _signer;
-        private readonly IEncodedSerializer _serializer;
         private readonly ICertificateManager _manager;
-        private LicenseModel _license;
+        private LicenseFileModel _license;
         private X509Certificate2 _certificate;
+        private InstanceModel _instance;
     }
 }

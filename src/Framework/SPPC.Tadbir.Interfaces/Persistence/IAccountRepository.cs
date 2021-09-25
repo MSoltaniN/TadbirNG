@@ -21,6 +21,15 @@ namespace SPPC.Tadbir.Persistence
         Task<PagedList<AccountViewModel>> GetAccountsAsync(GridOptions gridOptions = null);
 
         /// <summary>
+        /// به روش آسنکرون، کلیه حساب های قابل انتخاب در دوره مالی و شعبه جاری برنامه را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از حساب های قابل انتخاب در دوره مالی و شعبه جاری برنامه</returns>
+        /// <remarks>این متد حسابهای غیرفعال در دوره مالی جاری برنامه را از فهرست خروجی فیلتر می کند</remarks>
+        Task<PagedList<AccountViewModel>> GetAccountsLookupAsync(GridOptions gridOptions = null);
+
+        /// <summary>
         /// به روش آسنکرون، حساب با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه عددی یکی از حساب های موجود</param>

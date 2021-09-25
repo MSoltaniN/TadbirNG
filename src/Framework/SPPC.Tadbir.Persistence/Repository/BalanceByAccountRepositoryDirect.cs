@@ -40,23 +40,33 @@ namespace SPPC.Tadbir.Persistence.Repository
             BalanceByAccountParameters parameters)
         {
             var balanaceByItem = new BalanceByAccountViewModel();
-            DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-            var query = await GetReportQueryAsync(parameters);
-            var turnover = DbConsole.ExecuteQuery(query.Query);
-
-            query = await GetReportQueryAsync(parameters, true);
-            var initBalance = DbConsole.ExecuteQuery(query.Query);
-            balanaceByItem.Items.AddRange(GetMergedItems(initBalance, turnover));
-            balanaceByItem.Total = new BalanceByAccountItemViewModel()
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
             {
-                StartBalance = balanaceByItem.Items.Sum(item => item.StartBalance),
-                Debit = balanaceByItem.Items.Sum(item => item.Debit),
-                Credit = balanaceByItem.Items.Sum(item => item.Credit),
-                EndBalance = balanaceByItem.Items.Sum(item => item.EndBalance)
-            };
+                DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+                var query = await GetReportQueryAsync(parameters);
+                var turnover = DbConsole.ExecuteQuery(query.Query);
 
-            SetItemDetails(parameters, balanaceByItem);
+                query = await GetReportQueryAsync(parameters, true);
+                var initBalance = DbConsole.ExecuteQuery(query.Query);
+                balanaceByItem.Items.AddRange(GetMergedItems(initBalance, turnover));
+                balanaceByItem.Total = new BalanceByAccountItemViewModel()
+                {
+                    StartBalance = balanaceByItem.Items.Sum(item => item.StartBalance),
+                    Debit = balanaceByItem.Items.Sum(item => item.Debit),
+                    Credit = balanaceByItem.Items.Sum(item => item.Credit),
+                    EndBalance = balanaceByItem.Items.Sum(item => item.EndBalance)
+                };
+
+                SetItemDetails(parameters, balanaceByItem);
+            }
+
+            await OnSourceActionAsync(parameters.GridOptions, SourceListId.None);
             return balanaceByItem;
+        }
+
+        internal override OperationSourceId OperationSource
+        {
+            get { return OperationSourceId.BalanceByAccount; }
         }
 
         private static bool IsZeroItem(BalanceByAccountItemViewModel item)

@@ -229,6 +229,8 @@ export class AppComponent implements AfterViewInit, OnInit {
           if (command) {
             var url = command.routeUrl;
             this.router.navigate([url]);
+
+            event.preventDefault();
           }
         }
       }
@@ -242,6 +244,8 @@ export class AppComponent implements AfterViewInit, OnInit {
       });          
 
     }
+
+
   }  
 
   /**

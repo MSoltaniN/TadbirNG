@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Text;
+using DeviceId;
+using DeviceId.Encoders;
+using DeviceId.Formatters;
 
 namespace SPPC.Licensing.Local.Persistence
 {
@@ -11,62 +14,31 @@ namespace SPPC.Licensing.Local.Persistence
         /// <summary>
         ///
         /// </summary>
-        /// <returns></returns>
-        public static string GetProcessorId()
+        public static string UniqueKey
         {
-            return Guid.NewGuid().ToString("N");
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public static string GetVolumeSerial()
-        {
-            return Guid.NewGuid().ToString("N");
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public static string GetMainBoardSerial()
-        {
-            return Guid.NewGuid().ToString("N");
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public static string GetFirstMacAddress()
-        {
-            return Guid.NewGuid().ToString("N");
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public static string GetSystemUniqueId()
-        {
-            string uniqueId = String.Empty;
-            var items = new string[]
+            get
             {
-                GetProcessorId(),
-                GetVolumeSerial(),
-                GetMainBoardSerial(),
-                GetFirstMacAddress()
-            };
+                if (String.IsNullOrEmpty(_uniqueKey))
+                {
+                    _uniqueKey = Encode(new DeviceIdBuilder()
+                        .AddProcessorId()
+                        .AddMotherboardSerialNumber()
+                        .AddSystemUUID()
+                        .AddSystemDriveSerialNumber()
+                        .UseFormatter(new StringDeviceIdFormatter(new PlainTextDeviceIdComponentEncoder()))
+                        .ToString());
+                }
 
-            if (items.Length > 0)
-            {
-                uniqueId = Convert.ToBase64String(
-                    Encoding.UTF8.GetBytes(
-                        String.Join("$", items)));
+                return _uniqueKey;
             }
-
-            return uniqueId;
         }
+
+        private static string Encode(string value)
+        {
+            var bytes = Encoding.UTF8.GetBytes(value);
+            return Convert.ToBase64String(bytes);
+        }
+
+        private static string _uniqueKey;
     }
 }

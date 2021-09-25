@@ -36,6 +36,7 @@
               (dataStateChange)="onDataStateChange()"
               (cellClick)="onCellClick($event)"
               (dblclick)="rowDoubleClickHandler()"
+              (excelExport)="onExcelExport($event)"
               sppc-auto-generated-grid-reorder
               sppc-auto-generated-grid-resize>
     <kendo-grid-excel [fileName]="excelFileName" [fetchData]="allData"></kendo-grid-excel>
@@ -89,7 +90,7 @@
             <dt>{{ getColumnTitle(item) }}:</dt>
             <dd *ngIf="item.type == 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcNumConfig | async }}</dd>
             <dd *ngIf="item.scriptType != 'Date' && item.type != 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) }}</dd>
-            <dd *ngIf="item.scriptType == 'Date'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcDate }}</dd>
+            <dd *ngIf="item.scriptType == 'Date'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) |  SppcDate: item.type : item.scriptType }}</dd>
           </ng-template>
         </dl>
 
@@ -119,7 +120,7 @@
       </ng-template>
 
       <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'Date'">
-        {{ getRowValue(item.name,dataItem,item.scriptType) | SppcDate  }}
+        {{ getRowValue(item.name,dataItem,item.scriptType) |  SppcDate: item.type : item.scriptType  }}
       </ng-template>
 
       <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'boolean'">

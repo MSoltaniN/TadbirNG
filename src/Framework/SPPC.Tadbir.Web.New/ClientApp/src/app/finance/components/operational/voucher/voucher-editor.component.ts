@@ -6,19 +6,16 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
 import { String, DetailComponent } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { VoucherService, VoucherInfo, InventoryBalanceInfo } from '@sppc/finance/service';
 import { VoucherApi } from '@sppc/finance/service/api';
 import { Voucher } from '@sppc/finance/models';
 import { MetaDataService, BrowserStorageService, LookupService, ErrorHandlingService } from '@sppc/shared/services';
 import { DocumentStatusValue, VoucherOperations, VoucherSubjectTypes } from '@sppc/finance/enum';
-import { ViewName } from '@sppc/shared/security';
+import { ViewName, DraftVoucherPermissions, VoucherPermissions } from '@sppc/shared/security';
 import { LookupApi } from '@sppc/shared/services/api';
 import { Item } from '@sppc/shared/models';
 import { InventoryBalance } from '@sppc/finance/models/inventoryBalance';
-import { setTime } from '@progress/kendo-angular-dateinputs/dist/es2015/util';
-import { debug } from 'util';
-
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -109,6 +106,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   draftTitle: string;
   normalTitle: string;
   entityNamePermission: string;
+  breadcrumbResourceName: string;
+  voucherDateType: string;
 
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
     public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService,
@@ -125,13 +124,15 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.normalTitle = this.getText("Voucher.DraftVoucher");
     this.voucherOperationsItem = VoucherOperations;
     this.entityNamePermission = "Voucher";
+
+    this.setDateDisplayType();
     this.editForm.reset();    
 
     if (this.voucherItem) {
       this.initVoucherForm(this.voucherItem);
       this.isShowBreadcrumb = false;
       this.subjectMode = this.voucherItem.subjectType;
-      if (this.subjectMode == 1) this.entityNamePermission = "DraftVoucher";
+      if (this.subjectMode == 1) this.entityNamePermission = "DraftVoucher";      
       this.getVoucherType();
     }
     else {      
@@ -238,6 +239,10 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     
   }
 
+  setDateDisplayType() {
+    this.voucherDateType = this.properties.get(this.metadataKey).filter(p => p.name == "Date")[0].type;
+  }
+
   openingVoucherQuery() {
     this.voucherService.getOpeningVoucherQuery().subscribe(result => {
       if (result == true) {        
@@ -252,6 +257,16 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         this.initVoucherForm(result);
       }
 
+    }, err => {
+      if (err.statusCode == 400) {
+        this.showMessage(this.errorHandlingService.handleError(err), MessageType.Warning);
+        this.router.navigate(['/finance/voucher']);
+      }
+
+      if (err.value) {
+        this.showMessage(err.value, MessageType.Warning);
+        this.router.navigate(['/finance/voucher']);
+      }
     });
   }
 
@@ -403,7 +418,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   onSave(e?: any): void {
-    if (this.editForm.valid) {
+    if (this.editForm.valid && this.checkEditPermission()) {      
 
       let model: Voucher = this.editForm.value;
       model.branchId = this.BranchId;
@@ -506,7 +521,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   checkHandler() {
+
     var apiUrl = String.Format(this.voucherModel.statusId == DocumentStatusValue.NotChecked ? VoucherApi.CheckVoucher : VoucherApi.UndoCheckVoucher, this.voucherModel.id);
+    if (this.subjectMode == 1) {
+      apiUrl = String.Format(this.voucherModel.statusId == DocumentStatusValue.NotChecked ? VoucherApi.CheckDraftVoucher : VoucherApi.UndoCheckDraftVoucher, this.voucherModel.id);
+    }
 
     this.voucherService.changeVoucherStatus(apiUrl).subscribe(res => {
 
@@ -677,12 +696,32 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   get isVoucherConfirmed(): boolean {
-
     if (this.voucherModel)
       return this.voucherModel.statusId > 1;
 
     return false;
   }
+
+  get hasEditAccess(): boolean {
+    return this.checkEditPermission(false);
+  }
+
+  checkEditPermission(showMessage:boolean = true) {
+    if (this.subjectMode == 1 && !this.isAccess(Entities.DraftVoucher, DraftVoucherPermissions.Edit)) {
+      if (showMessage)
+        this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
+      return false;
+    }
+
+    if (this.subjectMode == 0 && !this.isAccess(Entities.Voucher, VoucherPermissions.Edit)) {
+      if (showMessage)
+        this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
+      return false;
+    }
+
+    return true;
+  }
+
 }
 
 

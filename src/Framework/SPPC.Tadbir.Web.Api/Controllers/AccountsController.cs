@@ -209,6 +209,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/accounts/lookup
+        [HttpGet]
+        [Route(AccountApi.AccountsLookupUrl)]
+        public async Task<IActionResult> GetAccountsLookupAsync()
+        {
+            var accounts = await _repository.GetAccountsLookupAsync(GridOptions);
+            Localize(accounts.Items);
+            return JsonListResult(accounts);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، سرفصل حسابداری داده شده را ایجاد می کند
         /// </summary>
         /// <param name="account">اطلاعات کامل سرفصل حسابداری جدید</param>
@@ -339,6 +353,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (result is BadRequestObjectResult)
             {
                 return result;
+            }
+
+            if (accountId == 0 && account.ParentId.HasValue)
+            {
+                var parent = await _repository.GetAccountAsync(account.ParentId.Value);
+                if (!parent.IsActive)
+                {
+                    string message = _strings.Format(AppStrings.InactiveAccountCantHaveChildren, parent.Name);
+                    return BadRequestResult(message);
+                }
+            }
+
+            if (accountId > 0 && account.ChildCount > 0 && !account.IsActive)
+            {
+                string message = _strings.Format(AppStrings.ParentAccountCantBeInactive, account.Name);
+                return BadRequestResult(message);
             }
 
             if (account.Level == 0 && !account.GroupId.HasValue)

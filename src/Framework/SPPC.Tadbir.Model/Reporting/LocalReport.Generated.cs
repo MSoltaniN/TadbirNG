@@ -28,7 +28,6 @@ namespace SPPC.Tadbir.Model.Reporting
             Caption = String.Empty;
             Template = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -50,11 +49,5 @@ namespace SPPC.Tadbir.Model.Reporting
         /// گزارش سیستمی یا ذخیره شده مرجع برای این گزارش محلی شده
         /// </summary>
         public virtual Report Report { get; set; }
-
-        private void InitReferences()
-        {
-            Locale = new Locale();
-            Report = new Report();
-        }
     }
 }

@@ -43,44 +43,47 @@ namespace SPPC.Tadbir.Persistence
         public async Task<BalanceSheetViewModel> GetBalanceSheetAsync(BalanceSheetParameters parameters)
         {
             var balanceSheet = new BalanceSheetViewModel();
-            _previousFiscalPeriodId = await GetPreviousFiscalPeriodIdAsync();
-            int length = _utility.GetLevelCodeLength(0);
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
+            {
+                _previousFiscalPeriodId = await GetPreviousFiscalPeriodIdAsync();
+                int length = _utility.GetLevelCodeLength(0);
 
-            // Calculate and add liquid asset/liability items...
-            balanceSheet.Items.Add(
-                GetReportHeaderItem(AppStrings.LiquidAssets, AppStrings.LiquidLiabilities));
-            var assets = await GetLiquidAssetItemsAsync(parameters, length);
-            var liabilities = await GetLiquidLiabilityItemsAsync(parameters, length);
-            var merged = GetMergedReportItems(assets.ToList(), liabilities.ToList());
-            var liquidSummary = GetReportSummaryItems(
-                merged, AppStrings.LiquidAssetsSum, AppStrings.LiquidLiabilitiesSum);
-            balanceSheet.Items.AddRange(merged);
-            balanceSheet.Items.AddRange(liquidSummary);
+                // Calculate and add liquid asset/liability items...
+                balanceSheet.Items.Add(
+                    GetReportHeaderItem(AppStrings.LiquidAssets, AppStrings.LiquidLiabilities));
+                var assets = await GetLiquidAssetItemsAsync(parameters, length);
+                var liabilities = await GetLiquidLiabilityItemsAsync(parameters, length);
+                var merged = GetMergedReportItems(assets.ToList(), liabilities.ToList());
+                var liquidSummary = GetReportSummaryItems(
+                    merged, AppStrings.LiquidAssetsSum, AppStrings.LiquidLiabilitiesSum);
+                balanceSheet.Items.AddRange(merged);
+                balanceSheet.Items.AddRange(liquidSummary);
 
-            // Calculate and add non-liquid asset/liability items...
-            balanceSheet.Items.Add(
-                GetReportHeaderItem(AppStrings.NonLiquidAssets, AppStrings.NonLiquidLiabilities));
-            assets = await GetNonLiquidAssetItemsAsync(parameters, length);
-            liabilities = await GetNonLiquidLiabilityItemsAsync(parameters, length);
-            merged = GetMergedReportItems(assets.ToList(), liabilities.ToList());
-            var nonLiquidSummary = GetReportSummaryItems(
-                merged, AppStrings.NonLiquidAssetsSum, AppStrings.NonLiquidLiabilitiesSum);
-            balanceSheet.Items.AddRange(merged);
-            balanceSheet.Items.AddRange(nonLiquidSummary);
+                // Calculate and add non-liquid asset/liability items...
+                balanceSheet.Items.Add(
+                    GetReportHeaderItem(AppStrings.NonLiquidAssets, AppStrings.NonLiquidLiabilities));
+                assets = await GetNonLiquidAssetItemsAsync(parameters, length);
+                liabilities = await GetNonLiquidLiabilityItemsAsync(parameters, length);
+                merged = GetMergedReportItems(assets.ToList(), liabilities.ToList());
+                var nonLiquidSummary = GetReportSummaryItems(
+                    merged, AppStrings.NonLiquidAssetsSum, AppStrings.NonLiquidLiabilitiesSum);
+                balanceSheet.Items.AddRange(merged);
+                balanceSheet.Items.AddRange(nonLiquidSummary);
 
-            // Calculate and add owner equity items...
-            balanceSheet.Items.Add(
-                GetReportHeaderItem(null, AppStrings.OwnerEquities));
-            var equity = await GetOwnerEquityItemsAsync(parameters, length);
-            var equitySummary = GetReportSummaryItems(equity, null, AppStrings.OwnerEquitiesSum);
-            balanceSheet.Items.AddRange(equity);
-            balanceSheet.Items.AddRange(equitySummary);
+                // Calculate and add owner equity items...
+                balanceSheet.Items.Add(
+                    GetReportHeaderItem(null, AppStrings.OwnerEquities));
+                var equity = await GetOwnerEquityItemsAsync(parameters, length);
+                var equitySummary = GetReportSummaryItems(equity, null, AppStrings.OwnerEquitiesSum);
+                balanceSheet.Items.AddRange(equity);
+                balanceSheet.Items.AddRange(equitySummary);
 
-            // Calculate and add total item...
-            var total = liquidSummary[1] + nonLiquidSummary[1] + equitySummary[1];
-            total.Assets = AppStrings.AssetsSum;
-            total.Liabilities = AppStrings.LiabilitiesOwnerEquitiesSum;
-            balanceSheet.Items.Add(total);
+                // Calculate and add total item...
+                var total = liquidSummary[1] + nonLiquidSummary[1] + equitySummary[1];
+                total.Assets = AppStrings.AssetsSum;
+                total.Liabilities = AppStrings.LiabilitiesOwnerEquitiesSum;
+                balanceSheet.Items.Add(total);
+            }
 
             await OnSourceActionAsync(parameters.GridOptions, SourceListId.BalanceSheet);
             return balanceSheet;

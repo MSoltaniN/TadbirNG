@@ -43,7 +43,7 @@ namespace SPPC.Tools.SystemDesigner.Cli
         {
             var connections = new List<string>();
             var dal = new SqlDataLayer(sysConnection);
-            var result = dal.Query("SELECT DbName, Server, UserName, Password FROM [Config].[CompanyDb]");
+            var result = dal.Query(_activeCompaniesQuery);
             foreach (DataRow row in result.Rows)
             {
                 var company = new CompanyDbModel()
@@ -173,17 +173,21 @@ namespace SPPC.Tools.SystemDesigner.Cli
 
         private void RefereshRuntimeCreateTadbirDBScripts()
         {
-            if (File.GetLastWriteTime(_createTadbirDBScriptFilePath) >
-                     File.GetLastWriteTime(_runetimeCreateTadbirDBScriptFilePath))
+            if (File.GetLastWriteTime(_mainDbScriptPath) >
+                     File.GetLastWriteTime(_runtimeDbScriptPath))
             {
-                File.Copy(_createTadbirDBScriptFilePath, _runetimeCreateTadbirDBScriptFilePath,true);
+                File.Copy(_mainDbScriptPath, _runtimeDbScriptPath,true);
             }
         }
 
         private const string _argsTemplate = @"-S {0} -d {1} -i {2} -b -E -I -j";
         private const string _scriptBlockRegex = @"-- (\d{1,}).(\d{1,}).(\d{1,})";
         private const string _tempScript = "Update.sql";
-        private const string _createTadbirDBScriptFilePath = @"..\..\..\res\Tadbir_CreateDbObjects.sql";
-        private const string _runetimeCreateTadbirDBScriptFilePath = @"..\..\..\src\Framework\SPPC.Tadbir.Web.Api\wwwroot\static\Tadbir_CreateDbObjects.sql";
+        private const string _mainDbScriptPath = @"..\..\..\res\Tadbir_CreateDbObjects.sql";
+        private const string _runtimeDbScriptPath = @"..\..\..\src\Framework\SPPC.Tadbir.Web.Api\wwwroot\static\Tadbir_CreateDbObjects.sql";
+        private const string _activeCompaniesQuery = @"
+SELECT DbName, Server, UserName, Password
+FROM [Config].[CompanyDb]
+WHERE IsActive = 1";
     }
 }

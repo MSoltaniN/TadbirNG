@@ -1,6 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { BrowserStorageService } from '@sppc/shared/services';
+import { Component, OnInit, Renderer2 } from '@angular/core';
+import { BrowserStorageService, MetaDataService } from '@sppc/shared/services';
 import { Command } from '@sppc/shared/models'
+import { UserService } from '@sppc/admin/service';
+import { DefaultComponent } from '@sppc/shared/class';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthenticationService } from '@sppc/core';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
+import { SettingService } from '@sppc/config/service';
+import { DialogService } from '@progress/kendo-angular-dialog';
 
 
 @Component({
@@ -8,30 +16,31 @@ import { Command } from '@sppc/shared/models'
   templateUrl: './appheader.component.html',
   styleUrls: ['./appheader.component.css']
 })
-export class AppheaderComponent implements OnInit {
+export class AppheaderComponent extends DefaultComponent implements OnInit {
 
   public companyName: string;
   public branchName: string;
   public fiscalPeriodName: string;
   public userName: string;
 
-  public profileItems: Array<Command>;
-  menuList: Array<Command> = new Array<Command>();
+  public profileItems: Array<Command>; 
   public icons: { [id: string]: string; } = {};
 
-  constructor(public bStorageService: BrowserStorageService) {
+  constructor(public toastrService: ToastrService,
+    public translate: TranslateService,
+    public renderer: Renderer2,
+    public metadata: MetaDataService,
+    public userService: UserService,
+    public settingService: SettingService,
+    public bStorageService: BrowserStorageService,
+    public dialogService: DialogService) {
+    super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
+  }
 
-    var branchId: number = 0;
-    var companyId: number = 0;
-    var fpId: number = 0;
-    var ticket: string = "";
-
+  ngOnInit() {
+    
     var currentContext = this.bStorageService.getCurrentUser();
     if (currentContext) {
-      branchId = currentContext ? currentContext.branchId : 0;
-      companyId = currentContext ? currentContext.companyId : 0;
-      fpId = currentContext ? currentContext.fpId : 0;
-      ticket = currentContext ? currentContext.ticket : "";
       this.userName = currentContext && currentContext.userName ? currentContext.userName.toString() : "";
       this.fiscalPeriodName = currentContext && currentContext.fiscalPeriodName ? currentContext.fiscalPeriodName.toString() : "";
       this.branchName = currentContext && currentContext.branchName ? currentContext.branchName.toString() : "";
@@ -40,23 +49,22 @@ export class AppheaderComponent implements OnInit {
 
     let profileMenus: any;
     profileMenus = this.bStorageService.getProfile();
-
-    if (profileMenus)
-      this.menuList = JSON.parse(profileMenus);
-    this.profileItems = new Array<Command>();
-    for (let item of this.menuList) {
-      // if (parent.id == 15)
-      // {
-
-      //for (let item of parent.children) {
-      this.profileItems.push(item);
-      //}
-      //}
+    if (profileMenus == null) {
+      this.userService.getDefaultUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
+        this.bStorageService.setProfile(res);
+        this.prepareProfileMenus(res);
+      });
     }
-
+    else {
+      this.prepareProfileMenus(JSON.parse(profileMenus));
+    }
   }
 
-  ngOnInit() {
-  }
 
+  prepareProfileMenus(profileMenus) {   
+    this.profileItems = new Array<Command>();
+    for (let item of profileMenus) {
+      this.profileItems.push(item);
+    }
+  }
 }

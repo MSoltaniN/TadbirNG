@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\bin\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\bin\Release\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <CodeAnalysisRuleSet>..\..\..\misc\assets\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
+    <ProjectReference Include="..\SPPC.Framework.Cryptography\SPPC.Framework.Cryptography.csproj" />
+    <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj" />
+    <ProjectReference Include="..\SPPC.Licensing.Model\SPPC.Licensing.Model.csproj" />
+    <ProjectReference Include="..\SPPC.Tools.Interfaces\SPPC.Tools.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

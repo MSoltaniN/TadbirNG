@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -21,26 +22,22 @@ namespace SPPC.Framework.Helpers
         }
 
         /// <summary>
-        /// Creates properties for the given <see cref="JsonContract"/>
+        /// Gets the serializable members for the type
         /// </summary>
-        /// <param name="type">The type to create properties for</param>
-        /// <param name="memberSerialization">The member serialization mode for the type</param>
-        /// <returns></returns>
-        protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+        /// <param name="objectType">The type to get serializable members for</param>
+        /// <returns>The serializable members for the type</returns>
+        protected override List<MemberInfo> GetSerializableMembers(Type objectType)
         {
-            var properties = base.CreateProperties(type, memberSerialization);
+            var properties = objectType.GetProperties();
             if (_ignoredProperties != null)
             {
-                properties = properties
-                    .Where(prop => !_ignoredProperties.Contains(prop.PropertyName))
+                return properties
+                    .Where(prop => !_ignoredProperties.Contains(prop.Name))
+                    .Cast<MemberInfo>()
                     .ToList();
             }
 
-            Array.ForEach(
-                properties.ToArray(),
-                prop => prop.PropertyName = String.Format(
-                    "{0}{1}", Char.ToLower(prop.PropertyName[0]), prop.PropertyName.Substring(1)));
-            return properties;
+            return base.GetSerializableMembers(objectType);
         }
 
         private readonly string[] _ignoredProperties;

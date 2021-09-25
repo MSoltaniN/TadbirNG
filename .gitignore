@@ -10,9 +10,14 @@ res/_codegen_
 .vs/
 
 # Ignore this to enable developer-specific connection string for API service
-src/Framework/SPPC.Tadbir.Web.Api/appsettings.Development.json
+src/**/appsettings.Development.json
 /doc/**/~$*
 
 # Ignore all uploaded files
-/src/**/Upload/*.*
-/src/Framework/SPPC.Tadbir.Web.Api/test.json
+src/**/Upload/*.*
+
+# Ignore instance-specific files
+src/**/license.Development.json
+src/**/instance.id
+src/**/environment.ts
+src/**/tadbir.lic

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.ViewModel.Config;
@@ -34,13 +35,14 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<Setting>();
             var allConfig = await repository
-                .GetAllAsync();
-            await ReadAsync(null);
-            return allConfig
+                .GetEntityQuery()
                 .Where(cfg => cfg.IsStandalone
                     && !(cfg.Type == (short)ConfigType.User && cfg.ScopeType < (short)ConfigScopeType.Entity))
                 .Select(cfg => Mapper.Map<SettingBriefViewModel>(cfg))
-                .ToList();
+                .ToListAsync();
+            SetDefaultCalendar(allConfig);
+            await ReadAsync(null);
+            return allConfig;
         }
 
         /// <summary>
@@ -110,6 +112,27 @@ namespace SPPC.Tadbir.Persistence
         internal override int? EntityType
         {
             get { return (int)EntityTypeId.Setting; }
+        }
+
+        private void SetDefaultCalendar(List<SettingBriefViewModel> allConfig)
+        {
+            var sysConfig = allConfig
+                .Where(cfg => cfg.ModelType == typeof(SystemConfig).Name)
+                .FirstOrDefault();
+            if (sysConfig != null)
+            {
+                var sysConfigValues = sysConfig.Values as SystemConfig;
+                sysConfigValues.DefaultCalendar = sysConfigValues.DefaultCalendars
+                    .Where(cfg => cfg.Language == UserContext.Language)
+                    .Select(cfg => cfg.Calendar)
+                    .Single();
+
+                var sysConfigDefValues = sysConfig.DefaultValues as SystemConfig;
+                sysConfigDefValues.DefaultCalendar = sysConfigDefValues.DefaultCalendars
+                    .Where(cfg => cfg.Language == UserContext.Language)
+                    .Select(cfg => cfg.Calendar)
+                    .Single();
+            }
         }
     }
 }

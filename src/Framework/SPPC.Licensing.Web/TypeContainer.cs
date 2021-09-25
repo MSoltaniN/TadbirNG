@@ -7,6 +7,7 @@ using SPPC.Framework.Cryptography;
 using SPPC.Framework.Persistence;
 using SPPC.Licensing.Persistence;
 using SPPC.Licensing.Persistence.Context;
+using SPPC.Licensing.Service;
 
 namespace SPPC.Licensing.Web
 {
@@ -57,7 +58,8 @@ namespace SPPC.Licensing.Web
 
         private void AddUtilityTypes()
         {
-            _services.AddTransient<ILicenseUtility, LicenseUtility>();
+            _services.AddTransient<ILicenseService, LicenseService>();
+            _services.AddTransient<ILicenseManager, LicenseManager>();
         }
 
         private readonly IServiceCollection _services;

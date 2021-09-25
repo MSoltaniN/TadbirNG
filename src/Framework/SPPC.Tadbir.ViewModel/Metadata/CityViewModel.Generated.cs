@@ -16,12 +16,12 @@ using System.ComponentModel.DataAnnotations;
 namespace SPPC.Tadbir.ViewModel.Metadata
 {
     /// <summary>
-    /// شهر یک استان را نگهداری میکند
+    /// اطلاعات یکی از شهرهای یک استان را نگهداری می کند
     /// </summary>
     public partial class CityViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CityViewModel"/> class.
+        /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         public CityViewModel()
         {
@@ -30,19 +30,19 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity.
+        /// شناسه دیتابیسی شهر
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the نام شهر
+        /// نام شهر
         /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
         [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the کد شهر
+        /// کد شهر
         /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
         [MaxLength(16, ErrorMessage = "{0} must have at most {1} characters.")]

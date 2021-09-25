@@ -3,7 +3,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { String, AutoGridExplorerComponent } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { DetailAccountApi } from '@sppc/finance/service/api';
 import { DetailAccount } from '@sppc/finance/models';
 import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
@@ -14,6 +14,7 @@ import { DialogService } from '@progress/kendo-angular-dialog';
 import { SettingService } from '@sppc/config/service';
 import { DetailAccountFormComponent } from './detailAccount-form.component';
 import { ViewName, DetailAccountPermissions } from '@sppc/shared/security';
+import { OperationId } from '@sppc/shared/enum/operationId';
 
 
 
@@ -161,6 +162,8 @@ export class DetailAccountComponent extends AutoGridExplorerComponent<DetailAcco
   }
 
   onAdvanceFilterOk(): any {
+    this.enableViewListChanged(this.viewId);
+    this.operationId = OperationId.Filter;
     this.reloadGrid();
   }
 

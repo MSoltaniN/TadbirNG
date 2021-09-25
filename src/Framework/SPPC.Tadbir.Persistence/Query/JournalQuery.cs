@@ -18,7 +18,7 @@ WHERE v.Date >= '{0}' AND v.Date <= '{1}' AND {{0}}";
         internal const string ByDateByRow = @"
 SELECT *
 FROM ( SELECT ROW_NUMBER() OVER ( ORDER BY {0} ) AS RowNum, v.Date, v.No, acc.FullCode, acc.Name,
-vl.Description, vl.Debit, vl.Credit, vl.Mark
+vl.Description, vl.Debit, vl.Credit, vl.Mark, vl.VoucherLineID AS [Id]
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
@@ -30,7 +30,7 @@ ORDER BY RowNum";
         internal const string ByDateByRowByBranch = @"
 SELECT *
 FROM ( SELECT ROW_NUMBER() OVER ( ORDER BY {0} ) AS RowNum, v.Date, v.No, acc.FullCode, acc.Name,
-vl.Description, vl.Debit, vl.Credit, vl.Mark, br.Name AS [BranchName]
+vl.Description, vl.Debit, vl.Credit, vl.Mark, br.Name AS [BranchName], vl.VoucherLineID AS [Id]
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
@@ -45,7 +45,7 @@ SELECT *
 FROM ( SELECT ROW_NUMBER() OVER ( ORDER BY {0} ) AS RowNum, v.Date, v.No,
 acc.FullCode AS AccountFullCode, acc.Name AS AccountName, facc.FullCode AS DetailAccountFullCode,
 facc.Name AS DetailAccountName, cc.FullCode AS CostCenterFullCode, cc.Name AS CostCenterName,
-prj.FullCode AS ProjectFullCode, prj.Name AS ProjectName, vl.Description, vl.Debit, vl.Credit, vl.Mark
+prj.FullCode AS ProjectFullCode, prj.Name AS ProjectName, vl.Description, vl.Debit, vl.Credit, vl.Mark, vl.VoucherLineID AS [Id]
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
@@ -61,7 +61,8 @@ ORDER BY RowNum";
 SELECT *
 FROM ( SELECT ROW_NUMBER() OVER ( ORDER BY {0} ) AS RowNum, v.Date, v.No, acc.FullCode, acc.Name,
 facc.FullCode AS [DetailFullCode], facc.Name AS [DetailName], cc.FullCode AS [CostFullCode], cc.Name AS [CostName],
-prj.FullCode AS [ProjectFullCode], prj.Name AS [ProjectName], vl.Description, vl.Debit, vl.Credit, vl.Mark, br.Name AS [BranchName]
+prj.FullCode AS [ProjectFullCode], prj.Name AS [ProjectName], vl.Description, vl.Debit, vl.Credit, vl.Mark, br.Name AS [BranchName],
+vl.VoucherLineID AS [Id]
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
@@ -87,7 +88,7 @@ WHERE v.No >= '{0}' AND v.No <= '{1}' AND {{0}}";
         internal const string ByNoByRow = @"
 SELECT *
 FROM ( SELECT ROW_NUMBER() OVER ( ORDER BY {0} ) AS RowNum, v.Date, v.No, acc.FullCode, acc.Name,
-vl.Description, vl.Debit, vl.Credit, vl.Mark
+vl.Description, vl.Debit, vl.Credit, vl.Mark, vl.VoucherLineID AS [Id]
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
@@ -99,7 +100,7 @@ ORDER BY RowNum";
         internal const string ByNoByRowByBranch = @"
 SELECT *
 FROM ( SELECT ROW_NUMBER() OVER ( ORDER BY {0} ) AS RowNum, v.Date, v.No, acc.FullCode, acc.Name,
-vl.Description, vl.Debit, vl.Credit, vl.Mark, br.Name AS [BranchName]
+vl.Description, vl.Debit, vl.Credit, vl.Mark, br.Name AS [BranchName], vl.VoucherLineID AS [Id]
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
@@ -113,7 +114,8 @@ ORDER BY RowNum";
 SELECT *
 FROM ( SELECT ROW_NUMBER() OVER ( ORDER BY {0} ) AS RowNum, v.Date, v.No, acc.FullCode, acc.Name,
 facc.FullCode AS [DetailFullCode], facc.Name AS [DetailName], cc.FullCode AS [CostFullCode], cc.Name AS [CostName],
-prj.FullCode AS [ProjectFullCode], prj.Name AS [ProjectName], vl.Description, vl.Debit, vl.Credit, vl.Mark
+prj.FullCode AS [ProjectFullCode], prj.Name AS [ProjectName], vl.Description, vl.Debit, vl.Credit, vl.Mark,
+vl.VoucherLineID AS [Id]
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
@@ -129,7 +131,8 @@ ORDER BY RowNum";
 SELECT *
 FROM ( SELECT ROW_NUMBER() OVER ( ORDER BY {0} ) AS RowNum, v.Date, v.No, acc.FullCode, acc.Name,
 facc.FullCode AS [DetailFullCode], facc.Name AS [DetailName], cc.FullCode AS [CostFullCode], cc.Name AS [CostName],
-prj.FullCode AS [ProjectFullCode], prj.Name AS [ProjectName], vl.Description, vl.Debit, vl.Credit, vl.Mark, br.Name AS [BranchName]
+prj.FullCode AS [ProjectFullCode], prj.Name AS [ProjectName], vl.Description, vl.Debit, vl.Credit, vl.Mark, br.Name AS [BranchName],
+vl.VoucherLineID AS [Id]
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID

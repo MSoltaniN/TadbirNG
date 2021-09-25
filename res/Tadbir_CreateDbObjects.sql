@@ -664,6 +664,30 @@ CREATE TABLE [Finance].[AccountProject] (
 )
 GO
 
+CREATE TABLE [Finance].[InactiveAccount] (
+    [InactiveAccountID]  INT              IDENTITY (1, 1) NOT NULL,
+    [AccountID]          INT              NOT NULL,
+    [FiscalPeriodID]     INT              NOT NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_InactiveAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Finance_InactiveAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_InactiveAccount] PRIMARY KEY CLUSTERED ([InactiveAccountID] ASC)
+    , CONSTRAINT [FK_Finance_InactiveAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
+    , CONSTRAINT [FK_Finance_InactiveAccount_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+)
+GO
+
+CREATE TABLE [Finance].[InactiveCurrency] (
+    [InactiveCurrencyID] INT              IDENTITY (1, 1) NOT NULL,
+    [CurrencyID]         INT              NOT NULL,
+    [FiscalPeriodID]     INT              NOT NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_InactiveCurrency_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Finance_InactiveCurrency_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_InactiveCurrency] PRIMARY KEY CLUSTERED ([InactiveCurrencyID] ASC)
+    , CONSTRAINT [FK_Finance_InactiveCurrency_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
+    , CONSTRAINT [FK_Finance_InactiveCurrency_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+)
+GO
+
 CREATE TABLE [Core].[Filter] (
     [FilterID]       INT              IDENTITY (1, 1) NOT NULL,
     [ViewId]         INT              NOT NULL,
@@ -750,7 +774,7 @@ INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelTyp
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (6, 'QuickSearchSettings', 3, 2, 'QuickSearchConfig', N'{}', N'{}', 'QuickSearchSettingsDescription', 0)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
-    VALUES (8, 'SystemConfigurationSettings', 2, 1, 'SystemConfig', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":2,"defaultCalendar":0,"usesDefaultCoding":true}', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":2,"defaultCalendar":0,"usesDefaultCoding":true}', 'SystemConfigurationDescription', 1)
+    VALUES (8, 'SystemConfigurationSettings', 2, 1, 'SystemConfig', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}', 'SystemConfigurationDescription', 1)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (9, 'FinanceReportSettings', 2, 1, 'FinanceReportConfig', N'{"openingAsFirstVoucher":false,"startTurnoverAsInitBalance":false}', N'{"openingAsFirstVoucher":false,"startTurnoverAsInitBalance":false}', 'FinanceReportSettingsDescription', 1)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
@@ -835,6 +859,7 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (53, N'GroupNor
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (54, N'Export')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (55, N'ExportRates')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (56, N'FilterRates')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (58, N'PrintPreview')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON
@@ -1426,6 +1451,48 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
     VALUES (171, 1, 3, 13, NULL, 6, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (172, 1, 3, 13, NULL, 54, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (173, 1, 1, NULL, 1, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (174, 1, 3, 2, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (175, 1, 1, NULL, 4, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (176, 1, 3, 6, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (177, 1, 1, NULL, 5, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (178, 1, 1, NULL, 6, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (179, 1, 1, NULL, 7, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (180, 1, 3, 3, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (181, 1, 1, NULL, 9, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (182, 1, 2, NULL, 18, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (183, 1, 1, NULL, 10, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (184, 1, 3, 5, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (185, 1, 3, 1, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (186, 1, 2, NULL, 11, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (187, 1, 3, 10, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (188, 1, 1, NULL, 12, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (189, 1, 1, NULL, 16, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (190, 1, 3, 4, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (191, 1, 2, NULL, 17, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (192, 1, 3, 12, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (193, 1, 3, 13, NULL, 58, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
 
@@ -1511,4 +1578,4 @@ GO
 
 -- TODO: Add new database scripts BEFORE this command and update [Version] field with each change in database version
 INSERT INTO [Core].[Version] ([VersionID],[Number])
-VALUES(1, '1.1.1149')
+VALUES(1, '1.1.1201')

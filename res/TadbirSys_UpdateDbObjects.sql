@@ -9207,3 +9207,71 @@ WHERE CommandID = 48
 UPDATE [Metadata].[Command]
 SET PermissionID = 189
 WHERE CommandID = 49
+
+-- 1.1.1166
+UPDATE [Metadata].[View]
+SET EntityName = 'Company'
+WHERE Name = 'CompanyDb'
+
+UPDATE [Metadata].[View]
+SET EntityName = 'ItemBalance'
+WHERE ViewID >= 43 AND ViewID <= 57
+
+UPDATE [Metadata].[View]
+SET EntityName = 'AccountCollection'
+WHERE Name = 'AccountCollectionAccount'
+
+UPDATE [Metadata].[View]
+SET SearchUrl = '/accounts/lookup'
+WHERE Name = 'Account'
+
+-- 1.1.1175
+Update Metadata.Command Set RouteUrl = '/admin/changePassword' Where TitleKey = 'ChangePassword'
+Update Metadata.Command Set IconName = 'folder-close' Where RouteUrl is Null
+Update Metadata.Command Set IconName = 'th-large' Where TitleKey = 'AccountGroup'
+Update Metadata.Command Set IconName = 'th-list' Where TitleKey = 'Account'
+Update Metadata.Command Set IconName = 'th' Where TitleKey = 'DetailAccount'
+Update Metadata.Command Set IconName = 'tower' Where TitleKey = 'CostCenter'
+Update Metadata.Command Set IconName = 'file' Where TitleKey = 'Project'
+Update Metadata.Command Set IconName = 'transfer' Where TitleKey = 'AccountRelations'
+Update Metadata.Command Set IconName = 'usd' Where TitleKey = 'Currency'
+Update Metadata.Command Set IconName = 'plus' Where TitleKey = 'NewVoucher'
+Update Metadata.Command Set IconName = 'search' Where TitleKey = 'VoucherByNo'
+Update Metadata.Command Set IconName = 'lock' Where TitleKey = 'RowAccessSettings'
+Update Metadata.Command Set IconName = 'wrench' Where TitleKey = 'Settings'
+
+-- 1.1.1176
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (10, N'Design')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (58, N'PrintPreview')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+SET IDENTITY_INSERT [Metadata].[EntityType] ON
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name]) VALUES (9, N'UserReport')
+SET IDENTITY_INSERT [Metadata].[EntityType] OFF
+
+SET IDENTITY_INSERT [Config].[SysLogSetting] ON
+INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (31, NULL, 5, 58, 1)
+INSERT INTO [Config].[SysLogSetting] (SysLogSettingID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (32, NULL, 9, 10, 1)
+SET IDENTITY_INSERT [Config].[SysLogSetting] OFF
+
+-- 1.1.1182
+UPDATE [Reporting].[Report]
+SET ServiceUrl = 'reports/voucher/{0}/std-form'
+WHERE Code = 'Voucher-Std-Form'
+
+UPDATE [Reporting].[Report]
+SET ServiceUrl = 'reports/voucher/{0}/std-form-detail'
+WHERE Code = 'Voucher-Std-Form-Detail'
+
+-- 1.1.1202
+UPDATE [Metadata].[Column]
+SET [Type] = '2'
+WHERE DotNetType LIKE 'System.Date%'
+
+-- 1.1.1203
+UPDATE [Metadata].[Column]
+SET [Type] = 'Default'
+WHERE DotNetType LIKE 'System.Date%'

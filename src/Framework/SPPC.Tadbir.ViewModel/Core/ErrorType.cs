@@ -21,6 +21,11 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// <summary>
         /// بروز خطای زمان اجرا
         /// </summary>
-        RuntimeException = 2
+        RuntimeException = 2,
+
+        /// <summary>
+        /// منقضی شدن تیکت امنیتی
+        /// </summary>
+        ExpiredSession = 3
     }
 }

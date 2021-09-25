@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -29,13 +30,10 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        /// <param name="fiscalRepository">امکان کار با اطلاعات دوره مالی را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی و سیستمی را در برنامه فراهم می کند</param>
-        public ConfigRepository(IRepositoryContext context, IFiscalPeriodRepository fiscalRepository,
-            IOperationLogRepository log)
+        public ConfigRepository(IRepositoryContext context, IOperationLogRepository log)
             : base(context, log)
         {
-            _fiscalRepository = fiscalRepository;
         }
 
         /// <summary>
@@ -54,22 +52,32 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                var fp = _fiscalRepository.GetFiscalPeriodAsync(UserContext.FiscalPeriodId).Result;
-                start = fp.StartDate;
+                var repository = UnitOfWork.GetRepository<FiscalPeriod>();
+                var fiscalPeriod = repository.GetByID(UserContext.FiscalPeriodId);
+                start = fiscalPeriod.StartDate;
                 end = (config.DefaultDateRange == DateRangeOptions.FiscalStartToCurrent)
                     ? DateTime.Now
-                    : fp.EndDate;
+                    : fiscalPeriod.EndDate;
             }
         }
 
         /// <summary>
-        /// به روش آسنکرون، نوع تقویم پیش فرض برنامه را خوانده و برمی گرداند
+        /// به روش آسنکرون، نوع تقویم پیش فرض برای زبان جاری برنامه را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مقدار عددی متناظر با نوع شمارشی موجود برای تقویم پیش فرض</returns>
-        public async Task<int> GetCurrentCalendarAsync()
+        public async Task<CalendarType> GetCurrentCalendarAsync()
         {
+            var calendar = CalendarType.Jalali;
             var systemConfig = await GetConfigByTypeAsync<SystemConfig>();
-            return systemConfig.DefaultCalendar;
+            var config = systemConfig.DefaultCalendars
+                .Where(cfg => cfg.Language == UserContext.Language)
+                .SingleOrDefault();
+            if (config != null)
+            {
+                calendar = (CalendarType)config.Calendar;
+            }
+
+            return calendar;
         }
 
         /// <summary>
@@ -80,8 +88,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<string> GetDateDisplayAsync(DateTime date)
         {
             string dateDisplay = date.ToShortDateString(false);
-            var systemConfig = await GetConfigByTypeAsync<SystemConfig>();
-            if (systemConfig.DefaultCalendar == (int)CalendarType.Jalali)
+            var calendar = await GetCurrentCalendarAsync();
+            if (calendar == CalendarType.Jalali)
             {
                 dateDisplay = JalaliDateTime
                     .FromDateTime(date)
@@ -261,20 +269,21 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="rootPath">آدرس ریشه نرم افزار در سرور</param>
         public async Task SaveSystemConfigAsync(SettingBriefViewModel configItem, string rootPath)
         {
-            Verify.ArgumentNotNull(configItem, "configItem");
+            Verify.ArgumentNotNull(configItem, nameof(configItem));
             var repository = UnitOfWork.GetAsyncRepository<Setting>();
             _webRootPath = rootPath;
 
             var systemConfig = await repository
                 .GetByIDWithTrackingAsync(configItem.Id);
             var oldValues = JsonHelper.To<SystemConfig>(systemConfig.Values);
+            SetDefaultCalendar(configItem);
             systemConfig.Values = JsonHelper.From(configItem.Values, false);
             repository.Update(systemConfig);
             await UnitOfWork.CommitAsync();
 
-            var configValues = JsonHelper.To<SystemConfig>(systemConfig.Values);
-            await LogConfigChangeAsync(oldValues, configValues);
-            if (configValues.UsesDefaultCoding && !await IsDefinedAccountAsync())
+            var newValues = JsonHelper.To<SystemConfig>(systemConfig.Values);
+            await LogConfigChangeAsync(oldValues, newValues);
+            if (newValues.UsesDefaultCoding && !await IsDefinedAccountAsync())
             {
                 await InitializeDefaultAccounts();
             }
@@ -347,16 +356,27 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private static string GetCalendarName(int calendar)
-        {
-            return (calendar == (int)CalendarType.Gregorian)
-                ? AppStrings.Gregorian
-                : AppStrings.Persian;
-        }
-
         private static string GetYesNo(bool value)
         {
             return value ? AppStrings.BooleanYes : AppStrings.BooleanNo;
+        }
+
+        private static string GetNullableValue(int? nullable)
+        {
+            return nullable.HasValue
+                ? nullable.Value.ToString()
+                : "NULL";
+        }
+
+        private bool IsCalendarChanged(SystemConfig old, SystemConfig current)
+        {
+            var oldConfig = old.DefaultCalendars
+                .Where(cfg => cfg.Language == UserContext.Language)
+                .SingleOrDefault();
+            var currentConfig = current.DefaultCalendars
+                .Where(cfg => cfg.Language == UserContext.Language)
+                .SingleOrDefault();
+            return oldConfig.Calendar != currentConfig.Calendar;
         }
 
         private async Task<bool> IsDefinedAccountAsync()
@@ -364,6 +384,16 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             var query = repository.GetEntityQuery();
             return await query.CountAsync() > 0 ? true : false;
+        }
+
+        private string GetCalendarName(SystemConfig config)
+        {
+            var calendarConfig = config.DefaultCalendars
+                .Where(cfg => cfg.Language == UserContext.Language)
+                .SingleOrDefault();
+            return (calendarConfig.Calendar == (int)CalendarType.Gregorian)
+                ? AppStrings.Gregorian
+                : AppStrings.Persian;
         }
 
         private async Task InitializeDefaultAccounts()
@@ -422,29 +452,29 @@ namespace SPPC.Tadbir.Persistence
 
         private void InsertDefaultAccounts(IList<Account> accounts)
         {
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-
-            string script = "SET IDENTITY_INSERT [Finance].[Account] ON\r\n";
-
-            foreach (var item in accounts)
+            var scriptBuilder = new StringBuilder();
+            scriptBuilder.AppendLine("SET IDENTITY_INSERT [Finance].[Account] ON");
+            foreach (var account in accounts)
             {
-                script += string.Format(@"INSERT INTO [Finance].[Account] (AccountID, ParentID, GroupID, FiscalPeriodID, BranchID, BranchScope, Code, FullCode, Name, [Level])
-                                          VALUES({0}, {1}, {2}, {3}, {4}, {5}, N'{6}', N'{7}', N'{8}', {9})",
-                                          item.Id, item.ParentId.HasValue ? item.ParentId.Value.ToString() : "NULL", item.GroupId.HasValue ? item.GroupId.Value.ToString() : "NULL",
-                                          UserContext.FiscalPeriodId, UserContext.BranchId, item.BranchScope, item.Code, item.FullCode, item.Name, item.Level);
-                script += Environment.NewLine;
+                scriptBuilder.AppendFormat(@"
+INSERT INTO [Finance].[Account] (AccountID, ParentID, GroupID, FiscalPeriodID, BranchID, BranchScope, Code, FullCode, Name, [Level])
+VALUES({0}, {1}, {2}, {3}, {4}, {5}, N'{6}', N'{7}', N'{8}', {9})",
+                    account.Id, GetNullableValue(account.ParentId), GetNullableValue(account.GroupId),
+                    UserContext.FiscalPeriodId, UserContext.BranchId, account.BranchScope, account.Code,
+                    account.FullCode, account.Name, account.Level);
+                scriptBuilder.AppendLine();
             }
 
-            script += "SET IDENTITY_INSERT [Finance].[Account] OFF";
-
+            scriptBuilder.AppendLine("SET IDENTITY_INSERT [Finance].[Account] OFF");
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-            DbConsole.ExecuteNonQuery(script);
+            DbConsole.ExecuteNonQuery(scriptBuilder.ToString());
 
             var accCollections = Path.Combine(_webRootPath, @"static\CollectionAccounts.sql");
-            script = File.ReadAllText(accCollections);
-            script = script.Replace("%branchId%", UserContext.BranchId.ToString())
+            scriptBuilder = new StringBuilder(File.ReadAllText(accCollections));
+            scriptBuilder
+                .Replace("%branchId%", UserContext.BranchId.ToString())
                 .Replace("%fiscalPeriodId%", UserContext.FiscalPeriodId.ToString());
-            DbConsole.ExecuteNonQuery(script);
+            DbConsole.ExecuteNonQuery(scriptBuilder.ToString());
         }
 
         private async Task UpdateTreeLevelUsage(ViewTreeFullConfig accountTreeConfig)
@@ -456,14 +486,26 @@ namespace SPPC.Tadbir.Persistence
             await SaveViewTreeConfigAsync(configItems);
         }
 
+        private void SetDefaultCalendar(SettingBriefViewModel config)
+        {
+            // NOTE: config.Values that comes back from client is NOT SystemConfig, so it needs double conversion...
+            var json = JsonHelper.From(config.Values);
+            var systemConfig = JsonHelper.To<SystemConfig>(json);
+            var calendarConfig = systemConfig.DefaultCalendars
+                .Where(cfg => cfg.Language == UserContext.Language)
+                .Single();
+            calendarConfig.Calendar = systemConfig.DefaultCalendar;
+            config.Values = systemConfig;
+        }
+
         private async Task LogConfigChangeAsync(SystemConfig oldConfig, SystemConfig newConfig)
         {
             string description;
-            if (oldConfig.DefaultCalendar != newConfig.DefaultCalendar)
+            if (IsCalendarChanged(oldConfig, newConfig))
             {
                 description = String.Format("{0} : {1} , {2} : {3}",
-                    AppStrings.Old, GetCalendarName(oldConfig.DefaultCalendar),
-                    AppStrings.New, GetCalendarName(newConfig.DefaultCalendar));
+                    AppStrings.Old, GetCalendarName(oldConfig),
+                    AppStrings.New, GetCalendarName(newConfig));
                 OnEntityAction(OperationId.CalendarChange);
                 Log.Description = Context.Localize(description);
                 await TrySaveLogAsync();
@@ -500,7 +542,6 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private readonly IFiscalPeriodRepository _fiscalRepository;
         private string _webRootPath;
     }
 }

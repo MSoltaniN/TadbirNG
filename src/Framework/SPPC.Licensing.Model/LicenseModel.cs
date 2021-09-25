@@ -11,6 +11,8 @@ namespace SPPC.Licensing.Model
         {
             var now = DateTime.Now.Date;
             UserCount = 10;
+            Edition = "Professional";
+            ActiveModules = 1;
             StartDate = now;
             EndDate = new DateTime(now.Year + 1, now.Month, now.Day);
             RowGuid = Guid.NewGuid();

@@ -42,12 +42,26 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs">
       <Link>FrameworkSolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="CustomerEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomerEditor.Designer.cs">
+      <DependentUpon>CustomerEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InstanceInfoEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstanceInfoEditor.Designer.cs">
+      <DependentUpon>InstanceInfoEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
@@ -55,10 +69,34 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="LicenseEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LicenseEditor.Designer.cs">
+      <DependentUpon>LicenseEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="CustomerEditor.resx">
+      <DependentUpon>CustomerEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstanceInfoEditor.resx">
+      <DependentUpon>InstanceInfoEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LicenseEditor.resx">
+      <DependentUpon>LicenseEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -80,22 +118,39 @@
       <Project>{10A16ED5-F293-471C-8790-73122CFA1E56}</Project>
       <Name>SPPC.Framework.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Framework.Persistence\SPPC.Framework.Persistence.csproj">
+      <Project>{ECF8782B-D0B5-47A5-AD26-D7156EE7B65D}</Project>
+      <Name>SPPC.Framework.Persistence</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj">
       <Project>{81da88f6-b2af-4568-b56b-35cc3368f850}</Project>
       <Name>SPPC.Framework.Service</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SPPC.Licensing.Interfaces\SPPC.Licensing.Interfaces.csproj">
-      <Project>{671ADBE3-B49B-4A77-BE4F-326C914C1867}</Project>
-      <Name>SPPC.Licensing.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SPPC.Licensing.Local.Persistence\SPPC.Licensing.Local.Persistence.csproj">
-      <Project>{db90efcb-6aed-4e39-8d70-4bb740d2bd91}</Project>
-      <Name>SPPC.Licensing.Local.Persistence</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPPC.Licensing.Model\SPPC.Licensing.Model.csproj">
       <Project>{8cc522e7-d132-4ede-b5dd-eb80b6e65405}</Project>
       <Name>SPPC.Licensing.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Licensing.Persistence\SPPC.Licensing.Persistence.csproj">
+      <Project>{26f7cacc-6932-4ecc-ab7e-af2e33d34645}</Project>
+      <Name>SPPC.Licensing.Persistence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Licensing.Service\SPPC.Licensing.Service.csproj">
+      <Project>{8f6b4bce-c489-4a91-818f-cd3d3c3c2838}</Project>
+      <Name>SPPC.Licensing.Service</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tools.Interfaces\SPPC.Tools.Interfaces.csproj">
+      <Project>{bd6a9e5b-fa96-4a8a-9e63-39943446ad65}</Project>
+      <Name>SPPC.Tools.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tools.Model\SPPC.Tools.Model.csproj">
+      <Project>{51242DCB-F03E-4A84-B9FF-434D62F4778A}</Project>
+      <Name>SPPC.Tools.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tools.Transforms\SPPC.Tools.Transforms.csproj">
+      <Project>{9b4b433a-a376-4d2d-9092-f215bddbae7e}</Project>
+      <Name>SPPC.Tools.Transforms</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

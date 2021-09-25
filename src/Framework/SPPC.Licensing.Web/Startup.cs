@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using SPPC.Licensing.Model;
 
 namespace SPPC.Licensing.Web
 {
@@ -28,6 +23,11 @@ namespace SPPC.Licensing.Web
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(
+                options => options
+                    .WithOrigins("*")
+                    .AllowAnyMethod()
+                    .WithHeaders("Content-Type", "Accept-Language", Constants.InstanceHeaderName));
             app.UseMvc();
         }
 
@@ -35,6 +35,7 @@ namespace SPPC.Licensing.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddCors();
 
             var container = new TypeContainer(services, Configuration);
             container.AddServices();

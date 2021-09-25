@@ -38,6 +38,9 @@ export class AccountApi {
     // accounts/count
     public static AccountsCount = environment.BaseUrl + "/accounts/count";
 
+    // accounts/lookup
+    public static AccountsLookup = environment.BaseUrl + "/accounts/lookup";
+
     // accounts/{accountId:min(1)}/fulldata
     public static AccountFullData = environment.BaseUrl + "/accounts/{0}/fulldata";
 }

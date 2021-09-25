@@ -12,9 +12,11 @@
 
 
 export interface AccountCollectionAccount {
-    accountId: number;
-    fiscalPeriodId: number;
-    branchId: number;
-    id: number;
-    collectionId: number;
+  accountId: number;
+  accountFullCode: string;
+  accountName: string;
+  fiscalPeriodId: number;
+  branchId: number;
+  id: number;
+  collectionId: number;
 }

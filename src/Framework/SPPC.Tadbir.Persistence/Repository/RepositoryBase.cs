@@ -1,16 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Config;
+using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 
@@ -87,10 +89,44 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، رشته اتصال شرکت را ایجاد میکند
+        /// </summary>
+        /// <param name="companyId">شناسه یکتای شرکت</param>
+        /// <returns>رشته اتصال</returns>
+        public async Task<string> BuildConnectionStringAsync(int companyId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var company = await repository.GetByIDAsync(companyId);
+            return BuildConnectionString(company);
+        }
+
+        /// <summary>
+        /// شعبه های زیرمجموعه شعبه داده شده را به صورت مجموعه ای از
+        /// شناسه های دیتابیسی خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه والد مورد نظر</param>
+        /// <returns>مجموعه شناسه های دیتابیسی شعبه های زیرمجموعه</returns>
+        public IEnumerable<int> GetChildTree(int branchId)
+        {
+            return GetChildTreeAsync(branchId).Result;
+        }
+
+        /// <summary>
+        /// شعبه های والد شعبه داده شده را به صورت مجموعه ای از
+        /// شناسه های دیتابیسی خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه زیرمجموعه مورد نظر</param>
+        /// <returns>مجموعه شناسه های دیتابیسی شعبه های والد</returns>
+        public IEnumerable<int> GetParentTree(int branchId)
+        {
+            return GetParentTreeAsync(branchId).Result;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، شرکت جاری در برنامه را به شرکت مشخص شده تغییر می دهد
         /// </summary>
         /// <param name="companyId">شناسه دیتابیسی شرکت مورد نظر</param>
-        public async Task SetCurrentCompanyAsync(int companyId)
+        protected async Task SetCurrentCompanyAsync(int companyId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             var company = await repository.GetByIDAsync(companyId);
@@ -101,15 +137,40 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، رشته اتصال شرکت را ایجاد میکند
+        /// به روش آسنکرون، شعبه های زیرمجموعه شعبه داده شده را به صورت مجموعه ای از
+        /// شناسه های دیتابیسی خوانده و برمی گرداند
         /// </summary>
-        /// <param name="companyId">شناسه یکتای شرکت</param>
-        /// <returns>رشته اتصال</returns>
-        public async Task<string> BuildConnectionStringAsync(int companyId)
+        /// <param name="branchId">شناسه دیتابیسی شعبه والد مورد نظر</param>
+        /// <returns>مجموعه شناسه های دیتابیسی شعبه های زیرمجموعه</returns>
+        protected async Task<IEnumerable<int>> GetChildTreeAsync(int branchId)
         {
-            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var company = await repository.GetByIDAsync(companyId);
-            return BuildConnectionString(company);
+            var tree = new List<int>();
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
+            var branch = await repository.GetByIDAsync(branchId, br => br.Children);
+            AddChildren(branch, tree);
+            return tree;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، شعبه های والد شعبه داده شده را به صورت مجموعه ای از
+        /// شناسه های دیتابیسی خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه زیرمجموعه مورد نظر</param>
+        /// <returns>مجموعه شناسه های دیتابیسی شعبه های والد</returns>
+        protected async Task<IEnumerable<int>> GetParentTreeAsync(int branchId)
+        {
+            var tree = new List<int>();
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
+            var branch = await repository.GetByIDWithTrackingAsync(branchId);
+            var currentBranch = branch;
+            while (currentBranch != null)
+            {
+                tree.Add(currentBranch.Id);
+                repository.LoadReference(currentBranch, br => br.Parent);
+                currentBranch = currentBranch.Parent;
+            }
+
+            return tree;
         }
 
         /// <summary>
@@ -232,10 +293,44 @@ namespace SPPC.Tadbir.Persistence
                 .ToArray();
         }
 
-        private static string GetDecodedValue(string encoded)
+        /// <summary>
+        /// به روش آسنکرون، عبارت موجود برای فیلتر شعبه را از تنظیمات لیست اطلاعاتی خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">تنظیمات لیست اطلاعاتی</param>
+        /// <returns>عبارت مورد نیاز برای فیلتر شعبه</returns>
+        protected async Task<string> GetBranchFilterAsync(GridOptions gridOptions)
         {
-            var bytes = Transform.FromBase64String(encoded);
-            return Encoding.UTF8.GetString(bytes);
+            string branchFilter = String.Empty;
+            if (gridOptions.QuickFilter != null)
+            {
+                var gridFilter = gridOptions.QuickFilter
+                    .GetAllFilters()
+                    .Where(filter => filter.FieldName == "BranchId")
+                    .FirstOrDefault();
+                if (gridFilter == null)
+                {
+                    var childBranches = new List<int>(await GetChildTreeAsync(UserContext.BranchId));
+                    childBranches.Insert(0, UserContext.BranchId);
+                    branchFilter = String.Format("BranchID IN({0})", String.Join(",", childBranches));
+                }
+                else
+                {
+                    branchFilter = gridFilter.ToString();
+                }
+            }
+
+            return branchFilter;
+        }
+
+        private void AddChildren(Branch branch, IList<int> children)
+        {
+            var repository = UnitOfWork.GetRepository<Branch>();
+            foreach (var child in branch.Children)
+            {
+                children.Add(child.Id);
+                var item = repository.GetByID(child.Id, br => br.Children);
+                AddChildren(item, children);
+            }
         }
 
         private const string _branchReferenceScript = @"

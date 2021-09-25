@@ -79,9 +79,19 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public int InventoryMode { get; set; }
 
         /// <summary>
+        /// تاریخ و ساعت آخرین ورود کاربر به برنامه
+        /// </summary>
+        public DateTime? LastLoginDate { get; set; }
+
+        /// <summary>
+        /// زبان جاری برنامه که موقع ورود به برنامه انتخاب شده است
+        /// </summary>
+        public string Language { get; set; }
+
+        /// <summary>
         /// مجموعه شناسه های دیتابیسی نقش های تخصیص یافته به این کاربر
         /// </summary>
-        public IList<int> Roles { get; private set; }
+        public IList<int> Roles { get; }
 
         /// <summary>
         /// مجموعه مجوزهای امنیتی اعطا شده به این کاربر

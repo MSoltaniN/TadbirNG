@@ -1975,3 +1975,96 @@ WHERE ModelType = 'FinanceReportConfig'
 UPDATE [Config].[LogSetting]
 SET SourceID = NULL, EntityTypeID = 15
 WHERE OperationID IN(31,32,33,34)
+
+-- 1.1.1166
+CREATE TABLE [Finance].[InactiveAccount] (
+    [InactiveAccountID]  INT              IDENTITY (1, 1) NOT NULL,
+    [AccountID]          INT              NOT NULL,
+    [FiscalPeriodID]     INT              NOT NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_InactiveAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Finance_InactiveAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_InactiveAccount] PRIMARY KEY CLUSTERED ([InactiveAccountID] ASC)
+    , CONSTRAINT [FK_Finance_InactiveAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
+    , CONSTRAINT [FK_Finance_InactiveAccount_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+)
+GO
+
+-- 1.1.1171
+CREATE TABLE [Finance].[InactiveCurrency] (
+    [InactiveCurrencyID] INT              IDENTITY (1, 1) NOT NULL,
+    [CurrencyID]         INT              NOT NULL,
+    [FiscalPeriodID]     INT              NOT NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_InactiveCurrency_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Finance_InactiveCurrency_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_InactiveCurrency] PRIMARY KEY CLUSTERED ([InactiveCurrencyID] ASC)
+    , CONSTRAINT [FK_Finance_InactiveCurrency_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
+    , CONSTRAINT [FK_Finance_InactiveCurrency_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+)
+GO
+
+-- 1.1.1174
+UPDATE [Finance].[VoucherLine]
+SET Mark = NULL
+WHERE Mark = ''
+
+-- 1.1.1176
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (58, N'PrintPreview')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (173, 1, 1, NULL, 1, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (174, 1, 3, 2, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (175, 1, 1, NULL, 4, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (176, 1, 3, 6, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (177, 1, 1, NULL, 5, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (178, 1, 1, NULL, 6, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (179, 1, 1, NULL, 7, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (180, 1, 3, 3, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (181, 1, 1, NULL, 9, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (182, 1, 2, NULL, 18, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (183, 1, 1, NULL, 10, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (184, 1, 3, 5, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (185, 1, 3, 1, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (186, 1, 2, NULL, 11, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (187, 1, 3, 10, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (188, 1, 1, NULL, 12, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (189, 1, 1, NULL, 16, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (190, 1, 3, 4, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (191, 1, 2, NULL, 17, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (192, 1, 3, 12, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (193, 1, 3, 13, NULL, 58, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.1.1201
+UPDATE [Config].[Setting]
+SET [Values] = N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}',
+DefaultValues = N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}'
+WHERE ModelType = 'SystemConfig'
+
+-- 1.1.1210
+UPDATE [Config].[Setting]
+SET [Values] = N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}',
+DefaultValues = N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}'
+WHERE ModelType = 'SystemConfig'

@@ -18,8 +18,7 @@ export class SppcGridFilter {
     @Input() public isDateTime: boolean = false;
 
     @Input() public allowFiltering: boolean = true;
-    @Input() public metaDataItem: any;
-
+    @Input() public metaDataItem: any;    
 
     @Input('metaData')
     public set metaData(value: Property | undefined) {
@@ -32,14 +31,14 @@ export class SppcGridFilter {
                 this.isString = true;
                 break;
             case "date":
-                this.isDate = true;
+                this.isDate = true;                
                 break;
             case "datetime":
-                this.isDateTime = true;
+                this.isDateTime = true;                
                 break;
             default:
                 break;
-        }
+        }      
 
   }
 

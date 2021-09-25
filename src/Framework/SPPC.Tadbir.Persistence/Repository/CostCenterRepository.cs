@@ -42,10 +42,15 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
         public async Task<PagedList<CostCenterViewModel>> GetCostCentersAsync(GridOptions gridOptions = null)
         {
-            var costCenters = await Repository
-                .GetAllQuery<CostCenter>(ViewId.CostCenter, cc => cc.Children)
-                .Select(item => Mapper.Map<CostCenterViewModel>(item))
-                .ToListAsync();
+            var costCenters = new List<CostCenterViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                costCenters = await Repository
+                    .GetAllQuery<CostCenter>(ViewId.CostCenter, cc => cc.Children)
+                    .Select(item => Mapper.Map<CostCenterViewModel>(item))
+                    .ToListAsync();
+            }
+
             await ReadAsync(gridOptions);
             return new PagedList<CostCenterViewModel>(costCenters, gridOptions);
         }

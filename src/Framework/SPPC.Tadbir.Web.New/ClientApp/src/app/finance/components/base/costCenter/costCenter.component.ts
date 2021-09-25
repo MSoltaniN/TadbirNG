@@ -3,7 +3,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '@progress/kendo-angular-dialog';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { CostCenterApi } from '@sppc/finance/service/api';
 import { CostCenter } from '@sppc/finance/models';
 import { GridService, BrowserStorageService, MetaDataService } from '@sppc/shared/services';
@@ -14,6 +14,7 @@ import { SettingService } from '@sppc/config/service';
 import { CostCenterFormComponent } from './costCenter-form.component';
 import { String, AutoGridExplorerComponent } from '@sppc/shared/class';
 import { ViewName, CostCenterPermissions } from '@sppc/shared/security';
+import { OperationId } from '@sppc/shared/enum/operationId';
 
 
 
@@ -161,6 +162,8 @@ export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> i
   }
 
   onAdvanceFilterOk(): any {
+    this.enableViewListChanged(this.viewId);
+    this.operationId = OperationId.Filter;
     this.reloadGrid();
   }
 

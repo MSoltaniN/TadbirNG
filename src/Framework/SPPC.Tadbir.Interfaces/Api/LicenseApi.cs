@@ -43,13 +43,13 @@ namespace SPPC.Tadbir.Api
         public const string ActivateLicenseUrl = "license/activate";
 
         /// <summary>
-        /// API client URL for all application licenses
+        /// API client URL for validating the application license
         /// </summary>
-        public const string Licenses = "licenses";
+        public const string ValidateLicense = "license/validate";
 
         /// <summary>
-        /// API server route URL for all application licenses
+        /// API server route URL for validating the application license
         /// </summary>
-        public const string LicensesUrl = "licenses";
+        public const string ValidateLicenseUrl = "license/validate";
     }
 }

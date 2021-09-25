@@ -44,13 +44,17 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>لیست نقش های تعریف شده</returns>
         public async Task<PagedList<RoleViewModel>> GetRolesAsync(GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<Role>();
-            var roles = await repository
-                .GetEntityQuery()
-                .Include(r => r.RolePermissions)
-                    .ThenInclude(rp => rp.Permission)
-                .Select(r => Mapper.Map<RoleViewModel>(r))
-                .ToListAsync();
+            var roles = new List<RoleViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<Role>();
+                roles = await repository
+                    .GetEntityQuery()
+                    .Include(r => r.RolePermissions)
+                        .ThenInclude(rp => rp.Permission)
+                    .Select(r => Mapper.Map<RoleViewModel>(r))
+                    .ToListAsync();
+            }
 
             await ReadAsync(gridOptions);
             return new PagedList<RoleViewModel>(roles, gridOptions);
@@ -340,7 +344,8 @@ namespace SPPC.Tadbir.Persistence
                 .Select(co => Mapper.Map<RelatedItemViewModel>(co))
                 .ToArray();
             var companyRepository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var allCompanies = await companyRepository.GetAllAsync();
+            var allCompanies = await companyRepository
+                .GetByCriteriaAsync(co => co.IsActive);
             var disabledCompanies = allCompanies
                 .Select(co => Mapper.Map<RelatedItemViewModel>(co))
                 .Except(enabledCompanies, new EntityEqualityComparer<RelatedItemViewModel>())

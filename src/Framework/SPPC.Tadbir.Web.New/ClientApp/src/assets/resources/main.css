@@ -246,97 +246,182 @@ table thead tr th span.ui-column-title {
 
 /*#endregion */
 
-/*#region loading sppiner in page load*/
 
-.sk-cube-grid {
-  width: 80px;
-  height: 80px;
-  /*margin: 500px auto;*/
-  position: fixed; /* or absolute */
-  top: 42%;
-  left: 48%;
+
+/*new sppiner*/
+
+/*change this to resize*/
+
+
+
+.example {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  height: 50px;
+  width: 50px;
+  transform: translateX(-50%) translateY(-50%);  
 }
 
-  .sk-cube-grid .sk-cube {
-    width: 33%;
-    height: 33%;
-    background-color: #fff;
-    float: left;
-    -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
-    animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 50px;
+}
+
+.item1 {
+  position: absolute;
+  height: 50px;
+  width: 15%;
+  background: red;
+  left: 10px;
+}
+
+.item2 {
+  position: absolute;
+  height: 50px;
+  width: 15%;
+  background: red;
+  left: 25px;
+}
+
+.item3 {
+  position: absolute;
+  height: 50px;
+  width: 15%;
+  background: red;
+  left: 40px;
+}
+
+.block {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 50px;
+}
+
+  .block > .item {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    background: #147ec2;
+    -webkit-animation: move 2s linear infinite;
+    animation: move 2s linear infinite;
   }
 
-  .sk-cube-grid .sk-cube1 {
-    -webkit-animation-delay: 0.2s;
-    animation-delay: 0.2s;
+    .block > .item:nth-of-type(1) {
+      top: -50px;
+      left: -50px;
+      -webkit-animation-delay: -1.75s;
+      animation-delay: -1.75s;
+    }
+
+    .block > .item:nth-of-type(2) {
+      top: -50px;
+      left: 0;
+      -webkit-animation-delay: -1.5s;
+      animation-delay: -1.5s;
+    }
+
+    .block > .item:nth-of-type(3) {
+      top: -50px;
+      left: 50px;
+      -webkit-animation-delay: -1.25s;
+      animation-delay: -1.25s;
+    }
+
+    .block > .item:nth-of-type(4) {
+      top: 0;
+      left: 50px;
+      -webkit-animation-delay: -1s;
+      animation-delay: -1s;
+    }
+
+    .block > .item:nth-of-type(5) {
+      top: 50px;
+      left: 50px;
+      -webkit-animation-delay: -0.75s;
+      animation-delay: -0.75s;
+    }
+
+    .block > .item:nth-of-type(6) {
+      top: 50px;
+      left: 0;
+      -webkit-animation-delay: -0.5s;
+      animation-delay: -0.5s;
+    }
+
+    .block > .item:nth-of-type(7) {
+      top: 50px;
+      left: -50px;
+      -webkit-animation-delay: -0.25s;
+      animation-delay: -0.25s;
+    }
+
+    .block > .item:nth-of-type(8) {
+      top: 0;
+      left: -50px;
+      -webkit-animation-delay: 0s;
+      animation-delay: 0s;
+    }
+
+@-webkit-keyframes move {
+  0% {
+    transform: rotate(0) scale(1);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
   }
 
-  .sk-cube-grid .sk-cube2 {
-    -webkit-animation-delay: 0.3s;
-    animation-delay: 0.3s;
+  10% {
+    transform: rotate(90deg) scale(0);
   }
 
-  .sk-cube-grid .sk-cube3 {
-    -webkit-animation-delay: 0.4s;
-    animation-delay: 0.4s;
+  50% {
+    transform: rotate(90deg) scale(0);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
   }
 
-  .sk-cube-grid .sk-cube4 {
-    -webkit-animation-delay: 0.1s;
-    animation-delay: 0.1s;
+  60% {
+    transform: rotate(180deg) scale(1);
   }
 
-  .sk-cube-grid .sk-cube5 {
-    -webkit-animation-delay: 0.2s;
-    animation-delay: 0.2s;
-  }
-
-  .sk-cube-grid .sk-cube6 {
-    -webkit-animation-delay: 0.3s;
-    animation-delay: 0.3s;
-  }
-
-  .sk-cube-grid .sk-cube7 {
-    -webkit-animation-delay: 0s;
-    animation-delay: 0s;
-  }
-
-  .sk-cube-grid .sk-cube8 {
-    -webkit-animation-delay: 0.1s;
-    animation-delay: 0.1s;
-  }
-
-  .sk-cube-grid .sk-cube9 {
-    -webkit-animation-delay: 0.2s;
-    animation-delay: 0.2s;
-  }
-
-@-webkit-keyframes sk-cubeGridScaleDelay {
-  0%, 70%, 100% {
-    -webkit-transform: scale3D(1, 1, 1);
-    transform: scale3D(1, 1, 1);
-  }
-
-  35% {
-    -webkit-transform: scale3D(0, 0, 1);
-    transform: scale3D(0, 0, 1);
+  100% {
+    transform: rotate(180deg) scale(1);
   }
 }
 
-@keyframes sk-cubeGridScaleDelay {
-  0%, 70%, 100% {
-    -webkit-transform: scale3D(1, 1, 1);
-    transform: scale3D(1, 1, 1);
+@keyframes move {
+  0% {
+    transform: rotate(0) scale(1);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
   }
 
-  35% {
-    -webkit-transform: scale3D(0, 0, 1);
-    transform: scale3D(0, 0, 1);
+  10% {
+    transform: rotate(90deg) scale(0);
+  }
+
+  50% {
+    transform: rotate(90deg) scale(0);
+    -webkit-animation-timing-function: ease-out;
+    animation-timing-function: ease-out;
+  }
+
+  60% {
+    transform: rotate(180deg) scale(1);
+  }
+
+  100% {
+    transform: rotate(180deg) scale(1);
   }
 }
 
-/*#endregion loading sppiner in page load*/
 
+/*new sppiner*/
 
 .k-dialog-buttongroup .k-primary:focus, .k-dialog-buttongroup .k-primary.k-state-focused {
   box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.13) !important;
@@ -401,7 +486,7 @@ body.tRtl .sppc-input-num {
 }
 
   .sppc-dialog-md hr {
-    border-top: dashed 1px #eee;
+    border-top: dashed 1px #147ec2;
   }
 
 @media screen and (max-width:800px) {

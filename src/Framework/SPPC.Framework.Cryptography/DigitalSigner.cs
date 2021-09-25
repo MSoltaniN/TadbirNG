@@ -35,7 +35,7 @@ namespace SPPC.Framework.Cryptography
             if (Certificate != null)
             {
                 var dataHash = _crypto.CreateHash(data);
-                var rsa = (RSACryptoServiceProvider)Certificate.PrivateKey;
+                var rsa = (RSA)Certificate.PrivateKey;
                 byte[] signatureBytes = rsa.SignHash(dataHash, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
                 signature = Convert.ToBase64String(signatureBytes);
             }
@@ -56,7 +56,7 @@ namespace SPPC.Framework.Cryptography
             if (Certificate != null)
             {
                 byte[] dataHash = _crypto.CreateHash(data);
-                var rsa = (RSACryptoServiceProvider)Certificate.PublicKey.Key;
+                var rsa = (RSA)Certificate.PublicKey.Key;
                 validated = rsa.VerifyHash(dataHash, Convert.FromBase64String(signature),
                     HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
             }

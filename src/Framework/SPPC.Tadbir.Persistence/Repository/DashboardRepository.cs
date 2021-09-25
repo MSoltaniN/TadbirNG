@@ -39,6 +39,11 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             var currentPeriod = await repository.GetByIDAsync(UserContext.FiscalPeriodId);
+            if (currentPeriod == null)
+            {
+                return new DashboardSummariesViewModel();
+            }
+
             var monthEnum = new MonthEnumerator(currentPeriod.StartDate, currentPeriod.EndDate, calendar);
             var months = monthEnum.GetMonths();
             return new DashboardSummariesViewModel()

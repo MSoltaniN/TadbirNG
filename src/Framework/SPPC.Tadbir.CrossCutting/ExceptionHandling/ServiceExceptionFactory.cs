@@ -27,7 +27,7 @@ namespace SPPC.Tadbir.ExceptionHandling
 
         private static ServiceExceptionContext ContextFromException(Exception exception)
         {
-            var context = new ServiceExceptionContext();
+            ServiceExceptionContext context;
             if (exception is JsonException)
             {
                 context = GetJsonSerializerContext(exception);

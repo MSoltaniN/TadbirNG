@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SPPC.Licensing.Model;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Middleware;
 using SPPC.Tadbir.Web.Api.Swagger;
@@ -67,7 +69,9 @@ namespace SPPC.Tadbir.Web.Api
                     .WithOrigins("*")
                     .AllowAnyMethod()
                     .WithExposedHeaders("X-Tadbir-AuthTicket", "X-Total-Count")
-                    .WithHeaders("Content-Type", "Accept-Language", "X-Tadbir-AuthTicket", "X-Tadbir-GridOptions", "X-Tadbir-Parameters"));
+                    .WithHeaders("Content-Type", "Accept-Language", AppConstants.ContextHeaderName,
+                        Constants.InstanceHeaderName, AppConstants.GridOptionsHeaderName,
+                        AppConstants.ParametersHeaderName, AppConstants.LicenseHeaderName));
 
             app.UseStaticFiles();
             app.UseMvc();

@@ -39,11 +39,17 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.btnAdd = new System.Windows.Forms.Button();
+            this.chkFilter = new System.Windows.Forms.CheckBox();
+            this.chkPrint = new System.Windows.Forms.CheckBox();
+            this.chkExport = new System.Windows.Forms.CheckBox();
             this.grpCrudActions.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpCrudActions
             // 
+            this.grpCrudActions.Controls.Add(this.chkExport);
+            this.grpCrudActions.Controls.Add(this.chkPrint);
+            this.grpCrudActions.Controls.Add(this.chkFilter);
             this.grpCrudActions.Controls.Add(this.chkDelete);
             this.grpCrudActions.Controls.Add(this.chkModify);
             this.grpCrudActions.Controls.Add(this.chkCreate);
@@ -53,12 +59,12 @@
             this.grpCrudActions.Size = new System.Drawing.Size(618, 72);
             this.grpCrudActions.TabIndex = 0;
             this.grpCrudActions.TabStop = false;
-            this.grpCrudActions.Text = "Standard CRUD Actions";
+            this.grpCrudActions.Text = "Standard Actions";
             // 
             // chkDelete
             // 
             this.chkDelete.AutoSize = true;
-            this.chkDelete.Location = new System.Drawing.Point(361, 36);
+            this.chkDelete.Location = new System.Drawing.Point(268, 36);
             this.chkDelete.Name = "chkDelete";
             this.chkDelete.Size = new System.Drawing.Size(71, 21);
             this.chkDelete.TabIndex = 3;
@@ -68,7 +74,7 @@
             // chkModify
             // 
             this.chkModify.AutoSize = true;
-            this.chkModify.Location = new System.Drawing.Point(240, 36);
+            this.chkModify.Location = new System.Drawing.Point(179, 36);
             this.chkModify.Name = "chkModify";
             this.chkModify.Size = new System.Drawing.Size(71, 21);
             this.chkModify.TabIndex = 2;
@@ -78,7 +84,7 @@
             // chkCreate
             // 
             this.chkCreate.AutoSize = true;
-            this.chkCreate.Location = new System.Drawing.Point(126, 36);
+            this.chkCreate.Location = new System.Drawing.Point(89, 36);
             this.chkCreate.Name = "chkCreate";
             this.chkCreate.Size = new System.Drawing.Size(72, 21);
             this.chkCreate.TabIndex = 1;
@@ -150,6 +156,36 @@
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.Add_Click);
             // 
+            // chkFilter
+            // 
+            this.chkFilter.AutoSize = true;
+            this.chkFilter.Location = new System.Drawing.Point(357, 36);
+            this.chkFilter.Name = "chkFilter";
+            this.chkFilter.Size = new System.Drawing.Size(61, 21);
+            this.chkFilter.TabIndex = 4;
+            this.chkFilter.Text = "Filter";
+            this.chkFilter.UseVisualStyleBackColor = true;
+            // 
+            // chkPrint
+            // 
+            this.chkPrint.AutoSize = true;
+            this.chkPrint.Location = new System.Drawing.Point(446, 36);
+            this.chkPrint.Name = "chkPrint";
+            this.chkPrint.Size = new System.Drawing.Size(59, 21);
+            this.chkPrint.TabIndex = 5;
+            this.chkPrint.Text = "Print";
+            this.chkPrint.UseVisualStyleBackColor = true;
+            // 
+            // chkExport
+            // 
+            this.chkExport.AutoSize = true;
+            this.chkExport.Location = new System.Drawing.Point(535, 36);
+            this.chkExport.Name = "chkExport";
+            this.chkExport.Size = new System.Drawing.Size(70, 21);
+            this.chkExport.TabIndex = 6;
+            this.chkExport.Text = "Export";
+            this.chkExport.UseVisualStyleBackColor = true;
+            // 
             // EntityActionsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -183,5 +219,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.CheckBox chkExport;
+        private System.Windows.Forms.CheckBox chkPrint;
+        private System.Windows.Forms.CheckBox chkFilter;
     }
 }

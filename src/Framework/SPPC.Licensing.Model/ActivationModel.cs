@@ -5,7 +5,7 @@ namespace SPPC.Licensing.Model
 {
     public class ActivationModel
     {
-        public InstanceModel InstanceKey { get; set; }
+        public string InstanceKey { get; set; }
 
         public string HardwareKey { get; set; }
 

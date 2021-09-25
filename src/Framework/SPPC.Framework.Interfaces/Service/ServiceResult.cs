@@ -26,6 +26,11 @@ namespace SPPC.Framework.Service
         /// <summary>
         /// Indicates that the service operation did not succeed because of a server-side error
         /// </summary>
-        ServerError = 3
+        ServerError = 3,
+
+        /// <summary>
+        /// Indicates that the service operation did not succeed due to license or security problem
+        /// </summary>
+        AccessDenied = 4
     }
 }

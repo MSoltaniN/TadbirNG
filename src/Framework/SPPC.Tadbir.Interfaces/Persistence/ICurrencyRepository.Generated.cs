@@ -104,12 +104,5 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="currency">ارز مورد نظر برای ایجاد</param>
         /// <returns>اطلاعات نمایشی ارز ایجاد شده</returns>
         Task<CurrencyViewModel> InsertDefaultCurrencyAsync(CurrencyViewModel currency);
-
-        /// <summary>
-        /// به روش آسنکرون، استان و شهرها را در شرکت جاری به روزرسانی می کند
-        /// </summary>
-        /// TODO: موقتی
-        /// <param name="mdbPath">مسیر فایل بانک اطلاعاتی اکسس مرتبط با استان و شهر</param>
-        Task UpdateZoneAsync(string mdbPath);
     }
 }

@@ -104,10 +104,6 @@
       <Project>{81da88f6-b2af-4568-b56b-35cc3368f850}</Project>
       <Name>SPPC.Framework.Service</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SPPC.Licensing.Interfaces\SPPC.Licensing.Interfaces.csproj">
-      <Project>{671ADBE3-B49B-4A77-BE4F-326C914C1867}</Project>
-      <Name>SPPC.Licensing.Interfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SPPC.Licensing.Local.Persistence\SPPC.Licensing.Local.Persistence.csproj">
       <Project>{db90efcb-6aed-4e39-8d70-4bb740d2bd91}</Project>
       <Name>SPPC.Licensing.Local.Persistence</Name>
@@ -120,6 +116,13 @@
       <Project>{d1f6c20d-75c8-4b50-b4c3-4a695158b45e}</Project>
       <Name>SPPC.Tadbir.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tools.Interfaces\SPPC.Tools.Interfaces.csproj">
+      <Project>{BD6A9E5B-FA96-4A8A-9E63-39943446AD65}</Project>
+      <Name>SPPC.Tools.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>$(ProjectDir)..\..\..\bin\Debug\ngdes.exe -cmd:xcopy</PostBuildEvent>
+  </PropertyGroup>
 </Project>

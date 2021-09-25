@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
@@ -7,6 +8,10 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
 using SPPC.Licensing.Service;
+using SPPC.Tools.LicenseManager.Properties;
+using SPPC.Tools.Model;
+using SPPC.Tools.Transforms.Templates;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.LicenseManager
 {
@@ -15,300 +20,464 @@ namespace SPPC.Tools.LicenseManager
         public MainWindow()
         {
             InitializeComponent();
-            License = new LicenseModel();
-            Customer = new CustomerModel();
             _crypto = new CryptoService();
         }
 
-        public LicenseModel License { get; set; }
+        private ICustomerService CustomerService
+        {
+            get
+            {
+                if (_customerService == null)
+                {
+                    string root = ConfigurationManager.AppSettings["OnlineServerRoot"];
+                    _customerService = new CustomerService(new ServiceClient(root));
+                }
 
-        public CustomerModel Customer { get; set; }
+                return _customerService;
+            }
+        }
+
+        private ILicenseService LicenseService
+        {
+            get
+            {
+                if (_licenseService == null)
+                {
+                    string root = ConfigurationManager.AppSettings["OnlineServerRoot"];
+                    _licenseService = new LicenseService(new ServiceClient(root));
+                }
+
+                return _licenseService;
+            }
+        }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            SetupBindings();
-            LoadDefaults();
+            RefreshCustomerList();
         }
 
-        private ILicenseService Service
+        private void DisplayCustomersButton_Click(object sender, EventArgs e)
         {
-            get
+            RefreshCustomerList();
+        }
+
+        private void NewCustomerButton_Click(object sender, EventArgs e)
+        {
+            var editor = new CustomerEditor
             {
-                if (_service == null)
+                Customer = new CustomerModel()
+            };
+            if (editor.ShowDialog(this) == DialogResult.OK)
+            {
+                Cursor = Cursors.WaitCursor;
+                string error = CustomerService.InsertCustomer(editor.Customer);
+                if (!String.IsNullOrEmpty(error))
                 {
-                    string root = ConfigurationManager.AppSettings["OnlineServerRoot"];
-                    _service = new LicenseService(new ServiceClient(root));
+                    Cursor = Cursors.Default;
+                    MessageBox.Show(this, error, "بروز خطا", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+                    return;
                 }
 
-                return _service;
+                Cursor = Cursors.Default;
+                MessageBox.Show(this, "مشتری با موفقیت ذخیره شد.", "عملیات موفق", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
             }
         }
 
-        private void SaveCustomer_Click(object sender, EventArgs e)
+        private void EditCustomerButton_Click(object sender, EventArgs e)
         {
-            if (!SaveCustomer())
+            if (grdCustomers.SelectedRows.Count == 0)
             {
                 return;
             }
 
-            this.Cursor = Cursors.WaitCursor;
-            string error = Service.InsertCustomer(Customer);
-            if (!String.IsNullOrEmpty(error))
+            var editor = new CustomerEditor
             {
-                this.Cursor = Cursors.Default;
-                MessageBox.Show(this, error, "بروز خطا", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
-                return;
-            }
+                Customer = grdCustomers.SelectedRows[0].DataBoundItem as CustomerModel
+            };
+            if (editor.ShowDialog(this) == DialogResult.OK)
+            {
+                Cursor = Cursors.WaitCursor;
+                string error = CustomerService.UpdateCustomer(editor.Customer);
+                if (!String.IsNullOrEmpty(error))
+                {
+                    Cursor = Cursors.Default;
+                    MessageBox.Show(this, error, "بروز خطا", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+                    return;
+                }
 
-            this.Cursor = Cursors.Default;
-            MessageBox.Show(this, "مشتری با موفقیت ذخیره شد.", "عملیات موفق", MessageBoxButtons.OK,
-                MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+                Cursor = Cursors.Default;
+                MessageBox.Show(this, "مشتری با موفقیت ذخیره شد.", "عملیات موفق", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+                RefreshCustomerList();
+            }
         }
 
-        private void SaveLicense_Click(object sender, EventArgs e)
+        private void CustomerLicensesButton_Click(object sender, EventArgs e)
         {
-            if (!SaveLicense())
+            if (grdCustomers.SelectedRows.Count == 0)
             {
                 return;
             }
 
-            this.Cursor = Cursors.WaitCursor;
-            string error = Service.InsertLicense(License);
-            if (!String.IsNullOrEmpty(error))
-            {
-                this.Cursor = Cursors.Default;
-                MessageBox.Show(this, error, "بروز خطا", MessageBoxButtons.OK,
-                    MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
-                return;
-            }
-
-            this.Cursor = Cursors.Default;
-            MessageBox.Show(this, "مجوز تدبیر با موفقیت ذخیره شد.", "عملیات موفق", MessageBoxButtons.OK,
-                MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+            var customer = grdCustomers.SelectedRows[0].DataBoundItem as CustomerModel;
+            tabMain.SelectedIndex = 1;
+            cmbCustomer.SelectedValue = customer.Id.ToString();
         }
 
-        private void SaveInstance_Click(object sender, EventArgs e)
+        private void NewLicenseButton_Click(object sender, EventArgs e)
         {
-            string path = ConfigurationManager.AppSettings["InstanceIdPath"];
+            int customerId = 0;
+            if (cmbCustomer.SelectedIndex != -1)
+            {
+                customerId = Int32.Parse(cmbCustomer.SelectedValue.ToString());
+            }
+
+            var editor = new LicenseEditor()
+            {
+                License = new LicenseModel() { CustomerId = customerId }
+            };
+            if (editor.ShowDialog(this) == DialogResult.OK)
+            {
+                Cursor = Cursors.WaitCursor;
+                var customer = CustomerService.GetCustomer(editor.License.CustomerId);
+                editor.License.CustomerKey = customer.CustomerKey;
+                string error = LicenseService.InsertLicense(editor.License);
+                if (!String.IsNullOrEmpty(error))
+                {
+                    Cursor = Cursors.Default;
+                    MessageBox.Show(this, error, "بروز خطا", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+                    return;
+                }
+
+                Cursor = Cursors.Default;
+                MessageBox.Show(this, "مجوز تدبیر با موفقیت ذخیره شد.", "عملیات موفق", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+                RefreshLicenseList();
+            }
+        }
+
+        private void EditLicenseButton_Click(object sender, EventArgs e)
+        {
+            if (grdLicenses.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            var editor = new LicenseEditor
+            {
+                License = grdLicenses.SelectedRows[0].DataBoundItem as LicenseModel
+            };
+            if (editor.ShowDialog(this) == DialogResult.OK)
+            {
+                Cursor = Cursors.WaitCursor;
+                string error = LicenseService.UpdateLicense(editor.License);
+                if (!String.IsNullOrEmpty(error))
+                {
+                    Cursor = Cursors.Default;
+                    MessageBox.Show(this, error, "بروز خطا", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+                    return;
+                }
+
+                Cursor = Cursors.Default;
+                MessageBox.Show(this, "مجوز تدبیر با موفقیت ذخیره شد.", "عملیات موفق", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+                RefreshLicenseList();
+            }
+        }
+
+        private void DeleteLicenseButton_Click(object sender, EventArgs e)
+        {
+            var response = MessageBox.Show(this, "Are you sure?", "Confirmation", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, MessageBoxOptions.RtlReading);
+            if (response == DialogResult.Yes)
+            {
+                MessageBox.Show(this, "License was deleted.", "Success", MessageBoxButtons.OK,
+                    MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+            }
+        }
+
+        private void SaveInstanceButton_Click(object sender, EventArgs e)
+        {
+            if (grdLicenses.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            if (!ValidateSaveInstance())
+            {
+                return;
+            }
+
+            var license = grdLicenses.SelectedRows[0].DataBoundItem as LicenseModel;
+            string instance = GetInstanceKey(license);
+            if (CreateClientInstance(instance))
+            {
+                string path = ConfigurationManager.AppSettings["InstanceIdPath"];
+                if (File.Exists(path))
+                {
+                    string folder = Path.GetDirectoryName(path);
+                    File.Move(path, Path.Combine(folder, "_instance.id"));
+                }
+
+                File.WriteAllText(path, instance);
+                var customer = CustomerService.GetCustomer(license.CustomerId);
+                CreateApiServiceLicense(license, customer);
+
+                MessageBox.Show(this, "شناسه برنامه با موفقیت ثبت شد.",
+                    "عملیات موفق", MessageBoxButtons.OK, MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+            }
+        }
+
+        private void CustomerCombo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshLicenseList();
+        }
+
+        private void CustomersGrid_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+        {
+            var columnMap = new Dictionary<string, string>
+            {
+                { "CompanyName", Resources.CompanyName },
+                { "Industry", Resources.Industry },
+                { "EmployeeCount", Resources.EmployeeCount },
+                { "HeadquartersAddress", Resources.HeadquartersAddress },
+                { "ContactFirstName", Resources.ContactFirstName },
+                { "ContactLastName", Resources.ContactLastName },
+                { "WorkPhone", Resources.WorkPhone },
+                { "WorkFax", Resources.WorkFax },
+                { "CellPhone", Resources.CellPhone }
+            };
+
+            if (columnMap.ContainsKey(e.Column.Name))
+            {
+                e.Column.HeaderText = columnMap[e.Column.Name];
+            }
+            else
+            {
+                e.Column.Visible = false;
+            }
+        }
+
+        private void LicensesGrid_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+        {
+            var columnMap = new Dictionary<string, string>
+            {
+                { "UserCount", Resources.ActiveUserCount },
+                { "Edition", Resources.AppEdition },
+                { "StartDate", Resources.ContractStart },
+                { "EndDate", Resources.ContractEnd },
+                { "ActiveModules", Resources.ActiveSubsystems },
+                { "IsActivated", Resources.IsActivated }
+            };
+
+            if (columnMap.ContainsKey(e.Column.Name))
+            {
+                e.Column.HeaderText = columnMap[e.Column.Name];
+            }
+            else
+            {
+                e.Column.Visible = false;
+            }
+        }
+
+        private void LicensesGrid_DataBindingComplete(
+            object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            ////foreach (DataGridViewRow row in grdLicenses.Rows)
+            ////{
+            ////    int activeModules = Int32.Parse(row.Cells["ActiveModules"].Value.ToString());
+            ////    row.Cells["ActiveModuleNames"].Value = GetActiveModules(activeModules);
+            ////}
+        }
+
+        private void MainTab_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabMain.SelectedIndex == 1)
+            {
+                Cursor = Cursors.WaitCursor;
+                var customers = CustomerService.GetCustomerLookup();
+                customers.Insert(0, new KeyValue(null, Resources.AllCustomers));
+                cmbCustomer.DisplayMember = "Value";
+                cmbCustomer.ValueMember = "Key";
+                cmbCustomer.DataSource = customers;
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private void ExitButton_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void RefreshCustomerList()
+        {
+            Cursor = Cursors.WaitCursor;
+            grdCustomers.DataSource = null;
+            grdCustomers.DataSource = CustomerService.GetCustomers();
+            Cursor = Cursors.Default;
+        }
+
+        private void RefreshLicenseList()
+        {
+            if (cmbCustomer.SelectedIndex != -1)
+            {
+                Cursor = Cursors.WaitCursor;
+                var lookupItem = cmbCustomer.SelectedItem as KeyValue;
+                int? customerId = lookupItem.Key != null
+                    ? Int32.Parse(lookupItem.Key)
+                    : (int?)null;
+                grdLicenses.DataSource = null;
+                grdLicenses.DataSource = LicenseService.GetLicenses(customerId);
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private string GetActiveModules(int activeModules)
+        {
+            var modules = new List<string>();
+            var modulesFlags = (Subsystems)activeModules;
+            if (HasModule(modulesFlags, Subsystems.Accounting))
+            {
+                modules.Add(Resources.Accounting);
+            }
+
+            if (HasModule(modulesFlags, Subsystems.Budgeting))
+            {
+                modules.Add(Resources.Budgeting);
+            }
+
+            if (HasModule(modulesFlags, Subsystems.CashFlow))
+            {
+                modules.Add(Resources.CashFlow);
+            }
+
+            if (HasModule(modulesFlags, Subsystems.Cheque))
+            {
+                modules.Add(Resources.Cheque);
+            }
+
+            if (HasModule(modulesFlags, Subsystems.Inventory))
+            {
+                modules.Add(Resources.Inventory);
+            }
+
+            if (HasModule(modulesFlags, Subsystems.Personnel))
+            {
+                modules.Add(Resources.Personnel);
+            }
+
+            if (HasModule(modulesFlags, Subsystems.Purchase))
+            {
+                modules.Add(Resources.Purchase);
+            }
+
+            if (HasModule(modulesFlags, Subsystems.Sales))
+            {
+                modules.Add(Resources.Sales);
+            }
+
+            if (HasModule(modulesFlags, Subsystems.WagePayment))
+            {
+                modules.Add(Resources.WagePayment);
+            }
+
+            if (HasModule(modulesFlags, Subsystems.Warehousing))
+            {
+                modules.Add(Resources.Warehousing);
+            }
+
+            return String.Join("، ", modules.ToArray());
+        }
+
+        private bool HasModule(Subsystems modules, Subsystems module)
+        {
+            return (modules & module) != 0;
+        }
+
+        private string GetInstanceKey(LicenseModel license)
+        {
             var instance = new InstanceModel()
             {
-                CustomerKey = License.CustomerKey,
-                LicenseKey = License.LicenseKey
+                CustomerKey = license.CustomerKey,
+                LicenseKey = license.LicenseKey
             };
-            string instanceData = _crypto.Encrypt(JsonHelper.From(instance));
-            File.WriteAllText(path, instanceData);
-            CreateApiServiceLicense();
-            MessageBox.Show(this, "شناسه برنامه با موفقیت ثبت شد.",
-                "عملیات موفق", MessageBoxButtons.OK, MessageBoxIcon.Exclamation,
-                MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+            return _crypto.Encrypt(JsonHelper.From(instance, false));
         }
 
-        private void Exit_Click(object sender, EventArgs e)
+        private bool CreateClientInstance(string instance)
         {
-            Close();
+            var editor = new InstanceInfoEditor()
+            {
+                Instance = new ClientInstanceModel()
+                {
+                    Key = instance,
+                    Version = VersionInfo.GetAppVersion()
+                }
+            };
+            var result = editor.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                string path = ConfigurationManager.AppSettings["ClientInstanceIdPath"];
+                var template = new TsInstanceFromValues(editor.Instance);
+                File.WriteAllText(path, template.TransformText());
+            }
+
+            return result == DialogResult.OK;
         }
 
-        private void SetupBindings()
-        {
-            // Customer bindings
-            txtCompanyName.DataBindings.Add("Text", Customer, "CompanyName");
-            txtHqAddress.DataBindings.Add("Text", Customer, "HeadquartersAddress");
-            txtFirstName.DataBindings.Add("Text", Customer, "ContactFirstName");
-            txtLastName.DataBindings.Add("Text", Customer, "ContactLastName");
-            txtWorkPhone.DataBindings.Add("Text", Customer, "WorkPhone");
-            txtWorkFax.DataBindings.Add("Text", Customer, "WorkFax");
-            txtCellPhone.DataBindings.Add("Text", Customer, "CellPhone");
-
-            // License bindings
-            spnUserCount.DataBindings.Add("Value", License, "UserCount");
-            dtpStartDate.DataBindings.Add("Value", License, "StartDate");
-            dtpEndDate.DataBindings.Add("Value", License, "EndDate");
-        }
-
-        private void LoadDefaults()
-        {
-
-            cmbEdition.SelectedIndex = 0;
-            cmbEmployeeCount.SelectedIndex = 3;
-            cmbIndustry.SelectedIndex = 1;
-            chkAccounting.Checked = true;
-        }
-
-        private bool SaveCustomer()
-        {
-            if (!ValidateCustomer())
-            {
-                return false;
-            }
-
-            Customer.CustomerKey = Guid.NewGuid().ToString();
-            Customer.Industry = cmbIndustry.SelectedItem.ToString();
-            Customer.EmployeeCount = cmbEmployeeCount.SelectedItem.ToString();
-
-            return true;
-        }
-
-        private bool SaveLicense()
-        {
-            if (!ValidateLicense())
-            {
-                return false;
-            }
-
-            License.CustomerKey = Customer.CustomerKey;
-            License.LicenseKey = Guid.NewGuid().ToString();
-            License.Edition = cmbEdition.SelectedItem.ToString();
-            return true;
-        }
-
-        private bool ValidateCustomer()
-        {
-            // Validate Customer...
-            if (!EnsureNotEmpty(txtCompanyName, "نام شرکت"))
-            {
-                return false;
-            }
-
-            if (!EnsureNotEmpty(txtHqAddress, "نشانی"))
-            {
-                return false;
-            }
-
-            if (!EnsureNotEmpty(txtFirstName, "نام"))
-            {
-                return false;
-            }
-
-            if (!EnsureNotEmpty(txtLastName, "نام خانوادگی"))
-            {
-                return false;
-            }
-
-            if (!EnsureNotEmpty(txtWorkFax, "شماره نمابر"))
-            {
-                return false;
-            }
-
-            if (!EnsureNotEmpty(txtCellPhone, "شماره همراه"))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool ValidateLicense()
-        {
-            // Validate License...
-            License.ActiveModules = GetSubsystems();
-            if (License.ActiveModules == (int)Subsystems.None)
-            {
-                string message = String.Format("زیرسیستمی انتخاب نشده است.");
-                MessageBox.Show(this, message, "پیغام خطا", MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.RtlReading);
-            }
-
-            return true;
-        }
-
-        private bool EnsureNotEmpty(TextBox textBox, string field)
-        {
-            bool isValid = true;
-            string template = "وارد کردن {0} اجباری است.";
-            if (String.IsNullOrWhiteSpace(textBox.Text))
-            {
-                string message = String.Format(template, field);
-                MessageBox.Show(this, message, "پیغام خطا", MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.RtlReading);
-                isValid = false;
-            }
-
-            return isValid;
-        }
-
-        private int GetSubsystems()
-        {
-            var selected = Subsystems.None;
-            if (chkAccounting.Checked)
-            {
-                selected |= Subsystems.Accounting;
-            }
-
-            if (chkCheque.Checked)
-            {
-                selected |= Subsystems.Cheque;
-            }
-
-            if (chkCashFlow.Checked)
-            {
-                selected |= Subsystems.CashFlow;
-            }
-
-            if (chkWagePayment.Checked)
-            {
-                selected |= Subsystems.WagePayment;
-            }
-
-            if (chkPersonnel.Checked)
-            {
-                selected |= Subsystems.Personnel;
-            }
-
-            if (chkInventory.Checked)
-            {
-                selected |= Subsystems.Inventory;
-            }
-
-            if (chkPurchase.Checked)
-            {
-                selected |= Subsystems.Purchase;
-            }
-
-            if (chkSales.Checked)
-            {
-                selected |= Subsystems.Sales;
-            }
-
-            if (chkWarehousing.Checked)
-            {
-                selected |= Subsystems.Warehousing;
-            }
-
-            if (chkBudgeting.Checked)
-            {
-                selected |= Subsystems.Budgeting;
-            }
-
-            return (int)selected;
-        }
-
-        private void CreateApiServiceLicense()
+        private void CreateApiServiceLicense(LicenseModel license, CustomerModel customer)
         {
             var path = ConfigurationManager.AppSettings["WebApiLicensePath"];
-            var license = GetLicenseData();
-            var json = JsonHelper.From(license);
+            var devPath = String.Format("{0}.Development.json", path);
+            var licenseData = GetLicenseData(license, customer);
+            var json = JsonHelper.From(licenseData);
             File.WriteAllText(path, json);
-            return;
+            if (!File.Exists(devPath))
+            {
+                File.WriteAllText(devPath, json);
+            }
         }
 
-        private LicenseViewModel GetLicenseData()
+        private LicenseViewModel GetLicenseData(LicenseModel license, CustomerModel customer)
         {
             return new LicenseViewModel()
             {
-                CustomerName = Customer.CompanyName,
-                Edition = License.Edition,
-                UserCount = License.UserCount,
-                ActiveModules = License.ActiveModules,
-                StartDate = License.StartDate,
-                EndDate = License.EndDate
+                CustomerName = customer.CompanyName,
+                ContactName = String.Format("{0} {1}", customer.ContactFirstName, customer.ContactLastName),
+                Edition = license.Edition,
+                UserCount = license.UserCount,
+                ActiveModules = license.ActiveModules,
+                StartDate = license.StartDate,
+                EndDate = license.EndDate
             };
         }
 
+        private bool ValidateSaveInstance()
+        {
+            if (grdLicenses.SelectedRows.Count == 0)
+            {
+                MessageBox.Show(this, "مجوزی انتخاب نشده است.", "ثبت شناسه برنامه", MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+                return false;
+            }
+
+            var response = MessageBox.Show(
+                this, "این عملیات پیش از ایجاد نسخه برای کاربر انجام می شود. آیا از ادامه عملیات اطمینان دارید؟",
+                "تأیید عملیات", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2,
+                MessageBoxOptions.RtlReading);
+
+            return response == DialogResult.Yes;
+        }
+
+        private ICustomerService _customerService;
+        private ILicenseService _licenseService;
         private readonly ICryptoService _crypto;
-        private ILicenseService _service;
     }
 }

@@ -13,8 +13,11 @@
     font-size: 12px;
 }
 
-.user-info-label
-{
-    margin-left: 4px!important;
-    margin-right: 4px!important;
+/deep/ body.tLtr .main-header .logo {
+  font-size: 12px !important;
+}
+
+.user-info-label {
+  margin-left: 4px !important;
+  margin-right: 4px !important;
 }

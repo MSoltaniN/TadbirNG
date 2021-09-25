@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DetailComponent } from '@sppc/shared/class';
 import { User } from '@sppc/admin/models';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
-import { Entities } from '@sppc/env/environment';
+import { Entities } from '@sppc/shared/enum/metadata';
 import { ViewName } from '@sppc/shared/security';
 
 

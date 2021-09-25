@@ -8,7 +8,6 @@
 </view-identifier>
 
 <app-bread-cumb [entityTypeName]="'BalanceByAccount'"></app-bread-cumb>
-
 <div class="panel-body">
   <kendo-grid id="{{viewId}}"
               style="width:100%;"
@@ -36,6 +35,7 @@
               (dataStateChange)="onDataStateChange()"
               (cellClick)="onCellClick($event)"
               (dblclick)="rowDoubleClickHandler()"
+              (excelExport)="onExcelExport($event)"
               sppc-auto-generated-grid-reorder
               sppc-auto-generated-grid-resize>
     <kendo-grid-excel [fileName]="excelFileName" [fetchData]="allData"></kendo-grid-excel>
@@ -104,12 +104,12 @@
         </auto-generated-grid-setting>
         <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
 
-        <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
+        <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [quickReportDisabled]="true" [advanceFilterDisabled]="true" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
         <button kendoButton class="sppc-float-diff" [disabled]="selectedRows.length != 1" EntityName="AccountBook" SppcPermissionCheck="View" (sppcClick)="showAccountBook()"
                 [icon]="'dictionary-add'" title="{{ 'Balance.AccountBook' | translate }}" type="button"></button>
       </div>
 
-  </ng-template>
+    </ng-template>
 
 
     <kendo-grid-checkbox-column showSelectAll="true"
@@ -128,7 +128,7 @@
             <dt>{{ getColumnTitle(item) }}:</dt>
             <dd *ngIf="item.type == 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcNumConfig | async }}</dd>
             <dd *ngIf="item.scriptType != 'Date' && item.type != 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) }}</dd>
-            <dd *ngIf="item.scriptType == 'Date'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcDate }}</dd>
+            <dd *ngIf="item.scriptType == 'Date'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) |  SppcDate: item.type : item.scriptType }}</dd>
           </ng-template>
         </dl>
 
@@ -162,7 +162,7 @@
       </ng-template>
 
       <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'Date'">
-        {{ getRowValue(item.name,dataItem,item.scriptType) | SppcDate  }}
+        {{ getRowValue(item.name,dataItem,item.scriptType) |  SppcDate: item.type : item.scriptType  }}
       </ng-template>
 
       <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'boolean'">
@@ -269,7 +269,7 @@
                                 [value]="selectedAccountLevel"
                                 [(ngModel)]="selectedAccountLevel"
                                 [disabled]="!chbAccount"
-                                (ngModelChange)="changeParam()">
+                                (ngModelChange)="changeParam();onChangeAccountLevel();">
             </kendo-dropdownlist>
 
             <input type="text" class="k-textbox sppc-float" [ngModel]="selectedAccount?.fullCode" title="{{selectedAccount?.fullCode}}" readonly />
@@ -292,7 +292,7 @@
                                 [value]="selectedDetailAccountLevel"
                                 [(ngModel)]="selectedDetailAccountLevel"
                                 [disabled]="!chbDetailAccount"
-                                (ngModelChange)="changeParam();">
+                                (ngModelChange)="changeParam();onChangeDetailAccountLevel();">
             </kendo-dropdownlist>
 
             <input type="text" class="k-textbox sppc-float" [ngModel]="selectedDetailAccount?.fullCode" title="{{selectedDetailAccount?.fullCode}}" readonly />
@@ -315,7 +315,7 @@
                                 [value]="selectedCCenterLevel"
                                 [(ngModel)]="selectedCCenterLevel"
                                 [disabled]="!chbCCenter"
-                                (ngModelChange)="changeParam()">
+                                (ngModelChange)="changeParam();onChangeCCenterLevel();">
             </kendo-dropdownlist>
 
             <input type="text" class="k-textbox sppc-float" [ngModel]="selectedCCenter?.fullCode" title="{{selectedAccount?.fullCode}}" readonly />
@@ -338,7 +338,7 @@
                                 [value]="selectedProjectLevel"
                                 [(ngModel)]="selectedProjectLevel"
                                 [disabled]="!chbProject"
-                                (ngModelChange)="changeParam()">
+                                (ngModelChange)="changeParam();onChangeProjectLevel();">
             </kendo-dropdownlist>
 
             <input type="text" class="k-textbox sppc-float" [ngModel]="selectedProject?.fullCode" title="{{selectedAccount?.fullCode}}" readonly />

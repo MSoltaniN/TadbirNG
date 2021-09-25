@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { BrowserStorageService, MetaDataService, LookupService } from '@sppc/shared/services';
-import { Layout } from '@sppc/env/environment';
+import { Layout } from '@sppc/shared/enum/metadata';
 import { DefaultComponent, DetailComponent } from '@sppc/shared/class';
 import { InventoryBalanceInfo, AccountInfo } from '@sppc/finance/service';
 import { SppcNumericInput } from '@sppc/shared/controls';

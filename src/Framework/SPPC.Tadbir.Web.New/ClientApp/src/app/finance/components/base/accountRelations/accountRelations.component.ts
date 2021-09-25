@@ -5,7 +5,7 @@ import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItemLookup, TreeItem } from '@progress/kendo-angular-treeview';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { MetaDataService, BrowserStorageService, ErrorHandlingService } from '@sppc/shared/services';
 import { String, FilterExpression, FilterExpressionBuilder, Filter, DefaultComponent } from '@sppc/shared/class';
 import { AccountItemBriefInfo, AccountRelationsService, AccountItemRelationsInfo } from '@sppc/finance/service';

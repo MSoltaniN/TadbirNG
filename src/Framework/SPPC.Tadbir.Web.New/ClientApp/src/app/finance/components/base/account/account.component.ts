@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '@progress/kendo-angular-dialog';
 import { AccountFormComponent } from './account-form.component';
 import { ViewIdentifierComponent } from '@sppc/shared/components/viewIdentifier/view-identifier.component';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { GridService, BrowserStorageService, MetaDataService, ErrorHandlingService } from '@sppc/shared/services';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
@@ -18,6 +18,7 @@ import { SelectFormComponent } from '@sppc/shared/controls';
 import { Account } from '@sppc/finance/models';
 import { AccountFullData } from '@sppc/finance/models/accountFullData';
 import { ReloadOption } from '@sppc/shared/class/reload-option';
+import { OperationId } from '@sppc/shared/enum/operationId';
 
 
 //#endregion
@@ -276,6 +277,8 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
   }
 
   onAdvanceFilterOk(): any {
+    this.enableViewListChanged(this.viewId);
+    this.operationId = OperationId.Filter;
     this.reloadGrid();
   }
 }

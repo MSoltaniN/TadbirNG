@@ -17,6 +17,7 @@ export const SessionKeys = {
   PreviousRoute:'PreviousRoute',
   CurrentSkin: 'currentSkin',
   NumberConfig: 'numberConfig',
+  SystemConfig: 'SystemConfig',
   TestBalanceConfig: 'testBalanceConfig',
   DateRangeConfig: 'DateRangeConfig',
   SelectedDateRange: 'SelectedDateRange',
@@ -33,6 +34,8 @@ export const SessionKeys = {
   OperationLog: 'OperationLog',
   BalanceSheet: 'BalanceSheet',
   Shortcut: 'shortcut',
+  License: 'license',
+  LicenseInfo: 'license-info'
 }
 
 
@@ -83,6 +86,29 @@ export class BrowserStorageService {
     var value = sessionStorage.getItem(key);
     if (value)
       return JSON.parse(value);
+    return null;
+  }
+
+  getLicense():string {
+    if (sessionStorage.getItem(SessionKeys.License))
+      return sessionStorage.getItem(SessionKeys.License);
+
+    return null;
+  }
+
+  setLicense(value:string) {
+    sessionStorage.setItem(SessionKeys.License, value);    
+  }
+
+  setLicenseInfo(linceseInfo: any) {
+    var licenseInfoString = JSON.stringify(linceseInfo);
+    sessionStorage.setItem(SessionKeys.LicenseInfo, licenseInfoString);
+  }
+
+  getLicenseInfo(): any {
+    if (sessionStorage.getItem(SessionKeys.LicenseInfo)) {
+      return JSON.parse(sessionStorage.getItem(SessionKeys.LicenseInfo));
+    }
     return null;
   }
 
@@ -243,8 +269,6 @@ export class BrowserStorageService {
 
   getMetadata(metadataKey: string): string {
 
-
-
     var compressedData = localStorage.getItem(metadataKey);
     if (compressedData) {
       var t0 = performance.now();
@@ -293,6 +317,19 @@ export class BrowserStorageService {
 
   setNumberConfig(numConfig: any) {
     localStorage.setItem(SessionKeys.NumberConfig, JSON.stringify(numConfig));
+  }
+
+  getSystemConfig(): string {
+    return localStorage.getItem(SessionKeys.SystemConfig);
+  }
+
+  removeSystemConfig() {
+    if (localStorage.getItem(SessionKeys.SystemConfig))
+      localStorage.removeItem(SessionKeys.SystemConfig);
+  }
+
+  setSystemConfig(systemConfig: string) {
+    localStorage.setItem(SessionKeys.SystemConfig, JSON.stringify(systemConfig));
   }
 
   setTestBalanceConfig(numConfig: any) {

@@ -1,5 +1,5 @@
 import { DefaultComponent } from '@sppc/shared/class/default.component';
-import { Injectable, OnDestroy, Renderer2, ChangeDetectorRef, NgZone, EventEmitter, ViewChild } from '@angular/core';
+import { Injectable, OnDestroy, Renderer2, ChangeDetectorRef, NgZone, EventEmitter, ViewChild, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { GridService, BrowserStorageService, MetaDataService } from '../services';
@@ -10,7 +10,7 @@ import { AdvanceFilterComponent } from "@sppc/shared/components/advanceFilter/ad
 import { Permissions, GlobalPermissions } from "@sppc/shared/security/permissions";
 import { FilterExpression } from '@sppc/shared/class/filterExpression';
 import { FilterRow } from "@sppc/shared/models";
-import { MessageType, Entities } from '@sppc/env/environment';
+import { MessageType, Entities } from '@sppc/shared/enum/metadata';
 import * as moment from 'jalali-moment';
 import { ViewName } from "@sppc/shared/security";
 
@@ -25,7 +25,10 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
   permission: Permissions;
   filterDialogRef: DialogRef;
   excelFileName: string;
-  
+
+  exportAccessed: boolean;
+  printAccessed: boolean;
+  filterAccessed: boolean;
 
   /**این تابع قبل از نمایش تنظیمات گزارش فوری اجرا میشود*/
   public onBeforeQuickReportSetting() {
@@ -39,14 +42,14 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
 
     this.dialogService = ServiceLocator.injector.get(DialogService);
     this.permission = new Permissions();    
-  }
- 
+  } 
+  
 
   showAdvanceFilterComponent(viewId: number, onOk: EventEmitter<any>, onCancel: EventEmitter<any>) {    
-    (async () => {
-      var entityName = await this.getEntityName(viewId);
-      var code = <number>GlobalPermissions.Filter
-      if (!this.isAccess(entityName, code)) {
+    //(async () => {
+
+    this.getGlobalPermissions().then(() => {
+      if (!this.filterAccessed) {
         this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
         return;
       }
@@ -74,35 +77,55 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
         this.filterDialogRef.close();
         onOk.emit();
       });
+    });     
+     
 
-    })();
+    //})();
   }
 
   showReportManager(viewId: number, parent: any, reportSetting: any, reportManager: any) {     
-    (async () => {
-      var entityName = await this.getEntityName(viewId);
-      var code = <number>GlobalPermissions.Print
-      if (!this.isAccess(entityName, code)) {
-        this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
-        return;
-      }
-
-      if (this.validateReport(parent)) {
-        if (!reportManager.directShowReport()) {
-          this.showMessage(this.getText("Report.PleaseSetQReportSetting"));
-          this.onBeforeQuickReportSetting();
-          reportSetting.showReportSetting(parent.gridColumns, parent.entityTypeName, this.viewId, reportManager);
+    //(async () => {
+      this.getGlobalPermissions().then(() => {
+        if (!this.printAccessed) {
+          this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
+          return;
         }
-      }     
-    })(); 
+
+        if (this.validateReport(parent)) {
+          if (!reportManager.directShowReport()) {
+            this.showMessage(this.getText("Report.PleaseSetQReportSetting"));
+            this.onBeforeQuickReportSetting();
+            reportSetting.showReportSetting(parent.gridColumns, parent.entityTypeName, this.viewId, reportManager);
+          }
+        }     
+      })      
+    //})(); 
+  }
+  
+
+  async getGlobalPermissions() {
+    
+    if (this.viewId) {
+      var entityName = await this.getEntityName(this.viewId)
+      var code = <number>GlobalPermissions.Export;
+      this.exportAccessed = this.isAccess(entityName, code);
+
+      code = <number>GlobalPermissions.Filter;
+      this.filterAccessed = this.isAccess(entityName, code);
+
+      code = <number>GlobalPermissions.Print;
+      this.printAccessed = this.isAccess(entityName, code);      
+    }    
   }
 
   showQuickReportSetting(viewId: number, parent: any, reportSetting: any, reportManager:any) {    
-    (async () => {
-      debugger;
-      var entityName = await this.getEntityName(viewId);
-      var code = <number>GlobalPermissions.Print;
-      if (!this.isAccess(entityName, code)) {
+    //(async () => {
+      //var entityName = await this.getEntityName(viewId);
+
+      //this.getGlobalPermissions();
+
+    this.getGlobalPermissions().then(() => {
+      if (!this.printAccessed) {
         this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
         return;
       }
@@ -111,7 +134,9 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
         this.onBeforeQuickReportSetting();
         reportSetting.showReportSetting(parent.gridColumns, parent.entityTypeName, this.viewId, reportManager);
       }
-    })();    
+    });
+      
+    //})();    
   }
 
   public validateReport(parent: any) {

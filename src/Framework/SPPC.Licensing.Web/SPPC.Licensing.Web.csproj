@@ -28,10 +28,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Cryptography\SPPC.Framework.Cryptography.csproj" />
-    <ProjectReference Include="..\SPPC.Licensing.Interfaces\SPPC.Licensing.Interfaces.csproj" />
     <ProjectReference Include="..\SPPC.Licensing.Model\SPPC.Licensing.Model.csproj" />
     <ProjectReference Include="..\SPPC.Licensing.Persistence\SPPC.Licensing.Persistence.csproj" />
-    <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj" />
+    <ProjectReference Include="..\SPPC.Licensing.Service\SPPC.Licensing.Service.csproj" />
+    <ProjectReference Include="..\SPPC.Tools.Interfaces\SPPC.Tools.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

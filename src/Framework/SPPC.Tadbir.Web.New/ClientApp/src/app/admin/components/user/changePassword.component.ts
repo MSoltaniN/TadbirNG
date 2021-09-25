@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { DetailComponent } from '@sppc/shared/class';
 import { MetaDataService, BrowserStorageService, ErrorHandlingService } from '@sppc/shared/services';
-import { MessageType, Entities } from '@sppc/env/environment';
+import { MessageType, Entities } from '@sppc/shared/enum/metadata';
 import { UserService } from '@sppc/admin/service';
 import { UserProfile } from '@sppc/shared/models';
 import { ViewName } from '@sppc/shared/security';
@@ -63,18 +63,20 @@ export class ChangePasswordComponent extends DetailComponent {
     public bStorageService: BrowserStorageService, public errorHandlingService:ErrorHandlingService) {
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.Password, ViewName.User);
 
-    if (localStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = localStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-      this.user_Name = currentContext ? currentContext.userName.toString() : "";
-    }
-    else if (sessionStorage.getItem('currentContext') != null) {
-      var item: string | null;
-      item = sessionStorage.getItem('currentContext');
-      var currentContext = JSON.parse(item != null ? item.toString() : "");
-      this.user_Name = currentContext ? currentContext.userName.toString() : "";
-    }
+    //if (localStorage.getItem('currentContext') != null) {
+    //  var item: string | null;
+    //  item = localStorage.getItem('currentContext');
+    //  var currentContext = JSON.parse(item != null ? item.toString() : "");
+    //  this.user_Name = currentContext ? currentContext.userName.toString() : "";
+    //}
+    //else if (sessionStorage.getItem('currentContext') != null) {
+    //  var item: string | null;
+    //  item = sessionStorage.getItem('currentContext');
+    //  var currentContext = JSON.parse(item != null ? item.toString() : "");
+    //  this.user_Name = currentContext ? currentContext.userName.toString() : "";
+    //}
+
+    this.user_Name = this.UserName;
   }
 
 

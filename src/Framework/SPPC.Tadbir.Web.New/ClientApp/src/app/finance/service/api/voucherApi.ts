@@ -62,6 +62,15 @@ export class VoucherApi {
     // vouchers/draft/new
     public static NewDraftVoucher = environment.BaseUrl + "/vouchers/draft/new";
 
+    // vouchers/draft/articles
+    public static AllDraftVoucherArticles = environment.BaseUrl + "/vouchers/draft/articles";
+
+    // vouchers/draft/{voucherId:min(1)}/articles
+    public static DraftVoucherArticles = environment.BaseUrl + "/vouchers/draft/{0}/articles";
+
+    // vouchers/draft/articles/{articleId:min(1)}
+    public static DraftVoucherArticle = environment.BaseUrl + "/vouchers/draft/articles/{0}";
+
     // vouchers/draft/by-no/{voucherNo:min(1)}
     public static DraftVoucherByNo = environment.BaseUrl + "/vouchers/draft/by-no/{0}";
 
@@ -118,6 +127,18 @@ export class VoucherApi {
 
     // vouchers/{voucherId:min(1)}/approve/undo
     public static UndoApproveVoucher = environment.BaseUrl + "/vouchers/{0}/approve/undo";
+
+    // vouchers/draft/{voucherId:min(1)}/check
+    public static CheckDraftVoucher = environment.BaseUrl + "/vouchers/draft/{0}/check";
+
+    // vouchers/draft/{voucherId:min(1)}/check/undo
+    public static UndoCheckDraftVoucher = environment.BaseUrl + "/vouchers/draft/{0}/check/undo";
+
+    // vouchers/draft/check
+    public static CheckDraftVouchers = environment.BaseUrl + "/vouchers/draft/check";
+
+    // vouchers/draft/check/undo
+    public static UndoCheckDraftVouchers = environment.BaseUrl + "/vouchers/draft/check/undo";
 
     // vouchers/{voucherId:min(1)}/normalize
     public static NormalizeVoucher = environment.BaseUrl + "/vouchers/{0}/normalize";

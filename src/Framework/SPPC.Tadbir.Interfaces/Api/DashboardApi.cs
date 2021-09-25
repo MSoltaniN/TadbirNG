@@ -17,5 +17,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for summary values in the main dashboard
         /// </summary>
         public const string SummariesUrl = "dashboard/summaries";
+
+        /// <summary>
+        /// API client URL for general license information
+        /// </summary>
+        public const string LicenseInfo = "dashboard/license";
+
+        /// <summary>
+        /// API server route URL for general license information
+        /// </summary>
+        public const string LicenseInfoUrl = "dashboard/license";
     }
 }

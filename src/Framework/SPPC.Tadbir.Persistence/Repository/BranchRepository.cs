@@ -43,9 +43,14 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از شعب سازمانی تعریف شده در شرکت جاری</returns>
         public async Task<PagedList<BranchViewModel>> GetBranchesAsync(GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            var branches = await repository.GetByCriteriaAsync(
-                    await GetSecurityFilterAsync(), br => br.Parent, br => br.Children);
+            var branches = new List<Branch>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<Branch>();
+                branches.AddRange(await repository.GetByCriteriaAsync(
+                        await GetSecurityFilterAsync(), br => br.Parent, br => br.Children));
+            }
+
             await ReadAsync(gridOptions);
             return new PagedList<BranchViewModel>(
                 branches.Select(br => Mapper.Map<BranchViewModel>(br)), gridOptions);

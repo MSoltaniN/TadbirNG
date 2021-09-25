@@ -6,7 +6,7 @@ import { BrowserStorageService, MetaDataService } from "@sppc/shared/services";
 import { SettingService } from "@sppc/config/service";
 import { FormLabelFullConfig, FormLabelConfig, FormLabelConfigEntity } from "@sppc/config/models";
 import { RTL } from "@progress/kendo-angular-l10n";
-import { Layout } from "@sppc/env/environment";
+import { Layout } from "@sppc/shared/enum/metadata";
 import { Item } from "@sppc/shared/models";
 import { GridComponent } from "@progress/kendo-angular-grid";
 

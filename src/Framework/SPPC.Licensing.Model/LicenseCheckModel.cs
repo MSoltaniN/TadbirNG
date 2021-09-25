@@ -5,7 +5,7 @@ namespace SPPC.Licensing.Model
 {
     public class LicenseCheckModel
     {
-        public InstanceModel InstanceKey { get; set; }
+        public string InstanceKey { get; set; }
 
         public string HardwardKey { get; set; }
 

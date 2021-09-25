@@ -5,7 +5,7 @@ import { DetailComponent } from '@sppc/shared/class';
 import { CurrencyRate } from '@sppc/finance/models';
 import { CurrencyService } from '@sppc/finance/service';
 import { BrowserStorageService, MetaDataService, LookupService } from '@sppc/shared/services';
-import { Entities } from '@sppc/env/environment';
+import { Entities } from '@sppc/shared/enum/metadata';
 import { ViewName } from '@sppc/shared/security';
 
 
@@ -34,15 +34,13 @@ export class CurrencyRateFormComponent extends DetailComponent implements OnInit
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string;
   @Input() public model: CurrencyRate;
-  @Input() public currencyName: string;
-
-
+  @Input() public currencyName: string;  
+  dateDisplayType: string;
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<CurrencyRate> = new EventEmitter();
   @Output() setFocus: EventEmitter<any> = new EventEmitter();
-
-  //create properties
+   
 
   //Events
   public onSave(e: any): void {
@@ -67,7 +65,15 @@ export class CurrencyRateFormComponent extends DetailComponent implements OnInit
 
   }
 
+  setDateDisplayType() {    
+    this.dateDisplayType = this.properties.get(this.metadataKey).filter(p => p.name == "Date")[0].type;
+  }
+
+
   ngOnInit(): void {
+
+    this.setDateDisplayType();
+
     this.editForm.reset();
     this.editForm.patchValue({
       id: this.model.id,

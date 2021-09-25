@@ -2,10 +2,10 @@ import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angu
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
-import { Layout, Entities } from '@sppc/env/environment';
+import { Layout, Entities } from '@sppc/shared/enum/metadata';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { FiscalPeriod } from '@sppc/organization/models';
-import { DetailComponent } from '@sppc/shared/class';
+import { DetailComponent, Property } from '@sppc/shared/class';
 import { ViewName } from '@sppc/shared/security';
 
 
@@ -42,6 +42,9 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
   @Input() public errorMessage: string;
   @Input() public isWizard: boolean = false;
 
+  public startDateDisplayType:string;
+  public endDateDisplayType: string;
+
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<FiscalPeriod> = new EventEmitter();
   @Output() previousStep: EventEmitter<any> = new EventEmitter();
@@ -56,6 +59,9 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
   ngOnInit(): void {
     this.editForm.reset();
 
+    debugger
+    this.setDateDisplayType();
+
     setTimeout(() => {
 
       if (this.model && this.isNew) {
@@ -63,13 +69,19 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
         this.model.endDate = this.getEndDate();
       }
 
+      this.model.companyId = this.CompanyId;
       this.editForm.reset(this.model);
-
+      
       if (this.model) {
         this.fiscalPeriod_Id = this.model.id;
       }
 
-    })
+    })  
+  }
+
+  setDateDisplayType() {
+    this.startDateDisplayType = this.properties.get(this.metadataKey).filter(p => p.name == "StartDate")[0].type;
+    this.endDateDisplayType = this.properties.get(this.metadataKey).filter(p => p.name == "EndDate")[0].type;
   }
 
   getStartDate(): Date {
@@ -83,7 +95,7 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
 
   getEndDate(): Date {
     if (this.CurrentLanguage == "fa") {
-      return new Date(new Date().getFullYear() + 1, 2, 19, 0, 0, 0);
+      return new Date(new Date().getFullYear() + 1, 2, 20, 0, 0, 0);
     }
     else {
       return new Date(new Date().getFullYear(), 11, 31, 0, 0, 0);
@@ -93,7 +105,9 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
   public onSave(e: any): void {
     e.preventDefault();
     if (this.editForm.valid) {
-      this.save.emit(this.editForm.value);
+      var model = <FiscalPeriod>this.editForm.value;
+      model.companyId = this.CompanyId;
+      this.save.emit(model);
     }
     else if (this.isWizard) {
       this.save.emit(null);

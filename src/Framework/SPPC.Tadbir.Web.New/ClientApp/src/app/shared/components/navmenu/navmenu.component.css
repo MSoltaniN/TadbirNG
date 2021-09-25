@@ -200,3 +200,46 @@ a.circle {
     margin-top:10px;
     font-size:14px;
 }
+
+
+/deep/ body.tLtr .ver-info {
+  z-index: 810;
+  position: absolute;
+  left: 50px;
+  bottom: 15px;
+  direction: rtl;
+  float: right;
+}
+
+/deep/ body.tRtl .ver-info {
+  z-index: 810;
+  position: absolute;
+  right: 0;
+  bottom: 15px;
+  direction: rtl;
+  float: right;
+}
+
+.ver {
+  color: white;
+  font-size:15px;
+  padding-right:70px;
+  text-decoration:underline;
+  cursor:pointer;
+}
+
+@media (min-width: 767px) {
+  #main-menu {
+    height: 86vh!important;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+}
+
+@media (max-width: 767px) {
+  #main-menu {
+    height: 75vh!important;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+}

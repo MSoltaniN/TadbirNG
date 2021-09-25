@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { String, DefaultComponent, DetailComponent } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { AccountService, AccountFullDataInfo, AccountInfo, CustomerTaxInfoModel, AccountOwnerInfo } from '@sppc/finance/service';
 import { Account, AccountOwner, AccountHolder } from '@sppc/finance/models';
 import { MetaDataService, BrowserStorageService, LookupService } from '@sppc/shared/services';
@@ -100,7 +100,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
   isDisableCustomerTaxTab: boolean = false;
   isDisableAccountOwnerTab: boolean = false;
-  uploadTab: boolean = false;
 
   accountModel: Account;
   customerTaxModel: CustomerTaxInfo;
@@ -113,7 +112,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   @Input() public parent: Account;
   @Input() public model: AccountFullData;
   @Input() public isNew: boolean = false;
-  //@Input() public errorMessage: string = '';
 
   @Output() save: EventEmitter<AccountFullData> = new EventEmitter();
   @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -189,7 +187,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if (this.model) {
+    if (this.model) {      
       this.accountModel = this.model.account;
       this.customerTaxModel = this.model.customerTaxInfo;
       this.accountOwnerModel = this.model.accountOwner;
@@ -360,10 +358,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     this.lookupService.getModels(LookupApi.Provinces).subscribe(res => {
       if (res.length) {
         this.filteredProcinces = this.provincesList = res;
-        this.uploadTab = false;
-      }
-      else {
-        this.uploadTab = true;
       }
 
       if (!this.isNew && this.customerTaxModel && this.customerTaxModel.id > 0) {
@@ -439,19 +433,16 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     this.accountModel.isActive = featureValue.isActive;
     this.accountModel.isCurrencyAdjustable = featureValue.isCurrencyAdjustable;
 
-    if (this.accountModel.id > 0) {
-      if (this.accountModel.level > 0)
-        this.accountModel.groupId = undefined;
-    }
-    else {
+    if (this.accountModel.id <= 0) {
       this.accountModel.branchId = this.BranchId;
       this.accountModel.fiscalPeriodId = this.FiscalPeriodId;
       this.accountModel.companyId = this.CompanyId;
       this.accountModel.parentId = this.parent ? this.parent.id : undefined;
-      this.accountModel.level = this.level;
-      if (this.accountModel.level > 0)
-        this.accountModel.groupId = undefined;
+      this.accountModel.level = this.level;      
     }
+
+    if (this.accountModel.level > 0)
+      this.accountModel.groupId = undefined;
 
     var resultModel = new AccountFullDataInfo();
 
@@ -530,29 +521,29 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       return true;
   }  
 
-  onFileChange(event: any) {
-    if (event.target.files && event.target.files.length > 0) {
-      let file = event.target.files[0];
-      var fileExtension = file.name.split('.').pop();
-      var accessExtensions = ["accda", "accdb", "accde", "accdr", "accdt", "mdb", "mde", "mdf", "mda"];
-      if (accessExtensions.filter(f => f == fileExtension.toLowerCase()).length > 0) {
+  //onFileChange(event: any) {
+  //  if (event.target.files && event.target.files.length > 0) {
+  //    let file = event.target.files[0];
+  //    var fileExtension = file.name.split('.').pop();
+  //    var accessExtensions = ["accda", "accdb", "accde", "accdr", "accdt", "mdb", "mde", "mdf", "mda"];
+  //    if (accessExtensions.filter(f => f == fileExtension.toLowerCase()).length > 0) {
 
-        this.accountService.postFile(file).subscribe(res => {
-          this.myInputVariable.nativeElement.value = "";
+  //      this.accountService.postFile(file).subscribe(res => {
+  //        this.myInputVariable.nativeElement.value = "";
 
-          if (res.type === HttpEventType.UploadProgress)
-            this.progress = Math.round(100 * res.loaded / res.total);
-          else
-            if (res.type === HttpEventType.Response) {
-              this.showMessage(this.getText("Messages.UploadSuccessful"), MessageType.Succes);
-              this.getProvince();
-            }
-        })
-      }
-      else {
-        this.showMessage(this.getText("Messages.IncorrectFileFormat"), MessageType.Warning);
-      }
+  //        if (res.type === HttpEventType.UploadProgress)
+  //          this.progress = Math.round(100 * res.loaded / res.total);
+  //        else
+  //          if (res.type === HttpEventType.Response) {
+  //            this.showMessage(this.getText("Messages.UploadSuccessful"), MessageType.Succes);
+  //            this.getProvince();
+  //          }
+  //      })
+  //    }
+  //    else {
+  //      this.showMessage(this.getText("Messages.IncorrectFileFormat"), MessageType.Warning);
+  //    }
 
-    }
-  }
+  //  }
+  //}
 }

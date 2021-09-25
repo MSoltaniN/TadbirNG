@@ -61,6 +61,12 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Templates\CsFluentMappingFromMetadata.Custom.cs" />
+    <Compile Include="Templates\CsPermissionsEnum.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CsPermissionsEnum.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\CsPermissionsEnum.Custom.cs" />
     <Compile Include="Templates\CsPocoFromXmlMetadata.cs">
       <DependentUpon>CsPocoFromXmlMetadata.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -97,12 +103,18 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Templates\TsConstTypeFromCsValueClass.Custom.cs" />
+    <Compile Include="Templates\TsInstanceFromValues.Custom.cs" />
     <Compile Include="Templates\TsPermissionsFromCsPermissions.cs">
       <DependentUpon>TsPermissionsFromCsPermissions.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Templates\TsPermissionsFromCsPermissions.Custom.cs" />
+    <Compile Include="Templates\TsInstanceFromValues.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TsInstanceFromValues.tt</DependentUpon>
+    </Compile>
     <Compile Include="Utility\ITextTemplate.cs" />
     <Compile Include="Utility\NamespaceUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -152,6 +164,10 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>CsApiClass.cs</LastGenOutput>
     </Content>
+    <Content Include="Templates\CsPermissionsEnum.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CsPermissionsEnum.cs</LastGenOutput>
+    </Content>
     <Content Include="Templates\EmptyCrudController.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>EmptyCrudController.cs</LastGenOutput>
@@ -159,6 +175,10 @@
     <Content Include="Templates\TsConstTypeFromCsValueClass.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TsConstTypeFromCsValueClass.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\TsInstanceFromValues.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TsInstanceFromValues.cs</LastGenOutput>
     </Content>
     <None Include="packages.config" />
     <None Include="Templates\TsPermissionsFromCsPermissions.tt">
@@ -214,6 +234,10 @@
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj">
       <Project>{18c0b0da-db22-4482-b6b7-b98d4decd8b4}</Project>
       <Name>SPPC.Framework.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tools.Interfaces\SPPC.Tools.Interfaces.csproj">
+      <Project>{bd6a9e5b-fa96-4a8a-9e63-39943446ad65}</Project>
+      <Name>SPPC.Tools.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPPC.Tools.Model\SPPC.Tools.Model.csproj">
       <Project>{51242dcb-f03e-4a84-b9ff-434d62f4778a}</Project>

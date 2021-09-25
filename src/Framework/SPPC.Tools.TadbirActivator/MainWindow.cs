@@ -8,11 +8,10 @@ using System.Windows.Forms;
 using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
-using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
 using SPPC.Licensing.Local.Persistence;
 using SPPC.Tools.TadbirActivator.Properties;
-using SPPC.Licensing.Service;
+using SPPC.Tadbir.Licensing;
 
 namespace SPPC.Tools.TadbirActivator
 {
@@ -38,14 +37,14 @@ namespace SPPC.Tools.TadbirActivator
             txtLicenseInfo.Text = licenseInfo;
         }
 
-        private ILicenseService Service
+        private ILicenseUtility Service
         {
             get
             {
                 if (_service == null)
                 {
                     string root = ConfigurationManager.AppSettings["OnlineServerRoot"];
-                    _service = new LicenseService(new ServiceClient(root));
+                    _service = LicenseUtility.CreateDefault(root);
                 }
 
                 return _service;
@@ -76,8 +75,11 @@ namespace SPPC.Tools.TadbirActivator
                     MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.RtlReading);
             }
-            catch
+            catch(Exception ex)
             {
+                var message = String.Format("Error : {1}{0}{0}StackTrace : {2}",
+                    Environment.NewLine, ex.Message, ex.StackTrace);
+                MessageBox.Show(message);
                 MessageBox.Show(this, Resources.Error_NoInternet, Resources.ErrorMessage,
                     MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.RtlReading);
@@ -102,6 +104,8 @@ namespace SPPC.Tools.TadbirActivator
 
                 var builder = new StringBuilder();
                 builder.AppendFormat("{0} : {1}", Resources.CompanyName, license.CustomerName);
+                builder.AppendLine();
+                builder.AppendFormat("{0} : {1}", Resources.ContactName, license.ContactName);
                 builder.AppendLine();
                 builder.AppendFormat("{0} : {1}", Resources.AppEdition, license.Edition);
                 builder.AppendLine();
@@ -188,28 +192,22 @@ namespace SPPC.Tools.TadbirActivator
             var activation = new ActivationModel()
             {
                 InstanceKey = GetInstanceId(),
-                HardwareKey = HardwareKey.GetSystemUniqueId(),
+                HardwareKey = HardwareKey.UniqueKey,
             };
 
             var manager = new CertificateManager();
-            _certificate = manager.GetFromStore(Constants.IssuerName);
-            if (_certificate == null)
-            {
-                _certificate = manager.GenerateSelfSigned(Constants.IssuerName, Constants.SubjectName);
-            }
-
+            _certificate = manager.GenerateSelfSigned(Constants.IssuerName, Constants.SubjectName);
             activation.ClientKey = Convert.ToBase64String(_certificate.GetPublicKey());
             return activation;
         }
 
-        private InstanceModel GetInstanceId()
+        private string GetInstanceId()
         {
-            var instance = new InstanceModel();
+            string instance = null;
             using (StreamReader reader = new StreamReader(
                 GetType().Assembly.GetManifestResourceStream("SPPC.Tools.TadbirActivator.instance.id")))
             {
-                var json = reader.ReadToEnd();
-                instance = JsonHelper.To<InstanceModel>(json);
+                instance = reader.ReadToEnd();
             }
 
             return instance;
@@ -217,14 +215,13 @@ namespace SPPC.Tools.TadbirActivator
 
         private void ExportCertificate(string root, string licenseData)
         {
-            var utility = LicenseUtility.CreateDefault();
             string path = Path.Combine(root, Constants.CertificateFile);
-            var license = utility.LoadLicense(licenseData);
+            var license = Service.LoadLicense(licenseData);
             var certificateBytes = _certificate.Export(X509ContentType.Pkcs12, license.Secret);
             File.WriteAllBytes(path, certificateBytes);
         }
 
-        private ILicenseService _service;
+        private ILicenseUtility _service;
         private X509Certificate2 _certificate;
     }
 }

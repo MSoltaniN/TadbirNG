@@ -12,8 +12,7 @@ import { UserApi } from '@sppc/admin/service/api';
 import { String } from '@sppc/shared/class/source';
 import { CompanyLogin } from '@sppc/shared/models';
 import { LookupApi } from '@sppc/shared/services/api';
-import { BaseService } from '@sppc/shared/class';
-import { extend } from 'webdriver-js-extender';
+import { BaseService } from '@sppc/shared/class/base.service';
 
 
 export class ContextInfo implements Context {
@@ -30,6 +29,7 @@ export class ContextInfo implements Context {
   fiscalPeriodName: string;
   permissions: PermissionBrief[];
   roles: number[];
+  lastLoginDate: string = null;
 }
 
 export class CompanyLoginInfo implements CompanyLogin {
@@ -64,6 +64,7 @@ export class AuthenticationService extends BaseService {
 
             user.ticket = ticket;
             user.userName = username;
+            user.lastLoginDate = contextInfo.TadbirContext.LastLoginDate;
             //user.roles = contextInfo.user.roles;
             user.roles = contextInfo.TadbirContext.Roles;
             this.bStorageService.setContext(user, remember);
@@ -189,9 +190,11 @@ export class AuthenticationService extends BaseService {
     header = header.append('Content-Type', 'application/json; charset=utf-8');
     header = header.append('X-Tadbir-AuthTicket', ticket);
 
+    var body = JSON.stringify(specialPassword);
+
     if (ticket == '') return Observable.empty<Response>();
-    var url = String.Format(UserApi.CheckSpecialPassword, specialPassword);
-    return this.http.get(url, { headers: header })
+    var url = UserApi.SpecialPassword;
+    return this.http.put(url,body,{ headers: header })
       .map(response => <any>(<Response>response));
   }
 }

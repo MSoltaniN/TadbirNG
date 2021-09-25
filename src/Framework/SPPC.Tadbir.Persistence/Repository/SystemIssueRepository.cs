@@ -114,23 +114,23 @@ namespace SPPC.Tadbir.Persistence.Repository
 
             if (vouchers.Count() > 0)
             {
-                var existNumber = vouchers.Select(voucher => voucher.No);
+                var existingNumbers = vouchers.Select(voucher => voucher.No);
 
-                var minNumber = existNumber.Min();
-                var maxNumber = existNumber.Max();
+                var minNumber = 1;
+                var maxNumber = existingNumbers.Max();
 
                 var numRange = Enumerable.Range(minNumber, maxNumber - minNumber + 1);
 
-                var missNumber = numRange
-                    .Where(num => !existNumber.Contains(num));
+                var missingNumbers = numRange
+                    .Where(num => !existingNumbers.Contains(num));
 
-                int count = missNumber.Count();
+                int count = missingNumbers.Count();
 
-                missNumber = missNumber
+                missingNumbers = missingNumbers
                     .OrderBy(num => num)
                     .ApplyPaging(gridOptions);
 
-                foreach (var item in missNumber)
+                foreach (var item in missingNumbers)
                 {
                     missNumberList.Add(new NumberListViewModel() { Number = item });
                 }

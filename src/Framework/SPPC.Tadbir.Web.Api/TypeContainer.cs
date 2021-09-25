@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
+using SPPC.Framework.Service;
 using SPPC.Tadbir.CrossCutting;
 using SPPC.Tadbir.CrossCutting.Redis;
 using SPPC.Tadbir.Domain;
@@ -13,7 +14,9 @@ using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Persistence.Repository;
 using SPPC.Tadbir.Persistence.Utility;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -158,16 +161,26 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<ICryptoService, CryptoService>();
             _services.AddTransient<ITokenService, JwtTokenService>();
             _services.AddTransient<ISecurityContextManager, ServiceContextManager>();
+            _services.AddTransient<IAuthorizeRequest, AuthorizeRequest>();
         }
 
         private void AddUtilityTypes()
         {
             _services.AddTransient<IDomainMapper, DomainMapper>();
+            _services.AddTransient<IApiClient>(provider =>
+            {
+                return new ServiceClient()
+                {
+                    ServiceRoot = _configuration["ServerRoot"]
+                };
+            });
+            _services.AddTransient<IDigitalSigner, DigitalSigner>();
+            _services.AddTransient<ICertificateManager, CertificateManager>();
+            _services.AddTransient<IEncodedSerializer, JsonSerializer>();
             _services.AddTransient<IReportUtility, ReportUtility>();
             _services.AddTransient<IReportDirectUtility, ReportDirectUtility>();
             _services.AddTransient<IAccountCollectionUtility, AccountCollectionUtility>();
             _services.AddTransient<IAccountItemUtilityFactory, AccountItemUtilityFactory>();
-            _services.AddTransient<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
             _services.AddTransient<ICacheManager, RedisCacheManager>();
         }
 

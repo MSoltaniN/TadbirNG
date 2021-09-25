@@ -316,7 +316,7 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<AccountHolderViewModel, AccountHolder>();
 
             mapperConfig.CreateMap<Account, AccountFullDataViewModel>()
-                .ForMember(dest => dest.Account, opt => opt.MapFrom(src => src))
+                .ForMember(dest => dest.Account, opt => opt.MapFrom(src => _autoMapper.Map<AccountViewModel>(src)))
                 .ForMember(dest => dest.CustomerTaxInfo,
                     opt => opt.MapFrom(src => src.CustomerTaxInfo ?? new CustomerTaxInfo()))
                 .ForMember(dest => dest.AccountOwner,
@@ -535,19 +535,8 @@ namespace SPPC.Tadbir.Mapper
                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Code))
                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
 
-            mapperConfig.CreateMap<DbDataReader, ZoneViewModel>()
-                .ForMember(dest => dest.ProvinceName, opts => opts.MapFrom(src => src[2]))
-                .ForMember(dest => dest.ProvinceCode, opts => opts.MapFrom(src => src[3]))
-                .ForMember(dest => dest.CityName, opts => opts.MapFrom(src => src[1]))
-                .ForMember(dest => dest.CityCode, opts => opts.MapFrom(src => src[0]));
-
-            mapperConfig.CreateMap<ZoneViewModel, Province>()
-               .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.ProvinceName))
-               .ForMember(dest => dest.Code, opts => opts.MapFrom(src => src.ProvinceCode));
-
-            mapperConfig.CreateMap<ZoneViewModel, City>()
-               .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.CityName))
-               .ForMember(dest => dest.Code, opts => opts.MapFrom(src => src.CityCode));
+            mapperConfig.CreateMap<ProvinceViewModel, Province>();
+            mapperConfig.CreateMap<CityViewModel, City>();
 
             mapperConfig.CreateMap<ShortcutCommand, ShortcutCommandViewModel>();
         }
@@ -562,6 +551,9 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Report, PrintInfoViewModel>()
                 .ForMember(dest => dest.Template, opts => opts.Ignore());
             mapperConfig.CreateMap<Report, ReportSummaryViewModel>();
+            mapperConfig.CreateMap<Parameter, Parameter>()
+                .ForMember(dest => dest.Id, opts => opts.UseValue(0))
+                .ForMember(dest => dest.Report, opts => opts.UseValue((Report)null));
 
             mapperConfig.CreateMap<Voucher, VoucherSummaryViewModel>()
                 .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.Date.Date.ToShortDateString(false)))
@@ -618,14 +610,6 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.PeriodTurnoverItem1, opts => opts.MapFrom(src => src.PeriodTurnover))
                 .ForMember(dest => dest.EndBalanceItem1, opts => opts.MapFrom(src => src.EndBalance))
                 .ForMember(dest => dest.BalanceItem1, opts => opts.MapFrom(src => src.Balance));
-        }
-
-        private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)
-        {
-            var value = (dictionary.ContainsKey(key))
-                ? (TValue)dictionary[key]
-                : default(TValue);
-            return value;
         }
 
         private static TConfig MapConfigType<TConfig>(Setting setting)

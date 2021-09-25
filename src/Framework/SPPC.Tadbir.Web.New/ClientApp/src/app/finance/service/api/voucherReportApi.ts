@@ -14,12 +14,18 @@ import { environment } from "@sppc/env/environment";
 
 export class VoucherReportApi {
 
-  //reports/voucher/sum-by-date
-  public static VoucherSumReport = environment.BaseUrl + "/reports/voucher/sum-by-date";
+  //reports/voucher/{voucherId:min(1)}/sum-by-date
+  public static VoucherSumReport = environment.BaseUrl + "/reports/voucher/{0}/sum-by-date";
 
+  //reports/voucher/{voucherId:min(1)}/std-form
+  public static VoucherStdForm = environment.BaseUrl + "/reports/voucher/{0}/std-form";
 
-  //reports/voucher/std-form/{voucherId:min(1)}
-  public static VoucherStdFormReport = environment.BaseUrl + "/reports/voucher/std-form/{0}";
+  //reports/voucher/{voucherId:min(1)}/std-form-detail
+  public static VoucherStdFormWithDetail = environment.BaseUrl + "/reports/voucher/{0}/std-form-detail";
 
+  //reports/voucher/draft/{voucherId:min(1)}/std-form
+  public static DraftVoucherStdForm = environment.BaseUrl + "/reports/voucher/draft/{0}/std-form";
 
+  //reports/voucher/draft/{voucherId:min(1)}/std-form-detail
+  public static DraftVoucherStdFormWithDetail = environment.BaseUrl + "/reports/voucher/draft/{0}/std-form-detail";
 }

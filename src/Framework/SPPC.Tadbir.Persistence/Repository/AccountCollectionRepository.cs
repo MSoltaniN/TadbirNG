@@ -25,12 +25,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
-        /// <param name="utility">امکانات تکمیلی برای کار با مجموعه های حساب را پیاده سازی می کند</param>
-        public AccountCollectionRepository(IRepositoryContext context, ISystemRepository system,
-            IAccountCollectionUtility utility)
+        public AccountCollectionRepository(IRepositoryContext context, ISystemRepository system)
             : base(context, system?.Logger)
         {
-            _utility = utility;
         }
 
         /// <summary>
@@ -52,23 +49,19 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="collectionId">شناسه یکتای مجموعه حساب</param>
         /// <returns>مجموعه ای از حساب های انتخاب شده در یک مجموعه حساب</returns>
-        public async Task<IList<AccountViewModel>> GetCollectionAccountsAsync(int collectionId)
+        public async Task<IList<AccountCollectionAccountViewModel>> GetCollectionAccountsAsync(int collectionId)
         {
             Verify.EnumValueIsDefined(typeof(AccountCollectionId), nameof(collectionId), collectionId);
-            var accounts = await _utility.GetInheritedAccountsAsync(
-                (AccountCollectionId)collectionId, UserContext.BranchId);
+            var accounts = await GetInheritedAccountsAsync(collectionId, UserContext.BranchId);
             await LogCollectionOperationAsync(OperationId.View, collectionId);
-            return accounts
-                .Select(acc => Mapper.Map<AccountViewModel>(acc))
-                .ToList();
+            return accounts;
         }
 
         /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت حساب های یک مجموعه حساب را ذخیره میکند
+        /// به روش آسنکرون، حساب های یک مجموعه حساب را اضافه میکند
         /// </summary>
         /// <param name="accounts">اطلاعات حساب های یک مجموعه حساب</param>
         /// <param name="collectionId">شناسه یکتای مجموعه حساب انتخاب شده</param>
-        /// <returns></returns>
         public async Task AddCollectionAccountsAsync(
             int collectionId, IList<AccountCollectionAccountViewModel> accounts)
         {
@@ -91,9 +84,61 @@ namespace SPPC.Tadbir.Persistence
             await LogCollectionOperationAsync(OperationId.Save, collectionId);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که شعبه داده شده امکان تعریف حساب برای مجموعه حساب را دارد یا نه
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
+        /// <param name="collectionId">شناسه دیتابیسی مجموعه حساب مورد نظر</param>
+        /// <returns>برای مجموعه حسابهای تک حسابی، شعبه داده شده باید بالاترین شعبه در ساختار درختی باشد.
+        /// ولی برای سایر مجموعه حسابها هر شعبه ای می تواند حسابهای مجموعه حساب را تعیین کند</returns>
+        public async Task<bool> CanBranchManageCollectionAsync(int branchId, int collectionId)
+        {
+            bool canManage = true;
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollection>();
+            var collection = await repository.GetByIDAsync(collectionId);
+            if (collection != null && !collection.MultiSelect)
+            {
+                var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
+                var top = await branchRepository.GetSingleByCriteriaAsync(br => br.ParentId == null);
+                canManage = top.Id == branchId;
+            }
+
+            return canManage;
+        }
+
         internal override int? EntityType
         {
             get { return (int)EntityTypeId.AccountCollectionAccount; }
+        }
+
+        private async Task<IList<AccountCollectionAccountViewModel>> GetInheritedAccountsAsync(
+            int collectionId, int branchId)
+        {
+            var accounts = new List<AccountCollectionAccountViewModel>();
+            var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
+            var branch = await branchRepository.GetByIDWithTrackingAsync(branchId);
+            var currentBranch = branch;
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            while (currentBranch != null)
+            {
+                var collectionAccounts = await repository
+                    .GetEntityQuery()
+                    .Include(aca => aca.Account)
+                    .Where(aca => aca.FiscalPeriodId <= UserContext.FiscalPeriodId &&
+                        aca.BranchId == currentBranch.Id &&
+                        aca.CollectionId == collectionId)
+                    .Select(aca => Mapper.Map<AccountCollectionAccountViewModel>(aca))
+                    .ToListAsync();
+                if (collectionAccounts.Count > 0)
+                {
+                    accounts.AddRange(collectionAccounts);
+                }
+
+                branchRepository.LoadReference(currentBranch, br => br.Parent);
+                currentBranch = currentBranch.Parent;
+            }
+
+            return accounts;
         }
 
         private void RemoveInaccessibleAccountCollections(
@@ -150,7 +195,5 @@ namespace SPPC.Tadbir.Persistence
                 await TrySaveLogAsync();
             }
         }
-
-        private readonly IAccountCollectionUtility _utility;
     }
 }

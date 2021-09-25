@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
 import { RowArgs } from '@progress/kendo-angular-grid';
 import { RTL } from '@progress/kendo-angular-l10n';
-import { Layout } from '@sppc/env/environment';
+import { Layout } from '@sppc/shared/enum/metadata';
 import { RelatedItems } from '@sppc/shared/models';
 import { DetailComponent } from '@sppc/shared/class';
 import { SecureEntity, FiscalPeriodPermissions } from '@sppc/shared/security';

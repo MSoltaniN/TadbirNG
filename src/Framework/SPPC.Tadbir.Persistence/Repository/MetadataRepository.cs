@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -26,9 +27,10 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// یک نمونه جدید از این کلاس ایجاد می کند
         /// </summary>
-        public MetadataRepository(IRepositoryContext context)
+        public MetadataRepository(IRepositoryContext context, IConfigRepository config)
             : base(context)
         {
+            _config = config;
             UnitOfWork.UseSystemContext();
         }
 
@@ -50,19 +52,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
         public async Task<ViewViewModel> GetViewMetadataAsync(string viewName)
         {
-            var repository = UnitOfWork.GetAsyncRepository<View>();
-            var viewMetadata = await repository
-                .GetSingleByCriteriaAsync(vu => vu.Name == viewName, vu => vu.Columns);
-            var metadata = Mapper.Map<ViewViewModel>(viewMetadata);
-            foreach (var column in metadata.Columns)
-            {
-                column.Settings = GetDynamicColumnSettings(column);
-            }
-
-            metadata.Columns = metadata.Columns
-                .OrderBy(col => col.DisplayIndex)
-                .ToList();
-            return metadata;
+            return await GetViewMetadataByCriteriaAsync(vu => vu.Name == viewName);
         }
 
         /// <summary>
@@ -72,19 +62,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
         public async Task<ViewViewModel> GetViewMetadataByIdAsync(int viewId)
         {
-            var repository = UnitOfWork.GetAsyncRepository<View>();
-            var viewMetadata = await repository
-                .GetSingleByCriteriaAsync(vu => vu.Id == viewId, vu => vu.Columns);
-            var metadata = Mapper.Map<ViewViewModel>(viewMetadata);
-            foreach (var column in metadata.Columns)
-            {
-                column.Settings = GetDynamicColumnSettings(column);
-            }
-
-            metadata.Columns = metadata.Columns
-                .OrderBy(col => col.DisplayIndex)
-                .ToList();
-            return metadata;
+            return await GetViewMetadataByCriteriaAsync(vu => vu.Id == viewId);
         }
 
         /// <summary>
@@ -173,13 +151,13 @@ namespace SPPC.Tadbir.Persistence
         {
             var metadata = await GetViewMetadataByIdAsync(viewId);
             var dynamicMetadata = metadata.GetCopy();
-            dynamicMetadata.Columns = new List<ColumnViewModel>();
+            var columns = new List<ColumnViewModel>();
             var dynamicColumns = metadata.Columns
                 .Where(col => col.IsDynamic)
                 .OrderBy(col => col.DisplayIndex)
                 .ToList();
-            dynamicMetadata.Columns.AddRange(metadata.Columns.Except(dynamicColumns));
-            Localize(dynamicMetadata.Columns);
+            columns.AddRange(metadata.Columns.Except(dynamicColumns));
+            Localize(columns);
 
             if (items.Count() > AppConstants.MaxCompareItems)
             {
@@ -189,8 +167,7 @@ namespace SPPC.Tadbir.Persistence
             int index = 1;
             foreach (int item in items)
             {
-                dynamicMetadata.Columns.AddRange(
-                    await GetDynamicColumnsAsync(dynamicColumns, itemViewId, item, index));
+                columns.AddRange(await GetDynamicColumnsAsync(dynamicColumns, itemViewId, item, index));
                 foreach (var column in dynamicColumns)
                 {
                     column.DisplayIndex += (short)dynamicColumns.Count;
@@ -199,6 +176,7 @@ namespace SPPC.Tadbir.Persistence
                 index++;
             }
 
+            dynamicMetadata.SetColumns(columns);
             return dynamicMetadata;
         }
 
@@ -324,5 +302,47 @@ namespace SPPC.Tadbir.Persistence
             UnitOfWork.UseSystemContext();
             return dynamicColumns;
         }
+
+        private async Task<ViewViewModel> GetViewMetadataByCriteriaAsync(Expression<Func<View, bool>> criteria)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<View>();
+            var metadata = await repository
+                .GetSingleByCriteriaAsync(criteria, vu => vu.Columns);
+            var metadataView = Mapper.Map<ViewViewModel>(metadata);
+            foreach (var column in metadata.Columns)
+            {
+                metadataView.Columns.Add(Mapper.Map<ColumnViewModel>(column));
+            }
+
+            foreach (var column in metadataView.Columns)
+            {
+                column.Settings = GetDynamicColumnSettings(column);
+            }
+
+            await PrepareColumnsAsync(metadataView);
+            return metadataView;
+        }
+
+        private async Task PrepareColumnsAsync(ViewViewModel view)
+        {
+            var calendar = await _config.GetCurrentCalendarAsync();
+            var columns = view.Columns
+                .OrderBy(col => col.DisplayIndex)
+                .ToArray();
+            Array.ForEach(columns, col =>
+            {
+                if (col.DotNetType.Contains("System.Date"))
+                {
+                    var columnCalendar = (CalendarType)Enum.Parse(typeof(CalendarType), col.Type);
+                    if (columnCalendar == CalendarType.Default)
+                    {
+                        col.Type = calendar.ToString();
+                    }
+                }
+            });
+            view.SetColumns(columns);
+        }
+
+        private readonly IConfigRepository _config;
     }
 }

@@ -47,42 +47,46 @@ namespace SPPC.Tadbir.Persistence
             int level, TestBalanceParameters parameters)
         {
             var balance = new TestBalanceViewModel();
-            var items = new List<TestBalanceItemViewModel>();
-            int length;
-            string filter;
-            int index = 0;
-            ReportQuery query;
-            while (index < level)
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
             {
-                length = _utility.GetLevelCodeLength(parameters.ViewId, index);
-                filter = String.Format("acc.Level == {0}", index);
+                var items = new List<TestBalanceItemViewModel>();
+                int length;
+                string filter;
+                int index = 0;
+                ReportQuery query;
+                while (index < level)
+                {
+                    length = _utility.GetLevelCodeLength(parameters.ViewId, index);
+                    filter = String.Format("acc.Level == {0}", index);
+                    query = await GetEndBalanceQueryAync(length, parameters, filter);
+                    items.AddRange(GetQueryResult(query));
+                    index++;
+                }
+
+                length = _utility.GetLevelCodeLength(parameters.ViewId, level);
+                filter = String.Format("acc.Level >= {0}", level);
                 query = await GetEndBalanceQueryAync(length, parameters, filter);
                 items.AddRange(GetQueryResult(query));
-                index++;
+
+                if (parameters.Format >= TestBalanceFormat.FourColumn)
+                {
+                    await AddTurnoversAsync(length, items, parameters);
+                }
+
+                if (parameters.Format >= TestBalanceFormat.SixColumn)
+                {
+                    await AddInitialBalancesAsync(length, items, parameters);
+                }
+
+                if (parameters.Format >= TestBalanceFormat.EightColumn)
+                {
+                    AddOperationSums(items);
+                }
+
+                items = await ApplyZeroBalanceOptionAsync(items, parameters, level);
+                PrepareBalance(balance, items, parameters, length);
             }
 
-            length = _utility.GetLevelCodeLength(parameters.ViewId, level);
-            filter = String.Format("acc.Level >= {0}", level);
-            query = await GetEndBalanceQueryAync(length, parameters, filter);
-            items.AddRange(GetQueryResult(query));
-
-            if (parameters.Format >= TestBalanceFormat.FourColumn)
-            {
-                await AddTurnoversAsync(length, items, parameters);
-            }
-
-            if (parameters.Format >= TestBalanceFormat.SixColumn)
-            {
-                await AddInitialBalancesAsync(length, items, parameters);
-            }
-
-            if (parameters.Format >= TestBalanceFormat.EightColumn)
-            {
-                AddOperationSums(items);
-            }
-
-            items = await ApplyZeroBalanceOptionAsync(items, parameters, level);
-            PrepareBalance(balance, items, parameters, length);
             var source = (parameters.ViewId == ViewId.Account)
                 ? OperationSourceId.TestBalance
                 : OperationSourceId.ItemBalance;
@@ -101,33 +105,36 @@ namespace SPPC.Tadbir.Persistence
             int accountId, TestBalanceParameters parameters)
         {
             var balance = new TestBalanceViewModel();
-            var accountItem = await _utility.GetItemAsync(parameters.ViewId, accountId);
-            if (accountItem != null)
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
             {
-                var items = new List<TestBalanceItemViewModel>();
-                int level = accountItem.Level + 1;
-                var filter = String.Format("acc.Level >= {0} AND acc.FullCode LIKE '{1}%'", level, accountItem.FullCode);
-                int length = _utility.GetLevelCodeLength(parameters.ViewId, level);
-                var query = await GetEndBalanceQueryAync(length, parameters, filter);
-                items.AddRange(GetQueryResult(query));
-
-                if (parameters.Format >= TestBalanceFormat.FourColumn)
+                var accountItem = await _utility.GetItemAsync(parameters.ViewId, accountId);
+                if (accountItem != null)
                 {
-                    await AddTurnoversAsync(length, items, parameters, filter);
-                }
+                    var items = new List<TestBalanceItemViewModel>();
+                    int level = accountItem.Level + 1;
+                    var filter = String.Format("acc.Level >= {0} AND acc.FullCode LIKE '{1}%'", level, accountItem.FullCode);
+                    int length = _utility.GetLevelCodeLength(parameters.ViewId, level);
+                    var query = await GetEndBalanceQueryAync(length, parameters, filter);
+                    items.AddRange(GetQueryResult(query));
 
-                if (parameters.Format >= TestBalanceFormat.SixColumn)
-                {
-                    await AddInitialBalancesAsync(length, items, parameters, filter);
-                }
+                    if (parameters.Format >= TestBalanceFormat.FourColumn)
+                    {
+                        await AddTurnoversAsync(length, items, parameters, filter);
+                    }
 
-                if (parameters.Format >= TestBalanceFormat.EightColumn)
-                {
-                    AddOperationSums(items);
-                }
+                    if (parameters.Format >= TestBalanceFormat.SixColumn)
+                    {
+                        await AddInitialBalancesAsync(length, items, parameters, filter);
+                    }
 
-                items = await ApplyZeroBalanceOptionAsync(items, parameters, level);
-                PrepareBalance(balance, items, parameters, length);
+                    if (parameters.Format >= TestBalanceFormat.EightColumn)
+                    {
+                        AddOperationSums(items);
+                    }
+
+                    items = await ApplyZeroBalanceOptionAsync(items, parameters, level);
+                    PrepareBalance(balance, items, parameters, length);
+                }
             }
 
             var source = (parameters.ViewId == ViewId.Account)

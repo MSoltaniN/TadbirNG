@@ -95,8 +95,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<VoucherLineViewModel> SaveArticleAsync(VoucherLineViewModel lineView)
         {
             Verify.ArgumentNotNull(lineView, "lineView");
-            VoucherLine line = default(VoucherLine);
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
+            VoucherLine line;
             if (lineView.Id == 0)
             {
                 line = Mapper.Map<VoucherLine>(lineView);

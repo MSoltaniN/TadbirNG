@@ -194,7 +194,7 @@
 
       <kendo-tabstrip-tab [title]="getText('Account.CustomerTaxTitle')" *ngIf="!isDisableCustomerTaxTab">
         <ng-template kendoTabContent>
-          <form novalidate [formGroup]="customerTaxForm" *ngIf="!uploadTab">
+          <form novalidate [formGroup]="customerTaxForm">
             <div>
               <div class="row">
                 <div class="col-xs-12 col-sm-6 sppc-float">
@@ -442,22 +442,6 @@
               </div>
             </div>
           </form>
-
-          <div *ngIf="uploadTab">
-            <div class="alert alert-info">
-              اطلاعات مربوط به استان ها و شهرها آپلود نشده است. لطفا فایل اکسس مربوطه را آپلود کنید.
-            </div>
-
-            <label for="file-upload" class="custom-file-upload" title="آپلود فایل">
-              آپلود فایل اکسس
-              <i class="fa fa-cloud-upload" *ngIf="progress == 0 || progress == 100" style="padding:2px 4px 2px !important;"></i>
-              <span class="upload-msg" *ngIf="progress > 0 && progress < 100">
-                {{progress}}%
-              </span>
-            </label>
-            <input #myInput id="file-upload" type="file" multiple (change)="onFileChange($event)" />
-
-          </div>
         </ng-template>
       </kendo-tabstrip-tab>
 

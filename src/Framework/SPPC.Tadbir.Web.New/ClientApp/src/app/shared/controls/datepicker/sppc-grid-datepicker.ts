@@ -1,8 +1,11 @@
-import { Component, OnInit, Input, forwardRef, OnDestroy, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, OnDestroy, Renderer2, ElementRef, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator } from '@angular/forms'
 import { DatePipe } from '@angular/common'
 
 import * as moment from 'jalali-moment';
+import { CalendarType } from '@sppc/shared/enum/metadata';
+import { BrowserStorageService } from '@sppc/shared/services';
+import { SppcGridFilter } from '..';
 
 
 
@@ -50,13 +53,39 @@ export class SppcGridDatepicker implements OnInit, OnDestroy, ControlValueAccess
     public isDateTime: boolean = false;
 
     public mode: string = 'daytime';
+    public displayType: string;
 
-    constructor(private datepipe: DatePipe, private render: Renderer2) {
+  constructor(private datepipe: DatePipe, private bStorageService: BrowserStorageService) {
     }
 
-    ngOnInit() {
-        var dateFormat = "YYYY/MM/DD"
-        var lang = localStorage.getItem('lang');
+  ngOnInit() {
+      
+      
+      var dateFormat = "YYYY/MM/DD"
+
+     
+      let lang: string;
+      if (this.displayType) {
+        if (this.displayType == CalendarType.Jalali)
+          lang = "fa";
+
+        if (this.displayType == CalendarType.Gregorian)
+          lang = "en";
+      }
+      else {
+        let config: any;
+        var calConfig = this.bStorageService.getSystemConfig();
+        if (calConfig) {
+          config = JSON.parse(calConfig);
+          if (config.defaultCalendar == 0)
+            lang = "fa";
+
+          if (config.defaultCalendar == 1)
+            lang = "en";
+        }
+      }
+        
+        //var lang = localStorage.getItem('lang');
         if (lang) {
             this.dateLocale = lang;
             if (lang == "en")

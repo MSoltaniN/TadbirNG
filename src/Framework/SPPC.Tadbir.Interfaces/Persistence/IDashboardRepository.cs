@@ -1,7 +1,5 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Threading.Tasks;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence

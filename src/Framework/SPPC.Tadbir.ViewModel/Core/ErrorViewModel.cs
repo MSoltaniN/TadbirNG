@@ -45,7 +45,7 @@ namespace SPPC.Tadbir.ViewModel.Core
             set
             {
                 _type = value;
-                StatusCode = (_type == ErrorType.ValidationError) ? 400 : 500;
+                SetStatusCode(_type);
             }
         }
 
@@ -53,6 +53,36 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// کد وضعیت مربوط به خطای ایجاد شده - با شماره استاندارد
         /// </summary>
         public int StatusCode { get; set; }
+
+        /// <summary>
+        /// نمایش متنی از این آبجکت ساخته و برمی گرداند
+        /// </summary>
+        /// <returns>نمایش متنی این آبجکت</returns>
+        public override string ToString()
+        {
+            string mainMessage = Messages.Count > 0
+                ? Messages[0]
+                : String.Empty;
+            return mainMessage;
+        }
+
+        private void SetStatusCode(ErrorType errorType)
+        {
+            switch (errorType)
+            {
+                case ErrorType.ValidationError:
+                    StatusCode = 400;
+                    break;
+                case ErrorType.RuntimeException:
+                    StatusCode = 500;
+                    break;
+                case ErrorType.ExpiredSession:
+                    StatusCode = 401;
+                    break;
+                default:
+                    break;
+            }
+        }
 
         private ErrorType _type;
     }

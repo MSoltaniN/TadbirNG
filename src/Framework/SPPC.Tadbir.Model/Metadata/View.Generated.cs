@@ -69,7 +69,7 @@ namespace SPPC.Tadbir.Model.Metadata
         /// <summary>
         /// مجموعه ای از ستون های تعریف شده برای نمای اطلاعاتی
         /// </summary>
-        public virtual IList<Column> Columns { get; protected set; }
+        public virtual List<Column> Columns { get; protected set; }
 
         private void InitReferences()
         {

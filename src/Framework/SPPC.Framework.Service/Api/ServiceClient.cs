@@ -225,7 +225,7 @@ namespace SPPC.Framework.Service
 
             if (disposing)
             {
-                _httpClient.Dispose();
+                _httpClient?.Dispose();
                 _disposed = true;
             }
         }
@@ -244,6 +244,10 @@ namespace SPPC.Framework.Service
             else if (response.StatusCode == HttpStatusCode.InternalServerError)
             {
                 serviceResponse = new ServiceResponse(ServiceResult.ServerError, String.Empty);
+            }
+            else if (response.StatusCode == HttpStatusCode.Forbidden)
+            {
+                serviceResponse = new ServiceResponse(ServiceResult.AccessDenied, "Access denied.");
             }
             else if (!response.IsSuccessStatusCode && response.StatusCode != HttpStatusCode.NotFound)
             {

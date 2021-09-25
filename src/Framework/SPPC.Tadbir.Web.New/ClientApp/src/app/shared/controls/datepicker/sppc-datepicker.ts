@@ -4,6 +4,8 @@ import { DatePipe } from '@angular/common'
 
 import * as moment from 'jalali-moment';
 import { KeyCode } from '@sppc/shared/enum';
+import { CalendarType } from '@sppc/shared/enum/metadata';
+import { BrowserStorageService } from '@sppc/shared/services';
 
 @Component({
   selector: 'sppc-datepicker',
@@ -81,8 +83,10 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
   propagateChange: any = () => { };
 
   @Input() formControlName: string;
+  @Input() displayType: string; //Jalali | Gregorian
+
   private control: AbstractControl | null;
-  constructor(private datepipe: DatePipe, @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {    
+  constructor(private datepipe: DatePipe, @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer, private bStorageService: BrowserStorageService) {    
   }  
 
   ngOnInit() {
@@ -138,7 +142,30 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
       }
     }
 
-    var lang = localStorage.getItem('lang');
+    
+    var lang : string;
+
+    if (this.displayType) {
+      if (this.displayType == CalendarType.Jalali)
+        lang = "en";
+
+      if (this.displayType == CalendarType.Gregorian)
+        lang = "en";
+    }
+    else {
+      let config: any;
+      var calConfig = this.bStorageService.getSystemConfig();
+      if (calConfig) {
+        config = JSON.parse(calConfig);
+        if (config.defaultCalendar == 0)
+          lang = "fa";
+
+        if (config.defaultCalendar == 1)
+          lang = "en";
+      }
+    }
+
+
     if (lang) {
       this.dateLocale = lang;
       if (lang == "en")

@@ -14,11 +14,18 @@ export class DashboardService extends BaseService {
     super(http, bStorageService);
   }
 
-    getDashboardInfo() {
-        var url = DashboardApi.SummariesUrl;
-        var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
-            .map(response => <any>(<Response>response));
-    }
+  getDashboardInfo() {
+    var url = DashboardApi.Summaries;
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+        .map(response => <any>(<Response>response));
+  }
+
+  getLincenseInfo() {
+    var url = DashboardApi.LicenseInfo;
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
+  }
 
 }

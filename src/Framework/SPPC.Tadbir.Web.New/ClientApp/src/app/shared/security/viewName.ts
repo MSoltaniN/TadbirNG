@@ -2,6 +2,7 @@ import { TestBalanceApi } from "@sppc/finance/service/api/testBalanceApi";
 
 
 export enum ViewName {
+  None = 0,
   Account = 1,
   Voucher = 2,
   VoucherLine = 3,

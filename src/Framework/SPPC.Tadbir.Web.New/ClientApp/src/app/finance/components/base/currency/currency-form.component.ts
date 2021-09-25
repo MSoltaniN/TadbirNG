@@ -6,7 +6,7 @@ import { Currency, TaxCurrency } from '@sppc/finance/models';
 import { CurrencyService, CurrencyEntity } from '@sppc/finance/service';
 import { CurrencyApi } from '@sppc/finance/service/api';
 import { BrowserStorageService, MetaDataService, LookupService } from '@sppc/shared/services';
-import { Entities, MessageType } from '@sppc/env/environment';
+import { Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { ViewName } from '@sppc/shared/security';
 import { HttpEventType, HttpClient } from '@angular/common/http';
 

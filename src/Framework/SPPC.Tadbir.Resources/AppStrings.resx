@@ -223,7 +223,7 @@
     <value>رمز ورود قدیم صحیح نیست.</value>
   </data>
   <data name="InvalidPasswordMessage" xml:space="preserve">
-    <value>رمز ورود وارد شده نادرست است.</value>
+    <value>رمز وارد شده نادرست است.</value>
   </data>
   <data name="InvalidUserNameMessage" xml:space="preserve">
     <value>کاربری با نام کاربری داده شده یافت نشد.</value>
@@ -3503,5 +3503,26 @@
   </data>
   <data name="CompanyAccess" xml:space="preserve">
     <value>دسترسی به شرکت</value>
+  </data>
+  <data name="InactiveAccountCantHaveChildren" xml:space="preserve">
+    <value>حساب والد '{0}' غیرفعال شده و نمی توان برای آن حساب زیرمجموعه تعریف کرد.</value>
+  </data>
+  <data name="ParentAccountCantBeInactive" xml:space="preserve">
+    <value>حساب '{0}' دارای زیرمجموعه است و نمی توان آن را غیرفعال کرد.</value>
+  </data>
+  <data name="CantManageCollectionFromBranch" xml:space="preserve">
+    <value>تعریف حساب برای این مجموعه حساب فقط از بالاترین شعبه امکانپذیر است.</value>
+  </data>
+  <data name="PrintPreview" xml:space="preserve">
+    <value>پیش نمایش چاپ</value>
+  </data>
+  <data name="ReportDesignDetails" xml:space="preserve">
+    <value>طراحی قالب گزارش - عنوان اصلی : '{0}' - عنوان جدید : '{1}'</value>
+  </data>
+  <data name="SessionIsExpired" xml:space="preserve">
+    <value>جلسه کاری شما در برنامه منقضی شده است. لطفاً دوباره وارد برنامه شوید.</value>
+  </data>
+  <data name="InvalidOrExpiredLicense" xml:space="preserve">
+    <value>مجوز برنامه شما غیرمعتبر یا منقضی است. لطفاً با فروشنده نرم افزار خود تماس بگیرید.</value>
   </data>
 </root>

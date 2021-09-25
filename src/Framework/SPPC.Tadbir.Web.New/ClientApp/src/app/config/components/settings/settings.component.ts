@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItem } from '@progress/kendo-angular-treeview';
 import { String, DefaultComponent } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { SettingsFormComponent } from './settings-form.component';
 import { BrowserStorageService, MetaDataService, ErrorHandlingService } from '@sppc/shared/services';
 import { SettingBriefInfo, SettingTreeNodeInfo, SettingService } from '@sppc/config/service';
@@ -95,8 +95,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
     }
   }
 
-  onSaveSettingsList() {
-
+  onSaveSettingsList() {    
     if (this.lastSelectedType) {
       this.settingForm.updateListHandler();
       this.updateList(this.lastSelectedType);

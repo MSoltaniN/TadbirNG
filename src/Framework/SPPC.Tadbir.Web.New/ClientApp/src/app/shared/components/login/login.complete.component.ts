@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Renderer2 } from '@angular/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TranslateService } from '@ngx-translate/core';
-import { Layout, MessageType, MessagePosition } from '@sppc/env/environment';
+import { Layout, MessageType, MessagePosition } from '@sppc/shared/enum/metadata';
 import { AuthenticationService, ContextInfo, CompanyLoginInfo } from '@sppc/core';
 import { MetaDataService, BrowserStorageService, SessionKeys } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
@@ -235,6 +235,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         this.bStorageService.setUserSetting(res, this.UserId);
     });
 
+    //To fill localstorage before load other component    
+    this.settingService.getSystemConfig();   
+
     this.bStorageService.removeSelectedDateRange();
   }
 
@@ -250,7 +253,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
       this.authenticationService.getFiscalPeriodById(currentUser.fpId, this.Ticket).subscribe(res => {
         this.bStorageService.setFiscalPeriod(res);
       })
-    }
+    }    
 
     this.userService.getCurrentUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
       this.bStorageService.setCurrentContext(currentUser);
@@ -278,10 +281,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
     });
 
-    this.userService.getDefaultUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
-      this.bStorageService.setProfile(res);
-
-    });
+    
 
 
 

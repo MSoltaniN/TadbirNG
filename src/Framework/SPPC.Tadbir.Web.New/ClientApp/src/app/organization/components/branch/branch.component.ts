@@ -7,7 +7,7 @@ import { DialogService } from '@progress/kendo-angular-dialog';
 import { BranchFormComponent } from './branch-form.component';
 import { BranchRolesFormComponent } from './branch-roles-form.component';
 import { String, AutoGridExplorerComponent, Filter, FilterExpressionOperator } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from '@sppc/env/environment';
+import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
 import { BranchService, BranchInfo } from '@sppc/organization/service';
 import { BranchApi, } from '@sppc/organization/service/api';
 import { Branch } from '@sppc/organization/models';
@@ -22,6 +22,7 @@ import { ReportManagementComponent } from '@sppc/shared/components/reportManagem
 import { CompanyLoginInfo, AuthenticationService, ContextInfo } from '@sppc/core';
 import { UserService } from '@sppc/admin/service';
 import { Router } from '@angular/router';
+import { OperationId } from '@sppc/shared/enum/operationId';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -81,6 +82,11 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
 
     this.dialogRef.content.instance.save.subscribe((res) => {      
       this.saveHandler(res, isNew);
+      if (isNew)
+        this.refreshTreeNodes();
+      if (!this.IsAdmin) {
+        this.showMessage(this.getText("Branch.BranchIsNotAccess"), MessageType.Info);
+      }
     });
 
     const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
@@ -188,6 +194,8 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
   }
 
   onAdvanceFilterOk() {
+    this.enableViewListChanged(this.viewId);
+    this.operationId = OperationId.Filter;
     this.reloadGrid();
   }
 

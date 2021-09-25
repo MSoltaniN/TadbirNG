@@ -54,8 +54,8 @@ export class UserApi {
   // users/default/commands
   public static UserDefaultCommands = environment.BaseUrl + "/users/default/commands";
 
-  // users/specialPassword/{specialPassword}
-  public static CheckSpecialPassword = environment.BaseUrl + "/users/specialPassword/{0}";
+  // users/admin/special-pass
+  public static SpecialPassword = environment.BaseUrl + "/users/admin/special-pass";
 
 
 }
