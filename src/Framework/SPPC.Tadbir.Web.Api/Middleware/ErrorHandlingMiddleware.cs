@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
+using Microsoft.IdentityModel.Tokens;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Domain;
@@ -71,12 +72,27 @@ namespace SPPC.Tadbir.Web.Api.Middleware
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            TryLogException(context, exception);
-            string message = _localizer[AppStrings.ErrorOccured];
-            var error = new ErrorViewModel(message, ErrorType.RuntimeException);
+            if (exception is SecurityTokenExpiredException _)
+            {
+                await HandleExceptionAsync(context, AppStrings.SessionIsExpired,
+                    ErrorType.ExpiredSession, HttpStatusCode.Unauthorized);
+            }
+            else
+            {
+                TryLogException(context, exception);
+                await HandleExceptionAsync(context, AppStrings.ErrorOccured,
+                    ErrorType.RuntimeException, HttpStatusCode.InternalServerError);
+            }
+        }
+
+        private async Task HandleExceptionAsync(HttpContext context, string messageKey,
+            ErrorType errorType, HttpStatusCode statusCode)
+        {
+            string message = _localizer[messageKey];
+            var error = new ErrorViewModel(message, errorType);
             var result = JsonHelper.From(error, false);
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.Response.StatusCode = (int)statusCode;
             await context.Response.WriteAsync(result);
         }
 
@@ -86,12 +102,20 @@ namespace SPPC.Tadbir.Web.Api.Middleware
             int? companyId = null;
             int? fpId = null;
             int? branchId = null;
-            var securityContext = GetSecurityContext(context);
-            if (securityContext != null)
+            try
             {
-                companyId = securityContext.User.CompanyId;
-                fpId = securityContext.User.FiscalPeriodId;
-                branchId = securityContext.User.BranchId;
+                var securityContext = GetSecurityContext(context);
+                if (securityContext != null)
+                {
+                    companyId = securityContext.User.CompanyId;
+                    fpId = securityContext.User.FiscalPeriodId;
+                    branchId = securityContext.User.BranchId;
+                }
+            }
+            catch (SecurityTokenExpiredException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine("WARNING: Security token is expired. Environment info is not available.");
             }
 
             var enCulture = new CultureInfo("en");

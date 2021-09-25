@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Config;
@@ -290,6 +291,35 @@ namespace SPPC.Tadbir.Persistence
                 .Cast<DataRow>()
                 .Select(row => Int32.Parse(row.ItemArray[0].ToString()))
                 .ToArray();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، عبارت موجود برای فیلتر شعبه را از تنظیمات لیست اطلاعاتی خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">تنظیمات لیست اطلاعاتی</param>
+        /// <returns>عبارت مورد نیاز برای فیلتر شعبه</returns>
+        protected async Task<string> GetBranchFilterAsync(GridOptions gridOptions)
+        {
+            string branchFilter = String.Empty;
+            if (gridOptions.QuickFilter != null)
+            {
+                var gridFilter = gridOptions.QuickFilter
+                    .GetAllFilters()
+                    .Where(filter => filter.FieldName == "BranchId")
+                    .FirstOrDefault();
+                if (gridFilter == null)
+                {
+                    var childBranches = new List<int>(await GetChildTreeAsync(UserContext.BranchId));
+                    childBranches.Insert(0, UserContext.BranchId);
+                    branchFilter = String.Format("BranchID IN({0})", String.Join(",", childBranches));
+                }
+                else
+                {
+                    branchFilter = gridFilter.ToString();
+                }
+            }
+
+            return branchFilter;
         }
 
         private void AddChildren(Branch branch, IList<int> children)

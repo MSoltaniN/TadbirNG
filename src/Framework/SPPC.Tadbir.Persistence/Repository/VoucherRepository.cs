@@ -50,7 +50,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه جاری</returns>
         public async Task<PagedList<VoucherViewModel>> GetVouchersAsync(GridOptions gridOptions = null)
         {
-            var vouchers = GetVoucherItems(gridOptions);
+            var vouchers = await GetVoucherItemsAsync(gridOptions);
             await ReadAsync(gridOptions);
             return new PagedList<VoucherViewModel>(vouchers, gridOptions);
         }
@@ -787,11 +787,11 @@ namespace SPPC.Tadbir.Persistence
             voucher.HasNext = nextCount > 0;
         }
 
-        private IEnumerable<VoucherViewModel> GetVoucherItems(GridOptions gridOptions)
+        private async Task<IEnumerable<VoucherViewModel>> GetVoucherItemsAsync(GridOptions gridOptions)
         {
             var options = gridOptions ?? new GridOptions();
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-            string filters = _report.TranslateQuery(GetEnvironmentFilters(options));
+            string filters = _report.TranslateQuery(await GetEnvironmentFiltersAsync(options));
             string listQuery = String.Format(VoucherQuery.EnvironmentVouchers, filters);
             var query = new ReportQuery(listQuery);
             var result = DbConsole.ExecuteQuery(query.Query);
@@ -801,7 +801,7 @@ namespace SPPC.Tadbir.Persistence
             return vouchers;
         }
 
-        private string GetEnvironmentFilters(GridOptions gridOptions)
+        private async Task<string> GetEnvironmentFiltersAsync(GridOptions gridOptions)
         {
             var predicates = new List<string>
             {
@@ -810,6 +810,12 @@ namespace SPPC.Tadbir.Persistence
             if (gridOptions.QuickFilter != null)
             {
                 predicates.Add(gridOptions.QuickFilter.ToString());
+                string branchFilter = await GetBranchFilterAsync(gridOptions);
+                branchFilter = branchFilter.Replace("BranchID", "v.BranchID");
+                if (branchFilter.Contains("IN"))
+                {
+                    predicates.Add(branchFilter);
+                }
             }
 
             return String.Join(" AND ", predicates);
