@@ -28,3 +28,10 @@ services:
 
  sppcTadbirWebNew:
   image: msn1368/sppctadbirwebnew:dev
+
+
+ sppcLicensingLocalWeb:
+  environment:
+   - ASPNETCORE_ENVIRONMENT=Development
+
+

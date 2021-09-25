@@ -54,3 +54,12 @@ services:
    - frontend
   ports:
    - 3003:4200
+
+ sppcLicensingLocalWeb:
+  image: msn1368/sppclicensinglocalweb:dev
+  build:
+   context: .
+   dockerfile: sppc.tadbir.web.api/Dockerfile
+  ports:
+   - 3004:80
+
