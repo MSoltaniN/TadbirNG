@@ -1,3 +1,6 @@
+USE NGTadbirSys
+GO
+
 -- 1.1.666
 SET IDENTITY_INSERT [Metadata].[View] ON
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (30, 'Currency', 0, 0, N'')

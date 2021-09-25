@@ -14,7 +14,7 @@ COPY SPPC.Licensing.Model/SPPC.Licensing.Model.csproj SPPC.Licensing.Model/
 COPY SPPC.Tadbir.ViewModel/SPPC.Tadbir.ViewModel.csproj SPPC.Tadbir.ViewModel/
 COPY SPPC.Tadbir.Configuration/SPPC.Tadbir.Configuration.csproj SPPC.Tadbir.Configuration/
 COPY SPPC.Framework.Persistence/SPPC.Framework.Persistence.csproj SPPC.Framework.Persistence/
-COPY SPPC.Framework.Model/SPPC.Framework.Model.csproj SPPC.Framework.Model/
+#COPY SPPC.Framework.Model/SPPC.Framework.Model.csproj SPPC.Framework.Model/
 COPY SPPC.Tadbir.Service/SPPC.Tadbir.Service.csproj SPPC.Tadbir.Service/
 COPY SPPC.Framework.Service/SPPC.Framework.Service.csproj SPPC.Framework.Service/
 COPY SPPC.Tadbir.Resources/SPPC.Tadbir.Resources.csproj SPPC.Tadbir.Resources/
