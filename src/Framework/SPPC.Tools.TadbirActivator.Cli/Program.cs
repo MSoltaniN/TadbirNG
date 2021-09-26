@@ -1,16 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using SPPC.Framework.Common;
+using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
+using SPPC.Licensing.Local.Persistence;
 using SPPC.Licensing.Model;
+using SPPC.Tadbir.Licensing;
 
 namespace SPPC.Tools.TadbirActivator.Cli
 {
     class Program
     {
+        private static ILicenseUtility Service
+        {
+            get
+            {
+                if (_service == null)
+                {
+                    string root = ConfigurationManager.AppSettings["OnlineServerRoot"];
+                    _service = LicenseUtility.CreateDefault(root);
+                }
+
+                return _service;
+            }
+        }
+
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
@@ -178,8 +197,68 @@ namespace SPPC.Tools.TadbirActivator.Cli
         {
             Console.WriteLine();
             Console.WriteLine("In Progress...");
+
+            try
+            {
+                var activation = GetActivationData();
+                string license = Service.GetActivatedLicense(activation);
+                if (String.IsNullOrEmpty(license))
+                {
+                    Console.WriteLine("This Product lready Activated!");
+                    return;
+                }
+
+                string licenseRoot = ConfigurationManager.AppSettings["LicensePath"];
+                string licensePath = Path.Combine(licenseRoot, Constants.LicenseFile);
+                File.WriteAllText(licensePath, license);
+                ExportCertificate(licenseRoot, license);
+                Console.WriteLine("The Program Activate successfully!");
+            }
+            catch (Exception ex)
+            {
+                var message = String.Format("Error : {1}{0}{0}StackTrace : {2}",
+                    Environment.NewLine, ex.Message, ex.StackTrace);
+                Console.WriteLine(message);
+                Console.WriteLine("There is no way to connect Internet!");
+            }
+        }
+
+        private static ActivationModel GetActivationData()
+        {
+            var activation = new ActivationModel()
+            {
+                InstanceKey = GetInstanceId(),
+                HardwareKey = HardwareKey.UniqueKey,
+            };
+
+            var manager = new CertificateManager();
+            _certificate = manager.GenerateSelfSigned(Constants.IssuerName, Constants.SubjectName);
+            activation.ClientKey = Convert.ToBase64String(_certificate.GetPublicKey());
+            return activation;
+        }
+
+        private static string GetInstanceId()
+        {
+            string instance = null;
+            var type = typeof(Program);
+            using (StreamReader reader = new StreamReader(type.Assembly.GetManifestResourceStream("SPPC.Tools.TadbirActivator.Cli.instance.id")))
+            {
+                instance = reader.ReadToEnd();
+            }
+
+            return instance;
+        }
+
+        private static void ExportCertificate(string root, string licenseData)
+        {
+            string path = Path.Combine(root, Constants.CertificateFile);
+            var license = Service.LoadLicense(licenseData);
+            var certificateBytes = _certificate.Export(X509ContentType.Pkcs12, license.Secret);
+            File.WriteAllBytes(path, certificateBytes);
         }
 
         private const string _apiLicensePath = @"..\..\..\src\Framework\SPPC.Tadbir.Web.Api\wwwroot\license";
+        private static ILicenseUtility _service;
+        private static X509Certificate2 _certificate;
     }
 }
