@@ -17,7 +17,7 @@ set ServiceName=0
 set /P BuildSpecific="Do you want to build specific Service?(y/n)"
 if %BuildSpecific%==y ( set /P ServiceName="Enter Service you want to build(1.sppcTadbirDB  2.sppc.tadbir.web.api 3.sppcTadbirWebNew 4.sppcLicensingLocalWeb) :" ) 
 
-if %ServiceName%==0 (docker-compose -f docker-compose.override.yml -f docker-compose.yml build 
+if %ServiceName%==0 (docker-compose -f docker-compose.override.yml -f docker-compose.yml build  
                                goto :push
                              )
 if %ServiceName%==1 (docker-compose -f docker-compose.override.yml -f docker-compose.yml build sppcTadbirDB)
