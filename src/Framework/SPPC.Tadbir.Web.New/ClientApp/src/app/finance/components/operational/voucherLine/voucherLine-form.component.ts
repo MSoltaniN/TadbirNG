@@ -42,38 +42,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   currencyOption: boolean = true;//این فیلد برای تنظیمات تاثیر مبلغ ریالی و نرخ  و مبلغ ارز میباشد و باید از تنظیمات خوانده شود
 
   //TODO: create form with metadata
-  public editForm1 = new FormGroup({
-    id: new FormControl(),
-    voucherId: new FormControl(),
-    currencyId: new FormControl(),
-    debit: new FormControl(),
-    credit: new FormControl(),
-    currencyValue: new FormControl(),
-    typeId: new FormControl(),
-    description: new FormControl("", Validators.maxLength(512)),
-    fullAccount: new FormGroup({
-      account: new FormGroup({
-        id: new FormControl("", Validators.required),
-        name: new FormControl(),
-        fullCode: new FormControl()
-      }),
-      detailAccount: new FormGroup({
-        id: new FormControl(),
-        name: new FormControl(),
-        fullCode: new FormControl()
-      }),
-      costCenter: new FormGroup({
-        id: new FormControl(),
-        name: new FormControl(),
-        fullCode: new FormControl()
-      }),
-      project: new FormGroup({
-        id: new FormControl(),
-        name: new FormControl(),
-        fullCode: new FormControl()
-      })
-    })
-  });
+  public editForm1: FormGroup;
 
   currenciesRows: Array<CurrencyInfo>;
   voucherLineTypeList: Array<Item> = [];
@@ -88,10 +57,11 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   errorMsg: string;
 
   @Input() public isNew: boolean = false;
-  @Input() public set errorMessage(msg: string) {
-    this.errorMsg = msg;
-    this.isEnableSaveBtn = true;
-  }
+  //@Input() public set errorMessages(msg: string) {
+  //  debugger;
+  //  this.errorMsg = msg;
+  //  this.isEnableSaveBtn = true;
+  //}
 
   @Input() public isNewBalance: boolean = false;
   @Input() public balance: number = 0;
@@ -111,7 +81,8 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
   ngOnInit(): void {
 
-    this.editForm1.reset(this.model);
+    this.initFromGroup();    
+    this.editForm1.reset(this.model);    
 
     this.getCurrencies();
     this.getArticleType();
@@ -136,6 +107,42 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
     }
 
     this.onChangeFullAccount();
+  }
+
+  initFromGroup() {
+
+    this.editForm1 = new FormGroup({
+      id: new FormControl(),
+      voucherId: new FormControl(),
+      currencyId: new FormControl(),
+      debit: new FormControl(),
+      credit: new FormControl(),
+      currencyValue: new FormControl(),
+      typeId: new FormControl(),
+      description: new FormControl("", Validators.maxLength(512)),
+      fullAccount: new FormGroup({
+        account: new FormGroup({
+          id: new FormControl("", Validators.required),
+          name: new FormControl(),
+          fullCode: new FormControl()
+        }),
+        detailAccount: new FormGroup({
+          id: new FormControl(),
+          name: new FormControl(),
+          fullCode: new FormControl()
+        }),
+        costCenter: new FormGroup({
+          id: new FormControl(),
+          name: new FormControl(),
+          fullCode: new FormControl()
+        }),
+        project: new FormGroup({
+          id: new FormControl(),
+          name: new FormControl(),
+          fullCode: new FormControl()
+        })
+      })
+    });
   }
 
   public onSave(isOpen: boolean): void {

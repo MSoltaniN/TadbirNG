@@ -746,6 +746,8 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
       designer.renderHtml('designerTab' + current);
 
       this.updateTemplateInTab(designer);
+
+      document.title = this.getText('App.Name');
     });
 
     var currentId = this.currentReportId;

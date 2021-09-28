@@ -29,7 +29,7 @@ namespace SPPC.Tools.SystemDesigner.Cli
                 }
             }
 
-            RefereshRuntimeCreateTadbirDBScripts();
+            RefereshRuntimeDbScripts();
         }
 
         private string GetSysConnectionString()
@@ -171,7 +171,7 @@ namespace SPPC.Tools.SystemDesigner.Cli
             }
         }
 
-        private void RefereshRuntimeCreateTadbirDBScripts()
+        private void RefereshRuntimeDbScripts()
         {
             if (File.GetLastWriteTime(_mainDbScriptPath) >
                      File.GetLastWriteTime(_runtimeDbScriptPath))

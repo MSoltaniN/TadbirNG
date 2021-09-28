@@ -9,6 +9,8 @@ namespace SPPC.Licensing.Model
         {
         }
 
+        public const int IssuerKeySizeInBits = 4096;
+        public const int CertKeySizeInBits = 2048;
         public const string IssuerName = "CN=Tadbir Licensing CA";
         public const string SubjectName = "CN=Tadbir";
         public const string CertificateFile = "tadbir.pfx";
