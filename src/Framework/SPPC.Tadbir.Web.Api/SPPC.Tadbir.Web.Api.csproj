@@ -69,7 +69,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ngdes.exe -cmd:refdb" />
+    <Exec Command="if $(ConfigurationName) == Debug (&#xD;&#xA;$(ProjectDir)..\..\..\bin\Debug\ngdes.exe -cmd:refdb&#xD;&#xA;)" />
   </Target>
 
 </Project>

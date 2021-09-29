@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ngdes.exe -cmd:reskey -res:$(ProjectDir)AppStrings.resx -ns:$(ProjectName)" />
+    <Exec Command="if $(ConfigurationName) == Debug (&#xD;&#xA;$(ProjectDir)..\..\..\bin\Debug\ngdes.exe -cmd:reskey -res:$(ProjectDir)AppStrings.resx -ns:$(ProjectName)&#xD;&#xA;)" />
   </Target>
 
 </Project>
