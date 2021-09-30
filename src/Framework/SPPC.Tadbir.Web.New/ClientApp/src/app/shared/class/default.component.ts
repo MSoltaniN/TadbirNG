@@ -322,7 +322,7 @@ export class DefaultComponent extends BaseComponent {
 
     if (filter.filters.length) {
       for (let i = 0; i < filter.filters.length; i++) {
-        if (filter.filters[i].value != "") {
+        if (filter.filters[i].value !== "") {
           var operator = "";
 
           var dataType = '';
@@ -430,7 +430,7 @@ export class DefaultComponent extends BaseComponent {
   }
 
   andTwoFilterExpression(filterExp1: FilterExpression, filterExp2: FilterExpression): FilterExpression {
-    if (filterExp1 != null) {
+    if (filterExp1 != null) {      
       if (filterExp2.filter) {
         var filter = new Filter(filterExp2.filter.FieldName, filterExp2.filter.Value, filterExp2.filter.Operator, filterExp2.filter.fieldTypeName);
         filterExp1.filter = filter;

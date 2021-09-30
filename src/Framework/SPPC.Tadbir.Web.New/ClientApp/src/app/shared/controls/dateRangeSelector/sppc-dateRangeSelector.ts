@@ -8,6 +8,7 @@ import { MessageType } from '@sppc/shared/enum/metadata';
 import { BaseComponent } from '@sppc/shared/class';
 import { SppcDatepicker } from '../datepicker/sppc-datepicker';
 import { async } from '@angular/core/testing';
+import { DateRangeType } from '@sppc/shared/enum';
 
 
 
@@ -71,9 +72,17 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
       this.displayToDate = await this.settingService.getDateConfigAsync("end");
     }
     )().then(() => {
-            
+
+      var dateRangeConfig = this.bStorageService.getdateRangeConfig();
+      var dateRangeType = "";
+
+      if (dateRangeConfig) {
+        var range = JSON.parse(dateRangeConfig);
+        dateRangeType = range ? range.defaultDateRange : DateRangeType.CurrentToCurrent;
+      }
+
       if (this.InitializeDate)
-        this.initDate();
+        this.initDate(dateRangeType);
 
       if (this.InitializeTodayDate)
       {
@@ -107,12 +116,16 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
             if (this.compareDate(val.fromDate, val.toDate) != 1) {
 
-              if (this.compareDate(val.fromDate, this.fpStartDate) == -1 && this.ValidateFPDate && !this.InitializeTodayDate) {
+             
+
+              if (this.compareDate(val.fromDate, this.fpStartDate) == -1 && this.ValidateFPDate && !this.InitializeTodayDate
+                && (dateRangeType == DateRangeType.FiscalStartToCurrent || dateRangeType == DateRangeType.FiscalStartToFiscalEnd)) {
                 this.showMessage("تاریخ ابتدا کوچکتر از ابتدای دوره مالی میباشد", MessageType.Warning);
                 this.myForm.patchValue({ 'fromDate': this.fpStartDate });
               }
               else
-                if (this.compareDate(val.toDate, this.fpEndDate) == 1 && this.ValidateFPDate && !this.InitializeTodayDate) {
+                if (this.compareDate(val.toDate, this.fpEndDate) == 1 && this.ValidateFPDate && !this.InitializeTodayDate
+                  && dateRangeType == DateRangeType.FiscalStartToFiscalEnd) {
                   this.showMessage("تاریخ انتها بزرگتر از انتهای دوره مالی میباشد", MessageType.Warning);
                   this.myForm.patchValue({ 'toDate': this.fpEndDate });
                 }
@@ -146,13 +159,17 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
    
   
 
-  initDate() {    
+  initDate(dateRangeType:string) {    
 
     this.fpStartDate = this.FiscalPeriodStartDate;
     this.fpEndDate = this.FiscalPeriodEndDate;
 
-    this.getFromDate();
-    this.getToDate();    
+    if (dateRangeType == DateRangeType.FiscalStartToCurrent || dateRangeType == DateRangeType.FiscalStartToFiscalEnd)
+      this.getFromDate();
+
+    if (dateRangeType == DateRangeType.FiscalStartToFiscalEnd)
+      this.getToDate();
+        
   }
 
   setInitialDates(from: Date, to: Date) {
@@ -179,8 +196,7 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
 
 
-  getFromDate() {
-
+  getFromDate() {    
     var compareFromDateFpStart = this.compareDate(this.displayFromDate, this.fpStartDate);
     var compareFromDateFpEnd = this.compareDate(this.displayFromDate, this.fpEndDate);
 
