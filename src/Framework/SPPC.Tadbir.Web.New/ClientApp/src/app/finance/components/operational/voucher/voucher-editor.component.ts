@@ -126,7 +126,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.entityNamePermission = "Voucher";
 
     this.setDateDisplayType();
-    this.editForm.reset();    
+    this.editForm.reset();        
 
     if (this.voucherItem) {
       this.initVoucherForm(this.voucherItem);
@@ -240,7 +240,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   setDateDisplayType() {
-    this.voucherDateType = this.properties.get(this.metadataKey).filter(p => p.name == "Date")[0].type;
+    if (this.properties && this.properties.get(this.metadataKey))
+      this.voucherDateType = this.properties.get(this.metadataKey).filter(p => p.name == "Date")[0].type;
   }
 
   openingVoucherQuery() {

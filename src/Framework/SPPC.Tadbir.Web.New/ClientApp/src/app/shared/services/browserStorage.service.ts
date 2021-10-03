@@ -271,11 +271,7 @@ export class BrowserStorageService {
 
     var compressedData = localStorage.getItem(metadataKey);
     if (compressedData) {
-      var t0 = performance.now();
       var decompressed = this.lz.decompress(compressedData);
-      var t1 = performance.now();
-      //console.log("decompress metadata time : " + (t1 - t0) + " milliseconds.");
-
       return decompressed;
     }
 
@@ -284,12 +280,8 @@ export class BrowserStorageService {
 
   setMetadata(metadataKey: string, columns: any) {
     var jsonData = JSON.stringify(columns);
-    if (jsonData) {
-      var t0 = performance.now();
+    if (jsonData) {  
       var compressedJSON = this.lz.compress(jsonData);
-      var t1 = performance.now();
-      //console.log("compress metadata time : " + (t1 - t0) + " milliseconds.");
-
       localStorage.setItem(metadataKey, compressedJSON);
     }
   }
@@ -320,16 +312,16 @@ export class BrowserStorageService {
   }
 
   getSystemConfig(): string {
-    return localStorage.getItem(SessionKeys.SystemConfig);
+    return sessionStorage.getItem(SessionKeys.SystemConfig);
   }
 
   removeSystemConfig() {
-    if (localStorage.getItem(SessionKeys.SystemConfig))
-      localStorage.removeItem(SessionKeys.SystemConfig);
+    if (sessionStorage.getItem(SessionKeys.SystemConfig))
+      sessionStorage.removeItem(SessionKeys.SystemConfig);
   }
 
   setSystemConfig(systemConfig: string) {
-    localStorage.setItem(SessionKeys.SystemConfig, JSON.stringify(systemConfig));
+    sessionStorage.setItem(SessionKeys.SystemConfig, JSON.stringify(systemConfig));
   }
 
   setTestBalanceConfig(numConfig: any) {

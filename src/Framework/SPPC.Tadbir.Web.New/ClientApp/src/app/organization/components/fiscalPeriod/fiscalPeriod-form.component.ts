@@ -58,8 +58,7 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
 
   ngOnInit(): void {
     this.editForm.reset();
-
-    debugger
+    
     this.setDateDisplayType();
 
     setTimeout(() => {

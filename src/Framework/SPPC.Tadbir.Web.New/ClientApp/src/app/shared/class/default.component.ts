@@ -145,7 +145,7 @@ export class DefaultComponent extends BaseComponent {
           return result.columns;
         }).subscribe((res1: any) => {
           this.properties.set(metaDataName, res1.columns);
-          this.bStorageService.setMetadata(metaDataName, res1);
+          this.bStorageService.setMetadata(metaDataName, res1.columns);
           var result = this.properties.get(metaDataName);
           this.baseEntityName = result.entityName;
           return result.columns;
@@ -174,7 +174,7 @@ export class DefaultComponent extends BaseComponent {
       if (!item) {
         const response = await this.metadataService.getMetaDataById(viewId).toPromise();
         let res: any = response;        
-        this.bStorageService.setMetadata(metaDataName, res);                
+        this.bStorageService.setMetadata(metaDataName, res.columns);                
         return res.entityName;
       }
       else {
@@ -212,7 +212,7 @@ export class DefaultComponent extends BaseComponent {
         const response = await this.metadataService.getMetaDataById(viewId).toPromise();
         let res: any = response;
         this.properties.set(metaDataName, res.columns);
-        this.bStorageService.setMetadata(metaDataName, res);
+        this.bStorageService.setMetadata(metaDataName, res.columns);
         //var result = this.properties.get(metaDataName);
         this.baseEntityName = res.entityName;
         return res.columns;
@@ -220,11 +220,11 @@ export class DefaultComponent extends BaseComponent {
       else {       
         if (!this.properties) this.properties = new Map<string, any>();
         var result = JSON.parse(item != null ? item.toString() : "");
-        this.properties.set(metaDataName, result.columns);
+        this.properties.set(metaDataName, result);
         if (!this.properties.get(metaDataName)) return undefined;
         //var result = this.properties.get(metaDataName);
         this.baseEntityName = result.entityName;
-        return result.columns;
+        return result;
       }
     }
 
