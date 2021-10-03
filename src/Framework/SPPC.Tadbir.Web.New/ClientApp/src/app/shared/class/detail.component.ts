@@ -52,7 +52,7 @@ export class DetailComponent extends BaseComponent {
     var propertiesValue = this.bStorageService.getMetadata(metadataKey);    
     if (propertiesValue && propertiesValue != null) {
       var result = JSON.parse(propertiesValue);
-      return result;
+      return result.columns;
     }
     
     return undefined;

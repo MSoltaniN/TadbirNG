@@ -589,7 +589,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
 
     if (!this.Parameters || this.Parameters.length == 0) {
       this.reportingService.getAllForReport(serviceUrl,
-      sort, filterExpression, quickFilter, OperationId.Print).subscribe((response: any) => {
+      sort, filterExpression, quickFilter, OperationId.PrintPreview).subscribe((response: any) => {
 
         var reportData = {
           rows: response.body,
@@ -613,7 +613,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     }
     else {
       this.reportingService.getAllByParamsForReport(serviceUrl,this.Parameters,
-      sort, filterExpression, quickFilter, OperationId.Print).subscribe((response: any) => {
+      sort, filterExpression, quickFilter, OperationId.PrintPreview).subscribe((response: any) => {
 
         var reportData = {
           rows: response.body.comparativeItems,
