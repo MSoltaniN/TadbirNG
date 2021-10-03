@@ -78,9 +78,9 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
     })  
   }
 
-  setDateDisplayType() {
-    this.startDateDisplayType = this.properties.get(this.metadataKey).filter(p => p.name == "StartDate")[0].type;
-    this.endDateDisplayType = this.properties.get(this.metadataKey).filter(p => p.name == "EndDate")[0].type;
+  setDateDisplayType() {   
+    this.startDateDisplayType = this.getProperties(this.metadataKey).filter(p => p.name == "StartDate")[0].type;
+    this.endDateDisplayType = this.getProperties(this.metadataKey).filter(p => p.name == "EndDate")[0].type;
   }
 
   getStartDate(): Date {
