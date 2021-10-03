@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.ViewModel;
