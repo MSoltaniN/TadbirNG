@@ -46,6 +46,7 @@ export class DetailComponent extends BaseComponent {
     this.errorMessages = [];
     this.shortcutService = ServiceLocator.injector.get(ShortcutService);
     this.localizeMsg();
+    this.properties = new Map<string, Array<Property>>();
   } 
 
   getProperties(metadataKey:string) : Array<Property> {
