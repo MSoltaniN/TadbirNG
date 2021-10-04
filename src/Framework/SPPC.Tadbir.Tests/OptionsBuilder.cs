@@ -11,7 +11,7 @@ namespace SPPC.Tadbir.Tests
             {
                 ListChanged = false,
                 Operation = 1,
-                Paging = new GridPaging(),
+                Paging = new GridPaging()
             };
         }
 
