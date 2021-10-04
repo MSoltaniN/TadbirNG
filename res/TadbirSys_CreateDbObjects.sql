@@ -2079,6 +2079,10 @@ UPDATE [Metadata].[Column]
 SET [Type] = 'Default'
 WHERE DotNetType LIKE 'System.Date%'
 
+UPDATE [Metadata].[Column]
+SET AllowSorting = 0, AllowFiltering = 0, IsNullable = 1
+WHERE [Name] = 'RowNo'
+
 -- Create configuration records...
 SET IDENTITY_INSERT [Config].[Setting] ON
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)

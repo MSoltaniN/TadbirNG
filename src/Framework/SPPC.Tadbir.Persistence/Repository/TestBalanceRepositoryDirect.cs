@@ -718,7 +718,6 @@ namespace SPPC.Tadbir.Persistence
 
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
-                var fromDate = parameters.FromDate.Value;
                 var toDate = parameters.ToDate.Value;
                 query = parameters.IsByBranch
                     ? new ReportQuery(String.Format(BalanceQuery.TurnoverByDateByBranch, length, componentName,
@@ -728,7 +727,6 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                var fromNo = parameters.FromNo.Value;
                 var toNo = parameters.ToNo.Value;
                 query = parameters.IsByBranch
                     ? new ReportQuery(String.Format(BalanceQuery.TurnoverByNoByBranch, length, componentName,
@@ -782,29 +780,32 @@ namespace SPPC.Tadbir.Persistence
                 predicates.Add(otherFilters);
             }
 
-            bool mustApply = _utility.MustApplyOpeningOption(parameters.Options, openingVoucher);
-            if (mustApply && isTurnover)
+            if (isTurnover)
             {
-                predicates.Add(String.Format("v.OriginID <> {0}", (int)VoucherOriginId.OpeningVoucher));
-            }
+                bool mustApply = _utility.MustApplyOpeningOption(parameters.Options, openingVoucher);
+                if (mustApply)
+                {
+                    predicates.Add(String.Format("OriginID <> {0}", (int)VoucherOriginId.OpeningVoucher));
+                }
 
-            bool startAsInit = (parameters.Options & FinanceReportOptions.StartTurnoverAsInitBalance) > 0;
-            bool isByDate = parameters.FromDate.HasValue && parameters.ToDate.HasValue;
-            string startPredicate;
-            if (startAsInit)
-            {
-                startPredicate = isByDate
-                    ? String.Format("{0} > '{1}'", DateExp, parameters.FromDate.Value.ToShortDateString(false))
-                    : String.Format("v.No > {0}", parameters.FromNo.Value);
-            }
-            else
-            {
-                startPredicate = isByDate
-                    ? String.Format("{0} >= '{1}'", DateExp, parameters.FromDate.Value.ToShortDateString(false))
-                    : String.Format("v.No >= {0}", parameters.FromNo.Value);
-            }
+                bool startAsInit = (parameters.Options & FinanceReportOptions.StartTurnoverAsInitBalance) > 0;
+                bool isByDate = parameters.FromDate.HasValue && parameters.ToDate.HasValue;
+                string startPredicate;
+                if (startAsInit)
+                {
+                    startPredicate = isByDate
+                        ? String.Format("{0} > '{1}'", DateExp, parameters.FromDate.Value.ToShortDateString(false))
+                        : String.Format("v.No > {0}", parameters.FromNo.Value);
+                }
+                else
+                {
+                    startPredicate = isByDate
+                        ? String.Format("{0} >= '{1}'", DateExp, parameters.FromDate.Value.ToShortDateString(false))
+                        : String.Format("v.No >= {0}", parameters.FromNo.Value);
+                }
 
-            predicates.Add(startPredicate);
+                predicates.Add(startPredicate);
+            }
 
             return String.Join(" AND ", predicates);
         }
@@ -831,21 +832,21 @@ namespace SPPC.Tadbir.Persistence
             {
                 datePredicate = isByDate
                     ? String.Format(
-                        "({0} < '{1}' OR ({0} >= '{1}' AND v.OriginID = {2}))", DateExp,
+                        "({0} < '{1}' OR ({0} >= '{1}' AND OriginID = {2}))", DateExp,
                         parameters.FromDate.Value.ToShortDateString(false),
                         (int)VoucherOriginId.OpeningVoucher)
                     : String.Format(
-                        "(v.No < {0} OR (v.No >= {0} AND v.OriginID = {1}))",
+                        "(v.No < {0} OR (v.No >= {0} AND OriginID = {1}))",
                         parameters.FromNo.Value, (int)VoucherOriginId.OpeningVoucher);
                 if (startAsInit)
                 {
                     datePredicate = isByDate
                         ? String.Format(
-                            "({0} <= '{1}' OR ({0} > '{1}' AND v.OriginID = {2}))", DateExp,
+                            "({0} <= '{1}' OR ({0} > '{1}' AND OriginID = {2}))", DateExp,
                             parameters.FromDate.Value.ToShortDateString(false),
                             (int)VoucherOriginId.OpeningVoucher)
                         : String.Format(
-                            "(v.No <= {0} OR (v.No > {0} AND v.OriginID = {1}))",
+                            "(v.No <= {0} OR (v.No > {0} AND OriginID = {1}))",
                             parameters.FromNo.Value, (int)VoucherOriginId.OpeningVoucher);
                 }
             }
@@ -868,12 +869,12 @@ namespace SPPC.Tadbir.Persistence
 
             if ((options & FinanceReportOptions.UseClosingVoucher) == 0)
             {
-                predicates.Add(String.Format("v.OriginID <> {0}", (int)VoucherOriginId.ClosingVoucher));
+                predicates.Add(String.Format("OriginID <> {0}", (int)VoucherOriginId.ClosingVoucher));
             }
 
             if ((options & FinanceReportOptions.UseClosingTempVoucher) == 0)
             {
-                predicates.Add(String.Format("v.OriginID <> {0}", (int)VoucherOriginId.ClosingTempAccounts));
+                predicates.Add(String.Format("OriginID <> {0}", (int)VoucherOriginId.ClosingTempAccounts));
             }
 
             return predicates;

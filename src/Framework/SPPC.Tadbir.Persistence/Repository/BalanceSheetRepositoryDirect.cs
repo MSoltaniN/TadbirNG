@@ -418,7 +418,7 @@ namespace SPPC.Tadbir.Persistence
                 _utility.GetEnvironmentFilters(parameters.GridOptions, UserContext.FiscalPeriodId));
             if (!parameters.UseClosingVoucher)
             {
-                builder.Append("AND VoucherOriginID != 4");
+                builder.AppendFormat(" AND OriginID <> {0}", (int)VoucherOriginId.ClosingVoucher);
             }
 
             return builder.ToString();
