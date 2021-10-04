@@ -65,13 +65,13 @@ export class DetailComponent extends BaseComponent {
       this.form = new FormGroup({ id: new FormControl() });
 
       let metadataKey = this.metadataKey;
-      if (!this.properties.get(this.metadataKey)) {
+      if (this.getProperties(this.metadataKey) == undefined) {
         this.metadataService.getMetaDataById(this.viewId).finally(() => {
           this.fillFormValidators();
           return this.form;
         }).subscribe((res1: any) => {
           this.properties.set(metadataKey, res1.columns);
-          this.bStorageService.setMetadata(metadataKey, res1.columns);
+          this.bStorageService.setMetadata(metadataKey, res1);
           return
         });
       }
@@ -94,20 +94,22 @@ export class DetailComponent extends BaseComponent {
     if (this.form == undefined)
       this.form = new FormGroup({ id: new FormControl() });
 
-    for (let entry of this.getProperties(this.metadataKey)) {
+    if (this.getProperties(this.metadataKey)) {
+      for (let entry of this.getProperties(this.metadataKey)) {
 
-      var name: string = entry.name.toLowerCase().substring(0, 1) + entry.name.substring(1);
+        var name: string = entry.name.toLowerCase().substring(0, 1) + entry.name.substring(1);
 
-      var validators: ValidatorFn[] = [];
+        var validators: ValidatorFn[] = [];
 
-      if (entry.length > 0) validators.push(Validators.maxLength(entry.length));
+        if (entry.length > 0) validators.push(Validators.maxLength(entry.length));
 
-      if (entry.minLength > 0) validators.push(Validators.minLength(entry.minLength));
+        if (entry.minLength > 0) validators.push(Validators.minLength(entry.minLength));
 
-      if (!entry.isNullable) validators.push(Validators.required);
+        if (!entry.isNullable) validators.push(Validators.required);
 
-      if (!this.form.contains(name) && name.toLowerCase() != "rowno") {
-        this.form.addControl(name, new FormControl("", validators));
+        if (!this.form.contains(name) && name.toLowerCase() != "rowno") {
+          this.form.addControl(name, new FormControl("", validators));
+        }
       }
     }
 

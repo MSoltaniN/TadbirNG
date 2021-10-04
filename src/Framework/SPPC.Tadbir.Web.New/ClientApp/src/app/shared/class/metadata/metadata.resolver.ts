@@ -13,10 +13,10 @@ export class MetaDataResolver implements Resolve<any> {
     var lang = this.bStorageService.getLanguage();
 
     var metadataKey = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '', lang ? lang : "fa");
-    var metadata = this.bStorageService.getMetadata(metadataKey);
+    var metadata = this.bStorageService.getMetadata(metadataKey);    
     if (metadata == null) {     
       const response = await this.metadataService.getMetaDataById(viewId).toPromise();
-      this.bStorageService.setMetadata(metadataKey, (<any>response).columns);
+      this.bStorageService.setMetadata(metadataKey, (<any>response));
     }
   }  
 
