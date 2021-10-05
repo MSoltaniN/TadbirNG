@@ -14,15 +14,15 @@ import { environment } from "@sppc/env/environment";
 
 export class MetadataApi {
 
-    // metadata/view/{viewName}
-    public static ViewMetadata = environment.BaseUrl + "/metadata/view/{0}";
+    // metadata/views
+    public static ViewsMetaData = environment.BaseUrl + "/metadata/views";
 
-    // metadata/view/{viewId:min(1)}
-    public static ViewMetadataById = environment.BaseUrl + "/metadata/view/{0}";
+    // metadata/views/{viewName}
+    public static ViewMetadata = environment.BaseUrl + "/metadata/views/{0}";
+
+    // metadata/views/{viewId:min(1)}
+    public static ViewMetadataById = environment.BaseUrl + "/metadata/views/{0}";
 
     // metadata/permissions
     public static PermissionMetadata = environment.BaseUrl + "/metadata/permissions";
-
-    // metadata/views
-    public static ViewsMetaData = environment.BaseUrl + "/metadata/views";
 }
