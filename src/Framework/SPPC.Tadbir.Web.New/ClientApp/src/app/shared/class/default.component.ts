@@ -104,28 +104,20 @@ export class DefaultComponent extends BaseComponent {
 
     if (this.viewId) {
       var item: string | null;
-      item = this.bStorageService.getMetadata(this.metadataKey);
+      item = this.bStorageService.getMetadata(this.metadataKey);    
+     
+      if (!this.properties)
+        this.properties = new Map<string, Array<Property>>();
 
-      if (!item) {
-        this.metadataService.getMetaDataById(this.viewId).finally(() => {
-          if (!this.properties.get(this.metadataKey)) return undefined;
-          var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
-          return result;
-        }).subscribe((res1: any) => {
-          this.properties.set(this.metadataKey, res1.columns);
-          this.bStorageService.setMetadata(this.metadataKey, res1.columns);
-          var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
-          return result;
-        });
-      }
-      else {
-        if (!this.properties) this.properties = new Map<string, Array<Property>>();
-        var arr = JSON.parse(item != null ? item.toString() : "");
-        this.properties.set(this.metadataKey, arr);
-        if (!this.properties.get(this.metadataKey)) return undefined;
-        var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
-        return result;
-      }
+      var arr = JSON.parse(item != null ? item.toString() : "");
+      this.properties.set(this.metadataKey, arr);
+
+      if (!this.properties.get(this.metadataKey))
+        return undefined;
+
+      var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
+
+      return result;     
 
     }
   }
@@ -136,31 +128,20 @@ export class DefaultComponent extends BaseComponent {
     if (viewId) {
 
       var item: string | null;
-      item = this.bStorageService.getMetadata(metaDataName);
+      item = this.bStorageService.getMetadata(metaDataName);  
 
-      if (!item) {
-        this.metadataService.getMetaDataById(viewId).finally(() => {
-          if (!this.properties.get(metaDataName)) return undefined;
-          var result = this.properties.get(metaDataName);
-          return result.columns;
-        }).subscribe((res1: any) => {
-          this.properties.set(metaDataName, res1.columns);
-          this.bStorageService.setMetadata(metaDataName, res1);
-          var result = this.properties.get(metaDataName);
-          this.baseEntityName = result.entityName;
-          return result.columns;
-        });
-      }
-      else {
+      if (!this.properties)
+        this.properties = new Map<string, any>();
 
-        if (!this.properties) this.properties = new Map<string, any>();
-        var arr = JSON.parse(item != null ? item.toString() : "");
-        this.properties.set(metaDataName, arr.columns);
-        if (!this.properties.get(metaDataName)) return undefined;
-        var result = this.properties.get(metaDataName);
-        this.baseEntityName = arr.entityName;
-        return arr.columns;
-      }
+      var arr = JSON.parse(item != null ? item.toString() : "");
+      this.properties.set(metaDataName, arr.columns);
+
+      if (!this.properties.get(metaDataName))
+        return undefined;
+     
+      this.baseEntityName = arr.entityName;
+
+      return arr.columns;     
 
     }
   }
@@ -171,19 +152,11 @@ export class DefaultComponent extends BaseComponent {
     if (viewId) {
       var item: string | null;
       item = this.bStorageService.getMetadata(metaDataName);
-      if (!item) {
-        const response = await this.metadataService.getMetaDataById(viewId).toPromise();
-        let res: any = response;
-        this.bStorageService.setMetadata(metaDataName, res);
-        return res.entityName;
-      }
-      else {
-        if (!this.properties) this.properties = new Map<string, any>();
-        var result = JSON.parse(item != null ? item.toString() : "");
-        return result.entityName;
-      }
+      
+      if (!this.properties) this.properties = new Map<string, any>();
+      var result = JSON.parse(item != null ? item.toString() : "");
+      return result.entityName;      
     }
-
   }
 
   getLocalizedViewName(viewId: number): string {
@@ -208,26 +181,19 @@ export class DefaultComponent extends BaseComponent {
     if (viewId) {
       var item: string | null;
       item = this.bStorageService.getMetadata(metaDataName);
-      if (!item) {
-        const response = await this.metadataService.getMetaDataById(viewId).toPromise();
-        let res: any = response;
-        this.properties.set(metaDataName, res.columns);
-        this.bStorageService.setMetadata(metaDataName, res);
-        //var result = this.properties.get(metaDataName);
-        this.baseEntityName = res.entityName;
-        return res.columns;
-      }
-      else {
-        if (!this.properties) this.properties = new Map<string, any>();
-        var result = JSON.parse(item != null ? item.toString() : "");
-        this.properties.set(metaDataName, result.columns);
-        if (!this.properties.get(metaDataName)) return undefined;
-        //var result = this.properties.get(metaDataName);
-        this.baseEntityName = result.entityName;
-        return result.columns;
-      }
-    }
+      
+      if (!this.properties)
+        this.properties = new Map<string, any>();
 
+      var result = JSON.parse(item != null ? item.toString() : "");
+      this.properties.set(metaDataName, result.columns);
+
+      if (!this.properties.get(metaDataName))
+        return undefined;
+
+      this.baseEntityName = result.entityName;
+      return result.columns;      
+    }
   }
 
   public getViewTreeSettings(viewId: number): ViewTreeConfig {
