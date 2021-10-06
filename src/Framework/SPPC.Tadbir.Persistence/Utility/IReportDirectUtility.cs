@@ -185,13 +185,6 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <summary>
         ///
         /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        string TranslateQuery(string query);
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <returns></returns>
         Task<Voucher> GetOpeningVoucherAsync();
 

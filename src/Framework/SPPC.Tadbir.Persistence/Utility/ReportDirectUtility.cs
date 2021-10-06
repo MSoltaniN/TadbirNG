@@ -555,27 +555,6 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <summary>
         ///
         /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        public string TranslateQuery(string query)
-        {
-            Verify.ArgumentNotNull(query, nameof(query));
-            return query
-                .Replace("Voucher", "v.")
-                .Replace("Date", "v.Date")
-                .Replace("== null", " IS NULL")
-                .Replace("!= null", " IS NOT NULL")
-                .Replace("\"", "'")
-                .Replace("&&", "AND")
-                .Replace("||", "OR")
-                .Replace("==", "=")
-                .Replace("!=", "<>")
-                .Replace("BranchId", "v.BranchID");
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <returns></returns>
         public async Task<Voucher> GetOpeningVoucherAsync()
         {
@@ -608,7 +587,6 @@ namespace SPPC.Tadbir.Persistence.Utility
                 .Replace("Account", "acc.")
                 .Replace("CostCenter", "cc.")
                 .Replace("Project", "prj.")
-                .Replace("Description", "vl.Description")
                 .Replace("Debit", "vl.Debit")
                 .Replace("Credit", "vl.Credit")
                 .Replace("Mark", "vl.Mark")
