@@ -50,7 +50,7 @@ export class AppheaderComponent extends DefaultComponent implements OnInit {
     let profileMenus: any;
     profileMenus = this.bStorageService.getProfile();
     if (profileMenus == null) {
-      this.userService.getDefaultUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
+      this.userService.getDefaultUserCommands(this.Ticket).subscribe((res: Array<Command>) => {        
         this.bStorageService.setProfile(res);
         this.prepareProfileMenus(res);
       });

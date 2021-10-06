@@ -16,6 +16,7 @@ import { InitialWizardComponent } from '@sppc/organization/components/initialWiz
 import { String } from '@sppc/shared/class/source';
 import { ShortcutCommand } from '@sppc/shared/models/shortcutCommand';
 import { debug } from 'util';
+import { environment } from '@sppc/env/environment';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -112,7 +113,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
           var metaData = JSON.parse(metaDataString);
           var oldModifiedDate = metaData.modifiedDate;
           if (Date.parse(modifiedDate) > Date.parse(oldModifiedDate)) {
-            this.bStorageService.removeLocalStorage(metaDataName);
+            this.bStorageService.setMetadata(metaDataName, item);
             this.settingService.setSettingByViewId(viewId, null);
           }
         }

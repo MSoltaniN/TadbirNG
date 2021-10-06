@@ -9,7 +9,7 @@ export const SessionKeys = {
   FiscalPeriod: 'FiscalPeriod',
   AppVersion: 'AppVersion',
   Menu: 'menu',
-  Profile: 'profile',
+  Profile: 'profile_{0}',
   Setting: 'setting_{0}',
   LastUserBranch: 'lastUserBranch_{0}_{1}',
   LastUserFpId: 'lastUserFpId_{0}_{1}',
@@ -167,17 +167,19 @@ export class BrowserStorageService {
   }
 
   getProfile(): string {
+    var key = String.Format(SessionKeys.Profile, this.getLanguage());
     if (this.isRememberMe())
-      return localStorage.getItem(SessionKeys.Profile);
+      return localStorage.getItem(key);
     else
-      return sessionStorage.getItem(SessionKeys.Profile);
+      return sessionStorage.getItem(key);
   }
 
   setProfile(item: any) {
+    var key = String.Format(SessionKeys.Profile, this.getLanguage());
     if (this.isRememberMe())
-      localStorage.setItem(SessionKeys.Profile, JSON.stringify(item));
+      localStorage.setItem(key, JSON.stringify(item));
     else
-      sessionStorage.setItem(SessionKeys.Profile, JSON.stringify(item));
+      sessionStorage.setItem(key, JSON.stringify(item));
   }
 
   checkVersion(version: string, userId: number) {
@@ -268,21 +270,17 @@ export class BrowserStorageService {
   }
 
   getMetadata(metadataKey: string): string {
-
-    var compressedData = localStorage.getItem(metadataKey);
-    if (compressedData) {
-      var decompressed = this.lz.decompress(compressedData);
-      return decompressed;
-    }
+    var metadata = localStorage.getItem(metadataKey);
+    if (metadata)
+      return metadata;    
 
     return null;
   }
 
   setMetadata(metadataKey: string, columns: any) {
     var jsonData = JSON.stringify(columns);
-    if (jsonData) {  
-      var compressedJSON = this.lz.compress(jsonData);
-      localStorage.setItem(metadataKey, compressedJSON);
+    if (jsonData) {        
+      localStorage.setItem(metadataKey, jsonData);
     }
   }
 
