@@ -833,7 +833,16 @@ namespace SPPC.Tadbir.Persistence
         private string AddCommonFieldAliases(string query)
         {
             return query
+                .Replace("== null", " IS NULL")
+                .Replace("!= null", " IS NOT NULL")
+                .Replace("\"", "'")
+                .Replace("&&", "AND")
+                .Replace("||", "OR")
+                .Replace("==", "=")
+                .Replace("!=", "<>")
+                .Replace("FiscalPeriodId", "FiscalPeriodID")
                 .Replace("FiscalPeriodID", "v.FiscalPeriodID")
+                .Replace("BranchId", "BranchID")
                 .Replace("BranchID", "v.BranchID")
                 .Replace("Description", "v.Description");
         }
