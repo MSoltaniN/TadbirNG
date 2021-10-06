@@ -62,30 +62,11 @@ export class DetailComponent extends BaseComponent {
   public get editForm(): FormGroup {
 
     if (this.form == undefined) {
-
-      this.form = new FormGroup({ id: new FormControl() });
-
-      let metadataKey = this.metadataKey;
-      if (this.getProperties(this.metadataKey) == undefined) {
-        this.metadataService.getMetaDataById(this.viewId).finally(() => {
-          this.fillFormValidators();
-          return this.form;
-        }).subscribe((res1: any) => {
-          this.properties.set(metadataKey, res1.columns);
-          this.bStorageService.setMetadata(metadataKey, res1);
-          return
-        });
-      }
-      else {
-        this.fillFormValidators();
-      }
-    }
-    else {
-      this.fillFormValidators();
-    }       
+      this.form = new FormGroup({ id: new FormControl() });      
+      this.fillFormValidators();      
+    }    
 
     return this.form;
-
   }  
 
   private fillFormValidators() {

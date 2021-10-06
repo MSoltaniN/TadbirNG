@@ -31,7 +31,9 @@ const routes: Routes = [{
   component: LayoutComponent,
   canActivate: [AuthGuard],
   children: [
-    { path: 'account', component: AccountComponent },
+    {
+      path: 'account', component: AccountComponent, data: { viewIds: [ViewName.Account] }      
+    },
     { path: 'account-collection', component: AccountCollectionComponent },
     { path: 'account-groups', component: AccountGroupsComponent },
     { path: 'accountrelations', component: AccountRelationsComponent },
@@ -40,21 +42,10 @@ const routes: Routes = [{
     { path: 'detailAccount', component: DetailAccountComponent },
     { path: 'projects', component: ProjectComponent },
     { path: 'profit-loss', component: ProfitLostComponent },
-    { path: 'voucher', component: VoucherComponent },    
+    { path: 'voucher', component: VoucherComponent },
     { path: 'voucher/:mode', component: VoucherComponent },
-    { path: 'vouchers/:mode', component: VoucherEditorComponent,
-      data: { viewId: ViewName.Voucher },
-      resolve: {
-        team: MetaDataResolver
-      }
-    },
-    {
-      path: 'vouchers/:mode/:type', component: VoucherEditorComponent,
-      data: { viewId: ViewName.Voucher },
-      resolve: {
-        team: MetaDataResolver
-      }
-    },
+    { path: 'vouchers/:mode', component: VoucherEditorComponent },
+    { path: 'vouchers/:mode/:type', component: VoucherEditorComponent },
     { path: 'account-book', component: AccountBookComponent },
     { path: 'journal', component: JournalComponent },
     { path: 'currency-rate/:id', component: currencyRateComponent },
