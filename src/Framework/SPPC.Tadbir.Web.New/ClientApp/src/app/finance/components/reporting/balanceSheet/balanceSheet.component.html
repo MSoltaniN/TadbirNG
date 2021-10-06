@@ -4,7 +4,7 @@
                 [ParamReportVisible]="false" [ParamInFilter]="voucherStatusSelected != '0'"></report-param>
 </view-identifier>
 <report-management [ViewIdentity]="viewIdentity" [ViewSettings]="viewSetting" [Grid]="grid" [Sort]="sort"
-                   [Filter]="currentFilter" [QuickFilter]="reportFilter" [Parameters]="param" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl"></report-management>
+                   [Filter]="currentFilter" [QuickFilter]="reportQuickFilter" [Parameters]="param" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl"></report-management>
 <report-setting></report-setting>
 <app-bread-cumb [entityTypeName]="'BalanceSheet'"></app-bread-cumb>
 <div class="panel-body">

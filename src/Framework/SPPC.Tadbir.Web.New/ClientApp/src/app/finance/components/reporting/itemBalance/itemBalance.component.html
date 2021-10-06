@@ -8,7 +8,7 @@
 </view-identifier>
 <app-bread-cumb [entityTypeName]="'ItemBalance'"></app-bread-cumb>
 <report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
-                   [Filter]="currentFilter" [QuickFilter]="reportFilter" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl"></report-management>
+                   [Filter]="currentFilter" [QuickFilter]="reportQuickFilter" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl"></report-management>
 <report-setting></report-setting>
 <div class="panel-body">
   <kendo-grid id="{{viewId}}"
