@@ -660,6 +660,23 @@ namespace SPPC.Tadbir.Persistence
             return typeName;
         }
 
+        private static string AddCommonFieldAliases(string query)
+        {
+            return query
+                .Replace("== null", " IS NULL")
+                .Replace("!= null", " IS NOT NULL")
+                .Replace("\"", "'")
+                .Replace("&&", "AND")
+                .Replace("||", "OR")
+                .Replace("==", "=")
+                .Replace("!=", "<>")
+                .Replace("FiscalPeriodId", "FiscalPeriodID")
+                .Replace("FiscalPeriodID", "v.FiscalPeriodID")
+                .Replace("BranchId", "BranchID")
+                .Replace("BranchID", "v.BranchID")
+                .Replace("Description", "v.Description");
+        }
+
         private async Task<Voucher> GetNewVoucherAsync(string description, VoucherOriginId origin)
         {
             var subject = SubjectType.Normal;
@@ -828,23 +845,6 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return AddCommonFieldAliases(String.Join(" AND ", predicates));
-        }
-
-        private string AddCommonFieldAliases(string query)
-        {
-            return query
-                .Replace("== null", " IS NULL")
-                .Replace("!= null", " IS NOT NULL")
-                .Replace("\"", "'")
-                .Replace("&&", "AND")
-                .Replace("||", "OR")
-                .Replace("==", "=")
-                .Replace("!=", "<>")
-                .Replace("FiscalPeriodId", "FiscalPeriodID")
-                .Replace("FiscalPeriodID", "v.FiscalPeriodID")
-                .Replace("BranchId", "BranchID")
-                .Replace("BranchID", "v.BranchID")
-                .Replace("Description", "v.Description");
         }
 
         private VoucherViewModel GetVoucherItem(DataRow row)

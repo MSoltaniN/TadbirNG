@@ -40,7 +40,10 @@ namespace SPPC.Tadbir.Persistence
                     && !(cfg.Type == (short)ConfigType.User && cfg.ScopeType < (short)ConfigScopeType.Entity))
                 .Select(cfg => Mapper.Map<SettingBriefViewModel>(cfg))
                 .ToListAsync();
-            SetDefaultCalendar(allConfig);
+            var sysConfig = allConfig
+                .Where(cfg => cfg.ModelType == typeof(SystemConfig).Name)
+                .SingleOrDefault();
+            SetDefaultCalendar(sysConfig);
             await ReadAsync(null);
             return allConfig;
         }
@@ -84,6 +87,10 @@ namespace SPPC.Tadbir.Persistence
             if (configById != null)
             {
                 config = Mapper.Map<SettingBriefViewModel>(configById);
+                if (config.ModelType == typeof(SystemConfig).Name)
+                {
+                    SetDefaultCalendar(config);
+                }
             }
 
             return config;
@@ -114,25 +121,19 @@ namespace SPPC.Tadbir.Persistence
             get { return (int)EntityTypeId.Setting; }
         }
 
-        private void SetDefaultCalendar(List<SettingBriefViewModel> allConfig)
+        private void SetDefaultCalendar(SettingBriefViewModel sysConfig)
         {
-            var sysConfig = allConfig
-                .Where(cfg => cfg.ModelType == typeof(SystemConfig).Name)
-                .FirstOrDefault();
-            if (sysConfig != null)
-            {
-                var sysConfigValues = sysConfig.Values as SystemConfig;
-                sysConfigValues.DefaultCalendar = sysConfigValues.DefaultCalendars
-                    .Where(cfg => cfg.Language == UserContext.Language)
-                    .Select(cfg => cfg.Calendar)
-                    .Single();
+            var sysConfigValues = sysConfig.Values as SystemConfig;
+            sysConfigValues.DefaultCalendar = sysConfigValues.DefaultCalendars
+                .Where(cfg => cfg.Language == UserContext.Language)
+                .Select(cfg => cfg.Calendar)
+                .Single();
 
-                var sysConfigDefValues = sysConfig.DefaultValues as SystemConfig;
-                sysConfigDefValues.DefaultCalendar = sysConfigDefValues.DefaultCalendars
-                    .Where(cfg => cfg.Language == UserContext.Language)
-                    .Select(cfg => cfg.Calendar)
-                    .Single();
-            }
+            var sysConfigDefValues = sysConfig.DefaultValues as SystemConfig;
+            sysConfigDefValues.DefaultCalendar = sysConfigDefValues.DefaultCalendars
+                .Where(cfg => cfg.Language == UserContext.Language)
+                .Select(cfg => cfg.Calendar)
+                .Single();
         }
     }
 }
