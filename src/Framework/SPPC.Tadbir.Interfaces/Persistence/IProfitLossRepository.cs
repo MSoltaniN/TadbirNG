@@ -10,7 +10,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات دیتابیسی مورد نیاز برای تهیه گزارش سود و زیان را تعریف می کند
     /// </summary>
-    public interface IProfitLossRepository
+    public interface IProfitLossRepository : IRepositoryBase
     {
         /// <summary>
         /// اطلاعات گزارش سود و زیان غیرمقایسه ای را محاسبه کرده و برمی گرداند
