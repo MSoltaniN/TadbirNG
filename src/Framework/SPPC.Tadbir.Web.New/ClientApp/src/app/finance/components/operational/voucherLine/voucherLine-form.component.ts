@@ -56,12 +56,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   decimalCount: number = 0;
   errorMsg: string;
 
-  @Input() public isNew: boolean = false;
-  //@Input() public set errorMessages(msg: string) {
-  //  debugger;
-  //  this.errorMsg = msg;
-  //  this.isEnableSaveBtn = true;
-  //}
+  @Input() public isNew: boolean = false; 
 
   @Input() public isNewBalance: boolean = false;
   @Input() public balance: number = 0;

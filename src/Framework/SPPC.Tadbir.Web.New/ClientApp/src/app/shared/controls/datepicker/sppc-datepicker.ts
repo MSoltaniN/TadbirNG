@@ -147,7 +147,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
 
     if (this.displayType) {
       if (this.displayType == CalendarType.Jalali)
-        lang = "en";
+        lang = "fa";
 
       if (this.displayType == CalendarType.Gregorian)
         lang = "en";

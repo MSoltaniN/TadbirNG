@@ -13,7 +13,9 @@ import { ServiceLocator } from "@sppc/service.locator";
 
 
 @Injectable()
-export class DetailComponent extends BaseComponent  {
+export class DetailComponent extends BaseComponent {
+
+  
 
   //shortcuts: ShortcutCommand[] = [new ShortcutCommand(1, 0, null, null, "Ctrl+Shift+Y", "addNew")];
 
@@ -29,65 +31,67 @@ export class DetailComponent extends BaseComponent  {
     public renderer: Renderer2, private metadataService: MetaDataService,
     @Optional() @Inject('empty') public entityType: string, @Optional() @Inject('empty') public viewId: number,public shortcutService?:ShortcutService) {
     super(toastrService, bStorageService);
-
+   
     if (viewId > 0) {
       this.metadataKey = String.Format(SessionKeys.MetadataKey, this.viewId ? this.viewId.toString() : '', this.CurrentLanguage);
-
-      this.localizeMsg();
-      var propertiesValue = this.bStorageService.getMetadata(this.metadataKey);
-
-      this.properties = new Map<string, Array<Property>>();
-      if (propertiesValue && propertiesValue != null) {
-        var result = JSON.parse(propertiesValue);
-        this.properties.set(this.metadataKey, result.columns);
+      var props = this.getProperties(this.metadataKey)
+      if (props != undefined && props.length > 0) {
+        this.fillFormValidators();
       }
+      else
+        this.form = undefined;
+      
     }
 
     this.errorMessages = [];
-    this.shortcutService = ServiceLocator.injector.get(ShortcutService); 
+    this.shortcutService = ServiceLocator.injector.get(ShortcutService);
+    this.localizeMsg();
+    this.properties = new Map<string, Array<Property>>();
+  } 
+
+  getProperties(metadataKey:string) : Array<Property> {
+    var propertiesValue = this.bStorageService.getMetadata(metadataKey);    
+    if (propertiesValue && propertiesValue != null) {
+      var result = JSON.parse(propertiesValue);
+      return result.columns;
+    }
+    
+    return undefined;
   }
 
   public get editForm(): FormGroup {
-    if (this.form == undefined) {
 
-      this.form = new FormGroup({ id: new FormControl() });
-      if (!this.properties.get(this.metadataKey)) {
-        this.metadataService.getMetaDataById(this.viewId).finally(() => {
-          this.fillFormValidators();
-          return this.form;
-        }).subscribe((res1: any) => {
-          this.properties.set(this.metadataKey, res1.columns);          
-          this.bStorageService.setMetadata(this.metadataKey, res1);
-          return
-        });
-      }
-    }
-    else {
-      this.fillFormValidators();
-    }   
+    if (this.form == undefined) {
+      this.form = new FormGroup({ id: new FormControl() });      
+      this.fillFormValidators();      
+    }    
 
     return this.form;
-
   }  
 
   private fillFormValidators() {
+
     var p: Property | undefined = undefined;
-    if (this.properties.get(this.metadataKey) == undefined) return;
+  
+    if (this.form == undefined)
+      this.form = new FormGroup({ id: new FormControl() });
 
-    for (let entry of this.properties.get(this.metadataKey)) {
+    if (this.getProperties(this.metadataKey)) {
+      for (let entry of this.getProperties(this.metadataKey)) {
 
-      var name: string = entry.name.toLowerCase().substring(0, 1) + entry.name.substring(1);
+        var name: string = entry.name.toLowerCase().substring(0, 1) + entry.name.substring(1);
 
-      var validators: ValidatorFn[] = [];
+        var validators: ValidatorFn[] = [];
 
-      if (entry.length > 0) validators.push(Validators.maxLength(entry.length));
+        if (entry.length > 0) validators.push(Validators.maxLength(entry.length));
 
-      if (entry.minLength > 0) validators.push(Validators.minLength(entry.minLength));
+        if (entry.minLength > 0) validators.push(Validators.minLength(entry.minLength));
 
-      if (!entry.isNullable) validators.push(Validators.required);
+        if (!entry.isNullable) validators.push(Validators.required);
 
-      if (!this.form.contains(name) && name.toLowerCase() != "rowno") {
-        this.form.addControl(name, new FormControl("", validators));
+        if (!this.form.contains(name) && name.toLowerCase() != "rowno") {
+          this.form.addControl(name, new FormControl("", validators));
+        }
       }
     }
 

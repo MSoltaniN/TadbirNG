@@ -9275,3 +9275,8 @@ WHERE DotNetType LIKE 'System.Date%'
 UPDATE [Metadata].[Column]
 SET [Type] = 'Default'
 WHERE DotNetType LIKE 'System.Date%'
+
+-- 1.1.1215
+UPDATE [Metadata].[Column]
+SET AllowSorting = 0, AllowFiltering = 0, IsNullable = 1
+WHERE [Name] = 'RowNo'

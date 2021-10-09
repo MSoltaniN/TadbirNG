@@ -1,6 +1,6 @@
 String.prototype.replaceBadChars = function (value: string): string {
   if (value) {
-    var chars = value.split('');
+    var chars = value.toString().split('');
     var newValue = '';
     chars.forEach((char) => {
       var newChar = char;
@@ -19,7 +19,7 @@ String.prototype.replaceBadChars = function (value: string): string {
 
 String.prototype.toPersianNumbers = function (value: string): string {
   if (value) {
-    var chars = value.split('');
+    var chars = value.toString().split('');
     var newValue = '';
     chars.forEach((char) => {
       var newChar = char;

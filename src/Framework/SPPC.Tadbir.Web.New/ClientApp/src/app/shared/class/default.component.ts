@@ -8,8 +8,8 @@ import { Filter } from './filter';
 import { Renderer2, Injectable, Inject, Optional, ViewChild, HostListener } from "@angular/core";
 import { FilterExpression } from './filterExpression';
 import { FilterExpressionBuilder } from './filterExpressionBuilder';
-import {  BrowserStorageService,SessionKeys } from '@sppc/shared/services/browserStorage.service';
-import {  MetaDataService } from '@sppc/shared/services/metadata.service';
+import { BrowserStorageService, SessionKeys } from '@sppc/shared/services/browserStorage.service';
+import { MetaDataService } from '@sppc/shared/services/metadata.service';
 import { SettingService } from '@sppc/config/service/settings.service';
 import { ViewTreeConfig } from '@sppc/config/models';
 import * as moment from 'jalali-moment';
@@ -17,7 +17,7 @@ import { Braces } from '../models';
 
 
 @Injectable()
-export class DefaultComponent extends BaseComponent {  
+export class DefaultComponent extends BaseComponent {
 
   public translateService: TranslateService
 
@@ -32,7 +32,7 @@ export class DefaultComponent extends BaseComponent {
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     public renderer: Renderer2, public metadataService: MetaDataService, public settingService: SettingService,
     @Optional() @Inject('empty') public entityType: string, @Optional() @Inject('empty') public viewId: number) {
-    super(toastrService, bStorageService);   
+    super(toastrService, bStorageService);
 
     this.setLanguageSetting();
 
@@ -104,28 +104,20 @@ export class DefaultComponent extends BaseComponent {
 
     if (this.viewId) {
       var item: string | null;
-      item = this.bStorageService.getMetadata(this.metadataKey);
+      item = this.bStorageService.getMetadata(this.metadataKey);    
+     
+      if (!this.properties)
+        this.properties = new Map<string, Array<Property>>();
 
-      if (!item) {
-        this.metadataService.getMetaDataById(this.viewId).finally(() => {
-          if (!this.properties.get(this.metadataKey)) return undefined;
-          var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
-          return result;
-        }).subscribe((res1: any) => {
-          this.properties.set(this.metadataKey, res1.columns);
-          this.bStorageService.setMetadata(this.metadataKey, res1.columns);
-          var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
-          return result;
-        });
-      }
-      else {
-        if (!this.properties) this.properties = new Map<string, Array<Property>>();
-        var arr = JSON.parse(item != null ? item.toString() : "");
-        this.properties.set(this.metadataKey, arr);
-        if (!this.properties.get(this.metadataKey)) return undefined;
-        var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
-        return result;
-      }
+      var arr = JSON.parse(item != null ? item.toString() : "");
+      this.properties.set(this.metadataKey, arr);
+
+      if (!this.properties.get(this.metadataKey))
+        return undefined;
+
+      var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
+
+      return result;     
 
     }
   }
@@ -136,54 +128,35 @@ export class DefaultComponent extends BaseComponent {
     if (viewId) {
 
       var item: string | null;
-      item = this.bStorageService.getMetadata(metaDataName);
+      item = this.bStorageService.getMetadata(metaDataName);  
 
-      if (!item) {
-        this.metadataService.getMetaDataById(viewId).finally(() => {
-          if (!this.properties.get(metaDataName)) return undefined;
-          var result = this.properties.get(metaDataName);
-          return result.columns;
-        }).subscribe((res1: any) => {
-          this.properties.set(metaDataName, res1.columns);
-          this.bStorageService.setMetadata(metaDataName, res1);
-          var result = this.properties.get(metaDataName);
-          this.baseEntityName = result.entityName;
-          return result.columns;
-        });
-      }
-      else {
-        
-        if (!this.properties) this.properties = new Map<string, any>();
-        var arr = JSON.parse(item != null ? item.toString() : "");
-        this.properties.set(metaDataName, arr.columns);
-        if (!this.properties.get(metaDataName)) return undefined;
-        var result = this.properties.get(metaDataName);
-        this.baseEntityName = arr.entityName;
-        return arr.columns;
-      }
+      if (!this.properties)
+        this.properties = new Map<string, any>();
+
+      var arr = JSON.parse(item != null ? item.toString() : "");
+      this.properties.set(metaDataName, arr.columns);
+
+      if (!this.properties.get(metaDataName))
+        return undefined;
+     
+      this.baseEntityName = arr.entityName;
+
+      return arr.columns;     
 
     }
   }
 
-  async getEntityName(viewId: number): Promise<string> {    
+  async getEntityName(viewId: number): Promise<string> {
     var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '', this.currentlang);
 
     if (viewId) {
       var item: string | null;
       item = this.bStorageService.getMetadata(metaDataName);
-      if (!item) {
-        const response = await this.metadataService.getMetaDataById(viewId).toPromise();
-        let res: any = response;        
-        this.bStorageService.setMetadata(metaDataName, res);                
-        return res.entityName;
-      }
-      else {
-        if (!this.properties) this.properties = new Map<string, any>();
-        var result = JSON.parse(item != null ? item.toString() : "");
-        return result.entityName;
-      }
+      
+      if (!this.properties) this.properties = new Map<string, any>();
+      var result = JSON.parse(item != null ? item.toString() : "");
+      return result.entityName;      
     }
-
   }
 
   getLocalizedViewName(viewId: number): string {
@@ -196,7 +169,7 @@ export class DefaultComponent extends BaseComponent {
         if (!this.properties) this.properties = new Map<string, any>();
         var result = JSON.parse(item != null ? item.toString() : "");
         return result.name;
-      }     
+      }
     }
 
     return "";
@@ -208,26 +181,19 @@ export class DefaultComponent extends BaseComponent {
     if (viewId) {
       var item: string | null;
       item = this.bStorageService.getMetadata(metaDataName);
-      if (!item) {
-        const response = await this.metadataService.getMetaDataById(viewId).toPromise();
-        let res: any = response;
-        this.properties.set(metaDataName, res.columns);
-        this.bStorageService.setMetadata(metaDataName, res);
-        //var result = this.properties.get(metaDataName);
-        this.baseEntityName = res.entityName;
-        return res.columns;
-      }
-      else {       
-        if (!this.properties) this.properties = new Map<string, any>();
-        var result = JSON.parse(item != null ? item.toString() : "");
-        this.properties.set(metaDataName, result.columns);
-        if (!this.properties.get(metaDataName)) return undefined;
-        //var result = this.properties.get(metaDataName);
-        this.baseEntityName = result.entityName;
-        return result.columns;
-      }
-    }
+      
+      if (!this.properties)
+        this.properties = new Map<string, any>();
 
+      var result = JSON.parse(item != null ? item.toString() : "");
+      this.properties.set(metaDataName, result.columns);
+
+      if (!this.properties.get(metaDataName))
+        return undefined;
+
+      this.baseEntityName = result.entityName;
+      return result.columns;      
+    }
   }
 
   public getViewTreeSettings(viewId: number): ViewTreeConfig {
@@ -279,7 +245,7 @@ export class DefaultComponent extends BaseComponent {
   */
   public set pageIndex(value: number) {
     this.skip = value;
-  }  
+  }
 
   /** get number value for grid current page */
   public get pageIndex(): number {
@@ -322,7 +288,7 @@ export class DefaultComponent extends BaseComponent {
 
     if (filter.filters.length) {
       for (let i = 0; i < filter.filters.length; i++) {
-        if (filter.filters[i].value != "") {
+        if (filter.filters[i].value !== "") {
           var operator = "";
 
           var dataType = '';
@@ -332,8 +298,8 @@ export class DefaultComponent extends BaseComponent {
           var properties = this.getAllMetaData(this.viewId);
           var property = properties.filter(p => p.name.toLowerCase() === field.toLowerCase());
           if (property && property.length > 0) {
-            dataType = property[0].dotNetType;               
-          }         
+            dataType = property[0].dotNetType;
+          }
 
           //if (metadata != undefined) {
           //  dataType = metadata.dotNetType;
@@ -342,8 +308,8 @@ export class DefaultComponent extends BaseComponent {
           //}
 
           switch (filter.filters[i].operator) {
-            case "eq":              
-              operator = " == {0}";              
+            case "eq":
+              operator = " == {0}";
               break;
             case "neq":
               operator = " != {0}";
@@ -373,10 +339,10 @@ export class DefaultComponent extends BaseComponent {
               operator = ".EndsWith({0})";
               break;
             default:
-              operator = " == {0}";              
+              operator = " == {0}";
           }
 
-          
+
 
           var filterValue = filter.filters[i].value;
 
@@ -423,7 +389,7 @@ export class DefaultComponent extends BaseComponent {
       filterExp.children.push(advanceFilter);
       return filterExp;
     }
-    else {      
+    else {
       return advanceFilter;
     }
 
@@ -449,18 +415,18 @@ export class DefaultComponent extends BaseComponent {
 
   }
 
-  addFilterExpressionWithBrace(sourceExpression: FilterExpression, filter: Filter , end : boolean = false,makeBraces:boolean = true): FilterExpression {
+  addFilterExpressionWithBrace(sourceExpression: FilterExpression, filter: Filter, end: boolean = false, makeBraces: boolean = true): FilterExpression {
     var firstExpressionId = "1";
     var lastExpressionId = "2";
 
     if (sourceExpression == null) {
       var startBrace = new Array<Braces>();
-      
+
       var brace1: Braces = { brace: "(", outerId: lastExpressionId };
       startBrace.push(brace1);
 
       var firstFilter = new FilterExpression();
-      filter.braces = (makeBraces == true)  ? startBrace : undefined;
+      filter.braces = (makeBraces == true) ? startBrace : undefined;
       filter.id = firstExpressionId;
       firstFilter.filter = filter;
       firstFilter.operator = " && ";
@@ -473,21 +439,21 @@ export class DefaultComponent extends BaseComponent {
       var nextFilter = new FilterExpression();
 
       if (end) {
-        var endBrace = new Array<Braces>();        
-        var brace2: Braces = { brace: ")", outerId: firstExpressionId};
+        var endBrace = new Array<Braces>();
+        var brace2: Braces = { brace: ")", outerId: firstExpressionId };
         endBrace.push(brace2);
         filter.id = lastExpressionId;
         filter.braces = (makeBraces == true) ? endBrace : undefined;
       }
 
       nextFilter.filter = filter;
-      nextFilter.operator = " || ";    
+      nextFilter.operator = " || ";
 
       sourceExpression.children.push(nextFilter);
     }
 
-    
-    
+
+
     return sourceExpression;
   }
   /**
@@ -588,6 +554,6 @@ export class DefaultComponent extends BaseComponent {
     }
   }
 
-  
+
 
 }

@@ -52,6 +52,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه
+        /// </summary>
+        public UserContextViewModel UserContext
+        {
+            get { return Context.UserContext; }
+        }
+
+        /// <summary>
         /// امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند
         /// </summary>
         protected IRepositoryContext Context { get; }
@@ -78,14 +86,6 @@ namespace SPPC.Tadbir.Persistence
         protected ISqlConsole DbConsole
         {
             get { return Context.DbConsole; }
-        }
-
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه
-        /// </summary>
-        protected UserContextViewModel UserContext
-        {
-            get { return Context.UserContext; }
         }
 
         /// <summary>

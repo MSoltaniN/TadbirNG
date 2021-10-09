@@ -660,6 +660,23 @@ namespace SPPC.Tadbir.Persistence
             return typeName;
         }
 
+        private static string AddCommonFieldAliases(string query)
+        {
+            return query
+                .Replace("== null", " IS NULL")
+                .Replace("!= null", " IS NOT NULL")
+                .Replace("\"", "'")
+                .Replace("&&", "AND")
+                .Replace("||", "OR")
+                .Replace("==", "=")
+                .Replace("!=", "<>")
+                .Replace("FiscalPeriodId", "FiscalPeriodID")
+                .Replace("FiscalPeriodID", "v.FiscalPeriodID")
+                .Replace("BranchId", "BranchID")
+                .Replace("BranchID", "v.BranchID")
+                .Replace("Description", "v.Description");
+        }
+
         private async Task<Voucher> GetNewVoucherAsync(string description, VoucherOriginId origin)
         {
             var subject = SubjectType.Normal;
@@ -796,7 +813,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var options = gridOptions ?? new GridOptions();
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-            string filters = _report.TranslateQuery(await GetEnvironmentFiltersAsync(options));
+            string filters = await GetEnvironmentFiltersAsync(options);
             string listQuery = String.Format(VoucherQuery.EnvironmentVouchers, filters);
             var query = new ReportQuery(listQuery);
             var result = DbConsole.ExecuteQuery(query.Query);
@@ -810,20 +827,24 @@ namespace SPPC.Tadbir.Persistence
         {
             var predicates = new List<string>
             {
-                String.Format("v.FiscalPeriodID = {0}", UserContext.FiscalPeriodId)
+                String.Format("FiscalPeriodID = {0}", UserContext.FiscalPeriodId)
             };
             if (gridOptions.QuickFilter != null)
             {
                 predicates.Add(gridOptions.QuickFilter.ToString());
                 string branchFilter = await GetBranchFilterAsync(gridOptions);
-                branchFilter = branchFilter.Replace("BranchID", "v.BranchID");
                 if (branchFilter.Contains("IN"))
                 {
                     predicates.Add(branchFilter);
                 }
             }
 
-            return String.Join(" AND ", predicates);
+            if (gridOptions.Filter != null)
+            {
+                predicates.Add(_report.GetColumnFilters(gridOptions));
+            }
+
+            return AddCommonFieldAliases(String.Join(" AND ", predicates));
         }
 
         private VoucherViewModel GetVoucherItem(DataRow row)

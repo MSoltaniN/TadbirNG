@@ -11,7 +11,7 @@ using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Reporting;
 
-namespace SPPC.Tadbir.Persistence.Repository
+namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     ///
@@ -458,7 +458,7 @@ namespace SPPC.Tadbir.Persistence.Repository
         private async Task<string> GetCommonWhereClauseAsync(BalanceByAccountParameters parameters)
         {
             var whereBuilder = new StringBuilder("WHERE ");
-            whereBuilder.Append(ReportQuery.TranslateQuery(
+            whereBuilder.Append(ReportQuery.TranslateFinanceQuery(
                 _utility.GetEnvironmentFilters(parameters.GridOptions)));
 
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)

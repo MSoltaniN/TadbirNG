@@ -9,7 +9,7 @@ export const SessionKeys = {
   FiscalPeriod: 'FiscalPeriod',
   AppVersion: 'AppVersion',
   Menu: 'menu',
-  Profile: 'profile',
+  Profile: 'profile_{0}',
   Setting: 'setting_{0}',
   LastUserBranch: 'lastUserBranch_{0}_{1}',
   LastUserFpId: 'lastUserFpId_{0}_{1}',
@@ -167,17 +167,19 @@ export class BrowserStorageService {
   }
 
   getProfile(): string {
+    var key = String.Format(SessionKeys.Profile, this.getLanguage());
     if (this.isRememberMe())
-      return localStorage.getItem(SessionKeys.Profile);
+      return localStorage.getItem(key);
     else
-      return sessionStorage.getItem(SessionKeys.Profile);
+      return sessionStorage.getItem(key);
   }
 
   setProfile(item: any) {
+    var key = String.Format(SessionKeys.Profile, this.getLanguage());
     if (this.isRememberMe())
-      localStorage.setItem(SessionKeys.Profile, JSON.stringify(item));
+      localStorage.setItem(key, JSON.stringify(item));
     else
-      sessionStorage.setItem(SessionKeys.Profile, JSON.stringify(item));
+      sessionStorage.setItem(key, JSON.stringify(item));
   }
 
   checkVersion(version: string, userId: number) {
@@ -268,29 +270,17 @@ export class BrowserStorageService {
   }
 
   getMetadata(metadataKey: string): string {
-
-    var compressedData = localStorage.getItem(metadataKey);
-    if (compressedData) {
-      var t0 = performance.now();
-      var decompressed = this.lz.decompress(compressedData);
-      var t1 = performance.now();
-      //console.log("decompress metadata time : " + (t1 - t0) + " milliseconds.");
-
-      return decompressed;
-    }
+    var metadata = localStorage.getItem(metadataKey);
+    if (metadata)
+      return metadata;    
 
     return null;
   }
 
   setMetadata(metadataKey: string, columns: any) {
     var jsonData = JSON.stringify(columns);
-    if (jsonData) {
-      var t0 = performance.now();
-      var compressedJSON = this.lz.compress(jsonData);
-      var t1 = performance.now();
-      //console.log("compress metadata time : " + (t1 - t0) + " milliseconds.");
-
-      localStorage.setItem(metadataKey, compressedJSON);
+    if (jsonData) {        
+      localStorage.setItem(metadataKey, jsonData);
     }
   }
 
@@ -320,16 +310,16 @@ export class BrowserStorageService {
   }
 
   getSystemConfig(): string {
-    return localStorage.getItem(SessionKeys.SystemConfig);
+    return sessionStorage.getItem(SessionKeys.SystemConfig);
   }
 
   removeSystemConfig() {
-    if (localStorage.getItem(SessionKeys.SystemConfig))
-      localStorage.removeItem(SessionKeys.SystemConfig);
+    if (sessionStorage.getItem(SessionKeys.SystemConfig))
+      sessionStorage.removeItem(SessionKeys.SystemConfig);
   }
 
   setSystemConfig(systemConfig: string) {
-    localStorage.setItem(SessionKeys.SystemConfig, JSON.stringify(systemConfig));
+    sessionStorage.setItem(SessionKeys.SystemConfig, JSON.stringify(systemConfig));
   }
 
   setTestBalanceConfig(numConfig: any) {

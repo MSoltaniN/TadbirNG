@@ -13,14 +13,6 @@ namespace SPPC.Tadbir.Persistence
     public interface IMetadataRepository
     {
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای نوع موجودیت مشخص شده را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <typeparam name="TEntity">نوع موجودیتی که فراداده آن مورد نیاز است</typeparam>
-        /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
-        Task<ViewViewModel> GetViewMetadataAsync<TEntity>()
-            where TEntity : IEntity;
-
-        /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای موجودیت با نام مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewName">نام (شناسه متنی) موجودیت مورد نظر</param>

@@ -124,7 +124,7 @@ namespace SPPC.Tadbir.Persistence.Utility
             var quickFilter = gridOptions?.QuickFilter?.ToString();
             if (branchId != null)
             {
-                predicates.Add(String.Format("BranchId = {0}", branchId));
+                predicates.Add(String.Format("BranchID = {0}", branchId));
             }
             else if (quickFilter == null || quickFilter.IndexOf("BranchId") == -1)
             {
@@ -133,18 +133,18 @@ namespace SPPC.Tadbir.Persistence.Utility
                 if (!String.IsNullOrEmpty(branchList))
                 {
                     predicates.Add(String.Format(
-                        "(BranchId = {0} OR BranchId IN({1}))", UserContext.BranchId, branchList));
+                        "(BranchID = {0} OR BranchID IN({1}))", UserContext.BranchId, branchList));
                 }
                 else
                 {
-                    predicates.Add(String.Format("BranchId = {0}", UserContext.BranchId));
+                    predicates.Add(String.Format("BranchID = {0}", UserContext.BranchId));
                 }
             }
 
-            predicates.Add(String.Format("v.FiscalPeriodId = {0}", fpId));
+            predicates.Add(String.Format("v.FiscalPeriodID = {0}", fpId));
             if (noDraft)
             {
-                predicates.Add(String.Format("v.SubjectType <> {0}", (int)SubjectType.Draft));
+                predicates.Add(String.Format("SubjectType <> {0}", (int)SubjectType.Draft));
             }
 
             if (!String.IsNullOrEmpty(quickFilter))
@@ -555,27 +555,6 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <summary>
         ///
         /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        public string TranslateQuery(string query)
-        {
-            Verify.ArgumentNotNull(query, nameof(query));
-            return query
-                .Replace("Voucher", "v.")
-                .Replace("Date", "v.Date")
-                .Replace("== null", " IS NULL")
-                .Replace("!= null", " IS NOT NULL")
-                .Replace("\"", "'")
-                .Replace("&&", "AND")
-                .Replace("||", "OR")
-                .Replace("==", "=")
-                .Replace("!=", "<>")
-                .Replace("BranchId", "v.BranchID");
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <returns></returns>
         public async Task<Voucher> GetOpeningVoucherAsync()
         {
@@ -608,7 +587,6 @@ namespace SPPC.Tadbir.Persistence.Utility
                 .Replace("Account", "acc.")
                 .Replace("CostCenter", "cc.")
                 .Replace("Project", "prj.")
-                .Replace("Description", "vl.Description")
                 .Replace("Debit", "vl.Debit")
                 .Replace("Credit", "vl.Credit")
                 .Replace("Mark", "vl.Mark")

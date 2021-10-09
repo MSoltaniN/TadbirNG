@@ -35,17 +35,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای نوع موجودیت مشخص شده را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <typeparam name="TEntity">نوع موجودیتی که فراداده آن مورد نیاز است</typeparam>
-        /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
-        public async Task<ViewViewModel> GetViewMetadataAsync<TEntity>()
-            where TEntity : IEntity
-        {
-            return await GetViewMetadataAsync(typeof(TEntity).Name);
-        }
-
-        /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای موجودیت با نام مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewName">نام (شناسه متنی) موجودیت مورد نظر</param>
@@ -132,11 +121,17 @@ namespace SPPC.Tadbir.Persistence
         /// <returns> اطلاعات فراداده ای تعریف شده برای همه موجودیت ها</returns>
         public async Task<IList<ViewViewModel>> GetViewsMetadataAsync()
         {
+            _currentCalendar = await _config.GetCurrentCalendarAsync();
             var repository = UnitOfWork.GetAsyncRepository<View>();
-            return await repository
-                .GetEntityQuery()
-                .Select(item => Mapper.Map<ViewViewModel>(item))
-                .ToListAsync();
+            var views = await repository.GetAllAsync(vu => vu.Columns);
+
+            var viewMetadatas = new List<ViewViewModel>();
+            foreach (var view in views)
+            {
+                viewMetadatas.Add(await LoadViewMetadataAsync(view));
+            }
+
+            return viewMetadatas;
         }
 
         /// <summary>
@@ -202,31 +197,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         #endregion
-
-        private string GetDynamicColumnSettings(ColumnViewModel column)
-        {
-            var columnConfig = GetDynamicColumnConfig(column);
-            return JsonHelper.From(columnConfig, false);
-        }
-
-        private ColumnViewConfig GetDynamicColumnConfig(ColumnViewModel column, int width = 100)
-        {
-            var columnConfig = new ColumnViewConfig(column.Name);
-            var deviceConfig = new ColumnViewDeviceConfig()
-            {
-                Title = column.Name,
-                Visibility = column.Visibility ?? ColumnVisibility.Visible,
-                Width = width,
-                Index = column.DisplayIndex,
-                DesignIndex = column.DisplayIndex
-            };
-            columnConfig.ExtraLarge = (ColumnViewDeviceConfig)deviceConfig.Clone();
-            columnConfig.ExtraSmall = (ColumnViewDeviceConfig)deviceConfig.Clone();
-            columnConfig.Large = (ColumnViewDeviceConfig)deviceConfig.Clone();
-            columnConfig.Medium = (ColumnViewDeviceConfig)deviceConfig.Clone();
-            columnConfig.Small = (ColumnViewDeviceConfig)deviceConfig.Clone();
-            return columnConfig;
-        }
 
         private void Localize(IList<ColumnViewModel> columns)
         {
@@ -308,24 +278,54 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<View>();
             var metadata = await repository
                 .GetSingleByCriteriaAsync(criteria, vu => vu.Columns);
-            var metadataView = Mapper.Map<ViewViewModel>(metadata);
-            foreach (var column in metadata.Columns)
+            return await LoadViewMetadataAsync(metadata);
+        }
+
+        private async Task<ViewViewModel> LoadViewMetadataAsync(View listMetadata)
+        {
+            var listMetadataView = Mapper.Map<ViewViewModel>(listMetadata);
+            foreach (var column in listMetadata.Columns)
             {
-                metadataView.Columns.Add(Mapper.Map<ColumnViewModel>(column));
+                listMetadataView.Columns.Add(Mapper.Map<ColumnViewModel>(column));
             }
 
-            foreach (var column in metadataView.Columns)
+            foreach (var column in listMetadataView.Columns)
             {
                 column.Settings = GetDynamicColumnSettings(column);
             }
 
-            await PrepareColumnsAsync(metadataView);
-            return metadataView;
+            await PrepareColumnsAsync(listMetadataView);
+            return listMetadataView;
+        }
+
+        private string GetDynamicColumnSettings(ColumnViewModel column)
+        {
+            var columnConfig = GetDynamicColumnConfig(column);
+            return JsonHelper.From(columnConfig, false);
+        }
+
+        private ColumnViewConfig GetDynamicColumnConfig(ColumnViewModel column, int width = 100)
+        {
+            var columnConfig = new ColumnViewConfig(column.Name);
+            var deviceConfig = new ColumnViewDeviceConfig()
+            {
+                Title = column.Name,
+                Visibility = column.Visibility ?? ColumnVisibility.Visible,
+                Width = width,
+                Index = column.DisplayIndex,
+                DesignIndex = column.DisplayIndex
+            };
+            columnConfig.ExtraLarge = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.ExtraSmall = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.Large = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.Medium = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.Small = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            return columnConfig;
         }
 
         private async Task PrepareColumnsAsync(ViewViewModel view)
         {
-            var calendar = await _config.GetCurrentCalendarAsync();
+            var calendar = _currentCalendar ?? await _config.GetCurrentCalendarAsync();
             var columns = view.Columns
                 .OrderBy(col => col.DisplayIndex)
                 .ToArray();
@@ -344,5 +344,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly IConfigRepository _config;
+        private CalendarType? _currentCalendar;
     }
 }

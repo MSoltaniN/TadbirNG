@@ -22,22 +22,24 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public static string TranslateQuery(string query)
+        public static string TranslateFinanceQuery(string query)
         {
             var builder = new StringBuilder(query);
             if (!String.IsNullOrEmpty(query))
             {
                 builder = builder
                     .Replace("Voucher", "v.")
+                    .Replace("StatusId", "StatusID")
+                    .Replace("OriginID", "v.OriginID")
+                    .Replace("SubjectType", "v.SubjectType")
+                    .Replace("Reference = '", "v.Reference = N'")
                     .Replace('"', '\'')
                     .Replace("== null", " IS NULL")
                     .Replace("!= null", " IS NOT NULL")
                     .Replace("==", "=")
                     .Replace("!=", "<>")
-                    .Replace(">=", ">=")
-                    .Replace("<=", "<=")
-                    .Replace("BranchId", "vl.BranchID")
-                    .Replace("Reference = '", "Reference = N'")
+                    .Replace("BranchId", "BranchID")
+                    .Replace("BranchID", "vl.BranchID")
                     .Replace("&&", "AND")
                     .Replace("||", "OR");
             }
@@ -59,7 +61,7 @@ namespace SPPC.Tadbir.Persistence
             int index = Query.IndexOf("{0}");
             if (index != -1)
             {
-                string translated = TranslateQuery(filter);
+                string translated = TranslateFinanceQuery(filter);
                 Query = String.Format(Query, translated);
             }
         }

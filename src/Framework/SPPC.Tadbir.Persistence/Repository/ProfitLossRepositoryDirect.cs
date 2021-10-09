@@ -626,7 +626,7 @@ namespace SPPC.Tadbir.Persistence
             if (!parameters.UseClosingTempVoucher)
             {
                 filterBuilder.AppendFormat(
-                    " AND v.OriginID <> {0}", (int)VoucherOriginId.ClosingTempAccounts);
+                    " AND OriginID <> {0}", (int)VoucherOriginId.ClosingTempAccounts);
             }
 
             if (parameters.CostCenterId != null)

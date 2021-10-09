@@ -37,5 +37,10 @@ namespace SPPC.Tadbir.Domain
         /// گزینه انعکاس گردش ابتدای دوره در مانده ابتدا
         /// </summary>
         StartTurnoverAsInitBalance = 0x10,
+
+        /// <summary>
+        /// انتخاب همه گزینه ها
+        /// </summary>
+        All = 0x1f
     }
 }

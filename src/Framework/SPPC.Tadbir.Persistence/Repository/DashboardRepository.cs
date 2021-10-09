@@ -151,7 +151,7 @@ namespace SPPC.Tadbir.Persistence
                 var filterBuilder = new StringBuilder(_report.GetEnvironmentFilters());
                 filterBuilder.AppendFormat(" AND vl.AccountID IN({0})",
                     String.Join(",", accounts.Select(acc => acc.Id)));
-                filterBuilder.Replace("BranchId", "vl.BranchID");
+                filterBuilder.Replace("BranchID", "vl.BranchID");
                 if (from == null || to == null)
                 {
                     reportQuery = new ReportQuery(String.Format(

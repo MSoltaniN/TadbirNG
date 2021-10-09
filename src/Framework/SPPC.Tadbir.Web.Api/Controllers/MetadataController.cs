@@ -33,9 +33,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         ///
         /// </summary>
+        /// <returns></returns>
+        // GET: api/metadata/views
+        [HttpGet]
+        [Route(MetadataApi.ViewsMetadataUrl)]
+        public async Task<IActionResult> GetViewsMetadata()
+        {
+            var allViews = await _repository.GetViewsMetadataAsync();
+            foreach (var view in allViews)
+            {
+                Localize(view);
+            }
+
+            return JsonReadResult(allViews);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="viewName"></param>
         /// <returns></returns>
-        // GET: api/metadata/view/{viewName}
+        // GET: api/metadata/views/{viewName}
         [HttpGet]
         [Route(MetadataApi.ViewMetadataUrl)]
         public async Task<IActionResult> GetViewMetadata(string viewName)
@@ -50,7 +68,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="viewId"></param>
         /// <returns></returns>
-        // GET: api/metadata/view/{viewId:min(1)}
+        // GET: api/metadata/views/{viewId:min(1)}
         [HttpGet]
         [Route(MetadataApi.ViewMetadataByIdUrl)]
         public async Task<IActionResult> GetViewMetadataById(int viewId)
@@ -71,19 +89,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var permissions = await _repository.GetPermissionGroupsAsync();
             return Json(permissions);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        // GET: api/metadata/views
-        [HttpGet]
-        [Route(MetadataApi.ViewsMetadataUrl)]
-        public async Task<IActionResult> GetViewsMetadata()
-        {
-            var metadata = await _repository.GetViewsMetadataAsync();
-            return JsonReadResult(metadata);
         }
 
         private void Localize(ViewViewModel metadata)

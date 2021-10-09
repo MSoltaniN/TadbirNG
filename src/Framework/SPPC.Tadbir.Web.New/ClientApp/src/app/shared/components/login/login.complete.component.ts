@@ -16,6 +16,7 @@ import { InitialWizardComponent } from '@sppc/organization/components/initialWiz
 import { String } from '@sppc/shared/class/source';
 import { ShortcutCommand } from '@sppc/shared/models/shortcutCommand';
 import { debug } from 'util';
+import { environment } from '@sppc/env/environment';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -91,16 +92,16 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
   ngOnInit() {
     this.currentRoute = this.bStorageService.getCurrentRoute();
     this.disabledCompany = true;
-    this.getCompany();
-    this.checkMetaDataObsolete();
+    this.getCompany();    
   }
 
   //#endregion
 
   //#region Methods
 
-  checkMetaDataObsolete() {
+  fetchMetaDatas(currentContext:ContextInfo) {
     var currentLang = this.currentlang;
+    var startTime = performance.now()
     this.metadata.getViews().subscribe((res:any) => {
       var views: Array<any> = res;      
       views.forEach((item) => {
@@ -112,12 +113,20 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
           var metaData = JSON.parse(metaDataString);
           var oldModifiedDate = metaData.modifiedDate;
           if (Date.parse(modifiedDate) > Date.parse(oldModifiedDate)) {
-            this.bStorageService.removeLocalStorage(metaDataName);
+            this.bStorageService.setMetadata(metaDataName, item);
             this.settingService.setSettingByViewId(viewId, null);
           }
         }
+        else {
+          this.bStorageService.setMetadata(metaDataName,item);
+        }
       });
-      
+
+      var endTime = performance.now()
+
+      console.log(`Call to fetchMetaDatas took ${endTime - startTime} milliseconds`)
+
+      this.loadMenuAndRoute(currentContext);      
     });
   }
 
@@ -235,7 +244,8 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         this.bStorageService.setUserSetting(res, this.UserId);
     });
 
-    //To fill localstorage before load other component    
+    //To fill localstorage before load other component
+    this.bStorageService.removeSystemConfig();   
     this.settingService.getSystemConfig();   
 
     this.bStorageService.removeSelectedDateRange();
@@ -323,7 +333,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
           this.bStorageService.setCurrentContext(currentUser);
           this.bStorageService.setLastUserBranchAndFpId(this.UserId, this.companyId, this.branchId, this.fiscalPeriodId);
 
-          this.loadMenuAndRoute(currentUser);
+          this.fetchMetaDatas(currentUser);
           this.loadShortcut();
           this.loadAllSetting();
         }

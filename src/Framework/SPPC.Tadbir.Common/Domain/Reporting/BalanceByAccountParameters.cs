@@ -11,7 +11,7 @@
         public int ViewId { get; set; }
 
         /// <summary>
-        /// در صورتی که گزارش بر اساس حساب نباشد تفکیک بر اساس حساب انجام میشود
+        /// مشخص می کند که تفکیک بر اساس سرفصل های حسابداری مورد نیاز است یا نه
         /// </summary>
         public bool IsSelectedAccount { get; set; }
 
@@ -26,7 +26,7 @@
         public int? AccountId { get; set; }
 
         /// <summary>
-        /// در صورتی که گزارش بر اساس تفصیلی شناور نباشد تفکیک بر اساس تفصیلی شناور انجام میشود
+        /// مشخص می کند که تفکیک بر اساس تفصیلی های شناور مورد نیاز است یا نه
         /// </summary>
         public bool IsSelectedDetailAccount { get; set; }
 
@@ -41,7 +41,7 @@
         public int? DetailAccountId { get; set; }
 
         /// <summary>
-        /// در صورتی که گزارش بر اساس مرکز هزینه نباشد تفکیک بر اساس مرکز هزینه انجام میشود
+        /// مشخص می کند که تفکیک بر اساس مراکز هزینه مورد نیاز است یا نه
         /// </summary>
         public bool IsSelectedCostCenter { get; set; }
 
@@ -56,7 +56,7 @@
         public int? CostCenterId { get; set; }
 
         /// <summary>
-        /// در صورتی که گزارش بر اساس پروژه نباشد تفکیک بر اساس پروژه انجام میشود
+        /// مشخص می کند که تفکیک بر اساس پروژه ها مورد نیاز است یا نه
         /// </summary>
         public bool IsSelectedProject { get; set; }
 
