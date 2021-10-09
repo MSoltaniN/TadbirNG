@@ -3,6 +3,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using SPPC.Framework.Cryptography;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
@@ -35,7 +36,9 @@ namespace SPPC.Tadbir.Tests
         private static IAppUnitOfWork GetUnitOfWork()
         {
             var context = new TadbirContext(_connection);
-            var sysContext = new SystemContext(new DbContextOptions<SystemContext>());
+            var builder = new DbContextOptionsBuilder<SystemContext>()
+                .UseSqlServer(_sysConnection);
+            var sysContext = new SystemContext(builder.Options);
             return new AppUnitOfWork(new DbContextAccessor(context, sysContext));
         }
 
@@ -48,7 +51,7 @@ namespace SPPC.Tadbir.Tests
                 Connection = _connection,
                 FiscalPeriodId = 2,
                 Id = 1,
-                InventoryMode = 0,
+                InventoryMode = (int)InventoryMode.Perpetual,
                 Language = "fa",
                 UserName = "admin"
             };
@@ -68,6 +71,8 @@ namespace SPPC.Tadbir.Tests
         }
 
         private const string _connection = @"Server=BE-LAPTOP;Database=NGTadbir;
+User ID=NgTadbirUser;Password=Demo1234;Trusted_Connection=False";
+        private const string _sysConnection = @"Server=BE-LAPTOP;Database=NGTadbirSys;
 User ID=NgTadbirUser;Password=Demo1234;Trusted_Connection=False";
     }
 }

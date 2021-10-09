@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -13,6 +14,11 @@ namespace SPPC.Tadbir.Persistence
         /// رشته اتصال مرتبط با شرکت جاری
         /// </summary>
         string CompanyConnection { get; set; }
+
+        /// <summary>
+        /// امکان دسترسی به اطلاعات محیطی کاربر جاری برنامه را فراهم می کند
+        /// </summary>
+        UserContextViewModel UserContext { get; }
 
         /// <summary>
         /// به روش آسنکرون، رشته اتصال شرکت را ایجاد میکند
