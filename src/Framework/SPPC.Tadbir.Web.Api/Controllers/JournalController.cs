@@ -498,16 +498,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private void PrepareJournal(JournalViewModel journal)
         {
             SetItemCount(journal.TotalCount);
-            Localize(journal);
             SetRowNumbers(journal.Items);
-        }
-
-        private void Localize(JournalViewModel journal)
-        {
-            foreach (var journalItem in journal.Items)
-            {
-                journalItem.Description = _strings[journalItem.Description ?? String.Empty];
-            }
         }
 
         private readonly IJournalRepository _repository;

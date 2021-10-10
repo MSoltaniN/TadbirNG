@@ -672,7 +672,7 @@ namespace SPPC.Tadbir.Persistence
         private ReportQuery GetJournalByRowQuery(JournalParameters parameters,
             bool byNo = false, bool byBranch = false, bool hasDetail = false)
         {
-            var query = default(ReportQuery);
+            ReportQuery query;
             var paging = parameters.GridOptions.Paging;
             int fromRow = (paging.PageSize * (paging.PageIndex - 1)) + 1;
             int toRow = paging.PageSize * paging.PageIndex;
@@ -735,9 +735,6 @@ namespace SPPC.Tadbir.Persistence
         {
             var journal = new JournalViewModel();
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-            var paging = parameters.GridOptions.Paging;
-            int fromRow = (paging.PageSize * (paging.PageIndex - 1)) + 1;
-            int toRow = paging.PageSize * paging.PageIndex;
             var query = GetJournalByRowQuery(parameters, byNo, byBranch, hasDetail);
             ApplyEnvironmentFilters(query, parameters.GridOptions);
             var result = DbConsole.ExecuteQuery(query.Query);
@@ -1098,7 +1095,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (var item in items)
             {
                 item.AccountName = accountMap[item.AccountFullCode];
-                item.Description = AppStrings.AsQuotedInVoucherLines;
+                item.Description = Context.Localize(AppStrings.AsQuotedInVoucherLines);
             }
         }
 

@@ -656,7 +656,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 : await _repository.GetAccountBookAsync(parameters);
             SetItemCount(book.TotalCount);
             SetRowNumbers(book.Items);
-            Localize(book);
             return Json(book);
         }
 
@@ -669,11 +668,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 from = from ?? rangeFrom;
                 to = to ?? rangeTo;
             }
-        }
-
-        private void Localize(AccountBookViewModel book)
-        {
-            Array.ForEach(book.Items.ToArray(), item => item.Description = _strings[item.Description ?? String.Empty]);
         }
 
         private delegate Task<AccountBookViewModel> AccountBookDelegate(int viewId, int itemId,
