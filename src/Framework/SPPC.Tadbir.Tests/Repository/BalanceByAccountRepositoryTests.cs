@@ -3,11 +3,10 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.ViewModel.Reporting;
 
-namespace SPPC.Tadbir.Tests.Repository
+namespace SPPC.Tadbir.Persistence.Tests
 {
     [TestFixture]
     [Category("RepositorySmokeTest")]

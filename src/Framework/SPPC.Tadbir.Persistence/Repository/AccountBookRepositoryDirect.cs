@@ -150,7 +150,7 @@ namespace SPPC.Tadbir.Persistence
 
         private static string GetSummaryQuery(bool byNo, bool byBranch)
         {
-            string query = String.Empty;
+            string query;
             if (byNo)
             {
                 query = byBranch ? BookQuery.VoucherSumByBranch : BookQuery.VoucherSum;
