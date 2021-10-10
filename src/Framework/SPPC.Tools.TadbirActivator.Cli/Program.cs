@@ -231,8 +231,8 @@ namespace SPPC.Tools.TadbirActivator.Cli
                 HardwareKey = HardwareKey.UniqueKey,
             };
 
-            var manager = new CertificateManager();
-            _certificate = manager.GenerateSelfSigned(Constants.IssuerName, Constants.SubjectName);
+            var manager = new CertificateGenerator();
+            _certificate = manager.GenerateSelfSigned();
             activation.ClientKey = Convert.ToBase64String(_certificate.GetPublicKey());
             return activation;
         }
