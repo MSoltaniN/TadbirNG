@@ -52,6 +52,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(item => Mapper.Map<AccountViewModel>(item))
                     .ToListAsync();
                 await UpdateInactiveAccountsAsync(accounts);
+                Array.ForEach(accounts.ToArray(), acc => acc.TurnoverMode = Context.Localize(acc.TurnoverMode));
             }
 
             await ReadAsync(gridOptions);

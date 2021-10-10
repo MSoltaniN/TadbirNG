@@ -54,6 +54,7 @@ namespace SPPC.Tadbir.Persistence
             if (gridOptions.Operation != (int)OperationId.Print)
             {
                 vouchers.AddRange(await GetVoucherItemsAsync(gridOptions));
+                Array.ForEach(vouchers.ToArray(), v => Localize(v));
             }
 
             await ReadAsync(gridOptions);
@@ -660,7 +661,7 @@ namespace SPPC.Tadbir.Persistence
             return typeName;
         }
 
-        private static string AddCommonFieldAliases(string query)
+        private static string TranslateQuery(string query)
         {
             return query
                 .Replace("== null", " IS NULL")
@@ -671,10 +672,11 @@ namespace SPPC.Tadbir.Persistence
                 .Replace("==", "=")
                 .Replace("!=", "<>")
                 .Replace("FiscalPeriodId", "FiscalPeriodID")
-                .Replace("FiscalPeriodID", "v.FiscalPeriodID")
                 .Replace("BranchId", "BranchID")
                 .Replace("BranchID", "v.BranchID")
-                .Replace("Description", "v.Description");
+                .Replace("BranchName", "br.Name")
+                .Replace("StatusName", "st.Name")
+                .Replace("OriginName", "vo.Name");
         }
 
         private async Task<Voucher> GetNewVoucherAsync(string description, VoucherOriginId origin)
@@ -814,7 +816,8 @@ namespace SPPC.Tadbir.Persistence
             var options = gridOptions ?? new GridOptions();
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             string filters = await GetEnvironmentFiltersAsync(options);
-            string listQuery = String.Format(VoucherQuery.EnvironmentVouchers, filters);
+            string listQuery = String.Format(
+                VoucherQuery.EnvironmentVouchers, filters, GetColumnSorting(gridOptions));
             var query = new ReportQuery(listQuery);
             var result = DbConsole.ExecuteQuery(query.Query);
             var vouchers = new List<VoucherViewModel>();
@@ -839,12 +842,12 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            if (gridOptions.Filter != null)
-            {
-                predicates.Add(_report.GetColumnFilters(gridOptions));
-            }
+            //if (gridOptions.Filter != null)
+            //{
+            //    predicates.Add(_report.GetColumnFilters(gridOptions));
+            //}
 
-            return AddCommonFieldAliases(String.Join(" AND ", predicates));
+            return TranslateQuery(String.Join(" AND ", predicates));
         }
 
         private VoucherViewModel GetVoucherItem(DataRow row)
@@ -876,6 +879,29 @@ namespace SPPC.Tadbir.Persistence
             return voucherItem;
         }
 
+        private string GetColumnSorting(GridOptions gridOptions)
+        {
+            string sorting = DefaultSorting;
+            if (gridOptions.SortColumns.Count > 0)
+            {
+                sorting = String.Join(", ", gridOptions.SortColumns.Select(col => col.ToString()));
+            }
+
+            return sorting;
+        }
+
+        private void Localize(VoucherViewModel voucher)
+        {
+            if (voucher != null)
+            {
+                voucher.StatusName = Context.Localize(voucher.StatusName);
+                voucher.OriginName = Context.Localize(voucher.OriginName);
+                voucher.TypeName = Context.Localize(voucher.TypeName);
+                voucher.Description = Context.Localize(voucher.Description);
+            }
+        }
+
+        private const string DefaultSorting = "v.Date, v.No";
         private readonly ISystemRepository _system;
         private readonly IUserRepository _userRepository;
         private readonly IReportDirectUtility _report;

@@ -62,7 +62,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetEnvironmentAccountsAsync()
         {
             var accounts = await _repository.GetAccountsAsync(GridOptions);
-            Localize(accounts.Items);
             return JsonListResult(accounts);
         }
 

@@ -46,6 +46,7 @@ namespace SPPC.Tadbir.Persistence
                     .GetEntityQuery()
                     .Select(grp => Mapper.Map<AccountGroupViewModel>(grp))
                     .ToListAsync();
+                Array.ForEach(accGroups.ToArray(), grp => grp.Category = Context.Localize(grp.Category));
             }
 
             await ReadAsync(gridOptions);
