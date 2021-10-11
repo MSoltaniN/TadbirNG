@@ -32,7 +32,7 @@ namespace SPPC.Tadbir.Persistence
             IReportDirectUtility utility)
             : base(context, system.Logger)
         {
-            _system = system;
+            Config = system.Config;
             _utility = utility;
         }
 
@@ -201,10 +201,7 @@ namespace SPPC.Tadbir.Persistence
             get { return OperationSourceId.Journal; }
         }
 
-        private IConfigRepository Config
-        {
-            get { return _system.Config; }
-        }
+        private IConfigRepository Config { get; }
 
         private static SourceListId GetSourceList(JournalMode mode, bool isByNo = false)
         {
@@ -759,7 +756,7 @@ namespace SPPC.Tadbir.Persistence
             JournalParameters parameters, bool byNo = false, bool byBranch = false)
         {
             var journal = new JournalViewModel();
-            int length = _utility.GetLevelCodeLength(0);
+            int length = Config.GetLevelCodeLength(0);
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
 
             var debitItems = GetByLevelItems(parameters, length, byNo, byBranch, true);
@@ -810,8 +807,8 @@ namespace SPPC.Tadbir.Persistence
             JournalParameters parameters, bool byNo = false, bool byBranch = false)
         {
             var journal = new JournalViewModel();
-            int ledgerLength = _utility.GetLevelCodeLength(0);
-            int subsidLength = _utility.GetLevelCodeLength(1);
+            int ledgerLength = Config.GetLevelCodeLength(0);
+            int subsidLength = Config.GetLevelCodeLength(1);
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
 
             var subsidDebit = GetByLevelItems(parameters, subsidLength, byNo, byBranch, true, " AND acc.Level >= 1 ");
@@ -866,7 +863,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var journal = new JournalViewModel();
             var items = new List<JournalItemViewModel>();
-            int length = _utility.GetLevelCodeLength(0);
+            int length = Config.GetLevelCodeLength(0);
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
 
             items.AddRange(GetLedgerSummaryItems(parameters, length, byNo, byBranch, true));
@@ -888,7 +885,7 @@ namespace SPPC.Tadbir.Persistence
             JournalParameters parameters, bool byBranch = false)
         {
             var journal = new JournalViewModel();
-            int length = _utility.GetLevelCodeLength(0);
+            int length = Config.GetLevelCodeLength(0);
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
 
             var debitItems = GetLedgerSummaryByDateItems(parameters, length, byBranch, false, true);
@@ -913,7 +910,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var journal = new JournalViewModel();
             var items = new List<JournalItemViewModel>();
-            int length = _utility.GetLevelCodeLength(0);
+            int length = Config.GetLevelCodeLength(0);
             var calendarType = await Config.GetCurrentCalendarAsync();
             Calendar calendar = (calendarType == CalendarType.Jalali)
                 ? new PersianCalendar() as Calendar
@@ -1112,7 +1109,6 @@ namespace SPPC.Tadbir.Persistence
 
         private const string ByRowDefaultSorting = "v.Date, v.No, vl.RowNo";
         private const string ByBranchDefaultSorting = "v.Date, v.No, vl.BranchId";
-        private readonly ISystemRepository _system;
         private readonly IReportDirectUtility _utility;
     }
 }

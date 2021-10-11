@@ -53,6 +53,21 @@ namespace SPPC.Framework.Presentation
         }
 
         /// <summary>
+        /// عبارت فیلتر داده شده را از عبارت فیلتر مرکب موجود حذف می کند
+        /// </summary>
+        /// <param name="filter">عبارت فیلتر مورد نظر برای حذف</param>
+        public void RemoveFilter(GridFilter filter)
+        {
+            var root = this;
+            while (root.Parent != null)
+            {
+                root = root.Parent;
+            }
+
+            RemoveFilter(root, filter);
+        }
+
+        /// <summary>
         /// یک رشته متنی شامل مقادیر این نمونه ساخته و برمی گرداند
         /// </summary>
         /// <returns>یک رشته متنی شامل مقادیر این نمونه</returns>
@@ -76,6 +91,10 @@ namespace SPPC.Framework.Presentation
                 if (Filter.Operator != "true")
                 {
                     builder = new StringBuilder(Filter.ToString());
+                }
+                else
+                {
+                    return Filter.Operator;
                 }
             }
 
@@ -159,10 +178,10 @@ namespace SPPC.Framework.Presentation
             return builder.ToString();
         }
 
-        private IEnumerable<GridFilter> GetChildFilters(FilterExpression expression)
+        private IEnumerable<GridFilter> GetChildFilters(FilterExpression filter)
         {
             var childFilters = new List<GridFilter>();
-            foreach (var child in expression.Children)
+            foreach (var child in filter.Children)
             {
                 childFilters.Add(child.Filter);
                 if (child.Children.Count > 0)
@@ -172,6 +191,27 @@ namespace SPPC.Framework.Presentation
             }
 
             return childFilters;
+        }
+
+        private void RemoveFilter(FilterExpression expression, GridFilter filter)
+        {
+            if (filter == expression.Filter)
+            {
+                expression.Filter.Operator = GridFilterOperator.True;
+                if (expression.Children.Count > 0)
+                {
+                    expression.Filter = expression.Children[0].Filter;
+                    expression.Operator = expression.Children[0].Operator;
+                    expression.Children.RemoveAt(0);
+                }
+            }
+            else
+            {
+                foreach (var child in expression.Children)
+                {
+                    RemoveFilter(child, filter);
+                }
+            }
         }
     }
 }

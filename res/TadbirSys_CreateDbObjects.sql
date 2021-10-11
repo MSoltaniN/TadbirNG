@@ -15,16 +15,6 @@ ALTER SERVER ROLE dbcreator ADD MEMBER NgTadbirUser;
 GO
 
 CREATE DATABASE NGTadbirSys
-ON
-( NAME = NGTadbirSys,
-    FILENAME = 'C:\SqlDb\NGTadbirSys.mdf',
-    SIZE = 10MB,
-    FILEGROWTH = 5MB )
-LOG ON
-( NAME = NGTadbirSys_log,
-    FILENAME = 'C:\SqlDb\NGTadbirSys_log.ldf',
-    SIZE = 5MB,
-    FILEGROWTH = 5% );
 GO
 
 ALTER AUTHORIZATION ON DATABASE::NGTadbirSys TO NgTadbirUser;

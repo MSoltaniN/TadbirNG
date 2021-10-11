@@ -30,8 +30,7 @@ namespace SPPC.Tadbir.Persistence
             IReportDirectUtility utility)
             : base(context, system.Logger)
         {
-            _context = context;
-            _system = system;
+            Config = system.Config;
             _utility = utility;
         }
 
@@ -46,7 +45,7 @@ namespace SPPC.Tadbir.Persistence
             if (parameters.GridOptions.Operation != (int)OperationId.Print)
             {
                 _previousFiscalPeriodId = await GetPreviousFiscalPeriodIdAsync();
-                int length = _utility.GetLevelCodeLength(0);
+                int length = Config.GetLevelCodeLength(0);
 
                 // Calculate and add liquid asset/liability items...
                 balanceSheet.Items.Add(
@@ -93,6 +92,8 @@ namespace SPPC.Tadbir.Persistence
         {
             get { return OperationSourceId.BalanceSheet; }
         }
+
+        private IConfigRepository Config { get; }
 
         private static BalanceSheetItemViewModel GetReportHeaderItem(string asset, string liability)
         {
@@ -424,8 +425,6 @@ namespace SPPC.Tadbir.Persistence
             return builder.ToString();
         }
 
-        private readonly IRepositoryContext _context;
-        private readonly ISystemRepository _system;
         private readonly IReportDirectUtility _utility;
         private int? _previousFiscalPeriodId;
     }

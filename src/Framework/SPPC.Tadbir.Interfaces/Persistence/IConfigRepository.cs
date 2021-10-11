@@ -95,5 +95,20 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="labelConfig">اطلاعات تنظیمات عناوین سفارشی</param>
         Task SaveFormLabelConfigAsync(FormLabelConfig labelConfig);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        int GetLevelCodeLength(int level);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        int GetLevelCodeLength(int viewId, int level);
     }
 }
