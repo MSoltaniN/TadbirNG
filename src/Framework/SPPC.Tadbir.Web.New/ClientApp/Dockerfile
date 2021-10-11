@@ -1,6 +1,7 @@
 ### STAGE 1: Build ### 
  #node:12 node:15.8.0-alpine3.10
 FROM node:15.8.0-alpine3.10 AS build
+EXPOSE 4200
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -28,7 +29,8 @@ COPY . .
 #COPY /dist .
 
 ENV NODE_OPTIONS=--max_old_space_size=8192
-RUN ng build --prod --output-path=dist
+#RUN ng build --prod --output-path=dist
+RUN ng build --configuration=production --output-path=dist
 #RUN node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --prod
 #RUN ng serve --host 0.0.0.0 --port 4200
 ##CMD [ "node", "protractor.conf.js" ]
@@ -36,6 +38,5 @@ RUN ng build --prod --output-path=dist
 
 ### STAGE 2: Run ###
 FROM nginx:1.17.1-alpine
-EXPOSE 4200
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
