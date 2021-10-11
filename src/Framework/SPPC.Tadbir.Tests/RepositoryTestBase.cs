@@ -5,12 +5,11 @@ using Microsoft.Extensions.Options;
 using SPPC.Framework.Cryptography;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Mapper;
-using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Auth;
 
-namespace SPPC.Tadbir.Tests
+namespace SPPC.Tadbir.Persistence.Tests
 {
     public abstract class RepositoryTestBase
     {

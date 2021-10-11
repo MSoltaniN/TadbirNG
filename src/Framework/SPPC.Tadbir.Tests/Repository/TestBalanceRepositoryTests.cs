@@ -3,11 +3,10 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.ViewModel.Reporting;
 
-namespace SPPC.Tadbir.Tests.Repository
+namespace SPPC.Tadbir.Persistence.Tests
 {
     [TestFixture]
     [Category("RepositorySmokeTest")]
@@ -7712,7 +7711,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7723,7 +7722,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7734,7 +7733,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7745,7 +7744,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7760,7 +7759,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7771,7 +7770,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7782,7 +7781,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7793,7 +7792,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7808,7 +7807,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7819,7 +7818,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7830,7 +7829,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7841,7 +7840,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7856,7 +7855,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7867,7 +7866,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7878,7 +7877,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7889,7 +7888,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7904,7 +7903,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7915,7 +7914,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7926,7 +7925,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7937,7 +7936,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7952,7 +7951,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7963,7 +7962,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7974,7 +7973,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -7985,7 +7984,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8000,7 +7999,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8011,7 +8010,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8022,7 +8021,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8033,7 +8032,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8048,7 +8047,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8059,7 +8058,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8070,7 +8069,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8081,7 +8080,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8096,7 +8095,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8107,7 +8106,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8118,7 +8117,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8129,7 +8128,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8144,7 +8143,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8155,7 +8154,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8166,7 +8165,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8177,7 +8176,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8192,7 +8191,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8203,7 +8202,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8214,7 +8213,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8225,7 +8224,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8240,7 +8239,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8251,7 +8250,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8262,7 +8261,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8273,7 +8272,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8288,7 +8287,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8299,7 +8298,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8310,7 +8309,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8321,7 +8320,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8336,7 +8335,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8347,7 +8346,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8358,7 +8357,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8369,7 +8368,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8384,7 +8383,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8395,7 +8394,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8406,7 +8405,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8417,7 +8416,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8432,7 +8431,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8443,7 +8442,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8454,7 +8453,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8465,7 +8464,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8480,7 +8479,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8491,7 +8490,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8502,7 +8501,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8513,7 +8512,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8528,7 +8527,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8539,7 +8538,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8550,7 +8549,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8561,7 +8560,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8576,7 +8575,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8587,7 +8586,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8598,7 +8597,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8609,7 +8608,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8624,7 +8623,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8635,7 +8634,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8646,7 +8645,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8657,7 +8656,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_NoOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8672,7 +8671,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8683,7 +8682,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8694,7 +8693,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8705,7 +8704,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8720,7 +8719,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8731,7 +8730,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8742,7 +8741,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8753,7 +8752,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8768,7 +8767,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8779,7 +8778,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8790,7 +8789,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8801,7 +8800,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8816,7 +8815,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8827,7 +8826,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8838,7 +8837,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8849,7 +8848,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8864,7 +8863,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8875,7 +8874,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8886,7 +8885,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8897,7 +8896,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8912,7 +8911,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8923,7 +8922,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8934,7 +8933,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8945,7 +8944,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8960,7 +8959,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8971,7 +8970,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8982,7 +8981,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -8993,7 +8992,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9008,7 +9007,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9019,7 +9018,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9030,7 +9029,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9041,7 +9040,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9056,7 +9055,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9067,7 +9066,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9078,7 +9077,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9089,7 +9088,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9104,7 +9103,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9115,7 +9114,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9126,7 +9125,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9137,7 +9136,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9152,7 +9151,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9163,7 +9162,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9174,7 +9173,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9185,7 +9184,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9200,7 +9199,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9211,7 +9210,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9222,7 +9221,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9233,7 +9232,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9248,7 +9247,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9259,7 +9258,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9270,7 +9269,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9281,7 +9280,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9296,7 +9295,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9307,7 +9306,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9318,7 +9317,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9329,7 +9328,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9344,7 +9343,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9355,7 +9354,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9366,7 +9365,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9377,7 +9376,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9392,7 +9391,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9403,7 +9402,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9414,7 +9413,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9425,7 +9424,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9440,7 +9439,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9451,7 +9450,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9462,7 +9461,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9473,7 +9472,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9488,7 +9487,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9499,7 +9498,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9510,7 +9509,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9521,7 +9520,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9536,7 +9535,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9547,7 +9546,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9558,7 +9557,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9569,7 +9568,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9584,7 +9583,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9595,7 +9594,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9606,7 +9605,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9617,7 +9616,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_FormOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9632,7 +9631,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9643,7 +9642,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9654,7 +9653,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9665,7 +9664,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9680,7 +9679,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9691,7 +9690,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9702,7 +9701,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9713,7 +9712,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9728,7 +9727,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9739,7 +9738,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9750,7 +9749,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9761,7 +9760,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9776,7 +9775,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9787,7 +9786,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9798,7 +9797,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9809,7 +9808,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9824,7 +9823,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9835,7 +9834,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9846,7 +9845,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9857,7 +9856,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9872,7 +9871,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9883,7 +9882,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9894,7 +9893,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9905,7 +9904,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9920,7 +9919,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9931,7 +9930,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9942,7 +9941,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9953,7 +9952,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9968,7 +9967,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9979,7 +9978,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -9990,7 +9989,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10001,7 +10000,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10016,7 +10015,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10027,7 +10026,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10038,7 +10037,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10049,7 +10048,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10064,7 +10063,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10075,7 +10074,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10086,7 +10085,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10097,7 +10096,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10112,7 +10111,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10123,7 +10122,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10134,7 +10133,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10145,7 +10144,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10160,7 +10159,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10171,7 +10170,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10182,7 +10181,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10193,7 +10192,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10208,7 +10207,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10219,7 +10218,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10230,7 +10229,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10241,7 +10240,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10256,7 +10255,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10267,7 +10266,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10278,7 +10277,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10289,7 +10288,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10304,7 +10303,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10315,7 +10314,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10326,7 +10325,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10337,7 +10336,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10352,7 +10351,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10363,7 +10362,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10374,7 +10373,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10385,7 +10384,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10400,7 +10399,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10411,7 +10410,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10422,7 +10421,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10433,7 +10432,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10448,7 +10447,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10459,7 +10458,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10470,7 +10469,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10481,7 +10480,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10496,7 +10495,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10507,7 +10506,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10518,7 +10517,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10529,7 +10528,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10544,7 +10543,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10555,7 +10554,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10566,7 +10565,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10577,7 +10576,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_OpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10592,7 +10591,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10603,7 +10602,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10614,7 +10613,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10625,7 +10624,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10640,7 +10639,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10651,7 +10650,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10662,7 +10661,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10673,7 +10672,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10688,7 +10687,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10699,7 +10698,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10710,7 +10709,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10721,7 +10720,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10736,7 +10735,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10747,7 +10746,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10758,7 +10757,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10769,7 +10768,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10784,7 +10783,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10795,7 +10794,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10806,7 +10805,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10817,7 +10816,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10832,7 +10831,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10843,7 +10842,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10854,7 +10853,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10865,7 +10864,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10880,7 +10879,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10891,7 +10890,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10902,7 +10901,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10913,7 +10912,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10928,7 +10927,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10939,7 +10938,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10950,7 +10949,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10961,7 +10960,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10976,7 +10975,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10987,7 +10986,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -10998,7 +10997,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11009,7 +11008,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11024,7 +11023,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11035,7 +11034,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11046,7 +11045,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11057,7 +11056,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11072,7 +11071,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11083,7 +11082,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11094,7 +11093,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11105,7 +11104,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11120,7 +11119,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11131,7 +11130,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11142,7 +11141,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11153,7 +11152,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11168,7 +11167,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11179,7 +11178,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11190,7 +11189,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11201,7 +11200,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11216,7 +11215,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11227,7 +11226,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11238,7 +11237,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11249,7 +11248,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11264,7 +11263,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11275,7 +11274,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11286,7 +11285,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11297,7 +11296,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11312,7 +11311,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11323,7 +11322,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11334,7 +11333,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11345,7 +11344,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11360,7 +11359,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11371,7 +11370,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11382,7 +11381,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11393,7 +11392,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11408,7 +11407,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11419,7 +11418,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11430,7 +11429,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11441,7 +11440,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11456,7 +11455,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11467,7 +11466,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11478,7 +11477,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11489,7 +11488,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11504,7 +11503,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11515,7 +11514,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11526,7 +11525,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11537,7 +11536,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_FormAndOpeningOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11552,7 +11551,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11563,7 +11562,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11574,7 +11573,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11585,7 +11584,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11600,7 +11599,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11611,7 +11610,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11622,7 +11621,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11633,7 +11632,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11648,7 +11647,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11659,7 +11658,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11670,7 +11669,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11681,7 +11680,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11696,7 +11695,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11707,7 +11706,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11718,7 +11717,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11729,7 +11728,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11744,7 +11743,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11755,7 +11754,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11766,7 +11765,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11777,7 +11776,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11792,7 +11791,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11803,7 +11802,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11814,7 +11813,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11825,7 +11824,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11840,7 +11839,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11851,7 +11850,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11862,7 +11861,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11873,7 +11872,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11888,7 +11887,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11899,7 +11898,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11910,7 +11909,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11921,7 +11920,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11936,7 +11935,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11947,7 +11946,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11958,7 +11957,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11969,7 +11968,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11984,7 +11983,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -11995,7 +11994,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12006,7 +12005,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12017,7 +12016,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12032,7 +12031,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12043,7 +12042,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12054,7 +12053,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12065,7 +12064,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12080,7 +12079,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12091,7 +12090,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12102,7 +12101,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12113,7 +12112,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12128,7 +12127,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12139,7 +12138,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12150,7 +12149,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12161,7 +12160,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12176,7 +12175,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12187,7 +12186,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12198,7 +12197,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12209,7 +12208,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12224,7 +12223,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12235,7 +12234,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12246,7 +12245,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12257,7 +12256,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12272,7 +12271,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12283,7 +12282,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12294,7 +12293,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12305,7 +12304,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12320,7 +12319,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12331,7 +12330,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12342,7 +12341,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12353,7 +12352,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12368,7 +12367,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12379,7 +12378,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12390,7 +12389,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12401,7 +12400,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12416,7 +12415,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12427,7 +12426,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12438,7 +12437,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12449,7 +12448,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12464,7 +12463,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12475,7 +12474,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12486,7 +12485,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12497,7 +12496,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_TurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12512,7 +12511,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12523,7 +12522,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12534,7 +12533,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12545,7 +12544,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12560,7 +12559,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12571,7 +12570,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12582,7 +12581,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12593,7 +12592,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12608,7 +12607,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12619,7 +12618,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12630,7 +12629,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12641,7 +12640,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12656,7 +12655,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12667,7 +12666,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12678,7 +12677,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12689,7 +12688,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12704,7 +12703,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12715,7 +12714,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12726,7 +12725,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12737,7 +12736,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12752,7 +12751,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12763,7 +12762,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12774,7 +12773,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12785,7 +12784,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12800,7 +12799,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12811,7 +12810,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12822,7 +12821,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12833,7 +12832,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12848,7 +12847,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12859,7 +12858,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12870,7 +12869,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12881,7 +12880,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12896,7 +12895,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12907,7 +12906,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12918,7 +12917,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12929,7 +12928,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12944,7 +12943,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12955,7 +12954,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12966,7 +12965,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12977,7 +12976,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -12992,7 +12991,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13003,7 +13002,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13014,7 +13013,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13025,7 +13024,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13040,7 +13039,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13051,7 +13050,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13062,7 +13061,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13073,7 +13072,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13088,7 +13087,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13099,7 +13098,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13110,7 +13109,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13121,7 +13120,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13136,7 +13135,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13147,7 +13146,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13158,7 +13157,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13169,7 +13168,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13184,7 +13183,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13195,7 +13194,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13206,7 +13205,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13217,7 +13216,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13232,7 +13231,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13243,7 +13242,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13254,7 +13253,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13265,7 +13264,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13280,7 +13279,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13291,7 +13290,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13302,7 +13301,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13313,7 +13312,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13328,7 +13327,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13339,7 +13338,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13350,7 +13349,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13361,7 +13360,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13376,7 +13375,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13387,7 +13386,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13398,7 +13397,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13409,7 +13408,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13424,7 +13423,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13435,7 +13434,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13446,7 +13445,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13457,7 +13456,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_FormAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13472,7 +13471,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13483,7 +13482,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13494,7 +13493,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13505,7 +13504,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13520,7 +13519,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13531,7 +13530,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13542,7 +13541,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13553,7 +13552,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13568,7 +13567,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13579,7 +13578,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13590,7 +13589,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13601,7 +13600,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13616,7 +13615,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13627,7 +13626,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13638,7 +13637,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13649,7 +13648,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13664,7 +13663,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13675,7 +13674,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13686,7 +13685,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13697,7 +13696,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13712,7 +13711,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13723,7 +13722,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13734,7 +13733,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13745,7 +13744,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13760,7 +13759,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13771,7 +13770,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13782,7 +13781,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13793,7 +13792,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13808,7 +13807,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13819,7 +13818,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13830,7 +13829,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13841,7 +13840,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13856,7 +13855,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13867,7 +13866,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13878,7 +13877,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13889,7 +13888,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13904,7 +13903,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13915,7 +13914,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13926,7 +13925,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13937,7 +13936,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13952,7 +13951,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13963,7 +13962,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13974,7 +13973,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -13985,7 +13984,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14000,7 +13999,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14011,7 +14010,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14022,7 +14021,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14033,7 +14032,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14048,7 +14047,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14059,7 +14058,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14070,7 +14069,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14081,7 +14080,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14096,7 +14095,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14107,7 +14106,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14118,7 +14117,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14129,7 +14128,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14144,7 +14143,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14155,7 +14154,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14166,7 +14165,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14177,7 +14176,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14192,7 +14191,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14203,7 +14202,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14214,7 +14213,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14225,7 +14224,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14240,7 +14239,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14251,7 +14250,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14262,7 +14261,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14273,7 +14272,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14288,7 +14287,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14299,7 +14298,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14310,7 +14309,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14321,7 +14320,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14336,7 +14335,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14347,7 +14346,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14358,7 +14357,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14369,7 +14368,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14384,7 +14383,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14395,7 +14394,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14406,7 +14405,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14417,7 +14416,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_OpeningAndTurnoverOption_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14432,7 +14431,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14443,7 +14442,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14454,7 +14453,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14465,7 +14464,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14480,7 +14479,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14491,7 +14490,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14502,7 +14501,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14513,7 +14512,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14528,7 +14527,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14539,7 +14538,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14550,7 +14549,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14561,7 +14560,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14576,7 +14575,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14587,7 +14586,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14598,7 +14597,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14609,7 +14608,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14624,7 +14623,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14635,7 +14634,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14646,7 +14645,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14657,7 +14656,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14672,7 +14671,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14683,7 +14682,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14694,7 +14693,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14705,7 +14704,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14720,7 +14719,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14731,7 +14730,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14742,7 +14741,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14753,7 +14752,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14768,7 +14767,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14779,7 +14778,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14790,7 +14789,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14801,7 +14800,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14816,7 +14815,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14827,7 +14826,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14838,7 +14837,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14849,7 +14848,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14864,7 +14863,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14875,7 +14874,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14886,7 +14885,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14897,7 +14896,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_NoGrouping_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14912,7 +14911,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14923,7 +14922,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14934,7 +14933,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14945,7 +14944,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14960,7 +14959,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14971,7 +14970,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14982,7 +14981,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -14993,7 +14992,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15008,7 +15007,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15019,7 +15018,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15030,7 +15029,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15041,7 +15040,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15056,7 +15055,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15067,7 +15066,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15078,7 +15077,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15089,7 +15088,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15104,7 +15103,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15115,7 +15114,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15126,7 +15125,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15137,7 +15136,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentBranch_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15152,7 +15151,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15163,7 +15162,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15174,7 +15173,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15185,7 +15184,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_CheckedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15200,7 +15199,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15211,7 +15210,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15222,7 +15221,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15233,7 +15232,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_FinalizedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15248,7 +15247,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15259,7 +15258,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15270,7 +15269,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15281,7 +15280,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ConfirmedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15296,7 +15295,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15307,7 +15306,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15318,7 +15317,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15329,7 +15328,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_ApprovedVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15344,7 +15343,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.TwoColumn);
+                TestBalanceFormat.TwoColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15355,7 +15354,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.FourColumn);
+                TestBalanceFormat.FourColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15366,7 +15365,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.SixColumn);
+                TestBalanceFormat.SixColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);
@@ -15377,7 +15376,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             // Arrange & Act
             var balance = await GetLevelBalance_AllVouchers_CurrentAndChildren_ByBranch_AllOptions_NoFilterSort(
-                TestBalanceFormat.EightColumn);
+                TestBalanceFormat.EightColumn, false);
 
             // Assert
             Assert.That(balance, Is.Not.Null);

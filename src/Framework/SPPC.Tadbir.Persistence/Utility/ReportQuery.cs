@@ -33,13 +33,14 @@ namespace SPPC.Tadbir.Persistence
                     .Replace("OriginID", "v.OriginID")
                     .Replace("SubjectType", "v.SubjectType")
                     .Replace("Reference = '", "v.Reference = N'")
+                    .Replace("BranchId", "BranchID")
+                    .Replace("BranchID", "vl.BranchID")
+                    .Replace("v.Date", "CAST(v.Date AS date)")
                     .Replace('"', '\'')
                     .Replace("== null", " IS NULL")
                     .Replace("!= null", " IS NOT NULL")
                     .Replace("==", "=")
                     .Replace("!=", "<>")
-                    .Replace("BranchId", "BranchID")
-                    .Replace("BranchID", "vl.BranchID")
                     .Replace("&&", "AND")
                     .Replace("||", "OR");
             }

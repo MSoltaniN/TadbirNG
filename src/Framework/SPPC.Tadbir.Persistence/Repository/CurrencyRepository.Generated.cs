@@ -53,6 +53,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(item => Mapper.Map<CurrencyViewModel>(item))
                     .ToListAsync();
                 await UpdateInactiveCurrenciesAsync(currencies);
+                Array.ForEach(currencies.ToArray(), curr => Localize(curr));
             }
 
             await ReadAsync(gridOptions);
@@ -74,6 +75,7 @@ namespace SPPC.Tadbir.Persistence
                 item = Mapper.Map<CurrencyViewModel>(currency);
                 var inactiveIds = await GetInactiveCurrencyIdsAsync();
                 item.IsActive = !inactiveIds.Contains(item.Id);
+                Localize(item);
             }
 
             return item;
@@ -92,6 +94,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(curr => curr.Currency.NameKey == nameKey)
                 .Select(curr => Mapper.Map<CurrencyViewModel>(curr))
                 .FirstOrDefault();
+            Localize(currency);
             return currency;
         }
 
@@ -449,6 +452,12 @@ namespace SPPC.Tadbir.Persistence
                 .Where(curr => curr.FiscalPeriodId == UserContext.FiscalPeriodId)
                 .Select(curr => curr.CurrencyId)
                 .ToListAsync();
+        }
+
+        private void Localize(CurrencyViewModel currency)
+        {
+            currency.Name = Context.Localize(currency.Name);
+            currency.MinorUnit = Context.Localize(currency.MinorUnit);
         }
 
         private readonly ISystemRepository _system;

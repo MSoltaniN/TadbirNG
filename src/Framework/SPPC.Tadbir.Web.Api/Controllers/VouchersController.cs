@@ -1716,14 +1716,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok(notValidated);
         }
 
-        private void Localize(IEnumerable<VoucherViewModel> vouchers)
-        {
-            foreach (var voucher in vouchers)
-            {
-                Localize(voucher);
-            }
-        }
-
         private void Localize(VoucherViewModel voucher)
         {
             if (voucher != null)
@@ -1756,7 +1748,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var repository = GetVoucherRepository();
             var vouchers = await repository.GetVouchersAsync(GridOptions);
-            Localize(vouchers.Items);
             return JsonListResult(vouchers);
         }
 

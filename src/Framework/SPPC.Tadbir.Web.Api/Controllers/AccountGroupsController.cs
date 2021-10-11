@@ -54,7 +54,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountGroupsAsync()
         {
             var accountGroups = await _repository.GetAccountGroupsAsync(GridOptions);
-            Localize(accountGroups.Items);
             return JsonListResult(accountGroups);
         }
 
@@ -70,11 +69,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountGroupAsync(int groupId)
         {
             var accountGroup = await _repository.GetAccountGroupAsync(groupId);
-            if (accountGroup != null)
-            {
-                Localize(accountGroup);
-            }
-
             return JsonReadResult(accountGroup);
         }
 
@@ -231,19 +225,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
-        }
-
-        private void Localize(IEnumerable<AccountGroupViewModel> accountGroups)
-        {
-            foreach (var accountGroup in accountGroups)
-            {
-                Localize(accountGroup);
-            }
-        }
-
-        private void Localize(AccountGroupViewModel accountGroup)
-        {
-            accountGroup.Category = _strings[accountGroup.Category];
         }
 
         private readonly IAccountGroupRepository _repository;

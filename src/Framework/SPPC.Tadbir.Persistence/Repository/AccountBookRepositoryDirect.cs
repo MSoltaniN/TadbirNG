@@ -150,7 +150,7 @@ namespace SPPC.Tadbir.Persistence
 
         private static string GetSummaryQuery(bool byNo, bool byBranch)
         {
-            string query = String.Empty;
+            string query;
             if (byNo)
             {
                 query = byBranch ? BookQuery.VoucherSumByBranch : BookQuery.VoucherSum;
@@ -237,13 +237,8 @@ namespace SPPC.Tadbir.Persistence
                 _utility.GetItemName(parameters.ViewId), _utility.GetFieldName(parameters.ViewId),
                 parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
                 fullCode));
-            var filterBuilder = new StringBuilder(_utility.GetEnvironmentFilters(parameters.GridOptions));
-            if (parameters.GridOptions.Filter != null)
-            {
-                filterBuilder.AppendFormat(" AND {0}", _utility.GetColumnFilters(parameters.GridOptions));
-            }
 
-            query.SetFilter(filterBuilder.ToString());
+            query.SetFilter(_utility.GetEnvironmentFilters(parameters.GridOptions));
             var result = DbConsole.ExecuteQuery(query.Query);
             items.AddRange(result.Rows
                 .Cast<DataRow>()
@@ -265,7 +260,7 @@ namespace SPPC.Tadbir.Persistence
             var bookItems = GetQueryResult(fullCode, bookQuery, parameters, byNo);
             foreach (var item in bookItems)
             {
-                item.Description = AppStrings.AsQuotedInJournal;
+                item.Description = Context.Localize(AppStrings.AsQuotedInJournal);
             }
 
             items.AddRange(bookItems);
@@ -309,6 +304,11 @@ namespace SPPC.Tadbir.Persistence
 
             items.AddRange(GetQueryResult(fullCode, VoucherOriginId.ClosingTempAccounts, parameters));
             items.AddRange(GetQueryResult(fullCode, VoucherOriginId.ClosingVoucher, parameters));
+            foreach (var item in items)
+            {
+                item.Description = Context.Localize(item.Description);
+            }
+
             PrepareAccountBook(book, items, parameters.GridOptions);
             return book;
         }
@@ -380,8 +380,7 @@ namespace SPPC.Tadbir.Persistence
             string bookQuery, AccountBookParameters parameters)
         {
             var query = new ReportQuery(bookQuery);
-            query.SetFilter(_utility.GetEnvironmentFilters(
-                parameters.GridOptions, UserContext.FiscalPeriodId));
+            query.SetFilter(_utility.GetEnvironmentFilters(parameters.GridOptions));
             var result = DbConsole.ExecuteQuery(query.Query);
             return result.Rows
                 .Cast<DataRow>()
@@ -421,7 +420,7 @@ namespace SPPC.Tadbir.Persistence
                 {
                     Balance = _utility.ValueOrDefault<decimal>(result.Rows[0], "Balance"),
                     BranchName = UserContext.BranchName,
-                    Description = AppStrings.InitialBalance,
+                    Description = Context.Localize(AppStrings.InitialBalance),
                     RowNo = 1,
                     VoucherDate = parameters.FromDate
                 };
