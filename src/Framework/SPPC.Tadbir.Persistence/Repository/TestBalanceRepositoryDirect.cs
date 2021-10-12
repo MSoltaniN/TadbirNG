@@ -4,9 +4,11 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -29,6 +31,7 @@ namespace SPPC.Tadbir.Persistence
             IReportDirectUtility utility)
             : base(context, system.Logger)
         {
+            _system = system;
             _utility = utility;
         }
 
@@ -56,14 +59,14 @@ namespace SPPC.Tadbir.Persistence
                 ReportQuery query;
                 while (index < level)
                 {
-                    length = _utility.GetLevelCodeLength(parameters.ViewId, index);
+                    length = Config.GetLevelCodeLength(parameters.ViewId, index);
                     filter = String.Format("acc.Level == {0}", index);
                     query = await GetEndBalanceQueryAync(length, parameters, filter);
                     items.AddRange(GetQueryResult(query));
                     index++;
                 }
 
-                length = _utility.GetLevelCodeLength(parameters.ViewId, level);
+                length = Config.GetLevelCodeLength(parameters.ViewId, level);
                 filter = String.Format("acc.Level >= {0}", level);
                 query = await GetEndBalanceQueryAync(length, parameters, filter);
                 items.AddRange(GetQueryResult(query));
@@ -113,7 +116,7 @@ namespace SPPC.Tadbir.Persistence
                     var items = new List<TestBalanceItemViewModel>();
                     int level = accountItem.Level + 1;
                     var filter = String.Format("acc.Level >= {0} AND acc.FullCode LIKE '{1}%'", level, accountItem.FullCode);
-                    int length = _utility.GetLevelCodeLength(parameters.ViewId, level);
+                    int length = Config.GetLevelCodeLength(parameters.ViewId, level);
                     var query = await GetEndBalanceQueryAync(length, parameters, filter);
                     items.AddRange(GetQueryResult(query));
 
@@ -152,8 +155,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IEnumerable<TestBalanceModeInfo>> GetBalanceTypesLookupAsync(int viewId)
         {
             var lookup = new List<TestBalanceModeInfo>();
-            lookup.AddRange(await _utility.GetLevelBalanceTypesAsync(viewId));
-            lookup.AddRange(await _utility.GetChildBalanceTypesAsync(viewId));
+            lookup.AddRange(await GetLevelBalanceTypesAsync(viewId));
+            lookup.AddRange(await GetChildBalanceTypesAsync(viewId));
             return lookup;
         }
 
@@ -213,6 +216,11 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return parameters;
+        }
+
+        private IConfigRepository Config
+        {
+            get { return _system.Config; }
         }
 
         private static int GetSourceList(TestBalanceFormat format, string itemTypeName)
@@ -361,6 +369,94 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private async Task<IEnumerable<TestBalanceModeInfo>> GetLevelBalanceTypesAsync(int viewId)
+        {
+            var lookup = new List<TestBalanceModeInfo>();
+            var fullConfig = await Config.GetViewTreeConfigByViewAsync(viewId);
+            var usedLevels = fullConfig.Current
+                .Levels
+                .Where(level => level.IsEnabled && level.IsUsed)
+                .ToList();
+            int typeId = 0;
+            for (int index = 0; index < usedLevels.Count; index++)
+            {
+                lookup.Add(new TestBalanceModeInfo()
+                {
+                    Id = typeId++,
+                    Name = usedLevels[index].Name,
+                    Level = usedLevels[index].No,
+                    IsDetail = false
+                });
+            }
+
+            return lookup;
+        }
+
+        private async Task<IEnumerable<TestBalanceModeInfo>> GetChildBalanceTypesAsync()
+        {
+            var lookup = new List<TestBalanceModeInfo>();
+            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewId.Account);
+            var usedLevels = fullConfig.Current
+                .Levels
+                .Where(level => level.IsEnabled && level.IsUsed)
+                .ToList();
+            int typeId = 0;
+            lookup.Add(new TestBalanceModeInfo()
+            {
+                Id = typeId++,
+                Name = "SubsidiariesOfLedger",
+                Level = 2,
+                IsDetail = true
+            });
+            lookup.Add(new TestBalanceModeInfo()
+            {
+                Id = typeId++,
+                Name = "DetailsOfSubsidiary",
+                Level = 3,
+                IsDetail = true
+            });
+            for (int index = 2; index < usedLevels.Count - 1; index++)
+            {
+                lookup.Add(new TestBalanceModeInfo()
+                {
+                    Id = typeId++,
+                    Name = usedLevels[index].Name,
+                    Level = usedLevels[index].No + 1,
+                    IsDetail = true
+                });
+            }
+
+            return lookup;
+        }
+
+        private async Task<IEnumerable<TestBalanceModeInfo>> GetChildBalanceTypesAsync(int viewId)
+        {
+            if (viewId == ViewId.Account)
+            {
+                return await GetChildBalanceTypesAsync();
+            }
+
+            var lookup = new List<TestBalanceModeInfo>();
+            var fullConfig = await Config.GetViewTreeConfigByViewAsync(viewId);
+            var usedLevels = fullConfig.Current
+                .Levels
+                .Where(level => level.IsEnabled && level.IsUsed)
+                .ToList();
+            int typeId = usedLevels.Count;
+            for (int index = 0; index < usedLevels.Count - 1; index++)
+            {
+                lookup.Add(new TestBalanceModeInfo()
+                {
+                    Id = typeId++,
+                    Name = usedLevels[index].Name,
+                    Level = usedLevels[index].No + 1,
+                    IsDetail = true
+                });
+            }
+
+            return lookup;
+        }
+
         private async Task<List<TestBalanceItemViewModel>> ApplyZeroBalanceOptionAsync(
             IEnumerable<TestBalanceItemViewModel> items, TestBalanceParameters parameters, int level)
         {
@@ -368,7 +464,7 @@ namespace SPPC.Tadbir.Persistence
             if ((parameters.Options & FinanceReportOptions.ShowZeroBalanceItems) > 0)
             {
                 newItems = items.Concat(
-                    await _utility.GetZeroBalanceItemsAsync(parameters.ViewId, items, level));
+                    await GetZeroBalanceItemsAsync(parameters.ViewId, items, level));
             }
             else
             {
@@ -380,6 +476,62 @@ namespace SPPC.Tadbir.Persistence
             return newItems
                 .OrderBy(item => item.AccountFullCode)
                 .ToList();
+        }
+
+        private async Task<IEnumerable<TestBalanceItemViewModel>> GetZeroBalanceItemsAsync(
+            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level)
+        {
+            var zeroItems = new List<TestBalanceItemViewModel>();
+            var notUsed = await GetNotUsedItemsAsync(viewId, items, level);
+            foreach (var notUsedItem in notUsed)
+            {
+                zeroItems.Add(new TestBalanceItemViewModel()
+                {
+                    AccountFullCode = notUsedItem.FullCode,
+                    DetailAccountFullCode = notUsedItem.FullCode,
+                    CostCenterFullCode = notUsedItem.FullCode,
+                    ProjectFullCode = notUsedItem.FullCode,
+                    BranchName = notUsedItem.Branch.Name
+                });
+            }
+
+            return zeroItems;
+        }
+
+        private async Task<IEnumerable<TreeEntity>> GetNotUsedItemsAsync(
+            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level)
+        {
+            IEnumerable<TreeEntity> notUsed = null;
+            switch (viewId)
+            {
+                case ViewId.Account:
+                    notUsed = await GetNotUsedItemsAsync<Account>(viewId, items, level);
+                    break;
+                case ViewId.DetailAccount:
+                    notUsed = await GetNotUsedItemsAsync<DetailAccount>(viewId, items, level);
+                    break;
+                case ViewId.CostCenter:
+                    notUsed = await GetNotUsedItemsAsync<CostCenter>(viewId, items, level);
+                    break;
+                case ViewId.Project:
+                    notUsed = await GetNotUsedItemsAsync<Project>(viewId, items, level);
+                    break;
+            }
+
+            return notUsed;
+        }
+
+        private async Task<IEnumerable<T>> GetNotUsedItemsAsync<T>(
+            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level)
+            where T : TreeEntity
+        {
+            var repository = _system.Repository;
+            var usedCodes = items
+                .Select(item => item.AccountFullCode);
+            return await repository
+                .GetAllQuery<T>(viewId, tree => tree.Branch)
+                .Where(tree => !usedCodes.Contains(tree.FullCode) && tree.Level == level)
+                .ToListAsync();
         }
 
         private void PrepareBalance(
@@ -794,13 +946,13 @@ namespace SPPC.Tadbir.Persistence
                 if (startAsInit)
                 {
                     startPredicate = isByDate
-                        ? String.Format("{0} > '{1}'", DateExp, parameters.FromDate.Value.ToShortDateString(false))
+                        ? String.Format("v.Date > '{0}'", parameters.FromDate.Value.ToShortDateString(false))
                         : String.Format("v.No > {0}", parameters.FromNo.Value);
                 }
                 else
                 {
                     startPredicate = isByDate
-                        ? String.Format("{0} >= '{1}'", DateExp, parameters.FromDate.Value.ToShortDateString(false))
+                        ? String.Format("v.Date >= '{0}'", parameters.FromDate.Value.ToShortDateString(false))
                         : String.Format("v.No >= {0}", parameters.FromNo.Value);
                 }
 
@@ -819,12 +971,12 @@ namespace SPPC.Tadbir.Persistence
             bool isByDate = parameters.FromDate.HasValue && parameters.ToDate.HasValue;
 
             string datePredicate = isByDate
-                ? String.Format("{0} < '{1}'", DateExp, parameters.FromDate.Value.ToShortDateString(false))
+                ? String.Format("v.Date < '{0}'", parameters.FromDate.Value.ToShortDateString(false))
                 : String.Format("v.No < {0}", parameters.FromNo.Value);
             if (startAsInit)
             {
                 datePredicate = isByDate
-                    ? String.Format("{0} <= '{1}'", DateExp, parameters.FromDate.Value.ToShortDateString(false))
+                    ? String.Format("v.Date <= '{0}'", parameters.FromDate.Value.ToShortDateString(false))
                     : String.Format("v.No <= {0}", parameters.FromNo.Value);
             }
 
@@ -832,7 +984,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 datePredicate = isByDate
                     ? String.Format(
-                        "({0} < '{1}' OR ({0} >= '{1}' AND OriginID = {2}))", DateExp,
+                        "(v.Date < '{0}' OR (v.Date >= '{0}' AND OriginID = {1}))",
                         parameters.FromDate.Value.ToShortDateString(false),
                         (int)VoucherOriginId.OpeningVoucher)
                     : String.Format(
@@ -842,7 +994,7 @@ namespace SPPC.Tadbir.Persistence
                 {
                     datePredicate = isByDate
                         ? String.Format(
-                            "({0} <= '{1}' OR ({0} > '{1}' AND OriginID = {2}))", DateExp,
+                            "(v.Date <= '{0}' OR (v.Date > '{0}' AND OriginID = {1}))",
                             parameters.FromDate.Value.ToShortDateString(false),
                             (int)VoucherOriginId.OpeningVoucher)
                         : String.Format(
@@ -880,7 +1032,7 @@ namespace SPPC.Tadbir.Persistence
             return predicates;
         }
 
-        private const string DateExp = "CAST(v.Date AS date)";
+        private readonly ISystemRepository _system;
         private readonly IReportDirectUtility _utility;
         private delegate TestBalanceItemViewModel MergeByCodeFunction(
             TestBalanceItemViewModel item, Dictionary<string, VoucherLineAmountsViewModel> itemMap,

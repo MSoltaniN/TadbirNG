@@ -67,11 +67,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCurrenciesAsync()
         {
             var currencies = await _repository.GetCurrenciesAsync(GridOptions);
-            foreach (var currency in currencies.Items)
-            {
-                Localize(currency);
-            }
-
             return JsonListResult(currencies);
         }
 
@@ -87,7 +82,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCurrencyAsync(int currencyId)
         {
             var currency = await _repository.GetCurrencyAsync(currencyId);
-            Localize(currency);
             return JsonReadResult(currency);
         }
 
@@ -135,7 +129,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var currency = _repository.GetCurrencyByName(path, nameKey);
             if (currency != null)
             {
-                Localize(currency);
                 currency.BranchId = SecurityContext.User.BranchId;
                 currency.BranchName = SecurityContext.User.BranchName;
             }
@@ -548,12 +541,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
-        }
-
-        private void Localize(CurrencyViewModel currency)
-        {
-            currency.Name = _strings[currency.Name];
-            currency.MinorUnit = _strings[currency.MinorUnit];
         }
 
         private string GetLocalCurrencyDbPath()

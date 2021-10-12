@@ -14,7 +14,7 @@ FROM [Finance].[Voucher] v
     INNER JOIN [Core].[DocumentStatus] st ON v.StatusID = st.StatusID
     INNER JOIN [Finance].[VoucherOrigin] vo ON v.OriginID = vo.OriginID
 WHERE {0}
-ORDER BY v.Date, v.No";
+ORDER BY {1}";
 
         internal const string BalanceByItemsByCurrency = @"
 SELECT vl.DetailID, vl.CostCenterID, vl.ProjectID, vl.CurrencyID, SUM(COALESCE(vl.CurrencyValue, 0)) AS CurrencyValueSum, SUM(vl.Debit - vl.Credit) AS Balance

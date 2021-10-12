@@ -1,7 +1,7 @@
 ﻿using System;
 using SPPC.Framework.Presentation;
 
-namespace SPPC.Tadbir.Tests
+namespace SPPC.Tadbir.Persistence.Tests
 {
     public class OptionsBuilder
     {

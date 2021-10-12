@@ -3,11 +3,10 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.ViewModel.Reporting;
 
-namespace SPPC.Tadbir.Tests.Repository
+namespace SPPC.Tadbir.Persistence.Tests
 {
     [TestFixture]
     [Category("RepositorySmokeTest")]
@@ -8439,7 +8438,7 @@ namespace SPPC.Tadbir.Tests.Repository
         {
             var repoContext = GetRepositoryContext();
             var sysRepo = GetSystemRepository(repoContext);
-            var utility = new ReportDirectUtility(repoContext, sysRepo);
+            var utility = new ReportDirectUtility(repoContext);
             _repository = new JournalRepositoryDirect(repoContext, sysRepo, utility);
         }
 

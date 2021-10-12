@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
@@ -57,6 +58,7 @@ namespace SPPC.Tadbir.Persistence
                     .GetEntityQuery(u => u.Person)
                     .Select(user => Mapper.Map<UserViewModel>(user))
                     .ToListAsync();
+                users = HandleLoginDateFilter(users, gridOptions);
             }
 
             await ReadAsync(gridOptions);
@@ -559,6 +561,75 @@ namespace SPPC.Tadbir.Persistence
         {
             return command.PermissionId != null
                 && !permissions.Contains(command.PermissionId.Value);
+        }
+
+        private static List<UserViewModel> HandleLoginDateFilter(
+            List<UserViewModel> users, GridOptions gridOptions)
+        {
+            var filtered = users;
+            var filters = gridOptions?.Filter?.GetAllFilters();
+            if (filters != null && filters.Count() > 0)
+            {
+                var dateFilter = filters
+                    .Where(f => f.FieldName == "lastLoginDate")
+                    .FirstOrDefault();
+                if (dateFilter != null)
+                {
+                    filtered = users
+                        .Where(FromGridFilter(dateFilter))
+                        .ToList();
+                    gridOptions.Filter.RemoveFilter(dateFilter);
+                }
+            }
+
+            return filtered;
+        }
+
+        private static Func<UserViewModel, bool> FromGridFilter(GridFilter gridFilter)
+        {
+            Func<UserViewModel, bool> func = null;
+            DateTime value = DateTime.Now.Parse(gridFilter.Value, false);
+            switch (gridFilter.Operator)
+            {
+                case GridFilterOperator.IsEqualTo:
+                    func = user => user.LastLoginDate.HasValue
+                        && (value.TimeOfDay == TimeSpan.Zero
+                            ? user.LastLoginDate.Value.Date == value.Date
+                            : user.LastLoginDate.Value == value);
+                    break;
+                case GridFilterOperator.IsNotEqualTo:
+                    func = user => user.LastLoginDate.HasValue
+                        && (value.TimeOfDay == TimeSpan.Zero
+                            ? user.LastLoginDate.Value.Date != value.Date
+                            : user.LastLoginDate.Value != value);
+                    break;
+                case GridFilterOperator.IsLessThan:
+                    func = user => user.LastLoginDate.HasValue
+                        && (value.TimeOfDay == TimeSpan.Zero
+                            ? user.LastLoginDate.Value.Date < value.Date
+                            : user.LastLoginDate.Value < value);
+                    break;
+                case GridFilterOperator.IsLessOrEqualTo:
+                    func = user => user.LastLoginDate.HasValue
+                        && (value.TimeOfDay == TimeSpan.Zero
+                            ? user.LastLoginDate.Value.Date <= value.Date
+                            : user.LastLoginDate.Value <= value);
+                    break;
+                case GridFilterOperator.IsGreaterThan:
+                    func = user => user.LastLoginDate.HasValue
+                        && (value.TimeOfDay == TimeSpan.Zero
+                            ? user.LastLoginDate.Value.Date > value.Date
+                            : user.LastLoginDate.Value > value);
+                    break;
+                case GridFilterOperator.IsGreaterOrEqualTo:
+                    func = user => user.LastLoginDate.HasValue
+                        && (value.TimeOfDay == TimeSpan.Zero
+                            ? user.LastLoginDate.Value.Date >= value.Date
+                            : user.LastLoginDate.Value >= value);
+                    break;
+            }
+
+            return func;
         }
 
         private void AddNewRoles(

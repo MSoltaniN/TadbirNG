@@ -6,13 +6,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Utility
 {
@@ -25,11 +23,9 @@ namespace SPPC.Tadbir.Persistence.Utility
         ///
         /// </summary>
         /// <param name="context"></param>
-        /// <param name="system"></param>
-        public ReportDirectUtility(IRepositoryContext context, ISystemRepository system)
+        public ReportDirectUtility(IRepositoryContext context)
             : base(context)
         {
-            _system = system;
         }
 
         /// <summary>
@@ -77,35 +73,6 @@ namespace SPPC.Tadbir.Persistence.Utility
             }
 
             return fieldName;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        public int GetLevelCodeLength(int level)
-        {
-            return GetLevelCodeLength(ViewId.Account, level);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="viewId"></param>
-        /// <param name="level"></param>
-        /// <returns></returns>
-        public int GetLevelCodeLength(int viewId, int level)
-        {
-            var fullConfig = Config
-                .GetViewTreeConfigByViewAsync(viewId)
-                .Result;
-            var treeConfig = fullConfig.Current;
-            int codeLength = treeConfig.Levels
-                .Where(cfg => cfg.No <= level + 1)
-                .Select(cfg => (int)cfg.CodeLength)
-                .Sum();
-            return codeLength;
         }
 
         /// <summary>
@@ -222,136 +189,6 @@ namespace SPPC.Tadbir.Persistence.Utility
             }
 
             return value;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، فهرست سطوح قابل استفاده برای گزارشگیری را
-        /// برای مولفه حساب داده شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="viewId">شناسه مولفه حساب</param>
-        /// <returns>فهرست سطوح قابل استفاده</returns>
-        public async Task<IEnumerable<TestBalanceModeInfo>> GetLevelBalanceTypesAsync(int viewId)
-        {
-            var lookup = new List<TestBalanceModeInfo>();
-            var fullConfig = await Config.GetViewTreeConfigByViewAsync(viewId);
-            var usedLevels = fullConfig.Current
-                .Levels
-                .Where(level => level.IsEnabled && level.IsUsed)
-                .ToList();
-            int typeId = 0;
-            for (int index = 0; index < usedLevels.Count; index++)
-            {
-                lookup.Add(new TestBalanceModeInfo()
-                {
-                    Id = typeId++,
-                    Name = usedLevels[index].Name,
-                    Level = usedLevels[index].No,
-                    IsDetail = false
-                });
-            }
-
-            return lookup;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، فهرست سطوح زیرمجموعه قابل انتخاب برای گزارشگیری را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>فهرست سطوح زیرمجموعه قابل انتخاب</returns>
-        public async Task<IEnumerable<TestBalanceModeInfo>> GetChildBalanceTypesAsync()
-        {
-            var lookup = new List<TestBalanceModeInfo>();
-            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewId.Account);
-            var usedLevels = fullConfig.Current
-                .Levels
-                .Where(level => level.IsEnabled && level.IsUsed)
-                .ToList();
-            int typeId = 0;
-            lookup.Add(new TestBalanceModeInfo()
-            {
-                Id = typeId++,
-                Name = "SubsidiariesOfLedger",
-                Level = 2,
-                IsDetail = true
-            });
-            lookup.Add(new TestBalanceModeInfo()
-            {
-                Id = typeId++,
-                Name = "DetailsOfSubsidiary",
-                Level = 3,
-                IsDetail = true
-            });
-            for (int index = 2; index < usedLevels.Count - 1; index++)
-            {
-                lookup.Add(new TestBalanceModeInfo()
-                {
-                    Id = typeId++,
-                    Name = usedLevels[index].Name,
-                    Level = usedLevels[index].No + 1,
-                    IsDetail = true
-                });
-            }
-
-            return lookup;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، فهرست سطوح زیرمجموعه قابل انتخاب برای گزارشگیری را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="viewId">شناسه مولفه حساب</param>
-        /// <returns>فهرست سطوح زیرمجموعه قابل انتخاب</returns>
-        public async Task<IEnumerable<TestBalanceModeInfo>> GetChildBalanceTypesAsync(int viewId)
-        {
-            if (viewId == ViewId.Account)
-            {
-                return await GetChildBalanceTypesAsync();
-            }
-
-            var lookup = new List<TestBalanceModeInfo>();
-            var fullConfig = await Config.GetViewTreeConfigByViewAsync(viewId);
-            var usedLevels = fullConfig.Current
-                .Levels
-                .Where(level => level.IsEnabled && level.IsUsed)
-                .ToList();
-            int typeId = usedLevels.Count;
-            for (int index = 0; index < usedLevels.Count - 1; index++)
-            {
-                lookup.Add(new TestBalanceModeInfo()
-                {
-                    Id = typeId++,
-                    Name = usedLevels[index].Name,
-                    Level = usedLevels[index].No + 1,
-                    IsDetail = true
-                });
-            }
-
-            return lookup;
-        }
-
-        /// <summary>
-        /// سطرهای بدون مانده و گردش را با توجه به سطرهای داده شده برای گزارش خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="viewId">شناسه مولفه حساب مورد نظر</param>
-        /// <param name="items">سطرهای داده شده برای گزارش</param>
-        /// <param name="level">سطح گزارشگیری مورد نظر</param>
-        /// <returns>سطرهای بدون مانده و گردش</returns>
-        public async Task<IEnumerable<TestBalanceItemViewModel>> GetZeroBalanceItemsAsync(
-            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level)
-        {
-            var zeroItems = new List<TestBalanceItemViewModel>();
-            var notUsed = await GetNotUsedItemsAsync(viewId, items, level);
-            foreach (var notUsedItem in notUsed)
-            {
-                zeroItems.Add(new TestBalanceItemViewModel()
-                {
-                    AccountFullCode = notUsedItem.FullCode,
-                    DetailAccountFullCode = notUsedItem.FullCode,
-                    CostCenterFullCode = notUsedItem.FullCode,
-                    ProjectFullCode = notUsedItem.FullCode,
-                    BranchName = notUsedItem.Branch.Name
-                });
-            }
-
-            return zeroItems;
         }
 
         /// <summary>
@@ -633,11 +470,6 @@ namespace SPPC.Tadbir.Persistence.Utility
             return builder.ToString();
         }
 
-        private IConfigRepository Config
-        {
-            get { return _system.Config; }
-        }
-
         private AccountItemBriefViewModel GetAccountInfo(DataRow row)
         {
             return new AccountItemBriefViewModel()
@@ -646,42 +478,6 @@ namespace SPPC.Tadbir.Persistence.Utility
                 Name = ValueOrDefault(row, "Name"),
                 FullCode = ValueOrDefault(row, "FullCode")
             };
-        }
-
-        private async Task<IEnumerable<TreeEntity>> GetNotUsedItemsAsync(
-            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level)
-        {
-            IEnumerable<TreeEntity> notUsed = null;
-            switch (viewId)
-            {
-                case ViewId.Account:
-                    notUsed = await GetNotUsedItemsAsync<Account>(viewId, items, level);
-                    break;
-                case ViewId.DetailAccount:
-                    notUsed = await GetNotUsedItemsAsync<DetailAccount>(viewId, items, level);
-                    break;
-                case ViewId.CostCenter:
-                    notUsed = await GetNotUsedItemsAsync<CostCenter>(viewId, items, level);
-                    break;
-                case ViewId.Project:
-                    notUsed = await GetNotUsedItemsAsync<Project>(viewId, items, level);
-                    break;
-            }
-
-            return notUsed;
-        }
-
-        private async Task<IEnumerable<T>> GetNotUsedItemsAsync<T>(
-            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level)
-            where T : TreeEntity
-        {
-            var repository = _system.Repository;
-            var usedCodes = items
-                .Select(item => item.AccountFullCode);
-            return await repository
-                .GetAllQuery<T>(viewId, tree => tree.Branch)
-                .Where(tree => !usedCodes.Contains(tree.FullCode) && tree.Level == level)
-                .ToListAsync();
         }
 
         private async Task<T> GetItemAsync<T>(int itemId)
@@ -695,6 +491,5 @@ namespace SPPC.Tadbir.Persistence.Utility
         private const string EndsWithRegex = @"\.EndsWith\('(\w{1,})'\)";
         private const string ContainsRegex = @"\.Contains\('(\w{1,})'\)";
         private const string NotContainsRegex = @"\.IndexOf\('(\w{1,})'\) = -1";
-        private readonly ISystemRepository _system;
     }
 }

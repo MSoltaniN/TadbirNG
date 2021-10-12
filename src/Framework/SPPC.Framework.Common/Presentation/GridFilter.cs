@@ -57,17 +57,24 @@ namespace SPPC.Framework.Presentation
         /// <returns>نمایش متنی برای این نمونه</returns>
         public override string ToString()
         {
-            string fieldName = String.Format("{0}{1}", Char.ToUpper(FieldName[0]), FieldName.Substring(1));
-            string op = OperatorFromFieldType();
-            string toString = !String.IsNullOrEmpty(Value)
-                ? String.Format("{0}{1}", fieldName, String.Format(op, Value.Replace(@"\", @"\\")))
-                : String.Format("{0}{1}", fieldName, Operator);
-            return toString;
+            if (Operator == GridFilterOperator.True)
+            {
+                return GridFilterOperator.True;
+            }
+            else
+            {
+                string fieldName = String.Format("{0}{1}", Char.ToUpper(FieldName[0]), FieldName.Substring(1));
+                string op = OperatorFromFieldType();
+                string toString = !String.IsNullOrEmpty(Value)
+                    ? String.Format("{0}{1}", fieldName, String.Format(op, Value.Replace(@"\", @"\\")))
+                    : String.Format("{0}{1}", fieldName, Operator);
+                return toString;
+            }
         }
 
         private string OperatorFromFieldType()
         {
-            string op = null;
+            string op;
             var quotedTypes = new string[]
             {
                 "System.String", "System.Date", "System.DateTime", "System.TimeSpan"
