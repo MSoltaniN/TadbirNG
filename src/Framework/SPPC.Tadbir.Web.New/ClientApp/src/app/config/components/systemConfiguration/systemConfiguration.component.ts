@@ -163,8 +163,9 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
    * بروز رسانی متادیتا هایی که شامل ستون از نوع تاریخ می باشد
    * */
   updateMetadatas() {
-   
-    for (var entity in Entities) {
+
+    var viewIds = new Array<number>();
+    for (var entity in Entities) {      
       var viewId = parseInt(ViewName[entity]);
       if (viewId > 0) {
         var metadataKey = String.Format(SessionKeys.MetadataKey, viewId.toString(), this.CurrentLanguage);
@@ -173,16 +174,25 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
           metadata.columns.forEach((property) => {
             if (property.scriptType.toLowerCase() == "date") {
               this.bStorageService.removeLocalStorage(metadataKey);
+              viewIds.push(viewId);
               return;
             }
           });
         }        
       }
     }
-    //Object.values(Entities).forEach((entity) => {
-      
-     
-    //});
+
+    this.metadata.getViews().subscribe((res: any) => {
+      var views: Array<any> = res;
+      views.forEach((item) => {        
+        var viewId = item.id;
+        var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '', this.CurrentLanguage);
+        if(viewIds.findIndex(v=>v == viewId) >= 0)
+          this.bStorageService.setMetadata(metaDataName, item);        
+      });
+
+    });
+    
     
   }
 

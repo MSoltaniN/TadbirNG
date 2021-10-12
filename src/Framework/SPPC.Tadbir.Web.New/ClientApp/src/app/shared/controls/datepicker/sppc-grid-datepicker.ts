@@ -130,13 +130,13 @@ export class SppcGridDatepicker implements OnInit, OnDestroy, ControlValueAccess
             if (hiddenElement) {
 
                 //hiddenElement.value = date;
-                var gDate = moment.from(date, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD')
+              var gDate = moment.from(date, this.dateLocale, 'YYYY/MM/DD').format('YYYY/MM/DD')
 
-                hiddenElement.setAttribute('ng-reflect-model', gDate);
+              hiddenElement.setAttribute('ng-reflect-model', gDate);
                     
-                hiddenElement.value = gDate;
-                var eve = new Event('input');
-                hiddenElement.dispatchEvent(eve);
+              hiddenElement.value = gDate;
+              var eve = new Event('input');
+              hiddenElement.dispatchEvent(eve);
             }
             
             
