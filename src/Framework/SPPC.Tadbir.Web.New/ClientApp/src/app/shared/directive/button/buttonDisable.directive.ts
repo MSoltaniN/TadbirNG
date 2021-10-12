@@ -1,6 +1,6 @@
-import { Directive, ElementRef, HostListener, Input } from "@angular/core";;
+import { Directive, ElementRef, HostListener } from "@angular/core";;
 
-@Directive({ selector: 'button.k-button , [kendogridaddcommand] , input[type=button] , type=button' })
+@Directive({ selector: 'button.k-button , button[kendogridaddcommand]' })
 export class SppcButtonDisable {
    
 
