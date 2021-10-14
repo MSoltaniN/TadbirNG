@@ -34,7 +34,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های شرکتی موجود و لاگ های بایگانی شده</returns>
-        Task<PagedList<OperationLogViewModel>> GetMergedLogsAsync(GridOptions gridOptions = null);
+        Task<PagedList<OperationLogViewModel>> GetMergedLogsAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات داده شده برای یک لاگ عملیات شرکتی جدید را ذخیره می کند

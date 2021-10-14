@@ -12,7 +12,7 @@ using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
-namespace SPPC.Tadbir.Persistence.Repository
+namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت کنترل سیستم را تعریف می کند.
