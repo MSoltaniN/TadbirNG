@@ -172,7 +172,7 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
         var metadata = JSON.parse(this.bStorageService.getMetadata(metadataKey));
         if (metadata && metadata.columns) {
           metadata.columns.forEach((property) => {
-            if (property.scriptType.toLowerCase() == "date") {
+            if (property.scriptType.toLowerCase() == "date" || property.scriptType.toLowerCase() == "datetime") {
               this.bStorageService.removeLocalStorage(metadataKey);
               viewIds.push(viewId);
               return;
