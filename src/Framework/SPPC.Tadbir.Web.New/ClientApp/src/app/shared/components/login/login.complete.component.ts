@@ -99,16 +99,16 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
   //#region Methods
 
-  fetchMetaDatas(currentContext:ContextInfo) {
-    var currentLang = this.currentlang;
+  fetchMetaDatas(currentContext:ContextInfo) {    
     var startTime = performance.now()
     this.metadata.getViews().subscribe((res:any) => {
       var views: Array<any> = res;      
       views.forEach((item) => {
         var modifiedDate = item.modifiedDate;
         var viewId = item.id;
-        var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '', currentLang);
-        var metaDataString = this.bStorageService.getMetadata(metaDataName);       
+        var metaDataName = String.Format(SessionKeys.MetadataKey, viewId ? viewId.toString() : '', this.CurrentLanguage);
+        var metaDataString = this.bStorageService.getMetadata(metaDataName);
+        let oldMetadataColumns: Array<any>;
         if (metaDataString) {
           var metaData = JSON.parse(metaDataString);
           var oldModifiedDate = metaData.modifiedDate;
@@ -116,10 +116,21 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
             this.bStorageService.setMetadata(metaDataName, item);
             this.settingService.setSettingByViewId(viewId, null);
           }
+
+          oldMetadataColumns = item.columns;
         }
         else {
-          this.bStorageService.setMetadata(metaDataName,item);
+          this.bStorageService.setMetadata(metaDataName, item);
+          oldMetadataColumns = item.columns;
         }
+
+        var columns = <Array<any>>item.columns;
+        columns.filter(c=>c.scriptType.toLowerCase() == "date").forEach((col) => {
+          var index = oldMetadataColumns.findIndex(c => c.name.toLowerCase() == col.name.toLowerCase());          
+          if (index > -1 && oldMetadataColumns[index].type != col.type) {
+            this.bStorageService.setMetadata(metaDataName, item);
+          }
+        });    
       });
 
       var endTime = performance.now()

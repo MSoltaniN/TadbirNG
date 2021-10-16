@@ -11,7 +11,7 @@ import { SortDescriptor } from "@progress/kendo-data-query";
 import { GridComponent, ColumnComponent } from "@progress/kendo-angular-grid";
 import { environment } from "@sppc/env/environment";
 import { Layout } from '@sppc/shared/enum/metadata';
-import { MetaDataService, BrowserStorageService, ReportingService, LocalReportInfo, ParameterInfo, ErrorHandlingService} from '@sppc/shared/services';
+import { MetaDataService, BrowserStorageService, ReportingService, LocalReportInfo, ParameterInfo, ErrorHandlingService, SessionKeys} from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { ViewIdentifierComponent, ReportParametersComponent, ReportParamComponent, TabInfo } from '..';
 import { QuickReportSettingComponent } from './QuickReport-Setting.component';
@@ -580,6 +580,8 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
         serviceUrl = this.replaceServiceUrlParams(serviceUrl, routeParameters);
       }
     }
+        
+    this.updateDateColumnByMetadata()
 
     var sort = this.currentSort;
     var quickFilter = this.currentQuickFilter;
@@ -635,6 +637,18 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
 
       });
     }
+  }
+
+  updateDateColumnByMetadata() {
+    this.metadataKey = String.Format(SessionKeys.MetadataKey, this.currentQuickReportViewInfo.viewId ? this.currentQuickReportViewInfo.viewId.toString() : '', this.currentlang);
+    var metadata = this.bStorageService.getMetadata(this.metadataKey);
+    var item = JSON.parse(metadata != null ? metadata.toString() : "");
+    var columns = <Array<any>>item.columns;
+    columns.filter(c => c.dotNetType.toLowerCase() == "system.date" || c.dotNetType.toLowerCase() == "system.datetime").forEach((col) => {
+      var index = this.currentQuickReportViewInfo.columns.findIndex(c => c.name.toLowerCase() == col.name.toLowerCase());
+      if(index > -1)
+        this.currentQuickReportViewInfo.columns[index].type = col.type;
+    });    
   }
 
   /**
