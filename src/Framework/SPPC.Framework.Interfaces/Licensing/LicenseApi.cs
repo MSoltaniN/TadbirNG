@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace SPPC.Tadbir.Api
+namespace SPPC.Framework.Licensing
 {
     /// <summary>
     /// Defines API server routes and API client operation URLs for working with licenses.

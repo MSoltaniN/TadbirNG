@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SPPC.Framework.Helpers;
 using SPPC.Licensing.Model;
 
 namespace SPPC.Tadbir.Licensing
@@ -18,8 +17,9 @@ namespace SPPC.Tadbir.Licensing
         /// درستی اطلاعات موجود در فایل مجوز را به طور کامل بررسی می کند
         /// </summary>
         /// <param name="instance"></param>
+        /// <param name="connection"></param>
         /// <returns>وضعیت بررسی مجوز که نشان می دهد مجوز موجود معتبر هست یا نه</returns>
-        LicenseStatus ValidateLicense(string instance);
+        LicenseStatus ValidateLicense(string instance, RemoteConnection connection);
 
         /// <summary>
         /// درستی اطلاعات موجود در فایل مجوز را به طور خلاصه بررسی می کند
@@ -63,5 +63,12 @@ namespace SPPC.Tadbir.Licensing
         /// <param name="licenseCheck"></param>
         /// <returns></returns>
         string GetLicense(LicenseCheckModel licenseCheck);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <returns></returns>
+        string GetRemoteDeviceId(RemoteConnection connection);
     }
 }
