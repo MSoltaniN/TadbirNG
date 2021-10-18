@@ -20,7 +20,7 @@ services:
    - ASPNETCORE_ENVIRONMENT=Development
    - ASPNETCORE_URLS=http://+:80
   ports:
-   - 3000:80
+   - 9095:80
   
  loadBalancer:
   profiles:

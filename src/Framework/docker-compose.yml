@@ -60,6 +60,7 @@ services:
   build:
    context: .
    dockerfile: sppc.tadbir.web.api/Dockerfile
-  ports:
-   - 3004:80
+  volumes:
+   - productdata:/app/wwwroot
+  network_mode: host
 
