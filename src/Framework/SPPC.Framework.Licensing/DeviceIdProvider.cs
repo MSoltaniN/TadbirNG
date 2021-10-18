@@ -37,7 +37,6 @@ namespace SPPC.Framework.Licensing
         /// <remarks>برای اتصال از راه دور از پروتکل اس اس اچ استفاده می شود</remarks>
         public string GetRemoteDeviceId(RemoteConnection connection)
         {
-            var bla = GetDeviceId();
             var ssh = new Ssh();
             var commands = Environment.OSVersion.Platform == PlatformID.Win32NT
                 ? SshCommands.Windows
