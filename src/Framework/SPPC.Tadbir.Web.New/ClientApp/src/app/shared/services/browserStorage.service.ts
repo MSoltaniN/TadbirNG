@@ -66,6 +66,8 @@ export class BrowserStorageService {
     if (sessionStorage.getItem(SessionKeys.CurrentContext))
       sessionStorage.removeItem(SessionKeys.CurrentContext);
 
+    this.removeSelectedDateRange();
+
     this.removeLicense();
     this.removeLicenseInfo();
   }
