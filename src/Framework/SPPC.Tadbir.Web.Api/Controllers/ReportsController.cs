@@ -758,7 +758,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                         case "money":
                             txtHeaderCell = (StiText)(sampleNumber.Clone(true));
                             break;
-                        case "date":
+                        case "gregorian":
+                        case "jalali":
                             txtHeaderCell = (StiText)(sampleNumber.Clone(true));
                             break;
                     }

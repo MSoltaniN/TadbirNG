@@ -59,7 +59,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetRolesAsync()
         {
             var roles = await _repository.GetRolesAsync(GridOptions);
-            Localize(roles.Items);
             return JsonListResult(roles);
         }
 

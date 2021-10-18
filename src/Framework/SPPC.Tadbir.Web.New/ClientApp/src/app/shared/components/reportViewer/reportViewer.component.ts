@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HttpClient } from "@angular/common/http";
 import * as moment from 'jalali-moment';
 import { MetaDataService, ReportingService, ParameterInfo, BrowserStorageService } from '@sppc/shared/services';
-import { Entities } from '@sppc/shared/enum/metadata';
+import { Entities, CalendarType } from '@sppc/shared/enum/metadata';
 import { SettingService } from '@sppc/config/service';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { ReportsQueries } from '../reportManagement/reports.queries';
@@ -251,7 +251,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
           var timeSpanColumns = quickReportViewInfo.columns.filter(c => c.dataType && (c.dataType.toLowerCase() === "system.timespan"));
           var boolColumns = quickReportViewInfo.columns.filter(c => c.dataType && (c.dataType.toLowerCase() === "system.boolean"));
 
-          if (dateColumns.length > 0 && this.CurrentLanguage == "fa") {
+          if (dateColumns.length > 0 && dateColumns.filter(c=>c.type == CalendarType.Jalali).length > 0) {
             var convertedData = reportRows;
             convertedData = this.convertToShamsiDate(convertedData, dateColumns);
             convertedData = this.formatTimeSpan(convertedData, timeSpanColumns);
@@ -260,7 +260,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
             this.report.regData("data", "data", convertedData);
             registerData = true;
           }
-          else if (dateColumns.length > 0) {
+          else if (dateColumns.length > 0 ) {
             var convertedData = reportRows;
             convertedData = this.convertToMiladiDate(convertedData, dateColumns);
             convertedData = this.formatTimeSpan(convertedData, timeSpanColumns);
@@ -279,13 +279,24 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
         var parameters: Array<ParameterInfo> = reportData.parameters;
         var localReport = this.report;
-        var lang = this.CurrentLanguage;
+
+        let lang:string;
+        let config: any;
+        var calConfig = this.bStorageService.getSystemConfig();
+        if (calConfig) {
+          config = JSON.parse(calConfig);
+          if (config.defaultCalendar == 0)
+            lang = "fa";
+
+          if (config.defaultCalendar == 1)
+            lang = "en";
+        }        
 
         if (parameters) {
           parameters.forEach(function (param) {
 
             var value = param.value;
-
+            
             if (param.dataType == "System.DateTime") {
               var fdate = moment(param.value, 'YYYY-M-D HH:mm:ss')
                 .locale(lang)
@@ -332,7 +343,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
     for (var index = 0; index < rows.length; index++) {
       cols.forEach(function (item) {
-        if (rows[index][item.name]) {
+        if (rows[index][item.name] && item.type == CalendarType.Jalali) {
           let momentDate = moment(rows[index][item.name]).locale('fa').format("YYYY/MM/DD");
           rows[index][item.name] = momentDate;
         }
@@ -378,7 +389,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
     for (var index = 0; index < rows.length; index++) {
       cols.forEach(function (item) {
-        if (rows[index][item.name]) {
+        if (rows[index][item.name] && item.type == CalendarType.Gregorian) {
           let momentDate = moment(rows[index][item.name]).locale('en').format("YYYY/MM/DD");
           rows[index][item.name] = momentDate;
         }

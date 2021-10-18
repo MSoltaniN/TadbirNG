@@ -48,7 +48,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetOperationLogsAsync()
         {
             var operationLogs = await _repository.GetLogsAsync(GridOptions);
-            Localize(operationLogs.Items);
             return JsonListResult(operationLogs);
         }
 
@@ -63,7 +62,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetOperationLogArchiveAsync()
         {
             var logArchive = await _repository.GetLogsArchiveAsync(GridOptions);
-            Localize(logArchive.Items);
             return JsonListResult(logArchive);
         }
 

@@ -330,6 +330,33 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public int GetLevelCodeLength(int level)
+        {
+            return GetLevelCodeLength(ViewId.Account, level);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public int GetLevelCodeLength(int viewId, int level)
+        {
+            var fullConfig = GetViewTreeConfigByViewAsync(viewId).Result;
+            var treeConfig = fullConfig.Current;
+            int codeLength = treeConfig.Levels
+                .Where(cfg => cfg.No <= level + 1)
+                .Select(cfg => (int)cfg.CodeLength)
+                .Sum();
+            return codeLength;
+        }
+
         internal override OperationSourceId OperationSource
         {
             get { return OperationSourceId.EnvironmentParams; }

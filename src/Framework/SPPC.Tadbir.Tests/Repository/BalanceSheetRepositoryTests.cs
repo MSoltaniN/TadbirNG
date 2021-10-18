@@ -1902,7 +1902,7 @@ namespace SPPC.Tadbir.Persistence.Tests
         {
             var repoContext = GetRepositoryContext();
             var sysRepo = GetSystemRepository(repoContext);
-            var utility = new ReportDirectUtility(repoContext, sysRepo);
+            var utility = new ReportDirectUtility(repoContext);
             _repository = new BalanceSheetRepositoryDirect(repoContext, sysRepo, utility);
         }
 

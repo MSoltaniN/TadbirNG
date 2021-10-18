@@ -104,18 +104,21 @@ export class DefaultComponent extends BaseComponent {
 
     if (this.viewId) {
       var item: string | null;
-      item = this.bStorageService.getMetadata(this.metadataKey);    
+
+      var metadataKey = String.Format(SessionKeys.MetadataKey, this.viewId ? this.viewId.toString() : '', this.currentlang);
+
+      item = this.bStorageService.getMetadata(metadataKey);    
      
       if (!this.properties)
         this.properties = new Map<string, Array<Property>>();
 
       var arr = JSON.parse(item != null ? item.toString() : "");
-      this.properties.set(this.metadataKey, arr);
+      this.properties.set(metadataKey, arr.columns);
 
-      if (!this.properties.get(this.metadataKey))
+      if (!this.properties.get(metadataKey))
         return undefined;
 
-      var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
+      var result = this.properties.get(metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
 
       return result;     
 
@@ -285,6 +288,8 @@ export class DefaultComponent extends BaseComponent {
 
   getFilters(filter: any): FilterExpression {
     let filters: Filter[] = [];
+
+    debugger;
 
     if (filter.filters.length) {
       for (let i = 0; i < filter.filters.length; i++) {

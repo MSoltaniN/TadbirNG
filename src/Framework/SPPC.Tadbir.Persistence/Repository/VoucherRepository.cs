@@ -679,6 +679,17 @@ namespace SPPC.Tadbir.Persistence
                 .Replace("OriginName", "vo.Name");
         }
 
+        private static string GetColumnSorting(GridOptions gridOptions)
+        {
+            string sorting = DefaultSorting;
+            if (gridOptions.SortColumns.Count > 0)
+            {
+                sorting = String.Join(", ", gridOptions.SortColumns.Select(col => col.ToString()));
+            }
+
+            return sorting;
+        }
+
         private async Task<Voucher> GetNewVoucherAsync(string description, VoucherOriginId origin)
         {
             var subject = SubjectType.Normal;
@@ -842,11 +853,6 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            //if (gridOptions.Filter != null)
-            //{
-            //    predicates.Add(_report.GetColumnFilters(gridOptions));
-            //}
-
             return TranslateQuery(String.Join(" AND ", predicates));
         }
 
@@ -877,17 +883,6 @@ namespace SPPC.Tadbir.Persistence
                 TypeName = GetTypeName(subjectType)
             };
             return voucherItem;
-        }
-
-        private string GetColumnSorting(GridOptions gridOptions)
-        {
-            string sorting = DefaultSorting;
-            if (gridOptions.SortColumns.Count > 0)
-            {
-                sorting = String.Join(", ", gridOptions.SortColumns.Select(col => col.ToString()));
-            }
-
-            return sorting;
         }
 
         private void Localize(VoucherViewModel voucher)

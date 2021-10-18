@@ -285,7 +285,8 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
             mapperConfig.CreateMap<CurrencyRateViewModel, CurrencyRate>();
 
-            mapperConfig.CreateMap<FiscalPeriod, FiscalPeriodViewModel>();
+            mapperConfig.CreateMap<FiscalPeriod, FiscalPeriodViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
             mapperConfig.CreateMap<FiscalPeriodViewModel, FiscalPeriod>()
                 .ForMember(dest => dest.InventoryMode, opts => opts.MapFrom(src => src.InventoryModeField))
                 .AfterMap((viewModel, model) => model.CompanyId = viewModel.CompanyId);
@@ -327,7 +328,8 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapCorporateTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<Branch, BranchViewModel>();
+            mapperConfig.CreateMap<Branch, BranchViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
             mapperConfig.CreateMap<BranchViewModel, Branch>()
                 .AfterMap((viewModel, model) => model.CompanyId = viewModel.CompanyId)
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId);
@@ -505,7 +507,10 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<UserSetting, QuickReportConfig>()
                 .ConvertUsing(cfg => JsonHelper.To<QuickReportConfig>(cfg.Values));
 
-            mapperConfig.CreateMap<CompanyDb, CompanyDbViewModel>();
+            mapperConfig.CreateMap<CompanyDb, CompanyDbViewModel>()
+                .ForMember(dest => dest.UserName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.Password, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
             mapperConfig.CreateMap<CompanyDbViewModel, CompanyDb>();
             mapperConfig.CreateMap<CompanyDb, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))

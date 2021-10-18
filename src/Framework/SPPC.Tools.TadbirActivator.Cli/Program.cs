@@ -6,7 +6,6 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using SPPC.Framework.Common;
-using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Licensing.Local.Persistence;
 using SPPC.Licensing.Model;
@@ -30,10 +29,11 @@ namespace SPPC.Tools.TadbirActivator.Cli
             }
         }
 
-        static void Main(string[] args)
+        static void Main()
         {
             Console.OutputEncoding = Encoding.UTF8;
             DisplayBanner();
+            _apiLicensePath = ConfigurationManager.AppSettings["ApiLicensePath"];
             if (!EnsureAppIsInstalled())
             {
                 Console.WriteLine("Press any key to quit...");
@@ -204,7 +204,7 @@ namespace SPPC.Tools.TadbirActivator.Cli
                 string license = Service.GetActivatedLicense(activation);
                 if (String.IsNullOrEmpty(license))
                 {
-                    Console.WriteLine("This Product lready Activated!");
+                    Console.WriteLine("This Tadbir installation is already activated.");
                     return;
                 }
 
@@ -212,14 +212,14 @@ namespace SPPC.Tools.TadbirActivator.Cli
                 string licensePath = Path.Combine(licenseRoot, Constants.LicenseFile);
                 File.WriteAllText(licensePath, license);
                 ExportCertificate(licenseRoot, license);
-                Console.WriteLine("The Program Activate successfully!");
+                Console.WriteLine("Tadbir was successfully activated.");
             }
             catch (Exception ex)
             {
                 var message = String.Format("Error : {1}{0}{0}StackTrace : {2}",
                     Environment.NewLine, ex.Message, ex.StackTrace);
                 Console.WriteLine(message);
-                Console.WriteLine("There is no way to connect Internet!");
+                Console.WriteLine("Unable to establish a connection to the Internet.");
             }
         }
 
@@ -241,7 +241,8 @@ namespace SPPC.Tools.TadbirActivator.Cli
         {
             string instance = null;
             var type = typeof(Program);
-            using (StreamReader reader = new StreamReader(type.Assembly.GetManifestResourceStream("SPPC.Tools.TadbirActivator.Cli.instance.id")))
+            using (StreamReader reader = new StreamReader(
+                type.Assembly.GetManifestResourceStream("SPPC.Tools.TadbirActivator.Cli.instance.id")))
             {
                 instance = reader.ReadToEnd();
             }
@@ -257,7 +258,7 @@ namespace SPPC.Tools.TadbirActivator.Cli
             File.WriteAllBytes(path, certificateBytes);
         }
 
-        private const string _apiLicensePath = @"..\..\..\src\Framework\SPPC.Tadbir.Web.Api\wwwroot\license";
+        private static string _apiLicensePath;
         private static ILicenseUtility _service;
         private static X509Certificate2 _certificate;
     }

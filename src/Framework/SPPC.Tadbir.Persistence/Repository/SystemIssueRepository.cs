@@ -12,7 +12,7 @@ using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
-namespace SPPC.Tadbir.Persistence.Repository
+namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت کنترل سیستم را تعریف می کند.
@@ -103,39 +103,29 @@ namespace SPPC.Tadbir.Persistence.Repository
         public async Task<ValueTuple<IList<NumberListViewModel>, int>> GetMissingVoucherNumbersAsync(
             GridOptions gridOptions, DateTime from, DateTime to)
         {
-            var missNumberList = new List<NumberListViewModel>();
-            var listAndCount = (missNumberList, 0);
-            var vouchers = await Repository.GetAllOperationQuery<Voucher>(ViewId.Voucher)
+            var missingNumbers = new List<NumberListViewModel>();
+            int count = 0;
+            var listAndCount = (missingNumbers, count);
+            var existingNumbers = await Repository.GetAllOperationQuery<Voucher>(ViewId.Voucher)
                 .Where(voucher => voucher.SubjectType != (short)SubjectType.Draft
                     && voucher.Date.IsBetween(from, to))
-                .Select(item => Mapper.Map<VoucherViewModel>(item))
-                .Apply(gridOptions, false)
+                .Select(voucher => voucher.No)
                 .ToListAsync();
 
-            if (vouchers.Count() > 0)
+            if (existingNumbers.Count() > 0)
             {
-                var existingNumbers = vouchers.Select(voucher => voucher.No);
-
-                var minNumber = 1;
                 var maxNumber = existingNumbers.Max();
-
-                var numRange = Enumerable.Range(minNumber, maxNumber - minNumber + 1);
-
-                var missingNumbers = numRange
-                    .Where(num => !existingNumbers.Contains(num));
-
-                int count = missingNumbers.Count();
-
-                missingNumbers = missingNumbers
+                var numRange = Enumerable.Range(1, maxNumber);
+                var allMissingNumbers = numRange
+                    .Where(num => !existingNumbers.Contains(num))
                     .OrderBy(num => num)
-                    .ApplyPaging(gridOptions);
+                    .Select(num => new NumberListViewModel() { Number = num });
 
-                foreach (var item in missingNumbers)
-                {
-                    missNumberList.Add(new NumberListViewModel() { Number = item });
-                }
-
-                listAndCount = (missNumberList, count);
+                count = allMissingNumbers
+                    .Apply(gridOptions, false)
+                    .Count();
+                missingNumbers.AddRange(allMissingNumbers.Apply(gridOptions));
+                listAndCount = (missingNumbers, count);
             }
 
             await OnSourceActionAsync(gridOptions, SourceListId.MissingVoucherNumbers);

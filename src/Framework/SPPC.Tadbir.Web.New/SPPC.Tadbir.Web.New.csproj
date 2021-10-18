@@ -106,6 +106,7 @@
     <None Remove="ClientApp\src\app\finance\index.ts" />
     <None Remove="ClientApp\src\app\shared\components\notFound\notFound.component.ts" />
     <None Remove="ClientApp\src\app\shared\components\reportManagement\quickReportViewSetting.ts" />
+    <None Remove="ClientApp\src\app\shared\directive\button\buttonDisable.directive.ts" />
     <None Remove="ClientApp\src\app\shared\directive\input\input.ts" />
     <None Remove="ClientApp\src\app\shared\directive\persistState\PersistState.ts" />
     <None Remove="ClientApp\src\app\shared\enum\global.ts" />
@@ -903,6 +904,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\finance\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\components\notFound\notFound.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\components\reportManagement\quickReportViewSetting.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\directive\button\buttonDisable.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\directive\input\input.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\directive\persistState\persistState.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\shared\enum\global.ts" />

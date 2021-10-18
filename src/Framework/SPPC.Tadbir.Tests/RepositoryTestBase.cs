@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using SPPC.Framework.Cryptography;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Mapper;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -16,7 +17,8 @@ namespace SPPC.Tadbir.Persistence.Tests
         protected ISystemRepository GetSystemRepository(IRepositoryContext context)
         {
             var sysContext = GetRepositoryContext();
-            var logger = new OperationLogRepository(context, new LogConfigRepository(context));
+            var utility = new ReportDirectUtility(context);
+            var logger = new OperationLogRepository(context, new LogConfigRepository(context), utility);
             var config = new ConfigRepository(context, logger);
             return new SystemRepository(
                 new SecureRepository(context), new MetadataRepository(sysContext, config), config, logger);

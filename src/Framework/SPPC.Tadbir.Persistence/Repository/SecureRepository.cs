@@ -80,7 +80,11 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
             var query = repository.GetEntityQuery(relatedProperties);
-            query = ApplyOperationBranchFilter(query);
+            if (viewId != ViewId.Voucher)
+            {
+                query = ApplyOperationBranchFilter(query);
+            }
+
             query = ApplyRowFilter(ref query, viewId);
             return query;
         }

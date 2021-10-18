@@ -9280,3 +9280,8 @@ WHERE DotNetType LIKE 'System.Date%'
 UPDATE [Metadata].[Column]
 SET AllowSorting = 0, AllowFiltering = 0, IsNullable = 1
 WHERE [Name] = 'RowNo'
+
+-- 1.1.1230
+UPDATE [Metadata].[Column]
+SET StorageType = 'time', [Length] = 7
+WHERE ViewID IN(13, 59, 60, 61) AND [Name] = 'Time'

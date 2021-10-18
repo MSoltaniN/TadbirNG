@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +9,9 @@ using SPPC.Framework.Domain;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Core;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Core;
 
@@ -26,10 +27,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="config">امکان خواندن تنظیمات جاری ایجاد لاگ را فراهم می کند</param>
-        public OperationLogRepository(IRepositoryContext context, ILogConfigRepository config)
+        /// <param name="utility"></param>
+        public OperationLogRepository(IRepositoryContext context, ILogConfigRepository config,
+            IReportDirectUtility utility)
             : base(context)
         {
             _config = config;
+            _utility = utility;
         }
 
         #region Company Log Operations
@@ -41,25 +45,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه لاگ های عملیاتی موجود</returns>
         public async Task<PagedList<OperationLogViewModel>> GetLogsAsync(GridOptions gridOptions = null)
         {
-            var inactiveIds = await GetInactiveCompanyIdsAsync();
-            var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
-            var list = await repository
-                .GetEntityQuery(
-                    log => log.Branch, log => log.EntityType, log => log.FiscalPeriod,
-                    log => log.Operation, log => log.Source, log => log.SourceList)
-                .Where(log => !inactiveIds.Contains(log.CompanyId))
-                .OrderByDescending(log => log.Date)
-                .ThenByDescending(log => log.Time)
-                .Select(log => Mapper.Map<OperationLogViewModel>(log))
-                .ToListAsync();
-            var pagedList = new PagedList<OperationLogViewModel>(list, gridOptions);
-            foreach (var log in pagedList.Items)
-            {
-                await SetSystemValues(log);
-            }
-
-            await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, gridOptions);
-            return pagedList;
+            return await FetchLogsFromSource(gridOptions, "OperationLog");
         }
 
         /// <summary>
@@ -69,25 +55,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه لاگ های شرکتی بایگانی شده</returns>
         public async Task<PagedList<OperationLogViewModel>> GetLogsArchiveAsync(GridOptions gridOptions = null)
         {
-            var inactiveIds = await GetInactiveCompanyIdsAsync();
-            var repository = UnitOfWork.GetAsyncRepository<OperationLogArchive>();
-            var list = await repository
-                .GetEntityQuery(
-                    log => log.Branch, log => log.EntityType, log => log.FiscalPeriod,
-                    log => log.Operation, log => log.Source, log => log.SourceList)
-                .Where(log => !inactiveIds.Contains(log.CompanyId))
-                .OrderByDescending(log => log.Date)
-                .ThenByDescending(log => log.Time)
-                .Select(log => Mapper.Map<OperationLogViewModel>(log))
-                .ToListAsync();
-            var pagedList = new PagedList<OperationLogViewModel>(list, gridOptions);
-            foreach (var log in list)
-            {
-                await SetSystemValues(log);
-            }
-
-            await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, gridOptions);
-            return pagedList;
+            return await FetchLogsFromSource(gridOptions, "OperationLogArchive");
         }
 
         /// <summary>
@@ -96,14 +64,22 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های شرکتی موجود و لاگ های بایگانی شده</returns>
-        public async Task<PagedList<OperationLogViewModel>> GetMergedLogsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<OperationLogViewModel>> GetMergedLogsAsync(GridOptions gridOptions)
         {
-            var active = await GetLogsAsync(null);
-            var archived = await GetLogsArchiveAsync(null);
-            var merged = active.Items
-                .Concat(archived.Items)
-                .OrderByDescending(log => log.Date)
-                .ThenByDescending(log => log.Time);
+            IEnumerable<OperationLogViewModel> merged = new List<OperationLogViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                var active = await GetLogsAsync();
+                var archived = await GetLogsArchiveAsync();
+                merged = active.Items
+                    .Concat(archived.Items);
+                if (gridOptions.SortColumns.Count == 0)
+                {
+                    merged = merged
+                        .OrderByDescending(log => log.Date)
+                        .ThenByDescending(log => log.Time);
+                }
+            }
 
             await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, gridOptions);
             return new PagedList<OperationLogViewModel>(merged, gridOptions);
@@ -221,21 +197,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه لاگ های سیستمی موجود</returns>
         public async Task<PagedList<OperationLogViewModel>> GetSystemLogsAsync(GridOptions gridOptions = null)
         {
-            UnitOfWork.UseSystemContext();
-            var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
-            var list = await repository.GetEntityQuery(
-                    log => log.Operation, log => log.EntityType,
-                    log => log.Source, log => log.SourceList,
-                    log => log.Company, log => log.User)
-                .Where(log => log.Company.IsActive)
-                .OrderByDescending(log => log.Date)
-                .ThenByDescending(log => log.Time)
-                .Select(log => Mapper.Map<OperationLogViewModel>(log))
-                .ToListAsync();
-            UnitOfWork.UseCompanyContext();
-
-            await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, gridOptions);
-            return new PagedList<OperationLogViewModel>(list, gridOptions);
+            return await FetchLogsFromSource(gridOptions, "SysOperationLog", true);
         }
 
         /// <summary>
@@ -245,21 +207,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه لاگ های سیستمی بایگانی شده</returns>
         public async Task<PagedList<OperationLogViewModel>> GetSystemLogsArchiveAsync(GridOptions gridOptions = null)
         {
-            UnitOfWork.UseSystemContext();
-            var repository = UnitOfWork.GetAsyncRepository<SysOperationLogArchive>();
-            var list = await repository.GetEntityQuery(
-                    log => log.Operation, log => log.EntityType,
-                    log => log.Source, log => log.SourceList,
-                    log => log.Company, log => log.User)
-                .Where(log => log.Company.IsActive)
-                .OrderByDescending(log => log.Date)
-                .ThenByDescending(log => log.Time)
-                .Select(log => Mapper.Map<OperationLogViewModel>(log))
-                .ToListAsync();
-            UnitOfWork.UseCompanyContext();
-
-            await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, gridOptions);
-            return new PagedList<OperationLogViewModel>(list, gridOptions);
+            return await FetchLogsFromSource(gridOptions, "SysOperationLogArchive", true);
         }
 
         /// <summary>
@@ -270,12 +218,20 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه لاگ های سیستمی موجود و لاگ های بایگانی شده</returns>
         public async Task<PagedList<OperationLogViewModel>> GetMergedSystemLogsAsync(GridOptions gridOptions = null)
         {
-            var active = await GetSystemLogsAsync(null);
-            var archived = await GetSystemLogsArchiveAsync(null);
-            var merged = active.Items
-                .Concat(archived.Items)
-                .OrderByDescending(log => log.Date)
-                .ThenByDescending(log => log.Time);
+            IEnumerable<OperationLogViewModel> merged = new List<OperationLogViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                var active = await GetSystemLogsAsync();
+                var archived = await GetSystemLogsArchiveAsync();
+                merged = active.Items
+                    .Concat(archived.Items);
+                if (gridOptions.SortColumns.Count == 0)
+                {
+                    merged = merged
+                        .OrderByDescending(log => log.Date)
+                        .ThenByDescending(log => log.Time);
+                }
+            }
 
             await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, gridOptions);
             return new PagedList<OperationLogViewModel>(merged, gridOptions);
@@ -394,6 +350,37 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
+        private static string GetColumnSorting(GridOptions gridOptions)
+        {
+            string sorting = DefaultSorting;
+            if (gridOptions.SortColumns.Count > 0)
+            {
+                sorting = String.Join(", ", gridOptions.SortColumns.Select(col => col.ToString()));
+            }
+
+            return sorting;
+        }
+
+        private async Task<PagedList<OperationLogViewModel>> FetchLogsFromSource(
+            GridOptions gridOptions, string source, bool isSystem = false)
+        {
+            var options = gridOptions ?? new GridOptions() { ListChanged = false };
+            var logs = new List<OperationLogViewModel>();
+            if (options.Operation != (int)OperationId.Print)
+            {
+                logs.AddRange(GetLogItems(options, source, isSystem));
+                Array.ForEach(logs.ToArray(), log => Localize(log));
+                if (!isSystem)
+                {
+                    SetSystemValues(logs);
+                }
+            }
+
+            var pagedList = new PagedList<OperationLogViewModel>(logs, options);
+            await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, options);
+            return pagedList;
+        }
+
         private async Task LogOperationAsync<TModel>(int entity, GridOptions gridOptions)
             where TModel : class, IEntity
         {
@@ -446,18 +433,105 @@ namespace SPPC.Tadbir.Persistence
             return inactiveIds;
         }
 
-        private async Task SetSystemValues(OperationLogViewModel log)
+        private void SetSystemValues(List<OperationLogViewModel> logs)
         {
-            UnitOfWork.UseSystemContext();
-            var userRepository = UnitOfWork.GetAsyncRepository<User>();
-            var user = await userRepository.GetByIDAsync(log.UserId ?? 0);
-            log.UserName = user?.UserName;
-            var companyRepository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var company = await companyRepository.GetByIDAsync(log.CompanyId ?? 0);
-            log.CompanyName = company?.Name;
-            UnitOfWork.UseCompanyContext();
+            var ids = logs
+                .Select(log => log.UserId)
+                .Distinct();
+            string query = String.Format(LogQuery.UserLookupQuery, String.Join(", ", ids));
+            DbConsole.ConnectionString = DbConsole.BuildConnectionString("NGTadbirSys");
+            var result = DbConsole.ExecuteQuery(query);
+            var lookup = new Dictionary<int, string>();
+            Array.ForEach(result.Rows
+                .Cast<DataRow>()
+                .Select(row => new KeyValuePair<int, string>(
+                    _utility.ValueOrDefault<int>(row, "UserID"),
+                    _utility.ValueOrDefault(row, "UserName")))
+                .ToArray(), item => lookup[item.Key] = item.Value);
+            Array.ForEach(logs.ToArray(), log => log.UserName = lookup[log.UserId.Value]);
+
+            ids = logs
+                .Select(log => log.CompanyId)
+                .Distinct();
+            query = String.Format(LogQuery.CompanyLookupQuery, String.Join(", ", ids));
+            result = DbConsole.ExecuteQuery(query);
+            lookup = new Dictionary<int, string>();
+            Array.ForEach(result.Rows
+                .Cast<DataRow>()
+                .Select(row => new KeyValuePair<int, string>(
+                    _utility.ValueOrDefault<int>(row, "CompanyID"),
+                    _utility.ValueOrDefault(row, "Name")))
+                .ToArray(), item => lookup[item.Key] = item.Value);
+            Array.ForEach(logs.ToArray(), log => log.CompanyName = lookup[log.CompanyId.Value]);
         }
 
+        private List<OperationLogViewModel> GetLogItems(
+            GridOptions gridOptions, string table, bool isSystem = false)
+        {
+            string connection = isSystem
+                ? DbConsole.BuildConnectionString("NGTadbirSys")
+                : UnitOfWork.CompanyConnection;
+            string queryName = isSystem ? LogQuery.SysOperationLogQuery : LogQuery.OperationLogQuery;
+
+            DbConsole.ConnectionString = connection;
+            string listQuery = String.Format(queryName, table, GetColumnSorting(gridOptions));
+            var query = new ReportQuery(listQuery);
+            var result = DbConsole.ExecuteQuery(query.Query);
+            var logs = new List<OperationLogViewModel>();
+            logs.AddRange(result.Rows
+                .Cast<DataRow>()
+                .Select(row => GetLogItem(row)));
+            return logs;
+        }
+
+        private OperationLogViewModel GetLogItem(DataRow row)
+        {
+            var voucherItem = new OperationLogViewModel()
+            {
+                Id = _utility.ValueOrDefault<int>(row, "Id"),
+                UserName = _utility.ValueOrDefault(row, "UserName"),
+                CompanyName = _utility.ValueOrDefault(row, "CompanyName"),
+                BranchName = _utility.ValueOrDefault(row, "BranchName"),
+                Date = _utility.ValueOrDefault<DateTime>(row, "Date"),
+                Description = _utility.ValueOrDefault(row, "Description"),
+                EntityAssociation = _utility.ValueOrDefault(row, "EntityAssociation"),
+                EntityCode = _utility.ValueOrDefault(row, "EntityCode"),
+                EntityDate = _utility.ValueOrDefault<DateTime>(row, "EntityDate"),
+                EntityDescription = _utility.ValueOrDefault(row, "EntityDescription"),
+                EntityName = _utility.ValueOrDefault(row, "EntityName"),
+                EntityNo = _utility.ValueOrDefault<int>(row, "EntityNo"),
+                EntityReference = _utility.ValueOrDefault(row, "EntityReference"),
+                EntityTypeId = _utility.ValueOrDefault<int>(row, "EntityTypeID"),
+                EntityTypeName = _utility.ValueOrDefault(row, "EntityTypeName"),
+                FiscalPeriodName = _utility.ValueOrDefault(row, "FiscalPeriodName"),
+                OperationName = _utility.ValueOrDefault(row, "OperationName"),
+                SourceListName = _utility.ValueOrDefault(row, "SourceListName"),
+                SourceName = _utility.ValueOrDefault(row, "SourceName"),
+                Time = _utility.ValueOrDefault<TimeSpan>(row, "Time"),
+                UserId = _utility.ValueOrDefault<int>(row, "UserID"),
+                CompanyId = _utility.ValueOrDefault<int>(row, "CompanyID"),
+                BranchId = _utility.ValueOrDefault<int>(row, "BranchID"),
+                FiscalPeriodId = _utility.ValueOrDefault<int>(row, "FiscalPeriodID"),
+            };
+            if (voucherItem.EntityDate == DateTime.MinValue)
+            {
+                voucherItem.EntityDate = null;
+            }
+
+            return voucherItem;
+        }
+
+        private void Localize(OperationLogViewModel log)
+        {
+            log.EntityTypeName = Context.Localize(log.EntityTypeName);
+            log.OperationName = Context.Localize(log.OperationName);
+            log.SourceListName = Context.Localize(log.SourceListName);
+            log.SourceName = Context.Localize(log.SourceName);
+            log.Description = Context.Localize(log.Description);
+        }
+
+        private const string DefaultSorting = "oplog.Date DESC, oplog.Time DESC";
         private readonly ILogConfigRepository _config;
+        private readonly IReportDirectUtility _utility;
     }
 }

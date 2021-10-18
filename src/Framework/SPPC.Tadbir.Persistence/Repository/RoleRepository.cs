@@ -54,6 +54,11 @@ namespace SPPC.Tadbir.Persistence
                         .ThenInclude(rp => rp.Permission)
                     .Select(r => Mapper.Map<RoleViewModel>(r))
                     .ToListAsync();
+                Array.ForEach(roles.ToArray(), role =>
+                {
+                    role.Name = Context.Localize(role.Name);
+                    role.Description = Context.Localize(role.Description);
+                });
             }
 
             await ReadAsync(gridOptions);

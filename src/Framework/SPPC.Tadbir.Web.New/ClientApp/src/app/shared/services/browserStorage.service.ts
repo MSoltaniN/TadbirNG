@@ -35,7 +35,8 @@ export const SessionKeys = {
   BalanceSheet: 'BalanceSheet',
   Shortcut: 'shortcut',
   License: 'license',
-  LicenseInfo: 'license-info'
+  LicenseInfo: 'license-info',
+  QuickReportSetting:'quick-report-{0}-{1}-{2}'
 }
 
 
@@ -64,6 +65,9 @@ export class BrowserStorageService {
 
     if (sessionStorage.getItem(SessionKeys.CurrentContext))
       sessionStorage.removeItem(SessionKeys.CurrentContext);
+
+    this.removeLicense();
+    this.removeLicenseInfo();
   }
 
   setLastUserBranchAndFpId(userId: number, companyId: string, branchId: string, fpId: string) {
@@ -98,6 +102,14 @@ export class BrowserStorageService {
 
   setLicense(value:string) {
     sessionStorage.setItem(SessionKeys.License, value);    
+  }
+
+  removeLicense() {
+    sessionStorage.removeItem(SessionKeys.License);
+  }
+
+  removeLicenseInfo() {    
+    sessionStorage.removeItem(SessionKeys.LicenseInfo);
   }
 
   setLicenseInfo(linceseInfo: any) {
@@ -409,5 +421,22 @@ export class BrowserStorageService {
 
   removeLocalStorage(key: string) {
     localStorage.removeItem(key);
+  }
+
+  setQuickReportSetting(viewId: string, userId: string, value:string) {
+    var key = String.Format(SessionKeys.QuickReportSetting, viewId.toString(), userId.toString(), this.getLanguage());
+    localStorage.setItem(key,value);
+  }
+
+  getQuickReportSetting(viewId: string, userId: string) {
+    var key = String.Format(SessionKeys.QuickReportSetting, viewId.toString(), userId.toString(),this.getLanguage());
+    var jsonString = localStorage.getItem(key);
+    return jsonString;
+  }
+
+  removeQuickReportSetting(viewId: string, userId: string) {
+    var key = String.Format(SessionKeys.QuickReportSetting, viewId.toString(), userId.toString(), this.getLanguage());
+    var jsonString = localStorage.removeItem(key);
+    return jsonString;
   }
 }

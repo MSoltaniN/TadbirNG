@@ -28,6 +28,7 @@ namespace SPPC.Tadbir.Persistence
             IReportDirectUtility utility)
             : base(context, system.Logger)
         {
+            Config = system.Config;
             _utility = utility;
         }
 
@@ -68,6 +69,8 @@ namespace SPPC.Tadbir.Persistence
         {
             get { return OperationSourceId.BalanceByAccount; }
         }
+
+        private IConfigRepository Config { get; }
 
         private static bool IsZeroItem(BalanceByAccountItemViewModel item)
         {
@@ -232,7 +235,7 @@ namespace SPPC.Tadbir.Persistence
             var projectLookup = new Dictionary<string, string>();
             if (parameters.IsSelectedAccount)
             {
-                int length = _utility.GetLevelCodeLength(
+                int length = Config.GetLevelCodeLength(
                     ViewId.Account, parameters.AccountLevel.Value);
                 accountLookup = GetItemLookup(
                     length, _utility.GetItemName(ViewId.Account),
@@ -241,7 +244,7 @@ namespace SPPC.Tadbir.Persistence
 
             if (parameters.IsSelectedDetailAccount)
             {
-                int length = _utility.GetLevelCodeLength(
+                int length = Config.GetLevelCodeLength(
                     ViewId.DetailAccount, parameters.DetailAccountLevel.Value);
                 detailAccountLookup = GetItemLookup(
                     length, _utility.GetItemName(ViewId.DetailAccount),
@@ -250,7 +253,7 @@ namespace SPPC.Tadbir.Persistence
 
             if (parameters.IsSelectedCostCenter)
             {
-                int length = _utility.GetLevelCodeLength(
+                int length = Config.GetLevelCodeLength(
                     ViewId.CostCenter, parameters.CostCenterLevel.Value);
                 costCenterLookup = GetItemLookup(
                     length, _utility.GetItemName(ViewId.CostCenter),
@@ -259,7 +262,7 @@ namespace SPPC.Tadbir.Persistence
 
             if (parameters.IsSelectedProject)
             {
-                int length = _utility.GetLevelCodeLength(
+                int length = Config.GetLevelCodeLength(
                     ViewId.Project, parameters.ProjectLevel.Value);
                 projectLookup = GetItemLookup(
                     length, _utility.GetItemName(ViewId.Project),
@@ -334,25 +337,25 @@ namespace SPPC.Tadbir.Persistence
                 "SELECT SUM(vl.Debit) AS DebitSum, SUM(vl.Credit) AS CreditSum");
             if (parameters.IsSelectedAccount)
             {
-                int length = _utility.GetLevelCodeLength(ViewId.Account, parameters.AccountLevel.Value);
+                int length = Config.GetLevelCodeLength(ViewId.Account, parameters.AccountLevel.Value);
                 selectBuilder.AppendFormat(", SUBSTRING(acc.FullCode, 1, {0}) AS AccountFullCode", length);
             }
 
             if (parameters.IsSelectedDetailAccount)
             {
-                int length = _utility.GetLevelCodeLength(ViewId.DetailAccount, parameters.DetailAccountLevel.Value);
+                int length = Config.GetLevelCodeLength(ViewId.DetailAccount, parameters.DetailAccountLevel.Value);
                 selectBuilder.AppendFormat(", SUBSTRING(facc.FullCode, 1, {0}) AS DetailAccountFullCode", length);
             }
 
             if (parameters.IsSelectedCostCenter)
             {
-                int length = _utility.GetLevelCodeLength(ViewId.CostCenter, parameters.CostCenterLevel.Value);
+                int length = Config.GetLevelCodeLength(ViewId.CostCenter, parameters.CostCenterLevel.Value);
                 selectBuilder.AppendFormat(", SUBSTRING(cc.FullCode, 1, {0}) AS CostCenterFullCode", length);
             }
 
             if (parameters.IsSelectedProject)
             {
-                int length = _utility.GetLevelCodeLength(ViewId.Project, parameters.ProjectLevel.Value);
+                int length = Config.GetLevelCodeLength(ViewId.Project, parameters.ProjectLevel.Value);
                 selectBuilder.AppendFormat(", SUBSTRING(prj.FullCode, 1, {0}) AS ProjectFullCode", length);
             }
 
@@ -523,7 +526,7 @@ namespace SPPC.Tadbir.Persistence
             var orderClauses = new List<string>();
             if (parameters.IsSelectedAccount)
             {
-                int length = _utility.GetLevelCodeLength(ViewId.Account, parameters.AccountLevel.Value);
+                int length = Config.GetLevelCodeLength(ViewId.Account, parameters.AccountLevel.Value);
                 string clause = String.Format("SUBSTRING(acc.FullCode, 1, {0})", length);
                 if (parameters.ViewId == ViewId.Account)
                 {
@@ -539,7 +542,7 @@ namespace SPPC.Tadbir.Persistence
 
             if (parameters.IsSelectedDetailAccount)
             {
-                int length = _utility.GetLevelCodeLength(ViewId.DetailAccount, parameters.DetailAccountLevel.Value);
+                int length = Config.GetLevelCodeLength(ViewId.DetailAccount, parameters.DetailAccountLevel.Value);
                 string clause = String.Format("SUBSTRING(facc.FullCode, 1, {0})", length);
                 if (parameters.ViewId == ViewId.DetailAccount)
                 {
@@ -555,7 +558,7 @@ namespace SPPC.Tadbir.Persistence
 
             if (parameters.IsSelectedCostCenter)
             {
-                int length = _utility.GetLevelCodeLength(ViewId.CostCenter, parameters.CostCenterLevel.Value);
+                int length = Config.GetLevelCodeLength(ViewId.CostCenter, parameters.CostCenterLevel.Value);
                 string clause = String.Format("SUBSTRING(cc.FullCode, 1, {0})", length);
                 if (parameters.ViewId == ViewId.CostCenter)
                 {
@@ -571,7 +574,7 @@ namespace SPPC.Tadbir.Persistence
 
             if (parameters.IsSelectedProject)
             {
-                int length = _utility.GetLevelCodeLength(ViewId.Project, parameters.ProjectLevel.Value);
+                int length = Config.GetLevelCodeLength(ViewId.Project, parameters.ProjectLevel.Value);
                 string clause = String.Format("SUBSTRING(prj.FullCode, 1, {0})", length);
                 if (parameters.ViewId == ViewId.Project)
                 {

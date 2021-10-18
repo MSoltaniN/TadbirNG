@@ -15,3 +15,4 @@ export * from './grid/sppc-grid-reorder';
 export * from './grid/sppc-grid-resize';
 export * from './grid/sppc-viewTree-config';
 export * from './input/input';
+export * from './button/buttonDisable.directive';
