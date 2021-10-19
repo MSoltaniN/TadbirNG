@@ -36,7 +36,7 @@ services:
   depends_on:
    - sppc.tadbir.web.api
   ports:
-   - 3000:80
+   - 9095:80
    - 1936:1936
   links:
    - sppc.tadbir.web.api
@@ -53,7 +53,7 @@ services:
   networks:
    - frontend
   ports:
-   - 3003:4200
+   - 9090:4200
 
  sppcLicensingLocalWeb:
   image: msn1368/sppclicensinglocalweb:dev
