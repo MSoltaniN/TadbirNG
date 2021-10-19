@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <CodeAnalysisRuleSet>..\..\..\misc\assets\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\bin\Debug\</OutputPath>
+    <DocumentationFile>..\..\..\bin\Debug\SPPC.Tadbir.Service.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\bin\Release\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
+    <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj" />
+    <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>
