@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Framework.Common", "SPPC.Framework.Common\SPPC.Framework.Common.csproj", "{68DE8264-2BD7-4573-B031-869F6864041A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Framework.Common", "SPPC.Framework.Common\SPPC.Framework.Common.csproj", "{68DE8264-2BD7-4573-B031-869F6864041A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{03029671-33D8-4B8A-911C-BB9B71B79F83}"
 	ProjectSection(SolutionItems) = preProject
@@ -20,6 +20,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Framework.Cryptography", "SPPC.Framework.Cryptography\SPPC.Framework.Cryptography.csproj", "{749072C6-D7A4-4C99-9C70-F4ED9B2383D6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Framework.Licensing", "SPPC.Framework.Licensing\SPPC.Framework.Licensing.csproj", "{886BF315-827F-452A-A1E9-1531D1113645}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackEnd", "BackEnd", "{DBA43C8B-22F7-42C2-BC47-9A65FA939272}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Framework.Persistence", "SPPC.Framework.Persistence\SPPC.Framework.Persistence.csproj", "{22069CB9-5103-4D22-8981-F5669E94FD1E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Framework.Service", "SPPC.Framework.Service\SPPC.Framework.Service.csproj", "{52D06A6E-BD97-4978-8B58-BF2C12D9FDE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +49,14 @@ Global
 		{886BF315-827F-452A-A1E9-1531D1113645}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{886BF315-827F-452A-A1E9-1531D1113645}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{886BF315-827F-452A-A1E9-1531D1113645}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22069CB9-5103-4D22-8981-F5669E94FD1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22069CB9-5103-4D22-8981-F5669E94FD1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22069CB9-5103-4D22-8981-F5669E94FD1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22069CB9-5103-4D22-8981-F5669E94FD1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52D06A6E-BD97-4978-8B58-BF2C12D9FDE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52D06A6E-BD97-4978-8B58-BF2C12D9FDE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52D06A6E-BD97-4978-8B58-BF2C12D9FDE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52D06A6E-BD97-4978-8B58-BF2C12D9FDE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +67,9 @@ Global
 		{FB0F3F8C-DCCC-4CF4-AF73-63A81F690710} = {E58D4B0E-EC52-4396-8A45-0FB69433D4F4}
 		{749072C6-D7A4-4C99-9C70-F4ED9B2383D6} = {E58D4B0E-EC52-4396-8A45-0FB69433D4F4}
 		{886BF315-827F-452A-A1E9-1531D1113645} = {E58D4B0E-EC52-4396-8A45-0FB69433D4F4}
+		{DBA43C8B-22F7-42C2-BC47-9A65FA939272} = {10963523-5CD8-4295-94A6-10CC5820FA50}
+		{22069CB9-5103-4D22-8981-F5669E94FD1E} = {DBA43C8B-22F7-42C2-BC47-9A65FA939272}
+		{52D06A6E-BD97-4978-8B58-BF2C12D9FDE2} = {DBA43C8B-22F7-42C2-BC47-9A65FA939272}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0876E344-B588-49D3-90AF-656CE086FC60}

@@ -1,8 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>SPPC.Framework.Licensing</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -11,8 +10,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>..\..\..\bin\Debug\SPPC.Licensing.Local.Persistence.xml</DocumentationFile>
     <OutputPath>..\..\..\bin\Debug\</OutputPath>
+    <DocumentationFile>..\..\..\bin\Debug\SPPC.Framework.Service.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -26,13 +25,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
     <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="ChilkatDnCore" Version="9.5.0.88" />
-    <PackageReference Include="DeviceId" Version="6.0.0" />
-    <PackageReference Include="DeviceId.Linux" Version="6.0.0" />
-    <PackageReference Include="DeviceId.Windows.Wmi" Version="6.1.0" />
   </ItemGroup>
 
 </Project>

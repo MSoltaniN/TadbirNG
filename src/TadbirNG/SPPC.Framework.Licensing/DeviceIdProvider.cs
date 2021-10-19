@@ -21,12 +21,18 @@ namespace SPPC.Framework.Licensing
         public string GetDeviceId()
         {
             var hwId = new DeviceIdBuilder()
-                    .AddProcessorId()
+                .OnWindows(builder => builder
                     .AddMotherboardSerialNumber()
-                    .AddSystemUUID()
+                    .AddProcessorId()
                     .AddSystemDriveSerialNumber()
-                    .UseFormatter(new StringDeviceIdFormatter(new PlainTextDeviceIdComponentEncoder()))
-                    .ToString();
+                    .AddSystemUuid())
+                .OnLinux(builder => builder
+                    .AddMotherboardSerialNumber()
+                    .AddCpuInfo()
+                    .AddSystemDriveSerialNumber()
+                    .AddMachineId())
+                .UseFormatter(new StringDeviceIdFormatter(new PlainTextDeviceIdComponentEncoder()))
+                .ToString();
             return Encode(hwId);
         }
 
