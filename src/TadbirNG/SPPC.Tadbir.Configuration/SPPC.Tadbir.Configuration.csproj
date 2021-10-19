@@ -11,7 +11,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\..\..\bin\Debug\</OutputPath>
-    <DocumentationFile>..\..\..\bin\Debug\SPPC.Tadbir.Common.xml</DocumentationFile>
+    <DocumentationFile>..\..\..\bin\Debug\SPPC.Tadbir.Configuration.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
