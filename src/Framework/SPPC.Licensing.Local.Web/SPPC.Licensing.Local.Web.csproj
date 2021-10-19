@@ -30,8 +30,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Cryptography\SPPC.Framework.Cryptography.csproj" />
+    <ProjectReference Include="..\SPPC.Framework.Licensing\SPPC.Framework.Licensing.csproj" />
     <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj" />
-    <ProjectReference Include="..\SPPC.Licensing.Local.Persistence\SPPC.Licensing.Local.Persistence.csproj" />
     <ProjectReference Include="..\SPPC.Licensing.Model\SPPC.Licensing.Model.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Resources\SPPC.Tadbir.Resources.csproj" />

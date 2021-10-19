@@ -7,7 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
-using SPPC.Licensing.Local.Persistence;
+using SPPC.Framework.Licensing;
 using SPPC.Licensing.Model;
 using SPPC.Tadbir.Licensing;
 
@@ -225,10 +225,11 @@ namespace SPPC.Tools.TadbirActivator.Cli
 
         private static ActivationModel GetActivationData()
         {
+            var deviceId = new DeviceIdProvider();
             var activation = new ActivationModel()
             {
                 InstanceKey = GetInstanceId(),
-                HardwareKey = HardwareKey.UniqueKey,
+                HardwareKey = deviceId.GetDeviceId(),
             };
 
             var manager = new CertificateGenerator();

@@ -9,9 +9,9 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Licensing.Model;
-using SPPC.Licensing.Local.Persistence;
 using SPPC.Tools.TadbirActivator.Properties;
 using SPPC.Tadbir.Licensing;
+using SPPC.Framework.Licensing;
 
 namespace SPPC.Tools.TadbirActivator
 {
@@ -189,10 +189,11 @@ namespace SPPC.Tools.TadbirActivator
 
         private ActivationModel GetActivationData()
         {
+            var deviceId = new DeviceIdProvider();
             var activation = new ActivationModel()
             {
                 InstanceKey = GetInstanceId(),
-                HardwareKey = HardwareKey.UniqueKey,
+                HardwareKey = deviceId.GetDeviceId(),
             };
 
             var manager = new CertificateManager();

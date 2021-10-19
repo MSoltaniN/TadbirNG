@@ -269,12 +269,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
   }
 
   loadMenuAndRoute(currentUser: ContextInfo) {
-    //#region load menu
-    if (currentUser.fpId) {
-      this.authenticationService.getFiscalPeriodById(currentUser.fpId, this.Ticket).subscribe(res => {
-        this.bStorageService.setFiscalPeriod(res);
-      })
-    }    
+    //#region load menu       
 
     this.userService.getCurrentUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
       this.bStorageService.setCurrentContext(currentUser);
@@ -344,9 +339,17 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
           this.bStorageService.setCurrentContext(currentUser);
           this.bStorageService.setLastUserBranchAndFpId(this.UserId, this.companyId, this.branchId, this.fiscalPeriodId);
 
-          this.fetchMetaDatas(currentUser);
-          this.loadShortcut();
-          this.loadAllSetting();
+          if (currentUser.fpId) {
+            this.authenticationService.getFiscalPeriodById(currentUser.fpId, this.Ticket).subscribe(res => {
+              this.bStorageService.setFiscalPeriod(res);
+
+              this.loadAllSetting();
+              this.fetchMetaDatas(currentUser);
+              this.loadShortcut();
+            })
+          } 
+          
+          
         }
 
       }

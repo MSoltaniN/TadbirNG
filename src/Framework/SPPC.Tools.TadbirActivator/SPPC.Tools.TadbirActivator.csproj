@@ -100,13 +100,13 @@
       <Project>{10a16ed5-f293-471c-8790-73122cfa1e56}</Project>
       <Name>SPPC.Framework.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Framework.Licensing\SPPC.Framework.Licensing.csproj">
+      <Project>{31FFE521-D542-4E49-8F28-AD2273B5336A}</Project>
+      <Name>SPPC.Framework.Licensing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj">
       <Project>{81da88f6-b2af-4568-b56b-35cc3368f850}</Project>
       <Name>SPPC.Framework.Service</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SPPC.Licensing.Local.Persistence\SPPC.Licensing.Local.Persistence.csproj">
-      <Project>{db90efcb-6aed-4e39-8d70-4bb740d2bd91}</Project>
-      <Name>SPPC.Licensing.Local.Persistence</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPPC.Licensing.Model\SPPC.Licensing.Model.csproj">
       <Project>{a28b5298-308f-4edb-8c46-ed1a82b40f9c}</Project>

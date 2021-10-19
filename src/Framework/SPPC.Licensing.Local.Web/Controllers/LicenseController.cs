@@ -3,9 +3,10 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SPPC.Licensing.Local.Persistence;
+using Microsoft.Extensions.Configuration;
+using SPPC.Framework.Helpers;
+using SPPC.Framework.Licensing;
 using SPPC.Licensing.Model;
-using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Resources;
@@ -15,9 +16,11 @@ namespace SPPC.Licensing.Local.Web.Controllers
     [Produces("application/json")]
     public class LicenseController : Controller
     {
-        public LicenseController(IHostingEnvironment host, ILicenseUtility utility)
+        public LicenseController(IHostingEnvironment host, IConfiguration configuration,
+            ILicenseUtility utility)
         {
             _webRoot = host.WebRootPath;
+            _config = configuration;
             _utility = utility;
             _utility.LicensePath = Path.Combine(_webRoot, Constants.LicenseFile);
         }
@@ -100,7 +103,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
                 return BadRequest();
             }
 
-            var status = _utility.ValidateLicense(instance);
+            var status = _utility.ValidateLicense(instance, GetRemoteConnection());
             if (status != LicenseStatus.OK)
             {
                 return StatusCode(StatusCodes.Status403Forbidden, AppStrings.InvalidOrExpiredLicense);
@@ -134,7 +137,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
             var certificate = System.IO.File.ReadAllBytes(certificatePath);
             return new LicenseCheckModel()
             {
-                HardwardKey = HardwareKey.UniqueKey,
+                HardwardKey = _utility.GetRemoteDeviceId(GetRemoteConnection()),
                 InstanceKey = instance,
                 Certificate = Convert.ToBase64String(certificate)
             };
@@ -150,7 +153,19 @@ namespace SPPC.Licensing.Local.Web.Controllers
             return Request.Headers[AppConstants.LicenseHeaderName];
         }
 
+        private RemoteConnection GetRemoteConnection()
+        {
+            return new RemoteConnection()
+            {
+                Domain = _config["SSH:Domain"],
+                Port = Int32.Parse(_config["SSH:Port"]),
+                User = _config["SSH:User"],
+                Password = _config["SSH:Password"]
+            };
+        }
+
         private readonly string _webRoot;
+        private readonly IConfiguration _config;
         private readonly ILicenseUtility _utility;
     }
 }

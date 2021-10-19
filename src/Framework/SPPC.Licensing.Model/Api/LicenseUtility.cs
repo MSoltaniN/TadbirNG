@@ -5,12 +5,11 @@ using System.Text;
 using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
+using SPPC.Framework.Licensing;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
-using SPPC.Tadbir.Api;
-using SPPC.Tadbir.Licensing;
 
-namespace SPPC.Licensing.Local.Persistence
+namespace SPPC.Tadbir.Licensing
 {
     /// <summary>
     /// امکانات مورد نیاز برای گرفتن یا کنترل درستی مجوز برنامه را پیاده سازی می کند
@@ -24,13 +23,15 @@ namespace SPPC.Licensing.Local.Persistence
         /// <param name="crypto">امکان انجام عملیات رمزنگاری متقارن را فراهم می کند</param>
         /// <param name="signer">امکان انجام عملیات امضای دیجیتالی را فراهم می کند</param>
         /// <param name="manager">امکان مدیریت گواهینامه های امنیتی را فراهم می کند </param>
+        /// <param name="deviceId">امکان خواندن شناسه سخت افزاری را فراهم می کند</param>
         public LicenseUtility(IApiClient apiClient, ICryptoService crypto, IDigitalSigner signer,
-            ICertificateManager manager)
+            ICertificateManager manager, IDeviceIdProvider deviceId)
         {
             _apiClient = apiClient;
             _crypto = crypto;
             _signer = signer;
             _manager = manager;
+            _deviceId = deviceId;
         }
 
         /// <summary>
@@ -47,14 +48,14 @@ namespace SPPC.Licensing.Local.Persistence
         {
             var crypto = new CryptoService();
             return new LicenseUtility(new ServiceClient(webRoot),
-                crypto, new DigitalSigner(crypto), new CertificateManager());
+                crypto, new DigitalSigner(crypto), new CertificateManager(), new DeviceIdProvider());
         }
 
         /// <summary>
         /// درستی اطلاعات موجود در فایل مجوز را به طور کامل بررسی می کند
         /// </summary>
         /// <returns>وضعیت بررسی مجوز که نشان می دهد مجوز موجود معتبر هست یا نه</returns>
-        public LicenseStatus ValidateLicense(string instance)
+        public LicenseStatus ValidateLicense(string instance, RemoteConnection connection)
         {
             SetInstance(instance);
             var status = LicenseStatus.OK;
@@ -74,7 +75,7 @@ namespace SPPC.Licensing.Local.Persistence
             {
                 status = LicenseStatus.BadCertificate;
             }
-            else if (!EnsureRunsOnOriginalHardware())
+            else if (!EnsureRunsOnOriginalHardware(connection))
             {
                 status = LicenseStatus.HardwareMismatch;
             }
@@ -186,6 +187,16 @@ namespace SPPC.Licensing.Local.Persistence
             return _apiClient.Get<string>(LicenseApi.License);
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <returns></returns>
+        public string GetRemoteDeviceId(RemoteConnection connection)
+        {
+            return _deviceId.GetRemoteDeviceId(connection);
+        }
+
         private bool EnsureLicenseExists()
         {
             return File.Exists(LicensePath);
@@ -226,9 +237,10 @@ namespace SPPC.Licensing.Local.Persistence
             return String.Compare(_license.ClientKey, publicKey) == 0;
         }
 
-        private bool EnsureRunsOnOriginalHardware()
+        private bool EnsureRunsOnOriginalHardware(RemoteConnection connection)
         {
-            return String.Compare(_license.HardwareKey, HardwareKey.UniqueKey) == 0;
+            string hardwareKey = _deviceId.GetRemoteDeviceId(connection);
+            return String.Compare(_license.HardwareKey, hardwareKey) == 0;
         }
 
         private bool EnsureInstanceIsValid()
@@ -261,6 +273,7 @@ namespace SPPC.Licensing.Local.Persistence
         private readonly ICryptoService _crypto;
         private readonly IDigitalSigner _signer;
         private readonly ICertificateManager _manager;
+        private readonly IDeviceIdProvider _deviceId;
         private LicenseFileModel _license;
         private X509Certificate2 _certificate;
         private InstanceModel _instance;
