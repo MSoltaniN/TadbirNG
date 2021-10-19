@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <CodeAnalysisRuleSet>..\..\..\misc\assets\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\bin\Debug\</OutputPath>
+    <DocumentationFile>..\..\..\bin\Debug\SPPC.Tadbir.Common.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\bin\Release\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj" />
+  </ItemGroup>
+
+</Project>
