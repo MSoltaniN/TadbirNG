@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Metadata;
@@ -37,10 +36,10 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش فرم مرسوم سند را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر برای چاپ</param>
+        /// <param name="voucherNo">شماره سند مالی مورد نظر برای چاپ</param>
         /// <param name="withDetail">مشخص می کند که آیا جزییات سطوح شناور نیز مورد نیاز است یا نه</param>
         /// <returns>اطلاعات گزارش فرم مرسوم سند</returns>
         Task<StandardVoucherViewModel> GetStandardVoucherFormAsync(
-            int voucherId, bool withDetail = false);
+            int voucherNo, bool withDetail = false);
     }
 }

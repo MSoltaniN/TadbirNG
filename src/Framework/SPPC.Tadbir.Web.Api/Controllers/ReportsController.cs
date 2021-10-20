@@ -366,24 +366,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         ///
         /// </summary>
         /// <returns></returns>
-        // GET: api/reports/voucher/{voucherId:min(1)}/std-form
+        // GET: api/reports/voucher/{voucherNo:min(1)}/std-form
         [HttpGet]
         [Route(ReportApi.VoucherStandardFormUrl)]
-        public async Task<IActionResult> GetStandardVoucherFormAsync(int voucherId)
+        public async Task<IActionResult> GetStandardVoucherFormAsync(int voucherNo)
         {
-            return await GetStandardFormAsync(voucherId);
+            return await GetStandardFormAsync(voucherNo);
         }
 
         /// <summary>
         ///
         /// </summary>
         /// <returns></returns>
-        // GET: api/reports/voucher/{voucherId:min(1)}/std-form-detail
+        // GET: api/reports/voucher/{voucherNo:min(1)}/std-form-detail
         [HttpGet]
         [Route(ReportApi.VoucherStandardFormWithDetailUrl)]
-        public async Task<IActionResult> GetStandardVoucherFormWithDetailAsync(int voucherId)
+        public async Task<IActionResult> GetStandardVoucherFormWithDetailAsync(int voucherNo)
         {
-            return await GetStandardFormAsync(voucherId, true);
+            return await GetStandardFormAsync(voucherNo, true);
         }
 
         #endregion
@@ -1038,12 +1038,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
-        private async Task<IActionResult> GetStandardFormAsync(int voucherId, bool withDetail = false)
+        private async Task<IActionResult> GetStandardFormAsync(int voucherNo, bool withDetail = false)
         {
-            var standardForm = await _repository.GetStandardVoucherFormAsync(voucherId, withDetail);
+            var standardForm = await _repository.GetStandardVoucherFormAsync(voucherNo, withDetail);
             if (standardForm == null)
             {
-                string message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Voucher, voucherId.ToString());
+                string message = _strings.Format(
+                    AppStrings.ItemByNumberNotFound, AppStrings.Voucher, voucherNo.ToString());
                 return BadRequestResult(message);
             }
 

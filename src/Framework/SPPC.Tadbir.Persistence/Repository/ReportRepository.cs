@@ -83,15 +83,15 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش فرم مرسوم سند را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر برای چاپ</param>
+        /// <param name="voucherNo">شماره سند مالی مورد نظر برای چاپ</param>
         /// <param name="withDetail">مشخص می کند که آیا جزییات سطوح شناور نیز مورد نیاز است یا نه</param>
         /// <returns>اطلاعات گزارش فرم مرسوم سند</returns>
         public async Task<StandardVoucherViewModel> GetStandardVoucherFormAsync(
-            int voucherId, bool withDetail = false)
+            int voucherNo, bool withDetail = false)
         {
             var standardForm = default(StandardVoucherViewModel);
             var voucher = await GetStandardVoucherFormQuery(withDetail)
-                .Where(v => v.Id == voucherId)
+                .Where(v => v.No == voucherNo)
                 .FirstOrDefaultAsync();
             if (voucher != null)
             {

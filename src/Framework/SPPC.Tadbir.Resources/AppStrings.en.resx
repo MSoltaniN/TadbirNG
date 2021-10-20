@@ -3534,4 +3534,7 @@
   <data name="InvalidOrExpiredLicense" xml:space="preserve">
     <value>Your application license is invalid or expired. Please contact your software vendor.</value>
   </data>
+  <data name="ItemByNumberNotFound" xml:space="preserve">
+    <value>No {0} with number '{1}' could be found.</value>
+  </data>
 </root>
