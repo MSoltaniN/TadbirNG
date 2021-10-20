@@ -1041,6 +1041,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<IActionResult> GetStandardFormAsync(int voucherId, bool withDetail = false)
         {
             var standardForm = await _repository.GetStandardVoucherFormAsync(voucherId, withDetail);
+            if (standardForm == null)
+            {
+                string message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Voucher, voucherId.ToString());
+                return BadRequestResult(message);
+            }
+
             var result = GetAuthorizationResult((SubjectType)standardForm.SubjectType);
             if (result != null)
             {
