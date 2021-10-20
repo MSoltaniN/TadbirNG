@@ -580,8 +580,11 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
         serviceUrl = this.replaceServiceUrlParams(serviceUrl, routeParameters);
       }
     }
-        
-    this.updateDateColumnByMetadata()
+
+    if(this.qReport)
+    {
+      this.updateDateColumnByMetadata()
+    }
 
     var sort = this.currentSort;
     var quickFilter = this.currentQuickFilter;
