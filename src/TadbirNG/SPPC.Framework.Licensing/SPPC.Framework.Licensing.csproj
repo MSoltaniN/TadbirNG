@@ -30,7 +30,9 @@
 
   <ItemGroup>
     <PackageReference Include="ChilkatDnCore" Version="9.5.0.88" />
-    <PackageReference Include="DeviceId" Version="5.0.0" />
+    <PackageReference Include="DeviceId" Version="6.0.0" />
+    <PackageReference Include="DeviceId.Linux" Version="6.0.0" />
+    <PackageReference Include="DeviceId.Windows.Wmi" Version="6.1.0" />
   </ItemGroup>
 
 </Project>

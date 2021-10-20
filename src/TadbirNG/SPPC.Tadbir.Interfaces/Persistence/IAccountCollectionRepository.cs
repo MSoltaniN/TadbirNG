@@ -1,0 +1,41 @@
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using SPPC.Tadbir.ViewModel.Finance;
+
+namespace SPPC.Tadbir.Persistence
+{
+    /// <summary>
+    /// عملیات مورد نیاز برای مدیریت مجموعه حساب را تعریف می کند.
+    /// </summary>
+    public interface IAccountCollectionRepository
+    {
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی طبقه بندی های مجموعه حساب را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از اطلاعات نمایشی طبقه بندی های مجموعه حساب</returns>
+        Task<IList<AccountCollectionCategoryViewModel>> GetCollectionCategoriesAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، حساب های انتخاب شده برای یک مجموعه حساب را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="collectionId">شناسه یکتای مجموعه حساب</param>
+        /// <returns>مجموعه ای از حساب های انتخاب شده در یک مجموعه حساب</returns>
+        Task<IList<AccountCollectionAccountViewModel>> GetCollectionAccountsAsync(int collectionId);
+
+        /// <summary>
+        /// به روش آسنکرون، حساب های یک مجموعه حساب را اضافه میکند
+        /// </summary>
+        /// <param name="accounts">اطلاعات حساب های یک مجموعه حساب</param>
+        /// <param name="collectionId">شناسه یکتای مجموعه حساب انتخاب شده</param>
+        Task AddCollectionAccountsAsync(int collectionId, IList<AccountCollectionAccountViewModel> accounts);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که شعبه داده شده امکان تعریف حساب برای مجموعه حساب را دارد یا نه
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
+        /// <param name="collectionId">شناسه دیتابیسی مجموعه حساب مورد نظر</param>
+        /// <returns>برای مجموعه حسابهای تک حسابی، شعبه داده شده باید بالاترین شعبه در ساختار درختی باشد.
+        /// ولی برای سایر مجموعه حسابها هر شعبه ای می تواند حسابهای مجموعه حساب را تعیین کند</returns>
+        Task<bool> CanBranchManageCollectionAsync(int branchId, int collectionId);
+    }
+}
