@@ -1,0 +1,83 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.<#= _model.EntityArea #>;
+using SPPC.Tadbir.Web.Api.Filters;
+using SPPC.Tadbir.Web.Api.Resources.Types;
+
+<#
+var plural = GetPluralName(_model.EntityName);
+var name = String.Format("{0}Controller", plural);
+#>
+namespace SPPC.Tadbir.Web.Api.Controllers
+{
+    [Produces("application/json")]
+    public class <#= name #> : ValidatingController<<#= _model.EntityName #>ViewModel>
+    {
+        public <#= name #>(I<#= _model.EntityName #>Repository repository, IStringLocalizer<AppStrings> strings = null)
+            : base(strings)
+        {
+            _repository = repository;
+        }
+
+        protected override string EntityNameKey
+        {
+            get { return AppStrings.<#= _model.EntityName #>; }
+        }
+
+        // GET: api/<#= plural.ToLower() #>
+        [Route(<#= _model.EntityName #>Api.<#= _model.IsFiscalEntity ? "Environment" : String.Empty #><#= plural #>Url)]
+        [AuthorizeRequest(SecureEntity.<#= _model.EntityName #>, (int)<#= _model.EntityName #>Permissions.View)]
+        public async Task<IActionResult> Get<#= _model.IsFiscalEntity ? "Environment" : String.Empty #><#= plural #>Async()
+        {
+            throw new NotImplementedException();
+        }
+
+        // GET: api/<#= plural.ToLower() #>/{<#= _model.EntityName.ToLower() #>Id:min(1)}
+        [Route(<#= _model.EntityName #>Api.<#= _model.EntityName #>Url)]
+        [AuthorizeRequest(SecureEntity.<#= _model.EntityName #>, (int)<#= _model.EntityName #>Permissions.View)]
+        public async Task<IActionResult> Get<#= _model.EntityName #>Async(int <#= _model.EntityName.ToLower() #>Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        // POST: api/<#= plural.ToLower() #>
+        [HttpPost]
+        [Route(<#= _model.EntityName #>Api.<#= _model.IsFiscalEntity ? "Environment" : String.Empty #><#= plural #>Url)]
+        [AuthorizeRequest(SecureEntity.<#= _model.EntityName #>, (int)<#= _model.EntityName #>Permissions.Create)]
+        public async Task<IActionResult> PostNew<#= _model.EntityName #>Async([FromBody] <#= _model.EntityName #>ViewModel <#= _model.EntityName.ToLower() #>)
+        {
+            throw new NotImplementedException();
+        }
+
+        // PUT: api/<#= plural.ToLower() #>/{<#= _model.EntityName.ToLower() #>Id:min(1)}
+        [HttpPut]
+        [Route(<#= _model.EntityName #>Api.<#= _model.EntityName #>Url)]
+        [AuthorizeRequest(SecureEntity.<#= _model.EntityName #>, (int)<#= _model.EntityName #>Permissions.Edit)]
+        public async Task<IActionResult> PutModified<#= _model.EntityName #>Async(int <#= _model.EntityName.ToLower() #>Id, [FromBody] <#= _model.EntityName #>ViewModel <#= _model.EntityName.ToLower() #>)
+        {
+            throw new NotImplementedException();
+        }
+
+        // DELETE: api/<#= plural.ToLower() #>/{<#= _model.EntityName.ToLower() #>Id:min(1)}
+        [HttpDelete]
+        [Route(<#= _model.EntityName #>Api.<#= _model.EntityName #>Url)]
+        [AuthorizeRequest(SecureEntity.<#= _model.EntityName #>, (int)<#= _model.EntityName #>Permissions.Delete)]
+        public async Task<IActionResult> DeleteExisting<#= _model.EntityName #>Async(int <#= _model.EntityName.ToLower() #>Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        private readonly I<#= _model.EntityName #>Repository _repository;
+    }
+}

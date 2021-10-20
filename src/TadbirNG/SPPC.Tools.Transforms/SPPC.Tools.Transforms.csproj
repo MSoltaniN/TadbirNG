@@ -1,0 +1,219 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <CodeAnalysisRuleSet>..\..\..\misc\assets\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\bin\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\bin\Release\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Templates\ResXKeyClass.cs" />
+    <Compile Remove="Templates\ResXKeyClass.Custom.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Templates\BlankController.tt" />
+    <None Remove="Templates\CsApiClass.tt" />
+    <None Remove="Templates\CsFluentMappingFromMetadata.tt" />
+    <None Remove="Templates\CsPermissionsEnum.tt" />
+    <None Remove="Templates\CsPocoFromXmlMetadata.tt" />
+    <None Remove="Templates\CsViewModelFromMetadata.tt" />
+    <None Remove="Templates\EmptyCrudController.tt" />
+    <None Remove="Templates\JsResFromCsViewModels.tt" />
+    <None Remove="Templates\RepoImplementationFromMetadata.tt" />
+    <None Remove="Templates\RepoInterfaceFromMetadata.tt" />
+    <None Remove="Templates\ResXKeyClass.tt" />
+    <None Remove="Templates\SqlCreateTableFromMetadata.tt" />
+    <None Remove="Templates\StarterCrudController.tt" />
+    <None Remove="Templates\TsApiFromCsApi.tt" />
+    <None Remove="Templates\TsConstTypeFromCsValueClass.tt" />
+    <None Remove="Templates\TsInstanceFromValues.tt" />
+    <None Remove="Templates\TsModelFromCsViewModel.tt" />
+    <None Remove="Templates\TsPermissionsFromCsPermissions.tt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Templates\BlankController.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>BlankController.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\CsApiClass.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CsApiClass.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\CsFluentMappingFromMetadata.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CsFluentMappingFromMetadata.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\CsPermissionsEnum.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CsPermissionsEnum.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\CsPocoFromXmlMetadata.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CsPocoFromXmlMetadata.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\CsViewModelFromMetadata.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CsViewModelFromMetadata.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\EmptyCrudController.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>EmptyCrudController.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\JsResFromCsViewModels.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>JsResFromCsViewModels.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\RepoImplementationFromMetadata.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>RepoImplementationFromMetadata.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\RepoInterfaceFromMetadata.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>RepoInterfaceFromMetadata.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\SqlCreateTableFromMetadata.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SqlCreateTableFromMetadata.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\StarterCrudController.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>StarterCrudController.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\TsApiFromCsApi.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TsApiFromCsApi.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\TsConstTypeFromCsValueClass.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TsConstTypeFromCsValueClass.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\TsInstanceFromValues.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TsInstanceFromValues.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\TsModelFromCsViewModel.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TsModelFromCsViewModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\TsPermissionsFromCsPermissions.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TsPermissionsFromCsPermissions.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
+    <ProjectReference Include="..\SPPC.Licensing.Interfaces\SPPC.Licensing.Interfaces.csproj" />
+    <ProjectReference Include="..\SPPC.Tools.Model\SPPC.Tools.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Templates\BlankController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BlankController.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CsApiClass.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CsApiClass.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CsFluentMappingFromMetadata.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CsFluentMappingFromMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CsPermissionsEnum.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CsPermissionsEnum.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CsPocoFromXmlMetadata.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CsPocoFromXmlMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CsViewModelFromMetadata.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CsViewModelFromMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\EmptyCrudController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EmptyCrudController.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\JsResFromCsViewModels.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>JsResFromCsViewModels.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\RepoImplementationFromMetadata.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RepoImplementationFromMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\RepoInterfaceFromMetadata.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RepoInterfaceFromMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\SqlCreateTableFromMetadata.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SqlCreateTableFromMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\StarterCrudController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StarterCrudController.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\TsApiFromCsApi.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TsApiFromCsApi.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\TsConstTypeFromCsValueClass.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TsConstTypeFromCsValueClass.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\TsInstanceFromValues.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TsInstanceFromValues.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\TsModelFromCsViewModel.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TsModelFromCsViewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\TsPermissionsFromCsPermissions.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TsPermissionsFromCsPermissions.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>
