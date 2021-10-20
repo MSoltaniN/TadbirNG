@@ -9285,3 +9285,12 @@ WHERE [Name] = 'RowNo'
 UPDATE [Metadata].[Column]
 SET StorageType = 'time', [Length] = 7
 WHERE ViewID IN(13, 59, 60, 61) AND [Name] = 'Time'
+
+-- 1.1.1238
+UPDATE [Reporting].[Report]
+SET ViewId = 2
+WHERE Code = 'Voucher-Std-Form'
+
+UPDATE [Reporting].[Report]
+SET ViewId = 2
+WHERE Code = 'Voucher-Std-Form-Detail'

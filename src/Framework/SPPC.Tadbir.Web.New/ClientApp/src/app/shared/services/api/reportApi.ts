@@ -26,6 +26,9 @@ export class ReportApi {
     // reports/sys/view/{viewId:min(1)}/default
     public static ReportsByViewDefault = environment.BaseUrl + "/reports/sys/view/{0}/default";
 
+    // reports/sys/view/{viewId:min(1)}/quickreport
+  public static ReportsByViewQuickReportUrl = environment.BaseUrl + "/reports/sys/view/{0}/quickreport";   
+
     // reports/sys/subsys/{subsysId:min(1)}
     public static ReportsBySubsystem = environment.BaseUrl + "/reports/sys/subsys/{0}";
 

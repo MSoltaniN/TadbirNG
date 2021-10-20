@@ -9,15 +9,15 @@ export class SppcButtonDisable {
   }   
 
   @HostListener('click') onClick() {    
-    this.element.nativeElement.classList.add("current-clicked-button");
     this.element.nativeElement.disabled = true;
+    this.element.nativeElement.classList.add("current-clicked-button");    
 
     setTimeout(() => {
       if (this.element.nativeElement.classList.contains("current-clicked-button")) {
-        this.element.nativeElement.classList.remove("current-clicked-button");
         this.element.nativeElement.disabled = false;
+        this.element.nativeElement.classList.remove("current-clicked-button");        
       }
-    }, 200);
+    }, 350);
 
   }
 }

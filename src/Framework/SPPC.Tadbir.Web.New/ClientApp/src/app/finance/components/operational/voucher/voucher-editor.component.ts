@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer2, Output, EventEmitter, DebugElement } from '@angular/core';
+import { Component, OnInit, Input, Renderer2, Output, EventEmitter, DebugElement, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -16,6 +16,8 @@ import { ViewName, DraftVoucherPermissions, VoucherPermissions } from '@sppc/sha
 import { LookupApi } from '@sppc/shared/services/api';
 import { Item } from '@sppc/shared/models';
 import { InventoryBalance } from '@sppc/finance/models/inventoryBalance';
+import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
+import { ViewIdentifierComponent, ReportViewerComponent } from '@sppc/shared/components';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -109,6 +111,12 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   breadcrumbResourceName: string;
   voucherDateType: string;
 
+  currentVoucherNo: number;
+
+  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
+
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
     public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService,
     public bStorageService: BrowserStorageService, public errorHandlingService: ErrorHandlingService) {
@@ -156,10 +164,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
               this.getVoucher(VoucherApi.LastVoucher);
             else
               this.getVoucher(VoucherApi.LastDraftVoucher);
+            
             break;
           }
           case "by-no": {
-            this.byNoVoucher();
+            this.byNoVoucher();            
             break;
           }
           case "first": {
@@ -167,7 +176,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
             if (this.subjectMode == 0)
               this.getVoucher(VoucherApi.FirstVoucher);
             else
-              this.getVoucher(VoucherApi.FirstDraftVoucher);
+              this.getVoucher(VoucherApi.FirstDraftVoucher);            
             break
           }
           case "next": {
@@ -177,7 +186,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
                 this.getVoucher(String.Format(VoucherApi.NextVoucher, voucherNo), true);
               else
                 this.getVoucher(String.Format(VoucherApi.NextDraftVoucher, voucherNo), true);
-            }
+            }            
             break
           }
           case "previous": {
@@ -202,10 +211,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
             else {
               this.openingVoucherQuery();
             }
+
             break;
           }
           case "closing-voucher": {
-            this.getVoucher(VoucherApi.ClosingVoucher);
+            this.getVoucher(VoucherApi.ClosingVoucher);            
             break;
           }
           case "close-temp-accounts":
@@ -225,6 +235,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
               else {
                 this.closingTmpOnInventoryMode1();
               }
+              
             break;
           }         
             
@@ -237,6 +248,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     }
 
     
+  }
+
+  //report methods
+  public showReport() {
+    this.reportManager.showDefaultDesignedReport();
   }
 
   setDateDisplayType() {
@@ -398,6 +414,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     //this.selectedType = this.voucherModel.type.toString();
     this.selectedType = this.voucherModel.subjectType.toString();
     this.subjectMode = this.voucherModel.subjectType;
+
+    this.currentVoucherNo = this.voucherModel.no;
   }
 
   voucherTypeListChange(value) {

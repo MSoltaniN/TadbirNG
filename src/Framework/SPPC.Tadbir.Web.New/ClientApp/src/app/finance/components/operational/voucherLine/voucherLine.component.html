@@ -1,9 +1,3 @@
-<view-identifier [ViewID]="viewId">
-  <report-param ParamName='no' [ParamValue]="voucherNo" ParamType="UrlParameter"></report-param>
-</view-identifier>
-<report-viewer id='compviewer'></report-viewer>
-<report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
-                   [Filter]="reportFilter" [RowData]="rowData" ></report-management>
 <div class="voucher-line">
   <div class="">
 
@@ -69,7 +63,7 @@
                                      (columnsList)="getColumns($event)">
         </auto-generated-grid-setting>
         <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-        <button kendoButton SppcPermissionCheck="Print" [EntityName]="entityNamePermission" (sppcClick)="showReport()" class="hidden-xs rm" type="button" [icon]="'printer'"></button>
+        <!--<button kendoButton SppcPermissionCheck="Print" [EntityName]="entityNamePermission" (sppcClick)="showReport()" class="hidden-xs rm" type="button" [icon]="'printer'"></button>-->
       </ng-template>
 
       <kendo-grid-checkbox-column showSelectAll="true"

@@ -146,6 +146,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         ///
         /// </summary>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route(ReportApi.ReportsByViewQuickReportUrl)]
+        public async Task<IActionResult> GetQuickReportByViewAsync(int viewId)
+        {
+            var report = await _sysRepository.GetQuickReportByViewAsync(viewId);
+            return JsonReadResult(report);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
         /// <param name="report"></param>
         /// <returns></returns>
         // POST: api/reports/sys

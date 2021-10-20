@@ -158,7 +158,20 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<Report>();
             var report = await repository.GetSingleByCriteriaAsync(
-                rep => rep.ViewId == viewId && rep.IsDefault);
+                rep => rep.ViewId == viewId && rep.IsDefault && rep.IsDynamic == false);
+            return Mapper.Map<ReportSummaryViewModel>(report);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات خلاصه گزارش فوری برای یک فرم را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی یکی از فرم های قابل چاپ</param>
+        /// <returns>اطلاعات خلاصه گزارش فوری</returns>
+        public async Task<ReportSummaryViewModel> GetQuickReportByViewAsync(int viewId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Report>();
+            var report = await repository.GetSingleByCriteriaAsync(
+                rep => rep.ViewId == viewId && rep.IsDefault && rep.IsDynamic == true);
             return Mapper.Map<ReportSummaryViewModel>(report);
         }
 

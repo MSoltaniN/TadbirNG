@@ -1,5 +1,11 @@
 
 <app-bread-cumb entityTypeName="{{subjectMode === 1 ? 'DraftVoucherEditor' : 'VoucherEditor'}}" *ngIf="isShowBreadcrumb"></app-bread-cumb>
+<view-identifier [ViewID]="viewId">
+  <report-param ParamName='no' [ParamValue]="currentVoucherNo" ParamType="UrlParameter"></report-param>
+</view-identifier>
+<report-viewer id='compviewer'></report-viewer>
+<report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
+                   [Filter]="reportFilter" [RowData]="rowData"></report-management>
 
 <div class="panel-body" style="padding-top: 0">
 
@@ -54,6 +60,8 @@
             <span class="k-icon k-i-close-outline"></span>
           </button>
 
+          <button kendoButton SppcPermissionCheck="Print" [EntityName]="entityNamePermission" (sppcClick)="showReport()" class="hidden-xs rm" type="button" [icon]="'printer'"></button>
+
           <button class="k-button k-button-icon sppc-float-diff" title="{{ 'Buttons.Help' | translate }}"><span class="k-icon k-i-help"></span></button>
         </div>
       </div>
@@ -92,7 +100,7 @@
               <div class="form-group">
                 <label for="dailyNo" class="control-label">{{ 'Voucher.DailyNo' | translate }}</label>
 
-                <input type="text" formControlName="dailyNo" class="k-textbox"  [attr.disabled]="(!hasEditAccess) || (isVoucherConfirmed) || (voucherModel && voucherModel.saveCount) === 0 ? 'disabled' : null" />
+                <input type="text" formControlName="dailyNo" class="k-textbox" [attr.disabled]="(!hasEditAccess) || (isVoucherConfirmed) || (voucherModel && voucherModel.saveCount) === 0 ? 'disabled' : null" />
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.dailyNo.valid || editForm.controls.dailyNo.pristine">
                   <span *ngIf="editForm.controls.dailyNo.errors?.required">{{ 'AllValidations.Voucher.DailyNoIsRequired' | translate }}</span>
@@ -104,7 +112,7 @@
               <div class="form-group">
                 <label for="association" class="control-label">{{ 'Voucher.Association' | translate }}</label>
 
-                <input type="text" class="k-textbox" formControlName="association" [attr.disabled]="isVoucherConfirmed || !hasEditAccess ? 'disabled' : null"  />
+                <input type="text" class="k-textbox" formControlName="association" [attr.disabled]="isVoucherConfirmed || !hasEditAccess ? 'disabled' : null" />
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.association.valid || editForm.controls.association.pristine">
                   <span *ngIf="editForm.controls.association.errors?.maxlength">{{ 'AllValidations.Voucher.AssociationIsTooLong' | translate }}</span>
@@ -126,7 +134,7 @@
               <div class="form-group">
                 <label for="description" class="control-label">{{ 'Voucher.Description' | translate }}</label>
 
-                <input type="text" class="k-textbox" formControlName="description" [attr.disabled]="isVoucherConfirmed || !hasEditAccess ? 'disabled' : null"/>
+                <input type="text" class="k-textbox" formControlName="description" [attr.disabled]="isVoucherConfirmed || !hasEditAccess ? 'disabled' : null" />
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
                   {{ 'AllValidations.Voucher.DescriptionIsTooLong' | translate }}
@@ -156,7 +164,7 @@
     <div class="row" *ngIf="voucherModel">
       <div class="col-xs-12">
         <div class="voucher-form-content">
-          <voucherLine [subjectMode]="subjectMode" 
+          <voucherLine [subjectMode]="subjectMode"
                        [voucherID]="voucherModel.id"
                        [documentStatus]="voucherModel.statusId"
                        [saveCount]="voucherModel.saveCount">

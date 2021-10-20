@@ -71,6 +71,13 @@ namespace SPPC.Tadbir.Persistence
         Task<ReportSummaryViewModel> GetDefaultReportByViewAsync(int viewId);
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات خلاصه گزارش فوری برای یک فرم را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی یکی از فرم های قابل چاپ</param>
+        /// <returns>اطلاعات خلاصه گزارش فوری</returns>
+        Task<ReportSummaryViewModel> GetQuickReportByViewAsync(int viewId);
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات یک گزارش ذخیره شده کاربری را ذخیره یا بروزرسانی می کند
         /// </summary>
         /// <param name="report">اطلاعات محلی شده گزارش کاربری</param>

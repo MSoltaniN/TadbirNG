@@ -105,6 +105,8 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
   disableDeleteButton: boolean = false;
   disablePreviewButton: boolean = false;
 
+  quickReportFolderId: number = 18;
+
   errorHandlingService: ErrorHandlingService
 
   private reportForm = new FormGroup({
@@ -256,7 +258,10 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
   public addQReportToDefaultFolder(viewId: string, formParams: Array<ReportParamComponent>) {
     var expandKeysArray: string[];
 
-    var defaltReportUrl = String.Format(ReportApi.ReportsByViewDefault, viewId);
+    var defaltReportUrl = String.Format(ReportApi.ReportsByViewQuickReportUrl, viewId);
+    if (!this.qReport)
+      defaltReportUrl = String.Format(ReportApi.ReportsByViewDefault, viewId);
+
     this.reportingService.getAll(defaltReportUrl)
       .subscribe((res: any) => {
         var report = <ReportSummary>res.body;
@@ -289,7 +294,10 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
   public expandAndSelectDefault(viewId: string, formParams: Array<ReportParamComponent>) {
     var expandKeysArray: string[];
 
-    var defaltReportUrl = String.Format(ReportApi.ReportsByViewDefault, viewId);
+    var defaltReportUrl = String.Format(ReportApi.ReportsByViewQuickReportUrl, viewId);
+    if (!this.qReport)
+      defaltReportUrl = String.Format(ReportApi.ReportsByViewDefault, viewId);
+
     this.reportingService.getAll(defaltReportUrl)
       .subscribe((res: any) => {
         var report = <ReportSummary>res.body;
@@ -484,10 +492,11 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
       this.currentPrintInfo = printInfo;
 
       if (printInfo.parameters.length > 0) {
-        if (formParams == undefined || formParams.length == 0)
+        var formPrameters = this.setParamterFromForm(formParams);
+        //if (formParams == undefined || formParams.length == 0)        
+        if (formPrameters.length == 0 || formPrameters.findIndex(p=>p.value == null) > -1)
           this.showParameterForm(printInfo);
-        else {
-          var formPrameters = this.setParamterFromForm(formParams);
+        else {         
           this.previewReport(formPrameters);
         }
       }
@@ -533,7 +542,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     var serviceUrl = environment.BaseUrl + "/";
 
     var urlIsComplete: boolean = false;
-    if (this.DefaultServiceUrl)
+    if (this.DefaultServiceUrl && this.currentDefaultReportId == this.currentPrintInfo.id)
     {
       serviceUrl = this.DefaultServiceUrl;
       urlIsComplete = true;
@@ -664,10 +673,12 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     if (params.length > 0) {
       var args = new Array<any>();
       params.forEach((item) => {
-        args.push(item.ParamValue);
+        if(item.ParamValue)
+          args.push(item.ParamValue);
       });
 
-      url = String.Format(url, args);
+      if (args.length > 0)
+        url = String.Format(url, args);
     }
 
     return url;
@@ -890,7 +901,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
   }
      
   /**
-   * این متد براساس گزارش دیفالت شده را نمایش میدهد یا گزارش فوری نمایش میدهد یا گزارش طراجی شده را نمایش میدهد
+   * این متد براساس گزارش دیفالت شده از نوع گزارش فوری نمایش میدهد
    * @param viewInfo
    */
   public showDefaultReport(viewInfo: QuickReportConfigInfo = null) {
@@ -914,6 +925,25 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
   }
 
   /**
+   * این متد براساس گزارش دیفالت شده طراجی شده را نمایش میدهد
+   * @param viewInfo
+   */
+  public showDefaultDesignedReport() {
+    var showQReport: boolean = false;
+    var treeData: Array<TreeItem> = null;
+    var url = String.Format(ReportApi.ReportsByView, this.ViewIdentity.ViewID);       
+
+    this.reportingService.getAll(url)
+      .subscribe((res: any) => {
+        treeData = <Array<TreeItem>>res.body;        
+        var defaultReport = treeData.filter((t: any) => t.isDefault === true && t.isDynamic === false)[0];
+
+        treeData = treeData.filter((t: any) => t.id !== this.quickReportFolderId && t.isDynamic === false);
+        this.switchReport(showQReport, treeData, defaultReport,null);
+      });
+  }
+
+  /**
    * در این تابع تصمیم برای نمایش گزارش فوری یا گزارش طراحی شده انجام میشود
    * @param showQReport
    * @param treeData
@@ -932,6 +962,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
       viewInfo.title = defReport.caption;
       viewInfo.viewId = Number(this.ViewIdentity.ViewID);
       viewInfo.reportViewSetting = this.ViewSettings;
+      this.qReport = true;
 
       //get parameters for quick report
       var url = String.Format(ReportApi.Report, defReport.id);

@@ -55,6 +55,11 @@ namespace SPPC.Tadbir.Api
         public const string ReportsByViewDefaultUrl = "reports/sys/view/{viewId:min(1)}/default";
 
         /// <summary>
+        /// API server route URL for default report associated with a view specified by unique identifier
+        /// </summary>
+        public const string ReportsByViewQuickReportUrl = "reports/sys/view/{viewId:min(1)}/quickreport";
+
+        /// <summary>
         /// API client URL for all reports associated with a subsystem specified by unique identifier
         /// </summary>
         public const string ReportsBySubsystem = "reports/sys/subsys/{0}";
