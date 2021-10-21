@@ -137,7 +137,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ProjectViewModel> SaveProjectAsync(ProjectViewModel project)
         {
             Verify.ArgumentNotNull(project, "project");
-            Project projectModel = default(Project);
+            Project projectModel;
             var repository = UnitOfWork.GetAsyncRepository<Project>();
             if (project.Id == 0)
             {
@@ -343,7 +343,7 @@ namespace SPPC.Tadbir.Persistence
             int codeLength = treeConfig.Levels[childLevel].CodeLength;
             string format = String.Format("D{0}", codeLength);
             var maxCode = (long)Math.Pow(10, codeLength) - 1;
-            var lastCode = (existingCodes.Count() > 0) ? Int64.Parse(existingCodes.Max()) : 0;
+            var lastCode = (existingCodes.Any()) ? Int64.Parse(existingCodes.Max()) : 0;
             var newCode = Math.Min(lastCode + 1, maxCode);
             return newCode.ToString(format);
         }

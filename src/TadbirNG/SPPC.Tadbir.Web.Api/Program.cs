@@ -3,13 +3,24 @@ using Microsoft.Extensions.Hosting;
 
 namespace SPPC.Tadbir.Web.Api
 {
+    /// <summary>
+    ///
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="args"></param>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>

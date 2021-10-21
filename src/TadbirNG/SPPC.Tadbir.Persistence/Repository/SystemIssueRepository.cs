@@ -63,7 +63,7 @@ namespace SPPC.Tadbir.Persistence
                 ViewId.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
                 .Where(voucher => voucher.SubjectType != (short)SubjectType.Draft
                     && voucher.Lines.Count == 0
-                    && voucher.Date.IsBetween(from, to))
+                    && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
                 .Select(item => Mapper.Map<VoucherViewModel>(item));
 
             var listAndCount = await GetListAndCountAsync(gridOptions, vouchers);
@@ -85,7 +85,7 @@ namespace SPPC.Tadbir.Persistence
                 ViewId.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
                 .Where(voucher => voucher.SubjectType != (short)SubjectType.Draft
                     && !voucher.IsBalanced
-                    && voucher.Date.IsBetween(from, to))
+                    && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
                 .Select(item => Mapper.Map<VoucherViewModel>(item));
 
             var listAndCount = await GetListAndCountAsync(gridOptions, vouchers);
@@ -108,7 +108,7 @@ namespace SPPC.Tadbir.Persistence
             var listAndCount = (missingNumbers, count);
             var existingNumbers = await Repository.GetAllOperationQuery<Voucher>(ViewId.Voucher)
                 .Where(voucher => voucher.SubjectType != (short)SubjectType.Draft
-                    && voucher.Date.IsBetween(from, to))
+                    && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
                 .Select(voucher => voucher.No)
                 .ToListAsync();
 
@@ -359,7 +359,8 @@ namespace SPPC.Tadbir.Persistence
                 line => line.Project,
                 line => line.Currency)
                 .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
-                    && line.Voucher.Date.IsBetween(from, to));
+                    && line.Voucher.Date.Date >= from.Date
+                    && line.Voucher.Date.Date <= to.Date);
             return lines;
         }
 

@@ -305,7 +305,7 @@ namespace SPPC.Tadbir.Persistence
         private Dictionary<string, string> GetItemLookup(
             int length, string componentName, IEnumerable<string> fullCodes)
         {
-            if (fullCodes.Count() == 0)
+            if (!fullCodes.Any())
             {
                 return new Dictionary<string, string>();
             }

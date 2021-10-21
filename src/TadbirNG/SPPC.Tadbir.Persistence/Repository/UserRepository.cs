@@ -318,7 +318,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<UserViewModel> SaveUserAsync(UserViewModel userView)
         {
             Verify.ArgumentNotNull(userView, "userView");
-            User user = default(User);
+            var user = default(User);
             var repository = UnitOfWork.GetAsyncRepository<User>();
             if (userView.Id == 0)
             {
@@ -568,7 +568,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var filtered = users;
             var filters = gridOptions?.Filter?.GetAllFilters();
-            if (filters != null && filters.Count() > 0)
+            if (filters != null && filters.Any())
             {
                 var dateFilter = filters
                     .Where(f => f.FieldName == "lastLoginDate")
@@ -632,7 +632,7 @@ namespace SPPC.Tadbir.Persistence
             return func;
         }
 
-        private void AddNewRoles(
+        private static void AddNewRoles(
             IRepository<UserRole> repository, IList<UserRole> existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = existing.Select(rc => rc.RoleId);
@@ -648,6 +648,22 @@ namespace SPPC.Tadbir.Persistence
                 };
                 repository.Insert(userRole);
             }
+        }
+
+        private static User CloneUser(User user)
+        {
+            return new User()
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                IsEnabled = user.IsEnabled,
+                Person = new Person()
+                {
+                    Id = user.Person.Id,
+                    FirstName = user.Person.FirstName,
+                    LastName = user.Person.LastName
+                }
+            };
         }
 
         private User GetNewUser(UserViewModel userViewModel)
@@ -673,22 +689,6 @@ namespace SPPC.Tadbir.Persistence
                     .ThenInclude(ur => ur.Role)
                         .ThenInclude(r => r.RolePermissions);
             return query;
-        }
-
-        private User CloneUser(User user)
-        {
-            return new User()
-            {
-                Id = user.Id,
-                UserName = user.UserName,
-                IsEnabled = user.IsEnabled,
-                Person = new Person()
-                {
-                    Id = user.Person.Id,
-                    FirstName = user.Person.FirstName,
-                    LastName = user.Person.LastName
-                }
-            };
         }
 
         private bool CheckPassword(string passwordHash, string password)

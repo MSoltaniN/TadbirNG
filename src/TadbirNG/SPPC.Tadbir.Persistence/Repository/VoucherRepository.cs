@@ -409,7 +409,7 @@ namespace SPPC.Tadbir.Persistence
                 var repository = UnitOfWork.GetAsyncRepository<Voucher>();
                 int count = await repository.GetCountByCriteriaAsync(
                     v => v.Id != voucher.Id
-                        && voucher.Date.CompareWith(v.Date) == 0
+                        && voucher.Date.Date == v.Date.Date
                         && v.DailyNo != 0
                         && v.DailyNo == voucher.DailyNo
                         && v.SubjectType == voucher.SubjectType
@@ -507,7 +507,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task SetVouchersStatusAsync(IEnumerable<int> items, DocumentStatusId status)
         {
             Verify.EnumValueIsDefined(typeof(DocumentStatusId), "status", (int)status);
-            if (items.Count() == 0)
+            if (!items.Any())
             {
                 return;
             }

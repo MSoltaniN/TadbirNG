@@ -41,7 +41,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
                 .Select(att => new PermissionBriefViewModel(att.Entity, att.Permission))
                 .ToArray();
 
-            if (requiredPermissions.Count() == 0)
+            if (requiredPermissions.Length == 0)
             {
                 return;
             }

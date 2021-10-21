@@ -93,7 +93,7 @@ namespace SPPC.Tadbir.Persistence.Utility
             {
                 predicates.Add(String.Format("BranchID = {0}", branchId));
             }
-            else if (quickFilter == null || quickFilter.IndexOf("BranchId") == -1)
+            else if (quickFilter == null || !quickFilter.Contains("BranchId"))
             {
                 var branchIds = GetChildTree(UserContext.BranchId);
                 string branchList = String.Join(",", branchIds.Select(id => id.ToString()));
@@ -334,7 +334,7 @@ namespace SPPC.Tadbir.Persistence.Utility
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             int inBranchId = branchId ?? UserContext.BranchId;
             var accounts = GetInheritedAccounts(collectionId, inBranchId);
-            if (accounts.Count() == 0)
+            if (!accounts.Any())
             {
                 return new List<AccountItemBriefViewModel>();
             }

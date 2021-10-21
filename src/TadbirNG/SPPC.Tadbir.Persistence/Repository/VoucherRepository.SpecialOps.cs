@@ -183,56 +183,7 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private static IEnumerable<IGrouping<int?, VoucherLine>> GetByCurrencyLineGroups(IEnumerable<VoucherLine> lines)
-        {
-            foreach (var byDetail in lines.GroupBy(line => line.DetailId))
-            {
-                foreach (var byCostCenter in byDetail.GroupBy(line => line.CostCenterId))
-                {
-                    foreach (var byProject in byCostCenter.GroupBy(line => line.ProjectId))
-                    {
-                        foreach (var byCurrency in byProject.GroupBy(line => line.CurrencyId))
-                        {
-                            yield return byCurrency;
-                        }
-                    }
-                }
-            }
-        }
-
-        private async Task<Voucher> GetCurrentSpecialVoucherAsync(VoucherOriginId origin)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var openingVoucher = await repository.GetSingleByCriteriaAsync(
-                v => v.FiscalPeriodId == UserContext.FiscalPeriodId &&
-                v.OriginId == (int)origin);
-            return openingVoucher;
-        }
-
-        private async Task<Account> GetBranchClosingAccountAsync(int branchId)
-        {
-            var accounts = await _utility.GetUsableAccountsAsync(AccountCollectionId.ClosingAccount, true, branchId);
-            return accounts.SingleOrDefault();
-        }
-
-        private async Task<IList<Account>> GetBranchAssetAccountsAsync(int branchId)
-        {
-            var accounts = new List<Account>();
-            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.LiquidAssets, true, branchId));
-            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.NonLiquidAssets, true, branchId));
-            return accounts;
-        }
-
-        private async Task<IList<Account>> GetBranchCapitalLiabilityAccountsAsync(int branchId)
-        {
-            var accounts = new List<Account>();
-            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.LiquidLiabilities, true, branchId));
-            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.NonLiquidLiabilities, true, branchId));
-            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.OwnerEquities, true, branchId));
-            return accounts;
-        }
-
-        private IList<FullAccountViewModel> GetFullAccounts(Account account)
+        private static IList<FullAccountViewModel> GetFullAccounts(Account account)
         {
             var fullAccounts = new List<FullAccountViewModel>();
             var accountBrief = new AccountItemBriefViewModel() { Id = account.Id };
@@ -338,6 +289,38 @@ namespace SPPC.Tadbir.Persistence
             return fullAccounts;
         }
 
+        private async Task<Voucher> GetCurrentSpecialVoucherAsync(VoucherOriginId origin)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var openingVoucher = await repository.GetSingleByCriteriaAsync(
+                v => v.FiscalPeriodId == UserContext.FiscalPeriodId &&
+                v.OriginId == (int)origin);
+            return openingVoucher;
+        }
+
+        private async Task<Account> GetBranchClosingAccountAsync(int branchId)
+        {
+            var accounts = await _utility.GetUsableAccountsAsync(AccountCollectionId.ClosingAccount, true, branchId);
+            return accounts.SingleOrDefault();
+        }
+
+        private async Task<IList<Account>> GetBranchAssetAccountsAsync(int branchId)
+        {
+            var accounts = new List<Account>();
+            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.LiquidAssets, true, branchId));
+            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.NonLiquidAssets, true, branchId));
+            return accounts;
+        }
+
+        private async Task<IList<Account>> GetBranchCapitalLiabilityAccountsAsync(int branchId)
+        {
+            var accounts = new List<Account>();
+            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.LiquidLiabilities, true, branchId));
+            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.NonLiquidLiabilities, true, branchId));
+            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.OwnerEquities, true, branchId));
+            return accounts;
+        }
+
         private async Task InsertAsync(Voucher voucher, string description)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
@@ -441,7 +424,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<Voucher> IssueOpeningVoucherAsync(bool isDefault)
         {
-            var openingVoucher = default(Voucher);
+            Voucher openingVoucher;
             var lastClosingVoucher = await GetPreviousClosingVoucherAsync();
             if (lastClosingVoucher != null)
             {
@@ -977,7 +960,7 @@ namespace SPPC.Tadbir.Persistence
             int branchId, IEnumerable<Account> accounts, Account closureAccount, string description)
         {
             var lines = new List<VoucherLine>();
-            if (accounts.Count() == 0 || closureAccount == null)
+            if (!accounts.Any() || closureAccount == null)
             {
                 return lines;
             }

@@ -349,7 +349,7 @@ namespace SPPC.Tadbir.Persistence
 
         private void DeleteWithCascade(Type parentType, int parentId, Type type, IEnumerable<int> ids)
         {
-            if (ids.Count() == 0)
+            if (!ids.Any())
             {
                 return;
             }

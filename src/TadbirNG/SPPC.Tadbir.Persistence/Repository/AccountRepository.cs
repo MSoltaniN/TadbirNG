@@ -418,7 +418,7 @@ namespace SPPC.Tadbir.Persistence
             var collectionAccounts = await repository
                 .GetByCriteriaAsync(aca => aca.AccountId == accountId, aca => aca.Collection);
 
-            if (collectionAccounts.Count() == 0)
+            if (collectionAccounts.Count == 0)
             {
                 return true;
             }
@@ -427,9 +427,9 @@ namespace SPPC.Tadbir.Persistence
                 var collections = collectionAccounts
                     .Select(aca => aca.Collection)
                     .Distinct();
-                return collections
+                return !collections
                     .Where(coll => coll.TypeLevel == (int)TypeLevel.LeafAccounts)
-                    .Count() == 0;
+                    .Any();
             }
         }
 
@@ -600,7 +600,7 @@ namespace SPPC.Tadbir.Persistence
             int codeLength = treeConfig.Levels[childLevel].CodeLength;
             string format = String.Format("D{0}", codeLength);
             var maxCode = (long)Math.Pow(10, codeLength) - 1;
-            var lastCode = (existingCodes.Count() > 0) ? Int64.Parse(existingCodes.Max()) : 0;
+            var lastCode = (existingCodes.Any()) ? Int64.Parse(existingCodes.Max()) : 0;
             var newCode = Math.Min(lastCode + 1, maxCode);
             return newCode.ToString(format);
         }

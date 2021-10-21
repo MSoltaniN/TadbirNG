@@ -158,7 +158,7 @@ namespace SPPC.Tadbir.Persistence.Utility
             DateTime date, Expression<Func<VoucherLine, bool>> itemCriteria)
         {
             return await GetBalanceAsync(
-                line => line.Voucher.Date.CompareWith(date) < 0, itemCriteria);
+                line => line.Voucher.Date.Date < date.Date, itemCriteria);
         }
 
         private async Task<decimal> GetBalanceByNoAsync(
@@ -178,7 +178,9 @@ namespace SPPC.Tadbir.Persistence.Utility
         private async Task<VoucherLineAmountsViewModel> GetTurnoverAsync(
             DateTime from, DateTime to, Expression<Func<VoucherLine, bool>> itemCriteria)
         {
-            return await GetTurnoverAsync(line => line.Voucher.Date.IsBetween(from, to), itemCriteria);
+            return await GetTurnoverAsync(
+                line => line.Voucher.Date.Date >= from.Date
+                && line.Voucher.Date.Date <= to.Date, itemCriteria);
         }
 
         private async Task<VoucherLineAmountsViewModel> GetTurnoverAsync(

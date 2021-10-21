@@ -26,7 +26,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         ///
         /// </summary>
         /// <param name="repository"></param>
-        /// <param name="config"></param>
         /// <param name="strings"></param>
         /// <param name="tokenService"></param>
         public CurrencyBookController(ICurrencyBookRepository repository,

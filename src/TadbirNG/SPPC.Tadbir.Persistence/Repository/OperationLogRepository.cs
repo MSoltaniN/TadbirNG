@@ -9,7 +9,6 @@ using SPPC.Framework.Domain;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Utility;
@@ -112,7 +111,8 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
             var archiveRepository = UnitOfWork.GetAsyncRepository<OperationLogArchive>();
-            var logs = await repository.GetByCriteriaAsync(log => log.Date.Date.IsBetween(from, to));
+            var logs = await repository.GetByCriteriaAsync(
+                log => log.Date.Date >= from.Date && log.Date.Date <= to.Date);
             logs = logs
                 .Apply(gridOptions, false)
                 .ToList();
@@ -157,7 +157,8 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
             var archiveRepository = UnitOfWork.GetAsyncRepository<OperationLogArchive>();
-            var archived = await archiveRepository.GetByCriteriaAsync(log => log.Date.Date.IsBetween(from, to));
+            var archived = await archiveRepository.GetByCriteriaAsync(
+                log => log.Date.Date >= from.Date && log.Date.Date <= to.Date);
             foreach (var item in archived)
             {
                 var log = Mapper.Map<OperationLog>(item);
@@ -267,7 +268,8 @@ namespace SPPC.Tadbir.Persistence
             UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
             var archiveRepository = UnitOfWork.GetAsyncRepository<SysOperationLogArchive>();
-            var logs = await repository.GetByCriteriaAsync(log => log.Date.Date.IsBetween(from, to));
+            var logs = await repository.GetByCriteriaAsync(
+                log => log.Date.Date >= from.Date && log.Date.Date <= to.Date);
             logs = logs
                 .Apply(gridOptions, false)
                 .ToList();
@@ -316,7 +318,8 @@ namespace SPPC.Tadbir.Persistence
             UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<SysOperationLog>();
             var archiveRepository = UnitOfWork.GetAsyncRepository<SysOperationLogArchive>();
-            var archived = await archiveRepository.GetByCriteriaAsync(log => log.Date.Date.IsBetween(from, to));
+            var archived = await archiveRepository.GetByCriteriaAsync(
+                log => log.Date.Date >= from.Date && log.Date.Date <= to.Date);
             foreach (var item in archived)
             {
                 var log = Mapper.Map<SysOperationLog>(item);
