@@ -19,18 +19,9 @@ namespace SPPC.Tadbir.Persistence
     public partial class TadbirContext : DbContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TadbirContext"/> class using the specified connection string.
+        /// Gets or sets the connection string currently set in this data context
         /// </summary>
-        /// <param name="connectionString">Database connection to use for this context</param>
-        public TadbirContext(string connectionString)
-        {
-            ConnectionString = connectionString;
-        }
-
-        /// <summary>
-        /// Gets the connection string currently set in this data context
-        /// </summary>
-        public string ConnectionString { get; }
+        public string ConnectionString { get; set; }
 
         /// <summary>
         /// Performs entity mappings required for converting data between object and relational forms

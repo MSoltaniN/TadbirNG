@@ -419,20 +419,6 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private async Task<IEnumerable<int>> GetInactiveCompanyIdsAsync()
-        {
-            UnitOfWork.UseSystemContext();
-            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var inactiveIds = await repository
-                .GetEntityQuery()
-                .Where(c => !c.IsActive)
-                .Select(c => c.Id)
-                .ToListAsync();
-            UnitOfWork.UseCompanyContext();
-
-            return inactiveIds;
-        }
-
         private void SetSystemValues(List<OperationLogViewModel> logs)
         {
             var ids = logs

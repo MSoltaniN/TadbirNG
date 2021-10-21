@@ -27,7 +27,7 @@ namespace SPPC.Tadbir.Persistence
         public void SwitchCompanyContext(string connection)
         {
             Verify.ArgumentNotNullOrEmptyString(connection, nameof(connection));
-            CompanyContext = new TadbirContext(connection);
+            CompanyContext = new TadbirContext() { ConnectionString = connection };
         }
 
         /// <summary>

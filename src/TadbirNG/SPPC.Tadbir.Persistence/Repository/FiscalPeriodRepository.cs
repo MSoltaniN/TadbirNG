@@ -230,15 +230,14 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(fiscalPeriod, "fiscalPeriod");
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var fiscalPeriods = await repository
-                .GetByCriteriaAsync(
+            var fiscalPeriods = await repository.GetByCriteriaAsync(
                 fp => fp.CompanyId == fiscalPeriod.CompanyId && fp.Id != fiscalPeriod.Id
                 && ((fiscalPeriod.StartDate.CompareWith(fp.StartDate) >= 0
                     && fiscalPeriod.StartDate.CompareWith(fp.EndDate) <= 0)
                 || (fiscalPeriod.EndDate.CompareWith(fp.StartDate) >= 0
                     && fiscalPeriod.EndDate.CompareWith(fp.EndDate) <= 0)));
 
-            return (fiscalPeriods.Count > 0);
+            return fiscalPeriods.Count > 0;
         }
 
         /// <summary>
@@ -410,7 +409,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private void AddNewRoles(
+        private static void AddNewRoles(
             IRepository<RoleFiscalPeriod> repository, IList<RoleFiscalPeriod> existing,
             RelatedItemsViewModel roleItems)
         {
