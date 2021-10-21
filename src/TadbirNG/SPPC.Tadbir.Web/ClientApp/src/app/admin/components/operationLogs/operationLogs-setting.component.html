@@ -1,0 +1,34 @@
+<app-bread-cumb></app-bread-cumb>
+<div class="panel-body">
+  <div class="row section-option">
+    <div class="col-md-6 col-xs-12 col-sm-6 sppc-float section-border">   
+      <div class="form-group">
+        <input type="checkbox" name="chkArchive" id="chkArchive" class="k-checkbox" [(ngModel)]="isSystem" (ngModelChange)="chkIsSystemChanged()" />
+        <span  for="chkArchive">{{ 'OperationLog.SystemLog' | translate }}</span>
+      </div>
+      <div class="form-group" [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
+        <kendo-treeview [nodes]="settingModel"
+                        [textField]="['name']"
+                        kendoTreeViewExpandable
+                        [kendoTreeViewSelectable]
+                        kendoTreeViewFlatDataBinding
+                        idField="id"
+                        parentIdField="parentId"
+                        (selectionChange)="handleSelection($event)">
+        </kendo-treeview>
+      </div>
+    </div>
+    <div class="col-md-6 col-xs-12 col-sm-6 section-border">
+      <div class="form-group" *ngFor="let item of detailItem">
+        <input type="checkbox" name="chkItem{{ item.id }}" id="chkItem{{ item.id }}" class="k-checkbox" [checked]="item.isEnabled" (change)="chkItemClick(item.id,item.operationId,$event)"  />
+        <span >{{ item.operationName }}</span>
+      </div>
+    </div>
+    <div class="col-md-12 col-xs-12 col-sm-12">
+      <button class="k-button k-primary btn-compute-selectable sppc-float-diff"
+              (click)="saveSettings();">
+        {{ 'Buttons.Save' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

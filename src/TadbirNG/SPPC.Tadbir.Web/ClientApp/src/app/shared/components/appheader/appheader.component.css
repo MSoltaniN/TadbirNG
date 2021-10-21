@@ -1,0 +1,23 @@
+.navbar-nav > .user-menu > .dropdown-menu > li.user-header
+{
+    height: 225px!important;
+}
+
+.btn-userInfo
+{
+    margin-right: 3px;
+}
+
+.btn
+{
+    font-size: 12px;
+}
+
+/deep/ body.tLtr .main-header .logo {
+  font-size: 12px !important;
+}
+
+.user-info-label {
+  margin-left: 4px !important;
+  margin-right: 4px !important;
+}

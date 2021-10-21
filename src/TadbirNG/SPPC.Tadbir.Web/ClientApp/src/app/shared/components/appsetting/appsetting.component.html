@@ -1,0 +1,148 @@
+<aside class="control-sidebar control-sidebar-dark">
+        <div class="tab-content">     
+                <div id="control-sidebar-theme-demo-options-tab" class="tab-pane active">
+                        <div>
+                                <h4 class="control-sidebar-heading">{{ 'Dashboard.Themes' | translate }}</h4>
+                                <ul class="list-unstyled clearfix">
+                                        <li style="float:left; width: 33.33333%; padding: 5px;"><a (click)="onChangeSkin('skin-blue')"
+                                                        data-skin="skin-blue" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                                        class="clearfix full-opacity-hover">
+                                                        <div><span style="display:block; width: 20%; float: left; height: 7px; background: #367fa9"></span><span
+                                                                        class="bg-light-blue" style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                                        <div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span
+                                                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span></div>
+                                                </a>
+                                                <p class="text-center no-margin">{{ 'Dashboard.Blue' | translate }}</p>
+                                        </li>
+                                        <!--<li style="float:left; width: 33.33333%; padding: 5px;"><a (click)="onChangeSkin('skin-black')" href="javascript:void(0)"
+                                                        data-skin="skin-black" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                                        class="clearfix full-opacity-hover">
+                                                        <div style="box-shadow: 0 0 2px rgba(0,0,0,0.1)" class="clearfix"><span
+                                                                        style="display:block; width: 20%; float: left; height: 7px; background: #fefefe"></span><span
+                                                                        style="display:block; width: 80%; float: left; height: 7px; background: #fefefe"></span></div>
+                                                        <div><span style="display:block; width: 20%; float: left; height: 20px; background: #222"></span><span
+                                                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span></div>
+                                                </a>
+                                                <p class="text-center no-margin">{{ 'Dashboard.Black' | translate }}</p>
+                                        </li>-->
+                                        <li style="float:left; width: 33.33333%; padding: 5px;"><a (click)="onChangeSkin('skin-purple')"
+                                                        data-skin="skin-purple" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                                        class="clearfix full-opacity-hover">
+                                                        <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                                                        class="bg-purple-active"></span><span class="bg-purple"
+                                                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                                        <div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span
+                                                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span></div>
+                                                </a>
+                                                <p class="text-center no-margin">{{ 'Dashboard.Purple' | translate }}</p>
+                                        </li>
+                                        <!--<li style="float:left; width: 33.33333%; padding: 5px;"><a (click)="onChangeSkin('skin-green')"
+                                                        data-skin="skin-green" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                                        class="clearfix full-opacity-hover">
+                                                        <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                                                        class="bg-green-active"></span><span class="bg-green"
+                                                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                                        <div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span
+                                                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span></div>
+                                                </a>
+                                                <p class="text-center no-margin">{{ 'Dashboard.Green' | translate }}</p>
+                                        </li>
+                                        <li style="float:left; width: 33.33333%; padding: 5px;"><a (click)="onChangeSkin('skin-red')"
+                                                        data-skin="skin-red" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                                        class="clearfix full-opacity-hover">
+                                                        <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                                                        class="bg-red-active"></span><span class="bg-red"
+                                                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                                        <div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span
+                                                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span></div>
+                                                </a>
+                                                <p class="text-center no-margin">{{ 'Dashboard.Red' | translate }}</p>
+                                        </li>
+                                        <li style="float:left; width: 33.33333%; padding: 5px;"><a (click)="onChangeSkin('skin-yellow')"
+                                                        data-skin="skin-yellow" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                                        class="clearfix full-opacity-hover">
+                                                        <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                                                        class="bg-yellow-active"></span><span class="bg-yellow"
+                                                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                                        <div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32"></span><span
+                                                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span></div>
+                                                </a>
+                                                <p class="text-center no-margin">{{ 'Dashboard.Yellow' | translate }}</p>
+                                        </li>
+                                        <li style="float:left; width: 33.33333%; padding: 5px;"><a (click)="onChangeSkin('skin-blue-light')"
+                                                        data-skin="skin-blue-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                                        class="clearfix full-opacity-hover">
+                                                        <div><span style="display:block; width: 20%; float: left; height: 7px; background: #367fa9"></span><span
+                                                                        class="bg-light-blue" style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                                        <div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span
+                                                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span></div>
+                                                </a>
+                                                <p class="text-center no-margin" style="font-size: 12px">{{
+                                                        'Dashboard.BlueLight' | translate }}</p>
+                                        </li>
+                                        <li style="float:left; width: 33.33333%; padding: 5px;"><a (click)="onChangeSkin('skin-green-light')"
+                                                        data-skin="skin-green-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                                        class="clearfix full-opacity-hover">
+                                                        <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                                                        class="bg-green-active"></span><span class="bg-green"
+                                                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                                        <div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span
+                                                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span></div>
+                                                </a>
+                                                <p class="text-center no-margin" style="font-size: 12px">{{
+                                                        'Dashboard.GreenLight' | translate }}</p>
+                                        </li>
+                                        <li style="float:left; width: 33.33333%; padding: 5px;"><a (click)="onChangeSkin('skin-red-light')"
+                                                        data-skin="skin-red-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                                        class="clearfix full-opacity-hover">
+                                                        <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                                                        class="bg-red-active"></span><span class="bg-red"
+                                                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                                        <div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span
+                                                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span></div>
+                                                </a>
+                                                <p class="text-center no-margin" style="font-size: 12px">{{
+                                                        'Dashboard.RedLight' | translate }}</p>
+                                        </li>-->
+                                        <li style="float:left; width: 33.33333%; padding: 5px;"><a (click)="onChangeSkin('skin-yellow-light')"
+                                                        data-skin="skin-yellow-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                                        class="clearfix full-opacity-hover">
+                                                        <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                                                        class="bg-yellow-active"></span><span class="bg-yellow"
+                                                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                                        <div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span
+                                                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span></div>
+                                                </a>
+                                                <p class="text-center no-margin" style="font-size: 12px">{{
+                                                        'Dashboard.YellowLight' | translate }}</p>
+                                        </li>
+                                        <!--<li style="float:left; width: 33.33333%; padding: 5px;"><a (click)="onChangeSkin('skin-purple-light')"
+                                                        data-skin="skin-purple-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                                        class="clearfix full-opacity-hover">
+                                                        <div><span style="display:block; width: 20%; float: left; height: 7px;"
+                                                                        class="bg-purple-active"></span><span class="bg-purple"
+                                                                        style="display:block; width: 80%; float: left; height: 7px;"></span></div>
+                                                        <div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span
+                                                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span></div>
+                                                </a>
+                                                <p class="text-center no-margin" style="font-size: 12px">{{
+                                                        'Dashboard.PurpleLight' | translate }}</p>
+                                        </li>-->
+                                        <li style="float:left; width: 33.33333%; padding: 5px;"><a (click)="onChangeSkin('skin-black-light')" href="javascript:void(0)"
+                                                        data-skin="skin-black-light" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)"
+                                                        class="clearfix full-opacity-hover">
+                                                        <div style="box-shadow: 0 0 2px rgba(0,0,0,0.1)" class="clearfix"><span
+                                                                        style="display:block; width: 20%; float: left; height: 7px; background: #fefefe"></span><span
+                                                                        style="display:block; width: 80%; float: left; height: 7px; background: #fefefe"></span></div>
+                                                        <div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc"></span><span
+                                                                        style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7"></span></div>
+                                                </a>
+                                                <p class="text-center no-margin" style="font-size: 12px">{{
+                                                                'Dashboard.White' | translate }}</p>
+                                        </li>
+                                </ul>
+                        </div>
+                </div>
+        </div>
+</aside>
+<div class="control-sidebar-bg"></div>

@@ -1,0 +1,8 @@
+<button *ngIf="advanceFilterDisabled == false" kendoButton class="hidden-xs lm" title="{{ 'AdvanceFilter.Title' | translate }}" (click)="showAdvanceFilterComponent()"
+        [icon]="'zoom'" type="button"></button>
+<button *ngIf="quickReportDisabled == false" kendoButton class="hidden-xs lm" title="{{ 'Report.ReportSetting' | translate }}" (click)="showQuickReportSetting()"
+        [icon]="'form-element'" type="button"></button>
+<button *ngIf="quickReportDisabled == false" kendoButton class="hidden-xs lm" title="{{ 'Report.Print' | translate }}" (click)="showReportManager()"
+        [icon]="'printer'" type="button"></button>
+<button *ngIf="exportDisabled == false" class="hidden-xs lm" kendoGridExcelCommand [icon]="'file-excel'"  title="{{ 'Exports.ExportToExcel' | translate }}"></button>
+

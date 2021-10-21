@@ -1,0 +1,101 @@
+.report-type {
+  margin: 0 15px 10px;
+}
+
+  .report-type label {
+    margin-top: 10px;
+    width: 100%
+  }
+
+.section-option {
+  margin-top: 15px;
+  background-color: #f6f6f6;
+  border: solid 1px #dadde2;
+  padding: 15px 15px 0;
+}
+
+  .section-option label, input[type=text] {
+    width: 100%
+  }
+
+/deep/.section-option kendo-dropdownlist {
+  width: 100%
+}
+
+/deep/ .k-switch-on .k-switch-handle {
+  left: -8px !important;
+}
+
+/deep/ .k-switch-off .k-switch-handle {
+  left: -4px !important;
+}
+
+/deep/ .k-switch[dir="rtl"] .k-switch-label-on {
+  right: -22px;
+}
+
+/deep/ .k-switch[dir="rtl"] .k-switch-label-off {
+  /*left: 0;*/
+}
+
+/deep/ .k-switch-label-on, /deep/ .k-switch-label-off {
+  overflow: initial;
+}
+
+/deep/.k-footer-template {
+  background-color: #b3b3b3;
+  color: #000;
+}
+
+.btn-compute-default {
+  margin-top: 25px;
+  border: 2px solid #337ab7;
+  color: #337ab7;
+  padding: 5px 25px;
+}
+
+.btn-compute {
+  color: #337ab7;
+  transition: All 0.3s 0.1s ease-out;
+}
+
+.btn-compute-selectable {
+  color: #fff;
+  background-image: linear-gradient(#c1e3ff, #337ab7);
+}
+
+.account-item {
+  margin-top: 20px;
+}
+
+  .account-item label {
+    width: 110px;
+  }
+
+  .account-item .ddl-account-item {
+    width: calc(100% - 115px);
+  }
+
+  .account-item > input[type=text] {
+    width: calc(50% - 15px);
+  }
+
+.quick-filter {
+  margin-top: 15px;
+}
+
+  .quick-filter .ddl-option {
+    width: 100%;
+  }
+
+.report-items {
+  margin-top: 20px;
+}
+
+  .report-items .k-checkbox-label {
+    margin-bottom: 25px;
+  }
+
+  .report-items label {
+    width: 100%;
+  }

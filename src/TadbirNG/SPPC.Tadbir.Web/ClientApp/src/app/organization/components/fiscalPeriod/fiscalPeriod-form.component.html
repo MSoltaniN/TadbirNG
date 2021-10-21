@@ -1,0 +1,58 @@
+<div style="padding:15px;" (keydown.esc)="escPress()">
+
+  <div *ngIf="errorMessages">
+    <div *ngFor="let err of errorMessages" class="alert alert-danger">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+      {{ err }}
+    </div>
+  </div>
+
+  <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
+    <div class="form-group">
+      <label for="name" class="control-label">{{ 'FiscalPeriod.Name' | translate }}</label>
+
+      <input type="text" class="k-textbox" formControlName="name" />
+
+      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
+        <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.FiscalPeriod.NameIsRequired' | translate }}</span>
+        <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.FiscalPeriod.NameIsTooLong' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="startDate" class="control-label">{{ 'FiscalPeriod.StartDate' | translate }}</label>
+
+      <sppc-datepicker formControlName="startDate" [displayType]="startDateDisplayType" ></sppc-datepicker>
+
+      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.startDate.valid || editForm.controls.startDate.pristine">
+        {{ 'AllValidations.FiscalPeriod.StartDateIsRequired' | translate }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="endDate" class="control-label">{{ 'FiscalPeriod.EndDate' | translate }}</label>
+
+      <sppc-datepicker formControlName="endDate" [displayType]="endDateDisplayType"></sppc-datepicker>
+
+      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.endDate.valid || editForm.controls.endDate.pristine">
+        {{ 'AllValidations.FiscalPeriod.EndDateIsRequired' | translate }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description" class="control-label">{{ 'FiscalPeriod.Description' | translate }}</label>
+
+      <textarea class="k-textarea" formControlName="description"></textarea>
+
+      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+        {{ 'AllValidations.FiscalPeriod.DescriptionIsTooLong' | translate }}
+      </div>
+    </div>
+  </form>
+</div>
+
+<kendo-dialog-actions>
+  <button class="k-button k-primary" [disabled]="!editForm.valid && !isWizard" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+  <button class="k-button" *ngIf="isWizard" (click)="onPreviousStep()">{{ 'Buttons.PreviousStep' | translate }}</button>
+  <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+</kendo-dialog-actions>

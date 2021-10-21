@@ -1,0 +1,71 @@
+.fAcc {
+  width: 49%;
+  display: inline-block;
+}
+
+.ddl-fAcc {
+  width: 100%
+}
+.fullAccount {
+  position:relative;
+}
+.fullAccount > input[type=text] {
+  border: none;
+  display: inline;
+  width: 100%;
+  text-align: center;
+  direction: ltr;
+}
+
+  .fullAccount > .glyphicon-search{
+    position:absolute;
+    left:10px;
+  }
+
+
+  .fullAccount > .glyphicon-search:hover {
+    cursor: pointer;
+    opacity: .8;
+  }
+
+.fullAccount .fullAccount-item > div {
+  width: 50%;
+  /*display: inline*/
+  display: inline-block;
+}
+
+.fullAccount .fullAccount-item input[type=text]{
+  width:100%;
+}
+
+
+/deep/ .fullAccountForm > .k-dialog {
+  width: 800px;
+}
+
+@media screen and (max-width:800px) {
+  /deep/ .fullAccountForm > .k-dialog {
+    width: 90%;
+    min-width: 250px;
+  }
+}
+
+.fullAccount-grid {
+  height: 200px;
+  border: solid 1px #3274b6;
+  margin-bottom: 10px;
+}
+
+.search-box {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+  .search-box button {
+    padding: 4px 5px
+  }
+
+  .dialog-item input[type=text] {
+    width: calc(100% - 65px);
+    margin: 5px 0;
+  }

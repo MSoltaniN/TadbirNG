@@ -1,0 +1,46 @@
+﻿.login {
+    
+    display: inline-block;
+    vertical-align: middle;
+    
+}
+
+.parentVertical
+{
+    height:100vh;
+}
+
+.vertical-center {
+    float: none;
+    margin: auto auto;
+    vertical-align: middle;
+    top: 50%;
+    transform: translateY(-50%);   
+}
+
+
+.flag
+{
+    width: 28px;
+    height: 23px;    
+}
+
+.flag.active{
+    border: 3px white solid;
+    border-radius: 4px;
+}
+
+.flag:hover {
+    transition: all .4s;    
+    border-radius: 4px;
+    width: 30px;    
+    cursor: pointer;
+}
+
+.chkRememberMe-right {
+    margin-right: 10px;
+}
+
+.chkRememberMe-left {
+    margin-left: 10px;
+}

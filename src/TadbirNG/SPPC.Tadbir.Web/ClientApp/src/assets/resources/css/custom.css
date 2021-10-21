@@ -1,0 +1,10 @@
+body.tRtl .reportTab li
+{
+    float: right!important;
+}
+
+body.tLtr .reportTab li
+{
+    float: left!important;
+}
+

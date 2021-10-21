@@ -1,0 +1,126 @@
+.sppc-filter-form > .k-grid {
+  min-height: 350px
+}
+
+/*.sppc-dialog-md
+{
+  width:810px!important;
+}*/
+
+.new-filter {
+  background-color: #f6f6f6;
+  border: solid 1px #dadde2;
+  margin-bottom: 5px;
+  padding-top: 1px;
+  padding-bottom: 5px;
+  padding-right: 6px;
+}
+
+.exp-view{
+  min-height:60px;
+}
+
+.hint {
+  border: solid 1px #dadde2;
+  height: 30px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.group-filter .form-group {
+  padding: 10px;
+  margin-bottom: 22px;
+}
+
+.exp-filter {
+  padding: 5px !important;
+  background-color: #f6f6f6;
+  border: solid 1px #dadde2;
+}
+
+  .exp-filter input {
+    width: 100%;
+    padding-right: 0px !important;
+    float: left !important;
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+.pad10
+{
+  padding-top:7px;
+  padding-right:2px;
+  padding-left:2px;
+}
+
+.pad15 {
+  padding-right: 15px;
+  padding-left:15px;
+}
+
+.sppc-filter-form .ins
+{
+  margin-top:24px;
+}
+
+.color0 {
+  color: #F1512F!important;
+}
+
+.color1 {
+  color: #FCE900 !important;
+}
+
+.color2 {
+  color: #A0FC00 !important;
+}
+
+.color3 {
+  color: #00FCE9 !important;
+}
+
+.color4 {
+  color: #00ACFC !important;
+}
+
+.color5 {
+  color: #BB00FC !important;
+}
+
+.color6 {
+  color: #0026FC !important;
+}
+
+.color7 {
+  color: #0C0000 !important;
+}
+
+.color8 {
+  color: #D5BDD6 !important;
+}
+
+.color9 {
+  color: #6C8972 !important;
+}
+
+.color10 {
+  color: #F4F2AA !important;
+}
+
+.logic-operator {
+  color: #a9aeb2;
+}
+
+.value
+{
+  color:#8d1515;
+}
+
+.operator {
+  color: #4e2929;
+}
+
+.column-name
+{
+  color:#4397ff;
+}
