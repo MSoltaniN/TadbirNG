@@ -84,7 +84,7 @@ namespace SPPC.Tools.SystemDesigner.Cli
         }
 
         private readonly string _resxBaseName = "AppStrings";
-        private string _area;
-        private string _lang;
+        private readonly string _area;
+        private readonly string _lang;
     }
 }
