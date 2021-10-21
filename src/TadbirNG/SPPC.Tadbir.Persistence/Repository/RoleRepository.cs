@@ -75,8 +75,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Permission>();
             var all = await repository
                 .GetEntityQuery(perm => perm.Group)
+                .Where(perm => perm.GroupId != 21)  // See comment in IsPublicPermission for more info
                 .Select(perm => Mapper.Map<PermissionViewModel>(perm))
-                .Where(perm => IsPublicPermission(perm))
                 .ToArrayAsync();
             var role = new RoleFullViewModel();
             Array.ForEach(all, perm =>

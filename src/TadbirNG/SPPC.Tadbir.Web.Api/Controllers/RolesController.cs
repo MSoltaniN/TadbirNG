@@ -516,15 +516,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return String.Empty;
         }
 
-        private void Localize(IList<RoleViewModel> roles)
-        {
-            Array.ForEach(roles.ToArray(), role =>
-            {
-                role.Name = _strings[role.Name];
-                role.Description = _strings[role.Description ?? String.Empty];
-            });
-        }
-
         private void Localize(RoleFullViewModel role)
         {
             if (role == null)
