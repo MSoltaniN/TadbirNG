@@ -55,6 +55,16 @@ namespace SPPC.Tadbir.Api
         public const string ReportsByViewDefaultUrl = "reports/sys/view/{viewId:min(1)}/default";
 
         /// <summary>
+        /// API client URL for quick report associated with a view specified by unique identifier
+        /// </summary>
+        public const string ReportsByViewQuickReport = "reports/sys/view/{0}/quickreport";
+
+        /// <summary>
+        /// API server route URL for quick report associated with a view specified by unique identifier
+        /// </summary>
+        public const string ReportsByViewQuickReportUrl = "reports/sys/view/{viewId:min(1)}/quickreport";
+
+        /// <summary>
         /// API client URL for all reports associated with a subsystem specified by unique identifier
         /// </summary>
         public const string ReportsBySubsystem = "reports/sys/subsys/{0}";
@@ -146,7 +156,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for Voucher Standard Form report
         /// </summary>
-        public const string VoucherStandardFormUrl = "reports/voucher/{voucherId:min(1)}/std-form";
+        public const string VoucherStandardFormUrl = "reports/voucher/{voucherNo:min(1)}/std-form";
 
         /// <summary>
         /// API client URL for Voucher Standard Form With Detail report
@@ -156,7 +166,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for Voucher Standard Form With Detail report
         /// </summary>
-        public const string VoucherStandardFormWithDetailUrl = "reports/voucher/{voucherId:min(1)}/std-form-detail";
+        public const string VoucherStandardFormWithDetailUrl = "reports/voucher/{voucherNo:min(1)}/std-form-detail";
 
         #endregion
     }

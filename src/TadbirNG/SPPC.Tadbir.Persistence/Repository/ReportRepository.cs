@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -83,15 +82,15 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش فرم مرسوم سند را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر برای چاپ</param>
+        /// <param name="voucherNo">شماره سند مالی مورد نظر برای چاپ</param>
         /// <param name="withDetail">مشخص می کند که آیا جزییات سطوح شناور نیز مورد نیاز است یا نه</param>
         /// <returns>اطلاعات گزارش فرم مرسوم سند</returns>
         public async Task<StandardVoucherViewModel> GetStandardVoucherFormAsync(
-            int voucherId, bool withDetail = false)
+            int voucherNo, bool withDetail = false)
         {
             var standardForm = default(StandardVoucherViewModel);
             var voucher = await GetStandardVoucherFormQuery(withDetail)
-                .Where(v => v.Id == voucherId)
+                .Where(v => v.No == voucherNo)
                 .FirstOrDefaultAsync();
             if (voucher != null)
             {
@@ -222,32 +221,6 @@ namespace SPPC.Tadbir.Persistence
                     Description = line.DetailAccount.Name
                 });
             }
-        }
-
-        private async Task<decimal> GetItemBalanceAsync(
-            DateTime date, Expression<Func<VoucherLine, bool>> itemCriteria)
-        {
-            return await Repository
-                .GetAllOperationQuery<VoucherLine>(
-                    ViewId.VoucherLine, line => line.Voucher, line => line.Account)
-                .Where(line => line.Voucher.Date.CompareWith(date) < 0
-                    && line.FiscalPeriodId == UserContext.FiscalPeriodId)
-                .Where(itemCriteria)
-                .Select(line => line.Debit - line.Credit)
-                .SumAsync();
-        }
-
-        private async Task<decimal> GetItemBalanceAsync(
-            int number, Expression<Func<VoucherLine, bool>> itemCriteria)
-        {
-            return await Repository
-                .GetAllOperationQuery<VoucherLine>(
-                    ViewId.VoucherLine, line => line.Voucher, line => line.Account)
-                .Where(line => line.Voucher.No < number
-                    && line.FiscalPeriodId == UserContext.FiscalPeriodId)
-                .Where(itemCriteria)
-                .Select(line => line.Debit - line.Credit)
-                .SumAsync();
         }
 
         private IQueryable<Voucher> GetStandardVoucherFormQuery(bool withDetail = false)

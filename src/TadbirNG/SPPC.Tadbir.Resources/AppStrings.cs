@@ -4065,6 +4065,11 @@ namespace SPPC.Tadbir.Resources
         public const string ItemByIdNotFound = "ItemByIdNotFound";
 
         /// <summary>
+        /// Default text : {0} مورد نظر با شماره '{1}' یافت نشد.
+        /// </summary>
+        public const string ItemByNumberNotFound = "ItemByNumberNotFound";
+
+        /// <summary>
         /// Default text : {0} مورد نظر یافت نشد.
         /// </summary>
         public const string ItemNotFound = "ItemNotFound";

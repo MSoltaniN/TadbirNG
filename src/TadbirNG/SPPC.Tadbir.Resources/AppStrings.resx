@@ -3525,4 +3525,7 @@
   <data name="InvalidOrExpiredLicense" xml:space="preserve">
     <value>مجوز برنامه شما غیرمعتبر یا منقضی است. لطفاً با فروشنده نرم افزار خود تماس بگیرید.</value>
   </data>
+  <data name="ItemByNumberNotFound" xml:space="preserve">
+    <value>{0} مورد نظر با شماره '{1}' یافت نشد.</value>
+  </data>
 </root>
