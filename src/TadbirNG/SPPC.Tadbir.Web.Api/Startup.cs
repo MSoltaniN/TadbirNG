@@ -61,9 +61,10 @@ namespace SPPC.Tadbir.Web.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SPPC.Tadbir.Web.Api (v1.0)"));
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SPPC.Tadbir.Web.Api (v1.0)"));
 
             ConfigureLocalization(app);
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
@@ -71,7 +72,7 @@ namespace SPPC.Tadbir.Web.Api
                 options => options
                     .WithOrigins("*")
                     .AllowAnyMethod()
-                    .WithExposedHeaders("X-Tadbir-AuthTicket", "X-Total-Count")
+                    .WithExposedHeaders(AppConstants.ContextHeaderName, AppConstants.TotalCountHeaderName)
                     .WithHeaders("Content-Type", "Accept-Language", AppConstants.ContextHeaderName,
                         Constants.InstanceHeaderName, AppConstants.GridOptionsHeaderName,
                         AppConstants.ParametersHeaderName, AppConstants.LicenseHeaderName));

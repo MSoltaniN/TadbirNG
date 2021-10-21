@@ -52,6 +52,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <returns></returns>
         // GET: api/dashboard/license
+        [HttpGet]
         [Route(DashboardApi.LicenseInfoUrl)]
         public IActionResult GetLicenseInfo()
         {

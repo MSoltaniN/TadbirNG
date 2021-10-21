@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.Web.Api.Swagger
             var info = new OpenApiInfo()
             {
                 Title = "Tadbir Api",
-                Version = "v1.0",
+                Version = "v1",
                 Description = "Allows programmatic access to Tadbir functionality.",
                 Contact = new OpenApiContact
                 {
@@ -44,7 +44,7 @@ namespace SPPC.Tadbir.Web.Api.Swagger
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1.0", info);
+                c.SwaggerDoc("v1", info);
 
                 ////c.DescribeAllEnumsAsStrings();
                 ////c.DescribeStringEnumsInCamelCase();

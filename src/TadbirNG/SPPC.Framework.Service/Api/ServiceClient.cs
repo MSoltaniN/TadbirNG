@@ -79,7 +79,7 @@ namespace SPPC.Framework.Service
         /// <returns>Requested data deserialized from the API Service response</returns>
         public T Get<T>(string apiUrl, params object[] apiUrlArgs)
         {
-            T value = default(T);
+            var value = default(T);
             var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
             var response = _httpClient.GetAsync(url).Result;
             var serviceResponse = GetResponse(response);
@@ -102,7 +102,7 @@ namespace SPPC.Framework.Service
         /// <returns>Requested data deserialized from the API Service response</returns>
         public T Get<T, TData>(TData data, string apiUrl, params object[] apiUrlArgs)
         {
-            T value = default(T);
+            var value = default(T);
             var request = new HttpRequestMessage(HttpMethod.Get, GetApiResourceUrl(apiUrl, apiUrlArgs))
             {
                 Content = new StringContent(JsonHelper.From(data, false), Encoding.UTF8, "application/json")
