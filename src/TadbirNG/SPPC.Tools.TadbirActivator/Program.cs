@@ -243,7 +243,7 @@ namespace SPPC.Tools.TadbirActivator.Cli
             string instance = null;
             var type = typeof(Program);
             using (var reader = new StreamReader(
-                type.Assembly.GetManifestResourceStream("SPPC.Tools.TadbirActivator.Cli.instance.id")))
+                type.Assembly.GetManifestResourceStream("SPPC.Tools.TadbirActivator.instance.id")))
             {
                 instance = reader.ReadToEnd();
             }
