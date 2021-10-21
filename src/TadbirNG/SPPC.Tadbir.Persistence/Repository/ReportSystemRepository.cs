@@ -68,7 +68,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(rep => rep.ViewId == viewId)
                 .ToListAsync();
 
-            List<Report> outReports = new List<Report>();
+            var outReports = new List<Report>();
             if (reports.Count > 0)
             {
                 outReports.AddRange(reports);
@@ -328,6 +328,19 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private static LocalReport CloneLocalReport(int reportId, LocalReport original, LocalReportViewModel copy)
+        {
+            return new LocalReport()
+            {
+                Caption = (original.LocaleId == copy.LocaleId)
+                    ? copy.Caption
+                    : String.Format("Copy of '{0}'", original.Caption),
+                ReportId = reportId,
+                LocaleId = original.LocaleId,
+                Template = original.Template
+            };
+        }
+
         private Report CloneReport(Report report)
         {
             return new Report()
@@ -338,19 +351,6 @@ namespace SPPC.Tadbir.Persistence
                 ServiceUrl = report.ServiceUrl,
                 SubsystemId = report.SubsystemId,
                 ViewId = report.ViewId
-            };
-        }
-
-        private LocalReport CloneLocalReport(int reportId, LocalReport original, LocalReportViewModel copy)
-        {
-            return new LocalReport()
-            {
-                Caption = (original.LocaleId == copy.LocaleId)
-                    ? copy.Caption
-                    : String.Format("Copy of '{0}'", original.Caption),
-                ReportId = reportId,
-                LocaleId = original.LocaleId,
-                Template = original.Template
             };
         }
 

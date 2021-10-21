@@ -169,7 +169,9 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<LogSetting>();
             var modifiedConfig = await repository
                 .GetEntityQuery()
-                .Where(cfg => modified.Select(item => item.Id).Contains(cfg.Id))
+                .Where(cfg => modified
+                    .Select(item => item.Id)
+                    .Contains(cfg.Id))
                 .ToListAsync();
             foreach (var config in modifiedConfig)
             {
@@ -193,7 +195,9 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<SysLogSetting>();
             var modifiedConfig = await repository
                 .GetEntityQuery()
-                .Where(cfg => modified.Select(item => item.Id).Contains(cfg.Id))
+                .Where(cfg => modified
+                    .Select(item => item.Id)
+                    .Contains(cfg.Id))
                 .ToListAsync();
             foreach (var config in modifiedConfig)
             {

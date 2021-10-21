@@ -22,7 +22,6 @@ namespace SPPC.Tadbir.Persistence
         public AccountOwnerRepository(IRepositoryContext context, ISystemRepository system)
             : base(context, system?.Logger)
         {
-            _system = system;
         }
 
         /// <summary>
@@ -33,7 +32,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountOwnerViewModel> SaveAccountOwnerAsync(AccountOwnerViewModel accountOwner)
         {
             Verify.ArgumentNotNull(accountOwner, "accountOwner");
-            AccountOwner accOwner = default(AccountOwner);
+            var accOwner = default(AccountOwner);
             var repository = UnitOfWork.GetAsyncRepository<AccountOwner>();
             if (accountOwner.Id == 0)
             {
@@ -142,12 +141,16 @@ namespace SPPC.Tadbir.Persistence
 
                 RemoveAccountHolders(repository, removedItems);
 
-                var newItems = accHolders.Where(f => f.Id == 0).ToList();
+                var newItems = accHolders
+                    .Where(f => f.Id == 0)
+                    .ToList();
                 InsertAccountHolder(repository, newItems);
 
                 var updatedItems = accHolders
                     .Where(item => item.Id > 0 &&
-                    !removedItems.Select(rmvItem => rmvItem.Id).Contains(item.Id))
+                        !removedItems
+                            .Select(rmvItem => rmvItem.Id)
+                            .Contains(item.Id))
                     .ToList();
 
                 await UpdateAccountHoldersAsync(repository, updatedItems);
@@ -170,7 +173,5 @@ namespace SPPC.Tadbir.Persistence
                 repository.Insert(entity);
             }
         }
-
-        private readonly ISystemRepository _system;
     }
 }

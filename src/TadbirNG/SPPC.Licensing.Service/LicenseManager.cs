@@ -162,7 +162,7 @@ namespace SPPC.Licensing.Service
         private readonly IDigitalSigner _signer;
         private InternalLicenseCheckModel _licenseCheck;
         private LicenseFileModel _license;
-        private X509Certificate2 _certificate = new X509Certificate2();
+        private X509Certificate2 _certificate = new();
         private bool _disposed = false;
     }
 }
