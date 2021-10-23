@@ -94,7 +94,7 @@ export class AccountGroupsFormComponent extends DetailComponent implements OnIni
       this.categoriesList = res.body;
 
       if (this.model && this.categoriesList.length > 0) {
-        var item = this.categoriesList.find(f => f.value == this.model.category);
+        var item = this.categoriesList.find(f => f.key.toLowerCase() == this.model.category.toLowerCase());
         this.categorySelected = item ? item.key : undefined;
       }
     })
