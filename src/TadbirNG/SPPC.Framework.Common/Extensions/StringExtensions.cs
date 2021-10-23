@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using SPPC.Framework.Common;
 
 namespace SPPC.Framework.Extensions
 {
@@ -44,6 +44,23 @@ namespace SPPC.Framework.Extensions
             }
 
             return autoEllipsis;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static string CamelCase(this string name)
+        {
+            Verify.ArgumentNotNullOrEmptyString(name, nameof(name));
+            string camelCase = name;
+            if (name.Length > 1)
+            {
+                camelCase = String.Format("{0}{1}", Char.ToLower(name[0]), name.Substring(1));
+            }
+
+            return camelCase;
         }
     }
 }

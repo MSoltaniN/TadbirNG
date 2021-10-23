@@ -75,8 +75,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Permission>();
             var all = await repository
                 .GetEntityQuery(perm => perm.Group)
+                .Where(perm => perm.GroupId != 21)  // See comment in IsPublicPermission for more info
                 .Select(perm => Mapper.Map<PermissionViewModel>(perm))
-                .Where(perm => IsPublicPermission(perm))
                 .ToArrayAsync();
             var role = new RoleFullViewModel();
             Array.ForEach(all, perm =>
@@ -898,25 +898,7 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
-        private void AddNewPermissions(Role existing, RoleFullViewModel role)
-        {
-            var repository = UnitOfWork.GetRepository<Permission>();
-            var currentItems = existing.RolePermissions.Select(rp => rp.PermissionId);
-            var newItems = role.Permissions
-                .Where(perm => perm.IsEnabled
-                    && !currentItems.Contains(perm.Id));
-            foreach (var item in newItems)
-            {
-                var rolePermission = new RolePermission()
-                {
-                    PermissionId = item.Id,
-                    RoleId = existing.Id
-                };
-                existing.RolePermissions.Add(rolePermission);
-            }
-        }
-
-        private void AddNewCompanies(
+        private static void AddNewCompanies(
             IRepository<RoleCompany> repository, IList<RoleCompany> existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = existing.Select(rc => rc.CompanyId);
@@ -934,7 +916,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private void AddNewBranches(
+        private static void AddNewBranches(
             IRepository<RoleBranch> repository, IList<RoleBranch> existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = existing.Select(rb => rb.BranchId);
@@ -952,7 +934,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private void AddNewUsers(
+        private static void AddNewUsers(
             IRepository<UserRole> repository, IList<UserRole> existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = existing.Select(ur => ur.UserId);
@@ -970,7 +952,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private void AddNewFiscalPeriods(
+        private static void AddNewFiscalPeriods(
             IRepository<RoleFiscalPeriod> repository, IList<RoleFiscalPeriod> existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = existing.Select(rfp => rfp.FiscalPeriodId);
@@ -988,7 +970,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private void AddRolePermissions(Role role, RoleFullViewModel roleViewModel)
+        private static void AddRolePermissions(Role role, RoleFullViewModel roleViewModel)
         {
             Array.ForEach(
                 roleViewModel.Permissions
@@ -997,13 +979,31 @@ namespace SPPC.Tadbir.Persistence
                 perm => role.RolePermissions.Add(GetNewRolePermission(perm, role)));
         }
 
-        private RolePermission GetNewRolePermission(PermissionViewModel perm, Role role)
+        private static RolePermission GetNewRolePermission(PermissionViewModel perm, Role role)
         {
             return new RolePermission()
             {
                 RoleId = role.Id,
                 PermissionId = perm.Id
             };
+        }
+
+        private void AddNewPermissions(Role existing, RoleFullViewModel role)
+        {
+            var repository = UnitOfWork.GetRepository<Permission>();
+            var currentItems = existing.RolePermissions.Select(rp => rp.PermissionId);
+            var newItems = role.Permissions
+                .Where(perm => perm.IsEnabled
+                    && !currentItems.Contains(perm.Id));
+            foreach (var item in newItems)
+            {
+                var rolePermission = new RolePermission()
+                {
+                    PermissionId = item.Id,
+                    RoleId = existing.Id
+                };
+                existing.RolePermissions.Add(rolePermission);
+            }
         }
 
         private async Task SaveViewRolePermissionAsync(ViewRowPermissionViewModel rowPermission)
@@ -1086,7 +1086,7 @@ namespace SPPC.Tadbir.Persistence
             var modifiedViews = permissions
                 .Where(perm => perm.AccessMode != RowAccessOptions.Default)
                 .Select(perm => perm.ViewName);
-            if (operation == OperationId.Save && modifiedViews.Count() > 0)
+            if (operation == OperationId.Save && modifiedViews.Any())
             {
                 string template = Context.Localize(AppStrings.RowPermissionsForRoleTo);
                 string viewNames = String.Join(" , ", modifiedViews);

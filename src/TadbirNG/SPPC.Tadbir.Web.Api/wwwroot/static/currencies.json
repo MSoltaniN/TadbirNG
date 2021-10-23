@@ -1,0 +1,2345 @@
+[
+  {
+    "country": "Afghanistan",
+    "currency": {
+      "nameKey": "CUnit_AfghanAfghani",
+      "name": "Afghan afghani",
+      "code": "AFN",
+      "minorUnitKey": "CMUnit_Pul",
+      "minorUnit": "Pul",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Albania",
+    "currency": {
+      "nameKey": "CUnit_AlbanianLek",
+      "name": "Albanian lek",
+      "code": "ALL",
+      "minorUnitKey": "CMUnit_Qindarkë",
+      "minorUnit": "Qindarkë",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Algeria",
+    "currency": {
+      "nameKey": "CUnit_AlgerianDinar",
+      "name": "Algerian dinar",
+      "code": "DZD",
+      "minorUnitKey": "CMUnit_Santeem",
+      "minorUnit": "Santeem",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Andorra",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Angola",
+    "currency": {
+      "nameKey": "CUnit_AngolanKwanza",
+      "name": "Angolan kwanza",
+      "code": "AOA",
+      "minorUnitKey": "CMUnit_Centimo",
+      "minorUnit": "Cêntimo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Anguilla",
+    "currency": {
+      "nameKey": "CUnit_EasternCaribbeanDollar",
+      "name": "Eastern Caribbean dollar",
+      "code": "XCD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Antigua and Barbuda",
+    "currency": {
+      "nameKey": "CUnit_EasternCaribbeanDollar",
+      "name": "Eastern Caribbean dollar",
+      "code": "XCD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Argentina",
+    "currency": {
+      "nameKey": "CUnit_ArgentinePeso",
+      "name": "Argentine peso",
+      "code": "ARS",
+      "minorUnitKey": "CMUnit_Centavo",
+      "minorUnit": "Centavo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Armenia",
+    "currency": {
+      "nameKey": "CUnit_ArmenianDram",
+      "name": "Armenian dram",
+      "code": "AMD",
+      "minorUnitKey": "CMUnit_Luma",
+      "minorUnit": "Luma",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Aruba",
+    "currency": {
+      "nameKey": "CUnit_ArubanFlorin",
+      "name": "Aruban florin",
+      "code": "AWG",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Ascension Island",
+    "currency": {
+      "nameKey": "CUnit_AscensionPound",
+      "name": "Ascension pound",
+      "code": "(none)",
+      "minorUnitKey": "CMUnit_Penny",
+      "minorUnit": "Penny",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Australia",
+    "currency": {
+      "nameKey": "CUnit_AustralianDollar",
+      "name": "Australian dollar",
+      "code": "AUD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Austria",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Azerbaijan",
+    "currency": {
+      "nameKey": "CUnit_AzerbaijaniManat",
+      "name": "Azerbaijani manat",
+      "code": "AZN",
+      "minorUnitKey": "CMUnit_Qəpik",
+      "minorUnit": "Qəpik",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Bahamas, The",
+    "currency": {
+      "nameKey": "CUnit_BahamianDollar",
+      "name": "Bahamian dollar",
+      "code": "BSD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Bahrain",
+    "currency": {
+      "nameKey": "CUnit_BahrainiDinar",
+      "name": "Bahraini dinar",
+      "code": "BHD",
+      "minorUnitKey": "CMUnit_Fils",
+      "minorUnit": "Fils",
+      "decimalCount": 3
+    }
+  },
+  {
+    "country": "Bangladesh",
+    "currency": {
+      "nameKey": "CUnit_BangladeshiTaka",
+      "name": "Bangladeshi taka",
+      "code": "BDT",
+      "minorUnitKey": "CMUnit_Poisha",
+      "minorUnit": "Poisha",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Barbados",
+    "currency": {
+      "nameKey": "CUnit_BarbadianDollar",
+      "name": "Barbadian dollar",
+      "code": "BBD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Belarus",
+    "currency": {
+      "nameKey": "CUnit_BelarusianRuble",
+      "name": "Belarusian ruble",
+      "code": "BYN",
+      "minorUnitKey": "CMUnit_Kapyeyka",
+      "minorUnit": "Kapyeyka",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Belgium",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Belize",
+    "currency": {
+      "nameKey": "CUnit_BelizeDollar",
+      "name": "Belize dollar",
+      "code": "BZD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Benin",
+    "currency": {
+      "nameKey": "CUnit_WestAfricanCFAFranc",
+      "name": "West African CFA franc",
+      "code": "XOF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Bermuda",
+    "currency": {
+      "nameKey": "CUnit_BermudianDollar",
+      "name": "Bermudian dollar",
+      "code": "BMD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Bolivia",
+    "currency": {
+      "nameKey": "CUnit_BolivianBoliviano",
+      "name": "Bolivian boliviano",
+      "code": "BOB",
+      "minorUnitKey": "CMUnit_Centavo",
+      "minorUnit": "Centavo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Bosnia and Herzegovina",
+    "currency": {
+      "nameKey": "CUnit_BosniaAndHerzegovinaConvertibleMark",
+      "name": "Bosnia and Herzegovina convertible mark",
+      "code": "BAM",
+      "minorUnitKey": "CMUnit_Fening",
+      "minorUnit": "Fening",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Botswana",
+    "currency": {
+      "nameKey": "CUnit_BotswanaPula",
+      "name": "Botswana pula",
+      "code": "BWP",
+      "minorUnitKey": "CMUnit_Thebe",
+      "minorUnit": "Thebe",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Brazil",
+    "currency": {
+      "nameKey": "CUnit_BrazilianReal",
+      "name": "Brazilian real",
+      "code": "BRL",
+      "minorUnitKey": "CMUnit_Centavo",
+      "minorUnit": "Centavo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Bulgaria",
+    "currency": {
+      "nameKey": "CUnit_BulgarianLev",
+      "name": "Bulgarian lev",
+      "code": "BGN",
+      "minorUnitKey": "CMUnit_Stotinka",
+      "minorUnit": "Stotinka",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Burkina Faso",
+    "currency": {
+      "nameKey": "CUnit_WestAfricanCFAFranc",
+      "name": "West African CFA franc",
+      "code": "XOF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Burundi",
+    "currency": {
+      "nameKey": "CUnit_BurundianFranc",
+      "name": "Burundian franc",
+      "code": "BIF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Cambodia",
+    "currency": {
+      "nameKey": "CUnit_CambodianRiel",
+      "name": "Cambodian riel",
+      "code": "KHR",
+      "minorUnitKey": "CMUnit_Sen",
+      "minorUnit": "Sen",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Cameroon",
+    "currency": {
+      "nameKey": "CUnit_CentralAfricanCFAFranc",
+      "name": "Central African CFA franc",
+      "code": "XAF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Canada",
+    "currency": {
+      "nameKey": "CUnit_CanadianDollar",
+      "name": "Canadian dollar",
+      "code": "CAD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Cape Verde",
+    "currency": {
+      "nameKey": "CUnit_CapeVerdeanEscudo",
+      "name": "Cape Verdean escudo",
+      "code": "CVE",
+      "minorUnitKey": "CMUnit_Centavo",
+      "minorUnit": "Centavo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Cayman Islands",
+    "currency": {
+      "nameKey": "CUnit_CaymanIslandsDollar",
+      "name": "Cayman Islands dollar",
+      "code": "KYD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Central African Republic",
+    "currency": {
+      "nameKey": "CUnit_CentralAfricanCFAFranc",
+      "name": "Central African CFA franc",
+      "code": "XAF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Chad",
+    "currency": {
+      "nameKey": "CUnit_CentralAfricanCFAFranc",
+      "name": "Central African CFA franc",
+      "code": "XAF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Chile",
+    "currency": {
+      "nameKey": "CUnit_ChileanPeso",
+      "name": "Chilean peso",
+      "code": "CLP",
+      "minorUnitKey": "CMUnit_Centavo",
+      "minorUnit": "Centavo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "China",
+    "currency": {
+      "nameKey": "CUnit_ChineseYuan",
+      "name": "Chinese yuan",
+      "code": "CNY",
+      "minorUnitKey": "CMUnit_Fen",
+      "minorUnit": "Fen",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Cocos (Keeling) Islands",
+    "currency": {
+      "nameKey": "CUnit_AustralianDollar",
+      "name": "Australian dollar",
+      "code": "AUD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Colombia",
+    "currency": {
+      "nameKey": "CUnit_ColombianPeso",
+      "name": "Colombian peso",
+      "code": "COP",
+      "minorUnitKey": "CMUnit_Centavo",
+      "minorUnit": "Centavo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Comoros",
+    "currency": {
+      "nameKey": "CUnit_ComorianFranc",
+      "name": "Comorian franc",
+      "code": "KMF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Congo, Democratic Republic of the",
+    "currency": {
+      "nameKey": "CUnit_CongoleseFranc",
+      "name": "Congolese franc",
+      "code": "CDF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Congo, Republic of the",
+    "currency": {
+      "nameKey": "CUnit_CentralAfricanCFAFranc",
+      "name": "Central African CFA franc",
+      "code": "XAF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Costa Rica",
+    "currency": {
+      "nameKey": "CUnit_CostaRicanColón",
+      "name": "Costa Rican colón",
+      "code": "CRC",
+      "minorUnitKey": "CMUnit_Centimo",
+      "minorUnit": "Céntimo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Côte d'Ivoire",
+    "currency": {
+      "nameKey": "CUnit_WestAfricanCFAFranc",
+      "name": "West African CFA franc",
+      "code": "XOF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Croatia",
+    "currency": {
+      "nameKey": "CUnit_CroatianKuna",
+      "name": "Croatian kuna",
+      "code": "HRK",
+      "minorUnitKey": "CMUnit_Lipa",
+      "minorUnit": "Lipa",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Cuba",
+    "currency": {
+      "nameKey": "CUnit_CubanPeso",
+      "name": "Cuban peso",
+      "code": "CUP",
+      "minorUnitKey": "CMUnit_Centavo",
+      "minorUnit": "Centavo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Curaçao",
+    "currency": {
+      "nameKey": "CUnit_NetherlandsAntilleanGuilder",
+      "name": "Netherlands Antillean guilder",
+      "code": "ANG",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Cyprus",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Czech Republic",
+    "currency": {
+      "nameKey": "CUnit_CzechKoruna",
+      "name": "Czech koruna",
+      "code": "CZK",
+      "minorUnitKey": "CMUnit_Haléř",
+      "minorUnit": "Haléř",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Denmark",
+    "currency": {
+      "nameKey": "CUnit_DanishKrone",
+      "name": "Danish krone",
+      "code": "DKK",
+      "minorUnitKey": "CMUnit_Öre",
+      "minorUnit": "Öre",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Djibouti",
+    "currency": {
+      "nameKey": "CUnit_DjiboutianFranc",
+      "name": "Djiboutian franc",
+      "code": "DJF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Dominica",
+    "currency": {
+      "nameKey": "CUnit_EasternCaribbeanDollar",
+      "name": "Eastern Caribbean dollar",
+      "code": "XCD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Dominican Republic",
+    "currency": {
+      "nameKey": "CUnit_DominicanPeso",
+      "name": "Dominican peso",
+      "code": "DOP",
+      "minorUnitKey": "CMUnit_Centavo",
+      "minorUnit": "Centavo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "East Timor",
+    "currency": {
+      "nameKey": "CUnit_UnitedStatesDollar",
+      "name": "United States dollar",
+      "code": "USD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Ecuador",
+    "currency": {
+      "nameKey": "CUnit_UnitedStatesDollar",
+      "name": "United States dollar",
+      "code": "USD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Egypt",
+    "currency": {
+      "nameKey": "CUnit_EgyptianPound",
+      "name": "Egyptian pound",
+      "code": "EGP",
+      "minorUnitKey": "CMUnit_Piastre",
+      "minorUnit": "Piastre",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "El Salvador",
+    "currency": {
+      "nameKey": "CUnit_UnitedStatesDollar",
+      "name": "United States dollar",
+      "code": "USD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Equatorial Guinea",
+    "currency": {
+      "nameKey": "CUnit_CentralAfricanCFAFranc",
+      "name": "Central African CFA franc",
+      "code": "XAF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Eritrea",
+    "currency": {
+      "nameKey": "CUnit_EritreanNakfa",
+      "name": "Eritrean nakfa",
+      "code": "ERN",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Estonia",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Eswatini",
+    "currency": {
+      "nameKey": "CUnit_SwaziLilangeni",
+      "name": "Swazi lilangeni",
+      "code": "SZL",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Ethiopia",
+    "currency": {
+      "nameKey": "CUnit_EthiopianBirr",
+      "name": "Ethiopian birr",
+      "code": "ETB",
+      "minorUnitKey": "CMUnit_Santim",
+      "minorUnit": "Santim",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Falkland Islands",
+    "currency": {
+      "nameKey": "CUnit_FalklandIslandsPound",
+      "name": "Falkland Islands pound",
+      "code": "FKP",
+      "minorUnitKey": "CMUnit_Penny",
+      "minorUnit": "Penny",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Fiji",
+    "currency": {
+      "nameKey": "CUnit_FijianDollar",
+      "name": "Fijian dollar",
+      "code": "FJD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Finland",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "France",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "French Polynesia",
+    "currency": {
+      "nameKey": "CUnit_CFPFranc",
+      "name": "CFP franc",
+      "code": "XPF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Gabon",
+    "currency": {
+      "nameKey": "CUnit_CentralAfricanCFAFranc",
+      "name": "Central African CFA franc",
+      "code": "XAF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Gambia, The",
+    "currency": {
+      "nameKey": "CUnit_GambianDalasi",
+      "name": "Gambian dalasi",
+      "code": "GMD",
+      "minorUnitKey": "CMUnit_Butut",
+      "minorUnit": "Butut",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Georgia",
+    "currency": {
+      "nameKey": "CUnit_GeorgianLari",
+      "name": "Georgian lari",
+      "code": "GEL",
+      "minorUnitKey": "CMUnit_Tetri",
+      "minorUnit": "Tetri",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Germany",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Ghana",
+    "currency": {
+      "nameKey": "CUnit_GhanaianCedi",
+      "name": "Ghanaian cedi",
+      "code": "GHS",
+      "minorUnitKey": "CMUnit_Pesewa",
+      "minorUnit": "Pesewa",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Gibraltar",
+    "currency": {
+      "nameKey": "CUnit_GibraltarPound",
+      "name": "Gibraltar pound",
+      "code": "GIP",
+      "minorUnitKey": "CMUnit_Penny",
+      "minorUnit": "Penny",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Greece",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Grenada",
+    "currency": {
+      "nameKey": "CUnit_EasternCaribbeanDollar",
+      "name": "Eastern Caribbean dollar",
+      "code": "XCD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Guatemala",
+    "currency": {
+      "nameKey": "CUnit_GuatemalanQuetzal",
+      "name": "Guatemalan quetzal",
+      "code": "GTQ",
+      "minorUnitKey": "CMUnit_Centavo",
+      "minorUnit": "Centavo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Guinea",
+    "currency": {
+      "nameKey": "CUnit_GuineanFranc",
+      "name": "Guinean franc",
+      "code": "GNF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Guinea-Bissau",
+    "currency": {
+      "nameKey": "CUnit_WestAfricanCFAFranc",
+      "name": "West African CFA franc",
+      "code": "XOF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Guyana",
+    "currency": {
+      "nameKey": "CUnit_GuyaneseDollar",
+      "name": "Guyanese dollar",
+      "code": "GYD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Haiti",
+    "currency": {
+      "nameKey": "CUnit_HaitianGourde",
+      "name": "Haitian gourde",
+      "code": "HTG",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Honduras",
+    "currency": {
+      "nameKey": "CUnit_HonduranLempira",
+      "name": "Honduran lempira",
+      "code": "HNL",
+      "minorUnitKey": "CMUnit_Centavo",
+      "minorUnit": "Centavo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Hong Kong",
+    "currency": {
+      "nameKey": "CUnit_HongKongDollar",
+      "name": "Hong Kong dollar",
+      "code": "HKD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Hungary",
+    "currency": {
+      "nameKey": "CUnit_HungarianForint",
+      "name": "Hungarian forint",
+      "code": "HUF",
+      "minorUnitKey": "CMUnit_Fillér",
+      "minorUnit": "Fillér",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Iceland",
+    "currency": {
+      "nameKey": "CUnit_IcelandicKróna",
+      "name": "Icelandic króna",
+      "code": "ISK",
+      "minorUnitKey": "CMUnit_Eyrir",
+      "minorUnit": "Eyrir",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "India",
+    "currency": {
+      "nameKey": "CUnit_IndianRupee",
+      "name": "Indian rupee",
+      "code": "INR",
+      "minorUnitKey": "CMUnit_Paisa",
+      "minorUnit": "Paisa",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Indonesia",
+    "currency": {
+      "nameKey": "CUnit_IndonesianRupiah",
+      "name": "Indonesian rupiah",
+      "code": "IDR",
+      "minorUnitKey": "CMUnit_Sen",
+      "minorUnit": "Sen",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Iran",
+    "currency": {
+      "nameKey": "CUnit_IranianRial",
+      "name": "Iranian rial",
+      "code": "IRR",
+      "minorUnitKey": "CMUnit_Dinar",
+      "minorUnit": "Dinar",
+      "decimalCount": 0
+    }
+  },
+  {
+    "country": "Iraq",
+    "currency": {
+      "nameKey": "CUnit_IraqiDinar",
+      "name": "Iraqi dinar",
+      "code": "IQD",
+      "minorUnitKey": "CMUnit_Fils",
+      "minorUnit": "Fils",
+      "decimalCount": 3
+    }
+  },
+  {
+    "country": "Ireland",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Israel",
+    "currency": {
+      "nameKey": "CUnit_IsraeliNewShekel",
+      "name": "Israeli new shekel",
+      "code": "ILS",
+      "minorUnitKey": "CMUnit_Agora",
+      "minorUnit": "Agora",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Italy",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Jamaica",
+    "currency": {
+      "nameKey": "CUnit_JamaicanDollar",
+      "name": "Jamaican dollar",
+      "code": "JMD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Japan",
+    "currency": {
+      "nameKey": "CUnit_JapaneseYen",
+      "name": "Japanese yen",
+      "code": "JPY",
+      "minorUnitKey": "CMUnit_Sen",
+      "minorUnit": "Sen",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Jordan",
+    "currency": {
+      "nameKey": "CUnit_JordanianDinar",
+      "name": "Jordanian dinar",
+      "code": "JOD",
+      "minorUnitKey": "CMUnit_Piastre",
+      "minorUnit": "Piastre",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Kazakhstan",
+    "currency": {
+      "nameKey": "CUnit_KazakhstaniTenge",
+      "name": "Kazakhstani tenge",
+      "code": "KZT",
+      "minorUnitKey": "CMUnit_Tïın",
+      "minorUnit": "Tïın",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Kenya",
+    "currency": {
+      "nameKey": "CUnit_KenyanShilling",
+      "name": "Kenyan shilling",
+      "code": "KES",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Korea, North",
+    "currency": {
+      "nameKey": "CUnit_NorthKoreanWon",
+      "name": "North Korean won",
+      "code": "KPW",
+      "minorUnitKey": "CMUnit_Chon",
+      "minorUnit": "Chon",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Korea, South",
+    "currency": {
+      "nameKey": "CUnit_SouthKoreanWon",
+      "name": "South Korean won",
+      "code": "KRW",
+      "minorUnitKey": "CMUnit_Jeon",
+      "minorUnit": "Jeon",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Kosovo",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Kuwait",
+    "currency": {
+      "nameKey": "CUnit_KuwaitiDinar",
+      "name": "Kuwaiti dinar",
+      "code": "KWD",
+      "minorUnitKey": "CMUnit_Fils",
+      "minorUnit": "Fils",
+      "decimalCount": 3
+    }
+  },
+  {
+    "country": "Kyrgyzstan",
+    "currency": {
+      "nameKey": "CUnit_KyrgyzstaniSom",
+      "name": "Kyrgyzstani som",
+      "code": "KGS",
+      "minorUnitKey": "CMUnit_Tyiyn",
+      "minorUnit": "Tyiyn",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Laos",
+    "currency": {
+      "nameKey": "CUnit_LaoKip",
+      "name": "Lao kip",
+      "code": "LAK",
+      "minorUnitKey": "CMUnit_Att",
+      "minorUnit": "Att",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Latvia",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Lebanon",
+    "currency": {
+      "nameKey": "CUnit_LebanesePound",
+      "name": "Lebanese pound",
+      "code": "LBP",
+      "minorUnitKey": "CMUnit_Piastre",
+      "minorUnit": "Piastre",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Liberia",
+    "currency": {
+      "nameKey": "CUnit_LiberianDollar",
+      "name": "Liberian dollar",
+      "code": "LRD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Libya",
+    "currency": {
+      "nameKey": "CUnit_LibyanDinar",
+      "name": "Libyan dinar",
+      "code": "LYD",
+      "minorUnitKey": "CMUnit_Dirham",
+      "minorUnit": "Dirham",
+      "decimalCount": 3
+    }
+  },
+  {
+    "country": "Liechtenstein",
+    "currency": {
+      "nameKey": "CUnit_SwissFranc",
+      "name": "Swiss franc",
+      "code": "CHF",
+      "minorUnitKey": "CMUnit_Rappen",
+      "minorUnit": "Rappen",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Lithuania",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Luxembourg",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Macau",
+    "currency": {
+      "nameKey": "CUnit_MacanesePataca",
+      "name": "Macanese pataca",
+      "code": "MOP",
+      "minorUnitKey": "CMUnit_Avo",
+      "minorUnit": "Avo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Madagascar",
+    "currency": {
+      "nameKey": "CUnit_MalagasyAriary",
+      "name": "Malagasy ariary",
+      "code": "MGA",
+      "minorUnitKey": "CMUnit_Iraimbilanja",
+      "minorUnit": "Iraimbilanja",
+      "decimalCount": 0
+    }
+  },
+  {
+    "country": "Malawi",
+    "currency": {
+      "nameKey": "CUnit_MalawianKwacha",
+      "name": "Malawian kwacha",
+      "code": "MWK",
+      "minorUnitKey": "CMUnit_Tambala",
+      "minorUnit": "Tambala",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Malaysia",
+    "currency": {
+      "nameKey": "CUnit_MalaysianRinggit",
+      "name": "Malaysian ringgit",
+      "code": "MYR",
+      "minorUnitKey": "CMUnit_Sen",
+      "minorUnit": "Sen",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Maldives",
+    "currency": {
+      "nameKey": "CUnit_MaldivianRufiyaa",
+      "name": "Maldivian rufiyaa",
+      "code": "MVR",
+      "minorUnitKey": "CMUnit_Laari",
+      "minorUnit": "Laari",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Mali",
+    "currency": {
+      "nameKey": "CUnit_WestAfricanCFAFranc",
+      "name": "West African CFA franc",
+      "code": "XOF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Malta",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Marshall Islands",
+    "currency": {
+      "nameKey": "CUnit_UnitedStatesDollar",
+      "name": "United States dollar",
+      "code": "USD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Mauritania",
+    "currency": {
+      "nameKey": "CUnit_MauritanianOuguiya",
+      "name": "Mauritanian ouguiya",
+      "code": "MRU",
+      "minorUnitKey": "CMUnit_Khoums",
+      "minorUnit": "Khoums",
+      "decimalCount": 0
+    }
+  },
+  {
+    "country": "Mexico",
+    "currency": {
+      "nameKey": "CUnit_MexicanPeso",
+      "name": "Mexican peso",
+      "code": "MXN",
+      "minorUnitKey": "CMUnit_Centavo",
+      "minorUnit": "Centavo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Moldova",
+    "currency": {
+      "nameKey": "CUnit_MoldovanLeu",
+      "name": "Moldovan leu",
+      "code": "MDL",
+      "minorUnitKey": "CMUnit_Ban",
+      "minorUnit": "Ban",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Monaco",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Mongolia",
+    "currency": {
+      "nameKey": "CUnit_MongolianTögrög",
+      "name": "Mongolian tögrög",
+      "code": "MNT",
+      "minorUnitKey": "CMUnit_Möngö",
+      "minorUnit": "Möngö",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Montenegro",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Montserrat",
+    "currency": {
+      "nameKey": "CUnit_EasternCaribbeanDollar",
+      "name": "Eastern Caribbean dollar",
+      "code": "XCD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Morocco",
+    "currency": {
+      "nameKey": "CUnit_MoroccanDirham",
+      "name": "Moroccan dirham",
+      "code": "MAD",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Mozambique",
+    "currency": {
+      "nameKey": "CUnit_MozambicanMetical",
+      "name": "Mozambican metical",
+      "code": "MZN",
+      "minorUnitKey": "CMUnit_Centavo",
+      "minorUnit": "Centavo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Myanmar",
+    "currency": {
+      "nameKey": "CUnit_BurmeseKyat",
+      "name": "Burmese kyat",
+      "code": "MMK",
+      "minorUnitKey": "CMUnit_Pya",
+      "minorUnit": "Pya",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Nauru",
+    "currency": {
+      "nameKey": "CUnit_AustralianDollar",
+      "name": "Australian dollar",
+      "code": "AUD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Netherlands",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "New Caledonia",
+    "currency": {
+      "nameKey": "CUnit_CFPFranc",
+      "name": "CFP franc",
+      "code": "XPF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "New Zealand",
+    "currency": {
+      "nameKey": "CUnit_NewZealandDollar",
+      "name": "New Zealand dollar",
+      "code": "NZD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Nicaragua",
+    "currency": {
+      "nameKey": "CUnit_NicaraguanCórdoba",
+      "name": "Nicaraguan córdoba",
+      "code": "NIO",
+      "minorUnitKey": "CMUnit_Centavo",
+      "minorUnit": "Centavo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Niger",
+    "currency": {
+      "nameKey": "CUnit_WestAfricanCFAFranc",
+      "name": "West African CFA franc",
+      "code": "XOF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Nigeria",
+    "currency": {
+      "nameKey": "CUnit_NigerianNaira",
+      "name": "Nigerian naira",
+      "code": "NGN",
+      "minorUnitKey": "CMUnit_Kobo",
+      "minorUnit": "Kobo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Niue",
+    "currency": {
+      "nameKey": "CUnit_NewZealandDollar",
+      "name": "New Zealand dollar",
+      "code": "NZD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "North Macedonia",
+    "currency": {
+      "nameKey": "CUnit_MacedonianDenar",
+      "name": "Macedonian denar",
+      "code": "MKD",
+      "minorUnitKey": "CMUnit_Deni",
+      "minorUnit": "Deni",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Northern Cyprus",
+    "currency": {
+      "nameKey": "CUnit_TurkishLira",
+      "name": "Turkish lira",
+      "code": "TRY",
+      "minorUnitKey": "CMUnit_Kuruş",
+      "minorUnit": "Kuruş",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Norway",
+    "currency": {
+      "nameKey": "CUnit_NorwegianKrone",
+      "name": "Norwegian krone",
+      "code": "NOK",
+      "minorUnitKey": "CMUnit_Øre",
+      "minorUnit": "Øre",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Oman",
+    "currency": {
+      "nameKey": "CUnit_OmaniRial",
+      "name": "Omani rial",
+      "code": "OMR",
+      "minorUnitKey": "CMUnit_Baisa",
+      "minorUnit": "Baisa",
+      "decimalCount": 3
+    }
+  },
+  {
+    "country": "Pakistan",
+    "currency": {
+      "nameKey": "CUnit_PakistaniRupee",
+      "name": "Pakistani rupee",
+      "code": "PKR",
+      "minorUnitKey": "CMUnit_Paisa",
+      "minorUnit": "Paisa",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Palau",
+    "currency": {
+      "nameKey": "CUnit_PalauanDollar",
+      "name": "Palauan dollar",
+      "code": "(none)",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Palestine",
+    "currency": {
+      "nameKey": "CUnit_IsraeliNewShekel",
+      "name": "Israeli new shekel",
+      "code": "ILS",
+      "minorUnitKey": "CMUnit_Agora",
+      "minorUnit": "Agora",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Papua New Guinea",
+    "currency": {
+      "nameKey": "CUnit_PapuaNewGuineanKina",
+      "name": "Papua New Guinean kina",
+      "code": "PGK",
+      "minorUnitKey": "CMUnit_Toea",
+      "minorUnit": "Toea",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Paraguay",
+    "currency": {
+      "nameKey": "CUnit_ParaguayanGuaraní",
+      "name": "Paraguayan guaraní",
+      "code": "PYG",
+      "minorUnitKey": "CMUnit_Centimo",
+      "minorUnit": "Céntimo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Peru",
+    "currency": {
+      "nameKey": "CUnit_PeruvianSol",
+      "name": "Peruvian sol",
+      "code": "PEN",
+      "minorUnitKey": "CMUnit_Centimo",
+      "minorUnit": "Céntimo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Philippines",
+    "currency": {
+      "nameKey": "CUnit_PhilippinePeso",
+      "name": "Philippine peso",
+      "code": "PHP",
+      "minorUnitKey": "CMUnit_Sentimo",
+      "minorUnit": "Sentimo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Pitcairn Islands",
+    "currency": {
+      "nameKey": "CUnit_NewZealandDollar",
+      "name": "New Zealand dollar",
+      "code": "NZD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Poland",
+    "currency": {
+      "nameKey": "CUnit_PolishZłoty",
+      "name": "Polish złoty",
+      "code": "PLN",
+      "minorUnitKey": "CMUnit_Grosz",
+      "minorUnit": "Grosz",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Portugal",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Qatar",
+    "currency": {
+      "nameKey": "CUnit_QatariRiyal",
+      "name": "Qatari riyal",
+      "code": "QAR",
+      "minorUnitKey": "CMUnit_Dirham",
+      "minorUnit": "Dirham",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Romania",
+    "currency": {
+      "nameKey": "CUnit_RomanianLeu",
+      "name": "Romanian leu",
+      "code": "RON",
+      "minorUnitKey": "CMUnit_Ban",
+      "minorUnit": "Ban",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Russia",
+    "currency": {
+      "nameKey": "CUnit_RussianRuble",
+      "name": "Russian ruble",
+      "code": "RUB",
+      "minorUnitKey": "CMUnit_Kopek",
+      "minorUnit": "Kopek",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Rwanda",
+    "currency": {
+      "nameKey": "CUnit_RwandanFranc",
+      "name": "Rwandan franc",
+      "code": "RWF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Saba",
+    "currency": {
+      "nameKey": "CUnit_UnitedStatesDollar",
+      "name": "United States dollar",
+      "code": "USD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Sahrawi Republic",
+    "currency": {
+      "nameKey": "CUnit_AlgerianDinar",
+      "name": "Algerian dinar",
+      "code": "DZD",
+      "minorUnitKey": "CMUnit_Santeem",
+      "minorUnit": "Santeem",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Saint Helena",
+    "currency": {
+      "nameKey": "CUnit_SaintHelenaPound",
+      "name": "Saint Helena pound",
+      "code": "SHP",
+      "minorUnitKey": "CMUnit_Penny",
+      "minorUnit": "Penny",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Saint Kitts and Nevis",
+    "currency": {
+      "nameKey": "CUnit_EasternCaribbeanDollar",
+      "name": "Eastern Caribbean dollar",
+      "code": "XCD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Saint Lucia",
+    "currency": {
+      "nameKey": "CUnit_EasternCaribbeanDollar",
+      "name": "Eastern Caribbean dollar",
+      "code": "XCD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Saint Vincent and the Grenadines",
+    "currency": {
+      "nameKey": "CUnit_EasternCaribbeanDollar",
+      "name": "Eastern Caribbean dollar",
+      "code": "XCD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Samoa",
+    "currency": {
+      "nameKey": "CUnit_SamoanTālā",
+      "name": "Samoan tālā",
+      "code": "WST",
+      "minorUnitKey": "CMUnit_Sene",
+      "minorUnit": "Sene",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "San Marino",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "São Tomé and Príncipe",
+    "currency": {
+      "nameKey": "CUnit_SãoToméAndPríncipeDobra",
+      "name": "São Tomé and Príncipe dobra",
+      "code": "STN",
+      "minorUnitKey": "CMUnit_Centimo",
+      "minorUnit": "Cêntimo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Saudi Arabia",
+    "currency": {
+      "nameKey": "CUnit_SaudiRiyal",
+      "name": "Saudi riyal",
+      "code": "SAR",
+      "minorUnitKey": "CMUnit_Halala",
+      "minorUnit": "Halala",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Senegal",
+    "currency": {
+      "nameKey": "CUnit_WestAfricanCFAFranc",
+      "name": "West African CFA franc",
+      "code": "XOF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Serbia",
+    "currency": {
+      "nameKey": "CUnit_SerbianDinar",
+      "name": "Serbian dinar",
+      "code": "RSD",
+      "minorUnitKey": "CMUnit_Para",
+      "minorUnit": "Para",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Seychelles",
+    "currency": {
+      "nameKey": "CUnit_SeychelloisRupee",
+      "name": "Seychellois rupee",
+      "code": "SCR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Sierra Leone",
+    "currency": {
+      "nameKey": "CUnit_SierraLeoneanLeone",
+      "name": "Sierra Leonean leone",
+      "code": "SLL",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Singapore",
+    "currency": {
+      "nameKey": "CUnit_BruneiDollar",
+      "name": "Brunei dollar",
+      "code": "BND",
+      "minorUnitKey": "CMUnit_Sen",
+      "minorUnit": "Sen",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Sint Eustatius",
+    "currency": {
+      "nameKey": "CUnit_UnitedStatesDollar",
+      "name": "United States dollar",
+      "code": "USD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Sint Maarten",
+    "currency": {
+      "nameKey": "CUnit_NetherlandsAntilleanGuilder",
+      "name": "Netherlands Antillean guilder",
+      "code": "ANG",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Slovakia",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Slovenia",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Solomon Islands",
+    "currency": {
+      "nameKey": "CUnit_SolomonIslandsDollar",
+      "name": "Solomon Islands dollar",
+      "code": "SBD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Somalia",
+    "currency": {
+      "nameKey": "CUnit_SomaliShilling",
+      "name": "Somali shilling",
+      "code": "SOS",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Somaliland",
+    "currency": {
+      "nameKey": "CUnit_SomalilandShilling",
+      "name": "Somaliland shilling",
+      "code": "SLS&#91;G&#93;",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "South Africa",
+    "currency": {
+      "nameKey": "CUnit_SouthAfricanRand",
+      "name": "South African rand",
+      "code": "ZAR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "South Georgia and the South Sandwich Islands",
+    "currency": {
+      "nameKey": "CUnit_BritishPound",
+      "name": "British pound",
+      "code": "GBP",
+      "minorUnitKey": "CMUnit_Penny",
+      "minorUnit": "Penny",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "South Ossetia",
+    "currency": {
+      "nameKey": "CUnit_RussianRuble",
+      "name": "Russian ruble",
+      "code": "RUB",
+      "minorUnitKey": "CMUnit_Kopek",
+      "minorUnit": "Kopek",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Spain",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "South Sudan",
+    "currency": {
+      "nameKey": "CUnit_SouthSudanesePound",
+      "name": "South Sudanese pound",
+      "code": "SSP",
+      "minorUnitKey": "CMUnit_Piastre",
+      "minorUnit": "Piastre",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Sri Lanka",
+    "currency": {
+      "nameKey": "CUnit_SriLankanRupee",
+      "name": "Sri Lankan rupee",
+      "code": "LKR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Sudan",
+    "currency": {
+      "nameKey": "CUnit_SudanesePound",
+      "name": "Sudanese pound",
+      "code": "SDG",
+      "minorUnitKey": "CMUnit_Piastre",
+      "minorUnit": "Piastre",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Suriname",
+    "currency": {
+      "nameKey": "CUnit_SurinameseDollar",
+      "name": "Surinamese dollar",
+      "code": "SRD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Sweden",
+    "currency": {
+      "nameKey": "CUnit_SwedishKrona",
+      "name": "Swedish krona",
+      "code": "SEK",
+      "minorUnitKey": "CMUnit_Öre",
+      "minorUnit": "Öre",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Switzerland",
+    "currency": {
+      "nameKey": "CUnit_SwissFranc",
+      "name": "Swiss franc",
+      "code": "CHF",
+      "minorUnitKey": "CMUnit_Rappen",
+      "minorUnit": "Rappen",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Syria",
+    "currency": {
+      "nameKey": "CUnit_SyrianPound",
+      "name": "Syrian pound",
+      "code": "SYP",
+      "minorUnitKey": "CMUnit_Piastre",
+      "minorUnit": "Piastre",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Taiwan",
+    "currency": {
+      "nameKey": "CUnit_NewTaiwanDollar",
+      "name": "New Taiwan dollar",
+      "code": "TWD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Tajikistan",
+    "currency": {
+      "nameKey": "CUnit_TajikistaniSomoni",
+      "name": "Tajikistani somoni",
+      "code": "TJS",
+      "minorUnitKey": "CMUnit_Diram",
+      "minorUnit": "Diram",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Tanzania",
+    "currency": {
+      "nameKey": "CUnit_TanzanianShilling",
+      "name": "Tanzanian shilling",
+      "code": "TZS",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Thailand",
+    "currency": {
+      "nameKey": "CUnit_ThaiBaht",
+      "name": "Thai baht",
+      "code": "THB",
+      "minorUnitKey": "CMUnit_Satang",
+      "minorUnit": "Satang",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Togo",
+    "currency": {
+      "nameKey": "CUnit_WestAfricanCFAFranc",
+      "name": "West African CFA franc",
+      "code": "XOF",
+      "minorUnitKey": "CMUnit_Centime",
+      "minorUnit": "Centime",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Tonga",
+    "currency": {
+      "nameKey": "CUnit_TonganPaanga",
+      "name": "Tongan paanga",
+      "code": "TOP",
+      "minorUnitKey": "CMUnit_Seniti",
+      "minorUnit": "Seniti",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Trinidad and Tobago",
+    "currency": {
+      "nameKey": "CUnit_TrinidadAndTobagoDollar",
+      "name": "Trinidad and Tobago dollar",
+      "code": "TTD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Tristan da Cunha",
+    "currency": {
+      "nameKey": "CUnit_SaintHelenaPound",
+      "name": "Saint Helena pound",
+      "code": "SHP",
+      "minorUnitKey": "CMUnit_Penny",
+      "minorUnit": "Penny",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Tunisia",
+    "currency": {
+      "nameKey": "CUnit_TunisianDinar",
+      "name": "Tunisian dinar",
+      "code": "TND",
+      "minorUnitKey": "CMUnit_Millime",
+      "minorUnit": "Millime",
+      "decimalCount": 3
+    }
+  },
+  {
+    "country": "Turkey",
+    "currency": {
+      "nameKey": "CUnit_TurkishLira",
+      "name": "Turkish lira",
+      "code": "TRY",
+      "minorUnitKey": "CMUnit_Kuruş",
+      "minorUnit": "Kuruş",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Turkmenistan",
+    "currency": {
+      "nameKey": "CUnit_TurkmenistanManat",
+      "name": "Turkmenistan manat",
+      "code": "TMT",
+      "minorUnitKey": "CMUnit_Tennesi",
+      "minorUnit": "Tennesi",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Turks and Caicos Islands",
+    "currency": {
+      "nameKey": "CUnit_UnitedStatesDollar",
+      "name": "United States dollar",
+      "code": "USD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Uganda",
+    "currency": {
+      "nameKey": "CUnit_UgandanShilling",
+      "name": "Ugandan shilling",
+      "code": "UGX",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Ukraine",
+    "currency": {
+      "nameKey": "CUnit_UkrainianHryvnia",
+      "name": "Ukrainian hryvnia",
+      "code": "UAH",
+      "minorUnitKey": "CMUnit_Kopiyka",
+      "minorUnit": "Kopiyka",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "United Arab Emirates",
+    "currency": {
+      "nameKey": "CUnit_UnitedArabEmiratesDirham",
+      "name": "United Arab Emirates dirham",
+      "code": "AED",
+      "minorUnitKey": "CMUnit_Fils",
+      "minorUnit": "Fils",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "United Kingdom",
+    "currency": {
+      "nameKey": "CUnit_BritishPound",
+      "name": "British pound",
+      "code": "GBP",
+      "minorUnitKey": "CMUnit_Penny",
+      "minorUnit": "Penny",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "United States",
+    "currency": {
+      "nameKey": "CUnit_UnitedStatesDollar",
+      "name": "United States dollar",
+      "code": "USD",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Uruguay",
+    "currency": {
+      "nameKey": "CUnit_UruguayanPeso",
+      "name": "Uruguayan peso",
+      "code": "UYU",
+      "minorUnitKey": "CMUnit_Centésimo",
+      "minorUnit": "Centésimo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Uzbekistan",
+    "currency": {
+      "nameKey": "CUnit_UzbekistaniSom",
+      "name": "Uzbekistani som",
+      "code": "UZS",
+      "minorUnitKey": "CMUnit_Tiyin",
+      "minorUnit": "Tiyin",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Vatican City",
+    "currency": {
+      "nameKey": "CUnit_Euro",
+      "name": "Euro",
+      "code": "EUR",
+      "minorUnitKey": "CMUnit_Cent",
+      "minorUnit": "Cent",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Venezuela",
+    "currency": {
+      "nameKey": "CUnit_VenezuelanBolívarSoberano",
+      "name": "Venezuelan bolívar soberano",
+      "code": "VES",
+      "minorUnitKey": "CMUnit_Centimo",
+      "minorUnit": "Céntimo",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Vietnam",
+    "currency": {
+      "nameKey": "CUnit_VietnameseĐồng",
+      "name": "Vietnamese đồng",
+      "code": "VND",
+      "minorUnitKey": "CMUnit_Hào",
+      "minorUnit": "Hào",
+      "decimalCount": 1
+    }
+  },
+  {
+    "country": "Yemen",
+    "currency": {
+      "nameKey": "CUnit_YemeniRial",
+      "name": "Yemeni rial",
+      "code": "YER",
+      "minorUnitKey": "CMUnit_Fils",
+      "minorUnit": "Fils",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Zambia",
+    "currency": {
+      "nameKey": "CUnit_ZambianKwacha",
+      "name": "Zambian kwacha",
+      "code": "ZMW",
+      "minorUnitKey": "CMUnit_Ngwee",
+      "minorUnit": "Ngwee",
+      "decimalCount": 2
+    }
+  },
+  {
+    "country": "Zimbabwe",
+    "currency": {
+      "nameKey": "CUnit_BotswanaPula",
+      "name": "Botswana pula",
+      "code": "BWP",
+      "minorUnitKey": "CMUnit_Thebe",
+      "minorUnit": "Thebe",
+      "decimalCount": 2
+    }
+  }
+]

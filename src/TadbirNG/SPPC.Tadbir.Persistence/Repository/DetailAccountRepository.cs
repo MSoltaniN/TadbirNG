@@ -149,7 +149,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<DetailAccountViewModel> SaveDetailAccountAsync(DetailAccountViewModel detailAccount)
         {
             Verify.ArgumentNotNull(detailAccount, "detailAccount");
-            DetailAccount detailModel = default(DetailAccount);
+            DetailAccount detailModel;
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             if (detailAccount.Id == 0)
             {
@@ -357,7 +357,7 @@ namespace SPPC.Tadbir.Persistence
             int codeLength = treeConfig.Levels[childLevel].CodeLength;
             string format = String.Format("D{0}", codeLength);
             var maxCode = (long)Math.Pow(10, codeLength) - 1;
-            var lastCode = (existingCodes.Count() > 0) ? Int64.Parse(existingCodes.Max()) : 0;
+            var lastCode = (existingCodes.Any()) ? Int64.Parse(existingCodes.Max()) : 0;
             var newCode = Math.Min(lastCode + 1, maxCode);
             return newCode.ToString(format);
         }

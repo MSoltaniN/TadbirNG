@@ -224,7 +224,7 @@ namespace SPPC.Tadbir.Persistence
             if (startDate != DateTime.MinValue)
             {
                 var accounts = _utility.GetUsableAccounts(collectionId);
-                if (accounts.Count() == 0)
+                if (!accounts.Any())
                 {
                     return items;
                 }
@@ -283,7 +283,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             var queryBuilder = new StringBuilder(selectBuilder.ToString());
-            queryBuilder.Append(filterBuilder.ToString());
+            queryBuilder.Append(filterBuilder);
             queryBuilder.AppendFormat(BalanceSheetQuery.CollectionBalanceEnd, length);
             var query = new ReportQuery(queryBuilder.ToString());
             query.SetFilter(GetEnvironmentFilters(parameters));

@@ -1,0 +1,40 @@
+<kendo-dialog *ngIf="companyList" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (keydown.esc)="escPress()"
+              (close)="closeForm()" [minWidth]="250" [width]="450">
+  <kendo-dialog-titlebar>
+    {{ getTitleText('RoleCompanies.RoleCompaniesTitle' | translate) }}
+  </kendo-dialog-titlebar>
+
+  <div *ngIf="errorMessages">
+    <div *ngFor="let err of errorMessages" class="alert alert-danger">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+      {{ err }}
+    </div>
+  </div>
+
+  <div class="panel panel-primary">
+    <div class="panel-body">
+
+      <kendo-grid id="gridRoleCompaniesFormData" [data]="gridData"
+                  [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+                  [selectedKeys]="selectedRows"
+                  [kendoGridSelectBy]="selectionKey">
+        <ng-template kendoGridNoRecordsTemplate>
+          {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+        </ng-template>
+
+        <kendo-grid-checkbox-column showSelectAll="true" width="40"></kendo-grid-checkbox-column>
+
+        <kendo-grid-column sppc-grid-column="RoleCompanies.name">
+        </kendo-grid-column>
+
+      </kendo-grid>
+    </div>
+  </div>
+
+
+  <kendo-dialog-actions>
+    <button class="k-button k-primary" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+    <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+  </kendo-dialog-actions>
+
+</kendo-dialog>

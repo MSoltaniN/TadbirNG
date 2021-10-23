@@ -1,0 +1,95 @@
+﻿{
+  "commands": [
+    {
+      "name": "tsvm",
+      "parameters": [
+        {
+          "name": "types",
+          "required": true,
+          "allowMultiple": true
+        }
+      ],
+      "description": "Generates TypeScript view model interfaces from existing C# view model classes.",
+      "handlerType": "SPPC.Tools.SystemDesigner.Cli.GenerateTsModelCommand, ngdes"
+    },
+    {
+      "name": "tsapi",
+      "parameters": [
+        {
+          "name": "types",
+          "required": true,
+          "allowMultiple": true
+        }
+      ],
+      "description": "Generates TypeScript Api classes from existing C# classes.",
+      "handlerType": "SPPC.Tools.SystemDesigner.Cli.GenerateTsApiCommand, ngdes"
+    },
+    {
+      "name": "jsres",
+      "parameters": [
+        {
+          "name": "area",
+          "required": true,
+          "alloMultiple": true
+        },
+        {
+          "name": "lang",
+          "required": true,
+          "allowMultiple": true
+        }
+      ],
+      "description": "Generates localized JSON objects containing multi-language strings.",
+      "handlerType": "SPPC.Tools.SystemDesigner.Cli.GenerateJsResourceCommand, ngdes"
+    },
+    {
+      "name": "reskey",
+      "parameters": [
+        {
+          "name": "res",
+          "required": true,
+          "allowMultiple": false
+        },
+        {
+          "name": "ns",
+          "required": false,
+          "allowMultiple": false
+        }
+      ],
+      "description": "Generates a C# class containing existing keys in resource files as constant string fields.",
+      "handlerType": "SPPC.Tools.SystemDesigner.Cli.GenerateKeyClassCommand, ngdes"
+    },
+    {
+      "name": "tssec",
+      "parameters": [
+      ],
+      "description": "Generates TypeScript security types from existing C# types.",
+      "handlerType": "SPPC.Tools.SystemDesigner.Cli.GenerateTsSecurityCommand, ngdes"
+    },
+    {
+      "name": "refdb",
+      "parameters": [
+      ],
+      "description": "Refreshes system and company databases with latest schema changes.",
+      "handlerType": "SPPC.Tools.SystemDesigner.Cli.RefreshDatabasesCommand, ngdes"
+    },
+    {
+      "name": "xcopy",
+      "parameters": [
+      ],
+      "description": "Prepares XCopy installation for activator tool.",
+      "handlerType": "SPPC.Tools.SystemDesigner.Cli.DeployActivatorCommand, ngdes"
+    },
+    {
+      "name": "csmodel",
+      "parameters": [
+        {
+          "name": "items",
+          "required": true,
+          "allowMultiple": true
+        }
+      ],
+      "description": "Generates C# model layer classes from XML entity metadata.",
+      "handlerType": "SPPC.Tools.SystemDesigner.Cli.GenerateCsModelCommand, ngdes"
+    }
+  ]
+}

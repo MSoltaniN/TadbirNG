@@ -1,0 +1,81 @@
+
+
+<div *ngIf="errorMessages">
+  <div *ngFor="let err of errorMessages" class="alert alert-danger">
+    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+    {{ err }}
+  </div>
+</div>
+
+
+<div style="position: relative; padding-bottom: 50px; min-height: 555px;">
+  <div>
+    <div class="col-xs-12 col-sm-6 sppc-float">
+      <div class="form-group">
+        <label class="control-label">{{ 'Currency.Name' | translate }}</label>
+
+        <kendo-dropdownlist [data]="currencyNameData" class="ddl-currency"
+                            [textField]="'value'"
+                            [valueField]="'key'"
+                            [valuePrimitive]="true"
+                            [filterable]="true"
+                            [value]="selectedCurrencyName"
+                            [(ngModel)]="selectedCurrencyName"
+                            (valueChange)="onChangeCurrency($event)"
+                            (filterChange)="handleFilter($event)"
+                            [disabled]="isExistArticle">
+        </kendo-dropdownlist>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 sppc-float">
+      <div class="form-group">
+        <label class="control-label">{{ 'Currency.DecimalCount' | translate }}</label>
+
+        <input type="text" class="k-textbox" [(ngModel)]="decimalCount" readonly />
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 sppc-float">
+      <div class="form-group">
+        <label class="control-label">{{ 'Settings.DefaultCalendar' | translate }}</label>
+
+        <kendo-dropdownlist [data]="calendarList" class="ddl-currency"
+                            [textField]="'value'"
+                            [valueField]="'key'"
+                            [valuePrimitive]="true"
+                            [value]="selectedCalendar"
+                            [(ngModel)]="selectedCalendar">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+        </kendo-dropdownlist>
+
+      </div>
+    </div>
+
+    <div class="col-xs-12">
+      <div class="form-group">
+        <input type="checkbox" name="committed" id="committed" class="k-checkbox" [(ngModel)]="useDefaultCoding" [disabled]="isExistAccount" />
+        <span for="committed">{{ 'Settings.DefaultCoding' | translate }}</span>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div>
+    <view-tree-config [reloadComponent]="isRefreshTreeView" (viewTreeValue)="onChangeViewTreeValue($event)"></view-tree-config>
+  </div>
+
+  <div style="position: absolute; bottom: 5px; right:0; left:0">
+    <button class="k-button k-primary" [ngClass]="{'pull-left': currentlang == 'fa', 'pull-right' : currentlang == 'en' }"
+            SppcPermissionCheck="SaveSettings"
+            (sppcClick)="saveSystemConfig()">
+      {{ 'ViewTreeConfig.Save' | translate }}
+    </button>
+  </div>
+</div>

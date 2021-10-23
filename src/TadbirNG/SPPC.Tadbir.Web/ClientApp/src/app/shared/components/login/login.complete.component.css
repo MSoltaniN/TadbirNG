@@ -1,0 +1,47 @@
+.login {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+.parentVertical {
+  height: 100vh;
+}
+
+.vertical-center {
+  float: none;
+  margin: auto auto;
+  vertical-align: middle;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.active {
+  border-style: ridge;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.ddl-noData {
+  color: #717171;
+  font-weight: 500;
+}
+
+.btn-company {
+  margin: 0 -10px;
+}
+
+/deep/.dialog-style-wizard > .k-overlay {
+  opacity: 0 !important;
+}
+
+
+/deep/.dialog-wizard .k-content {
+  height: 400px;
+}

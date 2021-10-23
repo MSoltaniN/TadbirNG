@@ -1,0 +1,8 @@
+﻿[
+  {
+    "source": "dbo.__FiscalPeriod__",
+    "target": "Finance.FiscalPeriod",
+    "requiredFields": [ "FiscalPeriodID", "CompanyID", "Name", "StartDate", "EndDate" ],
+    "sourceFields": ["Id", null, "", "", ""]
+  }
+]

@@ -29,10 +29,8 @@ namespace SPPC.Framework.Cryptography
         public byte[] CreateHash(byte[] data)
         {
             Verify.ArgumentNotNullOrEmpty(data, nameof(data));
-            using (var sha256 = SHA256.Create())
-            {
-                return sha256.ComputeHash(data);
-            }
+            using var sha256 = SHA256.Create();
+            return sha256.ComputeHash(data);
         }
 
         /// <summary>
@@ -44,12 +42,10 @@ namespace SPPC.Framework.Cryptography
         public string CreateHash(string data)
         {
             Verify.ArgumentNotNullOrEmptyString(data, nameof(data));
-            using (var sha256 = SHA256.Create())
-            {
-                var dataBytes = Encoding.UTF8.GetBytes(data);
-                var dataHashBytes = sha256.ComputeHash(dataBytes);
-                return Transform.ToHexString(dataHashBytes);
-            }
+            using var sha256 = SHA256.Create();
+            var dataBytes = Encoding.UTF8.GetBytes(data);
+            var dataHashBytes = sha256.ComputeHash(dataBytes);
+            return Transform.ToHexString(dataHashBytes);
         }
 
         /// <summary>
@@ -62,13 +58,11 @@ namespace SPPC.Framework.Cryptography
         {
             Verify.ArgumentNotNullOrEmpty(data, nameof(data));
             Verify.ArgumentNotNullOrEmpty(hash, nameof(hash));
-            using (var sha256 = SHA256.Create())
-            {
-                byte[] dataHash = sha256.ComputeHash(data);
-                string hexDataHash = Transform.ToHexString(dataHash);
-                string hexHash = Transform.ToHexString(hash);
-                return hexDataHash == hexHash;
-            }
+            using var sha256 = SHA256.Create();
+            byte[] dataHash = sha256.ComputeHash(data);
+            string hexDataHash = Transform.ToHexString(dataHash);
+            string hexHash = Transform.ToHexString(hash);
+            return hexDataHash == hexHash;
         }
 
         /// <summary>
@@ -85,17 +79,15 @@ namespace SPPC.Framework.Cryptography
             using (Aes aes = Aes.Create())
             {
                 ICryptoTransform encryptor = aes.CreateEncryptor();
-                using (MemoryStream memStream = new MemoryStream())
+                using (var memStream = new MemoryStream())
                 {
-                    using (CryptoStream cryptoStream = new CryptoStream(memStream, encryptor, CryptoStreamMode.Write))
+                    using var cryptoStream = new CryptoStream(memStream, encryptor, CryptoStreamMode.Write);
+                    using (var cryptoWriter = new StreamWriter(cryptoStream))
                     {
-                        using (StreamWriter cryptoWriter = new StreamWriter(cryptoStream))
-                        {
-                            cryptoWriter.Write(data);
-                        }
-
-                        cipher = memStream.ToArray();
+                        cryptoWriter.Write(data);
                     }
+
+                    cipher = memStream.ToArray();
                 }
 
                 wrappedCipher = WrapCipher(cipher, aes.Key, aes.IV);
@@ -122,16 +114,10 @@ namespace SPPC.Framework.Cryptography
                 aes.IV = iv;
 
                 ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-                using (MemoryStream memStream = new MemoryStream(unwrappedCipher))
-                {
-                    using (CryptoStream cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Read))
-                    {
-                        using (StreamReader cryptoReader = new StreamReader(cryptoStream))
-                        {
-                            data = cryptoReader.ReadToEnd();
-                        }
-                    }
-                }
+                using var memStream = new MemoryStream(unwrappedCipher);
+                using var cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Read);
+                using var cryptoReader = new StreamReader(cryptoStream);
+                data = cryptoReader.ReadToEnd();
             }
 
             return data;

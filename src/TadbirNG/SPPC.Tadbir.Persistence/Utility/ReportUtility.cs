@@ -43,7 +43,8 @@ namespace SPPC.Tadbir.Persistence.Utility
         {
             var lines = await query
                 .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
-                    && line.Voucher.Date.IsBetween(from, to))
+                    && line.Voucher.Date.Date >= from.Date
+                    && line.Voucher.Date.Date <= to.Date)
                 .OrderBy(line => line.Voucher.Date)
                     .ThenBy(line => line.Voucher.No)
                 .Select(line => Mapper.Map<TModel>(line))
@@ -67,7 +68,8 @@ namespace SPPC.Tadbir.Persistence.Utility
         {
             var lines = await query
                 .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
-                    && line.Voucher.Date.IsBetween(from, to))
+                    && line.Voucher.Date.Date >= from.Date
+                    && line.Voucher.Date.Date <= to.Date)
                 .OrderBy(line => line.Voucher.Date)
                     .ThenBy(line => line.Voucher.No)
                         .ThenBy(line => line.BranchId)

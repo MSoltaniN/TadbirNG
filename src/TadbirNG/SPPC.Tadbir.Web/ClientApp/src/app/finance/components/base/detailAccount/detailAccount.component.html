@@ -1,0 +1,195 @@
+
+<app-bread-cumb></app-bread-cumb>
+<view-identifier [ViewID]="viewId">
+</view-identifier>
+<report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
+                   [Filter]="reportFilter" [RowData]="rowData"></report-management>
+<report-setting></report-setting>
+<kendo-splitter orientation="vertical" style="height:calc(100vh - 95px);">
+
+  <kendo-splitter-pane>
+    <kendo-splitter>
+
+      <kendo-splitter-pane [collapsible]="true" size="20%" #treeContent [scrollTop]="treeScrollTop" class="hidden-xs">
+
+        <div style="height:100px">
+          <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}" style="margin-top:15px;">
+
+            <kendo-treeview [nodes]="firstTreeNode"
+                            textField="name"
+                            kendoTreeViewExpandable
+                            kendoTreeViewSelectable
+                            [hasChildren]="hasChildren"
+                            [children]="fetchChildren"
+                            [expandBy]="'id'"
+                            [(expandedKeys)]="expandedKeys"
+                            [selectBy]="'id'"
+                            [(selectedKeys)]="selectedKeys"
+                            (selectionChange)="handleSelection($event)"
+                            (nodeClick)="onNodeClick($event)">
+              <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                <div id="node-{{dataItem.id}}">
+                  {{dataItem.name}}
+                </div>
+              </ng-template>
+            </kendo-treeview>
+
+            <kendo-contextmenu #treemenulimited [items]="contextmenuLimitedItems" (select)="onSelectContextmenu($event)">
+              <ng-template kendoMenuItemTemplate let-item="item">
+                <span [ngClass]="item.icon"></span>
+                {{ item.text | translate }}
+              </ng-template>
+            </kendo-contextmenu>
+            <kendo-contextmenu #treemenu [items]="contextmenuItems" (select)="onSelectContextmenu($event)">
+              <ng-template kendoMenuItemTemplate let-item="item">
+                <span [ngClass]="item.icon"></span>
+                {{ item.text | translate }}
+              </ng-template>
+            </kendo-contextmenu>
+
+          </div>
+        </div>
+
+      </kendo-splitter-pane>
+
+      <kendo-splitter-pane>
+
+        <div>
+
+          <kendo-grid id="{{viewId}}"
+                      #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+                      [data]="rowData"
+                      [sortable]="{ allowUnsort: true, mode: 'multiple' }"
+                      [sort]="sort"
+                      [pageSize]="pageSize"
+                      [skip]="skip"
+                      [filter]="state.filter"
+                      [pageable]="true"
+                      [resizable]="true"
+                      [filterable]="true"
+                      [scrollable]="'scrollable'"
+                      (pageChange)="pageChange($event)"
+                      (sortChange)="sortChange($event)"
+                      (edit)="editHandler()"
+                      (remove)="removeHandler()"
+                      [loading]="false"
+                      [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+                      [selectedKeys]="selectedRows"
+                      [kendoGridSelectBy]="selectionKey"
+                      (filterChange)="filterChange($event)"
+                      (selectedKeysChange)="onSelectedKeysChange($event)"
+                      (dataStateChange)="onDataStateChange()"
+                      (cellClick)="onCellClick($event)"
+                      (dblclick)="rowDoubleClickHandler()"
+                      (excelExport)="onExcelExport($event)"
+                      sppc-auto-generated-grid-reorder
+                      sppc-auto-generated-grid-resize>
+
+            <kendo-grid-excel [fileName]="excelFileName" [fetchData]="allData"></kendo-grid-excel>
+            <ng-template kendoGridNoRecordsTemplate>
+              {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
+            </ng-template>
+
+            <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                                 pagerOf="{{ 'Paging.Of' | translate }}"
+                                 pagerItems="{{ 'Paging.Record' | translate }}"
+                                 pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}">
+            </kendo-grid-messages>
+
+            <ng-template kendoPagerTemplate>
+              <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+              <kendo-pager-info></kendo-pager-info>
+              <kendo-pager-numeric-buttons [buttonCount]="5"></kendo-pager-numeric-buttons>
+              <kendo-pager-next-buttons></kendo-pager-next-buttons>
+              <kendo-pager-page-sizes [pageSizes]="pageSizeArray"></kendo-pager-page-sizes>
+            </ng-template>
+
+            <ng-template kendoGridToolbarTemplate>
+              <section class="content-header" style="padding-top:0;">
+                <h4>{{ parent ? parent.name : this.treeParentTitle }}</h4>
+                <ol class="breadcrumb" style="top:0;" *ngIf="breadCrumbList.length > 1">
+                  <li *ngFor="let item of breadCrumbList"><a href="javascript:;" (click)="selectBreadCrumb(item)">{{ item.name }}</a></li>
+                </ol>
+              </section>
+
+              <button kendoGridAddCommand SppcPermissionCheck="Create" (sppcClick)="addNew()" [icon]="'file-add'" type="button" title="{{ 'DetailAccount.New' | translate }}"></button>
+
+              <button SppcPermissionCheck="Edit" (sppcClick)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
+              <button SppcPermissionCheck="Delete" (sppcClick)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+              <button (click)="subsetHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Subset' | translate }}"><span class="k-icon k-i-filter-add-expression"></span></button>
+
+              <auto-generated-grid-setting [entityTypeName]="entityTypeName"
+                                           (columnsList)="getColumns($event)">
+              </auto-generated-grid-setting>
+              <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+              <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
+              <!--<button kendoButton class="hidden-xs rm" title="{{ 'Report.ReportSetting' | translate }}" (click)="showReportSetting()"
+            [icon]="'form-element'" type="button"></button>
+    <button kendoButton class="hidden-xs rm" title="{{ 'Report.Print' | translate }}" (click)="showReport()"
+            [icon]="'printer'" type="button"></button>-->
+            </ng-template>
+
+            <kendo-grid-checkbox-column showSelectAll="true"
+                                        [width]="45"
+                                        [headerClass]="{'chb-column-explore': true}"
+                                        [class]="{'chb-column-explore': true}"
+                                        [resizable]="false"
+                                        [reorderable]="false">
+            </kendo-grid-checkbox-column>
+
+            <kendo-grid-column media="(max-width: 450px)" title="">
+              <ng-template kendoGridCellTemplate let-dataItem>
+                <dl>
+                  <ng-template ngFor let-item [ngForOf]="gridColumns" let-i="index">
+                    <dt>{{ getColumnTitle(item) }}:</dt>
+                    <dd *ngIf="item.type == 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcNumConfig | async }}</dd>
+                    <dd *ngIf="item.scriptType != 'Date' && item.type != 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) }}</dd>
+                    <dd *ngIf="item.scriptType == 'Date'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) |  SppcDate: item.type : item.scriptType }}</dd>
+                  </ng-template>
+                </dl>
+              </ng-template>
+
+            </kendo-grid-column>
+
+            <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of gridColumns" sppc-auto-grid-column="{{ item.settings }}">
+
+              <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                <sppc-auto-grid-filter [metaDataItem]="item" [metaData]="item.scriptType" [column]="column" [filter]="filter"></sppc-auto-grid-filter>
+              </ng-template>
+
+              <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'Date'">
+                {{ getRowValue(item.name,dataItem,item.scriptType) |  SppcDate: item.type : item.scriptType  }}
+              </ng-template>
+
+              <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'boolean'">
+                {{ getRowValue(item.name,dataItem,item.scriptType)  }}
+              </ng-template>
+
+              <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.type == 'Money'">
+                {{ getRowValue(item.name,dataItem,item.type) | SppcNumConfig | async }}
+              </ng-template>
+
+            </kendo-grid-column>
+
+          </kendo-grid>
+
+
+
+
+          <kendo-dialog title="{{'DetailAccount.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
+            <p>
+              {{ deleteConfirmMsg }}
+            </p>
+            <kendo-dialog-actions>
+              <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+              <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
+            </kendo-dialog-actions>
+          </kendo-dialog>
+
+        </div>
+
+      </kendo-splitter-pane>
+
+    </kendo-splitter>
+  </kendo-splitter-pane>
+</kendo-splitter>

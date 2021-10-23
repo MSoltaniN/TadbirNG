@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+.dl-value {
+  margin: 15px;
+}
+
+.chb-column-explore {
+  width: 30px !important
+}
+
+.chb-column {
+  width: 35px !important
+}
+
+.chb-column-explore-s {
+  width: 20px !important
+}
+
+.chb-column-s {
+  width: 25px !important
+}
+
+.chb-column-m {
+  width: 50px !important
+}
+
+.tRtl .toastr-rtl {
+  direction: rtl;
+}

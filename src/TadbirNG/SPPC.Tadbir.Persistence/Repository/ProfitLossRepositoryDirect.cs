@@ -249,7 +249,7 @@ namespace SPPC.Tadbir.Persistence
 
         private static DateTime MapDateToYear(DateTime source, int year)
         {
-            var projected = source.Date;
+            DateTime projected;
             if (source.IsLeapDay())
             {
                 projected = new DateTime(year, source.Month, source.Day - 1);
@@ -264,7 +264,7 @@ namespace SPPC.Tadbir.Persistence
 
         private static DateTime MapJalaliDateToYear(DateTime source, int year)
         {
-            var projected = source.Date;
+            DateTime projected;
             var jalali = JalaliDateTime.FromDateTime(source);
             if (jalali.IsLeapDay())
             {
@@ -278,6 +278,130 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return projected;
+        }
+
+        private static IEnumerable<ProfitLossItemViewModel> GetNetProfitItemsAsync(
+            ProfitLossItemViewModel beforeTax, ProfitLossParameters parameters)
+        {
+            var items = new List<ProfitLossItemViewModel>
+            {
+                new ProfitLossItemViewModel()
+                {
+                    Account = AppStrings.Tax,
+                    StartBalance = parameters.TaxAmount,
+                    EndBalance = parameters.TaxAmount,
+                    Balance = parameters.TaxAmount
+                },
+                new ProfitLossItemViewModel()
+                {
+                    Group = AppStrings.NetProfit,
+                    PeriodTurnover = beforeTax.PeriodTurnover - parameters.TaxAmount,
+                    EndBalance = beforeTax.EndBalance - parameters.TaxAmount,
+                    Balance = beforeTax.EndBalance - parameters.TaxAmount
+                }
+            };
+
+            return items;
+        }
+
+        private static IEnumerable<ProfitLossByItemsViewModel> MergeItems(IList<ProfitLossViewModel> items)
+        {
+            var mergedItems = new List<ProfitLossByItemsViewModel>();
+            var operationalCostAccounts = new List<string>();
+            var otherCostAccounts = new List<string>();
+            foreach (var item in items)
+            {
+                operationalCostAccounts.AddRange(
+                    GetAccounts(item.Items, AppStrings.OperationalCost, AppStrings.OperationalCostTotal));
+                otherCostAccounts.AddRange(
+                    GetAccounts(item.Items, AppStrings.OtherCostAndRevenue, AppStrings.OtherCostAndRevenueNet));
+            }
+
+            operationalCostAccounts = operationalCostAccounts
+                .Distinct()
+                .OrderBy(acc => acc)
+                .ToList();
+            otherCostAccounts = otherCostAccounts
+                .Distinct()
+                .OrderBy(acc => acc)
+                .ToList();
+            int mergedItemCount = operationalCostAccounts.Count + otherCostAccounts.Count + 12;
+            for (int i = 0; i < mergedItemCount; i++)
+            {
+                mergedItems.Add(new ProfitLossByItemsViewModel());
+            }
+
+            var operationalCostItems = new List<ProfitLossItemViewModel>();
+            var otherCostItems = new List<ProfitLossItemViewModel>();
+            int itemIndex = 0;
+            foreach (var item in items)
+            {
+                int index = item.Items.IndexOf(
+                    item.Items.Where(vm => vm.Group == AppStrings.OperationalCost).Single());
+                foreach (string account in operationalCostAccounts)
+                {
+                    var accountItem = item.Items
+                        .Where(vm => vm.Account == account)
+                        .SingleOrDefault();
+                    if (accountItem == null)
+                    {
+                        var newItem = new ProfitLossItemViewModel()
+                        {
+                            Account = account,
+                            StartBalance = 0.0M,
+                            PeriodTurnover = 0.0M,
+                            EndBalance = 0.0M,
+                            Balance = 0.0M
+                        };
+                        operationalCostItems.Add(newItem);
+                    }
+                    else
+                    {
+                        operationalCostItems.Add(accountItem);
+                        item.Items.Remove(accountItem);
+                    }
+                }
+
+                item.Items.InsertRange(index + 1, operationalCostItems);
+
+                index = item.Items.IndexOf(
+                    item.Items.Where(vm => vm.Group == AppStrings.OtherCostAndRevenue).Single());
+                foreach (string account in otherCostAccounts)
+                {
+                    var accountItem = item.Items
+                        .Where(vm => vm.Account == account)
+                        .SingleOrDefault();
+                    if (accountItem == null)
+                    {
+                        var newItem = new ProfitLossItemViewModel()
+                        {
+                            Account = account,
+                            StartBalance = 0.0M,
+                            PeriodTurnover = 0.0M,
+                            EndBalance = 0.0M,
+                            Balance = 0.0M
+                        };
+                        otherCostItems.Add(newItem);
+                    }
+                    else
+                    {
+                        otherCostItems.Add(accountItem);
+                        item.Items.Remove(accountItem);
+                    }
+                }
+
+                item.Items.InsertRange(index + 1, otherCostItems);
+                for (int lineIndex = 0; lineIndex < item.Items.Count; lineIndex++)
+                {
+                    CopyItemValues(itemIndex, item.Items[lineIndex], mergedItems[lineIndex]);
+                }
+
+                operationalCostItems.Clear();
+                otherCostItems.Clear();
+                itemIndex++;
+            }
+
+            return mergedItems;
         }
 
         private async Task<ProfitLossViewModel> CalculateProfitLossAsync(
@@ -334,7 +458,7 @@ namespace SPPC.Tadbir.Persistence
                 accounts, parameters, ProfitLossQuery.BalanceTotalSelect,
                 ProfitLossQuery.BalanceTotalEnd, ProfitLossQuery.InitBalanceTotalEnd,
                 CreditDebit, AppStrings.NetRevenue);
-            var netRevenue = items.Count() > 0
+            var netRevenue = items.Any()
                 ? items.First()
                 : new ProfitLossItemViewModel()
                 {
@@ -358,7 +482,7 @@ namespace SPPC.Tadbir.Persistence
                 accounts, parameters, ProfitLossQuery.BalanceTotalSelect,
                 ProfitLossQuery.BalanceTotalEnd, ProfitLossQuery.InitBalanceTotalEnd,
                 DebitCredit, AppStrings.SoldProductCost);
-            var productCost = items.Count() > 0
+            var productCost = items.Any()
                 ? items.First()
                 : new ProfitLossItemViewModel()
                 {
@@ -517,30 +641,6 @@ namespace SPPC.Tadbir.Persistence
             return items;
         }
 
-        private IEnumerable<ProfitLossItemViewModel> GetNetProfitItemsAsync(
-            ProfitLossItemViewModel beforeTax, ProfitLossParameters parameters)
-        {
-            var items = new List<ProfitLossItemViewModel>
-            {
-                new ProfitLossItemViewModel()
-                {
-                    Account = AppStrings.Tax,
-                    StartBalance = parameters.TaxAmount,
-                    EndBalance = parameters.TaxAmount,
-                    Balance = parameters.TaxAmount
-                },
-                new ProfitLossItemViewModel()
-                {
-                    Group = AppStrings.NetProfit,
-                    PeriodTurnover = beforeTax.PeriodTurnover - parameters.TaxAmount,
-                    EndBalance = beforeTax.EndBalance - parameters.TaxAmount,
-                    Balance = beforeTax.EndBalance - parameters.TaxAmount
-                }
-            };
-
-            return items;
-        }
-
         private async Task<IEnumerable<ProfitLossItemViewModel>> GetReportItemsAsync(
             IEnumerable<AccountItemBriefViewModel> accounts, ProfitLossParameters parameters,
             string select, string end, string initEnd, string balanceFunc, string account = null)
@@ -660,106 +760,6 @@ namespace SPPC.Tadbir.Persistence
             var reportQuery = new ReportQuery(queryBuilder.ToString());
             reportQuery.SetFilter(filterBuilder.ToString());
             return reportQuery;
-        }
-
-        private IEnumerable<ProfitLossByItemsViewModel> MergeItems(IList<ProfitLossViewModel> items)
-        {
-            var mergedItems = new List<ProfitLossByItemsViewModel>();
-            var operationalCostAccounts = new List<string>();
-            var otherCostAccounts = new List<string>();
-            foreach (var item in items)
-            {
-                operationalCostAccounts.AddRange(
-                    GetAccounts(item.Items, AppStrings.OperationalCost, AppStrings.OperationalCostTotal));
-                otherCostAccounts.AddRange(
-                    GetAccounts(item.Items, AppStrings.OtherCostAndRevenue, AppStrings.OtherCostAndRevenueNet));
-            }
-
-            operationalCostAccounts = operationalCostAccounts
-                .Distinct()
-                .OrderBy(acc => acc)
-                .ToList();
-            otherCostAccounts = otherCostAccounts
-                .Distinct()
-                .OrderBy(acc => acc)
-                .ToList();
-            int mergedItemCount = operationalCostAccounts.Count + otherCostAccounts.Count + 12;
-            for (int i = 0; i < mergedItemCount; i++)
-            {
-                mergedItems.Add(new ProfitLossByItemsViewModel());
-            }
-
-            var operationalCostItems = new List<ProfitLossItemViewModel>();
-            var otherCostItems = new List<ProfitLossItemViewModel>();
-            int itemIndex = 0;
-            foreach (var item in items)
-            {
-                int index = item.Items.IndexOf(
-                    item.Items.Where(vm => vm.Group == AppStrings.OperationalCost).Single());
-                foreach (string account in operationalCostAccounts)
-                {
-                    var accountItem = item.Items
-                        .Where(vm => vm.Account == account)
-                        .SingleOrDefault();
-                    if (accountItem == null)
-                    {
-                        var newItem = new ProfitLossItemViewModel()
-                        {
-                            Account = account,
-                            StartBalance = 0.0M,
-                            PeriodTurnover = 0.0M,
-                            EndBalance = 0.0M,
-                            Balance = 0.0M
-                        };
-                        operationalCostItems.Add(newItem);
-                    }
-                    else
-                    {
-                        operationalCostItems.Add(accountItem);
-                        item.Items.Remove(accountItem);
-                    }
-                }
-
-                item.Items.InsertRange(index + 1, operationalCostItems);
-
-                index = item.Items.IndexOf(
-                    item.Items.Where(vm => vm.Group == AppStrings.OtherCostAndRevenue).Single());
-                foreach (string account in otherCostAccounts)
-                {
-                    var accountItem = item.Items
-                        .Where(vm => vm.Account == account)
-                        .SingleOrDefault();
-                    if (accountItem == null)
-                    {
-                        var newItem = new ProfitLossItemViewModel()
-                        {
-                            Account = account,
-                            StartBalance = 0.0M,
-                            PeriodTurnover = 0.0M,
-                            EndBalance = 0.0M,
-                            Balance = 0.0M
-                        };
-                        otherCostItems.Add(newItem);
-                    }
-                    else
-                    {
-                        otherCostItems.Add(accountItem);
-                        item.Items.Remove(accountItem);
-                    }
-                }
-
-                item.Items.InsertRange(index + 1, otherCostItems);
-                for (int lineIndex = 0; lineIndex < item.Items.Count; lineIndex++)
-                {
-                    CopyItemValues(itemIndex, item.Items[lineIndex], mergedItems[lineIndex]);
-                }
-
-                operationalCostItems.Clear();
-                otherCostItems.Clear();
-                itemIndex++;
-            }
-
-            return mergedItems;
         }
 
         private async Task<ProfitLossParameters> GetAdjustedParametersAsync(

@@ -68,7 +68,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(rep => rep.ViewId == viewId)
                 .ToListAsync();
 
-            List<Report> outReports = new List<Report>();
+            var outReports = new List<Report>();
             if (reports.Count > 0)
             {
                 outReports.AddRange(reports);
@@ -158,7 +158,20 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<Report>();
             var report = await repository.GetSingleByCriteriaAsync(
-                rep => rep.ViewId == viewId && rep.IsDefault);
+                rep => rep.ViewId == viewId && rep.IsDefault && !rep.IsDynamic);
+            return Mapper.Map<ReportSummaryViewModel>(report);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات خلاصه گزارش فوری برای یک فرم را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی یکی از فرم های قابل چاپ</param>
+        /// <returns>اطلاعات خلاصه گزارش فوری</returns>
+        public async Task<ReportSummaryViewModel> GetQuickReportByViewAsync(int viewId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Report>();
+            var report = await repository.GetSingleByCriteriaAsync(
+                rep => rep.ViewId == viewId && rep.IsDefault && rep.IsDynamic);
             return Mapper.Map<ReportSummaryViewModel>(report);
         }
 
@@ -315,6 +328,19 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private static LocalReport CloneLocalReport(int reportId, LocalReport original, LocalReportViewModel copy)
+        {
+            return new LocalReport()
+            {
+                Caption = (original.LocaleId == copy.LocaleId)
+                    ? copy.Caption
+                    : String.Format("Copy of '{0}'", original.Caption),
+                ReportId = reportId,
+                LocaleId = original.LocaleId,
+                Template = original.Template
+            };
+        }
+
         private Report CloneReport(Report report)
         {
             return new Report()
@@ -325,19 +351,6 @@ namespace SPPC.Tadbir.Persistence
                 ServiceUrl = report.ServiceUrl,
                 SubsystemId = report.SubsystemId,
                 ViewId = report.ViewId
-            };
-        }
-
-        private LocalReport CloneLocalReport(int reportId, LocalReport original, LocalReportViewModel copy)
-        {
-            return new LocalReport()
-            {
-                Caption = (original.LocaleId == copy.LocaleId)
-                    ? copy.Caption
-                    : String.Format("Copy of '{0}'", original.Caption),
-                ReportId = reportId,
-                LocaleId = original.LocaleId,
-                Template = original.Template
             };
         }
 

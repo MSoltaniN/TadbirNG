@@ -1,0 +1,11 @@
+VS Custom Tool spec :
+
+Title : Generate Resource Class (TadbirNG)
+Command : <full-path-to-executable-folder>\ngdes.exe
+Arguments : -cmd:reskey -res:$(SolutionDir)SPPC.Tadbir.Resources\AppStrings.resx -ns:SPPC.Tadbir.Resources
+Initial directory : <full-path-to-executable-folder>
+
+Title : Refresh Tadbir Databases (TadbirNG)
+Command : <full-path-to-executable-folder>\ngdes.exe
+Arguments : -cmd:refdb
+Initial directory : <full-path-to-executable-folder>

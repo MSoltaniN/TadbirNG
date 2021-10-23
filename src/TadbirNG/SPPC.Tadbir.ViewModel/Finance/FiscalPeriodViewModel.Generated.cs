@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         {
             Name = String.Empty;
             Description = String.Empty;
-            InventoryModeField = (int)InventoryMode.Perpetual;
+            InventoryMode = (int)Domain.InventoryMode.Perpetual;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// نوع سیستم ثبت موجودی که می تواند دائمی (با مقدار 1) یا ادواری (با مقدار 0) باشد
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int InventoryModeField { get; set; }
+        public int InventoryMode { get; set; }
 
         /// <summary>
         /// Detail information related to this fiscal period

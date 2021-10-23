@@ -1,0 +1,90 @@
+<div style="padding:15px;" (keydown.esc)="escPress()">
+  <div class="form-group row">
+    <div class="col-md-12">     
+
+      <input type="checkbox" name="chkAutoSize" id="chkAutoSize" class="k-checkbox" [(ngModel)]="columnFitPage" />
+      <span for="chkAutoSize">{{ 'Report.PageSetting.AutoSizeColumns' | translate }}</span>
+
+    </div>
+  </div>
+    <div class="form-group row">
+      <div class="col-md-6">
+        <label class="control-label">{{ 'Report.PageSetting.PaperOrientation' | translate }}</label>
+        <kendo-dropdownlist [data]="pageOrientations"
+                            [textField]="'value'"
+                            [valueField]="'key'"
+                            [valuePrimitive]="true"
+                            [value]="pageOrientationSelected"
+                            [(ngModel)]="pageOrientationSelected">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+        </kendo-dropdownlist>
+      </div>
+      <div class="col-md-6">
+        <label class="control-label">{{ 'Report.PageSetting.PaperSize' | translate }}</label>
+
+        <kendo-dropdownlist [data]="pageSizes"
+                            [textField]="'value'"
+                            [valueField]="'key'"
+                            [valuePrimitive]="true"
+                            [value]="pageSizeSelected"
+                            [(ngModel)]="pageSizeSelected">
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem?.value | translate }}
+          </ng-template>
+        </kendo-dropdownlist>
+
+      </div>
+
+    </div>
+    <div class="form-group row">
+
+      <div class="col-md-6">
+        <label class="control-label left">{{ 'Report.PageSetting.LeftMargin' | translate }}</label>
+
+        <kendo-numerictextbox [min]="min"
+            [max]="max"
+            [(ngModel)]="leftMargin"  ></kendo-numerictextbox>
+
+      </div>
+      <div class="col-md-6">
+        <label class="control-label right">{{ 'Report.PageSetting.RightMargin' | translate }}</label>
+
+        <kendo-numerictextbox [min]="min"
+            [max]="max"
+            [(ngModel)]="rightMargin" ></kendo-numerictextbox>
+
+      </div>
+    </div>
+    <div class="form-group row">
+
+      <div class="col-md-6">
+        <label class="control-label top">{{ 'Report.PageSetting.TopMargin' | translate }}</label>
+
+        <kendo-numerictextbox [min]="min"
+            [max]="max"
+            [(ngModel)]="topMargin"  ></kendo-numerictextbox>
+
+      </div>
+      <div class="col-md-6">
+        <label class="control-label bottom">{{ 'Report.PageSetting.BottomMargin' | translate }}</label>
+
+        <kendo-numerictextbox [min]="min"
+            [max]="max"
+            [(ngModel)]="bottomMargin" ></kendo-numerictextbox>
+
+      </div>
+    </div>
+
+  </div>
+  <kendo-dialog-actions>
+    <button class="k-button k-primary" (click)="onSave()">{{ 'Buttons.Ok' | translate }}</button>
+    <button class="k-button" (click)="onCancel()">{{ 'Buttons.Cancel' | translate }}</button>
+  </kendo-dialog-actions>

@@ -192,6 +192,97 @@ namespace SPPC.Tadbir.Persistence
             book.SetItems(book.Items.ApplyPaging(gridOptions).ToArray());
         }
 
+        private static void AggregateCurrencyBook(
+            CurrencyBookViewModel book,
+            IEnumerable<CurrencyBookItemViewModel> lines,
+           bool byCurrency, bool byNo, bool byBranch = false)
+        {
+            foreach (var bookGroup in GetCurrencyBookGroups(lines, byCurrency, byNo, byBranch))
+            {
+                var aggregates = GetAggregatedBookItems(bookGroup, byNo || byBranch, byCurrency);
+                book.Items.AddRange(aggregates);
+            }
+        }
+
+        private static IEnumerable<IEnumerable<CurrencyBookItemViewModel>> GetCurrencyBookGroups(
+            IEnumerable<CurrencyBookItemViewModel> items, bool byCurrency, bool byNo, bool byBranch)
+        {
+            IEnumerable<IEnumerable<CurrencyBookItemViewModel>> groups = null;
+
+            if (byCurrency)
+            {
+                groups = GetGroupByThenByItems(items, item => item.CurrencyId);
+            }
+            else
+            {
+                if (byNo)
+                {
+                    groups = byBranch
+                        ? GetGroupByThenByItems(
+                            items, item => item.VoucherDate, item => item.VoucherNo, item => item.BranchId)
+                        : GetGroupByThenByItems(items, item => item.VoucherDate, item => item.VoucherNo);
+                }
+                else
+                {
+                    groups = byBranch
+                        ? GetGroupByThenByItems(items, item => item.VoucherDate, item => item.BranchId)
+                        : GetGroupByThenByItems(items, item => item.VoucherDate);
+                }
+            }
+
+            return groups;
+        }
+
+        private static IEnumerable<IEnumerable<CurrencyBookItemViewModel>> GetGroupByThenByItems<TKey1>(
+            IEnumerable<CurrencyBookItemViewModel> lines, Func<CurrencyBookItemViewModel, TKey1> selector1)
+        {
+            foreach (var byFirst in lines
+                .OrderBy(selector1)
+                .GroupBy(selector1))
+            {
+                yield return byFirst;
+            }
+        }
+
+        private static IEnumerable<IEnumerable<CurrencyBookItemViewModel>> GetGroupByThenByItems<TKey1, TKey2>(
+            IEnumerable<CurrencyBookItemViewModel> lines, Func<CurrencyBookItemViewModel, TKey1> selector1,
+            Func<CurrencyBookItemViewModel, TKey2> selector2)
+        {
+            foreach (var byFirst in lines
+                .OrderBy(selector1)
+                .GroupBy(selector1))
+            {
+                foreach (var bySecond in byFirst
+                    .OrderBy(selector2)
+                    .GroupBy(selector2))
+                {
+                    yield return bySecond;
+                }
+            }
+        }
+
+        private static IEnumerable<IEnumerable<CurrencyBookItemViewModel>> GetGroupByThenByItems<TKey1, TKey2, TKey3>(
+            IEnumerable<CurrencyBookItemViewModel> lines, Func<CurrencyBookItemViewModel, TKey1> selector1,
+            Func<CurrencyBookItemViewModel, TKey2> selector2, Func<CurrencyBookItemViewModel, TKey3> selector3)
+        {
+            foreach (var byFirst in lines
+                .OrderBy(selector1)
+                .GroupBy(selector1))
+            {
+                foreach (var bySecond in byFirst
+                    .OrderBy(selector2)
+                    .GroupBy(selector2))
+                {
+                    foreach (var byThird in bySecond
+                        .OrderBy(selector3)
+                        .GroupBy(selector3))
+                    {
+                        yield return byThird;
+                    }
+                }
+            }
+        }
+
         private async Task<CurrencyBookViewModel> GetCurrencyBookDataAsync(
             CurrencyBookParameters parameters)
         {
@@ -395,9 +486,10 @@ namespace SPPC.Tadbir.Persistence
         {
             var query = Repository
                 .GetAllOperationQuery<VoucherLine>(
-                    ViewId.VoucherLine, line => line.Voucher, line => line.Account, line => line.Branch, line => line.Currency)
+                    ViewId.VoucherLine, line => line.Voucher, line => line.Account,
+                    line => line.Branch, line => line.Currency)
                 .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
-                    && line.Voucher.Date.IsBetween(from, to));
+                    && line.Voucher.Date.Date >= from.Date && line.Voucher.Date.Date <= to.Date);
 
             foreach (var item in itemCriteria)
             {
@@ -410,97 +502,6 @@ namespace SPPC.Tadbir.Persistence
                 .ThenBy(line => line.RowNo);
 
             return query;
-        }
-
-        private void AggregateCurrencyBook(
-            CurrencyBookViewModel book,
-            IEnumerable<CurrencyBookItemViewModel> lines,
-           bool byCurrency, bool byNo, bool byBranch = false)
-        {
-            foreach (var bookGroup in GetCurrencyBookGroups(lines, byCurrency, byNo, byBranch))
-            {
-                var aggregates = GetAggregatedBookItems(bookGroup, byNo || byBranch, byCurrency);
-                book.Items.AddRange(aggregates);
-            }
-        }
-
-        private IEnumerable<IEnumerable<CurrencyBookItemViewModel>> GetCurrencyBookGroups(
-            IEnumerable<CurrencyBookItemViewModel> items, bool byCurrency, bool byNo, bool byBranch)
-        {
-            IEnumerable<IEnumerable<CurrencyBookItemViewModel>> groups = null;
-
-            if (byCurrency)
-            {
-                groups = GetGroupByThenByItems(items, item => item.CurrencyId);
-            }
-            else
-            {
-                if (byNo)
-                {
-                    groups = byBranch
-                        ? GetGroupByThenByItems(
-                            items, item => item.VoucherDate, item => item.VoucherNo, item => item.BranchId)
-                        : GetGroupByThenByItems(items, item => item.VoucherDate, item => item.VoucherNo);
-                }
-                else
-                {
-                    groups = byBranch
-                        ? GetGroupByThenByItems(items, item => item.VoucherDate, item => item.BranchId)
-                        : GetGroupByThenByItems(items, item => item.VoucherDate);
-                }
-            }
-
-            return groups;
-        }
-
-        private IEnumerable<IEnumerable<CurrencyBookItemViewModel>> GetGroupByThenByItems<TKey1>(
-            IEnumerable<CurrencyBookItemViewModel> lines, Func<CurrencyBookItemViewModel, TKey1> selector1)
-        {
-            foreach (var byFirst in lines
-                .OrderBy(selector1)
-                .GroupBy(selector1))
-            {
-                yield return byFirst;
-            }
-        }
-
-        private IEnumerable<IEnumerable<CurrencyBookItemViewModel>> GetGroupByThenByItems<TKey1, TKey2>(
-            IEnumerable<CurrencyBookItemViewModel> lines, Func<CurrencyBookItemViewModel, TKey1> selector1,
-            Func<CurrencyBookItemViewModel, TKey2> selector2)
-        {
-            foreach (var byFirst in lines
-                .OrderBy(selector1)
-                .GroupBy(selector1))
-            {
-                foreach (var bySecond in byFirst
-                    .OrderBy(selector2)
-                    .GroupBy(selector2))
-                {
-                    yield return bySecond;
-                }
-            }
-        }
-
-        private IEnumerable<IEnumerable<CurrencyBookItemViewModel>> GetGroupByThenByItems<TKey1, TKey2, TKey3>(
-            IEnumerable<CurrencyBookItemViewModel> lines, Func<CurrencyBookItemViewModel, TKey1> selector1,
-            Func<CurrencyBookItemViewModel, TKey2> selector2, Func<CurrencyBookItemViewModel, TKey3> selector3)
-        {
-            foreach (var byFirst in lines
-                .OrderBy(selector1)
-                .GroupBy(selector1))
-            {
-                foreach (var bySecond in byFirst
-                    .OrderBy(selector2)
-                    .GroupBy(selector2))
-                {
-                    foreach (var byThird in bySecond
-                        .OrderBy(selector3)
-                        .GroupBy(selector3))
-                    {
-                        yield return byThird;
-                    }
-                }
-            }
         }
 
         private TItem GetAccountItem<TItem>(int itemId)

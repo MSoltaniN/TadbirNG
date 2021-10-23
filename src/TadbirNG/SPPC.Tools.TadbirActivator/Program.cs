@@ -229,7 +229,7 @@ namespace SPPC.Tools.TadbirActivator.Cli
             var activation = new ActivationModel()
             {
                 InstanceKey = GetInstanceId(),
-                HardwareKey = deviceId.GetDeviceId(),
+                HardwareKey = deviceId.GetRemoteDeviceId(GetRemoteConnection()),
             };
 
             var manager = new CertificateGenerator();
@@ -242,8 +242,8 @@ namespace SPPC.Tools.TadbirActivator.Cli
         {
             string instance = null;
             var type = typeof(Program);
-            using (StreamReader reader = new StreamReader(
-                type.Assembly.GetManifestResourceStream("SPPC.Tools.TadbirActivator.Cli.instance.id")))
+            using (var reader = new StreamReader(
+                type.Assembly.GetManifestResourceStream("SPPC.Tools.TadbirActivator.instance.id")))
             {
                 instance = reader.ReadToEnd();
             }
@@ -257,6 +257,17 @@ namespace SPPC.Tools.TadbirActivator.Cli
             var license = Service.LoadLicense(licenseData);
             var certificateBytes = _certificate.Export(X509ContentType.Pkcs12, license.Secret);
             File.WriteAllBytes(path, certificateBytes);
+        }
+
+        private static RemoteConnection GetRemoteConnection()
+        {
+            return new RemoteConnection()
+            {
+                Domain = ConfigurationManager.AppSettings["SSH-Domain"],
+                Port = Int32.Parse(ConfigurationManager.AppSettings["SSH-Port"]),
+                User = ConfigurationManager.AppSettings["SSH-User"],
+                Password = ConfigurationManager.AppSettings["SSH-Password"]
+            };
         }
 
         private static string _apiLicensePath;

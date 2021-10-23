@@ -1,0 +1,18 @@
+#grdQRSetting > div > kendo-grid-list > div > div.k-grid-table-wrap > table > tbody > tr.k-grid-norecords {
+  background-color: white !important;
+  /*height: 65px !important;*/
+}
+
+#grdQRSetting > div > div > div > table > thead > tr > th > span.k-column-resizer {
+  /*width: 0.1em !important;*/
+  /*background-color: gray !important;*/
+  width: 1px !important;
+  background-color: lightgray !important;
+  border-width: 1.5px;
+  border-style: dashed;
+}
+
+/*#grdQRSetting > div > div > div > table > thead > tr.k-filter-row.ng-star-inserted > td {
+  border-color: gray !important;  
+}*/
+

@@ -145,7 +145,7 @@ namespace SPPC.Tadbir.Persistence
         {
             decimal balance = 0.0M;
             var reportQuery = default(ReportQuery);
-            if (accounts.Count() > 0)
+            if (accounts.Any())
             {
                 DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
                 var filterBuilder = new StringBuilder(_report.GetEnvironmentFilters());

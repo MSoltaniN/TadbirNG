@@ -1,0 +1,71 @@
+
+<div style="padding:15px;" (keydown.esc)="escPress()">
+
+  <div *ngIf="errorMessages">
+    <div *ngFor="let err of errorMessages" class="alert alert-danger">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+      {{ err }}
+    </div>
+  </div>
+
+  <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
+    <div class="form-group">
+      <label for="name" class="control-label">{{ 'Company.Name' | translate }}</label>
+
+      <input type="text" class="k-textbox" formControlName="name" />
+
+      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
+        <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
+        <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dbName" class="control-label">{{ 'Company.DbName' | translate }}</label>
+
+      <input type="text" class="k-textbox" formControlName="dbName" />
+
+      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.dbName.valid || editForm.controls.dbName.pristine">
+        <span *ngIf="editForm.controls.dbName.errors?.required">{{ 'AllValidations.CompanyDb.DbNameIsRequired' | translate }}</span>
+        <span *ngIf="editForm.controls.dbName.errors?.maxlength">{{ 'AllValidations.CompanyDb.DbNameIsTooLong' | translate }}</span>
+        <span *ngIf="editForm.controls.dbName.errors?.pattern">{{ 'AllValidations.CompanyDb.DbNamePatternNotValid' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label">{{ 'Company.UserName' | translate }}</label>
+
+      <input type="text" class="k-textbox" formControlName="userName"/>
+
+      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.userName.valid || editForm.controls.userName.pristine">
+        <span *ngIf="editForm.controls.userName.errors?.maxlength">{{ 'AllValidations.CompanyDb.UserNameIsTooLong' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="control-label">{{ 'Company.Password' | translate }}</label>
+
+      <input type="password" class="k-textbox" formControlName="password" autocomplete="new-password"/>
+
+      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.password.valid || editForm.controls.password.pristine">
+        <span *ngIf="editForm.controls.password.errors?.maxlength">{{ 'AllValidations.CompanyDb.PasswordIsTooLong' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description" class="control-label">{{ 'Company.Description' | translate }}</label>
+
+      <textarea class="k-textarea" formControlName="description"></textarea>
+
+      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+        {{ 'AllValidations.CompanyDb.DescriptionIsTooLong' | translate }}
+      </div>
+    </div>
+  </form>
+
+</div>
+
+<kendo-dialog-actions>
+  <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ isWizard ? ('Buttons.NextStep' | translate) : ('Buttons.Ok' | translate) }}</button>
+  <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+</kendo-dialog-actions>

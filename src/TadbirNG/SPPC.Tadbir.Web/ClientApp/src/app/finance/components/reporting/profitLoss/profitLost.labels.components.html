@@ -1,0 +1,12 @@
+<div class="panel-body">
+  <ul class="labels">
+    <li *ngFor="let item of currentLabels; index as i;">
+      <input type="text" id="{{item.key}}" class="k-checkbox labels" [(ngModel)]="item.value" />
+    </li>
+  </ul>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="onSave($event)" primary="true">{{ 'Buttons.Ok' | translate }}</button>
+    <button class="k-button" (click)="onResetToDefault()">{{ 'ProfitLoss.ResetDefault' | translate }}</button>
+    <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+  </kendo-dialog-actions>
+</div>

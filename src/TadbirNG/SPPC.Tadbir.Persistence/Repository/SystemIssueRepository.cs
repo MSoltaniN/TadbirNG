@@ -63,7 +63,7 @@ namespace SPPC.Tadbir.Persistence
                 ViewId.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
                 .Where(voucher => voucher.SubjectType != (short)SubjectType.Draft
                     && voucher.Lines.Count == 0
-                    && voucher.Date.IsBetween(from, to))
+                    && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
                 .Select(item => Mapper.Map<VoucherViewModel>(item));
 
             var listAndCount = await GetListAndCountAsync(gridOptions, vouchers);
@@ -85,7 +85,7 @@ namespace SPPC.Tadbir.Persistence
                 ViewId.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
                 .Where(voucher => voucher.SubjectType != (short)SubjectType.Draft
                     && !voucher.IsBalanced
-                    && voucher.Date.IsBetween(from, to))
+                    && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
                 .Select(item => Mapper.Map<VoucherViewModel>(item));
 
             var listAndCount = await GetListAndCountAsync(gridOptions, vouchers);
@@ -108,11 +108,11 @@ namespace SPPC.Tadbir.Persistence
             var listAndCount = (missingNumbers, count);
             var existingNumbers = await Repository.GetAllOperationQuery<Voucher>(ViewId.Voucher)
                 .Where(voucher => voucher.SubjectType != (short)SubjectType.Draft
-                    && voucher.Date.IsBetween(from, to))
+                    && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
                 .Select(voucher => voucher.No)
                 .ToListAsync();
 
-            if (existingNumbers.Count() > 0)
+            if (existingNumbers.Count > 0)
             {
                 var maxNumber = existingNumbers.Max();
                 var numRange = Enumerable.Range(1, maxNumber);
@@ -301,7 +301,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetArticleWithInvalidBalance(
             GridOptions gridOptions, DateTime to)
         {
-            List<VoucherLine> result = new List<VoucherLine>();
+            var result = new List<VoucherLine>();
 
             var lines = await Repository.GetAllOperationQuery<VoucherLine>(
                 ViewId.VoucherLine,
@@ -312,7 +312,8 @@ namespace SPPC.Tadbir.Persistence
                 line => line.Project,
                 line => line.Currency)
                 .Where(line => line.Voucher.Date.Date <= to.Date
-                && (line.Account.TurnoverMode == (short)TurnoverMode.CreditorEndPeriod || line.Account.TurnoverMode == (short)TurnoverMode.DebtorEndPeriod))
+                && (line.Account.TurnoverMode == (short)TurnoverMode.CreditorEndPeriod
+                    || line.Account.TurnoverMode == (short)TurnoverMode.DebtorEndPeriod))
                 .OrderBy(line => line.Voucher.Date)
                 .ThenBy(line => line.Voucher.No)
                 .ToListAsync();
@@ -344,7 +345,7 @@ namespace SPPC.Tadbir.Persistence
             voucherLines = voucherLines
                 .ApplyPaging(gridOptions);
 
-            return (voucherLines.ToList(), result.Count());
+            return (voucherLines.ToList(), result.Count);
         }
 
         private IQueryable<VoucherLine> GetArticlesQueryAsync(DateTime from, DateTime to)
@@ -358,7 +359,8 @@ namespace SPPC.Tadbir.Persistence
                 line => line.Project,
                 line => line.Currency)
                 .Where(line => line.Voucher.SubjectType != (short)SubjectType.Draft
-                    && line.Voucher.Date.IsBetween(from, to));
+                    && line.Voucher.Date.Date >= from.Date
+                    && line.Voucher.Date.Date <= to.Date);
             return lines;
         }
 

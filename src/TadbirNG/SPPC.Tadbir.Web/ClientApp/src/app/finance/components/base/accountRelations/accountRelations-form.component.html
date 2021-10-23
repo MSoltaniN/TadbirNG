@@ -1,0 +1,79 @@
+<kendo-dialog *ngIf="active" id="accountRelationForm" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (keydown.esc)="escPress()"
+              (close)="closeForm()">
+    <kendo-dialog-titlebar>
+        {{ getTitleText('AccountRelations.FormTitle' | translate) }}
+    </kendo-dialog-titlebar>
+
+    <div *ngIf="errorMessages">
+      <div *ngFor="let err of errorMessages" class="alert alert-danger">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        {{ err }}
+      </div>
+    </div>
+
+    <div class="row" id="main-section">
+        <div class="col-sm-6 sppc-float">
+            <div class="section-header">
+                <span class="control-label">{{ 'AccountRelations.RemainingRelations' | translate }}</span>
+                <input type="text" class="k-textbox input-search-form" [(ngModel)]="searchValue" (keydown)="onKeyChange($event.keyCode)" />
+                <button class="k-button k-primary btn-search"
+                        (click)="onSearch()">
+                    <span class="k-i-filter k-icon"></span>
+                </button>
+
+                <button class="k-button btn-search"
+                        [hidden]="!searchValue"
+                        (click)="removeFilter()">
+                    <span class="k-icon k-i-filter-clear"></span>
+                </button>
+
+            </div>
+            <div class="section-body">
+                <div *ngIf="resultMessage">
+                    <div class="alert alert-danger">
+                        {{ 'AccountRelations.noRemainingRelations' | translate }}
+                    </div>                   
+                </div>
+                <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}">
+                    <kendo-treeview [nodes]="relatedComponentCategories"
+                                    [textField]="['name']"
+                                    kendoTreeViewExpandable
+                                    [kendoTreeViewCheckable]="{ mode: 'multiple', checkChildren: false , checkParents: false }"
+                                    [checkBy]="checkById"
+                                    [(checkedKeys)]="relatedComponentCheckedKeys"
+                                    (checkedChange)="handleCheckedChange($event)">
+                        <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                            {{dataItem.name}} - ({{dataItem.fullCode}})
+                        </ng-template>
+                    </kendo-treeview>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="section-header">
+                <span class="control-label" id="result-label">{{ 'AccountRelations.NewRelations' | translate }}</span>
+            </div>
+            <div class="section-body">
+                <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}">
+                    <kendo-treeview [nodes]="resultCategories"
+                                    [textField]="['name']"
+                                    kendoTreeViewExpandable
+                                    [kendoTreeViewCheckable]="{ mode: 'multiple'}"
+                                    [checkBy]="checkById"
+                                    [(checkedKeys)]="resultCheckedKeys"
+                                    (checkedChange)="handleResultCheckedChange($event)">
+                        <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                            {{dataItem.name}} - ({{dataItem.fullCode}})
+                        </ng-template>
+                    </kendo-treeview>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    
+    <kendo-dialog-actions>
+        <button class="k-button k-primary" [disabled]="relatedComponentCheckedKeys.length == 0" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+        <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
