@@ -4,8 +4,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using SPPC.Framework.Common;
-using SPPC.Tools.MetaDesigner.Common;
-using SPPC.Tools.Model;
+using SPPC.Framework.Extensions;
 
 namespace SPPC.Tools.MetaDesigner.Persistence
 {
@@ -25,7 +24,7 @@ namespace SPPC.Tools.MetaDesigner.Persistence
     /// type name (called clrType) will also be added to the resulting XML element.
     /// 5. A property having a custom non-enumeration type will be serialized as an XML child element recursively.
     /// </remarks>
-    public class BasicXmlSerializer : IXmlSerializer
+    public class BasicXmlSerializer
     {
         /// <summary>
         /// Converts given object into a well-formed XML representation and returns the serialized form
@@ -52,6 +51,13 @@ namespace SPPC.Tools.MetaDesigner.Persistence
             var xItem = Serialize(item);
             xItem.Save(path, SaveOptions.None);
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="xItem"></param>
+        /// <param name="itemType"></param>
+        /// <returns></returns>
         public object Deserialize(XElement xItem, Type itemType)
         {
             Verify.ArgumentNotNull(xItem, "xItem");
@@ -102,6 +108,13 @@ namespace SPPC.Tools.MetaDesigner.Persistence
 
             return item;
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="itemType"></param>
+        /// <returns></returns>
         public object Deserialize(string path, Type itemType)
         {
             Verify.ArgumentNotNullOrWhitespace(path, "path");
@@ -109,6 +122,11 @@ namespace SPPC.Tools.MetaDesigner.Persistence
 
             var xRoot = XElement.Load(path);
             return Deserialize(xRoot, itemType);
+        }
+
+        private static bool IsSerialized(Type itemType, string propertyName)
+        {
+            return (Reflector.GetPropertyAttribute(itemType, propertyName, typeof(XmlIgnoreAttribute)) == null);
         }
 
         private XElement Serialize(object item, bool withType = false)
@@ -157,10 +175,6 @@ namespace SPPC.Tools.MetaDesigner.Persistence
             }
 
             return xItem;
-        }
-        private bool IsSerialized(Type itemType, string propertyName)
-        {
-            return (Reflector.GetPropertyAttribute(itemType, propertyName, typeof(XmlIgnoreAttribute)) == null);
         }
     }
 }

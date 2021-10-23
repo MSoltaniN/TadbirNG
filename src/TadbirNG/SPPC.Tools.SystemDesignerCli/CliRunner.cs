@@ -5,7 +5,7 @@ using System.Linq;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 
-namespace SPPC.Tools.SystemDesigner.Cli
+namespace SPPC.Tools.SystemDesignerCli
 {
     public static class CliRunner
     {
@@ -76,7 +76,7 @@ namespace SPPC.Tools.SystemDesigner.Cli
         {
             bool isSupported = true;
             var command = GetCommand(args);
-            if (command == null || command.Name == "reskey")
+            if (command == null)
             {
                 string paramSwitch = String.Format("-{0}:", _commandParam);
                 Console.WriteLine("Command '{0}' is not supported.", args[0].Replace(paramSwitch, String.Empty));
@@ -147,7 +147,7 @@ namespace SPPC.Tools.SystemDesigner.Cli
             return param;
         }
 
-        private static readonly string _jsonConfigUri = "SPPC.Tools.SystemDesigner.Cli.cli-config.json";
+        private static readonly string _jsonConfigUri = "SPPC.Tools.SystemDesignerCli.cli-config.json";
         private static readonly string _commandParam = "cmd";
         private static CliConfiguration _config;
     }

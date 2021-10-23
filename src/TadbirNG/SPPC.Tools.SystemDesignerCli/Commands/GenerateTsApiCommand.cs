@@ -6,7 +6,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Tools.Transforms.Templates;
 
-namespace SPPC.Tools.SystemDesigner.Cli
+namespace SPPC.Tools.SystemDesignerCli
 {
     public class GenerateTsApiCommand : ICliCommand
     {

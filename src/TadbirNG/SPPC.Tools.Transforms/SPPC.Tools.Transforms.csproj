@@ -18,11 +18,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Templates\ResXKeyClass.cs" />
-    <Compile Remove="Templates\ResXKeyClass.Custom.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Templates\BlankController.tt" />
     <None Remove="Templates\CsApiClass.tt" />
     <None Remove="Templates\CsFluentMappingFromMetadata.tt" />
@@ -49,70 +44,92 @@
 
   <ItemGroup>
     <Content Include="Templates\BlankController.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>BlankController.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\CsApiClass.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>CsApiClass.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\CsFluentMappingFromMetadata.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>CsFluentMappingFromMetadata.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\CsPermissionsEnum.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>CsPermissionsEnum.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\CsPocoFromXmlMetadata.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>CsPocoFromXmlMetadata.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\CsViewModelFromMetadata.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>CsViewModelFromMetadata.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\EmptyCrudController.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>EmptyCrudController.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\JsResFromCsViewModels.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>JsResFromCsViewModels.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\RepoImplementationFromMetadata.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>RepoImplementationFromMetadata.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\RepoInterfaceFromMetadata.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>RepoInterfaceFromMetadata.cs</LastGenOutput>
     </Content>
+    <Content Include="Templates\ResXKeyClass.tt">
+      <CustomToolNamespace></CustomToolNamespace>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ResXKeyClass.cs</LastGenOutput>
+    </Content>
     <Content Include="Templates\SqlCreateTableFromMetadata.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>SqlCreateTableFromMetadata.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\StarterCrudController.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>StarterCrudController.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\TsApiFromCsApi.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TsApiFromCsApi.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\TsConstTypeFromCsValueClass.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TsConstTypeFromCsValueClass.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\TsInstanceFromValues.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TsInstanceFromValues.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\TsModelFromCsViewModel.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TsModelFromCsViewModel.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\TsPermissionsFromCsPermissions.tt">
+      <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TsPermissionsFromCsPermissions.cs</LastGenOutput>
     </Content>
@@ -178,6 +195,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RepoInterfaceFromMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\ResXKeyClass.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResXKeyClass.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\SqlCreateTableFromMetadata.cs">
       <DesignTime>True</DesignTime>

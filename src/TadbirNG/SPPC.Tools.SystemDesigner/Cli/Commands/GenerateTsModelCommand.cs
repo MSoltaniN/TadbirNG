@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using SPPC.Framework.Common;
-using SPPC.Tools.Model;
+using SPPC.Framework.Extensions;
 using SPPC.Tools.Transforms.Templates;
 
 namespace SPPC.Tools.SystemDesigner.Cli
@@ -26,7 +26,6 @@ namespace SPPC.Tools.SystemDesigner.Cli
         {
             string tsAppPath = ConfigurationManager.AppSettings["TsAppPath"];
             string csAssembly = ConfigurationManager.AppSettings["CsViewModelAssemblies"];
-            string csOutPath = ConfigurationManager.AppSettings["CsOutputPath"];
             var assembly = Assembly.Load(csAssembly);
             if (assembly == null)
             {
@@ -44,7 +43,6 @@ namespace SPPC.Tools.SystemDesigner.Cli
                     .CamelCase();
                 string fullName = String.Format("{0}.{1}", csAssembly, typeName);
                 string generatedPath = String.Format(@"{0}\{1}.ts", tsAppPath, tsTypeName);
-                string assemblyPath = String.Format(@"{0}\{1}.dll", csOutPath, csAssembly);
                 var csType = assembly.GetType(fullName);
 
                 Console.WriteLine("Generating TypeScript model '{0}' for '{1}'...", tsTypeName, typeName);

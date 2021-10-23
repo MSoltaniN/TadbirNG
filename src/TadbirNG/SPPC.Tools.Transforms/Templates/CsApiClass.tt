@@ -3,6 +3,7 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="SPPC.Framework.Extensions" #>
 <#@ import namespace="SPPC.Tools.Model" #>
 using System;
 using System.Collections.Generic;

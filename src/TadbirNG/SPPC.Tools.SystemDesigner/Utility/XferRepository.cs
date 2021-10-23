@@ -233,7 +233,7 @@ namespace SPPC.Tools.SystemDesigner.Utility
         }
 
         // WARNING: For this logic to work properly, source database MUST have ONLY ONE fiscal period.
-        private Dictionary<string, int> BuildAccountMap(DataTable accounts)
+        private static Dictionary<string, int> BuildAccountMap(DataTable accounts)
         {
             int id = 1;
             var map = new Dictionary<string, int>();
@@ -248,7 +248,7 @@ namespace SPPC.Tools.SystemDesigner.Utility
             return map;
         }
 
-        private AccountViewModel GetViewModel(DataRow row, IDictionary<string, int> accountMap)
+        private static AccountViewModel GetViewModel(DataRow row, IDictionary<string, int> accountMap)
         {
             var account = new AccountViewModel()
             {
@@ -286,7 +286,7 @@ namespace SPPC.Tools.SystemDesigner.Utility
             return account;
         }
 
-        private DetailAccountViewModel GetViewModel(DataRow row)
+        private static DetailAccountViewModel GetViewModel(DataRow row)
         {
             var viewModel = new DetailAccountViewModel()
             {

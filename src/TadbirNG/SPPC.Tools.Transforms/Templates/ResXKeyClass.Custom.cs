@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Resources;
+using SPPC.Framework.Helpers;
 
 namespace SPPC.Tools.Transforms.Templates
 {
@@ -20,12 +18,10 @@ namespace SPPC.Tools.Transforms.Templates
         private static SortedDictionary<string, string> ExtractResourceKeys(string path)
         {
             var resources = new SortedDictionary<string, string>();
-            using (var resReader = new ResXResourceReader(path))
+            var resReader = new ResXResourceReader(path);
+            foreach (var entry in resReader.StringResources)
             {
-                foreach (DictionaryEntry entry in resReader)
-                {
-                    resources.Add(entry.Key.ToString(), entry.Value.ToString());
-                }
+                resources.Add(entry.Key, entry.Value);
             }
 
             return resources;
@@ -33,7 +29,7 @@ namespace SPPC.Tools.Transforms.Templates
 
         private readonly string _namespace;
         private readonly string _class;
-        private SortedDictionary<string, string> _resources;
-        private string _version;
+        private readonly SortedDictionary<string, string> _resources;
+        private readonly string _version;
     }
 }

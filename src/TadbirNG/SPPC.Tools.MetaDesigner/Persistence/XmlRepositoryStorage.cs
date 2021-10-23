@@ -24,7 +24,7 @@ namespace SPPC.Tools.MetaDesigner.Persistence
             serializer.Serialize(GetFileStoragePath(repository.Store), repository);
         }
 
-        private string GetFileStoragePath(Storage storage)
+        private static string GetFileStoragePath(Storage storage)
         {
             Verify.ArgumentNotNull(storage, "storage");
             return Path.Combine(storage.Connection, storage.Name);
