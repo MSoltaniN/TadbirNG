@@ -52,8 +52,6 @@
     "@progress/kendo-theme-default": "4.21.0",
     "@telerik/kendo-draggable": "^1.7.1",
     "@types/webpack-env": "^1.13.2",
-    "angular-lz-string": "^1.0.5",
-    "angular2-hotkeys": "^2.1.2",
     "angular2-template-loader": "^0.6.2",
     "angular2-text-mask": "^8.0.4",
     "aspnet-prerendering": "^3.0.1",
