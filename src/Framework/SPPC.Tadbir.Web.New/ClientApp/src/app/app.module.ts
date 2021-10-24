@@ -3,9 +3,6 @@ import { Headers, RequestOptions, BaseRequestOptions, Http, HttpModule } from '@
 import { APP_BASE_HREF, Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { TextMaskModule } from 'angular2-text-mask';
 import { Layout } from '@sppc/shared/enum/metadata';
-//import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
-import { HotkeyModule } from 'angular2-hotkeys';
-//import compress package
 import { LZStringModule, LZStringService } from 'ng-lz-string';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA, forwardRef, ErrorHandler, Injector } from '@angular/core';
@@ -51,7 +48,7 @@ import { HttpErrorInterceptor } from '@sppc/shared/class/http-error.interceptor'
     ReactiveFormsModule,
     
 
-    HotkeyModule.forRoot(),
+    
 
     TextMaskModule,
     
