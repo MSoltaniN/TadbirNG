@@ -20,10 +20,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Cli\Commands\GenerateKeyClassCommand.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
   </ItemGroup>
 
