@@ -1,7 +1,8 @@
-version: '3.4'
+version: '3.9'
 
 volumes:
  productdata:
+  external: true
  
 networks:
  frontend:
@@ -63,4 +64,6 @@ services:
   volumes:
    - productdata:/app/wwwroot
   network_mode: host
+  ports:
+   - 7473:80
 

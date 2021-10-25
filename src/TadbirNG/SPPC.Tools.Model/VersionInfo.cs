@@ -46,8 +46,8 @@ namespace SPPC.Tools.Utility
             return version;
         }
 
-        private const string _apiVersionPath = @"..\..\src\Framework\FrameworkSolutionInfo.cs";
-        private const string _appVersionPath = @"..\..\src\Framework\TadbirSolutionInfo.cs";
+        private const string _apiVersionPath = @"..\..\..\src\TadbirNG\FrameworkSolutionInfo.cs";
+        private const string _appVersionPath = @"..\..\..\src\TadbirNG\TadbirSolutionInfo.cs";
         private const string _versionRegex = @"(\d{1,}).(\d{1,}).(\d{1,})";
     }
 }
