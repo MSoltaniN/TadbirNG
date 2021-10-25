@@ -9,13 +9,13 @@ networks:
 
 services:
 
- sppcTadbirDB:
-  image: msn1368/sppctadbirdb:dev
+ DbServer:
+  image: msn1368/db-server:dev
   ports: 
     - 14433:1433
 
- sppcTadbirWebApi:
-  image: msn1368/sppctadbirwebapi:latest
+ ApiServer:
+  image: msn1368/api-server:latest
   environment:
    - ASPNETCORE_ENVIRONMENT=Development
    - ASPNETCORE_URLS=http://+:80
@@ -26,11 +26,12 @@ services:
   profiles:
    - donotstart
 
- sppcTadbirWebNew:
-  image: msn1368/sppctadbirwebnew:dev
+ WebApp:
+  image: msn1368/web-app:dev
 
 
- sppcLicensingLocalWeb:
+ LicenseServer:
+  image: msn1368/license-server:dev
   environment:
    - ASPNETCORE_ENVIRONMENT=Development
 
