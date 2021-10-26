@@ -14,7 +14,7 @@ services:
   ports: 
     - 14433:1433
 
- sppc.tadbir.web.api:
+ sppcTadbirWebApi:
   image: msn1368/sppctadbirwebapi:latest
   environment:
    - ASPNETCORE_ENVIRONMENT=Development

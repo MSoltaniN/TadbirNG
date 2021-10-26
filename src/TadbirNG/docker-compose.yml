@@ -1,0 +1,69 @@
+version: '3.9'
+
+volumes:
+ productdata:
+  external: true
+ 
+networks:
+ frontend:
+ backend:
+
+services:
+
+ DbServer:
+  image: msn1368/db-server:dev
+  user: root
+  build:
+   context: ../../res
+   dockerfile: Dockerfile
+  networks:
+   - backend
+  volumes:
+   - productdata:/var/opt/mssql/data
+   
+ ApiServer:
+  image: msn1368/api-server:latest
+  build:
+   context: .
+   dockerfile: sppc.tadbir.web.api/Dockerfile
+  depends_on:
+   - DbServer
+  networks:
+   - backend
+   - frontend
+
+ loadBalancer:
+  image: dockercloud/haproxy:1.2.1
+  depends_on:
+   - ApiServer
+  ports:
+   - 9095:80
+   - 1936:1936
+  links:
+   - ApiServer
+  volumes:
+   - /var/run/docker.sock:/var/run/docker.sock
+  networks:
+   - frontend
+
+ WebApp:
+  image: msn1368/web-app:dev
+  build: 
+   context: ./SPPC.Tadbir.Web/ClientApp
+   dockerfile: Dockerfile
+  networks:
+   - frontend
+  ports:
+   - 9090:4200
+
+ LicenseServer:
+  image: msn1368/license-server:dev
+  build:
+   context: .
+   dockerfile: SPPC.Licensing.Local.Web/Dockerfile
+  volumes:
+   - productdata:/app/wwwroot
+  network_mode: host
+  ports:
+   - 7473:80
+

@@ -20,7 +20,7 @@ services:
   volumes:
    - productdata:/var/opt/mssql/data
    
- sppc.tadbir.web.api:
+ sppcTadbirWebApi:
   image: msn1368/sppctadbirwebapi:latest
   build:
    context: .
@@ -34,12 +34,12 @@ services:
  loadBalancer:
   image: dockercloud/haproxy:1.2.1
   depends_on:
-   - sppc.tadbir.web.api
+   - sppcTadbirWebApi
   ports:
    - 9095:80
    - 1936:1936
   links:
-   - sppc.tadbir.web.api
+   - sppcTadbirWebApi
   volumes:
    - /var/run/docker.sock:/var/run/docker.sock
   networks:
