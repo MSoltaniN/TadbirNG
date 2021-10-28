@@ -14,48 +14,39 @@ import { environment } from "@sppc/env/environment";
 
 export class ReportApi {
 
-    // reports/sys/tree
-    public static ReportsHierarchy = environment.BaseUrl + "/reports/sys/tree";
+    // reports/tree
+    public static ReportsHierarchy = environment.BaseUrl + "/reports/tree";
 
-    // reports/sys
-    public static Reports = environment.BaseUrl + "/reports/sys";
+    // reports
+    public static Reports = environment.BaseUrl + "/reports";
 
-    // reports/sys/view/{viewId:min(1)}
-    public static ReportsByView = environment.BaseUrl + "/reports/sys/view/{0}";
+    // reports/view/{viewId:min(1)}
+    public static ReportsByView = environment.BaseUrl + "/reports/view/{0}";
 
-    // reports/sys/view/{viewId:min(1)}/default
-    public static ReportsByViewDefault = environment.BaseUrl + "/reports/sys/view/{0}/default";
+    // reports/view/{viewId:min(1)}/default
+    public static ReportsByViewDefault = environment.BaseUrl + "/reports/view/{0}/default";
 
-    // reports/sys/view/{viewId:min(1)}/quickreport
-  public static ReportsByViewQuickReportUrl = environment.BaseUrl + "/reports/sys/view/{0}/quickreport";   
+    // reports/view/{viewId:min(1)}/quickreport
+    public static ReportsByViewQuickReportUrl = environment.BaseUrl + "/reports/view/{0}/quickreport";   
 
-    // reports/sys/subsys/{subsysId:min(1)}
-    public static ReportsBySubsystem = environment.BaseUrl + "/reports/sys/subsys/{0}";
+    // reports/subsys/{subsysId:min(1)}
+    public static ReportsBySubsystem = environment.BaseUrl + "/reports/subsys/{0}";
 
-    // reports/sys/{reportId:min(1)}
-    public static Report = environment.BaseUrl + "/reports/sys/{0}";
+    // reports/{reportId:min(1)}
+    public static Report = environment.BaseUrl + "/reports/{0}";
 
-    // reports/sys/{reportId:min(1)}/default
-    public static ReportDefault = environment.BaseUrl + "/reports/sys/{0}/default";
+    // reports/{reportId:min(1)}/default
+    public static ReportDefault = environment.BaseUrl + "/reports/{0}/default";
 
-    // reports/sys/{reportId:min(1)}/design
-    public static ReportDesign = environment.BaseUrl + "/reports/sys/{0}/design";
+    // reports/{reportId:min(1)}/design
+    public static ReportDesign = environment.BaseUrl + "/reports/{0}/design";
 
-    // reports/sys/{reportId:min(1)}/caption
-    public static ReportCaption = environment.BaseUrl + "/reports/sys/{0}/caption";
+    // reports/{reportId:min(1)}/caption
+    public static ReportCaption = environment.BaseUrl + "/reports/{0}/caption";
 
     // reports/metadata/{viewId:min(1)}
     public static ReportMetadataByView = environment.BaseUrl + "/reports/metadata/{0}";
 
-    // reports/sys/quickreport
-    public static EnvironmentQuickReport = environment.BaseUrl + "/reports/sys/quickreport/{0}";
-
-    // reports/voucher/sum-by-date
-    public static EnvironmentVoucherSummaryByDate = environment.BaseUrl + "/reports/voucher/sum-by-date";
-
-    // reports/voucher/{voucherNo:min(1)}/std-form
-    public static VoucherStandardForm = environment.BaseUrl + "/reports/voucher/{0}/std-form";
-
-    // reports/voucher/{voucherNo:min(1)}/std-form-detail
-    public static VoucherStandardFormWithDetail = environment.BaseUrl + "/reports/voucher/{0}/std-form-detail";
+    // reports/quickreport
+    public static EnvironmentQuickReport = environment.BaseUrl + "/reports/quickreport/{0}";
 }

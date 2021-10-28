@@ -8,6 +8,7 @@ using SPPC.Framework.Common;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Resources;
+using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -23,10 +24,23 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز برای عملیات دیتابیسی را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی و سیستمی را فراهم می کند</param>
-        public ReportSystemRepository(IRepositoryContext context, IOperationLogRepository log)
+        /// <param name="metadata">امکان خواندن اطلاعات فراداده ای را فراهم می کند</param>
+        public ReportSystemRepository(IRepositoryContext context, IOperationLogRepository log,
+            IMetadataRepository metadata)
             : base(context, log)
         {
             UnitOfWork.UseSystemContext();
+            Metadata = metadata;
+        }
+
+        /// <summary>
+        /// اطلاعات فراداده ای یکی از نماهای اطلاعاتی گزارشی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر</param>
+        /// <returns>اطلاعات فراداده ای نمای گزارشی</returns>
+        public async Task<ViewViewModel> GetReportMetadataByViewAsync(int viewId)
+        {
+            return await Metadata.GetViewMetadataByIdAsync(viewId);
         }
 
         /// <summary>
@@ -313,6 +327,8 @@ namespace SPPC.Tadbir.Persistence
         {
             get { return (int?)SysEntityTypeId.UserReport; }
         }
+
+        private IMetadataRepository Metadata { get; }
 
         private static void Localize(int localeId, List<Report> reports, List<TreeItemViewModel> tree)
         {

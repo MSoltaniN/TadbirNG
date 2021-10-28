@@ -8,15 +8,14 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    /// عملیات مورد نیاز برای تهیه و محاسبه اطلاعات گزارش های برنامه را پیاده سازی می کند
+    /// عملیات مورد نیاز برای تهیه و محاسبه اطلاعات گزارش های زیرسیستم حسابداری را پیاده سازی می کند
     /// </summary>
-    public partial class ReportRepository : RepositoryBase, IReportRepository
+    public partial class FinanceReportRepository : RepositoryBase, IFinanceReportRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -24,22 +23,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="lookupRepository">امکان خواندن اطلاعات موجود را به صورت لوکاپ فراهم می کند</param>
-        public ReportRepository(IRepositoryContext context, ISystemRepository system,
+        public FinanceReportRepository(IRepositoryContext context, ISystemRepository system,
             ILookupRepository lookupRepository)
             : base(context)
         {
             _system = system;
             _lookupRepository = lookupRepository;
-        }
-
-        /// <summary>
-        /// اطلاعات فراداده ای یکی از نماهای اطلاعاتی گزارشی را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر</param>
-        /// <returns>اطلاعات فراداده ای نمای گزارشی</returns>
-        public async Task<ViewViewModel> GetReportMetadataByViewAsync(int viewId)
-        {
-            return await Metadata.GetViewMetadataByIdAsync(viewId);
         }
 
         /// <summary>
@@ -125,11 +114,6 @@ namespace SPPC.Tadbir.Persistence
         private ISecureRepository Repository
         {
             get { return _system.Repository; }
-        }
-
-        private IMetadataRepository Metadata
-        {
-            get { return _system.Metadata; }
         }
 
         private static void AddGeneralStandardLineItems(

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -9,6 +10,13 @@ namespace SPPC.Tadbir.Persistence
     /// </summary>
     public interface IReportSystemRepository
     {
+        /// <summary>
+        /// اطلاعات فراداده ای یکی از نماهای اطلاعاتی گزارشی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر</param>
+        /// <returns>اطلاعات فراداده ای نمای گزارشی</returns>
+        Task<ViewViewModel> GetReportMetadataByViewAsync(int viewId);
+
         /// <summary>
         /// به روش آسنکرون، اطلاعات قالب گزارش فوری را به زبان مورد نیاز خوانده و برمی گرداند
         /// </summary>

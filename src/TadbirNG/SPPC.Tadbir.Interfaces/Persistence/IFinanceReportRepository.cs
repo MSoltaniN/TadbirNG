@@ -1,23 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    /// عملیات مورد نیاز برای تهیه و محاسبه اطلاعات گزارش های برنامه را تعریف می کند
+    /// عملیات مورد نیاز برای تهیه و محاسبه اطلاعات گزارش های زیرسیستم حسابداری را تعریف می کند
     /// </summary>
-    public interface IReportRepository
+    public interface IFinanceReportRepository
     {
-        /// <summary>
-        /// اطلاعات فراداده ای یکی از نماهای اطلاعاتی گزارشی را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مورد نظر</param>
-        /// <returns>اطلاعات فراداده ای نمای گزارشی</returns>
-        Task<ViewViewModel> GetReportMetadataByViewAsync(int viewId);
-
         /// <summary>
         /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش خلاصه اسناد حسابداری را خوانده و برمی گرداند
         /// </summary>

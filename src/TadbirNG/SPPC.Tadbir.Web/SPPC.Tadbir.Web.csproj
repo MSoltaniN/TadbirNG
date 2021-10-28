@@ -88,6 +88,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\finance\service\api\reportsFinanceApi.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="ClientApp\src\assets\i18n\en.json">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
