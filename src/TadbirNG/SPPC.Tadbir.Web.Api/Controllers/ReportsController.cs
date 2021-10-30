@@ -53,7 +53,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         ///
         /// </summary>
         /// <returns></returns>
-        // GET: api/reports/sys/tree
+        // GET: api/reports/tree
         [HttpGet]
         [Route(ReportApi.ReportsHierarchyUrl)]
         public async Task<IActionResult> GetReportTreeAsync()
@@ -68,7 +68,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="viewId"></param>
         /// <returns></returns>
-        // GET: api/reports/sys/view/{viewId:min(1)}
+        // GET: api/reports/view/{viewId:min(1)}
         [HttpGet]
         [Route(ReportApi.ReportsByViewUrl)]
         public async Task<IActionResult> GetReportTreeByViewAsync(int viewId)
@@ -83,7 +83,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="subsysId"></param>
         /// <returns></returns>
-        // GET: api/reports/sys/subsys/{subsysId:min(1)}
+        // GET: api/reports/subsys/{subsysId:min(1)}
         [HttpGet]
         [Route(ReportApi.ReportsBySubsystemUrl)]
         public async Task<IActionResult> GetReportTreeBySubsystemAsync(int subsysId)
@@ -98,7 +98,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="reportId"></param>
         /// <returns></returns>
-        // GET: api/reports/sys/{reportId:min(1)}
+        // GET: api/reports/{reportId:min(1)}
         [HttpGet]
         [Route(ReportApi.ReportUrl)]
         public async Task<IActionResult> GetReportAsync(int reportId)
@@ -114,7 +114,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="reportId"></param>
         /// <returns></returns>
-        // GET: api/reports/sys/{reportId:min(1)}/design
+        // GET: api/reports/{reportId:min(1)}/design
         [HttpGet]
         [Route(ReportApi.ReportDesignUrl)]
         public async Task<IActionResult> GetReportDesignAsync(int reportId)
@@ -155,7 +155,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="report"></param>
         /// <returns></returns>
-        // POST: api/reports/sys
+        // POST: api/reports
         [HttpPost]
         [Route(ReportApi.ReportsUrl)]
         [AuthorizeRequest(SecureEntity.UserReport, (int)UserReportPermissions.Save)]
@@ -178,7 +178,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="reportId"></param>
         /// <param name="report"></param>
         /// <returns></returns>
-        // PUT: api/reports/sys/{reportId:min(1)}
+        // PUT: api/reports/{reportId:min(1)}
         [HttpPut]
         [Route(ReportApi.ReportUrl)]
         [AuthorizeRequest(SecureEntity.UserReport, (int)UserReportPermissions.Save)]
@@ -202,7 +202,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="reportId"></param>
         /// <param name="report"></param>
         /// <returns></returns>
-        // PUT: api/reports/sys/{reportId:min(1)}/caption
+        // PUT: api/reports/{reportId:min(1)}/caption
         [HttpPut]
         [Route(ReportApi.ReportCaptionUrl)]
         [AuthorizeRequest(SecureEntity.UserReport, (int)UserReportPermissions.Save)]
@@ -239,7 +239,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="reportId"></param>
         /// <returns></returns>
-        // DELETE: api/reports/sys/{reportId:min(1)}
+        // DELETE: api/reports/{reportId:min(1)}
         [HttpDelete]
         [Route(ReportApi.ReportUrl)]
         [AuthorizeRequest(SecureEntity.UserReport, (int)UserReportPermissions.Delete)]
@@ -266,7 +266,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="qr"></param>
         /// <param name="unit"></param>
         /// <returns></returns>
-        // PUT: api/reports/sys/quickreport/{unit:min(1)}
+        // PUT: api/reports/quickreport/{unit:min(1)}
         [HttpPut]
         [Route(ReportApi.EnvironmentQuickReportUrl)]
         public async Task<IActionResult> PutEnvironmentUserQuickReportAsync(

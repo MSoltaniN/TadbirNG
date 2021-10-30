@@ -37,6 +37,11 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public string Description { get; set; }
 
         /// <summary>
+        /// نام کامل کاربر صادرکننده سند
+        /// </summary>
+        public string IssuerName { get; set; }
+
+        /// <summary>
         /// نوع مفهومی سند - مانند سند عادی، سند پیش نویس و غیره
         /// </summary>
         public short SubjectType { get; set; }

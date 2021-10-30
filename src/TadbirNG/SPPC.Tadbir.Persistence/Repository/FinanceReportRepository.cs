@@ -79,7 +79,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var standardForm = default(StandardVoucherViewModel);
             var voucher = await GetStandardVoucherFormQuery(withDetail)
-                .Where(v => v.No == voucherNo)
+                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId && v.No == voucherNo)
                 .FirstOrDefaultAsync();
             if (voucher != null)
             {
@@ -106,9 +106,57 @@ namespace SPPC.Tadbir.Persistence
                     standardForm.Lines.AddRange(lineItems);
                     lineItems.Clear();
                 }
+
+                await SetVoucherDateAsync(standardForm);
             }
 
             return standardForm;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش چاپی "ساده - در سطح تفصیلی" را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherNo">شماره سند حسابداری مورد نظر</param>
+        /// <returns>اطلاعات سند حسابداری</returns>
+        public async Task<StandardVoucherViewModel> GetVoucherByDetailAsync(int voucherNo)
+        {
+            var voucherByDetail = default(StandardVoucherViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var voucher = await repository
+                .GetEntityQuery()
+                .Include(v => v.Lines)
+                    .ThenInclude(vl => vl.Account)
+                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId && v.No == voucherNo)
+                .FirstOrDefaultAsync();
+            if (voucher != null)
+            {
+                voucherByDetail = Mapper.Map<StandardVoucherViewModel>(voucher);
+                voucherByDetail.Lines.AddRange(voucher.Lines
+                    .Select(line => Mapper.Map<StandardVoucherLineViewModel>(line)));
+                await SetVoucherDateAsync(voucherByDetail);
+            }
+
+            return voucherByDetail;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش چاپی "مرکب - در سطح کل" را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherNo">شماره سند حسابداری مورد نظر</param>
+        /// <returns>اطلاعات سند حسابداری در سطح کل</returns>
+        public async Task<StandardVoucherViewModel> GetVoucherByLedgerAsync(int voucherNo)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش چاپی "مرکب - در سطح معین" را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherNo">شماره سند حسابداری مورد نظر</param>
+        /// <returns>اطلاعات سند حسابداری در سطح معین</returns>
+        public async Task<StandardVoucherViewModel> GetVoucherBySubsidiaryAsync(int voucherNo)
+        {
+            return null;
         }
 
         private ISecureRepository Repository
@@ -228,6 +276,17 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return query;
+        }
+
+        private async Task SetVoucherDateAsync(StandardVoucherViewModel voucher)
+        {
+            var calendar = await _system.Config.GetCurrentCalendarAsync();
+            if (calendar == CalendarType.Jalali)
+            {
+                voucher.Date = JalaliDateTime
+                    .FromDateTime(DateTime.Parse(voucher.Date))
+                    .ToShortDateString();
+            }
         }
 
         private readonly ISystemRepository _system;

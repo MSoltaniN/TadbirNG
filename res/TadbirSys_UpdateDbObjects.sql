@@ -9294,3 +9294,37 @@ WHERE Code = 'Voucher-Std-Form'
 UPDATE [Reporting].[Report]
 SET ViewId = 2
 WHERE Code = 'Voucher-Std-Form-Detail'
+
+-- 1.2.1257
+SET IDENTITY_INSERT [Reporting].[Report] ON
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (82, 20, 1, 2, 2, '', 'reports/finance/voucher-by-no/{0}/by-detail', 0, 1, 0, 0)
+SET IDENTITY_INSERT [Reporting].[Report] OFF
+
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+INSERT INTO [Reporting].[LocalReport] (LocalReportID, LocaleID, ReportID, Caption)
+    VALUES (255, 1, 82, 'Simple - by detail level')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID, LocaleID, ReportID, Caption)
+    VALUES (256, 2, 82, N'ساده - در سطح تفصیلی')
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
+
+SET IDENTITY_INSERT [Reporting].[Parameter] ON
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey])
+    VALUES (164, 82, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo')
+SET IDENTITY_INSERT [Reporting].[Parameter] OFF
+
+
+UPDATE [Reporting].[Report]
+SET ServiceUrl = 'reports/finance/vouchers/sum-by-date'
+WHERE Code = 'Voucher-Sum-By-Date'
+
+UPDATE [Reporting].[Report]
+SET ServiceUrl = 'reports/finance/voucher-by-no/{0}/std-form'
+WHERE Code = 'Voucher-Std-Form'
+
+UPDATE [Reporting].[Report]
+SET ServiceUrl = 'reports/finance/voucher-by-no/{0}/std-form-detail'
+WHERE Code = 'Voucher-Std-Form-Detail'
+
+UPDATE [Core].[Version]
+SET Number = '1.2.1257'

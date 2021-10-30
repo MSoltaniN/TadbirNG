@@ -577,6 +577,7 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Voucher, StandardVoucherViewModel>()
                 .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.Date.Date.ToShortDateString(false)))
                 .ForMember(dest => dest.Lines, opts => opts.Ignore());
+            mapperConfig.CreateMap<VoucherLine, StandardVoucherLineViewModel>();
 
             mapperConfig.CreateMap<VoucherLine, JournalItemViewModel>();
             mapperConfig.CreateMap<VoucherLine, AccountBookItemViewModel>();

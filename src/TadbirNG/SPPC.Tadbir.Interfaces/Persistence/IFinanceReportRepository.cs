@@ -32,5 +32,26 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="withDetail">مشخص می کند که آیا جزییات سطوح شناور نیز مورد نیاز است یا نه</param>
         /// <returns>اطلاعات گزارش فرم مرسوم سند</returns>
         Task<StandardVoucherViewModel> GetStandardVoucherFormAsync(int voucherNo, bool withDetail = false);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش چاپی "ساده - در سطح تفصیلی" را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherNo">شماره سند حسابداری مورد نظر</param>
+        /// <returns>اطلاعات سند حسابداری</returns>
+        Task<StandardVoucherViewModel> GetVoucherByDetailAsync(int voucherNo);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش چاپی "مرکب - در سطح کل" را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherNo">شماره سند حسابداری مورد نظر</param>
+        /// <returns>اطلاعات سند حسابداری در سطح کل</returns>
+        Task<StandardVoucherViewModel> GetVoucherByLedgerAsync(int voucherNo);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات گزارش چاپی "مرکب - در سطح معین" را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherNo">شماره سند حسابداری مورد نظر</param>
+        /// <returns>اطلاعات سند حسابداری در سطح معین</returns>
+        Task<StandardVoucherViewModel> GetVoucherBySubsidiaryAsync(int voucherNo);
     }
 }

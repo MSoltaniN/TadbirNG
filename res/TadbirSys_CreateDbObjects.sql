@@ -2430,11 +2430,11 @@ INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID
 INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [ViewID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
     VALUES (38, 19, 1, 2, 26, N'Journal-ByNo-LedgerSummary', N'reports/journal/by-no/summary', 0, 1, 1, 1, NULL)
 INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [ViewID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
-    VALUES (39, 20, 1, 2, 2, N'Voucher-Sum-By-Date', N'reports/voucher/sum-by-date', 0, 1, 0, 0, N'RowNo,Voucher,Date,DebitSum,CreditSum,Difference,PreparedBy,BalanceLabel,CheckLabel,Origin')
+    VALUES (39, 20, 1, 2, 2, N'Voucher-Sum-By-Date', N'reports/finance/vouchers/sum-by-date', 0, 1, 0, 0, N'RowNo,Voucher,Date,DebitSum,CreditSum,Difference,PreparedBy,BalanceLabel,CheckLabel,Origin')
 INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [ViewID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
-    VALUES (40, 20, 1, 2, 2, N'Voucher-Std-Form', N'reports/voucher/{0}/std-form', 0, 1, 1, 0, NULL)
+    VALUES (40, 20, 1, 2, 2, N'Voucher-Std-Form', N'reports/finance/voucher-by-no/{0}/std-form', 0, 1, 1, 0, NULL)
 INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [ViewID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
-    VALUES (41, 20, 1, 2, 2, N'Voucher-Std-Form-Detail', N'reports/voucher/{0}/std-form-detail', 0, 1, 0, 0, NULL)
+    VALUES (41, 20, 1, 2, 2, N'Voucher-Std-Form-Detail', N'reports/finance/voucher-by-no/{0}/std-form-detail', 0, 1, 0, 0, NULL)
 INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [ViewID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
     VALUES (42, NULL, 1, 1, NULL, N'Report-QReport-Manage', NULL, 1, 1, 0, 0, NULL)
 INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [ViewID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
@@ -2503,6 +2503,16 @@ INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID
     VALUES (76, 19, 1, 62, 2, '', NULL, 0, 1, 1, 1)
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
     VALUES (77, 19, 1, 64, 2, '', NULL, 0, 1, 1, 1)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (78, 19, 1, 65, 2, '', NULL, 0, 1, 1, 1)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (79, 19, 1, 66, 2, '', NULL, 0, 1, 1, 1)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (80, 19, 1, 67, 2, 'BalanceSheet', 'bal-sheet', 0, 1, 1, 1)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (81, 20, 1, 2, 2, 'Vouchers', NULL, 0, 1, 1, 1)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (82, 20, 1, 2, 2, '', 'reports/finance/voucher-by-no/{0}/by-detail', 0, 1, 0, 0)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON
@@ -2994,6 +3004,18 @@ INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], 
     VALUES (243, 1, 77, 'Profit-Loss', NULL)
 INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
     VALUES (244, 2, 77, N'سود و زیان', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (249, 1, 80, 'BalanceSheet')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (250, 2, 80, N'ترازنامه')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (251, 1, 81, 'Vouchers')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (252, 2, 81, N'اسناد مالی')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID, LocaleID, ReportID, Caption)
+    VALUES (255, 1, 82, 'Simple - by detail level')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID, LocaleID, ReportID, Caption)
+    VALUES (256, 2, 82, N'ساده - در سطح تفصیلی')
 SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
 
 SET IDENTITY_INSERT [Reporting].[Parameter] ON 
@@ -3262,6 +3284,8 @@ INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName],
     VALUES (162, 77, 'toDate', 'to', 'EQ', 'System.DateTime', 'QueryString', 'ToDate', 'ToDate')
 INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])
     VALUES (163, 77, 'VoucherStatus', 'VoucherStatusId', 'EQ', 'System.Int32', 'TextBox', 'VoucherStatus', 'VoucherStatus')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey])
+    VALUES (164, 82, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo')
 SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 
 -- Sample user settings for UserID = 1 and Account List form (Admin user)...
