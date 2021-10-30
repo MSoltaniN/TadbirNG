@@ -11,6 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\license.log" />
     <Content Remove="wwwroot\tadbir.lic" />
     <Content Remove="wwwroot\tadbir.pfx" />
   </ItemGroup>

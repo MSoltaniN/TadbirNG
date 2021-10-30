@@ -62,32 +62,55 @@ namespace SPPC.Tadbir.Licensing
             if (!EnsureLicenseExists())
             {
                 status = LicenseStatus.NoLicense;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] License file 'tadbir.lic' could not be loaded.{1}",
+                    DateTime.Now.ToString(), Environment.NewLine);
             }
             else if (EnsureLicenseNotCorrupt())
             {
                 status = LicenseStatus.Corrupt;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] License file is corrupt or tampered.{1}",
+                    DateTime.Now.ToString(), Environment.NewLine);
             }
             else if (!EnsureCertificateExists())
             {
                 status = LicenseStatus.NoCertificate;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] Certificate file 'tadbir.pfx' could not be loaded.{1}",
+                    DateTime.Now.ToString());
             }
             else if (!EnsureCertificateIsValid())
             {
                 status = LicenseStatus.BadCertificate;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] Certificate file is invalid.{1}",
+                    DateTime.Now.ToString(), Environment.NewLine);
             }
             else if (!EnsureRunsOnOriginalHardware(connection))
             {
                 status = LicenseStatus.HardwareMismatch;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] This hardware system does not match original hardware.{1}",
+                    DateTime.Now.ToString(), Environment.NewLine);
             }
             else if (!EnsureInstanceIsValid())
             {
                 status = LicenseStatus.InstanceMismatch;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] Given instance is not licensed on this server.{1}",
+                    DateTime.Now.ToString(), Environment.NewLine);
             }
             else if (!EnsureLicenseNotExpired())
             {
                 status = LicenseStatus.Expired;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] License is expired.{1}",
+                    DateTime.Now.ToString(), Environment.NewLine);
             }
 
+            _log.AppendLine();
+            File.AppendAllText(@".\wwwroot\license.log", _log.ToString());
             return status;
         }
 
@@ -199,12 +222,22 @@ namespace SPPC.Tadbir.Licensing
 
         private bool EnsureLicenseExists()
         {
-            return File.Exists(LicensePath);
+            _log.AppendFormat("[{0}] [INFO] Ensuring license file exists...",
+                DateTime.Now.ToString());
+            bool validated = File.Exists(LicensePath);
+            if (validated)
+            {
+                _log.AppendLine(" (OK)");
+            }
+
+            return validated;
         }
 
         private bool EnsureLicenseNotCorrupt()
         {
             bool isCorrupt = false;
+            _log.AppendFormat("[{0}] [INFO] Ensuring license file is pristine ...",
+                DateTime.Now.ToString());
             string licenseData = File.ReadAllText(LicensePath);
             if (!String.IsNullOrEmpty(licenseData))
             {
@@ -222,38 +255,83 @@ namespace SPPC.Tadbir.Licensing
                 isCorrupt = true;
             }
 
+            if (!isCorrupt)
+            {
+                _log.AppendLine(" (OK)");
+            }
+
             return isCorrupt;
         }
 
         private bool EnsureCertificateExists()
         {
+            _log.AppendFormat("[{0}] [INFO] Loading licensing certificate...",
+                DateTime.Now.ToString());
             _certificate = LoadCerificate();
-            return _certificate != null;
+            bool validated = _certificate != null;
+            if (validated)
+            {
+                _log.AppendLine(" (OK)");
+            }
+
+            return validated;
         }
 
         private bool EnsureCertificateIsValid()
         {
+            _log.AppendFormat("[{0}] [INFO] Validating licensing certificate...",
+                DateTime.Now.ToString());
             var publicKey = Convert.ToBase64String(_certificate.GetPublicKey());
-            return String.Compare(_license.ClientKey, publicKey) == 0;
+            bool validated = String.Compare(_license.ClientKey, publicKey) == 0;
+            if (validated)
+            {
+                _log.AppendLine(" (OK)");
+            }
+
+            return validated;
         }
 
         private bool EnsureRunsOnOriginalHardware(RemoteConnection connection)
         {
+            _log.AppendFormat("[{0}] [INFO] Validating server hardware...",
+                DateTime.Now.ToString());
             string hardwareKey = _deviceId.GetRemoteDeviceId(connection);
-            return String.Compare(_license.HardwareKey, hardwareKey) == 0;
+            bool validated = String.Compare(_license.HardwareKey, hardwareKey) == 0;
+            if (validated)
+            {
+                _log.AppendLine(" (OK)");
+            }
+
+            return validated;
         }
 
         private bool EnsureInstanceIsValid()
         {
-            return _license.CustomerKey == _instance.CustomerKey
+            _log.AppendFormat("[{0}] [INFO] Validating application instance...",
+                DateTime.Now.ToString());
+            bool validated = _license.CustomerKey == _instance.CustomerKey
                 && _license.LicenseKey == _instance.LicenseKey;
+            if (validated)
+            {
+                _log.AppendLine(" (OK)");
+            }
+
+            return validated;
         }
 
         private bool EnsureLicenseNotExpired()
         {
+            _log.AppendFormat("[{0}] [INFO] Ensuring license not expired...",
+                DateTime.Now.ToString());
             var now = DateTime.Now.Date;
-            return now >= _license.StartDate
+            bool validated = now >= _license.StartDate
                 && now <= _license.EndDate;
+            if (validated)
+            {
+                _log.AppendLine(" (OK)");
+            }
+
+            return validated;
         }
 
         private void SetInstance(string instance)
@@ -277,5 +355,6 @@ namespace SPPC.Tadbir.Licensing
         private LicenseFileModel _license;
         private X509Certificate2 _certificate;
         private InstanceModel _instance;
+        private readonly StringBuilder _log = new();
     }
 }
