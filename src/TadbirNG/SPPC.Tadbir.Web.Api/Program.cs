@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using SPPC.Framework.Common;
+using SPPC.Tadbir.Persistence;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -21,7 +22,11 @@ namespace SPPC.Tadbir.Web.Api
         public static void Main(string[] args)
         {
 #if DEBUG
-            AnalyzeCurrentApi();
+            ////AnalyzeCurrentApi();
+            ////var analyzer = new AutoMappingAnalyzer();
+            ////analyzer.AnalyzeMappings();
+            ////var analyzer = new DbMappingAnalyzer();
+            ////analyzer.Analyze();
 #endif
             CreateHostBuilder(args).Build().Run();
         }

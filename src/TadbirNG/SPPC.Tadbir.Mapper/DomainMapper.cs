@@ -432,6 +432,7 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.Type.Id = viewModel.TypeId);
             mapperConfig.CreateMap<Filter, FilterViewModel>();
             mapperConfig.CreateMap<FilterViewModel, Filter>();
+            mapperConfig.CreateMap<SystemErrorViewModel, SystemError>();
         }
 
         private static void MapConfigTypes(IMapperConfigurationExpression mapperConfig)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.ViewModel.Core;
 

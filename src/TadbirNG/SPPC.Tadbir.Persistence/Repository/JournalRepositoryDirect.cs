@@ -253,7 +253,7 @@ namespace SPPC.Tadbir.Persistence
         private static ReportQuery GetJournalByLevelQuery(
             JournalParameters parameters, int length, bool byNo, bool isDebit)
         {
-            var query = default(ReportQuery);
+            ReportQuery query;
             string command = !byNo
                 ? String.Format(JournalQuery.ByDateByLevel, length,
                     parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false))
@@ -767,7 +767,7 @@ namespace SPPC.Tadbir.Persistence
                     debitItems, creditItems, parameters.GridOptions);
             }
 
-            journal.TotalCount = debitItems.Count() + creditItems.Count();
+            journal.TotalCount = debitItems.Count + creditItems.Count;
             journal.DebitSum = debitItems.Sum(item => item.Debit);
             journal.CreditSum = creditItems.Sum(item => item.Credit);
             journal.Items.AddRange(MergeByNumber(debitItems, creditItems, parameters.GridOptions));

@@ -36,6 +36,7 @@
     <ProjectReference Include="..\SPPC.Tadbir.Configuration\SPPC.Tadbir.Configuration.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.CrossCutting\SPPC.Tadbir.CrossCutting.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Mapper\SPPC.Tadbir.Mapper.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Model\SPPC.Tadbir.Model.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Resources\SPPC.Tadbir.Resources.csproj" />
   </ItemGroup>
