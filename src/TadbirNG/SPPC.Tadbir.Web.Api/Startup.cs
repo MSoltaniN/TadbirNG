@@ -39,10 +39,12 @@ namespace SPPC.Tadbir.Web.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddLocalization();
-            services.AddControllers(options =>
-            {
-                options.Filters.Add(typeof(AuthorizeRequestFilter));
-            });
+            services
+                .AddControllers(options =>
+                    {
+                        options.Filters.Add(typeof(AuthorizeRequestFilter));
+                    })
+                .AddNewtonsoftJson();
             services.AddCors();
             services.AddSwagger();
 

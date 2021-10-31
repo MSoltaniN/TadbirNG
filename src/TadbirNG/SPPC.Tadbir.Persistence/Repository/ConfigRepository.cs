@@ -112,8 +112,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
             var items = await repository
                 .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(QuickSearchConfig).Name
-                    && cfg.User.Id == userId
-                    && cfg.View.Id == viewId);
+                    && cfg.UserId == userId
+                    && cfg.ViewId == viewId);
             var config = items.SingleOrDefault();
             if (config == null)
             {
@@ -155,7 +155,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
             var existing = await repository
                 .GetEntityWithTrackingQuery()
-                .Where(cfg => cfg.User.Id == userId
+                .Where(cfg => cfg.UserId == userId
                     && cfg.ViewId == userConfig.ViewId
                     && cfg.ModelType == typeof(QuickSearchConfig).Name)
                 .SingleOrDefaultAsync();

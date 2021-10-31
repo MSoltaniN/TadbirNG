@@ -527,6 +527,7 @@ namespace SPPC.Tadbir.Mapper
         private static void MapMetadataTypes(IMapperConfigurationExpression mapperConfig)
         {
             mapperConfig.CreateMap<View, ViewViewModel>();
+            mapperConfig.CreateMap<View, ViewSummaryViewModel>();
             mapperConfig.CreateMap<Column, ColumnViewModel>();
             mapperConfig.CreateMap<Command, CommandViewModel>()
                 .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey));
@@ -550,12 +551,14 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<Report, ReportViewModel>()
                 .ForMember(dest => dest.ResourceMap, opts => opts.Ignore());
+            mapperConfig.CreateMap<LocalReport, LocalReportViewModel>();
             mapperConfig.CreateMap<Report, TreeItemViewModel>()
                 .ForMember(dest => dest.ParentId, opts => opts.MapFrom(
                     src => src.Parent != null ? src.Parent.Id : (int?)null));
             mapperConfig.CreateMap<Report, PrintInfoViewModel>()
                 .ForMember(dest => dest.Template, opts => opts.Ignore());
             mapperConfig.CreateMap<Report, ReportSummaryViewModel>();
+            mapperConfig.CreateMap<Parameter, ParameterViewModel>();
             mapperConfig.CreateMap<Parameter, Parameter>()
                 .ForMember(dest => dest.Id, opts => opts.MapFrom(src => 0))
                 .ForMember(dest => dest.Report, opts => opts.MapFrom(src => (Report)null));

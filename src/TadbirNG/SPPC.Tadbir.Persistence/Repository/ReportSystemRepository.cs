@@ -78,28 +78,23 @@ namespace SPPC.Tadbir.Persistence
             var tree = new List<TreeItemViewModel>();
             var repository = UnitOfWork.GetAsyncRepository<Report>();
             var reports = await repository
-                .GetEntityWithTrackingQuery(rep => rep.Parent, rep => rep.LocalReports)
+                .GetEntityQuery(rep => rep.Parent, rep => rep.LocalReports)
                 .Where(rep => rep.ViewId == viewId)
                 .ToListAsync();
 
             var outReports = new List<Report>();
             if (reports.Count > 0)
             {
+                Report loaded;
                 outReports.AddRange(reports);
                 foreach (var report in reports)
                 {
-                    var first = report;
-                    var parent = first.Parent;
+                    var parent = report.Parent;
                     while (parent != null)
                     {
-                        if (!outReports.Contains(parent))
-                        {
-                            outReports.Add(parent);
-                        }
-
-                        await repository.LoadReferenceAsync(parent, rep => rep.Parent);
-                        await repository.LoadCollectionAsync(parent, rep => rep.LocalReports);
-                        parent = parent.Parent;
+                        loaded = await LoadReportAsync(parent.Id);
+                        outReports.Add(loaded);
+                        parent = loaded.Parent;
                     }
                 }
 
@@ -355,6 +350,13 @@ namespace SPPC.Tadbir.Persistence
                 LocaleId = original.LocaleId,
                 Template = original.Template
             };
+        }
+
+        private async Task<Report> LoadReportAsync(int reportId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Report>();
+            return await repository.GetFirstByCriteriaAsync(
+                rep => rep.Id == reportId, rep => rep.Parent, rep => rep.LocalReports);
         }
 
         private Report CloneReport(Report report)

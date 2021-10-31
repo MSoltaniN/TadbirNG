@@ -47,12 +47,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasConstraintName("FK_Config_UserSetting_Config_Setting");
             builder.HasOne(e => e.User)
                 .WithMany()
-                .HasForeignKey("UserID")
+                .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Config_UserSetting_Auth_User");
             builder.HasOne(e => e.Role)
                 .WithMany()
-                .HasForeignKey("RoleID")
+                .HasForeignKey(e => e.RoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Config_UserSetting_Auth_Role");
             builder.HasOne(e => e.View)

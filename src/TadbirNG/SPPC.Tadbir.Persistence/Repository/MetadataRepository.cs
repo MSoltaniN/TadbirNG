@@ -284,10 +284,10 @@ namespace SPPC.Tadbir.Persistence
         private async Task<ViewViewModel> LoadViewMetadataAsync(View listMetadata)
         {
             var listMetadataView = Mapper.Map<ViewViewModel>(listMetadata);
-            foreach (var column in listMetadata.Columns)
-            {
-                listMetadataView.Columns.Add(Mapper.Map<ColumnViewModel>(column));
-            }
+            //foreach (var column in listMetadata.Columns)
+            //{
+            //    listMetadataView.Columns.Add(Mapper.Map<ColumnViewModel>(column));
+            //}
 
             foreach (var column in listMetadataView.Columns)
             {
