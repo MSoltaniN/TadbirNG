@@ -102,13 +102,28 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="voucherNo"></param>
         /// <returns></returns>
-        // GET: api/reports/finance/voucher-by-no/{voucherNo:min(1)}/by-detail
+        // GET: api/reports/finance/voucher-by-no/{voucherNo:min(1)}/by-ledger
         [HttpGet]
         [Route(ReportsFinanceApi.VoucherByLedgerUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Print)]
         public async Task<IActionResult> GetVoucherByLedgerAsync(int voucherNo)
         {
             var voucher = await _repository.GetVoucherByLedgerAsync(voucherNo);
+            return JsonReadResult(voucher);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="voucherNo"></param>
+        /// <returns></returns>
+        // GET: api/reports/finance/voucher-by-no/{voucherNo:min(1)}/by-subsid
+        [HttpGet]
+        [Route(ReportsFinanceApi.VoucherBySubsidiaryUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Print)]
+        public async Task<IActionResult> GetVoucherBySubsidiaryAsync(int voucherNo)
+        {
+            var voucher = await _repository.GetVoucherBySubsidiaryAsync(voucherNo);
             return JsonReadResult(voucher);
         }
 

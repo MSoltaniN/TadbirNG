@@ -28,5 +28,14 @@ FROM [Finance].[Voucher] v
 WHERE v.FiscalPeriodID = {0} AND vl.BranchID = {1} AND vl.AccountID = {2} AND v.SubjectType = 0
 GROUP BY vl.DetailID, vl.CostCenterID, vl.ProjectID, vl.CurrencyID
 ORDER BY vl.DetailID, vl.CostCenterID, vl.ProjectID, vl.CurrencyID";
+
+        internal const string VoucherSummaryByLevel = @"
+SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS Debit, 0 AS Credit1
+FROM [Finance].[VoucherLine] vl
+    INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
+    INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
+WHERE v.No = {1} AND v.FiscalPeriodID = {2} AND v.SubjectType = 0 AND vl.Debit > 0 {3}
+GROUP BY SUBSTRING(acc.FullCode, 1, {0})
+ORDER BY SUBSTRING(acc.FullCode, 1, {0})";
     }
 }

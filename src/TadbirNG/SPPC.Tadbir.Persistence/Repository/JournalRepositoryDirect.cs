@@ -821,7 +821,7 @@ namespace SPPC.Tadbir.Persistence
                     ledgerDebit, ledgerCredit, subsidDebit, subsidCredit, parameters.GridOptions);
             }
 
-            journal.TotalCount = subsidDebit.Count() + subsidCredit.Count() + ledgerDebit.Count() + ledgerCredit.Count();
+            journal.TotalCount = subsidDebit.Count + subsidCredit.Count + ledgerDebit.Count + ledgerCredit.Count;
             journal.DebitSum = subsidDebit.Sum(item => item.Debit) + ledgerDebit.Sum(item => item.Debit);
             journal.CreditSum = subsidCredit.Sum(item => item.Credit) + ledgerCredit.Sum(item => item.Credit);
             journal.Items.AddRange(MergeByNumber(subsidDebit, ledgerDebit, subsidCredit, ledgerCredit, parameters.GridOptions));

@@ -9326,5 +9326,31 @@ UPDATE [Reporting].[Report]
 SET ServiceUrl = 'reports/finance/voucher-by-no/{0}/std-form-detail'
 WHERE Code = 'Voucher-Std-Form-Detail'
 
+-- 1.2.1261
+SET IDENTITY_INSERT [Reporting].[Report] ON
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (83, 20, 1, 2, 2, '', 'reports/finance/voucher-by-no/{0}/by-ledger', 0, 1, 0, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (84, 20, 1, 2, 2, '', 'reports/finance/voucher-by-no/{0}/by-subsid', 0, 1, 0, 0)
+SET IDENTITY_INSERT [Reporting].[Report] OFF
+
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+INSERT INTO [Reporting].[LocalReport] (LocalReportID, LocaleID, ReportID, Caption)
+    VALUES (257, 1, 83, 'Aggregate - by ledger level')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID, LocaleID, ReportID, Caption)
+    VALUES (258, 2, 83, N'مرکب - در سطح کل')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID, LocaleID, ReportID, Caption)
+    VALUES (259, 1, 84, 'Aggregate - by subsidiary level')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID, LocaleID, ReportID, Caption)
+    VALUES (260, 2, 84, N'مرکب - در سطح معین')
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
+
+SET IDENTITY_INSERT [Reporting].[Parameter] ON
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey])
+    VALUES (165, 83, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey])
+    VALUES (166, 84, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo')
+SET IDENTITY_INSERT [Reporting].[Parameter] OFF
+
 UPDATE [Core].[Version]
-SET Number = '1.2.1257'
+SET Number = '1.2.1261'

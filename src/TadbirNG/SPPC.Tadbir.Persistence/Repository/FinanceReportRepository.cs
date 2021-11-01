@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -23,12 +25,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         /// <param name="lookupRepository">امکان خواندن اطلاعات موجود را به صورت لوکاپ فراهم می کند</param>
+        /// <param name="utility">امکان اجرای مستقیم دستورات دیتابیسی را فراهم می کند</param>
         public FinanceReportRepository(IRepositoryContext context, ISystemRepository system,
-            ILookupRepository lookupRepository)
+            ILookupRepository lookupRepository, IReportDirectUtility utility)
             : base(context)
         {
             _system = system;
             _lookupRepository = lookupRepository;
+            _utility = utility;
         }
 
         /// <summary>
@@ -98,8 +102,8 @@ namespace SPPC.Tadbir.Persistence
                         AddFloatingStandardLineItems(line, lineItems);
                     }
 
-                    AddGeneralStandardLineItems(line, lineItems);
-                    AddAuxiliaryStandardLineItems(line, lineItems);
+                    AddLedgerStandardLineItems(line, lineItems);
+                    AddSubsidiaryStandardLineItems(line, lineItems);
                     AddDetailStandardLineItems(line, lineItems);
 
                     lineItems.Reverse();
@@ -146,7 +150,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات سند حسابداری در سطح کل</returns>
         public async Task<StandardVoucherViewModel> GetVoucherByLedgerAsync(int voucherNo)
         {
-            return null;
+            return await GetSummaryByLevelAsync(voucherNo, 0);
         }
 
         /// <summary>
@@ -156,7 +160,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات سند حسابداری در سطح معین</returns>
         public async Task<StandardVoucherViewModel> GetVoucherBySubsidiaryAsync(int voucherNo)
         {
-            return null;
+            return await GetSummaryByLevelAsync(voucherNo, 1);
         }
 
         private ISecureRepository Repository
@@ -164,7 +168,9 @@ namespace SPPC.Tadbir.Persistence
             get { return _system.Repository; }
         }
 
-        private static void AddGeneralStandardLineItems(
+        #region Standard Voucher Implementation
+
+        private static void AddLedgerStandardLineItems(
             VoucherLine line, IList<StandardVoucherLineViewModel> lineItems)
         {
             if (line.Account.Level == 0)
@@ -179,7 +185,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private static void AddAuxiliaryStandardLineItems(
+        private static void AddSubsidiaryStandardLineItems(
             VoucherLine line, IList<StandardVoucherLineViewModel> lineItems)
         {
             if (line.Account.Level == 1)
@@ -278,18 +284,133 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
+        #endregion
+
+        #region Voucher By Level Implementation
+
+        private async Task<StandardVoucherViewModel> GetSummaryByLevelAsync(int voucherNo, int level)
+        {
+            var summary = default(StandardVoucherViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var voucher = await repository.GetSingleByCriteriaAsync(
+                v => v.No == voucherNo && v.SubjectType == (short)SubjectType.Normal &&
+                v.FiscalPeriodId == UserContext.FiscalPeriodId);
+            if (voucher != null)
+            {
+                summary = Mapper.Map<StandardVoucherViewModel>(voucher);
+                DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+                if (level == 0)
+                {
+                    summary.Lines.AddRange(GetSummaryByLedgerItems(voucherNo));
+                }
+                else
+                {
+                    summary.Lines.AddRange(GetSummaryBySubsidiaryItems(voucherNo));
+                }
+
+                await SetNameAndDescriptionAsync(summary.Lines);
+                await SetVoucherDateAsync(summary);
+            }
+
+            return summary;
+        }
+
+        private IEnumerable<StandardVoucherLineViewModel> GetSummaryByLedgerItems(int voucherNo)
+        {
+            int length = _system.Config.GetLevelCodeLength(0);
+            var debitItems = GetByLevelItems(voucherNo, length, true);
+            var creditItems = GetByLevelItems(voucherNo, length, false);
+            return debitItems.Concat(creditItems);
+        }
+
+        private IEnumerable<StandardVoucherLineViewModel> GetSummaryBySubsidiaryItems(int voucherNo)
+        {
+            int ledgerLength = _system.Config.GetLevelCodeLength(0);
+            int subsidLength = _system.Config.GetLevelCodeLength(1);
+            var subsidDebit = GetByLevelItems(voucherNo, subsidLength, true, "AND acc.Level >= 1 ");
+            var ledgerDebit = GetByLevelItems(voucherNo, ledgerLength, true, "AND acc.Level = 0 ");
+            var subsidCredit = GetByLevelItems(voucherNo, subsidLength, false, "AND acc.Level >= 1 ");
+            var ledgerCredit = GetByLevelItems(voucherNo, ledgerLength, false, "AND acc.Level = 0 ");
+            return subsidDebit
+                .Concat(ledgerDebit)
+                .OrderBy(line => line.AccountFullCode)
+                .Concat(subsidCredit
+                    .Concat(ledgerCredit)
+                    .OrderBy(line => line.AccountFullCode));
+        }
+
+        private List<StandardVoucherLineViewModel> GetByLevelItems(
+            int voucherNo, int length, bool isDebit, string filter = "")
+        {
+            var query = GetSummaryByLevelQuery(voucherNo, length, isDebit, filter);
+            var result = DbConsole.ExecuteQuery(query.Query);
+            return result.Rows
+                .Cast<DataRow>()
+                .Select(row => GetSummaryItem(row))
+                .ToList();
+        }
+
+        private StandardVoucherLineViewModel GetSummaryItem(DataRow row)
+        {
+            return new StandardVoucherLineViewModel()
+            {
+                AccountFullCode = _utility.ValueOrDefault(row, "FullCode"),
+                Debit = _utility.ValueOrDefault<decimal>(row, "Debit"),
+                Credit = _utility.ValueOrDefault<decimal>(row, "Credit")
+            };
+        }
+
+        private ReportQuery GetSummaryByLevelQuery(int voucherNo, int length, bool isDebit, string filter = "")
+        {
+            ReportQuery query;
+            string command = String.Format(VoucherQuery.VoucherSummaryByLevel,
+                length, voucherNo, UserContext.FiscalPeriodId, filter);
+            if (isDebit)
+            {
+                query = new ReportQuery(command);
+            }
+            else
+            {
+                query = new ReportQuery(command
+                    .Replace("Debit", "Credit")
+                    .Replace("Credit1", "Debit"));
+            }
+
+            return query;
+        }
+
+        private async Task SetNameAndDescriptionAsync(List<StandardVoucherLineViewModel> lines)
+        {
+            var repository = UnitOfWork.GetRepository<Account>();
+            var fullCodes = lines
+                .Select(item => item.AccountFullCode);
+            var accounts = await repository
+                .GetEntityQuery()
+                .Where(acc => fullCodes.Contains(acc.FullCode))
+                .Select(acc => new KeyValuePair<string, string>(acc.FullCode, acc.Name))
+                .ToListAsync();
+            var accountMap = new Dictionary<string, string>(accounts);
+            foreach (var line in lines)
+            {
+                line.Description = accountMap[line.AccountFullCode];
+            }
+        }
+
+        #endregion
+
         private async Task SetVoucherDateAsync(StandardVoucherViewModel voucher)
         {
             var calendar = await _system.Config.GetCurrentCalendarAsync();
             if (calendar == CalendarType.Jalali)
             {
                 voucher.Date = JalaliDateTime
-                    .FromDateTime(DateTime.Parse(voucher.Date))
+                    .FromDateTime(DateTime.Now.Parse(voucher.Date, false))
                     .ToShortDateString();
             }
         }
 
         private readonly ISystemRepository _system;
         private readonly ILookupRepository _lookupRepository;
+        private readonly IReportDirectUtility _utility;
     }
 }

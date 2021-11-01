@@ -2513,6 +2513,10 @@ INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID
     VALUES (81, 20, 1, 2, 2, 'Vouchers', NULL, 0, 1, 1, 1)
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
     VALUES (82, 20, 1, 2, 2, '', 'reports/finance/voucher-by-no/{0}/by-detail', 0, 1, 0, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (83, 20, 1, 2, 2, '', 'reports/finance/voucher-by-no/{0}/by-ledger', 0, 1, 0, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (84, 20, 1, 2, 2, '', 'reports/finance/voucher-by-no/{0}/by-subsid', 0, 1, 0, 0)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON
@@ -3016,6 +3020,14 @@ INSERT INTO [Reporting].[LocalReport] (LocalReportID, LocaleID, ReportID, Captio
     VALUES (255, 1, 82, 'Simple - by detail level')
 INSERT INTO [Reporting].[LocalReport] (LocalReportID, LocaleID, ReportID, Caption)
     VALUES (256, 2, 82, N'ساده - در سطح تفصیلی')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID, LocaleID, ReportID, Caption)
+    VALUES (257, 1, 83, 'Aggregate - by ledger level')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID, LocaleID, ReportID, Caption)
+    VALUES (258, 2, 83, N'مرکب - در سطح کل')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID, LocaleID, ReportID, Caption)
+    VALUES (259, 1, 84, 'Aggregate - by subsidiary level')
+INSERT INTO [Reporting].[LocalReport] (LocalReportID, LocaleID, ReportID, Caption)
+    VALUES (260, 2, 84, N'مرکب - در سطح معین')
 SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
 
 SET IDENTITY_INSERT [Reporting].[Parameter] ON 
@@ -3286,6 +3298,10 @@ INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName],
     VALUES (163, 77, 'VoucherStatus', 'VoucherStatusId', 'EQ', 'System.Int32', 'TextBox', 'VoucherStatus', 'VoucherStatus')
 INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey])
     VALUES (164, 82, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey])
+    VALUES (165, 83, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey])
+    VALUES (166, 84, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo')
 SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 
 -- Sample user settings for UserID = 1 and Account List form (Admin user)...
