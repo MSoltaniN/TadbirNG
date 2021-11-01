@@ -93,7 +93,11 @@ namespace SPPC.Tadbir.Persistence
                     while (parent != null)
                     {
                         loaded = await LoadReportAsync(parent.Id);
-                        outReports.Add(loaded);
+                        if (!outReports.Any(rep => rep.Id == parent.Id))
+                        {
+                            outReports.Add(loaded);
+                        }
+
                         parent = loaded.Parent;
                     }
                 }
