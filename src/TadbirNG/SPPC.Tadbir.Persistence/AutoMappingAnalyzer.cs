@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         public AutoMappingAnalyzer()
         {
-            _autoMapper = new DomainMapper(new CryptoService());
+            _autoMapper = new DomainMapper(new CryptoService(new CertificateManager()));
             _mapperConfig = _autoMapper.Configuration as MapperConfiguration;
         }
 

@@ -29,6 +29,6 @@ namespace SPPC.Tadbir.Service
             }
         }
 
-        private ISecurityContextManager _contextManager;
+        private readonly ISecurityContextManager _contextManager;
     }
 }

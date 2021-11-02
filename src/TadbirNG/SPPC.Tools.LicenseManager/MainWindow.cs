@@ -20,7 +20,7 @@ namespace SPPC.Tools.LicenseManager
         public MainWindow()
         {
             InitializeComponent();
-            _crypto = new CryptoService();
+            _crypto = new CryptoService(new CertificateManager());
         }
 
         private ICustomerService CustomerService
@@ -316,6 +316,38 @@ namespace SPPC.Tools.LicenseManager
             Application.Exit();
         }
 
+        private static bool HasModule(Subsystems modules, Subsystems module)
+        {
+            return (modules & module) != 0;
+        }
+
+        private static void CreateApiServiceLicense(LicenseModel license, CustomerModel customer)
+        {
+            var path = ConfigurationManager.AppSettings["WebApiLicensePath"];
+            var devPath = String.Format("{0}.Development.json", path);
+            var licenseData = GetLicenseData(license, customer);
+            var json = JsonHelper.From(licenseData);
+            File.WriteAllText(path, json);
+            if (!File.Exists(devPath))
+            {
+                File.WriteAllText(devPath, json);
+            }
+        }
+
+        private static LicenseViewModel GetLicenseData(LicenseModel license, CustomerModel customer)
+        {
+            return new LicenseViewModel()
+            {
+                CustomerName = customer.CompanyName,
+                ContactName = String.Format("{0} {1}", customer.ContactFirstName, customer.ContactLastName),
+                Edition = license.Edition,
+                UserCount = license.UserCount,
+                ActiveModules = license.ActiveModules,
+                StartDate = license.StartDate,
+                EndDate = license.EndDate
+            };
+        }
+
         private void RefreshCustomerList()
         {
             Cursor = Cursors.WaitCursor;
@@ -396,11 +428,6 @@ namespace SPPC.Tools.LicenseManager
             return String.Join("، ", modules.ToArray());
         }
 
-        private bool HasModule(Subsystems modules, Subsystems module)
-        {
-            return (modules & module) != 0;
-        }
-
         private string GetInstanceKey(LicenseModel license)
         {
             var instance = new InstanceModel()
@@ -430,33 +457,6 @@ namespace SPPC.Tools.LicenseManager
             }
 
             return result == DialogResult.OK;
-        }
-
-        private void CreateApiServiceLicense(LicenseModel license, CustomerModel customer)
-        {
-            var path = ConfigurationManager.AppSettings["WebApiLicensePath"];
-            var devPath = String.Format("{0}.Development.json", path);
-            var licenseData = GetLicenseData(license, customer);
-            var json = JsonHelper.From(licenseData);
-            File.WriteAllText(path, json);
-            if (!File.Exists(devPath))
-            {
-                File.WriteAllText(devPath, json);
-            }
-        }
-
-        private LicenseViewModel GetLicenseData(LicenseModel license, CustomerModel customer)
-        {
-            return new LicenseViewModel()
-            {
-                CustomerName = customer.CompanyName,
-                ContactName = String.Format("{0} {1}", customer.ContactFirstName, customer.ContactLastName),
-                Edition = license.Edition,
-                UserCount = license.UserCount,
-                ActiveModules = license.ActiveModules,
-                StartDate = license.StartDate,
-                EndDate = license.EndDate
-            };
         }
 
         private bool ValidateSaveInstance()

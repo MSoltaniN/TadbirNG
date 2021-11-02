@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using SPPC.Framework.Common;
 
@@ -16,9 +17,16 @@ namespace SPPC.Framework.Cryptography
         /// <summary>
         /// Initializes a new instance of the <see cref="CryptoService"/> class.
         /// </summary>
-        public CryptoService()
+        /// <param name="certificateManager">Provides services for managing X509 certificates</param>
+        public CryptoService(ICertificateManager certificateManager)
         {
+            CertificateManager = certificateManager;
         }
+
+        /// <summary>
+        /// Provides services for managing X509 certificates
+        /// </summary>
+        public ICertificateManager CertificateManager { get; }
 
         /// <summary>
         /// Transforms given binary data to a cryptographic hash value using a standard hashing algorithm.
@@ -121,6 +129,49 @@ namespace SPPC.Framework.Cryptography
             }
 
             return data;
+        }
+
+        /// <summary>
+        /// اطلاعات باینری داده شده را امضای دیجیتالی می کند
+        /// </summary>
+        /// <param name="data">اطلاعات مورد نظر برای امضا</param>
+        /// <param name="certificate">گواهینامه امنیتی مورد نظر برای انجام عملیات</param>
+        /// <returns>امضای دیجیتالی اطلاعات داده شده به شکل متنی</returns>
+        public string SignData(byte[] data, X509Certificate2 certificate)
+        {
+            string signature = String.Empty;
+            if (certificate != null)
+            {
+                var dataHash = CreateHash(data);
+                var rsa = (RSA)certificate.PrivateKey;
+                byte[] signatureBytes = rsa.SignHash(dataHash,
+                    HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+                signature = Convert.ToBase64String(signatureBytes);
+            }
+
+            return signature;
+        }
+
+        /// <summary>
+        /// اطلاعات باینری داده شده را با توجه به امضای دیجیتالی داده شده تأیید یا رد می کند
+        /// </summary>
+        /// <param name="data">اطلاعات مورد نظر برای تأیید امضا</param>
+        /// <param name="signature">امضای دیجیتالی مورد استفاده برای تأیید اطلاعات</param>
+        /// <param name="certificate">گواهینامه امنیتی مورد نظر برای انجام عملیات</param>
+        /// <returns>در صورت درستی اطلاعات داده شده مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        public bool VerifyData(byte[] data, string signature, X509Certificate2 certificate)
+        {
+            bool validated = false;
+            if (certificate != null)
+            {
+                byte[] dataHash = CreateHash(data);
+                var rsa = (RSA)certificate.PublicKey.Key;
+                validated = rsa.VerifyHash(dataHash, Convert.FromBase64String(signature),
+                    HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            }
+
+            return validated;
         }
 
         private static byte[] WrapCipher(byte[] cipher, byte[] key, byte[] iv)

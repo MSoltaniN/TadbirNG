@@ -174,7 +174,6 @@ namespace SPPC.Tadbir.Web.Api
                     ServiceRoot = _configuration["ServerRoot"]
                 };
             });
-            _services.AddTransient<IDigitalSigner, DigitalSigner>();
             _services.AddTransient<ICertificateManager, CertificateManager>();
             _services.AddTransient<IEncodedSerializer, JsonSerializer>();
             _services.AddTransient<IReportUtility, ReportUtility>();

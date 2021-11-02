@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Security.Cryptography.X509Certificates;
 
 namespace SPPC.Framework.Cryptography
 {
@@ -11,6 +10,11 @@ namespace SPPC.Framework.Cryptography
     /// </remarks>
     public interface ICryptoService
     {
+        /// <summary>
+        /// Provides services for managing X509 certificates
+        /// </summary>
+        ICertificateManager CertificateManager { get; }
+
         /// <summary>
         /// Transforms given binary data to a cryptographic hash value using a standard hashing algorithm.
         /// </summary>
@@ -46,5 +50,23 @@ namespace SPPC.Framework.Cryptography
         /// <param name="cipher">Previously encrypted data as a string representation</param>
         /// <returns>Original data retrieved from encrypted form</returns>
         string Decrypt(string cipher);
+
+        /// <summary>
+        /// اطلاعات باینری داده شده را امضای دیجیتالی می کند
+        /// </summary>
+        /// <param name="data">اطلاعات مورد نظر برای امضا</param>
+        /// <param name="certificate">گواهینامه امنیتی مورد نظر برای انجام عملیات</param>
+        /// <returns>امضای دیجیتالی اطلاعات داده شده به شکل متنی</returns>
+        string SignData(byte[] data, X509Certificate2 certificate);
+
+        /// <summary>
+        /// اطلاعات باینری داده شده را با توجه به امضای دیجیتالی داده شده تأیید یا رد می کند
+        /// </summary>
+        /// <param name="data">اطلاعات مورد نظر برای تأیید امضا</param>
+        /// <param name="signature">امضای دیجیتالی مورد استفاده برای تأیید اطلاعات</param>
+        /// <param name="certificate">گواهینامه امنیتی مورد نظر برای انجام عملیات</param>
+        /// <returns>در صورت درستی اطلاعات داده شده مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        bool VerifyData(byte[] data, string signature, X509Certificate2 certificate);
     }
 }

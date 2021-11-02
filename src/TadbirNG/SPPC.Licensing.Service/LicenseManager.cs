@@ -11,11 +11,10 @@ namespace SPPC.Licensing.Service
 {
     public class LicenseManager : ILicenseManager, IDisposable
     {
-        public LicenseManager(ILicenseRepository repository, ICryptoService crypto, IDigitalSigner signer)
+        public LicenseManager(ILicenseRepository repository, ICryptoService crypto)
         {
             _repository = repository;
             _crypto = crypto;
-            _signer = signer;
         }
 
         public async Task<string> ActivateLicenseAsync(ActivationModel activation)
@@ -71,7 +70,6 @@ namespace SPPC.Licensing.Service
 
         public string GetActiveLicense()
         {
-            _signer.Certificate = _certificate;
             var ignored = new string[]
             {
                 "Id", "CustomerId", "CustomerKey", "LicenseKey", "HardwareKey",
@@ -79,7 +77,7 @@ namespace SPPC.Licensing.Service
             };
             var json = JsonHelper.From(_license, true, ignored);
             var license = Encoding.UTF8.GetBytes(json);
-            return _signer.SignData(license);
+            return _crypto.SignData(license, _certificate);
         }
 
         private static string GetNewLicenseSecret()
@@ -159,7 +157,6 @@ namespace SPPC.Licensing.Service
 
         private readonly ILicenseRepository _repository;
         private readonly ICryptoService _crypto;
-        private readonly IDigitalSigner _signer;
         private InternalLicenseCheckModel _licenseCheck;
         private LicenseFileModel _license;
         private X509Certificate2 _certificate = new();

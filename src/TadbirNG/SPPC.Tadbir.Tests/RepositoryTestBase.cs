@@ -27,7 +27,7 @@ namespace SPPC.Tadbir.Persistence.Tests
         protected static IRepositoryContext GetRepositoryContext()
         {
             var unitOfWork = GetUnitOfWork();
-            var mapper = new DomainMapper(new CryptoService());
+            var mapper = new DomainMapper(new CryptoService(new CertificateManager()));
             var dbConsole = new SqlServerConsole();
             var secContext = new SecurityContext(GetTestUserContext());
             var localizer = GetStringLocalizer();

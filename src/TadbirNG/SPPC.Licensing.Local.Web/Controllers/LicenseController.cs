@@ -39,7 +39,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
                     return result;
                 }
 
-                var license = _utility.GetActiveLicense();
+                var license = _utility.GetLicense();
                 return Ok(license);
             }
             catch (Exception e)
@@ -62,9 +62,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
                     return result;
                 }
 
-                var licenseCheck = GetLicenseCheck(instance);
-                var license = _utility.GetLicense(licenseCheck);
-
+                var license = _utility.GetOnlineLicense(instance, GetRemoteConnection());
                 if (!String.IsNullOrEmpty(license))
                 {
                     return Ok(license);
@@ -156,18 +154,6 @@ namespace SPPC.Licensing.Local.Web.Controllers
 
             succeeded = true;
             return Ok();
-        }
-
-        private LicenseCheckModel GetLicenseCheck(string instance)
-        {
-            string certificatePath = Path.Combine(_webRoot, Constants.CertificateFile);
-            var certificate = System.IO.File.ReadAllBytes(certificatePath);
-            return new LicenseCheckModel()
-            {
-                HardwardKey = _utility.GetRemoteDeviceId(GetRemoteConnection()),
-                InstanceKey = instance,
-                Certificate = Convert.ToBase64String(certificate)
-            };
         }
 
         private string GetInstance()

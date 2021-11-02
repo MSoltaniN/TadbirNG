@@ -21,16 +21,11 @@ namespace SPPC.Tadbir.Licensing
         /// </summary>
         /// <param name="apiClient"></param>
         /// <param name="crypto">امکان انجام عملیات رمزنگاری متقارن را فراهم می کند</param>
-        /// <param name="signer">امکان انجام عملیات امضای دیجیتالی را فراهم می کند</param>
-        /// <param name="manager">امکان مدیریت گواهینامه های امنیتی را فراهم می کند </param>
         /// <param name="deviceId">امکان خواندن شناسه سخت افزاری را فراهم می کند</param>
-        public LicenseUtility(IApiClient apiClient, ICryptoService crypto, IDigitalSigner signer,
-            ICertificateManager manager, IDeviceIdProvider deviceId)
+        public LicenseUtility(IApiClient apiClient, ICryptoService crypto, IDeviceIdProvider deviceId)
         {
             _apiClient = apiClient;
             _crypto = crypto;
-            _signer = signer;
-            _manager = manager;
             _deviceId = deviceId;
         }
 
@@ -38,18 +33,6 @@ namespace SPPC.Tadbir.Licensing
         /// مسیر فایل مجوز ایجاد شده پس از فعال سازی برنامه
         /// </summary>
         public string LicensePath { get; set; }
-
-        /// <summary>
-        /// نمونه جدیدی از این کلاس را با پیاده سازی پیش فرض ساخته و برمی گرداند
-        /// </summary>
-        /// <param name="webRoot">آدرس اصلی سرویس آنلاین کنترل لایسنس تدبیر</param>
-        /// <returns>نمونه جدید با پیاده سازی پیش فرض برای همه وابستگی های کلاس</returns>
-        public static ILicenseUtility CreateDefault(string webRoot)
-        {
-            var crypto = new CryptoService();
-            return new LicenseUtility(new ServiceClient(webRoot),
-                crypto, new DigitalSigner(crypto), new CertificateManager(), new DeviceIdProvider());
-        }
 
         /// <summary>
         /// مجوز برنامه را فعالسازی می کند
@@ -87,6 +70,34 @@ namespace SPPC.Tadbir.Licensing
             }
 
             return result;
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="licenseCheck"></param>
+        /// <returns></returns>
+        public string GetOnlineLicense(string instance, RemoteConnection connection)
+        {
+            var licenseCheck = GetLicenseCheck(instance, connection);
+            _apiClient.AddHeader(
+                Constants.LicenseCheckHeaderName, _crypto.Encrypt(JsonHelper.From(licenseCheck)));
+            return _apiClient.Get<string>(LicenseApi.License);
+        }
+
+        /// <summary>
+        /// اطلاعات مجوز فعال سازی شده موجود را خوانده و به صورت امضای دیجیتالی برمی گرداند
+        /// </summary>
+        /// <returns>امضای دیجیتالی به دست آمده از مجوز فعال سازی شده</returns>
+        public string GetLicense()
+        {
+            var ignored = new string[]
+            {
+                "CustomerKey", "LicenseKey", "HardwareKey", "ClientKey", "Secret", "IsActivated"
+            };
+            string license = JsonHelper.From(_license, true, ignored);
+            var licenseBytes = Encoding.UTF8.GetBytes(license);
+            return _crypto.SignData(licenseBytes, _certificate);
         }
 
         /// <summary>
@@ -193,69 +204,14 @@ namespace SPPC.Tadbir.Licensing
             byte[] apiLicenseBytes = Encoding.UTF8.GetBytes(apiLicense);
             string licenseData = File.ReadAllText(LicensePath, Encoding.UTF8);
             _license = LoadLicense(licenseData);
-            _signer.Certificate = LoadCerificate();
-            return _signer.VerifyData(apiLicenseBytes, signature);
+            var certificate = LoadCerificate();
+            return _crypto.VerifyData(apiLicenseBytes, signature, certificate);
         }
 
-        /// <summary>
-        /// اطلاعات مجوز فعال سازی شده موجود را خوانده و به صورت امضای دیجیتالی برمی گرداند
-        /// </summary>
-        /// <returns>امضای دیجیتالی به دست آمده از مجوز فعال سازی شده</returns>
-        public string GetActiveLicense()
-        {
-            _signer.Certificate = _certificate;
-            var ignored = new string[]
-            {
-                "CustomerKey", "LicenseKey", "HardwareKey", "ClientKey", "Secret", "IsActivated"
-            };
-            string license = JsonHelper.From(_license, true, ignored);
-            var licenseBytes = Encoding.UTF8.GetBytes(license);
-            return _signer.SignData(licenseBytes);
-        }
-
-        /// <summary>
-        /// اطلاعات رمزنگاری شده مجوز را خوانده و به صورت مدل اطلاعاتی مجوز برمی گرداند
-        /// </summary>
-        /// <param name="licenseData">اطلاعات رمزنگاری مجوز</param>
-        /// <returns>اطلاعات رمزگشایی شده مجوز به صورت مدل اطلاعاتی مجوز</returns>
-        public LicenseFileModel LoadLicense(string licenseData)
-        {
-            var json = _crypto.Decrypt(licenseData);
-            return JsonHelper.To<LicenseFileModel>(json);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="activation"></param>
-        /// <returns></returns>
-        public string GetActivatedLicense(ActivationModel activation)
+        private string GetActivatedLicense(ActivationModel activation)
         {
             Verify.ArgumentNotNull(activation, nameof(activation));
             return _apiClient.Update<ActivationModel, string>(activation, LicenseApi.ActivateLicense);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="licenseCheck"></param>
-        /// <returns></returns>
-        public string GetLicense(LicenseCheckModel licenseCheck)
-        {
-            Verify.ArgumentNotNull(licenseCheck, nameof(licenseCheck));
-            _apiClient.AddHeader(
-                Constants.LicenseCheckHeaderName, _crypto.Encrypt(JsonHelper.From(licenseCheck)));
-            return _apiClient.Get<string>(LicenseApi.License);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="connection"></param>
-        /// <returns></returns>
-        public string GetRemoteDeviceId(RemoteConnection connection)
-        {
-            return _deviceId.GetRemoteDeviceId(connection);
         }
 
         private ActivationModel GetActivationData(string instance, RemoteConnection connection)
@@ -266,7 +222,8 @@ namespace SPPC.Tadbir.Licensing
                 HardwareKey = _deviceId.GetRemoteDeviceId(connection),
             };
 
-            _certificate = _manager.GenerateSelfSigned(Constants.IssuerName, Constants.SubjectName);
+            _certificate = _crypto.CertificateManager.GenerateSelfSigned(
+                Constants.IssuerName, Constants.SubjectName);
             activation.ClientKey = Convert.ToBase64String(_certificate.GetPublicKey());
             return activation;
         }
@@ -277,6 +234,25 @@ namespace SPPC.Tadbir.Licensing
             var license = LoadLicense(licenseData);
             var certificateBytes = _certificate.Export(X509ContentType.Pkcs12, license.Secret);
             File.WriteAllBytes(path, certificateBytes);
+        }
+
+        private LicenseCheckModel GetLicenseCheck(string instance, RemoteConnection connection)
+        {
+            string certificatePath = Path.Combine(
+                Path.GetDirectoryName(LicensePath), Constants.CertificateFile);
+            var certificate = File.ReadAllBytes(certificatePath);
+            return new LicenseCheckModel()
+            {
+                HardwardKey = _deviceId.GetRemoteDeviceId(connection),
+                InstanceKey = instance,
+                Certificate = Convert.ToBase64String(certificate)
+            };
+        }
+
+        private LicenseFileModel LoadLicense(string licenseData)
+        {
+            var json = _crypto.Decrypt(licenseData);
+            return JsonHelper.To<LicenseFileModel>(json);
         }
 
         private bool EnsureLicenseExists()
@@ -403,13 +379,11 @@ namespace SPPC.Tadbir.Licensing
         {
             string root = Path.GetDirectoryName(LicensePath);
             string certificatePath = Path.Combine(root, Constants.CertificateFile);
-            return _manager.GetFromFile(certificatePath, _license.Secret);
+            return _crypto.CertificateManager.GetFromFile(certificatePath, _license.Secret);
         }
 
         private readonly IApiClient _apiClient;
         private readonly ICryptoService _crypto;
-        private readonly IDigitalSigner _signer;
-        private readonly ICertificateManager _manager;
         private readonly IDeviceIdProvider _deviceId;
         private LicenseFileModel _license;
         private X509Certificate2 _certificate;

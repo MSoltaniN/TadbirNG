@@ -51,7 +51,6 @@ namespace SPPC.Licensing.Web
         {
             _services.AddTransient<ICryptoService, CryptoService>();
             _services.AddTransient<IEncodedSerializer, JsonSerializer>();
-            _services.AddTransient<IDigitalSigner, DigitalSigner>();
             _services.AddTransient<ICertificateManager, CertificateManager>();
         }
 

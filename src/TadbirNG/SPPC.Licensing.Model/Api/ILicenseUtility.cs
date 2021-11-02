@@ -22,6 +22,19 @@ namespace SPPC.Tadbir.Licensing
         ActivationResult ActivateLicense(string instance, RemoteConnection connection);
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <param name="licenseCheck"></param>
+        /// <returns></returns>
+        string GetOnlineLicense(string instance, RemoteConnection connection);
+
+        /// <summary>
+        /// اطلاعات مجوز فعال سازی شده موجود را خوانده و به صورت امضای دیجیتالی برمی گرداند
+        /// </summary>
+        /// <returns>امضای دیجیتالی به دست آمده از مجوز فعال سازی شده</returns>
+        string GetLicense();
+
+        /// <summary>
         /// درستی اطلاعات موجود در فایل مجوز را به طور کامل بررسی می کند
         /// </summary>
         /// <param name="instance"></param>
@@ -44,39 +57,5 @@ namespace SPPC.Tadbir.Licensing
         /// <returns>در صورت درستی مجوز مقدار بولی "درست" و در صورت
         /// عدم مطابقت اطلاعات متنی با اطلاعات فعال سازی شده مقدار بولی "نادرست" را برمی گرداند</returns>
         bool ValidateSignature(string apiLicense, string signature);
-
-        /// <summary>
-        /// اطلاعات مجوز فعال سازی شده موجود را خوانده و به صورت امضای دیجیتالی برمی گرداند
-        /// </summary>
-        /// <returns>امضای دیجیتالی به دست آمده از مجوز فعال سازی شده</returns>
-        string GetActiveLicense();
-
-        /// <summary>
-        /// اطلاعات رمزنگاری شده مجوز را خوانده و به صورت مدل اطلاعاتی مجوز برمی گرداند
-        /// </summary>
-        /// <param name="licenseData">اطلاعات رمزنگاری مجوز</param>
-        /// <returns>اطلاعات رمزگشایی شده مجوز به صورت مدل اطلاعاتی مجوز</returns>
-        LicenseFileModel LoadLicense(string licenseData);
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="activation"></param>
-        /// <returns></returns>
-        string GetActivatedLicense(ActivationModel activation);
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="licenseCheck"></param>
-        /// <returns></returns>
-        string GetLicense(LicenseCheckModel licenseCheck);
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="connection"></param>
-        /// <returns></returns>
-        string GetRemoteDeviceId(RemoteConnection connection);
     }
 }
