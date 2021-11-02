@@ -65,8 +65,8 @@ namespace SPPC.Tadbir.Persistence
             builder.AppendLine("=======================================================================");
             builder.AppendLine();
             foreach (var group in mappings
-                .OrderBy(map => map.Key)
-                .GroupBy(map => map.Key))
+                .GroupBy(map => map.Key)
+                .OrderBy(map => map.Key))
             {
                 var srcItems = group.Key.Split('.');
                 builder.AppendFormat(">{0} Mappings :{1}", srcItems.Last(), Environment.NewLine);

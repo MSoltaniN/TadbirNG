@@ -63,6 +63,9 @@ namespace SPPC.Tadbir.Persistence
                     row["TABLE_NAME"].ToString(), row["COLUMN_NAME"].ToString().Replace("ID", "Id")))
                 .OrderBy(kv => kv.Key)
                     .ThenBy(kv => kv.Value));
+            Array.ForEach(dbNullables
+                .Where(kv => kv.Value == kv.Key + "Id")
+                .ToArray(), item => dbNullables.Remove(item));
             return dbNullables;
         }
 
