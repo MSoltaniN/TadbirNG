@@ -80,6 +80,33 @@ namespace SPPC.Licensing.Local.Web.Controllers
             }
         }
 
+        // PUT: api/license/activate
+        [HttpPut]
+        [Route(LicenseApi.ActivateLicenseUrl)]
+        public IActionResult PutLicenseAsActivated()
+        {
+            IActionResult result;
+            var activationResult = _utility.ActivateLicense(GetInstance(), GetRemoteConnection());
+            if (activationResult == ActivationResult.Failed)
+            {
+                result = StatusCode(500, "Error occured during activation.");
+            }
+            else if (activationResult == ActivationResult.AlreadyActivated)
+            {
+                result = Ok("Already activated.");
+            }
+            else if (activationResult == ActivationResult.BadInstance)
+            {
+                result = StatusCode(403, "Given license cannot be activated.");
+            }
+            else
+            {
+                result = Ok();
+            }
+
+            return result;
+        }
+
         // PUT: api/license/validate
         [HttpPut]
         [Route(LicenseApi.ValidateLicenseUrl)]

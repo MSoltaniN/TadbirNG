@@ -1,17 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using Org.BouncyCastle.Asn1;
-using Org.BouncyCastle.Asn1.Pkcs;
-using Org.BouncyCastle.Asn1.X509;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Generators;
-using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Math;
-using Org.BouncyCastle.Pkcs;
-using Org.BouncyCastle.Security;
-using Org.BouncyCastle.Utilities;
-using Org.BouncyCastle.X509;
+using SPPC.Framework.Values;
 
 namespace SPPC.Framework.Cryptography
 {
@@ -35,10 +26,49 @@ namespace SPPC.Framework.Cryptography
         /// <returns>گواهینامه خودامضای جدید</returns>
         public X509Certificate2 GenerateSelfSigned(string issuerName, string subjectName)
         {
-            AsymmetricKeyParameter myCAprivateKey = null;
-            GenerateRoot(issuerName, ref myCAprivateKey);
-            var selfSigned = GenerateSelfSigned(subjectName, issuerName, myCAprivateKey);
-            return selfSigned;
+            X509Certificate2 certificate;
+            using (var issuerKey = RSA.Create(Constants.IssuerKeySizeInBits))
+            {
+                using var certKey = RSA.Create(Constants.CertKeySizeInBits);
+                var parentReq = new CertificateRequest(
+                    issuerName, issuerKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+
+                parentReq.CertificateExtensions.Add(
+                    new X509BasicConstraintsExtension(true, false, 0, true));
+
+                parentReq.CertificateExtensions.Add(
+                    new X509SubjectKeyIdentifierExtension(parentReq.PublicKey, false));
+
+                using var parentCert = parentReq.CreateSelfSigned(
+                    DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddYears(2));
+                var req = new CertificateRequest(
+                    subjectName, certKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+
+                req.CertificateExtensions.Add(
+                    new X509BasicConstraintsExtension(false, false, 0, false));
+
+                req.CertificateExtensions.Add(
+                    new X509KeyUsageExtension(
+                        X509KeyUsageFlags.DigitalSignature | X509KeyUsageFlags.NonRepudiation, false));
+
+                req.CertificateExtensions.Add(
+                    new X509EnhancedKeyUsageExtension(
+                        new OidCollection
+                        {
+                            new Oid("1.3.6.1.5.5.7.3.8")
+                        },
+                        true));
+
+                req.CertificateExtensions.Add(
+                    new X509SubjectKeyIdentifierExtension(req.PublicKey, false));
+
+                var publicKeyCert = req.Create(
+                    parentCert, DateTimeOffset.UtcNow, DateTimeOffset.UtcNow.AddYears(1),
+                    new byte[] { 1, 2, 3, 4 });
+                certificate = publicKeyCert.CopyWithPrivateKey(certKey);
+            }
+
+            return certificate;
         }
 
         /// <summary>
@@ -90,141 +120,6 @@ namespace SPPC.Framework.Cryptography
         {
             var rawData = File.ReadAllBytes(path);
             return new X509Certificate2(rawData, password);
-        }
-
-        private static SecureRandom GetSecureRandom()
-        {
-            byte[] seed = RandomGenerator.Generate(32);
-            SecureRandom random = SecureRandom.GetInstance("SHA256PRNG");
-            random.SetSeed(seed);
-            return random;
-        }
-
-        private static X509Certificate2 GenerateRoot(string subjectName, ref AsymmetricKeyParameter caPrivateKey)
-        {
-            const int keyStrength = 2048;
-
-            // Generating Random Numbers
-            var random = GetSecureRandom();
-
-            // The Certificate Generator
-            var certificateGenerator = new X509V3CertificateGenerator();
-
-            // Serial Number
-            BigInteger serialNumber = BigIntegers.CreateRandomInRange(BigInteger.One, BigInteger.ValueOf(Int64.MaxValue), random);
-            certificateGenerator.SetSerialNumber(serialNumber);
-
-            // Signature Algorithm
-            const string signatureAlgorithm = "SHA256WithRSA";
-#pragma warning disable CS0618 // Type or member is obsolete
-            certificateGenerator.SetSignatureAlgorithm(signatureAlgorithm);
-#pragma warning restore CS0618 // Type or member is obsolete
-
-            // Issuer and Subject Name
-            var subjectDN = new X509Name(subjectName);
-            X509Name issuerDN = subjectDN;
-            certificateGenerator.SetIssuerDN(issuerDN);
-            certificateGenerator.SetSubjectDN(subjectDN);
-
-            // Valid For
-            DateTime notBefore = DateTime.UtcNow.Date;
-            DateTime notAfter = notBefore.AddYears(2);
-
-            certificateGenerator.SetNotBefore(notBefore);
-            certificateGenerator.SetNotAfter(notAfter);
-
-            // Subject Public Key
-            AsymmetricCipherKeyPair subjectKeyPair;
-            var keyGenerationParameters = new KeyGenerationParameters(random, keyStrength);
-            var keyPairGenerator = new RsaKeyPairGenerator();
-            keyPairGenerator.Init(keyGenerationParameters);
-            subjectKeyPair = keyPairGenerator.GenerateKeyPair();
-
-            certificateGenerator.SetPublicKey(subjectKeyPair.Public);
-
-            // Generating the Certificate
-            AsymmetricCipherKeyPair issuerKeyPair = subjectKeyPair;
-
-            // Selfsign certificate
-#pragma warning disable CS0618 // Type or member is obsolete
-            Org.BouncyCastle.X509.X509Certificate certificate = certificateGenerator.Generate(issuerKeyPair.Private, random);
-#pragma warning restore CS0618 // Type or member is obsolete
-            var x509 = new X509Certificate2(certificate.GetEncoded());
-
-            caPrivateKey = issuerKeyPair.Private;
-
-            return x509;
-        }
-
-        private static X509Certificate2 GenerateSelfSigned(
-            string subjectName, string issuerName, AsymmetricKeyParameter issuerPrivKey)
-        {
-            const int keyStrength = 2048;
-
-            // Generating Random Numbers
-            var random = GetSecureRandom();
-
-            // The Certificate Generator
-            var certificateGenerator = new X509V3CertificateGenerator();
-
-            // Serial Number
-            BigInteger serialNumber = BigIntegers.CreateRandomInRange(BigInteger.One, BigInteger.ValueOf(Int64.MaxValue), random);
-            certificateGenerator.SetSerialNumber(serialNumber);
-
-            // Signature Algorithm
-            const string signatureAlgorithm = "SHA256WithRSA";
-#pragma warning disable CS0618 // Type or member is obsolete
-            certificateGenerator.SetSignatureAlgorithm(signatureAlgorithm);
-#pragma warning restore CS0618 // Type or member is obsolete
-
-            // Issuer and Subject Name
-            var subjectDN = new X509Name(subjectName);
-            var issuerDN = new X509Name(issuerName);
-            certificateGenerator.SetIssuerDN(issuerDN);
-            certificateGenerator.SetSubjectDN(subjectDN);
-
-            // Valid For
-            DateTime notBefore = DateTime.UtcNow.Date;
-            DateTime notAfter = notBefore.AddYears(2);
-
-            certificateGenerator.SetNotBefore(notBefore);
-            certificateGenerator.SetNotAfter(notAfter);
-
-            // Subject Public Key
-            AsymmetricCipherKeyPair subjectKeyPair;
-            var keyGenerationParameters = new KeyGenerationParameters(random, keyStrength);
-            var keyPairGenerator = new RsaKeyPairGenerator();
-            keyPairGenerator.Init(keyGenerationParameters);
-            subjectKeyPair = keyPairGenerator.GenerateKeyPair();
-
-            certificateGenerator.SetPublicKey(subjectKeyPair.Public);
-
-            // Selfsign certificate
-#pragma warning disable CS0618 // Type or member is obsolete
-            Org.BouncyCastle.X509.X509Certificate certificate = certificateGenerator.Generate(issuerPrivKey, random);
-#pragma warning restore CS0618 // Type or member is obsolete
-
-            // Corresponding private key
-            PrivateKeyInfo info = PrivateKeyInfoFactory.CreatePrivateKeyInfo(subjectKeyPair.Private);
-
-            // Merge into X509Certificate2
-            var x509 = new X509Certificate2(certificate.GetEncoded());
-
-            Asn1Sequence seq = (Asn1Sequence)Asn1Object.FromByteArray(info.ParsePrivateKey().GetDerEncoded());
-            if (seq.Count != 9)
-            {
-                ////throw new PemException("malformed sequence in RSA private key");
-            }
-
-#pragma warning disable CS0618 // Type or member is obsolete
-            var rsa = new RsaPrivateKeyStructure(seq);
-#pragma warning restore CS0618 // Type or member is obsolete
-            var rsaparams = new RsaPrivateCrtKeyParameters(
-                rsa.Modulus, rsa.PublicExponent, rsa.PrivateExponent, rsa.Prime1, rsa.Prime2,
-                rsa.Exponent1, rsa.Exponent2, rsa.Coefficient);
-
-            x509.PrivateKey = DotNetUtilities.ToRSA(rsaparams);
-            return x509;
         }
     }
 }

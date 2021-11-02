@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using SPPC.Framework.Values;
+﻿using SPPC.Framework.Values;
 
 namespace SPPC.Framework.Service
 {
@@ -27,13 +25,13 @@ namespace SPPC.Framework.Service
         /// </summary>
         public bool Succeeded
         {
-            get { return (Result == ServiceResult.Success); }
+            get { return Result == ServiceResult.Success; }
         }
 
         /// <summary>
         /// Gets a message that explains this response.
         /// </summary>
-        public string Message { get; private set; }
+        public string Message { get; }
 
         /// <summary>
         /// Gets possible solutions that may prevent a failed operation.
@@ -43,6 +41,6 @@ namespace SPPC.Framework.Service
         /// <summary>
         /// Gets a value that shows the result of a service operation.
         /// </summary>
-        public ServiceResult Result { get; set; }
+        public ServiceResult Result { get; }
     }
 }

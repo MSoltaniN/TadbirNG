@@ -14,6 +14,11 @@ namespace SPPC.Framework.Service
         string ServiceRoot { get; set; }
 
         /// <summary>
+        /// Gets the last response received from service
+        /// </summary>
+        ServiceResponse LastResponse { get; }
+
+        /// <summary>
         /// Adds a single-valued HTTP header specified by name and value to all requests
         /// </summary>
         /// <param name="name">Name of header to add</param>

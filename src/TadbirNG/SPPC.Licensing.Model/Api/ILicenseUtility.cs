@@ -14,6 +14,14 @@ namespace SPPC.Tadbir.Licensing
         string LicensePath { get; set; }
 
         /// <summary>
+        /// مجوز برنامه را فعالسازی می کند
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="connection"></param>
+        /// <returns>نتیجه فعالسازی مجوز به صورت کدهای سیستمی تعریف شده</returns>
+        ActivationResult ActivateLicense(string instance, RemoteConnection connection);
+
+        /// <summary>
         /// درستی اطلاعات موجود در فایل مجوز را به طور کامل بررسی می کند
         /// </summary>
         /// <param name="instance"></param>

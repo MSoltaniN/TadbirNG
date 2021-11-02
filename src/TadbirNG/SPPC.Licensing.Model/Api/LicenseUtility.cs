@@ -52,6 +52,44 @@ namespace SPPC.Tadbir.Licensing
         }
 
         /// <summary>
+        /// مجوز برنامه را فعالسازی می کند
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="connection"></param>
+        /// <returns>نتیجه فعالسازی مجوز به صورت کدهای سیستمی تعریف شده</returns>
+        public ActivationResult ActivateLicense(string instance, RemoteConnection connection)
+        {
+            if (String.IsNullOrWhiteSpace(instance))
+            {
+                return ActivationResult.Failed;
+            }
+
+            ActivationResult result;
+            var activation = GetActivationData(instance, connection);
+            var license = GetActivatedLicense(activation);
+            if (_apiClient.LastResponse.Result == ServiceResult.ValidationFailed)
+            {
+                result = ActivationResult.BadInstance;
+            }
+            else if (_apiClient.LastResponse.Result == ServiceResult.ServerError)
+            {
+                result = ActivationResult.Failed;
+            }
+            else if (license == String.Empty)
+            {
+                result = ActivationResult.AlreadyActivated;
+            }
+            else
+            {
+                File.WriteAllText(LicensePath, license);
+                ExportCertificate(license);
+                result = ActivationResult.OK;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// درستی اطلاعات موجود در فایل مجوز را به طور کامل بررسی می کند
         /// </summary>
         /// <returns>وضعیت بررسی مجوز که نشان می دهد مجوز موجود معتبر هست یا نه</returns>
@@ -218,6 +256,27 @@ namespace SPPC.Tadbir.Licensing
         public string GetRemoteDeviceId(RemoteConnection connection)
         {
             return _deviceId.GetRemoteDeviceId(connection);
+        }
+
+        private ActivationModel GetActivationData(string instance, RemoteConnection connection)
+        {
+            var activation = new ActivationModel()
+            {
+                InstanceKey = instance,
+                HardwareKey = _deviceId.GetRemoteDeviceId(connection),
+            };
+
+            _certificate = _manager.GenerateSelfSigned(Constants.IssuerName, Constants.SubjectName);
+            activation.ClientKey = Convert.ToBase64String(_certificate.GetPublicKey());
+            return activation;
+        }
+
+        private void ExportCertificate(string licenseData)
+        {
+            string path = Path.Combine(Path.GetDirectoryName(LicensePath), Constants.CertificateFile);
+            var license = LoadLicense(licenseData);
+            var certificateBytes = _certificate.Export(X509ContentType.Pkcs12, license.Secret);
+            File.WriteAllBytes(path, certificateBytes);
         }
 
         private bool EnsureLicenseExists()

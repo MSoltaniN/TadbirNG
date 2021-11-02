@@ -24,6 +24,7 @@ namespace SPPC.Framework.Service
         /// </remarks>
         public ServiceClient()
         {
+            LastResponse = new ServiceResponse();
         }
 
         /// <summary>
@@ -61,6 +62,11 @@ namespace SPPC.Framework.Service
         }
 
         /// <summary>
+        /// Gets the last response received from service
+        /// </summary>
+        public ServiceResponse LastResponse { get; private set; }
+
+        /// <summary>
         /// Adds a single-valued HTTP header specified by name and value to all requests
         /// </summary>
         /// <param name="name">Name of header to add</param>
@@ -82,8 +88,8 @@ namespace SPPC.Framework.Service
             var value = default(T);
             var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
             var response = _httpClient.GetAsync(url).Result;
-            var serviceResponse = GetResponse(response);
-            if (serviceResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
+            LastResponse = GetResponse(response);
+            if (LastResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
             {
                 value = JsonHelper.To<T>(response.Content.ReadAsStringAsync().Result);
             }
@@ -108,8 +114,8 @@ namespace SPPC.Framework.Service
                 Content = new StringContent(JsonHelper.From(data, false), Encoding.UTF8, "application/json")
             };
             var response = _httpClient.SendAsync(request).Result;
-            var serviceResponse = GetResponse(response);
-            if (serviceResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
+            LastResponse = GetResponse(response);
+            if (LastResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
             {
                 value = JsonHelper.To<T>(response.Content.ReadAsStringAsync().Result);
             }
@@ -128,7 +134,8 @@ namespace SPPC.Framework.Service
         {
             var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
             var response = _httpClient.PostAsJsonAsync(url, data).Result;
-            return GetResponse(response);
+            LastResponse = GetResponse(response);
+            return LastResponse;
         }
 
         /// <summary>
@@ -144,8 +151,8 @@ namespace SPPC.Framework.Service
             var value = default(TValue);
             var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
             var response = _httpClient.PostAsJsonAsync(url, data).Result;
-            var serviceResponse = GetResponse(response);
-            if (serviceResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
+            LastResponse = GetResponse(response);
+            if (LastResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
             {
                 value = JsonHelper.To<TValue>(response.Content.ReadAsStringAsync().Result);
             }
@@ -164,7 +171,8 @@ namespace SPPC.Framework.Service
         {
             var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
             var response = _httpClient.PutAsJsonAsync(url, data).Result;
-            return GetResponse(response);
+            LastResponse = GetResponse(response);
+            return LastResponse;
         }
 
         /// <summary>
@@ -180,8 +188,8 @@ namespace SPPC.Framework.Service
             var value = default(TValue);
             var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
             var response = _httpClient.PutAsJsonAsync(url, data).Result;
-            var serviceResponse = GetResponse(response);
-            if (serviceResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
+            LastResponse = GetResponse(response);
+            if (LastResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
             {
                 value = JsonHelper.To<TValue>(response.Content.ReadAsStringAsync().Result);
             }
@@ -198,7 +206,8 @@ namespace SPPC.Framework.Service
         {
             var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
             var response = _httpClient.DeleteAsync(url).Result;
-            return GetResponse(response);
+            LastResponse = GetResponse(response);
+            return LastResponse;
         }
 
         #region IDisposable Support
@@ -238,12 +247,12 @@ namespace SPPC.Framework.Service
             if (response.StatusCode == HttpStatusCode.BadRequest)
             {
                 var message = response.Content.ReadAsStringAsync().Result;
-                var serviceMessage = JsonHelper.To<ServiceMessage>(message);
-                serviceResponse = new ServiceResponse(ServiceResult.ValidationFailed, serviceMessage.Message);
+                serviceResponse = new ServiceResponse(ServiceResult.ValidationFailed, message);
             }
             else if (response.StatusCode == HttpStatusCode.InternalServerError)
             {
-                serviceResponse = new ServiceResponse(ServiceResult.ServerError, String.Empty);
+                var message = response.Content.ReadAsStringAsync().Result;
+                serviceResponse = new ServiceResponse(ServiceResult.ServerError, message);
             }
             else if (response.StatusCode == HttpStatusCode.Forbidden)
             {
