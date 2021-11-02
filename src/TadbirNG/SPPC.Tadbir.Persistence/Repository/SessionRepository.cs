@@ -14,7 +14,7 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
-        public SessionRepository(RepositoryContext context)
+        public SessionRepository(IRepositoryContext context)
             : base(context)
         {
             UnitOfWork.UseSystemContext();
