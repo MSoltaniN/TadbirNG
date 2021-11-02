@@ -154,6 +154,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IProfitLossRepository, ProfitLossRepositoryDirect>();
             _services.AddTransient<IBalanceSheetRepository, BalanceSheetRepositoryDirect>();
             _services.AddTransient<ISystemErrorRepository, SystemErrorRepository>();
+            _services.AddTransient<ISessionRepository, SessionRepository>();
         }
 
         private void AddServiceTypes()
