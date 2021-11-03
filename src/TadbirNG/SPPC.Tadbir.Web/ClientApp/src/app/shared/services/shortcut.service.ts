@@ -31,51 +31,40 @@ export class ShortcutService {
    * @param command
    */
   hotkeyUsed(ctrl: boolean, alt: boolean, shift: boolean, key: string, command: any) {
-    var ctrlFound: boolean = false;
-    var altFound: boolean = false;
-    var shiftFound: boolean = false;
-    var keyFound: boolean = false;
+    // ['ctrl','alt','shift','key']
+    var keys : string[] = ['0','0','0','0'];
+    var matchKeys : string[] = [];
+
+    matchKeys[0] = ctrl ? '1' : '0';
+    matchKeys[1] = alt ? '1' : '0';
+    matchKeys[2] = shift ? '1' : '0';
+    matchKeys[3] = '1';
 
     var it = command.hotKey.toLowerCase();
-    if (ctrl && it.indexOf('ctrl') >= 0) {
-      ctrlFound = true;
+    if (it.indexOf('ctrl') >= 0) {
+      keys[0] = '1';
     }
 
     if (it.indexOf('alt') >= 0) {
-      if (alt) {
-        altFound = true;
-      }
+      keys[1] = '1';
     }
-
+       
     if (it.indexOf('shift') >= 0) {
-      if (shift) {
-        shiftFound = true;
-      }
+      keys[2] = '1';
     }
+    
+    var onlykey = it.replace('alt','').replace('ctrl','').replace('shift','');
+    if (onlykey.indexOf(key) >= 0)
+    {
+      keys[3] = '1';
+    }      
+       
+    var keyStr = keys.join('');
+    var matchKeyStr = matchKeys.join('');
 
-    if (it.indexOf('+' + key) >= 0)
-      keyFound = true;
-
-
-    if (ctrl && shift && alt) {
-      if ((ctrlFound && shiftFound && altFound) && keyFound)
-        return command;
-    }
-    else if (ctrl && shift) {
-      if ((ctrlFound && shiftFound) && keyFound)
-        return command;
-    }
-    else if (ctrl && alt) {
-      if ((ctrlFound && altFound) && keyFound)
-        return command;
-    }
-    else if (shift && alt) {
-      if ((shiftFound && altFound) && keyFound)
-        return command;
-    }
-    else if (ctrl) {
-      if ((ctrlFound) && keyFound)
-        return command;
+    if(parseInt(keyStr,2) == parseInt(matchKeyStr,2))
+    {
+      return command;
     }
   }
 }

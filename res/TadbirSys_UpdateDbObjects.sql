@@ -9354,3 +9354,29 @@ SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 
 UPDATE [Core].[Version]
 SET Number = '1.2.1261'
+
+-- 1.2.1267
+SET IDENTITY_INSERT [Reporting].[Parameter] ON
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey])
+    VALUES (167, 41, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo')
+SET IDENTITY_INSERT [Reporting].[Parameter] OFF
+
+Delete [Metadata].[ShortcutCommand]
+
+SET IDENTITY_INSERT [Metadata].[ShortcutCommand] ON
+	INSERT [Metadata].[ShortcutCommand] ([ShortcutCommandID], [PermissionID], [Name], [Scope], [HotKey], [Method])
+    VALUES (1, NULL, N'NewVoucherLine', N'VoucherLineComponent', N'Ctrl+O', N'addNew')
+	
+	INSERT [Metadata].[ShortcutCommand] ([ShortcutCommandID], [PermissionID], [Name], [Scope], [HotKey], [Method])
+    VALUES (2, NULL, N'ExportToExcel', NULL, N'Ctrl+Alt+X', N'exportToExcel')	
+	
+	INSERT [Metadata].[ShortcutCommand] ([ShortcutCommandID], [PermissionID], [Name], [Scope], [HotKey], [Method])
+    VALUES (3, NULL, N'Print', NULL, N'Ctrl+Alt+P', N'print')
+	
+	INSERT [Metadata].[ShortcutCommand] ([ShortcutCommandID], [PermissionID], [Name], [Scope], [HotKey], [Method])
+    VALUES (4, NULL, N'ReportSetting', NULL, N'Ctrl+Alt+S', N'openReportSetting')
+	
+	INSERT [Metadata].[ShortcutCommand] ([ShortcutCommandID], [PermissionID], [Name], [Scope], [HotKey], [Method])
+    VALUES (5, NULL, N'AdvanceFilter', NULL, N'Ctrl+Alt+A', N'openAdvanceFilter')
+	
+SET IDENTITY_INSERT [Metadata].[ShortcutCommand] OFF

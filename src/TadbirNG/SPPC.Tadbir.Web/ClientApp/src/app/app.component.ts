@@ -1,4 +1,4 @@
-import { Component, Inject, AfterViewInit, OnInit, HostListener, ChangeDetectorRef, Renderer } from '@angular/core';
+import { Component, Inject, AfterViewInit, OnInit, HostListener, ChangeDetectorRef, Renderer, ViewChildren, QueryList } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
@@ -6,7 +6,9 @@ import { Context, AuthenticationService } from '@sppc/core';
 import { BrowserStorageService } from '@sppc/shared/services';
 import { UserService } from '@sppc/admin/service';
 import { Command } from '@sppc/shared/models';
-
+import { ShareDataService } from '@sppc/shared/services/share-data.service';
+import { DialogComponent, DialogService } from '@progress/kendo-angular-dialog';
+import { ShortcutService } from '@sppc/shared/services/shortcut.service';
 
 declare var $: any;
 declare var Stimulsoft: any;
@@ -95,7 +97,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 
       });
   }
-
+  
 
   constructor(location: Location,
     public router: Router,
@@ -104,7 +106,7 @@ export class AppComponent implements AfterViewInit, OnInit {
     public userService: UserService,
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer,
-    private renderer: Renderer) {
+    private shortcutService:ShortcutService) {       
 
     //#region init Lang    
 
@@ -211,6 +213,10 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   @HostListener('window:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
+    //if kendodialog is activated on screen exit from function
+    if(this.document.getElementsByTagName('kendo-dialog').length > 0)
+      return;
+
     if (event.key != "Control" && event.key != "Shift" && event.key != "Alt") {
       
 
@@ -259,7 +265,7 @@ export class AppComponent implements AfterViewInit, OnInit {
   searchHotKey(ctrl: boolean,shift:boolean,alt :boolean , key:string, commands:Command[]) : Command {
     for (let command of commands) {
       if (command.hotKey != null) {
-        var result = this.hotkeyUsed(ctrl, alt, shift, key, command);
+        var result = this.shortcutService.hotkeyUsed(ctrl, alt, shift, key, command);
         if (result) return result;        
       }
 
@@ -271,62 +277,8 @@ export class AppComponent implements AfterViewInit, OnInit {
       }
     }
     return undefined;
-  }
+  } 
 
-  
-  /**
-   * در یک کامند جستجو میکند و تطابق شورت کات زا در کامند بررسی میکند
-   * @param ctrl
-   * @param alt
-   * @param shift
-   * @param key
-   * @param command
-   */
-  hotkeyUsed(ctrl: boolean, alt: boolean, shift: boolean, key: string, command: any) {
-    var ctrlFound: boolean = false;
-    var altFound: boolean = false;
-    var shiftFound: boolean = false;
-    var keyFound: boolean = false;
-
-    var it = command.hotKey.toLowerCase();
-    if (it.indexOf('ctrl') >= 0) {
-      ctrlFound = true;
-    }
-
-    if (it.indexOf('alt') >= 0) {
-      altFound = true;
-    }
-       
-    if (it.indexOf('shift') >= 0) {
-      shiftFound = true;
-    }
-    
-
-    if (it.indexOf('+' + key) >= 0)
-      keyFound = true;
-       
-
-    if ((ctrlFound && shiftFound && altFound) && keyFound) {
-      if (ctrl && shift && alt)
-        return command;
-    }
-    else if ((ctrlFound && shiftFound) && keyFound) {
-      if (ctrl && shift)
-        return command;
-    }
-    else if ((ctrlFound && altFound) && keyFound)  {
-      if (ctrl && alt)
-        return command;
-    }
-    else if ((shiftFound && altFound) && keyFound)  {
-      if (shift && alt)
-        return command;
-    }
-    else if ((ctrlFound) && keyFound){
-      if (ctrl) 
-        return command;
-    }
-  }
   
 
   initHotKeys() {
