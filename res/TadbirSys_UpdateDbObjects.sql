@@ -9380,3 +9380,10 @@ SET IDENTITY_INSERT [Metadata].[ShortcutCommand] ON
     VALUES (5, NULL, N'AdvanceFilter', NULL, N'Ctrl+Alt+A', N'openAdvanceFilter')
 	
 SET IDENTITY_INSERT [Metadata].[ShortcutCommand] OFF
+
+--1.2.1268
+UPDATE [Reporting].[Report] SET Code = 'Voucher-By-Detail' WHERE ReportID = 82
+
+UPDATE [Reporting].[Report] SET Code = 'Voucher-By-Ledger' WHERE ReportID = 83
+
+UPDATE [Reporting].[Report] SET Code = 'Voucher-By-Subsid' WHERE ReportID = 84
