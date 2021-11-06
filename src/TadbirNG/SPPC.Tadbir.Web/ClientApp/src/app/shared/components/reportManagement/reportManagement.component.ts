@@ -886,10 +886,10 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
    */
   public directShowReport()  {
 
-    var viewId = parseInt(this.ViewIdentity.ViewID);
-    var userId = this.UserId;    
-    
-    var jsonString = localStorage.getItem("s" + viewId + this.currentlang + userId);
+    var viewId = this.ViewIdentity.ViewID;
+    var userId = this.UserId;       
+
+    var jsonString = this.bStorageService.getQuickReportSetting(viewId, userId.toString());
     if (jsonString) {
       var res = <QuickReportConfigInfo>JSON.parse(jsonString);
       this.showDefaultReport(res);
