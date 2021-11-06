@@ -5,7 +5,7 @@ using SPPC.Tools.Model;
 
 namespace SPPC.Tools.Transforms.Templates
 {
-    public partial class CsViewModelFromMetadata
+    public partial class CsViewModelFromMetadata : ITextTemplate
     {
         public CsViewModelFromMetadata(Entity entity)
         {

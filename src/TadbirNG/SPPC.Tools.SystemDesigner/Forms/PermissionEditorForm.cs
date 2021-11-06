@@ -12,9 +12,9 @@ using SPPC.Framework.Persistence;
 
 namespace SPPC.Tools.SystemDesigner.Designers
 {
-    public partial class PermissionDesignerForm : Form
+    public partial class PermissionEditorForm : Form
     {
-        public PermissionDesignerForm()
+        public PermissionEditorForm()
         {
             InitializeComponent();
             Model = new PermissionDesignerModel();
@@ -268,7 +268,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private string GetSysConnectionString()
         {
-            string path = @"..\..\src\Framework\SPPC.Tadbir.Web.Api\appsettings.Development.json";
+            string path = @"..\..\..\src\TadbirNG\SPPC.Tadbir.Web.Api\appsettings.Development.json";
             var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
             return appSettings.ConnectionStrings.TadbirSysApi;
         }

@@ -4,7 +4,7 @@ using SPPC.Tools.Model;
 
 namespace SPPC.Tools.Transforms.Templates
 {
-    public partial class SqlCreateTableFromMetadata
+    public partial class SqlCreateTableFromMetadata : ITextTemplate
     {
         public SqlCreateTableFromMetadata(Entity[] entities)
         {

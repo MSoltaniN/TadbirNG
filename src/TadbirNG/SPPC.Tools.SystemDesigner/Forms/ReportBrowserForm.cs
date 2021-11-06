@@ -11,9 +11,9 @@ using SPPC.Framework.Persistence;
 
 namespace SPPC.Tools.SystemDesigner.Designers
 {
-    public partial class ManageReportsForm : Form
+    public partial class ReportBrowserForm : Form
     {
-        public ManageReportsForm()
+        public ReportBrowserForm()
         {
             InitializeComponent();
             LoadDataTables();
@@ -27,22 +27,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private void LoadGridView()
         {
-            grdNewReports.DataSource = _reportTable;
-                //from table in _reportTable.AsEnumerable()
-                //                       select new { ReportID = (int)table["ReportID"]
-                //                                   , ParentID = (int)table["ParentID"] 
-                //                                   , ViewID = (int)table["ViewID"]
-                //                                   , SubsystemID = (int)table["SubsystemID"]
-                //                                   , ServiceUrl = (int)table["ServiceUrl"]
-                //                                   , IsGroup = (int)table["IsGroup"]
-                //                                   , IsSystem = (int)table["IsSystem"]
-                //                                   , IsDefault = (int)table["IsDefault"]
-                //                                   , IsDynamic = (int)table["IsDynamic"]
-                //                                   , EnCaption = (int)table["EnCaption"]
-                //                                   , FaCaption = (int)table["FaCaption"]
-                //                                   , EnTemplatePath = (int)table["EnTemplatePath"]
-                //                                   , FaTemplatePath = (int)table["FaTemplatePath"] };
-
+            grdReports.DataSource = _reportTable;
         }
 
         private void LoadDataTables()
@@ -72,7 +57,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private void Add_Click(object sender, EventArgs e)
         {
-            var form = new ReportDesignerForm()
+            var form = new ReportEditorForm()
             {
                 SysConnection = _sysConnection ,
                
@@ -102,15 +87,14 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private void Edit_Click(object sender, EventArgs e)
         {
-            
             int reportId = 1;
-            if (grdNewReports.SelectedRows.Count > 0)
+            if (grdReports.SelectedRows.Count > 0)
             {
-                reportId = Convert.ToInt32(grdNewReports.SelectedRows[0].Cells["ReportID"].Value.ToString());
+                reportId = Convert.ToInt32(grdReports.SelectedRows[0].Cells["ReportID"].Value.ToString());
                 DataRow dr = _reportTable.Select(string.Format("ReportID={0}", reportId)).FirstOrDefault();
                 if (dr != null)
                 {
-                    var designer = new ReportDesignerForm()
+                    var designer = new ReportEditorForm()
                     {
                         SysConnection = _sysConnection
                     };
@@ -152,9 +136,9 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private void Delete_Click(object sender, EventArgs e)
         {
-            if (grdNewReports.SelectedRows.Count > 0)
+            if (grdReports.SelectedRows.Count > 0)
             {
-                int reportId = Convert.ToInt32(grdNewReports.SelectedRows[0].Cells["ReportID"].Value.ToString());
+                int reportId = Convert.ToInt32(grdReports.SelectedRows[0].Cells["ReportID"].Value.ToString());
                 DataRow dr = _reportTable.Select(string.Format("ReportID={0}", reportId)).FirstOrDefault();
                 dr.Delete();
                 _paramDictionary.Remove(Convert.ToInt32(dr["ReportId"]));
@@ -271,7 +255,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private string GetSysConnectionString()
         {
-            string path = @"..\..\src\Framework\SPPC.Tadbir.Web.Api\appsettings.Development.json";
+            string path = @"..\..\..\src\TadbirNG\SPPC.Tadbir.Web.Api\appsettings.Development.json";
             var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
             return appSettings.ConnectionStrings.TadbirSysApi;
         }
@@ -290,6 +274,6 @@ namespace SPPC.Tools.SystemDesigner.Designers
         private string _sysConnection;
         private DataTable _reportTable = new DataTable("ReportTable");
         private Dictionary<int, DataTable> _paramDictionary = new Dictionary<int, DataTable>();
-        private const string _TadbirSysUpdateScript = @"..\..\res\TadbirSys_UpdateDbObjects.sql";
+        private const string _TadbirSysUpdateScript = @"..\..\..\res\TadbirSys_UpdateDbObjects.sql";
     }
 }

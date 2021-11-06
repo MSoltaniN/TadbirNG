@@ -11,9 +11,9 @@ using SPPC.Tools.Model;
 
 namespace SPPC.Tools.SystemDesigner.Forms
 {
-    public partial class LogCatalogueForm : Form
+    public partial class LogSettingBrowserForm : Form
     {
-        public LogCatalogueForm()
+        public LogSettingBrowserForm()
         {
             InitializeComponent();
             _dal = new SqlDataLayer(_connection);

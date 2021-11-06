@@ -100,7 +100,7 @@ SET ", schema, table);
 
         private string GetSysConnectionString()
         {
-            string path = @"..\..\src\Framework\SPPC.Tadbir.Web.Api\appsettings.Development.json";
+            string path = @"..\..\..\src\TadbirNG\SPPC.Tadbir.Web.Api\appsettings.Development.json";
             var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
             return appSettings.ConnectionStrings.TadbirSysApi;
         }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
-using System.Linq;
-using SPPC.Tools.MetaDesigner.Persistence;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms.Templates;
 

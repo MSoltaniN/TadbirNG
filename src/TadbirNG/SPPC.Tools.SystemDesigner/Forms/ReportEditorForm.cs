@@ -6,9 +6,9 @@ using SPPC.Framework.Persistence;
 
 namespace SPPC.Tools.SystemDesigner.Designers
 {
-    public partial class ReportDesignerForm : Form
+    public partial class ReportEditorForm : Form
     {
-        public ReportDesignerForm()
+        public ReportEditorForm()
         {
             InitializeComponent();
             Parameters = new DataTable("ParameterTable");

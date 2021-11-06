@@ -9361,7 +9361,7 @@ INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Ope
     VALUES (167, 41, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo')
 SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 
-Delete [Metadata].[ShortcutCommand]
+DELETE [Metadata].[ShortcutCommand]
 
 SET IDENTITY_INSERT [Metadata].[ShortcutCommand] ON
 	INSERT [Metadata].[ShortcutCommand] ([ShortcutCommandID], [PermissionID], [Name], [Scope], [HotKey], [Method])
@@ -9380,3 +9380,4 @@ SET IDENTITY_INSERT [Metadata].[ShortcutCommand] ON
     VALUES (5, NULL, N'AdvanceFilter', NULL, N'Ctrl+Alt+A', N'openAdvanceFilter')
 	
 SET IDENTITY_INSERT [Metadata].[ShortcutCommand] OFF
+

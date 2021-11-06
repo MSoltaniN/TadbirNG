@@ -64,7 +64,7 @@ namespace SPPC.Tadbir.Persistence.Tests
         {
             var options = new LocalizationOptions()
             {
-                ResourcesPath = @"..\..\..\src\Framework\SPPC.Tadbir.Resources"
+                ResourcesPath = @"..\..\..\src\TadbirNG\SPPC.Tadbir.Resources"
             };
             var factory = new ResourceManagerStringLocalizerFactory(
                 new OptionsWrapper<LocalizationOptions>(options), new NullLoggerFactory());
