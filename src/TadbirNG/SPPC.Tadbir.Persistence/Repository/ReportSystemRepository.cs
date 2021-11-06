@@ -295,7 +295,8 @@ namespace SPPC.Tadbir.Persistence
             var report = await repository.GetByIDAsync(reportId);
             if (report != null)
             {
-                var groupReports = await repository.GetByCriteriaAsync(rep => rep.Code == report.Code);
+                var groupReports = await repository.GetByCriteriaAsync(
+                    rep => rep.ViewId == report.ViewId && !rep.IsDynamic);
                 foreach (var groupReport in groupReports)
                 {
                     groupReport.IsDefault = (groupReport.Id == reportId);

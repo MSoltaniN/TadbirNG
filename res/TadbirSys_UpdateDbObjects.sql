@@ -9352,9 +9352,6 @@ INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Ope
     VALUES (166, 84, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo')
 SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 
-UPDATE [Core].[Version]
-SET Number = '1.2.1261'
-
 -- 1.2.1267
 SET IDENTITY_INSERT [Reporting].[Parameter] ON
 INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey])
@@ -9380,4 +9377,3 @@ SET IDENTITY_INSERT [Metadata].[ShortcutCommand] ON
     VALUES (5, NULL, N'AdvanceFilter', NULL, N'Ctrl+Alt+A', N'openAdvanceFilter')
 	
 SET IDENTITY_INSERT [Metadata].[ShortcutCommand] OFF
-
