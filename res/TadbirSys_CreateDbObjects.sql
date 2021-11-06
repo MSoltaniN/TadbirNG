@@ -56,6 +56,9 @@ CREATE TABLE [Core].[Version] (
 )
 GO
 
+INSERT INTO [Core].[Version] ([VersionID], [Number])
+    VALUES(1, '1.2.1267')
+
 CREATE TABLE [Metadata].[EntityType] (
     [EntityTypeID]   INT              IDENTITY (1, 1) NOT NULL,
     [Name]           NVARCHAR(128)    NOT NULL,
@@ -2351,6 +2354,18 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALU
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (209, 35, N'UncheckClosingVoucher', 8)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
+SET IDENTITY_INSERT [Metadata].[ShortcutCommand] ON
+INSERT [Metadata].[ShortcutCommand] ([ShortcutCommandID], [PermissionID], [Name], [Scope], [HotKey], [Method])
+    VALUES (1, NULL, N'NewVoucherLine', N'VoucherLineComponent', N'Ctrl+O', N'addNew')
+INSERT [Metadata].[ShortcutCommand] ([ShortcutCommandID], [PermissionID], [Name], [Scope], [HotKey], [Method])
+    VALUES (2, NULL, N'ExportToExcel', NULL, N'Ctrl+Alt+X', N'exportToExcel')	
+INSERT [Metadata].[ShortcutCommand] ([ShortcutCommandID], [PermissionID], [Name], [Scope], [HotKey], [Method])
+    VALUES (3, NULL, N'Print', NULL, N'Ctrl+Alt+P', N'print')
+INSERT [Metadata].[ShortcutCommand] ([ShortcutCommandID], [PermissionID], [Name], [Scope], [HotKey], [Method])
+    VALUES (4, NULL, N'ReportSetting', NULL, N'Ctrl+Alt+S', N'openReportSetting')
+INSERT [Metadata].[ShortcutCommand] ([ShortcutCommandID], [PermissionID], [Name], [Scope], [HotKey], [Method])
+    VALUES (5, NULL, N'AdvanceFilter', NULL, N'Ctrl+Alt+A', N'openAdvanceFilter')
+SET IDENTITY_INSERT [Metadata].[ShortcutCommand] OFF
 
 SET IDENTITY_INSERT [Reporting].[Report] ON
 INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [ViewID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
@@ -3302,6 +3317,8 @@ INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Ope
     VALUES (165, 83, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo')
 INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey])
     VALUES (166, 84, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey])
+    VALUES (167, 41, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo')
 SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 
 -- Sample user settings for UserID = 1 and Account List form (Admin user)...

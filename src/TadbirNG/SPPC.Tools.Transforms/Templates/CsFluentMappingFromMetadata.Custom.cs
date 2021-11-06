@@ -6,7 +6,7 @@ using SPPC.Tools.Model;
 
 namespace SPPC.Tools.Transforms.Templates
 {
-    public partial class CsFluentMappingFromMetadata
+    public partial class CsFluentMappingFromMetadata : ITextTemplate
     {
         public CsFluentMappingFromMetadata(Entity entity)
         {

@@ -5,19 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using SPPC.Framework.Common;
-using SPPC.Framework.Helpers;
 using SPPC.Tools.Model;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Framework.Persistence;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Designers
 {
-    public partial class PermissionDesignerForm : Form
+    public partial class PermissionEditorForm : Form
     {
-        public PermissionDesignerForm()
+        public PermissionEditorForm()
         {
             InitializeComponent();
             Model = new PermissionDesignerModel();
+            _sysConnection = DbConnections.SystemConnection;
         }
 
         public PermissionDesignerModel Model { get; set; }
@@ -25,7 +26,6 @@ namespace SPPC.Tools.SystemDesigner.Designers
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            _sysConnection = GetSysConnectionString();
             SetupBindings();
             lboxPermissions.DisplayMember = "Name";
         }
@@ -34,7 +34,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
         {
             if (String.IsNullOrEmpty(txtGroupName.Text) && !String.IsNullOrEmpty(txtEntityName.Text))
             {
-                txtGroupName.Text = String.Format("ManageEntities,{0}", GetPluralName(txtEntityName.Text));
+                txtGroupName.Text = String.Format("ManageEntities,{0}", txtEntityName.Text.ToPlural());
             }
         }
 
@@ -149,6 +149,24 @@ namespace SPPC.Tools.SystemDesigner.Designers
             ShowFlagLabel();
         }
 
+        private static PermissionViewModel GetPermission(string name, int index)
+        {
+            var Permission = new PermissionViewModel()
+            {
+                Id = index,
+                Name = name,
+                Flag = (int)Math.Pow(2, index)
+            };
+            return Permission;
+        }
+
+        private static string GetNullableValue(string nullable)
+        {
+            return String.IsNullOrEmpty(nullable)
+                ? "NULL"
+                : String.Format("N'{0}'", nullable);
+        }
+
         private void SetupBindings()
         {
             txtGroupName.DataBindings.Add("Text", Model.PermissionGroup, "Name");
@@ -189,23 +207,12 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private void LoadDefaultPermissions()
         {
-            List<string> permissionNames = new List<string> { "View", "Create", "Edit", "Delete", "Filter", "Print" };
+            var permissionNames = new List<string> { "View", "Create", "Edit", "Delete", "Filter", "Print" };
             int itemIndex = 0;
             foreach (var name in permissionNames)
             {
                 lboxPermissions.Items.Add(GetPermission(name, itemIndex++));
             }
-        }
-
-        private PermissionViewModel GetPermission(string name, int index)
-        {
-            var Permission = new PermissionViewModel()
-            {
-                Id = index,
-                Name = name,
-                Flag = (int)Math.Pow(2, index)
-            };
-            return Permission;
         }
 
         private void SavePermission(int index)
@@ -266,45 +273,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
             return new Version(assemblyVersion.ToString(3));
         }
 
-        private string GetSysConnectionString()
-        {
-            string path = @"..\..\src\Framework\SPPC.Tadbir.Web.Api\appsettings.Development.json";
-            var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
-            return appSettings.ConnectionStrings.TadbirSysApi;
-        }
-
-        private static string GetPluralName(string name)
-        {
-            Verify.ArgumentNotNullOrEmptyString(name, "name");
-            char lastChar = name[name.Length - 1];
-            string plural = name;
-            switch (lastChar)
-            {
-                case 'h':
-                case 's':
-                case 'x':
-                case 'z':
-                    plural = String.Format("{0}es", name);
-                    break;
-                case 'y':
-                    plural = String.Format("{0}ies", name.Substring(0, name.Length - 1));
-                    break;
-                default:
-                    plural = String.Format("{0}s", name);
-                    break;
-            }
-
-            return plural;
-        }
-
-        private string GetNullableValue(string nullable)
-        {
-            return String.IsNullOrEmpty(nullable)
-                ? "NULL"
-                : String.Format("N'{0}'", nullable);
-        }
-
-        private string _sysConnection;
+        private readonly string _sysConnection;
         private int _lastselectedIndex = -1;
         private const string _TadbirSysUpdateScript = @"..\..\res\TadbirSys_UpdateDbObjects.sql";
     }

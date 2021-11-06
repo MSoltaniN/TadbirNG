@@ -7,7 +7,7 @@ using SPPC.Tools.Model;
 
 namespace SPPC.Tools.Transforms.Templates
 {
-    public partial class CsPocoFromXmlMetadata
+    public partial class CsPocoFromXmlMetadata : ITextTemplate
     {
         public CsPocoFromXmlMetadata(Entity entity)
         {

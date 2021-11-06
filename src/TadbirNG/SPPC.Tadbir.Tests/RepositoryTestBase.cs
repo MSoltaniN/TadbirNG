@@ -9,11 +9,18 @@ using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tadbir.Persistence.Tests
 {
     public abstract class RepositoryTestBase
     {
+        static RepositoryTestBase()
+        {
+            _connection = DbConnections.CompanyConnection;
+            _sysConnection = DbConnections.SystemConnection;
+        }
+
         protected static ISystemRepository GetSystemRepository(IRepositoryContext context)
         {
             var sysContext = GetRepositoryContext();
@@ -64,16 +71,14 @@ namespace SPPC.Tadbir.Persistence.Tests
         {
             var options = new LocalizationOptions()
             {
-                ResourcesPath = @"..\..\..\src\Framework\SPPC.Tadbir.Resources"
+                ResourcesPath = @"..\..\..\src\TadbirNG\SPPC.Tadbir.Resources"
             };
             var factory = new ResourceManagerStringLocalizerFactory(
                 new OptionsWrapper<LocalizationOptions>(options), new NullLoggerFactory());
             return new StringLocalizer<AppStrings>(factory);
         }
 
-        private const string _connection = @"Server=BE-LAPTOP;Database=NGTadbir;
-User ID=NgTadbirUser;Password=Demo1234;Trusted_Connection=False";
-        private const string _sysConnection = @"Server=BE-LAPTOP;Database=NGTadbirSys;
-User ID=NgTadbirUser;Password=Demo1234;Trusted_Connection=False";
+        private static readonly string _connection;
+        private static readonly string _sysConnection;
     }
 }

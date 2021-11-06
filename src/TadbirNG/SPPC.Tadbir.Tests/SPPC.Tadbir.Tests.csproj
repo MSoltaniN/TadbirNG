@@ -40,6 +40,7 @@
     <ProjectReference Include="..\SPPC.Tadbir.Mapper\SPPC.Tadbir.Mapper.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Persistence\SPPC.Tadbir.Persistence.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj" />
+    <ProjectReference Include="..\SPPC.Tools.Model\SPPC.Tools.Model.csproj" />
   </ItemGroup>
 
 </Project>

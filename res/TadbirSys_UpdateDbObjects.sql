@@ -9352,16 +9352,13 @@ INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Ope
     VALUES (166, 84, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo')
 SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 
-UPDATE [Core].[Version]
-SET Number = '1.2.1261'
-
 -- 1.2.1267
 SET IDENTITY_INSERT [Reporting].[Parameter] ON
 INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey])
     VALUES (167, 41, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo')
 SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 
-Delete [Metadata].[ShortcutCommand]
+DELETE [Metadata].[ShortcutCommand]
 
 SET IDENTITY_INSERT [Metadata].[ShortcutCommand] ON
 	INSERT [Metadata].[ShortcutCommand] ([ShortcutCommandID], [PermissionID], [Name], [Scope], [HotKey], [Method])
@@ -9381,7 +9378,7 @@ SET IDENTITY_INSERT [Metadata].[ShortcutCommand] ON
 	
 SET IDENTITY_INSERT [Metadata].[ShortcutCommand] OFF
 
---1.2.1268
+--1.2.1271
 UPDATE [Reporting].[Report] SET Code = 'Voucher-By-Detail' WHERE ReportID = 82
 
 UPDATE [Reporting].[Report] SET Code = 'Voucher-By-Ledger' WHERE ReportID = 83

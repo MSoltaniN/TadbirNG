@@ -3,10 +3,11 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="SPPC.Tools.Utility" #>
 <#
 var entityInfo = _model;
 var entity = entityInfo.Entity;
-var plural = GetPluralName(entity.Name);
+var plural = entity.Name.ToPlural();
 #>
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;

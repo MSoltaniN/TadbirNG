@@ -410,7 +410,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             var query = repository.GetEntityQuery();
-            return await query.CountAsync() > 0 ? true : false;
+            return await query.AnyAsync();
         }
 
         private string GetCalendarName(SystemConfig config)

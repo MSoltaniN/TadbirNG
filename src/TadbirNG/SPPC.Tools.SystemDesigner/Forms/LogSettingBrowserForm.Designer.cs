@@ -1,6 +1,6 @@
 ﻿namespace SPPC.Tools.SystemDesigner.Forms
 {
-    partial class LogCatalogueForm
+    partial class LogSettingBrowserForm
     {
         /// <summary>
         /// Required designer variable.

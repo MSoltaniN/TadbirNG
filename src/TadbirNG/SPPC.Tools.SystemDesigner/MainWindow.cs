@@ -17,11 +17,51 @@ namespace SPPC.Tools.SystemDesigner
             InitializeComponent();
         }
 
-        private void WizardsViewWizard_Click(object sender, EventArgs e)
+        #region Metadata Menu
+
+        private void MetadataEntities_Click(object sender, EventArgs e)
+        {
+            var designer = new MetadataDesigner();
+            designer.ShowDialog(this);
+        }
+
+        private void MetadataListViews_Click(object sender, EventArgs e)
         {
             var wizard = new ViewWizardForm();
             wizard.ShowDialog();
         }
+
+        private void MetadataPermissions_Click(object sender, EventArgs e)
+        {
+            var browser = new PermissionBrowserForm();
+            browser.ShowDialog(this);
+        }
+
+        private void MetadataReports_Click(object sender, EventArgs e)
+        {
+            var browser = new ReportBrowserForm();
+            browser.ShowDialog(this);
+        }
+
+        private void MetadataLogSettings_Click(object sender, EventArgs e)
+        {
+            var browser = new LogSettingBrowserForm();
+            browser.ShowDialog(this);
+        }
+
+        private void MetadataMenus_Click(object sender, EventArgs e)
+        {
+            var browser = new MenuBrowserForm();
+            browser.ShowDialog(this);
+        }
+
+        private void MetadataShortcuts_Click(object sender, EventArgs e)
+        {
+            var browser = new ShortcutBrowserForm();
+            browser.ShowDialog(this);
+        }
+
+        #endregion
 
         private void GenerateApiController_Click(object sender, EventArgs e)
         {
@@ -67,12 +107,6 @@ namespace SPPC.Tools.SystemDesigner
             }
         }
 
-        private void ManageLogCatalog_Click(object sender, EventArgs e)
-        {
-            var form = new LogCatalogueForm();
-            form.ShowDialog(this);
-        }
-
         private void ManageSecurityTicket_Click(object sender, EventArgs e)
         {
             var form = new TicketManager();
@@ -81,26 +115,12 @@ namespace SPPC.Tools.SystemDesigner
 
         private void AddPermissionGroup_Click(object sender, EventArgs e)
         {
-            var designer = new PermissionDesignerForm();
+            var designer = new PermissionEditorForm();
             designer.ShowDialog();
         }
 
         private void EditPermissionGroup_Click(object sender, EventArgs e)
         {
-            //var Editor = new PermissionEditorForm();
-            //Editor.ShowDialog();
-        }
-
-        private void DesignersReport_Click(object sender, EventArgs e)
-        {
-            var designer = new ManageReportsForm();
-            designer.ShowDialog(this);
-        }
-
-        private void DesignersMetadata_Click(object sender, EventArgs e)
-        {
-            var designer = new MetadataDesigner();
-            designer.ShowDialog(this);
         }
     }
 }

@@ -2,9 +2,9 @@
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Tools.Model;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
 {
@@ -14,6 +14,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
         {
             InitializeComponent();
             WizardModel = new ViewWizardModel();
+            _sysConnection = DbConnections.SystemConnection;
         }
 
         public ViewWizardModel WizardModel { get; set; }
@@ -27,7 +28,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
 
         private void LoadViews()
         {
-            _sysConnection = GetSysConnectionString();
             var dal = new SqlDataLayer(_sysConnection);
             WizardModel.ViewItems = dal.Query("SELECT ViewID, Name FROM [Metadata].[View]");
         }
@@ -65,6 +65,11 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
                 DialogResult = DialogResult.OK;
                 Close();
             }
+        }
+
+        private void Cancel_Click(object sender, EventArgs e)
+        {
+            Close();
         }
 
         private void LoadFirstPage()
@@ -117,8 +122,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
 
         private void GenerateScript()
         {
-            var sysConnection = GetSysConnectionString();
-            var dal = new SqlDataLayer(sysConnection);
+            var dal = new SqlDataLayer(_sysConnection);
             int maxViewId = Convert.ToInt32(dal.QueryScalar("SELECT MAX([ViewID]) FROM [Metadata].[View]"));
             int maxColumnId = Convert.ToInt32( dal.QueryScalar("SELECT MAX([ColumnID]) FROM [Metadata].[Column]"));
             var view = WizardModel.View;
@@ -199,26 +203,14 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
             return output;
         }
 
-        private string GetSysConnectionString()
-        {
-            string path = @"..\..\src\Framework\SPPC.Tadbir.Web.Api\appsettings.Development.json";
-            var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
-            return appSettings.ConnectionStrings.TadbirSysApi;
-        }
-
         private Version GetSolutionVersion()
         {
             var assemblyVersion= GetType().Assembly.GetName().Version;
             return new Version(assemblyVersion.ToString());
         }
 
-        private void Cancel_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
         private int _currentStepNo = 1;
-        private string _sysConnection;
+        private readonly string _sysConnection;
         private const string _TadbirSysUpdateScript = @"..\..\res\TadbirSys_UpdateDbObjects.sql";
     }
 }

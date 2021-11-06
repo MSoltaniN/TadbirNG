@@ -12,6 +12,7 @@ namespace SPPC.Tools.Transforms.Templates
     using System.Linq;
     using System.Text;
     using System.Collections.Generic;
+    using SPPC.Tools.Utility;
     using System;
     
     /// <summary>
@@ -32,29 +33,29 @@ namespace SPPC.Tools.Transforms.Templates
                     "sing Microsoft.AspNetCore.Mvc;\r\nusing Microsoft.Extensions.Localization;\r\nusing " +
                     "SPPC.Tadbir.Persistence;\r\nusing SPPC.Tadbir.Web.Api.Resources.Types;\r\n\r\n");
             
-            #line 14 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\BlankController.tt"
- var name = String.Format("{0}Controller", GetPluralName(_model.EntityName)); 
+            #line 15 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\BlankController.tt"
+ var name = String.Format("{0}Controller", _model.EntityName.ToPlural()); 
             
             #line default
             #line hidden
             this.Write("namespace SPPC.Tadbir.Web.Api.Controllers\r\n{\r\n    [Produces(\"application/json\")]\r" +
                     "\n    public class ");
             
-            #line 18 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\BlankController.tt"
+            #line 19 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\BlankController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write(" : ApiControllerBase\r\n    {\r\n        public ");
             
-            #line 20 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\BlankController.tt"
+            #line 21 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\BlankController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("(I");
             
-            #line 20 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\BlankController.tt"
+            #line 21 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\BlankController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
@@ -63,7 +64,7 @@ namespace SPPC.Tools.Transforms.Templates
                     ": base(strings)\r\n        {\r\n            _repository = repository;\r\n        }\r\n\r\n" +
                     "        private readonly I");
             
-            #line 26 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\BlankController.tt"
+            #line 27 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\BlankController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default

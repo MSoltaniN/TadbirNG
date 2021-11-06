@@ -34,7 +34,7 @@ namespace SPPC.Tools.SystemDesignerCli
 
         private static string GetSysConnectionString()
         {
-            string path = @"..\..\..\src\Framework\SPPC.Tadbir.Web.Api\appsettings.Development.json";
+            string path = @"..\..\..\src\TadbirNG\SPPC.Tadbir.Web.Api\appsettings.Development.json";
             var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
             return appSettings.ConnectionStrings.TadbirSysApi;
         }
@@ -184,7 +184,7 @@ namespace SPPC.Tools.SystemDesignerCli
         private const string _scriptBlockRegex = @"-- (\d{1,}).(\d{1,}).(\d{1,})";
         private const string _tempScript = "Update.sql";
         private const string _mainDbScriptPath = @"..\..\..\res\Tadbir_CreateDbObjects.sql";
-        private const string _runtimeDbScriptPath = @"..\..\..\src\Framework\SPPC.Tadbir.Web.Api\wwwroot\static\Tadbir_CreateDbObjects.sql";
+        private const string _runtimeDbScriptPath = @"..\..\..\src\TadbirNG\SPPC.Tadbir.Web.Api\wwwroot\static\Tadbir_CreateDbObjects.sql";
         private const string _activeCompaniesQuery = @"
 SELECT DbName, Server, UserName, Password
 FROM [Config].[CompanyDb]
