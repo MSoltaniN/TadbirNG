@@ -4,6 +4,7 @@ using SPPC.Framework.Common;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms;
 using SPPC.Tools.Transforms.Templates;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Commands
 {
@@ -20,7 +21,7 @@ namespace SPPC.Tools.SystemDesigner.Commands
             var template = GetTemplate();
             string transformed = template.TransformText();
             string path = Path.Combine(
-                _model.OutputPath, String.Format("{0}Controller.cs", GetPluralName(_model.EntityName)));
+                _model.OutputPath, String.Format("{0}Controller.cs", _model.EntityName.ToPlural()));
             File.WriteAllText(path, transformed);
         }
 
@@ -41,30 +42,6 @@ namespace SPPC.Tools.SystemDesigner.Commands
             }
 
             return template;
-        }
-
-        private static string GetPluralName(string name)
-        {
-            Verify.ArgumentNotNullOrEmptyString(name, "name");
-            char lastChar = name[name.Length - 1];
-            string plural = name;
-            switch (lastChar)
-            {
-                case 'h':
-                case 's':
-                case 'x':
-                case 'z':
-                    plural = String.Format("{0}es", name);
-                    break;
-                case 'y':
-                    plural = String.Format("{0}ies", name.Substring(0, name.Length - 1));
-                    break;
-                default:
-                    plural = String.Format("{0}s", name);
-                    break;
-            }
-
-            return plural;
         }
 
         private readonly ControllerModel _model;

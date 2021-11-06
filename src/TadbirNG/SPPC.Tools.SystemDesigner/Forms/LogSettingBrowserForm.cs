@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Tools.Model;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Forms
 {
@@ -17,6 +18,8 @@ namespace SPPC.Tools.SystemDesigner.Forms
         {
             InitializeComponent();
             _dal = new SqlDataLayer(_connection);
+            _connection = DbConnections.CompanyConnection;
+            _sysConnection = DbConnections.SystemConnection;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -26,113 +29,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
             LoadLookups();
             LoadSourceEntities();
             Cursor = Cursors.Default;
-        }
-
-        private List<LogSettingModel> LoadCurrentSetting()
-        {
-            string command =
-                @"SELECT * FROM [Config].[LogSetting]";
-            var result = _dal.Query(command);
-            return result.Rows
-                .Cast<DataRow>()
-                .Select(row => new LogSettingModel()
-                {
-                    Id = IdFromRowItem(row[0]),
-                    SubsystemId = IdFromRowItem(row[1]),
-                    SourceTypeId = IdFromRowItem(row[2]),
-                    SourceId = NullableIdFromRowItem(row[3]),
-                    EntityTypeId = NullableIdFromRowItem(row[4]),
-                    OperationId = IdFromRowItem(row[5]),
-                    IsEnabled = Boolean.Parse(row[6].ToString())
-                })
-                .ToList();
-        }
-
-        private void LoadSourceEntities()
-        {
-            var settingItems = new List<LogSettingModel>();
-            settingItems.AddRange(GetMetadataLookup("EntityType")
-                .Select(row => new LogSettingModel()
-                {
-                    SubsystemId = 1,
-                    SourceTypeId = 1,
-                    EntityTypeId = Int32.Parse(row.Key),
-                    Name = row.Value
-                }));
-            settingItems.AddRange(GetMetadataLookup("OperationSource")
-                .Select(row => new LogSettingModel()
-                {
-                    SubsystemId = 1,
-                    SourceTypeId = 1,
-                    SourceId = Int32.Parse(row.Key),
-                    Name = row.Value
-                }));
-            var existing = LoadCurrentSetting();
-            MergeSettings(settingItems, existing);
-            settingItems = settingItems
-                .OrderBy(item => item.Name)
-                .ToList();
-            lbxSourceEntity.DisplayMember = "Name";
-            lbxSourceEntity.DataSource = settingItems;
-        }
-
-        private void MergeSettings(List<LogSettingModel> all, List<LogSettingModel> existing)
-        {
-            var entities = existing
-                .Where(log => log.EntityTypeId != null)
-                .GroupBy(log => log.EntityTypeId);
-            foreach (var group in entities)
-            {
-                var first = group.First();
-                var entityLog = all
-                    .Where(log => log.EntityTypeId == group.Key)
-                    .First();
-                entityLog.SubsystemId = first.SubsystemId;
-                entityLog.SourceTypeId = first.SourceTypeId;
-                entityLog.Operations.AddRange(group.Select(log => log.OperationId));
-            }
-
-            var sources = existing
-                .Where(log => log.SourceId != null)
-                .GroupBy(log => log.SourceId);
-            foreach (var group in sources)
-            {
-                var first = group.First();
-                var entityLog = all
-                    .Where(log => log.SourceId == group.Key)
-                    .First();
-                entityLog.SubsystemId = first.SubsystemId;
-                entityLog.SourceTypeId = first.SourceTypeId;
-                entityLog.Operations.AddRange(group.Select(log => log.OperationId));
-            }
-        }
-
-        private void LoadLookups()
-        {
-            var list = GetMetadataLookup("Subsystem");
-            cmbSubsystem.DisplayMember = "Value";
-            cmbSubsystem.ValueMember = "Key";
-            cmbSubsystem.DataSource = list;
-
-            list = GetMetadataLookup("OperationSourceType");
-            cmbSourceType.DisplayMember = "Value";
-            cmbSourceType.ValueMember = "Key";
-            cmbSourceType.DataSource = list;
-
-            list = GetMetadataLookup("Operation");
-            lbxOperations.DisplayMember = "Value";
-            lbxOperations.ValueMember = "Key";
-            lbxOperations.DataSource = list;
-        }
-
-        private List<KeyValue> GetMetadataLookup(string table)
-        {
-            string command = String.Format("SELECT {0}ID,Name FROM [Metadata].[{0}]", table);
-            var result = _dal.Query(command);
-            return result.Rows
-                .Cast<DataRow>()
-                .Select(row => new KeyValue(row[0].ToString(), row[1].ToString()))
-                .ToList();
         }
 
         private void SourceEntity_SelectedIndexChanged(object sender, EventArgs e)
@@ -225,20 +121,127 @@ namespace SPPC.Tools.SystemDesigner.Forms
             }
         }
 
-        private int IdFromRowItem(object item)
+        private static void MergeSettings(List<LogSettingModel> all, List<LogSettingModel> existing)
+        {
+            var entities = existing
+                .Where(log => log.EntityTypeId != null)
+                .GroupBy(log => log.EntityTypeId);
+            foreach (var group in entities)
+            {
+                var first = group.First();
+                var entityLog = all
+                    .Where(log => log.EntityTypeId == group.Key)
+                    .First();
+                entityLog.SubsystemId = first.SubsystemId;
+                entityLog.SourceTypeId = first.SourceTypeId;
+                entityLog.Operations.AddRange(group.Select(log => log.OperationId));
+            }
+
+            var sources = existing
+                .Where(log => log.SourceId != null)
+                .GroupBy(log => log.SourceId);
+            foreach (var group in sources)
+            {
+                var first = group.First();
+                var entityLog = all
+                    .Where(log => log.SourceId == group.Key)
+                    .First();
+                entityLog.SubsystemId = first.SubsystemId;
+                entityLog.SourceTypeId = first.SourceTypeId;
+                entityLog.Operations.AddRange(group.Select(log => log.OperationId));
+            }
+        }
+
+        private static int IdFromRowItem(object item)
         {
             return Int32.Parse(item.ToString());
         }
 
-        private int? NullableIdFromRowItem(object item)
+        private static int? NullableIdFromRowItem(object item)
         {
             return (item != DBNull.Value)
                 ? Int32.Parse(item.ToString())
                 : (int?)null;
         }
 
-        private const string _connection = @"Server=BE-LAPTOP;Database=NGTadbir;Trusted_Connection=True;MultipleActiveResultSets=true";
-        private const string _sysConnection = @"Server=BE-LAPTOP;Database=NGTadbirSys;Trusted_Connection=True;MultipleActiveResultSets=true";
+        private List<LogSettingModel> LoadCurrentSetting()
+        {
+            string command =
+                @"SELECT * FROM [Config].[LogSetting]";
+            var result = _dal.Query(command);
+            return result.Rows
+                .Cast<DataRow>()
+                .Select(row => new LogSettingModel()
+                {
+                    Id = IdFromRowItem(row[0]),
+                    SubsystemId = IdFromRowItem(row[1]),
+                    SourceTypeId = IdFromRowItem(row[2]),
+                    SourceId = NullableIdFromRowItem(row[3]),
+                    EntityTypeId = NullableIdFromRowItem(row[4]),
+                    OperationId = IdFromRowItem(row[5]),
+                    IsEnabled = Boolean.Parse(row[6].ToString())
+                })
+                .ToList();
+        }
+
+        private void LoadLookups()
+        {
+            var list = GetMetadataLookup("Subsystem");
+            cmbSubsystem.DisplayMember = "Value";
+            cmbSubsystem.ValueMember = "Key";
+            cmbSubsystem.DataSource = list;
+
+            list = GetMetadataLookup("OperationSourceType");
+            cmbSourceType.DisplayMember = "Value";
+            cmbSourceType.ValueMember = "Key";
+            cmbSourceType.DataSource = list;
+
+            list = GetMetadataLookup("Operation");
+            lbxOperations.DisplayMember = "Value";
+            lbxOperations.ValueMember = "Key";
+            lbxOperations.DataSource = list;
+        }
+
+        private void LoadSourceEntities()
+        {
+            var settingItems = new List<LogSettingModel>();
+            settingItems.AddRange(GetMetadataLookup("EntityType")
+                .Select(row => new LogSettingModel()
+                {
+                    SubsystemId = 1,
+                    SourceTypeId = 1,
+                    EntityTypeId = Int32.Parse(row.Key),
+                    Name = row.Value
+                }));
+            settingItems.AddRange(GetMetadataLookup("OperationSource")
+                .Select(row => new LogSettingModel()
+                {
+                    SubsystemId = 1,
+                    SourceTypeId = 1,
+                    SourceId = Int32.Parse(row.Key),
+                    Name = row.Value
+                }));
+            var existing = LoadCurrentSetting();
+            MergeSettings(settingItems, existing);
+            settingItems = settingItems
+                .OrderBy(item => item.Name)
+                .ToList();
+            lbxSourceEntity.DisplayMember = "Name";
+            lbxSourceEntity.DataSource = settingItems;
+        }
+
+        private List<KeyValue> GetMetadataLookup(string table)
+        {
+            string command = String.Format("SELECT {0}ID,Name FROM [Metadata].[{0}]", table);
+            var result = _dal.Query(command);
+            return result.Rows
+                .Cast<DataRow>()
+                .Select(row => new KeyValue(row[0].ToString(), row[1].ToString()))
+                .ToList();
+        }
+
+        private readonly string _connection;
+        private readonly string _sysConnection;
         private readonly SqlDataLayer _dal;
     }
 }

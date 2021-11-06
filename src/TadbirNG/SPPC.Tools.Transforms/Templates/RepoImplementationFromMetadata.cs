@@ -14,6 +14,7 @@ namespace SPPC.Tools.Transforms.Templates
     using System.Collections.Generic;
     using SPPC.Framework.Extensions;
     using SPPC.Tools.Model;
+    using SPPC.Tools.Utility;
     using System;
     
     /// <summary>
@@ -31,11 +32,11 @@ namespace SPPC.Tools.Transforms.Templates
         public virtual string TransformText()
         {
             
-            #line 8 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 9 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
 
 var entityInfo = _model;
 var entity = entityInfo.Entity;
-var plural = GetPluralName(entity.Name);
+var plural = entity.Name.ToPlural();
 var camelCase = entity.Name.CamelCase();
 
             
@@ -45,14 +46,14 @@ var camelCase = entity.Name.CamelCase();
                     ".EntityFrameworkCore;\r\nusing SPPC.Framework.Common;\r\nusing SPPC.Framework.Presen" +
                     "tation;\r\nusing SPPC.Tadbir.Model.");
             
-            #line 20 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 21 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Area));
             
             #line default
             #line hidden
             this.Write(";\r\nusing SPPC.Tadbir.Utility;\r\n");
             
-            #line 22 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 23 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
  if(entity.Area != "Auth")
 { 
             
@@ -60,14 +61,14 @@ var camelCase = entity.Name.CamelCase();
             #line hidden
             this.Write("using SPPC.Tadbir.ViewModel.");
             
-            #line 24 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 25 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Area));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 25 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 26 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
  } 
             
             #line default
@@ -75,35 +76,35 @@ var camelCase = entity.Name.CamelCase();
             this.Write("\r\nnamespace SPPC.Tadbir.Persistence\r\n{\r\n    /// <summary>\r\n    /// عملیات مورد نی" +
                     "از برای مدیریت ");
             
-            #line 30 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.PluralName));
             
             #line default
             #line hidden
             this.Write(" را پیاده سازی می کند\r\n    /// </summary>\r\n    public class ");
             
-            #line 32 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 33 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("Repository : EntityLoggingRepository<");
             
-            #line 32 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 33 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 32 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 33 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("ViewModel>, I");
             
-            #line 32 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 33 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
@@ -117,7 +118,7 @@ var camelCase = entity.Name.CamelCase();
         /// <param name=""system"">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
         public ");
             
-            #line 39 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 40 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
@@ -125,7 +126,7 @@ var camelCase = entity.Name.CamelCase();
             this.Write("Repository(IRepositoryContext context, ISystemRepository system)\r\n            : b" +
                     "ase(context, system.Logger)\r\n        {\r\n");
             
-            #line 42 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 43 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
  if(entityInfo.IsFiscalEntity)
    { 
             
@@ -133,14 +134,14 @@ var camelCase = entity.Name.CamelCase();
             #line hidden
             this.Write("            _system = system;\r\n");
             
-            #line 45 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 46 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
  } 
             
             #line default
             #line hidden
             this.Write("        }\r\n\r\n        /// <summary>\r\n        /// به روش آسنکرون، اطلاعات کلیه ");
             
-            #line 49 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 50 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.PluralName));
             
             #line default
@@ -149,35 +150,35 @@ var camelCase = entity.Name.CamelCase();
                     "tions\">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>\r\n        /// " +
                     "<returns>مجموعه ای از ");
             
-            #line 52 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 53 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.PluralName));
             
             #line default
             #line hidden
             this.Write(" تعریف شده</returns>\r\n        public async Task<PagedList<");
             
-            #line 53 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 54 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("ViewModel>> Get");
             
-            #line 53 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 54 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural));
             
             #line default
             #line hidden
             this.Write("Async(GridOptions gridOptions = null)\r\n        {\r\n            var ");
             
-            #line 55 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.CamelCase()));
             
             #line default
             #line hidden
             this.Write(" = new List<");
             
-            #line 55 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
@@ -185,7 +186,7 @@ var camelCase = entity.Name.CamelCase();
             this.Write("ViewModel>();\r\n            if (gridOptions.Operation != (int)OperationId.Print)\r\n" +
                     "            {\r\n");
             
-            #line 58 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 59 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
  if(entityInfo.IsFiscalEntity)
    { 
             
@@ -193,35 +194,35 @@ var camelCase = entity.Name.CamelCase();
             #line hidden
             this.Write("                var query = Repository.GetAllQuery");
             
-            #line 60 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 61 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("(ViewName.");
             
-            #line 60 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 61 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write(");\r\n                var ");
             
-            #line 61 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 62 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.CamelCase()));
             
             #line default
             #line hidden
             this.Write(" = await query\r\n                    .Select(item => Mapper.Map<");
             
-            #line 62 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 63 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("ViewModel>(item))\r\n                    .ToListAsync();\r\n");
             
-            #line 64 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 65 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
  }
    else
    { 
@@ -230,14 +231,14 @@ var camelCase = entity.Name.CamelCase();
             #line hidden
             this.Write("                var repository = UnitOfWork.GetAsyncRepository<");
             
-            #line 67 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 68 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write(">();\r\n                var ");
             
-            #line 68 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 69 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.CamelCase()));
             
             #line default
@@ -245,14 +246,14 @@ var camelCase = entity.Name.CamelCase();
             this.Write(" = await repository\r\n                    .GetEntityQuery()\r\n                    ." +
                     "Select(item => Mapper.Map<");
             
-            #line 70 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 71 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("ViewModel>(item))\r\n                    .ToListAsync();\r\n");
             
-            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 73 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
  } 
             
             #line default
@@ -260,14 +261,14 @@ var camelCase = entity.Name.CamelCase();
             this.Write("            }\r\n\r\n            await ReadAsync(gridOptions);\r\n            return ne" +
                     "w PagedList<");
             
-            #line 76 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 77 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("ViewModel>(");
             
-            #line 76 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 77 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.CamelCase()));
             
             #line default
@@ -275,7 +276,7 @@ var camelCase = entity.Name.CamelCase();
             this.Write(", gridOptions);\r\n        }\r\n\r\n        /// <summary>\r\n        /// به روش آسنکرون، " +
                     "");
             
-            #line 80 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 81 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));
             
             #line default
@@ -283,49 +284,49 @@ var camelCase = entity.Name.CamelCase();
             this.Write(" با شناسه عددی مشخص شده را خوانده و برمی گرداند\r\n        /// </summary>\r\n        " +
                     "/// <param name=\"");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 83 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Id\">شناسه عددی یکی از ");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 83 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.PluralName));
             
             #line default
             #line hidden
             this.Write(" موجود</param>\r\n        /// <returns>");
             
-            #line 83 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 84 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));
             
             #line default
             #line hidden
             this.Write(" مشخص شده با شناسه عددی</returns>\r\n        public async Task<");
             
-            #line 84 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 85 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("ViewModel> Get");
             
-            #line 84 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 85 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("Async(int ");
             
-            #line 84 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 85 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Id)\r\n        {\r\n            ");
             
-            #line 86 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 87 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
@@ -333,42 +334,42 @@ var camelCase = entity.Name.CamelCase();
             this.Write("ViewModel item = null;\r\n            var repository = UnitOfWork.GetAsyncRepositor" +
                     "y<");
             
-            #line 87 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 88 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write(">();\r\n            var ");
             
-            #line 88 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 89 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write(" = await repository.GetByIDAsync(");
             
-            #line 88 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 89 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Id);\r\n            if (");
             
-            #line 89 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 90 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write(" != null)\r\n            {\r\n                item = Mapper.Map<");
             
-            #line 91 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 92 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("ViewModel>(");
             
-            #line 91 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 92 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
@@ -376,147 +377,147 @@ var camelCase = entity.Name.CamelCase();
             this.Write(");\r\n            }\r\n\r\n            return item;\r\n        }\r\n\r\n        /// <summary>" +
                     "\r\n        /// به روش آسنکرون، اطلاعات یک ");
             
-            #line 98 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 99 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));
             
             #line default
             #line hidden
             this.Write(" را ایجاد یا اصلاح می کند\r\n        /// </summary>\r\n        /// <param name=\"");
             
-            #line 100 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 101 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("\">");
             
-            #line 100 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 101 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));
             
             #line default
             #line hidden
             this.Write(" مورد نظر برای ایجاد یا اصلاح</param>\r\n        /// <returns>اطلاعات نمایشی ");
             
-            #line 101 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 102 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));
             
             #line default
             #line hidden
             this.Write(" ایجاد یا اصلاح شده</returns>\r\n        public async Task<");
             
-            #line 102 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 103 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("ViewModel> Save");
             
-            #line 102 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 103 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("Async(");
             
-            #line 102 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 103 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("ViewModel ");
             
-            #line 102 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 103 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write(")\r\n        {\r\n            Verify.ArgumentNotNull(");
             
-            #line 104 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 105 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write(", nameof(");
             
-            #line 104 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 105 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("));\r\n            ");
             
-            #line 105 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 106 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 105 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 106 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Model;\r\n            var repository = UnitOfWork.GetAsyncRepository<");
             
-            #line 106 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 107 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write(">();\r\n            if (");
             
-            #line 107 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 108 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write(".Id == 0)\r\n            {\r\n                ");
             
-            #line 109 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 110 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Model = Mapper.Map<");
             
-            #line 109 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 110 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write(">(");
             
-            #line 109 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 110 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write(");\r\n                await InsertAsync(repository, ");
             
-            #line 110 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 111 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Model);\r\n            }\r\n            else\r\n            {\r\n                ");
             
-            #line 114 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 115 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Model = await repository.GetByIDAsync(");
             
-            #line 114 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 115 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write(".Id);\r\n                if (");
             
-            #line 115 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 116 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
@@ -524,35 +525,35 @@ var camelCase = entity.Name.CamelCase();
             this.Write("Model != null)\r\n                {\r\n                    await UpdateAsync(reposito" +
                     "ry, ");
             
-            #line 117 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 118 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Model, ");
             
-            #line 117 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 118 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write(");\r\n                }\r\n            }\r\n\r\n            return Mapper.Map<");
             
-            #line 121 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 122 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("ViewModel>(");
             
-            #line 121 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 122 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Model);\r\n        }\r\n\r\n        /// <summary>\r\n        /// به روش آسنکرون، ");
             
-            #line 125 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 126 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));
             
             #line default
@@ -560,63 +561,63 @@ var camelCase = entity.Name.CamelCase();
             this.Write(" مشخص شده با شناسه عددی را حذف می کند\r\n        /// </summary>\r\n        /// <param" +
                     " name=\"");
             
-            #line 127 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 128 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Id\">شناسه عددی ");
             
-            #line 127 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 128 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));
             
             #line default
             #line hidden
             this.Write(" مورد نظر برای حذف</param>\r\n        public async Task Delete");
             
-            #line 128 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 129 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("Async(int ");
             
-            #line 128 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 129 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Id)\r\n        {\r\n            var repository = UnitOfWork.GetAsyncRepository<");
             
-            #line 130 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 131 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write(">();\r\n            var ");
             
-            #line 131 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 132 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write(" = await repository.GetByIDAsync(");
             
-            #line 131 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 132 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Id);\r\n            if (");
             
-            #line 132 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 133 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write(" != null)\r\n            {\r\n                await DeleteAsync(repository, ");
             
-            #line 134 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 135 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
@@ -624,7 +625,7 @@ var camelCase = entity.Name.CamelCase();
             this.Write(");\r\n            }\r\n        }\r\n\r\n        /// <summary>\r\n        /// به روش آسنکرون" +
                     "، ");
             
-            #line 139 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 140 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.PluralName));
             
             #line default
@@ -632,63 +633,63 @@ var camelCase = entity.Name.CamelCase();
             this.Write(" مشخص شده با شناسه عددی را حذف می کند\r\n        /// </summary>\r\n        /// <param" +
                     " name=\"accountIds\">مجموعه ای از شناسه های عددی ");
             
-            #line 141 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 142 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.PluralName));
             
             #line default
             #line hidden
             this.Write(" مورد نظر برای حذف</param>\r\n        public async Task Delete");
             
-            #line 142 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 143 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural));
             
             #line default
             #line hidden
             this.Write("Async(IList<int> ");
             
-            #line 142 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 143 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Ids)\r\n        {\r\n            var repository = UnitOfWork.GetAsyncRepository<");
             
-            #line 144 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 145 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write(">();\r\n            foreach (int ");
             
-            #line 145 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 146 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Id in ");
             
-            #line 145 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 146 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Ids)\r\n            {\r\n                var ");
             
-            #line 147 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 148 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write(" = await repository.GetByIDAsync(");
             
-            #line 147 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 148 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("Id);\r\n                if (");
             
-            #line 148 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 149 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
@@ -696,14 +697,14 @@ var camelCase = entity.Name.CamelCase();
             this.Write(" != null)\r\n                {\r\n                    await DeleteNoLogAsync(reposito" +
                     "ry, ");
             
-            #line 150 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 151 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write(");\r\n                }\r\n            }\r\n\r\n            await OnEntityGroupDeleted(");
             
-            #line 154 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 155 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
@@ -712,49 +713,49 @@ var camelCase = entity.Name.CamelCase();
                     "ز مدل نمایشی به سطر اطلاعاتی موجود کپی می کند\r\n        /// </summary>\r\n        /" +
                     "// <param name=\"");
             
-            #line 160 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 161 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("ViewModel\">مدل نمایشی شامل آخرین تغییرات</param>\r\n        /// <param name=\"");
             
-            #line 161 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 162 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("\">سطر اطلاعاتی موجود</param>\r\n        protected override void UpdateExisting(");
             
-            #line 162 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 163 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("ViewModel ");
             
-            #line 162 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 163 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("ViewModel, ");
             
-            #line 162 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 163 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 162 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 163 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write(")\r\n        {\r\n");
             
-            #line 164 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 165 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
 
 var doNotCopy = new string[] { "ModifiedDate", "RowGuid" };
 foreach(var property in entity.Properties
@@ -765,35 +766,35 @@ foreach(var property in entity.Properties
             #line hidden
             this.Write("            ");
             
-            #line 169 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 170 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write(".");
             
-            #line 169 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 170 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
             
             #line default
             #line hidden
             this.Write(" = ");
             
-            #line 169 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 170 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(camelCase));
             
             #line default
             #line hidden
             this.Write("ViewModel.");
             
-            #line 169 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 170 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 170 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 171 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
  } 
             
             #line default
@@ -807,7 +808,7 @@ foreach(var property in entity.Properties
         /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
         protected override string GetState(");
             
-            #line 178 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 179 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
@@ -815,7 +816,7 @@ foreach(var property in entity.Properties
             this.Write(" entity)\r\n        {\r\n            throw new NotImplementedException();\r\n        }\r" +
                     "\n");
             
-            #line 182 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 183 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
  if(entityInfo.IsFiscalEntity)
    { 
             
@@ -825,7 +826,7 @@ foreach(var property in entity.Properties
                     "rn _system.Repository; }\r\n        }\r\n\r\n        private readonly ISystemRepositor" +
                     "y _system;\r\n");
             
-            #line 191 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
+            #line 192 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
  } 
             
             #line default

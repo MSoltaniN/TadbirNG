@@ -16,5 +16,10 @@ namespace SPPC.Tools.SystemDesigner.Forms
         {
             InitializeComponent();
         }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+        }
     }
 }

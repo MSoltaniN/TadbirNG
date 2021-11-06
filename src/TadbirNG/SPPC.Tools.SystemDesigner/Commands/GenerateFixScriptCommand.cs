@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
-using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Tools.Model;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Commands
 {
@@ -20,16 +19,12 @@ namespace SPPC.Tools.SystemDesigner.Commands
 
         public void Execute()
         {
-            string sysConnection = GetSysConnectionString();
+            string sysConnection = DbConnections.SystemConnection;
+            string connection = DbConnections.CompanyConnection;
             if (!sysConnection.Contains("130.185.76.7"))
             {
-                var connectionBuilder = new SqlConnectionStringBuilder(sysConnection)
-                {
-                    InitialCatalog = "NGTadbir"
-                };
-
                 // Generate script for company databases...
-                _dal = new SqlDataLayer(connectionBuilder.ConnectionString);
+                _dal = new SqlDataLayer(connection);
                 var textColumns = GetTextColumns();
                 var clauses = GetUpdateClauses(textColumns);
                 File.WriteAllText(_path, String.Join(Environment.NewLine, clauses));
@@ -41,6 +36,39 @@ namespace SPPC.Tools.SystemDesigner.Commands
                 string sysScriptPath = Path.Combine(Path.GetDirectoryName(_path), "TadbirSys_FixArabicLetters.sql");
                 File.WriteAllText(sysScriptPath, String.Join(Environment.NewLine, clauses));
             }
+        }
+
+        private static List<string> GetUpdateClauses(List<TextColumnModel> textColumns)
+        {
+            var clauses = new List<string>();
+            foreach (var tblGroup in textColumns
+                .OrderBy(col => col.Table)
+                .GroupBy(col => col.Table))
+            {
+                clauses.Add(GetUpdateClause(tblGroup.Key, tblGroup, ArabicKeh, FarsiKeh));
+                clauses.Add(GetUpdateClause(tblGroup.Key, tblGroup, ArabicYeh, FarsiYeh));
+                clauses.Add(GetUpdateClause(tblGroup.Key, tblGroup, ArabicYehAlt, FarsiYeh));
+            }
+
+            return clauses;
+        }
+
+        private static string GetUpdateClause(string table, IEnumerable<TextColumnModel> textColumns, int from, int to)
+        {
+            var expressions = new List<string>();
+            var clauseBuilder = new StringBuilder();
+            string schema = textColumns.First().Schema;
+            clauseBuilder.AppendFormat(@"
+UPDATE [{0}].[{1}]
+SET ", schema, table);
+            foreach (var textColumn in textColumns)
+            {
+                expressions.Add(String.Format("[{0}] = REPLACE([{0}], NCHAR({1}), NCHAR({2}))",
+                    textColumn.Column, from, to));
+            }
+
+            clauseBuilder.Append(String.Join(", ", expressions));
+            return clauseBuilder.ToString();
         }
 
         private List<TextColumnModel> GetTextColumns()
@@ -63,46 +91,6 @@ namespace SPPC.Tools.SystemDesigner.Commands
             }
 
             return textColumns;
-        }
-
-        private List<string> GetUpdateClauses(List<TextColumnModel> textColumns)
-        {
-            var clauses = new List<string>();
-            foreach (var tblGroup in textColumns
-                .OrderBy(col => col.Table)
-                .GroupBy(col => col.Table))
-            {
-                clauses.Add(GetUpdateClause(tblGroup.Key, tblGroup, ArabicKeh, FarsiKeh));
-                clauses.Add(GetUpdateClause(tblGroup.Key, tblGroup, ArabicYeh, FarsiYeh));
-                clauses.Add(GetUpdateClause(tblGroup.Key, tblGroup, ArabicYehAlt, FarsiYeh));
-            }
-
-            return clauses;
-        }
-
-        private string GetUpdateClause(string table, IEnumerable<TextColumnModel> textColumns, int from, int to)
-        {
-            var expressions = new List<string>();
-            var clauseBuilder = new StringBuilder();
-            string schema = textColumns.First().Schema;
-            clauseBuilder.AppendFormat(@"
-UPDATE [{0}].[{1}]
-SET ", schema, table);
-            foreach (var textColumn in textColumns)
-            {
-                expressions.Add(String.Format("[{0}] = REPLACE([{0}], NCHAR({1}), NCHAR({2}))",
-                    textColumn.Column, from, to));
-            }
-
-            clauseBuilder.Append(String.Join(", ", expressions));
-            return clauseBuilder.ToString();
-        }
-
-        private string GetSysConnectionString()
-        {
-            string path = @"..\..\..\src\TadbirNG\SPPC.Tadbir.Web.Api\appsettings.Development.json";
-            var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
-            return appSettings.ConnectionStrings.TadbirSysApi;
         }
 
         private const int ArabicKeh = 1603;

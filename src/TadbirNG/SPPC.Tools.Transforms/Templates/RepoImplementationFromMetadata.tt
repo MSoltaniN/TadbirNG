@@ -5,10 +5,11 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="SPPC.Framework.Extensions" #>
 <#@ import namespace="SPPC.Tools.Model" #>
+<#@ import namespace="SPPC.Tools.Utility" #>
 <#
 var entityInfo = _model;
 var entity = entityInfo.Entity;
-var plural = GetPluralName(entity.Name);
+var plural = entity.Name.ToPlural();
 var camelCase = entity.Name.CamelCase();
 #>
 using System;

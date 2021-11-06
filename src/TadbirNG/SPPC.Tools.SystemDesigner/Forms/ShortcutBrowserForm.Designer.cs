@@ -76,6 +76,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.btnNew.TabIndex = 2;
             this.btnNew.Text = "New...";
             this.btnNew.UseVisualStyleBackColor = true;
+            this.btnNew.Click += new System.EventHandler(this.New_Click);
             // 
             // btnEdit
             // 
@@ -86,6 +87,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.btnEdit.TabIndex = 3;
             this.btnEdit.Text = "Edit...";
             this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.Edit_Click);
             // 
             // btnDelete
             // 
@@ -96,6 +98,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.btnDelete.TabIndex = 4;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.Delete_Click);
             // 
             // btnGenerate
             // 
@@ -106,6 +109,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.btnGenerate.TabIndex = 5;
             this.btnGenerate.Text = "Generate Scripts";
             this.btnGenerate.UseVisualStyleBackColor = true;
+            this.btnGenerate.Click += new System.EventHandler(this.Generate_Click);
             // 
             // btnCancel
             // 

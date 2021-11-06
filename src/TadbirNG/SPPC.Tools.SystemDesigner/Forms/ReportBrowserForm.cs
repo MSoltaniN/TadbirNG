@@ -1,13 +1,12 @@
-﻿using SPPC.Framework.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using SPPC.Tools.Model;
 using SPPC.Framework.Persistence;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Designers
 {
@@ -16,43 +15,13 @@ namespace SPPC.Tools.SystemDesigner.Designers
         public ReportBrowserForm()
         {
             InitializeComponent();
+            _sysConnection = DbConnections.SystemConnection;
             LoadDataTables();
         }
 
         private void ManageReportsForm_Load(object sender, EventArgs e)
         {
-            _sysConnection = GetSysConnectionString();
             LoadGridView();
-        }
-
-        private void LoadGridView()
-        {
-            grdReports.DataSource = _reportTable;
-        }
-
-        private void LoadDataTables()
-        {
-            DataColumn workCol = _reportTable.Columns.Add("ReportID", typeof(int));
-            workCol.AllowDBNull = false;
-            workCol.Unique = true;
-            workCol.AutoIncrement = true;
-            workCol.AutoIncrementSeed = 1;
-            _reportTable.Columns.Add("ParentID"     , typeof(int));
-            _reportTable.Columns.Add("ViewID"       , typeof(int));
-            _reportTable.Columns.Add("SubsystemID"  , typeof(int));
-            _reportTable.Columns.Add("ServiceUrl"   , typeof(string));
-            _reportTable.Columns.Add("IsGroup"      , typeof(bool));
-            _reportTable.Columns.Add("IsSystem"     , typeof(bool));
-            _reportTable.Columns.Add("IsDefault"    , typeof(bool));
-            _reportTable.Columns.Add("IsDynamic"    , typeof(bool));
-            _reportTable.Columns.Add("EnCaption"    , typeof(string));
-            _reportTable.Columns.Add("FaCaption"    , typeof(string));
-            _reportTable.Columns.Add("EnTemplatePath", typeof(string));
-            _reportTable.Columns.Add("FaTemplatePath", typeof(string));
-
-            DataColumn[] PrimaryKeyColumns = new DataColumn[1];
-            PrimaryKeyColumns[0] = _reportTable.Columns["ReportID"];
-            _reportTable.PrimaryKey = PrimaryKeyColumns;
         }
 
         private void Add_Click(object sender, EventArgs e)
@@ -87,10 +56,9 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private void Edit_Click(object sender, EventArgs e)
         {
-            int reportId = 1;
             if (grdReports.SelectedRows.Count > 0)
             {
-                reportId = Convert.ToInt32(grdReports.SelectedRows[0].Cells["ReportID"].Value.ToString());
+                int reportId = Convert.ToInt32(grdReports.SelectedRows[0].Cells["ReportID"].Value.ToString());
                 DataRow dr = _reportTable.Select(string.Format("ReportID={0}", reportId)).FirstOrDefault();
                 if (dr != null)
                 {
@@ -148,8 +116,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private void Generate_Click(object sender, EventArgs e)
         {
-            var sysConnection = GetSysConnectionString();
-            var dal = new SqlDataLayer(sysConnection);
+            var dal = new SqlDataLayer(_sysConnection);
             int maxReportId = Convert.ToInt32(dal.QueryScalar("SELECT MAX([ReportID]) FROM [Reporting].[Report]"));
             int maxLocalReport = Convert.ToInt32(dal.QueryScalar("SELECT MAX([LocalReportID]) FROM [Reporting].[LocalReport]"));
             int maxParamId = Convert.ToInt32(dal.QueryScalar("SELECT MAX([ParamID]) FROM [Reporting].[Parameter]"));
@@ -246,23 +213,46 @@ namespace SPPC.Tools.SystemDesigner.Designers
             Close();
         }
 
+        private void Cancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void LoadGridView()
+        {
+            grdReports.DataSource = _reportTable;
+        }
+
+        private void LoadDataTables()
+        {
+            DataColumn workCol = _reportTable.Columns.Add("ReportID", typeof(int));
+            workCol.AllowDBNull = false;
+            workCol.Unique = true;
+            workCol.AutoIncrement = true;
+            workCol.AutoIncrementSeed = 1;
+            _reportTable.Columns.Add("ParentID"     , typeof(int));
+            _reportTable.Columns.Add("ViewID"       , typeof(int));
+            _reportTable.Columns.Add("SubsystemID"  , typeof(int));
+            _reportTable.Columns.Add("ServiceUrl"   , typeof(string));
+            _reportTable.Columns.Add("IsGroup"      , typeof(bool));
+            _reportTable.Columns.Add("IsSystem"     , typeof(bool));
+            _reportTable.Columns.Add("IsDefault"    , typeof(bool));
+            _reportTable.Columns.Add("IsDynamic"    , typeof(bool));
+            _reportTable.Columns.Add("EnCaption"    , typeof(string));
+            _reportTable.Columns.Add("FaCaption"    , typeof(string));
+            _reportTable.Columns.Add("EnTemplatePath", typeof(string));
+            _reportTable.Columns.Add("FaTemplatePath", typeof(string));
+
+            DataColumn[] PrimaryKeyColumns = new DataColumn[1];
+            PrimaryKeyColumns[0] = _reportTable.Columns["ReportID"];
+            _reportTable.PrimaryKey = PrimaryKeyColumns;
+        }
+
         private string GetNullableValue(string nullable)
         {
             return String.IsNullOrEmpty(nullable)
                 ? "NULL"
                 : String.Format("N'{0}'", nullable);
-        }
-
-        private string GetSysConnectionString()
-        {
-            string path = @"..\..\..\src\TadbirNG\SPPC.Tadbir.Web.Api\appsettings.Development.json";
-            var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
-            return appSettings.ConnectionStrings.TadbirSysApi;
-        }
-
-        private void Cancel_Click(object sender, EventArgs e)
-        {
-            Close();
         }
 
         private Version GetSolutionVersion()
@@ -271,9 +261,9 @@ namespace SPPC.Tools.SystemDesigner.Designers
             return new Version(assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build);
         }
 
-        private string _sysConnection;
-        private DataTable _reportTable = new DataTable("ReportTable");
-        private Dictionary<int, DataTable> _paramDictionary = new Dictionary<int, DataTable>();
+        private readonly string _sysConnection;
+        private readonly DataTable _reportTable = new("ReportTable");
+        private readonly Dictionary<int, DataTable> _paramDictionary = new();
         private const string _TadbirSysUpdateScript = @"..\..\..\res\TadbirSys_UpdateDbObjects.sql";
     }
 }

@@ -1,6 +1,5 @@
-﻿using System;
-using System.ComponentModel;
-using SPPC.Framework.Common;
+﻿using System.ComponentModel;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.Model
 {
@@ -69,36 +68,12 @@ namespace SPPC.Tools.Model
         [Description("Short description of purpose and usage of the entity in the application")]
         public string Description { get; set; }
 
-        private static string GetPluralName(string name)
-        {
-            Verify.ArgumentNotNullOrEmptyString(name, "name");
-            char lastChar = name[name.Length - 1];
-            string plural;
-            switch (lastChar)
-            {
-                case 'h':
-                case 's':
-                case 'x':
-                case 'z':
-                    plural = String.Format("{0}es", name);
-                    break;
-                case 'y':
-                    plural = String.Format("{0}ies", name.Substring(0, name.Length - 1));
-                    break;
-                default:
-                    plural = String.Format("{0}s", name);
-                    break;
-            }
-
-            return plural;
-        }
-
         private string GetDefaultName()
         {
             string name = EndpointName;
             if (Multiplicity == RelationMultiplicity.OneToMany || Multiplicity == RelationMultiplicity.ManyToMany)
             {
-                name = GetPluralName(name);
+                name = name.ToPlural();
             }
 
             return name;
