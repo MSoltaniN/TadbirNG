@@ -36,6 +36,7 @@
     <None Remove="Templates\TsInstanceFromValues.tt" />
     <None Remove="Templates\TsModelFromCsViewModel.tt" />
     <None Remove="Templates\TsPermissionsFromCsPermissions.tt" />
+    <None Remove="Templates\WebApiSettings.tt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -133,6 +134,10 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TsPermissionsFromCsPermissions.cs</LastGenOutput>
     </Content>
+    <Content Include="Templates\WebApiSettings.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>WebApiSettings.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -186,6 +191,21 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>JsResFromCsViewModels.tt</DependentUpon>
     </Compile>
+    <Compile Update="Templates\LicenseApiSettings.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LicenseApiSettings.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\LocalLicenseApiSettings.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LocalLicenseApiSettings.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\NgDevEnvironment.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>NgDevEnvironment.tt</DependentUpon>
+    </Compile>
     <Compile Update="Templates\RepoImplementationFromMetadata.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -236,6 +256,26 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>TsPermissionsFromCsPermissions.tt</DependentUpon>
     </Compile>
+    <Compile Update="Templates\WebApiSettings.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>WebApiSettings.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Templates\LicenseApiSettings.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>LicenseApiSettings.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\LocalLicenseApiSettings.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>LocalLicenseApiSettings.cs</LastGenOutput>
+    </None>
+    <None Update="Templates\NgDevEnvironment.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>NgDevEnvironment.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
 </Project>

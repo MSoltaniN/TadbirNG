@@ -1,0 +1,24 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+{
+  "ConnectionStrings": {
+    "TadbirSysApi": "Server=<#= _model.DbServerName #>;Database=NGTadbirSys;User ID=NgTadbirUser;Password=Demo1234;Trusted_Connection=False;Connect Timeout=60;MultipleActiveResultSets=true"
+  },
+  "ServerRoot": "http://localhost:7473",
+  "Jwt": {
+    "Audience": "tadbir-app",
+    "Issuer": "tadbir-api",
+    "Expiration": 10080,
+    "Secret": "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw=="
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  }
+}

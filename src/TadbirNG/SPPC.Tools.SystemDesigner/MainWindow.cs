@@ -5,6 +5,7 @@ using SPPC.Tools.SystemDesigner.Forms;
 using SPPC.Tools.Model;
 using SPPC.Tools.SystemDesigner.Wizards.NewCrudEntityWizard;
 using SPPC.Tools.SystemDesigner.Wizards.ViewWizard;
+using SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard;
 using SPPC.Tools.SystemDesigner.Designers;
 using SPPC.Tools.MetaDesigner;
 
@@ -121,6 +122,12 @@ namespace SPPC.Tools.SystemDesigner
 
         private void EditPermissionGroup_Click(object sender, EventArgs e)
         {
+        }
+
+        private void WizardsEnvSetup_Click(object sender, EventArgs e)
+        {
+            var wizard = new EnvSetupWizardForm();
+            wizard.ShowDialog(this);
         }
     }
 }
