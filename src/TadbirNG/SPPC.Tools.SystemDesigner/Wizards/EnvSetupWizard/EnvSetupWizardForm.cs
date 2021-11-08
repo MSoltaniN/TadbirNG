@@ -65,6 +65,17 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             }
         }
 
+        private void ThirdPage_Started(object sender, EventArgs e)
+        {
+            btnBack.Enabled = false;
+        }
+
+        private void ThirdPage_Stopped(object sender, EventArgs e)
+        {
+            btnBack.Enabled = true;
+            btnNext.Enabled = true;
+        }
+
         private void LoadFirstPage()
         {
             var page = new GeneralSettingsPage() { Dock = DockStyle.Fill, WizardModel = WizardModel };
@@ -72,6 +83,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             pnlPage.Controls.Add(page);
             SetCurrentStepInfo(page.Info);
             btnNext.Text = "Next";
+            btnNext.Enabled = true;
         }
 
         private void LoadSecondPage()
@@ -80,14 +92,19 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             pnlPage.Controls.Clear();
             pnlPage.Controls.Add(page);
             SetCurrentStepInfo(page.Info);
+            btnNext.Text = "Next";
+            btnNext.Enabled = true;
         }
 
         private void LoadThirdPage()
         {
             var page = new ActionOutputPage() { Dock = DockStyle.Fill, WizardModel = WizardModel };
+            page.Started += ThirdPage_Started;
+            page.Stopped += ThirdPage_Stopped;
             pnlPage.Controls.Clear();
             pnlPage.Controls.Add(page);
             SetCurrentStepInfo(page.Info);
+            btnNext.Enabled = false;
             btnNext.Text = "Finish";
         }
 
@@ -99,6 +116,11 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             }
 
             if (!EnsureLicenseeInfoIsCorrect())
+            {
+                return false;
+            }
+
+            if (!EnsureWinLoginInfoIsCorrect())
             {
                 return false;
             }
@@ -152,6 +174,21 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 || String.IsNullOrWhiteSpace(WizardModel.LicenseeLastName))
             {
                 MessageBox.Show(this, "You must enter a first name and last name for your development license.",
+                    "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                validated = false;
+            }
+
+            return validated;
+        }
+
+        private bool EnsureWinLoginInfoIsCorrect()
+        {
+            bool validated = true;
+            if (String.IsNullOrWhiteSpace(WizardModel.WinUserName)
+                || String.IsNullOrWhiteSpace(WizardModel.WinPassword))
+            {
+                MessageBox.Show(this, @"Your local Windows login credentials are required for activation.
+This information stays on your local machine and is not committed to source control.",
                     "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 validated = false;
             }

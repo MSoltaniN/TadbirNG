@@ -5,7 +5,7 @@
 <#@ import namespace="System.Collections.Generic" #>
 {
   "ConnectionStrings": {
-    "LicenseDb": "Server=<#= _model.DbServerName #>;Database=NGLicense;Trusted_Connection=True"
+    "LicenseDb": "Server=<#= _model.DbServerName.Replace("\\", "\\\\") #>;Database=NGLicense;User ID=NgTadbirUser;Password=Demo1234;Trusted_Connection=False"
   },
   "Logging": {
     "LogLevel": {

@@ -2,8 +2,8 @@
 GO
 
 SET IDENTITY_INSERT [Corporate].[Branch] ON
-INSERT INTO [Corporate].[Branch] (BranchID, CompanyID, Name, [Level]) VALUES (1, 1, N'دفتر مرکزی', 0)
-INSERT INTO [Corporate].[Branch] (BranchID, CompanyID, Name, [Level]) VALUES (2, 1, N'نمایشگاه تهران', 0)
+INSERT INTO [Corporate].[Branch] (BranchID, CompanyID, ParentID, Name, [Level]) VALUES (1, 1, NULL, N'دفتر مرکزی', 0)
+INSERT INTO [Corporate].[Branch] (BranchID, CompanyID, ParentID, Name, [Level]) VALUES (2, 1, 1, N'نمایشگاه تهران', 1)
 SET IDENTITY_INSERT [Corporate].[Branch] OFF
 
 SET IDENTITY_INSERT [Finance].[FiscalPeriod] ON
@@ -38,7 +38,7 @@ INSERT INTO [Auth].[RoleFiscalPeriod] (RoleFiscalPeriodID, RoleID, FiscalPeriodI
 SET IDENTITY_INSERT [Auth].[RoleFiscalPeriod] OFF
 
 SET IDENTITY_INSERT [Finance].[Currency] ON
-INSERT INTO [Finance].[Currency] ([Name],[Country],[Code],[MinorUnit]) VALUES(N'CUnit_IranianRial', N'Country_Iran', N'IRR', N'CMUnit_Dinar')
+INSERT INTO [Finance].[Currency] ([CurrencyID], [BranchID], [Name], [Code], [MinorUnit], [DecimalCount]) VALUES(1, 1, N'CUnit_IranianRial', N'IRR', N'CMUnit_Dinar', 0)
 SET IDENTITY_INSERT [Finance].[Currency] OFF
 
 -- Insert suggested account coding...

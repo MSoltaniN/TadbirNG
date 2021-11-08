@@ -34,10 +34,24 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
 
         public string Info { get; }
 
+        public event EventHandler Started;
+
+        public event EventHandler Stopped;
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             lblProgress.Text = String.Empty;
+        }
+
+        private void RaiseStartedEvent()
+        {
+            Started?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void RaiseStoppedEvent()
+        {
+            Stopped?.Invoke(this, EventArgs.Empty);
         }
 
         private void Start_Click(object sender, EventArgs e)
@@ -49,68 +63,62 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
 
             Cursor = Cursors.AppStarting;
             btnStart.Enabled = false;
+            RaiseStartedEvent();
 
             _params = new EnvSetupParameters(WizardModel);
             string result = GenerateDevelopmentSettings();
             if (!String.IsNullOrEmpty(result))
             {
-                btnStart.Enabled = true;
-                Cursor = Cursors.Default;
+                SetStoppedState();
                 return;
             }
 
             result = CreateLicenseDatabase();
             if (!String.IsNullOrEmpty(result))
             {
-                btnStart.Enabled = true;
-                Cursor = Cursors.Default;
+                SetStoppedState();
                 return;
             }
 
             result = AddDeveloperLicense();
             if (!String.IsNullOrEmpty(result))
             {
-                btnStart.Enabled = true;
-                Cursor = Cursors.Default;
+                SetStoppedState();
                 return;
             }
 
             result = GenerateDevelopmentEnvironment();
             if (!String.IsNullOrEmpty(result))
             {
-                btnStart.Enabled = true;
-                Cursor = Cursors.Default;
+                SetStoppedState();
                 return;
             }
 
             result = CreateSystemDatabase();
             if (!String.IsNullOrEmpty(result))
             {
-                btnStart.Enabled = true;
-                Cursor = Cursors.Default;
+                SetStoppedState();
                 return;
             }
 
             result = CreateSampleDatabase();
             if (!String.IsNullOrEmpty(result))
             {
-                btnStart.Enabled = true;
-                Cursor = Cursors.Default;
+                SetStoppedState();
                 return;
             }
 
             result = ActivateDeveloperLicense();
             if (!String.IsNullOrEmpty(result))
             {
-                btnStart.Enabled = true;
-                Cursor = Cursors.Default;
+                SetStoppedState();
                 return;
             }
 
             _outputBuilder.AppendLine("Environment setup completed successfully.");
             LogOutput();
 
-            Cursor = Cursors.Default;
+            SetStoppedState();
         }
 
         private string GenerateDevelopmentSettings()
@@ -293,7 +301,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 _apiClient.Update("Null Data", LicenseApi.ActivateLicense);
                 _outputBuilder.AppendLine("(OK)");
                 LogOutput();
-                progress.Value += 25;
+                UpdateProgress(25);
             }
             catch (Exception ex)
             {
@@ -327,6 +335,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
         private bool EnsureLocalServerIsUp()
         {
             bool validated = true;
+            Cursor = Cursors.WaitCursor;
             try
             {
                 _apiClient.Update("Null Data", LicenseApi.ValidateLicense);
@@ -338,6 +347,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 validated = false;
             }
 
+            Cursor = Cursors.Default;
             return validated;
         }
 
@@ -358,7 +368,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
         {
             return new LicenseViewModel()
             {
-                CustomerName = "",
+                CustomerName = "تیم توسعه تدبیر وب",
                 ContactName = String.Format("{0} {1}", WizardModel.LicenseeFirstName, WizardModel.LicenseeLastName),
                 Edition = "Enterprise",
                 UserCount = 5,
@@ -366,6 +376,13 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 StartDate = DateTime.Parse("2021-11-01"),
                 EndDate = DateTime.Parse("2022-11-01")
             };
+        }
+
+        private void SetStoppedState()
+        {
+            btnStart.Enabled = true;
+            Cursor = Cursors.Default;
+            RaiseStoppedEvent();
         }
 
         private readonly InstanceModel _instance;
