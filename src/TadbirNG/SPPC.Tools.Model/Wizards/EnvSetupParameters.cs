@@ -79,6 +79,14 @@ namespace SPPC.Tools.Model
             }
         }
 
+        public string SampleDataDbScript
+        {
+            get
+            {
+                return Path.Combine(_model.RootFolder, "res", "SampleData", "Tadbir_TestData.sql");
+            }
+        }
+
         public static string CreateLicenseDbScript
         {
             get { return _createLicenseDbScript; }
@@ -129,7 +137,10 @@ GO
 CREATE DATABASE [NGLicense]
 GO
 
-ALTER DATABASE [NGLicense] SET COMPATIBILITY_LEVEL = 120
+ALTER DATABASE [NGLicense] SET COMPATIBILITY_LEVEL = 130
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION SET IDENTITY_CACHE=OFF
 GO
 
 ALTER AUTHORIZATION ON DATABASE::NGLicense TO NgTadbirUser;
@@ -200,6 +211,16 @@ SET IDENTITY_INSERT [dbo].[License] OFF
         private static readonly string _createSampleInitScript = @"
 CREATE DATABASE NGTadbir
 GO
+
+ALTER DATABASE [NGTadbir] SET COMPATIBILITY_LEVEL = 130
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION SET IDENTITY_CACHE=OFF
+GO
+
+ALTER AUTHORIZATION ON DATABASE::NGTadbir TO NgTadbirUser;
+GO
+
 USE [NGTadbir]
 GO
 ";

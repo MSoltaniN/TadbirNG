@@ -243,7 +243,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 var builder = new StringBuilder();
                 builder.AppendLine(File.ReadAllText(_params.SystemDbScript));
                 builder.AppendLine();
-                builder.AppendLine(File.ReadAllText(_params.SystemDataDbScript));
+                builder.AppendFormat(File.ReadAllText(_params.SystemDataDbScript), WizardModel.DbServerName);
                 sql.ExecuteNonQuery(builder.ToString());
                 _outputBuilder.AppendLine("(OK)");
                 LogOutput();
@@ -273,6 +273,8 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 builder.AppendLine(EnvSetupParameters.CreateSampleInitScript);
                 builder.AppendLine();
                 builder.AppendLine(File.ReadAllText(_params.SampleDbScript));
+                builder.AppendLine();
+                builder.AppendLine(File.ReadAllText(_params.SampleDataDbScript));
                 sql.ExecuteNonQuery(builder.ToString());
                 _outputBuilder.AppendLine("(OK)");
                 LogOutput();
