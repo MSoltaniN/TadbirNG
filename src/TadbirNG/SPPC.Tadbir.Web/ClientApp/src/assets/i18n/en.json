@@ -286,6 +286,8 @@
     "NoDataForOperators": "Please select a field",
     "RemoveBracesMsg": "Cannot remove selected braces from selected filters",
     "AddBracesMsg": "Inserting parentheses is not possible for the selected filters",
+    "FilterNameIsRequired": "Filter name is a required field",
+    "FilterNameIsDuplicated": "Filter name is duplicated",
     "Name": "Name",
     "SaveFilter": "Save filter"
   },

@@ -941,20 +941,31 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     this.activeGroupFilter = true;  
   }
 
+  checkForDuplicateName(name:string) {
+    var findIndex = this.groupFilters.findIndex(f => f.name == name);
+    if (findIndex >= 0) {
+      this.showMessage(this.getText("AdvanceFilter.FilterNameIsDuplicated"));
+      return false;
+    }
+
+    return true;
+  }
+
   onGroupFilterOk() {
     if (!this.filterGroupName) {
-      this.showMessage("نام برای ذخیره فیلتر اجباری می باشد");
+      this.showMessage(this.getText("AdvanceFilter.FilterNameIsRequired"));
       return;
-    }
+    }   
 
     if (this.activeSaveFilter) {
       this.isEditMode = false;
     }
 
-    if (!this.isEditMode) {
-      var gf = new GroupFilter();
+    if (!this.checkForDuplicateName(this.filterGroupName) && !this.isEditMode)
+      return;
 
-     
+    if (!this.isEditMode) {
+      var gf = new GroupFilter();     
 
       var max = 0;
       this.groupFilters.forEach(it => {
