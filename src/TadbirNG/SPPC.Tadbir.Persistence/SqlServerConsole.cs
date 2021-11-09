@@ -27,10 +27,10 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>تعداد رکوردهای تغییریافته پس از اجرای دستورات</returns>
         public int ExecuteNonQuery(string sqlCommand)
         {
-            var server = new Server(
-                new ServerConnection(
-                    new SqlConnection(ConnectionString)));
-            return server.ConnectionContext.ExecuteNonQuery(sqlCommand);
+            var connection = GetDatabaseConnection();
+            int rowsAffected = connection.ExecuteNonQuery(sqlCommand);
+            connection.Disconnect();
+            return rowsAffected;
         }
 
         /// <summary>
@@ -40,10 +40,9 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات به دست آمده از دستور دیتابیسی با ساختار جدولی</returns>
         public DataTable ExecuteQuery(string sqlCommand)
         {
-            var server = new Server(
-                new ServerConnection(
-                    new SqlConnection(ConnectionString)));
-            var dataSet = server.ConnectionContext.ExecuteWithResults(sqlCommand);
+            var connection = GetDatabaseConnection();
+            var dataSet = connection.ExecuteWithResults(sqlCommand);
+            connection.Disconnect();
             return dataSet.Tables.Count > 0
                 ? dataSet.Tables[0]
                 : null;
@@ -101,6 +100,14 @@ namespace SPPC.Tadbir.Persistence
             };
 
             return builder.ConnectionString;
+        }
+
+        private ServerConnection GetDatabaseConnection()
+        {
+            var server = new Server(
+                new ServerConnection(
+                    new SqlConnection(ConnectionString)));
+            return server.ConnectionContext;
         }
     }
 }
