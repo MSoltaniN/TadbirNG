@@ -42,7 +42,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.btnBack.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(100, 35);
-            this.btnBack.TabIndex = 10;
+            this.btnBack.TabIndex = 3;
             this.btnBack.Text = "Back";
             this.btnBack.UseVisualStyleBackColor = true;
             this.btnBack.Click += new System.EventHandler(this.Back_Click);
@@ -53,7 +53,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.btnNext.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(100, 35);
-            this.btnNext.TabIndex = 9;
+            this.btnNext.TabIndex = 4;
             this.btnNext.Text = "Next";
             this.btnNext.UseVisualStyleBackColor = true;
             this.btnNext.Click += new System.EventHandler(this.Next_Click);
@@ -65,7 +65,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 35);
-            this.btnCancel.TabIndex = 8;
+            this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -75,7 +75,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.pnlPage.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlPage.Name = "pnlPage";
             this.pnlPage.Size = new System.Drawing.Size(655, 570);
-            this.pnlPage.TabIndex = 7;
+            this.pnlPage.TabIndex = 2;
             // 
             // lblStepInfo
             // 
@@ -86,13 +86,15 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.lblStepInfo.Location = new System.Drawing.Point(16, 14);
             this.lblStepInfo.Name = "lblStepInfo";
             this.lblStepInfo.Size = new System.Drawing.Size(656, 48);
-            this.lblStepInfo.TabIndex = 6;
+            this.lblStepInfo.TabIndex = 1;
             this.lblStepInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // EnvSetupWizardForm
             // 
+            this.AcceptButton = this.btnNext;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(688, 709);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnNext);

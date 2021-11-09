@@ -10,6 +10,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
         {
             InitializeComponent();
             Info = "General settings and information";
+            chkShowPass.Checked = true;
         }
 
         public EnvSetupWizardModel WizardModel { get; set; }
@@ -34,6 +35,11 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             {
                 txtRootFolder.Text = browser.SelectedPath;
             }
+        }
+
+        private void ShowPass_CheckedChanged(object sender, EventArgs e)
+        {
+            txtWinPassword.PasswordChar = chkShowPass.Checked ? '\0' : '*';
         }
 
         private void SetupBindings()

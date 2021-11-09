@@ -34,6 +34,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.btnStart = new System.Windows.Forms.Button();
             this.progress = new System.Windows.Forms.ProgressBar();
             this.lblProgress = new System.Windows.Forms.Label();
+            this.worker = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // txtOutput
@@ -48,7 +49,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.txtOutput.ReadOnly = true;
             this.txtOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtOutput.Size = new System.Drawing.Size(443, 230);
-            this.txtOutput.TabIndex = 7;
+            this.txtOutput.TabIndex = 1;
             // 
             // label3
             // 
@@ -56,7 +57,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.label3.Location = new System.Drawing.Point(11, 12);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(131, 20);
-            this.label3.TabIndex = 6;
+            this.label3.TabIndex = 0;
             this.label3.Text = "Operation output :";
             // 
             // btnStart
@@ -65,7 +66,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.btnStart.Location = new System.Drawing.Point(11, 316);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(94, 34);
-            this.btnStart.TabIndex = 8;
+            this.btnStart.TabIndex = 4;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.Start_Click);
@@ -78,7 +79,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.progress.Name = "progress";
             this.progress.Size = new System.Drawing.Size(374, 22);
             this.progress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.progress.TabIndex = 9;
+            this.progress.TabIndex = 2;
             // 
             // lblProgress
             // 
@@ -87,8 +88,15 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.lblProgress.Location = new System.Drawing.Point(391, 278);
             this.lblProgress.Name = "lblProgress";
             this.lblProgress.Size = new System.Drawing.Size(50, 20);
-            this.lblProgress.TabIndex = 10;
+            this.lblProgress.TabIndex = 3;
             this.lblProgress.Text = "label1";
+            // 
+            // worker
+            // 
+            this.worker.WorkerReportsProgress = true;
+            this.worker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Worker_DoWork);
+            this.worker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.Worker_ProgressChanged);
+            this.worker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Worker_RunWorkerCompleted);
             // 
             // ActionOutputPage
             // 
@@ -113,5 +121,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.ProgressBar progress;
         private System.Windows.Forms.Label lblProgress;
+        private System.ComponentModel.BackgroundWorker worker;
     }
 }

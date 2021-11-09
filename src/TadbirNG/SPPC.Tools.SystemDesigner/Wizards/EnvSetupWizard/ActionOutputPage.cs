@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
@@ -64,7 +66,11 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             Cursor = Cursors.AppStarting;
             btnStart.Enabled = false;
             RaiseStartedEvent();
+            worker.RunWorkerAsync();
+        }
 
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
             _params = new EnvSetupParameters(WizardModel);
             string result = GenerateDevelopmentSettings();
             if (!String.IsNullOrEmpty(result))
@@ -114,10 +120,17 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 SetStoppedState();
                 return;
             }
+        }
 
+        private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            UpdateProgress(e.ProgressPercentage);
+        }
+
+        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
             _outputBuilder.AppendLine("Environment setup completed successfully.");
             LogOutput();
-
             SetStoppedState();
         }
 
@@ -138,7 +151,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 File.WriteAllText(_params.LocalLicenseApiSettings, template.TransformText());
                 _outputBuilder.AppendLine("(OK)");
                 LogOutput();
-                UpdateProgress(5);
+                worker.ReportProgress(5);
             }
             catch (Exception ex)
             {
@@ -163,7 +176,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 sql.ExecuteNonQuery(EnvSetupParameters.CreateLicenseDbScript);
                 _outputBuilder.AppendLine("(OK)");
                 LogOutput();
-                UpdateProgress(10);
+                worker.ReportProgress(10);
             }
             catch (Exception ex)
             {
@@ -191,7 +204,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 CreateApiServiceLicense();
                 _outputBuilder.AppendLine("(OK)");
                 LogOutput();
-                UpdateProgress(5);
+                worker.ReportProgress(5);
             }
             catch (Exception ex)
             {
@@ -218,7 +231,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
 
                 _outputBuilder.AppendLine("(OK)");
                 LogOutput();
-                UpdateProgress(5);
+                worker.ReportProgress(5);
             }
             catch (Exception ex)
             {
@@ -247,7 +260,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 sql.ExecuteNonQuery(builder.ToString());
                 _outputBuilder.AppendLine("(OK)");
                 LogOutput();
-                UpdateProgress(25);
+                worker.ReportProgress(25);
             }
             catch (Exception ex)
             {
@@ -278,7 +291,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 sql.ExecuteNonQuery(builder.ToString());
                 _outputBuilder.AppendLine("(OK)");
                 LogOutput();
-                UpdateProgress(25);
+                worker.ReportProgress(25);
             }
             catch (Exception ex)
             {
@@ -303,7 +316,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 _apiClient.Update("Null Data", LicenseApi.ActivateLicense);
                 _outputBuilder.AppendLine("(OK)");
                 LogOutput();
-                UpdateProgress(25);
+                worker.ReportProgress(25);
             }
             catch (Exception ex)
             {
@@ -320,6 +333,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
         private void LogOutput()
         {
             txtOutput.Text = _outputBuilder.ToString();
+            Thread.Sleep(500);
         }
 
         private void UpdateProgress(int increment)

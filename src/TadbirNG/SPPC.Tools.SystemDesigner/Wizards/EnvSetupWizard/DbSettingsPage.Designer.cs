@@ -101,7 +101,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.txtDbServer.Location = new System.Drawing.Point(12, 47);
             this.txtDbServer.Name = "txtDbServer";
             this.txtDbServer.Size = new System.Drawing.Size(443, 27);
-            this.txtDbServer.TabIndex = 7;
+            this.txtDbServer.TabIndex = 1;
             // 
             // DbSettingsPage
             // 
