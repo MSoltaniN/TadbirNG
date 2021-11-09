@@ -1,0 +1,15 @@
+USE master;
+GO
+
+CREATE LOGIN [NgTadbirUser]
+WITH PASSWORD = 'Demo1234',
+DEFAULT_DATABASE = master,
+CHECK_POLICY = OFF,
+CHECK_EXPIRATION = OFF;
+GO
+
+ALTER SERVER ROLE securityadmin ADD MEMBER NgTadbirUser;
+GO
+
+ALTER SERVER ROLE dbcreator ADD MEMBER NgTadbirUser;
+GO

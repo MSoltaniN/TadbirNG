@@ -225,7 +225,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
           //currentUser.ticket = newTicket;
           //currentUser.roles = contextInfo.roles;
 
-          currentUser.permissions = context.TadbirContext.User.Permissions;
+          currentUser.permissions = context.TadbirContext.Permissions;
           currentUser.fiscalPeriodName = context.TadbirContext.FiscalPeriodName;
           currentUser.branchName = context.TadbirContext.BranchName;
           currentUser.companyName = context.TadbirContext.CompanyName;

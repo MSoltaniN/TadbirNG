@@ -342,12 +342,12 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
           if (currentUser.fpId) {
             this.authenticationService.getFiscalPeriodById(currentUser.fpId, this.Ticket).subscribe(res => {
               this.bStorageService.setFiscalPeriod(res);
-
-              this.loadAllSetting();
-              this.fetchMetaDatas(currentUser);
-              this.loadShortcut();
+              this.loadSettings(currentUser);
             })
-          } 
+          }
+          else {
+            this.loadSettings(currentUser);
+          }
           
           
         }
@@ -355,6 +355,12 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
       }
 
     })
+  }
+
+  loadSettings(currentUser: ContextInfo) {
+    this.loadAllSetting();
+    this.fetchMetaDatas(currentUser);
+    this.loadShortcut();
   }
 
   //#endregion

@@ -1,0 +1,17 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+{
+  "ConnectionStrings": {
+    "LicenseDb": "Server=<#= _model.DbServerName.Replace("\\", "\\\\") #>;Database=NGLicense;User ID=NgTadbirUser;Password=Demo1234;Trusted_Connection=False"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  }
+}

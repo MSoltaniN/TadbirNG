@@ -2,7 +2,7 @@
 
 namespace SPPC.Tools.Transforms.Templates
 {
-    public partial class CsApiClass :  ITextTemplate
+    public partial class CsApiClass : ITextTemplate
     {
         public CsApiClass(ApiModel model)
         {

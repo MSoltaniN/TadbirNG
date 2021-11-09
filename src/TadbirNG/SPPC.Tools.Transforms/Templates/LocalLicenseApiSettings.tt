@@ -1,0 +1,21 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+{
+  "ServerRoot": "http://localhost:1447",
+  "SSH": {
+    "Domain": "127.0.0.1",
+    "Port": 22,
+    "User": "<#= _model.WinUserName #>",
+    "Password": "<#= _model.WinPassword #>"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  }
+}
