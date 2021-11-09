@@ -2068,3 +2068,25 @@ UPDATE [Config].[Setting]
 SET [Values] = N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}',
 DefaultValues = N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}'
 WHERE ModelType = 'SystemConfig'
+
+-- 1.2.1275
+UPDATE [Finance].[Voucher]
+SET DocumentID = NULL
+GO
+
+ALTER TABLE [Finance].[Voucher]
+DROP CONSTRAINT [FK_Finance_Voucher_Finance_Document]
+
+ALTER TABLE [Finance].[Voucher]
+DROP COLUMN [DocumentID]
+
+DROP TABLE [WorkItemHistory]
+
+DROP TABLE [WorkItemDocument]
+
+DROP TABLE [WorkItem]
+
+DROP TABLE [DocumentAction]
+
+DROP TABLE [Document]
+

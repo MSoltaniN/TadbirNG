@@ -10,7 +10,6 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPPC.Tadbir.Model.Finance;
@@ -86,10 +85,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey(e => e.BranchId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_Voucher_Corporate_Branch");
-            builder.HasOne(e => e.Document)
-                .WithMany()
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_Voucher_Core_Document");
             builder.HasOne(e => e.Status)
                 .WithMany()
                 .HasForeignKey(e => e.StatusId)

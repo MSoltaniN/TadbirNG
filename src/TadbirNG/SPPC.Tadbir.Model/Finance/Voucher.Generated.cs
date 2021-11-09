@@ -121,11 +121,6 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual List<VoucherLine> Lines { get; protected set; }
 
         /// <summary>
-        /// مستند اداری مرتبط با این سند مالی
-        /// </summary>
-        public virtual Document Document { get; set; }
-
-        /// <summary>
         /// وضعیت ثبتی این سند مالی
         /// </summary>
         public virtual DocumentStatus Status { get; set; }

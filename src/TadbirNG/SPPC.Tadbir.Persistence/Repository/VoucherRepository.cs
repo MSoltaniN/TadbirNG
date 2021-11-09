@@ -339,7 +339,6 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await ManageDocumentAsync(voucher);
             return Mapper.Map<VoucherViewModel>(voucher);
         }
 
@@ -753,47 +752,6 @@ namespace SPPC.Tadbir.Persistence
                 .Select(v => v.DailyNo)
                 .FirstOrDefault();
             return (lastNo + 1);
-        }
-
-        private async Task ManageDocumentAsync(Voucher voucher)
-        {
-            if (voucher != null)
-            {
-                var repository = UnitOfWork.GetAsyncRepository<Document>();
-                var voucherRepository = UnitOfWork.GetAsyncRepository<Voucher>();
-                var document = await repository.GetSingleByCriteriaAsync(
-                    doc => doc.EntityId == voucher.Id && doc.Type.Id == (int)Domain.DocumentTypeId.Voucher,
-                    doc => doc.Actions);
-                if (document == null)
-                {
-                    document = new Document()
-                    {
-                        EntityId = voucher.Id,
-                        TypeId = (int)Domain.DocumentTypeId.Voucher
-                    };
-                    var action = new DocumentAction()
-                    {
-                        CreatedById = UserContext.Id,
-                        ModifiedById = UserContext.Id,
-                        CreatedDate = DateTime.Now,
-                        ModifiedDate = DateTime.Now
-                    };
-                    action.Document = document;
-                    document.Actions.Add(action);
-                    repository.Insert(document, doc => doc.Actions);
-                    voucher.DocumentId = document.Id;
-                    voucherRepository.Update(voucher);
-                }
-                else
-                {
-                    var action = document.Actions.Single();
-                    action.ModifiedById = UserContext.Id;
-                    action.ModifiedDate = DateTime.Now;
-                    repository.Update(document, doc => doc.Actions);
-                }
-
-                await UnitOfWork.CommitAsync();
-            }
         }
 
         private string GetCurrentUserDisplayName()

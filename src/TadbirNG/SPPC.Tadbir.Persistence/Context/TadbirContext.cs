@@ -49,8 +49,6 @@ namespace SPPC.Tadbir.Persistence
             CustomerTaxInfoMap.BuildMapping(modelBuilder.Entity<CustomerTaxInfo>());
             CustomFormMap.BuildMapping(modelBuilder.Entity<CustomForm>());
             DetailAccountMap.BuildMapping(modelBuilder.Entity<DetailAccount>());
-            DocumentMap.BuildMapping(modelBuilder.Entity<Document>());
-            DocumentActionMap.BuildMapping(modelBuilder.Entity<DocumentAction>());
             DocumentStatusMap.BuildMapping(modelBuilder.Entity<DocumentStatus>());
             DocumentTypeMap.BuildMapping(modelBuilder.Entity<DocumentType>());
             EntityTypeMap.BuildMapping(modelBuilder.Entity<EntityType>());

@@ -201,36 +201,6 @@ CREATE TABLE [Core].[DocumentStatus] (
 )
 GO
 
-CREATE TABLE [Core].[Document] (
-    [DocumentID]     INT              IDENTITY (1, 1) NOT NULL,
-    [TypeID]         INT              NOT NULL,
-    [EntityID]       INT              NOT NULL,
-    [No]             NVARCHAR(64)     NOT NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Core_Document_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Core_Document_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Core_Document] PRIMARY KEY CLUSTERED ([DocumentID] ASC)
-    , CONSTRAINT [FK_Core_Document_Core_Type] FOREIGN KEY ([TypeID]) REFERENCES [Core].[DocumentType]([TypeID])
-)
-GO
-
-CREATE TABLE [Core].[DocumentAction] (
-    [ActionID]           INT              IDENTITY (1, 1) NOT NULL,
-	[DocumentID]         INT              NOT NULL,
-	[LineID]             INT              NULL,
-    [CreatedByID]        INT              NOT NULL,
-    [ModifiedByID]       INT              NOT NULL,
-    [ConfirmedByID]      INT              NULL,
-    [ApprovedByID]       INT              NULL,
-    [CreatedDate]        DATETIME         NOT NULL,
-    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Core_DocumentAction_ModifiedDate] DEFAULT (getdate()) NOT NULL,
-    [ConfirmedDate]      DATETIME         NULL,
-    [ApprovedDate]       DATETIME         NULL,
-    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Core_DocumentAction_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL
-    , CONSTRAINT [PK_Core_DocumentAction] PRIMARY KEY CLUSTERED ([ActionID] ASC)
-    , CONSTRAINT [FK_Core_DocumentAction_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document]([DocumentID])
-)
-GO
-
 CREATE TABLE [Config].[Setting] (
     [SettingID]      INT              IDENTITY (1, 1) NOT NULL,
     [ParentID]       INT              NULL,
@@ -499,7 +469,6 @@ CREATE TABLE [Finance].[Voucher] (
     [VoucherID]       INT              IDENTITY (1, 1) NOT NULL,
     [FiscalPeriodID]  INT              NOT NULL,
     [BranchID]        INT              NOT NULL,
-    [DocumentID]      INT              NULL,
     [StatusID]        INT              NOT NULL,
 	[OriginID]        INT              CONSTRAINT [DF_Finance_Voucher_OriginID] DEFAULT (1) NOT NULL,
     [IssuedByID]      INT              NOT NULL,
@@ -525,7 +494,6 @@ CREATE TABLE [Finance].[Voucher] (
     , CONSTRAINT [PK_Finance_Voucher] PRIMARY KEY CLUSTERED ([VoucherID] ASC)
     , CONSTRAINT [FK_Finance_Voucher_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_Voucher_Finance_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
-    , CONSTRAINT [FK_Finance_Voucher_Finance_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document]([DocumentID])
     , CONSTRAINT [FK_Finance_Voucher_Finance_Status] FOREIGN KEY ([StatusID]) REFERENCES [Core].[DocumentStatus]([StatusID])
 	, CONSTRAINT [FK_Finance_Voucher_Finance_VoucherOrigin] FOREIGN KEY ([OriginID]) REFERENCES [Finance].[VoucherOrigin]([OriginID])
 )
@@ -698,56 +666,6 @@ CREATE TABLE [Core].[Filter] (
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Core_Filter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Core_Filter_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Core_Filter] PRIMARY KEY CLUSTERED ([FilterID] ASC)
-)
-GO
-
-CREATE TABLE [Workflow].[WorkItem] (
-    [WorkItemID]     INT              IDENTITY (1, 1) NOT NULL,
-	[CreatedByID]    INT              NOT NULL,
-	[TargetID]       INT              NULL,
-    [Number]         NVARCHAR(16)     NOT NULL,
-    [Date]           DATETIME         NOT NULL,
-    [Time]           TIME(7)          NOT NULL,
-    [Title]          NVARCHAR(128)    NOT NULL,
-    [DocumentType]   VARCHAR(128)     NOT NULL,
-    [Action]         VARCHAR(64)      NOT NULL,
-    [Remarks]        NVARCHAR(1024)   NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Workflow_WorkItem_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Workflow_WorkItem_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_WorkItem] PRIMARY KEY CLUSTERED ([WorkItemID] ASC)
-)
-GO
-
-CREATE TABLE [Workflow].[WorkItemDocument] (
-    [DocumentItemID]   INT              IDENTITY (1, 1) NOT NULL,
-    [WorkItemID]       INT              NULL,
-    [EntityID]         INT              NOT NULL,
-    [DocumentID]       INT              NOT NULL,
-    [DocumentType]     VARCHAR(128)     NOT NULL,
-    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Workflow_WorkItemDocument_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Workflow_WorkItemDocument_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_WorkItemDocument] PRIMARY KEY CLUSTERED ([DocumentItemID] ASC)
-    , CONSTRAINT [FK_Workflow_WorkItemDocument_Workflow_WorkItem] FOREIGN KEY ([WorkItemID]) REFERENCES [Workflow].[WorkItem] ([WorkItemID])
-    , CONSTRAINT [FK_Workflow_WorkItemDocument_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document] ([DocumentID])
-)
-GO
-
-CREATE TABLE [Workflow].[WorkItemHistory] (
-    [HistoryItemID]       INT              IDENTITY (1, 1) NOT NULL,
-	[UserID]              INT              NOT NULL,
-	[RoleID]              INT              NOT NULL,
-    [DocumentID]          INT              NOT NULL,
-    [EntityID]            INT              NOT NULL,
-    [Number]              NVARCHAR(16)     NOT NULL,
-    [Date]                DATETIME         NOT NULL,
-    [Time]                TIME(7)          NOT NULL,
-    [Title]               NVARCHAR(128)    NOT NULL,
-    [Action]              VARCHAR(64)      NOT NULL,
-    [Remarks]             NVARCHAR(1024)   NULL,
-    [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Workflow_WorkItemHistory_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Workflow_WorkItemHistory_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_WorkItemHistory] PRIMARY KEY CLUSTERED ([HistoryItemID] ASC)
-    , CONSTRAINT [FK_Workflow_WorkItemHistory_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document] ([DocumentID])
 )
 GO
 

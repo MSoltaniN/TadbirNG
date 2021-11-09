@@ -11,11 +11,6 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual int StatusId { get; set; }
 
         /// <summary>
-        /// شناسه دیتابیسی مستند اداری مرتبط با این سند مالی
-        /// </summary>
-        public virtual int? DocumentId { get; set; }
-
-        /// <summary>
         /// شناسه دیتابیسی مأخذ این سند مالی
         /// </summary>
         public virtual int OriginId { get; set; }

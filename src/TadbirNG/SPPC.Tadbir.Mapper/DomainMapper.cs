@@ -395,41 +395,6 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.CompanyName,
                     opts => opts.MapFrom(src => (src.Company != null) ? src.Company.Name : String.Empty));
-
-            mapperConfig.CreateMap<DocumentAction, DocumentActionViewModel>()
-                .ForMember(
-                    dest => dest.LineId,
-                    opts => opts.MapFrom(src => src.LineId ?? 0));
-            mapperConfig.CreateMap<DocumentActionViewModel, DocumentAction>()
-                .ForMember(
-                    dest => dest.LineId,
-                    opts => opts.MapFrom(
-                        src => (src.LineId > 0) ? (int?)src.LineId : null))
-                .AfterMap((viewModel, model) => model.CreatedBy.Id = viewModel.CreatedById)
-                .AfterMap((viewModel, model) => model.ModifiedBy.Id = viewModel.ModifiedById)
-                .AfterMap((viewModel, model) =>
-                    model.ConfirmedBy = (viewModel.ConfirmedById > 0)
-                        ? new User()
-                        {
-                            Id = viewModel.ConfirmedById
-                        }
-                        : null)
-                .AfterMap((viewModel, model) =>
-                    model.ApprovedBy = (viewModel.ApprovedById > 0)
-                        ? new User()
-                        {
-                            Id = viewModel.ApprovedById
-                        }
-                        : null);
-            mapperConfig.CreateMap<Document, DocumentViewModel>();
-            mapperConfig.CreateMap<DocumentViewModel, Document>()
-                .ForMember(
-                    dest => dest.Actions,
-                    opts => opts.Ignore())
-                .AfterMap((viewModel, model) => Array.ForEach(
-                    viewModel.Actions.ToArray(),
-                    act => model.Actions.Add(_autoMapper.Map<DocumentAction>(act))))
-                .AfterMap((viewModel, model) => model.Type.Id = viewModel.TypeId);
             mapperConfig.CreateMap<Filter, FilterViewModel>();
             mapperConfig.CreateMap<FilterViewModel, Filter>();
             mapperConfig.CreateMap<SystemErrorViewModel, SystemError>();
