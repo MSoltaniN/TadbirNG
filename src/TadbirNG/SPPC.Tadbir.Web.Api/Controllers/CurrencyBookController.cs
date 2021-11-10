@@ -156,7 +156,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var book = await _repository.GetCurrencyBookAllCurrenciesAsync(bookParams);
             SetItemCount(book.TotalCount);
-            Localize(book);
             SortItems(book);
             return Json(book);
         }
@@ -203,17 +202,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 : await _repository.GetCurrencyBookAsync(bookParams);
             SetItemCount(book.TotalCount);
             SetRowNumbers(book.Items);
-            Localize(book);
             return Json(book);
-        }
-
-        private void Localize(CurrencyBookViewModel book)
-        {
-            Array.ForEach(book.Items.ToArray(), item =>
-            {
-                item.Description = _strings[item.Description ?? String.Empty];
-                item.CurrencyName = _strings[item.CurrencyName ?? String.Empty];
-            });
         }
 
         private readonly ICurrencyBookRepository _repository;

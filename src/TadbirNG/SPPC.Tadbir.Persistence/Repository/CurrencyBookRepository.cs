@@ -362,10 +362,11 @@ namespace SPPC.Tadbir.Persistence
             var itemCriteria = GetItemCriteria(bookParam);
             var bookItems = await GetRawCurrencyBookLines(itemCriteria, bookParam.From, bookParam.To)
                 .ToListAsync();
-            book.Items.AddRange(bookItems
+            var localized = bookItems
                 .Select(line => Mapper.Map<CurrencyBookItemViewModel>(line))
-                .ApplyQuickFilter(bookParam.GridOptions)
-                .Apply(bookParam.GridOptions, false));
+                .ApplyQuickFilter(bookParam.GridOptions);
+            Localize(localized);
+            book.Items.AddRange(localized.Apply(bookParam.GridOptions, false));
             PrepareCurrencyBook(book, bookParam.GridOptions);
             return book;
         }
@@ -383,6 +384,7 @@ namespace SPPC.Tadbir.Persistence
                 .ApplyQuickFilter(bookParam.GridOptions)
                 .ToList();
             AggregateCurrencyBook(book, lines, byCurrency, byNo, bookParam.ByBranch);
+            Localize(book.Items);
             book.SetItems(book.Items.Apply(bookParam.GridOptions, false).ToArray());
             PrepareCurrencyBook(book, bookParam.GridOptions);
             return book;
@@ -413,16 +415,12 @@ namespace SPPC.Tadbir.Persistence
                     {
                         Array.ForEach(GetGroupByThenByItems(monthLines, item => item.BranchId).ToArray(), group =>
                         {
-                            var aggregates = GetAggregatedBookItems(group, true);
-                            Array.ForEach(aggregates.ToArray(), item => item.VoucherDate = month.End);
-                            book.Items.AddRange(aggregates);
+                            AggregateMonthlyItems(book, group, month, true);
                         });
                     }
                     else
                     {
-                        var aggregates = GetAggregatedBookItems(monthLines, false);
-                        Array.ForEach(aggregates.ToArray(), item => item.VoucherDate = month.End);
-                        book.Items.AddRange(aggregates);
+                        AggregateMonthlyItems(book, monthLines, month, false);
                     }
                 }
             }
@@ -466,19 +464,33 @@ namespace SPPC.Tadbir.Persistence
                     {
                         Array.ForEach(GetGroupByThenByItems(lines, item => item.BranchId).ToArray(), group =>
                         {
-                            var aggregates = GetAggregatedBookItems(group, true);
-                            Array.ForEach(aggregates.ToArray(), item => item.Description = origin.ToString());
-                            book.Items.AddRange(aggregates);
+                            AggregateSpecialItems(book, group, origin.ToString(), true);
                         });
                     }
                     else
                     {
-                        var aggregates = GetAggregatedBookItems(lines, false);
-                        Array.ForEach(aggregates.ToArray(), item => item.Description = origin.ToString());
-                        book.Items.AddRange(aggregates);
+                        AggregateSpecialItems(book, lines, origin.ToString(), false);
                     }
                 }
             }
+        }
+
+        private void AggregateMonthlyItems(CurrencyBookViewModel book,
+            IEnumerable<CurrencyBookItemViewModel> items, MonthInfo month, bool singleMode)
+        {
+            var aggregates = GetAggregatedBookItems(items, singleMode);
+            Array.ForEach(aggregates.ToArray(), item => item.VoucherDate = month.End);
+            Localize(aggregates);
+            book.Items.AddRange(aggregates);
+        }
+
+        private void AggregateSpecialItems(CurrencyBookViewModel book,
+            IEnumerable<CurrencyBookItemViewModel> items, string description, bool singleMode)
+        {
+            var aggregates = GetAggregatedBookItems(items, singleMode);
+            Array.ForEach(aggregates.ToArray(), item => item.Description = description);
+            Localize(aggregates);
+            book.Items.AddRange(aggregates);
         }
 
         private IQueryable<VoucherLine> GetRawCurrencyBookLines(
@@ -509,6 +521,15 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetRepository<TItem>();
             return repository.GetByID(itemId);
+        }
+
+        private void Localize(IEnumerable<CurrencyBookItemViewModel> items)
+        {
+            Array.ForEach(items.ToArray(), item =>
+            {
+                item.CurrencyName = Context.Localize(item.CurrencyName);
+                item.Description = Context.Localize(item.Description);
+            });
         }
 
         private readonly ISystemRepository _system;
