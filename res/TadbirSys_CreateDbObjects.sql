@@ -279,6 +279,7 @@ CREATE TABLE [Reporting].[Parameter] (
     [Operator]         NVARCHAR(16)     NOT NULL,
     [DataType]         NVARCHAR(64)     NOT NULL,
     [ControlType]      NVARCHAR(64)     NOT NULL,
+    [Source]           NVARCHAR(64)     NULL,
     [CaptionKey]       NVARCHAR(64)     NOT NULL,
     [DefaultValue]     NVARCHAR(64)     NULL,
     [MinValue]         NVARCHAR(64)     NULL,
