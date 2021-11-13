@@ -61,6 +61,11 @@ export class ReportParametersComponent implements OnInit {
       
   }
 
+  getControl(name:string)
+  {
+    return this.parameterForm.get(name);
+  }
+
   public cancelDialog()
   {
       this.active = false;      

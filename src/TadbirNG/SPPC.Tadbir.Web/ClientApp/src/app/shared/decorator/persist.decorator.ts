@@ -56,8 +56,7 @@ export function SavePersist():MethodDecorator
             var key = target.constructor.name;
             var tempKey = `temp_${target.constructor.name}`;
             if (sessionStorage.getItem(tempKey)) {
-                sessionStorage.setItem(key, sessionStorage.getItem(tempKey));
-                //sessionStorage.removeItem(tempKey);
+                sessionStorage.setItem(key, sessionStorage.getItem(tempKey));                
             }
 
             const result = originalMethod.apply(this, args);                        
