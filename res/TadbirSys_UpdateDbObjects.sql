@@ -5087,13 +5087,13 @@ INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName],
 INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])
     VALUES (171, 86, 'toDate', 'to', 'EQ', 'System.DateTime', 'QueryString', 'ToDate', 'ToDate')
 INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])
-    VALUES (172, 87, 'fromNo', 'from', 'EQ', 'System.DateTime', 'QueryString', 'FromNo', 'FromNo')
+    VALUES (172, 87, 'fromNo', 'from', 'EQ', 'System.Int32', 'NumberBox', 'FromNo', 'FromNo')
 INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])
-    VALUES (173, 87, 'toNo', 'to', 'EQ', 'System.DateTime', 'QueryString', 'ToNo', 'ToNo')
+    VALUES (173, 87, 'toNo', 'to', 'EQ', 'System.Int32', 'NumberBox', 'ToNo', 'ToNo')
 INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])
-    VALUES (174, 88, 'fromNo', 'from', 'EQ', 'System.DateTime', 'QueryString', 'FromNo', 'FromNo')
+    VALUES (174, 88, 'fromNo', 'from', 'EQ', 'System.Int32', 'NumberBox', 'FromNo', 'FromNo')
 INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])
-    VALUES (175, 88, 'toNo', 'to', 'EQ', 'System.DateTime', 'QueryString', 'ToNo', 'ToNo')
+    VALUES (175, 88, 'toNo', 'to', 'EQ', 'System.Int32', 'NumberBox', 'ToNo', 'ToNo')
 SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 
 -- 1.2.1284
