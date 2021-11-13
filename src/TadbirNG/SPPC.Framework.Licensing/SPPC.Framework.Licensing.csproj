@@ -24,15 +24,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
-    <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj" />
+    <PackageReference Include="SSH.NET" Version="2020.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ChilkatDnCore" Version="9.5.0.88" />
-    <PackageReference Include="DeviceId" Version="6.0.0" />
-    <PackageReference Include="DeviceId.Linux" Version="6.0.0" />
-    <PackageReference Include="DeviceId.Windows.Wmi" Version="6.1.0" />
+    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
+    <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

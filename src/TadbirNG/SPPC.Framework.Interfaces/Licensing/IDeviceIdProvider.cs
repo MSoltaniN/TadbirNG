@@ -1,5 +1,4 @@
-﻿using System;
-using SPPC.Framework.Helpers;
+﻿using SPPC.Framework.Helpers;
 
 namespace SPPC.Framework.Licensing
 {
@@ -8,12 +7,6 @@ namespace SPPC.Framework.Licensing
     /// </summary>
     public interface IDeviceIdProvider
     {
-        /// <summary>
-        /// شناسه سخت افزاری وسیله جاری را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>شناسه سخت افزاری وسیله جاری</returns>
-        string GetDeviceId();
-
         /// <summary>
         /// شناسه سخت افزاری یک وسیله را از راه دور خوانده و برمی گرداند
         /// </summary>

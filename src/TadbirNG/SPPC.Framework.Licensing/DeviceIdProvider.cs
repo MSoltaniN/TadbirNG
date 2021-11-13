@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Chilkat;
-using DeviceId;
-using DeviceId.Encoders;
-using DeviceId.Formatters;
+using Renci.SshNet;
 using SPPC.Framework.Helpers;
 
 namespace SPPC.Framework.Licensing
@@ -15,46 +12,26 @@ namespace SPPC.Framework.Licensing
     public class DeviceIdProvider : IDeviceIdProvider
     {
         /// <summary>
-        /// شناسه سخت افزاری وسیله جاری را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>شناسه سخت افزاری وسیله جاری</returns>
-        public string GetDeviceId()
-        {
-            var hwId = new DeviceIdBuilder()
-                .OnWindows(builder => builder
-                    .AddMotherboardSerialNumber()
-                    .AddProcessorId()
-                    .AddSystemDriveSerialNumber()
-                    .AddSystemUuid())
-                .OnLinux(builder => builder
-                    .AddMotherboardSerialNumber()
-                    .AddCpuInfo()
-                    .AddSystemDriveSerialNumber()
-                    .AddMachineId())
-                .UseFormatter(new StringDeviceIdFormatter(new PlainTextDeviceIdComponentEncoder()))
-                .ToString();
-            return Encode(hwId);
-        }
-
-        /// <summary>
         /// شناسه سخت افزاری یک وسیله را از راه دور خوانده و برمی گرداند
         /// </summary>
         /// <returns>شناسه سخت افزاری وسیله مورد نظر</returns>
         /// <remarks>برای اتصال از راه دور از پروتکل اس اس اچ استفاده می شود</remarks>
         public string GetRemoteDeviceId(RemoteConnection connection)
         {
-            var ssh = new Ssh();
             var commands = Environment.OSVersion.Platform == PlatformID.Win32NT
                 ? SshCommands.Windows
                 : SshCommands.Linux;
-            string key;
-            if (ssh.Connect(connection.Domain, connection.Port)
-                && ssh.AuthenticatePw(connection.User, connection.Password))
+            string key = String.Empty;
+            var sshConnection = new ConnectionInfo(
+                connection.Domain, connection.Port, connection.User, new PasswordAuthenticationMethod(
+                    connection.User, connection.Password));
+            using (var sshClient = new SshClient(sshConnection))
             {
                 var items = new List<string>();
+                sshClient.Connect();
                 foreach (var command in commands.AllCommands)
                 {
-                    string id = GetCommandResult(ssh, command);
+                    string id = GetCommandResult(sshClient, command);
                     if (!String.IsNullOrEmpty(id))
                     {
                         items.Add(id);
@@ -63,10 +40,6 @@ namespace SPPC.Framework.Licensing
 
                 string hwKey = String.Join(".", items);
                 key = Encode(hwKey);
-            }
-            else
-            {
-                key = String.Empty;
             }
 
             return key;
@@ -78,19 +51,16 @@ namespace SPPC.Framework.Licensing
             return Convert.ToBase64String(bytes);
         }
 
-        private static string GetCommandResult(Ssh ssh, SshCommand command)
+        private static string GetCommandResult(SshClient ssh, SshCommand command)
         {
-            string result = ssh.QuickCommand(command.Command, "ansi");
-            if (!ssh.LastMethodSuccess)
-            {
-                Console.WriteLine(ssh.LastErrorText);
-            }
-
+            string result = ssh
+                .CreateCommand(command.Command)
+                .Execute();
             if (!String.IsNullOrEmpty(result))
             {
                 result = result
-                    .Replace(@"\r", String.Empty)
-                    .Replace(@"\n", String.Empty)
+                    .Replace("\r", String.Empty)
+                    .Replace("\n", String.Empty)
                     .Replace(command.ResultKey, String.Empty)
                     .Trim();
             }
