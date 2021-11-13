@@ -46,12 +46,12 @@ namespace SPPC.Tools.Model
             }
         }
 
-        public string WebApiLicensePath
+        public string WebApiRootPath
         {
             get
             {
-                return Path.Combine(_model.RootFolder, "src", "TadbirNG", "SPPC.Tadbir.Web.Api",
-                    "wwwroot", "license");
+                return Path.Combine(_model.RootFolder,
+                    "src", "TadbirNG", "SPPC.Tadbir.Web.Api", "wwwroot");
             }
         }
 

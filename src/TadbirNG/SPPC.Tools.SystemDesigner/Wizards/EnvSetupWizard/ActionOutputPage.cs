@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Configuration;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -9,6 +10,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Licensing;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms;
@@ -202,6 +204,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                     _instance.CustomerKey, WizardModel.LicenseeFirstName, WizardModel.LicenseeLastName,
                     _instance.LicenseKey));
                 CreateApiServiceLicense();
+                CreateApiServiceEdition();
                 _outputBuilder.AppendLine("(OK)");
                 LogOutput();
                 worker.ReportProgress(5);
@@ -369,15 +372,20 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
 
         private void CreateApiServiceLicense()
         {
-            var path = _params.WebApiLicensePath;
-            var devPath = String.Format("{0}.Development.json", path);
+            var path = String.Format(@"{0}\license.Development.json", _params.WebApiRootPath);
             var licenseData = GetLicenseData();
             var json = JsonHelper.From(licenseData);
             File.WriteAllText(path, json);
-            if (!File.Exists(devPath))
-            {
-                File.WriteAllText(devPath, json);
-            }
+        }
+
+        private void CreateApiServiceEdition()
+        {
+            var configPath = ConfigurationManager.AppSettings["EditionConfigPath"];
+            var allConfig = JsonHelper.To<EditionsConfig>(File.ReadAllText(configPath));
+
+            var path = String.Format(@"{0}\edition.Development.json", _params.WebApiRootPath);
+            string json = JsonHelper.From(allConfig.Enterprise);
+            File.WriteAllText(path, json);
         }
 
         private LicenseViewModel GetLicenseData()

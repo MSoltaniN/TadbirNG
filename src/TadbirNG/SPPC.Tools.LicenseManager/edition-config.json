@@ -1,0 +1,41 @@
+{
+  "standard": {
+    "maxUsers": 15,
+    "maxCompanies": 2,
+    "maxBranches": 1,
+    "maxBranchDepth": 1,
+    "maxAccountDepth": 3,
+    "maxDetailAccountDepth": 3,
+    "maxCostCenterDepth": 3,
+    "maxProjectDepth": 3,
+    "enableBranchFilter": false,
+    "enableByBranchReporting": false,
+    "enableRowPermissions": false
+  },
+  "professional": {
+    "maxUsers": 30,
+    "maxCompanies": 5,
+    "maxBranches": 5,
+    "maxBranchDepth": 3,
+    "maxAccountDepth": 5,
+    "maxDetailAccountDepth": 5,
+    "maxCostCenterDepth": 5,
+    "maxProjectDepth": 5,
+    "enableBranchFilter": true,
+    "enableByBranchReporting": true,
+    "enableRowPermissions": true
+  },
+  "enterprise": {
+    "maxUsers": 0,
+    "maxCompanies": 0,
+    "maxBranches": 0,
+    "maxBranchDepth": 0,
+    "maxAccountDepth": 0,
+    "maxDetailAccountDepth": 0,
+    "maxCostCenterDepth": 0,
+    "maxProjectDepth": 0,
+    "enableBranchFilter": true,
+    "enableByBranchReporting": true,
+    "enableRowPermissions": true
+  }
+}

@@ -8,16 +8,15 @@ lib/
 # Ignore generated files
 res/_codegen_
 .vs/
-
-# Ignore this to enable developer-specific connection string for API service
-src/**/appsettings.Development.json
 /doc/**/~$*
+
+# Ignore all development-mode artifacts
+src/**/*.Development.json
 
 # Ignore all uploaded files
 src/**/Upload/*.*
 
 # Ignore instance-specific files
-src/**/license.Development.json
 src/**/instance.id
 src/**/environment.ts
 src/**/tadbir.lic

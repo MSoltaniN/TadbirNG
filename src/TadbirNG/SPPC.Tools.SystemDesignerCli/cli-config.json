@@ -73,13 +73,6 @@
       "handlerType": "SPPC.Tools.SystemDesignerCli.RefreshDatabasesCommand, ngdes"
     },
     {
-      "name": "xcopy",
-      "parameters": [
-      ],
-      "description": "Prepares XCopy installation for activator tool.",
-      "handlerType": "SPPC.Tools.SystemDesignerCli.DeployActivatorCommand, ngdes"
-    },
-    {
       "name": "csmodel",
       "parameters": [
         {

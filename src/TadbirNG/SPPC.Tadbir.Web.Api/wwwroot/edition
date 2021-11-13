@@ -1,0 +1,13 @@
+{
+  "maxUsers": 30,
+  "maxCompanies": 5,
+  "maxBranches": 5,
+  "maxBranchDepth": 3,
+  "maxAccountDepth": 5,
+  "maxDetailAccountDepth": 5,
+  "maxCostCenterDepth": 5,
+  "maxProjectDepth": 5,
+  "enableBranchFilter": true,
+  "enableByBranchReporting": true,
+  "enableRowPermissions": true
+}

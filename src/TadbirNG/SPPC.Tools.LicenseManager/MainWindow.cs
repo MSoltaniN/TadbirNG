@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
+using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
 using SPPC.Licensing.Service;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tools.LicenseManager.Properties;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms.Templates;
@@ -218,16 +220,9 @@ namespace SPPC.Tools.LicenseManager
             string instance = GetInstanceKey(license);
             if (CreateClientInstance(instance))
             {
-                string path = ConfigurationManager.AppSettings["InstanceIdPath"];
-                if (File.Exists(path))
-                {
-                    string folder = Path.GetDirectoryName(path);
-                    File.Move(path, Path.Combine(folder, "_instance.id"));
-                }
-
-                File.WriteAllText(path, instance);
                 var customer = CustomerService.GetCustomer(license.CustomerId);
                 CreateApiServiceLicense(license, customer);
+                CreateApiServiceEdition(license);
 
                 MessageBox.Show(this, "شناسه برنامه با موفقیت ثبت شد.",
                     "عملیات موفق", MessageBoxButtons.OK, MessageBoxIcon.Information,
@@ -319,6 +314,21 @@ namespace SPPC.Tools.LicenseManager
         private static bool HasModule(Subsystems modules, Subsystems module)
         {
             return (modules & module) != 0;
+        }
+
+        private static void CreateApiServiceEdition(LicenseModel license)
+        {
+            var configPath = ConfigurationManager.AppSettings["EditionConfigPath"];
+            var allConfig = JsonHelper.To<EditionsConfig>(File.ReadAllText(configPath));
+            var path = ConfigurationManager.AppSettings["WebApiLicensePath"];
+            var editionPath = String.Format(@"{0}\edition", Path.GetDirectoryName(path));
+            string json = JsonHelper.From(Reflector.GetProperty(allConfig, license.Edition));
+            File.WriteAllText(editionPath, json);
+            var devEditionPath = String.Format("{0}.Development.json", editionPath);
+            if (!File.Exists(devEditionPath))
+            {
+                File.WriteAllText(devEditionPath, json);
+            }
         }
 
         private static void CreateApiServiceLicense(LicenseModel license, CustomerModel customer)
