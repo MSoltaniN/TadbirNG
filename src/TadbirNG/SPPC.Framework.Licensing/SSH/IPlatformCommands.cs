@@ -10,8 +10,6 @@ namespace SPPC.Framework.Licensing
 
         SshCommand GetMainboardId { get; }
 
-        SshCommand GetDiskDriveId { get; }
-
         SshCommand GetSystemId { get; }
     }
 }
