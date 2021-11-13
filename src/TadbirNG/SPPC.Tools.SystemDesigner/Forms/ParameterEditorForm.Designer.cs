@@ -40,7 +40,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.cmbControlType = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.btnApply = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -157,21 +157,21 @@
             this.label6.TabIndex = 10;
             this.label6.Text = "Control Type";
             // 
-            // btnApply
+            // btnSave
             // 
-            this.btnApply.Location = new System.Drawing.Point(15, 197);
-            this.btnApply.Name = "btnApply";
-            this.btnApply.Size = new System.Drawing.Size(79, 37);
-            this.btnApply.TabIndex = 12;
-            this.btnApply.Text = "Apply";
-            this.btnApply.UseVisualStyleBackColor = true;
-            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            this.btnSave.Location = new System.Drawing.Point(15, 199);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(79, 35);
+            this.btnSave.TabIndex = 12;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnApply_Click);
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(101, 197);
+            this.btnCancel.Location = new System.Drawing.Point(101, 199);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(79, 37);
+            this.btnCancel.Size = new System.Drawing.Size(81, 35);
             this.btnCancel.TabIndex = 13;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -184,7 +184,7 @@
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(545, 249);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnApply);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.cmbControlType);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.cmbDataType);
@@ -217,7 +217,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button btnApply;
+        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
         public System.Windows.Forms.TextBox txtName;
         public System.Windows.Forms.TextBox txtFieldName;

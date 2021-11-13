@@ -27,14 +27,14 @@ namespace SPPC.Tools.SystemDesigner.Designers
         }
 
         #region General tab
+
         private void LoadListViews()
         {
             var dal = new SqlDataLayer(SysConnection);
             cmbListViews.ValueMember = "ViewID";
             cmbListViews.DisplayMember = "Name";
-            cmbListViews.DataSource = dal.Query(@"SELECT [ViewID], [Name] FROM [Metadata].[View] 
-                                                 WHERE [ViewID] NOT IN ( SELECT DISTINCT COALESCE(ViewID,0) FROM [Reporting].[Report] )
-                                                 ORDER BY ViewID");
+            cmbListViews.DataSource = dal.Query(
+                @"SELECT [ViewID], [Name] FROM [Metadata].[View] ORDER BY [Name]");
         }
 
         private void LoadSubSystems()
@@ -105,6 +105,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
         #endregion
 
         #region Parameter tab
+
         private void LoadParameters()
         {
             MakeDataTableParameter();
@@ -177,74 +178,75 @@ namespace SPPC.Tools.SystemDesigner.Designers
         private void MakeDataTableParameter()
         {
             if (Parameters.Columns.Count > 0)
+            {
                 return;
+            }
 
-            DataColumn column;
+            Parameters.Columns.Add(new DataColumn
+            {
+                DataType = System.Type.GetType("System.Int32"),
+                ColumnName = "ParamId",
+                AutoIncrement = true,
+                AutoIncrementSeed = 1,
+                ReadOnly = true,
+                Unique = true
+            });
+            Parameters.Columns.Add(new DataColumn
+            {
+                DataType = System.Type.GetType("System.String"),
+                ColumnName = "Name",
+                AutoIncrement = false,
+                Caption = "Name",
+                ReadOnly = false,
+                Unique = false
+            });
+            Parameters.Columns.Add(new DataColumn
+            {
+                DataType = System.Type.GetType("System.String"),
+                ColumnName = "FieldName",
+                AutoIncrement = false,
+                Caption = "FieldName",
+                ReadOnly = false,
+                Unique = false
+            });
+            Parameters.Columns.Add(new DataColumn
+            {
+                DataType = System.Type.GetType("System.String"),
+                ColumnName = "CaptionKey",
+                AutoIncrement = false,
+                Caption = "CaptionKey",
+                ReadOnly = false,
+                Unique = false
+            });
+            Parameters.Columns.Add(new DataColumn
+            {
+                DataType = System.Type.GetType("System.String"),
+                ColumnName = "Operator",
+                AutoIncrement = false,
+                Caption = "Operator",
+                ReadOnly = false,
+                Unique = false
+            });
+            Parameters.Columns.Add(new DataColumn
+            {
+                DataType = System.Type.GetType("System.String"),
+                ColumnName = "DataType",
+                AutoIncrement = false,
+                Caption = "DataType",
+                ReadOnly = false,
+                Unique = false
+            });
+            Parameters.Columns.Add(new DataColumn
+            {
+                DataType = System.Type.GetType("System.String"),
+                ColumnName = "ControlType",
+                AutoIncrement = false,
+                Caption = "ControlType",
+                ReadOnly = false,
+                Unique = false
+            });
 
-            column = new DataColumn();
-            column.DataType = System.Type.GetType("System.Int32");
-            column.ColumnName = "ParamId";
-            column.AutoIncrement = true;
-            column.AutoIncrementSeed = 1;
-            column.ReadOnly = true;
-            column.Unique = true;
-            Parameters.Columns.Add(column);
-
-            column = new DataColumn();
-            column.DataType = System.Type.GetType("System.String");
-            column.ColumnName = "Name";
-            column.AutoIncrement = false;
-            column.Caption = "Name";
-            column.ReadOnly = false;
-            column.Unique = false;
-            Parameters.Columns.Add(column);
-
-            column = new DataColumn();
-            column.DataType = System.Type.GetType("System.String");
-            column.ColumnName = "FieldName";
-            column.AutoIncrement = false;
-            column.Caption = "FieldName";
-            column.ReadOnly = false;
-            column.Unique = false;
-            Parameters.Columns.Add(column);
-
-            column = new DataColumn();
-            column.DataType = System.Type.GetType("System.String");
-            column.ColumnName = "CaptionKey";
-            column.AutoIncrement = false;
-            column.Caption = "CaptionKey";
-            column.ReadOnly = false;
-            column.Unique = false;
-            Parameters.Columns.Add(column);
-
-            column = new DataColumn();
-            column.DataType = System.Type.GetType("System.String");
-            column.ColumnName = "Operator";
-            column.AutoIncrement = false;
-            column.Caption = "Operator";
-            column.ReadOnly = false;
-            column.Unique = false;
-            Parameters.Columns.Add(column);
-
-            column = new DataColumn();
-            column.DataType = System.Type.GetType("System.String");
-            column.ColumnName = "DataType";
-            column.AutoIncrement = false;
-            column.Caption = "DataType";
-            column.ReadOnly = false;
-            column.Unique = false;
-            Parameters.Columns.Add(column);
-
-            column = new DataColumn();
-            column.DataType = System.Type.GetType("System.String");
-            column.ColumnName = "ControlType";
-            column.AutoIncrement = false;
-            column.Caption = "ControlType";
-            column.ReadOnly = false;
-            column.Unique = false;
-            Parameters.Columns.Add(column);
-
-            DataColumn[] PrimaryKeyColumns = new DataColumn[1];
+            var PrimaryKeyColumns = new DataColumn[1];
             PrimaryKeyColumns[0] = Parameters.Columns["id"];
             Parameters.PrimaryKey = PrimaryKeyColumns;
         }
@@ -256,12 +258,13 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         #endregion
 
-        private void Submit_Click(object sender, EventArgs e)
+        private void Save_Click(object sender, EventArgs e)
         {
             if(!Validate())
             {
                 return;
             }
+
             DialogResult = DialogResult.OK;
             Close();
         }
@@ -278,11 +281,11 @@ namespace SPPC.Tools.SystemDesigner.Designers
                 MessageBox.Show("Please fill Persian Caption.");
                 return false;
             }
-            if ((txtTemplateEn.Text == "" || txtTemplateFa.Text == "" ) && chkQuickReport.Checked == false )
-            {
-                MessageBox.Show("Please fill template file path.");
-                return false;
-            }
+            ////if ((txtTemplateEn.Text == "" || txtTemplateFa.Text == "" ) && chkQuickReport.Checked == false )
+            ////{
+            ////    MessageBox.Show("Please fill template file path.");
+            ////    return false;
+            ////}
             return true;
         }
 

@@ -37,7 +37,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.label3 = new System.Windows.Forms.Label();
             this.txtMethod = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.btnOK = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -105,15 +105,15 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.label4.TabIndex = 6;
             this.label4.Text = "Method :";
             // 
-            // btnOK
+            // btnSave
             // 
-            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnOK.Location = new System.Drawing.Point(12, 344);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(94, 34);
-            this.btnOK.TabIndex = 8;
-            this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSave.Location = new System.Drawing.Point(12, 344);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(94, 34);
+            this.btnSave.TabIndex = 8;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
             // 
             // btnCancel
             // 
@@ -127,13 +127,13 @@ namespace SPPC.Tools.SystemDesigner.Forms
             // 
             // ShortcutEditorForm
             // 
-            this.AcceptButton = this.btnOK;
+            this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(532, 390);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnOK);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.txtMethod);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtHotKey);
@@ -164,7 +164,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtMethod;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
     }
 }

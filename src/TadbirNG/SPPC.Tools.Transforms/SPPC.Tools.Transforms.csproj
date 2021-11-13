@@ -141,6 +141,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.CodeDom" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
     <ProjectReference Include="..\SPPC.Licensing.Interfaces\SPPC.Licensing.Interfaces.csproj" />
     <ProjectReference Include="..\SPPC.Tools.Model\SPPC.Tools.Model.csproj" />

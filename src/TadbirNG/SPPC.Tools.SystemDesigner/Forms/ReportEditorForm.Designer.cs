@@ -60,7 +60,7 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.grdParameters = new System.Windows.Forms.DataGridView();
             this.label7 = new System.Windows.Forms.Label();
-            this.btnSubmit = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabGeneral.SuspendLayout();
@@ -88,7 +88,7 @@
             this.tabGeneral.Controls.Add(this.label1);
             this.tabGeneral.Location = new System.Drawing.Point(4, 29);
             this.tabGeneral.Name = "tabGeneral";
-            this.tabGeneral.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabGeneral.Padding = new System.Windows.Forms.Padding(3);
             this.tabGeneral.Size = new System.Drawing.Size(641, 589);
             this.tabGeneral.TabIndex = 0;
             this.tabGeneral.Text = "General";
@@ -363,7 +363,7 @@
             this.tabParameters.Controls.Add(this.label7);
             this.tabParameters.Location = new System.Drawing.Point(4, 29);
             this.tabParameters.Name = "tabParameters";
-            this.tabParameters.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabParameters.Padding = new System.Windows.Forms.Padding(3);
             this.tabParameters.Size = new System.Drawing.Size(641, 589);
             this.tabParameters.TabIndex = 1;
             this.tabParameters.Text = "Parameters";
@@ -424,24 +424,24 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "Current parameters";
             // 
-            // btnSubmit
+            // btnSave
             // 
-            this.btnSubmit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSubmit.Location = new System.Drawing.Point(12, 640);
-            this.btnSubmit.Name = "btnSubmit";
-            this.btnSubmit.Size = new System.Drawing.Size(132, 37);
-            this.btnSubmit.TabIndex = 18;
-            this.btnSubmit.Text = "Submit";
-            this.btnSubmit.UseVisualStyleBackColor = true;
-            this.btnSubmit.Click += new System.EventHandler(this.Submit_Click);
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSave.Location = new System.Drawing.Point(12, 642);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(103, 35);
+            this.btnSave.TabIndex = 18;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.Save_Click);
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(549, 640);
+            this.btnCancel.Location = new System.Drawing.Point(549, 642);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(91, 37);
+            this.btnCancel.Size = new System.Drawing.Size(91, 35);
             this.btnCancel.TabIndex = 19;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -449,13 +449,13 @@
             // 
             // ReportEditorForm
             // 
-            this.AcceptButton = this.btnSubmit;
+            this.AcceptButton = this.btnSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(651, 685);
             this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnSubmit);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.tabControl1);
             this.MinimizeBox = false;
             this.Name = "ReportEditorForm";
@@ -494,7 +494,7 @@
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.DataGridView grdParameters;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button btnSubmit;
+        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnBrowseFa;
         private System.Windows.Forms.Label label9;

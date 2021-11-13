@@ -16,6 +16,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
         {
             InitializeComponent();
             _sysConnection = DbConnections.SystemConnection;
+            _dal = new SqlDataLayer(_sysConnection);
             LoadDataTables();
         }
 
@@ -28,8 +29,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
         {
             var form = new ReportEditorForm()
             {
-                SysConnection = _sysConnection ,
-               
+                SysConnection = _sysConnection
             };
             form.SetupControls();
             if (form.ShowDialog() == DialogResult.OK)
@@ -163,7 +163,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
                     , 1
                     , reportId
                     , row["EnCaption"].ToString()
-                    , Convert.ToBoolean(row["IsDynamic"]) ? "NULL" : GetNullableValue(row["EnTemplatePath"].ToString()));
+                    , GetTemplateValue(row, "EnTemplatePath"));
                 builder.AppendLine();
                 builder.AppendLine("INSERT INTO [Reporting].[LocalReport] " +
                     "([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])");
@@ -172,7 +172,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
                     , 2
                     , reportId++
                     , row["FaCaption"].ToString()
-                    , Convert.ToBoolean(row["IsDynamic"]) ? "NULL" : GetNullableValue(row["FaTemplatePath"].ToString()));
+                    , GetTemplateValue(row, "EnTemplatePath"));
                 builder.AppendLine();
             }
 
@@ -218,6 +218,10 @@ namespace SPPC.Tools.SystemDesigner.Designers
             Close();
         }
 
+        private void LoadExistingReports()
+        {
+        }
+
         private void LoadGridView()
         {
             grdReports.DataSource = _reportTable;
@@ -261,6 +265,19 @@ namespace SPPC.Tools.SystemDesigner.Designers
             return new Version(assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build);
         }
 
+        private string GetTemplateValue(DataRow row, string fieldName)
+        {
+            string value = "NULL";
+            string fieldValue = row[fieldName].ToString();
+            if (!String.IsNullOrEmpty(fieldValue) && File.Exists(fieldValue))
+            {
+                value = String.Format("'{0}'", File.ReadAllText(fieldValue));
+            }
+
+            return value;
+        }
+
+        private readonly DataLayerBase _dal;
         private readonly string _sysConnection;
         private readonly DataTable _reportTable = new("ReportTable");
         private readonly Dictionary<int, DataTable> _paramDictionary = new();
