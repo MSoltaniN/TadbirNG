@@ -49,10 +49,10 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllOperationQuery<Voucher>(
                     ViewId.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
                 .Select(voucher => Mapper.Map<VoucherSummaryViewModel>(voucher))
-                .Apply(gridOptions)
                 .ToListAsync();
-            Array.ForEach(vouchers.ToArray(),
-                voucher => voucher.PreparedBy = userMap[voucher.PreparedById]);
+            Array.ForEach(vouchers
+                .Apply(gridOptions)
+                .ToArray(), voucher => voucher.PreparedBy = userMap[voucher.PreparedById]);
             return vouchers;
         }
 
@@ -64,12 +64,13 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetVoucherSummaryByDateCountAsync(GridOptions gridOptions)
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
-            int count = await Repository
+            var vouchers = await Repository
                 .GetAllOperationQuery<Voucher>(ViewId.Voucher, voucher => voucher.Lines)
                 .Select(voucher => Mapper.Map<VoucherSummaryViewModel>(voucher))
+                .ToListAsync();
+            return vouchers
                 .Apply(gridOptions, false)
-                .CountAsync();
-            return count;
+                .Count();
         }
 
         /// <summary>

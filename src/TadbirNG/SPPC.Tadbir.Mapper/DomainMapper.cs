@@ -302,6 +302,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
 
+            mapperConfig.CreateMap<TaxCurrency, TaxCurrencyViewModel>();
             mapperConfig.CreateMap<TaxCurrencyViewModel, TaxCurrency>();
             mapperConfig.CreateMap<DbDataReader, TaxCurrencyViewModel>()
                 .ForMember(dest => dest.Code, opts => opts.MapFrom(src => src["Code"]))

@@ -44,8 +44,6 @@ export class BaseComponent extends EnviromentComponent {
 
   executeClickEvent(className)
   {    
-    
-    debugger;
     var activeElement = document.activeElement;
     var elements = activeElement.getElementsByClassName(className);
     if(elements.length > 0)

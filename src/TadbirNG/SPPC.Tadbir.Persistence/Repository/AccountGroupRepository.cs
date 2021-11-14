@@ -77,7 +77,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="groupId">شناسه دیتابیسی گروه مورد نظر</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه حساب های کل زیرمجموعه</returns>
-        public async Task<PagedList<AccountViewModel>> GetGroupLedgerAccountsAsync(int groupId, GridOptions gridOptions = null)
+        public async Task<PagedList<AccountViewModel>> GetGroupLedgerAccountsAsync(
+            int groupId, GridOptions gridOptions = null)
         {
             var accounts = await Repository
                 .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)

@@ -59,14 +59,16 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ValueTuple<IList<VoucherViewModel>, int>> GetVouchersWithNoArticleAsync(
             GridOptions gridOptions, DateTime from, DateTime to)
         {
-            var vouchers = Repository.GetAllOperationQuery<Voucher>(
-                ViewId.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
+            var vouchers = await Repository
+                .GetAllOperationQuery<Voucher>(
+                    ViewId.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
                 .Where(voucher => voucher.SubjectType != (short)SubjectType.Draft
                     && voucher.Lines.Count == 0
                     && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
-                .Select(item => Mapper.Map<VoucherViewModel>(item));
+                .Select(item => Mapper.Map<VoucherViewModel>(item))
+                .ToListAsync();
 
-            var listAndCount = await GetListAndCountAsync(gridOptions, vouchers);
+            var listAndCount = GetListAndCount(gridOptions, vouchers);
             await OnSourceActionAsync(gridOptions, SourceListId.VouchersWithNoArticle);
             return listAndCount;
         }
@@ -81,14 +83,16 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ValueTuple<IList<VoucherViewModel>, int>> GetUnbalancedVouchersAsync(
             GridOptions gridOptions, DateTime from, DateTime to)
         {
-            var vouchers = Repository.GetAllOperationQuery<Voucher>(
-                ViewId.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
+            var vouchers = await Repository
+                .GetAllOperationQuery<Voucher>(
+                    ViewId.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
                 .Where(voucher => voucher.SubjectType != (short)SubjectType.Draft
                     && !voucher.IsBalanced
                     && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
-                .Select(item => Mapper.Map<VoucherViewModel>(item));
+                .Select(item => Mapper.Map<VoucherViewModel>(item))
+                .ToListAsync();
 
-            var listAndCount = await GetListAndCountAsync(gridOptions, vouchers);
+            var listAndCount = GetListAndCount(gridOptions, vouchers);
             await OnSourceActionAsync(gridOptions, SourceListId.UnbalancedVouchers);
             return listAndCount;
         }
@@ -149,27 +153,36 @@ namespace SPPC.Tadbir.Persistence
             {
                 case "miss-acc":
                     {
-                        var lines = GetArticlesQueryAsync(from, to);
-                        lines = GetArticlesWithMissingAccount(lines);
-                        result = await GetListAndCountAsync(gridOptions, lines);
+                        var lines = await GetArticlesQueryAsync(from, to)
+                            .Where(line => line.Account == null)
+                            .ToListAsync();
+                        result = GetListAndCount(gridOptions, lines);
                         sourceList = SourceListId.ArticlesWithMissingAccount;
                         break;
                     }
 
                 case "zero-amount":
                     {
-                        var lines = GetArticlesQueryAsync(from, to);
-                        lines = GetArticleHavingZeroAmount(lines);
-                        result = await GetListAndCountAsync(gridOptions, lines);
+                        var lines = await GetArticlesQueryAsync(from, to)
+                            .Where(line => line.Debit == 0 && line.Credit == 0)
+                            .ToListAsync();
+                        result = GetListAndCount(gridOptions, lines);
                         sourceList = SourceListId.ArticlesHavingZeroAmount;
                         break;
                     }
 
                 case "invalid-acc":
                     {
-                        var lines = GetArticlesQueryAsync(from, to);
-                        var enumerableLines = GetArticleWithInvalidAccount(lines);
-                        result = GetListAndCount(gridOptions, enumerableLines);
+                        var lines = await GetArticlesQueryAsync(from, to)
+                            .ToListAsync();
+                        lines = lines
+                            .Where(line => !_relationRepository.LookupFullAccount(
+                                Mapper.Map<AccountItemBriefViewModel>(line.Account),
+                                Mapper.Map<AccountItemBriefViewModel>(line.DetailAccount),
+                                Mapper.Map<AccountItemBriefViewModel>(line.CostCenter),
+                                Mapper.Map<AccountItemBriefViewModel>(line.Project)))
+                            .ToList();
+                        result = GetListAndCount(gridOptions, lines);
                         sourceList = SourceListId.ArticlesWithInvalidAccountItems;
                         break;
                     }
@@ -183,8 +196,12 @@ namespace SPPC.Tadbir.Persistence
 
                 case "invalid-acc-turnover":
                     {
-                        var lines = GetArticleWithInvalidTurnover(from, to);
-                        result = await GetListAndCountAsync(gridOptions, lines);
+                        var lines = await GetArticlesQueryAsync(from, to)
+                            .Where(line =>
+                                (line.Account.TurnoverMode == (short)TurnoverMode.CreditorDuringPeriod && line.Debit != 0)
+                                || (line.Account.TurnoverMode == (short)TurnoverMode.DebtorDuringPeriod && line.Credit != 0))
+                            .ToListAsync();
+                        result = GetListAndCount(gridOptions, lines);
                         sourceList = SourceListId.AccountsWithInvalidPeriodTurnover;
                         break;
                     }
@@ -212,35 +229,19 @@ namespace SPPC.Tadbir.Persistence
             get { return _system.Repository; }
         }
 
-        private static async Task<ValueTuple<IList<VoucherViewModel>, int>> GetListAndCountAsync(
-            GridOptions gridOptions, IQueryable<VoucherViewModel> vouchers)
+        private static ValueTuple<IList<VoucherViewModel>, int> GetListAndCount(
+            GridOptions gridOptions, IList<VoucherViewModel> vouchers)
         {
             var filteredList = vouchers
                 .Apply(gridOptions, false);
 
-            var vouchersList = await filteredList
+            var vouchersList = filteredList
                 .OrderBy(voucher => voucher.Date.Date)
                 .ThenBy(voucher => voucher.No)
                 .ApplyPaging(gridOptions)
-                .ToListAsync();
+                .ToList();
 
-            return (vouchersList, await filteredList.CountAsync());
-        }
-
-        private static IQueryable<VoucherLine> GetArticlesWithMissingAccount(IQueryable<VoucherLine> voucherLines)
-        {
-            var lines = voucherLines
-                 .Where(line => line.Account == null);
-
-            return lines;
-        }
-
-        private static IQueryable<VoucherLine> GetArticleHavingZeroAmount(IQueryable<VoucherLine> voucherLines)
-        {
-            var lines = voucherLines
-                 .Where(line => line.Debit == 0 && line.Credit == 0);
-
-            return lines;
+            return (vouchersList, filteredList.Count());
         }
 
         private async Task<IList<SystemIssue>> FilterInaccessibleIssues()
@@ -265,7 +266,6 @@ namespace SPPC.Tadbir.Persistence
         {
             var permissionIds = new List<int>();
             var roles = await GetUserRolesAsync();
-
             Array.ForEach(roles.ToArray(),
                 role => permissionIds.AddRange(role.RolePermissions.Select(rp => rp.PermissionId)));
 
@@ -286,23 +286,10 @@ namespace SPPC.Tadbir.Persistence
             return roles;
         }
 
-        private IQueryable<VoucherLine> GetArticleWithInvalidTurnover(DateTime from, DateTime to)
-        {
-            var lines = GetArticlesQueryAsync(from, to);
-
-            lines = lines
-                .Where(line =>
-                (line.Account.TurnoverMode == (short)TurnoverMode.CreditorDuringPeriod && line.Debit != 0)
-                || (line.Account.TurnoverMode == (short)TurnoverMode.DebtorDuringPeriod && line.Credit != 0));
-
-            return lines;
-        }
-
         private async Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetArticleWithInvalidBalance(
             GridOptions gridOptions, DateTime to)
         {
             var result = new List<VoucherLine>();
-
             var lines = await Repository.GetAllOperationQuery<VoucherLine>(
                 ViewId.VoucherLine,
                 line => line.Voucher,
@@ -317,23 +304,20 @@ namespace SPPC.Tadbir.Persistence
                 .OrderBy(line => line.Voucher.Date)
                 .ThenBy(line => line.Voucher.No)
                 .ToListAsync();
-
-            var accountGroup = lines.GroupBy(line => line.Account);
-
-            foreach (var group in accountGroup)
+            var accountGroups = lines.GroupBy(line => line.Account);
+            foreach (var group in accountGroups)
             {
-                decimal balancedValue = 0;
-
+                decimal balance = 0;
                 foreach (var line in group)
                 {
-                    balancedValue += line.Debit - line.Credit;
-                    if (line.Account.TurnoverMode == (short)TurnoverMode.CreditorEndPeriod && balancedValue > 0)
+                    balance += line.Debit - line.Credit;
+                    if (line.Account.TurnoverMode == (short)TurnoverMode.CreditorEndPeriod && balance > 0)
                     {
                         result.Add(line);
                         break;
                     }
 
-                    if (line.Account.TurnoverMode == (short)TurnoverMode.DebtorEndPeriod && balancedValue < 0)
+                    if (line.Account.TurnoverMode == (short)TurnoverMode.DebtorEndPeriod && balance < 0)
                     {
                         result.Add(line);
                         break;
@@ -341,11 +325,11 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            var voucherLines = result.Select(item => Mapper.Map<VoucherLineDetailViewModel>(item));
-            voucherLines = voucherLines
-                .ApplyPaging(gridOptions);
-
-            return (voucherLines.ToList(), result.Count);
+            var voucherLines = result
+                .Select(item => Mapper.Map<VoucherLineDetailViewModel>(item))
+                .ApplyPaging(gridOptions)
+                .ToList();
+            return (voucherLines, result.Count);
         }
 
         private IQueryable<VoucherLine> GetArticlesQueryAsync(DateTime from, DateTime to)
@@ -364,45 +348,12 @@ namespace SPPC.Tadbir.Persistence
             return lines;
         }
 
-        private IEnumerable<VoucherLine> GetArticleWithInvalidAccount(IQueryable<VoucherLine> voucherLines)
-        {
-            var lines = voucherLines.ToList();
-
-            var lineList = lines.Where(
-                line => !_relationRepository.LookupFullAccount(
-                    Mapper.Map<AccountItemBriefViewModel>(line.Account),
-                    Mapper.Map<AccountItemBriefViewModel>(line.DetailAccount),
-                    Mapper.Map<AccountItemBriefViewModel>(line.CostCenter),
-                    Mapper.Map<AccountItemBriefViewModel>(line.Project)));
-
-            return lineList;
-        }
-
-        private async Task<ValueTuple<IList<VoucherLineDetailViewModel>, int>> GetListAndCountAsync(
-            GridOptions gridOptions, IQueryable<VoucherLine> lines)
+        private ValueTuple<IList<VoucherLineDetailViewModel>, int> GetListAndCount(
+            GridOptions gridOptions, IList<VoucherLine> lines)
         {
             var voucherLines = lines.Select(item => Mapper.Map<VoucherLineDetailViewModel>(item));
-
             var filteredList = voucherLines
                 .Apply(gridOptions, false);
-
-            var vouchersList = await filteredList
-                .OrderBy(line => line.VoucherDate.Date)
-                .ThenBy(line => line.VoucherNo)
-                .ApplyPaging(gridOptions)
-                .ToListAsync();
-
-            return (vouchersList, await filteredList.CountAsync());
-        }
-
-        private ValueTuple<IList<VoucherLineDetailViewModel>, int> GetListAndCount(
-            GridOptions gridOptions, IEnumerable<VoucherLine> lines)
-        {
-            var voucherLines = lines.Select(item => Mapper.Map<VoucherLineDetailViewModel>(item));
-
-            var filteredList = voucherLines
-               .Apply(gridOptions, false);
-
             var vouchersList = filteredList
                 .OrderBy(line => line.VoucherDate.Date)
                 .ThenBy(line => line.VoucherNo)

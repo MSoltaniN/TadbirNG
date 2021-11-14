@@ -82,10 +82,12 @@ namespace SPPC.Tadbir.Persistence
             var query = repository.GetEntityQuery()
                 .Where(line => line.Voucher.Id == voucherId);
             query = Repository.ApplyRowFilter(ref query, ViewId.VoucherLine);
-            return await query
+            var articles = await query
                 .Select(line => Mapper.Map<TViewModel>(line))
+                .ToListAsync();
+            return articles
                 .Apply(gridOptions, false)
-                .CountAsync();
+                .Count();
         }
 
         /// <summary>

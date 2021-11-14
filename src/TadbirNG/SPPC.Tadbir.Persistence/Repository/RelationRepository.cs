@@ -264,8 +264,10 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllQuery<DetailAccount>(ViewId.DetailAccount)
                 .Where(facc => relatedDetailIds.Contains(facc.Id))
                 .Select(facc => Mapper.Map<AccountItemBriefViewModel>(facc))
-                .Apply(gridOptions)
                 .ToListAsync();
+            detailAccounts = detailAccounts
+                .Apply(gridOptions)
+                .ToList();
             Array.ForEach(detailAccounts.ToArray(), facc => facc.IsSelected = true);
             await LogAssociationOperationAsync<Account>(
                 OperationId.View, AppStrings.Account, accountId, AppStrings.DetailAccount, gridOptions);
@@ -300,8 +302,10 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllQuery<CostCenter>(ViewId.CostCenter)
                 .Where(cc => relatedCenterIds.Contains(cc.Id))
                 .Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc))
-                .Apply(gridOptions)
                 .ToListAsync();
+            costCenters = costCenters
+                .Apply(gridOptions)
+                .ToList();
             Array.ForEach(costCenters.ToArray(), cc => cc.IsSelected = true);
             await LogAssociationOperationAsync<Account>(
                 OperationId.View, AppStrings.Account, accountId, AppStrings.CostCenter, gridOptions);
@@ -336,8 +340,10 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllQuery<Project>(ViewId.Project)
                 .Where(prj => relatedProjectIds.Contains(prj.Id))
                 .Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj))
-                .Apply(gridOptions)
                 .ToListAsync();
+            projects = projects
+                .Apply(gridOptions)
+                .ToList();
             Array.ForEach(projects.ToArray(), prj => prj.IsSelected = true);
             await LogAssociationOperationAsync<Account>(
                 OperationId.View, AppStrings.Account, accountId, AppStrings.Project, gridOptions);
@@ -366,8 +372,10 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllQuery<Account>(ViewId.Account)
                 .Where(acc => relatedAccountIds.Contains(acc.Id))
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
-                .Apply(gridOptions)
                 .ToListAsync();
+            accounts = accounts
+                .Apply(gridOptions)
+                .ToList();
             Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
             await LogAssociationOperationAsync<DetailAccount>(
                 OperationId.View, AppStrings.DetailAccount, detailId, AppStrings.Account, gridOptions);
@@ -396,8 +404,10 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllQuery<Account>(ViewId.Account)
                 .Where(acc => relatedAccountIds.Contains(acc.Id))
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
-                .Apply(gridOptions)
                 .ToListAsync();
+            accounts = accounts
+                .Apply(gridOptions)
+                .ToList();
             Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
             await LogAssociationOperationAsync<CostCenter>(
                 OperationId.View, AppStrings.CostCenter, costCenterId, AppStrings.Account, gridOptions);
@@ -426,8 +436,10 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllQuery<Account>(ViewId.Account)
                 .Where(acc => relatedAccountIds.Contains(acc.Id))
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
-                .Apply(gridOptions)
                 .ToListAsync();
+            accounts = accounts
+                .Apply(gridOptions)
+                .ToList();
             Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
             await LogAssociationOperationAsync<Project>(
                 OperationId.View, AppStrings.Project, projectId, AppStrings.Account, gridOptions);
@@ -1088,10 +1100,12 @@ namespace SPPC.Tadbir.Persistence
                 query = query.Where(facc => facc.Children.Count == 0);
             }
 
-            return await query
+            var detailAccounts = await query
                 .Select(facc => Mapper.Map<AccountItemBriefViewModel>(facc))
-                .Apply(gridOptions)
                 .ToListAsync();
+            return detailAccounts
+                .Apply(gridOptions)
+                .ToList();
         }
 
         /// <summary>
@@ -1119,10 +1133,12 @@ namespace SPPC.Tadbir.Persistence
                 query = query.Where(cc => cc.Children.Count == 0);
             }
 
-            return await query
+            var costCenters = await query
                 .Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc))
-                .Apply(gridOptions)
                 .ToListAsync();
+            return costCenters
+                .Apply(gridOptions)
+                .ToList();
         }
 
         /// <summary>
@@ -1150,10 +1166,12 @@ namespace SPPC.Tadbir.Persistence
                 query = query.Where(prj => prj.Children.Count == 0);
             }
 
-            return await query
+            var projects = await query
                 .Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj))
-                .Apply(gridOptions)
                 .ToListAsync();
+            return projects
+                .Apply(gridOptions)
+                .ToList();
         }
 
         /// <summary>
@@ -1179,10 +1197,12 @@ namespace SPPC.Tadbir.Persistence
                     && !inactiveAccountIds.Contains(acc.Id)
                     && acc.Children.Count == 0);
 
-            return await query
+            var accounts = await query
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
-                .Apply(gridOptions)
                 .ToListAsync();
+            return accounts
+                .Apply(gridOptions)
+                .ToList();
         }
 
         /// <summary>
@@ -1208,10 +1228,12 @@ namespace SPPC.Tadbir.Persistence
                     && !inactiveAccountIds.Contains(acc.Id)
                     && acc.Children.Count == 0);
 
-            return await query
+            var accounts = await query
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
-                .Apply(gridOptions)
                 .ToListAsync();
+            return accounts
+                .Apply(gridOptions)
+                .ToList();
         }
 
         /// <summary>
@@ -1237,10 +1259,12 @@ namespace SPPC.Tadbir.Persistence
                     && !inactiveAccountIds.Contains(acc.Id)
                     && acc.Children.Count == 0);
 
-            return await query
+            var accounts = await query
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
-                .Apply(gridOptions)
                 .ToListAsync();
+            return accounts
+                .Apply(gridOptions)
+                .ToList();
         }
 
         /// <summary>

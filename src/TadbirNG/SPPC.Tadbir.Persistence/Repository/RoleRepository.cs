@@ -594,11 +594,9 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<ViewRowPermission>();
             var settings = await repository
                 .GetByCriteriaAsync(perm => perm.Role.Id == roleId, perm => perm.Role, perm => perm.View);
-            Array.ForEach(
-                settings
-                    .Select(perm => Mapper.Map<ViewRowPermissionViewModel>(perm))
-                    .ToArray(),
-                perm => rowSettings.RowPermissions.Add(perm));
+            Array.ForEach(settings
+                .Select(perm => Mapper.Map<ViewRowPermissionViewModel>(perm))
+                .ToArray(), perm => rowSettings.RowPermissions.Add(perm));
 
             var viewRepository = UnitOfWork.GetAsyncRepository<View>();
             var views = await viewRepository

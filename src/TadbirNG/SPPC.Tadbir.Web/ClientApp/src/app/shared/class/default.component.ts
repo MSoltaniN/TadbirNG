@@ -289,8 +289,6 @@ export class DefaultComponent extends BaseComponent {
   getFilters(filter: any): FilterExpression {
     let filters: Filter[] = [];
 
-    debugger;
-
     if (filter.filters.length) {
       for (let i = 0; i < filter.filters.length; i++) {
         if (filter.filters[i].value !== "") {

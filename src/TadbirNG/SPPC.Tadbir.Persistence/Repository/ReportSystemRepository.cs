@@ -103,8 +103,8 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 tree = outReports
-                        .Select(rep => Mapper.Map<TreeItemViewModel>(rep))
-                        .ToList();
+                    .Select(rep => Mapper.Map<TreeItemViewModel>(rep))
+                    .ToList();
                 Localize(localeId, outReports, tree);
             }
 

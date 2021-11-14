@@ -114,17 +114,20 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns></returns>
-        public async Task<IList<KeyValue>> GetAllLookupAsync<TEntity>(int viewId, GridOptions gridOptions = null)
+        public async Task<IList<KeyValue>> GetAllLookupAsync<TEntity>(
+            int viewId, GridOptions gridOptions = null)
             where TEntity : class, IBaseEntity
         {
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
             var query = repository.GetEntityQuery();
             query = ApplyBranchFilterForLookup(query);
             query = ApplyRowFilter(ref query, viewId);
-            return await query
+            var lookup = await query
                 .Select(entity => Mapper.Map<KeyValue>(entity))
-                .Apply(gridOptions)
                 .ToListAsync();
+            return lookup
+                .Apply(gridOptions)
+                .ToList();
         }
 
         /// <summary>
@@ -136,15 +139,18 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای اطلاعاتی موجودیت مورد نظر</returns>
-        public async Task<int> GetCountAsync<TEntity, TEntityView>(int viewId, GridOptions gridOptions = null)
+        public async Task<int> GetCountAsync<TEntity, TEntityView>(
+            int viewId, GridOptions gridOptions = null)
             where TEntity : class, IBaseEntity
             where TEntityView : class, new()
         {
             var query = GetAllQuery<TEntity>(viewId);
-            return await query
+            var items = await query
                 .Select(item => Mapper.Map<TEntityView>(item))
+                .ToListAsync();
+            return items
                 .Apply(gridOptions, false)
-                .CountAsync();
+                .Count();
         }
 
         /// <summary>
@@ -156,15 +162,18 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای اطلاعاتی موجودیت مورد نظر</returns>
-        public async Task<int> GetOperationCountAsync<TEntity, TEntityView>(int viewId, GridOptions gridOptions = null)
+        public async Task<int> GetOperationCountAsync<TEntity, TEntityView>(
+            int viewId, GridOptions gridOptions = null)
             where TEntity : class, IFiscalEntity
             where TEntityView : class, new()
         {
             var query = GetAllOperationQuery<TEntity>(viewId);
-            return await query
+            var items = await query
                 .Select(item => Mapper.Map<TEntityView>(item))
+                .ToListAsync();
+            return items
                 .Apply(gridOptions, false)
-                .CountAsync();
+                .Count();
         }
 
         /// <summary>

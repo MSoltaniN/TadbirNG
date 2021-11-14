@@ -50,10 +50,11 @@ namespace SPPC.Tadbir.Persistence.Utility
             }
 
             var leafAccounts = await query
-                .Where(acc => acc.Children.Count == 0 &&
-                    accounts.Any(item => acc.FullCode.StartsWith(item.FullCode)))
+                .Where(acc => acc.Children.Count == 0)
                 .ToListAsync();
-            return leafAccounts;
+            return leafAccounts
+                .Where(leaf => accounts.Any(item => leaf.FullCode.StartsWith(item.FullCode)))
+                .ToList();
         }
 
         /// <summary>

@@ -244,12 +244,15 @@ namespace SPPC.Tadbir.Persistence
             where TViewModel : class, new()
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            return await repository.GetEntityQuery()
+            var vouchers = await repository
+                .GetEntityQuery()
                 .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId
                     && v.SubjectType != (short)SubjectType.Draft)
                 .Select(item => Mapper.Map<TViewModel>(item))
+                .ToListAsync();
+            return vouchers
                 .Apply(gridOptions, false)
-                .CountAsync();
+                .Count();
         }
 
         /// <summary>
