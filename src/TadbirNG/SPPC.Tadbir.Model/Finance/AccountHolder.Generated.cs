@@ -28,7 +28,6 @@ namespace SPPC.Tadbir.Model.Finance
             this.FirstName = String.Empty;
             this.LastName = String.Empty;
             this.ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -50,9 +49,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// Gets or sets the اطلاعات حساب بانکی مربوط به این طرف حساب
         /// </summary>
         public virtual AccountOwner AccountOwner { get; set; }
-
-        private void InitReferences()
-        {
-        }
     }
 }

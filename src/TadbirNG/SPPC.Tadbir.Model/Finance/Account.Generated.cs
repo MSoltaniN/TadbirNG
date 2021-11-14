@@ -32,7 +32,6 @@ namespace SPPC.Tadbir.Model.Finance
             Name = String.Empty;
             Description = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -79,12 +78,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// گروه حساب مرتبط با حساب کل
         /// </summary>
         public virtual AccountGroup Group { get; set; }
-
-        private void InitReferences()
-        {
-            FiscalPeriod = new FiscalPeriod();
-            Branch = new Branch();
-            Children = new List<Account>();
-        }
     }
 }

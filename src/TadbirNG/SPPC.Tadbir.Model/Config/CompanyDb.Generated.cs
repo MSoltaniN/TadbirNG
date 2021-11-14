@@ -32,7 +32,6 @@ namespace SPPC.Tadbir.Model.Config
             Password = String.Empty;
             Description = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -69,9 +68,5 @@ namespace SPPC.Tadbir.Model.Config
         /// اطلاعات تکمیلی در مورد این شرکت
         /// </summary>
         public virtual string Description { get; set; }
-
-        private void InitReferences()
-        {
-        }
     }
 }

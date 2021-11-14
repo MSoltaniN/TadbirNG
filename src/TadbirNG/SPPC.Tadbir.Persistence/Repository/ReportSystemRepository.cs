@@ -276,7 +276,8 @@ namespace SPPC.Tadbir.Persistence
 
                 if (report.IsDefault)
                 {
-                    var systemReport = await repository.GetSingleByCriteriaAsync(rep => rep.Code == report.Code && rep.IsSystem);
+                    var systemReport = await repository.GetSingleByCriteriaAsync(
+                        rep => rep.Code == report.Code && rep.IsSystem);
                     systemReport.IsDefault = true;
                     repository.Update(systemReport);
                 }

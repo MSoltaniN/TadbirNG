@@ -28,7 +28,6 @@ namespace SPPC.Tadbir.Model.Metadata
             ResourceId = String.Empty;
             Text = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -45,10 +44,5 @@ namespace SPPC.Tadbir.Model.Metadata
         /// زبان این متن محلی شده را مشخص می کند
         /// </summary>
         public virtual Locale Locale { get; set; }
-
-        private void InitReferences()
-        {
-            Locale = new Locale();
-        }
     }
 }

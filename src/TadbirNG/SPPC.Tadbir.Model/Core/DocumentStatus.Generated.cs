@@ -27,16 +27,11 @@ namespace SPPC.Tadbir.Model.Core
         {
             this.Name = String.Empty;
             this.ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
         /// نام وضعیت ثبتی
         /// </summary>
         public virtual string Name { get; set; }
-
-        private void InitReferences()
-        {
-        }
     }
 }

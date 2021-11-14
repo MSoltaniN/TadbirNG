@@ -30,7 +30,6 @@ namespace SPPC.Tadbir.Model.Metadata
             Name = String.Empty;
             Description = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -62,10 +61,5 @@ namespace SPPC.Tadbir.Model.Metadata
         /// مجموعه ای از گزارش های ذخیره شده سیستمی یا کاربری که اطلاعات این فرم را نمایش می دهند
         /// </summary>
         public virtual IList<Report> Reports { get; protected set; }
-
-        private void InitReferences()
-        {
-            Reports = new List<Report>();
-        }
     }
 }

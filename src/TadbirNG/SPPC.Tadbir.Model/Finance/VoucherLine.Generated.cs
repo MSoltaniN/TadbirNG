@@ -30,7 +30,6 @@ namespace SPPC.Tadbir.Model.Finance
             FollowupNo = String.Empty;
             Mark = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -117,18 +116,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// شناسه دیتابیسی کاربر ایجاد کننده آرتیکل
         /// </summary>
         public virtual User CreatedBy { get; set; }
-
-        private void InitReferences()
-        {
-            Voucher = new Voucher();
-            Currency = new Currency();
-            Branch = new Branch();
-            FiscalPeriod = new FiscalPeriod();
-            Account = new Account();
-            DetailAccount = new DetailAccount();
-            CostCenter = new CostCenter();
-            Project = new Project();
-            CreatedBy = new User();
-        }
     }
 }

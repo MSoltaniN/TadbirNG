@@ -32,7 +32,6 @@ namespace SPPC.Tadbir.Model.Finance
             this.Name = String.Empty;
             this.Description = String.Empty;
             this.ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -49,12 +48,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// مجموعه ای از سرفصل های حسابداری مرتبط با این تفصیلی شناور
         /// </summary>
         public IList<AccountDetailAccount> AccountDetailAccounts { get; protected set; }
-
-        private void InitReferences()
-        {
-            FiscalPeriod = new FiscalPeriod();
-            Branch = new Branch();
-            Children = new List<DetailAccount>();
-        }
     }
 }

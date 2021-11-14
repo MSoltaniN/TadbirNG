@@ -352,7 +352,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteVoucherAsync(int voucherId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var voucher = await repository.GetByIDWithTrackingAsync(voucherId, txn => txn.Lines);
+            var voucher = await repository.GetByIDWithTrackingAsync(voucherId, v => v.Lines);
             if (voucher != null)
             {
                 voucher.Lines.Clear();
@@ -393,7 +393,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetCountByCriteriaAsync(vch => vch.Id != voucher.Id
                     && vch.No == voucher.No
                     && vch.SubjectType == voucher.SubjectType
-                    && vch.FiscalPeriod.Id == voucher.FiscalPeriodId);
+                    && vch.FiscalPeriodId == voucher.FiscalPeriodId);
             return count > 0;
         }
 

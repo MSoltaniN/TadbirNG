@@ -27,7 +27,6 @@ namespace SPPC.Tadbir.Model.Metadata
             this.Name = String.Empty;
             this.Code = String.Empty;
             this.ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -44,9 +43,5 @@ namespace SPPC.Tadbir.Model.Metadata
         /// استان مربوط به این شهر
         /// </summary>
         public virtual Province Province { get; set; }
-
-        private void InitReferences()
-        {
-        }
     }
 }

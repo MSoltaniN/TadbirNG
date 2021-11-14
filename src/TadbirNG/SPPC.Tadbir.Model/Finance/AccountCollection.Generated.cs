@@ -27,7 +27,6 @@ namespace SPPC.Tadbir.Model.Finance
         {
             Name = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -54,10 +53,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// طبقه بندی اصلی دربرگیرنده این مجموعه حساب
         /// </summary>
         public virtual AccountCollectionCategory Category { get; set; }
-
-        private void InitReferences()
-        {
-            Category = new AccountCollectionCategory();
-        }
     }
 }

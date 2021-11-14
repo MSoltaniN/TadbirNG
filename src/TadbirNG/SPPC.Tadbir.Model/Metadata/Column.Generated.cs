@@ -32,7 +32,6 @@ namespace SPPC.Tadbir.Model.Metadata
             ScriptType = String.Empty;
             Expression = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -120,10 +119,5 @@ namespace SPPC.Tadbir.Model.Metadata
         /// موجودیتی که این ستون در آن تعریف شده است
         /// </summary>
         public virtual View View { get; set; }
-
-        private void InitReferences()
-        {
-            View = new View();
-        }
     }
 }

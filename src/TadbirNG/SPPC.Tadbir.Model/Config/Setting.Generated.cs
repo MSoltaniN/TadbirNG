@@ -30,7 +30,6 @@ namespace SPPC.Tadbir.Model.Config
             Values = String.Empty;
             DefaultValues = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -82,9 +81,5 @@ namespace SPPC.Tadbir.Model.Config
         /// تنظیمات والد برای این تنظیمات در ساختار درختی
         /// </summary>
         public virtual Setting Parent { get; set; }
-
-        private void InitReferences()
-        {
-        }
     }
 }

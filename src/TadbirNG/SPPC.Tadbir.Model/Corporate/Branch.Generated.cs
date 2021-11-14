@@ -29,7 +29,6 @@ namespace SPPC.Tadbir.Model.Corporate
             this.Name = String.Empty;
             this.Description = String.Empty;
             this.ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -57,11 +56,5 @@ namespace SPPC.Tadbir.Model.Corporate
         /// Gets or sets the parent of this branch in the main branch hierarchy
         /// </summary>
         public virtual Branch Parent { get; set; }
-
-        private void InitReferences()
-        {
-            RoleBranches = new List<RoleBranch>();
-            Children = new List<Branch>();
-        }
     }
 }

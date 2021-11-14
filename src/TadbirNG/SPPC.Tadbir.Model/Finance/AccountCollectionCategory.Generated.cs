@@ -27,7 +27,6 @@ namespace SPPC.Tadbir.Model.Finance
         {
             Name = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -39,10 +38,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// مجموعه حساب های مرتبط با این گروه 
         /// </summary>
         public virtual IList<AccountCollection> AccountCollections { get; protected set; }
-
-        private void InitReferences()
-        {
-            AccountCollections = new List<AccountCollection>();
-        }
     }
 }

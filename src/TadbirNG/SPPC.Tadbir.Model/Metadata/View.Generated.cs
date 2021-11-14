@@ -28,7 +28,6 @@ namespace SPPC.Tadbir.Model.Metadata
             Name = String.Empty;
             FetchUrl = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -70,10 +69,5 @@ namespace SPPC.Tadbir.Model.Metadata
         /// مجموعه ای از ستون های تعریف شده برای نمای اطلاعاتی
         /// </summary>
         public virtual List<Column> Columns { get; protected set; }
-
-        private void InitReferences()
-        {
-            Columns = new List<Column>();
-        }
     }
 }

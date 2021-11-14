@@ -29,7 +29,6 @@ namespace SPPC.Tadbir.Model.Reporting
             this.TitleKey = String.Empty;
             this.ApiUrl = String.Empty;
             this.ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -66,9 +65,5 @@ namespace SPPC.Tadbir.Model.Reporting
         /// Gets or sets the موجودیتی که این ستون در آن تعریف شده است
         /// </summary>
         public virtual View View { get; set; }
-
-        private void InitReferences()
-        {
-        }
     }
 }

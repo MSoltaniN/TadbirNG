@@ -29,7 +29,6 @@ namespace SPPC.Tadbir.Model.Metadata
             LocalName = String.Empty;
             Code = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -46,9 +45,5 @@ namespace SPPC.Tadbir.Model.Metadata
         /// کد شناسایی استاندارد زبان که معمولاً دو حرفی یا پنج حرفی است
         /// </summary>
         public virtual string Code { get; set; }
-
-        private void InitReferences()
-        {
-        }
     }
 }

@@ -49,7 +49,7 @@ namespace SPPC.Tadbir.Persistence
             int branchId = UserContext.BranchId;
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             var accounts = await repository
-                .GetByCriteriaAsync(acc => acc.FiscalPeriod.Id <= fpId);
+                .GetByCriteriaAsync(acc => acc.FiscalPeriodId <= fpId);
             return accounts
                 .Select(acc => Mapper.Map<KeyValue>(acc))
                 .Apply(gridOptions);
@@ -67,7 +67,7 @@ namespace SPPC.Tadbir.Persistence
             int branchId = UserContext.BranchId;
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             var detailAccounts = await repository
-                .GetByCriteriaAsync(det => det.FiscalPeriod.Id <= fpId);
+                .GetByCriteriaAsync(det => det.FiscalPeriodId <= fpId);
             return detailAccounts
                 .Select(det => Mapper.Map<KeyValue>(det))
                 .Apply(gridOptions);
@@ -85,7 +85,7 @@ namespace SPPC.Tadbir.Persistence
             int branchId = UserContext.BranchId;
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var costCenters = await repository
-                .GetByCriteriaAsync(cc => cc.FiscalPeriod.Id <= fpId);
+                .GetByCriteriaAsync(cc => cc.FiscalPeriodId <= fpId);
             return costCenters
                 .Select(cc => Mapper.Map<KeyValue>(cc))
                 .Apply(gridOptions);
@@ -103,7 +103,7 @@ namespace SPPC.Tadbir.Persistence
             int branchId = UserContext.BranchId;
             var repository = UnitOfWork.GetAsyncRepository<Project>();
             var projects = await repository
-                .GetByCriteriaAsync(prj => prj.FiscalPeriod.Id <= fpId);
+                .GetByCriteriaAsync(prj => prj.FiscalPeriodId <= fpId);
             return projects
                 .Select(prj => Mapper.Map<KeyValue>(prj))
                 .Apply(gridOptions);
@@ -121,7 +121,7 @@ namespace SPPC.Tadbir.Persistence
             int branchId = UserContext.BranchId;
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
             var vouchers = await repository
-                .GetByCriteriaAsync(voucher => voucher.FiscalPeriod.Id == fpId);
+                .GetByCriteriaAsync(voucher => voucher.FiscalPeriodId == fpId);
             return vouchers
                 .Select(voucher => Mapper.Map<KeyValue>(voucher))
                 .Apply(gridOptions);
@@ -139,7 +139,7 @@ namespace SPPC.Tadbir.Persistence
             int branchId = UserContext.BranchId;
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var lines = await repository
-                .GetByCriteriaAsync(line => line.FiscalPeriod.Id == fpId);
+                .GetByCriteriaAsync(line => line.FiscalPeriodId == fpId);
             return lines
                 .Select(line => Mapper.Map<KeyValue>(line))
                 .Apply(gridOptions);

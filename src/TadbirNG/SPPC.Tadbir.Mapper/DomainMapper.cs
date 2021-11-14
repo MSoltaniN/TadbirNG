@@ -250,12 +250,10 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.TypeId,
                     opts => opts.MapFrom(src => src.LineTypeId))
-                .AfterMap((viewModel, model) => model.Voucher.Id = viewModel.VoucherId)
                 .AfterMap((viewModel, model) => model.AccountId = viewModel.FullAccount.Account.Id)
                 .AfterMap((viewModel, model) => model.DetailId = AsNullable(viewModel.FullAccount.DetailAccount.Id))
                 .AfterMap((viewModel, model) => model.CostCenterId = AsNullable(viewModel.FullAccount.CostCenter.Id))
-                .AfterMap((viewModel, model) => model.ProjectId = AsNullable(viewModel.FullAccount.Project.Id))
-                .AfterMap((viewModel, model) => model.CurrencyId = viewModel.CurrencyId);
+                .AfterMap((viewModel, model) => model.ProjectId = AsNullable(viewModel.FullAccount.Project.Id));
             mapperConfig.CreateMap<VoucherLine, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(
@@ -287,9 +285,7 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<FiscalPeriod, FiscalPeriodViewModel>()
                 .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
-            mapperConfig.CreateMap<FiscalPeriodViewModel, FiscalPeriod>()
-                .ForMember(dest => dest.InventoryMode, opts => opts.MapFrom(src => src.InventoryMode))
-                .AfterMap((viewModel, model) => model.CompanyId = viewModel.CompanyId);
+            mapperConfig.CreateMap<FiscalPeriodViewModel, FiscalPeriod>();
             mapperConfig.CreateMap<FiscalPeriod, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
@@ -331,9 +327,7 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<Branch, BranchViewModel>()
                 .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
-            mapperConfig.CreateMap<BranchViewModel, Branch>()
-                .AfterMap((viewModel, model) => model.CompanyId = viewModel.CompanyId)
-                .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId);
+            mapperConfig.CreateMap<BranchViewModel, Branch>();
             mapperConfig.CreateMap<Branch, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
@@ -596,7 +590,7 @@ namespace SPPC.Tadbir.Mapper
 
         private static int? AsNullable(int value)
         {
-            return value > 0 ? value : (int?)null;
+            return value > 0 ? value : null;
         }
 
         private static FullAccountViewModel BuildFullAccount(

@@ -27,7 +27,6 @@ namespace SPPC.Tadbir.Model.Metadata
             this.Name = String.Empty;
             this.Code = String.Empty;
             this.ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -39,9 +38,5 @@ namespace SPPC.Tadbir.Model.Metadata
         /// کد استان
         /// </summary>
         public virtual string Code { get; set; }
-
-        private void InitReferences()
-        {
-        }
     }
 }

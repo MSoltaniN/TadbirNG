@@ -29,7 +29,6 @@ namespace SPPC.Tadbir.Model.Config
             ModelType = String.Empty;
             Values = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -71,10 +70,5 @@ namespace SPPC.Tadbir.Model.Config
         /// اطلاعات متادیتای نمای موجودیت مرتبط با این تنظیمات
         /// </summary>
         public virtual View View { get; set; }
-
-        private void InitReferences()
-        {
-            Setting = new Setting();
-        }
     }
 }

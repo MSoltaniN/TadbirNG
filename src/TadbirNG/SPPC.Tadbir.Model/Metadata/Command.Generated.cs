@@ -27,7 +27,6 @@ namespace SPPC.Tadbir.Model.Metadata
         {
             TitleKey = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -59,9 +58,5 @@ namespace SPPC.Tadbir.Model.Metadata
         /// دسترسی امنیتی مورد نیاز کاربر برای فعال کردن این دستور در برنامه
         /// </summary>
         public virtual Permission Permission { get; set; }
-
-        private void InitReferences()
-        {
-        }
     }
 }

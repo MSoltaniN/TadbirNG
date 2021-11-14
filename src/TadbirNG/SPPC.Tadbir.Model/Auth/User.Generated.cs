@@ -29,7 +29,6 @@ namespace SPPC.Tadbir.Model.Auth
             this.UserName = String.Empty;
             this.PasswordHash = String.Empty;
             this.ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -62,11 +61,5 @@ namespace SPPC.Tadbir.Model.Auth
         ///// Gets or sets the collection of all application-defined roles that are assigned to this user
         ///// </summary>
         ////public virtual IList<Role> Roles { get; protected set; }
-
-        private void InitReferences()
-        {
-            Person = new Person();
-            UserRoles = new List<UserRole>();
-        }
     }
 }

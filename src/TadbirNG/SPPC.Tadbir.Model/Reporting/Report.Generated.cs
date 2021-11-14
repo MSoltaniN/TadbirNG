@@ -31,7 +31,6 @@ namespace SPPC.Tadbir.Model.Reporting
             ServiceUrl = String.Empty;
             ResourceKeys = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -98,11 +97,5 @@ namespace SPPC.Tadbir.Model.Reporting
         /// فرمی که به عنوان منبع داده اصلی این گزارش در برنامه شناخته می شود
         /// </summary>
         public virtual ReportView View { get; set; }
-
-        private void InitReferences()
-        {
-            LocalReports = new List<LocalReport>();
-            Parameters = new List<Parameter>();
-        }
     }
 }

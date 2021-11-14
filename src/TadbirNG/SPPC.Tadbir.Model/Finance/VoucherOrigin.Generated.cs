@@ -27,16 +27,11 @@ namespace SPPC.Tadbir.Model.Finance
         {
             Name = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
         /// نام ماخذ ایجاد سند مالی
         /// </summary>
         public virtual string Name { get; set; }
-
-        private void InitReferences()
-        {
-        }
     }
 }

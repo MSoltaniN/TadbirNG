@@ -22,7 +22,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public CustomerTaxInfo()
         {
-            InitReferences();
         }
 
         /// <summary>
@@ -99,9 +98,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// Gets or sets the حساب انتخاب شده
         /// </summary>
         public virtual Account Account { get; set; }
-
-        private void InitReferences()
-        {
-        }
     }
 }

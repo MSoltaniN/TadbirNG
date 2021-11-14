@@ -29,7 +29,6 @@ namespace SPPC.Tadbir.Model.Finance
             Category = String.Empty;
             Description = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -51,9 +50,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// شرح یا ملاحظات گروه حساب به زبان پیش فرض برنامه
         /// </summary>
         public virtual string Description { get; set; }
-
-        private void InitReferences()
-        {
-        }
     }
 }

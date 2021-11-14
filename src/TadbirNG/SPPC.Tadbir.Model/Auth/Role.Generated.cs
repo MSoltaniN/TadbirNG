@@ -28,7 +28,6 @@ namespace SPPC.Tadbir.Model.Auth
             this.Name = String.Empty;
             this.Description = String.Empty;
             this.ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -58,11 +57,5 @@ namespace SPPC.Tadbir.Model.Auth
         ///// Gets or sets the collection of all branches that this role can access
         ///// </summary>
         ////public virtual IList<Branch> Branches { get; protected set; }
-
-        private void InitReferences()
-        {
-            UserRoles = new List<UserRole>();
-            RolePermissions = new List<RolePermission>();
-        }
     }
 }

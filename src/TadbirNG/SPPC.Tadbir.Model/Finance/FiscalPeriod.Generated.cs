@@ -32,7 +32,6 @@ namespace SPPC.Tadbir.Model.Finance
             StartDate = DateTime.Now;
             EndDate = DateTime.Now;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -59,10 +58,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// Detail information related to this fiscal period
         /// </summary>
         public virtual string Description { get; set; }
-
-        private void InitReferences()
-        {
-            RoleFiscalPeriods = new List<RoleFiscalPeriod>();
-        }
     }
 }

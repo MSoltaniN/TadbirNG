@@ -29,7 +29,6 @@ namespace SPPC.Tadbir.Model.Config
             Values = String.Empty;
             DefaultValues = String.Empty;
             ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -56,9 +55,5 @@ namespace SPPC.Tadbir.Model.Config
         /// ریز اطلاعات تنظیمات پیش فرض که با فرمت مشخصی ذخیره و بازیابی می شود
         /// </summary>
         public virtual string DefaultValues { get; set; }
-
-        private void InitReferences()
-        {
-        }
     }
 }

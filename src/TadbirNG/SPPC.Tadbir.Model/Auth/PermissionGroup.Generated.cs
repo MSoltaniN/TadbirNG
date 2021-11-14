@@ -29,7 +29,6 @@ namespace SPPC.Tadbir.Model.Auth
             this.EntityName = String.Empty;
             this.Description = String.Empty;
             this.ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -51,10 +50,5 @@ namespace SPPC.Tadbir.Model.Auth
         /// Gets or sets the collection of all permissions defined in this group
         /// </summary>
         public virtual IList<Permission> Permissions { get; protected set; }
-
-        private void InitReferences()
-        {
-            this.Permissions = new List<Permission>();
-        }
     }
 }
