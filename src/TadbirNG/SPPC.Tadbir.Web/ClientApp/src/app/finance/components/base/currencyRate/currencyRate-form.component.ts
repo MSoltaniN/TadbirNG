@@ -66,7 +66,8 @@ export class CurrencyRateFormComponent extends DetailComponent implements OnInit
   }
 
   setDateDisplayType() {    
-    this.dateDisplayType = this.properties.get(this.metadataKey).filter(p => p.name == "Date")[0].type;
+    
+    this.dateDisplayType = this.getProperties(this.metadataKey).filter(p => p.name == "Date")[0].type;
   }
 
 
