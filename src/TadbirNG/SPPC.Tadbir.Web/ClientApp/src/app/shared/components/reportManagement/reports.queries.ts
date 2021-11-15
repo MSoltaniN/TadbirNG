@@ -29,6 +29,19 @@ export class ReportsQueries {
       case "Voucher-By-Subsid":
         outReport = this.regVoucherBySubsid(report, data);
         break;
+      case "Journal-ByDate-ByLedger":
+        outReport = this.regJournal_ByDate_ByLedger(report, data);
+        break;
+      case "Journal-ByDate-BySubsidiary":
+        outReport = this.regJournal_ByDate_BySubsidiary(report, data);
+        break;
+      case "Journal-ByNo-ByLedger":
+        outReport = this.regJournal_ByNo_ByLedger(report, data);
+        break;
+      case "Journal-ByNo-BySubsidiary":
+        outReport = this.regJournal_ByNo_BySubsidiary(report, data);
+      break;
+        
     }
 
     return outReport;
@@ -204,4 +217,61 @@ export class ReportsQueries {
 
     return report;
   }
+
+  public static regJournal_ByDate_ByLedger(report: any, data: any) {
+    
+    var reportData = data;
+    //set data in report
+    report.regData("Journal_ByDate_ByLedger", "items", reportData.rows.items);     
+
+    //set parameters in report
+    report.dictionary.variables.getByName("debitSum").valueObject = reportData.rows.debitSum;;
+    report.dictionary.variables.getByName("creditSum").valueObject = reportData.rows.creditSum;
+    report.dictionary.variables.getByName("totalCount").valueObject = reportData.rows.totalCount;
+    
+    return report;
+  }
+
+  public static regJournal_ByDate_BySubsidiary(report: any, data: any) {
+    
+    var reportData = data;
+    //set data in report
+    report.regData("Journal_ByDate_BySubsidiary", "items", reportData.rows.items);     
+
+    //set parameters in report
+    report.dictionary.variables.getByName("debitSum").valueObject = reportData.rows.debitSum;;
+    report.dictionary.variables.getByName("creditSum").valueObject = reportData.rows.creditSum;
+    report.dictionary.variables.getByName("totalCount").valueObject = reportData.rows.totalCount;
+    
+    return report;
+  }
+
+  public static regJournal_ByNo_ByLedger(report: any, data: any) {
+    
+    var reportData = data;
+    //set data in report
+    report.regData("Journal_ByNo_ByLedger", "items", reportData.rows.items);     
+
+    //set parameters in report
+    report.dictionary.variables.getByName("debitSum").valueObject = reportData.rows.debitSum;;
+    report.dictionary.variables.getByName("creditSum").valueObject = reportData.rows.creditSum;
+    report.dictionary.variables.getByName("totalCount").valueObject = reportData.rows.totalCount;
+    
+    return report;
+  }
+
+  public static regJournal_ByNo_BySubsidiary(report: any, data: any) {
+    
+    var reportData = data;
+    //set data in report
+    report.regData("Journal_ByNo_BySubsidiary", "items", reportData.rows.items);     
+
+    //set parameters in report
+    report.dictionary.variables.getByName("debitSum").valueObject = reportData.rows.debitSum;;
+    report.dictionary.variables.getByName("creditSum").valueObject = reportData.rows.creditSum;
+    report.dictionary.variables.getByName("totalCount").valueObject = reportData.rows.totalCount;
+    
+    return report;
+  }
+
 }
