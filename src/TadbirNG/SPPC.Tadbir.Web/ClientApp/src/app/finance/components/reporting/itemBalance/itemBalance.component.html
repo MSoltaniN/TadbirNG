@@ -3,8 +3,6 @@
   <report-param ParamName='toDate' [ParamValue]="toDate" [ParamInFilter]="itemBalanceType === '1'"></report-param>
   <report-param ParamName='fromNo' [ParamValue]="fromVoucher" [ParamInFilter]="itemBalanceType === '2'"></report-param>
   <report-param ParamName='toNo' [ParamValue]="toVoucher" [ParamInFilter]="itemBalanceType === '2'"></report-param>
-  <report-param ParamName='VoucherStatus' [ParamValue]="voucherStatusSelected"
-                [ParamReportVisible]="false" [ParamInFilter]="voucherStatusSelected != '0'"></report-param>
 </view-identifier>
 <app-bread-cumb [entityTypeName]="'ItemBalance'"></app-bread-cumb>
 <report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"

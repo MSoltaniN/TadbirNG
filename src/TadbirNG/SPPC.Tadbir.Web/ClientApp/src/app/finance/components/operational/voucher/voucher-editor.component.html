@@ -1,7 +1,7 @@
 
 <app-bread-cumb entityTypeName="{{subjectMode === 1 ? 'DraftVoucherEditor' : 'VoucherEditor'}}" *ngIf="isShowBreadcrumb"></app-bread-cumb>
 <view-identifier [ViewID]="viewId">
-  <report-param ParamName='no' [ParamValue]="currentVoucherNo" ParamType="UrlParameter"></report-param>
+  <report-param ParamName='no' [ParamValue]="currentVoucherNo" ></report-param>
 </view-identifier>
 <report-viewer id='compviewer'></report-viewer>
 <report-management [ViewIdentity]="viewIdentity" ></report-management>

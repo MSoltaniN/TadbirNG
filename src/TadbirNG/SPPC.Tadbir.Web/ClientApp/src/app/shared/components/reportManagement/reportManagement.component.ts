@@ -524,6 +524,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
         paramInfo.descriptionKey = param.descriptionKey;
         paramInfo.name = param.name;
         paramInfo.value = fparam[0].ParamValue;
+        paramInfo.source = param.source;
 
         paramArrays.push(paramInfo);
       }
@@ -556,9 +557,9 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     //remove parameter that ParamInFilter == false
     if (this.ViewIdentity) {
       this.ViewIdentity.params.forEach(function (p) {
-        if (p.ParamType && p.ParamType.toLowerCase() == "urlparameter") {
-          urlParameters.push(p);
-        }
+        // if (p.ParamType && p.ParamType.toLowerCase() == "urlparameter") {
+        //   urlParameters.push(p);
+        // }
 
         if (!p.ParamInFilter && params) {
           var index = params.findIndex(f => f.name === p.ParamName);
@@ -575,12 +576,12 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
         serviceUrl = this.changeServiceUrl(serviceUrl, params);
       }
 
-      if (urlParameters && urlParameters.length > 0) 
-        serviceUrl = this.replaceServiceUrlParams(serviceUrl, urlParameters);
+      // if (urlParameters && urlParameters.length > 0) 
+      //   serviceUrl = this.replaceServiceUrlParams(serviceUrl, urlParameters);
       
       if (params && params.length > 0) {
         var routeParameters = new Array<ReportParamComponent>();
-        params.filter(p => p.controlType != 'QueryString').forEach(function (p) {          
+        params.filter(p => p.source.toLowerCase() == 'route').forEach(function (p) {          
           var param = new ReportParamComponent();
           param.ParamValue = p.value;
           routeParameters.push(param);          
@@ -685,13 +686,13 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
   }
 
   /**
-   * این تابع آدرس روت مربوط به دیتای گزارش را فرمت دهی میکند
+   * این تابع آدرس کوئری  مربوط به پارامترهای گزارش را فرمت دهی میکند مانند ?id=1&no=2
    * @param url
    * @param params
    */
   changeServiceUrl(url: string, params: ParameterInfo[]): string {   
 
-    var queryStringParams = params.filter(p => p.controlType === 'QueryString');
+    var queryStringParams = params.filter(p => p.source.toLowerCase() === 'querystring');
     if (queryStringParams.length > 0)
       url += '?';
     else

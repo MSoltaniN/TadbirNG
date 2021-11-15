@@ -1,8 +1,6 @@
 <view-identifier [ViewID]="viewId" [IsDynamicColumns]="comparativeSelected" [DynamicMetadata]="gridColumns" >
   <report-param ParamName='fromDate' [ParamValue]="fromDate" [ParamInFilter]="true"></report-param>
   <report-param ParamName='toDate' [ParamValue]="toDate" [ParamInFilter]="true"></report-param>
-  <report-param ParamName='VoucherStatus' [ParamValue]="voucherStatusSelected"
-                [ParamReportVisible]="false" [ParamInFilter]="voucherStatusSelected != '0'"></report-param>
 </view-identifier>
 <report-management [ViewIdentity]="viewIdentity" [ViewSettings]="viewSetting" [Grid]="grid" [Sort]="sort"
                    [Filter]="currentFilter" [QuickFilter]="reportQuickFilter" [Parameters]="param" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl"></report-management>

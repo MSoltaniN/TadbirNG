@@ -23,4 +23,5 @@ export interface Parameter {
     maxValue: string;
     descriptionKey: string;
     name: string;    
+    source:string;
 }

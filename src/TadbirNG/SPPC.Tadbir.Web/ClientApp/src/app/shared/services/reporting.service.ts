@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { LocalReport, QuickReportConfigInfo, Parameter, QuickReportColumnModel, QuickReportViewModel } from '@sppc/shared/models';
 import { ReportBaseService } from '@sppc/shared/class/report.base.service';
 import { BrowserStorageService } from '@sppc/shared/services/browserStorage.service';
+import { StringLiteral } from 'typescript';
 
 
 @Injectable()
@@ -94,7 +95,7 @@ export class ParameterInfo implements Parameter, ParameterFields {
   maxValue: string;
   descriptionKey: string;
   name: string;
-
+  source:string;
 }
 
 export class LocalReportInfo implements LocalReport {

@@ -399,19 +399,27 @@ namespace SPPC.Tadbir.Web.Api
                 {
                     txtHeaderCell = (StiText)(sampleText.Clone(true));
 
-                    switch (orderdColumns[i].Type.ToLower())
+                    if (orderdColumns[i].Type != null)
                     {
-                        case "string":
-                            txtHeaderCell = (StiText)(sampleText.Clone(true));
-                            break;
-                        case "number":
-                        case "money":
-                            txtHeaderCell = (StiText)(sampleNumber.Clone(true));
-                            break;
-                        case "gregorian":
-                        case "jalali":
-                            txtHeaderCell = (StiText)(sampleNumber.Clone(true));
-                            break;
+                        switch (orderdColumns[i].Type.ToLower())
+                        {
+                            case "number":
+                            case "money":
+                                txtHeaderCell = (StiText)(sampleNumber.Clone(true));
+                                break;
+                            case "gregorian":
+                            case "jalali":
+                                txtHeaderCell = (StiText)(sampleNumber.Clone(true));
+                                break;
+                            case "string":
+                            default:
+                                txtHeaderCell = (StiText)(sampleText.Clone(true));
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        txtHeaderCell = (StiText)(sampleText.Clone(true));
                     }
 
                     txtHeaderCell.Name = ctrlName;
@@ -593,7 +601,7 @@ namespace SPPC.Tadbir.Web.Api
 
                 if (txtDataCell == null)
                 {
-                    if (orderdColumns[i].Name.ToLower() != "rowno")
+                    if (orderdColumns[i].Name.ToLower() != "rowno" && orderdColumns[i].Type != null)
                     {
                         switch (orderdColumns[i].Type.ToLower())
                         {
@@ -621,7 +629,7 @@ namespace SPPC.Tadbir.Web.Api
                     txtDataCell.Page = report.Pages[0];
                 }
 
-                if (orderdColumns[i].Type.ToLower() == "money")
+                if (orderdColumns[i].Type != null && orderdColumns[i].Type.ToLower() == "money")
                 {
                     txtDataCell.TextFormat = new Stimulsoft.Report.Components.TextFormats.StiNumberFormatService(1, ".", 0, ",", 3, true, false, " ");
                 }

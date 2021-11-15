@@ -48,7 +48,8 @@ export class ReportParametersComponent implements OnInit {
         paramInfo.dataType = param.dataType;
         paramInfo.descriptionKey = param.descriptionKey;
         paramInfo.name = param.name;
-
+        paramInfo.source = param.source;
+        
         paramArrays.push(paramInfo);
         //paramsForm.addControl(paramInfo.fieldName,new FormControl())
         paramsForm.addControl(paramInfo.name,new FormControl('',Validators.required));
