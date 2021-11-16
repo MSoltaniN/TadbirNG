@@ -275,11 +275,11 @@ namespace SPPC.Tadbir.Persistence
         private static ReportQuery GetJournalByLevelByBranchQuery(
             JournalParameters parameters, int length, bool byNo, bool isDebit)
         {
-            var query = default(ReportQuery);
             string command = !byNo
                 ? String.Format(JournalQuery.ByDateByLevelByBranch, length,
                     parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false))
                 : String.Format(JournalQuery.ByNoByLevelByBranch, length, parameters.FromNo, parameters.ToNo);
+            ReportQuery query;
             if (isDebit)
             {
                 query = new ReportQuery(command);
@@ -297,11 +297,11 @@ namespace SPPC.Tadbir.Persistence
         private static ReportQuery GetJournalLedgerSummaryQuery(
             JournalParameters parameters, int length, bool byNo, bool isDebit)
         {
-            var query = default(ReportQuery);
             string command = !byNo
                 ? String.Format(JournalQuery.ByDateLedgerSummary, length,
                     parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false))
                 : String.Format(JournalQuery.ByNoLedgerSummary, length, parameters.FromNo, parameters.ToNo);
+            ReportQuery query;
             if (isDebit)
             {
                 query = new ReportQuery(command);
@@ -319,11 +319,11 @@ namespace SPPC.Tadbir.Persistence
         private static ReportQuery GetJournalLedgerSummaryByBranchQuery(
             JournalParameters parameters, int length, bool byNo, bool isDebit)
         {
-            var query = default(ReportQuery);
             string command = !byNo
                 ? String.Format(JournalQuery.ByDateLedgerSummaryByBranch, length,
                     parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false))
                 : String.Format(JournalQuery.ByNoLedgerSummaryByBranch, length, parameters.FromNo, parameters.ToNo);
+            ReportQuery query;
             if (isDebit)
             {
                 query = new ReportQuery(command);
@@ -763,8 +763,9 @@ namespace SPPC.Tadbir.Persistence
             var creditItems = GetByLevelItems(parameters, length, byNo, byBranch, false);
             if (HasColumnFilterOrSort(parameters.GridOptions))
             {
-                return await GetFilteredJournalByLedgerAsync(
+                journal = await GetFilteredJournalByLedgerAsync(
                     debitItems, creditItems, parameters.GridOptions);
+                return GetJournalWithQuote(journal, parameters, byNo);
             }
 
             journal.TotalCount = debitItems.Count + creditItems.Count;
@@ -773,7 +774,7 @@ namespace SPPC.Tadbir.Persistence
             journal.Items.AddRange(MergeByNumber(debitItems, creditItems, parameters.GridOptions));
             await SetNameAndDescriptionAsync(journal.Items);
 
-            return journal;
+            return GetJournalWithQuote(journal, parameters, byNo);
         }
 
         private async Task<JournalViewModel> GetFilteredJournalByLedgerAsync(
@@ -817,8 +818,9 @@ namespace SPPC.Tadbir.Persistence
             var ledgerCredit = GetByLevelItems(parameters, ledgerLength, byNo, byBranch, false, " AND acc.Level = 0 ");
             if (HasColumnFilterOrSort(parameters.GridOptions))
             {
-                return await GetFilteredJournalBySubsidiaryAsync(
+                journal = await GetFilteredJournalBySubsidiaryAsync(
                     ledgerDebit, ledgerCredit, subsidDebit, subsidCredit, parameters.GridOptions);
+                return GetJournalWithQuote(journal, parameters, byNo);
             }
 
             journal.TotalCount = subsidDebit.Count + subsidCredit.Count + ledgerDebit.Count + ledgerCredit.Count;
@@ -827,7 +829,7 @@ namespace SPPC.Tadbir.Persistence
             journal.Items.AddRange(MergeByNumber(subsidDebit, ledgerDebit, subsidCredit, ledgerCredit, parameters.GridOptions));
             await SetNameAndDescriptionAsync(journal.Items);
 
-            return journal;
+            return GetJournalWithQuote(journal, parameters, byNo);
         }
 
         private async Task<JournalViewModel> GetFilteredJournalBySubsidiaryAsync(
@@ -949,6 +951,26 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await PrepareJournalAsync(journal, items, parameters.GridOptions);
+            return journal;
+        }
+
+        private JournalViewModel GetJournalWithQuote(
+            JournalViewModel journal, JournalParameters parameters, bool byNo)
+        {
+            ReportQuery query = byNo
+                ? new ReportQuery(String.Format(JournalQuery.StartTurnoverByNo, parameters.FromNo))
+                : new ReportQuery(String.Format(JournalQuery.StartTurnoverByDate,
+                    parameters.FromDate.ToShortDateString(false)));
+            query.SetFilter(_utility.GetEnvironmentFilters(parameters.GridOptions));
+            var result = DbConsole.ExecuteQuery(query.Query);
+            if (result.Rows.Count == 0)
+            {
+                return journal;
+            }
+
+            var row = result.Rows[0];
+            journal.StartDebit = _utility.ValueOrDefault<decimal>(row, "StartDebit");
+            journal.StartCredit = _utility.ValueOrDefault<decimal>(row, "StartCredit");
             return journal;
         }
 

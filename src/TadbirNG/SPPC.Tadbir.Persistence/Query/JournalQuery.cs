@@ -5,6 +5,20 @@ namespace SPPC.Tadbir.Persistence
 {
     internal static class JournalQuery
     {
+        internal const string StartTurnoverByDate = @"
+SELECT SUM(vl.Debit) AS StartDebit, SUM(vl.Credit) AS StartCredit
+FROM [Finance].[VoucherLine] vl
+    INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
+WHERE v.Date < '{0}' AND {{0}}
+";
+
+        internal const string StartTurnoverByNo = @"
+SELECT SUM(vl.Debit) AS StartDebit, SUM(vl.Credit) AS StartCredit
+FROM [Finance].[VoucherLine] vl
+    INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
+WHERE v.No < {0} AND {{0}}
+";
+
         internal const string MainByDateByRow = @"
 SELECT COUNT(*) AS TotalCount, SUM(vl.Debit) AS DebitSum, SUM(vl.Credit) AS CreditSum
 FROM [Finance].[VoucherLine] vl

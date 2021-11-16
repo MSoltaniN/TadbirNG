@@ -22,6 +22,16 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public List<JournalItemViewModel> Items { get; }
 
         /// <summary>
+        /// جمع گردش بدهکار برای اسناد پیش از دوره گزارشگیری - بخش نقل از قبل در گزارش چاپی
+        /// </summary>
+        public decimal StartDebit { get; set; }
+
+        /// <summary>
+        /// جمع گردش بستانکار برای اسناد پیش از دوره گزارشگیری - بخش نقل از قبل در گزارش چاپی
+        /// </summary>
+        public decimal StartCredit { get; set; }
+
+        /// <summary>
         /// جمع مبالغ بدهکار در تمام سطرهای گزارش
         /// </summary>
         public decimal DebitSum { get; set; }
