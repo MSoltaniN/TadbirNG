@@ -1,5 +1,5 @@
 
-export function Persist<Type>(defaultValue:Type,entityName?:string,entityAction?:number)
+export function Persist<Type>(defaultValue?:Type,entityName?:string,entityAction?:number)
 {
     return (target:object,propertyName:string)=>{        
         var value = target[propertyName];
@@ -14,29 +14,31 @@ export function Persist<Type>(defaultValue:Type,entityName?:string,entityAction?
                     if(this.isAccess(entityName, entityAction))                        
                     {                        
                         value = getValueFromStorage(key,propertyName);
-                        setValueToStorage(tempKey,propertyName,value);
+                        setValueToStorage(tempKey,propertyName,value);                        
                     }
-                    else
+                    else if (defaultValue)
+                    {
                         value = defaultValue;
+                    }                    
                 }  
                 else
                 {
                     if(getValueFromStorage(key,propertyName))
                     {
                         value = getValueFromStorage(key,propertyName);
-                        setValueToStorage(tempKey,propertyName,value);
+                        setValueToStorage(tempKey,propertyName,value);                        
                     }
-                    else
+                    else if (defaultValue)
                     {
                         value = defaultValue;
                     }
                 }
-
+                
                 return value;
             },
             set(item:Type):void
             {                
-                setValueToStorage(tempKey,propertyName,item);
+                setValueToStorage(tempKey,propertyName,item);                
             }
         })
     };    

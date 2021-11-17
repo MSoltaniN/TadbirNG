@@ -114,8 +114,7 @@
                               [valueField]="'key'"
                               [valuePrimitive]="true"
                               [value]="branchScopeSelected"
-                              [(ngModel)]="branchScopeSelected"
-                              (ngModelChange)="saveStates();">
+                              [(ngModel)]="branchScopeSelected">
             <ng-template kendoDropDownListValueTemplate let-dataItem>
               {{ dataItem?.value | translate }}
             </ng-template>

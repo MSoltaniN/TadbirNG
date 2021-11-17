@@ -243,7 +243,7 @@
                                 [valuePrimitive]="true"
                                 [value]="formatSelected"
                                 [(ngModel)]="formatSelected"
-                                (ngModelChange)="changeFormatType();saveStates();">
+                                (ngModelChange)="changeFormatType();">
               <ng-template kendoDropDownListValueTemplate let-dataItem>
                 {{ dataItem?.value | translate }}
               </ng-template>
@@ -261,7 +261,7 @@
                                 [valuePrimitive]="true"
                                 [value]="branchScopeSelected"
                                 [(ngModel)]="branchScopeSelected"
-                                (ngModelChange)="changeParam();saveStates();">
+                                (ngModelChange)="changeParam();">
               <ng-template kendoDropDownListValueTemplate let-dataItem>
                 {{ dataItem?.value | translate }}
               </ng-template>
@@ -292,7 +292,7 @@
                                 [valuePrimitive]="true"
                                 [value]="voucherStatusSelected"
                                 [(ngModel)]="voucherStatusSelected"
-                                (ngModelChange)="changeParam();saveStates();onChangeVoucherStatus();">
+                                (ngModelChange)="changeParam();onChangeVoucherStatus();">
               <ng-template kendoDropDownListValueTemplate let-dataItem>
                 {{ dataItem?.value | translate }}
               </ng-template>
@@ -321,13 +321,13 @@
       <div class="col-xs-12 col-sm-3">
         <div class="col-xs-12 col-sm-12 form-group">
           <div class="voucher-status-item">
-            <input type="checkbox" name="useClosingVoucher" id="useClosingVoucher" class="k-checkbox" [(ngModel)]="useClosingVoucher" (ngModelChange)="saveStates()" />
+            <input type="checkbox" name="useClosingVoucher" id="useClosingVoucher" class="k-checkbox" [(ngModel)]="useClosingVoucher" />
             <span for="useClosingVoucher">{{ 'Balance.Closing' | translate }}</span>
           </div>
         </div>
         <div class="col-xs-12 col-sm-12 form-group">
           <div class="voucher-status-item">
-            <input type="checkbox" name="useClosingTempVoucher" id="useClosingTempVoucher" class="k-checkbox" [(ngModel)]="useClosingTempVoucher" (ngModelChange)="saveStates()" />
+            <input type="checkbox" name="useClosingTempVoucher" id="useClosingTempVoucher" class="k-checkbox" [(ngModel)]="useClosingTempVoucher" />
             <span for="useClosingTempVoucher">{{ 'Balance.CloseAccounts' | translate }}</span>
           </div>
         </div>
@@ -340,7 +340,7 @@
         <hr />-->
         <div class="col-xs-12 col-sm-12 form-group">          
           <div class="voucher-status-item">
-            <input type="checkbox" name="showZeroBalanceItems" id="showZeroBalanceItems" class="k-checkbox" [(ngModel)]="showZeroBalanceItems" (ngModelChange)="saveStates()" />
+            <input type="checkbox" name="showZeroBalanceItems" id="showZeroBalanceItems" class="k-checkbox" [(ngModel)]="showZeroBalanceItems" />
             <span for="showZeroBalanceItems">{{ 'Balance.ShowZeroRemains' | translate }}</span>
           </div>
         </div>

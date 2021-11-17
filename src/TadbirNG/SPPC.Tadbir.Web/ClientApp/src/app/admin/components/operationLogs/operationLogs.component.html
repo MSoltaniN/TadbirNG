@@ -128,7 +128,7 @@
                             [valuePrimitive]="true"
                             [value]="logType"
                             [(ngModel)]="logType"
-                            (ngModelChange)="logTypeChanged();saveStates();">
+                            (ngModelChange)="logTypeChanged();">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
@@ -146,8 +146,7 @@
                             [disabled]="disableBranch"
                             [valuePrimitive]="true"
                             [value]="branchSelected"
-                            [(ngModel)]="branchSelected"
-                            (ngModelChange)="saveStates();">
+                            [(ngModel)]="branchSelected">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
@@ -165,8 +164,7 @@
                             [valueField]="'key'"
                             [valuePrimitive]="true"
                             [value]="fiscalsPeriodSelected"
-                            [(ngModel)]="fiscalsPeriodSelected"
-                            (ngModelChange)="saveStates();">
+                            [(ngModel)]="fiscalsPeriodSelected" >
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
@@ -183,8 +181,7 @@
                             [valueField]="'key'"
                             [valuePrimitive]="true"
                             [value]="companySelected"
-                            [(ngModel)]="companySelected"
-                            (ngModelChange)="saveStates();">
+                            [(ngModel)]="companySelected" >
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
@@ -205,7 +202,7 @@
                             [valuePrimitive]="true"
                             [value]="logReportType"
                             [(ngModel)]="logReportType"
-                            (ngModelChange)="systemLogChanged();saveStates();">
+                            (ngModelChange)="systemLogChanged();">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
@@ -222,8 +219,7 @@
                             [valueField]="'key'"
                             [valuePrimitive]="true"
                             [value]="userSelected"
-                            [(ngModel)]="userSelected"
-                            (ngModelChange)="saveStates();">
+                            [(ngModel)]="userSelected">
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
@@ -240,8 +236,7 @@
                             [valueField]="'key'"
                             [valuePrimitive]="true"
                             [value]="entitySelected"
-                            [(ngModel)]="entitySelected"
-                            (ngModelChange)="saveStates();">
+                            [(ngModel)]="entitySelected" >
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
