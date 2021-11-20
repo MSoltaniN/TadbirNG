@@ -691,13 +691,6 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private bool CheckPassword(string passwordHash, string password)
-        {
-            byte[] passwordHashBytes = Transform.FromHexString(passwordHash);
-            byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
-            return _crypto.ValidateHash(passwordBytes, passwordHashBytes);
-        }
-
         private async Task<CompanyLoginViewModel> GetCurrentLoginAsync(
             int companyId, int fiscalPeriodId, int branchId)
         {
@@ -743,7 +736,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 description = String.Format("{0} : {1}", AppStrings.DisabledUser, login.UserName);
             }
-            else if (!CheckPassword(user.Password, login.Password))
+            else if (!_crypto.ValidateHash(login.Password, user.Password))
             {
                 description = AppStrings.InvalidPassword;
             }
@@ -752,7 +745,7 @@ namespace SPPC.Tadbir.Persistence
                 description = String.Empty;
             }
 
-            if (user == null || !user.IsEnabled || !CheckPassword(user.Password, login.Password))
+            if (user == null || !user.IsEnabled || !_crypto.ValidateHash(login.Password, user.Password))
             {
                 int? userId = user?.Id;
                 await OnSystemLoginAsync(userId, description);

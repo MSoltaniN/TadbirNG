@@ -272,7 +272,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(_strings.Format(AppStrings.ItemNotFound, AppStrings.User));
             }
 
-            if (!CheckPassword(user.Password, profile.OldPassword))
+            if (!_crypto.ValidateHash(profile.OldPassword, user.Password))
             {
                 return BadRequestResult(_strings.Format(AppStrings.IncorrectOldPassword));
             }
@@ -327,7 +327,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(_strings.Format(AppStrings.DisabledUserMessage));
             }
 
-            if (!CheckPassword(user.Password, login.Password))
+            if (!_crypto.ValidateHash(login.Password, user.Password))
             {
                 return BadRequestResult(_strings.Format(AppStrings.InvalidPasswordMessage));
             }
@@ -434,7 +434,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest]
         public IActionResult PutSpecialPassword([FromBody] string specialPassword)
         {
-            if (!CheckPassword(AppConstants.SpecialPasswordHash, specialPassword))
+            if (!_crypto.ValidateHash(specialPassword, AppConstants.SpecialPasswordHash))
             {
                 return BadRequestResult(_strings.Format(AppStrings.InvalidPasswordMessage));
             }
@@ -456,13 +456,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
-        }
-
-        private bool CheckPassword(string passwordHash, string password)
-        {
-            byte[] passwordHashBytes = Transform.FromHexString(passwordHash);
-            byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
-            return _crypto.ValidateHash(passwordBytes, passwordHashBytes);
         }
 
         private async Task<string> GetUserTicketAsync(int userId)

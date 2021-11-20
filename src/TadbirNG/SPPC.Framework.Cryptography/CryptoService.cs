@@ -29,19 +29,6 @@ namespace SPPC.Framework.Cryptography
         public ICertificateManager CertificateManager { get; }
 
         /// <summary>
-        /// Transforms given binary data to a cryptographic hash value using a standard hashing algorithm.
-        /// Current implementation uses SHA256 data hashing algorithm.
-        /// </summary>
-        /// <param name="data">Binary data that needs to be hashed</param>
-        /// <returns>SHA256 hash of given data</returns>
-        public byte[] CreateHash(byte[] data)
-        {
-            Verify.ArgumentNotNullOrEmpty(data, nameof(data));
-            using var sha256 = SHA256.Create();
-            return sha256.ComputeHash(data);
-        }
-
-        /// <summary>
         /// Transforms given text data to a cryptographic hash value using a standard hashing algorithm.
         /// Current implementation uses SHA256 data hashing algorithm.
         /// </summary>
@@ -50,34 +37,65 @@ namespace SPPC.Framework.Cryptography
         public string CreateHash(string data)
         {
             Verify.ArgumentNotNullOrEmptyString(data, nameof(data));
-            using var sha256 = SHA256.Create();
             var dataBytes = Encoding.UTF8.GetBytes(data);
-            var dataHashBytes = sha256.ComputeHash(dataBytes);
-            return Transform.ToHexString(dataHashBytes);
+            return CreateHash(dataBytes);
         }
 
         /// <summary>
-        /// Validates given data against a SHA256 hash value by computing data hash and comparing it to the given hash.
+        /// Transforms given binary data to a cryptographic hash value using a standard hashing algorithm.
+        /// Current implementation uses SHA256 data hashing algorithm.
+        /// </summary>
+        /// <param name="data">Binary data that needs to be hashed</param>
+        /// <returns>SHA256 hash of given data in hexadecimal form</returns>
+        public string CreateHash(byte[] data)
+        {
+            Verify.ArgumentNotNullOrEmpty(data, nameof(data));
+            using var sha256 = SHA256.Create();
+            var hash = sha256.ComputeHash(data);
+            return Transform
+                .ToHexString(hash)
+                .ToLower();
+        }
+
+        /// <summary>
+        /// Validates given text data against a hash value
+        /// </summary>
+        /// <param name="data">Text data that needs to be validated.</param>
+        /// <param name="hash">Hash value to use for validation</param>
+        /// <returns>True if input data is valid, otherwise false.</returns>
+        public bool ValidateHash(string data, string hash)
+        {
+            Verify.ArgumentNotNullOrEmptyString(data, nameof(data));
+            Verify.ArgumentNotNullOrEmptyString(hash, nameof(hash));
+
+            var dataBytes = Encoding.UTF8.GetBytes(data);
+            return ValidateHash(dataBytes, hash);
+        }
+
+        /// <summary>
+        /// Validates given binary data against a SHA256 hash value
         /// </summary>
         /// <param name="data">Binary data that needs to be validated.</param>
         /// <param name="hash">A SHA256 hash value to use for validation</param>
         /// <returns>True if input data is valid, otherwise false.</returns>
-        public bool ValidateHash(byte[] data, byte[] hash)
+        public bool ValidateHash(byte[] data, string hash)
         {
             Verify.ArgumentNotNullOrEmpty(data, nameof(data));
-            Verify.ArgumentNotNullOrEmpty(hash, nameof(hash));
+            Verify.ArgumentNotNullOrEmptyString(hash, nameof(hash));
+
             using var sha256 = SHA256.Create();
-            byte[] dataHash = sha256.ComputeHash(data);
-            string hexDataHash = Transform.ToHexString(dataHash);
-            string hexHash = Transform.ToHexString(hash);
-            return hexDataHash == hexHash;
+            var dataHashBytes = sha256.ComputeHash(data);
+            string dataHash = Transform
+                .ToHexString(dataHashBytes)
+                .ToLower();
+            return String.Compare(dataHash, hash, true) == 0;
         }
 
         /// <summary>
         /// Converts input string data to encrypted form with a string representation
         /// </summary>
         /// <param name="data">String data to encrypt</param>
-        /// <returns>String representation of encrypted data</returns>
+        /// <returns>Encrypted data as a Base64 string</returns>
         public string Encrypt(string data)
         {
             Verify.ArgumentNotNullOrEmptyString(data, nameof(data));
@@ -105,9 +123,36 @@ namespace SPPC.Framework.Cryptography
         }
 
         /// <summary>
+        /// Converts input text data to encrypted form with Base64 representation
+        /// </summary>
+        /// <param name="data">Text data to encrypt</param>
+        /// <param name="certificate">Certificate to use for PGP (Pretty Good Privacy) key exchange</param>
+        /// <returns>Base64 representation of encrypted data</returns>
+        public string Encrypt(string data, X509Certificate2 certificate)
+        {
+            Verify.ArgumentNotNullOrEmptyString(data, nameof(data));
+            Verify.ArgumentNotNull(certificate, nameof(certificate));
+
+            using Aes aes = Aes.Create();
+            aes.KeySize = _KeySizeBits;
+            aes.BlockSize = _IvSizeBits;
+            var encryptor = aes.CreateEncryptor();
+            using var memStream = new MemoryStream();
+            using var cryptoStream = new CryptoStream(memStream, encryptor, CryptoStreamMode.Write);
+            using (var cryptoWriter = new StreamWriter(cryptoStream))
+            {
+                cryptoWriter.Write(data);
+            }
+
+            var dataCipher = memStream.ToArray();
+            var keyCipher = EncryptKey(aes, certificate);
+            return WrapCipher(dataCipher, keyCipher);
+        }
+
+        /// <summary>
         /// Converts string representation of previously encrypted data to original data
         /// </summary>
-        /// <param name="cipher">Previously encrypted data as a string representation</param>
+        /// <param name="cipher">Previously encrypted data as a Base64 string</param>
         /// <returns>Original data retrieved from encrypted form</returns>
         public string Decrypt(string cipher)
         {
@@ -132,6 +177,30 @@ namespace SPPC.Framework.Cryptography
         }
 
         /// <summary>
+        /// Converts Base64 representation of previously encrypted data to original data
+        /// </summary>
+        /// <param name="cipher">Previously encrypted data in Base64 form</param>
+        /// <param name="certificate">Certificate to use for PGP (Pretty Good Privacy) key exchange</param>
+        /// <returns>Original data retrieved from encrypted form</returns>
+        public string Decrypt(string cipher, X509Certificate2 certificate)
+        {
+            Verify.ArgumentNotNullOrEmptyString(cipher, nameof(cipher));
+            Verify.ArgumentNotNull(certificate, nameof(certificate));
+
+            UnwrapCipher(cipher, out byte[] dataCipher, out byte[] keyCipher);
+            UnwrapKey(DecryptKey(keyCipher, certificate), out byte[] key, out byte[] iv);
+            using Aes aes = Aes.Create();
+            aes.Key = key;
+            aes.IV = iv;
+
+            var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+            using var memStream = new MemoryStream(dataCipher);
+            using var cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Read);
+            using var cryptoReader = new StreamReader(cryptoStream);
+            return cryptoReader.ReadToEnd();
+        }
+
+        /// <summary>
         /// اطلاعات باینری داده شده را امضای دیجیتالی می کند
         /// </summary>
         /// <param name="data">اطلاعات مورد نظر برای امضا</param>
@@ -142,7 +211,7 @@ namespace SPPC.Framework.Cryptography
             string signature = String.Empty;
             if (certificate != null)
             {
-                var dataHash = CreateHash(data);
+                var dataHash = Transform.FromHexString(CreateHash(data));
                 var rsa = (RSA)certificate.PrivateKey;
                 byte[] signatureBytes = rsa.SignHash(dataHash,
                     HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
@@ -165,7 +234,7 @@ namespace SPPC.Framework.Cryptography
             bool validated = false;
             if (certificate != null)
             {
-                byte[] dataHash = CreateHash(data);
+                var dataHash = Transform.FromHexString(CreateHash(data));
                 var rsa = (RSA)certificate.PublicKey.Key;
                 validated = rsa.VerifyHash(dataHash, Convert.FromBase64String(signature),
                     HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
@@ -193,7 +262,49 @@ namespace SPPC.Framework.Cryptography
             return unwrappedCipher;
         }
 
+        private static byte[] EncryptKey(SymmetricAlgorithm alg, X509Certificate2 certificate)
+        {
+            var key = alg.Key
+                .Concat(alg.IV)
+                .ToArray();
+            var publicKey = (RSA)certificate.PublicKey.Key;
+            return publicKey.Encrypt(key, RSAEncryptionPadding.OaepSHA256);
+        }
+
+        private static byte[] DecryptKey(byte[] key, X509Certificate2 certificate)
+        {
+            var privateKey = (RSA)certificate.PrivateKey;
+            return privateKey.Decrypt(key, RSAEncryptionPadding.OaepSHA256);
+        }
+
+        private static string WrapCipher(byte[] data, byte[] key)
+        {
+            return Transform.ToBase64String(key
+                .Concat(data)
+                .ToArray());
+        }
+
+        private static void UnwrapCipher(string cipher, out byte[] data, out byte[] key)
+        {
+            var cipherBytes = Transform.FromBase64String(cipher);
+            key = new byte[_KeyCipherSize];
+            data = new byte[cipherBytes.Length - _KeyCipherSize];
+            Array.Copy(cipherBytes, 0, key, 0, _KeyCipherSize);
+            Array.Copy(cipherBytes, _KeyCipherSize, data, 0, data.Length);
+        }
+
+        private static void UnwrapKey(byte[] wrappedKey, out byte[] key, out byte[] iv)
+        {
+            key = new byte[_KeySize];
+            iv = new byte[_IvSize];
+            Array.Copy(wrappedKey, 0, key, 0, _KeySize);
+            Array.Copy(wrappedKey, _KeySize, iv, 0, _IvSize);
+        }
+
         private const int _KeySize = 32;
         private const int _IvSize = 16;
+        private const int _KeyCipherSize = 256;
+        private const int _KeySizeBits = 256;
+        private const int _IvSizeBits = 128;
     }
 }
