@@ -14,12 +14,22 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for Voucher Summary by Date report
         /// </summary>
-        public const string EnvironmentVoucherSummaryByDate = "reports/finance/vouchers/sum-by-date";
+        public const string VoucherSummaryByDate = "reports/finance/vouchers/sum-by-date";
 
         /// <summary>
         /// API server route URL for Voucher Summary by Date report
         /// </summary>
-        public const string EnvironmentVoucherSummaryByDateUrl = "reports/finance/vouchers/sum-by-date";
+        public const string VoucherSummaryByDateUrl = "reports/finance/vouchers/sum-by-date";
+
+        /// <summary>
+        /// API client URL for Voucher Summary by Number report
+        /// </summary>
+        public const string VoucherSummaryByNo = "reports/finance/vouchers/sum-by-no";
+
+        /// <summary>
+        /// API server route URL for Voucher Summary by Number report
+        /// </summary>
+        public const string VoucherSummaryByNoUrl = "reports/finance/vouchers/sum-by-no";
 
         /// <summary>
         /// API client URL for Voucher Summary report

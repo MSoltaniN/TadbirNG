@@ -493,26 +493,6 @@ namespace SPPC.Tadbir.Persistence
         #region Security Subsystem lookup
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات اشخاص تعریف شده در برنامه را به صورت یک دیکشنری
-        /// که بر حسب شناسه دیتابیسی کاربر ایندکس شده برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه اطلاعات کاربران موجود به صورت دیکشنری</returns>
-        public async Task<IDictionary<int, string>> GetUserPersonsAsync()
-        {
-            var userPersons = new Dictionary<int, string>();
-            UnitOfWork.UseSystemContext();
-            var repository = UnitOfWork.GetAsyncRepository<User>();
-            var all = await repository
-                .GetEntityQuery(user => user.Person)
-                .Select(user => new KeyValuePair<int, string>(
-                    user.Id, String.Format("{0}، {1}", user.Person.LastName, user.Person.FirstName)))
-                .ToArrayAsync();
-            Array.ForEach(all, kv => userPersons.Add(kv.Key, kv.Value));
-            UnitOfWork.UseCompanyContext();
-            return userPersons;
-        }
-
-        /// <summary>
         /// به روش آسنکرون، نقش های امنیتی تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه نقش های امنیتی تعریف شده</returns>

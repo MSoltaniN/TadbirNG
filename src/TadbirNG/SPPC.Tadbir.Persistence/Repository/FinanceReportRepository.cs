@@ -10,6 +10,7 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -36,41 +37,27 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش خلاصه اسناد حسابداری را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش خلاصه اسناد حسابداری بر اساس تاریخ
+        /// را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات گزارش خلاصه اسناد حسابداری</returns>
         public async Task<IList<VoucherSummaryViewModel>> GetVoucherSummaryByDateReportAsync(
             GridOptions gridOptions)
         {
-            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
-            var userMap = await _lookupRepository.GetUserPersonsAsync();
-            var vouchers = await Repository
-                .GetAllOperationQuery<Voucher>(
-                    ViewId.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
-                .Select(voucher => Mapper.Map<VoucherSummaryViewModel>(voucher))
-                .ToListAsync();
-            Array.ForEach(vouchers
-                .Apply(gridOptions)
-                .ToArray(), voucher => voucher.PreparedBy = userMap[voucher.PreparedById]);
-            return vouchers;
+            return await GetVoucherSummaryItemsAsync(gridOptions);
         }
 
         /// <summary>
-        /// به روش آسنکرون، نعداد سطرهای اطلاعاتی در گزارش خلاصه اسناد حسابداری را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش خلاصه اسناد حسابداری بر اساس شماره سند
+        /// را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>تعداد سطرهای گزارش خلاصه اسناد حسابداری</returns>
-        public async Task<int> GetVoucherSummaryByDateCountAsync(GridOptions gridOptions)
+        /// <returns>اطلاعات گزارش خلاصه اسناد حسابداری</returns>
+        public async Task<IList<VoucherSummaryViewModel>> GetVoucherSummaryByNoReportAsync(
+            GridOptions gridOptions)
         {
-            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
-            var vouchers = await Repository
-                .GetAllOperationQuery<Voucher>(ViewId.Voucher, voucher => voucher.Lines)
-                .Select(voucher => Mapper.Map<VoucherSummaryViewModel>(voucher))
-                .ToListAsync();
-            return vouchers
-                .Apply(gridOptions, false)
-                .Count();
+            return await GetVoucherSummaryItemsAsync(gridOptions, true);
         }
 
         /// <summary>
@@ -167,6 +154,45 @@ namespace SPPC.Tadbir.Persistence
         private ISecureRepository Repository
         {
             get { return _system.Repository; }
+        }
+
+        private async Task<IList<VoucherSummaryViewModel>> GetVoucherSummaryItemsAsync(
+            GridOptions gridOptions, bool byNo = false)
+        {
+            var calendar = await _system.Config.GetCurrentCalendarAsync();
+            DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+            var query = byNo
+                ? new ReportQuery(VoucherQuery.VoucherSummaryByNo)
+                : new ReportQuery(VoucherQuery.VoucherSummaryByDate);
+            query.SetFilter(_utility.GetEnvironmentFilters(gridOptions));
+            var result = DbConsole.ExecuteQuery(query.Query);
+            return result.Rows
+                .Cast<DataRow>()
+                .Select(row => GetVoucherSummaryItem(row, calendar))
+                .ToList();
+        }
+
+        private VoucherSummaryViewModel GetVoucherSummaryItem(DataRow row, CalendarType calendar)
+        {
+            var date = _utility.ValueOrDefault<DateTime>(row, "Date");
+            var summary = new VoucherSummaryViewModel()
+            {
+                No = _utility.ValueOrDefault<int>(row, "No"),
+                Date = calendar == CalendarType.Jalali
+                    ? JalaliDateTime.FromDateTime(date).ToShortDateString()
+                    : date.ToShortDateString(false),
+                DebitSum = _utility.ValueOrDefault<decimal>(row, "DebitSum"),
+                CreditSum = _utility.ValueOrDefault<decimal>(row, "CreditSum"),
+                Difference = _utility.ValueOrDefault<decimal>(row, "Difference"),
+                IssuerName = _utility.ValueOrDefault(row, "IssuerName"),
+                StatusName = _utility.ValueOrDefault(row, "StatusName"),
+                OriginName = _utility.ValueOrDefault(row, "OriginName")
+            };
+
+            summary.BalanceStatus = summary.DebitSum == summary.CreditSum
+                ? AppStrings.Balanced
+                : AppStrings.Unbalanced;
+            return summary;
         }
 
         #region Standard Voucher Implementation

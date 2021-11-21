@@ -11,19 +11,20 @@ namespace SPPC.Tadbir.Persistence
     public interface IFinanceReportRepository
     {
         /// <summary>
-        /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش خلاصه اسناد حسابداری را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش خلاصه اسناد حسابداری بر اساس تاریخ
+        /// را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <returns>اطلاعات گزارش خلاصه اسناد حسابداری</returns>
-        Task<IList<VoucherSummaryViewModel>> GetVoucherSummaryByDateReportAsync(
-            GridOptions gridOptions);
+        Task<IList<VoucherSummaryViewModel>> GetVoucherSummaryByDateReportAsync(GridOptions gridOptions);
 
         /// <summary>
-        /// به روش آسنکرون، نعداد سطرهای اطلاعاتی در گزارش خلاصه اسناد حسابداری را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش خلاصه اسناد حسابداری بر اساس شماره سند
+        /// را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
-        /// <returns>تعداد سطرهای گزارش خلاصه اسناد حسابداری</returns>
-        Task<int> GetVoucherSummaryByDateCountAsync(GridOptions gridOptions);
+        /// <returns>اطلاعات گزارش خلاصه اسناد حسابداری</returns>
+        Task<IList<VoucherSummaryViewModel>> GetVoucherSummaryByNoReportAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش فرم مرسوم سند را خوانده و برمی گرداند

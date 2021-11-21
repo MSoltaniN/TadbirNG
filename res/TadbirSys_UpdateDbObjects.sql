@@ -5388,5 +5388,37 @@ GO
 SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 GO
 
+-- 1.2.1292
+SET IDENTITY_INSERT [Reporting].[Report] ON
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (89, 16, 1, 2, 2, '', N'reports/finance/vouchers/sum-by-date', 0, 1, 0, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (90, 16, 1, 2, 2, '', N'reports/finance/vouchers/sum-by-no', 0, 1, 0, 0)
+SET IDENTITY_INSERT [Reporting].[Report] OFF
 
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (269, 1, 89, 'Accounting Voucher Summary - By Date', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (270, 2, 89, N'خلاصه اسناد حسابداری - بر اساس تاریخ', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (271, 1, 90, 'Accounting Voucher Summary - By Voucher No', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (272, 2, 90, N'خلاصه اسناد حسابداری - بر اساس شماره سند', NULL)
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
+
+SET IDENTITY_INSERT [Reporting].[Parameter] ON
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])
+    VALUES (178, 89, 'fromDate', 'Date', 'GTE', 'System.DateTime', 'TextBox', 'FromDate', 'FromDate')
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])
+    VALUES (179, 89, 'toDate', 'Date', 'LTE', 'System.DateTime', 'TextBox', 'ToDate', 'ToDate')
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])
+    VALUES (180, 90, 'fromNo', 'No', 'GTE', 'System.Int32', 'TextBox', 'FromNo', 'FromNo')
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])
+    VALUES (181, 90, 'toNo', 'No', 'LTE', 'System.Int32', 'TextBox', 'ToNo', 'ToNo')
+SET IDENTITY_INSERT [Reporting].[Parameter] OFF
+
+UPDATE [Reporting].[Parameter]
+SET Source = 'GridOptions'
+WHERE Source = 'GridOption'
 

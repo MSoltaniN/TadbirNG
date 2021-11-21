@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using SPPC.Framework.Common;
-using SPPC.Tadbir.Persistence;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -27,6 +26,7 @@ namespace SPPC.Tadbir.Web.Api
             ////analyzer.AnalyzeMappings();
             ////var analyzer = new DbMappingAnalyzer();
             ////analyzer.Analyze();
+            ////var encoded = TestGridOptionsBuilder.GetOtherEncodedGridOptions();
 #endif
             CreateHostBuilder(args).Build().Run();
         }
@@ -65,5 +65,6 @@ namespace SPPC.Tadbir.Web.Api
                 }
             }
         }
+
     }
 }

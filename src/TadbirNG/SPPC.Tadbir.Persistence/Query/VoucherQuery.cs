@@ -37,5 +37,25 @@ FROM [Finance].[VoucherLine] vl
 WHERE v.No = {1} AND v.FiscalPeriodID = {2} AND v.SubjectType = 0 AND vl.Debit > 0 {3}
 GROUP BY SUBSTRING(acc.FullCode, 1, {0})
 ORDER BY SUBSTRING(acc.FullCode, 1, {0})";
+
+        internal const string VoucherSummaryByDate = @"
+SELECT v.No, v.Date, SUM(vl.Debit) AS [DebitSum], SUM(vl.Credit) AS [CreditSum], ABS(SUM(vl.Debit - vl.Credit)) AS [Difference],
+v.IssuerName, st.Name AS [StatusName], vo.Name AS [OriginName]
+FROM [Finance].[VoucherLine] vl
+    INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
+	INNER JOIN [Core].[DocumentStatus] st ON v.StatusID = st.StatusID
+	INNER JOIN [Finance].[VoucherOrigin] vo ON v.OriginID = vo.OriginID
+WHERE {0}
+GROUP BY v.Date, v.No, v.IssuerName, st.Name, vo.Name";
+
+        internal const string VoucherSummaryByNo = @"
+SELECT v.No, v.Date, SUM(vl.Debit) AS [DebitSum], SUM(vl.Credit) AS [CreditSum], ABS(SUM(vl.Debit - vl.Credit)) AS [Difference],
+v.IssuerName, st.Name AS [StatusName], vo.Name AS [OriginName]
+FROM [Finance].[VoucherLine] vl
+    INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
+	INNER JOIN [Core].[DocumentStatus] st ON v.StatusID = st.StatusID
+	INNER JOIN [Finance].[VoucherOrigin] vo ON v.OriginID = vo.OriginID
+WHERE {0}
+GROUP BY v.Date, v.No, v.IssuerName, st.Name, vo.Name";
     }
 }

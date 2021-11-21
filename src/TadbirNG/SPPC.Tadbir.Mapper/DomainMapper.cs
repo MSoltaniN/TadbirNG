@@ -534,10 +534,7 @@ namespace SPPC.Tadbir.Mapper
                         src => Math.Abs(VoucherHelper.GetDebitSum(src) - VoucherHelper.GetCreditSum(src))))
                 .ForMember(
                     dest => dest.BalanceStatus,
-                    opts => opts.MapFrom(src => VoucherHelper.GetBalanceStatus(src)))
-                .ForMember(dest => dest.CheckStatus, opts => opts.MapFrom(src => src.Status.Name))
-                .ForMember(dest => dest.Origin, opts => opts.MapFrom(src => "UserVoucher"))
-                .ForMember(dest => dest.PreparedById, opts => opts.MapFrom(src => src.ModifiedById));
+                    opts => opts.MapFrom(src => VoucherHelper.GetBalanceStatus(src)));
             mapperConfig.CreateMap<Voucher, StandardVoucherViewModel>()
                 .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.Date.Date.ToShortDateString(false)))
                 .ForMember(dest => dest.Lines, opts => opts.Ignore());
