@@ -228,6 +228,8 @@ export class ReportsQueries {
     report.dictionary.variables.getByName("debitSum").valueObject = reportData.rows.debitSum;;
     report.dictionary.variables.getByName("creditSum").valueObject = reportData.rows.creditSum;
     report.dictionary.variables.getByName("totalCount").valueObject = reportData.rows.totalCount;
+    report.dictionary.variables.getByName("startCredit").valueObject = reportData.rows.startCredit;
+    report.dictionary.variables.getByName("startDebit").valueObject = reportData.rows.startDebit;        
     
     return report;
   }
@@ -242,7 +244,9 @@ export class ReportsQueries {
     report.dictionary.variables.getByName("debitSum").valueObject = reportData.rows.debitSum;;
     report.dictionary.variables.getByName("creditSum").valueObject = reportData.rows.creditSum;
     report.dictionary.variables.getByName("totalCount").valueObject = reportData.rows.totalCount;
-    
+    report.dictionary.variables.getByName("startCredit").valueObject = reportData.rows.startCredit;
+    report.dictionary.variables.getByName("startDebit").valueObject = reportData.rows.startDebit; 
+
     return report;
   }
 
@@ -256,7 +260,9 @@ export class ReportsQueries {
     report.dictionary.variables.getByName("debitSum").valueObject = reportData.rows.debitSum;;
     report.dictionary.variables.getByName("creditSum").valueObject = reportData.rows.creditSum;
     report.dictionary.variables.getByName("totalCount").valueObject = reportData.rows.totalCount;
-    
+    report.dictionary.variables.getByName("startCredit").valueObject = reportData.rows.startCredit;
+    report.dictionary.variables.getByName("startDebit").valueObject = reportData.rows.startDebit; 
+
     return report;
   }
 
@@ -270,6 +276,8 @@ export class ReportsQueries {
     report.dictionary.variables.getByName("debitSum").valueObject = reportData.rows.debitSum;;
     report.dictionary.variables.getByName("creditSum").valueObject = reportData.rows.creditSum;
     report.dictionary.variables.getByName("totalCount").valueObject = reportData.rows.totalCount;
+    report.dictionary.variables.getByName("startCredit").valueObject = reportData.rows.startCredit;
+    report.dictionary.variables.getByName("startDebit").valueObject = reportData.rows.startDebit; 
     
     return report;
   }
