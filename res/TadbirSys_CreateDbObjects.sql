@@ -2532,6 +2532,10 @@ INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID
     VALUES (87, 16, 1, 24, 2, 'Journal-ByNo-ByLedger', N'reports/journal/by-no/by-ledger', 0, 1, 0, 0)
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
     VALUES (88, 16, 1, 25, 2, 'Journal-ByNo-BySubsidiary', N'reports/journal/by-no/by-subsid', 0, 1, 0, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (89, 16, 1, 2, 2, '', N'reports/finance/vouchers/sum-by-date', 0, 1, 0, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (90, 16, 1, 2, 2, '', N'reports/finance/vouchers/sum-by-no', 0, 1, 0, 0)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON
@@ -3059,6 +3063,14 @@ INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], 
     VALUES (267, 1, 88, 'Journal in Subsidiary Level - By Number', NULL)
 INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
     VALUES (268, 2, 88, N'دفتر روزنامه در سطح معین - بر اساس شماره سند', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (269, 1, 89, 'Accounting Voucher Summary - By Date', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (270, 2, 89, N'خلاصه اسناد حسابداری - بر اساس تاریخ', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (271, 1, 90, 'Accounting Voucher Summary - By Voucher No', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (272, 2, 90, N'خلاصه اسناد حسابداری - بر اساس شماره سند', NULL)
 SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
 
 SET IDENTITY_INSERT [Reporting].[Parameter] ON 
@@ -3286,21 +3298,21 @@ INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Ope
 GO
 INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (147, 69, N'toNo', N'to', N'EQ', N'System.Int32', N'TextBox', N'ToNo', NULL, NULL, NULL, N'ToNo', N'b03fd7c8-30c3-4171-bc53-50e4590f8840', CAST(N'2020-11-16T16:33:28.130' AS DateTime), N'QueryString')
 GO
-INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (149, 70, N'fromDate', N'Date', N'GTE', N'System.DateTime', N'TextBox', N'FromDate', NULL, NULL, NULL, N'FromDate', N'8385212d-2096-4b29-9832-df3844384bef', CAST(N'2020-11-16T16:33:28.130' AS DateTime), N'GridOption')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (149, 70, N'fromDate', N'Date', N'GTE', N'System.DateTime', N'TextBox', N'FromDate', NULL, NULL, NULL, N'FromDate', N'8385212d-2096-4b29-9832-df3844384bef', CAST(N'2020-11-16T16:33:28.130' AS DateTime), N'GridOptions')
 GO
-INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (150, 70, N'toDate', N'Date', N'LTE', N'System.DateTime', N'TextBox', N'ToDate', NULL, NULL, NULL, N'ToDate', N'350f3c09-7198-418a-9540-d57c2bda8559', CAST(N'2020-11-16T16:33:28.133' AS DateTime), N'GridOption')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (150, 70, N'toDate', N'Date', N'LTE', N'System.DateTime', N'TextBox', N'ToDate', NULL, NULL, NULL, N'ToDate', N'350f3c09-7198-418a-9540-d57c2bda8559', CAST(N'2020-11-16T16:33:28.133' AS DateTime), N'GridOptions')
 GO
-INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (151, 71, N'fromDate', N'Date', N'GTE', N'System.DateTime', N'TextBox', N'FromDate', NULL, NULL, NULL, N'FromDate', N'abe24fa4-74b9-4731-a086-fca4599f181c', CAST(N'2020-11-16T16:33:28.133' AS DateTime), N'GridOption')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (151, 71, N'fromDate', N'Date', N'GTE', N'System.DateTime', N'TextBox', N'FromDate', NULL, NULL, NULL, N'FromDate', N'abe24fa4-74b9-4731-a086-fca4599f181c', CAST(N'2020-11-16T16:33:28.133' AS DateTime), N'GridOptions')
 GO
-INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (152, 71, N'toDate', N'Date', N'LTE', N'System.DateTime', N'TextBox', N'ToDate', NULL, NULL, NULL, N'ToDate', N'ec1dd965-5ea4-4b97-9c36-f0f1daea59b5', CAST(N'2020-11-16T16:33:28.137' AS DateTime), N'GridOption')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (152, 71, N'toDate', N'Date', N'LTE', N'System.DateTime', N'TextBox', N'ToDate', NULL, NULL, NULL, N'ToDate', N'ec1dd965-5ea4-4b97-9c36-f0f1daea59b5', CAST(N'2020-11-16T16:33:28.137' AS DateTime), N'GridOptions')
 GO
-INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (153, 72, N'fromDate', N'Date', N'GTE', N'System.DateTime', N'TextBox', N'FromDate', NULL, NULL, NULL, N'FromDate', N'3d34114f-5a5d-47e3-8942-f3bfb6f7ec9c', CAST(N'2020-11-16T16:33:28.137' AS DateTime), N'GridOption')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (153, 72, N'fromDate', N'Date', N'GTE', N'System.DateTime', N'TextBox', N'FromDate', NULL, NULL, NULL, N'FromDate', N'3d34114f-5a5d-47e3-8942-f3bfb6f7ec9c', CAST(N'2020-11-16T16:33:28.137' AS DateTime), N'GridOptions')
 GO
-INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (154, 72, N'toDate', N'Date', N'LTE', N'System.DateTime', N'TextBox', N'ToDate', NULL, NULL, NULL, N'ToDate', N'9bdab2ae-1342-4f82-ae52-aa93fe870ef2', CAST(N'2020-11-16T16:33:28.137' AS DateTime), N'GridOption')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (154, 72, N'toDate', N'Date', N'LTE', N'System.DateTime', N'TextBox', N'ToDate', NULL, NULL, NULL, N'ToDate', N'9bdab2ae-1342-4f82-ae52-aa93fe870ef2', CAST(N'2020-11-16T16:33:28.137' AS DateTime), N'GridOptions')
 GO
-INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (155, 73, N'fromDate', N'Date', N'GTE', N'System.DateTime', N'TextBox', N'FromDate', NULL, NULL, NULL, N'FromDate', N'd5d764db-f763-49d1-8906-6c08a3a3f313', CAST(N'2020-11-16T16:33:28.137' AS DateTime), N'GridOption')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (155, 73, N'fromDate', N'Date', N'GTE', N'System.DateTime', N'TextBox', N'FromDate', NULL, NULL, NULL, N'FromDate', N'd5d764db-f763-49d1-8906-6c08a3a3f313', CAST(N'2020-11-16T16:33:28.137' AS DateTime), N'GridOptions')
 GO
-INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (156, 73, N'toDate', N'Date', N'LTE', N'System.DateTime', N'TextBox', N'ToDate', NULL, NULL, NULL, N'ToDate', N'7c2356ce-ff9f-4e56-af0d-ace93101ebfc', CAST(N'2020-11-16T16:33:28.140' AS DateTime), N'GridOption')
+INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (156, 73, N'toDate', N'Date', N'LTE', N'System.DateTime', N'TextBox', N'ToDate', NULL, NULL, NULL, N'ToDate', N'7c2356ce-ff9f-4e56-af0d-ace93101ebfc', CAST(N'2020-11-16T16:33:28.140' AS DateTime), N'GridOptions')
 GO
 INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (158, 76, N'fromDate', N'from', N'EQ', N'System.DateTime', N'TextBox', N'FromDate', NULL, NULL, NULL, N'FromDate', N'725dc31d-ca0e-4684-9be2-51dad9f407dc', CAST(N'2020-11-16T16:33:28.140' AS DateTime), N'QueryString')
 GO
@@ -3338,10 +3350,14 @@ INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Ope
 GO
 INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (177, 80, N'date', N'date', N'EQ', N'System.DateTime', N'DatePicker', N'Date', NULL, NULL, NULL, N'Date', N'7c984db0-8248-4bf9-908e-557a7677ddf3', CAST(N'2021-11-15T13:51:11.493' AS DateTime), N'QueryString')
 GO
-INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (2112, 3055, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo', N'bd82ec0d-9c10-4e32-ab9c-46027788ef92', CAST(N'2020-10-25T15:42:02.090' AS DateTime), N'Route')
-GO
-INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (2113, 3056, N'no', N'no', N'EQ', N'System.Int32', N'TextBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo', N'bd82ec0d-9c10-4e32-ab9c-46027788ef92', CAST(N'2020-10-25T15:42:02.090' AS DateTime), N'Route')
-GO
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])
+    VALUES (178, 89, 'fromDate', 'Date', 'GTE', 'System.DateTime', 'TextBox', 'FromDate', 'FromDate')
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])
+    VALUES (179, 89, 'toDate', 'Date', 'LTE', 'System.DateTime', 'TextBox', 'ToDate', 'ToDate')
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])
+    VALUES (180, 90, 'fromNo', 'No', 'GTE', 'System.Int32', 'TextBox', 'FromNo', 'FromNo')
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])
+    VALUES (181, 90, 'toNo', 'No', 'LTE', 'System.Int32', 'TextBox', 'ToNo', 'ToNo')
 
 SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 GO

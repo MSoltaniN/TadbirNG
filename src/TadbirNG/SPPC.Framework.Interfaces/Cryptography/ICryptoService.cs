@@ -16,13 +16,6 @@ namespace SPPC.Framework.Cryptography
         ICertificateManager CertificateManager { get; }
 
         /// <summary>
-        /// Transforms given binary data to a cryptographic hash value using a standard hashing algorithm.
-        /// </summary>
-        /// <param name="data">Binary data that needs to be hashed</param>
-        /// <returns>Hash of given data</returns>
-        byte[] CreateHash(byte[] data);
-
-        /// <summary>
         /// Transforms given text data to a cryptographic hash value using a standard hashing algorithm.
         /// </summary>
         /// <param name="data">Text data that needs to be hashed</param>
@@ -30,12 +23,27 @@ namespace SPPC.Framework.Cryptography
         string CreateHash(string data);
 
         /// <summary>
-        /// Validates given data against a hash value by computing data hash and comparing it to the given hash.
+        /// Transforms given binary data to a cryptographic hash value using a standard hashing algorithm.
+        /// </summary>
+        /// <param name="data">Binary data that needs to be hashed</param>
+        /// <returns>Cryptographic hash of given data</returns>
+        string CreateHash(byte[] data);
+
+        /// <summary>
+        /// Validates given text data against a hash value
+        /// </summary>
+        /// <param name="data">Text data that needs to be validated.</param>
+        /// <param name="hash">Hash value to use for validation</param>
+        /// <returns>True if input data is valid, otherwise false.</returns>
+        bool ValidateHash(string data, string hash);
+
+        /// <summary>
+        /// Validates given binary data against a hash value
         /// </summary>
         /// <param name="data">Binary data that needs to be validated.</param>
         /// <param name="hash">Hash value to use for validation</param>
         /// <returns>True if input data is valid, otherwise false.</returns>
-        bool ValidateHash(byte[] data, byte[] hash);
+        bool ValidateHash(byte[] data, string hash);
 
         /// <summary>
         /// Converts input string data to encrypted form with a string representation
@@ -45,11 +53,27 @@ namespace SPPC.Framework.Cryptography
         string Encrypt(string data);
 
         /// <summary>
+        /// Converts input text data to encrypted form with a string representation
+        /// </summary>
+        /// <param name="data">Text data to encrypt</param>
+        /// <param name="certificate">Certificate to use for PGP (Pretty Good Privacy) key exchange</param>
+        /// <returns>String representation of encrypted data</returns>
+        string Encrypt(string data, X509Certificate2 certificate);
+
+        /// <summary>
         /// Converts string representation of previously encrypted data to original data
         /// </summary>
         /// <param name="cipher">Previously encrypted data as a string representation</param>
         /// <returns>Original data retrieved from encrypted form</returns>
         string Decrypt(string cipher);
+
+        /// <summary>
+        /// Converts string representation of previously encrypted data to original data
+        /// </summary>
+        /// <param name="cipher">Previously encrypted data as a string representation</param>
+        /// <param name="certificate">Certificate to use for PGP (Pretty Good Privacy) key exchange</param>
+        /// <returns>Original data retrieved from encrypted form</returns>
+        string Decrypt(string cipher, X509Certificate2 certificate);
 
         /// <summary>
         /// اطلاعات باینری داده شده را امضای دیجیتالی می کند

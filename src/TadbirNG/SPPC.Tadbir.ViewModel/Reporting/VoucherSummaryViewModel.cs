@@ -23,7 +23,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// شماره سند مالی
         /// </summary>
-        public string No { get; set; }
+        public int No { get; set; }
 
         /// <summary>
         /// تاریخ سند مالی
@@ -48,28 +48,27 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// تنظیم کننده سند مالی شامل نام و نام خانوادگی با قالب نمایشی پیش فرض سیستم
         /// </summary>
-        public string PreparedBy { get; set; }
+        public string IssuerName { get; set; }
 
         /// <summary>
-        /// وضعیت تراز سند مالی که یکی از مقادیر تراز یا ناتراز
-        /// را در زبان جاری برنامه نمایش می دهد
+        /// وضعیت تراز سند مالی که یکی از مقادیر تراز یا ناتراز را در زبان جاری برنامه نمایش می دهد
         /// </summary>
         public string BalanceStatus { get; set; }
 
         /// <summary>
-        /// وضعیت ثبت سند مالی که یکی از مقادیر یادداشت، ثبت عادی یا ثبت قطعی
+        /// وضعیت ثبت سند مالی که یکی از مقادیر ثبت نشده، ثبت عادی یا ثبت قطعی
         /// را در زبان جاری برنامه نمایش می دهد
         /// </summary>
-        public string CheckStatus { get; set; }
+        public string StatusName { get; set; }
 
         /// <summary>
-        /// ماخذ سند که در حال حاضر فقط مقدار سند عادی را در زبان جاری برنامه نمایش می دهد
+        /// ماخذ سند را در زبان جاری برنامه نمایش می دهد
         /// </summary>
-        public string Origin { get; set; }
+        public string OriginName { get; set; }
 
         /// <summary>
-        /// شناسه دیتابیسی کاربر تنظیم کننده سند مالی
+        /// شناسه دیتابیسی کاربر صادرکننده سند مالی
         /// </summary>
-        public int PreparedById { get; set; }
+        public int IssuedById { get; set; }
     }
 }

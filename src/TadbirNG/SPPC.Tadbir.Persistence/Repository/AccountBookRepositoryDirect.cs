@@ -120,34 +120,6 @@ namespace SPPC.Tadbir.Persistence
             get { return _system.Config; }
         }
 
-        private static void PrepareAccountBook(AccountBookViewModel book,
-            IList<AccountBookItemViewModel> items, GridOptions gridOptions)
-        {
-            var filteredItems = items
-                .Skip(1)
-                .Apply(gridOptions, false)
-                .ToList();
-            if (filteredItems.Count == 0)
-            {
-                book.Items.Add(items[0]);
-                return;
-            }
-
-            filteredItems.Insert(0, items[0]);
-            decimal balance = filteredItems[0].Balance;
-            foreach (var item in filteredItems.Skip(1))
-            {
-                balance = balance + item.Debit - item.Credit;
-                item.Balance = balance;
-            }
-
-            book.DebitSum = filteredItems.Sum(item => item.Debit);
-            book.CreditSum = filteredItems.Sum(item => item.Credit);
-            book.Balance = filteredItems.Last().Balance;
-            book.TotalCount = filteredItems.Count;
-            book.Items.AddRange(filteredItems.ApplyPaging(gridOptions));
-        }
-
         private static string GetSummaryQuery(bool byNo, bool byBranch)
         {
             string query;
@@ -311,6 +283,35 @@ namespace SPPC.Tadbir.Persistence
 
             PrepareAccountBook(book, items, parameters.GridOptions);
             return book;
+        }
+
+        private void PrepareAccountBook(AccountBookViewModel book,
+            IList<AccountBookItemViewModel> items, GridOptions gridOptions)
+        {
+            var filteredItems = items
+                .Skip(1)
+                .Apply(gridOptions, false)
+                .ToList();
+            if (filteredItems.Count == 0)
+            {
+                book.Items.Add(items[0]);
+                return;
+            }
+
+            filteredItems.Insert(0, items[0]);
+            decimal balance = filteredItems[0].Balance;
+            foreach (var item in filteredItems.Skip(1))
+            {
+                balance = balance + item.Debit - item.Credit;
+                item.Balance = balance;
+                item.Description = Context.Localize(item.Description);
+            }
+
+            book.DebitSum = filteredItems.Sum(item => item.Debit);
+            book.CreditSum = filteredItems.Sum(item => item.Credit);
+            book.Balance = filteredItems.Last().Balance;
+            book.TotalCount = filteredItems.Count;
+            book.Items.AddRange(filteredItems.ApplyPaging(gridOptions));
         }
 
         private List<AccountBookItemViewModel> GetQueryResult(

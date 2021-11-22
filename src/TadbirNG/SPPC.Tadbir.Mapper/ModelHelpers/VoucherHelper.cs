@@ -12,16 +12,14 @@ namespace SPPC.Tadbir.Mapper.ModelHelpers
         {
             Verify.ArgumentNotNull(voucher, nameof(voucher));
             return voucher.Lines
-                .Select(line => line.Debit)
-                .Sum();
+                .Sum(line => line.Debit);
         }
 
         internal static decimal GetCreditSum(Voucher voucher)
         {
             Verify.ArgumentNotNull(voucher, nameof(voucher));
             return voucher.Lines
-                .Select(line => line.Credit)
-                .Sum();
+                .Sum(line => line.Credit);
         }
 
         internal static string GetBalanceStatus(Voucher voucher)

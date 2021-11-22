@@ -4,8 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using SPPC.Framework.Common;
-using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
@@ -47,13 +45,28 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns></returns>
         // GET: api/reports/finance/vouchers/sum-by-date
         [HttpGet]
-        [Route(ReportsFinanceApi.EnvironmentVoucherSummaryByDateUrl)]
+        [Route(ReportsFinanceApi.VoucherSummaryByDateUrl)]
         [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.Print)]
-        public async Task<IActionResult> GetEnvironmentVoucherSummaryByDateAsync()
+        public async Task<IActionResult> GetVoucherSummaryByDateAsync()
         {
-            int itemCount = await _repository.GetVoucherSummaryByDateCountAsync(GridOptions);
-            SetItemCount(itemCount);
             var report = await _repository.GetVoucherSummaryByDateReportAsync(GridOptions);
+            SetItemCount(report.Count);
+            Localize(report);
+            return Json(report);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/reports/finance/vouchers/sum-by-no
+        [HttpGet]
+        [Route(ReportsFinanceApi.VoucherSummaryByNoUrl)]
+        [AuthorizeRequest(SecureEntity.Vouchers, (int)ManageVouchersPermissions.Print)]
+        public async Task<IActionResult> GetVoucherSummaryByNoAsync()
+        {
+            var report = await _repository.GetVoucherSummaryByNoReportAsync(GridOptions);
+            SetItemCount(report.Count);
             Localize(report);
             return Json(report);
         }
@@ -167,21 +180,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private void Localize(IList<VoucherSummaryViewModel> report)
         {
-            var now = DateTime.Now;
-            var languages = GetPrimaryRequestLanguage();
-            if (languages == "fa")
-            {
-                Array.ForEach(report.ToArray(),
-                    summary => summary.Date = JalaliDateTime
-                        .FromDateTime(now.Parse(summary.Date, false))
-                        .ToShortDateString());
-            }
-
             Array.ForEach(report.ToArray(), summary =>
             {
                 summary.BalanceStatus = _strings[summary.BalanceStatus];
-                summary.CheckStatus = _strings[summary.CheckStatus];
-                summary.Origin = _strings[summary.Origin];
+                summary.StatusName = _strings[summary.StatusName];
+                summary.OriginName = _strings[summary.OriginName];
             });
         }
 
