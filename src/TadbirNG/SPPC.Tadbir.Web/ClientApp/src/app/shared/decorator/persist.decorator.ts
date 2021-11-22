@@ -23,7 +23,7 @@ export function Persist<Type>(defaultValue?:Type,entityName?:string,entityAction
                 }  
                 else
                 {
-                    if(getValueFromStorage(key,propertyName))
+                    if(getValueFromStorage(key,propertyName) != null)
                     {
                         value = getValueFromStorage(key,propertyName);
                         setValueToStorage(tempKey,propertyName,value);                        
