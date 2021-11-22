@@ -20,4 +20,26 @@ export enum VoucherStatusType {
     CurrentBranch = "1",
     CurrentBranchAndSubsets = "2"
  }
+
+ export enum BookDisplayType {
+  ByRow = "1",
+  VoucherSum = "2",
+  DailySum = "3",
+  MonthlySum = "4",
+}
+
+export enum BookDisplayTypeResource {
+  /**مطابق ردیف های سند */
+  ByRow = "AccountBook.DisplayByRow",
+
+  /**جمع مبالغ هر سند */
+  VoucherSum = "AccountBook.DisplayByVoucherSum",
+
+  /**جمع مبالغ اسناد در هر روز */
+  DailySum = "AccountBook.DisplayByDailySum",
+
+  /**جمع مبالغ اسناد در هر ماه */
+  MonthlySum = "AccountBook.DisplayByMonthlySum",
+}
+
    
