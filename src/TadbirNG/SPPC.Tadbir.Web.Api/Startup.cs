@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
@@ -58,8 +59,10 @@ namespace SPPC.Tadbir.Web.Api
         /// </summary>
         /// <param name="app">امکان پیکربندی مسیر اجرایی سرویس وب را فراهم می کند</param>
         /// <param name="env">اطلاعات محیط میزبانی سرویس را فراهم می کند</param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        /// <param name="lifetime">امکان اتصال به وقایع مهم مرتبط با چرخه حیات سرور را فراهم می کند</param>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime lifetime)
         {
+            //lifetime.ApplicationStarted.Register(OnAppStarted, lifetime);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -87,6 +90,11 @@ namespace SPPC.Tadbir.Web.Api
                 endpoints.MapControllers();
             });
         }
+
+        //private void OnAppStarted(object state)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         private static void ConfigureLocalization(IApplicationBuilder app)
         {

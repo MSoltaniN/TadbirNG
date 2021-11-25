@@ -81,7 +81,7 @@ namespace SPPC.Tools.SystemDesignerCli
             var version = GetDatabaseVersion(connection);
             var sqlBuilder = new SqlConnectionStringBuilder(connection);
             var scriptFile = ConfigurationManager.AppSettings[configKey];
-            var blocks = GetRequiredBlocks(version, File.ReadAllText(scriptFile));
+            var blocks = GetRequiredBlocks(version, File.ReadAllText(scriptFile, Encoding.UTF8));
             if (blocks.Count > 0)
             {
                 BuildTempScriptFile(blocks.Values.Cast<string>().ToList());
