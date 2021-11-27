@@ -16,32 +16,32 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         }
 
         /// <summary>
-        /// جمع مبالغ بدهکار در تمام سطرهای گزارش
+        /// جمع مبالغ بدهکار ارزی در تمام سطرهای گزارش
         /// </summary>
         public decimal DebitSum { get; set; }
 
         /// <summary>
-        /// جمع مبالغ بستانکار در تمام سطرهای گزارش
+        /// جمع مبالغ بستانکار ارزی در تمام سطرهای گزارش
         /// </summary>
         public decimal CreditSum { get; set; }
 
         /// <summary>
-        /// مانده نهایی موضوع مورد نظر در انتهای دوره گزارشگیری
+        /// مانده نهایی ارزی در انتهای دوره گزارشگیری
         /// </summary>
         public decimal Balance { get; set; }
 
         /// <summary>
-        /// جمع مبالغ بدهکار ارزی در تمام سطرهای گزارش
+        /// جمع مبالغ بدهکار در تمام سطرهای گزارش
         /// </summary>
         public decimal BaseCurrencyDebitSum { get; set; }
 
         /// <summary>
-        /// جمع مبالغ بستانکار ارزی در تمام سطرهای گزارش
+        /// جمع مبالغ بستانکار در تمام سطرهای گزارش
         /// </summary>
         public decimal BaseCurrencyCreditSum { get; set; }
 
         /// <summary>
-        /// مانده نهایی ارزی موضوع مورد نظر در انتهای دوره گزارشگیری
+        /// مانده نهایی ارز پایه در انتهای دوره گزارشگیری
         /// </summary>
         public decimal BaseCurrencyBalance { get; set; }
 

@@ -46,7 +46,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="ccenterId"></param>
         /// <param name="projectId"></param>
         /// <returns></returns>
-        // GET: api/currbook/by-row/by-branch/{byBranch}
+        // GET: api/currbook/by-row
         [HttpGet]
         [Route(CurrencyBookApi.CurrencyBookByRowUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyBook, (int)CurrencyBookPermissions.View)]
@@ -68,7 +68,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="ccenterId"></param>
         /// <param name="projectId"></param>
         /// <returns></returns>
-        // GET: api/currbook/voucher-sum/by-branch/{byBranch}
+        // GET: api/currbook/voucher-sum
         [HttpGet]
         [Route(CurrencyBookApi.CurrencyBookVoucherSumUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyBook, (int)CurrencyBookPermissions.View)]
@@ -90,7 +90,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="ccenterId"></param>
         /// <param name="projectId"></param>
         /// <returns></returns>
-        // GET: api/currbook/daily-sum/by-branch/{byBranch}
+        // GET: api/currbook/daily-sum
         [HttpGet]
         [Route(CurrencyBookApi.CurrencyBookDailySumUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyBook, (int)CurrencyBookPermissions.View)]
@@ -112,7 +112,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="ccenterId"></param>
         /// <param name="projectId"></param>
         /// <returns></returns>
-        // GET: api/currbook/monthly-sum/by-branch/{byBranch}
+        // GET: api/currbook/monthly-sum
         [HttpGet]
         [Route(CurrencyBookApi.CurrencyBookMonthlySumUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyBook, (int)CurrencyBookPermissions.View)]
@@ -139,13 +139,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(CurrencyBookApi.CurrencyBookAllCurrenciesUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyBook, (int)CurrencyBookPermissions.View)]
         public async Task<IActionResult> GetCurrencyBookAllCurrenciesAsync(
-             bool currFree, DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId)
+            DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId, bool currFree = true)
         {
             var bookParams = new CurrencyBookParameters()
             {
                 ByBranch = false,
-                From = from,
-                To = to,
+                FromDate = from,
+                ToDate = to,
                 AccountId = accountId,
                 DetailAccountId = faccountId,
                 CostCenterId = ccenterId,
@@ -182,24 +182,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private async Task<IActionResult> CurrencyBookResultAsync(
-            AccountBookMode bookMode, bool byBranch, DateTime from, DateTime to,
+            AccountBookMode mode, bool byBranch, DateTime from, DateTime to,
             int? accountId, int? faccountId, int? ccenterId, int? projectId)
         {
-            var bookParams = new CurrencyBookParameters()
+            var parameters = new CurrencyBookParameters()
             {
-                Mode = bookMode,
+                Mode = mode,
                 ByBranch = byBranch,
-                From = from,
-                To = to,
+                FromDate = from,
+                ToDate = to,
                 AccountId = accountId,
                 DetailAccountId = faccountId,
                 CostCenterId = ccenterId,
                 ProjectId = projectId,
                 GridOptions = GridOptions ?? new GridOptions()
             };
-            var book = byBranch
-                ? await _repository.GetCurrencyBookByBranchAsync(bookParams)
-                : await _repository.GetCurrencyBookAsync(bookParams);
+            var book = await _repository.GetCurrencyBookAsync(parameters);
             SetItemCount(book.TotalCount);
             SetRowNumbers(book.Items);
             return Json(book);

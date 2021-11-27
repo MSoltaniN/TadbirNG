@@ -1,5 +1,4 @@
-﻿using System;
-using SPPC.Framework.Presentation;
+﻿using SPPC.Framework.Presentation;
 
 namespace SPPC.Tadbir.Persistence.Tests
 {
@@ -25,6 +24,19 @@ namespace SPPC.Tadbir.Persistence.Tests
                 Value = branchId.ToString()
             };
             AddFilter(branchFilter);
+            return this;
+        }
+
+        public OptionsBuilder WithCurrencyFilter(int currencyId)
+        {
+            var currencyFilter = new GridFilter()
+            {
+                FieldName = "CurrencyId",
+                FieldTypeName = "System.Int32",
+                Operator = GridFilterOperator.IsEqualTo,
+                Value = currencyId.ToString()
+            };
+            AddFilter(currencyFilter);
             return this;
         }
 

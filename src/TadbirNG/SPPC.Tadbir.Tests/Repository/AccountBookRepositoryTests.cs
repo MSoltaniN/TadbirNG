@@ -3680,7 +3680,7 @@ namespace SPPC.Tadbir.Persistence.Tests
 
         #endregion
 
-        private AccountBookParameters GetTestParameters(
+        private static AccountBookParameters GetTestParameters(
             AccountBookMode mode, GridOptions gridOptions, bool byBranch = false)
         {
             return new AccountBookParameters()
