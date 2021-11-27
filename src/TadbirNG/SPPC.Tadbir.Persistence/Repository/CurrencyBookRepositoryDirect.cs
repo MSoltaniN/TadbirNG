@@ -438,8 +438,12 @@ namespace SPPC.Tadbir.Persistence
             book.BaseCurrencyCreditSum = filteredItems.Sum(item => item.BaseCurrencyCredit);
             book.DebitSum = filteredItems.Sum(item => item.Debit);
             book.CreditSum = filteredItems.Sum(item => item.Credit);
-            book.BaseCurrencyBalance = filteredItems.Last().BaseCurrencyBalance;
-            book.Balance = filteredItems.Last().Balance;
+            if (filteredItems.Any())
+            {
+                book.BaseCurrencyBalance = filteredItems.Last().BaseCurrencyBalance;
+                book.Balance = filteredItems.Last().Balance;
+            }
+
             book.TotalCount = filteredItems.Count;
             book.SetItems(filteredItems.ApplyPaging(parameters.GridOptions));
         }

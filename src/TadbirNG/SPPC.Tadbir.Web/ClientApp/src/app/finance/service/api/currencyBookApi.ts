@@ -15,16 +15,16 @@ import { environment } from "@sppc/env/environment";
 export class CurrencyBookApi {
 
     // currbook/by-row/by-branch/{byBranch}
-    public static CurrencyBookByRow = environment.BaseUrl + "/currbook/by-row/by-branch/{0}";
+    public static CurrencyBookByRow = environment.BaseUrl + "/currbook/by-row";
 
     // currbook/voucher-sum/by-branch/{byBranch}
-    public static CurrencyBookVoucherSum = environment.BaseUrl + "/currbook/voucher-sum/by-branch/{0}";
+    public static CurrencyBookVoucherSum = environment.BaseUrl + "/currbook/voucher-sum";
 
     // currbook/daily-sum/by-branch/{byBranch}
-    public static CurrencyBookDailySum = environment.BaseUrl + "/currbook/daily-sum/by-branch/{0}";
+    public static CurrencyBookDailySum = environment.BaseUrl + "/currbook/daily-sum";
 
     // currbook/monthly-sum/by-branch/{byBranch}
-    public static CurrencyBookMonthlySum = environment.BaseUrl + "/currbook/monthly-sum/by-branch/{0}";
+    public static CurrencyBookMonthlySum = environment.BaseUrl + "/currbook/monthly-sum";
 
     // currbook/all-currencies/{currFree}
     public static CurrencyBookAllCurrencies = environment.BaseUrl +"/currbook/all-currencies/{0}"
