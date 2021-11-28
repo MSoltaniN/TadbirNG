@@ -25,9 +25,10 @@ namespace SPPC.Tadbir.Model.Auth
         /// </summary>
         public Role()
         {
-            this.Name = String.Empty;
-            this.Description = String.Empty;
-            this.ModifiedDate = DateTime.Now;
+            Name = String.Empty;
+            Description = String.Empty;
+            ModifiedDate = DateTime.Now;
+            RolePermissions = new List<RolePermission>();
         }
 
         /// <summary>
