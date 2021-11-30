@@ -35,6 +35,7 @@ namespace SPPC.Tadbir.Persistence
                     .Replace("Reference = '", "v.Reference = N'")
                     .Replace("BranchId", "BranchID")
                     .Replace("BranchID", "vl.BranchID")
+                    .Replace("CurrencyId", "vl.CurrencyID")
                     .Replace("v.Date", "CAST(v.Date AS date)")
                     .Replace('"', '\'')
                     .Replace("== null", " IS NULL")

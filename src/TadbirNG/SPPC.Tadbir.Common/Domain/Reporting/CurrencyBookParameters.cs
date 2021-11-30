@@ -21,12 +21,12 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// تاریخ شروع گزارش
         /// </summary>
-        public DateTime From { get; set; }
+        public DateTime FromDate { get; set; }
 
         /// <summary>
         /// تاریخ پایان گزارش
         /// </summary>
-        public DateTime To { get; set; }
+        public DateTime ToDate { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی حساب انتخاب شده برای گزارش گیری
@@ -51,11 +51,20 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// در حالت کلیه ارزها سطرهای بدون ارز هم آورده شود یا خیر؟
         /// </summary>
-        public bool CurrencyFree { get; set; } = false;
+        public bool CurrencyFree { get; set; }
 
         /// <summary>
         /// گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات
         /// </summary>
         public GridOptions GridOptions { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public CurrencyBookParameters GetCopy()
+        {
+            return (CurrencyBookParameters)MemberwiseClone();
+        }
     }
 }

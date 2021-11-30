@@ -48,7 +48,7 @@ namespace SPPC.Tadbir.Licensing
             }
 
             ActivationResult result;
-            var activation = GetActivationData(instance, connection);
+            var activation = GetActivationData(instance, connection, out X509Certificate2 certificate);
             var license = GetActivatedLicense(activation);
             if (_apiClient.LastResponse.Result == ServiceResult.ValidationFailed)
             {
@@ -65,7 +65,7 @@ namespace SPPC.Tadbir.Licensing
             else
             {
                 File.WriteAllText(LicensePath, license);
-                ExportCertificate(license);
+                ExportCertificate(certificate);
                 result = ActivationResult.OK;
             }
 
@@ -95,9 +95,11 @@ namespace SPPC.Tadbir.Licensing
             {
                 "CustomerKey", "LicenseKey", "HardwareKey", "ClientKey", "Secret", "IsActivated"
             };
-            string license = JsonHelper.From(_license, true, ignored);
+            var licenseModel = LoadLicense();
+            var certificate = LoadCerificate(licenseModel.Secret);
+            string license = JsonHelper.From(licenseModel, true, ignored);
             var licenseBytes = Encoding.UTF8.GetBytes(license);
-            return _crypto.SignData(licenseBytes, _certificate);
+            return _crypto.SignData(licenseBytes, certificate);
         }
 
         /// <summary>
@@ -106,51 +108,51 @@ namespace SPPC.Tadbir.Licensing
         /// <returns>وضعیت بررسی مجوز که نشان می دهد مجوز موجود معتبر هست یا نه</returns>
         public LicenseStatus ValidateLicense(string instance, RemoteConnection connection)
         {
-            SetInstance(instance);
+            var instanceModel = GetInstance(instance);
             var status = LicenseStatus.OK;
             if (!EnsureLicenseExists())
             {
                 status = LicenseStatus.NoLicense;
                 _log.AppendLine();
-                _log.AppendFormat("[{0}] [ERROR] License file 'tadbir.lic' could not be loaded.{1}",
-                    DateTime.Now.ToString(), Environment.NewLine);
+                _log.AppendFormat("[{0}] [ERROR] License file '{1}' could not be loaded.{2}",
+                    DateTime.Now.ToString(), Constants.LicenseFile, Environment.NewLine);
             }
-            else if (EnsureLicenseNotCorrupt())
+            else if (EnsureLicenseNotCorrupt(out LicenseFileModel license))
             {
                 status = LicenseStatus.Corrupt;
                 _log.AppendLine();
                 _log.AppendFormat("[{0}] [ERROR] License file is corrupt or tampered.{1}",
                     DateTime.Now.ToString(), Environment.NewLine);
             }
-            else if (!EnsureCertificateExists())
+            else if (!EnsureCertificateExists(license, out X509Certificate2 certificate))
             {
                 status = LicenseStatus.NoCertificate;
                 _log.AppendLine();
-                _log.AppendFormat("[{0}] [ERROR] Certificate file 'tadbir.pfx' could not be loaded.{1}",
-                    DateTime.Now.ToString());
+                _log.AppendFormat("[{0}] [ERROR] Certificate file '{1}' could not be loaded.{2}",
+                    DateTime.Now.ToString(), Constants.CertificateFile, Environment.NewLine);
             }
-            else if (!EnsureCertificateIsValid())
+            else if (!EnsureCertificateIsValid(certificate, license.ClientKey))
             {
                 status = LicenseStatus.BadCertificate;
                 _log.AppendLine();
                 _log.AppendFormat("[{0}] [ERROR] Certificate file is invalid.{1}",
                     DateTime.Now.ToString(), Environment.NewLine);
             }
-            else if (!EnsureRunsOnOriginalHardware(connection))
+            else if (!EnsureRunsOnOriginalHardware(connection, license.HardwareKey))
             {
                 status = LicenseStatus.HardwareMismatch;
                 _log.AppendLine();
                 _log.AppendFormat("[{0}] [ERROR] This hardware system does not match original hardware.{1}",
                     DateTime.Now.ToString(), Environment.NewLine);
             }
-            else if (!EnsureInstanceIsValid())
+            else if (!EnsureInstanceIsValid(instanceModel, license))
             {
                 status = LicenseStatus.InstanceMismatch;
                 _log.AppendLine();
                 _log.AppendFormat("[{0}] [ERROR] Given instance is not licensed on this server.{1}",
                     DateTime.Now.ToString(), Environment.NewLine);
             }
-            else if (!EnsureLicenseNotExpired())
+            else if (!EnsureLicenseNotExpired(license))
             {
                 status = LicenseStatus.Expired;
                 _log.AppendLine();
@@ -169,13 +171,12 @@ namespace SPPC.Tadbir.Licensing
         /// <returns></returns>
         public LicenseStatus QuickValidateLicense(string instance)
         {
-            SetInstance(instance);
             var status = LicenseStatus.OK;
             if (!EnsureLicenseExists())
             {
                 status = LicenseStatus.NoLicense;
             }
-            else if (EnsureLicenseNotCorrupt())
+            else if (EnsureLicenseNotCorrupt(out _))
             {
                 status = LicenseStatus.Corrupt;
             }
@@ -202,9 +203,8 @@ namespace SPPC.Tadbir.Licensing
             Verify.ArgumentNotNullOrEmptyString(apiLicense, nameof(apiLicense));
             Verify.ArgumentNotNullOrEmptyString(signature, nameof(signature));
             byte[] apiLicenseBytes = Encoding.UTF8.GetBytes(apiLicense);
-            string licenseData = File.ReadAllText(LicensePath, Encoding.UTF8);
-            _license = LoadLicense(licenseData);
-            var certificate = LoadCerificate();
+            var license = LoadLicense();
+            var certificate = LoadCerificate(license.Secret);
             return _crypto.VerifyData(apiLicenseBytes, signature, certificate);
         }
 
@@ -214,7 +214,8 @@ namespace SPPC.Tadbir.Licensing
             return _apiClient.Update<ActivationModel, string>(activation, LicenseApi.ActivateLicense);
         }
 
-        private ActivationModel GetActivationData(string instance, RemoteConnection connection)
+        private ActivationModel GetActivationData(string instance, RemoteConnection connection,
+            out X509Certificate2 certificate)
         {
             var activation = new ActivationModel()
             {
@@ -222,37 +223,30 @@ namespace SPPC.Tadbir.Licensing
                 HardwareKey = _deviceId.GetRemoteDeviceId(connection),
             };
 
-            _certificate = _crypto.CertificateManager.GenerateSelfSigned(
+            certificate = _crypto.CertificateManager.GenerateSelfSigned(
                 Constants.IssuerName, Constants.SubjectName);
-            activation.ClientKey = Convert.ToBase64String(_certificate.GetPublicKey());
+            activation.ClientKey = Convert.ToBase64String(certificate.GetPublicKey());
             return activation;
         }
 
-        private void ExportCertificate(string licenseData)
+        private void ExportCertificate(X509Certificate2 certificate)
         {
             string path = Path.Combine(Path.GetDirectoryName(LicensePath), Constants.CertificateFile);
-            var license = LoadLicense(licenseData);
-            var certificateBytes = _certificate.Export(X509ContentType.Pkcs12, license.Secret);
+            var license = LoadLicense();
+            var certificateBytes = certificate.Export(X509ContentType.Pkcs12, license.Secret);
             File.WriteAllBytes(path, certificateBytes);
         }
 
         private LicenseCheckModel GetLicenseCheck(string instance, RemoteConnection connection)
         {
-            string certificatePath = Path.Combine(
-                Path.GetDirectoryName(LicensePath), Constants.CertificateFile);
-            var certificate = File.ReadAllBytes(certificatePath);
+            var license = LoadLicense();
+            var certificate = LoadCerificate(license.Secret);
             return new LicenseCheckModel()
             {
                 HardwardKey = _deviceId.GetRemoteDeviceId(connection),
                 InstanceKey = instance,
-                Certificate = Convert.ToBase64String(certificate)
+                Certificate = Convert.ToBase64String(certificate.RawData)
             };
-        }
-
-        private LicenseFileModel LoadLicense(string licenseData)
-        {
-            var json = _crypto.Decrypt(licenseData);
-            return JsonHelper.To<LicenseFileModel>(json);
         }
 
         private bool EnsureLicenseExists()
@@ -268,8 +262,9 @@ namespace SPPC.Tadbir.Licensing
             return validated;
         }
 
-        private bool EnsureLicenseNotCorrupt()
+        private bool EnsureLicenseNotCorrupt(out LicenseFileModel license)
         {
+            license = null;
             bool isCorrupt = false;
             _log.AppendFormat("[{0}] [INFO] Ensuring license file is pristine ...",
                 DateTime.Now.ToString());
@@ -278,7 +273,7 @@ namespace SPPC.Tadbir.Licensing
             {
                 try
                 {
-                    _license = LoadLicense(licenseData);
+                    license = LoadLicense();
                 }
                 catch
                 {
@@ -298,12 +293,12 @@ namespace SPPC.Tadbir.Licensing
             return isCorrupt;
         }
 
-        private bool EnsureCertificateExists()
+        private bool EnsureCertificateExists(LicenseFileModel license, out X509Certificate2 certificate)
         {
             _log.AppendFormat("[{0}] [INFO] Loading licensing certificate...",
                 DateTime.Now.ToString());
-            _certificate = LoadCerificate();
-            bool validated = _certificate != null;
+            certificate = LoadCerificate(license.Secret);
+            bool validated = certificate != null;
             if (validated)
             {
                 _log.AppendLine(" (OK)");
@@ -312,12 +307,12 @@ namespace SPPC.Tadbir.Licensing
             return validated;
         }
 
-        private bool EnsureCertificateIsValid()
+        private bool EnsureCertificateIsValid(X509Certificate2 certificate, string clientKey)
         {
             _log.AppendFormat("[{0}] [INFO] Validating licensing certificate...",
                 DateTime.Now.ToString());
-            var publicKey = Convert.ToBase64String(_certificate.GetPublicKey());
-            bool validated = String.Compare(_license.ClientKey, publicKey) == 0;
+            var publicKey = Convert.ToBase64String(certificate.GetPublicKey());
+            bool validated = String.Compare(clientKey, publicKey) == 0;
             if (validated)
             {
                 _log.AppendLine(" (OK)");
@@ -326,12 +321,12 @@ namespace SPPC.Tadbir.Licensing
             return validated;
         }
 
-        private bool EnsureRunsOnOriginalHardware(RemoteConnection connection)
+        private bool EnsureRunsOnOriginalHardware(RemoteConnection connection, string hwKey)
         {
             _log.AppendFormat("[{0}] [INFO] Validating server hardware...",
                 DateTime.Now.ToString());
             string hardwareKey = _deviceId.GetRemoteDeviceId(connection);
-            bool validated = String.Compare(_license.HardwareKey, hardwareKey) == 0;
+            bool validated = String.Compare(hwKey, hardwareKey) == 0;
             if (validated)
             {
                 _log.AppendLine(" (OK)");
@@ -340,12 +335,12 @@ namespace SPPC.Tadbir.Licensing
             return validated;
         }
 
-        private bool EnsureInstanceIsValid()
+        private bool EnsureInstanceIsValid(InstanceModel instance, LicenseFileModel license)
         {
             _log.AppendFormat("[{0}] [INFO] Validating application instance...",
                 DateTime.Now.ToString());
-            bool validated = _license.CustomerKey == _instance.CustomerKey
-                && _license.LicenseKey == _instance.LicenseKey;
+            bool validated = license.CustomerKey == instance.CustomerKey
+                && license.LicenseKey == instance.LicenseKey;
             if (validated)
             {
                 _log.AppendLine(" (OK)");
@@ -354,13 +349,13 @@ namespace SPPC.Tadbir.Licensing
             return validated;
         }
 
-        private bool EnsureLicenseNotExpired()
+        private bool EnsureLicenseNotExpired(LicenseFileModel license)
         {
             _log.AppendFormat("[{0}] [INFO] Ensuring license not expired...",
                 DateTime.Now.ToString());
             var now = DateTime.Now.Date;
-            bool validated = now >= _license.StartDate
-                && now <= _license.EndDate;
+            bool validated = now >= license.StartDate
+                && now <= license.EndDate;
             if (validated)
             {
                 _log.AppendLine(" (OK)");
@@ -369,25 +364,29 @@ namespace SPPC.Tadbir.Licensing
             return validated;
         }
 
-        private void SetInstance(string instance)
+        private InstanceModel GetInstance(string instance)
         {
             string json = _crypto.Decrypt(instance);
-            _instance = JsonHelper.To<InstanceModel>(json);
+            return JsonHelper.To<InstanceModel>(json);
         }
 
-        private X509Certificate2 LoadCerificate()
+        private LicenseFileModel LoadLicense()
+        {
+            var licenseData = File.ReadAllText(LicensePath, Encoding.UTF8);
+            var json = _crypto.Decrypt(licenseData);
+            return JsonHelper.To<LicenseFileModel>(json);
+        }
+
+        private X509Certificate2 LoadCerificate(string password)
         {
             string root = Path.GetDirectoryName(LicensePath);
             string certificatePath = Path.Combine(root, Constants.CertificateFile);
-            return _crypto.CertificateManager.GetFromFile(certificatePath, _license.Secret);
+            return _crypto.CertificateManager.GetFromFile(certificatePath, password);
         }
 
         private readonly IApiClient _apiClient;
         private readonly ICryptoService _crypto;
         private readonly IDeviceIdProvider _deviceId;
-        private LicenseFileModel _license;
-        private X509Certificate2 _certificate;
-        private InstanceModel _instance;
         private readonly StringBuilder _log = new();
     }
 }

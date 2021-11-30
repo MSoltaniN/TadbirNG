@@ -360,7 +360,7 @@ namespace SPPC.Tadbir.Persistence
             var book = new CurrencyBookViewModel();
 
             var itemCriteria = GetItemCriteria(bookParam);
-            var bookItems = await GetRawCurrencyBookLines(itemCriteria, bookParam.From, bookParam.To)
+            var bookItems = await GetRawCurrencyBookLines(itemCriteria, bookParam.FromDate, bookParam.ToDate)
                 .ToListAsync();
             var localized = bookItems
                 .Select(line => Mapper.Map<CurrencyBookItemViewModel>(line))
@@ -377,7 +377,7 @@ namespace SPPC.Tadbir.Persistence
             var book = new CurrencyBookViewModel();
 
             var itemCriteria = GetItemCriteria(bookParam, byCurrency);
-            var lines = await GetRawCurrencyBookLines(itemCriteria, bookParam.From, bookParam.To)
+            var lines = await GetRawCurrencyBookLines(itemCriteria, bookParam.FromDate, bookParam.ToDate)
                 .Select(line => Mapper.Map<CurrencyBookItemViewModel>(line))
                 .ToListAsync();
             lines = lines
@@ -399,7 +399,7 @@ namespace SPPC.Tadbir.Persistence
             await AddSpecialBookItemsAsync(book, itemCriteria,
                 VoucherOriginId.OpeningVoucher, bookParam);
 
-            var monthEnum = new MonthEnumerator(bookParam.From, bookParam.To, new PersianCalendar());
+            var monthEnum = new MonthEnumerator(bookParam.FromDate, bookParam.ToDate, new PersianCalendar());
             foreach (var month in monthEnum.GetMonths())
             {
                 var monthLines = GetRawCurrencyBookLines(itemCriteria, month.Start, month.End)
@@ -442,7 +442,7 @@ namespace SPPC.Tadbir.Persistence
             if (origin != VoucherOriginId.NormalVoucher)
             {
                 var date = await _report.GetSpecialVoucherDateAsync(origin);
-                if (date.HasValue && date.Value.IsBetween(bookParam.From, bookParam.To))
+                if (date.HasValue && date.Value.IsBetween(bookParam.FromDate, bookParam.ToDate))
                 {
                     var query = Repository
                         .GetAllOperationQuery<VoucherLine>(
