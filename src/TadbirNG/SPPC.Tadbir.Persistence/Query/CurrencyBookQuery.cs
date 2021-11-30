@@ -61,12 +61,12 @@ SUM(vl.CurrencyValue) AS [Credit], br.Name AS [BranchName]";
 ORDER BY br.Name";
 
         internal const string AllCurrenciesSelect = @"
-SELECT curr.Name AS [CurrencyName], SUM(vl.Debit) AS [BaseCurrencyDebit],
+SELECT curr.CurrencyID AS [CurrencyId], curr.Name AS [CurrencyName], SUM(vl.Debit) AS [BaseCurrencyDebit],
 SUM(vl.Credit) AS [BaseCurrencyCredit], SUM(vl.CurrencyValue) AS [Debit],
 SUM(vl.CurrencyValue) AS [Credit]";
 
         internal const string AllCurrenciesByBranchSelect = @"
-SELECT curr.Name AS [CurrencyName], SUM(vl.Debit) AS [BaseCurrencyDebit],
+SELECT curr.CurrencyID AS [CurrencyId], curr.Name AS [CurrencyName], SUM(vl.Debit) AS [BaseCurrencyDebit],
 SUM(vl.Credit) AS [BaseCurrencyCredit], SUM(vl.CurrencyValue) AS [Debit],
 SUM(vl.CurrencyValue) AS [Credit], br.Name AS [BranchName]";
 

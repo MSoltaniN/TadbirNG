@@ -107,6 +107,11 @@ namespace SPPC.Tadbir.Persistence
             return book;
         }
 
+        internal override OperationSourceId OperationSource
+        {
+            get { return OperationSourceId.CurrencyBook; }
+        }
+
         private static SourceListId GetSourceList(CurrencyBookMode mode)
         {
             var sourceList = SourceListId.None;
@@ -413,6 +418,7 @@ namespace SPPC.Tadbir.Persistence
                 Debit = _utility.ValueOrDefault<decimal>(row, "Debit"),
                 Credit = _utility.ValueOrDefault<decimal>(row, "Credit"),
                 BranchName = _utility.ValueOrDefault(row, "BranchName"),
+                CurrencyId = _utility.ValueOrDefault<int>(row, "CurrencyId"),
                 CurrencyName = _utility.ValueOrDefault(row, "CurrencyName"),
                 Mark = _utility.ValueOrDefault(row, "Mark"),
                 Id = _utility.ValueOrDefault<int>(row, "VoucherLineID"),
@@ -480,7 +486,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var queryBuilder = new StringBuilder();
             queryBuilder.AppendLine(await GetWhereClauseAsync(parameters, null, isDebit));
-            queryBuilder.Append("GROUP BY curr.Name");
+            queryBuilder.Append("GROUP BY curr.CurrencyID, curr.Name");
             if (parameters.ByBranch)
             {
                 queryBuilder.Append(", br.Name");
