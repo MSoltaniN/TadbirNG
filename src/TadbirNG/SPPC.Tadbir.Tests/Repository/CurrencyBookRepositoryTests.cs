@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence.Utility;
-using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Tests
 {
@@ -31,40 +27,62 @@ namespace SPPC.Tadbir.Persistence.Tests
                 .Build();
 
             // By Row
-            var parameters = GetTestParameters(AccountBookMode.ByRows, gridOptions);
+            var parameters = GetTestParameters(CurrencyBookMode.ByRows, gridOptions);
             await _repository.GetCurrencyBookAsync(parameters);
 
             // By Row By Branch
-            parameters = GetTestParameters(AccountBookMode.ByRows, gridOptions, true);
+            parameters = GetTestParameters(CurrencyBookMode.ByRows, gridOptions, true);
             await _repository.GetCurrencyBookAsync(parameters);
 
             // Voucher Sum
-            parameters = GetTestParameters(AccountBookMode.VoucherSum, gridOptions);
+            parameters = GetTestParameters(CurrencyBookMode.VoucherSum, gridOptions);
             await _repository.GetCurrencyBookAsync(parameters);
 
             // Voucher Sum By Branch
-            parameters = GetTestParameters(AccountBookMode.VoucherSum, gridOptions, true);
+            parameters = GetTestParameters(CurrencyBookMode.VoucherSum, gridOptions, true);
             await _repository.GetCurrencyBookAsync(parameters);
 
             // Daily Sum
-            parameters = GetTestParameters(AccountBookMode.DailySum, gridOptions);
+            parameters = GetTestParameters(CurrencyBookMode.DailySum, gridOptions);
             await _repository.GetCurrencyBookAsync(parameters);
 
             // Daily Sum By Branch
-            parameters = GetTestParameters(AccountBookMode.DailySum, gridOptions, true);
+            parameters = GetTestParameters(CurrencyBookMode.DailySum, gridOptions, true);
             await _repository.GetCurrencyBookAsync(parameters);
 
             // Monthly Sum
-            parameters = GetTestParameters(AccountBookMode.MonthlySum, gridOptions);
+            parameters = GetTestParameters(CurrencyBookMode.MonthlySum, gridOptions);
             await _repository.GetCurrencyBookAsync(parameters);
 
             // Monthly Sum By Branch
-            parameters = GetTestParameters(AccountBookMode.MonthlySum, gridOptions, true);
+            parameters = GetTestParameters(CurrencyBookMode.MonthlySum, gridOptions, true);
             await _repository.GetCurrencyBookAsync(parameters);
+
+            // All Currencies
+            gridOptions = new OptionsBuilder()
+                .WithBranchFilter(1)
+                .UseCheckedVouchers()
+                .Build();
+            parameters = GetTestParameters(CurrencyBookMode.AllCurrencies, gridOptions);
+            await _repository.GetCurrencyBookAllCurrenciesAsync(parameters);
+
+            // All Currencies By Branch
+            parameters = GetTestParameters(CurrencyBookMode.AllCurrencies, gridOptions, true);
+            await _repository.GetCurrencyBookAllCurrenciesAsync(parameters);
+
+            // All Currencies + Show No Currency
+            parameters = GetTestParameters(CurrencyBookMode.AllCurrencies, gridOptions);
+            parameters.NoCurrency = true;
+            await _repository.GetCurrencyBookAllCurrenciesAsync(parameters);
+
+            // All Currencies By Branch + Show No Currency
+            parameters = GetTestParameters(CurrencyBookMode.AllCurrencies, gridOptions, true);
+            parameters.NoCurrency = true;
+            await _repository.GetCurrencyBookAllCurrenciesAsync(parameters);
         }
 
         private static CurrencyBookParameters GetTestParameters(
-            AccountBookMode mode, GridOptions gridOptions, bool byBranch = false)
+            CurrencyBookMode mode, GridOptions gridOptions, bool byBranch = false)
         {
             return new CurrencyBookParameters()
             {

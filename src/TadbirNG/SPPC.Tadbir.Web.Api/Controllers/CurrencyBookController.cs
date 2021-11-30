@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -11,7 +9,6 @@ using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
-using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -51,9 +48,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(CurrencyBookApi.CurrencyBookByRowUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyBook, (int)CurrencyBookPermissions.View)]
         public async Task<IActionResult> GetCurrencyBookByRowAsync(
-            bool byBranch, DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId)
+            DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId,
+            bool byBranch)
         {
-            return await CurrencyBookResultAsync(AccountBookMode.ByRows,
+            return await CurrencyBookResultAsync(CurrencyBookMode.ByRows,
                 byBranch, from, to, accountId, faccountId, ccenterId, projectId);
         }
 
@@ -73,9 +71,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(CurrencyBookApi.CurrencyBookVoucherSumUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyBook, (int)CurrencyBookPermissions.View)]
         public async Task<IActionResult> GetCurrencyBookVoucherSumAsync(
-            bool byBranch, DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId)
+            DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId,
+            bool byBranch)
         {
-            return await CurrencyBookResultAsync(AccountBookMode.VoucherSum,
+            return await CurrencyBookResultAsync(CurrencyBookMode.VoucherSum,
                 byBranch, from, to, accountId, faccountId, ccenterId, projectId);
         }
 
@@ -95,9 +94,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(CurrencyBookApi.CurrencyBookDailySumUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyBook, (int)CurrencyBookPermissions.View)]
         public async Task<IActionResult> GetCurrencyBookDailySumAsync(
-            bool byBranch, DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId)
+            DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId,
+            bool byBranch)
         {
-            return await CurrencyBookResultAsync(AccountBookMode.DailySum,
+            return await CurrencyBookResultAsync(CurrencyBookMode.DailySum,
                 byBranch, from, to, accountId, faccountId, ccenterId, projectId);
         }
 
@@ -117,75 +117,47 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(CurrencyBookApi.CurrencyBookMonthlySumUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyBook, (int)CurrencyBookPermissions.View)]
         public async Task<IActionResult> GetCurrencyBookMonthlySumAsync(
-            bool byBranch, DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId)
+            DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId,
+            bool byBranch)
         {
-            return await CurrencyBookResultAsync(AccountBookMode.MonthlySum,
+            return await CurrencyBookResultAsync(CurrencyBookMode.MonthlySum,
                 byBranch, from, to, accountId, faccountId, ccenterId, projectId);
         }
 
         /// <summary>
         ///
         /// </summary>
-        /// <param name="currFree"></param>
+        /// <param name="noCurrency"></param>
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <param name="accountId"></param>
         /// <param name="faccountId"></param>
         /// <param name="ccenterId"></param>
         /// <param name="projectId"></param>
+        /// <param name="byBranch"></param>
         /// <returns></returns>
         // GET: api/currbook/all-currencies/{currFree}
         [HttpGet]
         [Route(CurrencyBookApi.CurrencyBookAllCurrenciesUrl)]
         [AuthorizeRequest(SecureEntity.CurrencyBook, (int)CurrencyBookPermissions.View)]
         public async Task<IActionResult> GetCurrencyBookAllCurrenciesAsync(
-            DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId, bool currFree = true)
+            DateTime from, DateTime to, int? accountId, int? faccountId, int? ccenterId, int? projectId,
+            bool byBranch, bool noCurrency)
         {
-            var bookParams = new CurrencyBookParameters()
-            {
-                ByBranch = false,
-                FromDate = from,
-                ToDate = to,
-                AccountId = accountId,
-                DetailAccountId = faccountId,
-                CostCenterId = ccenterId,
-                ProjectId = projectId,
-                CurrencyFree = currFree,
-                GridOptions = GridOptions ?? new GridOptions()
-            };
-
-            var book = await _repository.GetCurrencyBookAllCurrenciesAsync(bookParams);
+            var parameters = GetParameters(
+                CurrencyBookMode.AllCurrencies, byBranch, from, to,
+                accountId, faccountId, ccenterId, projectId, noCurrency);
+            var book = await _repository.GetCurrencyBookAllCurrenciesAsync(parameters);
             SetItemCount(book.TotalCount);
-            SortItems(book);
+            SetRowNumbers(book.Items);
             return Json(book);
         }
 
-        private static void SortItems(CurrencyBookViewModel book)
+        private CurrencyBookParameters GetParameters(
+            CurrencyBookMode mode, bool byBranch, DateTime from, DateTime to,
+            int? accountId, int? faccountId, int? ccenterId, int? projectId, bool noCurrency = false)
         {
-            var currencyFreeItem = new CurrencyBookItemViewModel();
-            var items = new List<CurrencyBookItemViewModel>();
-            items.AddRange(book.Items.Where(item => item.CurrencyId != null));
-            items = items.OrderBy(item => item.CurrencyName).ToList();
-            currencyFreeItem = book.Items.FirstOrDefault(curr => curr.CurrencyId == null);
-            if (currencyFreeItem != null)
-            {
-                items.Add(currencyFreeItem);
-            }
-
-            for (int i = 0; i < items.Count; i++)
-            {
-                items[i].RowNo = i + 1;
-            }
-
-            book.Items.Clear();
-            book.Items.AddRange(items);
-        }
-
-        private async Task<IActionResult> CurrencyBookResultAsync(
-            AccountBookMode mode, bool byBranch, DateTime from, DateTime to,
-            int? accountId, int? faccountId, int? ccenterId, int? projectId)
-        {
-            var parameters = new CurrencyBookParameters()
+            return new CurrencyBookParameters()
             {
                 Mode = mode,
                 ByBranch = byBranch,
@@ -195,8 +167,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 DetailAccountId = faccountId,
                 CostCenterId = ccenterId,
                 ProjectId = projectId,
+                NoCurrency = noCurrency,
                 GridOptions = GridOptions ?? new GridOptions()
             };
+        }
+
+        private async Task<IActionResult> CurrencyBookResultAsync(
+            CurrencyBookMode mode, bool byBranch, DateTime from, DateTime to,
+            int? accountId, int? faccountId, int? ccenterId, int? projectId)
+        {
+            var parameters = GetParameters(
+                mode, byBranch, from, to, accountId, faccountId, ccenterId, projectId);
             var book = await _repository.GetCurrencyBookAsync(parameters);
             SetItemCount(book.TotalCount);
             SetRowNumbers(book.Items);

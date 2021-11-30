@@ -48,11 +48,11 @@
         /// <summary>
         /// API client URL for Book report by all currencies
         /// </summary>
-        public const string CurrencyBookAllCurrencies = "currbook/all-currencies/{0}";
+        public const string CurrencyBookAllCurrencies = "currbook/all-currencies";
 
         /// <summary>
         /// API server route URL for Book report by all currencies
         /// </summary>
-        public const string CurrencyBookAllCurrenciesUrl = "currbook/all-currencies/{currFree}";
+        public const string CurrencyBookAllCurrenciesUrl = "currbook/all-currencies";
     }
 }

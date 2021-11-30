@@ -11,7 +11,7 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// نوع نمایش انتخاب شده برای گزارش
         /// </summary>
-        public AccountBookMode Mode { get; set; }
+        public CurrencyBookMode Mode { get; set; }
 
         /// <summary>
         /// گزارش به تفکیک شعبه است یا خیر؟
@@ -51,7 +51,7 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// در حالت کلیه ارزها سطرهای بدون ارز هم آورده شود یا خیر؟
         /// </summary>
-        public bool CurrencyFree { get; set; }
+        public bool NoCurrency { get; set; }
 
         /// <summary>
         /// گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات

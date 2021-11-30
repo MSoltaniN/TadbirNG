@@ -2589,8 +2589,8 @@
   <data name="BaseCurrencyDebit" xml:space="preserve">
     <value>Base currency debit</value>
   </data>
-  <data name="Currency_Free_Rows" xml:space="preserve">
-    <value>Currency free rows</value>
+  <data name="NoCurrencyArticles" xml:space="preserve">
+    <value>Articles without currency</value>
   </data>
   <data name="CurrencyBook" xml:space="preserve">
     <value>Currency Book</value>
