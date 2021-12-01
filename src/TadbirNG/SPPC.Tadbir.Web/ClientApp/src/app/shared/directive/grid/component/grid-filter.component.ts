@@ -171,4 +171,9 @@ export class GridFilterComponent extends BaseComponent implements OnInit, OnDest
 
   }
 
+  clearFilterGrid(): void {
+    this.grid.filter.filters = [];
+    this.showClearFilter = this.grid.filter.filters.length;
+  }
+
 }

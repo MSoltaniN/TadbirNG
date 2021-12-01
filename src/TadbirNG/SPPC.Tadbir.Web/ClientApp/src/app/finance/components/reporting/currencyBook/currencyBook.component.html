@@ -293,7 +293,7 @@
 
       <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
         <div style="margin-top:33px">
-          <input type="checkbox" [(ngModel)]="currencyFree" [disabled]="selectedCurrencyValue" (ngModelChange)="onChangeCurrencyFree()" name="currencyFree" id="currencyFree" class="k-checkbox" />
+          <input type="checkbox" [(ngModel)]="currencyFree" [attr.disabled]="selectedCurrencyValue != '-1' ? 'disabled' : null" (ngModelChange)="onChangeCurrencyFree()" name="currencyFree" id="currencyFree" class="k-checkbox" />
           <span for="currencyFree">{{ 'CurrencyBook.CurrencyFreeRows' | translate }}</span>
         </div>
       </div>
