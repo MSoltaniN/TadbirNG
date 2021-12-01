@@ -20,14 +20,6 @@ namespace SPPC.Tadbir.Web.Api
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
-#if DEBUG
-            ////AnalyzeCurrentApi();
-            ////var analyzer = new AutoMappingAnalyzer();
-            ////analyzer.AnalyzeMappings();
-            ////var analyzer = new DbMappingAnalyzer();
-            ////analyzer.Analyze();
-            ////var encoded = TestGridOptionsBuilder.GetOtherEncodedGridOptions();
-#endif
             CreateHostBuilder(args).Build().Run();
         }
 

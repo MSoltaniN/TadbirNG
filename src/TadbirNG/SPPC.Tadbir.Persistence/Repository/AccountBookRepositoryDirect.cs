@@ -215,6 +215,11 @@ namespace SPPC.Tadbir.Persistence
             items.AddRange(result.Rows
                 .Cast<DataRow>()
                 .Select(row => GetBookItem(row)));
+            foreach (var item in items)
+            {
+                item.Description = Context.Localize(item.Description);
+            }
+
             PrepareAccountBook(book, items, parameters.GridOptions);
             return book;
         }
@@ -229,13 +234,12 @@ namespace SPPC.Tadbir.Persistence
                 await GetFirstBookItemAsync(parameters)
             };
 
-            var bookItems = GetQueryResult(fullCode, bookQuery, parameters, byNo);
-            foreach (var item in bookItems)
+            items.AddRange(GetQueryResult(fullCode, bookQuery, parameters, byNo));
+            foreach (var item in items)
             {
-                item.Description = Context.Localize(AppStrings.AsQuotedInJournal);
+                item.Description = Context.Localize(item.Description);
             }
 
-            items.AddRange(bookItems);
             PrepareAccountBook(book, items, parameters.GridOptions);
             return book;
         }
@@ -265,12 +269,7 @@ namespace SPPC.Tadbir.Persistence
                 monthParams.ToDate = month.End;
 
                 monthlyBook = GetQueryResult(fullCode, bookQuery, monthParams);
-                foreach (var item in monthlyBook)
-                {
-                    item.Description = AppStrings.AsQuotedInJournal;
-                    item.VoucherDate = month.End;
-                }
-
+                Array.ForEach(monthlyBook.ToArray(), item => item.VoucherDate = month.End);
                 items.AddRange(monthlyBook.Where(item => item.Debit > 0.0M || item.Credit > 0.0M));
             }
 
@@ -285,7 +284,7 @@ namespace SPPC.Tadbir.Persistence
             return book;
         }
 
-        private void PrepareAccountBook(AccountBookViewModel book,
+        private static void PrepareAccountBook(AccountBookViewModel book,
             IList<AccountBookItemViewModel> items, GridOptions gridOptions)
         {
             var filteredItems = items
@@ -304,7 +303,6 @@ namespace SPPC.Tadbir.Persistence
             {
                 balance = balance + item.Debit - item.Credit;
                 item.Balance = balance;
-                item.Description = Context.Localize(item.Description);
             }
 
             book.DebitSum = filteredItems.Sum(item => item.Debit);
@@ -328,24 +326,23 @@ namespace SPPC.Tadbir.Persistence
             var result = new List<AccountBookItemViewModel>();
             if (byNo)
             {
-                result = debitItems
+                result.AddRange(debitItems
                     .Concat(creditItems)
                     .OrderBy(item => item.VoucherDate)
                     .ThenBy(item => item.VoucherNo)
                     .ThenBy(item => item.BranchName)
-                    .ThenBy(item => item.Credit)
-                    .ToList();
+                    .ThenBy(item => item.Credit));
             }
             else
             {
-                result = debitItems
+                result.AddRange(debitItems
                     .Concat(creditItems)
                     .OrderBy(item => item.VoucherDate)
                     .ThenBy(item => item.BranchName)
-                    .ThenBy(item => item.Credit)
-                    .ToList();
+                    .ThenBy(item => item.Credit));
             }
 
+            Array.ForEach(result.ToArray(), item => item.Description = AppStrings.AsQuotedInJournal);
             return result;
         }
 
@@ -421,7 +418,7 @@ namespace SPPC.Tadbir.Persistence
                 {
                     Balance = _utility.ValueOrDefault<decimal>(result.Rows[0], "Balance"),
                     BranchName = UserContext.BranchName,
-                    Description = Context.Localize(AppStrings.InitialBalance),
+                    Description = AppStrings.InitialBalance,
                     RowNo = 1,
                     VoucherDate = parameters.FromDate
                 };

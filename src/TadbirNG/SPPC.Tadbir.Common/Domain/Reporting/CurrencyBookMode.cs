@@ -3,9 +3,9 @@
 namespace SPPC.Tadbir.Domain
 {
     /// <summary>
-    /// داده شمارشی برای نماهای مختلف گزارش دفتر حساب
+    /// داده شمارشی برای نماهای مختلف گزارش دفتر عملیات ارزی
     /// </summary>
-    public enum AccountBookMode
+    public enum CurrencyBookMode
     {
         /// <summary>
         /// مطابق ردیف های سند
@@ -25,6 +25,11 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// جمع مبالغ اسناد هر  ماه
         /// </summary>
-        MonthlySum = 3
+        MonthlySum = 3,
+
+        /// <summary>
+        /// گزارشگیری روی کلیه ارزها
+        /// </summary>
+        AllCurrencies = 4
     }
 }

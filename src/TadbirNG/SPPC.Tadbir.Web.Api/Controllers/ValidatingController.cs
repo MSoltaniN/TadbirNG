@@ -117,6 +117,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(message);
             }
 
+            var invalidCode = new string('0', codeLen);
+            if (item.Code == invalidCode)
+            {
+                string message = String.Format(_strings[AppStrings.InvalidLevelCode], item.Code);
+                return BadRequestResult(message);
+            }
+
             return Ok();
         }
 

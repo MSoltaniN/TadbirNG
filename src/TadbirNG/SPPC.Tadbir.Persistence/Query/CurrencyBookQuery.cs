@@ -55,9 +55,27 @@ SUM(vl.CurrencyValue) AS [Credit]";
         internal const string MonthlySumByBranchSelect = @"
 SELECT COUNT(vl.RowNo) AS LineCount, SUM(vl.Debit) AS [BaseCurrencyDebit],
 SUM(vl.Credit) AS [BaseCurrencyCredit], SUM(vl.CurrencyValue) AS [Debit],
-SUM(vl.CurrencyValue) AS [Credit], br.Name AS BranchName";
+SUM(vl.CurrencyValue) AS [Credit], br.Name AS [BranchName]";
 
         internal const string MonthlySumByBranchGroupBy = @"GROUP BY br.Name
 ORDER BY br.Name";
+
+        internal const string AllCurrenciesSelect = @"
+SELECT curr.CurrencyID AS [CurrencyId], curr.Name AS [CurrencyName], SUM(vl.Debit) AS [BaseCurrencyDebit],
+SUM(vl.Credit) AS [BaseCurrencyCredit], SUM(vl.CurrencyValue) AS [Debit],
+SUM(vl.CurrencyValue) AS [Credit]";
+
+        internal const string AllCurrenciesByBranchSelect = @"
+SELECT curr.CurrencyID AS [CurrencyId], curr.Name AS [CurrencyName], SUM(vl.Debit) AS [BaseCurrencyDebit],
+SUM(vl.Credit) AS [BaseCurrencyCredit], SUM(vl.CurrencyValue) AS [Debit],
+SUM(vl.CurrencyValue) AS [Credit], br.Name AS [BranchName]";
+
+        internal const string NoCurrencySelect = @"
+SELECT SUM(vl.Debit) AS [Debit], SUM(vl.Credit) AS [Credit], SUM(vl.Debit) AS [BaseCurrencyDebit],
+SUM(vl.Credit) AS [BaseCurrencyCredit]";
+
+        internal const string NoCurrencyByBranchSelect = @"
+SELECT SUM(vl.Debit) AS [Debit], SUM(vl.Credit) AS [Credit], SUM(vl.Debit) AS [BaseCurrencyDebit],
+SUM(vl.Credit) AS [BaseCurrencyCredit], br.Name AS [BranchName]";
     }
 }

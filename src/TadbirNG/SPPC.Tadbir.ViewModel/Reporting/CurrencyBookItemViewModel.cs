@@ -90,7 +90,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// هنگامیکه کلیه ارزها انتخاب شده باشد این فیلد مقدار درست میگیرد
         /// </summary>
-        public bool HasChild { get; set; } = false;
+        public bool HasChild { get; set; }
 
         /// <summary>
         /// رفرنس سند مالی

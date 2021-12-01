@@ -2589,8 +2589,8 @@
   <data name="BaseCurrencyDebit" xml:space="preserve">
     <value>Base currency debit</value>
   </data>
-  <data name="Currency_Free_Rows" xml:space="preserve">
-    <value>Currency free rows</value>
+  <data name="NoCurrencyArticles" xml:space="preserve">
+    <value>Articles without currency</value>
   </data>
   <data name="CurrencyBook" xml:space="preserve">
     <value>Currency Book</value>
@@ -3536,5 +3536,8 @@
   </data>
   <data name="ItemByNumberNotFound" xml:space="preserve">
     <value>No {0} with number '{1}' could be found.</value>
+  </data>
+  <data name="InvalidLevelCode" xml:space="preserve">
+    <value>'{0}' is not a valid code.</value>
   </data>
 </root>
