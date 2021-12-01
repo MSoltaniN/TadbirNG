@@ -3537,4 +3537,7 @@
   <data name="ItemByNumberNotFound" xml:space="preserve">
     <value>No {0} with number '{1}' could be found.</value>
   </data>
+  <data name="InvalidLevelCode" xml:space="preserve">
+    <value>'{0}' is not a valid code.</value>
+  </data>
 </root>

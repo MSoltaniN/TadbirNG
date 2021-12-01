@@ -3528,4 +3528,7 @@
   <data name="ItemByNumberNotFound" xml:space="preserve">
     <value>{0} مورد نظر با شماره '{1}' یافت نشد.</value>
   </data>
+  <data name="InvalidLevelCode" xml:space="preserve">
+    <value>کد '{0}' معتبر نیست.</value>
+  </data>
 </root>
