@@ -266,6 +266,7 @@ namespace SPPC.Tadbir.Persistence
                 {
                     merged.Add(new CurrencyBookItemViewModel()
                     {
+                        CurrencyId = debitItem.CurrencyId,
                         CurrencyName = debitItem.CurrencyName,
                         Debit = debitItem.Debit,
                         Credit = creditItem.Credit,
@@ -289,6 +290,18 @@ namespace SPPC.Tadbir.Persistence
             Debug.WriteLine(query);
             Debug.WriteLine("----------------------------------------------------------------------------");
 #endif
+        }
+
+        private static decimal CalculateCurrencyRate(CurrencyBookItemViewModel item)
+        {
+            decimal rate = 1M;
+            if (item.Debit > 0 ^ item.Credit > 0)
+            {
+                rate = Math.Round(
+                    Math.Max(item.BaseCurrencyDebit, item.BaseCurrencyCredit) / Math.Max(item.Debit, item.Credit));
+            }
+
+            return rate;
         }
 
         private async Task<CurrencyBookViewModel> GetSimpleBookAsync(
@@ -430,10 +443,10 @@ namespace SPPC.Tadbir.Persistence
             bookItem.Credit = bookItem.BaseCurrencyCredit > 0M
                 ? bookItem.Credit
                 : 0M;
-            var rate = bookItem.BaseCurrencyDebit > 0M
-                ? bookItem.BaseCurrencyDebit / Math.Max(1M, bookItem.Debit)
-                : bookItem.BaseCurrencyCredit / Math.Max(1M, bookItem.Credit);
-            bookItem.CurrencyRate = Math.Round(rate);
+            bookItem.CurrencyRate = CalculateCurrencyRate(bookItem);
+            bookItem.CurrencyId = bookItem.CurrencyId > 0
+                ? bookItem.CurrencyId
+                : null;
             return bookItem;
         }
 
