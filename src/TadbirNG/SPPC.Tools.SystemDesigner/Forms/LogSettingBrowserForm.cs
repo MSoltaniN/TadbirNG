@@ -17,18 +17,18 @@ namespace SPPC.Tools.SystemDesigner.Forms
         public LogSettingBrowserForm()
         {
             InitializeComponent();
-            _dal = new SqlDataLayer(_connection);
             _connection = DbConnections.CompanyConnection;
             _sysConnection = DbConnections.SystemConnection;
+            _dal = new SqlDataLayer(_connection);
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            Cursor = Cursors.WaitCursor;
+            ActiveForm.Cursor = Cursors.WaitCursor;
             LoadLookups();
             LoadSourceEntities();
-            Cursor = Cursors.Default;
+            ActiveForm.Cursor = Cursors.Default;
         }
 
         private void SourceEntity_SelectedIndexChanged(object sender, EventArgs e)

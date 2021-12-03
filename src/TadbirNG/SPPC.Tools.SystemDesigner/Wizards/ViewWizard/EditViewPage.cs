@@ -18,6 +18,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
         public string Info { get; set; }
 
         public ViewViewModel View { get; set; }
+
         public List<ColumnViewModel> Columns { get; set; }
 
         protected override void OnLoad(EventArgs e)
@@ -66,8 +67,15 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
                 }
             }
 
-            var node = tvViewModels.Nodes.Find(View.Name, true);
-            tvViewModels.SelectedNode = node.FirstOrDefault() ?? tvViewModels.Nodes[0];
+            if (!String.IsNullOrEmpty(View.Name))
+            {
+                var nodes = tvViewModels.Nodes.Find(View.Name, true);
+                tvViewModels.SelectedNode = nodes.FirstOrDefault() ?? tvViewModels.Nodes[0];
+            }
+            else
+            {
+                tvViewModels.SelectedNode = tvViewModels.Nodes[0];
+            }
         }
 
         private void SetupBindings()

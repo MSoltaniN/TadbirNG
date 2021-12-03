@@ -22,8 +22,10 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            ActiveForm.Cursor = Cursors.WaitCursor;
             LoadViews();
             LoadFirstPage();
+            ActiveForm.Cursor = Cursors.Default;
         }
 
         private void LoadViews()
@@ -211,6 +213,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
 
         private int _currentStepNo = 1;
         private readonly string _sysConnection;
-        private const string _TadbirSysUpdateScript = @"..\..\res\TadbirSys_UpdateDbObjects.sql";
+        private const string _TadbirSysUpdateScript = @"..\..\..\res\TadbirSys_UpdateDbObjects.sql";
     }
 }

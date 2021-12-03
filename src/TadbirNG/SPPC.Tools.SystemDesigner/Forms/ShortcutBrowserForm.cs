@@ -10,8 +10,8 @@ namespace SPPC.Tools.SystemDesigner.Forms
         public ShortcutBrowserForm()
         {
             InitializeComponent();
-            _dal = new SqlDataLayer(_sysConnection);
             _sysConnection = DbConnections.SystemConnection;
+            _dal = new SqlDataLayer(_sysConnection);
         }
 
         protected override void OnLoad(EventArgs e)

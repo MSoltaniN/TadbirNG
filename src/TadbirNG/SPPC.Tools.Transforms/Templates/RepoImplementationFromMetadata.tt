@@ -13,11 +13,13 @@ var plural = entity.Name.ToPlural();
 var camelCase = entity.Name.CamelCase();
 #>
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.<#= entity.Area #>;
 using SPPC.Tadbir.Utility;
 <# if(entity.Area != "Auth")
@@ -66,7 +68,7 @@ namespace SPPC.Tadbir.Persistence
    else
    { #>
                 var repository = UnitOfWork.GetAsyncRepository<<#= entity.Name #>>();
-                var <#= plural.CamelCase() #> = await repository
+                <#= plural.CamelCase() #> = await repository
                     .GetEntityQuery()
                     .Select(item => Mapper.Map<<#= entity.Name #>ViewModel>(item))
                     .ToListAsync();
@@ -139,7 +141,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، <#= entityInfo.PluralName #> مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
-        /// <param name="accountIds">مجموعه ای از شناسه های عددی <#= entityInfo.PluralName #> مورد نظر برای حذف</param>
+        /// <param name="<#= camelCase #>Ids">مجموعه ای از شناسه های عددی <#= entityInfo.PluralName #> مورد نظر برای حذف</param>
         public async Task Delete<#= plural #>Async(IList<int> <#= camelCase #>Ids)
         {
             var repository = UnitOfWork.GetAsyncRepository<<#= entity.Name #>>();

@@ -5107,7 +5107,7 @@ SET [Source] = [ControlType]
 
 -- 1.2.1289
 
-Delete [Reporting].[Parameter]
+DELETE [Reporting].[Parameter]
 
 SET IDENTITY_INSERT [Reporting].[Parameter] ON 
 GO
@@ -5391,9 +5391,9 @@ GO
 -- 1.2.1292
 SET IDENTITY_INSERT [Reporting].[Report] ON
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
-    VALUES (89, 16, 1, 2, 2, '', N'reports/finance/vouchers/sum-by-date', 0, 1, 0, 0)
+    VALUES (89, 16, 1, 2, 2, 'Voucher-Summary-By-Date', N'reports/finance/vouchers/sum-by-date', 0, 1, 0, 0)
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
-    VALUES (90, 16, 1, 2, 2, '', N'reports/finance/vouchers/sum-by-no', 0, 1, 0, 0)
+    VALUES (90, 16, 1, 2, 2, 'Voucher-Summary-By-No', N'reports/finance/vouchers/sum-by-no', 0, 1, 0, 0)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON
@@ -5421,4 +5421,3 @@ SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 UPDATE [Reporting].[Parameter]
 SET Source = 'GridOptions'
 WHERE Source = 'GridOption'
-

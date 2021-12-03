@@ -2437,8 +2437,6 @@ INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID
 INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [ViewID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
     VALUES (38, 19, 1, 2, 26, N'Journal-ByNo-LedgerSummary', N'reports/journal/by-no/summary', 0, 1, 1, 1, NULL)
 INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [ViewID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
-    VALUES (39, 20, 1, 2, 2, N'Voucher-Sum-By-Date', N'reports/finance/vouchers/sum-by-date', 0, 1, 0, 0, N'RowNo,Voucher,Date,DebitSum,CreditSum,Difference,PreparedBy,BalanceLabel,CheckLabel,Origin')
-INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [ViewID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
     VALUES (40, 20, 1, 2, 2, N'Voucher-Std-Form', N'reports/finance/voucher-by-no/{0}/std-form', 0, 1, 1, 0, NULL)
 INSERT [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [SubsystemID], [ViewID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
     VALUES (41, 20, 1, 2, 2, N'Voucher-Std-Form-Detail', N'reports/finance/voucher-by-no/{0}/std-form-detail', 0, 1, 0, 0, NULL)
@@ -2533,9 +2531,9 @@ INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
     VALUES (88, 16, 1, 25, 2, 'Journal-ByNo-BySubsidiary', N'reports/journal/by-no/by-subsid', 0, 1, 0, 0)
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
-    VALUES (89, 16, 1, 2, 2, '', N'reports/finance/vouchers/sum-by-date', 0, 1, 0, 0)
+    VALUES (89, 16, 1, 2, 2, 'Voucher-Summary-By-Date', N'reports/finance/vouchers/sum-by-date', 0, 1, 0, 0)
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
-    VALUES (90, 16, 1, 2, 2, '', N'reports/finance/vouchers/sum-by-no', 0, 1, 0, 0)
+    VALUES (90, 16, 1, 2, 2, 'Voucher-Summary-By-No', N'reports/finance/vouchers/sum-by-no', 0, 1, 0, 0)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON
@@ -2844,14 +2842,6 @@ INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], 
 INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
     VALUES (152, 4, 38, N'Journal, by number, ledger summary')
 INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
-    VALUES (153, 1, 39, N'Voucher summary by date')
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
-    VALUES (154, 2, 39, N'خلاصه اسناد بر حسب تاریخ')
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
-    VALUES (155, 3, 39, N'Voucher summary by date')
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
-    VALUES (156, 4, 39, N'Voucher summary by date')
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
     VALUES (157, 1, 40, N'Voucher, standard format')
 INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
     VALUES (158, 2, 40, N'فرم مرسوم سند')
@@ -3123,14 +3113,6 @@ GO
 INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (23, 38, N'fromDate', N'from', N'EQ', N'System.DateTime', N'DatePicker', N'FromDate', NULL, NULL, NULL, N'FromDate', N'50b85b6f-6df4-4367-b0aa-5743a65e8372', CAST(N'2020-10-25T15:42:02.067' AS DateTime), N'QueryString')
 GO
 INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (24, 38, N'toDate', N'to', N'EQ', N'System.DateTime', N'DatePicker', N'ToDate', NULL, NULL, NULL, N'ToDate', N'5b22b731-a0c2-4f8c-aff7-5b6ea83b3ded', CAST(N'2020-10-25T15:42:02.070' AS DateTime), N'QueryString')
-GO
-INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (25, 39, N'from', N'from', N'EQ', N'System.DateTime', N'TextBox', N'FromDate', NULL, NULL, NULL, N'FromDate', N'96d5bf6f-448a-4d54-8e53-8168e8e58786', CAST(N'2020-10-25T15:42:02.070' AS DateTime), N'QueryString')
-GO
-INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (26, 39, N'to', N'to', N'EQ', N'System.DateTime', N'TextBox', N'ToDate', NULL, NULL, NULL, N'ToDate', N'2ede8dfa-3141-43cc-bfee-35cbc4f19f75', CAST(N'2020-10-25T15:42:02.070' AS DateTime), N'QueryString')
-GO
-INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (39, 39, N'fromDate', N'from', N'EQ', N'System.DateTime', N'TextBox', N'FromDate', NULL, NULL, NULL, N'FromDate', N'3f40ce4e-b112-47ea-b732-410dbfa82d93', CAST(N'2020-10-25T15:42:02.087' AS DateTime), NULL)
-GO
-INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (40, 39, N'toDate', N'to', N'EQ', N'System.DateTime', N'TextBox', N'ToDate', NULL, NULL, NULL, N'ToDate', N'fc8433f6-543f-4cb6-99ed-cbe45b2bfd3c', CAST(N'2020-10-25T15:42:02.087' AS DateTime), NULL)
 GO
 INSERT [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [rowguid], [ModifiedDate], [Source]) VALUES (42, 40, N'no', N'no', N'EQ', N'System.Int32', N'NumberBox', N'VoucherNo', NULL, NULL, NULL, N'VoucherNo', N'bd82ec0d-9c10-4e32-ab9c-46027788ef92', CAST(N'2020-10-25T15:42:02.090' AS DateTime), N'Route')
 GO

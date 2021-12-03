@@ -275,6 +275,6 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private readonly string _sysConnection;
         private int _lastselectedIndex = -1;
-        private const string _TadbirSysUpdateScript = @"..\..\res\TadbirSys_UpdateDbObjects.sql";
+        private const string _TadbirSysUpdateScript = @"..\..\..\res\TadbirSys_UpdateDbObjects.sql";
     }
 }
