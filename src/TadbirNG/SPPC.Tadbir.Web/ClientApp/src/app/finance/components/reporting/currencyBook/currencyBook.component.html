@@ -76,7 +76,7 @@
                                 width="22"
                                 [resizable]="false"
                                 [reorderable]="false">
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue">
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0'">
         {{ 'AccountBook.Sum' | translate }}
       </ng-template>
     </kendo-grid-checkbox-column>
@@ -94,7 +94,7 @@
         </dl>
 
       </ng-template>
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue">
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 &&  selectedCurrencyValue!= '0'">
         <table>
           <tr>
             <td>{{ 'AccountBook.DebitSum' | translate }}</td>
@@ -146,27 +146,31 @@
         </div>
       </ng-template>
 
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue && item.name == 'Credit'">
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0' && item.name == 'Credit'">
         {{ creditSum | SppcNumConfig | async }}
       </ng-template>
 
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue && item.name == 'Debit'">
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0' && item.name == 'Debit'">
         {{ debitSum | SppcNumConfig | async }}
       </ng-template>
 
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue && item.name == 'Balance'">
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0' && item.name == 'Balance'">
         {{ balance | SppcNumConfig | async }}
       </ng-template>
 
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue && item.name == 'BaseCurrencyCredit'">
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0' && item.name == 'BaseCurrencyCredit'">
         {{ baseCurrencyCreditSum | SppcNumConfig | async }}
       </ng-template>
 
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue && item.name == 'BaseCurrencyDebit'">
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0' && item.name == 'BaseCurrencyDebit'">
         {{ baseCurrencyDebitSum | SppcNumConfig | async }}
       </ng-template>
 
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue && item.name == 'BaseCurrencyBalance'">
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0' && item.name == 'BaseCurrencyBalance'">
+        {{ baseCurrencyBalance | SppcNumConfig | async }}
+      </ng-template>
+
+      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0' && item.name == 'BranchName'">
         {{ baseCurrencyBalance | SppcNumConfig | async }}
       </ng-template>
 
@@ -293,7 +297,7 @@
 
       <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
         <div style="margin-top:33px">
-          <input type="checkbox" [(ngModel)]="currencyFree" [attr.disabled]="selectedCurrencyValue != '-1' ? 'disabled' : null" (ngModelChange)="onChangeCurrencyFree()" name="currencyFree" id="currencyFree" class="k-checkbox" />
+          <input type="checkbox" [(ngModel)]="currencyFree" [attr.disabled]="selectedCurrencyValue != '0' ? 'disabled' : null" (ngModelChange)="onChangeCurrencyFree()" name="currencyFree" id="currencyFree" class="k-checkbox" />
           <span for="currencyFree">{{ 'CurrencyBook.CurrencyFreeRows' | translate }}</span>
         </div>
       </div>
