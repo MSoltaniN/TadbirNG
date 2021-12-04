@@ -175,6 +175,57 @@ namespace SPPC.Tadbir.Persistence
             return dynamicMetadata;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای پویا را برای گزارش مانده به تفکیک حساب ایجاد کرده و برمی گرداند
+        /// </summary>
+        /// <param name="parameters">پارامترهای تنظیم شده برای گزارش</param>
+        /// <returns>اطلاعات فراداده ای پویا برای کزارش</returns>
+        public async Task<ViewViewModel> GetBalanceByAccountMetadataAsync(
+            BalanceByAccountParameters parameters)
+        {
+            var metadata = await GetViewMetadataByIdAsync(ViewId.BalanceByAccount);
+            var dynamicMetadata = metadata.GetCopy();
+            var columns = new List<ColumnViewModel>
+            {
+                metadata.Columns
+                    .Where(col => col.Name == "RowNo")
+                    .Single()
+            };
+            columns.AddRange(metadata.Columns
+                .Where(GetAccountItemCriteria(parameters.ViewId)));
+            if (parameters.IsSelectedAccount && parameters.ViewId != ViewId.Account)
+            {
+                columns.AddRange(metadata.Columns
+                    .Where(GetAccountItemCriteria(ViewId.Account)));
+            }
+
+            if (parameters.IsSelectedDetailAccount && parameters.ViewId != ViewId.DetailAccount)
+            {
+                columns.AddRange(metadata.Columns
+                    .Where(GetAccountItemCriteria(ViewId.DetailAccount)));
+            }
+
+            if (parameters.IsSelectedCostCenter && parameters.ViewId != ViewId.CostCenter)
+            {
+                columns.AddRange(metadata.Columns
+                    .Where(GetAccountItemCriteria(ViewId.CostCenter)));
+            }
+
+            if (parameters.IsSelectedProject && parameters.ViewId != ViewId.Project)
+            {
+                columns.AddRange(metadata.Columns
+                    .Where(GetAccountItemCriteria(ViewId.Project)));
+            }
+
+            columns.AddRange(metadata.Columns
+                .Where(col => col.DisplayIndex >= 9));
+            int index = 1;
+            Array.ForEach(columns.Skip(1).ToArray(), col => col.DisplayIndex = (short)index++);
+
+            dynamicMetadata.SetColumns(columns);
+            return dynamicMetadata;
+        }
+
         #region System Designer
 
         /// <summary>
@@ -197,6 +248,57 @@ namespace SPPC.Tadbir.Persistence
         }
 
         #endregion
+
+        private static string GetDynamicColumnSettings(ColumnViewModel column)
+        {
+            var columnConfig = GetDynamicColumnConfig(column);
+            return JsonHelper.From(columnConfig, false);
+        }
+
+        private static ColumnViewConfig GetDynamicColumnConfig(ColumnViewModel column, int width = 100)
+        {
+            var columnConfig = new ColumnViewConfig(column.Name);
+            var deviceConfig = new ColumnViewDeviceConfig()
+            {
+                Title = column.Name,
+                Visibility = column.Visibility ?? ColumnVisibility.Visible,
+                Width = width,
+                Index = column.DisplayIndex,
+                DesignIndex = column.DisplayIndex
+            };
+            columnConfig.ExtraLarge = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.ExtraSmall = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.Large = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.Medium = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            columnConfig.Small = (ColumnViewDeviceConfig)deviceConfig.Clone();
+            return columnConfig;
+        }
+
+        private static Func<ColumnViewModel, bool> GetAccountItemCriteria(int viewId)
+        {
+            Func<ColumnViewModel, bool> criteria;
+            switch (viewId)
+            {
+                case ViewId.Account:
+                    criteria = column => column.Name.StartsWith("Account")
+                        && column.Name != "AccountDescription";
+                    break;
+                case ViewId.DetailAccount:
+                    criteria = column => column.Name.StartsWith("DetailAccount");
+                    break;
+                case ViewId.CostCenter:
+                    criteria = column => column.Name.StartsWith("CostCenter");
+                    break;
+                case ViewId.Project:
+                    criteria = column => column.Name.StartsWith("Project");
+                    break;
+                default:
+                    criteria = null;
+                    break;
+            }
+
+            return criteria;
+        }
 
         private void Localize(IList<ColumnViewModel> columns)
         {
@@ -291,31 +393,6 @@ namespace SPPC.Tadbir.Persistence
 
             await PrepareColumnsAsync(listMetadataView);
             return listMetadataView;
-        }
-
-        private string GetDynamicColumnSettings(ColumnViewModel column)
-        {
-            var columnConfig = GetDynamicColumnConfig(column);
-            return JsonHelper.From(columnConfig, false);
-        }
-
-        private ColumnViewConfig GetDynamicColumnConfig(ColumnViewModel column, int width = 100)
-        {
-            var columnConfig = new ColumnViewConfig(column.Name);
-            var deviceConfig = new ColumnViewDeviceConfig()
-            {
-                Title = column.Name,
-                Visibility = column.Visibility ?? ColumnVisibility.Visible,
-                Width = width,
-                Index = column.DisplayIndex,
-                DesignIndex = column.DisplayIndex
-            };
-            columnConfig.ExtraLarge = (ColumnViewDeviceConfig)deviceConfig.Clone();
-            columnConfig.ExtraSmall = (ColumnViewDeviceConfig)deviceConfig.Clone();
-            columnConfig.Large = (ColumnViewDeviceConfig)deviceConfig.Clone();
-            columnConfig.Medium = (ColumnViewDeviceConfig)deviceConfig.Clone();
-            columnConfig.Small = (ColumnViewDeviceConfig)deviceConfig.Clone();
-            return columnConfig;
         }
 
         private async Task PrepareColumnsAsync(ViewViewModel view)

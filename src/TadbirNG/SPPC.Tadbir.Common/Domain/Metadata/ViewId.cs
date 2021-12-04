@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Domain
 {
@@ -86,6 +85,11 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی نرخ های یک ارز
         /// </summary>
         public const int CurrencyRate = 31;
+
+        /// <summary>
+        /// نمای اطلاعاتی گزارش مانده به تفکیک حساب
+        /// </summary>
+        public const int BalanceByAccount = 58;
 
         /// <summary>
         /// نمای اطلاعاتی گزارش سود و زیان مقایسه ای با سه ستون مبلغ

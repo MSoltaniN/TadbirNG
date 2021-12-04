@@ -29,6 +29,7 @@ namespace SPPC.Tadbir.Persistence
             : base(context, system.Logger)
         {
             Config = system.Config;
+            Metadata = system.Metadata;
             _utility = utility;
         }
 
@@ -59,6 +60,7 @@ namespace SPPC.Tadbir.Persistence
                 };
 
                 SetItemDetails(parameters, balanaceByItem);
+                balanaceByItem.ViewMetadata = await Metadata.GetBalanceByAccountMetadataAsync(parameters);
             }
 
             await OnSourceActionAsync(parameters.GridOptions, SourceListId.None);
@@ -71,6 +73,8 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private IConfigRepository Config { get; }
+
+        private IMetadataRepository Metadata { get; }
 
         private static bool IsZeroItem(BalanceByAccountItemViewModel item)
         {

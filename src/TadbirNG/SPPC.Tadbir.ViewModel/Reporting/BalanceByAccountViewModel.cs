@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.ViewModel.Reporting
 {
@@ -20,6 +21,11 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// مجموعه سطرهای محاسبه شده در گزارش
         /// </summary>
         public List<BalanceByAccountItemViewModel> Items { get; }
+
+        /// <summary>
+        /// اطلاعات فراداده ای نمای لیستی که باید به صورت پویا با توجه به موارد انتخاب شده ساخته شود
+        /// </summary>
+        public ViewViewModel ViewMetadata { get; set; }
 
         /// <summary>
         /// سطر پایانی گزارش شامل مقادیر جمع کل محاسبه شده برای ستون های گزارش

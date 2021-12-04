@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Domain;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -59,6 +60,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="items">مجموعه اقلام داده شده برای مقایسه</param>
         /// <returns>اطلاعات فراداده ای مرکب برای نمای لیستی مقایسه ای</returns>
         Task<ViewViewModel> GetCompoundViewMetadataAsync(int viewId, int itemViewId, IEnumerable<int> items);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای پویا را برای گزارش مانده به تفکیک حساب ایجاد کرده و برمی گرداند
+        /// </summary>
+        /// <param name="parameters">پارامترهای تنظیم شده برای گزارش</param>
+        /// <returns>اطلاعات فراداده ای پویا برای کزارش</returns>
+        Task<ViewViewModel> GetBalanceByAccountMetadataAsync(BalanceByAccountParameters parameters);
 
         #region System Designer
 
