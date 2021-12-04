@@ -221,6 +221,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(col => col.DisplayIndex >= 9));
             int index = 1;
             Array.ForEach(columns.Skip(1).ToArray(), col => col.DisplayIndex = (short)index++);
+            Localize(columns);
 
             dynamicMetadata.SetColumns(columns);
             return dynamicMetadata;
