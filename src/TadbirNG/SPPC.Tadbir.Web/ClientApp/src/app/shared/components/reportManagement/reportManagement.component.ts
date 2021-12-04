@@ -629,9 +629,17 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     else {
       this.reportingService.getAllByParamsForReport(serviceUrl,this.Parameters,
       sort, filterExpression, quickFilter, OperationId.PrintPreview).subscribe((response: any) => {
+        
+        var data = null;
+        if(response.body.comparativeItems)
+          data = response.body.comparativeItems;
+        else if (response.body.items)
+          data = response.body.items;
+        else
+          data = data = response.body;
 
         var reportData = {
-          rows: response.body.comparativeItems,
+          rows: data,
           parameters: params
         };
 
