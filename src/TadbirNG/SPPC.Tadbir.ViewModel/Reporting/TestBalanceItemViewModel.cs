@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.ViewModel.Reporting
 {
@@ -33,7 +32,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// شماره سطح که عمق حساب به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
         /// </summary>
-        public short AccountLevel { get; set; }
+        public int AccountLevel { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی تفصیلی شناور مورد استفاده در سطر گزارش
@@ -53,7 +52,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// شماره سطح که عمق تفصیلی شناور به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
         /// </summary>
-        public short DetailAccountLevel { get; set; }
+        public int DetailAccountLevel { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی مرکز هزینه مورد استفاده در سطر گزارش
@@ -73,7 +72,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// شماره سطح که عمق مرکز هزینه به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
         /// </summary>
-        public short CostCenterLevel { get; set; }
+        public int CostCenterLevel { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی پروژه مورد استفاده در سطر گزارش
@@ -93,7 +92,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// شماره سطح که عمق پروژه به کار رفته در آرتیکل مالی را در ساختار درختی مشخص می کند
         /// </summary>
-        public short ProjectLevel { get; set; }
+        public int ProjectLevel { get; set; }
 
         /// <summary>
         /// مانده ابتدای دوره - بدهکار
@@ -149,30 +148,5 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// نام شعبه ایجادکننده آرتیکل
         /// </summary>
         public string BranchName { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی شعبه ایجادکننده آرتیکل
-        /// </summary>
-        public int BranchId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی وضعیت ثبتی سند مالی
-        /// </summary>
-        public int VoucherStatusId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی کاربر تاییدکننده سند مالی
-        /// </summary>
-        public int? VoucherConfirmedById { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی کاربر تصویب کننده سند مالی
-        /// </summary>
-        public int? VoucherApprovedById { get; set; }
-
-        /// <summary>
-        /// رفرنس سند مالی
-        /// </summary>
-        public string VoucherReference { get; set; }
     }
 }

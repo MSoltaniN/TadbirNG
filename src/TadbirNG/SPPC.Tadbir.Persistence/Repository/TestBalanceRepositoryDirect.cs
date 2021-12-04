@@ -62,14 +62,14 @@ namespace SPPC.Tadbir.Persistence
                     length = Config.GetLevelCodeLength(parameters.ViewId, index);
                     filter = String.Format("acc.Level == {0}", index);
                     query = await GetEndBalanceQueryAync(length, parameters, filter);
-                    items.AddRange(GetQueryResult(query));
+                    items.AddRange(GetQueryResult(query, index));
                     index++;
                 }
 
                 length = Config.GetLevelCodeLength(parameters.ViewId, level);
                 filter = String.Format("acc.Level >= {0}", level);
                 query = await GetEndBalanceQueryAync(length, parameters, filter);
-                items.AddRange(GetQueryResult(query));
+                items.AddRange(GetQueryResult(query, level));
 
                 if (parameters.Format >= TestBalanceFormat.FourColumn)
                 {
@@ -118,7 +118,7 @@ namespace SPPC.Tadbir.Persistence
                     var filter = String.Format("acc.Level >= {0} AND acc.FullCode LIKE '{1}%'", level, accountItem.FullCode);
                     int length = Config.GetLevelCodeLength(parameters.ViewId, level);
                     var query = await GetEndBalanceQueryAync(length, parameters, filter);
-                    items.AddRange(GetQueryResult(query));
+                    items.AddRange(GetQueryResult(query, level));
 
                     if (parameters.Format >= TestBalanceFormat.FourColumn)
                     {
@@ -798,16 +798,16 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private IEnumerable<TestBalanceItemViewModel> GetQueryResult(ReportQuery query)
+        private IEnumerable<TestBalanceItemViewModel> GetQueryResult(ReportQuery query, int level)
         {
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             var result = DbConsole.ExecuteQuery(query.Query);
             return result.Rows
                 .Cast<DataRow>()
-                .Select(row => GetBalanceItem(row));
+                .Select(row => GetBalanceItem(row, level));
         }
 
-        private TestBalanceItemViewModel GetBalanceItem(DataRow row)
+        private TestBalanceItemViewModel GetBalanceItem(DataRow row, int level)
         {
             var balance = _utility.ValueOrDefault<decimal>(row, "Balance");
             var fullCode = _utility.ValueOrDefault(row, "FullCode");
@@ -817,6 +817,10 @@ namespace SPPC.Tadbir.Persistence
                 DetailAccountFullCode = fullCode,
                 CostCenterFullCode = fullCode,
                 ProjectFullCode = fullCode,
+                AccountLevel = level,
+                DetailAccountLevel = level,
+                CostCenterLevel = level,
+                ProjectLevel = level,
                 TurnoverDebit = _utility.ValueOrDefault<decimal>(row, "DebitSum"),
                 TurnoverCredit = _utility.ValueOrDefault<decimal>(row, "CreditSum"),
                 EndBalanceDebit = Math.Max(0, balance),
