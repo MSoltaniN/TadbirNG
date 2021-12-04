@@ -5421,3 +5421,13 @@ SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 UPDATE [Reporting].[Parameter]
 SET Source = 'GridOptions'
 WHERE Source = 'GridOption'
+
+-- 1.2.1304
+SET IDENTITY_INSERT [Metadata].[Column] ON
+
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (686, 37, 'BranchName', NULL, NULL, 'System.String', 'nvarchar', 'string', 128, 0, 0, 0, 1, 1, N'AlwaysVisible', 5, NULL)
+
+SET IDENTITY_INSERT [Metadata].[Column] OFF
+
+DELETE Config.[UserSetting] WHERE ViewID = 37
