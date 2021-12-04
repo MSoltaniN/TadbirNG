@@ -35,7 +35,7 @@ export class RoleDetailFormComponent extends DetailComponent {
   ////create properties
   public gridUsersData: any;
 
-
+  public RoleIsNotAdmin:boolean = true;
   public showloadingPermissionMessage: boolean = true;
   public showloadingBranchesMessage: boolean = true;
   public showloadingUsersMessage: boolean = true;
@@ -100,7 +100,7 @@ export class RoleDetailFormComponent extends DetailComponent {
 
       //this.gridBranchesData = roleDetails.branches;
       this.gridUsersData = roleDetails.users;
-
+      this.RoleIsNotAdmin = roleDetails.role.id != 1;
       this.roleName = roleDetails.role.name;
       this.roleDescription = roleDetails.role.description != null ? roleDetails.role.description : "";
 

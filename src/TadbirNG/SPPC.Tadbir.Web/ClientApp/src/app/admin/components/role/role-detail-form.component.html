@@ -32,7 +32,7 @@
 
 
 
-    <div class="panel panel-primary">
+    <div class="panel panel-primary" *ngIf="RoleIsNotAdmin" >
         <div class="panel-heading">{{ 'Role.Permissions' | translate }}</div>
         <div class="panel-body">
             <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}" *ngIf="treeData.length > 1">
@@ -50,37 +50,7 @@
         </div>
     </div>
 
-    <!--<div class="panel panel-primary">
-        <div class="panel-heading">{{ 'Role.Branches' | translate }}</div>
-        <div class="panel-body">            
-            <kendo-grid id="gridBranchesData" [data]="gridBranchesData">
-                    <ng-template kendoGridNoRecordsTemplate>
-                        {{showloadingBranchesMessage  ? ('App.Loading' | translate) : ('RoleBranches.RecordNotFound' | translate)}}
-                    </ng-template>
-
-
-                    <kendo-grid-column media="(max-width: 450px)" title="">
-                        <ng-template kendoGridCellTemplate let-roleBranches>
-                            <dl>
-                                <dt>{{ 'RoleBranches.Name' | translate }}</dt>
-                                <dd>{{ roleBranches.name }}</dd>
-
-                                <dt>{{ 'RoleBranches.Description' | translate }}</dt>
-                                <dd>{{ roleBranches.description }}</dd>
-                            </dl>
-
-                        </ng-template>
-                    </kendo-grid-column>
-
-                    <kendo-grid-column media="(min-width: 450px)" width="400" sppc-grid-column="RoleBranches.name">
-                    </kendo-grid-column>
-                    <kendo-grid-column media="(min-width: 450px)" sppc-grid-column="RoleBranches.description">
-                    </kendo-grid-column>
-
-                </kendo-grid>            
-        </div>
-    </div>-->
-
+    
 
     <div class="panel panel-primary">
         <div class="panel-heading">{{ 'Role.Users' | translate }}</div>
