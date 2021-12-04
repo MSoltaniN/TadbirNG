@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using Renci.SshNet;
 using SPPC.Framework.Helpers;
@@ -18,17 +19,16 @@ namespace SPPC.Framework.Licensing
         /// <remarks>برای اتصال از راه دور از پروتکل اس اس اچ استفاده می شود</remarks>
         public string GetRemoteDeviceId(RemoteConnection connection)
         {
-            var commands = Environment.OSVersion.Platform == PlatformID.Win32NT
-                ? SshCommands.Windows
-                : SshCommands.Linux;
             string key = String.Empty;
-            var sshConnection = new ConnectionInfo(
-                connection.Domain, connection.Port, connection.User, new PasswordAuthenticationMethod(
-                    connection.User, connection.Password));
-            using (var sshClient = new SshClient(sshConnection))
+            try
             {
+                var sshConnection = new ConnectionInfo(
+                    connection.Domain, connection.Port, connection.User, new PasswordAuthenticationMethod(
+                        connection.User, connection.Password));
+                using var sshClient = new SshClient(sshConnection);
                 var items = new List<string>();
                 sshClient.Connect();
+                var commands = GetTargetCommands(sshClient);
                 foreach (var command in commands.AllCommands)
                 {
                     string id = GetCommandResult(sshClient, command);
@@ -41,8 +41,24 @@ namespace SPPC.Framework.Licensing
                 string hwKey = String.Join(".", items);
                 key = Encode(hwKey);
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("ERROR: Could not query hardware key.");
+                Debug.WriteLine(ex.Message);
+                throw;
+            }
 
             return key;
+        }
+
+        private static IPlatformCommands GetTargetCommands(SshClient ssh)
+        {
+            string result = ssh
+                .CreateCommand(SshCommands.Linux.GetOSName.Command)
+                .Execute();
+            return result == "Linux"
+                ? SshCommands.Linux
+                : SshCommands.Windows;
         }
 
         private static string Encode(string value)

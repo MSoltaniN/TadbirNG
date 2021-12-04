@@ -11,5 +11,7 @@ namespace SPPC.Framework.Licensing
         SshCommand GetMainboardId { get; }
 
         SshCommand GetSystemId { get; }
+
+        SshCommand GetOSName { get; }
     }
 }
