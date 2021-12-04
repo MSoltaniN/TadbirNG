@@ -67,7 +67,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/fperiods/{fpId:min(1)}
         [HttpGet]
         [Route(FiscalPeriodApi.FiscalPeriodUrl)]
-        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
         public async Task<IActionResult> GetFiscalPeriodAsync(int fpId)
         {
             var fiscalPeriod = await _repository.GetFiscalPeriodAsync(fpId);
