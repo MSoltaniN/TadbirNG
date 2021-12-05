@@ -5,7 +5,7 @@
   <report-param ParamName='toNo' [ParamValue]="toVoucher" [ParamInFilter]="reportType === '2'"></report-param>
 </view-identifier>
 
-<report-management [ViewIdentity]="viewIdentity" [ViewSettings]="viewSetting" [Grid]="grid" [Sort]="sort"
+<report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
                    [Filter]="currentFilter" [QuickFilter]="reportQuickFilter" [Parameters]="param" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl"></report-management>
 <report-setting></report-setting>
 
