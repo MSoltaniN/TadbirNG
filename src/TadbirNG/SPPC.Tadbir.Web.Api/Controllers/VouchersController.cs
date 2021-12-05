@@ -1214,23 +1214,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var validated = new List<int>();
             var notValidated = new List<GroupActionResultViewModel>();
-            foreach (int item in items)
-            {
-                if (await VoucherActionValidationResultAsync(item, action) is BadRequestObjectResult result)
-                {
-                    var error = result.Value as ErrorViewModel;
-                    notValidated.Add(new GroupActionResultViewModel()
-                    {
-                        Id = item,
-                        ErrorMessage = error.Messages[0]
-                    });
-                }
-                else
-                {
-                    validated.Add(item);
-                }
-            }
-
+            await GroupValidateItemsAsync(items, action, validated, notValidated);
             if (validated.Count > 0)
             {
                 var repository = await GetVoucherRepositoryAsync(validated[0]);
@@ -1245,25 +1229,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var validated = new List<int>();
             var notValidated = new List<GroupActionResultViewModel>();
-            bool isConfirmed = (action == AppStrings.GroupConfirmApprove);
-            foreach (int item in items)
-            {
-                if (await VoucherActionValidationResultAsync(item, action) is BadRequestObjectResult result)
-                {
-                    var error = result.Value as ErrorViewModel;
-                    notValidated.Add(new GroupActionResultViewModel()
-                    {
-                        Id = item,
-                        ErrorMessage = error.Messages[0]
-                    });
-                }
-                else
-                {
-                    validated.Add(item);
-                }
-            }
+            await GroupValidateItemsAsync(items, action, validated, notValidated);
 
-            await _repository.SetVouchersConfirmApproveStatusAsync(validated, isConfirmed);
+            await _repository.SetVouchersConfirmApproveStatusAsync(
+                validated, action == AppStrings.GroupConfirmApprove);
             return Ok(notValidated);
         }
 
@@ -1443,6 +1412,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         #endregion
+
+        private async Task GroupValidateItemsAsync(IEnumerable<int> items, string action,
+            List<int> validated, List<GroupActionResultViewModel> notValidated)
+        {
+            foreach (int item in items)
+            {
+                if (await VoucherActionValidationResultAsync(item, action) is BadRequestObjectResult result)
+                {
+                    var repository = await GetVoucherRepositoryAsync(item);
+                    var voucher = await repository.GetVoucherAsync(item);
+                    var error = result.Value as ErrorViewModel;
+                    notValidated.Add(GetGroupActionResult(error.Messages[0], voucher));
+                }
+                else
+                {
+                    validated.Add(item);
+                }
+            }
+        }
 
         private IActionResult BasicValidationResult<TModel>(TModel model, string modelType, int modelId = 0)
         {
