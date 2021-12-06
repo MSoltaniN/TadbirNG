@@ -38,13 +38,13 @@
                 {{userName}}
               </p>
               <div class="row">
-                <div class="col-md-12"><p class="userinfo"><strong class="user-info-label">{{ 'Enviroment.Company' | translate }}:</strong><small>{{companyName}}</small></p></div>
+                <div class="col-md-12"><p class="userinfo"><strong class="user-info-label">{{ 'Enviroment.Company' | translate }}:</strong><small [innerText]="companyName"></small></p></div>
               </div>
               <div class="row">
-                <div class="col-md-12"><p class="userinfo"><strong class="user-info-label">{{ 'Enviroment.Branch' | translate }}:</strong><small>{{branchName}}</small></p></div>
+                <div class="col-md-12"><p class="userinfo"><strong class="user-info-label">{{ 'Enviroment.Branch' | translate }}:</strong><small [innerText]="branchName"></small></p></div>
               </div>
               <div class="row">
-                <div class="col-md-12"><p class="userinfo"><strong class="user-info-label">{{ 'Enviroment.FiscalPeriod' | translate }}:</strong><small>{{fiscalPeriodName}}</small></p></div>
+                <div class="col-md-12"><p class="userinfo"><strong class="user-info-label">{{ 'Enviroment.FiscalPeriod' | translate }}:</strong><small [innerText]="fiscalPeriodName"></small></p></div>
               </div>
 
             </li>

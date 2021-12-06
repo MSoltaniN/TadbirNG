@@ -1324,6 +1324,8 @@
       "CompanyIsRequired": "Company is required.",
       "BranchIsRequired": "Branch is required.",
       "FiscalPeriodIsRequired": "Fiscal period is required.",
+      "PleaseSelectFiscalPeriod": "Branch is selected please select a fiscal period",
+      "PleaseSelectBranch":"Fiscal period is selected please select a branch",
       "NoError": ""
     },
     "PermissionGroup": {
