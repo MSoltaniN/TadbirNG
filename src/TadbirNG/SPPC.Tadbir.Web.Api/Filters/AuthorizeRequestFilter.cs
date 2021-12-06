@@ -7,24 +7,24 @@ using SPPC.Tadbir.ViewModel.Auth;
 namespace SPPC.Tadbir.Web.Api.Filters
 {
     /// <summary>
-    ///
+    /// امکان فیلتر درخواست را با هدف احراز هویت و مجوزدهی فراهم می کند
     /// </summary>
     public class AuthorizeRequestFilter : IActionFilter
     {
         /// <summary>
-        ///
+        /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="authorize"></param>
+        /// <param name="authorize">امکان احراز هویت و مجوزدهی را با استفاده از تیکت امنیتی فراهم می کند</param>
         public AuthorizeRequestFilter(IAuthorizeRequest authorize)
         {
             _authorize = authorize;
         }
 
         /// <summary>
-        ///
+        /// امکان فیلتر درخواست را پس از اجرای متد کنترلر فراهم می کند
         /// </summary>
-        /// <param name="context"></param>
-        public void OnActionExecuted(ActionExecutedContext context)
+        /// <param name="actionContext">اطلاعات جاری مورد نیاز برای فیلتر درخواست</param>
+        public void OnActionExecuted(ActionExecutedContext actionContext)
         {
         }
 

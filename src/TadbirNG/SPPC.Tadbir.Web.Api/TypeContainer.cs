@@ -17,6 +17,7 @@ using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Web.Api.Filters;
+using SPPC.Tadbir.Web.Api.Validators;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -155,6 +156,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IBalanceSheetRepository, BalanceSheetRepositoryDirect>();
             _services.AddTransient<ISystemErrorRepository, SystemErrorRepository>();
             _services.AddTransient<ISessionRepository, SessionRepository>();
+            _services.AddTransient<IEditionRepository, EditionRepository>();
         }
 
         private void AddServiceTypes()
@@ -163,6 +165,14 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<ITokenService, JwtTokenService>();
             _services.AddTransient<ISecurityContextManager, ServiceContextManager>();
             _services.AddTransient<IAuthorizeRequest, AuthorizeRequest>();
+            _services.AddTransient<ICheckEdition, CheckEdition>();
+            _services.AddTransient<IModelValidatorFactory, ModelValidatorFactory>();
+            _services.AddTransient<CompanyValidator>();
+            _services.AddTransient<BranchValidator>();
+            _services.AddTransient<AccountValidator>();
+            _services.AddTransient<DetailAccountValidator>();
+            _services.AddTransient<CostCenterValidator>();
+            _services.AddTransient<ProjectValidator>();
         }
 
         private void AddUtilityTypes()

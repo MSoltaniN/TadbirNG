@@ -1,5 +1,6 @@
 {
   "standard": {
+    "name": "Edition_Standard",
     "maxUsers": 15,
     "maxCompanies": 2,
     "maxBranches": 1,
@@ -13,6 +14,7 @@
     "enableRowPermissions": false
   },
   "professional": {
+    "name": "Edition_Professional",
     "maxUsers": 30,
     "maxCompanies": 5,
     "maxBranches": 5,
@@ -26,6 +28,7 @@
     "enableRowPermissions": true
   },
   "enterprise": {
+    "name": "Edition_Enterprise",
     "maxUsers": 0,
     "maxCompanies": 0,
     "maxBranches": 0,

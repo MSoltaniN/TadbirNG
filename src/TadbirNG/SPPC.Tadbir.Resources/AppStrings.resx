@@ -3531,4 +3531,22 @@
   <data name="InvalidLevelCode" xml:space="preserve">
     <value>کد '{0}' معتبر نیست.</value>
   </data>
+  <data name="Edition_DepthLimit" xml:space="preserve">
+    <value>در ویرایش {0} حداکثر عمق مجاز برای ساختار درختی {1} {2} سطح است.</value>
+  </data>
+  <data name="Edition_Enterprise" xml:space="preserve">
+    <value>سازمانی</value>
+  </data>
+  <data name="Edition_MaxBranchLimit" xml:space="preserve">
+    <value>در ویرایش {0} می توانید برای هر شرکت حداکثر {1} شعبه ایجاد کنید.</value>
+  </data>
+  <data name="Edition_MaxCompanyLimit" xml:space="preserve">
+    <value>در ویرایش {0} می توانید حداکثر {1} شرکت ایجاد کنید.</value>
+  </data>
+  <data name="Edition_Professional" xml:space="preserve">
+    <value>حرفه ای</value>
+  </data>
+  <data name="Edition_Standard" xml:space="preserve">
+    <value>استاندارد</value>
+  </data>
 </root>

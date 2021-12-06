@@ -26,6 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\edition" />
+    <Content Remove="wwwroot\edition.Development.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Resources\Reporting\Template\QuickReport.A4.Ltr.mrt" />
     <None Remove="Resources\Reporting\Template\QuickReport.A4.Rtl.mrt" />
   </ItemGroup>
@@ -34,6 +39,8 @@
     <EmbeddedResource Include="Report.cs" />
     <EmbeddedResource Include="Resources\Reporting\Template\QuickReport.A4.Ltr.mrt" />
     <EmbeddedResource Include="Resources\Reporting\Template\QuickReport.A4.Rtl.mrt" />
+    <EmbeddedResource Include="wwwroot\edition" />
+    <EmbeddedResource Include="wwwroot\edition.Development.json" />
   </ItemGroup>
 
   <ItemGroup>

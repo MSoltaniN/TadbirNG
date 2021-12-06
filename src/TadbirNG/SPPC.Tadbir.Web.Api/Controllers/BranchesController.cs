@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Configuration.Enums;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -28,13 +29,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="repository">امکان مدیریت اطلاعات شعبه ها در دیتابیس را فراهم می کند</param>
+        /// <param name="checkEdition"></param>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
         /// <param name="tokenService"></param>
         public BranchesController(
-            IBranchRepository repository, IStringLocalizer<AppStrings> strings, ITokenService tokenService)
+            IBranchRepository repository, ICheckEdition checkEdition,
+            IStringLocalizer<AppStrings> strings, ITokenService tokenService)
             : base(strings, tokenService)
         {
             _repository = repository;
+            _checkEdition = checkEdition;
         }
 
         /// <summary>
@@ -118,6 +122,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (result is BadRequestObjectResult)
             {
                 return result;
+            }
+
+            var message = _checkEdition.ValidateNewModel(branch, EditionLimit.BranchCountAndDepth);
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequestResult(message);
             }
 
             if (!await _repository.IsValidBranchAsync(branch))
@@ -322,6 +332,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             Array.ForEach(roles.RelatedItems.ToArray(), item => item.Name = _strings[item.Name]);
         }
 
-        private IBranchRepository _repository;
+        private readonly IBranchRepository _repository;
+        private readonly ICheckEdition _checkEdition;
     }
 }

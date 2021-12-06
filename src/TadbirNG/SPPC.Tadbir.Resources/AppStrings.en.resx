@@ -3540,4 +3540,22 @@
   <data name="InvalidLevelCode" xml:space="preserve">
     <value>'{0}' is not a valid code.</value>
   </data>
+  <data name="Edition_DepthLimit" xml:space="preserve">
+    <value>{1} hierarchy can be no deeper than {2} levels in {0} edition.</value>
+  </data>
+  <data name="Edition_Enterprise" xml:space="preserve">
+    <value>Enterprise</value>
+  </data>
+  <data name="Edition_MaxBranchLimit" xml:space="preserve">
+    <value>A company can have no more than {1} branches in {0} edition.</value>
+  </data>
+  <data name="Edition_MaxCompanyLimit" xml:space="preserve">
+    <value>You can have no more than {1} companies in {0} edition.</value>
+  </data>
+  <data name="Edition_Professional" xml:space="preserve">
+    <value>Professional</value>
+  </data>
+  <data name="Edition_Standard" xml:space="preserve">
+    <value>Standard</value>
+  </data>
 </root>

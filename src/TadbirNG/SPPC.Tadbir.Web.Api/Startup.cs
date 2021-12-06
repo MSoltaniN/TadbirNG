@@ -43,7 +43,7 @@ namespace SPPC.Tadbir.Web.Api
             services
                 .AddControllers(options =>
                     {
-                        options.Filters.Add(typeof(AuthorizeRequestFilter));
+                        options.Filters.Add<AuthorizeRequestFilter>();
                     })
                 .AddNewtonsoftJson();
             services.AddCors();

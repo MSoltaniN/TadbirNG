@@ -8,6 +8,11 @@ namespace SPPC.Tadbir.Configuration.Models
     public class EditionConfig
     {
         /// <summary>
+        /// نام این ویرایش از برنامه
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// حداکثر تعداد مجاز برای کاربران همزمان
         /// </summary>
         public int MaxUsers { get; set; }
