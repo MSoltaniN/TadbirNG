@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { SettingService } from '@sppc/config/service';
 import { DialogService } from '@progress/kendo-angular-dialog';
+import { ShareDataService } from '@sppc/shared/services/share-data.service';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class AppheaderComponent extends DefaultComponent implements OnInit {
 
   public profileItems: Array<Command>; 
   public icons: { [id: string]: string; } = {};
+ 
 
   constructor(public toastrService: ToastrService,
     public translate: TranslateService,
@@ -33,7 +35,8 @@ export class AppheaderComponent extends DefaultComponent implements OnInit {
     public userService: UserService,
     public settingService: SettingService,
     public bStorageService: BrowserStorageService,
-    public dialogService: DialogService) {
+    public dialogService: DialogService,
+    public shareService: ShareDataService) {
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
   }
 
@@ -58,6 +61,12 @@ export class AppheaderComponent extends DefaultComponent implements OnInit {
     else {
       this.prepareProfileMenus(JSON.parse(profileMenus));
     }
+
+
+    this.shareService.sharingSubjectData.subscribe((item)=>{
+      this.branchName = item.branchName;
+      this.fiscalPeriodName = item.fiscalPeriodName;
+    });
   }
 
 

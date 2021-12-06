@@ -23,6 +23,7 @@ import { CompanyLoginInfo, AuthenticationService, ContextInfo } from '@sppc/core
 import { UserService } from '@sppc/admin/service';
 import { Router } from '@angular/router';
 import { OperationId } from '@sppc/shared/enum/operationId';
+import { ShareDataService } from '@sppc/shared/services/share-data.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -51,7 +52,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
     public userService: UserService, private router: Router, private authenticationService: AuthenticationService, public branchService: BranchService,
-    public cdref: ChangeDetectorRef, public ngZone: NgZone, public errorHandlingService: ErrorHandlingService) {
+    public cdref: ChangeDetectorRef, public ngZone: NgZone, public errorHandlingService: ErrorHandlingService,public shareDataService:ShareDataService) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.Branch,
       "Branch.LedgerBranch", "", "",
       BranchApi.Branches, BranchApi.RootBranches, BranchApi.Branch, BranchApi.BranchChildren,
@@ -182,15 +183,16 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
   onChangeBranch() {
     var branchId = this.selectedRows[0];
     this.bStorageService.setSelectedBranchId(branchId);
-
     var fiscalPeriodId = this.FiscalPeriodId ? this.FiscalPeriodId : this.bStorageService.getSelectedFiscalPeriodId();
 
     if (fiscalPeriodId) {
       this.getNewTicket(branchId, fiscalPeriodId);
     }
     else {
-      this.showMessage(this.getText("AllValidations.Login.FiscalPeriodIsRequired"), MessageType.Info);
+      this.showMessage(this.getText("AllValidations.Login.PleaseSelectFiscalPeriod"), MessageType.Info);
     }
+
+    
   }
 
   onAdvanceFilterOk() {
@@ -207,6 +209,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
 
     this.authenticationService.getCompanyTicket(companyLoginModel, this.Ticket).subscribe(res => {
       if (res.headers != null) {
+        debugger;
         let newTicket = res.headers.get('X-Tadbir-AuthTicket');
 
         let contextInfo = res.body;
@@ -236,6 +239,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
           this.bStorageService.setLastUserBranchAndFpId(this.UserId, this.CompanyId.toString(), branchId.toString(), fpId.toString());
 
           this.getMenuAndReloadPage(newTicket);
+          this.shareDataService.sharingSubjectData.next(currentUser);
         }
 
       }

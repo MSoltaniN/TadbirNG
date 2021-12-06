@@ -1454,6 +1454,8 @@
       "CompanyIsRequired": "لطفا شرکت را انتخاب کنید.",
       "BranchIsRequired": "لطفا شعبه را انتخاب کنید.",
       "FiscalPeriodIsRequired": "لطفا دوره مالی را انتخاب کنید.",
+      "PleaseSelectFiscalPeriod": "شعبه مورد نظر انتخاب شد لطفا دوره مالی را انتخاب کنید",
+      "PleaseSelectBranch":"دوره مالی مورد نظر انتخاب شد لطفا شعبه را انتخاب کنید",
       "NoError": ""
     },
     "PermissionGroup": {
