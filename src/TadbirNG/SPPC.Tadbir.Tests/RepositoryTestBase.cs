@@ -1,19 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Options;
 using SPPC.Framework.Cryptography;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence.Utility;
-using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Tests;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tools.Utility;
 
 namespace SPPC.Tadbir.Persistence.Tests
 {
-    public abstract class RepositoryTestBase
+    public abstract class RepositoryTestBase : TestBase
     {
         static RepositoryTestBase()
         {
@@ -65,17 +62,6 @@ namespace SPPC.Tadbir.Persistence.Tests
             };
             userContext.Roles.Add(1);
             return userContext;
-        }
-
-        private static IStringLocalizer<AppStrings> GetStringLocalizer()
-        {
-            var options = new LocalizationOptions()
-            {
-                ResourcesPath = @"..\..\..\src\TadbirNG\SPPC.Tadbir.Resources"
-            };
-            var factory = new ResourceManagerStringLocalizerFactory(
-                new OptionsWrapper<LocalizationOptions>(options), new NullLoggerFactory());
-            return new StringLocalizer<AppStrings>(factory);
         }
 
         private static readonly string _connection;

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Configuration.Enums;
+using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -27,15 +29,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="repository">امکان مدیریت اطلاعات شرکت ها را در دیتابیس سیستمی فراهم می کند</param>
+        /// <param name="checkEdition"></param>
         /// <param name="host">اطلاعات محیط میزبانی سرویس وب را فراهم می کند</param>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را در برنامه فراهم می کند</param>
         /// <param name="tokenManager"></param>
         public CompaniesController(
-            ICompanyRepository repository, IWebHostEnvironment host,
+            ICompanyRepository repository, ICheckEdition checkEdition, IWebHostEnvironment host,
             IStringLocalizer<AppStrings> strings, ITokenManager tokenManager)
             : base(strings, tokenManager)
         {
             _repository = repository;
+            _checkEdition = checkEdition;
             _host = host;
         }
 
@@ -87,6 +91,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest]
         public async Task<IActionResult> PostNewCompanyAsync([FromBody] CompanyDbViewModel company)
         {
+            var message = _checkEdition.ValidateNewModel(company, EditionLimit.CompanyCount);
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequestResult(message);
+            }
+
             var result = await ValidationResultAsync(company);
             if (result is BadRequestObjectResult)
             {
@@ -247,5 +257,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private readonly IWebHostEnvironment _host;
         private readonly ICompanyRepository _repository;
+        private readonly ICheckEdition _checkEdition;
     }
 }

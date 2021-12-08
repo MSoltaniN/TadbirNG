@@ -117,16 +117,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.Create)]
         public async Task<IActionResult> PostNewBranchAsync([FromBody] BranchViewModel branch)
         {
-            var result = BasicValidationResult(branch);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
             var message = _checkEdition.ValidateNewModel(branch, EditionLimit.BranchCountAndDepth);
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequestResult(message);
+            }
+
+            var result = BasicValidationResult(branch);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
             }
 
             if (!await _repository.IsValidBranchAsync(branch))

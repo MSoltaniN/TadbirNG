@@ -10,6 +10,7 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -28,6 +29,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             _mockRepository = new Mock<IAccountRepository>();
             _mockLocalizer = new Mock<IStringLocalizer<AppStrings>>();
             _mockConfig = new Mock<IConfigRepository>();
+            _mockCheckEdition = new Mock<ICheckEdition>();
         }
 
         [SetUp]
@@ -38,7 +40,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             _mockConfig.Setup(cfg => cfg.GetViewTreeConfigByViewAsync(ViewId.Account))
                 .ReturnsAsync(new ViewTreeFullConfig());
             _controller = new AccountsController(
-                _mockRepository.Object, _mockConfig.Object, _mockLocalizer.Object, null)
+                _mockRepository.Object, _mockConfig.Object, _mockCheckEdition.Object,
+                _mockLocalizer.Object, null)
             {
                 ControllerContext = TestControllerContext
             };
@@ -520,6 +523,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         #endregion
 
         private Mock<IAccountRepository> _mockRepository;
+        private Mock<ICheckEdition> _mockCheckEdition;
         private Mock<IStringLocalizer<AppStrings>> _mockLocalizer;
         private Mock<IConfigRepository> _mockConfig;
         private AccountFullDataViewModel _existingAccount;

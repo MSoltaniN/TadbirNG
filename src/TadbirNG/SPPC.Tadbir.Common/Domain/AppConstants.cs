@@ -108,6 +108,11 @@ namespace SPPC.Tadbir.Domain
         public const int MaxCompareItems = 5;
 
         /// <summary>
+        /// حداکثر عمق قابل پشتیبانی برای ساختار درختی مولفه های حساب
+        /// </summary>
+        public const int MaxAccountTreeLevel = 8;
+
+        /// <summary>
         /// قالب پیش فرض برای برچسب های زمانی
         /// </summary>
         public const string TimestampFormat = "yyyy-MM-dd HH:mm:ss";

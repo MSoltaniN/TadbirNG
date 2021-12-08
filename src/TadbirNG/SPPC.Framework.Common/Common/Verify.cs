@@ -148,7 +148,7 @@ namespace SPPC.Framework.Common
         /// <param name="minValue">The specified minimum value required by argument</param>
         public static void ArgumentNotLessThan(IComparable argValue, IComparable minValue)
         {
-            VerifyNotNullAndIsAssignable(argValue, minValue);
+            NotNullAndIsAssignable(argValue, minValue);
             if (argValue.CompareTo(minValue) < 0)
             {
                 throw (ExceptionBuilder.NewArgumentOutOfRangeException());
@@ -165,7 +165,7 @@ namespace SPPC.Framework.Common
         /// <param name="argName">Name of the argument to check</param>
         public static void ArgumentNotLessThan(IComparable argValue, IComparable minValue, string argName)
         {
-            VerifyNotNullAndIsAssignable(argValue, minValue);
+            NotNullAndIsAssignable(argValue, minValue);
             if (argValue.CompareTo(minValue) < 0)
             {
                 throw (ExceptionBuilder.NewArgumentOutOfRangeException(argName));
@@ -180,7 +180,7 @@ namespace SPPC.Framework.Common
         /// <param name="maxValue">The specified maximum value required by argument</param>
         public static void ArgumentNotGreaterThan(IComparable argValue, IComparable maxValue)
         {
-            VerifyNotNullAndIsAssignable(argValue, maxValue);
+            NotNullAndIsAssignable(argValue, maxValue);
             if (argValue.CompareTo(maxValue) > 0)
             {
                 throw (ExceptionBuilder.NewArgumentOutOfRangeException());
@@ -197,7 +197,7 @@ namespace SPPC.Framework.Common
         /// <param name="argName">Name of the argument to check</param>
         public static void ArgumentNotGreaterThan(IComparable argValue, IComparable maxValue, string argName)
         {
-            VerifyNotNullAndIsAssignable(argValue, maxValue);
+            NotNullAndIsAssignable(argValue, maxValue);
             if (argValue.CompareTo(maxValue) > 0)
             {
                 throw (ExceptionBuilder.NewArgumentOutOfRangeException(argName));
@@ -213,7 +213,7 @@ namespace SPPC.Framework.Common
         /// <param name="maxValue">The specified maximum value required by argument</param>
         public static void ArgumentNotOutOfRange(IComparable argValue, IComparable minValue, IComparable maxValue)
         {
-            VerifyNotNullAndIsAssignable(argValue, minValue, maxValue);
+            NotNullAndIsAssignable(argValue, minValue, maxValue);
             if (argValue.CompareTo(minValue) < 0 || argValue.CompareTo(maxValue) > 0)
             {
                 throw (ExceptionBuilder.NewArgumentOutOfRangeException());
@@ -232,7 +232,7 @@ namespace SPPC.Framework.Common
         public static void ArgumentNotOutOfRange(IComparable argValue, IComparable minValue, IComparable maxValue,
             string argName)
         {
-            VerifyNotNullAndIsAssignable(argValue, minValue, maxValue);
+            NotNullAndIsAssignable(argValue, minValue, maxValue);
             if (argValue.CompareTo(minValue) < 0 || argValue.CompareTo(maxValue) > 0)
             {
                 throw (ExceptionBuilder.NewArgumentOutOfRangeException(argName));
@@ -273,11 +273,13 @@ namespace SPPC.Framework.Common
 
             if (!leftType.IsAssignableFrom(rightType))
             {
-                throw (ExceptionBuilder.NewArgumentException());
+                var message = String.Format(
+                    "Expected an object having type '{0}' (or derived from it).", leftType.FullName);
+                throw ExceptionBuilder.NewArgumentException(message);
             }
         }
 
-        private static void VerifyNotNullAndIsAssignable(IComparable leftValue, IComparable rightValue)
+        private static void NotNullAndIsAssignable(IComparable leftValue, IComparable rightValue)
         {
             ArgumentNotNull(leftValue, "leftValue");
             ArgumentNotNull(rightValue, "rightValue");
@@ -287,7 +289,7 @@ namespace SPPC.Framework.Common
             TypeIsAssignableFromType(leftType, rightType);
         }
 
-        private static void VerifyNotNullAndIsAssignable(IComparable argValue, IComparable minValue, IComparable maxValue)
+        private static void NotNullAndIsAssignable(IComparable argValue, IComparable minValue, IComparable maxValue)
         {
             ArgumentNotNull(argValue, "argValue");
             ArgumentNotNull(minValue, "minValue");

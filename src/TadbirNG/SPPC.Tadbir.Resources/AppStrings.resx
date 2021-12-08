@@ -3549,4 +3549,7 @@
   <data name="Edition_Standard" xml:space="preserve">
     <value>استاندارد</value>
   </data>
+  <data name="UnsupportedDepth" xml:space="preserve">
+    <value>حداکثر عمق مجاز برای ساختارهای درختی در این نسخه {0} سطح است.</value>
+  </data>
 </root>

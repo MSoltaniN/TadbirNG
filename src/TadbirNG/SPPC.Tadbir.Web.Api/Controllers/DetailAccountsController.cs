@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Configuration.Enums;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -27,10 +29,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="repository">امکان مدیریت اطلاعات تفصیلی های شناور در دیتابیس را فراهم می کند</param>
         /// <param name="config">امکان خواندن اطلاعات پیکربندی برنامه را فراهم می کند</param>
+        /// <param name="checkEdition"></param>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
         /// <param name="tokenManager"></param>
         public DetailAccountsController(
-            IDetailAccountRepository repository, IConfigRepository config,
+            IDetailAccountRepository repository, IConfigRepository config, ICheckEdition checkEdition,
             IStringLocalizer<AppStrings> strings, ITokenManager tokenManager)
             : base(strings, tokenManager)
         {
@@ -38,6 +41,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             Verify.ArgumentNotNull(config, "config");
             _config = config;
             _treeConfig = _config.GetViewTreeConfigByViewAsync(ViewId.DetailAccount).Result;
+            _checkEdition = checkEdition;
         }
 
         /// <summary>
@@ -172,6 +176,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.Create)]
         public async Task<IActionResult> PostNewDetailAccountAsync([FromBody] DetailAccountViewModel detailAccount)
         {
+            var message = _checkEdition.ValidateNewModel(detailAccount, EditionLimit.DetailAccountDepth);
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequestResult(message);
+            }
+
             var result = await ValidationResultAsync(detailAccount);
             if (result is BadRequestObjectResult)
             {
@@ -335,5 +345,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private readonly IDetailAccountRepository _repository;
         private readonly IConfigRepository _config;
         private readonly ViewTreeFullConfig _treeConfig;
+        private readonly ICheckEdition _checkEdition;
     }
 }

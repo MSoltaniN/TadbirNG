@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Common;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Resources;
@@ -28,15 +29,19 @@ namespace SPPC.Tadbir.Licensing
         /// <returns></returns>
         public string Validate(object model, EditionConfig config)
         {
+            Verify.ArgumentNotNull(model, nameof(model));
+            Verify.TypeIsAssignableFromType(typeof(ITreeEntityView), model.GetType());
             string result = String.Empty;
-            if (config.MaxAccountDepth > 0)
+            var account = model as ITreeEntityView;
+            if (config.MaxAccountDepth > 0 && account.Level >= config.MaxAccountDepth)
             {
-                var account = model as ITreeEntityView;
-                if (account.Level >= config.MaxAccountDepth)
-                {
-                    result = _strings.Format(AppStrings.Edition_DepthLimit,
-                        config.Name, AppStrings.Account, config.MaxAccountDepth.ToString());
-                }
+                result = _strings.Format(AppStrings.Edition_DepthLimit,
+                    config.Name, AppStrings.Account, config.MaxAccountDepth.ToString());
+            }
+            else if (config.MaxAccountDepth == 0 && account.Level >= AppConstants.MaxAccountTreeLevel)
+            {
+                result = _strings.Format(
+                    AppStrings.UnsupportedDepth, AppConstants.MaxAccountTreeLevel.ToString());
             }
 
             return result;

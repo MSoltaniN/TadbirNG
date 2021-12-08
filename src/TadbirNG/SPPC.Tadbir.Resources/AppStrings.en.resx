@@ -3558,4 +3558,7 @@
   <data name="Edition_Standard" xml:space="preserve">
     <value>Standard</value>
   </data>
+  <data name="UnsupportedDepth" xml:space="preserve">
+    <value>This version does not support hierarchies deeper than 8 levels.</value>
+  </data>
 </root>

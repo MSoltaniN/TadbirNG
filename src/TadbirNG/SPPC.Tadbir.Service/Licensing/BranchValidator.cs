@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Common;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
@@ -31,6 +32,8 @@ namespace SPPC.Tadbir.Licensing
         /// <returns></returns>
         public string Validate(object model, EditionConfig config)
         {
+            Verify.ArgumentNotNull(model, nameof(model));
+            Verify.TypeIsAssignableFromType(typeof(BranchViewModel), model.GetType());
             string result = String.Empty;
             if (config.MaxBranches > 0 && config.MaxBranchDepth > 0)
             {
