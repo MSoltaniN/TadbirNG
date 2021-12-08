@@ -30,12 +30,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="configRepository"></param>
         /// <param name="systemRepository"></param>
         /// <param name="strings"></param>
-        /// <param name="tokenService"></param>
+        /// <param name="tokenManager"></param>
         public ProfitLossController(
             IProfitLossRepository repository, IConfigRepository configRepository,
             ISystemConfigRepository systemRepository, IStringLocalizer<AppStrings> strings,
-            ITokenService tokenService)
-            : base(strings, tokenService)
+            ITokenManager tokenManager)
+            : base(strings, tokenManager)
         {
             _repository = repository;
             _systemRepository = systemRepository;

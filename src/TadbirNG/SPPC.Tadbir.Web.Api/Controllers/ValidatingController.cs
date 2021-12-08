@@ -9,10 +9,9 @@ using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
-using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.Web.Api.Extensions;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -27,9 +26,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
-        /// <param name="tokenService"></param>
-        protected ValidatingController(IStringLocalizer<AppStrings> strings, ITokenService tokenService)
-            : base(strings, tokenService)
+        /// <param name="tokenManager"></param>
+        protected ValidatingController(IStringLocalizer<AppStrings> strings, ITokenManager tokenManager)
+            : base(strings, tokenManager)
         {
         }
 

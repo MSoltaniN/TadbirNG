@@ -1,6 +1,6 @@
 ﻿using SPPC.Tadbir.Configuration.Enums;
 
-namespace SPPC.Tadbir.Service
+namespace SPPC.Tadbir.Licensing
 {
     /// <summary>
     /// عملیات مورد نیاز برای کنترل ویرایش برنامه را تعریف می کند

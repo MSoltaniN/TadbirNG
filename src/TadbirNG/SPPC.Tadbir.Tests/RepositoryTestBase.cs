@@ -7,7 +7,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
-using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tools.Utility;
 

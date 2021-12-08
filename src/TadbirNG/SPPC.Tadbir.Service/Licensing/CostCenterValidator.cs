@@ -3,21 +3,19 @@ using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Resources;
-using SPPC.Tadbir.Service;
-using SPPC.Tadbir.Web.Api.Extensions;
 
-namespace SPPC.Tadbir.Web.Api.Validators
+namespace SPPC.Tadbir.Licensing
 {
     /// <summary>
     /// 
     /// </summary>
-    public class ProjectValidator : IModelValidator
+    public class CostCenterValidator : IModelValidator
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="strings"></param>
-        public ProjectValidator(IStringLocalizer<AppStrings> strings)
+        public CostCenterValidator(IStringLocalizer<AppStrings> strings)
         {
             _strings = strings;
         }
@@ -31,13 +29,13 @@ namespace SPPC.Tadbir.Web.Api.Validators
         public string Validate(object model, EditionConfig config)
         {
             string result = String.Empty;
-            if (config.MaxProjectDepth > 0)
+            if (config.MaxCostCenterDepth > 0)
             {
-                var project = model as ITreeEntityView;
-                if (project.Level >= config.MaxProjectDepth)
+                var costCenter = model as ITreeEntityView;
+                if (costCenter.Level >= config.MaxCostCenterDepth)
                 {
                     result = _strings.Format(AppStrings.Edition_DepthLimit,
-                        config.Name, AppStrings.Project, config.MaxProjectDepth.ToString());
+                        config.Name, AppStrings.CostCenter, config.MaxCostCenterDepth.ToString());
                 }
             }
 

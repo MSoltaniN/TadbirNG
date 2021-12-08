@@ -14,10 +14,8 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -36,11 +34,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="host"></param>
         /// <param name="crypto"></param>
         /// <param name="strings"></param>
-        /// <param name="tokenService"></param>
+        /// <param name="tokenManager"></param>
         public CurrenciesController(ICurrencyRepository repository, ICurrencyRateRepository rateRepository,
             IWebHostEnvironment host, ICryptoService crypto, IStringLocalizer<AppStrings> strings,
-            ITokenService tokenService)
-            : base(strings, tokenService)
+            ITokenManager tokenManager)
+            : base(strings, tokenManager)
         {
             _repository = repository;
             _rateRepository = rateRepository;

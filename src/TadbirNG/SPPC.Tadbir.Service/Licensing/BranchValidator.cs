@@ -3,22 +3,21 @@ using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
-using SPPC.Tadbir.Service;
-using SPPC.Tadbir.Web.Api.Extensions;
+using SPPC.Tadbir.ViewModel.Corporate;
 
-namespace SPPC.Tadbir.Web.Api.Validators
+namespace SPPC.Tadbir.Licensing
 {
     /// <summary>
     /// 
     /// </summary>
-    public class CompanyValidator : IModelValidator
+    public class BranchValidator : IModelValidator
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="strings"></param>
-        public CompanyValidator(IEditionRepository repository, IStringLocalizer<AppStrings> strings)
+        public BranchValidator(IEditionRepository repository, IStringLocalizer<AppStrings> strings)
         {
             _repository = repository;
             _strings = strings;
@@ -33,13 +32,19 @@ namespace SPPC.Tadbir.Web.Api.Validators
         public string Validate(object model, EditionConfig config)
         {
             string result = String.Empty;
-            if (config.MaxCompanies > 0)
+            if (config.MaxBranches > 0 && config.MaxBranchDepth > 0)
             {
-                bool validated = _repository.CanCreteCompanyAsync(config.MaxCompanies).Result;
+                var branch = model as BranchViewModel;
+                bool validated = _repository.CanCreteBranchAsync(config.MaxBranches).Result;
                 if (!validated)
                 {
-                    result = _strings.Format(AppStrings.Edition_MaxCompanyLimit,
-                        config.Name, config.MaxCompanies.ToString());
+                    result = _strings.Format(AppStrings.Edition_MaxBranchLimit,
+                        config.Name, config.MaxBranches.ToString());
+                }
+                else if (branch.Level >= config.MaxBranchDepth)
+                {
+                    result = _strings.Format(AppStrings.Edition_DepthLimit,
+                        config.Name, AppStrings.Branch, config.MaxBranchDepth.ToString());
                 }
             }
 

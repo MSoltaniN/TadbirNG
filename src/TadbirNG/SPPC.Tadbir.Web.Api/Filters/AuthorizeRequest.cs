@@ -13,7 +13,6 @@ using SPPC.Framework.Presentation;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Web.Api.Filters
@@ -26,11 +25,11 @@ namespace SPPC.Tadbir.Web.Api.Filters
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="tokenService"></param>
+        /// <param name="tokenManager"></param>
         /// <param name="apiClient">امکان تماس با یک سرویس وب را فراهم می کند</param>
-        public AuthorizeRequest(ITokenService tokenService, IApiClient apiClient)
+        public AuthorizeRequest(ITokenManager tokenManager, IApiClient apiClient)
         {
-            _tokenService = tokenService;
+            _tokenManager = tokenManager;
             _apiClient = apiClient;
         }
 
@@ -64,7 +63,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
                     "Authorization ticket header '{0}' could not be found.", AppConstants.ContextHeaderName);
                 result = new BadRequestObjectResult(reason);
             }
-            else if (!_tokenService.Validate(authTicket))
+            else if (!_tokenManager.Validate(authTicket))
             {
                 // If ticket is invalid or expired, return Unauthorized (401) response...
                 result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
@@ -109,7 +108,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
 
         private bool IsAuthorized(HttpRequest httpRequest, string authTicket)
         {
-            var securityContext = _tokenService.GetSecurityContext(authTicket);
+            var securityContext = _tokenManager.GetSecurityContext(authTicket);
             bool isAuthorized = securityContext.IsInRole(AppConstants.AdminRoleId);
             if (!isAuthorized && _requiredPermissions != null)
             {
@@ -176,7 +175,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
 #else
         private readonly string _licensePath = @".\wwwroot\license";
 #endif
-        private readonly ITokenService _tokenService;
+        private readonly ITokenManager _tokenManager;
         private readonly IApiClient _apiClient;
         private IEnumerable<PermissionBriefViewModel> _requiredPermissions;
     }

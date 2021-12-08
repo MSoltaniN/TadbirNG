@@ -10,14 +10,13 @@ using SPPC.Framework.Service;
 using SPPC.Tadbir.CrossCutting;
 using SPPC.Tadbir.CrossCutting.Redis;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Persistence.Repository;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Web.Api.Filters;
-using SPPC.Tadbir.Web.Api.Validators;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -56,8 +55,8 @@ namespace SPPC.Tadbir.Web.Api
             if (!String.IsNullOrEmpty(token))
             {
                 var crypto = provider.GetService<ICryptoService>();
-                var tokenService = provider.GetService<ITokenService>();
-                var securityContext = tokenService.GetSecurityContext(token);
+                var tokenManager = provider.GetService<ITokenManager>();
+                var securityContext = tokenManager.GetSecurityContext(token);
                 string connectionString = securityContext?.User.Connection;
                 companyConnection = String.IsNullOrEmpty(connectionString)
                     ? connectionString
@@ -74,8 +73,8 @@ namespace SPPC.Tadbir.Web.Api
             string token = httpContext.Request.Headers[AppConstants.ContextHeaderName];
             if (!String.IsNullOrEmpty(token))
             {
-                var tokenService = provider.GetService<ITokenService>();
-                securityContext = tokenService.GetSecurityContext(token);
+                var tokenManager = provider.GetService<ITokenManager>();
+                securityContext = tokenManager.GetSecurityContext(token);
             }
 
             return securityContext;
@@ -162,7 +161,7 @@ namespace SPPC.Tadbir.Web.Api
         private void AddServiceTypes()
         {
             _services.AddTransient<ICryptoService, CryptoService>();
-            _services.AddTransient<ITokenService, JwtTokenService>();
+            _services.AddTransient<ITokenManager, JwtTokenManager>();
             _services.AddTransient<ISecurityContextManager, ServiceContextManager>();
             _services.AddTransient<IAuthorizeRequest, AuthorizeRequest>();
             _services.AddTransient<ICheckEdition, CheckEdition>();

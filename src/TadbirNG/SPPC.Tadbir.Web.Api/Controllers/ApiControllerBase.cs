@@ -10,7 +10,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Resources;
-using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Core;
@@ -26,11 +26,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
-        /// <param name="tokenService">امکان پردازش توکن امنیتی سرویس را فراهم می کند</param>
-        protected ApiControllerBase(IStringLocalizer<AppStrings> strings, ITokenService tokenService)
+        /// <param name="tokenManager">امکان پردازش توکن امنیتی سرویس را فراهم می کند</param>
+        protected ApiControllerBase(IStringLocalizer<AppStrings> strings, ITokenManager tokenManager)
         {
             _strings = strings;
-            _tokenService = tokenService;
+            _tokenManager = tokenManager;
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns>اطلاعات محیطی و امنیتی به دست آمده از توکن</returns>
         protected SecurityContext SecurityContextFromTicket(string ticket)
         {
-            return _tokenService.GetSecurityContext(ticket) as SecurityContext;
+            return _tokenManager.GetSecurityContext(ticket) as SecurityContext;
         }
 
         /// <summary>
@@ -229,6 +229,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         protected IStringLocalizer<AppStrings> _strings;
 
-        private readonly ITokenService _tokenService;
+        private readonly ITokenManager _tokenManager;
     }
 }

@@ -10,10 +10,8 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -30,11 +28,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="repository">امکان مدیریت اطلاعات مراکز هزینه در دیتابیس را فراهم می کند</param>
         /// <param name="config">امکان خواندن اطلاعات پیکربندی برنامه را فراهم می کند</param>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
-        /// <param name="tokenService"></param>
+        /// <param name="tokenManager"></param>
         public CostCentersController(
             ICostCenterRepository repository, IConfigRepository config,
-            IStringLocalizer<AppStrings> strings, ITokenService tokenService)
-            : base(strings, tokenService)
+            IStringLocalizer<AppStrings> strings, ITokenManager tokenManager)
+            : base(strings, tokenManager)
         {
             _repository = repository;
             Verify.ArgumentNotNull(config, "config");

@@ -6,9 +6,8 @@ using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
-using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Core;
-using SPPC.Tadbir.Web.Api.Extensions;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -23,10 +22,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="strings"></param>
-        /// <param name="tokenService"></param>
+        /// <param name="tokenManager"></param>
         public FiltersController(IFilterRepository repository, IStringLocalizer<AppStrings> strings,
-            ITokenService tokenService)
-            : base(strings, tokenService)
+            ITokenManager tokenManager)
+            : base(strings, tokenManager)
         {
             _repository = repository;
         }

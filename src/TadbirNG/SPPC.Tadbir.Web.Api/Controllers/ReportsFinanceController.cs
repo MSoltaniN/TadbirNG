@@ -9,10 +9,8 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Reporting;
-using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -30,10 +28,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="repository"></param>
         /// <param name="authorize"></param>
         /// <param name="strings"></param>
-        /// <param name="tokenService"></param>
+        /// <param name="tokenManager"></param>
         public ReportsFinanceController(IFinanceReportRepository repository, IAuthorizeRequest authorize,
-            IStringLocalizer<AppStrings> strings, ITokenService tokenService)
-            : base(strings, tokenService)
+            IStringLocalizer<AppStrings> strings, ITokenManager tokenManager)
+            : base(strings, tokenManager)
         {
             _repository = repository;
             _authorize = authorize;

@@ -9,12 +9,10 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -31,11 +29,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="repository">امکان مدیریت اطلاعات شرکت ها را در دیتابیس سیستمی فراهم می کند</param>
         /// <param name="host">اطلاعات محیط میزبانی سرویس وب را فراهم می کند</param>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را در برنامه فراهم می کند</param>
-        /// <param name="tokenService"></param>
+        /// <param name="tokenManager"></param>
         public CompaniesController(
             ICompanyRepository repository, IWebHostEnvironment host,
-            IStringLocalizer<AppStrings> strings, ITokenService tokenService)
-            : base(strings, tokenService)
+            IStringLocalizer<AppStrings> strings, ITokenManager tokenManager)
+            : base(strings, tokenManager)
         {
             _repository = repository;
             _host = host;

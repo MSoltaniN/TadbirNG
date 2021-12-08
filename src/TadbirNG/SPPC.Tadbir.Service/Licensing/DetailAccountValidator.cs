@@ -3,21 +3,19 @@ using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Resources;
-using SPPC.Tadbir.Service;
-using SPPC.Tadbir.Web.Api.Extensions;
 
-namespace SPPC.Tadbir.Web.Api.Validators
+namespace SPPC.Tadbir.Licensing
 {
     /// <summary>
     /// 
     /// </summary>
-    public class AccountValidator : IModelValidator
+    public class DetailAccountValidator : IModelValidator
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="strings"></param>
-        public AccountValidator(IStringLocalizer<AppStrings> strings)
+        public DetailAccountValidator(IStringLocalizer<AppStrings> strings)
         {
             _strings = strings;
         }
@@ -31,13 +29,13 @@ namespace SPPC.Tadbir.Web.Api.Validators
         public string Validate(object model, EditionConfig config)
         {
             string result = String.Empty;
-            if (config.MaxAccountDepth > 0)
+            if (config.MaxDetailAccountDepth > 0)
             {
-                var account = model as ITreeEntityView;
-                if (account.Level >= config.MaxAccountDepth)
+                var detailAccount = model as ITreeEntityView;
+                if (detailAccount.Level >= config.MaxDetailAccountDepth)
                 {
                     result = _strings.Format(AppStrings.Edition_DepthLimit,
-                        config.Name, AppStrings.Account, config.MaxAccountDepth.ToString());
+                        config.Name, AppStrings.DetailAccount, config.MaxDetailAccountDepth.ToString());
                 }
             }
 

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using SPPC.Framework.Common;
 using SPPC.Tadbir.ViewModel.Auth;
 
-namespace SPPC.Tadbir.Service
+namespace SPPC.Tadbir.Security
 {
     /// <summary>
     /// Provides members required for authorizing actions of current application user.

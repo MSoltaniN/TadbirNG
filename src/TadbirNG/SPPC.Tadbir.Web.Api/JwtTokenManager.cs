@@ -7,21 +7,20 @@ using Microsoft.IdentityModel.Tokens;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Auth;
 
-namespace SPPC.Tadbir.Web.Api
+namespace SPPC.Tadbir.Security
 {
     /// <summary>
     ///
     /// </summary>
-    public class JwtTokenService : ITokenService
+    public class JwtTokenManager : ITokenManager
     {
         /// <summary>
         ///
         /// </summary>
         /// <param name="configuration"></param>
-        public JwtTokenService(IConfiguration configuration)
+        public JwtTokenManager(IConfiguration configuration)
         {
             _config = configuration;
         }

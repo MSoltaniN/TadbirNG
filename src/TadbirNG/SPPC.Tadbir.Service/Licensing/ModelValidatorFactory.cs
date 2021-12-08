@@ -1,9 +1,8 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using SPPC.Tadbir.Configuration.Enums;
-using SPPC.Tadbir.Service;
 
-namespace SPPC.Tadbir.Web.Api.Validators
+namespace SPPC.Tadbir.Licensing
 {
     /// <summary>
     /// 

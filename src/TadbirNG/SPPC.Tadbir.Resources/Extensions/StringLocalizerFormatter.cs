@@ -2,7 +2,7 @@
 using System.Linq;
 using Microsoft.Extensions.Localization;
 
-namespace SPPC.Tadbir.Web.Api.Extensions
+namespace SPPC.Tadbir.Resources
 {
     /// <summary>
     /// متدهای کمکی برای استفاده ساده تر از کلاس مربوطه را پیاده سازی می کند. مزیت اصلی استفاده از این متدها این است که

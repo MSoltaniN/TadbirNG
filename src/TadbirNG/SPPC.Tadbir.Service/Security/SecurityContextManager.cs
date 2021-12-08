@@ -4,7 +4,7 @@ using SPPC.Framework.Cryptography;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Auth;
 
-namespace SPPC.Tadbir.Service
+namespace SPPC.Tadbir.Security
 {
     /// <summary>
     /// Provides operations for managing required contextual information related to current application user.

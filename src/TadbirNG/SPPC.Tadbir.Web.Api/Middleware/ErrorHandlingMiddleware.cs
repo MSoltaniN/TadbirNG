@@ -12,7 +12,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ExceptionHandling;
 using SPPC.Tadbir.Persistence.Query;
 using SPPC.Tadbir.Resources;
-using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Web.Api.Middleware
@@ -30,12 +30,12 @@ namespace SPPC.Tadbir.Web.Api.Middleware
         /// <param name="dbConsole">امکان ارسال دستورات مستقیم به دیتابیس را فراهم می کند</param>
         /// <param name="token">امکان کار با توکن امنیتی برنامه را فراهم می کند</param>
         public ErrorHandlingMiddleware(RequestDelegate next, IStringLocalizer<AppStrings> localizer,
-            ISqlConsole dbConsole, ITokenService token)
+            ISqlConsole dbConsole, ITokenManager token)
         {
             _next = next;
             _localizer = localizer;
             _dbConsole = dbConsole;
-            _token = token;
+            _tokenManager = token;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace SPPC.Tadbir.Web.Api.Middleware
                 return null;
             }
 
-            return _token.GetSecurityContext(context);
+            return _tokenManager.GetSecurityContext(context);
         }
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
@@ -146,6 +146,6 @@ namespace SPPC.Tadbir.Web.Api.Middleware
         private readonly RequestDelegate _next;
         private readonly IStringLocalizer<AppStrings> _localizer;
         private readonly ISqlConsole _dbConsole;
-        private readonly ITokenService _token;
+        private readonly ITokenManager _tokenManager;
     }
 }

@@ -25,11 +25,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="repository"></param>
         /// <param name="configRepository"></param>
         /// <param name="strings"></param>
-        /// <param name="tokenService"></param>
+        /// <param name="tokenManager"></param>
         public AccountRelationsController(
             IRelationRepository repository, IConfigRepository configRepository,
-            IStringLocalizer<AppStrings> strings, ITokenService tokenService)
-            : base(strings, tokenService)
+            IStringLocalizer<AppStrings> strings, ITokenManager tokenManager)
+            : base(strings, tokenManager)
         {
             Verify.ArgumentNotNull(configRepository, "configRepository");
             _repository = repository;

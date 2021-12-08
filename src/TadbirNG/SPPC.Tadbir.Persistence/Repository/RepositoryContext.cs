@@ -5,7 +5,7 @@ using Microsoft.Extensions.Localization;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Resources;
-using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Persistence

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using SPPC.Tadbir.ViewModel.Auth;
+﻿using SPPC.Tadbir.ViewModel.Auth;
 
-namespace SPPC.Tadbir.Service
+namespace SPPC.Tadbir.Security
 {
     /// <summary>
     /// Defines operations for managing required contextual information related to current application user.

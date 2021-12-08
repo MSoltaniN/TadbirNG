@@ -26,10 +26,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="repository"></param>
         /// <param name="config"></param>
         /// <param name="strings"></param>
-        /// <param name="tokenService"></param>
+        /// <param name="tokenManager"></param>
         public JournalController(IJournalRepository repository, IConfigRepository config,
-            IStringLocalizer<AppStrings> strings, ITokenService tokenService)
-            : base(strings, tokenService)
+            IStringLocalizer<AppStrings> strings, ITokenManager tokenManager)
+            : base(strings, tokenManager)
         {
             _repository = repository;
             _configRepository = config;

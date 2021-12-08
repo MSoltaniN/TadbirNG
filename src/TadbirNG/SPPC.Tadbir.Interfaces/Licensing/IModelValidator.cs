@@ -1,6 +1,6 @@
 ﻿using SPPC.Tadbir.Configuration.Models;
 
-namespace SPPC.Tadbir.Service
+namespace SPPC.Tadbir.Licensing
 {
     /// <summary>
     /// اطلاعات یک سطر اطلاعاتی را با توجه به تنظیمات ویرایش جاری برنامه اعتبارسنجی می کند

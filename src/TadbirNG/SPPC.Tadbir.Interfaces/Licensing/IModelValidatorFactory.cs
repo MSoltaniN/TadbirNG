@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SPPC.Tadbir.Configuration.Enums;
+﻿using SPPC.Tadbir.Configuration.Enums;
 
-namespace SPPC.Tadbir.Service
+namespace SPPC.Tadbir.Licensing
 {
     /// <summary>
     /// 

@@ -6,15 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Configuration.Enums;
+using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -31,11 +30,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="repository">امکان مدیریت اطلاعات شعبه ها در دیتابیس را فراهم می کند</param>
         /// <param name="checkEdition"></param>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
-        /// <param name="tokenService"></param>
+        /// <param name="tokenManager"></param>
         public BranchesController(
             IBranchRepository repository, ICheckEdition checkEdition,
-            IStringLocalizer<AppStrings> strings, ITokenService tokenService)
-            : base(strings, tokenService)
+            IStringLocalizer<AppStrings> strings, ITokenManager tokenManager)
+            : base(strings, tokenManager)
         {
             _repository = repository;
             _checkEdition = checkEdition;

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace SPPC.Tadbir.Service
+namespace SPPC.Tadbir.Security
 {
     /// <summary>
     ///
     /// </summary>
-    public interface ITokenService
+    public interface ITokenManager
     {
         /// <summary>
         ///

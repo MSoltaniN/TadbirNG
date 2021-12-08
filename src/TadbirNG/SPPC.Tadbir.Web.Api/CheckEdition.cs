@@ -2,9 +2,9 @@
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Configuration.Enums;
 using SPPC.Tadbir.Configuration.Models;
-using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Web.Api;
 
-namespace SPPC.Tadbir.Web.Api
+namespace SPPC.Tadbir.Licensing
 {
     /// <summary>
     /// عملیات مورد نیاز برای کنترل ویرایش برنامه را پیاده سازی می کند

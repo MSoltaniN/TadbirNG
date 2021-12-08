@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
-using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -31,18 +27,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="crypto"></param>
-        /// <param name="tokenService"></param>
+        /// <param name="tokenManager"></param>
         /// <param name="strings"></param>
         public UsersController(
             IUserRepository repository,
             ICryptoService crypto,
-            ITokenService tokenService,
+            ITokenManager tokenManager,
             IStringLocalizer<AppStrings> strings)
-            : base(strings, tokenService)
+            : base(strings, tokenManager)
         {
             _repository = repository;
             _crypto = crypto;
-            _tokenService = tokenService;
+            _tokenManager = tokenManager;
         }
 
         /// <summary>
@@ -360,7 +356,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             string ticket = Request.Headers[AppConstants.ContextHeaderName];
-            if (!_tokenService.Validate(ticket))
+            if (!_tokenManager.Validate(ticket))
             {
                 return Unauthorized();
             }
@@ -473,7 +469,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private string GetEncodedTicket(UserContextViewModel userContext)
         {
             var securityContext = new SecurityContext(userContext);
-            return _tokenService.Generate(securityContext);
+            return _tokenManager.Generate(securityContext);
         }
 
         private void Localize(RelatedItemsViewModel roles)
@@ -483,6 +479,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private readonly IUserRepository _repository;
         private readonly ICryptoService _crypto;
-        private readonly ITokenService _tokenService;
+        private readonly ITokenManager _tokenManager;
     }
 }
