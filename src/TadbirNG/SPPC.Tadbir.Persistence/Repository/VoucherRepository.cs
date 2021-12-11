@@ -673,7 +673,7 @@ namespace SPPC.Tadbir.Persistence
                 .Replace("||", "OR")
                 .Replace("==", "=")
                 .Replace("!=", "<>")
-                .Replace("FiscalPeriodId", "FiscalPeriodID")
+                .Replace("Voucher", "v.")
                 .Replace("BranchId", "BranchID")
                 .Replace("BranchID", "v.BranchID")
                 .Replace("BranchName", "br.Name")
@@ -802,7 +802,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var predicates = new List<string>
             {
-                String.Format("FiscalPeriodID = {0}", UserContext.FiscalPeriodId)
+                String.Format("v.FiscalPeriodID = {0}", UserContext.FiscalPeriodId)
             };
             if (gridOptions.QuickFilter != null)
             {
