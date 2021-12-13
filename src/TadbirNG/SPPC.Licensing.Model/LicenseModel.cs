@@ -66,6 +66,14 @@ namespace SPPC.Licensing.Model
 
         public bool IsActivated { get; set; }
 
+        /// <summary>
+        /// سقف مجاز تعریف شده برای تعداد دفعات گرفتن مجوز برنامه از سرور آفلاین
+        /// </summary>
+        /// <remarks>
+        /// بعد از این تعداد ورود به برنامه، گرفتن مجوز از سرور آنلاین اجباری خواهد بود
+        /// </remarks>
+        public int OfflineLimit { get; set; }
+
         public CustomerModel Customer { get; set; }
 
         public Guid RowGuid { get; set; }

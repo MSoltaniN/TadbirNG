@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service.Extensions;
@@ -98,6 +99,27 @@ namespace SPPC.Framework.Service
         }
 
         /// <summary>
+        /// Asynchronously retrieves data by sending an HTTP GET request to a Web API service.
+        /// </summary>
+        /// <typeparam name="T">Type of data to retrieve</typeparam>
+        /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>
+        /// <param name="apiUrlArgs">Variable array of arguments required by the API URL</param>
+        /// <returns>Requested data deserialized from the API Service response</returns>
+        public async Task<T> GetAsync<T>(string apiUrl, params object[] apiUrlArgs)
+        {
+            var value = default(T);
+            var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
+            var response = await _httpClient.GetAsync(url);
+            LastResponse = GetResponse(response);
+            if (LastResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
+            {
+                value = JsonHelper.To<T>(await response.Content.ReadAsStringAsync());
+            }
+
+            return value;
+        }
+
+        /// <summary>
         /// Retrieves data by sending an HTTP GET request to a Web API service.
         /// </summary>
         /// <typeparam name="T">Type of data to retrieve</typeparam>
@@ -139,6 +161,21 @@ namespace SPPC.Framework.Service
         }
 
         /// <summary>
+        /// Asynchronously inserts data by sending an HTTP POST request to a Web API service.
+        /// </summary>
+        /// <typeparam name="T">Type of data to insert</typeparam>
+        /// <param name="data">Data to insert</param>
+        /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>
+        /// <param name="apiUrlArgs">Variable array of arguments required by the API URL</param>
+        public async Task<ServiceResponse> InsertAsync<T>(T data, string apiUrl, params object[] apiUrlArgs)
+        {
+            var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
+            var response = await _httpClient.PostAsJsonAsync(url, data);
+            LastResponse = GetResponse(response);
+            return LastResponse;
+        }
+
+        /// <summary>
         /// Inserts data by sending an HTTP POST request to a Web API service.
         /// </summary>
         /// <typeparam name="T">Type of data to insert</typeparam>
@@ -161,6 +198,28 @@ namespace SPPC.Framework.Service
         }
 
         /// <summary>
+        /// Asynchronously inserts data by sending an HTTP POST request to a Web API service.
+        /// </summary>
+        /// <typeparam name="T">Type of data to insert</typeparam>
+        /// <typeparam name="TValue">Type of data returned by API method</typeparam>
+        /// <param name="data">Data to insert</param>
+        /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>
+        /// <param name="apiUrlArgs">Variable array of arguments required by the API URL</param>
+        public async Task<TValue> InsertAsync<T, TValue>(T data, string apiUrl, params object[] apiUrlArgs)
+        {
+            var value = default(TValue);
+            var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
+            var response = await _httpClient.PostAsJsonAsync(url, data);
+            LastResponse = GetResponse(response);
+            if (LastResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
+            {
+                value = JsonHelper.To<TValue>(await response.Content.ReadAsStringAsync());
+            }
+
+            return value;
+        }
+
+        /// <summary>
         /// Updates data by sending an HTTP PUT request to a Web API service.
         /// </summary>
         /// <typeparam name="T">Type of data to update</typeparam>
@@ -171,6 +230,21 @@ namespace SPPC.Framework.Service
         {
             var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
             var response = _httpClient.PutAsJsonAsync(url, data).Result;
+            LastResponse = GetResponse(response);
+            return LastResponse;
+        }
+
+        /// <summary>
+        /// Asynchronously updates data by sending an HTTP PUT request to a Web API service.
+        /// </summary>
+        /// <typeparam name="T">Type of data to update</typeparam>
+        /// <param name="data">Data to update</param>
+        /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>
+        /// <param name="apiUrlArgs">Variable array of arguments required by the API URL</param>
+        public async Task<ServiceResponse> UpdateAsync<T>(T data, string apiUrl, params object[] apiUrlArgs)
+        {
+            var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
+            var response = await _httpClient.PutAsJsonAsync(url, data);
             LastResponse = GetResponse(response);
             return LastResponse;
         }
@@ -198,6 +272,28 @@ namespace SPPC.Framework.Service
         }
 
         /// <summary>
+        /// Asynchronously updates data by sending an HTTP PUT request to a Web API service.
+        /// </summary>
+        /// <typeparam name="T">Type of data to update</typeparam>
+        /// <typeparam name="TValue">Type of data returned by API method</typeparam>
+        /// <param name="data">Data to update</param>
+        /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>
+        /// <param name="apiUrlArgs">Variable array of arguments required by the API URL</param>
+        public async Task<TValue> UpdateAsync<T, TValue>(T data, string apiUrl, params object[] apiUrlArgs)
+        {
+            var value = default(TValue);
+            var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
+            var response = await _httpClient.PutAsJsonAsync(url, data);
+            LastResponse = GetResponse(response);
+            if (LastResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
+            {
+                value = JsonHelper.To<TValue>(await response.Content.ReadAsStringAsync());
+            }
+
+            return value;
+        }
+
+        /// <summary>
         /// Deletes data by sending an HTTP DELETE request to a Web API service.
         /// </summary>
         /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>
@@ -206,6 +302,19 @@ namespace SPPC.Framework.Service
         {
             var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
             var response = _httpClient.DeleteAsync(url).Result;
+            LastResponse = GetResponse(response);
+            return LastResponse;
+        }
+
+        /// <summary>
+        /// Asynchronously deletes data by sending an HTTP DELETE request to a Web API service.
+        /// </summary>
+        /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>
+        /// <param name="apiUrlArgs">Variable array of arguments required by the API URL</param>
+        public async Task<ServiceResponse> DeleteAsync(string apiUrl, params object[] apiUrlArgs)
+        {
+            var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
+            var response = await _httpClient.DeleteAsync(url);
             LastResponse = GetResponse(response);
             return LastResponse;
         }

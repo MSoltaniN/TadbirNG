@@ -187,6 +187,7 @@ CREATE TABLE [dbo].[License](
 	[EndDate]       DATETIME     NOT NULL,
 	[ActiveModules] INT          NOT NULL,
 	[IsActivated]   BIT          CONSTRAINT [DF_License_IsActivated] DEFAULT (0) NOT NULL,
+	[OfflineLimit]  INT          CONSTRAINT [DF_License_OfflineLimit] DEFAULT (0) NOT NULL,
     [RowGuid]       UNIQUEIDENTIFIER CONSTRAINT [DF_License_RowGuid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]  DATETIME         CONSTRAINT [DF_License_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_License] PRIMARY KEY CLUSTERED ([LicenseID] ASC)

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading.Tasks;
 using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
@@ -35,12 +36,12 @@ namespace SPPC.Tadbir.Licensing
         public string LicensePath { get; set; }
 
         /// <summary>
-        /// مجوز برنامه را فعالسازی می کند
+        /// به روش آسنکرون مجوز برنامه را فعالسازی می کند
         /// </summary>
         /// <param name="instance"></param>
         /// <param name="connection"></param>
         /// <returns>نتیجه فعالسازی مجوز به صورت کدهای سیستمی تعریف شده</returns>
-        public ActivationResult ActivateLicense(string instance, RemoteConnection connection)
+        public async Task<ActivationResult> ActivateLicenseAsync(string instance, RemoteConnection connection)
         {
             if (String.IsNullOrWhiteSpace(instance))
             {
@@ -49,7 +50,7 @@ namespace SPPC.Tadbir.Licensing
 
             ActivationResult result;
             var activation = GetActivationData(instance, connection, out X509Certificate2 certificate);
-            var license = GetActivatedLicense(activation);
+            var license = await GetActivatedLicenseAsync(activation);
             if (_apiClient.LastResponse.Result == ServiceResult.ValidationFailed)
             {
                 result = ActivationResult.BadInstance;
@@ -64,8 +65,8 @@ namespace SPPC.Tadbir.Licensing
             }
             else
             {
-                File.WriteAllText(LicensePath, license);
-                ExportCertificate(certificate);
+                await File.WriteAllTextAsync(LicensePath, license);
+                await ExportCertificateAsync(certificate);
                 result = ActivationResult.OK;
             }
 
@@ -77,29 +78,43 @@ namespace SPPC.Tadbir.Licensing
         /// </summary>
         /// <param name="licenseCheck"></param>
         /// <returns></returns>
-        public string GetOnlineLicense(string instance, RemoteConnection connection)
+        public async Task<string> GetOnlineLicenseAsync(string instance, RemoteConnection connection)
         {
-            var licenseCheck = GetLicenseCheck(instance, connection);
+            var licenseCheck = await GetLicenseCheckAsync(instance, connection);
             _apiClient.AddHeader(
                 Constants.LicenseCheckHeaderName, _crypto.Encrypt(JsonHelper.From(licenseCheck)));
-            return _apiClient.Get<string>(LicenseApi.License);
+            var license = await _apiClient.GetAsync<string>(LicenseApi.License);
+            var licenseModel = await LoadLicenseAsync();
+            ResetLoginCount(licenseModel);
+            return license;
         }
 
         /// <summary>
-        /// اطلاعات مجوز فعال سازی شده موجود را خوانده و به صورت امضای دیجیتالی برمی گرداند
+        /// به روش آسنکرون اطلاعات مجوز فعال سازی شده موجود را خوانده و به صورت امضای دیجیتالی برمی گرداند
         /// </summary>
         /// <returns>امضای دیجیتالی به دست آمده از مجوز فعال سازی شده</returns>
-        public string GetLicense()
+        public async Task<string> GetLicenseAsync()
         {
+            var signature = String.Empty;
             var ignored = new string[]
             {
-                "CustomerKey", "LicenseKey", "HardwareKey", "ClientKey", "Secret", "IsActivated"
+                "CustomerKey", "LicenseKey", "HardwareKey", "ClientKey", "Secret", "IsActivated",
+                "OfflineLimit", "LoginCount"
             };
-            var licenseModel = LoadLicense();
-            var certificate = LoadCerificate(licenseModel.Secret);
-            string license = JsonHelper.From(licenseModel, true, ignored);
-            var licenseBytes = Encoding.UTF8.GetBytes(license);
-            return _crypto.SignData(licenseBytes, certificate);
+            var licenseModel = await LoadLicenseAsync();
+            if (licenseModel.OfflineLimit == 0 || licenseModel.LoginCount < licenseModel.OfflineLimit)
+            {
+                var certificate = LoadCerificate(licenseModel.Secret);
+                string license = JsonHelper.From(licenseModel, true, ignored);
+                var licenseBytes = Encoding.UTF8.GetBytes(license);
+                signature = _crypto.SignData(licenseBytes, certificate);
+                if (licenseModel.OfflineLimit > 0)
+                {
+                    UpdateLoginCount(licenseModel);
+                }
+            }
+
+            return signature;
         }
 
         /// <summary>
@@ -180,10 +195,7 @@ namespace SPPC.Tadbir.Licensing
             {
                 status = LicenseStatus.Corrupt;
             }
-
-            string root = Path.GetDirectoryName(LicensePath);
-            string certificatePath = Path.Combine(root, Constants.CertificateFile);
-            if (!File.Exists(certificatePath))
+            else if (!File.Exists(CertificatePath))
             {
                 status = LicenseStatus.NoCertificate;
             }
@@ -192,26 +204,34 @@ namespace SPPC.Tadbir.Licensing
         }
 
         /// <summary>
-        /// درستی اطلاعات متنی مجوز مورد استفاده سرویس را با امضای دیجیتالی داده شده بررسی می کند
+        /// به روش آسنکرون درستی اطلاعات متنی مجوز مورد استفاده سرویس را با امضای دیجیتالی داده شده بررسی می کند
         /// </summary>
         /// <param name="apiLicense">اطلاعات متنی فایل مجوز سرویس</param>
         /// <param name="signature">امضای دیجیتالی مورد استفاده برای بررسی درستی مجوز</param>
         /// <returns>در صورت درستی مجوز مقدار بولی "درست" و در صورت
         /// عدم مطابقت اطلاعات متنی با اطلاعات فعال سازی شده مقدار بولی "نادرست" را برمی گرداند</returns>
-        public bool ValidateSignature(string apiLicense, string signature)
+        public async Task<bool> ValidateSignatureAsync(string apiLicense, string signature)
         {
             Verify.ArgumentNotNullOrEmptyString(apiLicense, nameof(apiLicense));
             Verify.ArgumentNotNullOrEmptyString(signature, nameof(signature));
             byte[] apiLicenseBytes = Encoding.UTF8.GetBytes(apiLicense);
-            var license = LoadLicense();
+            var license = await LoadLicenseAsync();
             var certificate = LoadCerificate(license.Secret);
             return _crypto.VerifyData(apiLicenseBytes, signature, certificate);
         }
 
-        private string GetActivatedLicense(ActivationModel activation)
+        private string CertificatePath
+        {
+            get
+            {
+                return Path.Combine(Path.GetDirectoryName(LicensePath), Constants.CertificateFile);
+            }
+        }
+
+        private async Task<string> GetActivatedLicenseAsync(ActivationModel activation)
         {
             Verify.ArgumentNotNull(activation, nameof(activation));
-            return _apiClient.Update<ActivationModel, string>(activation, LicenseApi.ActivateLicense);
+            return await _apiClient.UpdateAsync<ActivationModel, string>(activation, LicenseApi.ActivateLicense);
         }
 
         private ActivationModel GetActivationData(string instance, RemoteConnection connection,
@@ -229,23 +249,21 @@ namespace SPPC.Tadbir.Licensing
             return activation;
         }
 
-        private void ExportCertificate(X509Certificate2 certificate)
+        private async Task ExportCertificateAsync(X509Certificate2 certificate)
         {
-            string path = Path.Combine(Path.GetDirectoryName(LicensePath), Constants.CertificateFile);
-            var license = LoadLicense();
+            var license = await LoadLicenseAsync();
             var certificateBytes = certificate.Export(X509ContentType.Pkcs12, license.Secret);
-            File.WriteAllBytes(path, certificateBytes);
+            await File.WriteAllBytesAsync(CertificatePath, certificateBytes);
         }
 
-        private LicenseCheckModel GetLicenseCheck(string instance, RemoteConnection connection)
+        private async Task<LicenseCheckModel> GetLicenseCheckAsync(string instance, RemoteConnection connection)
         {
-            var license = LoadLicense();
-            var certificate = LoadCerificate(license.Secret);
+            var certificateBytes = await File.ReadAllBytesAsync(CertificatePath);
             return new LicenseCheckModel()
             {
                 HardwardKey = _deviceId.GetRemoteDeviceId(connection),
                 InstanceKey = instance,
-                Certificate = Convert.ToBase64String(certificate.RawData)
+                Certificate = Convert.ToBase64String(certificateBytes)
             };
         }
 
@@ -273,7 +291,7 @@ namespace SPPC.Tadbir.Licensing
             {
                 try
                 {
-                    license = LoadLicense();
+                    license = LoadLicenseAsync().Result;
                 }
                 catch
                 {
@@ -370,20 +388,47 @@ namespace SPPC.Tadbir.Licensing
             return JsonHelper.To<InstanceModel>(json);
         }
 
-        private LicenseFileModel LoadLicense()
+        private async Task <LicenseFileModel> LoadLicenseAsync()
         {
-            var licenseData = File.ReadAllText(LicensePath, Encoding.UTF8);
+            var licenseData = await File.ReadAllTextAsync(LicensePath, Encoding.UTF8);
             var json = _crypto.Decrypt(licenseData);
             return JsonHelper.To<LicenseFileModel>(json);
         }
 
-        private X509Certificate2 LoadCerificate(string password)
+        private void SaveLicense(LicenseFileModel license)
         {
-            string root = Path.GetDirectoryName(LicensePath);
-            string certificatePath = Path.Combine(root, Constants.CertificateFile);
-            return _crypto.CertificateManager.GetFromFile(certificatePath, password);
+            var json = JsonHelper.From(license, false, null, false);
+            var encryptedLicense = _crypto.Encrypt(json);
+            File.WriteAllText(LicensePath, encryptedLicense, Encoding.UTF8);
         }
 
+        private void UpdateLoginCount(LicenseFileModel licenseModel)
+        {
+            lock (_loginCountLock)
+            {
+                licenseModel.LoginCount++;
+                SaveLicense(licenseModel);
+            }
+        }
+
+        private void ResetLoginCount(LicenseFileModel license)
+        {
+            if (license.OfflineLimit > 0 && license.LoginCount > 0)
+            {
+                lock (_loginCountLock)
+                {
+                    license.LoginCount = 0;
+                    SaveLicense(license);
+                }
+            }
+        }
+
+        private X509Certificate2 LoadCerificate(string password)
+        {
+            return _crypto.CertificateManager.GetFromFile(CertificatePath, password);
+        }
+
+        private static readonly object _loginCountLock = new();
         private readonly IApiClient _apiClient;
         private readonly ICryptoService _crypto;
         private readonly IDeviceIdProvider _deviceId;

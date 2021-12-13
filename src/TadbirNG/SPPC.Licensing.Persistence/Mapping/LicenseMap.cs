@@ -39,6 +39,8 @@ namespace SPPC.Licensing.Persistence.Mapping
                 .IsRequired();
             builder.Property(e => e.IsActivated)
                 .IsRequired();
+            builder.Property(e => e.OfflineLimit)
+                .IsRequired();
             builder.Property(e => e.RowGuid);
             builder.Property(e => e.ModifiedDate);
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Licensing.Model
 {
@@ -30,5 +29,9 @@ namespace SPPC.Licensing.Model
         public int ActiveModules { get; set; }
 
         public bool IsActivated { get; set; }
+
+        public int OfflineLimit { get; set; }
+
+        public int LoginCount { get; set; }
     }
 }

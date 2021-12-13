@@ -60,6 +60,7 @@ namespace SPPC.Tools.LicenseManager
         private void SetupBindings()
         {
             spnUserCount.DataBindings.Add("Value", License, "UserCount");
+            spnOfflineLimit.DataBindings.Add("Value", License, "OfflineLimit");
             dtpStartDate.DataBindings.Add("Value", License, "StartDate");
             dtpEndDate.DataBindings.Add("Value", License, "EndDate");
             cmbEdition.DataBindings.Add("SelectedItem", License, "Edition");

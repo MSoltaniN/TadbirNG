@@ -669,6 +669,84 @@ CREATE TABLE [Core].[Filter] (
 )
 GO
 
+CREATE TABLE [Finance].[CustomerTaxInfo] (
+    [CustomerTaxInfoID]   INT              IDENTITY (1, 1) NOT NULL,  
+	[AccountID]           INT              NOT NULL,  
+    [CustomerFirstName]   NVARCHAR(64)     NULL,
+    [CustomerName]        NVARCHAR(128)    NOT NULL,
+    [PersonType]          INT              NOT NULL,
+    [BuyerType]           INT              NOT NULL,
+    [EconomicCode]        NVARCHAR(12)     NULL,
+    [Address]             NVARCHAR(256)    NOT NULL,
+    [NationalCode]        NVARCHAR(11)     NOT NULL,
+    [PerCityCode]         NVARCHAR(10)     NOT NULL,
+    [PhoneNo]             NVARCHAR(64)     NOT NULL,
+    [MobileNo]            NVARCHAR(64)     NOT NULL,
+    [PostalCode]          NVARCHAR(10)     NOT NULL,
+	[ProvinceCode]        NVARCHAR(4)      NOT NULL,
+    [CityCode]            NVARCHAR(16)     NOT NULL,
+    [Description]         NVARCHAR(1024)   NULL,
+	[rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_CustomerTaxInfo_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Finance_CustomerTaxInfo_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_CustomerTaxInfo] PRIMARY KEY CLUSTERED ([CustomerTaxInfoID] ASC)
+    , CONSTRAINT [FK_Finance_CustomerTaxInfo_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
+)
+GO
+
+CREATE TABLE [Finance].[AccountOwner] (
+    [AccountOwnerID]   INT              IDENTITY (1, 1) NOT NULL,
+    [AccountID]        INT              NOT NULL,    
+    [BankName]         NVARCHAR(64)     NOT NULL,
+    [AccountType]      INT              NOT NULL,
+    [BankBranchName]   NVARCHAR(64)     NOT NULL,
+    [BranchIndex]      NVARCHAR(64)     NOT NULL,
+    [AccountNumber]    NVARCHAR(32)     NOT NULL,
+    [CardNumber]       NVARCHAR(32)     NULL,
+    [ShabaNumber]      NVARCHAR(32)     NULL,
+    [Description]      NVARCHAR(512)    NULL,
+	[rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_AccountOwner_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Finance_AccountOwner_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_AccountOwner] PRIMARY KEY CLUSTERED ([AccountOwnerID] ASC)
+    , CONSTRAINT [FK_Finance_AccountOwner_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
+)
+GO
+
+
+CREATE TABLE [Finance].[AccountHolder] (
+    [AccountHolderID]   INT              IDENTITY (1, 1) NOT NULL,
+    [AccountOwnerID]    INT              NOT NULL,    
+    [FirstName]         NVARCHAR(64)     NOT NULL,
+    [LastName]          NVARCHAR(64)     NOT NULL,
+    [HasSignature]      BIT              NOT NULL,
+	[rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_AccountHolder_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_AccountHolder_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_AccountHolder] PRIMARY KEY CLUSTERED ([AccountHolderID] ASC)
+    , CONSTRAINT [FK_Finance_AccountHolder_Finance_AccountOwner] FOREIGN KEY ([AccountOwnerID]) REFERENCES [Finance].[AccountOwner]([AccountOwnerID])
+)
+GO
+
+CREATE TABLE [Metadata].[Province] (
+    [ProvinceID]     INT              IDENTITY (1, 1) NOT NULL,
+	[Name]           NVARCHAR(64)     NOT NULL,
+    [Code]           NVARCHAR(4)      NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Province_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_Province_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_Province] PRIMARY KEY CLUSTERED ([ProvinceID] ASC)
+)
+GO
+
+CREATE TABLE [Metadata].[City] (
+    [CityID]         INT              IDENTITY (1, 1) NOT NULL,
+    [ProvinceID]     INT              NOT NULL,
+	[Name]           NVARCHAR(64)     NOT NULL,
+    [Code]           NVARCHAR(16)     NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_City_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_City_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_City] PRIMARY KEY CLUSTERED ([CityID] ASC)
+    , CONSTRAINT [FK_Metadata_City_Metadata_Province] FOREIGN KEY ([ProvinceID]) REFERENCES [Metadata].[Province]([ProvinceID])
+)
+GO
+
 -- Insert system records...
 SET IDENTITY_INSERT [Core].[DocumentStatus] ON
 INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (1, N'NotChecked')
@@ -1412,87 +1490,6 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (193, 1, 3, 13, NULL, 58, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
-
-
-CREATE TABLE [Finance].[CustomerTaxInfo] (
-    [CustomerTaxInfoID]   INT              IDENTITY (1, 1) NOT NULL,  
-	[AccountID]           INT              NOT NULL,  
-    [CustomerFirstName]   NVARCHAR(64)     NULL,
-    [CustomerName]        NVARCHAR(128)    NOT NULL,
-    [PersonType]          INT              NOT NULL,
-    [BuyerType]           INT              NOT NULL,
-    [EconomicCode]        NVARCHAR(12)     NULL,
-    [Address]             NVARCHAR(256)    NOT NULL,
-    [NationalCode]        NVARCHAR(11)     NOT NULL,
-    [PerCityCode]         NVARCHAR(10)     NOT NULL,
-    [PhoneNo]             NVARCHAR(64)     NOT NULL,
-    [MobileNo]            NVARCHAR(64)     NOT NULL,
-    [PostalCode]          NVARCHAR(10)     NOT NULL,
-	[ProvinceCode]        NVARCHAR(4)      NOT NULL,
-    [CityCode]            NVARCHAR(16)     NOT NULL,
-    [Description]         NVARCHAR(1024)   NULL,
-	[rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_CustomerTaxInfo_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Finance_CustomerTaxInfo_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_CustomerTaxInfo] PRIMARY KEY CLUSTERED ([CustomerTaxInfoID] ASC)
-    , CONSTRAINT [FK_Finance_CustomerTaxInfo_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
-)
-GO
-
-
-CREATE TABLE [Finance].[AccountOwner] (
-    [AccountOwnerID]   INT              IDENTITY (1, 1) NOT NULL,
-    [AccountID]        INT              NOT NULL,    
-    [BankName]         NVARCHAR(64)     NOT NULL,
-    [AccountType]      INT              NOT NULL,
-    [BankBranchName]   NVARCHAR(64)     NOT NULL,
-    [BranchIndex]      NVARCHAR(64)     NOT NULL,
-    [AccountNumber]    NVARCHAR(32)     NOT NULL,
-    [CardNumber]       NVARCHAR(32)     NULL,
-    [ShabaNumber]      NVARCHAR(32)     NULL,
-    [Description]      NVARCHAR(512)    NULL,
-	[rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_AccountOwner_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Finance_AccountOwner_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_AccountOwner] PRIMARY KEY CLUSTERED ([AccountOwnerID] ASC)
-    , CONSTRAINT [FK_Finance_AccountOwner_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
-)
-GO
-
-
-CREATE TABLE [Finance].[AccountHolder] (
-    [AccountHolderID]   INT              IDENTITY (1, 1) NOT NULL,
-    [AccountOwnerID]    INT              NOT NULL,    
-    [FirstName]         NVARCHAR(64)     NOT NULL,
-    [LastName]          NVARCHAR(64)     NOT NULL,
-    [HasSignature]      BIT              NOT NULL,
-	[rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_AccountHolder_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_AccountHolder_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_AccountHolder] PRIMARY KEY CLUSTERED ([AccountHolderID] ASC)
-    , CONSTRAINT [FK_Finance_AccountHolder_Finance_AccountOwner] FOREIGN KEY ([AccountOwnerID]) REFERENCES [Finance].[AccountOwner]([AccountOwnerID])
-)
-GO
-
-CREATE TABLE [Metadata].[Province] (
-    [ProvinceID]     INT              IDENTITY (1, 1) NOT NULL,
-	[Name]           NVARCHAR(64)     NOT NULL,
-    [Code]           NVARCHAR(4)      NOT NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Province_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_Province_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Metadata_Province] PRIMARY KEY CLUSTERED ([ProvinceID] ASC)
-)
-GO
-
-
-CREATE TABLE [Metadata].[City] (
-    [CityID]         INT              IDENTITY (1, 1) NOT NULL,
-    [ProvinceID]     INT              NOT NULL,
-	[Name]           NVARCHAR(64)     NOT NULL,
-    [Code]           NVARCHAR(16)     NOT NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_City_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_City_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Metadata_City] PRIMARY KEY CLUSTERED ([CityID] ASC)
-    , CONSTRAINT [FK_Metadata_City_Metadata_Province] FOREIGN KEY ([ProvinceID]) REFERENCES [Metadata].[Province]([ProvinceID])
-)
-GO
 
 -- TODO: Add new database scripts BEFORE this command and update [Version] field with each change in database version
 INSERT INTO [Core].[Version] ([VersionID],[Number])

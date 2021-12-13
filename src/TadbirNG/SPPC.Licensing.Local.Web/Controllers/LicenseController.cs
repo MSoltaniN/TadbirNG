@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
         // GET: api/license
         [HttpGet]
         [Route(LicenseApi.LicenseUrl)]
-        public IActionResult GetAppLicense()
+        public async Task<IActionResult> GetAppLicenseAsync()
         {
             try
             {
@@ -39,8 +40,10 @@ namespace SPPC.Licensing.Local.Web.Controllers
                     return result;
                 }
 
-                var license = _utility.GetLicense();
-                return Ok(license);
+                var license = await _utility.GetLicenseAsync();
+                return !String.IsNullOrEmpty(license)
+                    ? Ok(license)
+                    : Unauthorized("Online license query is required.");
             }
             catch (Exception e)
             {
@@ -51,7 +54,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
         // GET: api/license/online
         [HttpGet]
         [Route(LicenseApi.OnlineLicenseUrl)]
-        public IActionResult GetOnlineAppLicense()
+        public async Task<IActionResult> GetOnlineAppLicenseAsync()
         {
             try
             {
@@ -62,7 +65,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
                     return result;
                 }
 
-                var license = _utility.GetOnlineLicense(instance, GetRemoteConnection());
+                var license = await _utility.GetOnlineLicenseAsync(instance, GetRemoteConnection());
                 if (!String.IsNullOrEmpty(license))
                 {
                     return Ok(license);
@@ -81,10 +84,10 @@ namespace SPPC.Licensing.Local.Web.Controllers
         // PUT: api/license/activate
         [HttpPut]
         [Route(LicenseApi.ActivateLicenseUrl)]
-        public IActionResult PutLicenseAsActivated()
+        public async Task<IActionResult> PutLicenseAsActivatedAsync()
         {
             IActionResult result;
-            var activationResult = _utility.ActivateLicense(GetInstance(), GetRemoteConnection());
+            var activationResult = await _utility.ActivateLicenseAsync(GetInstance(), GetRemoteConnection());
             if (activationResult == ActivationResult.Failed)
             {
                 result = StatusCode(500, "Error occured during activation.");
@@ -108,7 +111,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
         // PUT: api/license/validate
         [HttpPut]
         [Route(LicenseApi.ValidateLicenseUrl)]
-        public IActionResult PutLicenseValidation([FromBody] string license)
+        public async Task<IActionResult> PutLicenseValidationAsync([FromBody] string license)
         {
             string signature = GetLicense();
             if (license == null || String.IsNullOrEmpty(signature))
@@ -116,7 +119,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
                 return BadRequest();
             }
 
-            bool validated = _utility.ValidateSignature(license, signature);
+            bool validated = await _utility.ValidateSignatureAsync(license, signature);
             return Ok(validated);
         }
 

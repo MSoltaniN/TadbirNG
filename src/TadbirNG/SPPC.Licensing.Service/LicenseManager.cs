@@ -72,8 +72,8 @@ namespace SPPC.Licensing.Service
         {
             var ignored = new string[]
             {
-                "Id", "CustomerId", "CustomerKey", "LicenseKey", "HardwareKey",
-                "ClientKey", "Secret", "Customer", "RowGuid", "ModifiedDate", "IsActivated"
+                "Id", "CustomerId", "CustomerKey", "LicenseKey", "HardwareKey", "ClientKey", "Secret",
+                "Customer", "RowGuid", "ModifiedDate", "IsActivated", "OfflineLimit", "LoginCount"
             };
             var json = JsonHelper.From(_license, true, ignored);
             var license = Encoding.UTF8.GetBytes(json);

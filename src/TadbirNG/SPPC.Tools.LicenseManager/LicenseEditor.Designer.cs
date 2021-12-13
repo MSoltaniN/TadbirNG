@@ -53,8 +53,11 @@ namespace SPPC.Tools.LicenseManager
             this.cmbCustomer = new System.Windows.Forms.ComboBox();
             this.lblCustomer = new System.Windows.Forms.Label();
             this.chkIsActivated = new System.Windows.Forms.CheckBox();
+            this.spnOfflineLimit = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
             this.grpSubsystems.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spnUserCount)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spnOfflineLimit)).BeginInit();
             this.SuspendLayout();
             // 
             // grpSubsystems
@@ -69,7 +72,7 @@ namespace SPPC.Tools.LicenseManager
             this.grpSubsystems.Controls.Add(this.chkCashFlow);
             this.grpSubsystems.Controls.Add(this.chkCheque);
             this.grpSubsystems.Controls.Add(this.chkAccounting);
-            this.grpSubsystems.Location = new System.Drawing.Point(15, 248);
+            this.grpSubsystems.Location = new System.Drawing.Point(15, 284);
             this.grpSubsystems.Name = "grpSubsystems";
             this.grpSubsystems.Size = new System.Drawing.Size(465, 218);
             this.grpSubsystems.TabIndex = 10;
@@ -168,7 +171,7 @@ namespace SPPC.Tools.LicenseManager
             // 
             // label14
             // 
-            this.label14.Location = new System.Drawing.Point(25, 201);
+            this.label14.Location = new System.Drawing.Point(20, 201);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(142, 18);
             this.label14.TabIndex = 8;
@@ -176,7 +179,7 @@ namespace SPPC.Tools.LicenseManager
             // 
             // label13
             // 
-            this.label13.Location = new System.Drawing.Point(25, 159);
+            this.label13.Location = new System.Drawing.Point(20, 159);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(142, 18);
             this.label13.TabIndex = 6;
@@ -184,7 +187,7 @@ namespace SPPC.Tools.LicenseManager
             // 
             // label12
             // 
-            this.label12.Location = new System.Drawing.Point(25, 113);
+            this.label12.Location = new System.Drawing.Point(20, 113);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(142, 18);
             this.label12.TabIndex = 4;
@@ -192,7 +195,7 @@ namespace SPPC.Tools.LicenseManager
             // 
             // label11
             // 
-            this.label11.Location = new System.Drawing.Point(25, 70);
+            this.label11.Location = new System.Drawing.Point(20, 70);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(142, 18);
             this.label11.TabIndex = 2;
@@ -201,7 +204,7 @@ namespace SPPC.Tools.LicenseManager
             // dtpEndDate
             // 
             this.dtpEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpEndDate.Location = new System.Drawing.Point(173, 199);
+            this.dtpEndDate.Location = new System.Drawing.Point(189, 199);
             this.dtpEndDate.Name = "dtpEndDate";
             this.dtpEndDate.Size = new System.Drawing.Size(239, 26);
             this.dtpEndDate.TabIndex = 9;
@@ -209,7 +212,7 @@ namespace SPPC.Tools.LicenseManager
             // dtpStartDate
             // 
             this.dtpStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpStartDate.Location = new System.Drawing.Point(173, 157);
+            this.dtpStartDate.Location = new System.Drawing.Point(189, 157);
             this.dtpStartDate.Name = "dtpStartDate";
             this.dtpStartDate.Size = new System.Drawing.Size(239, 26);
             this.dtpStartDate.TabIndex = 7;
@@ -222,14 +225,14 @@ namespace SPPC.Tools.LicenseManager
             "Standard",
             "Professional",
             "Enterprise"});
-            this.cmbEdition.Location = new System.Drawing.Point(173, 113);
+            this.cmbEdition.Location = new System.Drawing.Point(189, 113);
             this.cmbEdition.Name = "cmbEdition";
             this.cmbEdition.Size = new System.Drawing.Size(239, 26);
             this.cmbEdition.TabIndex = 5;
             // 
             // spnUserCount
             // 
-            this.spnUserCount.Location = new System.Drawing.Point(173, 70);
+            this.spnUserCount.Location = new System.Drawing.Point(189, 68);
             this.spnUserCount.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -253,8 +256,8 @@ namespace SPPC.Tools.LicenseManager
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.btnCancel.Location = new System.Drawing.Point(138, 533);
+            this.btnCancel.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnCancel.Location = new System.Drawing.Point(138, 583);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(110, 36);
             this.btnCancel.TabIndex = 12;
@@ -265,8 +268,8 @@ namespace SPPC.Tools.LicenseManager
             // 
             this.btnSaveLicense.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSaveLicense.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnSaveLicense.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.btnSaveLicense.Location = new System.Drawing.Point(12, 533);
+            this.btnSaveLicense.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnSaveLicense.Location = new System.Drawing.Point(12, 583);
             this.btnSaveLicense.Name = "btnSaveLicense";
             this.btnSaveLicense.Size = new System.Drawing.Size(120, 36);
             this.btnSaveLicense.TabIndex = 11;
@@ -278,15 +281,15 @@ namespace SPPC.Tools.LicenseManager
             // 
             this.cmbCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCustomer.FormattingEnabled = true;
-            this.cmbCustomer.Location = new System.Drawing.Point(173, 19);
+            this.cmbCustomer.Location = new System.Drawing.Point(189, 19);
             this.cmbCustomer.Name = "cmbCustomer";
-            this.cmbCustomer.Size = new System.Drawing.Size(307, 26);
+            this.cmbCustomer.Size = new System.Drawing.Size(291, 26);
             this.cmbCustomer.TabIndex = 1;
             // 
             // lblCustomer
             // 
             this.lblCustomer.AutoSize = true;
-            this.lblCustomer.Location = new System.Drawing.Point(25, 22);
+            this.lblCustomer.Location = new System.Drawing.Point(20, 22);
             this.lblCustomer.Name = "lblCustomer";
             this.lblCustomer.Size = new System.Drawing.Size(110, 18);
             this.lblCustomer.TabIndex = 0;
@@ -295,12 +298,32 @@ namespace SPPC.Tools.LicenseManager
             // chkIsActivated
             // 
             this.chkIsActivated.Enabled = false;
-            this.chkIsActivated.Location = new System.Drawing.Point(28, 480);
+            this.chkIsActivated.Location = new System.Drawing.Point(28, 516);
             this.chkIsActivated.Name = "chkIsActivated";
             this.chkIsActivated.Size = new System.Drawing.Size(215, 27);
             this.chkIsActivated.TabIndex = 13;
             this.chkIsActivated.Text = "فعالسازی شده";
             this.chkIsActivated.UseVisualStyleBackColor = true;
+            // 
+            // spnOfflineLimit
+            // 
+            this.spnOfflineLimit.Location = new System.Drawing.Point(189, 241);
+            this.spnOfflineLimit.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.spnOfflineLimit.Name = "spnOfflineLimit";
+            this.spnOfflineLimit.Size = new System.Drawing.Size(97, 26);
+            this.spnOfflineLimit.TabIndex = 15;
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(20, 243);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(163, 18);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "سقف مجوزگیری آفلاین :";
             // 
             // LicenseEditor
             // 
@@ -308,7 +331,9 @@ namespace SPPC.Tools.LicenseManager
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(494, 577);
+            this.ClientSize = new System.Drawing.Size(494, 627);
+            this.Controls.Add(this.spnOfflineLimit);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.chkIsActivated);
             this.Controls.Add(this.cmbCustomer);
             this.Controls.Add(this.lblCustomer);
@@ -323,7 +348,7 @@ namespace SPPC.Tools.LicenseManager
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.grpSubsystems);
-            this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -335,6 +360,7 @@ namespace SPPC.Tools.LicenseManager
             this.Text = "ایجاد یا ویرایش مجوز برنامه";
             this.grpSubsystems.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.spnUserCount)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spnOfflineLimit)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -366,5 +392,7 @@ namespace SPPC.Tools.LicenseManager
         private System.Windows.Forms.ComboBox cmbCustomer;
         private System.Windows.Forms.Label lblCustomer;
         private System.Windows.Forms.CheckBox chkIsActivated;
+        private System.Windows.Forms.NumericUpDown spnOfflineLimit;
+        private System.Windows.Forms.Label label1;
     }
 }

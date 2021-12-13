@@ -1,4 +1,5 @@
-﻿using SPPC.Framework.Helpers;
+﻿using System.Threading.Tasks;
+using SPPC.Framework.Helpers;
 using SPPC.Licensing.Model;
 
 namespace SPPC.Tadbir.Licensing
@@ -14,25 +15,25 @@ namespace SPPC.Tadbir.Licensing
         string LicensePath { get; set; }
 
         /// <summary>
-        /// مجوز برنامه را فعالسازی می کند
+        /// به روش آسنکرون مجوز برنامه را فعالسازی می کند
         /// </summary>
         /// <param name="instance"></param>
         /// <param name="connection"></param>
         /// <returns>نتیجه فعالسازی مجوز به صورت کدهای سیستمی تعریف شده</returns>
-        ActivationResult ActivateLicense(string instance, RemoteConnection connection);
+        Task<ActivationResult> ActivateLicenseAsync(string instance, RemoteConnection connection);
 
         /// <summary>
         ///
         /// </summary>
         /// <param name="licenseCheck"></param>
         /// <returns></returns>
-        string GetOnlineLicense(string instance, RemoteConnection connection);
+        Task<string> GetOnlineLicenseAsync(string instance, RemoteConnection connection);
 
         /// <summary>
-        /// اطلاعات مجوز فعال سازی شده موجود را خوانده و به صورت امضای دیجیتالی برمی گرداند
+        /// به روش آسنکرون اطلاعات مجوز فعال سازی شده موجود را خوانده و به صورت امضای دیجیتالی برمی گرداند
         /// </summary>
         /// <returns>امضای دیجیتالی به دست آمده از مجوز فعال سازی شده</returns>
-        string GetLicense();
+        Task<string> GetLicenseAsync();
 
         /// <summary>
         /// درستی اطلاعات موجود در فایل مجوز را به طور کامل بررسی می کند
@@ -50,12 +51,12 @@ namespace SPPC.Tadbir.Licensing
         LicenseStatus QuickValidateLicense(string instance);
 
         /// <summary>
-        /// درستی اطلاعات متنی مجوز مورد استفاده سرویس را با امضای دیجیتالی داده شده بررسی می کند
+        /// به روش آسنکرون درستی اطلاعات متنی مجوز مورد استفاده سرویس را با امضای دیجیتالی داده شده بررسی می کند
         /// </summary>
         /// <param name="apiLicense">اطلاعات متنی فایل مجوز سرویس</param>
         /// <param name="signature">امضای دیجیتالی مورد استفاده برای بررسی درستی مجوز</param>
         /// <returns>در صورت درستی مجوز مقدار بولی "درست" و در صورت
         /// عدم مطابقت اطلاعات متنی با اطلاعات فعال سازی شده مقدار بولی "نادرست" را برمی گرداند</returns>
-        bool ValidateSignature(string apiLicense, string signature);
+        Task<bool> ValidateSignatureAsync(string apiLicense, string signature);
     }
 }
