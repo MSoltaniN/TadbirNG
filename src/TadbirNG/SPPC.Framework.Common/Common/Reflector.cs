@@ -453,6 +453,8 @@ namespace SPPC.Framework.Common
         /// If given argument list doesn't contain all arguments required by the method, or one
         /// or more arguments have types that don't match the type expected by the method, an exception
         /// will be thrown.</param>
+        /// <returns>An object containing the return value of the invoked method, or null in the case
+        /// of a constructor.</returns>
         public static object Invoke(object source, string methodName, params object[] args)
         {
             Verify.ArgumentNotNull(source, "source");

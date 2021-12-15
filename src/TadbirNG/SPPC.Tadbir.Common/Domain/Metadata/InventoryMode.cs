@@ -16,6 +16,11 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// سیستم ثبت دائمی
         /// </summary>
-        Perpetual = 1
+        Perpetual = 1,
+
+        /// <summary>
+        /// مقدار خاص برای نشان دادن مقادیر مشترک در هر دو سیستم
+        /// </summary>
+        Both = 2
     }
 }

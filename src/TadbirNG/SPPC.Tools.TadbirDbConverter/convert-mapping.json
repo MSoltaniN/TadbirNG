@@ -1,0 +1,43 @@
+{
+  "fiscalPeriod": {
+    "sourceTable": "__FiscalPeriod__",
+    "targetSchema": "Finance",
+    "hasFpId": false,
+    "fields": [
+      {
+        "fromName": "FPDesc",
+        "toName": "Description"
+      },
+      {
+        "fromName": "SType",
+        "toName": "InventoryMode"
+      }
+    ],
+    "ignoreFields": [
+      "FPNo",
+      "LRes",
+      "DRes",
+      "TRes"
+    ]
+  },
+  "accountGroup": {
+    "sourceTable": "__SysGrpAcc__",
+    "targetSchema": "Finance",
+    "hasFpId": false,
+    "fields": [
+      {
+        "fromName": "AccDesc",
+        "toName": "Description"
+      },
+      {
+        "fromName": "SType",
+        "toName": "InventoryMode"
+      },
+      {
+        "fromName": "Categ",
+        "toName": "Category"
+      }
+    ],
+    "ignoreFields": []
+  }
+}
