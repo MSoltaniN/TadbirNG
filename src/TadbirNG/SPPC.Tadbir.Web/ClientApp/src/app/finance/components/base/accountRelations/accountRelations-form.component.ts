@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, ElementRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -111,8 +111,8 @@ export class AccountRelationsFormComponent extends DetailComponent {
   //Events
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService) {
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.AccountRelations, undefined);
+    private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService,public elem:ElementRef) {
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.AccountRelations, undefined,elem);
   }
 
   getApiUrl() {

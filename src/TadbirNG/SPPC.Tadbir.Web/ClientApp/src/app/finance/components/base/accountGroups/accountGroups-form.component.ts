@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, OnInit, ElementRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -74,9 +74,9 @@ export class AccountGroupsFormComponent extends DetailComponent implements OnIni
   //Events
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
-    public renderer: Renderer2, public metadata: MetaDataService, public bStorageService: BrowserStorageService) {
+    public renderer: Renderer2, public metadata: MetaDataService, public bStorageService: BrowserStorageService,public elem:ElementRef) {
 
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.AccountGroup, ViewName.AccountGroup);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.AccountGroup, ViewName.AccountGroup,elem);
   }
 
   ngOnInit() {

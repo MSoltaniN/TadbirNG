@@ -80,9 +80,9 @@ export class CurrencyFormComponent extends DetailComponent implements OnInit {
   //Events
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public lookupService: LookupService, public currencyService: CurrencyService, public renderer: Renderer2, public metadata: MetaDataService) {
+    public lookupService: LookupService, public currencyService: CurrencyService, public renderer: Renderer2, public metadata: MetaDataService,public elem:ElementRef) {
 
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.VoucherLine, ViewName.Currency);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.VoucherLine, ViewName.Currency,elem);
 
   }
 

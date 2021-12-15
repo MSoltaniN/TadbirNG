@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, ElementRef } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { RowArgs } from '@progress/kendo-angular-grid';
 import { TranslateService } from '@ngx-translate/core';
@@ -215,9 +215,9 @@ export class RoleFormComponent extends DetailComponent {
 
   constructor(public bStorageService: BrowserStorageService,
     public toastrService: ToastrService, public translate: TranslateService,
-    public renderer: Renderer2, public metadata: MetaDataService) {
+    public renderer: Renderer2, public metadata: MetaDataService,public elem:ElementRef) {
 
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Role, ViewName.Role);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Role, ViewName.Role,elem);
   }
 
 

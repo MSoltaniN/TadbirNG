@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ChangeDetectorRef, NgZone, ViewChild } from '@angular/core';
+import { Component, OnInit, Renderer2, ChangeDetectorRef, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
@@ -40,11 +40,11 @@ export class ProjectComponent extends AutoGridExplorerComponent<Project> impleme
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
-    public cdref: ChangeDetectorRef, public ngZone: NgZone) {
+    public cdref: ChangeDetectorRef, public ngZone: NgZone,public elem:ElementRef) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.Project,
       "Project.LedgerProject", "Project.EditorTitleNew", "Project.EditorTitleEdit",
       ProjectApi.EnvironmentProjects, ProjectApi.RootProjects, ProjectApi.Project, ProjectApi.ProjectChildren, ProjectApi.NewChildProject,
-      cdref, ngZone)
+      cdref, ngZone,elem)
   }
 
   ngOnInit(): void {

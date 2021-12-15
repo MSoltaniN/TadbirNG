@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2, Host, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, Host, OnInit, ElementRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -112,8 +112,8 @@ export class CostCenterFormComponent extends DetailComponent implements OnInit {
   }
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public renderer: Renderer2, public metadata: MetaDataService) {
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.CostCenter, ViewName.CostCenter);
+    public renderer: Renderer2, public metadata: MetaDataService,public elem:ElementRef) {
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.CostCenter, ViewName.CostCenter,elem);
   }
 
 

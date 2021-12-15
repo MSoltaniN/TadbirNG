@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -78,9 +78,9 @@ export class UserFormComponent extends DetailComponent {
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public renderer: Renderer2, public metadata: MetaDataService) {
+    public renderer: Renderer2, public metadata: MetaDataService,public elem:ElementRef) {
 
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.User, ViewName.User);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.User, ViewName.User,elem);
   }
 
 }

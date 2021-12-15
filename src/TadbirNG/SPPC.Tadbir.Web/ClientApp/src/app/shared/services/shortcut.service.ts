@@ -41,20 +41,20 @@ export class ShortcutService {
     matchKeys[3] = '1';
 
     var it = command.hotKey.toLowerCase();
-    if (it.indexOf('ctrl') >= 0) {
+    if (this.isExactMatch(it,'ctrl')) {
       keys[0] = '1';
     }
 
-    if (it.indexOf('alt') >= 0) {
+    if (this.isExactMatch(it,'alt')) {
       keys[1] = '1';
     }
        
-    if (it.indexOf('shift') >= 0) {
+    if (this.isExactMatch(it,'shift')) {
       keys[2] = '1';
     }
     
     var onlykey = it.replace('alt','').replace('ctrl','').replace('shift','');
-    if (onlykey.indexOf(key) >= 0)
+    if (this.isExactMatch(onlykey,key))
     {
       keys[3] = '1';
     }      
@@ -66,6 +66,14 @@ export class ShortcutService {
     {
       return command;
     }
+  }
+
+  escapeRegExpMatch = function(s) {
+    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  };
+  
+  isExactMatch = (str, match) => {
+    return new RegExp(`\\b${this.escapeRegExpMatch(match)}\\b`).test(str)
   }
 }
 

@@ -1,5 +1,5 @@
 import { DetailComponent, BaseComponent } from "@sppc/shared/class";
-import { OnInit, Renderer2, Component, ViewChild, Output, EventEmitter } from "@angular/core";
+import { OnInit, Renderer2, Component, ViewChild, Output, EventEmitter, ElementRef } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "@ngx-translate/core";
 import { BrowserStorageService, MetaDataService } from "@sppc/shared/services";
@@ -39,9 +39,9 @@ export class ProfitLostLabelsComponent extends DetailComponent implements OnInit
 
   constructor(public bStorageService: BrowserStorageService,
     public toastrService: ToastrService, public translate: TranslateService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService:SettingService) {
+    public renderer: Renderer2, public metadata: MetaDataService, public settingService:SettingService,public elem:ElementRef) {
 
-    super(toastrService, translate, bStorageService, renderer, metadata,'',0);
+    super(toastrService, translate, bStorageService, renderer, metadata,'',0,elem);
   }
 
   ngOnInit(): void {

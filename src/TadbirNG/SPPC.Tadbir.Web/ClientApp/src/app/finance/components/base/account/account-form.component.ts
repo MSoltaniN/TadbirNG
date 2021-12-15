@@ -181,8 +181,8 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   accountHolders: FormArray;
 
   constructor(private accountService: AccountService, public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
-    public renderer: Renderer2, public metadata: MetaDataService, public bStorageService: BrowserStorageService, public formBuilder: FormBuilder) {
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Account, ViewName.Account);
+    public renderer: Renderer2, public metadata: MetaDataService, public bStorageService: BrowserStorageService, public formBuilder: FormBuilder,public elem:ElementRef) {
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Account, ViewName.Account,elem);
   }
 
 

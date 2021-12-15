@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Renderer2, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Renderer2, ChangeDetectorRef, NgZone, ElementRef } from '@angular/core';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
@@ -56,9 +56,9 @@ export class QuickReportPageSettingComponent extends DetailComponent implements 
 
   constructor(public bStorageService: BrowserStorageService,
     public toastrService: ToastrService, public translate: TranslateService,
-    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
+    public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService,public elem:ElementRef) {
 
-    super(toastrService, translate, bStorageService, renderer, metadata, '', 0);
+    super(toastrService, translate, bStorageService, renderer, metadata, '', 0,elem);
   }
 
   ngOnInit() {

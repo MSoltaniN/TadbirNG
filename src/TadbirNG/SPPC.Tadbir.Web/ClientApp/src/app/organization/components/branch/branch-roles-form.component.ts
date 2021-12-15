@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, OnInit, ElementRef } from '@angular/core';
 import { RowArgs } from '@progress/kendo-angular-grid';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -48,8 +48,8 @@ export class BranchRolesFormComponent extends DetailComponent implements OnInit 
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public renderer: Renderer2, public metadata: MetaDataService, public branchService: BranchService) {
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Branch, ViewName.Branch);
+    public renderer: Renderer2, public metadata: MetaDataService, public branchService: BranchService,public elem:ElementRef) {
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Branch, ViewName.Branch,elem);
   }
 
   ngOnInit() {

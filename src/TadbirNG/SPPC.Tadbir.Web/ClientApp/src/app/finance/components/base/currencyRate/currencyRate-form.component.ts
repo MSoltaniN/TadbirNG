@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, OnInit, ElementRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { DetailComponent } from '@sppc/shared/class';
@@ -59,9 +59,9 @@ export class CurrencyRateFormComponent extends DetailComponent implements OnInit
   //Events
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public lookupService: LookupService, public currencyService: CurrencyService, public renderer: Renderer2, public metadata: MetaDataService) {
+    public lookupService: LookupService, public currencyService: CurrencyService, public renderer: Renderer2, public metadata: MetaDataService,public elem:ElementRef) {
 
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.CurrencyRate, ViewName.CurrencyRate);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.CurrencyRate, ViewName.CurrencyRate,elem);
 
   }
 

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2,  OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2,  OnInit, ElementRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -113,8 +113,8 @@ export class DetailAccountFormComponent extends DetailComponent implements OnIni
   }
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public renderer: Renderer2, public metadata: MetaDataService, public lookupService: LookupService) {
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.DetailAccount, ViewName.DetailAccount);
+    public renderer: Renderer2, public metadata: MetaDataService, public lookupService: LookupService,public elem:ElementRef) {
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.DetailAccount, ViewName.DetailAccount,elem);
   }
 
   getCurrencies() {

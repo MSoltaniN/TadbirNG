@@ -18,7 +18,7 @@
             [ngStyle]="{'display':searchActiveMenu(cmd.id) === true ? 'block':'none' }">
           <li *ngFor="let innerCmd of cmd.children;" [ngClass]="{'treeview' : innerCmd.routeUrl == null,'active':innerCmd.routeUrl === this.currentRoute}">
             <!--<a [routerLink]="innerCmd.routeUrl ? [innerCmd.routeUrl] : []">-->
-            <a href="javascript:;" (click)="onClickMenu(innerCmd)">
+            <a class='sh-{{innerCmd.id}}' href="javascript:;" (click)="onClickMenu(innerCmd)">
               <span class="glyphicon glyphicon-{{innerCmd.iconName}}"></span>
               <span class="menuitem child" title="{{innerCmd.hotKey}}" >
                 {{
@@ -33,7 +33,7 @@
                 *ngIf="innerCmd.children.length > 0" [ngStyle]="{'display':searchActiveMenu(innerCmd.id) === true ? 'block':'none' }">
               <li *ngFor="let cmd3 of innerCmd.children;" [ngClass]="{'treeview' : cmd3.routeUrl == null,'active':cmd3.routeUrl === this.currentRoute}">
                 <!--<a [routerLink]="cmd3.routeUrl ? [cmd3.routeUrl] : []">-->
-                <a href="javascript:;" (click)="onClickMenu(cmd3)">
+                <a class='sh-{{cmd3.id}}' href="javascript:;" (click)="onClickMenu(cmd3)">
                   <span class="glyphicon glyphicon-{{cmd3.iconName}}"></span>
                   <span class="menuitem child" title="{{cmd3.hotKey}}">
                     {{ cmd3.title }}
@@ -46,7 +46,7 @@
                     *ngIf="cmd3.children.length > 0" [ngStyle]="{'display':searchActiveMenu(cmd3.id) === true ? 'block':'none' }">
                   <li *ngFor="let cmd4 of cmd3.children;" [ngClass]="{'active':cmd4.routeUrl === this.currentRoute,'active':cmd4.routeUrl === this.currentRoute}">
                     <!--<a [routerLink]="cmd4.routeUrl ? [cmd4.routeUrl] : []">-->
-                    <a href="javascript:;" (click)="onClickMenu(cmd4)">
+                    <a class='sh-{{cmd4.id}}' href="javascript:;" (click)="onClickMenu(cmd4)">
                       <span class="glyphicon glyphicon-{{cmd4.iconName}}"></span>
                       <span class="menuitem child" title="{{cmd4.hotKey}}">
                         {{ cmd4.title }}

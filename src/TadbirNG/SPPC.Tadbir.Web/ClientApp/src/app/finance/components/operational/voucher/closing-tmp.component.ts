@@ -43,8 +43,8 @@ export class ClosingTmpComponent extends DetailComponent implements OnInit {
   @Output() dataChanged: EventEmitter<any> = new EventEmitter();
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public renderer: Renderer2, public metadata: MetaDataService, public lookupService: LookupService) {
-    super(toastrService, translate, bStorageService, renderer, metadata,'',0);
+    public renderer: Renderer2, public metadata: MetaDataService, public lookupService: LookupService,public elem:ElementRef) {
+    super(toastrService, translate, bStorageService, renderer, metadata,'',0,elem);
   }
 
   ngOnInit(): void {    

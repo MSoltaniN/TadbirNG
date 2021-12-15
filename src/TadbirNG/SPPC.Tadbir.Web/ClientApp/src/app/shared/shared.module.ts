@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders, ErrorHandler } from '@angular/core';
+import { NgModule, ModuleWithProviders, ErrorHandler, ElementRef } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';

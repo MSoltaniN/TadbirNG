@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, Host, ElementRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -86,8 +86,8 @@ export class ViewRowPermissionSingleFormComponent extends DetailComponent {
   }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
-      public viewRowPermissionService: ViewRowPermissionService, public bStorageService: BrowserStorageService) {
-      super(toastrService, translate, bStorageService, renderer, metadata, Entities.RowAccess, undefined);
+      public viewRowPermissionService: ViewRowPermissionService, public bStorageService: BrowserStorageService,public elem:ElementRef) {
+      super(toastrService, translate, bStorageService, renderer, metadata, Entities.RowAccess, undefined,elem);
 
         this.getCategories();
     }

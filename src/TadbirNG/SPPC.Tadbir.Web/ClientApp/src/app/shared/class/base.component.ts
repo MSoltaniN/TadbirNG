@@ -4,7 +4,6 @@ import { BrowserStorageService } from '@sppc/shared/services/browserStorage.serv
 import { MessageType, MessagePosition } from '@sppc/shared/enum/metadata';
 import { MessageBoxService } from '@sppc/shared/services/message.service';
 import { ServiceLocator } from '@sppc/service.locator';
-import { Renderer2 } from '@angular/core';
 
 
 export class BaseComponent extends EnviromentComponent {
@@ -22,6 +21,8 @@ export class BaseComponent extends EnviromentComponent {
   public deleteConfirmMsg: string;
 
   private messageBoxService: MessageBoxService;
+
+  selector:string;
 
   //private elref: ElementRef;
 
@@ -42,36 +43,105 @@ export class BaseComponent extends EnviromentComponent {
 
   ////#region Shortcut methods 
 
-  executeClickEvent(className)
-  {    
-    var activeElement = document.activeElement;
-    var elements = activeElement.getElementsByClassName(className);
+  //execute click of an element within internal element
+  internalExecuteClickEvent(className)
+  { 
+    var activeElement = document.querySelector(this.selector);
+    var elements = activeElement.getElementsByClassName(className);    
     if(elements.length > 0)
     {
       var element = <any> elements[0];      
+      if(element.hasAttribute('hidden') || element.hasAttribute('disabled'))
+        return;
+
+      element.click();
+    }
+  }
+
+  //execute click of an element within document
+  globalExecuteClickEvent(className)
+  {           
+    var elements = document.getElementsByClassName(className);    
+    if(elements.length > 0)
+    {
+      var element = <any> elements[0];      
+      if(element.hasAttribute('hidden') || element.hasAttribute('disabled'))
+        return;
+
       element.click();
     }
   }
 
   /** این متد برای اجرا توسط شورت کات های عمومی برنامه نوشته شده است - از جدول ShortcutCommand استفاده میشود */
-  exportToExcel()
+  sh_exportToExcel()
   {
-    this.executeClickEvent('export-excel');    
+    this.internalExecuteClickEvent('sh-export-excel');    
   }
 
-  openAdvanceFilter()
+  sh_openAdvanceFilter()
   {
-    this.executeClickEvent('advance-filter');    
+    this.internalExecuteClickEvent('sh-advance-filter');    
   }
 
-  openReportSetting()
+  sh_openReportSetting()
   {
-    this.executeClickEvent('report-setting');    
+    this.internalExecuteClickEvent('sh-report-setting');    
   }
 
-  print()
+  sh_print()
   {
-    this.executeClickEvent('print');    
+    this.internalExecuteClickEvent('sh-print');    
+  }
+
+  sh_openNewDialog()
+  {
+    this.internalExecuteClickEvent('sh-sh-add-button');    
+  }
+
+  sh_openEditDialog()
+  {
+    this.internalExecuteClickEvent('sh-edit-button');    
+  }
+
+  sh_delete()
+  {
+    this.internalExecuteClickEvent('sh-remove-button');    
+  }
+
+  sh_executeFilter()
+  {
+    this.internalExecuteClickEvent('sh-execute-filter');    
+  }
+
+  sh_removeFilter()
+  {
+    this.internalExecuteClickEvent('sh-remove-filter');    
+  }
+
+  sh_newVoucher()
+  {
+    this.internalExecuteClickEvent('sh-new-voucher');    
+  }
+
+  sh_removeVoucher()
+  {
+    this.internalExecuteClickEvent('sh-remove-voucher');    
+  }  
+
+  sh_checkVoucher()
+  {
+    this.internalExecuteClickEvent('sh-check-voucher');    
+  }
+
+  sh_unCheckVoucher()
+  {
+    this.internalExecuteClickEvent('sh-uncheck-voucher');    
+  }
+
+  /** open report management form */
+  sh_openReportManager()
+  {
+    this.globalExecuteClickEvent('sh-38');    
   }
 
   ////#endregion
