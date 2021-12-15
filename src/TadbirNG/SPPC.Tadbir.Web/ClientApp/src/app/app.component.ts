@@ -1,4 +1,4 @@
-import { Component, Inject, AfterViewInit, OnInit, HostListener, ChangeDetectorRef, Renderer, ViewChildren, QueryList } from '@angular/core';
+import { Component, Inject, AfterViewInit, OnInit, HostListener, ChangeDetectorRef, Renderer, ViewChildren, QueryList, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
@@ -7,8 +7,9 @@ import { BrowserStorageService } from '@sppc/shared/services';
 import { UserService } from '@sppc/admin/service';
 import { Command } from '@sppc/shared/models';
 import { ShareDataService } from '@sppc/shared/services/share-data.service';
-import { DialogComponent, DialogService } from '@progress/kendo-angular-dialog';
 import { ShortcutService } from '@sppc/shared/services/shortcut.service';
+import { ShortcutCommand } from './shared/models/shortcutCommand';
+import { ServiceLocator } from '@sppc/service.locator';
 
 declare var $: any;
 declare var Stimulsoft: any;
@@ -54,6 +55,8 @@ export class AppComponent implements AfterViewInit, OnInit {
   public isRtl: boolean;
   public lang: string = '';
 
+  scopeService: ShareDataService;  
+
   ngOnInit() {
 
     //load fonts
@@ -76,6 +79,34 @@ export class AppComponent implements AfterViewInit, OnInit {
     //Stimulsoft.System.Drawing.FontStyle.Italic
 
     this.registerFunctions();
+
+    this.manageComponentScopes();
+  }
+
+  manageComponentScopes()
+  {
+    this.scopeService = ServiceLocator.injector.get(ShareDataService);
+    
+    this.scopeService.getScope().subscribe((component) => {      
+      if (component) {
+        var componentName = component.constructor.name;
+        if(ShareDataService.exceptionComponents.findIndex(s=>s == componentName) == -1
+        && ShareDataService.components.findIndex(s=>s.constructor.name == componentName) == -1)
+          ShareDataService.components.unshift(component);
+      }
+      else
+      {
+        if(ShareDataService.removedComponent)
+        {
+            var findIndex = ShareDataService.components.findIndex(s=>s.constructor.name == ShareDataService.removedComponent.constructor.name);
+            if(findIndex >= 0)
+            {
+              ShareDataService.removedComponent = undefined;
+              ShareDataService.components.splice(findIndex,1)
+            }
+        }     
+      }
+    })
   }
 
   registerFunctions() {
@@ -106,7 +137,8 @@ export class AppComponent implements AfterViewInit, OnInit {
     public userService: UserService,
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer,
-    private shortcutService:ShortcutService) {       
+    private shortcutService:ShortcutService,
+    public elem:ElementRef) {       
 
     //#region init Lang    
 
@@ -214,34 +246,129 @@ export class AppComponent implements AfterViewInit, OnInit {
   @HostListener('window:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     //if kendodialog is activated on screen exit from function
-    if(this.document.getElementsByTagName('kendo-dialog').length > 0)
-      return;
+    
 
-    if (event.key != "Control" && event.key != "Shift" && event.key != "Alt") {
-      
+    this.replaceBadCharacters(event);
+
+    if (event.key != "Control" && event.key != "Shift" && event.key != "Alt") {      
 
       var ctrl = event.ctrlKey ? true : false;
       var shift = event.shiftKey ? true : false;
       var alt = event.altKey ? true : false;
+      var activeComponents = new Array();
 
       if (event.code) {
+        var result = false;
+        var activeElement = document.activeElement;
+        var dialog = null;
 
-        var key = event.code.replace('Key', '').toLowerCase();
+        if(activeElement.tagName.toLowerCase() == "kendo-dialog")
+          dialog = activeElement
+        else
+          dialog = (<any>document.activeElement.parentNode).closest('kendo-dialog');
 
-        var menus = this.bStorageService.getMenu();
-        if (menus) {
-          this.menuList = JSON.parse(menus);
-          var command = this.searchHotKey(ctrl, shift, alt, key, this.menuList);
-          if (command) {
-            var url = command.routeUrl;
-            this.router.navigate([url]);
+        if(dialog)
+        {          
+          var components = ShareDataService.components; 
+          var selectors = "";
+          components.forEach((item)=>{
+            if(dialog.querySelector(item.selector))
+            {
+              selectors += item.selector + ",";
+            }            
+          });
 
-            event.preventDefault();
+          selectors = selectors.substring(0,selectors.length - 1);
+          
+          var elements = dialog.querySelectorAll(selectors);
+          if(elements.length > 0)
+          {
+            var parentSelector = elements[0].tagName;
+            var index = components.findIndex(c=>c.selector.toLowerCase() == parentSelector.toLowerCase());
+            activeComponents.push(components[index]);
           }
         }
+        else
+        {
+          result = this.checkKeysForNavigate(ctrl,shift,alt,event.code);
+          activeComponents = ShareDataService.components;
+        }        
+        
+        if(!result)
+        {
+          this.checkKeysForCommand(ctrl,shift,alt,event.code,activeComponents);
+        }
+      }
+
+    }  
+  }  
+
+  checkKeysForNavigate(ctrl,shift,alt,code):boolean
+  {
+    var key = code.replace('Key', '').toLowerCase();
+
+    var menus = this.bStorageService.getMenu();
+    if (menus) {
+      this.menuList = JSON.parse(menus);
+      var command = this.searchHotKey(ctrl, shift, alt, key, this.menuList);
+      if (command) {
+        var url = command.routeUrl;
+        this.router.navigate([url]);
+
+        event.preventDefault();
+
+        return true;
       }
     }
 
+    return false;
+  }
+
+  checkKeysForCommand(ctrl,shift,alt,code,activeComponents)
+  {
+    var key = code.replace('Key', '').toLowerCase();
+    var shortcuts: ShortcutCommand[];
+    shortcuts = JSON.parse(this.bStorageService.getShortcut())
+    var shortcutCommand = this.shortcutService.searchShortcutCommand(ctrl, shift, alt, key, shortcuts);
+    if (shortcutCommand) {          
+      if(shortcutCommand.scope)
+      {       
+        var scopeIndex = -1;       
+        if(shortcutCommand.scope.indexOf(",") == -1)
+        { 
+          scopeIndex = activeComponents.findIndex(f=>
+            (<any>f).constructor.name.toLowerCase() == shortcutCommand.scope.toLowerCase() 
+          || ((<any>f).constructor.__proto__ != null && (<any>f).constructor.__proto__.name.toLowerCase() == shortcutCommand.scope.toLowerCase())
+          || ((<any>f).constructor.__proto__.__proto__ != null && (<any>f).constructor.__proto__.__proto__.name.toLowerCase() == shortcutCommand.scope.toLowerCase()));          
+        }
+        else
+        {    
+          var scopes = shortcutCommand.scope.toLowerCase().split(",");
+          scopeIndex = activeComponents.findIndex(f=>
+            scopes.findIndex(a=>a == (<any>f).constructor.name.toLowerCase()) >= 0
+          || ((<any>f).constructor.__proto__ != null && scopes.findIndex(a=>a == (<any>f).constructor.__proto__.name.toLowerCase())) >= 0
+          || ((<any>f).constructor.__proto__.__proto__ != null && scopes.findIndex(a=>a == (<any>f).constructor.__proto__.__proto__.name.toLowerCase())) >= 0);          
+        }
+        
+        if(scopeIndex >= 0)
+        {
+          
+          var component = activeComponents[scopeIndex]; 
+          component[shortcutCommand.method]();
+          event.preventDefault();
+          
+        }        
+      }
+      // else
+      // {            
+      //   this[shortcutCommand.method]();
+      //   event.preventDefault();
+      // }
+    }
+  }
+
+  replaceBadCharacters(event)
+  {
     var element: any = event.target;
     if ((event.key == 'ي') || (event.key == 'ك') && (element.parentNode.className == 'k-filtercell-wrapper')) {      
 
@@ -250,9 +377,7 @@ export class AppComponent implements AfterViewInit, OnInit {
       });          
 
     }
-
-
-  }  
+  }
 
   /**
    * برای جستجو در شورت کات های منو بکار میرود

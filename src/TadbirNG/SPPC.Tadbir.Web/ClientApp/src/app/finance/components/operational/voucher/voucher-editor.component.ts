@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer2, Output, EventEmitter, DebugElement, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Renderer2, Output, EventEmitter, DebugElement, ViewChild, ElementRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -119,9 +119,9 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
   constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
     public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService,
-    public bStorageService: BrowserStorageService, public errorHandlingService: ErrorHandlingService) {
+    public bStorageService: BrowserStorageService, public errorHandlingService: ErrorHandlingService,public elem:ElementRef) {
 
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Voucher, ViewName.Voucher);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Voucher, ViewName.Voucher,elem);
 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }

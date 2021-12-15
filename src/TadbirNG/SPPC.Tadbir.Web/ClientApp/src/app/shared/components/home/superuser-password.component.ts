@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Renderer2 } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Renderer2, ElementRef } from '@angular/core';
 import { DetailComponent } from '@sppc/shared/class/detail.component';
 import { BrowserStorageService, MetaDataService, ErrorHandlingService } from '@sppc/shared/services';
 import { TranslateService } from '@ngx-translate/core';
@@ -23,9 +23,10 @@ export class SuperuserPasswordComponent extends DetailComponent implements OnIni
 
   constructor(public bStorageService: BrowserStorageService,
     public toastrService: ToastrService, public translate: TranslateService,
-    public renderer: Renderer2, public metadata: MetaDataService, public authService: AuthenticationService, public errorHandlingService: ErrorHandlingService) {
+    public renderer: Renderer2, public metadata: MetaDataService, 
+    public authService: AuthenticationService, public errorHandlingService: ErrorHandlingService,public elem:ElementRef) {
 
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.None, ViewName.None);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.None, ViewName.None,elem);
   }
 
   ngOnInit() {

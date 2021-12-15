@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, OnInit, ElementRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -43,9 +43,9 @@ export class CompanyFormComponent extends DetailComponent implements OnInit {
   @Output() save: EventEmitter<CompanyDb> = new EventEmitter();
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public renderer: Renderer2, public metadata: MetaDataService) {
+    public renderer: Renderer2, public metadata: MetaDataService,public elem:ElementRef) {
 
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Company, ViewName.Company);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Company, ViewName.Company,elem);
   }
 
   ngOnInit(): void {

@@ -21,11 +21,11 @@
       <div class="row">
         <div class="col-xs-12 sppc-float" style="margin-top: 5px;">
 
-          <button class="k-button" title="{{ 'Voucher.NewVoucher' | translate }}" SppcPermissionCheck="Create" [EntityName]="entityNamePermission" (sppcClick)="voucherOperation(voucherOperationsItem.New)">
+          <button class="k-button sh-new-voucher" title="{{ 'Voucher.NewVoucher' | translate }}" SppcPermissionCheck="Create" [EntityName]="entityNamePermission" (sppcClick)="voucherOperation(voucherOperationsItem.New)">
             <span class="k-icon k-i-file-add"></span>
           </button>
 
-          <button SppcPermissionCheck="Delete" [EntityName]="entityNamePermission" (sppcClick)="removeHandler()" class="k-button k-button-icon" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+          <button SppcPermissionCheck="Delete" [EntityName]="entityNamePermission" (sppcClick)="removeHandler()" class="k-button k-button-icon sh-remove-voucher" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
 
           <button class="k-button" title="{{ 'Voucher.SearchVoucher' | translate }}" (click)="voucherOperation(voucherOperationsItem.Search)">
             <span class="k-icon k-i-search"></span>
@@ -51,15 +51,15 @@
             <span class="k-icon k-i-save"></span>
           </button>
 
-          <button class="k-button" SppcPermissionCheck="Check" [EntityName]="entityNamePermission" (sppcClick)="voucherOperation(voucherOperationsItem.CheckVoucher)" [hidden]="!voucherModel || voucherModel.statusId > 1" title="{{ 'Voucher.Commit' | translate }}">
+          <button class="k-button sh-check-voucher" SppcPermissionCheck="Check" [EntityName]="entityNamePermission" (sppcClick)="voucherOperation(voucherOperationsItem.CheckVoucher)" [hidden]="!voucherModel || voucherModel.statusId > 1" title="{{ 'Voucher.Commit' | translate }}">
             <span class="k-icon k-i-check-outline"></span>
           </button>
 
-          <button class="k-button" SppcPermissionCheck="UndoCheck" [EntityName]="entityNamePermission" (sppcClick)="voucherOperation(voucherOperationsItem.CheckVoucher)" [hidden]="!voucherModel || voucherModel.statusId < 2" title="{{ 'Voucher.ReturnFromCommit' | translate }}">
+          <button class="k-button sh-uncheck-voucher" SppcPermissionCheck="UndoCheck" [EntityName]="entityNamePermission" (sppcClick)="voucherOperation(voucherOperationsItem.CheckVoucher)" [hidden]="!voucherModel || voucherModel.statusId < 2" title="{{ 'Voucher.ReturnFromCommit' | translate }}">
             <span class="k-icon k-i-close-outline"></span>
           </button>
 
-          <button kendoButton SppcPermissionCheck="Print" [EntityName]="entityNamePermission" (sppcClick)="showReport()" class="hidden-xs rm print" type="button" [icon]="'printer'"></button>
+          <button kendoButton SppcPermissionCheck="Print" [EntityName]="entityNamePermission" (sppcClick)="showReport()" class="hidden-xs rm print sh-print" type="button" [icon]="'printer'"></button>
 
           <button class="k-button k-button-icon sppc-float-diff" title="{{ 'Buttons.Help' | translate }}"><span class="k-icon k-i-help"></span></button>
         </div>

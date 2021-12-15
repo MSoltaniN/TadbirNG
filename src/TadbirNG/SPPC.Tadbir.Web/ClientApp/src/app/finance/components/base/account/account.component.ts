@@ -1,5 +1,5 @@
 //#region Imports
-import { Component, ChangeDetectorRef, NgZone, Renderer2, OnInit, ViewChild } from '@angular/core';
+import { Component, ChangeDetectorRef, NgZone, Renderer2, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
@@ -52,11 +52,11 @@ export class AccountComponent extends AutoGridExplorerComponent<Account> impleme
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
-    public cdref: ChangeDetectorRef, public ngZone: NgZone) {
+    public cdref: ChangeDetectorRef, public ngZone: NgZone,public elem:ElementRef) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.Account,
       "Account.LedgerAccount", "Account.EditorTitleNew", "Account.EditorTitleEdit",
       AccountApi.EnvironmentAccounts, AccountApi.LedgerAccounts, AccountApi.Account, AccountApi.AccountChildren,
-      AccountApi.NewChildAccount, cdref, ngZone)
+      AccountApi.NewChildAccount, cdref, ngZone,elem);
   }
 
 

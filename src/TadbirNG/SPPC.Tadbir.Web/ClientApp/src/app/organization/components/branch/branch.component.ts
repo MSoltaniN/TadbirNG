@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ChangeDetectorRef, NgZone, ViewChild } from '@angular/core';
+import { Component, OnInit, Renderer2, ChangeDetectorRef, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -52,11 +52,11 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
     public userService: UserService, private router: Router, private authenticationService: AuthenticationService, public branchService: BranchService,
-    public cdref: ChangeDetectorRef, public ngZone: NgZone, public errorHandlingService: ErrorHandlingService,public shareDataService:ShareDataService) {
+    public cdref: ChangeDetectorRef, public ngZone: NgZone, public errorHandlingService: ErrorHandlingService,public shareDataService:ShareDataService,public elem:ElementRef) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.Branch,
       "Branch.LedgerBranch", "", "",
       BranchApi.Branches, BranchApi.RootBranches, BranchApi.Branch, BranchApi.BranchChildren,
-      "", cdref, ngZone)
+      "", cdref, ngZone,elem)
   }
 
   ngOnInit() {

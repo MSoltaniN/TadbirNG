@@ -1,5 +1,5 @@
 import { BaseComponent } from "./base.component";
-import { Injectable, Renderer2, Optional, Inject, Host, Input, HostListener, OnInit, OnDestroy } from "@angular/core";
+import { Injectable, Renderer2, Optional, Inject, Host, Input, HostListener, OnInit, OnDestroy, ElementRef } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormControl, ValidatorFn, Validators, AsyncValidatorFn } from "@angular/forms";
@@ -35,7 +35,8 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     public renderer: Renderer2, private metadataService: MetaDataService,
-    @Optional() @Inject('empty') public entityType: string, @Optional() @Inject('empty') public viewId: number,public shortcutService?:ShortcutService) {
+    @Optional() @Inject('empty') public entityType: string, @Optional() @Inject('empty') public viewId: number,public elem:ElementRef,
+    public shortcutService?:ShortcutService) {
     super(toastrService, bStorageService);
    
     if (viewId > 0) {
@@ -47,12 +48,17 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
       else
         this.form = undefined;
       
-    }
+    }      
 
     this.errorMessages = [];
     this.shortcutService = ServiceLocator.injector.get(ShortcutService);
     this.localizeMsg();
     this.properties = new Map<string, Array<Property>>();
+
+    if(elem)   
+    { 
+      this.selector = elem.nativeElement.tagName.toLowerCase();     
+    }
 
     this.scopeService = ServiceLocator.injector.get(ShareDataService);
     this.scopeService.setScope(this);
@@ -197,45 +203,45 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
    * برای هندل کردن شورکات های که به یک متد خاص متصل میباشند
    * @param event
    */
-   @HostListener('window:keydown', [])
-   handleKeyboardEvent() {
-     var event: KeyboardEvent = <KeyboardEvent> window.event;
+  //  @HostListener('window:keydown', [])
+  //  handleKeyboardEvent() {
+  //    var event: KeyboardEvent = <KeyboardEvent> window.event;
      
-     if (event.key != "Control" && event.key != "Shift" && event.key != "Alt") {
+  //    if (event.key != "Control" && event.key != "Shift" && event.key != "Alt") {
  
-       var ctrl = event.ctrlKey ? true : false;
-       var shift = event.shiftKey ? true : false;
-       var alt = event.altKey ? true : false;
+  //      var ctrl = event.ctrlKey ? true : false;
+  //      var shift = event.shiftKey ? true : false;
+  //      var alt = event.altKey ? true : false;
  
-       if (event.code) {
-         var key = event.code.replace('Key', '').toLowerCase();
-         var shortcuts: ShortcutCommand[];
-         shortcuts = JSON.parse(this.bStorageService.getShortcut())
-         var shortcutCommand = this.shortcutService.searchShortcutCommand(ctrl, shift, alt, key, shortcuts);
-         if (shortcutCommand) {          
-           if(shortcutCommand.scope)
-           {              
-             var scopeIndex = ShareDataService.components.findIndex(f=>f.constructor.name.toLowerCase() == shortcutCommand.scope.toLowerCase());
-             if(scopeIndex >= 0)
-             {
+  //      if (event.code) {
+  //        var key = event.code.replace('Key', '').toLowerCase();
+  //        var shortcuts: ShortcutCommand[];
+  //        shortcuts = JSON.parse(this.bStorageService.getShortcut())
+  //        var shortcutCommand = this.shortcutService.searchShortcutCommand(ctrl, shift, alt, key, shortcuts);
+  //        if (shortcutCommand) {          
+  //          if(shortcutCommand.scope)
+  //          {              
+  //            var scopeIndex = ShareDataService.components.findIndex(f=>f.constructor.name.toLowerCase() == shortcutCommand.scope.toLowerCase());
+  //            if(scopeIndex >= 0)
+  //            {
                
-               var component = ShareDataService.components[scopeIndex];              
-               if(this.constructor.name == component.constructor.name)
-               {
-                 component[shortcutCommand.method]();
-                 event.preventDefault();
-               }
-             }
-           }
-           else
-           {            
-             this[shortcutCommand.method]();
-             event.preventDefault();
-           }
-         }
-       }
-     }    
-   }
+  //              var component = ShareDataService.components[scopeIndex];              
+  //              if(this.constructor.name == component.constructor.name)
+  //              {
+  //                component[shortcutCommand.method]();
+  //                event.preventDefault();
+  //              }
+  //            }
+  //          }
+  //          else
+  //          {            
+  //            this[shortcutCommand.method]();
+  //            event.preventDefault();
+  //          }
+  //        }
+  //      }
+  //    }    
+  //  }
 
   
 

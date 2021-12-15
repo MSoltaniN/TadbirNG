@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, TemplateRef, Output, EventEmitter } from '@angular/core'
+import { Component, OnInit, Renderer2, TemplateRef, Output, EventEmitter, ElementRef } from '@angular/core'
 import { ControlContainer } from '@angular/forms'
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
@@ -74,8 +74,8 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
   //#endregion
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
-    public controlContainer: ControlContainer, private fullAccountService: FullAccountService, private dialogService: DialogService, public bStorageService: BrowserStorageService) {
-    super(toastrService, translate, bStorageService, renderer, metadata, '', undefined);
+    public controlContainer: ControlContainer, private fullAccountService: FullAccountService, private dialogService: DialogService, public bStorageService: BrowserStorageService,public elem:ElementRef) {
+    super(toastrService, translate, bStorageService, renderer, metadata, '', undefined,elem);
 
   }
 

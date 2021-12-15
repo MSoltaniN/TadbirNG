@@ -1,4 +1,4 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -60,8 +60,8 @@ export class ChangePasswordComponent extends DetailComponent {
 
   constructor(public toastrService: ToastrService, public translate: TranslateService,
     private userService: UserService, public renderer: Renderer2, public metadata: MetaDataService,
-    public bStorageService: BrowserStorageService, public errorHandlingService:ErrorHandlingService) {
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Password, ViewName.User);
+    public bStorageService: BrowserStorageService, public errorHandlingService:ErrorHandlingService,public elem:ElementRef) {
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Password, ViewName.User,elem);
 
     //if (localStorage.getItem('currentContext') != null) {
     //  var item: string | null;

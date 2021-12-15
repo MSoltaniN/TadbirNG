@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, ElementRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -110,8 +110,8 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
   //Events
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
-    public viewRowPermissionService: ViewRowPermissionService, public bStorageService: BrowserStorageService) {
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.RowAccess, undefined);
+    public viewRowPermissionService: ViewRowPermissionService, public bStorageService: BrowserStorageService,public elem:ElementRef) {
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.RowAccess, undefined,elem);
   }
 
   getFetchUrl() {

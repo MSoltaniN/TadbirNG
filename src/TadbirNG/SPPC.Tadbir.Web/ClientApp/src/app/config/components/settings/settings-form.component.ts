@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, ElementRef } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -95,8 +95,8 @@ export class SettingsFormComponent extends DetailComponent {
   @Output() updateList: EventEmitter<SettingBriefInfo> = new EventEmitter();
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public renderer: Renderer2, public metadata: MetaDataService) {
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Setting, undefined);
+    public renderer: Renderer2, public metadata: MetaDataService,public elem:ElementRef) {
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Setting, undefined,elem);
 
     this.ddlDateRanges = [
       { value: "Settings.DateRanges.FiscalStartToCurrent", key: DateRangeType.FiscalStartToCurrent },

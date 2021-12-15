@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ViewChild, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild, ChangeDetectorRef, NgZone, ElementRef } from '@angular/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
@@ -43,11 +43,11 @@ export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> i
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
-    public cdref: ChangeDetectorRef, public ngZone: NgZone) {
+    public cdref: ChangeDetectorRef, public ngZone: NgZone,public elem:ElementRef) {
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.CostCenter,
       "CostCenter.LedgerCostCenter", "CostCenter.EditorTitleNew", "CostCenter.EditorTitleEdit",
       CostCenterApi.EnvironmentCostCenters, CostCenterApi.RootCostCenters, CostCenterApi.CostCenter, CostCenterApi.CostCenterChildren,
-      CostCenterApi.NewChildCostCenter, cdref, ngZone)
+      CostCenterApi.NewChildCostCenter, cdref, ngZone,elem)
   }
 
   ngOnInit(): void {

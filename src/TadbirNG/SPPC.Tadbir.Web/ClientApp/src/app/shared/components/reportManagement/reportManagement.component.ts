@@ -22,6 +22,7 @@ import { ReportApi } from '@sppc/shared/services/api';
 import { OperationId } from '@sppc/shared/enum/operationId';
 import { QuickReportViewSetting } from './quickReportViewSetting';
 import { ServiceLocator } from '@sppc/service.locator';
+import { DateInputCustomMessagesComponent } from '@progress/kendo-angular-dateinputs';
 
 
 
@@ -69,6 +70,8 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
 
   treeData: any[];
   active: boolean = false;
+  activeElement:any;
+
   showReportDesigner: boolean = false;
   showReportViewer: boolean = false;
   showSaveAsDialog: boolean = false;
@@ -204,6 +207,7 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
   //متد نمایش گزارش فوری
   public showQuickReport(viewId: string, formParams: Array<ReportParamComponent>,
     filter: FilterExpression = null, sort: SortDescriptor[] = null, designJson: string, qrRowData: any, quickReportViewInfo: QuickReportConfigInfo, quickFilter: FilterExpression = null) {
+    this.activeElement = document.activeElement;
     this.active = true;
 
     if (viewId) {
@@ -227,7 +231,8 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
   }
 
   public showDialog(viewId: string = null, formParams: Array<ReportParamComponent> = null,
-    filter: FilterExpression = null, sort: SortDescriptor[] = null, treeMenuData: any = null) {
+    filter: FilterExpression = null, sort: SortDescriptor[] = null, treeMenuData: any = null,activeElement:any = null) {
+    this.activeElement = document.activeElement;
     this.active = true;
     if (viewId) {
       this.currentViewId = viewId;
@@ -851,8 +856,13 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
     this.deleteConfirm = true;
   }
 
-  closeDialog() {
+  closeDialog() {    
     this.active = false;
+    setTimeout(() => {
+      debugger;
+      this.activeElement.focus();
+    }, 0)
+    
   }
 
   /**

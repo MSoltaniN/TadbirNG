@@ -13,6 +13,8 @@ import { Command } from '@sppc/shared/models';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
 import { DialogService } from '@progress/kendo-angular-dialog';
 import { LicenseInfoComponent } from '../dashboard/license-info.component';
+import { ServiceLocator } from '@sppc/service.locator';
+import { ShareDataService } from '@sppc/shared/services/share-data.service';
 
 
 
@@ -34,12 +36,22 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
   versionTitle: string;
   @ViewChild('li') menuItems: Array<ElementRef>;
 
+  scopeService: ShareDataService;
+
   constructor(public toastrService: ToastrService, private authenticationService: AuthenticationService, public bStorageService: BrowserStorageService,
     public translate: TranslateService, public renderer2: Renderer2, public router: Router,
     public metadata: MetaDataService, public el: ElementRef, public settingService: SettingService,
-    public location: Location, private dialogService: DialogService) {
+    public location: Location, private dialogService: DialogService,public elem:ElementRef) {
 
     super(toastrService, translate, bStorageService, renderer2, metadata, settingService, '', undefined);
+
+    this.scopeService = ServiceLocator.injector.get(ShareDataService);
+    this.scopeService.setScope(this);
+
+    if(elem)    
+    {
+      this.selector = elem.nativeElement.tagName.toLowerCase();      
+    }
 
     var menus = this.bStorageService.getMenu()
 
@@ -107,7 +119,7 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
 
   onClickMenu(item: Command) {
     //for show report manager
-    if (item.routeUrl == '/tadbir/reports') {
+    if (item.routeUrl == '/tadbir/reports') {      
       this.reportManager.showDialog();
       return;
     }
