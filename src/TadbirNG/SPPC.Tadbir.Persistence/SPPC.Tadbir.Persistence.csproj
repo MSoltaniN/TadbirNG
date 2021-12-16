@@ -28,17 +28,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.11" />
-    <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="161.46521.71" />
-    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.Data.Odbc" Version="5.0.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Persistence\SPPC.Framework.Persistence.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Configuration\SPPC.Tadbir.Configuration.csproj" />
-    <ProjectReference Include="..\SPPC.Tadbir.CrossCutting\SPPC.Tadbir.CrossCutting.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Mapper\SPPC.Tadbir.Mapper.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Model\SPPC.Tadbir.Model.csproj" />

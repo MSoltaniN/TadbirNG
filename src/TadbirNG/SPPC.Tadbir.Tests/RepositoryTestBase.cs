@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Cryptography;
+using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence.Utility;

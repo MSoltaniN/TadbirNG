@@ -76,7 +76,11 @@ namespace SPPC.Tools.LicenseManager
             }
 
             License.CustomerId = Int32.Parse(cmbCustomer.SelectedValue.ToString());
-            License.LicenseKey = Guid.NewGuid().ToString();
+            if (String.IsNullOrEmpty(License.LicenseKey))
+            {
+                License.LicenseKey = Guid.NewGuid().ToString();
+            }
+
             return true;
         }
 

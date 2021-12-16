@@ -4,9 +4,8 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
-using SPPC.Framework.Persistence;
 
-namespace SPPC.Tadbir.Persistence
+namespace SPPC.Framework.Persistence
 {
     /// <summary>
     /// عملیات مورد نیاز برای ارتباط مستقیم با یک پایگاه داده ای اس کیو ال سرور را پیاده سازی می کند

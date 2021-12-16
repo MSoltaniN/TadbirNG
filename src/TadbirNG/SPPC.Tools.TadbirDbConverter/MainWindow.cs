@@ -11,7 +11,6 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.Persistence;
 
 namespace SPPC.Tools.TadbirDbConverter
 {

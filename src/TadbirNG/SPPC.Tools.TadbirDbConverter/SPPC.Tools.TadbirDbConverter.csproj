@@ -27,7 +27,6 @@
     <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj" />
     <ProjectReference Include="..\SPPC.Framework.Persistence\SPPC.Framework.Persistence.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Model\SPPC.Tadbir.Model.csproj" />
-    <ProjectReference Include="..\SPPC.Tadbir.Persistence\SPPC.Tadbir.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
