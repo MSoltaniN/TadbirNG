@@ -24,7 +24,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Cryptography\SPPC.Framework.Cryptography.csproj" />
     <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj" />
-    <ProjectReference Include="..\SPPC.Framework.Licensing\SPPC.Framework.Licensing.csproj" />
     <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj" />
   </ItemGroup>
 
