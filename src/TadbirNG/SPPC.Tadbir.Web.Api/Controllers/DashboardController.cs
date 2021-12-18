@@ -7,6 +7,7 @@ using Microsoft.Extensions.Localization;
 using SPPC.Framework.Helpers;
 using SPPC.Licensing.Model;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Common;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -24,13 +25,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         ///
         /// </summary>
         /// <param name="repository"></param>
+        /// <param name="pathProvider">مسیرهای فایل های کاربردی مورد نیاز سرویس وب را فراهم می کند</param>
         /// <param name="strings"></param>
         /// <param name="tokenManager"></param>
-        public DashboardController(IDashboardRepository repository,
+        public DashboardController(IDashboardRepository repository, IApiPathProvider pathProvider,
             IStringLocalizer<AppStrings> strings, ITokenManager tokenManager)
             : base(strings, tokenManager)
         {
             _repository = repository;
+            _pathProvider = pathProvider;
         }
 
         /// <summary>
@@ -56,7 +59,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(DashboardApi.LicenseInfoUrl)]
         public IActionResult GetLicenseInfo()
         {
-            string licenseData = System.IO.File.ReadAllText(_licensePath);
+            string licenseData = System.IO.File.ReadAllText(_pathProvider.License);
             var license = JsonHelper.To<LicenseFileModel>(licenseData);
             return Json(license);
         }
@@ -80,10 +83,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private readonly IDashboardRepository _repository;
-#if DEBUG
-        private readonly string _licensePath = @".\wwwroot\license.Development.json";
-#else
-        private readonly string _licensePath = @".\wwwroot\license";
-#endif
+        private readonly IApiPathProvider _pathProvider;
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -17,13 +15,10 @@ namespace SPPC.Licensing.Local.Web.Controllers
     [Produces("application/json")]
     public class LicenseController : Controller
     {
-        public LicenseController(IWebHostEnvironment host, IConfiguration configuration,
-            ILicenseUtility utility)
+        public LicenseController(IConfiguration configuration, ILicenseUtility utility)
         {
-            _webRoot = host.WebRootPath;
             _config = configuration;
             _utility = utility;
-            _utility.LicensePath = Path.Combine(_webRoot, Constants.LicenseFile);
         }
 
         // GET: api/license
@@ -181,7 +176,6 @@ namespace SPPC.Licensing.Local.Web.Controllers
             };
         }
 
-        private readonly string _webRoot;
         private readonly IConfiguration _config;
         private readonly ILicenseUtility _utility;
         private delegate LicenseStatus LicenseValidatorDelegate(string instance);

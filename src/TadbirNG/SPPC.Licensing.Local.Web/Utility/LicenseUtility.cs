@@ -9,6 +9,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Licensing;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
+using SPPC.Tadbir.Common;
 
 namespace SPPC.Tadbir.Licensing
 {
@@ -23,17 +24,14 @@ namespace SPPC.Tadbir.Licensing
         /// <param name="apiClient"></param>
         /// <param name="crypto">امکان انجام عملیات رمزنگاری متقارن را فراهم می کند</param>
         /// <param name="deviceId">امکان خواندن شناسه سخت افزاری را فراهم می کند</param>
-        public LicenseUtility(IApiClient apiClient, ICryptoService crypto, IDeviceIdProvider deviceId)
+        public LicenseUtility(IApiClient apiClient, ICryptoService crypto, IDeviceIdProvider deviceId,
+            ILicensePathProvider pathProvider)
         {
             _apiClient = apiClient;
             _crypto = crypto;
             _deviceId = deviceId;
+            _pathProvider = pathProvider;
         }
-
-        /// <summary>
-        /// مسیر فایل مجوز ایجاد شده پس از فعال سازی برنامه
-        /// </summary>
-        public string LicensePath { get; set; }
 
         /// <summary>
         /// به روش آسنکرون مجوز برنامه را فعالسازی می کند
@@ -244,12 +242,14 @@ namespace SPPC.Tadbir.Licensing
             return _crypto.VerifyData(apiLicenseBytes, signature, certificate);
         }
 
+        private string LicensePath
+        {
+            get { return _pathProvider.BinLicense; }
+        }
+
         private string CertificatePath
         {
-            get
-            {
-                return Path.Combine(Path.GetDirectoryName(LicensePath), Constants.CertificateFile);
-            }
+            get { return _pathProvider.Certificate; }
         }
 
         private async Task<string> GetActivatedLicenseAsync(ActivationModel activation)
@@ -469,6 +469,7 @@ namespace SPPC.Tadbir.Licensing
         private readonly IApiClient _apiClient;
         private readonly ICryptoService _crypto;
         private readonly IDeviceIdProvider _deviceId;
+        private readonly ILicensePathProvider _pathProvider;
         private readonly StringBuilder _log = new();
     }
 }

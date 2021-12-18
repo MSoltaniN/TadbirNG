@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using SPPC.Framework.Cryptography;
 using SPPC.Tadbir.Api;
-using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Common;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -31,19 +27,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="rateRepository"></param>
-        /// <param name="host"></param>
-        /// <param name="crypto"></param>
+        /// <param name="pathProvider"></param>
         /// <param name="strings"></param>
         /// <param name="tokenManager"></param>
         public CurrenciesController(ICurrencyRepository repository, ICurrencyRateRepository rateRepository,
-            IWebHostEnvironment host, ICryptoService crypto, IStringLocalizer<AppStrings> strings,
-            ITokenManager tokenManager)
+            IApiPathProvider pathProvider, IStringLocalizer<AppStrings> strings, ITokenManager tokenManager)
             : base(strings, tokenManager)
         {
             _repository = repository;
             _rateRepository = rateRepository;
-            _host = host;
-            _crypto = crypto;
+            _pathProvider = pathProvider;
         }
 
         /// <summary>
@@ -123,8 +116,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(CurrencyApi.CurrencyInfoByNameUrl)]
         public IActionResult GetCurrencyInfoByName(string nameKey)
         {
-            var path = GetLocalCurrencyDbPath();
-            var currency = _repository.GetCurrencyByName(path, nameKey);
+            var currency = _repository.GetCurrencyByName(_pathProvider.Currencies, nameKey);
             if (currency != null)
             {
                 currency.BranchId = SecurityContext.User.BranchId;
@@ -143,8 +135,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(CurrencyApi.CurrencyNamesLookupUrl)]
         public IActionResult GetCurrencyNamesLookup()
         {
-            var path = GetLocalCurrencyDbPath();
-            var currencyNames = _repository.GetCurrencyNamesLookup(path);
+            var currencyNames = _repository.GetCurrencyNamesLookup(_pathProvider.Currencies);
             Array.ForEach(currencyNames.ToArray(), name => name.Value = _strings[name.Value]);
             SetItemCount(currencyNames.Count);
             var sortedList = currencyNames
@@ -210,8 +201,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.Create)]
         public async Task<IActionResult> PostDefaultCurrencyAsync(string nameKey)
         {
-            var path = GetLocalCurrencyDbPath();
-            var currency = _repository.GetCurrencyByName(path, nameKey);
+            var currency = _repository.GetCurrencyByName(_pathProvider.Currencies, nameKey);
             currency.BranchId = SecurityContext.User.BranchId;
             currency.IsDefaultCurrency = true;
 
@@ -276,31 +266,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPost]
         [Route(CurrencyApi.TaxCurrenciesUrl)]
         [DisableRequestSizeLimit]
-        public async Task<IActionResult> PostTaxCurrenciesAsync()
+        public IActionResult PostTaxCurrencies()
         {
-            var file = Request.Form.Files[0];
-            string newPath = Path.Combine(_host.WebRootPath, AppConstants.UserUploadFolderName);
-            if (!Directory.Exists(newPath))
-            {
-                Directory.CreateDirectory(newPath);
-            }
-
-            if (file.Length > 0)
-            {
-                string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                string fullPath = Path.Combine(newPath, fileName);
-                using (var stream = new FileStream(fullPath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
-
-                var ticket = Request.Form[AppConstants.ContextHeaderName];
-                var context = SecurityContextFromTicket(ticket);
-                _repository.CompanyConnection = _crypto.Decrypt(context.User.Connection);
-                await _repository.UpdateTaxCurrenciesAsync(fullPath);
-            }
-
-            return Ok();
+            // NOTE: This functionality has been fundamentally wrong and is now disabled.
+            // Tax currencies must be either provided in CreateDbObjects script or imported
+            // from a data file (similar to what is done for states and cities of Iran)
+            return NotFound();
         }
 
         /// <summary>
@@ -541,14 +512,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private string GetLocalCurrencyDbPath()
-        {
-            return Path.Combine(_host.WebRootPath, "static", "currencies.json");
-        }
-
         private readonly ICurrencyRepository _repository;
         private readonly ICurrencyRateRepository _rateRepository;
-        private readonly IWebHostEnvironment _host;
-        private readonly ICryptoService _crypto;
+        private readonly IApiPathProvider _pathProvider;
     }
 }

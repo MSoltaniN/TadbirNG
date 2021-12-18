@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Licensing;
 using SPPC.Framework.Service;
+using SPPC.Tadbir.Common;
 using SPPC.Tadbir.Licensing;
 
 namespace SPPC.Licensing.Local.Web
@@ -50,6 +51,7 @@ namespace SPPC.Licensing.Local.Web
             });
             _services.AddTransient<ILicenseUtility, LicenseUtility>();
             _services.AddTransient<IDeviceIdProvider, DeviceIdProvider>();
+            _services.AddTransient<ILicensePathProvider, LicenseResourcePaths>();
         }
 
         private readonly IServiceCollection _services;

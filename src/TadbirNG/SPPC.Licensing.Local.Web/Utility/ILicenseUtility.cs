@@ -10,11 +10,6 @@ namespace SPPC.Tadbir.Licensing
     public interface ILicenseUtility
     {
         /// <summary>
-        /// مسیر فایل مجوز ایجاد شده پس از فعال سازی برنامه
-        /// </summary>
-        string LicensePath { get; set; }
-
-        /// <summary>
         /// به روش آسنکرون مجوز برنامه را فعالسازی می کند
         /// </summary>
         /// <param name="instance"></param>

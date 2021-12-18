@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
@@ -30,16 +29,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="system"></param>
         /// <param name="strings"></param>
         /// <param name="tokenManager"></param>
-        /// <param name="host"></param>
         public SettingsController(IConfigRepository repository, ILogConfigRepository log,
-            ISystemConfigRepository system, IWebHostEnvironment host, IStringLocalizer<AppStrings> strings,
+            ISystemConfigRepository system, IStringLocalizer<AppStrings> strings,
             ITokenManager tokenManager)
             : base(strings, tokenManager)
         {
             _repository = repository;
             _logRepository = log;
             _systemRepository = system;
-            _host = host;
         }
 
         /// <summary>
@@ -147,7 +144,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Settings));
             }
 
-            await _repository.SaveSystemConfigAsync(setting, _host.WebRootPath);
+            await _repository.SaveSystemConfigAsync(setting);
 
             return Ok();
         }
@@ -488,6 +485,5 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private readonly IConfigRepository _repository;
         private readonly ILogConfigRepository _logRepository;
         private readonly ISystemConfigRepository _systemRepository;
-        private readonly IWebHostEnvironment _host;
     }
 }
