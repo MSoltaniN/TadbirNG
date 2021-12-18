@@ -5473,5 +5473,52 @@ INSERT [Metadata].[ShortcutCommand] ([ShortcutCommandID], [PermissionID], [Name]
 SET IDENTITY_INSERT [Metadata].[ShortcutCommand] OFF
 
 
+-- 1.2.1319
+Update Metadata.Command set HotKey = 'Ctrl+Shift+A' where CommandID = 3
+
+Update Metadata.Command set HotKey = 'Ctrl+A' where CommandID = 4
+
+Update Metadata.Command set HotKey = 'Ctrl+Backquote' where CommandID = 5
+
+Update Metadata.Command set HotKey = 'Ctrl+E' where CommandID = 6
+
+Update Metadata.Command set HotKey = 'Ctrl+J' where CommandID = 7
+
+Update Metadata.Command set HotKey = 'Ctrl+D' where CommandID = 12
+
+Update Metadata.Command set HotKey = 'Ctrl+Z' where CommandID = 21
+
+Update Metadata.Command set HotKey = 'Ctrl+Q' where CommandID = 22
+
+Update Metadata.Command set HotKey = 'Ctrl+Alt+C' where CommandID = 24
+
+Update Metadata.Command set HotKey = 'Ctrl+B' where CommandID = 25
+
+Update Metadata.Command set HotKey = 'Ctrl+Alt+F' where CommandID = 26
+
+Update Metadata.Command set HotKey = 'Ctrl+Alt+H' where CommandID = 29
+
+Update Metadata.Command set HotKey = 'Ctrl+Shift+G' where CommandID = 40
+
+Update Metadata.Command set HotKey = 'Ctrl+Shift+S' where CommandID = 42
+
+Update Metadata.Command set HotKey = 'Ctrl+Shift+I' where CommandID = 43
+
+Update Metadata.Command set HotKey = 'Ctrl+Shift+B' where CommandID = 44
+
+Update Metadata.Command set HotKey = 'Ctrl+Shift+P' where CommandID = 46
+
+Update Metadata.Command set HotKey = 'Ctrl+Shift+V' where CommandID = 47
+
+Update Metadata.Command set HotKey = 'Ctrl+Shift+D' where CommandID = 48
+
+Update Metadata.Command set HotKey = 'Ctrl+Shift+L' where CommandID = 49
+
+Update Metadata.Command set HotKey = 'Ctrl+Shift+K' where CommandID = 50
+
+
+
+
+
 
 
