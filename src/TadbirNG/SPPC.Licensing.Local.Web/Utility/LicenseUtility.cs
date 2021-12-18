@@ -125,7 +125,14 @@ namespace SPPC.Tadbir.Licensing
         {
             var instanceModel = GetInstance(instance);
             var status = LicenseStatus.OK;
-            if (!EnsureLicenseExists())
+            if (!EnsureLicenseIsActivated())
+            {
+                status = LicenseStatus.NotActivated;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] Product license is not yet activated.{1}",
+                    DateTime.Now.ToString(), Environment.NewLine);
+            }
+            else if (!EnsureLicenseExists())
             {
                 status = LicenseStatus.NoLicense;
                 _log.AppendLine();
@@ -187,19 +194,36 @@ namespace SPPC.Tadbir.Licensing
         public LicenseStatus QuickValidateLicense(string instance)
         {
             var status = LicenseStatus.OK;
-            if (!EnsureLicenseExists())
+            if (!EnsureLicenseIsActivated())
+            {
+                status = LicenseStatus.NotActivated;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] Product license is not yet activated.{1}",
+                    DateTime.Now.ToString(), Environment.NewLine);
+            }
+            else if (!EnsureLicenseExists())
             {
                 status = LicenseStatus.NoLicense;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] License file '{1}' could not be loaded.{2}",
+                    DateTime.Now.ToString(), Constants.LicenseFile, Environment.NewLine);
             }
             else if (EnsureLicenseNotCorrupt(out _))
             {
                 status = LicenseStatus.Corrupt;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] License file is corrupt or tampered.{1}",
+                    DateTime.Now.ToString(), Environment.NewLine);
             }
             else if (!File.Exists(CertificatePath))
             {
                 status = LicenseStatus.NoCertificate;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] Certificate file '{1}' does not exist.{2}",
+                    DateTime.Now.ToString(), Constants.CertificateFile, Environment.NewLine);
             }
 
+            File.AppendAllText(@".\wwwroot\license.log", _log.ToString());
             return status;
         }
 
@@ -265,6 +289,19 @@ namespace SPPC.Tadbir.Licensing
                 InstanceKey = instance,
                 Certificate = Convert.ToBase64String(certificateBytes)
             };
+        }
+
+        private bool EnsureLicenseIsActivated()
+        {
+            _log.AppendFormat("[{0}] [INFO] Ensuring product is activated...",
+                DateTime.Now.ToString());
+            bool validated = File.Exists(LicensePath) || File.Exists(CertificatePath);
+            if (validated)
+            {
+                _log.AppendLine(" (OK)");
+            }
+
+            return validated;
         }
 
         private bool EnsureLicenseExists()

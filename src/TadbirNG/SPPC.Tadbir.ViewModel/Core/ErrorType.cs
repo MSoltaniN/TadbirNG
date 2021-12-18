@@ -26,6 +26,21 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// <summary>
         /// منقضی شدن تیکت امنیتی
         /// </summary>
-        ExpiredSession = 3
+        ExpiredSession = 3,
+
+        /// <summary>
+        /// کد خطا برای حالتی که فعالسازی برنامه هنوز انجام نشده است
+        /// </summary>
+        NotActivated = 4,
+
+        /// <summary>
+        /// بروز خطا هنگام اعتبارسنجی مجوز
+        /// </summary>
+        BadLicense = 5,
+
+        /// <summary>
+        /// کد خطا برای حالتی که مجوز برنامه باید از سرور آنلاین گرفته شود
+        /// </summary>
+        RequiresOnlineLicense = 6
     }
 }
