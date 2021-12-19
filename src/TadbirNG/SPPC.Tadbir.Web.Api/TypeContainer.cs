@@ -7,6 +7,7 @@ using SPPC.Framework.Cryptography;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Service;
+using SPPC.Tadbir.Common;
 using SPPC.Tadbir.CrossCutting;
 using SPPC.Tadbir.CrossCutting.Redis;
 using SPPC.Tadbir.Domain;
@@ -16,7 +17,6 @@ using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Persistence.Repository;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -191,6 +191,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IAccountCollectionUtility, AccountCollectionUtility>();
             _services.AddTransient<IAccountItemUtilityFactory, AccountItemUtilityFactory>();
             _services.AddTransient<ICacheManager, RedisCacheManager>();
+            _services.AddTransient<IApiPathProvider, ApiResourcePaths>();
         }
 
         private readonly IServiceCollection _services;

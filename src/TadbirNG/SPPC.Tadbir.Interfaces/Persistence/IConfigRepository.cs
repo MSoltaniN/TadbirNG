@@ -79,8 +79,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، آخرین وضعیت پیکربندی سیستم را ذخیره می کند
         /// </summary>
         /// <param name="configItem">تنظیمات پیکربندی سیستم</param>
-        /// <param name="rootPath">آدرس ریشه نرم افزار در سرور</param>
-        Task SaveSystemConfigAsync(SettingBriefViewModel configItem, string rootPath);
+        Task SaveSystemConfigAsync(SettingBriefViewModel configItem);
 
         /// <summary>
         /// به روش آسنکرون، تنظیمات موجود برای عناوین سفارشی فرم گزارشی مشخص شده را خوانده و برمی گرداند

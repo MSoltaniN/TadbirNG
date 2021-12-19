@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.Common;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
@@ -31,9 +32,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی و سیستمی را در برنامه فراهم می کند</param>
-        public ConfigRepository(IRepositoryContext context, IOperationLogRepository log)
+        /// <param name="pathProvider">مسیرهای فایل های کاربردی مورد نیاز را فراهم می کند</param>
+        public ConfigRepository(IRepositoryContext context, IOperationLogRepository log,
+            IApiPathProvider pathProvider)
             : base(context, log)
         {
+            _pathProvider = pathProvider;
         }
 
         /// <summary>
@@ -266,12 +270,10 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، آخرین وضعیت پیکربندی سیستم را ذخیره می کند
         /// </summary>
         /// <param name="configItem">تنظیمات پیکربندی سیستم</param>
-        /// <param name="rootPath">آدرس ریشه نرم افزار در سرور</param>
-        public async Task SaveSystemConfigAsync(SettingBriefViewModel configItem, string rootPath)
+        public async Task SaveSystemConfigAsync(SettingBriefViewModel configItem)
         {
             Verify.ArgumentNotNull(configItem, nameof(configItem));
             var repository = UnitOfWork.GetAsyncRepository<Setting>();
-            _webRootPath = rootPath;
 
             var systemConfig = await repository
                 .GetByIDWithTrackingAsync(configItem.Id);
@@ -426,10 +428,8 @@ namespace SPPC.Tadbir.Persistence
         private async Task InitializeDefaultAccounts()
         {
             var accountTreeConfig = await GetViewTreeConfigByViewAsync(ViewId.Account);
-
-            var jsonPath = Path.Combine(_webRootPath, @"static\DefaultAccounts.json");
-            var defaultAcc = JsonHelper.To<List<DefaultAccountViewModel>>(File.ReadAllText(jsonPath));
-
+            var defaultAcc = JsonHelper.To<List<DefaultAccountViewModel>>(
+                File.ReadAllText(_pathProvider.Accounts));
             UpdateDefaultAccountCodeRecursive(defaultAcc, accountTreeConfig, string.Empty);
 
             var accounts = defaultAcc.Select(f => Mapper.Map<Account>(f)).ToList();
@@ -496,8 +496,7 @@ VALUES({0}, {1}, {2}, {3}, {4}, {5}, N'{6}', N'{7}', N'{8}', {9})",
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             DbConsole.ExecuteNonQuery(scriptBuilder.ToString());
 
-            var accCollections = Path.Combine(_webRootPath, @"static\CollectionAccounts.sql");
-            scriptBuilder = new StringBuilder(File.ReadAllText(accCollections));
+            scriptBuilder = new StringBuilder(File.ReadAllText(_pathProvider.AccountScript));
             scriptBuilder
                 .Replace("%branchId%", UserContext.BranchId.ToString())
                 .Replace("%fiscalPeriodId%", UserContext.FiscalPeriodId.ToString());
@@ -569,6 +568,6 @@ VALUES({0}, {1}, {2}, {3}, {4}, {5}, N'{6}', N'{7}', N'{8}', {9})",
             }
         }
 
-        private string _webRootPath;
+        private readonly IApiPathProvider _pathProvider;
     }
 }

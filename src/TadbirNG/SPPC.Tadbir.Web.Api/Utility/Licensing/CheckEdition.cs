@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.Common;
 using SPPC.Tadbir.Configuration.Enums;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Web.Api;
@@ -15,9 +16,11 @@ namespace SPPC.Tadbir.Licensing
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="factory"></param>
-        public CheckEdition(IModelValidatorFactory factory)
+        /// <param name="pathProvider">مسیرهای فایل های کاربردی مورد نیاز سرویس وب را فراهم می کند</param>
+        public CheckEdition(IModelValidatorFactory factory, IApiPathProvider pathProvider)
         {
             _factory = factory;
+            _pathProvider = pathProvider;
         }
 
         /// <summary>
@@ -33,19 +36,15 @@ namespace SPPC.Tadbir.Licensing
             return validator.Validate(model, config);
         }
 
-        private static EditionConfig GetEditionConfig()
+        private EditionConfig GetEditionConfig()
         {
             using var reader = new StreamReader(
-                typeof(Program).Assembly.GetManifestResourceStream(_configUri));
+                typeof(Program).Assembly.GetManifestResourceStream(_pathProvider.Edition));
             string jsonConfig = reader.ReadToEnd();
             return JsonHelper.To<EditionConfig>(jsonConfig);
         }
 
-#if DEBUG
-        private static readonly string _configUri = "SPPC.Tadbir.Web.Api.wwwroot.edition.Development.json";
-#else
-        private static readonly string _configUri = "SPPC.Tadbir.Web.Api.wwwroot.edition";
-#endif
         private readonly IModelValidatorFactory _factory;
+        private readonly IApiPathProvider _pathProvider;
     }
 }

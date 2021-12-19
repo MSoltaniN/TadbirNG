@@ -18,14 +18,21 @@ namespace SPPC.Tadbir.ViewModel.Core
         }
 
         /// <summary>
+        /// نمونه جدیدی از این کلاس را با توجه به نوع خطای داده شده می سازد
+        /// </summary>
+        public ErrorViewModel(ErrorType type)
+            : this()
+        {
+            Type = type;
+        }
+
+        /// <summary>
         /// نمونه جدیدی از این کلاس را با توجه به مقادیر داده شده می سازد
         /// </summary>
         public ErrorViewModel(string message, ErrorType type = ErrorType.ValidationError)
-            : this()
+            : this(type)
         {
-            Verify.ArgumentNotNullOrEmptyString(message, nameof(message));
             Messages.Add(message);
-            Type = type;
         }
 
         /// <summary>
@@ -78,6 +85,11 @@ namespace SPPC.Tadbir.ViewModel.Core
                     break;
                 case ErrorType.ExpiredSession:
                     StatusCode = 401;
+                    break;
+                case ErrorType.NotActivated:
+                case ErrorType.BadLicense:
+                case ErrorType.RequiresOnlineLicense:
+                    StatusCode = 403;
                     break;
                 default:
                     break;

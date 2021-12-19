@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -10,20 +8,17 @@ using SPPC.Framework.Licensing;
 using SPPC.Licensing.Model;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Licensing;
-using SPPC.Tadbir.Resources;
+using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Licensing.Local.Web.Controllers
 {
     [Produces("application/json")]
     public class LicenseController : Controller
     {
-        public LicenseController(IWebHostEnvironment host, IConfiguration configuration,
-            ILicenseUtility utility)
+        public LicenseController(IConfiguration configuration, ILicenseUtility utility)
         {
-            _webRoot = host.WebRootPath;
             _config = configuration;
             _utility = utility;
-            _utility.LicensePath = Path.Combine(_webRoot, Constants.LicenseFile);
         }
 
         // GET: api/license
@@ -43,7 +38,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
                 var license = await _utility.GetLicenseAsync();
                 return !String.IsNullOrEmpty(license)
                     ? Ok(license)
-                    : Unauthorized("Online license query is required.");
+                    : StatusCode(StatusCodes.Status403Forbidden, new ErrorViewModel(ErrorType.RequiresOnlineLicense));
             }
             catch (Exception e)
             {
@@ -66,14 +61,9 @@ namespace SPPC.Licensing.Local.Web.Controllers
                 }
 
                 var license = await _utility.GetOnlineLicenseAsync(instance, GetRemoteConnection());
-                if (!String.IsNullOrEmpty(license))
-                {
-                    return Ok(license);
-                }
-                else
-                {
-                    return StatusCode(StatusCodes.Status403Forbidden, AppStrings.InvalidOrExpiredLicense);
-                }
+                return !String.IsNullOrEmpty(license)
+                    ? Ok(license)
+                    : StatusCode(StatusCodes.Status403Forbidden, new ErrorViewModel(ErrorType.BadLicense));
             }
             catch (Exception e)
             {
@@ -128,13 +118,16 @@ namespace SPPC.Licensing.Local.Web.Controllers
             succeeded = false;
             if (String.IsNullOrEmpty(instance))
             {
-                return BadRequest();
+                return BadRequest(new ErrorViewModel(ErrorType.ValidationError));
             }
 
             var status = _utility.ValidateLicense(instance, GetRemoteConnection());
             if (status != LicenseStatus.OK)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, AppStrings.InvalidOrExpiredLicense);
+                var errorType = status == LicenseStatus.NotActivated
+                    ? ErrorType.NotActivated
+                    : ErrorType.BadLicense;
+                return StatusCode(StatusCodes.Status403Forbidden, new ErrorViewModel(errorType));
             }
 
             succeeded = true;
@@ -146,13 +139,16 @@ namespace SPPC.Licensing.Local.Web.Controllers
             succeeded = false;
             if (String.IsNullOrEmpty(instance))
             {
-                return BadRequest();
+                return BadRequest(new ErrorViewModel(ErrorType.ValidationError));
             }
 
             var status = _utility.QuickValidateLicense(instance);
             if (status != LicenseStatus.OK)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, AppStrings.InvalidOrExpiredLicense);
+                var errorType = status == LicenseStatus.NotActivated
+                    ? ErrorType.NotActivated
+                    : ErrorType.BadLicense;
+                return StatusCode(StatusCodes.Status403Forbidden, new ErrorViewModel(errorType));
             }
 
             succeeded = true;
@@ -180,8 +176,8 @@ namespace SPPC.Licensing.Local.Web.Controllers
             };
         }
 
-        private readonly string _webRoot;
         private readonly IConfiguration _config;
         private readonly ILicenseUtility _utility;
+        private delegate LicenseStatus LicenseValidatorDelegate(string instance);
     }
 }

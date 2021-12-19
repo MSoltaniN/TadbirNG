@@ -24,7 +24,7 @@ namespace SPPC.Tadbir.Persistence.Tests
             var sysContext = GetRepositoryContext();
             var utility = new ReportDirectUtility(context);
             var logger = new OperationLogRepository(context, new LogConfigRepository(context), utility);
-            var config = new ConfigRepository(context, logger);
+            var config = new ConfigRepository(context, logger, null);
             return new SystemRepository(
                 new SecureRepository(context), new MetadataRepository(sysContext, config), config, logger);
         }

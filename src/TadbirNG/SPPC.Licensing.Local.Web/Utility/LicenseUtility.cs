@@ -9,6 +9,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Licensing;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
+using SPPC.Tadbir.Common;
 
 namespace SPPC.Tadbir.Licensing
 {
@@ -23,17 +24,14 @@ namespace SPPC.Tadbir.Licensing
         /// <param name="apiClient"></param>
         /// <param name="crypto">امکان انجام عملیات رمزنگاری متقارن را فراهم می کند</param>
         /// <param name="deviceId">امکان خواندن شناسه سخت افزاری را فراهم می کند</param>
-        public LicenseUtility(IApiClient apiClient, ICryptoService crypto, IDeviceIdProvider deviceId)
+        public LicenseUtility(IApiClient apiClient, ICryptoService crypto, IDeviceIdProvider deviceId,
+            ILicensePathProvider pathProvider)
         {
             _apiClient = apiClient;
             _crypto = crypto;
             _deviceId = deviceId;
+            _pathProvider = pathProvider;
         }
-
-        /// <summary>
-        /// مسیر فایل مجوز ایجاد شده پس از فعال سازی برنامه
-        /// </summary>
-        public string LicensePath { get; set; }
 
         /// <summary>
         /// به روش آسنکرون مجوز برنامه را فعالسازی می کند
@@ -125,7 +123,14 @@ namespace SPPC.Tadbir.Licensing
         {
             var instanceModel = GetInstance(instance);
             var status = LicenseStatus.OK;
-            if (!EnsureLicenseExists())
+            if (!EnsureLicenseIsActivated())
+            {
+                status = LicenseStatus.NotActivated;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] Product license is not yet activated.{1}",
+                    DateTime.Now.ToString(), Environment.NewLine);
+            }
+            else if (!EnsureLicenseExists())
             {
                 status = LicenseStatus.NoLicense;
                 _log.AppendLine();
@@ -187,19 +192,36 @@ namespace SPPC.Tadbir.Licensing
         public LicenseStatus QuickValidateLicense(string instance)
         {
             var status = LicenseStatus.OK;
-            if (!EnsureLicenseExists())
+            if (!EnsureLicenseIsActivated())
+            {
+                status = LicenseStatus.NotActivated;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] Product license is not yet activated.{1}",
+                    DateTime.Now.ToString(), Environment.NewLine);
+            }
+            else if (!EnsureLicenseExists())
             {
                 status = LicenseStatus.NoLicense;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] License file '{1}' could not be loaded.{2}",
+                    DateTime.Now.ToString(), Constants.LicenseFile, Environment.NewLine);
             }
             else if (EnsureLicenseNotCorrupt(out _))
             {
                 status = LicenseStatus.Corrupt;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] License file is corrupt or tampered.{1}",
+                    DateTime.Now.ToString(), Environment.NewLine);
             }
             else if (!File.Exists(CertificatePath))
             {
                 status = LicenseStatus.NoCertificate;
+                _log.AppendLine();
+                _log.AppendFormat("[{0}] [ERROR] Certificate file '{1}' does not exist.{2}",
+                    DateTime.Now.ToString(), Constants.CertificateFile, Environment.NewLine);
             }
 
+            File.AppendAllText(@".\wwwroot\license.log", _log.ToString());
             return status;
         }
 
@@ -220,12 +242,14 @@ namespace SPPC.Tadbir.Licensing
             return _crypto.VerifyData(apiLicenseBytes, signature, certificate);
         }
 
+        private string LicensePath
+        {
+            get { return _pathProvider.BinLicense; }
+        }
+
         private string CertificatePath
         {
-            get
-            {
-                return Path.Combine(Path.GetDirectoryName(LicensePath), Constants.CertificateFile);
-            }
+            get { return _pathProvider.Certificate; }
         }
 
         private async Task<string> GetActivatedLicenseAsync(ActivationModel activation)
@@ -265,6 +289,19 @@ namespace SPPC.Tadbir.Licensing
                 InstanceKey = instance,
                 Certificate = Convert.ToBase64String(certificateBytes)
             };
+        }
+
+        private bool EnsureLicenseIsActivated()
+        {
+            _log.AppendFormat("[{0}] [INFO] Ensuring product is activated...",
+                DateTime.Now.ToString());
+            bool validated = File.Exists(LicensePath) || File.Exists(CertificatePath);
+            if (validated)
+            {
+                _log.AppendLine(" (OK)");
+            }
+
+            return validated;
         }
 
         private bool EnsureLicenseExists()
@@ -432,6 +469,7 @@ namespace SPPC.Tadbir.Licensing
         private readonly IApiClient _apiClient;
         private readonly ICryptoService _crypto;
         private readonly IDeviceIdProvider _deviceId;
+        private readonly ILicensePathProvider _pathProvider;
         private readonly StringBuilder _log = new();
     }
 }

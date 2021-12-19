@@ -11,11 +11,11 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Licensing;
 using SPPC.Framework.Presentation;
 using SPPC.Framework.Service;
+using SPPC.Tadbir.Common;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Auth;
 
-namespace SPPC.Tadbir.Web.Api.Filters
+namespace SPPC.Tadbir.Security
 {
     /// <summary>
     /// عملیات مورد نیاز برای احراز هویت، مجوزدهی و کنترل لایسنس را پیاده سازی می کند
@@ -27,10 +27,13 @@ namespace SPPC.Tadbir.Web.Api.Filters
         /// </summary>
         /// <param name="tokenManager"></param>
         /// <param name="apiClient">امکان تماس با یک سرویس وب را فراهم می کند</param>
-        public AuthorizeRequest(ITokenManager tokenManager, IApiClient apiClient)
+        /// <param name="pathProvider">مسیرهای فایل های کاربردی مورد نیاز سرویس وب را فراهم می کند</param>
+        public AuthorizeRequest(ITokenManager tokenManager, IApiClient apiClient,
+            IApiPathProvider pathProvider)
         {
             _tokenManager = tokenManager;
             _apiClient = apiClient;
+            _pathProvider = pathProvider;
         }
 
         /// <summary>
@@ -134,7 +137,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
             if (!String.IsNullOrEmpty(httpRequest.Headers[AppConstants.LicenseHeaderName]))
             {
                 signature = httpRequest.Headers[AppConstants.LicenseHeaderName];
-                string license = File.ReadAllText(_licensePath, Encoding.UTF8);
+                string license = File.ReadAllText(_pathProvider.License, Encoding.UTF8);
                 _apiClient.AddHeader(AppConstants.LicenseHeaderName, signature);
                 validated = _apiClient.Update<string, bool>(license, LicenseApi.ValidateLicense);
             }
@@ -170,13 +173,9 @@ namespace SPPC.Tadbir.Web.Api.Filters
             return isAuthorized;
         }
 
-#if DEBUG
-        private readonly string _licensePath = @".\wwwroot\license.Development.json";
-#else
-        private readonly string _licensePath = @".\wwwroot\license";
-#endif
         private readonly ITokenManager _tokenManager;
         private readonly IApiClient _apiClient;
+        private readonly IApiPathProvider _pathProvider;
         private IEnumerable<PermissionBriefViewModel> _requiredPermissions;
     }
 }

@@ -13,6 +13,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Common;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
@@ -37,11 +38,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="appConfig">امکان خواندن تنظیمات کلی برنامه را فراهم می کند</param>
+        /// <param name="pathProvider">مسیرهای فایل های کاربردی مورد نیاز در سرویس وب را فراهم می کند</param>
         public CompanyRepository(IRepositoryContext context, IOperationLogRepository log,
-            IConfiguration appConfig)
+            IConfiguration appConfig, IApiPathProvider pathProvider)
             : base(context, log)
         {
             _appConfig = appConfig;
+            _pathProvider = pathProvider;
             UnitOfWork.UseSystemContext();
         }
 
@@ -86,19 +89,18 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک شرکت را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="companyView">شرکت مورد نظر برای ایجاد یا اصلاح</param>
-        /// <param name="webRoot">مسیر ریشه نرم افزار</param>
         /// <returns>اطلاعات نمایشی شرکت ایجاد یا اصلاح شده</returns>
-        public async Task<CompanyDbViewModel> SaveCompanyAsync(CompanyDbViewModel companyView, string webRoot)
+        public async Task<CompanyDbViewModel> SaveCompanyAsync(CompanyDbViewModel companyView)
         {
             Verify.ArgumentNotNull(companyView, "companyView");
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             CompanyDb company;
             if (companyView.Id == 0)
             {
-                CreateDatabase(companyView, webRoot);
+                CreateDatabase(companyView);
                 company = Mapper.Map<CompanyDb>(companyView);
                 await InsertAsync(repository, company);
-                await ImportStatesAndCitiesAsync(company.Id, webRoot);
+                await ImportStatesAndCitiesAsync(company.Id);
             }
             else
             {
@@ -329,7 +331,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private void AddNewRoles(
+        private static void AddNewRoles(
             IRepository<RoleCompany> repository, IList<RoleCompany> existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = existing.Select(rc => rc.RoleId);
@@ -347,12 +349,12 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private void CreateDatabase(CompanyDbViewModel company, string webRoot)
+        private void CreateDatabase(CompanyDbViewModel company)
         {
             var sqlBuilder = new StringBuilder();
             if (!IsDuplicateDatabaseName(company.DbName))
             {
-                var scriptPath = Path.Combine(webRoot, "static", "Tadbir_CreateDbObjects.sql");
+                var scriptPath = _pathProvider.CompanyScript;
                 if (!File.Exists(scriptPath))
                 {
                     throw ExceptionBuilder.NewGenericException<FileNotFoundException>();
@@ -409,12 +411,12 @@ namespace SPPC.Tadbir.Persistence
             company.Server = sqlBuilder.DataSource;
         }
 
-        private async Task ImportStatesAndCitiesAsync(int companyId, string webRoot)
+        private async Task ImportStatesAndCitiesAsync(int companyId)
         {
             await SetCurrentCompanyAsync(companyId);
             UnitOfWork.UseCompanyContext();
             var stateRepository = UnitOfWork.GetAsyncRepository<Province>();
-            string path = Path.Combine(webRoot, "static", "ir-states.json");
+            string path = _pathProvider.IranStates;
             var states = JsonHelper.To<IEnumerable<ProvinceViewModel>>(File.ReadAllText(path));
             foreach (var state in states)
             {
@@ -425,7 +427,7 @@ namespace SPPC.Tadbir.Persistence
             await UnitOfWork.CommitAsync();
 
             var cityRepository = UnitOfWork.GetAsyncRepository<City>();
-            path = Path.Combine(webRoot, "static", "ir-cities.json");
+            path = _pathProvider.IranCities;
             var cities = JsonHelper.To<IEnumerable<CityViewModel>>(File.ReadAllText(path));
             foreach (var city in cities)
             {
@@ -498,5 +500,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly IConfiguration _appConfig;
+        private readonly IApiPathProvider _pathProvider;
     }
 }

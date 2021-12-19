@@ -30,17 +30,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="repository">امکان مدیریت اطلاعات شرکت ها را در دیتابیس سیستمی فراهم می کند</param>
         /// <param name="checkEdition"></param>
-        /// <param name="host">اطلاعات محیط میزبانی سرویس وب را فراهم می کند</param>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را در برنامه فراهم می کند</param>
         /// <param name="tokenManager"></param>
         public CompaniesController(
-            ICompanyRepository repository, ICheckEdition checkEdition, IWebHostEnvironment host,
+            ICompanyRepository repository, ICheckEdition checkEdition,
             IStringLocalizer<AppStrings> strings, ITokenManager tokenManager)
             : base(strings, tokenManager)
         {
             _repository = repository;
             _checkEdition = checkEdition;
-            _host = host;
         }
 
         /// <summary>
@@ -103,7 +101,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var outputItem = await _repository.SaveCompanyAsync(company, _host.WebRootPath);
+            var outputItem = await _repository.SaveCompanyAsync(company);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
@@ -126,7 +124,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var outputItem = await _repository.SaveCompanyAsync(company, _host.WebRootPath);
+            var outputItem = await _repository.SaveCompanyAsync(company);
             return OkReadResult(outputItem);
         }
 
@@ -255,7 +253,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             Array.ForEach(roles.RelatedItems.ToArray(), item => item.Name = _strings[item.Name]);
         }
 
-        private readonly IWebHostEnvironment _host;
         private readonly ICompanyRepository _repository;
         private readonly ICheckEdition _checkEdition;
     }
