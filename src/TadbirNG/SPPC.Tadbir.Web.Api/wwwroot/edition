@@ -1,7 +1,7 @@
 {
   "name": "Edition_Professional",
   "maxUsers": 30,
-  "maxCompanies": 5,
+  "maxCompanies": 10,
   "maxBranches": 10,
   "maxBranchDepth": 3,
   "maxAccountDepth": 5,
