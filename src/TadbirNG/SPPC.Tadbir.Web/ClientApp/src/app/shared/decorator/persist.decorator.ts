@@ -38,9 +38,8 @@ export function SavePersist():MethodDecorator
         var propName = "persistenceData";
         const originalMethod = descriptor.value; 
 
-        descriptor.value =  function (...args: any[]) { 
+        descriptor.value =  function (...args: any[]) {             
             
-            debugger;
 
             var persistenceData = new Object();
             Object.keys(target[propName]).forEach((item)=>{
