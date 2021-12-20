@@ -20,4 +20,14 @@ export class LicenseService extends BaseService {
     return this.http.get(url, options)
       .map(response => <any>(<Response>response));
   }
+
+  // GetAppLicense(url: string) {
+
+  //   var newHeader = this.httpHeaders;
+  //   newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
+  //   var options = { headers: newHeader };
+
+  //   return this.http.get(url, options)
+  //     .map(response => <any>(<Response>response));
+  // }
 }

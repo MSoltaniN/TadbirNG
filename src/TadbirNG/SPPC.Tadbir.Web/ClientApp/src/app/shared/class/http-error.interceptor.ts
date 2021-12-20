@@ -7,6 +7,7 @@ import { DialogService, DialogCloseResult } from "@progress/kendo-angular-dialog
 import { Router } from "@angular/router";
 import { BrowserStorageService, SessionKeys } from "../services";
 import { TranslateService } from "@ngx-translate/core";
+import { ErrorType } from "@sppc/shared/models";
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
@@ -77,7 +78,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             return Observable.throw(undefined);
           }
 
-          if (error.error && error.error.statusCode == 401) {            
+          if (error.error && error.error.statusCode == 401 && error.error.type == ErrorType.ExpiredSession) {            
             //logout current user
            
             this.bStorageService.removeCurrentContext(); //remove current user from session

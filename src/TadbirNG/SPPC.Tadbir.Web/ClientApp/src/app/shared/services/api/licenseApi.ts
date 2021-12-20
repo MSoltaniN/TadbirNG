@@ -16,5 +16,9 @@ export class LicenseApi {
 
   // filters/views/{viewId:min(1)}
   public static LicenseUrl = environment.LicenseServerUrl + "/license";
-  
+
+  public static OnlineLicenseUrl = environment.LicenseServerUrl + "license/online";
+
+  public static ActivateLicenseUrl = environment.LicenseServerUrl + "license/activate";
+
 }
