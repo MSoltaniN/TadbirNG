@@ -5517,6 +5517,26 @@ Update Metadata.Command set HotKey = 'Ctrl+Shift+L' where CommandID = 49
 Update Metadata.Command set HotKey = 'Ctrl+Shift+K' where CommandID = 50
 
 
+--1.2.1321
+
+Update Metadata.Command set HotKey = 'Ctrl+Alt+R' where CommandID = 9
+
+Update Metadata.Command set HotKey = 'Ctrl+Alt+U' where CommandID = 41
+
+Update Metadata.Command set HotKey = 'Ctrl+Shift+O' where CommandID = 32
+
+Update Metadata.Command set HotKey = 'Ctrl+Alt+W' where CommandID = 30
+
+Update Metadata.Command set HotKey = 'Ctrl+K' where CommandID = 31
+
+Update Metadata.Command set HotKey = 'Ctrl+Alt+V' where CommandID = 15
+
+Update Metadata.Command set HotKey = 'Ctrl+Alt+V' where CommandID = 15
+
+Update Metadata.Command set HotKey = 'Alt+Q' where CommandID = 38
+
+
+
 
 
 
