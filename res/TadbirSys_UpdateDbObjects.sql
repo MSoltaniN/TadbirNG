@@ -5541,7 +5541,7 @@ Update [Metadata].[ShortcutCommand] Set Method = 'sh_addVoucherLine' Where Short
 
 Update [Metadata].[ShortcutCommand] Set HotKey = 'Alt+C' Where ShortcutCommandID = 12
 
-Update [Metadata].[ShortcutCommand] Set HotKey = 'Ctrl+Shift+D' Where ShortcutCommandID = 8
+Update [Metadata].[ShortcutCommand] Set HotKey = 'Ctrl+Shift+R' Where ShortcutCommandID = 8
 
 
 
