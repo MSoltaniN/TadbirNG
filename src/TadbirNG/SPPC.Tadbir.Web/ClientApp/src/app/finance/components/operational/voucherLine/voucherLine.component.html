@@ -48,7 +48,7 @@
 
       <ng-template kendoGridToolbarTemplate>
 
-        <button kendoGridAddCommand SppcPermissionCheck="CreateLine|Edit" [EntityName]="entityNamePermission" (sppcClick)="addNew()" *ngIf="documentStatusId == documentStatusNotChecked" class="sh-add-button " [icon]="'file-add'" type="button" title="{{ 'VoucherLine.New' | translate }}"></button>
+        <button kendoGridAddCommand SppcPermissionCheck="CreateLine|Edit" [EntityName]="entityNamePermission" (sppcClick)="addNew()" *ngIf="documentStatusId == documentStatusNotChecked" class="sh-add-voucherline" [icon]="'file-add'" type="button" title="{{ 'VoucherLine.New' | translate }}"></button>
 
         <button kendoGridAddCommand type="button"
                 [icon]="'plus-outline'" *ngIf="balance != 0 && documentStatusId == documentStatusNotChecked" class="k-button"

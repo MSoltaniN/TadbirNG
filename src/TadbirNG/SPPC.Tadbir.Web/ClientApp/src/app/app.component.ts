@@ -283,9 +283,11 @@ export class AppComponent implements AfterViewInit, OnInit {
           var elements = dialog.querySelectorAll(selectors);
           if(elements.length > 0)
           {
-            var parentSelector = elements[0].tagName;
-            var index = components.findIndex(c=>c.selector.toLowerCase() == parentSelector.toLowerCase());
-            activeComponents.push(components[index]);
+            elements.forEach((item)=>{
+              var parentSelector = item.tagName;
+              var index = components.findIndex(c=>c.selector.toLowerCase() == parentSelector.toLowerCase());
+              activeComponents.push(components[index]);
+            });            
           }
         }
         else

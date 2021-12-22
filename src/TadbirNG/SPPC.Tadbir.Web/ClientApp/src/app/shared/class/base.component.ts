@@ -95,7 +95,7 @@ export class BaseComponent extends EnviromentComponent {
 
   sh_openNewDialog()
   {
-    this.internalExecuteClickEvent('sh-sh-add-button');    
+    this.internalExecuteClickEvent('sh-add-button');    
   }
 
   sh_openEditDialog()
@@ -118,6 +118,7 @@ export class BaseComponent extends EnviromentComponent {
     this.internalExecuteClickEvent('sh-remove-filter');    
   }
 
+  //Voucher methods
   sh_newVoucher()
   {
     this.internalExecuteClickEvent('sh-new-voucher');    
@@ -137,6 +138,13 @@ export class BaseComponent extends EnviromentComponent {
   {
     this.internalExecuteClickEvent('sh-uncheck-voucher');    
   }
+
+  sh_addVoucherLine()
+  {
+    this.internalExecuteClickEvent('sh-add-voucherline');    
+  }
+
+  //Voucher methods
 
   /** open report management form */
   sh_openReportManager()
