@@ -16,7 +16,6 @@ namespace SPPC.Tadbir.Persistence
         public EditionRepository(IRepositoryContext context)
             : base(context)
         {
-            UnitOfWork.UseSystemContext();
         }
 
         /// <summary>
@@ -28,6 +27,7 @@ namespace SPPC.Tadbir.Persistence
         /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
         public async Task<bool> CanCreteCompanyAsync(int maxCompanies)
         {
+            UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             int count = await repository.GetCountByCriteriaAsync(company => company.IsActive);
             return count < maxCompanies;
@@ -42,6 +42,7 @@ namespace SPPC.Tadbir.Persistence
         /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
         public async Task<bool> CanCreteBranchAsync(int maxBranches)
         {
+            UnitOfWork.UseCompanyContext();
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
             int count = await repository.GetCountByCriteriaAsync(branch => true);
             return count < maxBranches;
