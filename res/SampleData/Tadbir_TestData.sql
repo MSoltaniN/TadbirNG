@@ -345,29 +345,29 @@ SET IDENTITY_INSERT [Finance].[Project] OFF
 
 SET IDENTITY_INSERT [Finance].[Voucher] ON 
 
-INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [DocumentID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
-  VALUES (1, 1, 1, NULL, 2, 1, 1, 1, 1, 1, 11, 1, CAST(N'2018-09-10T10:45:00.000' AS DateTime), N'فراقانونی', NULL, 1, 0, 0, 1, N'برگشت از خرید', N'سیستم، راهبر', N'سیستم، راهبر', N'سیستم، راهبر', N'سیستم، راهبر')
+INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
+  VALUES (1, 1, 1, 2, 1, 1, 1, 1, 1, 11, 1, CAST(N'2018-09-10T10:45:00.000' AS DateTime), N'فراقانونی', NULL, 1, 0, 0, 1, N'برگشت از خرید', N'سیستم، راهبر', N'سیستم، راهبر', N'سیستم، راهبر', N'سیستم، راهبر')
 
-INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [DocumentID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
-  VALUES (2, 1, 1, NULL, 2, 1, 1, 1, NULL, NULL, 12, 1, CAST(N'2018-09-26T12:00:00.000' AS DateTime), NULL, NULL, 1, 0, 0, 6, N'برگشت از فروش', N'سیستم، راهبر', N'سیستم, راهبر', N'قربانی, نادر', N'قربانی, نادر')
+INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
+  VALUES (2, 1, 1, 2, 1, 1, 1, NULL, NULL, 12, 1, CAST(N'2018-09-26T12:00:00.000' AS DateTime), NULL, NULL, 1, 0, 0, 6, N'برگشت از فروش', N'سیستم، راهبر', N'سیستم, راهبر', N'قربانی, نادر', N'قربانی, نادر')
 
-INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [DocumentID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
-  VALUES (3, 1, 1, NULL, 2, 1, 1, 1, NULL, NULL, 13, 1, CAST(N'2018-10-28T10:46:00.000' AS DateTime), NULL, NULL, 1, 0, 0, 1, N'فاکتور فروش با تخفیف', N'سیستم، راهبر', N'سیستم، راهبر', N'سیستم, راهبر', N'سیستم, راهبر')
+INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
+  VALUES (3, 1, 1, 2, 1, 1, 1, NULL, NULL, 13, 1, CAST(N'2018-10-28T10:46:00.000' AS DateTime), NULL, NULL, 1, 0, 0, 1, N'فاکتور فروش با تخفیف', N'سیستم، راهبر', N'سیستم، راهبر', N'سیستم, راهبر', N'سیستم, راهبر')
 
-INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [DocumentID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
-  VALUES (4, 1, 1, NULL, 2, 1, 1, 1, 1, 1, 14, 1, CAST(N'2018-10-30T10:47:00.000' AS DateTime), N'غیرقانونی', NULL, 1, 0, 0, 1, N'برگشت از فروش با تخفیف', N'سیستم، راهبر', N'سیستم، راهبر', N'سیستم, راهبر', N'سیستم, راهبر')
+INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
+  VALUES (4, 1, 1, 2, 1, 1, 1, 1, 1, 14, 1, CAST(N'2018-10-30T10:47:00.000' AS DateTime), N'غیرقانونی', NULL, 1, 0, 0, 1, N'برگشت از فروش با تخفیف', N'سیستم، راهبر', N'سیستم، راهبر', N'سیستم, راهبر', N'سیستم, راهبر')
 
-INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [DocumentID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
-  VALUES (5, 1, 1, NULL, 2, 1, 1, 1, NULL, NULL, 15, 1, CAST(N'2018-11-01T10:47:00.000' AS DateTime), N'456الف 987بB', NULL, 1, 0, 0, 3, N'سند دریافت به صندوق ', N'سیستم، راهبر', N'سیستم, راهبر', NULL, NULL)
+INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
+  VALUES (5, 1, 1, 2, 1, 1, 1, NULL, NULL, 15, 1, CAST(N'2018-11-01T10:47:00.000' AS DateTime), N'456الف 987بB', NULL, 1, 0, 0, 3, N'سند دریافت به صندوق ', N'سیستم، راهبر', N'سیستم, راهبر', NULL, NULL)
 
-INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [DocumentID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
-  VALUES (6, 1, 1, NULL, 2, 1, 1, 1, NULL, NULL, 16, 1, CAST(N'2018-11-02T03:15:00.000' AS DateTime), NULL, NULL, 1, 0, 0, 1, N'سند دریافت به بانک', N'سیستم، راهبر', N'سیستم، راهبر', NULL, NULL)
+INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
+  VALUES (6, 1, 1, 2, 1, 1, 1, NULL, NULL, 16, 1, CAST(N'2018-11-02T03:15:00.000' AS DateTime), NULL, NULL, 1, 0, 0, 1, N'سند دریافت به بانک', N'سیستم، راهبر', N'سیستم، راهبر', NULL, NULL)
 
-INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [DocumentID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
-  VALUES (7, 1, 1, NULL, 2, 1, 1, 1, NULL, NULL, 17, 1, CAST(N'2018-11-03T03:22:00.000' AS DateTime), N'غیرقانونی', NULL, 1, 0, 0, 1, N'سند پرداخت از صندوق ', N'سیستم، راهبر', N'سیستم، راهبر', NULL, NULL)
+INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
+  VALUES (7, 1, 1, 2, 1, 1, 1, NULL, NULL, 17, 1, CAST(N'2018-11-03T03:22:00.000' AS DateTime), N'غیرقانونی', NULL, 1, 0, 0, 1, N'سند پرداخت از صندوق ', N'سیستم، راهبر', N'سیستم، راهبر', NULL, NULL)
 
-INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [DocumentID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
-  VALUES (8, 1, 1, NULL, 2, 1, 1, 1, NULL, NULL, 18, 1, CAST(N'2018-11-03T03:25:00.000' AS DateTime), NULL, NULL, 1, 0, 0, 1, N'سند پرداخت از بانک', N'سیستم، راهبر', N'سیستم، راهبر', NULL, NULL)
+INSERT [Finance].[Voucher] ([VoucherID], [FiscalPeriodID], [BranchID], [StatusID], [OriginID], [IssuedByID], [ModifiedByID], [ConfirmedByID], [ApprovedByID], [No], [DailyNo], [Date], [Reference], [Association], [IsBalanced], [Type], [SubjectType], [SaveCount], [Description], [IssuerName], [ModifierName], [ConfirmerName], [ApproverName])
+  VALUES (8, 1, 1, 2, 1, 1, 1, NULL, NULL, 18, 1, CAST(N'2018-11-03T03:25:00.000' AS DateTime), NULL, NULL, 1, 0, 0, 1, N'سند پرداخت از بانک', N'سیستم، راهبر', N'سیستم، راهبر', NULL, NULL)
 
 SET IDENTITY_INSERT [Finance].[Voucher] OFF
 

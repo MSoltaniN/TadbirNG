@@ -18,6 +18,7 @@ services:
   image: msn1368/api-server:latest
   environment:
    - ASPNETCORE_ENVIRONMENT=Development
+   - Logging__LogLevel__Microsoft=Information
    - ASPNETCORE_URLS=http://+:80
   ports:
    - 9095:80
@@ -34,5 +35,4 @@ services:
   image: msn1368/license-server:dev
   environment:
    - ASPNETCORE_ENVIRONMENT=Development
-
-
+   - Logging__LogLevel__Microsoft=Information

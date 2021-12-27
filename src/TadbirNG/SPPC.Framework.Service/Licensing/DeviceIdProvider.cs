@@ -56,7 +56,7 @@ namespace SPPC.Framework.Licensing
             string result = ssh
                 .CreateCommand(SshCommands.Linux.GetOSName.Command)
                 .Execute();
-            return result == "Linux"
+            return result.ToLower().Contains("linux")
                 ? SshCommands.Linux
                 : SshCommands.Windows;
         }

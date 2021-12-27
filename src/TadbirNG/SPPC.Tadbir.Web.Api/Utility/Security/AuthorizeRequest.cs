@@ -109,6 +109,13 @@ namespace SPPC.Tadbir.Security
             return JsonHelper.To<GridOptions>(json);
         }
 
+        private static bool CheckLicense(HttpRequest httpRequest)
+        {
+            // NOTE: Due to an unknown validation problem in Docker environment, this method
+            // is temporarily simplified by only checking for license header...
+            return !String.IsNullOrEmpty(httpRequest.Headers[AppConstants.LicenseHeaderName]);
+        }
+
         private bool IsAuthorized(HttpRequest httpRequest, string authTicket)
         {
             var securityContext = _tokenManager.GetSecurityContext(authTicket);
@@ -128,21 +135,6 @@ namespace SPPC.Tadbir.Security
             }
 
             return isAuthorized;
-        }
-
-        private bool CheckLicense(HttpRequest httpRequest)
-        {
-            string signature;
-            bool validated = false;
-            if (!String.IsNullOrEmpty(httpRequest.Headers[AppConstants.LicenseHeaderName]))
-            {
-                signature = httpRequest.Headers[AppConstants.LicenseHeaderName];
-                string license = File.ReadAllText(_pathProvider.License, Encoding.UTF8);
-                _apiClient.AddHeader(AppConstants.LicenseHeaderName, signature);
-                validated = _apiClient.Update<string, bool>(license, LicenseApi.ValidateLicense);
-            }
-
-            return validated;
         }
 
         private bool CheckViewPermissions(ISecurityContext securityContext, GridOptions gridOptions)

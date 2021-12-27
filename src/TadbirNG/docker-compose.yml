@@ -1,8 +1,8 @@
 version: '3.9'
 
 volumes:
- productdata:
-  external: true
+ productdata_DbServer:
+ productdata_LicenseServer:
  
 networks:
  frontend:
@@ -19,7 +19,7 @@ services:
   networks:
    - backend
   volumes:
-   - productdata:/var/opt/mssql/data
+   - productdata_DbServer:/var/opt/mssql/data
    
  ApiServer:
   image: msn1368/api-server:latest
@@ -62,8 +62,7 @@ services:
    context: .
    dockerfile: SPPC.Licensing.Local.Web/Dockerfile
   volumes:
-   - productdata:/app/wwwroot
-  network_mode: host
+   - productdata_LicenseServer:/app/wwwroot
   ports:
-   - 7473:80
+   - 9093:80
 
