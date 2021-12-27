@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SPPC.Framework.Common;
+using SPPC.Framework.Domain;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
@@ -17,6 +18,7 @@ using SPPC.Tadbir.Common;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
+using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
@@ -100,7 +102,7 @@ namespace SPPC.Tadbir.Persistence
                 CreateDatabase(companyView);
                 company = Mapper.Map<CompanyDb>(companyView);
                 await InsertAsync(repository, company);
-                await ImportStatesAndCitiesAsync(company.Id);
+                await ImportLookupsAsync(company.Id);
             }
             else
             {
@@ -411,33 +413,31 @@ namespace SPPC.Tadbir.Persistence
             company.Server = sqlBuilder.DataSource;
         }
 
-        private async Task ImportStatesAndCitiesAsync(int companyId)
+        private async Task ImportLookupsAsync(int companyId)
         {
             await SetCurrentCompanyAsync(companyId);
             UnitOfWork.UseCompanyContext();
-            var stateRepository = UnitOfWork.GetAsyncRepository<Province>();
-            string path = _pathProvider.IranStates;
-            var states = JsonHelper.To<IEnumerable<ProvinceViewModel>>(File.ReadAllText(path));
-            foreach (var state in states)
-            {
-                state.Id = 0;
-                stateRepository.Insert(Mapper.Map<Province>(state));
-            }
 
-            await UnitOfWork.CommitAsync();
+            await ImportLookupAsync<Province, ProvinceViewModel>(_pathProvider.IranStates);
+            await ImportLookupAsync<City, CityViewModel>(_pathProvider.IranCities);
+            await ImportLookupAsync<TaxCurrency, TaxCurrency>(_pathProvider.TaxCurrencies);
 
-            var cityRepository = UnitOfWork.GetAsyncRepository<City>();
-            path = _pathProvider.IranCities;
-            var cities = JsonHelper.To<IEnumerable<CityViewModel>>(File.ReadAllText(path));
-            foreach (var city in cities)
-            {
-                city.Id = 0;
-                cityRepository.Insert(Mapper.Map<City>(city));
-            }
-
-            await UnitOfWork.CommitAsync();
             UnitOfWork.UseSystemContext();
             await SetCurrentCompanyAsync(UserContext.CompanyId);
+        }
+
+        private async Task ImportLookupAsync<TModel, TViewModel>(string dataFilePath)
+            where TModel : class, IEntity
+        {
+            var repository = UnitOfWork.GetAsyncRepository<TModel>();
+            var items = JsonHelper.To<IEnumerable<TViewModel>>(File.ReadAllText(dataFilePath));
+            foreach (var item in items)
+            {
+                Reflector.SetProperty(item, "Id", 0);
+                repository.Insert(Mapper.Map<TModel>(item));
+            }
+
+            await UnitOfWork.CommitAsync();
         }
 
         private bool IsDuplicateDatabaseName(string dbName)

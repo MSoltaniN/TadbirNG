@@ -23,6 +23,7 @@ namespace SPPC.Tadbir.Web.Api
             IranStates = Path.Combine(webRootPath, "static", "ir-states.json");
             IranCities = Path.Combine(webRootPath, "static", "ir-cities.json");
             Currencies = Path.Combine(webRootPath, "static", "currencies.json");
+            TaxCurrencies = Path.Combine(webRootPath, "static", "tax-currencies.json");
             Accounts = Path.Combine(webRootPath, "static", "DefaultAccounts.json");
             AccountScript = Path.Combine(webRootPath, "static", "CollectionAccounts.sql");
             CompanyScript = Path.Combine(webRootPath, "static", "Tadbir_CreateDbObjects.sql");
@@ -49,6 +50,11 @@ namespace SPPC.Tadbir.Web.Api
         /// مسیر فایل داده ای ارزهای استاندارد
         /// </summary>
         public string Currencies { get; private set; }
+
+        /// <summary>
+        /// مسیر فایل داده ای اطلاعات مالیاتی ارزها
+        /// </summary>
+        public string TaxCurrencies { get; private set; }
 
         /// <summary>
         /// مسیر فایل داده ای حساب های پیش فرض

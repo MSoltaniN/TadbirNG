@@ -23,6 +23,11 @@ namespace SPPC.Tadbir.Common
         string Currencies { get; }
 
         /// <summary>
+        /// مسیر فایل داده ای اطلاعات مالیاتی ارزها
+        /// </summary>
+        string TaxCurrencies { get; }
+
+        /// <summary>
         /// مسیر فایل داده ای حساب های پیش فرض
         /// </summary>
         string Accounts { get; }
