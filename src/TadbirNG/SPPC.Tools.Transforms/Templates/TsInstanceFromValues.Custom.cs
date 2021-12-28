@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using SPPC.Tools.Model;
+﻿using SPPC.Tools.Model;
 
 namespace SPPC.Tools.Transforms.Templates
 {
-    public partial class TsInstanceFromValues
+    public partial class TsInstanceFromValues : ITextTemplate
     {
-        public TsInstanceFromValues(ClientInstanceModel instance)
+        public TsInstanceFromValues(IBuildSettings settings)
         {
-            _instance = instance;
+            _settings = settings;
         }
 
-        private readonly ClientInstanceModel _instance;
+        private readonly IBuildSettings _settings;
     }
 }

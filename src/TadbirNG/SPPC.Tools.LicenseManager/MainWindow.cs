@@ -12,6 +12,7 @@ using SPPC.Licensing.Service;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tools.LicenseManager.Properties;
 using SPPC.Tools.Model;
+using SPPC.Tools.Transforms;
 using SPPC.Tools.Transforms.Templates;
 using SPPC.Tools.Utility;
 
@@ -206,24 +207,28 @@ namespace SPPC.Tools.LicenseManager
 
         private void SaveInstanceButton_Click(object sender, EventArgs e)
         {
-            if (grdLicenses.SelectedRows.Count == 0)
-            {
-                return;
-            }
-
             if (!ValidateSaveInstance())
             {
                 return;
             }
 
-            var license = grdLicenses.SelectedRows[0].DataBoundItem as LicenseModel;
-            string instance = GetInstanceKey(license);
-            if (CreateClientInstance(instance))
+            if (ConfigureCurrentBuild(BuildSettings.Default))
             {
-                var customer = CustomerService.GetCustomer(license.CustomerId);
-                CreateApiServiceLicense(license, customer);
-                CreateApiServiceEdition(license);
+                MessageBox.Show(this, "شناسه برنامه با موفقیت ثبت شد.",
+                    "عملیات موفق", MessageBoxButtons.OK, MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+            }
+        }
 
+        private void SaveDockerInstance_Click(object sender, EventArgs e)
+        {
+            if (!ValidateSaveInstance())
+            {
+                return;
+            }
+
+            if (ConfigureCurrentBuild(BuildSettings.Docker))
+            {
                 MessageBox.Show(this, "شناسه برنامه با موفقیت ثبت شد.",
                     "عملیات موفق", MessageBoxButtons.OK, MessageBoxIcon.Information,
                     MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
@@ -311,9 +316,50 @@ namespace SPPC.Tools.LicenseManager
             Application.Exit();
         }
 
-        private static bool HasModule(Subsystems modules, Subsystems module)
+        private bool ConfigureCurrentBuild(IBuildSettings settings)
         {
-            return (modules & module) != 0;
+            var license = grdLicenses.SelectedRows[0].DataBoundItem as LicenseModel;
+            settings.Key = GetInstanceKey(license);
+            settings.Version = VersionInfo.GetAppVersion();
+            var editor = new InstanceInfoEditor() { BuildSettings = settings };
+            var result = editor.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                CreateEnvironmentSettings(editor.BuildSettings);
+                CreateApiServiceLicense(license);
+                CreateApiServiceEdition(license);
+            }
+
+            return result == DialogResult.OK;
+        }
+
+        private static void CreateEnvironmentSettings(IBuildSettings settings)
+        {
+            string path = ConfigurationManager.AppSettings["ClientInstanceIdPath"];
+            ITextTemplate template = new TsInstanceFromValues(settings);
+            File.WriteAllText(path, template.TransformText());
+
+            path = ConfigurationManager.AppSettings["LocalServerSettingsPath"];
+            template = new LocalLicenseApiSettings(settings);
+            File.WriteAllText(path, template.TransformText());
+
+            path = ConfigurationManager.AppSettings["WebApiSettingsPath"];
+            template = new WebApiSettings(settings);
+            File.WriteAllText(path, template.TransformText());
+        }
+
+        private void CreateApiServiceLicense(LicenseModel license)
+        {
+            var customer = CustomerService.GetCustomer(license.CustomerId);
+            var path = ConfigurationManager.AppSettings["WebApiLicensePath"];
+            var devPath = String.Format("{0}.Development.json", path);
+            var licenseData = GetLicenseData(license, customer);
+            var json = JsonHelper.From(licenseData);
+            File.WriteAllText(path, json);
+            if (!File.Exists(devPath))
+            {
+                File.WriteAllText(devPath, json);
+            }
         }
 
         private static void CreateApiServiceEdition(LicenseModel license)
@@ -331,17 +377,26 @@ namespace SPPC.Tools.LicenseManager
             }
         }
 
-        private static void CreateApiServiceLicense(LicenseModel license, CustomerModel customer)
+        private bool ValidateSaveInstance()
         {
-            var path = ConfigurationManager.AppSettings["WebApiLicensePath"];
-            var devPath = String.Format("{0}.Development.json", path);
-            var licenseData = GetLicenseData(license, customer);
-            var json = JsonHelper.From(licenseData);
-            File.WriteAllText(path, json);
-            if (!File.Exists(devPath))
+            if (grdLicenses.SelectedRows.Count == 0)
             {
-                File.WriteAllText(devPath, json);
+                MessageBox.Show(this, "مجوزی انتخاب نشده است.", "ثبت شناسه برنامه", MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
+                return false;
             }
+
+            var response = MessageBox.Show(
+                this, "این عملیات پیش از ایجاد نسخه برای کاربر انجام می شود. آیا از ادامه عملیات اطمینان دارید؟",
+                "تأیید عملیات", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2,
+                MessageBoxOptions.RtlReading);
+
+            return response == DialogResult.Yes;
+        }
+
+        private static bool HasModule(Subsystems modules, Subsystems module)
+        {
+            return (modules & module) != 0;
         }
 
         private static LicenseViewModel GetLicenseData(LicenseModel license, CustomerModel customer)
@@ -446,44 +501,6 @@ namespace SPPC.Tools.LicenseManager
                 LicenseKey = license.LicenseKey
             };
             return _crypto.Encrypt(JsonHelper.From(instance, false));
-        }
-
-        private bool CreateClientInstance(string instance)
-        {
-            var editor = new InstanceInfoEditor()
-            {
-                Instance = new ClientInstanceModel()
-                {
-                    Key = instance,
-                    Version = VersionInfo.GetAppVersion()
-                }
-            };
-            var result = editor.ShowDialog(this);
-            if (result == DialogResult.OK)
-            {
-                string path = ConfigurationManager.AppSettings["ClientInstanceIdPath"];
-                var template = new TsInstanceFromValues(editor.Instance);
-                File.WriteAllText(path, template.TransformText());
-            }
-
-            return result == DialogResult.OK;
-        }
-
-        private bool ValidateSaveInstance()
-        {
-            if (grdLicenses.SelectedRows.Count == 0)
-            {
-                MessageBox.Show(this, "مجوزی انتخاب نشده است.", "ثبت شناسه برنامه", MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
-                return false;
-            }
-
-            var response = MessageBox.Show(
-                this, "این عملیات پیش از ایجاد نسخه برای کاربر انجام می شود. آیا از ادامه عملیات اطمینان دارید؟",
-                "تأیید عملیات", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2,
-                MessageBoxOptions.RtlReading);
-
-            return response == DialogResult.Yes;
         }
 
         private ICustomerService _customerService;

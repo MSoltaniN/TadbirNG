@@ -5,9 +5,9 @@
 <#@ import namespace="System.Collections.Generic" #>
 {
   "ConnectionStrings": {
-    "TadbirSysApi": "Server=<#= _model.DbServerName.Replace("\\", "\\\\") #>;Database=NGTadbirSys;User ID=NgTadbirUser;Password=Demo1234;Trusted_Connection=False"
+    "TadbirSysApi": "Server=<#= _settings.DbServerName.Replace("\\", "\\\\") #>;Database=NGTadbirSys;User ID=<#= _settings.DbUserName #>;Password=<#= _settings.DbPassword #>;Trusted_Connection=False"
   },
-  "ServerRoot": "http://localhost:7473",
+  "ServerRoot": "<#= _settings.LocalServerRoot #>",
   "Jwt": {
     "Audience": "tadbir-app",
     "Issuer": "tadbir-api",
@@ -20,5 +20,6 @@
       "Microsoft": "Warning",
       "Microsoft.Hosting.Lifetime": "Information"
     }
-  }
+  },
+  "AllowedHosts": "*"
 }
