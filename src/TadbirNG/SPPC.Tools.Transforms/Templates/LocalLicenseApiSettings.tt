@@ -4,12 +4,12 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 {
-  "ServerRoot": "http://localhost:1447",
+  "ServerRoot": "<#= _settings.OnlineServerRoot #>",
   "SSH": {
-    "Domain": "127.0.0.1",
-    "Port": 22,
-    "User": "<#= _model.WinUserName #>",
-    "Password": "<#= _model.WinPassword #>"
+    "Domain": "<#= _settings.Ssh.Domain #>",
+    "Port": <#= _settings.Ssh.Port #>,
+    "User": "<#= _settings.Ssh.User #>",
+    "Password": "<#= _settings.Ssh.Password #>"
   },
   "Logging": {
     "LogLevel": {

@@ -28,18 +28,38 @@ namespace SPPC.Tools.Transforms.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("{\r\n  \"ServerRoot\": \"http://localhost:1447\",\r\n  \"SSH\": {\r\n    \"Domain\": \"127.0.0.1" +
-                    "\",\r\n    \"Port\": 22,\r\n    \"User\": \"");
+            this.Write("{\r\n  \"ServerRoot\": \"");
+            
+            #line 7 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.OnlineServerRoot));
+            
+            #line default
+            #line hidden
+            this.Write("\",\r\n  \"SSH\": {\r\n    \"Domain\": \"");
+            
+            #line 9 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.Ssh.Domain));
+            
+            #line default
+            #line hidden
+            this.Write("\",\r\n    \"Port\": ");
+            
+            #line 10 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.Ssh.Port));
+            
+            #line default
+            #line hidden
+            this.Write(",\r\n    \"User\": \"");
             
             #line 11 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_model.WinUserName));
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.Ssh.User));
             
             #line default
             #line hidden
             this.Write("\",\r\n    \"Password\": \"");
             
             #line 12 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_model.WinPassword));
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.Ssh.Password));
             
             #line default
             #line hidden

@@ -143,13 +143,13 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             LogOutput();
             try
             {
-                ITextTemplate template = new WebApiSettings(WizardModel);
+                ITextTemplate template = new WebApiSettings(BuildSettings.Default);
                 File.WriteAllText(_params.WebApiSettings, template.TransformText());
 
                 template = new LicenseApiSettings(WizardModel);
                 File.WriteAllText(_params.LicenseApiSettings, template.TransformText());
 
-                template = new LocalLicenseApiSettings(WizardModel);
+                template = new LocalLicenseApiSettings(BuildSettings.Default);
                 File.WriteAllText(_params.LocalLicenseApiSettings, template.TransformText());
                 _outputBuilder.AppendLine("(OK)");
                 LogOutput();

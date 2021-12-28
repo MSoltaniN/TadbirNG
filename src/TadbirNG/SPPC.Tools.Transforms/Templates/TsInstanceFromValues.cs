@@ -33,7 +33,7 @@ namespace SPPC.Tools.Transforms.Templates
                     " Version: ");
             
             #line 9 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\TsInstanceFromValues.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_instance.Version));
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.Version));
             
             #line default
             #line hidden
@@ -56,28 +56,28 @@ export const environment = {
   BaseUrl: '");
             
             #line 20 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\TsInstanceFromValues.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_instance.BaseUrl));
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.WebApiUrl));
             
             #line default
             #line hidden
             this.Write("\',\r\n  LicenseServerUrl: \'");
             
             #line 21 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\TsInstanceFromValues.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_instance.LicenseServerUrl));
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.LocalServerUrl));
             
             #line default
             #line hidden
             this.Write("\',\r\n  InstanceKey: \'");
             
             #line 22 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\TsInstanceFromValues.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_instance.Key));
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.Key));
             
             #line default
             #line hidden
             this.Write("\',\r\n  Version: \'");
             
             #line 23 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\TsInstanceFromValues.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_instance.Version));
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.Version));
             
             #line default
             #line hidden

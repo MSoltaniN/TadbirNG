@@ -38,6 +38,7 @@ namespace SPPC.Tools.LicenseManager
             this.btnNewCustomer = new System.Windows.Forms.Button();
             this.grdCustomers = new System.Windows.Forms.DataGridView();
             this.tabLicenses = new System.Windows.Forms.TabPage();
+            this.btnSaveDockerInstance = new System.Windows.Forms.Button();
             this.btnSaveInstance = new System.Windows.Forms.Button();
             this.btnDeleteLicense = new System.Windows.Forms.Button();
             this.btnEditLicense = new System.Windows.Forms.Button();
@@ -161,6 +162,7 @@ namespace SPPC.Tools.LicenseManager
             // 
             // tabLicenses
             // 
+            this.tabLicenses.Controls.Add(this.btnSaveDockerInstance);
             this.tabLicenses.Controls.Add(this.btnSaveInstance);
             this.tabLicenses.Controls.Add(this.btnDeleteLicense);
             this.tabLicenses.Controls.Add(this.btnEditLicense);
@@ -176,12 +178,23 @@ namespace SPPC.Tools.LicenseManager
             this.tabLicenses.Text = "مجوزها";
             this.tabLicenses.UseVisualStyleBackColor = true;
             // 
+            // btnSaveDockerInstance
+            // 
+            this.btnSaveDockerInstance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveDockerInstance.Location = new System.Drawing.Point(95, 454);
+            this.btnSaveDockerInstance.Name = "btnSaveDockerInstance";
+            this.btnSaveDockerInstance.Size = new System.Drawing.Size(150, 34);
+            this.btnSaveDockerInstance.TabIndex = 7;
+            this.btnSaveDockerInstance.Text = "ثبت شناسه داکر";
+            this.btnSaveDockerInstance.UseVisualStyleBackColor = true;
+            this.btnSaveDockerInstance.Click += new System.EventHandler(this.SaveDockerInstance_Click);
+            // 
             // btnSaveInstance
             // 
             this.btnSaveInstance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveInstance.Location = new System.Drawing.Point(188, 454);
+            this.btnSaveInstance.Location = new System.Drawing.Point(251, 454);
             this.btnSaveInstance.Name = "btnSaveInstance";
-            this.btnSaveInstance.Size = new System.Drawing.Size(183, 34);
+            this.btnSaveInstance.Size = new System.Drawing.Size(150, 34);
             this.btnSaveInstance.TabIndex = 6;
             this.btnSaveInstance.Text = "ثبت شناسه برنامه";
             this.btnSaveInstance.UseVisualStyleBackColor = true;
@@ -190,9 +203,9 @@ namespace SPPC.Tools.LicenseManager
             // btnDeleteLicense
             // 
             this.btnDeleteLicense.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDeleteLicense.Location = new System.Drawing.Point(377, 454);
+            this.btnDeleteLicense.Location = new System.Drawing.Point(407, 454);
             this.btnDeleteLicense.Name = "btnDeleteLicense";
-            this.btnDeleteLicense.Size = new System.Drawing.Size(111, 34);
+            this.btnDeleteLicense.Size = new System.Drawing.Size(102, 34);
             this.btnDeleteLicense.TabIndex = 5;
             this.btnDeleteLicense.Text = "حذف";
             this.btnDeleteLicense.UseVisualStyleBackColor = true;
@@ -201,9 +214,9 @@ namespace SPPC.Tools.LicenseManager
             // btnEditLicense
             // 
             this.btnEditLicense.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEditLicense.Location = new System.Drawing.Point(494, 454);
+            this.btnEditLicense.Location = new System.Drawing.Point(515, 454);
             this.btnEditLicense.Name = "btnEditLicense";
-            this.btnEditLicense.Size = new System.Drawing.Size(111, 34);
+            this.btnEditLicense.Size = new System.Drawing.Size(108, 34);
             this.btnEditLicense.TabIndex = 4;
             this.btnEditLicense.Text = "ویرایش";
             this.btnEditLicense.UseVisualStyleBackColor = true;
@@ -212,9 +225,9 @@ namespace SPPC.Tools.LicenseManager
             // btnNewLicense
             // 
             this.btnNewLicense.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNewLicense.Location = new System.Drawing.Point(611, 454);
+            this.btnNewLicense.Location = new System.Drawing.Point(629, 454);
             this.btnNewLicense.Name = "btnNewLicense";
-            this.btnNewLicense.Size = new System.Drawing.Size(133, 34);
+            this.btnNewLicense.Size = new System.Drawing.Size(115, 34);
             this.btnNewLicense.TabIndex = 3;
             this.btnNewLicense.Text = "مجوز جدید";
             this.btnNewLicense.UseVisualStyleBackColor = true;
@@ -227,7 +240,7 @@ namespace SPPC.Tools.LicenseManager
             this.cmbCustomer.FormattingEnabled = true;
             this.cmbCustomer.Location = new System.Drawing.Point(251, 8);
             this.cmbCustomer.Name = "cmbCustomer";
-            this.cmbCustomer.Size = new System.Drawing.Size(369, 26);
+            this.cmbCustomer.Size = new System.Drawing.Size(372, 26);
             this.cmbCustomer.TabIndex = 1;
             this.cmbCustomer.SelectedIndexChanged += new System.EventHandler(this.CustomerCombo_SelectedIndexChanged);
             // 
@@ -262,15 +275,15 @@ namespace SPPC.Tools.LicenseManager
             this.grdLicenses.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.LicensesGrid_ColumnAdded);
             this.grdLicenses.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.LicensesGrid_DataBindingComplete);
             // 
-            // CustomerList
+            // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnExit;
             this.ClientSize = new System.Drawing.Size(782, 553);
             this.Controls.Add(this.tabMain);
-            this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
-            this.Name = "CustomerList";
+            this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Name = "MainWindow";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -304,5 +317,6 @@ namespace SPPC.Tools.LicenseManager
         private System.Windows.Forms.Button btnSaveInstance;
         private System.Windows.Forms.Button btnDisplayCustomers;
         private System.Windows.Forms.Button btnExit;
+        private System.Windows.Forms.Button btnSaveDockerInstance;
     }
 }

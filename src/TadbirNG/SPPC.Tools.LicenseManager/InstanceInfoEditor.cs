@@ -13,10 +13,13 @@ namespace SPPC.Tools.LicenseManager
 
         public ClientInstanceModel Instance { get; set; }
 
+        public IBuildSettings BuildSettings { get; set; }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             SetupBindings();
+            chkShowPassword.Checked = false;
         }
 
         private void SaveInstanceButton_Click(object sender, EventArgs e)
@@ -31,10 +34,13 @@ namespace SPPC.Tools.LicenseManager
 
         private void SetupBindings()
         {
-            txtBaseUrl.DataBindings.Add("Text", Instance, "BaseUrl");
-            txtServerUrl.DataBindings.Add("Text", Instance, "LicenseServerUrl");
-            txtInstanceKey.DataBindings.Add("Text", Instance, "Key");
-            txtVersion.DataBindings.Add("Text", Instance, "Version");
+            txtBaseUrl.DataBindings.Add("Text", BuildSettings, "WebApiUrl");
+            txtServerUrl.DataBindings.Add("Text", BuildSettings, "LocalServerRoot");
+            txtOnlineServerUrl.DataBindings.Add("Text", BuildSettings, "OnlineServerRoot");
+            txtUserName.DataBindings.Add("Text", BuildSettings, "Ssh.User");
+            txtPassword.DataBindings.Add("Text", BuildSettings, "Ssh.Password");
+            txtInstanceKey.DataBindings.Add("Text", BuildSettings, "Key");
+            txtVersion.DataBindings.Add("Text", BuildSettings, "Version");
         }
 
         private bool ValidateInstance()
@@ -71,6 +77,11 @@ namespace SPPC.Tools.LicenseManager
         private void CancelButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void ShowPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            txtPassword.PasswordChar = chkShowPassword.Checked ? '\0' : '*';
         }
     }
 }

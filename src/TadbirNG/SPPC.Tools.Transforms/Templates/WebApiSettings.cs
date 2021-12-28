@@ -31,13 +31,32 @@ namespace SPPC.Tools.Transforms.Templates
             this.Write("{\r\n  \"ConnectionStrings\": {\r\n    \"TadbirSysApi\": \"Server=");
             
             #line 8 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\WebApiSettings.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_model.DbServerName));
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.DbServerName.Replace("\\", "\\\\")));
             
             #line default
             #line hidden
-            this.Write(@";Database=NGTadbirSys;User ID=NgTadbirUser;Password=Demo1234;Trusted_Connection=False;Connect Timeout=60;MultipleActiveResultSets=true""
-  },
-  ""ServerRoot"": ""http://localhost:7473"",
+            this.Write(";Database=NGTadbirSys;User ID=");
+            
+            #line 8 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\WebApiSettings.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.DbUserName));
+            
+            #line default
+            #line hidden
+            this.Write(";Password=");
+            
+            #line 8 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\WebApiSettings.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.DbPassword));
+            
+            #line default
+            #line hidden
+            this.Write(";Trusted_Connection=False\"\r\n  },\r\n  \"ServerRoot\": \"");
+            
+            #line 10 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\WebApiSettings.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.LocalServerRoot));
+            
+            #line default
+            #line hidden
+            this.Write(@""",
   ""Jwt"": {
     ""Audience"": ""tadbir-app"",
     ""Issuer"": ""tadbir-api"",
@@ -50,7 +69,8 @@ namespace SPPC.Tools.Transforms.Templates
       ""Microsoft"": ""Warning"",
       ""Microsoft.Hosting.Lifetime"": ""Information""
     }
-  }
+  },
+  ""AllowedHosts"": ""*""
 }
 ");
             return this.GenerationEnvironment.ToString();
