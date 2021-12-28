@@ -5543,6 +5543,19 @@ Update [Metadata].[ShortcutCommand] Set HotKey = 'Alt+C' Where ShortcutCommandID
 
 Update [Metadata].[ShortcutCommand] Set HotKey = 'Ctrl+Shift+R' Where ShortcutCommandID = 8
 
+--1.2.1326
+
+Update Metadata.Command set HotKey = 'Ctrl+Y' where CommandID = 10
+
+Update Metadata.Command set HotKey = 'Ctrl+Alt+Y' where CommandID = 17
+
+Update Metadata.Command set HotKey = 'Ctrl+Alt+U' where CommandID = 18
+
+Update Metadata.Command set HotKey = 'Ctrl+Alt+I' where CommandID = 19
+
+
+
+
 
 
 

@@ -39,6 +39,10 @@ export class BaseComponent extends EnviromentComponent {
   public showMessage(text: string, type: MessageType = MessageType.Info, title: string = '', position: MessagePosition = MessagePosition.TopLeft) {
     this.messageBoxService.showMessage(text, type, title, position);
   }
+
+  public showMessageWithTime(text: string, type: MessageType = MessageType.Info,timeout:number, title: string = '', position: MessagePosition = MessagePosition.TopLeft) {
+    this.messageBoxService.showMessageWithTime(text, type,timeout,title, position);
+  }
  
 
   ////#region Shortcut methods 
