@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Licensing;
 using SPPC.Licensing.Model;
@@ -36,6 +39,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
                 }
 
                 var license = await _utility.GetLicenseAsync();
+                LogSessionInfo();
                 return !String.IsNullOrEmpty(license)
                     ? Ok(license)
                     : StatusCode(StatusCodes.Status403Forbidden, new ErrorViewModel(ErrorType.RequiresOnlineLicense));
@@ -174,6 +178,32 @@ namespace SPPC.Licensing.Local.Web.Controllers
                 User = _config["SSH:User"],
                 Password = _config["SSH:Password"]
             };
+        }
+
+        private void LogSessionInfo()
+        {
+            var infoBuilder = new StringBuilder();
+            var header = Request.Headers["User-Agent"].FirstOrDefault();
+            if (!String.IsNullOrEmpty(header))
+            {
+                infoBuilder.AppendFormat($"User-Agent : {header}{Environment.NewLine}");
+            }
+
+            var conn = Request.HttpContext.Connection;
+            if (conn.RemoteIpAddress != null)
+            {
+                infoBuilder.AppendFormat($"Remote IP : {conn.RemoteIpAddress}");
+                if (conn.RemotePort > 0)
+                {
+                    infoBuilder.AppendFormat($":{conn.RemotePort}{Environment.NewLine}");
+                }
+            }
+
+            var now = DateTime.UtcNow;
+            infoBuilder.AppendFormat($"User ID : 1{Environment.NewLine}");
+            infoBuilder.AppendFormat($"Since (UTC): {now.ToShortDateString(false)} {now.TimeOfDay}{Environment.NewLine}");
+            infoBuilder.AppendLine();
+            System.IO.File.AppendAllText(System.IO.Path.Combine("wwwroot", "session-info.log"), infoBuilder.ToString());
         }
 
         private readonly IConfiguration _config;

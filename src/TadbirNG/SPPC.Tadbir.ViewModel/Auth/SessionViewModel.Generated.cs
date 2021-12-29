@@ -39,7 +39,7 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public int Id { get; set; }
 
         /// <summary>
-        /// نام استاندارد مرورگر مورد استفاده در این جلسه برنامه
+        /// اطلاعات کامل عامل کاربری مورد استفاده در این جلسه برنامه
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(128, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
@@ -51,6 +51,13 @@ namespace SPPC.Tadbir.ViewModel.Auth
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Device { get; set; }
+
+        /// <summary>
+        /// نام استاندارد مرورگر مورد استفاده در این جلسه برنامه
+        /// </summary>
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public string Browser { get; set; }
 
         /// <summary>
         /// شناسه یکتای تولیدشده برای مرورگر مورد استفاده در این جلسه برنامه

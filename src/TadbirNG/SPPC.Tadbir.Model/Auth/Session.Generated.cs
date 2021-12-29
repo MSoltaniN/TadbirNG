@@ -35,7 +35,7 @@ namespace SPPC.Tadbir.Model.Auth
         }
 
         /// <summary>
-        /// نام استاندارد مرورگر مورد استفاده در این جلسه برنامه
+        /// اطلاعات کامل عامل کاربری مورد استفاده در این جلسه برنامه
         /// </summary>
         public virtual string UserAgent { get; set; }
 
@@ -43,6 +43,11 @@ namespace SPPC.Tadbir.Model.Auth
         /// نام وسیله مورد استفاده در این جلسه برنامه
         /// </summary>
         public virtual string Device { get; set; }
+
+        /// <summary>
+        /// نام استاندارد مرورگر مورد استفاده در این جلسه برنامه
+        /// </summary>
+        public virtual string Browser { get; set; }
 
         /// <summary>
         /// شناسه یکتای تولیدشده برای مرورگر مورد استفاده در این جلسه برنامه

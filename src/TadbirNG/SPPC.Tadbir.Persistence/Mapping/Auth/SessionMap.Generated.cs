@@ -31,6 +31,9 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.Device)
                 .IsRequired()
                 .HasMaxLength(64);
+            builder.Property(e => e.Browser)
+                .IsRequired()
+                .HasMaxLength(64);
             builder.Property(e => e.Fingerprint)
                 .IsRequired()
                 .HasMaxLength(128);
