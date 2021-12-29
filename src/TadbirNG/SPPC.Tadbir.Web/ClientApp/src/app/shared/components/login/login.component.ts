@@ -12,6 +12,7 @@ import { SettingService } from '@sppc/config/service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { LicenseApi } from '@sppc/shared/services/api/licenseApi';
 import { MessageType } from '@sppc/shared/enum/metadata';
+import { ErrorType } from '@sppc/shared/models';
 
 
 
@@ -100,23 +101,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
                 if (this.authenticationService.islogin())
                 { 
                   if (this.bStorageService.getCurrentUser().lastLoginDate == null || this.bStorageService.getLicense() == null) {
-                    this.licenseService.GetAppLicense(LicenseApi.LicenseUrl).subscribe((res) => {
-
-                      this.bStorageService.setLicense(res);
-
-                      this.parent.step1 = false;
-                      this.parent.step2 = true;
-
-                      this.dashborardService.getLincenseInfo().subscribe((info) => {
-                        this.bStorageService.setLicenseInfo(info);
-                      });
-
-                    },
-                    error => {
-                      this.bStorageService.removeCurrentContext();                      
-                      this.showMessage(this.getText("Messages.LicenseError"), MessageType.Error);
-                      this.loading = false;
-                    });
+                    this.getLicense();
                   }
 
                   if (this.bStorageService.getCurrentUser().lastLoginDate != null && this.bStorageService.getLicense() != null) 
@@ -134,6 +119,81 @@ export class LoginComponent extends DefaultComponent implements OnInit {
             });
     }
 
-    
+    getLicense()
+    {
+      this.licenseService.GetAppLicense(LicenseApi.LicenseUrl).subscribe((res) => {
+
+        this.bStorageService.setLicense(res);
+
+        this.parent.step1 = false;
+        this.parent.step2 = true;
+
+        this.dashborardService.getLincenseInfo().subscribe((info) => {
+          this.bStorageService.setLicenseInfo(info);
+        });
+
+      },
+      error => {
+        debugger;
+        if(error.statusCode == 403)
+        {
+          if(error.type == (ErrorType.NotActivated))
+          {
+            if(!navigator.onLine)
+            {
+              this.showMessage(this.getText("Messages.InternetConnectionError"), MessageType.Info);
+              this.logOut();
+              return;
+            }
+            else
+            {
+              this.activateLicense();
+            }
+          }
+
+          if(error.type == (ErrorType.BadLicense))
+          {            
+            this.licenseError();
+          }
+        }
+        else
+        {
+          this.licenseError();
+        }
+
+      });
+    }
+
+    logOut()
+    {
+      this.bStorageService.removeCurrentContext();
+      this.loading = false;
+    }
+
+    activateLicense()
+    {
+      var timeout = 2500;      
+      this.showMessageWithTime(this.getText("Messages.StartingActivation"), MessageType.Info,timeout);
+
+      setTimeout(() => {
+
+        this.licenseService.ActivateLicense(LicenseApi.ActivateLicenseUrl).subscribe((res) => {
+          this.showMessageWithTime(this.getText("Messages.ActivationIsSuccessful"), MessageType.Succes,timeout);        
+          this.getLicense();
+        },
+        error => {
+          this.showMessageWithTime(this.getText("Messages.ActivationIsNotSuccessful"), MessageType.Error,timeout);
+          this.logOut();
+        });
+
+      }, timeout);
+      
+    }
+
+    licenseError()
+    {
+      this.showMessage(this.getText("Messages.LicenseError"), MessageType.Error);
+      this.logOut();
+    }
 
 }

@@ -21,13 +21,14 @@ export class LicenseService extends BaseService {
       .map(response => <any>(<Response>response));
   }
 
-  // GetAppLicense(url: string) {
+  ActivateLicense(url: string) {
 
-  //   var newHeader = this.httpHeaders;
-  //   newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
-  //   var options = { headers: newHeader };
+    debugger;
+    var newHeader = this.httpHeaders;    
+    newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
+    var options = { headers: newHeader };
 
-  //   return this.http.get(url, options)
-  //     .map(response => <any>(<Response>response));
-  // }
+    return this.http.put(url,null, options)
+      .map(response => <any>(<Response>response));
+  }
 }
