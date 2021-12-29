@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
@@ -100,24 +99,6 @@ namespace SPPC.Tadbir.Web.Api.Middleware
 
         private void TryLogException(HttpContext context, Exception exception)
         {
-            // ------- START : Diagnostic Code -------
-            string logPath = Path.Combine("wwwroot", "webapi.log");
-            var logBuilder = new StringBuilder();
-            logBuilder.AppendLine("Original Exception :");
-            logBuilder.AppendLine();
-            logBuilder.AppendLine(exception.Message);
-            var current = exception;
-            while (current.InnerException != null)
-            {
-                current = current.InnerException;
-                logBuilder.AppendLine(current.Message);
-            }
-
-            logBuilder.AppendLine(exception.StackTrace);
-            logBuilder.AppendLine();
-            File.AppendAllText(logPath, logBuilder.ToString());
-            // ------- END : Diagnostic Code -------
-
             var serviceException = ServiceExceptionFactory.FromException(exception);
             int? companyId = null;
             int? fpId = null;
@@ -151,38 +132,15 @@ namespace SPPC.Tadbir.Web.Api.Middleware
 
             try
             {
-                // ------- START : Diagnostic Code -------
-                logBuilder.Clear();
-                logBuilder.AppendLine("Query for inserting log record into SystemError table :");
-                // ------- END : Diagnostic Code -------
-
                 var query = String.Format(ErrorQuery.Insert, FromNullableId(companyId),
                     FromNullableId(fpId), FromNullableId(branchId), systemError.TimestampUtc,
                     systemError.Code, systemError.Message, systemError.FaultingMethod,
                     systemError.FaultType, systemError.StackTrace);
-
-                // ------- START : Diagnostic Code -------
-                logBuilder.AppendLine(query);
-                logBuilder.AppendLine();
-                // ------- END : Diagnostic Code -------
-
                 _dbConsole.ExecuteNonQuery(query);
             }
-            catch (Exception logEx)
+            catch
             {
-                // ------- START : Diagnostic Code -------
-                logBuilder.AppendLine("Error inserting log record.");
-                logBuilder.AppendLine("Logging exception :");
-                logBuilder.AppendLine(logEx.Message);
-                logBuilder.AppendLine(logEx.StackTrace);
-                logBuilder.AppendLine();
-                // ------- END : Diagnostic Code -------
-
                 Debug.WriteLine("WARNING: Could not log system error to database.");
-            }
-            finally
-            {
-                File.AppendAllText(logPath, logBuilder.ToString());
             }
         }
 
