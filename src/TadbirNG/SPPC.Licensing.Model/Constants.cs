@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Licensing.Model
 {
@@ -18,5 +17,10 @@ namespace SPPC.Licensing.Model
         public const string InstanceHeaderName = "X-Tadbir-Instance";
         public const string LicenseHeaderName = "X-Tadbir-License";
         public const string LicenseCheckHeaderName = "X-Tadbir-LicenseCheck";
+
+        public static TimeSpan SessionTimeout
+        {
+            get { return TimeSpan.FromDays(14); }
+        }
     }
 }

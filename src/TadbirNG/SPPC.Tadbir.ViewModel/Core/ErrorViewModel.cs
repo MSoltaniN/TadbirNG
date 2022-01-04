@@ -89,6 +89,7 @@ namespace SPPC.Tadbir.ViewModel.Core
                 case ErrorType.NotActivated:
                 case ErrorType.BadLicense:
                 case ErrorType.RequiresOnlineLicense:
+                case ErrorType.TooManySessions:
                     StatusCode = 403;
                     break;
                 default:

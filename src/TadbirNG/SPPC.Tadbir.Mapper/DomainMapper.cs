@@ -126,6 +126,9 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.EntityName, opts => opts.MapFrom(src => src.Group.EntityName))
                 .ForMember(dest => dest.Flags, opts => opts.MapFrom(src => src.Flag));
 
+            mapperConfig.CreateMap<Session, SessionViewModel>();
+            mapperConfig.CreateMap<SessionViewModel, Session>();
+
             mapperConfig.CreateMap<ViewRowPermission, ViewRowPermissionViewModel>()
                 .ForMember(
                     dest => dest.Items,

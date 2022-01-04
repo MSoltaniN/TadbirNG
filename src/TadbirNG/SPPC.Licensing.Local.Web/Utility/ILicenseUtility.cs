@@ -53,5 +53,11 @@ namespace SPPC.Tadbir.Licensing
         /// <returns>در صورت درستی مجوز مقدار بولی "درست" و در صورت
         /// عدم مطابقت اطلاعات متنی با اطلاعات فعال سازی شده مقدار بولی "نادرست" را برمی گرداند</returns>
         Task<bool> ValidateSignatureAsync(string apiLicense, string signature);
+
+        /// <summary>
+        /// به روش آسنکرون اطلاعات مجوز برنامه را از فایل مرتبط خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات کامل مجوز برنامه</returns>
+        Task<LicenseFileModel> LoadLicenseAsync();
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.ViewModel.Core
 {
@@ -41,6 +40,11 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// <summary>
         /// کد خطا برای حالتی که مجوز برنامه باید از سرور آنلاین گرفته شود
         /// </summary>
-        RequiresOnlineLicense = 6
+        RequiresOnlineLicense = 6,
+
+        /// <summary>
+        /// کد خطا برای رسیدن به سقف تعداد کاربران همزمان در برنامه
+        /// </summary>
+        TooManySessions = 7
     }
 }

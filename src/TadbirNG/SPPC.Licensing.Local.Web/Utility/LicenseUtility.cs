@@ -242,6 +242,17 @@ namespace SPPC.Tadbir.Licensing
             return _crypto.VerifyData(apiLicenseBytes, signature, certificate);
         }
 
+        /// <summary>
+        /// به روش آسنکرون اطلاعات مجوز برنامه را از فایل مرتبط خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات کامل مجوز برنامه</returns>
+        public async Task <LicenseFileModel> LoadLicenseAsync()
+        {
+            var licenseData = await File.ReadAllTextAsync(LicensePath, Encoding.UTF8);
+            var json = _crypto.Decrypt(licenseData);
+            return JsonHelper.To<LicenseFileModel>(json);
+        }
+
         private string LicensePath
         {
             get { return _pathProvider.BinLicense; }
@@ -423,13 +434,6 @@ namespace SPPC.Tadbir.Licensing
         {
             string json = _crypto.Decrypt(instance);
             return JsonHelper.To<InstanceModel>(json);
-        }
-
-        private async Task <LicenseFileModel> LoadLicenseAsync()
-        {
-            var licenseData = await File.ReadAllTextAsync(LicensePath, Encoding.UTF8);
-            var json = _crypto.Decrypt(licenseData);
-            return JsonHelper.To<LicenseFileModel>(json);
         }
 
         private void SaveLicense(LicenseFileModel license)

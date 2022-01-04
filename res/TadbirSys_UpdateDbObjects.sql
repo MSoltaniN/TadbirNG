@@ -5553,19 +5553,19 @@ Update Metadata.Command set HotKey = 'Ctrl+Alt+U' where CommandID = 18
 
 Update Metadata.Command set HotKey = 'Ctrl+Alt+I' where CommandID = 19
 
--- 1.2.1327
+-- 1.2.1328
 CREATE TABLE [Auth].[Session] (
-    [SessionID]      INT              IDENTITY (1, 1) NOT NULL,
-    [UserID]         INT              NOT NULL,
-    [UserAgent]      NVARCHAR(128)    NOT NULL,
-    [Device]         NVARCHAR(64)     NOT NULL,
-    [Browser]        NVARCHAR(64)     NOT NULL,
-    [Fingerprint]    NVARCHAR(128)    NOT NULL,
-    [IPAddress]      NVARCHAR(16)     NULL,
-    [SinceUtc]       DATETIME         NOT NULL,
-    [TimeZone]       NVARCHAR(32)     NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_Session_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Auth_Session_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    [SessionID]       INT              IDENTITY (1, 1) NOT NULL,
+    [UserID]          INT              NOT NULL,
+    [Device]          NVARCHAR(64)     NOT NULL,
+    [Browser]         NVARCHAR(64)     NOT NULL,
+    [Fingerprint]     NVARCHAR(128)    NOT NULL,
+    [IPAddress]       NVARCHAR(16)     NULL,
+    [SinceUtc]        DATETIME         NOT NULL,
+    [LastActivityUtc] DATETIME         NOT NULL,
+    [TimeZone]        NVARCHAR(32)     NULL,
+    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_Session_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Auth_Session_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Auth_Session] PRIMARY KEY CLUSTERED ([SessionID] ASC)
     , CONSTRAINT [FK_Auth_Session_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User]([UserID])
 )

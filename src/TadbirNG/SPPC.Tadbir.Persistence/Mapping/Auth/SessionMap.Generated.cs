@@ -25,9 +25,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("SessionID");
-            builder.Property(e => e.UserAgent)
-                .IsRequired()
-                .HasMaxLength(128);
             builder.Property(e => e.Device)
                 .IsRequired()
                 .HasMaxLength(64);
@@ -40,6 +37,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.IPAddress)
                 .HasMaxLength(16);
             builder.Property(e => e.SinceUtc)
+                .IsRequired();
+            builder.Property(e => e.LastActivityUtc)
                 .IsRequired();
             builder.Property(e => e.TimeZone)
                 .HasMaxLength(32);

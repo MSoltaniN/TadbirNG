@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Licensing;
 using SPPC.Licensing.Model;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Licensing;
+using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Licensing.Local.Web.Controllers
@@ -18,10 +16,12 @@ namespace SPPC.Licensing.Local.Web.Controllers
     [Produces("application/json")]
     public class LicenseController : Controller
     {
-        public LicenseController(IConfiguration configuration, ILicenseUtility utility)
+        public LicenseController(IConfiguration configuration, ILicenseUtility utility,
+            ISessionRepository repository)
         {
             _config = configuration;
             _utility = utility;
+            _repository = repository;
         }
 
         // GET: api/license
@@ -39,10 +39,17 @@ namespace SPPC.Licensing.Local.Web.Controllers
                 }
 
                 var license = await _utility.GetLicenseAsync();
-                LogSessionInfo();
-                return !String.IsNullOrEmpty(license)
-                    ? Ok(license)
-                    : StatusCode(StatusCodes.Status403Forbidden, new ErrorViewModel(ErrorType.RequiresOnlineLicense));
+                if (!String.IsNullOrEmpty(license))
+                {
+                    await RegisterUserSessionAsync();
+                }
+                else
+                {
+                    result = StatusCode(StatusCodes.Status403Forbidden,
+                        new ErrorViewModel(ErrorType.RequiresOnlineLicense));
+                }
+
+                return result;
             }
             catch (Exception e)
             {
@@ -65,9 +72,17 @@ namespace SPPC.Licensing.Local.Web.Controllers
                 }
 
                 var license = await _utility.GetOnlineLicenseAsync(instance, GetRemoteConnection());
-                return !String.IsNullOrEmpty(license)
-                    ? Ok(license)
-                    : StatusCode(StatusCodes.Status403Forbidden, new ErrorViewModel(ErrorType.BadLicense));
+                if (!String.IsNullOrEmpty(license))
+                {
+                    await RegisterUserSessionAsync();
+                }
+                else
+                {
+                    result = StatusCode(StatusCodes.Status403Forbidden,
+                        new ErrorViewModel(ErrorType.BadLicense));
+                }
+
+                return result;
             }
             catch (Exception e)
             {
@@ -117,12 +132,38 @@ namespace SPPC.Licensing.Local.Web.Controllers
             return Ok(validated);
         }
 
+        // PUT: api/sessions/current/active
+        [HttpPut]
+        [Route(LicenseApi.SetCurrentSessionAsActiveUrl)]
+        public async Task<IActionResult> PutCurrentSessionAsActiveAsync()
+        {
+            string userAgent = Request.Headers["User-Agent"];
+            await _repository.UpdateSessionLastActiveAsync(userAgent);
+            return Ok();
+        }
+
+        // DELETE: api/sessions/current
+        [HttpDelete]
+        [Route(LicenseApi.CurrentSessionUrl)]
+        public async Task<IActionResult> DeleteCurrentSessionAsync()
+        {
+            string userAgent = Request.Headers["User-Agent"];
+            await _repository.DeleteSessionAsync(userAgent);
+            return NoContent();
+        }
+
         private IActionResult GetValidationResult(string instance, out bool succeeded)
         {
             succeeded = false;
             if (String.IsNullOrEmpty(instance))
             {
                 return BadRequest(new ErrorViewModel(ErrorType.ValidationError));
+            }
+
+            var result = GetSessionValidationResult();
+            if (!(result is OkResult))
+            {
+                return result;
             }
 
             var status = _utility.ValidateLicense(instance, GetRemoteConnection());
@@ -146,6 +187,12 @@ namespace SPPC.Licensing.Local.Web.Controllers
                 return BadRequest(new ErrorViewModel(ErrorType.ValidationError));
             }
 
+            var result = GetSessionValidationResult();
+            if (!(result is OkResult))
+            {
+                return result;
+            }
+
             var status = _utility.QuickValidateLicense(instance);
             if (status != LicenseStatus.OK)
             {
@@ -157,6 +204,27 @@ namespace SPPC.Licensing.Local.Web.Controllers
 
             succeeded = true;
             return Ok();
+        }
+
+        private IActionResult GetSessionValidationResult()
+        {
+            IActionResult result = Ok();
+            var license = _utility.LoadLicenseAsync().Result;
+            int sessionCount = _repository.GetSessionCountAsync().Result;
+            if (sessionCount >= license.UserCount)
+            {
+                var errorType = ErrorType.TooManySessions;
+                result = StatusCode(StatusCodes.Status403Forbidden, new ErrorViewModel(errorType));
+            }
+
+            return result;
+        }
+
+        private async Task RegisterUserSessionAsync()
+        {
+            string userAgent = Request.Headers["User-Agent"];
+            string ipAddress = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
+            await _repository.SaveSessionAsync(userAgent, ipAddress);
         }
 
         private string GetInstance()
@@ -180,34 +248,8 @@ namespace SPPC.Licensing.Local.Web.Controllers
             };
         }
 
-        private void LogSessionInfo()
-        {
-            var infoBuilder = new StringBuilder();
-            var header = Request.Headers["User-Agent"].FirstOrDefault();
-            if (!String.IsNullOrEmpty(header))
-            {
-                infoBuilder.AppendFormat($"User-Agent : {header}{Environment.NewLine}");
-            }
-
-            var conn = Request.HttpContext.Connection;
-            if (conn.RemoteIpAddress != null)
-            {
-                infoBuilder.AppendFormat($"Remote IP : {conn.RemoteIpAddress}");
-                if (conn.RemotePort > 0)
-                {
-                    infoBuilder.AppendFormat($":{conn.RemotePort}{Environment.NewLine}");
-                }
-            }
-
-            var now = DateTime.UtcNow;
-            infoBuilder.AppendFormat($"User ID : 1{Environment.NewLine}");
-            infoBuilder.AppendFormat($"Since (UTC): {now.ToShortDateString(false)} {now.TimeOfDay}{Environment.NewLine}");
-            infoBuilder.AppendLine();
-            System.IO.File.AppendAllText(System.IO.Path.Combine("wwwroot", "session-info.log"), infoBuilder.ToString());
-        }
-
         private readonly IConfiguration _config;
         private readonly ILicenseUtility _utility;
-        private delegate LicenseStatus LicenseValidatorDelegate(string instance);
+        private readonly ISessionRepository _repository;
     }
 }

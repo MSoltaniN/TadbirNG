@@ -5,6 +5,8 @@ using SPPC.Framework.Licensing;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Common;
 using SPPC.Tadbir.Licensing;
+using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Security;
 
 namespace SPPC.Licensing.Local.Web
 {
@@ -52,6 +54,8 @@ namespace SPPC.Licensing.Local.Web
             _services.AddTransient<ILicenseUtility, LicenseUtility>();
             _services.AddTransient<IDeviceIdProvider, DeviceIdProvider>();
             _services.AddTransient<ILicensePathProvider, LicenseResourcePaths>();
+            _services.AddTransient<ISessionProvider, SessionProvider>();
+            _services.AddTransient<ISessionRepository, SessionRepository>();
         }
 
         private readonly IServiceCollection _services;

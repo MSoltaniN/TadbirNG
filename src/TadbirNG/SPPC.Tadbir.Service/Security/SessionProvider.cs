@@ -40,9 +40,9 @@ namespace SPPC.Tadbir.Security
                 session = new SessionViewModel()
                 {
                     Device = GetDevice(detector),
-                    UserAgent = userAgent,
                     Browser = GetBrowser(detector),
                     SinceUtc = DateTime.UtcNow,
+                    LastActivityUtc = DateTime.UtcNow,
                     IPAddress = ipAddress,
                     Fingerprint = GetFingerprint(detector, userAgent)
                 };

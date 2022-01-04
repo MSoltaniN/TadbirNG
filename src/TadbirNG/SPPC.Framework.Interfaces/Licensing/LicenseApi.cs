@@ -50,5 +50,25 @@ namespace SPPC.Framework.Licensing
         /// API server route URL for validating the application license
         /// </summary>
         public const string ValidateLicenseUrl = "license/validate";
+
+        /// <summary>
+        /// API client URL for current session in the application
+        /// </summary>
+        public const string CurrentSession = "sessions/current";
+
+        /// <summary>
+        /// API server route URL for current session in the application
+        /// </summary>
+        public const string CurrentSessionUrl = "sessions/current";
+
+        /// <summary>
+        /// API client URL for keeping current application session in active state
+        /// </summary>
+        public const string SetCurrentSessionAsActive = "sessions/current/active";
+
+        /// <summary>
+        /// API server route URL for keeping current application session in active state
+        /// </summary>
+        public const string SetCurrentSessionAsActiveUrl = "sessions/current/active";
     }
 }
