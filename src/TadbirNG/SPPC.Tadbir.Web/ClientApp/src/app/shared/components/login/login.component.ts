@@ -6,13 +6,15 @@ import { TranslateService } from '@ngx-translate/core';
 import {LoginContainerComponent} from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
 //import { DOCUMENT } from '@angular/common';
-import { AuthenticationService } from '@sppc/core';
+import { AuthenticationService, ContextInfo } from '@sppc/core';
 import { MetaDataService, BrowserStorageService, SessionKeys, LicenseService, DashboardService } from '@sppc/shared/services';
 import { SettingService } from '@sppc/config/service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { LicenseApi } from '@sppc/shared/services/api/licenseApi';
 import { MessageType } from '@sppc/shared/enum/metadata';
 import { ErrorType } from '@sppc/shared/models';
+import { DialogCloseResult, DialogRef, DialogResult, DialogService } from '@progress/kendo-angular-dialog';
+import { ThrowStmt } from '@angular/compiler';
 
 
 
@@ -31,18 +33,20 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     firstStep: boolean = true;
     ticket: string = '';
 
+    currentLogin:ContextInfo;
 
     public lang: string = '';
     public stepOne : boolean = true;
-
-    
+    public activationForm:boolean = false;
+    public onlineLicense:boolean = false;
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
       private authenticationService: AuthenticationService, public toastrService: ToastrService, public bStorageService: BrowserStorageService,
         public translate: TranslateService, @Host() public parent: LoginContainerComponent, public renderer: Renderer2,
-        public metadata: MetaDataService, public settingService: SettingService, @Inject(DOCUMENT) public document,private licenseService:LicenseService,private dashborardService:DashboardService) 
+        public metadata: MetaDataService, public settingService: SettingService, @Inject(DOCUMENT) public document,
+        private licenseService:LicenseService,private dashborardService:DashboardService,private dialogService:DialogService) 
     {
       super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
         this.lang = this.currentlang;
@@ -100,8 +104,8 @@ export class LoginComponent extends DefaultComponent implements OnInit {
             data => {
                 if (this.authenticationService.islogin())
                 { 
-                  if (this.bStorageService.getCurrentUser().lastLoginDate == null || this.bStorageService.getLicense() == null) {
-                    this.getLicense();
+                  if (this.bStorageService.getCurrentUser().lastLoginDate == null || this.bStorageService.getLicense() == null) {                    
+                    this.checkOfflineLicense();
                   }
 
                   if (this.bStorageService.getCurrentUser().lastLoginDate != null && this.bStorageService.getLicense() != null) 
@@ -119,11 +123,9 @@ export class LoginComponent extends DefaultComponent implements OnInit {
             });
     }
 
-    getLicense()
+    setLicenseCache(license)
     {
-      this.licenseService.GetAppLicense(LicenseApi.LicenseUrl).subscribe((res) => {
-
-        this.bStorageService.setLicense(res);
+      this.bStorageService.setLicense(license);
 
         this.parent.step1 = false;
         this.parent.step2 = true;
@@ -131,24 +133,35 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         this.dashborardService.getLincenseInfo().subscribe((info) => {
           this.bStorageService.setLicenseInfo(info);
         });
+    }
 
+    checkOfflineLicense()
+    {
+      this.licenseService.GetAppLicense(LicenseApi.LicenseUrl).subscribe((res) => {
+        this.setLicenseCache(res);
       },
       error => {
         debugger;
+        this.currentLogin = this.bStorageService.getCurrentUser();
+        this.logOut();
+
         if(error.statusCode == 403)
         {
           if(error.type == (ErrorType.NotActivated))
           {
-            if(!navigator.onLine)
-            {
-              this.showMessage(this.getText("Messages.InternetConnectionError"), MessageType.Info);
-              this.logOut();
+            if(!this.checkInternetConnection())
+            {              
               return;
             }
             else
             {
               this.activateLicense();
             }
+          }
+
+          if(error.type == (ErrorType.RequiresOnlineLicense))
+          {
+            this.checkOnlineLicense();
           }
 
           if(error.type == (ErrorType.BadLicense))
@@ -164,6 +177,64 @@ export class LoginComponent extends DefaultComponent implements OnInit {
       });
     }
 
+    checkInternetConnection()
+    {
+      if(!navigator.onLine)
+      {
+        this.showMessage(this.getText("Messages.InternetConnectionError"), MessageType.Info);
+        this.logOut();
+        return false;
+      }
+
+      return true;
+    }
+
+    checkOnlineLicense()
+    {
+      if(!this.checkInternetConnection()) return;     
+      
+      this.showOnlineLicense();
+    }    
+
+    startActivatingSoftware()
+    {
+      this.closeActivationForm();
+      this.licenseService.ActivateLicense(LicenseApi.ActivateLicenseUrl).subscribe((res) => {
+        this.showMessageWithTime(this.getText("Messages.ActivationIsSuccessful"), MessageType.Succes,1000);        
+        this.bStorageService.setContext(this.currentLogin,this.model.remember);
+        this.checkOfflineLicense();
+      },
+      error => {        
+        this.showMessageWithTime(this.getText("Messages.ActivationIsNotSuccessful"), MessageType.Error,1000);
+        this.logOut();
+      });
+    }
+
+    startCheckingOnlineLicense()
+    {   
+      this.closeOnlineLicenseForm();   
+      this.licenseService.CheckOnlineLicense(LicenseApi.OnlineLicenseUrl).subscribe((res) => {
+        this.showMessageWithTime(this.getText("Messages.OnlineLicenseIsSuccessful"), MessageType.Succes,1000);        
+        
+        this.bStorageService.setContext(this.currentLogin,this.model.remember);        
+        this.setLicenseCache(res);
+      },
+      error => {        
+        this.showMessageWithTime(this.getText("Messages.OnlineLicenseIsNotSuccessful"), MessageType.Error,1000);
+        this.logOut();
+      });
+    }
+
+    closeActivationForm()
+    {
+      this.activationForm = false;
+    }
+
+    closeOnlineLicenseForm()
+    {
+      this.onlineLicense = false;
+    }
+
     logOut()
     {
       this.bStorageService.removeCurrentContext();
@@ -172,22 +243,12 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
     activateLicense()
     {
-      var timeout = 2500;      
-      this.showMessageWithTime(this.getText("Messages.StartingActivation"), MessageType.Info,timeout);
+      this.activationForm = true;  
+    }
 
-      setTimeout(() => {
-
-        this.licenseService.ActivateLicense(LicenseApi.ActivateLicenseUrl).subscribe((res) => {
-          this.showMessageWithTime(this.getText("Messages.ActivationIsSuccessful"), MessageType.Succes,timeout);        
-          this.getLicense();
-        },
-        error => {
-          this.showMessageWithTime(this.getText("Messages.ActivationIsNotSuccessful"), MessageType.Error,timeout);
-          this.logOut();
-        });
-
-      }, timeout);
-      
+    showOnlineLicense()
+    {
+      this.onlineLicense = true;
     }
 
     licenseError()

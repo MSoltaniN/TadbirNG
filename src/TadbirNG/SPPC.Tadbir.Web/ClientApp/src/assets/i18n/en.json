@@ -71,9 +71,14 @@
     "DeleteOperationSuccessful": "delete operation successful",
     "GlobalErrorMessage": "An error occurred while performing the operation",
     "LicenseError": "Software license control encountered an error! Please contact the system administrator.",
-    "StartingActivation":"Starting activation software....",
+    "StartingActivation":"The application is not activated! To activate the software, please make sure of the internet connection status. Do you want activation software?",
     "ActivationIsSuccessful":"Activation is successful",
-    "ActivationIsNotSuccessful":"Activation is not successful"
+    "ActivationIsNotSuccessful":"Activation is not successful",
+    "CheckingOnlineLicense":"Check software licenses",
+    "CheckingOnlineMsg":"The software needs to check the license online! Please check the internet connection status. Do you want to check the software license?",    
+    "OnlineLicenseIsSuccessful":"Software license was successfully verified",
+    "OnlineLicenseIsNotSuccessful":"Error checking software license encountered",
+    "SoftwareActivation":"Software activation"
   },
   "Report": {
     "ReportViewer": "View of",

@@ -22,13 +22,22 @@ export class LicenseService extends BaseService {
   }
 
   ActivateLicense(url: string) {
-
-    debugger;
+ 
     var newHeader = this.httpHeaders;    
     newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
     var options = { headers: newHeader };
 
     return this.http.put(url,null, options)
+      .map(response => <any>(<Response>response));
+  }
+
+  CheckOnlineLicense(url: string) {
+    
+    var newHeader = this.httpHeaders;    
+    newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
+    var options = { headers: newHeader };
+
+    return this.http.get(url, options)
       .map(response => <any>(<Response>response));
   }
 }

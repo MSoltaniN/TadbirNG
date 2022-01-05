@@ -12,11 +12,13 @@ export class ShortcutService {
    * @param commands
    */
   searchShortcutCommand(ctrl: boolean, shift: boolean, alt: boolean, key: string, commands: ShortcutCommand[]): ShortcutCommand {
-    for (let command of commands) {
-      if (command.hotKey != null) {
-
-        var result = this.hotkeyUsed(ctrl, alt, shift, key, command);
-        if (result) return result;
+    if(commands)
+    {
+      for (let command of commands) {
+        if (command.hotKey != null) {
+          var result = this.hotkeyUsed(ctrl, alt, shift, key, command);
+          if (result) return result;
+        }
       }
     }
     return undefined;

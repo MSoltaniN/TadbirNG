@@ -34,3 +34,27 @@
     </div>    
 </div>
 
+<kendo-dialog title="{{'Messages.SoftwareActivation' | translate}}" *ngIf="activationForm" 
+[ngStyle]="{'direction':this.currentlang === 'fa' ? 'rtl':'ltr'}"
+(close)="closeActivationForm()"  [minWidth]="250" [width]="350" [height]="200">
+<p>
+    {{'Messages.StartingActivation' | translate}}
+</p>
+<kendo-dialog-actions>
+    <button class="k-button" (click)="startActivatingSoftware()" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+    <button class="k-button" (click)="closeActivationForm()">{{ 'Buttons.No' | translate }}</button>
+</kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="{{'Messages.CheckingOnlineLicense' | translate}}" *ngIf="onlineLicense" 
+[ngStyle]="{'direction':this.currentlang === 'fa' ? 'rtl':'ltr'}"
+(close)="closeOnlineLicenseForm()"  [minWidth]="250" [width]="350" [height]="200">
+<p>
+    {{'Messages.CheckingOnlineMsg' | translate}}
+</p>
+<kendo-dialog-actions>
+    <button class="k-button" (click)="startCheckingOnlineLicense()" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+    <button class="k-button" (click)="closeOnlineLicenseForm()">{{ 'Buttons.No' | translate }}</button>
+</kendo-dialog-actions>
+</kendo-dialog>
+
