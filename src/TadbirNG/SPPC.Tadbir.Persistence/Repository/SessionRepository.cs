@@ -67,11 +67,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userId">شناسه دیتابیسی کاربری که وارد برنامه شده است</param>
         public async Task SaveSessionAsync(string userAgent, string ipAddress, int userId)
         {
-            var repository = UnitOfWork.GetAsyncRepository<Session>();
-            var session = _sessionProvider.GetSession(userAgent, ipAddress);
-            session.UserId = userId;
-            repository.Insert(Mapper.Map<Session>(session));
-            await UnitOfWork.CommitAsync();
+            if (userId > 0)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<Session>();
+                var session = _sessionProvider.GetSession(userAgent, ipAddress);
+                session.UserId = userId;
+                repository.Insert(Mapper.Map<Session>(session));
+                await UnitOfWork.CommitAsync();
+            }
         }
 
         /// <summary>
