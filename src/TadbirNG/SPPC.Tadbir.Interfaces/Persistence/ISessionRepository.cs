@@ -27,7 +27,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="userAgent">اطلاعات عامل کاربری دریافت شده از درخواست وب</param>
         /// <param name="ipAddress">آدرس آی پی فرستنده درخواست وب</param>
-        Task SaveSessionAsync(string userAgent, string ipAddress);
+        /// <param name="userId">شناسه دیتابیسی کاربری که وارد برنامه شده است</param>
+        Task SaveSessionAsync(string userAgent, string ipAddress, int userId);
 
         /// <summary>
         /// به روش آسنکرون، وضعیت جلسه کاری با مشخصات داده شده را به حالت فعال نگه می دارد

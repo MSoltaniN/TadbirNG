@@ -35,9 +35,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<Session>();
             var now = DateTime.UtcNow;
-            var sessions = await repository.GetByCriteriaAsync(
-                session => now - session.SinceUtc < Constants.SessionTimeout);
+            var sessions = await repository.GetAllAsync();
             return sessions
+                .Where(session => now - session.SinceUtc < Constants.SessionTimeout)
                 .Select(session => Mapper.Map<SessionViewModel>(session))
                 .ToList();
         }
@@ -51,10 +51,10 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<Session>();
             var now = DateTime.UtcNow;
-            var sessions = await repository.GetByCriteriaAsync(session =>
-                now - session.SinceUtc < Constants.SessionTimeout &&
-                session.User.Id == userId);
+            var sessions = await repository.GetAllAsync();
             return sessions
+                .Where(session => now - session.SinceUtc < Constants.SessionTimeout
+                    && session.User.Id == userId)
                 .Select(session => Mapper.Map<SessionViewModel>(session))
                 .ToList();
         }
@@ -64,11 +64,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="userAgent">اطلاعات عامل کاربری دریافت شده از درخواست وب</param>
         /// <param name="ipAddress">آدرس آی پی فرستنده درخواست وب</param>
-        public async Task SaveSessionAsync(string userAgent, string ipAddress)
+        /// <param name="userId">شناسه دیتابیسی کاربری که وارد برنامه شده است</param>
+        public async Task SaveSessionAsync(string userAgent, string ipAddress, int userId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Session>();
             var session = _sessionProvider.GetSession(userAgent, ipAddress);
-            session.UserId = UserContext.Id;
+            session.UserId = userId;
             repository.Insert(Mapper.Map<Session>(session));
             await UnitOfWork.CommitAsync();
         }
@@ -115,18 +116,18 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetSessionCountAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<Session>();
+            var all = await repository.GetAllAsync();
             var now = DateTime.UtcNow;
-            return await repository.GetCountByCriteriaAsync(
-                session => now - session.SinceUtc < Constants.SessionTimeout);
+            return all.Count(session => now - session.SinceUtc < Constants.SessionTimeout);
         }
 
         private async Task<Session> GetActiveSessionAsync(string userAgent)
         {
             var repository = UnitOfWork.GetAsyncRepository<Session>();
-            var now = DateTime.UtcNow;
             var fingerprint = GetFingerprint(userAgent);
-            return await repository.GetFirstByCriteriaAsync(session =>
-                now - session.SinceUtc < Constants.SessionTimeout &&
+            var all = await repository.GetAllAsync();
+            return all.FirstOrDefault(session =>
+                DateTime.UtcNow - session.SinceUtc < Constants.SessionTimeout &&
                 session.Fingerprint == fingerprint);
         }
 
@@ -138,8 +139,8 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task CleanupSessions(IAsyncRepository<Session> repository, DateTime now)
         {
-            var expired = await repository.GetByCriteriaAsync(session =>
-                now - session.SinceUtc >= Constants.SessionTimeout);
+            var all = await repository.GetAllAsync();
+            var expired = all.Where(session => now - session.SinceUtc >= Constants.SessionTimeout);
             foreach (var item in expired)
             {
                 repository.Delete(item);

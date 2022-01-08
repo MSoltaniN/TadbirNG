@@ -72,9 +72,10 @@ namespace SPPC.Tadbir.Licensing
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
-        /// <param name="licenseCheck"></param>
+        /// <param name="instance"></param>
+        /// <param name="connection"></param>
         /// <returns></returns>
         public async Task<string> GetOnlineLicenseAsync(string instance, RemoteConnection connection)
         {

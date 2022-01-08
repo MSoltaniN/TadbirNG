@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using SPPC.Framework.Persistence;
+﻿using SPPC.Framework.Persistence;
 
 namespace SPPC.Tadbir.Persistence
 {

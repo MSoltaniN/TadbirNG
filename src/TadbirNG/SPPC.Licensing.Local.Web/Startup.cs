@@ -1,5 +1,7 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,7 +22,7 @@ namespace SPPC.Licensing.Local.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddLocalization();
             services.AddControllers()
                 .AddNewtonsoftJson();
 
@@ -36,6 +38,7 @@ namespace SPPC.Licensing.Local.Web
                 app.UseDeveloperExceptionPage();
             }
 
+            ConfigureLocalization(app);
             app.UseCors(
                 options => options
                     .WithOrigins("*")
@@ -47,6 +50,23 @@ namespace SPPC.Licensing.Local.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+        }
+
+        private static void ConfigureLocalization(IApplicationBuilder app)
+        {
+            var supportedCultures = new[]
+            {
+                new CultureInfo("fa-IR"),
+                new CultureInfo("fa"),
+                new CultureInfo("en-US"),
+                new CultureInfo("en")
+            };
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("fa", "fa"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
             });
         }
     }

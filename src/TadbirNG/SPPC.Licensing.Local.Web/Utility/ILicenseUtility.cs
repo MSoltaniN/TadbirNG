@@ -18,9 +18,10 @@ namespace SPPC.Tadbir.Licensing
         Task<ActivationResult> ActivateLicenseAsync(string instance, RemoteConnection connection);
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
-        /// <param name="licenseCheck"></param>
+        /// <param name="instance"></param>
+        /// <param name="connection"></param>
         /// <returns></returns>
         Task<string> GetOnlineLicenseAsync(string instance, RemoteConnection connection);
 

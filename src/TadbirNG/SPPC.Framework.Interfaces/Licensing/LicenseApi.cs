@@ -22,14 +22,24 @@ namespace SPPC.Framework.Licensing
         public const string LicenseUrl = "license";
 
         /// <summary>
+        /// API client URL for the application license requested from a licensing service
+        /// </summary>
+        public const string UserLicense = "license/users/{0}";
+
+        /// <summary>
+        /// API server route URL for the application license requested from a licensing service
+        /// </summary>
+        public const string UserLicenseUrl = "license/users/{userId:min(1)}";
+
+        /// <summary>
         /// API client URL for the application license requested from online licensing service
         /// </summary>
-        public const string OnlineLicense = "license/online";
+        public const string OnlineUserLicense = "license/users/{0}/online";
 
         /// <summary>
         /// API server route URL for the application license requested from online licensing service
         /// </summary>
-        public const string OnlineLicenseUrl = "license/online";
+        public const string OnlineUserLicenseUrl = "license/users/{userId:min(1)}/online";
 
         /// <summary>
         /// API client URL for activating the application license (online server only)

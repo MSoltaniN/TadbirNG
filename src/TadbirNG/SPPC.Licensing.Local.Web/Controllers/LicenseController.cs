@@ -24,10 +24,10 @@ namespace SPPC.Licensing.Local.Web.Controllers
             _repository = repository;
         }
 
-        // GET: api/license
+        // GET: api/license/users/{userId:min(1)}
         [HttpGet]
-        [Route(LicenseApi.LicenseUrl)]
-        public async Task<IActionResult> GetAppLicenseAsync()
+        [Route(LicenseApi.UserLicenseUrl)]
+        public async Task<IActionResult> GetAppLicenseAsync(int userId)
         {
             try
             {
@@ -41,7 +41,8 @@ namespace SPPC.Licensing.Local.Web.Controllers
                 var license = await _utility.GetLicenseAsync();
                 if (!String.IsNullOrEmpty(license))
                 {
-                    await RegisterUserSessionAsync();
+                    await RegisterUserSessionAsync(userId);
+                    result = Ok(license);
                 }
                 else
                 {
@@ -57,10 +58,10 @@ namespace SPPC.Licensing.Local.Web.Controllers
             }
         }
 
-        // GET: api/license/online
+        // GET: api/license/users/{userId:min(1)}/online
         [HttpGet]
-        [Route(LicenseApi.OnlineLicenseUrl)]
-        public async Task<IActionResult> GetOnlineAppLicenseAsync()
+        [Route(LicenseApi.OnlineUserLicenseUrl)]
+        public async Task<IActionResult> GetOnlineAppLicenseAsync(int userId)
         {
             try
             {
@@ -74,7 +75,8 @@ namespace SPPC.Licensing.Local.Web.Controllers
                 var license = await _utility.GetOnlineLicenseAsync(instance, GetRemoteConnection());
                 if (!String.IsNullOrEmpty(license))
                 {
-                    await RegisterUserSessionAsync();
+                    await RegisterUserSessionAsync(userId);
+                    result = Ok(license);
                 }
                 else
                 {
@@ -220,11 +222,11 @@ namespace SPPC.Licensing.Local.Web.Controllers
             return result;
         }
 
-        private async Task RegisterUserSessionAsync()
+        private async Task RegisterUserSessionAsync(int userId)
         {
             string userAgent = Request.Headers["User-Agent"];
             string ipAddress = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
-            await _repository.SaveSessionAsync(userAgent, ipAddress);
+            await _repository.SaveSessionAsync(userAgent, ipAddress, userId);
         }
 
         private string GetInstance()

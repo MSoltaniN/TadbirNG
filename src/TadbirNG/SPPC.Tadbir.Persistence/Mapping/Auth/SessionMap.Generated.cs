@@ -51,7 +51,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.User)
                 .WithMany()
-                .HasForeignKey("UserID")
+                .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Auth_Session_Auth_User");
         }

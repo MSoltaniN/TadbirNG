@@ -137,7 +137,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
     checkOfflineLicense()
     {
-      this.licenseService.GetAppLicense(LicenseApi.LicenseUrl).subscribe((res) => {
+      this.licenseService.GetAppLicense(LicenseApi.UserLicenseUrl).subscribe((res) => {
         this.setLicenseCache(res);
       },
       error => {
@@ -213,7 +213,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     startCheckingOnlineLicense()
     {   
       this.closeOnlineLicenseForm();   
-      this.licenseService.CheckOnlineLicense(LicenseApi.OnlineLicenseUrl).subscribe((res) => {
+      this.licenseService.CheckOnlineLicense(LicenseApi.OnlineUserLicenseUrl).subscribe((res) => {
         this.showMessageWithTime(this.getText("Messages.OnlineLicenseIsSuccessful"), MessageType.Succes,1000);        
         
         this.bStorageService.setContext(this.currentLogin,this.model.remember);        

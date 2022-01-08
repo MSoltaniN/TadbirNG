@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace SPPC.Tadbir.ViewModel.Auth
+namespace SPPC.Tadbir.Model.Auth
 {
-    public partial class SessionViewModel
+    public partial class Session
     {
         /// <summary>
         /// شناسه دیتابیسی کاربر متناظر با این جلسه کاری برنامه
         /// </summary>
-        public int UserId { get; set; }
+        public virtual int UserId { get; set; }
     }
 }
