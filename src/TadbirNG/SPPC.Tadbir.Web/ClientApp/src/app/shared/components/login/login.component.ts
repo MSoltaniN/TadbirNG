@@ -14,8 +14,7 @@ import { LicenseApi } from '@sppc/shared/services/api/licenseApi';
 import { MessageType } from '@sppc/shared/enum/metadata';
 import { ErrorType } from '@sppc/shared/models';
 import { DialogCloseResult, DialogRef, DialogResult, DialogService } from '@progress/kendo-angular-dialog';
-import { ThrowStmt } from '@angular/compiler';
-
+import { String } from '@sppc/shared/class/source';
 
 
 
@@ -137,7 +136,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
     checkOfflineLicense()
     {
-      this.licenseService.GetAppLicense(LicenseApi.UserLicenseUrl).subscribe((res) => {
+      this.licenseService.GetAppLicense(String.Format(LicenseApi.UserLicenseUrl,this.UserId)).subscribe((res) => {
         this.setLicenseCache(res);
       },
       error => {
@@ -213,7 +212,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     startCheckingOnlineLicense()
     {   
       this.closeOnlineLicenseForm();   
-      this.licenseService.CheckOnlineLicense(LicenseApi.OnlineUserLicenseUrl).subscribe((res) => {
+      this.licenseService.CheckOnlineLicense(String.Format(LicenseApi.OnlineUserLicenseUrl,this.UserId)).subscribe((res) => {
         this.showMessageWithTime(this.getText("Messages.OnlineLicenseIsSuccessful"), MessageType.Succes,1000);        
         
         this.bStorageService.setContext(this.currentLogin,this.model.remember);        

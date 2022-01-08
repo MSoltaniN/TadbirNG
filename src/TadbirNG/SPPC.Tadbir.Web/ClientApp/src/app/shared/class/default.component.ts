@@ -77,17 +77,24 @@ export class DefaultComponent extends BaseComponent {
     if (this.currentlang == 'fa') {
       this.renderer.addClass(document.body, 'tRtl');
       this.renderer.removeClass(document.body, 'tLtr');
-
-      this.renderer.addClass(document.getElementById('mainContent'), 'pull-left')
-      this.renderer.removeClass(document.getElementById('mainContent'), 'pull-right')
+      
+      let mainContent = document.getElementById('mainContent');      
+      if(mainContent)
+      {
+        this.renderer.addClass(document.getElementById('mainContent'), 'pull-left')
+        this.renderer.removeClass(document.getElementById('mainContent'), 'pull-right')
+      }
     }
 
     if (this.currentlang == 'en') {
       this.renderer.addClass(document.body, 'tLtr');
-      this.renderer.removeClass(document.body, 'tRtl');
-
-      this.renderer.addClass(document.getElementById('mainContent'), 'pull-right')
-      this.renderer.removeClass(document.getElementById('mainContent'), 'pull-left')
+      this.renderer.removeClass(document.body, 'tRtl');      
+      let mainContent = document.getElementById('mainContent');
+      if(mainContent)
+      {
+        this.renderer.addClass(document.getElementById('mainContent'), 'pull-right')
+        this.renderer.removeClass(document.getElementById('mainContent'), 'pull-left')
+      }
     }
     //rtl or ltr body
 
