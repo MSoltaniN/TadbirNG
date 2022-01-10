@@ -12,5 +12,6 @@ export enum ErrorType {
   ExpiredSession = 3,
   NotActivated = 4,  
   BadLicense = 5,
-  RequiresOnlineLicense = 6  
+  RequiresOnlineLicense = 6,   
+  TooManySessions = 7
 }

@@ -372,12 +372,7 @@ export class AppComponent implements AfterViewInit, OnInit {
           event.preventDefault();
           
         }        
-      }
-      // else
-      // {            
-      //   this[shortcutCommand.method]();
-      //   event.preventDefault();
-      // }
+      }      
     }
   }
 

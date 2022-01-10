@@ -29,8 +29,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         {
             FullAccount = new FullAccountViewModel();
             Description = String.Empty;
-            FollowupNo = String.Empty;
-            Mark = String.Empty;
+            FollowupNo = String.Empty;            
         }
 
         /// <summary>
