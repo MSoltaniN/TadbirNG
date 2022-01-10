@@ -286,6 +286,8 @@ export class AppComponent implements AfterViewInit, OnInit {
           }            
         });
 
+        if(selectors == "") return;
+
         selectors = selectors.substring(0,selectors.length - 1);
         
         var elements = parentElement.querySelectorAll(selectors);
@@ -299,35 +301,9 @@ export class AppComponent implements AfterViewInit, OnInit {
         }
 
         if(!isDialog)
-        {     
-          
+        { 
           result = this.checkKeysForNavigate(ctrl,shift,alt,event.code);
-          // var components = ShareDataService.components; 
-          // var selectors = "";
-          // components.forEach((item)=>{
-          //   if(dialog.querySelector(item.selector))
-          //   {
-          //     selectors += item.selector + ",";
-          //   }            
-          // });
-
-          // selectors = selectors.substring(0,selectors.length - 1);
-          
-          // var elements = dialog.querySelectorAll(selectors);
-          // if(elements.length > 0)
-          // {
-          //   elements.forEach((item)=>{
-          //     var parentSelector = item.tagName;
-          //     var index = components.findIndex(c=>c.selector.toLowerCase() == parentSelector.toLowerCase());
-          //     activeComponents.push(components[index]);
-          //   });            
-          // }
         }
-        else
-        {
-          //result = this.checkKeysForNavigate(ctrl,shift,alt,event.code);
-          //activeComponents = ShareDataService.components;
-        }        
         
         if(!result)
         {
