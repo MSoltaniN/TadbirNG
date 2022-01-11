@@ -146,7 +146,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
         if(error.statusCode == 403)
         {
-          if(error.type == (ErrorType.NotActivated))
+          if(error.type == ErrorType.NotActivated)
           {
             if(!this.checkInternetConnection())
             {              
@@ -158,14 +158,19 @@ export class LoginComponent extends DefaultComponent implements OnInit {
             }
           }
 
-          if(error.type == (ErrorType.RequiresOnlineLicense))
+          if(error.type == ErrorType.RequiresOnlineLicense)
           {
             this.checkOnlineLicense();
           }
 
-          if(error.type == (ErrorType.BadLicense))
+          if(error.type == ErrorType.BadLicense)
           {            
             this.licenseError();
+          }
+
+          if(error.type == ErrorType.TooManySessions)
+          {            
+            this.tooManySessionsMessage();
           }
         }
         else
@@ -199,12 +204,12 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     {
       this.closeActivationForm();
       this.licenseService.ActivateLicense(LicenseApi.ActivateLicenseUrl).subscribe((res) => {
-        this.showMessageWithTime(this.getText("Messages.ActivationIsSuccessful"), MessageType.Succes,1000);        
+        this.showMessageWithTime(this.getText("Messages.ActivationIsSuccessful"), MessageType.Succes,4000);        
         this.bStorageService.setContext(this.currentLogin,this.model.remember);
         this.checkOfflineLicense();
       },
       error => {        
-        this.showMessageWithTime(this.getText("Messages.ActivationIsNotSuccessful"), MessageType.Error,1000);
+        this.showMessageWithTime(this.getText("Messages.ActivationIsNotSuccessful"), MessageType.Error,4000);
         this.logOut();
       });
     }
@@ -213,13 +218,13 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     {   
       this.closeOnlineLicenseForm();   
       this.licenseService.CheckOnlineLicense(String.Format(LicenseApi.OnlineUserLicenseUrl,this.UserId)).subscribe((res) => {
-        this.showMessageWithTime(this.getText("Messages.OnlineLicenseIsSuccessful"), MessageType.Succes,1000);        
+        this.showMessageWithTime(this.getText("Messages.OnlineLicenseIsSuccessful"), MessageType.Succes,4000);        
         
         this.bStorageService.setContext(this.currentLogin,this.model.remember);        
         this.setLicenseCache(res);
       },
       error => {        
-        this.showMessageWithTime(this.getText("Messages.OnlineLicenseIsNotSuccessful"), MessageType.Error,1000);
+        this.showMessageWithTime(this.getText("Messages.OnlineLicenseIsNotSuccessful"), MessageType.Error,4000);
         this.logOut();
       });
     }
@@ -248,6 +253,12 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     showOnlineLicense()
     {
       this.onlineLicense = true;
+    }
+
+    tooManySessionsMessage()
+    {
+      this.showMessage(this.getText("Messages.TooManySessions"), MessageType.Info);
+      this.logOut();
     }
 
     licenseError()
