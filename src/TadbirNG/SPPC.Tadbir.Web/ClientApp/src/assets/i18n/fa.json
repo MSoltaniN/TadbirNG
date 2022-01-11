@@ -78,7 +78,8 @@
     "CheckingOnlineMsg":"نرم افزار نیاز به بررسی مجوز بصورت آنلاین دارد! لطفا از وضعیت اتصال اینترنت اطمینان حاصل کنید . آیا مایل به بررسی مجوز نرم افزار هستید؟",    
     "OnlineLicenseIsSuccessful":"مجوز نرم افزار با موفقیت بررسی شد",
     "OnlineLicenseIsNotSuccessful":"بررسی مجوز نرم افزار با خطا مواجه شد",
-    "SoftwareActivation":"فعال سازی نرم افزار"
+    "SoftwareActivation":"فعال سازی نرم افزار",
+    "TooManySessions":"تعداد جلسات کاربر بیشتر از حد مجاز می باشد"
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",

@@ -20,4 +20,8 @@ export class LicenseApi {
 
   public static ActivateLicenseUrl = environment.LicenseServerUrl + "/license/activate";
 
+  public static  SetCurrentSessionAsActiveUrl = environment.LicenseServerUrl + "/sessions/current/active";
+
+  public static  CurrentSessionUrl = environment.LicenseServerUrl + "/sessions/current";
+  
 }

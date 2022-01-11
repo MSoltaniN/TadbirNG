@@ -78,7 +78,8 @@
     "CheckingOnlineMsg":"The software needs to check the license online! Please check the internet connection status. Do you want to check the software license?",    
     "OnlineLicenseIsSuccessful":"Software license was successfully verified",
     "OnlineLicenseIsNotSuccessful":"Error checking software license encountered",
-    "SoftwareActivation":"Software activation"
+    "SoftwareActivation":"Software activation",
+    "TooManySessions":"The number of user sessions is more than allowed"
   },
   "Report": {
     "ReportViewer": "View of",

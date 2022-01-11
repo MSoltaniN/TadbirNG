@@ -21,22 +21,14 @@ export class VoucherLineInfo implements VoucherLine {
     account: AccountItemBrief;
     detailAccount: AccountItemBrief;
     costCenter: AccountItemBrief;
-    project: AccountItemBrief;
+    project: AccountItemBrief;    
   };
+  mark:string | undefined;
 }
 
 @Injectable()
 export class VoucherLineService extends BaseService {
-
-  private getAccountArticlesUrl = "http://37.59.93.7:8080/accounts/{0}/articles";
-  getAccountArticles(accountId: number) {
-
-    var url = String.Format(this.getAccountArticlesUrl, accountId.toString());
-    var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
-  }
-
+  
   constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
     super(http, bStorageService);
   }

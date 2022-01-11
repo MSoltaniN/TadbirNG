@@ -40,4 +40,13 @@ export class LicenseService extends BaseService {
     return this.http.get(url, options)
       .map(response => <any>(<Response>response));
   }
+
+  DeleteCurrentSessionAsync(url: string) {
+ 
+    var newHeader = this.httpHeaders;        
+    var options = { headers: newHeader };
+
+    return this.http.delete(url, options)
+      .map(response => <any>(<Response>response));
+  }
 }
