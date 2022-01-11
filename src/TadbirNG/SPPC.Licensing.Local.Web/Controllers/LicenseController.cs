@@ -162,12 +162,6 @@ namespace SPPC.Licensing.Local.Web.Controllers
                 return BadRequest(new ErrorViewModel(ErrorType.ValidationError));
             }
 
-            var result = GetSessionValidationResult();
-            if (!(result is OkResult))
-            {
-                return result;
-            }
-
             var status = _utility.ValidateLicense(instance, GetRemoteConnection());
             if (status != LicenseStatus.OK)
             {
@@ -175,6 +169,12 @@ namespace SPPC.Licensing.Local.Web.Controllers
                     ? ErrorType.NotActivated
                     : ErrorType.BadLicense;
                 return StatusCode(StatusCodes.Status403Forbidden, new ErrorViewModel(errorType));
+            }
+
+            var result = GetSessionValidationResult();
+            if (!(result is OkResult))
+            {
+                return result;
             }
 
             succeeded = true;
