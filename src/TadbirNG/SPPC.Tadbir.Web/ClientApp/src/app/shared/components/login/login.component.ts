@@ -33,6 +33,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     ticket: string = '';
 
     currentLogin:ContextInfo;
+    currentUserId:number;
 
     public lang: string = '';
     public stepOne : boolean = true;
@@ -136,6 +137,8 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
     checkOfflineLicense()
     {
+      this.currentUserId = this.UserId;
+
       this.licenseService.GetAppLicense(String.Format(LicenseApi.UserLicenseUrl,this.UserId)).subscribe((res) => {
         this.setLicenseCache(res);
       },
@@ -216,8 +219,8 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
     startCheckingOnlineLicense()
     {   
-      this.closeOnlineLicenseForm();   
-      this.licenseService.CheckOnlineLicense(String.Format(LicenseApi.OnlineUserLicenseUrl,this.UserId)).subscribe((res) => {
+      this.closeOnlineLicenseForm();         ;
+      this.licenseService.CheckOnlineLicense(String.Format(LicenseApi.OnlineUserLicenseUrl,this.currentUserId)).subscribe((res) => {
         this.showMessageWithTime(this.getText("Messages.OnlineLicenseIsSuccessful"), MessageType.Succes,4000);        
         
         this.bStorageService.setContext(this.currentLogin,this.model.remember);        
