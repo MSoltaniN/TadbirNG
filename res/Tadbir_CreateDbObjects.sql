@@ -1493,4 +1493,4 @@ SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
 -- TODO: Add new database scripts BEFORE this command and update [Version] field with each change in database version
 INSERT INTO [Core].[Version] ([VersionID],[Number])
-VALUES(1, '1.2.1272')
+VALUES(1, '1.2.1331')
