@@ -11,8 +11,6 @@ namespace SPPC.Tools.LicenseManager
             InitializeComponent();
         }
 
-        public ClientInstanceModel Instance { get; set; }
-
         public IBuildSettings BuildSettings { get; set; }
 
         protected override void OnLoad(EventArgs e)
