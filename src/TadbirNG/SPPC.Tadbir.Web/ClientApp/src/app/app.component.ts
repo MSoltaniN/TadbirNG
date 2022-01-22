@@ -58,6 +58,16 @@ export class AppComponent implements AfterViewInit, OnInit {
   ngOnInit() {
 
     debugger;
+    
+    this.addStimulsoftFonts();
+
+    this.registerFunctions();
+
+    this.manageComponentScopes();
+  }
+
+  addStimulsoftFonts()
+  {
     //load fonts
     Stimulsoft.StiOptions.Export.Pdf.AllowImportSystemLibraries = true;
     Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/BZar.ttf", "B Zar");
@@ -75,11 +85,6 @@ export class AppComponent implements AfterViewInit, OnInit {
       Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/IranSans/ttf/IRANSansWeb.ttf", "IRANSansWeb");
       Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/IranSans/ttf/IRANSansWeb_Bold.ttf", "IRANSansWeb", Stimulsoft.System.Drawing.FontStyle.Bold);
     }
-    //Stimulsoft.System.Drawing.FontStyle.Italic
-
-    this.registerFunctions();
-
-    this.manageComponentScopes();
   }
 
   manageComponentScopes()

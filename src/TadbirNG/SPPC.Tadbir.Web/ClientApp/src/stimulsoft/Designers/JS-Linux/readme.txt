@@ -1,1 +1,0 @@
-After installation replace file stimulsoft.reports.js inside "Designer" file with cracked one

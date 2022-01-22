@@ -26,10 +26,11 @@
               "src/stimulsoft/stimulsoft.viewer.office2013.whiteblue.css",
               "src/stimulsoft/stimulsoft.designer.office2013.whiteblue.css"
             ],
-            "scripts": [
+            "scripts": [              
               "src/stimulsoft/stimulsoft.reports.js",
               "src/stimulsoft/stimulsoft.viewer.js",
-              "src/stimulsoft/stimulsoft.designer.js"
+              "src/stimulsoft/stimulsoft.designer.js",
+              "src/stimulsoft/stimulsoft.blockly.js"
             ]
           },
           "configurations": {
