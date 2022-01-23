@@ -31,6 +31,8 @@ namespace SPPC.Tadbir.Model.Reporting
             ServiceUrl = String.Empty;
             ResourceKeys = String.Empty;
             ModifiedDate = DateTime.Now;
+            LocalReports = new List<LocalReport>();
+            Parameters = new List<Parameter>();
         }
 
         /// <summary>
