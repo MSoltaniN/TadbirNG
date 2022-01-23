@@ -485,6 +485,7 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<LogSetting, LogSettingViewModel>();
             mapperConfig.CreateMap<LogSetting, LogSettingItemViewModel>();
+            mapperConfig.CreateMap<SysLogSetting, LogSettingViewModel>();
             mapperConfig.CreateMap<SysLogSetting, LogSettingItemViewModel>();
         }
 
