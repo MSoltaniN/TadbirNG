@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Configuration;
+using SPPC.Tadbir.Configuration.Enums;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -31,11 +33,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="repository">امکان مدیریت اطلاعات نقش های سازمانی در دیتابیس را فراهم می کند</param>
         /// <param name="strings">امکان ترجمه متن های چندزبانه را فراهم می کند</param>
         /// <param name="tokenManager"></param>
-        public RolesController(IRoleRepository repository, IStringLocalizer<AppStrings> strings,
-            ITokenManager tokenManager)
+        /// <param name="checkEdition"></param>
+        public RolesController(IRoleRepository repository, ICheckEdition checkEdition,
+            IStringLocalizer<AppStrings> strings, ITokenManager tokenManager)
             : base(strings, tokenManager)
         {
             _repository = repository;
+            _checkEdition = checkEdition;
         }
 
         /// <summary>
@@ -378,6 +382,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedRowAccessSettingsForRoleAsync(
             int roleId, [FromBody] RowPermissionsForRoleViewModel permissions)
         {
+            var message = _checkEdition.ValidateNewModel(permissions, EditionLimit.RowPermissionAccess);
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequestResult(message);
+            }
+
             var result = BasicValidationResult(permissions, roleId);
             if (result is BadRequestObjectResult)
             {
@@ -558,5 +568,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private readonly IRoleRepository _repository;
+        private readonly ICheckEdition _checkEdition;
     }
 }

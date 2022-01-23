@@ -191,6 +191,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IAccountItemUtilityFactory, AccountItemUtilityFactory>();
             _services.AddTransient<ICacheManager, RedisCacheManager>();
             _services.AddTransient<IApiPathProvider, ApiResourcePaths>();
+            _services.AddTransient<ICommandFilter, CommandFilter>();
         }
 
         private readonly IServiceCollection _services;

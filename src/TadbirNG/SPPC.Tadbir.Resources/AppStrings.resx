@@ -3552,4 +3552,7 @@
   <data name="UnsupportedDepth" xml:space="preserve">
     <value>حداکثر عمق مجاز برای ساختارهای درختی در این نسخه {0} سطح است.</value>
   </data>
+  <data name="Edition_RowPermissionsDisabled" xml:space="preserve">
+    <value>در ویرایش استاندارد امکان تعریف و اعمال دسترسی های سطری وجود ندارد.</value>
+  </data>
 </root>

@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Cryptography;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Configuration.Enums;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -27,17 +29,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="repository"></param>
         /// <param name="crypto"></param>
+        /// <param name="commandFilter"></param>
         /// <param name="tokenManager"></param>
         /// <param name="strings"></param>
         public UsersController(
             IUserRepository repository,
             ICryptoService crypto,
+            ICommandFilter commandFilter,
             ITokenManager tokenManager,
             IStringLocalizer<AppStrings> strings)
             : base(strings, tokenManager)
         {
             _repository = repository;
             _crypto = crypto;
+            _commandFilter = commandFilter;
             _tokenManager = tokenManager;
         }
 
@@ -109,6 +114,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCurrentUserCommandsAsync()
         {
             var commands = await _repository.GetUserCommandsAsync(SecurityContext.User.Id);
+            _commandFilter.FilterCommands(commands, EditionLimit.RowPermissionAccess);
             Array.ForEach(commands.ToArray(), cmd =>
             {
                 cmd.Title = _strings[cmd.Title];
@@ -479,6 +485,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private readonly IUserRepository _repository;
         private readonly ICryptoService _crypto;
+        private readonly ICommandFilter _commandFilter;
         private readonly ITokenManager _tokenManager;
     }
 }
