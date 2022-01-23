@@ -134,6 +134,39 @@ namespace SPPC.Licensing.Local.Web.Controllers
             return Ok(validated);
         }
 
+        // GET: api/sessions
+        [HttpGet]
+        [Route(LicenseApi.OpenSessionsUrl)]
+        public async Task<IActionResult> GetOpenSessionsAsync()
+        {
+            var sessions = await _repository.GetSessionsAsync();
+            return Json(sessions);
+        }
+
+        // GET: api/sessions/users/{userId:min(1)}
+        [HttpGet]
+        [Route(LicenseApi.OpenSessionsByUserUrl)]
+        public async Task<IActionResult> GetOpenSessionsByUserAsync(int userId)
+        {
+            var sessions = await _repository.GetUserSessionsAsync(userId);
+            return Json(sessions);
+        }
+
+        // GET: api/sessions
+        [HttpPut]
+        [Route(LicenseApi.OpenSessionsUrl)]
+        public async Task<IActionResult> PutExistingSessionsAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null || actionDetail.Items == null)
+            {
+                return BadRequest();
+            }
+
+            await _repository.DeleteSessionsAsync(actionDetail.Items);
+            return Ok();
+        }
+
         // PUT: api/sessions/current/active
         [HttpPut]
         [Route(LicenseApi.SetCurrentSessionAsActiveUrl)]

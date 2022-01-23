@@ -44,6 +44,12 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteSessionAsync(string userAgent);
 
         /// <summary>
+        /// به روش آسنکرون، جلسات مشخص شده با شناسه دیتابیسی را در برنامه به پایان می رساند
+        /// </summary>
+        /// <param name="sessionIds">مجموعه شناسه های دیتابیسی جلسات مورد نظر</param>
+        Task DeleteSessionsAsync(IEnumerable<int> sessionIds);
+
+        /// <summary>
         /// به روش آسنکرون، تعداد جلسات باز برنامه را خوانده و برمی گرداند
         /// </summary>
         /// <returns>تعداد جلسات باز برنامه</returns>

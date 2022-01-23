@@ -62,6 +62,26 @@ namespace SPPC.Framework.Licensing
         public const string ValidateLicenseUrl = "license/validate";
 
         /// <summary>
+        /// API client URL for all open sessions in the application
+        /// </summary>
+        public const string OpenSessions = "sessions";
+
+        /// <summary>
+        /// API server route URL for all open sessions in the application
+        /// </summary>
+        public const string OpenSessionsUrl = "sessions";
+
+        /// <summary>
+        /// API client URL for all open sessions for a specific user in the application
+        /// </summary>
+        public const string OpenSessionsByUser = "sessions/users/{0}";
+
+        /// <summary>
+        /// API server route URL for all open sessions for a specific user in the application
+        /// </summary>
+        public const string OpenSessionsByUserUrl = "sessions/users/{userId:min(1)}";
+
+        /// <summary>
         /// API client URL for current session in the application
         /// </summary>
         public const string CurrentSession = "sessions/current";

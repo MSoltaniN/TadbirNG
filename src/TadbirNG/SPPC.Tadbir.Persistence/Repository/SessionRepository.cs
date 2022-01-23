@@ -54,7 +54,7 @@ namespace SPPC.Tadbir.Persistence
             var sessions = await repository.GetAllAsync();
             return sessions
                 .Where(session => now - session.SinceUtc < Constants.SessionTimeout
-                    && session.User.Id == userId)
+                    && session.UserId == userId)
                 .Select(session => Mapper.Map<SessionViewModel>(session))
                 .ToList();
         }
@@ -110,6 +110,23 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await CleanupSessions(repository, now);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، جلسات مشخص شده با شناسه دیتابیسی را در برنامه به پایان می رساند
+        /// </summary>
+        /// <param name="sessionIds">مجموعه شناسه های دیتابیسی جلسات مورد نظر</param>
+        public async Task DeleteSessionsAsync(IEnumerable<int> sessionIds)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Session>();
+            var sessions = await repository.GetByCriteriaAsync(
+                session => sessionIds.Contains(session.Id));
+            foreach (var session in sessions)
+            {
+                repository.Delete(session);
+            }
+
+            await UnitOfWork.CommitAsync();
         }
 
         /// <summary>
