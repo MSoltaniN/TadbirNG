@@ -1135,7 +1135,9 @@
     "Password": "Password",
     "BtnLogin": "Login",
     "RememberMe": "Remember Me",
-    "UserIncorrect": "username or password is incorrect"
+    "UserIncorrect": "username or password is incorrect",
+    "ServerUserName":"Server user name",
+    "ServerPassword":"Server password"
   },
   "Sppc-DateRange": {
     "FromDate": "From Date",
@@ -1335,7 +1337,9 @@
       "FiscalPeriodIsRequired": "Fiscal period is required.",
       "PleaseSelectFiscalPeriod": "Branch is selected please select a fiscal period",
       "PleaseSelectBranch":"Fiscal period is selected please select a branch",
-      "NoError": ""
+      "NoError": "",
+      "ServerUserNameIsRequired":"Server user name is required.",
+      "ServerPasswordIsRequired":"Server password is required."
     },
     "PermissionGroup": {
       "NameIsRequired": "Name is required.",

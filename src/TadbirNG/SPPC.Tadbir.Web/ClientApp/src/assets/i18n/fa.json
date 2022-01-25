@@ -1265,7 +1265,9 @@
     "Password": "کلمه عبور",
     "BtnLogin": "ورود",
     "RememberMe": "مرا به خاطر بسپار",
-    "UserIncorrect": "نام کاربری يا کلمه عبور اشتباه می باشد"
+    "UserIncorrect": "نام کاربری يا کلمه عبور اشتباه می باشد",
+    "ServerUserName":"نام کاربری سرور",
+    "ServerPassword":"کلمه عبور سرور"
   },
   "Sppc-DateRange": {
     "FromDate": "از تاریخ",
@@ -1465,7 +1467,9 @@
       "FiscalPeriodIsRequired": "لطفا دوره مالی را انتخاب کنید.",
       "PleaseSelectFiscalPeriod": "شعبه مورد نظر انتخاب شد لطفا دوره مالی را انتخاب کنید",
       "PleaseSelectBranch":"دوره مالی مورد نظر انتخاب شد لطفا شعبه را انتخاب کنید",
-      "NoError": ""
+      "NoError": "",
+      "ServerUserNameIsRequired":"لطفا نام کاربری سرور را وارد کنید",
+      "ServerPasswordIsRequired":"لطفا کلمه عبور سرور را وارد کنید"
     },
     "PermissionGroup": {
       "NameIsRequired": "وارد کردن نام اجباری است.",

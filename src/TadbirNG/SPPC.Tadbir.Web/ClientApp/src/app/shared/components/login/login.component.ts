@@ -15,6 +15,7 @@ import { MessageType } from '@sppc/shared/enum/metadata';
 import { ErrorType } from '@sppc/shared/models';
 import { DialogCloseResult, DialogRef, DialogResult, DialogService } from '@progress/kendo-angular-dialog';
 import { String } from '@sppc/shared/class/source';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 
@@ -37,8 +38,16 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
     public lang: string = '';
     public stepOne : boolean = true;
-    public activationForm:boolean = false;
+    public showActivationForm:boolean = false;
     public onlineLicense:boolean = false;
+
+    public activationForm = new FormGroup({            
+      userName: new FormControl('', [Validators.required, Validators.maxLength(128)]),
+      password: new FormControl('', [Validators.required, Validators.maxLength(128)])      
+    });
+
+    serverUserName:string = "";
+    serverPassword:string = "";
 
     constructor(
         private route: ActivatedRoute,
@@ -234,7 +243,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
     closeActivationForm()
     {
-      this.activationForm = false;
+      this.showActivationForm = false;
     }
 
     closeOnlineLicenseForm()
@@ -250,7 +259,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
     activateLicense()
     {
-      this.activationForm = true;  
+      this.showActivationForm = true;  
     }
 
     showOnlineLicense()
