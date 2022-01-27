@@ -32,6 +32,8 @@ namespace SPPC.Licensing.Service
 
             var licenseFile = await _repository.GetLicenseFileDataAsync(
                 license.LicenseKey, license.CustomerKey);
+            licenseFile.ServerUser = activation.ServerUser;
+            licenseFile.ServerPassword = activation.ServerPassword;
             return _crypto.Encrypt(JsonHelper.From(licenseFile, false));
         }
 
@@ -73,7 +75,8 @@ namespace SPPC.Licensing.Service
             var ignored = new string[]
             {
                 "Id", "CustomerId", "CustomerKey", "LicenseKey", "HardwareKey", "ClientKey", "Secret",
-                "Customer", "RowGuid", "ModifiedDate", "IsActivated", "OfflineLimit", "LoginCount"
+                "Customer", "RowGuid", "ModifiedDate", "IsActivated", "OfflineLimit", "LoginCount",
+                "ServerUser", "ServerPassword"
             };
             var json = JsonHelper.From(_license, true, ignored);
             var license = Encoding.UTF8.GetBytes(json);
