@@ -425,7 +425,7 @@ namespace SPPC.Tadbir.Persistence
                 VoucherDate = _utility.ValueOrDefault<DateTime>(row, "Date"),
                 VoucherNo = _utility.ValueOrDefault<int>(row, "No"),
                 Description = _utility.ValueOrDefault(row, "Description"),
-                VoucherReference = _utility.ValueOrDefault(row, "Reference"),
+                Reference = _utility.ValueOrDefault(row, "Reference"),
                 BaseCurrencyDebit = _utility.ValueOrDefault<decimal>(row, "BaseCurrencyDebit"),
                 BaseCurrencyCredit = _utility.ValueOrDefault<decimal>(row, "BaseCurrencyCredit"),
                 Debit = _utility.ValueOrDefault<decimal>(row, "Debit"),
