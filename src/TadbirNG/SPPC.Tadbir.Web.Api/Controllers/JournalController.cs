@@ -8,7 +8,6 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Filters;
 
@@ -488,10 +487,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (from == null || to == null)
             {
-                DateTime rangeFrom, rangeTo;
-                _configRepository.GetCurrentFiscalDateRange(out rangeFrom, out rangeTo);
-                from = from ?? rangeFrom;
-                to = to ?? rangeTo;
+                _configRepository.GetCurrentFiscalDateRange(out DateTime rangeFrom, out DateTime rangeTo);
+                from ??= rangeFrom;
+                to ??= rangeTo;
             }
         }
 

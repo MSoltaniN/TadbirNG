@@ -282,12 +282,21 @@ namespace SPPC.Tadbir.Persistence
                     item.AccountName = items[1];
                     item.AccountDescription = items[2];
                 }
+                else
+                {
+                    item.AccountName = String.Empty;
+                    item.AccountDescription = String.Empty;
+                }
 
                 if (!String.IsNullOrEmpty(item.DetailAccountFullCode))
                 {
                     var items = detailAccountLookup[item.DetailAccountFullCode].Split(',');
                     item.DetailAccountId = Int32.Parse(items[0]);
                     item.DetailAccountName = items[1];
+                }
+                else
+                {
+                    item.DetailAccountName = String.Empty;
                 }
 
                 if (!String.IsNullOrEmpty(item.CostCenterFullCode))
@@ -296,12 +305,20 @@ namespace SPPC.Tadbir.Persistence
                     item.CostCenterId = Int32.Parse(items[0]);
                     item.CostCenterName = items[1];
                 }
+                else
+                {
+                    item.CostCenterName = String.Empty;
+                }
 
                 if (!String.IsNullOrEmpty(item.ProjectFullCode))
                 {
                     var items = projectLookup[item.ProjectFullCode].Split(',');
                     item.ProjectId = Int32.Parse(items[0]);
                     item.ProjectName = items[1];
+                }
+                else
+                {
+                    item.ProjectName = String.Empty;
                 }
             }
         }

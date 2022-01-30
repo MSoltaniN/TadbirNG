@@ -1123,7 +1123,10 @@ namespace SPPC.Tadbir.Persistence
             var filterBuilder = new StringBuilder(_utility.GetEnvironmentFilters(gridOptions));
             if (gridOptions.Filter != null)
             {
-                filterBuilder.AppendFormat(" AND {0}", _utility.GetColumnFilters(gridOptions));
+                var columnFilters = _utility
+                    .GetColumnFilters(gridOptions)
+                    .Replace("Description", "vl.Description");
+                filterBuilder.AppendFormat(" AND {0}", columnFilters);
             }
 
             query.SetFilter(filterBuilder.ToString());

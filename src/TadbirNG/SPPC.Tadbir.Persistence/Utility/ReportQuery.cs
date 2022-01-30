@@ -28,22 +28,22 @@ namespace SPPC.Tadbir.Persistence
             if (!String.IsNullOrEmpty(query))
             {
                 builder = builder
-                    .Replace("Voucher", "v.")
-                    .Replace("StatusId", "StatusID")
-                    .Replace("OriginID", "v.OriginID")
-                    .Replace("SubjectType", "v.SubjectType")
-                    .Replace("Reference = '", "v.Reference = N'")
-                    .Replace("BranchId", "BranchID")
-                    .Replace("BranchID", "vl.BranchID")
-                    .Replace("CurrencyId", "vl.CurrencyID")
-                    .Replace("v.Date", "CAST(v.Date AS date)")
                     .Replace('"', '\'')
                     .Replace("== null", " IS NULL")
                     .Replace("!= null", " IS NOT NULL")
                     .Replace("==", "=")
                     .Replace("!=", "<>")
                     .Replace("&&", "AND")
-                    .Replace("||", "OR");
+                    .Replace("||", "OR")
+                    .Replace("Voucher", "v.")
+                    .Replace("StatusId", "StatusID")
+                    .Replace("OriginID", "v.OriginID")
+                    .Replace("SubjectType", "v.SubjectType")
+                    .Replace("Reference = '", "Reference = N'")
+                    .Replace("BranchId", "BranchID")
+                    .Replace("BranchID", "vl.BranchID")
+                    .Replace("CurrencyId", "vl.CurrencyID")
+                    .Replace("v.Date", "CAST(v.Date AS date)");
             }
 
             return builder.ToString();

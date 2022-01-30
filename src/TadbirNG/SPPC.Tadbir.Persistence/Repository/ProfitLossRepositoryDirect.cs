@@ -717,8 +717,9 @@ namespace SPPC.Tadbir.Persistence
             ProfitLossParameters parameters)
         {
             int fiscalPeriodId = parameters.FiscalPeriodId ?? UserContext.FiscalPeriodId;
+            int branchId = parameters.BranchId ?? UserContext.BranchId;
             var filterBuilder = new StringBuilder(
-                _utility.GetEnvironmentFilters(parameters.GridOptions, fiscalPeriodId));
+                _utility.GetEnvironmentFilters(parameters.GridOptions, fiscalPeriodId, branchId));
             var queryBuilder = new StringBuilder();
             queryBuilder.AppendFormat(select, balanceFunc);
             queryBuilder.AppendLine();

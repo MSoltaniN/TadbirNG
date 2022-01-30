@@ -45,6 +45,11 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// <summary>
         /// کد خطا برای رسیدن به سقف تعداد کاربران همزمان در برنامه
         /// </summary>
-        TooManySessions = 7
+        TooManySessions = 7,
+
+        /// <summary>
+        /// کد خطا برای نادرست بودن اطلاعات حساب کاربری سرور اصلی
+        /// </summary>
+        InvalidUserPass = 8
     }
 }

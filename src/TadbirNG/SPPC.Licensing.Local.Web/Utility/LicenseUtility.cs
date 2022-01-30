@@ -98,7 +98,7 @@ namespace SPPC.Tadbir.Licensing
             var ignored = new string[]
             {
                 "CustomerKey", "LicenseKey", "HardwareKey", "ClientKey", "Secret", "IsActivated",
-                "OfflineLimit", "LoginCount"
+                "OfflineLimit", "LoginCount","ServerUser", "ServerPassword"
             };
             var licenseModel = await LoadLicenseAsync();
             if (licenseModel.OfflineLimit == 0 || licenseModel.LoginCount < licenseModel.OfflineLimit)
@@ -249,9 +249,15 @@ namespace SPPC.Tadbir.Licensing
         /// <returns>اطلاعات کامل مجوز برنامه</returns>
         public async Task <LicenseFileModel> LoadLicenseAsync()
         {
-            var licenseData = await File.ReadAllTextAsync(LicensePath, Encoding.UTF8);
-            var json = _crypto.Decrypt(licenseData);
-            return JsonHelper.To<LicenseFileModel>(json);
+            var license = default(LicenseFileModel);
+            if (File.Exists(LicensePath))
+            {
+                var licenseData = await File.ReadAllTextAsync(LicensePath, Encoding.UTF8);
+                var json = _crypto.Decrypt(licenseData);
+                license = JsonHelper.To<LicenseFileModel>(json);
+            }
+
+            return license;
         }
 
         private string LicensePath
@@ -277,6 +283,8 @@ namespace SPPC.Tadbir.Licensing
             {
                 InstanceKey = instance,
                 HardwareKey = _deviceId.GetRemoteDeviceId(connection),
+                ServerUser = connection.User,
+                ServerPassword = connection.Password
             };
 
             certificate = _crypto.CertificateManager.GenerateSelfSigned(

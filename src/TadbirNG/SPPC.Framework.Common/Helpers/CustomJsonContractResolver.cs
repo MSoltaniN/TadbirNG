@@ -40,6 +40,23 @@ namespace SPPC.Framework.Helpers
             return base.GetSerializableMembers(objectType);
         }
 
+        /// <summary>
+        /// Creates a JsonProperty for the given MemberInfo
+        /// </summary>
+        /// <param name="member"></param>
+        /// <param name="memberSerialization"></param>
+        /// <returns>A created JsonProperty for the given MemberInfo</returns>
+        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+        {
+            var property = base.CreateProperty(member, memberSerialization);
+            if (_ignoredProperties != null && _ignoredProperties.Contains(property.PropertyName))
+            {
+                property.ShouldDeserialize = _ => false;
+            }
+
+            return property;
+        }
+
         private readonly string[] _ignoredProperties;
     }
 }

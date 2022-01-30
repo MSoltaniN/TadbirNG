@@ -543,23 +543,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.Date.Date.ToShortDateString(false)))
                 .ForMember(dest => dest.Lines, opts => opts.Ignore());
             mapperConfig.CreateMap<VoucherLine, StandardVoucherLineViewModel>();
-
-            mapperConfig.CreateMap<VoucherLine, JournalItemViewModel>();
-            mapperConfig.CreateMap<VoucherLine, AccountBookItemViewModel>();
-            mapperConfig.CreateMap<VoucherLine, TestBalanceItemViewModel>()
-                .ForMember(dest => dest.TurnoverDebit, opts => opts.MapFrom(src => src.Debit))
-                .ForMember(dest => dest.TurnoverCredit, opts => opts.MapFrom(src => src.Credit));
-            mapperConfig.CreateMap<VoucherLine, CurrencyBookItemViewModel>()
-                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
-                .ForMember(dest => dest.VoucherReference, opts => opts.NullSubstitute(String.Empty))
-                .ForMember(dest => dest.Credit, opts => opts.MapFrom(src => src.Credit > 0 ? src.CurrencyValue : 0))
-                .ForMember(dest => dest.Debit, opts => opts.MapFrom(src => src.Debit > 0 ? src.CurrencyValue : 0))
-                .ForMember(dest => dest.BaseCurrencyCredit, opts => opts.MapFrom(src => src.Credit))
-                .ForMember(dest => dest.BaseCurrencyDebit, opts => opts.MapFrom(src => src.Debit))
-                .ForMember(dest => dest.CurrencyRate, opts => opts.MapFrom(
-                    src => CalculateCurrencyRate(src)));
             mapperConfig.CreateMap<VoucherLine, VoucherLineDetailViewModel>();
-            mapperConfig.CreateMap<VoucherLine, BalanceByAccountItemViewModel>();
 
             mapperConfig.CreateMap<SystemIssue, SystemIssueViewModel>()
                 .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey));
@@ -638,20 +622,6 @@ namespace SPPC.Tadbir.Mapper
             columnConfig.Medium = (ColumnViewDeviceConfig)deviceConfig.Clone();
             columnConfig.Small = (ColumnViewDeviceConfig)deviceConfig.Clone();
             return columnConfig;
-        }
-
-        private static decimal CalculateCurrencyRate(VoucherLine line)
-        {
-            decimal rate = 0.0M;
-            if (line.CurrencyValue.HasValue && line.CurrencyValue > 0.0M)
-            {
-                int decimalCount = line.Currency.DecimalCount;
-                rate = line.Debit > 0
-                    ? Math.Round(line.Debit / line.CurrencyValue.Value, decimalCount)
-                    : Math.Round(line.Credit / line.CurrencyValue.Value, decimalCount);
-            }
-
-            return rate;
         }
 
         private static ICryptoService _crypto;
