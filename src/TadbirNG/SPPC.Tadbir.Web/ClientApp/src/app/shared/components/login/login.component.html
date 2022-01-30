@@ -46,16 +46,20 @@
         <div class="form-group row">        
             <label for="serverUserName" class="control-label">{{ 'Login.ServerUserName' | translate }}</label>
             <input type="text" id="serverUserName" formControlName="userName" name="serverUserName" class="k-textbox col-md-12" [(ngModel)]="serverUserName" />                 
-            <div class="k-tooltip k-tooltip-validation" [hidden]="activationForm.controls.userName.valid || activationForm.controls.userName.pristine">
-                <span *ngIf="activationForm.controls.userName.errors?.required">{{ 'AllValidations.Login.ServerUserNameIsRequired' | translate }}</span>                
-            </div>
+            <div>
+                <div class="k-tooltip k-tooltip-validation" [hidden]="activationForm.controls.userName.valid || activationForm.controls.userName.pristine">
+                    <span *ngIf="activationForm.controls.userName.errors?.required">{{ 'AllValidations.Login.ServerUserNameIsRequired' | translate }}</span>                
+                </div>
+            </div>            
         </div>
         <div class="form-group row">
             <label for="serverPassword" class="control-label">{{ 'Login.ServerPassword' | translate }}</label>
             <input type="password" id="serverPassword" formControlName="password" name="serverPassword" class="k-textbox col-md-12" [(ngModel)]="serverPassword" />                  
-            <div class="k-tooltip k-tooltip-validation" [hidden]="activationForm.controls.password.valid || activationForm.controls.password.pristine">
+            <div>
+                <div class="k-tooltip k-tooltip-validation" [hidden]="activationForm.controls.password.valid || activationForm.controls.password.pristine">
                 <span *ngIf="activationForm.controls.password.errors?.required">{{ 'AllValidations.Login.ServerPasswordIsRequired' | translate }}</span>                
-            </div>
+                </div>
+            </div>            
         </div>
     </div>    
 </form>
