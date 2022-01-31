@@ -79,7 +79,9 @@
     "OnlineLicenseIsSuccessful":"Software license was successfully verified",
     "OnlineLicenseIsNotSuccessful":"Error checking software license encountered",
     "SoftwareActivation":"Software activation",
-    "TooManySessions":"The number of user sessions is more than allowed"
+    "SoftwareLicense":"Software license",
+    "TooManySessions":"The number of user sessions is more than allowed",
+    "ActivationPasswordIsNotCorrect":"Server username or password  is incorrect"
   },
   "Report": {
     "ReportViewer": "View of",

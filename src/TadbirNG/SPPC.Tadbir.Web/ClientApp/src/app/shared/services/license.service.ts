@@ -21,13 +21,13 @@ export class LicenseService extends BaseService {
       .map(response => <any>(<Response>response));
   }
 
-  ActivateLicense(url: string) {
+  ActivateLicense(url: string,userName: string,password: string) {
  
     var newHeader = this.httpHeaders;    
     newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
     var options = { headers: newHeader };
 
-    return this.http.put(url,null, options)
+    return this.http.put(url,{ username: userName, password: password }, options)
       .map(response => <any>(<Response>response));
   }
 

@@ -219,6 +219,11 @@ export class BrowserStorageService {
     return localStorage.getItem(String.Format(SessionKeys.Setting, userId));
   }
 
+  deleteUserSettings(userId:number)
+  {
+    localStorage.removeItem(String.Format(SessionKeys.Setting, userId));
+  }
+
   getLastUserBranch(userId: number, companyId: string): string | undefined {
     var branchId = localStorage.getItem(String.Format(SessionKeys.LastUserBranch, userId, companyId));
     return branchId != "undefined" ? branchId : undefined;

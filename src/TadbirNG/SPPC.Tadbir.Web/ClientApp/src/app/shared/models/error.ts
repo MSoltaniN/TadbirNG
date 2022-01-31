@@ -13,5 +13,6 @@ export enum ErrorType {
   NotActivated = 4,  
   BadLicense = 5,
   RequiresOnlineLicense = 6,   
-  TooManySessions = 7
+  TooManySessions = 7,
+  InvalidUserPass = 8
 }

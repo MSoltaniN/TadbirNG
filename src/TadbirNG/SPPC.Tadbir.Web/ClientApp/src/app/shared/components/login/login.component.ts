@@ -40,6 +40,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     public stepOne : boolean = true;
     public showActivationForm:boolean = false;
     public onlineLicense:boolean = false;
+    public showServerForm:boolean = false;
 
     public activationForm = new FormGroup({            
       userName: new FormControl('', [Validators.required, Validators.maxLength(128)]),
@@ -184,6 +185,12 @@ export class LoginComponent extends DefaultComponent implements OnInit {
           {            
             this.tooManySessionsMessage();
           }
+
+          if(error.type == ErrorType.InvalidUserPass)
+          {
+            this.showServerForm = true;  
+          }
+
         }
         else
         {
@@ -214,21 +221,32 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
     startActivatingSoftware()
     {
-      this.closeActivationForm();
-      this.licenseService.ActivateLicense(LicenseApi.ActivateLicenseUrl).subscribe((res) => {
+      var userName = this.activationForm.controls.userName.value;
+      var password = this.activationForm.controls.password.value;
+      
+      this.licenseService.ActivateLicense(LicenseApi.ActivateLicenseUrl,userName,password).subscribe((res) => {
+        this.closeActivationForm();
         this.showMessageWithTime(this.getText("Messages.ActivationIsSuccessful"), MessageType.Succes,4000);        
         this.bStorageService.setContext(this.currentLogin,this.model.remember);
         this.checkOfflineLicense();
       },
       error => {        
-        this.showMessageWithTime(this.getText("Messages.ActivationIsNotSuccessful"), MessageType.Error,4000);
+        debugger
+        if(error.type == ErrorType.InvalidUserPass)
+        {
+          this.showMessageWithTime(this.getText("Messages.ActivationPasswordIsNotCorrect"), MessageType.Error,4000);
+        }
+        else
+        {          
+          this.showMessageWithTime(this.getText("Messages.ActivationIsNotSuccessful"), MessageType.Error,4000);
+        }
         this.logOut();
       });
     }
 
     startCheckingOnlineLicense()
     {   
-      this.closeOnlineLicenseForm();         ;
+      this.closeOnlineLicenseForm();
       this.licenseService.CheckOnlineLicense(String.Format(LicenseApi.OnlineUserLicenseUrl,this.currentUserId)).subscribe((res) => {
         this.showMessageWithTime(this.getText("Messages.OnlineLicenseIsSuccessful"), MessageType.Succes,4000);        
         
@@ -239,6 +257,16 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         this.showMessageWithTime(this.getText("Messages.OnlineLicenseIsNotSuccessful"), MessageType.Error,4000);
         this.logOut();
       });
+    }
+    
+    startCheckLicense()
+    {
+
+    }
+
+    closeServerForm()
+    {
+      this.showServerForm = false;
     }
 
     closeActivationForm()

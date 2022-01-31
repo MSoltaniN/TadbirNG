@@ -79,7 +79,9 @@
     "OnlineLicenseIsSuccessful":"مجوز نرم افزار با موفقیت بررسی شد",
     "OnlineLicenseIsNotSuccessful":"بررسی مجوز نرم افزار با خطا مواجه شد",
     "SoftwareActivation":"فعال سازی نرم افزار",
-    "TooManySessions":"تعداد جلسات کاربر بیشتر از حد مجاز می باشد"
+    "SoftwareLicense":"مجوز نرم افزار",
+    "TooManySessions":"تعداد جلسات کاربر بیشتر از حد مجاز می باشد",
+    "ActivationPasswordIsNotCorrect":"نام کاربری یا رمز عبور سرور اشتباه می باشد"
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
