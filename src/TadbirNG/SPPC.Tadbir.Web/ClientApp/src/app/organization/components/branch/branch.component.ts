@@ -209,7 +209,6 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
 
     this.authenticationService.getCompanyTicket(companyLoginModel, this.Ticket).subscribe(res => {
       if (res.headers != null) {
-        debugger;
         let newTicket = res.headers.get('X-Tadbir-AuthTicket');
 
         let contextInfo = res.body;
