@@ -49,4 +49,25 @@ export class LicenseService extends BaseService {
     return this.http.delete(url, options)
       .map(response => <any>(<Response>response));
   }
+
+  GetOpenSessions(url: string)
+  {
+    var newHeader = this.httpHeaders;    
+    newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
+    var options = { headers: newHeader };
+
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
+  }
+
+  DeleteOpenSessions(url: string,ids: number[])
+  {
+    var newHeader = this.httpHeaders;    
+    newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
+    var options = { headers: newHeader };
+    let body = JSON.stringify({ paraph: '', items: ids });
+
+    return this.http.put(url,body, options)
+      .map(response => <any>(<Response>response));
+  }
 }
