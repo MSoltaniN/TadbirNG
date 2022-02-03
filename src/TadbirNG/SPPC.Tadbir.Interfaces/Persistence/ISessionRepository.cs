@@ -50,6 +50,11 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteSessionsAsync(IEnumerable<int> sessionIds);
 
         /// <summary>
+        /// به روش آسنکرون، جلسات منقضی شده در برنامه را به پایان می رساند
+        /// </summary>
+        Task CleanupSessionsAsync();
+
+        /// <summary>
         /// به روش آسنکرون، تعداد جلسات باز برنامه را خوانده و برمی گرداند
         /// </summary>
         /// <returns>تعداد جلسات باز برنامه</returns>

@@ -260,6 +260,17 @@ namespace SPPC.Tadbir.Licensing
             return license;
         }
 
+        /// <summary>
+        /// اطلاعات فایل مجوز برنامه را مطابق با آخرین تغییرات ذخیره و به روزرسانی می کند
+        /// </summary>
+        /// <param name="license">اطلاعات مجوز برنامه با آخرین تغییرات</param>
+        public void SaveLicense(LicenseFileModel license)
+        {
+            var json = JsonHelper.From(license, false, null, false);
+            var encryptedLicense = _crypto.Encrypt(json);
+            File.WriteAllText(LicensePath, encryptedLicense, Encoding.UTF8);
+        }
+
         private string LicensePath
         {
             get { return _pathProvider.BinLicense; }
@@ -443,13 +454,6 @@ namespace SPPC.Tadbir.Licensing
         {
             string json = _crypto.Decrypt(instance);
             return JsonHelper.To<InstanceModel>(json);
-        }
-
-        private void SaveLicense(LicenseFileModel license)
-        {
-            var json = JsonHelper.From(license, false, null, false);
-            var encryptedLicense = _crypto.Encrypt(json);
-            File.WriteAllText(LicensePath, encryptedLicense, Encoding.UTF8);
         }
 
         private void UpdateLoginCount(LicenseFileModel licenseModel)
