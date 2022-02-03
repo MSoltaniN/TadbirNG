@@ -112,3 +112,26 @@
 </kendo-dialog-actions>
 </kendo-dialog>
 
+<kendo-dialog title="{{'Messages.OpenSessions' | translate}}" *ngIf="showSessionForm" 
+[ngStyle]="{'direction':this.currentlang === 'fa' ? 'rtl':'ltr'}"
+(close)="closeSessionForm()"  [minWidth]="350" [width]="650" [height]="450">
+<div>
+    <ul class="sessions">
+        <li *ngFor="let session of sessions">
+            <div class="session-row" [ngClass]="{'pull-right':this.currentlang === 'fa' , 'pull-left': this.currentlang === 'en'}">
+                <div class="col-md-10" >
+                    <span>{{session.browser}} - {{session.device}} - {{convertToShamsi(session.lastActivityUtc)}} </span>
+                </div>
+                <div class="col-md-2">
+                    <button class="k-button" (click)="removeSession(session.id)">{{ 'Buttons.Exit' | translate }}</button>
+                </div>                                
+            </div>
+            <hr class="col-md-12">
+        </li>
+    </ul>
+</div>
+<kendo-dialog-actions>    
+    <button class="k-button" (click)="closeSessionForm()">{{ 'Buttons.Ok' | translate }}</button>
+</kendo-dialog-actions>
+</kendo-dialog>
+

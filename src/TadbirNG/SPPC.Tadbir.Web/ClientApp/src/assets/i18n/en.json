@@ -81,7 +81,8 @@
     "SoftwareActivation":"Software activation",
     "SoftwareLicense":"Software license",
     "TooManySessions":"The number of user sessions is more than allowed",
-    "ActivationPasswordIsNotCorrect":"Server username or password  is incorrect"
+    "ActivationPasswordIsNotCorrect":"Server username or password  is incorrect",
+    "OpenSessions":"Open user sessions"
   },
   "Report": {
     "ReportViewer": "View of",
@@ -143,7 +144,8 @@
     "Previous": "Previous",
     "NextStep": "Next Step",
     "PreviousStep": "Previous Step",
-    "ComingBack": "Return"
+    "ComingBack": "Return",
+    "Exit": "Exit"
   },
   "GridSetting": {
     "Visibility": "Visibility",

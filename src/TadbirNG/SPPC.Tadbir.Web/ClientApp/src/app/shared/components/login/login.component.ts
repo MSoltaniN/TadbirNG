@@ -16,7 +16,7 @@ import { ErrorType } from '@sppc/shared/models';
 import { DialogCloseResult, DialogRef, DialogResult, DialogService } from '@progress/kendo-angular-dialog';
 import { String } from '@sppc/shared/class/source';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
+import * as moment from 'jalali-moment';
 
 
 @Component({
@@ -41,6 +41,8 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     public showActivationForm:boolean = false;
     public onlineLicense:boolean = false;
     public showServerForm:boolean = false;
+    public showSessionForm:boolean = false;
+    public sessions : any[];
 
     public activationForm = new FormGroup({            
       userName: new FormControl('', [Validators.required, Validators.maxLength(128)]),
@@ -145,6 +147,11 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         });
     }
 
+    closeSessionForm()
+    {
+
+    }
+
     checkOfflineLicense()
     {
       this.currentUserId = this.UserId;
@@ -184,6 +191,8 @@ export class LoginComponent extends DefaultComponent implements OnInit {
           if(error.type == ErrorType.TooManySessions)
           {            
             this.tooManySessionsMessage();
+
+
           }
 
           if(error.type == ErrorType.InvalidUserPass)
@@ -198,6 +207,12 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         }
 
       });
+    }
+
+    convertToShamsi(date)
+    {
+      var shamsiDate = moment(date).locale('fa').format("YYYY/MM/DD HH:mm");
+      return shamsiDate;
     }
 
     checkInternetConnection()
@@ -299,6 +314,27 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     {
       this.showMessage(this.getText("Messages.TooManySessions"), MessageType.Info);
       this.logOut();
+
+      this.licenseService.GetOpenSessions(String.Format(LicenseApi.OpenSessionsByUserUrl,this.currentUserId)).subscribe((res)=>
+      {
+        this.showSessionForm = true;
+        this.sessions = res;
+      });
+
+    }
+
+    removeSession(id:number)
+    {
+      let modelsIdArray: Array<number> = [];
+      modelsIdArray.push(id);
+      this.licenseService.DeleteOpenSessions(String.Format(LicenseApi.OpenSessionsUrl),modelsIdArray).subscribe((res)=>
+      {        
+        this.sessions.splice(this.sessions.findIndex(f=>f.id == id),1);
+        if(this.sessions.length == 0)
+        {
+          this.showSessionForm = false;
+        }
+      });      
     }
 
     licenseError()

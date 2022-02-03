@@ -47,7 +47,7 @@
             <span class="k-icon k-i-arrow-end-left"></span>
           </button>
 
-          <button class="k-button" [disabled]="!editForm.valid" SppcPermissionCheck="Edit" [EntityName]="entityNamePermission" (sppcClick)="onSave($event)" title="{{ 'Voucher.Save' | translate }}">
+          <button class="k-button" [disabled]="editForm.status == 'INVALID'" SppcPermissionCheck="Edit" [EntityName]="entityNamePermission" (sppcClick)="onSave($event)" title="{{ 'Voucher.Save' | translate }}">
             <span class="k-icon k-i-save"></span>
           </button>
 

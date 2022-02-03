@@ -81,7 +81,8 @@
     "SoftwareActivation":"فعال سازی نرم افزار",
     "SoftwareLicense":"مجوز نرم افزار",
     "TooManySessions":"تعداد جلسات کاربر بیشتر از حد مجاز می باشد",
-    "ActivationPasswordIsNotCorrect":"نام کاربری یا رمز عبور سرور اشتباه می باشد"
+    "ActivationPasswordIsNotCorrect":"نام کاربری یا رمز عبور سرور اشتباه می باشد",
+    "OpenSessions":"جلسات کاربری باز"
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
@@ -161,7 +162,8 @@
     "Previous": "قبلی",
     "NextStep": "مرحله بعد",
     "PreviousStep": "مرحله قبل",
-    "ComingBack": "بازگشت"
+    "ComingBack": "بازگشت",
+    "Exit": "خروج"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
