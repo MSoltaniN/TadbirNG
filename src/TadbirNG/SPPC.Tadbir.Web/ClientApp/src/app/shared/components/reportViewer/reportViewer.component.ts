@@ -1,17 +1,16 @@
-import { Component, OnInit, Input, Renderer2, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { SettingService } from '@sppc/config/service';
+import { DefaultComponent } from '@sppc/shared/class';
+import { CalendarType, Entities } from '@sppc/shared/enum/metadata';
+import { QuickReportColumnConfig, QuickReportConfigInfo, Report } from '@sppc/shared/models';
+import { ViewName } from '@sppc/shared/security';
+import { BrowserStorageService, MetaDataService, ParameterInfo, ReportingService } from '@sppc/shared/services';
+import * as moment from 'jalali-moment';
 import { ToastrService } from 'ngx-toastr';
 import "rxjs/Rx";
-import { TranslateService } from '@ngx-translate/core';
-import { HttpClient } from "@angular/common/http";
-import * as moment from 'jalali-moment';
-import { MetaDataService, ReportingService, ParameterInfo, BrowserStorageService } from '@sppc/shared/services';
-import { Entities, CalendarType } from '@sppc/shared/enum/metadata';
-import { SettingService } from '@sppc/config/service';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { ReportsQueries } from '../reportManagement/reports.queries';
-import { ViewName } from '@sppc/shared/security';
-import { DefaultComponent } from '@sppc/shared/class';
-import { Report, QuickReportColumnConfig, QuickReportConfigInfo } from '@sppc/shared/models';
 
 
 declare var Stimulsoft: any;
@@ -120,7 +119,9 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
       this.fillResourceVariables(reportObject, this.report);
 
-      this.report.render();
+      //this.report.render();
+      this.report.renderAsync();
+      
       this.viewer.report = this.report;
 
       console.log('Rendering the viewer to selected element');
@@ -147,7 +148,8 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       this.report.dictionary.variables.getByName("description").valueObject = reportData.rows.description;
       this.report.dictionary.variables.getByName("no").valueObject = reportData.rows.no;
 
-      this.report.render();
+      //this.report.render();
+      this.report.renderAsync();
       this.viewer.report = this.report;
 
       console.log('Rendering the viewer to selected element');
@@ -182,7 +184,8 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
 
 
     this.report = localReport;
-    this.report.render();
+    //this.report.render();
+    this.report.renderAsync();
     this.viewer.report = localReport;
 
     console.log('Rendering the viewer to selected element');
@@ -321,8 +324,9 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
         }
 
         this.report = localReport;
-        //this.fillResourceVariables(reportObject,this.report);
-        this.report.render();
+        
+        //this.report.render();
+        this.report.renderAsync();
         this.viewer.report = this.report;
 
         //this.addViewerEvents(this.viewer);

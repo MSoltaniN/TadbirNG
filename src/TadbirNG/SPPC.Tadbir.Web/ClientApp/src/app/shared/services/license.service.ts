@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { BaseService } from "../class/base.service";
 import { HttpClient } from "@angular/common/http";
-import { BrowserStorageService } from '@sppc/shared/services/browserStorage.service';
+import { Injectable } from "@angular/core";
 import { environment } from "@sppc/env/environment";
+import { BrowserStorageService } from '@sppc/shared/services/browserStorage.service';
+import { BaseService } from "../class/base.service";
 
 @Injectable()
 export class LicenseService extends BaseService {
@@ -11,13 +11,17 @@ export class LicenseService extends BaseService {
     super(http, bStorageService);
   }
 
-  GetAppLicense(url: string) {
+  CheckOfflineLicense(url: string,serverUserName?: string,serverPassword?: string) {
 
     var newHeader = this.httpHeaders;
     newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
     var options = { headers: newHeader };
+    
+    let userViewModel = null;
+    if(serverUserName && serverPassword)
+      userViewModel = { username: serverUserName, password: serverPassword };
 
-    return this.http.get(url, options)
+    return this.http.put(url,userViewModel, options)
       .map(response => <any>(<Response>response));
   }
 
@@ -31,13 +35,17 @@ export class LicenseService extends BaseService {
       .map(response => <any>(<Response>response));
   }
 
-  CheckOnlineLicense(url: string) {
+  CheckOnlineLicense(url: string,serverUserName?:string,serverPassword?:string) {
     
     var newHeader = this.httpHeaders;    
     newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
-    var options = { headers: newHeader };
+    var options = { headers: newHeader };    
 
-    return this.http.get(url, options)
+    let userViewModel = null;
+    if(serverUserName && serverPassword)
+      userViewModel = { username: serverUserName, password: serverPassword };
+
+    return this.http.put(url,userViewModel,options)
       .map(response => <any>(<Response>response));
   }
 
@@ -68,6 +76,16 @@ export class LicenseService extends BaseService {
     let body = JSON.stringify({ paraph: '', items: ids });
 
     return this.http.put(url,body, options)
+      .map(response => <any>(<Response>response));
+  }
+
+  PutSessionAsActive(url:string)
+  {
+    var newHeader = this.httpHeaders;    
+    newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
+    var options = { headers: newHeader };    
+
+    return this.http.put(url,null, options)
       .map(response => <any>(<Response>response));
   }
 }

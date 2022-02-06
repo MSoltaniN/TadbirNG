@@ -1,22 +1,21 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { DefaultComponent } from "../../class/default.component";
+import { Component, Host, Inject, OnInit, Renderer2 } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DOCUMENT } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import {LoginContainerComponent} from "./login.container.component";
-import { Host, Renderer2 } from '@angular/core';
+import { DialogService } from '@progress/kendo-angular-dialog';
+import { SettingService } from '@sppc/config/service';
 //import { DOCUMENT } from '@angular/common';
 import { AuthenticationService, ContextInfo } from '@sppc/core';
-import { MetaDataService, BrowserStorageService, SessionKeys, LicenseService, DashboardService } from '@sppc/shared/services';
-import { SettingService } from '@sppc/config/service';
-import { DOCUMENT } from '@angular/platform-browser';
-import { LicenseApi } from '@sppc/shared/services/api/licenseApi';
+import { String } from '@sppc/shared/class/source';
 import { MessageType } from '@sppc/shared/enum/metadata';
 import { ErrorType } from '@sppc/shared/models';
-import { DialogCloseResult, DialogRef, DialogResult, DialogService } from '@progress/kendo-angular-dialog';
-import { String } from '@sppc/shared/class/source';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BrowserStorageService, DashboardService, LicenseService, MetaDataService } from '@sppc/shared/services';
+import { LicenseApi } from '@sppc/shared/services/api/licenseApi';
 import * as moment from 'jalali-moment';
+import { ToastrService } from 'ngx-toastr';
+import { DefaultComponent } from "../../class/default.component";
+import { LoginContainerComponent } from "./login.container.component";
 
 
 @Component({
@@ -43,6 +42,9 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     public showServerForm:boolean = false;
     public showSessionForm:boolean = false;
     public sessions : any[];
+
+    private duringCheckOfflineLicense:boolean = false;
+    private duringCheckOnlineLicense:boolean = false;
 
     public activationForm = new FormGroup({            
       userName: new FormControl('', [Validators.required, Validators.maxLength(128)]),
@@ -116,6 +118,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
             data => {
                 if (this.authenticationService.islogin())
                 { 
+                  this.currentUserId = this.UserId;
                   if (this.bStorageService.getCurrentUser().lastLoginDate == null || this.bStorageService.getLicense() == null) {                    
                     this.checkOfflineLicense();
                   }
@@ -152,12 +155,11 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
     }
 
-    checkOfflineLicense()
+    checkOfflineLicense(serverUserName?:string,serverPassword?:string)
     {
-      this.currentUserId = this.UserId;
-
-      this.licenseService.GetAppLicense(String.Format(LicenseApi.UserLicenseUrl,this.UserId)).subscribe((res) => {
+      this.licenseService.CheckOfflineLicense(String.Format(LicenseApi.UserLicenseUrl,this.currentUserId),serverUserName,serverPassword).subscribe((res) => {
         this.setLicenseCache(res);
+        this.duringCheckOfflineLicense = false;
       },
       error => {
         debugger;
@@ -191,13 +193,12 @@ export class LoginComponent extends DefaultComponent implements OnInit {
           if(error.type == ErrorType.TooManySessions)
           {            
             this.tooManySessionsMessage();
-
-
           }
 
           if(error.type == ErrorType.InvalidUserPass)
           {
-            this.showServerForm = true;  
+            this.duringCheckOfflineLicense = true;
+            this.showServerPasswordForm()          
           }
 
         }
@@ -207,6 +208,13 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         }
 
       });
+    }
+
+    showServerPasswordForm()
+    {
+      this.showMessageWithTime(this.getText("Messages.ActivationPasswordIsNotCorrect"), MessageType.Error,3000);
+      this.activationForm.reset();
+      this.showServerForm = true;      
     }
 
     convertToShamsi(date)
@@ -259,24 +267,49 @@ export class LoginComponent extends DefaultComponent implements OnInit {
       });
     }
 
-    startCheckingOnlineLicense()
+    startCheckingOnlineLicense(serverUserName?:string,serverPassword?:string)
     {   
       this.closeOnlineLicenseForm();
-      this.licenseService.CheckOnlineLicense(String.Format(LicenseApi.OnlineUserLicenseUrl,this.currentUserId)).subscribe((res) => {
+      this.licenseService.CheckOnlineLicense(String.Format(LicenseApi.OnlineUserLicenseUrl,this.currentUserId),serverUserName,serverPassword).subscribe((res) => {
         this.showMessageWithTime(this.getText("Messages.OnlineLicenseIsSuccessful"), MessageType.Succes,4000);        
         
         this.bStorageService.setContext(this.currentLogin,this.model.remember);        
         this.setLicenseCache(res);
+        this.duringCheckOnlineLicense = false;
       },
-      error => {        
-        this.showMessageWithTime(this.getText("Messages.OnlineLicenseIsNotSuccessful"), MessageType.Error,4000);
+      error => {    
+        if(error.type == ErrorType.InvalidUserPass)
+        {
+          this.showMessageWithTime(this.getText("Messages.ActivationPasswordIsNotCorrect"), MessageType.Error,2000);
+          this.duringCheckOnlineLicense = true;
+          this.showServerPasswordForm();
+        }
+        else
+        {
+          this.showMessageWithTime(this.getText("Messages.OnlineLicenseIsNotSuccessful"), MessageType.Error,4000);
+        }
+
         this.logOut();
       });
     }
     
     startCheckLicense()
     {
+      //check online license with new user and password
+      
+      var userName = this.activationForm.controls.userName.value;
+      var password = this.activationForm.controls.password.value;
 
+      if(this.duringCheckOnlineLicense)
+      {        
+        this.startCheckingOnlineLicense(userName,password);
+        
+      }
+
+      if(this.duringCheckOfflineLicense)
+      {
+        this.checkOfflineLicense(userName,password);        
+      }
     }
 
     closeServerForm()

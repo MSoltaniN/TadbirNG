@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
 import { Context, AuthenticationService } from '@sppc/core';
-import { BrowserStorageService } from '@sppc/shared/services';
+import { BrowserStorageService, LicenseService } from '@sppc/shared/services';
 import { UserService } from '@sppc/admin/service';
 import { Command } from '@sppc/shared/models';
 import { ShareDataService } from '@sppc/shared/services/share-data.service';
@@ -11,6 +11,7 @@ import { ShortcutService } from '@sppc/shared/services/shortcut.service';
 import { ShortcutCommand } from '@sppc/shared/models/shortcutCommand';
 import { ServiceLocator } from '@sppc/service.locator';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
+import { LicenseApi } from './shared/services/api/licenseApi';
 
 declare var $: any;
 declare var Stimulsoft: any;
@@ -64,6 +65,18 @@ export class AppComponent implements AfterViewInit, OnInit {
     this.registerFunctions();
 
     this.manageComponentScopes();
+
+    this.setAliveSessionTimer();    
+  }
+
+  setAliveSessionTimer()
+  {    
+      setInterval(()=>{
+        if(this.bStorageService.getCurrentUser())
+        {
+          this.licenseService.PutSessionAsActive(LicenseApi.SetCurrentSessionAsActiveUrl).subscribe();
+        }
+      },900000);    
   }
 
   addStimulsoftFonts()
@@ -142,7 +155,8 @@ export class AppComponent implements AfterViewInit, OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer,
     private shortcutService:ShortcutService,
-    public elem:ElementRef) {       
+    public elem:ElementRef,
+    private licenseService:LicenseService) {       
 
     //#region init Lang    
 
