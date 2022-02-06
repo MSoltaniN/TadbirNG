@@ -26,14 +26,15 @@ namespace SPPC.Licensing.Local.Web.Controllers
             _repository = repository;
         }
 
-        // GET: api/license/users/{userId:min(1)}
-        [HttpGet]
+        // PUT: api/license/users/{userId:min(1)}
+        [HttpPut]
         [Route(LicenseApi.UserLicenseUrl)]
-        public async Task<IActionResult> GetAppLicenseAsync(int userId)
+        public async Task<IActionResult> PutAppLicenseAsync(int userId, [FromBody] LoginViewModel login)
         {
             IActionResult result;
             try
             {
+                await UpdateServerAccountAsync(login);
                 string instance = GetInstance();
                 result = GetValidationResult(instance, out bool succeeded);
                 if (!succeeded)
@@ -67,14 +68,15 @@ namespace SPPC.Licensing.Local.Web.Controllers
             }
         }
 
-        // GET: api/license/users/{userId:min(1)}/online
-        [HttpGet]
+        // PUT: api/license/users/{userId:min(1)}/online
+        [HttpPut]
         [Route(LicenseApi.OnlineUserLicenseUrl)]
-        public async Task<IActionResult> GetOnlineAppLicenseAsync(int userId)
+        public async Task<IActionResult> PutOnlineAppLicenseAsync(int userId, [FromBody] LoginViewModel login)
         {
             IActionResult result;
             try
             {
+                await UpdateServerAccountAsync(login);
                 string instance = GetInstance();
                 result = GetQuickValidationResult(instance, out bool succeeded);
                 if (!succeeded)
@@ -194,7 +196,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
             return Json(sessions);
         }
 
-        // GET: api/sessions
+        // PUT: api/sessions
         [HttpPut]
         [Route(LicenseApi.OpenSessionsUrl)]
         public async Task<IActionResult> PutExistingSessionsAsDeletedAsync(
@@ -216,6 +218,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
         {
             string userAgent = Request.Headers["User-Agent"];
             await _repository.UpdateSessionLastActiveAsync(userAgent);
+            await _repository.CleanupSessionsAsync();
             return Ok();
         }
 
@@ -312,6 +315,17 @@ namespace SPPC.Licensing.Local.Web.Controllers
         private string GetLicense()
         {
             return Request.Headers[AppConstants.LicenseHeaderName];
+        }
+
+        private async Task UpdateServerAccountAsync(LoginViewModel login)
+        {
+            if (login != null)
+            {
+                var license = await _utility.LoadLicenseAsync();
+                license.ServerUser = login.UserName;
+                license.ServerPassword = login.Password;
+                _utility.SaveLicense(license);
+            }
         }
 
         private RemoteConnection GetRemoteConnection()

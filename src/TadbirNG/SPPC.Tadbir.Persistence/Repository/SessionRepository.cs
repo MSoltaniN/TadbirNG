@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SPPC.Framework.Persistence;
 using SPPC.Licensing.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Security;
@@ -101,15 +100,12 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteSessionAsync(string userAgent)
         {
             var repository = UnitOfWork.GetAsyncRepository<Session>();
-            var now = DateTime.UtcNow;
             var existing = await GetActiveSessionAsync(userAgent);
             if (existing != null)
             {
                 repository.Delete(existing);
                 await UnitOfWork.CommitAsync();
             }
-
-            await CleanupSessions(repository, now);
         }
 
         /// <summary>
@@ -124,6 +120,23 @@ namespace SPPC.Tadbir.Persistence
             foreach (var session in sessions)
             {
                 repository.Delete(session);
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، جلسات منقضی شده در برنامه را به پایان می رساند
+        /// </summary>
+        public async Task CleanupSessionsAsync()
+        {
+            var now = DateTime.UtcNow;
+            var repository = UnitOfWork.GetAsyncRepository<Session>();
+            var all = await repository.GetAllAsync();
+            var expired = all.Where(session => now - session.LastActivityUtc >= Constants.SessionTimeout);
+            foreach (var item in expired)
+            {
+                repository.Delete(item);
             }
 
             await UnitOfWork.CommitAsync();
@@ -155,18 +168,6 @@ namespace SPPC.Tadbir.Persistence
         {
             var session = _sessionProvider.GetSession(userAgent, null);
             return session.Fingerprint;
-        }
-
-        private async Task CleanupSessions(IAsyncRepository<Session> repository, DateTime now)
-        {
-            var all = await repository.GetAllAsync();
-            var expired = all.Where(session => now - session.SinceUtc >= Constants.SessionTimeout);
-            foreach (var item in expired)
-            {
-                repository.Delete(item);
-            }
-
-            await UnitOfWork.CommitAsync();
         }
 
         private readonly ISessionProvider _sessionProvider;

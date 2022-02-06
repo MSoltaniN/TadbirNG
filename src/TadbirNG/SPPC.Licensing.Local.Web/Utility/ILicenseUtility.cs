@@ -60,5 +60,11 @@ namespace SPPC.Tadbir.Licensing
         /// </summary>
         /// <returns>اطلاعات کامل مجوز برنامه</returns>
         Task<LicenseFileModel> LoadLicenseAsync();
+
+        /// <summary>
+        /// اطلاعات فایل مجوز برنامه را مطابق با آخرین تغییرات ذخیره و به روزرسانی می کند
+        /// </summary>
+        /// <param name="license">اطلاعات مجوز برنامه با آخرین تغییرات</param>
+        void SaveLicense(LicenseFileModel license);
     }
 }
