@@ -26,10 +26,10 @@ namespace SPPC.Licensing.Local.Web.Controllers
             _repository = repository;
         }
 
-        // GET: api/license/users/{userId:min(1)}
-        [HttpGet]
+        // PUT: api/license/users/{userId:min(1)}
+        [HttpPut]
         [Route(LicenseApi.UserLicenseUrl)]
-        public async Task<IActionResult> GetAppLicenseAsync(int userId, [FromBody] LoginViewModel login)
+        public async Task<IActionResult> PutAppLicenseAsync(int userId, [FromBody] LoginViewModel login)
         {
             IActionResult result;
             try
@@ -68,10 +68,10 @@ namespace SPPC.Licensing.Local.Web.Controllers
             }
         }
 
-        // GET: api/license/users/{userId:min(1)}/online
-        [HttpGet]
+        // PUT: api/license/users/{userId:min(1)}/online
+        [HttpPut]
         [Route(LicenseApi.OnlineUserLicenseUrl)]
-        public async Task<IActionResult> GetOnlineAppLicenseAsync(int userId, [FromBody] LoginViewModel login)
+        public async Task<IActionResult> PutOnlineAppLicenseAsync(int userId, [FromBody] LoginViewModel login)
         {
             IActionResult result;
             try
@@ -196,7 +196,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
             return Json(sessions);
         }
 
-        // GET: api/sessions
+        // PUT: api/sessions
         [HttpPut]
         [Route(LicenseApi.OpenSessionsUrl)]
         public async Task<IActionResult> PutExistingSessionsAsDeletedAsync(
