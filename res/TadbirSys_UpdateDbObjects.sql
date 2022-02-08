@@ -5517,7 +5517,7 @@ Update Metadata.Command set HotKey = 'Ctrl+Shift+L' where CommandID = 49
 Update Metadata.Command set HotKey = 'Ctrl+Shift+K' where CommandID = 50
 
 
---1.2.1321
+-- 1.2.1321
 
 Update Metadata.Command set HotKey = 'Ctrl+Alt+R' where CommandID = 9
 
@@ -5535,7 +5535,7 @@ Update Metadata.Command set HotKey = 'Ctrl+Alt+V' where CommandID = 15
 
 Update Metadata.Command set HotKey = 'Alt+Q' where CommandID = 38
 
---1.2.1322
+-- 1.2.1322
 
 Update [Metadata].[ShortcutCommand] Set Method = 'sh_addVoucherLine' Where ShortcutCommandID = 1
 
@@ -5543,9 +5543,30 @@ Update [Metadata].[ShortcutCommand] Set HotKey = 'Alt+C' Where ShortcutCommandID
 
 Update [Metadata].[ShortcutCommand] Set HotKey = 'Ctrl+Shift+R' Where ShortcutCommandID = 8
 
+-- 1.2.1326
 
+Update Metadata.Command set HotKey = 'Ctrl+Y' where CommandID = 10
 
+Update Metadata.Command set HotKey = 'Ctrl+Alt+Y' where CommandID = 17
 
+Update Metadata.Command set HotKey = 'Ctrl+Alt+U' where CommandID = 18
 
+Update Metadata.Command set HotKey = 'Ctrl+Alt+I' where CommandID = 19
 
-
+-- 1.2.1328
+CREATE TABLE [Auth].[Session] (
+    [SessionID]       INT              IDENTITY (1, 1) NOT NULL,
+    [UserID]          INT              NOT NULL,
+    [Device]          NVARCHAR(64)     NOT NULL,
+    [Browser]         NVARCHAR(64)     NOT NULL,
+    [Fingerprint]     NVARCHAR(128)    NOT NULL,
+    [IPAddress]       NVARCHAR(16)     NULL,
+    [SinceUtc]        DATETIME         NOT NULL,
+    [LastActivityUtc] DATETIME         NOT NULL,
+    [TimeZone]        NVARCHAR(32)     NULL,
+    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_Session_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Auth_Session_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Auth_Session] PRIMARY KEY CLUSTERED ([SessionID] ASC)
+    , CONSTRAINT [FK_Auth_Session_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User]([UserID])
+)
+GO

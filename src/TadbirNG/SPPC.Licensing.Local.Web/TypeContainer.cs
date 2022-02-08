@@ -1,10 +1,18 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Licensing;
+using SPPC.Framework.Mapper;
+using SPPC.Framework.Persistence;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Common;
 using SPPC.Tadbir.Licensing;
+using SPPC.Tadbir.Mapper;
+using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Resources;
+using SPPC.Tadbir.Security;
 
 namespace SPPC.Licensing.Local.Web
 {
@@ -38,6 +46,7 @@ namespace SPPC.Licensing.Local.Web
             _services.AddTransient<ICryptoService, CryptoService>();
             _services.AddTransient<IEncodedSerializer, JsonSerializer>();
             _services.AddTransient<ICertificateManager, CertificateManager>();
+            _services.AddTransient<ISecurityContext, SecurityContext>();
         }
 
         private void AddUtilityTypes()
@@ -52,6 +61,19 @@ namespace SPPC.Licensing.Local.Web
             _services.AddTransient<ILicenseUtility, LicenseUtility>();
             _services.AddTransient<IDeviceIdProvider, DeviceIdProvider>();
             _services.AddTransient<ILicensePathProvider, LicenseResourcePaths>();
+            _services.AddTransient<ISessionProvider, SessionProvider>();
+            _services.AddTransient<ISessionRepository, SessionRepository>();
+
+            _services.AddDbContext<TadbirContext>();
+            _services.AddDbContext<SystemContext>(options =>
+                options.UseSqlServer(_configuration.GetConnectionString("TadbirSysApi")));
+            _services.AddScoped<SystemContext>();
+
+            _services.AddTransient<IAppUnitOfWork, AppUnitOfWork>();
+            _services.AddTransient<IDomainMapper, DomainMapper>();
+            _services.AddTransient<ISqlConsole, SqlServerConsole>();
+            _services.AddTransient<IDbContextAccessor, DbContextAccessor>();
+            _services.AddTransient<IRepositoryContext, RepositoryContext>();
         }
 
         private readonly IServiceCollection _services;

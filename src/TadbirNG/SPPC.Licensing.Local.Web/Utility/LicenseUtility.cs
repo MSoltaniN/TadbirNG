@@ -72,9 +72,10 @@ namespace SPPC.Tadbir.Licensing
         }
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
-        /// <param name="licenseCheck"></param>
+        /// <param name="instance"></param>
+        /// <param name="connection"></param>
         /// <returns></returns>
         public async Task<string> GetOnlineLicenseAsync(string instance, RemoteConnection connection)
         {
@@ -97,7 +98,7 @@ namespace SPPC.Tadbir.Licensing
             var ignored = new string[]
             {
                 "CustomerKey", "LicenseKey", "HardwareKey", "ClientKey", "Secret", "IsActivated",
-                "OfflineLimit", "LoginCount"
+                "OfflineLimit", "LoginCount","ServerUser", "ServerPassword"
             };
             var licenseModel = await LoadLicenseAsync();
             if (licenseModel.OfflineLimit == 0 || licenseModel.LoginCount < licenseModel.OfflineLimit)
@@ -242,6 +243,34 @@ namespace SPPC.Tadbir.Licensing
             return _crypto.VerifyData(apiLicenseBytes, signature, certificate);
         }
 
+        /// <summary>
+        /// به روش آسنکرون اطلاعات مجوز برنامه را از فایل مرتبط خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات کامل مجوز برنامه</returns>
+        public async Task <LicenseFileModel> LoadLicenseAsync()
+        {
+            var license = default(LicenseFileModel);
+            if (File.Exists(LicensePath))
+            {
+                var licenseData = await File.ReadAllTextAsync(LicensePath, Encoding.UTF8);
+                var json = _crypto.Decrypt(licenseData);
+                license = JsonHelper.To<LicenseFileModel>(json);
+            }
+
+            return license;
+        }
+
+        /// <summary>
+        /// اطلاعات فایل مجوز برنامه را مطابق با آخرین تغییرات ذخیره و به روزرسانی می کند
+        /// </summary>
+        /// <param name="license">اطلاعات مجوز برنامه با آخرین تغییرات</param>
+        public void SaveLicense(LicenseFileModel license)
+        {
+            var json = JsonHelper.From(license, false, null, false);
+            var encryptedLicense = _crypto.Encrypt(json);
+            File.WriteAllText(LicensePath, encryptedLicense, Encoding.UTF8);
+        }
+
         private string LicensePath
         {
             get { return _pathProvider.BinLicense; }
@@ -265,6 +294,8 @@ namespace SPPC.Tadbir.Licensing
             {
                 InstanceKey = instance,
                 HardwareKey = _deviceId.GetRemoteDeviceId(connection),
+                ServerUser = connection.User,
+                ServerPassword = connection.Password
             };
 
             certificate = _crypto.CertificateManager.GenerateSelfSigned(
@@ -423,20 +454,6 @@ namespace SPPC.Tadbir.Licensing
         {
             string json = _crypto.Decrypt(instance);
             return JsonHelper.To<InstanceModel>(json);
-        }
-
-        private async Task <LicenseFileModel> LoadLicenseAsync()
-        {
-            var licenseData = await File.ReadAllTextAsync(LicensePath, Encoding.UTF8);
-            var json = _crypto.Decrypt(licenseData);
-            return JsonHelper.To<LicenseFileModel>(json);
-        }
-
-        private void SaveLicense(LicenseFileModel license)
-        {
-            var json = JsonHelper.From(license, false, null, false);
-            var encryptedLicense = _crypto.Encrypt(json);
-            File.WriteAllText(LicensePath, encryptedLicense, Encoding.UTF8);
         }
 
         private void UpdateLoginCount(LicenseFileModel licenseModel)

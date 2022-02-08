@@ -33,5 +33,9 @@ namespace SPPC.Licensing.Model
         public int OfflineLimit { get; set; }
 
         public int LoginCount { get; set; }
+
+        public string ServerUser { get; set; }
+
+        public string ServerPassword { get; set; }
     }
 }

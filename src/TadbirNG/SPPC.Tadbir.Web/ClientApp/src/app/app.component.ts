@@ -1,15 +1,17 @@
-import { Component, Inject, AfterViewInit, OnInit, HostListener, ChangeDetectorRef, Renderer, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { Component, Inject, AfterViewInit, OnInit, HostListener, ChangeDetectorRef, Renderer, ViewChildren, QueryList, ElementRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
 import { Context, AuthenticationService } from '@sppc/core';
-import { BrowserStorageService } from '@sppc/shared/services';
+import { BrowserStorageService, LicenseService } from '@sppc/shared/services';
 import { UserService } from '@sppc/admin/service';
 import { Command } from '@sppc/shared/models';
 import { ShareDataService } from '@sppc/shared/services/share-data.service';
 import { ShortcutService } from '@sppc/shared/services/shortcut.service';
-import { ShortcutCommand } from './shared/models/shortcutCommand';
+import { ShortcutCommand } from '@sppc/shared/models/shortcutCommand';
 import { ServiceLocator } from '@sppc/service.locator';
+import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
+import { LicenseApi } from './shared/services/api/licenseApi';
 
 declare var $: any;
 declare var Stimulsoft: any;
@@ -31,9 +33,6 @@ String.replaceBadChars = (s: string) => {
 })
 
 export class AppComponent implements AfterViewInit, OnInit {
-
-  
-      
 
   options = {
     min: 8,
@@ -59,6 +58,29 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
 
+    debugger;
+    
+    this.addStimulsoftFonts();
+
+    this.registerFunctions();
+
+    this.manageComponentScopes();
+
+    this.setAliveSessionTimer();    
+  }
+
+  setAliveSessionTimer()
+  {    
+      setInterval(()=>{
+        if(this.bStorageService.getCurrentUser())
+        {
+          this.licenseService.PutSessionAsActive(LicenseApi.SetCurrentSessionAsActiveUrl).subscribe();
+        }
+      },900000);    
+  }
+
+  addStimulsoftFonts()
+  {
     //load fonts
     Stimulsoft.StiOptions.Export.Pdf.AllowImportSystemLibraries = true;
     Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/BZar.ttf", "B Zar");
@@ -76,11 +98,6 @@ export class AppComponent implements AfterViewInit, OnInit {
       Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/IranSans/ttf/IRANSansWeb.ttf", "IRANSansWeb");
       Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/IranSans/ttf/IRANSansWeb_Bold.ttf", "IRANSansWeb", Stimulsoft.System.Drawing.FontStyle.Bold);
     }
-    //Stimulsoft.System.Drawing.FontStyle.Italic
-
-    this.registerFunctions();
-
-    this.manageComponentScopes();
   }
 
   manageComponentScopes()
@@ -138,7 +155,8 @@ export class AppComponent implements AfterViewInit, OnInit {
     @Inject(DOCUMENT) private document: Document,
     public sanitizer: DomSanitizer,
     private shortcutService:ShortcutService,
-    public elem:ElementRef) {       
+    public elem:ElementRef,
+    private licenseService:LicenseService) {       
 
     //#region init Lang    
 
@@ -257,44 +275,54 @@ export class AppComponent implements AfterViewInit, OnInit {
       var alt = event.altKey ? true : false;
       var activeComponents = new Array();
 
+      var isDialog : boolean = false;
+
       if (event.code) {
         var result = false;
         var activeElement = document.activeElement;
-        var dialog = null;
+        var parentElement = null;
 
-        if(activeElement.tagName.toLowerCase() == "kendo-dialog")
-          dialog = activeElement
+        if(activeElement.tagName.toLowerCase() == "kendo-dialog")          
+            parentElement = activeElement          
         else
-          dialog = (<any>document.activeElement.parentNode).closest('kendo-dialog');
-
-        if(dialog)
-        {          
-          var components = ShareDataService.components; 
-          var selectors = "";
-          components.forEach((item)=>{
-            if(dialog.querySelector(item.selector))
-            {
-              selectors += item.selector + ",";
-            }            
-          });
-
-          selectors = selectors.substring(0,selectors.length - 1);
-          
-          var elements = dialog.querySelectorAll(selectors);
-          if(elements.length > 0)
-          {
-            elements.forEach((item)=>{
-              var parentSelector = item.tagName;
-              var index = components.findIndex(c=>c.selector.toLowerCase() == parentSelector.toLowerCase());
-              activeComponents.push(components[index]);
-            });            
-          }
+          parentElement = (<any>document.activeElement.parentNode).closest('kendo-dialog');
+        
+        if(!parentElement) 
+        {
+          parentElement = document;
         }
         else
         {
+          isDialog = true;
+        }
+
+        var components = ShareDataService.components; 
+        var selectors = "";
+        components.forEach((item)=>{
+          if(parentElement.querySelector(item.selector))
+          {
+            selectors += item.selector + ",";
+          }            
+        });
+
+        if(selectors == "") return;
+
+        selectors = selectors.substring(0,selectors.length - 1);
+        
+        var elements = parentElement.querySelectorAll(selectors);
+        if(elements.length > 0)
+        {
+          elements.forEach((item)=>{
+            var parentSelector = item.tagName;
+            var index = components.findIndex(c=>c.selector.toLowerCase() == parentSelector.toLowerCase());
+            activeComponents.push(components[index]);
+          });            
+        }
+
+        if(!isDialog)
+        { 
           result = this.checkKeysForNavigate(ctrl,shift,alt,event.code);
-          activeComponents = ShareDataService.components;
-        }        
+        }
         
         if(!result)
         {
@@ -315,6 +343,9 @@ export class AppComponent implements AfterViewInit, OnInit {
       var command = this.searchHotKey(ctrl, shift, alt, key, this.menuList);
       if (command) {
         var url = command.routeUrl;
+
+        if (url == '/tadbir/reports') return;        
+
         this.router.navigate([url]);
 
         event.preventDefault();
@@ -360,12 +391,7 @@ export class AppComponent implements AfterViewInit, OnInit {
           event.preventDefault();
           
         }        
-      }
-      // else
-      // {            
-      //   this[shortcutCommand.method]();
-      //   event.preventDefault();
-      // }
+      }      
     }
   }
 

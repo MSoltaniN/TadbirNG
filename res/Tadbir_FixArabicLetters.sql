@@ -125,15 +125,6 @@ SET [Code] = REPLACE([Code], NCHAR(1610), NCHAR(1740)), [Description] = REPLACE(
 UPDATE [Finance].[DetailAccount]
 SET [Code] = REPLACE([Code], NCHAR(1609), NCHAR(1740)), [Description] = REPLACE([Description], NCHAR(1609), NCHAR(1740)), [FullCode] = REPLACE([FullCode], NCHAR(1609), NCHAR(1740)), [Name] = REPLACE([Name], NCHAR(1609), NCHAR(1740))
 
-UPDATE [Core].[Document]
-SET [No] = REPLACE([No], NCHAR(1603), NCHAR(1705))
-
-UPDATE [Core].[Document]
-SET [No] = REPLACE([No], NCHAR(1610), NCHAR(1740))
-
-UPDATE [Core].[Document]
-SET [No] = REPLACE([No], NCHAR(1609), NCHAR(1740))
-
 UPDATE [Core].[DocumentStatus]
 SET [Name] = REPLACE([Name], NCHAR(1603), NCHAR(1705))
 
@@ -304,21 +295,3 @@ SET [Name] = REPLACE([Name], NCHAR(1610), NCHAR(1740))
 
 UPDATE [Finance].[VoucherOrigin]
 SET [Name] = REPLACE([Name], NCHAR(1609), NCHAR(1740))
-
-UPDATE [Workflow].[WorkItem]
-SET [Number] = REPLACE([Number], NCHAR(1603), NCHAR(1705)), [Remarks] = REPLACE([Remarks], NCHAR(1603), NCHAR(1705)), [Title] = REPLACE([Title], NCHAR(1603), NCHAR(1705))
-
-UPDATE [Workflow].[WorkItem]
-SET [Number] = REPLACE([Number], NCHAR(1610), NCHAR(1740)), [Remarks] = REPLACE([Remarks], NCHAR(1610), NCHAR(1740)), [Title] = REPLACE([Title], NCHAR(1610), NCHAR(1740))
-
-UPDATE [Workflow].[WorkItem]
-SET [Number] = REPLACE([Number], NCHAR(1609), NCHAR(1740)), [Remarks] = REPLACE([Remarks], NCHAR(1609), NCHAR(1740)), [Title] = REPLACE([Title], NCHAR(1609), NCHAR(1740))
-
-UPDATE [Workflow].[WorkItemHistory]
-SET [Number] = REPLACE([Number], NCHAR(1603), NCHAR(1705)), [Remarks] = REPLACE([Remarks], NCHAR(1603), NCHAR(1705)), [Title] = REPLACE([Title], NCHAR(1603), NCHAR(1705))
-
-UPDATE [Workflow].[WorkItemHistory]
-SET [Number] = REPLACE([Number], NCHAR(1610), NCHAR(1740)), [Remarks] = REPLACE([Remarks], NCHAR(1610), NCHAR(1740)), [Title] = REPLACE([Title], NCHAR(1610), NCHAR(1740))
-
-UPDATE [Workflow].[WorkItemHistory]
-SET [Number] = REPLACE([Number], NCHAR(1609), NCHAR(1740)), [Remarks] = REPLACE([Remarks], NCHAR(1609), NCHAR(1740)), [Title] = REPLACE([Title], NCHAR(1609), NCHAR(1740))

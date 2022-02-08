@@ -18,9 +18,10 @@ namespace SPPC.Tadbir.Licensing
         Task<ActivationResult> ActivateLicenseAsync(string instance, RemoteConnection connection);
 
         /// <summary>
-        ///
+        /// 
         /// </summary>
-        /// <param name="licenseCheck"></param>
+        /// <param name="instance"></param>
+        /// <param name="connection"></param>
         /// <returns></returns>
         Task<string> GetOnlineLicenseAsync(string instance, RemoteConnection connection);
 
@@ -53,5 +54,17 @@ namespace SPPC.Tadbir.Licensing
         /// <returns>در صورت درستی مجوز مقدار بولی "درست" و در صورت
         /// عدم مطابقت اطلاعات متنی با اطلاعات فعال سازی شده مقدار بولی "نادرست" را برمی گرداند</returns>
         Task<bool> ValidateSignatureAsync(string apiLicense, string signature);
+
+        /// <summary>
+        /// به روش آسنکرون اطلاعات مجوز برنامه را از فایل مرتبط خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات کامل مجوز برنامه</returns>
+        Task<LicenseFileModel> LoadLicenseAsync();
+
+        /// <summary>
+        /// اطلاعات فایل مجوز برنامه را مطابق با آخرین تغییرات ذخیره و به روزرسانی می کند
+        /// </summary>
+        /// <param name="license">اطلاعات مجوز برنامه با آخرین تغییرات</param>
+        void SaveLicense(LicenseFileModel license);
     }
 }

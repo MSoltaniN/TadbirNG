@@ -70,7 +70,19 @@
     "VoucherDeleteConfirm": "are you sure to delete voucher?",
     "DeleteOperationSuccessful": "delete operation successful",
     "GlobalErrorMessage": "An error occurred while performing the operation",
-    "LicenseError": "Software license control encountered an error! Please contact the system administrator."
+    "LicenseError": "Software license control encountered an error! Please contact the system administrator.",
+    "StartingActivation":"The application is not activated! To activate the software, please make sure of the internet connection status. Do you want activation software?",
+    "ActivationIsSuccessful":"Activation is successful",
+    "ActivationIsNotSuccessful":"Activation is not successful",
+    "CheckingOnlineLicense":"Check software licenses",
+    "CheckingOnlineMsg":"The software needs to check the license online! Please check the internet connection status. Do you want to check the software license?",    
+    "OnlineLicenseIsSuccessful":"Software license was successfully verified",
+    "OnlineLicenseIsNotSuccessful":"Error checking software license encountered",
+    "SoftwareActivation":"Software activation",
+    "SoftwareLicense":"Software license",
+    "TooManySessions":"The number of user sessions is more than allowed",
+    "ActivationPasswordIsNotCorrect":"Server username or password  is incorrect",
+    "OpenSessions":"Open user sessions"
   },
   "Report": {
     "ReportViewer": "View of",
@@ -132,7 +144,8 @@
     "Previous": "Previous",
     "NextStep": "Next Step",
     "PreviousStep": "Previous Step",
-    "ComingBack": "Return"
+    "ComingBack": "Return",
+    "Exit": "Exit"
   },
   "GridSetting": {
     "Visibility": "Visibility",
@@ -1126,7 +1139,9 @@
     "Password": "Password",
     "BtnLogin": "Login",
     "RememberMe": "Remember Me",
-    "UserIncorrect": "username or password is incorrect"
+    "UserIncorrect": "username or password is incorrect",
+    "ServerUserName":"Server user name",
+    "ServerPassword":"Server password"
   },
   "Sppc-DateRange": {
     "FromDate": "From Date",
@@ -1326,7 +1341,9 @@
       "FiscalPeriodIsRequired": "Fiscal period is required.",
       "PleaseSelectFiscalPeriod": "Branch is selected please select a fiscal period",
       "PleaseSelectBranch":"Fiscal period is selected please select a branch",
-      "NoError": ""
+      "NoError": "",
+      "ServerUserNameIsRequired":"Server user name is required.",
+      "ServerPasswordIsRequired":"Server password is required."
     },
     "PermissionGroup": {
       "NameIsRequired": "Name is required.",

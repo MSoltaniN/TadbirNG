@@ -70,7 +70,19 @@
     "VoucherDeleteConfirm": "آیا برای حذف سند اطمینان دارید؟",
     "DeleteOperationSuccessful": "عملیات حذف با موفقیت انجام شد",
     "GlobalErrorMessage": "خطایی در هنگام اجرای عملیات رخ داده است",
-    "LicenseError": "کنترل مجوز نرم افزار با خطا مواجه شد ! لطفا با مدیر سیستم تماس بگیرید."
+    "LicenseError": "کنترل مجوز نرم افزار با خطا مواجه شد ! لطفا با مدیر سیستم تماس بگیرید.",
+    "StartingActivation":"نرم افزار فعال سازی نشده است ! برای فعال سازی نرم افزار لطفا از وضعیت اتصال اینترنت اطمینان حاصل کنید . آیا مایل به فعال سازی نرم افزار هستید؟",
+    "ActivationIsSuccessful":"فعال سازی نرم افزار با موفقیت انجام شد",
+    "ActivationIsNotSuccessful":"فعال سازی نرم افزار با خطا مواجه شد.لطفا از وضعیت اتصال اینترنت خود مطمئن شوید!",
+    "CheckingOnlineLicense":" بررسی مجوز نرم افزار",
+    "CheckingOnlineMsg":"نرم افزار نیاز به بررسی مجوز بصورت آنلاین دارد! لطفا از وضعیت اتصال اینترنت اطمینان حاصل کنید . آیا مایل به بررسی مجوز نرم افزار هستید؟",    
+    "OnlineLicenseIsSuccessful":"مجوز نرم افزار با موفقیت بررسی شد",
+    "OnlineLicenseIsNotSuccessful":"بررسی مجوز نرم افزار با خطا مواجه شد",
+    "SoftwareActivation":"فعال سازی نرم افزار",
+    "SoftwareLicense":"مجوز نرم افزار",
+    "TooManySessions":"تعداد جلسات کاربر بیشتر از حد مجاز می باشد",
+    "ActivationPasswordIsNotCorrect":"نام کاربری یا رمز عبور سرور اشتباه می باشد",
+    "OpenSessions":"جلسات کاربری باز"
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
@@ -150,7 +162,8 @@
     "Previous": "قبلی",
     "NextStep": "مرحله بعد",
     "PreviousStep": "مرحله قبل",
-    "ComingBack": "بازگشت"
+    "ComingBack": "بازگشت",
+    "Exit": "خروج"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
@@ -1256,7 +1269,9 @@
     "Password": "کلمه عبور",
     "BtnLogin": "ورود",
     "RememberMe": "مرا به خاطر بسپار",
-    "UserIncorrect": "نام کاربری يا کلمه عبور اشتباه می باشد"
+    "UserIncorrect": "نام کاربری يا کلمه عبور اشتباه می باشد",
+    "ServerUserName":"نام کاربری سرور",
+    "ServerPassword":"کلمه عبور سرور"
   },
   "Sppc-DateRange": {
     "FromDate": "از تاریخ",
@@ -1456,7 +1471,9 @@
       "FiscalPeriodIsRequired": "لطفا دوره مالی را انتخاب کنید.",
       "PleaseSelectFiscalPeriod": "شعبه مورد نظر انتخاب شد لطفا دوره مالی را انتخاب کنید",
       "PleaseSelectBranch":"دوره مالی مورد نظر انتخاب شد لطفا شعبه را انتخاب کنید",
-      "NoError": ""
+      "NoError": "",
+      "ServerUserNameIsRequired":"لطفا نام کاربری سرور را وارد کنید",
+      "ServerPasswordIsRequired":"لطفا کلمه عبور سرور را وارد کنید"
     },
     "PermissionGroup": {
       "NameIsRequired": "وارد کردن نام اجباری است.",

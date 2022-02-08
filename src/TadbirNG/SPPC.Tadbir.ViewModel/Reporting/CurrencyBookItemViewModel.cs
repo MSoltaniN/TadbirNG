@@ -95,6 +95,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// رفرنس سند مالی
         /// </summary>
-        public string VoucherReference { get; set; }
+        public string Reference { get; set; }
     }
 }

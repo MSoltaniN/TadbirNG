@@ -247,7 +247,7 @@ export class SettingService extends BaseService {
     if (settingsJson) {
       var settings: Array<ListFormViewConfig> = JSON.parse(settingsJson);
 
-      var findIndex = settings.findIndex(s => s.viewId == viewId);
+      var findIndex = settings.findIndex(s => s != null && s.viewId == viewId);
       if (findIndex > -1)
         return settings[findIndex];
     }
@@ -265,7 +265,7 @@ export class SettingService extends BaseService {
 
       if (!settings) settings = new Array<ListFormViewConfig>();
 
-      var findIndex = settings.findIndex(s => s.viewId == viewId);
+      var findIndex = settings.findIndex(s => s != null && s.viewId == viewId);
       if (findIndex > -1)
         settings[findIndex] = currentSetting;
       else

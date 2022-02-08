@@ -25,10 +25,10 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("SessionID");
-            builder.Property(e => e.UserAgent)
-                .IsRequired()
-                .HasMaxLength(128);
             builder.Property(e => e.Device)
+                .IsRequired()
+                .HasMaxLength(64);
+            builder.Property(e => e.Browser)
                 .IsRequired()
                 .HasMaxLength(64);
             builder.Property(e => e.Fingerprint)
@@ -37,6 +37,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.IPAddress)
                 .HasMaxLength(16);
             builder.Property(e => e.SinceUtc)
+                .IsRequired();
+            builder.Property(e => e.LastActivityUtc)
                 .IsRequired();
             builder.Property(e => e.TimeZone)
                 .HasMaxLength(32);
@@ -49,7 +51,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.User)
                 .WithMany()
-                .HasForeignKey("UserID")
+                .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Auth_Session_Auth_User");
         }

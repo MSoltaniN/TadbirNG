@@ -10,32 +10,52 @@ namespace SPPC.Tadbir.Persistence
     public interface ISessionRepository
     {
         /// <summary>
-        /// اطلاعات کلیه جلسات باز برنامه را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات کلیه جلسات باز برنامه را خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات جلسات باز برنامه</returns>
         Task<IList<SessionViewModel>> GetSessionsAsync();
 
         /// <summary>
-        /// اطلاعات کلیه جلسات باز یک کاربر مشخص در برنامه را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات کلیه جلسات باز یک کاربر مشخص در برنامه را خوانده و برمی گرداند
         /// </summary>
         /// <param name="userId">شناسه دیتابیسی کاربر مورد نظر</param>
         /// <returns>اطلاعات جلسات باز کاربر در برنامه</returns>
         Task<IList<SessionViewModel>> GetUserSessionsAsync(int userId);
 
         /// <summary>
-        /// جلسه جدیدی در برنامه را ثبت می کند
+        /// به روش آسنکرون، جلسه جدیدی در برنامه را ثبت می کند
         /// </summary>
-        /// <param name="session">اطلاعات نمایشی جلسه جدید</param>
-        Task SaveSessionAsync(SessionViewModel session);
+        /// <param name="userAgent">اطلاعات عامل کاربری دریافت شده از درخواست وب</param>
+        /// <param name="ipAddress">آدرس آی پی فرستنده درخواست وب</param>
+        /// <param name="userId">شناسه دیتابیسی کاربری که وارد برنامه شده است</param>
+        Task SaveSessionAsync(string userAgent, string ipAddress, int userId);
 
         /// <summary>
-        /// جلسه مشخص شده را در برنامه به پایان می رساند
+        /// به روش آسنکرون، وضعیت جلسه کاری با مشخصات داده شده را به حالت فعال نگه می دارد
         /// </summary>
-        /// <param name="fingerprint">شناسه یکتای تولیدشده برای مرورگر کاربر</param>
-        Task DeleteSessionAsync(string fingerprint);
+        /// <param name="userAgent">اطلاعات عامل کاربری دریافت شده از درخواست وب</param>
+        /// <returns></returns>
+        Task UpdateSessionLastActiveAsync(string userAgent);
 
         /// <summary>
-        /// تعداد جلسات باز برنامه را خوانده و برمی گرداند
+        /// به روش آسنکرون، جلسه مشخص شده را در برنامه به پایان می رساند
+        /// </summary>
+        /// <param name="userAgent">اطلاعات عامل کاربری دریافت شده از درخواست وب</param>
+        Task DeleteSessionAsync(string userAgent);
+
+        /// <summary>
+        /// به روش آسنکرون، جلسات مشخص شده با شناسه دیتابیسی را در برنامه به پایان می رساند
+        /// </summary>
+        /// <param name="sessionIds">مجموعه شناسه های دیتابیسی جلسات مورد نظر</param>
+        Task DeleteSessionsAsync(IEnumerable<int> sessionIds);
+
+        /// <summary>
+        /// به روش آسنکرون، جلسات منقضی شده در برنامه را به پایان می رساند
+        /// </summary>
+        Task CleanupSessionsAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد جلسات باز برنامه را خوانده و برمی گرداند
         /// </summary>
         /// <returns>تعداد جلسات باز برنامه</returns>
         Task<int> GetSessionCountAsync();

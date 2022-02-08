@@ -282,12 +282,21 @@ namespace SPPC.Tadbir.Persistence
                     item.AccountName = items[1];
                     item.AccountDescription = items[2];
                 }
+                else
+                {
+                    item.AccountName = String.Empty;
+                    item.AccountDescription = String.Empty;
+                }
 
                 if (!String.IsNullOrEmpty(item.DetailAccountFullCode))
                 {
                     var items = detailAccountLookup[item.DetailAccountFullCode].Split(',');
                     item.DetailAccountId = Int32.Parse(items[0]);
                     item.DetailAccountName = items[1];
+                }
+                else
+                {
+                    item.DetailAccountName = String.Empty;
                 }
 
                 if (!String.IsNullOrEmpty(item.CostCenterFullCode))
@@ -296,12 +305,20 @@ namespace SPPC.Tadbir.Persistence
                     item.CostCenterId = Int32.Parse(items[0]);
                     item.CostCenterName = items[1];
                 }
+                else
+                {
+                    item.CostCenterName = String.Empty;
+                }
 
                 if (!String.IsNullOrEmpty(item.ProjectFullCode))
                 {
                     var items = projectLookup[item.ProjectFullCode].Split(',');
                     item.ProjectId = Int32.Parse(items[0]);
                     item.ProjectName = items[1];
+                }
+                else
+                {
+                    item.ProjectName = String.Empty;
                 }
             }
         }
@@ -495,29 +512,37 @@ namespace SPPC.Tadbir.Persistence
 
             if (parameters.AccountId.HasValue)
             {
+                int length = Config.GetLevelCodeLength(ViewId.Account, parameters.AccountLevel.Value);
                 var account = await _utility.GetItemAsync(ViewId.Account, parameters.AccountId.Value);
-                whereBuilder.AppendFormat(" AND acc.FullCode LIKE '{0}%'", account.FullCode);
+                whereBuilder.AppendFormat(" AND acc.FullCode LIKE '{0}%' AND LEN(acc.FullCode) >= {1}",
+                    account.FullCode, length);
             }
 
             if (parameters.DetailAccountId.HasValue)
             {
+                int length = Config.GetLevelCodeLength(ViewId.DetailAccount, parameters.DetailAccountLevel.Value);
                 var detailAccount = await _utility.GetItemAsync(
                     ViewId.DetailAccount, parameters.DetailAccountId.Value);
-                whereBuilder.AppendFormat(" AND facc.FullCode LIKE '{0}%'", detailAccount.FullCode);
+                whereBuilder.AppendFormat(" AND facc.FullCode LIKE '{0}%' AND LEN(facc.FullCode) >= {1}",
+                    detailAccount.FullCode, length);
             }
 
             if (parameters.CostCenterId.HasValue)
             {
+                int length = Config.GetLevelCodeLength(ViewId.CostCenter, parameters.CostCenterLevel.Value);
                 var costCenter = await _utility.GetItemAsync(
                     ViewId.CostCenter, parameters.CostCenterId.Value);
-                whereBuilder.AppendFormat(" AND cc.FullCode LIKE '{0}%'", costCenter.FullCode);
+                whereBuilder.AppendFormat(" AND cc.FullCode LIKE '{0}%' AND LEN(cc.FullCode) >= {1}",
+                    costCenter.FullCode, length);
             }
 
             if (parameters.ProjectId.HasValue)
             {
+                int length = Config.GetLevelCodeLength(ViewId.Project, parameters.ProjectLevel.Value);
                 var project = await _utility.GetItemAsync(
                     ViewId.Project, parameters.ProjectId.Value);
-                whereBuilder.AppendFormat(" AND prj.FullCode LIKE '{0}%'", project.FullCode);
+                whereBuilder.AppendFormat(" AND prj.FullCode LIKE '{0}%' AND LEN(prj.FullCode) >= {1}",
+                    project.FullCode, length);
             }
 
             return whereBuilder.ToString();

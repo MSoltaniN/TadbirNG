@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace SPPC.Tadbir.ViewModel.Config
 {
     /// <summary>
-    /// اطلاعاتی تنظیمات لاگ را برای یکی از عملیات نگهعداری می کند
+    /// اطلاعاتی تنظیمات لاگ را برای یکی از عملیات نگهداری می کند
     /// </summary>
     public class LogSettingItemViewModel
     {

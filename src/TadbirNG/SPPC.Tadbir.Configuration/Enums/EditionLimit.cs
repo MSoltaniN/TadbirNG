@@ -40,6 +40,11 @@ namespace SPPC.Tadbir.Configuration.Enums
         /// <summary>
         /// محدودیت عمق ساختار درختی پروژه ها
         /// </summary>
-        ProjectDepth = 6
+        ProjectDepth = 6,
+
+        /// <summary>
+        /// محدودیت تعریف شده برای امکان مدیریت دسترسی های سطری موجودیت ها
+        /// </summary>
+        RowPermissionAccess = 7
     }
 }

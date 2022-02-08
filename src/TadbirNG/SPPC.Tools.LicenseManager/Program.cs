@@ -16,7 +16,7 @@ namespace SPPC.Tools.LicenseManager
         [STAThread]
         static void Main()
         {
-            ////UpdateLicenseFile();
+            UpdateLicenseFile();
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -29,7 +29,7 @@ namespace SPPC.Tools.LicenseManager
             var crypto = new CryptoService(new CertificateManager());
             var licenseData = File.ReadAllText(path, Encoding.UTF8);
             var licenseModel = JsonHelper.To<LicenseFileModel>(crypto.Decrypt(licenseData));
-            licenseModel.OfflineLimit = 0;
+            licenseModel.OfflineLimit = 3;
             File.WriteAllText(path,
                 crypto.Encrypt(
                     JsonHelper.From(licenseModel, false, null, false)), Encoding.UTF8);

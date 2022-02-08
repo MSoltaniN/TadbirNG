@@ -44,3 +44,21 @@
 .chkRememberMe-left {
     margin-left: 10px;
 }
+
+.frmActivation
+{
+    margin-right: 10px!important;
+    margin-left: 10px!important;
+}
+
+.session-row
+{
+    margin-top: 8px;
+    margin-bottom: 10px;
+    width:100%;
+}
+
+.sessions
+{
+    list-style-type: none;
+}

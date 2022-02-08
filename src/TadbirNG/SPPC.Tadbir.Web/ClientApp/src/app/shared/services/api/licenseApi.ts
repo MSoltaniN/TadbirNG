@@ -14,11 +14,18 @@ import { environment } from "@sppc/env/environment";
 
 export class LicenseApi {
 
-  // filters/views/{viewId:min(1)}
-  public static LicenseUrl = environment.LicenseServerUrl + "/license";
+  public static UserLicenseUrl = environment.LicenseServerUrl + "/license/users/{0}";
 
-  public static OnlineLicenseUrl = environment.LicenseServerUrl + "license/online";
+  public static OnlineUserLicenseUrl = environment.LicenseServerUrl + "/license/users/{0}/online";
 
-  public static ActivateLicenseUrl = environment.LicenseServerUrl + "license/activate";
+  public static ActivateLicenseUrl = environment.LicenseServerUrl + "/license/activate";
+
+  public static SetCurrentSessionAsActiveUrl = environment.LicenseServerUrl + "/sessions/current/active";
+
+  public static CurrentSessionUrl = environment.LicenseServerUrl + "/sessions/current";
+
+  public static OpenSessionsUrl = environment.LicenseServerUrl + "/sessions";
+  
+  public static OpenSessionsByUserUrl = environment.LicenseServerUrl + "/sessions/users/{0}"
 
 }

@@ -55,4 +55,44 @@ export class MessageBoxService {
 
   }  
 
+
+  public showMessageWithTime(text: string, type: MessageType = MessageType.Info,timeout:number, title: string = '', position: MessagePosition = MessagePosition.TopLeft) {
+
+    if (text == '' || text == undefined || text == null)
+      return;
+
+    var pos: MessagePosition = position;
+
+    var lang = localStorage.getItem('lang');
+    if (lang != 'fa')
+      pos = MessagePosition.TopRight;
+
+    var posCss = 'toast-top-left'
+    switch (pos) {
+      case MessagePosition.TopRight:
+        posCss = 'toast-top-right';
+        break;
+      case MessagePosition.TopCenter:
+        posCss = 'toast-top-center';
+        break;
+    }
+
+    switch (type) {
+      case MessageType.Info:
+        this.toastrService.info(text, title, { positionClass: posCss, enableHtml: true,timeOut:timeout });
+        break;
+      case MessageType.Warning:
+        this.toastrService.warning(text, title, { positionClass: posCss, enableHtml: true,timeOut:timeout });
+        break;
+      case MessageType.Succes:
+        this.toastrService.success(text, title, { positionClass: posCss, enableHtml: true,timeOut:timeout });
+        break;
+      case MessageType.Error:
+        this.toastrService.error(text, title, { positionClass: posCss, enableHtml: true,timeOut:timeout });
+        break;
+    }
+
+  }  
+
+
 }

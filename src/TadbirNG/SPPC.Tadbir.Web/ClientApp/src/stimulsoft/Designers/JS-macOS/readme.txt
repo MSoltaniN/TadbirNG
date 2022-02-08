@@ -1,1 +1,0 @@
-After installation replace file Contents -> Resources -> app.nw -> scripts -> stimulsoft.reports.js with cracked one

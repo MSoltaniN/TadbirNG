@@ -46,6 +46,9 @@ namespace SPPC.Tadbir.Licensing
                 case EditionLimit.ProjectDepth:
                     validator = _provider.GetService<ProjectValidator>();
                     break;
+                case EditionLimit.RowPermissionAccess:
+                    validator = _provider.GetService<RowPermissionValidator>();
+                    break;
             }
 
             return validator;

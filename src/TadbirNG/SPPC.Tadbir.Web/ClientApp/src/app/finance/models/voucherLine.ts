@@ -24,4 +24,5 @@ export interface VoucherLine extends IEntity {
   debit: number;
   credit: number;
   currencyValue?: number;
+  mark:string;
 }

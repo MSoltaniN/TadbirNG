@@ -3,11 +3,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Renci.SshNet.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Licensing;
 using SPPC.Licensing.Model;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Licensing;
+using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Licensing.Local.Web.Controllers
@@ -15,30 +18,49 @@ namespace SPPC.Licensing.Local.Web.Controllers
     [Produces("application/json")]
     public class LicenseController : Controller
     {
-        public LicenseController(IConfiguration configuration, ILicenseUtility utility)
+        public LicenseController(IConfiguration configuration, ILicenseUtility utility,
+            ISessionRepository repository)
         {
             _config = configuration;
             _utility = utility;
+            _repository = repository;
         }
 
-        // GET: api/license
-        [HttpGet]
-        [Route(LicenseApi.LicenseUrl)]
-        public async Task<IActionResult> GetAppLicenseAsync()
+        // PUT: api/license/users/{userId:min(1)}
+        [HttpPut]
+        [Route(LicenseApi.UserLicenseUrl)]
+        public async Task<IActionResult> PutAppLicenseAsync(int userId, [FromBody] LoginViewModel login)
         {
+            IActionResult result;
             try
             {
+                await UpdateServerAccountAsync(login);
                 string instance = GetInstance();
-                var result = GetValidationResult(instance, out bool succeeded);
+                result = GetValidationResult(instance, out bool succeeded);
                 if (!succeeded)
                 {
                     return result;
                 }
 
                 var license = await _utility.GetLicenseAsync();
-                return !String.IsNullOrEmpty(license)
-                    ? Ok(license)
-                    : StatusCode(StatusCodes.Status403Forbidden, new ErrorViewModel(ErrorType.RequiresOnlineLicense));
+                if (!String.IsNullOrEmpty(license))
+                {
+                    await RegisterUserSessionAsync(userId);
+                    result = Ok(license);
+                }
+                else
+                {
+                    result = StatusCode(StatusCodes.Status403Forbidden,
+                        new ErrorViewModel(ErrorType.RequiresOnlineLicense));
+                }
+
+                return result;
+            }
+            catch (SshAuthenticationException)
+            {
+                result = StatusCode(StatusCodes.Status403Forbidden,
+                    new ErrorViewModel(ErrorType.InvalidUserPass));
+                return result;
             }
             catch (Exception e)
             {
@@ -46,24 +68,41 @@ namespace SPPC.Licensing.Local.Web.Controllers
             }
         }
 
-        // GET: api/license/online
-        [HttpGet]
-        [Route(LicenseApi.OnlineLicenseUrl)]
-        public async Task<IActionResult> GetOnlineAppLicenseAsync()
+        // PUT: api/license/users/{userId:min(1)}/online
+        [HttpPut]
+        [Route(LicenseApi.OnlineUserLicenseUrl)]
+        public async Task<IActionResult> PutOnlineAppLicenseAsync(int userId, [FromBody] LoginViewModel login)
         {
+            IActionResult result;
             try
             {
+                await UpdateServerAccountAsync(login);
                 string instance = GetInstance();
-                var result = GetQuickValidationResult(instance, out bool succeeded);
+                result = GetQuickValidationResult(instance, out bool succeeded);
                 if (!succeeded)
                 {
                     return result;
                 }
 
                 var license = await _utility.GetOnlineLicenseAsync(instance, GetRemoteConnection());
-                return !String.IsNullOrEmpty(license)
-                    ? Ok(license)
-                    : StatusCode(StatusCodes.Status403Forbidden, new ErrorViewModel(ErrorType.BadLicense));
+                if (!String.IsNullOrEmpty(license))
+                {
+                    await RegisterUserSessionAsync(userId);
+                    result = Ok(license);
+                }
+                else
+                {
+                    result = StatusCode(StatusCodes.Status403Forbidden,
+                        new ErrorViewModel(ErrorType.BadLicense));
+                }
+
+                return result;
+            }
+            catch (SshAuthenticationException)
+            {
+                result = StatusCode(StatusCodes.Status403Forbidden,
+                    new ErrorViewModel(ErrorType.InvalidUserPass));
+                return result;
             }
             catch (Exception e)
             {
@@ -74,25 +113,51 @@ namespace SPPC.Licensing.Local.Web.Controllers
         // PUT: api/license/activate
         [HttpPut]
         [Route(LicenseApi.ActivateLicenseUrl)]
-        public async Task<IActionResult> PutLicenseAsActivatedAsync()
+        public async Task<IActionResult> PutLicenseAsActivatedAsync([FromBody] LoginViewModel login)
         {
+            if (login == null)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             IActionResult result;
-            var activationResult = await _utility.ActivateLicenseAsync(GetInstance(), GetRemoteConnection());
-            if (activationResult == ActivationResult.Failed)
+            try
             {
-                result = StatusCode(500, "Error occured during activation.");
+                var connection = GetRemoteConnection();
+                connection.User = login.UserName;
+                connection.Password = login.Password;
+                var activationResult = await _utility.ActivateLicenseAsync(GetInstance(), connection);
+                if (activationResult == ActivationResult.Failed)
+                {
+                    result = StatusCode(500, "Error occured during activation.");
+                }
+                else if (activationResult == ActivationResult.AlreadyActivated)
+                {
+                    result = Ok("Already activated.");
+                }
+                else if (activationResult == ActivationResult.BadInstance)
+                {
+                    result = StatusCode(403, "Given license cannot be activated.");
+                }
+                else
+                {
+                    result = Ok();
+                }
             }
-            else if (activationResult == ActivationResult.AlreadyActivated)
+            catch (SshAuthenticationException)
             {
-                result = Ok("Already activated.");
+                result = StatusCode(StatusCodes.Status403Forbidden,
+                    new ErrorViewModel(ErrorType.InvalidUserPass));
+                return result;
             }
-            else if (activationResult == ActivationResult.BadInstance)
+            catch (Exception e)
             {
-                result = StatusCode(403, "Given license cannot be activated.");
-            }
-            else
-            {
-                result = Ok();
+                return StatusCode(500, e.ToString());
             }
 
             return result;
@@ -113,6 +178,60 @@ namespace SPPC.Licensing.Local.Web.Controllers
             return Ok(validated);
         }
 
+        // GET: api/sessions
+        [HttpGet]
+        [Route(LicenseApi.OpenSessionsUrl)]
+        public async Task<IActionResult> GetOpenSessionsAsync()
+        {
+            var sessions = await _repository.GetSessionsAsync();
+            return Json(sessions);
+        }
+
+        // GET: api/sessions/users/{userId:min(1)}
+        [HttpGet]
+        [Route(LicenseApi.OpenSessionsByUserUrl)]
+        public async Task<IActionResult> GetOpenSessionsByUserAsync(int userId)
+        {
+            var sessions = await _repository.GetUserSessionsAsync(userId);
+            return Json(sessions);
+        }
+
+        // PUT: api/sessions
+        [HttpPut]
+        [Route(LicenseApi.OpenSessionsUrl)]
+        public async Task<IActionResult> PutExistingSessionsAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null || actionDetail.Items == null)
+            {
+                return BadRequest();
+            }
+
+            await _repository.DeleteSessionsAsync(actionDetail.Items);
+            return Ok();
+        }
+
+        // PUT: api/sessions/current/active
+        [HttpPut]
+        [Route(LicenseApi.SetCurrentSessionAsActiveUrl)]
+        public async Task<IActionResult> PutCurrentSessionAsActiveAsync()
+        {
+            string userAgent = Request.Headers["User-Agent"];
+            await _repository.UpdateSessionLastActiveAsync(userAgent);
+            await _repository.CleanupSessionsAsync();
+            return Ok();
+        }
+
+        // DELETE: api/sessions/current
+        [HttpDelete]
+        [Route(LicenseApi.CurrentSessionUrl)]
+        public async Task<IActionResult> DeleteCurrentSessionAsync()
+        {
+            string userAgent = Request.Headers["User-Agent"];
+            await _repository.DeleteSessionAsync(userAgent);
+            return NoContent();
+        }
+
         private IActionResult GetValidationResult(string instance, out bool succeeded)
         {
             succeeded = false;
@@ -130,6 +249,12 @@ namespace SPPC.Licensing.Local.Web.Controllers
                 return StatusCode(StatusCodes.Status403Forbidden, new ErrorViewModel(errorType));
             }
 
+            var result = GetSessionValidationResult();
+            if (!(result is OkResult))
+            {
+                return result;
+            }
+
             succeeded = true;
             return Ok();
         }
@@ -140,6 +265,12 @@ namespace SPPC.Licensing.Local.Web.Controllers
             if (String.IsNullOrEmpty(instance))
             {
                 return BadRequest(new ErrorViewModel(ErrorType.ValidationError));
+            }
+
+            var result = GetSessionValidationResult();
+            if (!(result is OkResult))
+            {
+                return result;
             }
 
             var status = _utility.QuickValidateLicense(instance);
@@ -155,6 +286,27 @@ namespace SPPC.Licensing.Local.Web.Controllers
             return Ok();
         }
 
+        private IActionResult GetSessionValidationResult()
+        {
+            IActionResult result = Ok();
+            var license = _utility.LoadLicenseAsync().Result;
+            int sessionCount = _repository.GetSessionCountAsync().Result;
+            if (sessionCount >= license.UserCount)
+            {
+                var errorType = ErrorType.TooManySessions;
+                result = StatusCode(StatusCodes.Status403Forbidden, new ErrorViewModel(errorType));
+            }
+
+            return result;
+        }
+
+        private async Task RegisterUserSessionAsync(int userId)
+        {
+            string userAgent = Request.Headers["User-Agent"];
+            string ipAddress = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
+            await _repository.SaveSessionAsync(userAgent, ipAddress, userId);
+        }
+
         private string GetInstance()
         {
             return Request.Headers[Constants.InstanceHeaderName];
@@ -165,19 +317,36 @@ namespace SPPC.Licensing.Local.Web.Controllers
             return Request.Headers[AppConstants.LicenseHeaderName];
         }
 
+        private async Task UpdateServerAccountAsync(LoginViewModel login)
+        {
+            if (login != null)
+            {
+                var license = await _utility.LoadLicenseAsync();
+                license.ServerUser = login.UserName;
+                license.ServerPassword = login.Password;
+                _utility.SaveLicense(license);
+            }
+        }
+
         private RemoteConnection GetRemoteConnection()
         {
-            return new RemoteConnection()
+            var license = _utility.LoadLicenseAsync().Result;
+            var connection = new RemoteConnection()
             {
                 Domain = _config["SSH:Domain"],
-                Port = Int32.Parse(_config["SSH:Port"]),
-                User = _config["SSH:User"],
-                Password = _config["SSH:Password"]
+                Port = Int32.Parse(_config["SSH:Port"])
             };
+            if (license != null)
+            {
+                connection.User = license.ServerUser;
+                connection.Password = license.ServerPassword;
+            }
+
+            return connection;
         }
 
         private readonly IConfiguration _config;
         private readonly ILicenseUtility _utility;
-        private delegate LicenseStatus LicenseValidatorDelegate(string instance);
+        private readonly ISessionRepository _repository;
     }
 }

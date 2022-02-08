@@ -5,7 +5,7 @@
                 <i class="fa fa-user"></i> {{ 'Login.Title' | translate }}
                 <div [ngClass]="{'pull-left' : (lang == 'fa'),'pull-right' : (lang == 'en')}">
                     <img src="../../../assets/resources/images/gb.svg" [ngClass]="{'active' : (lang == 'en')}" (click)="changeLang('en')" class="flag" />
-                    <img src="../../../assets/resources/images/ir.svg" [ngClass]="{'active' : (lang == 'fa')}" (click)="changeLang('fa')" class="flag" />
+                    <img src="../../../assets/resources/images/ir.svg" [ngClass]="{'active' : (lang == 'fa')}" (click)="changeLang('fa')" class="flag" />                    
                 </div>
             </div>
             <div class="panel-body">
@@ -33,4 +33,105 @@
         </div>
     </div>    
 </div>
+
+<kendo-dialog title="{{'Messages.SoftwareLicense' | translate}}" *ngIf="showServerForm" 
+[ngStyle]="{'direction':this.currentlang === 'fa' ? 'rtl':'ltr'}"
+(close)="closeServerForm()"  [minWidth]="250" [width]="380" [height]="280">
+<form name="form" [formGroup]="activationForm" novalidate>
+    <div class="frmActivation">    
+        <div class="form-group row">        
+            <label for="serverUserName" class="control-label">{{ 'Login.ServerUserName' | translate }}</label>
+            <input type="text" id="serverUserName" formControlName="userName" name="serverUserName" class="k-textbox col-md-12" [(ngModel)]="serverUserName" />                 
+            <div>
+                <div class="k-tooltip k-tooltip-validation" [hidden]="activationForm.controls.userName.valid || activationForm.controls.userName.pristine">
+                    <span *ngIf="activationForm.controls.userName.errors?.required">{{ 'AllValidations.Login.ServerUserNameIsRequired' | translate }}</span>                
+                </div>
+            </div>            
+        </div>
+        <div class="form-group row">
+            <label for="serverPassword" class="control-label">{{ 'Login.ServerPassword' | translate }}</label>
+            <input type="password" id="serverPassword" formControlName="password" name="serverPassword" class="k-textbox col-md-12" [(ngModel)]="serverPassword" />                  
+            <div>
+                <div class="k-tooltip k-tooltip-validation" [hidden]="activationForm.controls.password.valid || activationForm.controls.password.pristine">
+                <span *ngIf="activationForm.controls.password.errors?.required">{{ 'AllValidations.Login.ServerPasswordIsRequired' | translate }}</span>                
+                </div>
+            </div>            
+        </div>
+    </div>    
+</form>
+<kendo-dialog-actions>
+    <button class="k-button" [disabled]="!activationForm.valid" (click)="startCheckLicense()" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+    <button class="k-button" (click)="closeServerForm()">{{ 'Buttons.No' | translate }}</button>
+</kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="{{'Messages.SoftwareActivation' | translate}}" *ngIf="showActivationForm" 
+[ngStyle]="{'direction':this.currentlang === 'fa' ? 'rtl':'ltr'}"
+(close)="closeActivationForm()"  [minWidth]="250" [width]="380" [height]="390">
+<p>
+    {{'Messages.StartingActivation' | translate}}
+</p>
+<br>
+<form name="form" [formGroup]="activationForm" novalidate>
+    <div class="frmActivation">    
+        <div class="form-group row">        
+            <label for="serverUserName" class="control-label">{{ 'Login.ServerUserName' | translate }}</label>
+            <input type="text" id="serverUserName" formControlName="userName" name="serverUserName" class="k-textbox col-md-12" [(ngModel)]="serverUserName" />                 
+            <div>
+                <div class="k-tooltip k-tooltip-validation" [hidden]="activationForm.controls.userName.valid || activationForm.controls.userName.pristine">
+                    <span *ngIf="activationForm.controls.userName.errors?.required">{{ 'AllValidations.Login.ServerUserNameIsRequired' | translate }}</span>                
+                </div>
+            </div>            
+        </div>
+        <div class="form-group row">
+            <label for="serverPassword" class="control-label">{{ 'Login.ServerPassword' | translate }}</label>
+            <input type="password" id="serverPassword" formControlName="password" name="serverPassword" class="k-textbox col-md-12" [(ngModel)]="serverPassword" />                  
+            <div>
+                <div class="k-tooltip k-tooltip-validation" [hidden]="activationForm.controls.password.valid || activationForm.controls.password.pristine">
+                <span *ngIf="activationForm.controls.password.errors?.required">{{ 'AllValidations.Login.ServerPasswordIsRequired' | translate }}</span>                
+                </div>
+            </div>            
+        </div>
+    </div>    
+</form>
+<kendo-dialog-actions>
+    <button class="k-button" [disabled]="!activationForm.valid" (click)="startActivatingSoftware()" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+    <button class="k-button" (click)="closeActivationForm()">{{ 'Buttons.No' | translate }}</button>
+</kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="{{'Messages.CheckingOnlineLicense' | translate}}" *ngIf="onlineLicense" 
+[ngStyle]="{'direction':this.currentlang === 'fa' ? 'rtl':'ltr'}"
+(close)="closeOnlineLicenseForm()"  [minWidth]="250" [width]="350" [height]="200">
+<p>
+    {{'Messages.CheckingOnlineMsg' | translate}}
+</p>
+<kendo-dialog-actions>
+    <button class="k-button" (click)="startCheckingOnlineLicense()" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+    <button class="k-button" (click)="closeOnlineLicenseForm()">{{ 'Buttons.No' | translate }}</button>
+</kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="{{'Messages.OpenSessions' | translate}}" *ngIf="showSessionForm" 
+[ngStyle]="{'direction':this.currentlang === 'fa' ? 'rtl':'ltr'}"
+(close)="closeSessionForm()"  [minWidth]="350" [width]="650" [height]="450">
+<div>
+    <ul class="sessions">
+        <li *ngFor="let session of sessions">
+            <div class="session-row" [ngClass]="{'pull-right':this.currentlang === 'fa' , 'pull-left': this.currentlang === 'en'}">
+                <div class="col-md-10" >
+                    <span>{{session.browser}} - {{session.device}} - {{convertToShamsi(session.lastActivityUtc)}} </span>
+                </div>
+                <div class="col-md-2">
+                    <button class="k-button" (click)="removeSession(session.id)">{{ 'Buttons.Exit' | translate }}</button>
+                </div>                                
+            </div>
+            <hr class="col-md-12">
+        </li>
+    </ul>
+</div>
+<kendo-dialog-actions>    
+    <button class="k-button" (click)="closeSessionForm()">{{ 'Buttons.Ok' | translate }}</button>
+</kendo-dialog-actions>
+</kendo-dialog>
 
