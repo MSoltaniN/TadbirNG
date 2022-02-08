@@ -65,4 +65,6 @@ services:
    - productdata_LicenseServer:/app/wwwroot
   ports:
    - 9093:80
+  extra_hosts:
+   - "host.docker.internal:host-gateway"
 

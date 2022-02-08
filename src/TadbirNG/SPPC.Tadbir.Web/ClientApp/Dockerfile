@@ -30,7 +30,7 @@ COPY . .
 
 ENV NODE_OPTIONS=--max_old_space_size=8192
 #RUN ng build --prod --output-path=dist
-RUN ng build --configuration=production --output-path=dist
+RUN ng build --configuration=production --optimization=false --output-path=dist
 #RUN node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --prod
 #RUN ng serve --host 0.0.0.0 --port 4200
 ##CMD [ "node", "protractor.conf.js" ]
