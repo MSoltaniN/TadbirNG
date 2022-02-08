@@ -1,16 +1,16 @@
-import { Component, Inject, AfterViewInit, OnInit, HostListener, ChangeDetectorRef, Renderer, ViewChildren, QueryList, ElementRef, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, HostListener, Inject, OnInit } from '@angular/core';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
-import { Context, AuthenticationService } from '@sppc/core';
-import { BrowserStorageService, LicenseService } from '@sppc/shared/services';
+import { Router } from '@angular/router';
 import { UserService } from '@sppc/admin/service';
+import { AuthenticationService, Context } from '@sppc/core';
+import { environment } from '@sppc/env/environment';
+import { ServiceLocator } from '@sppc/service.locator';
 import { Command } from '@sppc/shared/models';
+import { ShortcutCommand } from '@sppc/shared/models/shortcutCommand';
+import { BrowserStorageService, LicenseService } from '@sppc/shared/services';
 import { ShareDataService } from '@sppc/shared/services/share-data.service';
 import { ShortcutService } from '@sppc/shared/services/shortcut.service';
-import { ShortcutCommand } from '@sppc/shared/models/shortcutCommand';
-import { ServiceLocator } from '@sppc/service.locator';
-import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
 import { LicenseApi } from './shared/services/api/licenseApi';
 
 declare var $: any;
@@ -76,7 +76,7 @@ export class AppComponent implements AfterViewInit, OnInit {
         {
           this.licenseService.PutSessionAsActive(LicenseApi.SetCurrentSessionAsActiveUrl).subscribe();
         }
-      },900000);    
+      },environment.SessionAliveInterval);    
   }
 
   addStimulsoftFonts()
