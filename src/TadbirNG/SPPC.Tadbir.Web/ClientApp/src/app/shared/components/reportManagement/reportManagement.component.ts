@@ -858,7 +858,6 @@ export class ReportManagementComponent extends DefaultComponent implements OnIni
   closeDialog() {    
     this.active = false;
     setTimeout(() => {
-      debugger;
       this.activeElement.focus();
     }, 0)
     

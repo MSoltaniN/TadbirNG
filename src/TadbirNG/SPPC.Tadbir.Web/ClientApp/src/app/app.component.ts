@@ -58,8 +58,6 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
 
-    debugger;
-    
     this.addStimulsoftFonts();
 
     this.registerFunctions();

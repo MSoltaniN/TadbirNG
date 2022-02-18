@@ -13,7 +13,6 @@ COPY ["SPPC.Framework.Interfaces/SPPC.Framework.Interfaces.csproj", "SPPC.Framew
 COPY ["SPPC.Framework.Common/SPPC.Framework.Common.csproj", "SPPC.Framework.Common/"]
 COPY ["SPPC.Framework.Cryptography/SPPC.Framework.Cryptography.csproj", "SPPC.Framework.Cryptography/"]
 COPY ["SPPC.Framework.Service/SPPC.Framework.Service.csproj", "SPPC.Framework.Service/"]
-COPY ["SPPC.Framework.Licensing/SPPC.Framework.Licensing.csproj", "SPPC.Framework.Licensing/"]
 COPY ["SPPC.Tadbir.Resources/SPPC.Tadbir.Resources.csproj", "SPPC.Tadbir.Resources/"]
 COPY ["SPPC.Tadbir.Interfaces/SPPC.Tadbir.Interfaces.csproj", "SPPC.Tadbir.Interfaces/"]
 COPY ["SPPC.Tadbir.Common/SPPC.Tadbir.Common.csproj", "SPPC.Tadbir.Common/"]

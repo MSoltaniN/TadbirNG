@@ -162,7 +162,6 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         this.duringCheckOfflineLicense = false;
       },
       error => {
-        debugger;
         this.currentLogin = this.bStorageService.getCurrentUser();
         this.logOut();
 

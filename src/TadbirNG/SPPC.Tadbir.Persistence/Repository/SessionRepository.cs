@@ -133,7 +133,7 @@ namespace SPPC.Tadbir.Persistence
             var now = DateTime.UtcNow;
             var repository = UnitOfWork.GetAsyncRepository<Session>();
             var all = await repository.GetAllAsync();
-            var expired = all.Where(session => now - session.LastActivityUtc >= Constants.SessionTimeout);
+            var expired = all.Where(session => now - session.SinceUtc >= Constants.SessionTimeout);
             foreach (var item in expired)
             {
                 repository.Delete(item);
