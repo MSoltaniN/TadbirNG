@@ -55,13 +55,22 @@ export class AppComponent implements AfterViewInit, OnInit {
   public lang: string = '';
 
   scopeService: ShareDataService;  
+  stimulsoftRegister : any;
 
-  ngOnInit() {
+  ngOnInit() {    
+    
+    this.stimulsoftRegister = setInterval(()=>{
+      
+      if(Stimulsoft)
+      { 
+        clearInterval(this.stimulsoftRegister);
 
-    this.addStimulsoftFonts();
-
-    this.registerFunctions();
-
+        this.registerFunctions();
+        this.addStimulsoftFonts();
+      }
+      
+    } , 20000);
+    
     this.manageComponentScopes();
 
     this.setAliveSessionTimer();    
@@ -79,7 +88,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   addStimulsoftFonts()
   {
-    //load fonts
+    //load fonts     
     Stimulsoft.StiOptions.Export.Pdf.AllowImportSystemLibraries = true;
     Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/BZar.ttf", "B Zar");
     Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/BZar.ttf", "B Zar", Stimulsoft.System.Drawing.FontStyle.Bold);
@@ -88,14 +97,13 @@ export class AppComponent implements AfterViewInit, OnInit {
     if (language == "fa") {
 
       Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/IRANSansWeb.ttf", "IRANSansWeb");
-      Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/IRANSansWeb_Bold.ttf", "IRANSansWeb", Stimulsoft.System.Drawing.FontStyle.Bold);
-      //assets/resources/fonts/IranSans-En/ttf
+      Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/ReportFont/IRANSansWeb_Bold.ttf", "IRANSansWeb", Stimulsoft.System.Drawing.FontStyle.Bold);        
 
     }
     else {
       Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/IranSans/ttf/IRANSansWeb.ttf", "IRANSansWeb");
       Stimulsoft.Base.StiFontCollection.addOpentypeFontFile("assets/resources/fonts/IranSans/ttf/IRANSansWeb_Bold.ttf", "IRANSansWeb", Stimulsoft.System.Drawing.FontStyle.Bold);
-    }
+    }  
   }
 
   manageComponentScopes()
@@ -124,24 +132,19 @@ export class AppComponent implements AfterViewInit, OnInit {
     })
   }
 
-  registerFunctions() {
-    Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "TestFunction",
-      "this is a test function", "", typeof (String), "", [typeof (String)], [""], [""], function (value) {
-        var result: string = value;
-        return result.toUpperCase();
-      });
+  registerFunctions() {    
+        Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "TestFunction",
+        "this is a test function", "", typeof (String), "", [typeof (String)], [""], [""], function (value) {
+          var result: string = value;
+          return result.toUpperCase();
+        });
 
-    Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "ToShamsi",
-      "Convert miladi date to shamsi", "", typeof (String), "", [typeof (String)], [""], [""], function (value) {
-        /*if (value == null || value == undefined)
-          return "";
-        
-        moment.locale('en');
-        let MomentDate = moment(value).locale('fa').format("YYYY/MM/DD");
-        return MomentDate;*/
-        return "Test";
+        Stimulsoft.Report.Dictionary.StiFunctions.addFunction("TadbirFunctions", "Accounting", "ToShamsi",
+        "Convert miladi date to shamsi", "", typeof (String), "", [typeof (String)], [""], [""], function (value) {
+          
+          return "Test";
 
-      });
+        });     
   }
   
 

@@ -152,7 +152,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
     closeSessionForm()
     {
-
+      this.showSessionForm = false;
     }
 
     checkOfflineLicense(serverUserName?:string,serverPassword?:string)
