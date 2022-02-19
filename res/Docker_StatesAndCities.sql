@@ -1,4 +1,4 @@
-﻿
+﻿USE NGTadbir
 SET IDENTITY_INSERT [Metadata].[Province] ON 
 
 INSERT [Metadata].[Province] ([ProvinceID], [Name], [Code]) VALUES (1, N'تهران', N'10')
