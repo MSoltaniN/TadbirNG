@@ -1,46 +1,70 @@
-import { Injectable, ViewChild, Renderer2, Optional, Inject, ChangeDetectorRef, NgZone, EventEmitter, Output, OnDestroy, ReflectiveInjector, DebugElement, ViewContainerRef, Host, HostListener, ViewChildren, ElementRef } from "@angular/core";
-import { GridComponent, GridDataResult, PageChangeEvent, SelectAllCheckboxState, RowArgs, ColumnBase } from "@progress/kendo-angular-grid";
-import { ToastrService } from "ngx-toastr";
+import {
+  ChangeDetectorRef,
+  ElementRef,
+  Inject,
+  Injectable,
+  NgZone,
+  OnDestroy,
+  Optional,
+  Renderer2,
+  ViewChild,
+} from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import { SortDescriptor, CompositeFilterDescriptor } from "@progress/kendo-data-query";
-import { take, map } from 'rxjs/operators';
-import { String } from '@sppc/shared/class/source';
-import { FilterExpression } from '@sppc/shared/class/filterExpression';
-import { Filter } from '@sppc/shared/class/filter';
-import { Property } from '@sppc/shared/class/metadata/property';
-import { FilterExpressionOperator } from '@sppc/shared/class/filterExpressionOperator';
-import { ListComponent } from '@sppc/shared/class/list.component';
-import { BrowserStorageService, SessionKeys } from "@sppc/shared/services/browserStorage.service";
-import { SettingService } from "@sppc/config/service/settings.service";
-import { ViewName } from "@sppc/shared/security/viewName";
-import { Permissions, GlobalPermissions } from "@sppc/shared/security/permissions";
-import { ColumnViewConfig, ListFormViewConfig, Error, FilterRow, GroupFilter, Item, IEntity, ErrorType } from "@sppc/shared/models";
-import { ErrorHandlingService, MetaDataService } from "@sppc/shared/services";
-import { GridService } from "@sppc/shared/services/grid.service";
-import { MessageType, CalendarType } from "@sppc/shared/enum/metadata";
-import { DialogRef, DialogService } from "@progress/kendo-angular-dialog";
-import { ServiceLocator } from "@sppc/service.locator";
-import { ExcelExportData } from "@progress/kendo-angular-excel-export";
-import { Observable } from "rxjs";
-import { ErrorListComponent } from "@sppc/shared/components/errorList/errorList.component";
+import { DialogRef } from "@progress/kendo-angular-dialog";
+import {
+  ColumnBase,
+  GridComponent,
+  GridDataResult,
+  PageChangeEvent,
+  RowArgs,
+  SelectAllCheckboxState,
+} from "@progress/kendo-angular-grid";
+import {
+  CompositeFilterDescriptor,
+  SortDescriptor,
+} from "@progress/kendo-data-query";
 import { NumberConfig } from "@sppc/config/models";
-import { ReloadOption } from "./reload-option";
-import { ReloadStatusType } from "../enum";
-import { BaseService } from "@sppc/shared/class/base.service";
-import { ResultOption } from "./result.option";
-import { ControlContainer } from "@angular/forms";
-import { ShortcutCommand } from "../models/shortcutCommand";
-import { ShortcutService } from "../services/shortcut.service";
-import { OperationId } from "../enum/operationId";
-import { SuperuserPasswordComponent } from "@sppc/shared/components/home/superuser-password.component";
-import * as moment from 'jalali-moment';
 import { SystemConfig } from "@sppc/config/models/systemConfig";
+import { SettingService } from "@sppc/config/service/settings.service";
+import { ServiceLocator } from "@sppc/service.locator";
+import { BaseService } from "@sppc/shared/class/base.service";
+import { Filter } from "@sppc/shared/class/filter";
+import { FilterExpression } from "@sppc/shared/class/filterExpression";
+import { FilterExpressionOperator } from "@sppc/shared/class/filterExpressionOperator";
+import { ListComponent } from "@sppc/shared/class/list.component";
+import { Property } from "@sppc/shared/class/metadata/property";
+import { String } from "@sppc/shared/class/source";
+import { ErrorListComponent } from "@sppc/shared/components/errorList/errorList.component";
+import { SuperuserPasswordComponent } from "@sppc/shared/components/home/superuser-password.component";
+import { CalendarType, MessageType } from "@sppc/shared/enum/metadata";
+import {
+  ColumnViewConfig,
+  Error,
+  ListFormViewConfig,
+} from "@sppc/shared/models";
+import { ViewName } from "@sppc/shared/security/viewName";
+import { ErrorHandlingService, MetaDataService } from "@sppc/shared/services";
+import {
+  BrowserStorageService,
+  SessionKeys,
+} from "@sppc/shared/services/browserStorage.service";
+import { GridService } from "@sppc/shared/services/grid.service";
 import { ShareDataService } from "@sppc/shared/services/share-data.service";
-
+import * as moment from "jalali-moment";
+import { ToastrService } from "ngx-toastr";
+import { Observable } from "rxjs";
+import { map, take } from "rxjs/operators";
+import { ReloadStatusType } from "../enum";
+import { OperationId } from "../enum/operationId";
+import { ShortcutService } from "../services/shortcut.service";
+import { ReloadOption } from "./reload-option";
+import { ResultOption } from "./result.option";
 
 @Injectable()
-export class AutoGeneratedGridComponent<T = void | any> extends ListComponent implements OnDestroy {
-
+export class AutoGeneratedGridComponent<T = void | any>
+  extends ListComponent
+  implements OnDestroy
+{
   //shortcuts: ShortcutCommand[];// = [new ShortcutCommand(1, 0, null, null, "Ctrl+Shift+Y", "addNew")];
 
   @ViewChild(GridComponent) grid: GridComponent;
@@ -51,14 +75,14 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
   public selectedRows: any[] = [];
   public totalRecords: number;
   public reportFilter: FilterExpression;
-  public reportQuickFilter: FilterExpression;  
+  public reportQuickFilter: FilterExpression;
   viewAccess: boolean;
   //allSelectedRows: any[] = [];
-  
+
   deleteConfirm: boolean;
   deleteModelId: number;
   currentFilter: FilterExpression;
-  
+
   showloadingMessage: boolean = true;
   groupOperation: boolean = false;
 
@@ -113,41 +137,61 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
   public dialogModel: any;
   public editDataItem?: T | any;
 
-  //counter 'E' key 
+  //counter 'E' key
   specialKeyPressCounter: number;
   isSuperAdmin: boolean = false;
-  showGetPasswordModal: boolean = false;  
-  
-  scopeService: ShareDataService;
-  scopes:Array<any> = [];   
+  showGetPasswordModal: boolean = false;
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public gridService: GridService,
-    public renderer: Renderer2, public metadataService: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
-    public cdref: ChangeDetectorRef, public ngZone: NgZone,public elem:ElementRef,
-    @Optional() @Inject('empty') public environmentModelsUrl?: string,
-    @Optional() @Inject('empty') public modelUrl?: string,
-    @Inject(ErrorHandlingService) public errorHandlingService?: ErrorHandlingService, public shortcutService?: ShortcutService) {    
-    super(toastrService, translate, gridService, renderer, metadataService, settingService, bStorageService, cdref, ngZone);
-        
+  scopeService: ShareDataService;
+  scopes: Array<any> = [];
+
+  constructor(
+    public toastrService: ToastrService,
+    public translate: TranslateService,
+    public gridService: GridService,
+    public renderer: Renderer2,
+    public metadataService: MetaDataService,
+    public settingService: SettingService,
+    public bStorageService: BrowserStorageService,
+    public cdref: ChangeDetectorRef,
+    public ngZone: NgZone,
+    public elem: ElementRef,
+    @Optional() @Inject("empty") public environmentModelsUrl?: string,
+    @Optional() @Inject("empty") public modelUrl?: string,
+    @Inject(ErrorHandlingService)
+    public errorHandlingService?: ErrorHandlingService,
+    public shortcutService?: ShortcutService
+  ) {
+    super(
+      toastrService,
+      translate,
+      gridService,
+      renderer,
+      metadataService,
+      settingService,
+      bStorageService,
+      cdref,
+      ngZone
+    );
+
     (async () => {
       this.config = await this.settingService.getNumberConfigBySettingIdAsync();
       this.systemConfig = await this.settingService.getSystemConfigAsync();
-    })();          
+    })();
 
-    if(elem)    
-    {
-      this.selector = elem.nativeElement.tagName.toLowerCase();      
+    if (elem) {
+      this.selector = elem.nativeElement.tagName.toLowerCase();
     }
-    
 
     this.isSuperAdmin = false;
     this.specialKeyPressCounter = 0;
 
-    this.errorHandlingService = ServiceLocator.injector.get(ErrorHandlingService);
-    this.shortcutService = ServiceLocator.injector.get(ShortcutService);    
+    this.errorHandlingService =
+      ServiceLocator.injector.get(ErrorHandlingService);
+    this.shortcutService = ServiceLocator.injector.get(ShortcutService);
 
     this.scopeService = ServiceLocator.injector.get(ShareDataService);
-    this.scopeService.setScope(this);       
+    this.scopeService.setScope(this);
   }
 
   ngAfterViewInit(): void {
@@ -157,19 +201,17 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
   }
 
   ngOnDestroy(): void {
-    this.bStorageService.removeSessionStorage('unSaveFilter' + this.viewId);
-           
+    this.bStorageService.removeSessionStorage("unSaveFilter" + this.viewId);
+
     var tempKey = `temp_${this.constructor.name}`;
     this.bStorageService.removeSessionStorage(tempKey);
 
     this.scopeService.clearScope(this);
-    
-  } 
+  }
 
   getRowValue(columnName: string, dataItem: any, dataType: string): any {
-    
     var colName = columnName.charAt(0).toLowerCase() + columnName.slice(1);
-    
+
     var res = dataItem[colName];
     var result = res;
 
@@ -180,10 +222,9 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
       }
       case "boolean": {
         if (res == true) {
-          result = "فعال"
-        }
-        else {
-          result = "غیرفعال"
+          result = "فعال";
+        } else {
+          result = "غیرفعال";
         }
         break;
       }
@@ -202,27 +243,30 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
   }
 
   public getMetaData(name: string): Property | undefined {
-
-    this.metadataKey = String.Format(SessionKeys.MetadataKey, this.viewId ? this.viewId.toString() : '', this.currentlang);
+    this.metadataKey = String.Format(
+      SessionKeys.MetadataKey,
+      this.viewId ? this.viewId.toString() : "",
+      this.currentlang
+    );
     var viewId = ViewName[this.entityTypeName];
 
     if (viewId) {
       var item: string | null;
-      item = this.bStorageService.getMetadata(this.metadataKey);  
-      
+      item = this.bStorageService.getMetadata(this.metadataKey);
+
       if (!this.properties)
         this.properties = new Map<string, Array<Property>>();
 
       var arr = JSON.parse(item != null ? item.toString() : "");
       this.properties.set(this.metadataKey, arr);
 
-      if (!this.properties.get(this.metadataKey))
-        return undefined;
+      if (!this.properties.get(this.metadataKey)) return undefined;
 
-      var result = this.properties.get(this.metadataKey).find(p => p.name.toLowerCase() == name.toLowerCase());
+      var result = this.properties
+        .get(this.metadataKey)
+        .find((p) => p.name.toLowerCase() == name.toLowerCase());
 
-      return result;      
-
+      return result;
     }
   }
 
@@ -233,10 +277,8 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
     var screenSetting = setting[size];
     return screenSetting.title;
   }
-  
 
-  reloadGrid(options?: ReloadOption):void {
-
+  reloadGrid(options?: ReloadOption): void {
     this.onBeforeDataBind();
 
     (async () => {
@@ -245,13 +287,25 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
 
     if (!this.cancelLoad) {
       //check pagenumber  and correction
-      if (options && options.Status == ReloadStatusType.AfterDelete && this.rowData) {
-        var pageCount = Math.floor((this.rowData.total - this.selectedRows.length) / this.pageSize) + 1;
+      if (
+        options &&
+        options.Status == ReloadStatusType.AfterDelete &&
+        this.rowData
+      ) {
+        var pageCount =
+          Math.floor(
+            (this.rowData.total - this.selectedRows.length) / this.pageSize
+          ) + 1;
         if (this.pageIndex > 0 && this.pageIndex > pageCount)
-          this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+          this.pageIndex = (this.pageIndex - 1) * this.pageSize - this.pageSize;
       }
 
-      if (options && (options.Status == ReloadStatusType.AfterFilter || options.Status == ReloadStatusType.None || options.Status == ReloadStatusType.AfterAdvanceFilter)) {
+      if (
+        options &&
+        (options.Status == ReloadStatusType.AfterFilter ||
+          options.Status == ReloadStatusType.None ||
+          options.Status == ReloadStatusType.AfterAdvanceFilter)
+      ) {
         this.skip = 0;
       }
       //check pagenumber  and correction
@@ -259,11 +313,10 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
       //implement overload 2
       if (this.useReloadParameter || (options && options.Parameter)) {
         if (options && !options.Parameter) {
-          options.Parameter = this.onGenerateParameters()
-        }
-        else if (!options) {
+          options.Parameter = this.onGenerateParameters();
+        } else if (!options) {
           options = new ReloadOption();
-          options.Parameter = this.onGenerateParameters()
+          options.Parameter = this.onGenerateParameters();
         }
         this.reloadWithParam(options);
       }
@@ -271,15 +324,11 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
       else {
         this.baseReload(options);
       }
-    }
-    else
-      this.cancelLoad = false;
-    
+    } else this.cancelLoad = false;
   }
 
   private reloadWithParam(options?: ReloadOption) {
     if (this.getDataUrl) {
-
       this.grid.loading = true;
 
       if (this.totalRecords == this.skip && this.totalRecords != 0) {
@@ -291,41 +340,54 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
 
       var currentFilter: FilterExpression = this.currentFilter;
 
-      if (this.defaultFilter && this.defaultFilter.length > 0) {               
-
-        this.defaultFilter.forEach(item => {
-          currentFilter = this.addFilterToFilterExpression(currentFilter,
-            item, FilterExpressionOperator.And);
-        })
+      if (this.defaultFilter && this.defaultFilter.length > 0) {
+        this.defaultFilter.forEach((item) => {
+          currentFilter = this.addFilterToFilterExpression(
+            currentFilter,
+            item,
+            FilterExpressionOperator.And
+          );
+        });
 
         if (this.currentFilter) {
-          currentFilter = this.andTwoFilterExpression(currentFilter,
-            this.currentFilter);
+          currentFilter = this.andTwoFilterExpression(
+            currentFilter,
+            this.currentFilter
+          );
         }
 
         if (this.useCustomFilterExpression && this.customFilter) {
-          currentFilter = this.andTwoFilterExpression(currentFilter,
-            this.customFilter);
+          currentFilter = this.andTwoFilterExpression(
+            currentFilter,
+            this.customFilter
+          );
         }
       }
 
       var filterExp: FilterExpression;
       if (this.quickFilter) {
-        this.quickFilter.forEach(item => {
-          filterExp = this.addFilterToFilterExpression(filterExp,
-            item, FilterExpressionOperator.And);
-        })
+        this.quickFilter.forEach((item) => {
+          filterExp = this.addFilterToFilterExpression(
+            filterExp,
+            item,
+            FilterExpressionOperator.And
+          );
+        });
 
         if (this.useCustomQuickFilterExpression && this.customQuickFilter) {
-          filterExp = this.andTwoFilterExpression(filterExp,
-            this.customQuickFilter);
+          filterExp = this.andTwoFilterExpression(
+            filterExp,
+            this.customQuickFilter
+          );
         }
       }
 
       //this code for concat filters to advanceFilters
       if (this.advanceFilters)
-        currentFilter = this.andFilterToFilterExpression(currentFilter,
-          this.advanceFilters);
+        currentFilter = this.andFilterToFilterExpression(
+          currentFilter,
+          this.advanceFilters
+        );
 
       var filter = currentFilter;
       //this.reportFilter = filter;
@@ -337,73 +399,82 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
       //init list change from listchange variable or listchange array
       if (!this.customListChanged) {
         var changed = this.listChanged;
-        if (this.listChangedViews && this.listChangedViews.findIndex(f => f === this.viewId) > -1) {
+        if (
+          this.listChangedViews &&
+          this.listChangedViews.findIndex((f) => f === this.viewId) > -1
+        ) {
           changed = false;
         }
-      }
-      else
-        changed = this.listChanged;
+      } else changed = this.listChanged;
 
-      if(this.operationId == OperationId.None)
-        this.operationId = this.getOperationId(options);  
-      
-      this.gridService.getAllByParams(this.getDataUrl, options.Parameter,this.pageIndex, this.pageSize, this.sort, filter, filterExp, changed,this.operationId).subscribe((res) => {
+      if (this.operationId == OperationId.None)
+        this.operationId = this.getOperationId(options);
 
-        //load metadata from response 
-        if (res.body.viewMetadata) {
-          this.properties.set(res.body.viewMetadata.name, res.body.viewMetadata.columns);
-          this.gridColumns = res.body.viewMetadata.columns;
-        }
-
-        var resData = res.body;
-        var totalCount = 0;
-        this.operationId = OperationId.None;
-
-        if (res.headers != null) {
-          var headers = res.headers != undefined ? res.headers : null;
-          if (headers != null) {
-            var retheader = headers.get('X-Total-Count');
-            if (retheader != null)
-              totalCount = parseInt(retheader.toString());
+      this.gridService
+        .getAllByParams(
+          this.getDataUrl,
+          options.Parameter,
+          this.pageIndex,
+          this.pageSize,
+          this.sort,
+          filter,
+          filterExp,
+          changed,
+          this.operationId
+        )
+        .subscribe((res) => {
+          //load metadata from response
+          if (res.body.viewMetadata) {
+            this.properties.set(
+              res.body.viewMetadata.name,
+              res.body.viewMetadata.columns
+            );
+            this.gridColumns = res.body.viewMetadata.columns;
           }
-        }
 
-        if (resData.comparativeItems) 
-        {
-          this.rowData = {
-            data: resData.comparativeItems,
-            total: totalCount
+          var resData = res.body;
+          var totalCount = 0;
+          this.operationId = OperationId.None;
+
+          if (res.headers != null) {
+            var headers = res.headers != undefined ? res.headers : null;
+            if (headers != null) {
+              var retheader = headers.get("X-Total-Count");
+              if (retheader != null)
+                totalCount = parseInt(retheader.toString());
+            }
           }
-          this.showloadingMessage = !(resData.comparativeItems.length == 0);
-          
-          if (res.body.viewMetadata) 
-            this.viewId = resData.viewMetadata.id;
-        }
-        else if (resData.items) {
+
+          if (resData.comparativeItems) {
+            this.rowData = {
+              data: resData.comparativeItems,
+              total: totalCount,
+            };
+            this.showloadingMessage = !(resData.comparativeItems.length == 0);
+
+            if (res.body.viewMetadata) this.viewId = resData.viewMetadata.id;
+          } else if (resData.items) {
             this.rowData = {
               data: resData.items,
-              total: totalCount
-            }
+              total: totalCount,
+            };
             this.showloadingMessage = !(resData.items.length == 0);
-        }
-        else {
-          this.rowData = {
-            data: resData,
-            total: totalCount
+          } else {
+            this.rowData = {
+              data: resData,
+              total: totalCount,
+            };
+            this.showloadingMessage = !(resData.length == 0);
           }
-          this.showloadingMessage = !(resData.length == 0);    
-        }
-                
 
-        this.totalRecords = totalCount;
-        this.grid.loading = false;
+          this.totalRecords = totalCount;
+          this.grid.loading = false;
 
-        this.listChanged = true;
-        this.disableViewListChanged(this.viewId);
+          this.listChanged = true;
+          this.disableViewListChanged(this.viewId);
 
-        this.onDataBind(resData);        
-      })
-
+          this.onDataBind(resData);
+        });
     }
     this.cdref.detectChanges();
   }
@@ -411,7 +482,6 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
   //method overload 1
   private baseReload(options?: ReloadOption) {
     if (this.getDataUrl) {
-
       this.grid.loading = true;
 
       if (this.totalRecords == this.skip && this.totalRecords != 0) {
@@ -419,363 +489,462 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
       }
 
       if (options && options.InsertedModel)
-        this.goToLastPage(this.totalRecords);  
-  
+        this.goToLastPage(this.totalRecords);
+
       let currentFilter = undefined;
       if (this.currentFilter)
         currentFilter = JSON.parse(JSON.stringify(this.currentFilter));
 
-
-      if (this.defaultFilter && this.defaultFilter.length > 0) {        
-
-        this.defaultFilter.forEach(item => {
-          currentFilter = this.addFilterToFilterExpression(currentFilter,
-            item, FilterExpressionOperator.And);
-        })     
+      if (this.defaultFilter && this.defaultFilter.length > 0) {
+        this.defaultFilter.forEach((item) => {
+          currentFilter = this.addFilterToFilterExpression(
+            currentFilter,
+            item,
+            FilterExpressionOperator.And
+          );
+        });
 
         if (this.useCustomFilterExpression && this.customFilter) {
-          currentFilter = this.andTwoFilterExpression(currentFilter,
-            this.customFilter);
+          currentFilter = this.andTwoFilterExpression(
+            currentFilter,
+            this.customFilter
+          );
         }
       }
 
       var filterExp: FilterExpression;
       if (this.quickFilter) {
-        this.quickFilter.forEach(item => {
-          filterExp = this.addFilterToFilterExpression(filterExp,
-            item, FilterExpressionOperator.And);
-        })
+        this.quickFilter.forEach((item) => {
+          filterExp = this.addFilterToFilterExpression(
+            filterExp,
+            item,
+            FilterExpressionOperator.And
+          );
+        });
 
         if (this.useCustomQuickFilterExpression && this.customQuickFilter) {
-          filterExp = this.andTwoFilterExpression(filterExp,
-            this.customQuickFilter);
+          filterExp = this.andTwoFilterExpression(
+            filterExp,
+            this.customQuickFilter
+          );
         }
       }
 
       //this code for concat filters to advanceFilters
       if (this.advanceFilters)
-        currentFilter = this.andFilterToFilterExpression(currentFilter,
-          this.advanceFilters);
+        currentFilter = this.andFilterToFilterExpression(
+          currentFilter,
+          this.advanceFilters
+        );
 
       var filter = currentFilter;
-      this.reportFilter = filter;      
+      this.reportFilter = filter;
       this.reportQuickFilter = filterExp;
       //init list change from listchange variable or listchange array
       if (!this.customListChanged) {
         var changed = this.listChanged;
-        if (this.listChangedViews && this.listChangedViews.findIndex(f => f === this.viewId) > -1) {
+        if (
+          this.listChangedViews &&
+          this.listChangedViews.findIndex((f) => f === this.viewId) > -1
+        ) {
           changed = false;
         }
-      }
-      else
-        changed = this.listChanged;
+      } else changed = this.listChanged;
 
-      if(this.operationId == OperationId.None)
-        this.operationId = this.getOperationId(options);  
+      if (this.operationId == OperationId.None)
+        this.operationId = this.getOperationId(options);
 
-      this.gridService.getAll(this.getDataUrl, this.pageIndex, this.pageSize, this.sort, filter, filterExp, changed, this.operationId).subscribe((res) => {
-        var resData = res.body;
-        var totalCount = 0;
+      this.gridService
+        .getAll(
+          this.getDataUrl,
+          this.pageIndex,
+          this.pageSize,
+          this.sort,
+          filter,
+          filterExp,
+          changed,
+          this.operationId
+        )
+        .subscribe(
+          (res) => {
+            var resData = res.body;
+            var totalCount = 0;
 
-        this.operationId = OperationId.None;
+            this.operationId = OperationId.None;
 
-        if (res.headers != null) {
-          var headers = res.headers != undefined ? res.headers : null;
-          if (headers != null) {
-            var retheader = headers.get('X-Total-Count');
-            if (retheader != null)
-              totalCount = parseInt(retheader.toString());
+            if (res.headers != null) {
+              var headers = res.headers != undefined ? res.headers : null;
+              if (headers != null) {
+                var retheader = headers.get("X-Total-Count");
+                if (retheader != null)
+                  totalCount = parseInt(retheader.toString());
+              }
+            }
+
+            if (resData.items) {
+              this.rowData = {
+                data: resData.items,
+                total: totalCount,
+              };
+
+              this.showloadingMessage = !(resData.items.length == 0);
+            } else {
+              this.rowData = {
+                data: resData,
+                total: totalCount,
+              };
+
+              this.showloadingMessage = !(resData.length == 0);
+            }
+
+            this.totalRecords = totalCount;
+            this.grid.loading = false;
+
+            this.listChanged = true;
+            this.disableViewListChanged(this.viewId);
+
+            this.onDataBind(resData);
+          },
+          (error) => {
+            this.grid.loading = false;
+            this.showMessage(
+              this.errorHandlingService.handleError(error),
+              MessageType.Warning
+            );
           }
-        }
-
-        if (resData.items) {
-          this.rowData = {
-            data: resData.items,
-            total: totalCount
-          }
-
-          this.showloadingMessage = !(resData.items.length == 0);
-        }
-        else {
-          this.rowData = {
-            data: resData,
-            total: totalCount
-          }
-
-          this.showloadingMessage = !(resData.length == 0);
-
-        }
-
-        this.totalRecords = totalCount;
-        this.grid.loading = false;
-
-        this.listChanged = true;
-        this.disableViewListChanged(this.viewId);
-
-        this.onDataBind(resData);
-        
-      }, (error => {        
-        this.grid.loading = false;
-        this.showMessage(this.errorHandlingService.handleError(error), MessageType.Warning);
-      }))
-
+        );
     }
     this.cdref.detectChanges();
   }
 
   public getOperationId(option: ReloadOption) {
-    
-    if (option == undefined ||
-        option.Status == ReloadStatusType.AfterDelete ||
+    if (
+      option == undefined ||
+      option.Status == ReloadStatusType.AfterDelete ||
       option.Status == ReloadStatusType.AfterEdit ||
       option.Status == ReloadStatusType.AfterInsert ||
-      option.Status == ReloadStatusType.AfterSort) {
-        return OperationId.View;
+      option.Status == ReloadStatusType.AfterSort
+    ) {
+      return OperationId.View;
     }
 
-    if (option.Status == ReloadStatusType.AfterAdvanceFilter ||
-      option.Status == ReloadStatusType.AfterFilter) {
+    if (
+      option.Status == ReloadStatusType.AfterAdvanceFilter ||
+      option.Status == ReloadStatusType.AfterFilter
+    ) {
       return OperationId.Filter;
     }
 
     return OperationId.None;
   }
 
-  public getExportData(): Observable<GridDataResult> {          
-      if (!this.exportAccessed) {
-        this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
-        return Observable.empty<GridDataResult>();
-      }
+  public getExportData(): Observable<GridDataResult> {
+    if (!this.exportAccessed) {
+      this.showMessage(this.getText("App.AccessDenied"), MessageType.Warning);
+      return Observable.empty<GridDataResult>();
+    }
 
-      if (this.getDataUrl) {
+    if (this.getDataUrl) {
+      let currentFilter = undefined;
+      if (this.currentFilter)
+        currentFilter = JSON.parse(JSON.stringify(this.currentFilter));
 
-        let currentFilter = undefined;
-        if (this.currentFilter)
-          currentFilter = JSON.parse(JSON.stringify(this.currentFilter));
+      if (this.defaultFilter && this.defaultFilter.length > 0) {
+        this.defaultFilter.forEach((item) => {
+          currentFilter = this.addFilterToFilterExpression(
+            currentFilter,
+            item,
+            FilterExpressionOperator.And
+          );
+        });
 
-        if (this.defaultFilter && this.defaultFilter.length > 0) {
-          this.defaultFilter.forEach(item => {
-            currentFilter = this.addFilterToFilterExpression(currentFilter,
-              item, FilterExpressionOperator.And);
-          })
-
-          if (this.useCustomFilterExpression && this.customFilter) {
-            currentFilter = this.andTwoFilterExpression(currentFilter,
-              this.customFilter);
-          }
-        }
-
-        var filterExp: FilterExpression;
-        if (this.quickFilter) {
-          this.quickFilter.forEach(item => {
-            filterExp = this.addFilterToFilterExpression(filterExp,
-              item, FilterExpressionOperator.And);
-          })
-        }
-
-        //this code for concat filters to advanceFilters
-        if (this.advanceFilters)
-          currentFilter = this.andFilterToFilterExpression(currentFilter,
-            this.advanceFilters);
-
-        var filter = currentFilter;
-
-        if (!this.parameters || this.parameters.length == 0) {
-          return this.gridService.getAll(this.getDataUrl, 1, 1000000, this.sort, filter, filterExp, true, OperationId.Export).pipe(
-            map(response => (<GridDataResult>{
-              data: (response.body.items) ? response.body.items : response.body,
-              total: (response.body.items) ? response.body.items.length : response.body.length,
-            }))
+        if (this.useCustomFilterExpression && this.customFilter) {
+          currentFilter = this.andTwoFilterExpression(
+            currentFilter,
+            this.customFilter
           );
         }
-        else {
-          var param = { paraf: "", items: this.parameters };
-          return this.gridService.getAllByParams(this.getDataUrl, param.items, 1, 1000000, this.sort, filter, filterExp, true, OperationId.Export).pipe(
-            map(response => (<GridDataResult>{
-              data: (response.body.comparativeItems && response.body.comparativeItems.length > 0) ? response.body.comparativeItems : response.body.items,
-              total: (response.body.comparativeItems && response.body.comparativeItems.length > 0) ? response.body.comparativeItems.length : response.body.items.length,
-            }))
-          );
-
-        }
       }
-      else {
-        this.showMessage(this.getText("App.PleaseLoadData"));
-        return Observable.empty<GridDataResult>();
-      }   
-    
+
+      var filterExp: FilterExpression;
+      if (this.quickFilter) {
+        this.quickFilter.forEach((item) => {
+          filterExp = this.addFilterToFilterExpression(
+            filterExp,
+            item,
+            FilterExpressionOperator.And
+          );
+        });
+      }
+
+      //this code for concat filters to advanceFilters
+      if (this.advanceFilters)
+        currentFilter = this.andFilterToFilterExpression(
+          currentFilter,
+          this.advanceFilters
+        );
+
+      var filter = currentFilter;
+
+      if (!this.parameters || this.parameters.length == 0) {
+        return this.gridService
+          .getAll(
+            this.getDataUrl,
+            1,
+            1000000,
+            this.sort,
+            filter,
+            filterExp,
+            true,
+            OperationId.Export
+          )
+          .pipe(
+            map(
+              (response) =>
+                <GridDataResult>{
+                  data: response.body.items
+                    ? response.body.items
+                    : response.body,
+                  total: response.body.items
+                    ? response.body.items.length
+                    : response.body.length,
+                }
+            )
+          );
+      } else {
+        var param = { paraf: "", items: this.parameters };
+        return this.gridService
+          .getAllByParams(
+            this.getDataUrl,
+            param.items,
+            1,
+            1000000,
+            this.sort,
+            filter,
+            filterExp,
+            true,
+            OperationId.Export
+          )
+          .pipe(
+            map(
+              (response) =>
+                <GridDataResult>{
+                  data:
+                    response.body.comparativeItems &&
+                    response.body.comparativeItems.length > 0
+                      ? response.body.comparativeItems
+                      : response.body.items,
+                  total:
+                    response.body.comparativeItems &&
+                    response.body.comparativeItems.length > 0
+                      ? response.body.comparativeItems.length
+                      : response.body.items.length,
+                }
+            )
+          );
+      }
+    } else {
+      this.showMessage(this.getText("App.PleaseLoadData"));
+      return Observable.empty<GridDataResult>();
+    }
   }
 
   public allData = (): Observable<any> => {
-    this.excelFileName = this.getExcelFileName();    
+    this.excelFileName = this.getExcelFileName();
     return this.getExportData();
-  }
+  };
 
-  public onExcelExport(e: any): void  {    
-    
+  public onExcelExport(e: any): void {
     const rows = e.workbook.sheets[0].rows;
     var header = null;
 
     //set decimalPrecision
     var decimalPrecision = "";
     if (this.config.decimalPrecision > 0) {
-      decimalPrecision = "0."
+      decimalPrecision = "0.";
       for (var i = 0; i < this.config.decimalPrecision; i++) {
-        decimalPrecision += "0"
-      }      
+        decimalPrecision += "0";
+      }
     }
-      
+
     //set footer data for reports
     rows.forEach((row) => {
-      if (row.type === 'header' && header == null) {
+      if (row.type === "header" && header == null) {
         header = row;
       }
-      if (row.type === 'footer') {
+      if (row.type === "footer") {
         this.onFooterExportToExcel(header, row);
       }
     });
 
     //set format for cells
-    rows.forEach((row) => {      
-      if (row.type === 'data' || row.type === 'footer') {        
+    rows.forEach((row) => {
+      if (row.type === "data" || row.type === "footer") {
         var cellNo = 0;
         row.cells.forEach((cell) => {
-
           //set font
           cell.fontSize = 12;
           cell.fontName = "Tahoma";
           if (this.gridColumns[cellNo]) {
-            if (this.CurrentLanguage == 'fa') {
-
-              if (this.gridColumns[cellNo].scriptType == 'number' && this.gridColumns[cellNo].storageType == 'money') {
+            if (this.CurrentLanguage == "fa") {
+              if (
+                this.gridColumns[cellNo].scriptType == "number" &&
+                this.gridColumns[cellNo].storageType == "money"
+              ) {
                 if (cell.value != "0")
-                  cell.format = '[$-3020429]#,###' + decimalPrecision;
-                else
-                  cell.format = '[$-3020429]#';
-              }
-              else if (this.gridColumns[cellNo].scriptType == 'number' &&
-                (this.gridColumns[cellNo].storageType == 'int' || this.gridColumns[cellNo].storageType == 'smallint')) {
-                cell.format = '[$-3020429]#';
-              }
-              else if (this.gridColumns[cellNo].scriptType == 'boolean' &&
-                (this.gridColumns[cellNo].storageType == 'bit')) {
-                if (cell.value.toString().toLower() == 'false')
-                  cell.value = this.getText('Exports.False');
-                if (cell.value.toString().toLower() == 'true')
-                  cell.value = this.getText('Exports.True');
-              }
-              else if (cell.value && this.gridColumns[cellNo].scriptType == 'string' &&
-                this.gridColumns[cellNo].storageType == 'nvarchar') {
-                cell.value = '‏' + cell.value;
-              }
-              else if (this.gridColumns[cellNo].storageType.toLower() == 'time') {
-                cell.value = cell.value.toString().toPersianNumbers(cell.value)
-              }
-              else if (this.gridColumns[cellNo].scriptType.toLower() == 'date' && this.gridColumns[cellNo].storageType.toLower() == 'datetime') {                
+                  cell.format = "[$-3020429]#,###" + decimalPrecision;
+                else cell.format = "[$-3020429]#";
+              } else if (
+                this.gridColumns[cellNo].scriptType == "number" &&
+                (this.gridColumns[cellNo].storageType == "int" ||
+                  this.gridColumns[cellNo].storageType == "smallint")
+              ) {
+                cell.format = "[$-3020429]#";
+              } else if (
+                this.gridColumns[cellNo].scriptType == "boolean" &&
+                this.gridColumns[cellNo].storageType == "bit"
+              ) {
+                if (cell.value.toString().toLower() == "false")
+                  cell.value = this.getText("Exports.False");
+                if (cell.value.toString().toLower() == "true")
+                  cell.value = this.getText("Exports.True");
+              } else if (
+                cell.value &&
+                this.gridColumns[cellNo].scriptType == "string" &&
+                this.gridColumns[cellNo].storageType == "nvarchar"
+              ) {
+                cell.value = "‏" + cell.value;
+              } else if (
+                this.gridColumns[cellNo].storageType.toLower() == "time"
+              ) {
+                cell.value = cell.value.toString().toPersianNumbers(cell.value);
+              } else if (
+                this.gridColumns[cellNo].scriptType.toLower() == "date" &&
+                this.gridColumns[cellNo].storageType.toLower() == "datetime"
+              ) {
                 if (this.gridColumns[cellNo].type == CalendarType.Jalali) {
-                  var shamsiDate = moment(cell.value).locale('fa').format("YYYY/MM/DD");
+                  var shamsiDate = moment(cell.value)
+                    .locale("fa")
+                    .format("YYYY/MM/DD");
+                  cell.value = shamsiDate.toPersianNumbers(shamsiDate);
+                } else {
+                  var shamsiDate = moment(cell.value)
+                    .locale("en")
+                    .format("YYYY/MM/DD");
                   cell.value = shamsiDate.toPersianNumbers(shamsiDate);
                 }
-                else {
-                  var shamsiDate = moment(cell.value).locale('en').format("YYYY/MM/DD");
-                  cell.value = shamsiDate.toPersianNumbers(shamsiDate);
-                }
-              }
-              else if (this.gridColumns[cellNo].scriptType.toLower() == 'datetime' && this.gridColumns[cellNo].storageType.toLower() == 'datetime') {
+              } else if (
+                this.gridColumns[cellNo].scriptType.toLower() == "datetime" &&
+                this.gridColumns[cellNo].storageType.toLower() == "datetime"
+              ) {
                 if (this.gridColumns[cellNo].type == CalendarType.Jalali) {
-                  var shamsiDate = moment(cell.value).locale('fa').format("YYYY/MM/DD HH:mm");
+                  var shamsiDate = moment(cell.value)
+                    .locale("fa")
+                    .format("YYYY/MM/DD HH:mm");
                   cell.value = shamsiDate.toPersianNumbers(shamsiDate);
-                }
-                else {
-                  var shamsiDate = moment(cell.value).locale('en').format("YYYY/MM/DD HH:mm");
+                } else {
+                  var shamsiDate = moment(cell.value)
+                    .locale("en")
+                    .format("YYYY/MM/DD HH:mm");
                   cell.value = shamsiDate.toPersianNumbers(shamsiDate);
                 }
               }
 
               cell.hAlign = "right";
-            }
-            else {
-              if (this.gridColumns[cellNo].scriptType == 'number' && this.gridColumns[cellNo].storageType == 'money') {
-                if (cell.value != "0")
-                  cell.format = '#,###' + decimalPrecision;                
-              }              
-              else if (this.gridColumns[cellNo].scriptType == 'boolean' &&
-                (this.gridColumns[cellNo].storageType == 'bit')) {
-                if (cell.value.toString().toLower() == 'false')
-                  cell.value = this.getText('Exports.False');
-                if (cell.value.toString().toLower() == 'true')
-                  cell.value = this.getText('Exports.True');
-              }
-              else if (cell.value && this.gridColumns[cellNo].scriptType == 'string' &&
-                this.gridColumns[cellNo].storageType == 'nvarchar') {
-                cell.value = '‎‏' + cell.value;
+            } else {
+              if (
+                this.gridColumns[cellNo].scriptType == "number" &&
+                this.gridColumns[cellNo].storageType == "money"
+              ) {
+                if (cell.value != "0") cell.format = "#,###" + decimalPrecision;
+              } else if (
+                this.gridColumns[cellNo].scriptType == "boolean" &&
+                this.gridColumns[cellNo].storageType == "bit"
+              ) {
+                if (cell.value.toString().toLower() == "false")
+                  cell.value = this.getText("Exports.False");
+                if (cell.value.toString().toLower() == "true")
+                  cell.value = this.getText("Exports.True");
+              } else if (
+                cell.value &&
+                this.gridColumns[cellNo].scriptType == "string" &&
+                this.gridColumns[cellNo].storageType == "nvarchar"
+              ) {
+                cell.value = "‎‏" + cell.value;
               }
 
               cell.hAlign = "left";
             }
-          }      
+          }
 
           cellNo++;
-
-          });                
+        });
       }
-      
     });
-
   }
-    
 
   reloadGridEvent() {
     this.reloadGrid();
-  }  
+  }
 
-  disableViewListChanged(viewId:number) {
-    if (this.listChangedViews.findIndex(p => p === viewId) == -1) {      
+  disableViewListChanged(viewId: number) {
+    if (this.listChangedViews.findIndex((p) => p === viewId) == -1) {
       this.listChangedViews.push(viewId);
     }
-
   }
 
   enableViewListChanged(viewId: number) {
-    if (this.listChangedViews.findIndex(p => p === viewId) >= 0) {
-      this.listChangedViews.splice(this.listChangedViews.findIndex(p => p === viewId));
+    if (this.listChangedViews.findIndex((p) => p === viewId) >= 0) {
+      this.listChangedViews.splice(
+        this.listChangedViews.findIndex((p) => p === viewId)
+      );
     }
-
   }
-  
+
   deleteModel(confirm: boolean) {
     if (confirm) {
       if (this.groupOperation) {
         //حذف گروهی
         this.grid.loading = true;
         let rowsId: Array<number> = [];
-        this.selectedRows.forEach(item => {
+        this.selectedRows.forEach((item) => {
           rowsId.push(item);
-        })
+        });
 
-        this.gridService.groupDelete(this.environmentModelsUrl, rowsId).subscribe(res => {          
-
-          this.afterGroupDelete(res, rowsId);
-          this.grid.loading = false;
-
-        }, (error => {
-          this.grid.loading = false;
-          this.showMessage(this.errorHandlingService.handleError(error), MessageType.Warning);
-        }));
-      }
-      else {
+        this.gridService
+          .groupDelete(this.environmentModelsUrl, rowsId)
+          .subscribe(
+            (res) => {
+              this.afterGroupDelete(res, rowsId);
+              this.grid.loading = false;
+            },
+            (error) => {
+              this.grid.loading = false;
+              this.showMessage(
+                this.errorHandlingService.handleError(error),
+                MessageType.Warning
+              );
+            }
+          );
+      } else {
         //حذف تکی
         this.grid.loading = true;
-        this.gridService.delete(String.Format(this.modelUrl, this.deleteModelId)).subscribe(response => {
-          this.afterDelete();
-          this.grid.loading = false;
-          
-        }, (error => {
-          this.grid.loading = false;          
-          this.showMessage(this.errorHandlingService.handleError(error), MessageType.Warning);
-        }));
+        this.gridService
+          .delete(String.Format(this.modelUrl, this.deleteModelId))
+          .subscribe(
+            (response) => {
+              this.afterDelete();
+              this.grid.loading = false;
+            },
+            (error) => {
+              this.grid.loading = false;
+              this.showMessage(
+                this.errorHandlingService.handleError(error),
+                MessageType.Warning
+              );
+            }
+          );
       }
-
     }
 
     //hide confirm dialog
@@ -786,7 +955,7 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
     this.deleteModelId = 0;
     this.showMessage(this.deleteMsg, MessageType.Info);
     if (this.rowData.data.length == 1 && this.pageIndex > 1)
-      this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+      this.pageIndex = (this.pageIndex - 1) * this.pageSize - this.pageSize;
 
     var options = new ReloadOption();
     options.Status = ReloadStatusType.AfterDelete;
@@ -796,14 +965,16 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
   }
 
   afterGroupDelete(data, rowsId) {
-    if (this.rowData.data.length == this.selectedRows.length && this.pageIndex > 1)
-      this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
-    
+    if (
+      this.rowData.data.length == this.selectedRows.length &&
+      this.pageIndex > 1
+    )
+      this.pageIndex = (this.pageIndex - 1) * this.pageSize - this.pageSize;
+
     if (data && data.length > 0) {
       //show errorlist component
       this.openErrorListDialog(data, rowsId.length);
-    }
-    else {
+    } else {
       this.showMessage(this.deleteMsg, MessageType.Info);
     }
 
@@ -816,27 +987,25 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
     this.selectedRows = [];
   }
 
-  public addNew() {
-
-  }
+  public addNew() {}
 
   selectionKey(context: RowArgs): any {
-    //return context.dataItem;    
-    return context.dataItem.id;  
+    //return context.dataItem;
+    return context.dataItem.id;
   }
 
   onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
-    if (this.selectedRows.length > 1)
-      this.groupOperation = true;
-    else
-      this.groupOperation = false;
+    if (this.selectedRows.length > 1) this.groupOperation = true;
+    else this.groupOperation = false;
   }
 
   filterChange(filter: CompositeFilterDescriptor): void {
-
     this.listChanged = false;
     var isReload: boolean = false;
-    if (this.currentFilter && this.currentFilter.children.length > filter.filters.length)
+    if (
+      this.currentFilter &&
+      this.currentFilter.children.length > filter.filters.length
+    )
       isReload = true;
 
     this.currentFilter = this.getFilters(filter);
@@ -852,32 +1021,27 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
     var properties = this.getAllMetaData(this.viewId);
     this.rowData = undefined;
     this.showloadingMessage = false;
-    this.gridColumns = properties.filter(p=>p.visibility != 'Hidden');
+    this.gridColumns = properties.filter((p) => p.visibility != "Hidden");
   }
 
   public sortChange(sort: SortDescriptor[]): void {
-
     this.listChanged = false;
-    this.sort = sort.filter(f => f.dir != undefined);
+    this.sort = sort.filter((f) => f.dir != undefined);
 
     this.reloadGrid();
   }
 
-  removeHandler(arg: any) {
-
-  }
+  removeHandler(arg: any) {}
 
   public pageChange(event: PageChangeEvent): void {
     this.listChanged = false;
     this.skip = event.skip;
     this.pageSize = event.take;
     this.setPageSizeByViewId();
-    this.reloadGrid();    
+    this.reloadGrid();
   }
 
-  public editHandler(arg: any) {
-
-  }
+  public editHandler(arg: any) {}
 
   /**
    * این متد برای ایجاد یا ویرایش موجودیت بکار میرود و در دو اورلود پیاده سازی شده است
@@ -885,14 +1049,24 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
    * @param isNew
    */
   saveHandler(model: any, isNew: boolean): void;
-  saveHandler(model: T | any, isNew: boolean, service: BaseService, serviceUrl?: string);
-  saveHandler(model: T | any, isNew: boolean, service?: BaseService, serviceUrl?: string) {
+  saveHandler(
+    model: T | any,
+    isNew: boolean,
+    service: BaseService,
+    serviceUrl?: string
+  );
+  saveHandler(
+    model: T | any,
+    isNew: boolean,
+    service?: BaseService,
+    serviceUrl?: string
+  ) {
     var promise = new Promise((resolve, reject) => {
       if (service) {
         this.grid.loading = true;
         if (!isNew) {
-          service.edit<T>(String.Format(serviceUrl, model.id), model)
-            .subscribe(response => {
+          service.edit<T>(String.Format(serviceUrl, model.id), model).subscribe(
+            (response) => {
               this.editDataItem = undefined;
               this.showMessage(this.updateMsg, MessageType.Succes);
 
@@ -909,25 +1083,25 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
               this.selectedRows = [];
               this.grid.loading = false;
 
-              var resultOption = new ResultOption(true);             
+              var resultOption = new ResultOption(true);
 
               resolve(resultOption);
+            },
+            (error: Error) => {
+              this.grid.loading = false;
+              var resultOption = new ResultOption(false, error);
+              reject(resultOption);
 
-            }, ((error: Error) => {                
-                this.grid.loading = false;
-                var resultOption = new ResultOption(false, error);
-                reject(resultOption);
-
-                this.editDataItem = model;
-                var exceptionResult = this.errorHandlingService.handleError(error);
-                if (this.dialogModel)
-                  this.dialogModel.errorMessages = exceptionResult;
-                
-            }));
-        }
-        else {
-          service.insert<T>(serviceUrl, model)
-            .subscribe((response: any) => {
+              this.editDataItem = model;
+              var exceptionResult =
+                this.errorHandlingService.handleError(error);
+              if (this.dialogModel)
+                this.dialogModel.errorMessages = exceptionResult;
+            }
+          );
+        } else {
+          service.insert<T>(serviceUrl, model).subscribe(
+            (response: any) => {
               this.editDataItem = undefined;
               this.showMessage(this.insertMsg, MessageType.Succes);
               var insertedModel = response;
@@ -939,7 +1113,7 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
               }
 
               var options = new ReloadOption();
-              options.InsertedModel = insertedModel
+              options.InsertedModel = insertedModel;
               options.Status = ReloadStatusType.AfterInsert;
               this.reloadGrid(options);
 
@@ -947,43 +1121,44 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
               this.grid.loading = false;
               var resultOption = new ResultOption(true);
               resolve(resultOption);
-
-            }, ((error: Error) => {               
-
-                this.grid.loading = false;
-                var resultOption = new ResultOption(false, error);
-                var exceptionResult = this.errorHandlingService.handleError(error);
-                if (this.dialogModel)
-                  this.dialogModel.errorMessages = exceptionResult;
-                reject(resultOption);
-            }));
+            },
+            (error: Error) => {
+              this.grid.loading = false;
+              var resultOption = new ResultOption(false, error);
+              var exceptionResult =
+                this.errorHandlingService.handleError(error);
+              if (this.dialogModel)
+                this.dialogModel.errorMessages = exceptionResult;
+              reject(resultOption);
+            }
+          );
         }
       }
-    }
-    );
+    });
 
-    return promise;    
+    return promise;
   }
 
   public onDataStateChange(): void {
     if (this.rowData && this.rowData.total > 0) {
       var fcolumns = new Array<ColumnBase>();
       this.grid.columns.forEach(function (column) {
-        if (column.width == undefined)
-          fcolumns.push(column);
-      });      
+        if (column.width == undefined) fcolumns.push(column);
+      });
       this.fitColumns(fcolumns);
     }
   }
 
-  public fitColumns(fcolumns: Array<ColumnBase>): void {    
+  public fitColumns(fcolumns: Array<ColumnBase>): void {
     if (fcolumns.length > 0) {
-      this.ngZone.onStable.asObservable().pipe(take(1)).subscribe(() => {
-        this.grid.autoFitColumns(fcolumns);
-      });
+      this.ngZone.onStable
+        .asObservable()
+        .pipe(take(1))
+        .subscribe(() => {
+          this.grid.autoFitColumns(fcolumns);
+        });
     }
   }
-
 
   setPageSizeByViewId() {
     var settingsJson = this.bStorageService.getUserSettings(this.UserId);
@@ -992,7 +1167,7 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
       var settings: Array<ListFormViewConfig> = JSON.parse(settingsJson);
 
       if (settings) {
-        var findIndex = settings.findIndex(s => s.viewId == viewId);
+        var findIndex = settings.findIndex((s) => s.viewId == viewId);
 
         if (findIndex > -1) {
           settings[findIndex].pageSize = this.pageSize;
@@ -1009,7 +1184,7 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
       var settings: Array<ListFormViewConfig> = JSON.parse(settingsJson);
 
       if (settings) {
-        var item = settings.find(s => s != null && s.viewId == viewId);
+        var item = settings.find((s) => s != null && s.viewId == viewId);
         if (item) {
           this.pageSize = item.pageSize;
         }
@@ -1018,9 +1193,8 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
   }
 
   openErrorListDialog(rowData: any[], total: number) {
-
     this.dialogRef = this.dialogService.open({
-      title: this.getText('ErrorList.GroupOperationReport'),
+      title: this.getText("ErrorList.GroupOperationReport"),
       content: ErrorListComponent,
     });
 
@@ -1028,12 +1202,12 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
     this.dialogModel.rowData = rowData;
     this.dialogModel.totalItems = total;
 
-    const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
-      this.dialogRef.close();
-    });
-
+    const closeForm = this.dialogRef.content.instance.cancel.subscribe(
+      (res) => {
+        this.dialogRef.close();
+      }
+    );
   }
-
 
   /**این تابع بعد از فراخوانی سرویس فراخوانی و دیتای مربوطه را برمیگرداند*/
   public onDataBind(res: any) {
@@ -1052,10 +1226,8 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
 
   customListChanged: boolean;
   /** این ایونت اگر در کلاس مشتق شده پیاده سازی شده باشد میتوان برای تغییر متغیر listchange از آن استفاده کرد */
-  public onListChanged() {
+  public onListChanged() {}
 
-  }
-    
   // /**
   //  * برای هندل کردن شورکات های که به یک متد خاص متصل میباشند
   //  * @param event
@@ -1063,7 +1235,7 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
   // @HostListener('window:keydown', [])
   // handleKeyboardEvent() {
   //   var event: KeyboardEvent = <KeyboardEvent> window.event;
-    
+
   //   if (event.key != "Control" && event.key != "Shift" && event.key != "Alt") {
 
   //     var ctrl = event.ctrlKey ? true : false;
@@ -1075,14 +1247,14 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
   //       var shortcuts: ShortcutCommand[];
   //       shortcuts = JSON.parse(this.bStorageService.getShortcut())
   //       var shortcutCommand = this.shortcutService.searchShortcutCommand(ctrl, shift, alt, key, shortcuts);
-  //       if (shortcutCommand) {          
+  //       if (shortcutCommand) {
   //         if(shortcutCommand.scope)
-  //         {              
+  //         {
   //           var scopeIndex = ShareDataService.components.findIndex(f=>f.constructor.name.toLowerCase() == shortcutCommand.scope.toLowerCase());
   //           if(scopeIndex >= 0)
   //           {
-              
-  //             var component = ShareDataService.components[scopeIndex];              
+
+  //             var component = ShareDataService.components[scopeIndex];
   //             if(this.constructor.name == component.constructor.name)
   //             {
   //               component[shortcutCommand.method]();
@@ -1091,8 +1263,8 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
   //           }
   //         }
   //         else
-  //         { 
-  //           if(this.constructor.name == "AutoGeneratedGridComponent")           
+  //         {
+  //           if(this.constructor.name == "AutoGeneratedGridComponent")
   //           {
   //             this[shortcutCommand.method]();
   //             event.preventDefault();
@@ -1100,10 +1272,8 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
   //         }
   //       }
   //     }
-  //   }    
+  //   }
   // }
-
-  
 
   /**
    * برای هندل کردن و نمایش دادن فرم رمز عبور کاربر سوپر یوزر
@@ -1111,19 +1281,16 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
    */
   handleCtrlE(event: KeyboardEvent) {
     if (event.altKey && event.ctrlKey) {
-      if (event.key.toLowerCase() == 'e') {
+      if (event.key.toLowerCase() == "e") {
         this.specialKeyPressCounter++;
       } else {
         this.specialKeyPressCounter = 0;
       }
-      if (this.specialKeyPressCounter == 8) {        
+      if (this.specialKeyPressCounter == 8) {
         var currentContext = this.bStorageService.getCurrentUser();
         if (currentContext.roles[0] == 1) {
           this.showPasswordModal();
-        }
-        else
-          return false;
-
+        } else return false;
       }
     } else {
       this.specialKeyPressCounter = 0;
@@ -1131,32 +1298,26 @@ export class AutoGeneratedGridComponent<T = void | any> extends ListComponent im
   }
 
   showPasswordModal() {
-    console.log('showPasswordModal');
-      this.dialogRef = this.dialogService.open({
-        title: this.getText('Voucher.GetPasssordModalTitle'),
-        content: SuperuserPasswordComponent,
-        width: 300,
-        height: 150
-      });
+    console.log("showPasswordModal");
+    this.dialogRef = this.dialogService.open({
+      title: this.getText("Voucher.GetPasssordModalTitle"),
+      content: SuperuserPasswordComponent,
+      width: 300,
+      height: 150,
+    });
 
-      this.dialogRef.content.instance.cancel.subscribe(() => {
-        //this.showGetPasswordModal = false;
-        this.dialogRef.close();
-      });
+    this.dialogRef.content.instance.cancel.subscribe(() => {
+      //this.showGetPasswordModal = false;
+      this.dialogRef.close();
+    });
 
-      this.dialogRef.content.instance.result.subscribe(() => {       
-        this.isSuperAdmin = true;            
-        //this.showGetPasswordModal = false;
-        this.onSuperAdminOk();
-        this.dialogRef.close();        
-      });
-    
+    this.dialogRef.content.instance.result.subscribe(() => {
+      this.isSuperAdmin = true;
+      //this.showGetPasswordModal = false;
+      this.onSuperAdminOk();
+      this.dialogRef.close();
+    });
   }
 
-  onSuperAdminOk() { }
-
-  
-
+  onSuperAdminOk() {}
 }
-
-
