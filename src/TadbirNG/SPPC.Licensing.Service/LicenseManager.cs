@@ -34,7 +34,7 @@ namespace SPPC.Licensing.Service
                 license.LicenseKey, license.CustomerKey);
             licenseFile.ServerUser = activation.ServerUser;
             licenseFile.ServerPassword = activation.ServerPassword;
-            return _crypto.Encrypt(JsonHelper.From(licenseFile, false));
+            return _crypto.Encrypt(JsonHelper.From(licenseFile, false, null, false));
         }
 
         public async Task<LicenseStatus> ValidateLicenseAsync(LicenseCheckModel licenseCheck)

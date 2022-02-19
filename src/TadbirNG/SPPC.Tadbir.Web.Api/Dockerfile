@@ -16,7 +16,6 @@ COPY ["SPPC.Tadbir.Interfaces/SPPC.Tadbir.Interfaces.csproj", "SPPC.Tadbir.Inter
 COPY ["SPPC.Licensing.Model/SPPC.Licensing.Model.csproj", "SPPC.Licensing.Model/"]
 COPY ["SPPC.Framework.Cryptography/SPPC.Framework.Cryptography.csproj", "SPPC.Framework.Cryptography/"]
 COPY ["SPPC.Framework.Service/SPPC.Framework.Service.csproj", "SPPC.Framework.Service/"]
-COPY ["SPPC.Framework.Licensing/SPPC.Framework.Licensing.csproj", "SPPC.Framework.Licensing/"]
 COPY ["SPPC.Tadbir.ViewModel/SPPC.Tadbir.ViewModel.csproj", "SPPC.Tadbir.ViewModel/"]
 COPY ["SPPC.Tadbir.Configuration/SPPC.Tadbir.Configuration.csproj", "SPPC.Tadbir.Configuration/"]
 COPY ["SPPC.Framework.Persistence/SPPC.Framework.Persistence.csproj", "SPPC.Framework.Persistence/"]

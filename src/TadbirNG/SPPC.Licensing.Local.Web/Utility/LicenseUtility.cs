@@ -463,6 +463,10 @@ namespace SPPC.Tadbir.Licensing
                 licenseModel.LoginCount++;
                 SaveLicense(licenseModel);
             }
+
+            string info = String.Format(
+                $"Offline licenses issued : {licenseModel.LoginCount}{Environment.NewLine}{Environment.NewLine}");
+            File.AppendAllText(@".\wwwroot\license.log", info);
         }
 
         private void ResetLoginCount(LicenseFileModel license)

@@ -16,7 +16,7 @@ namespace SPPC.Tools.LicenseManager
         [STAThread]
         static void Main()
         {
-            UpdateLicenseFile();
+            //UpdateLicenseFile();
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

@@ -328,6 +328,7 @@ namespace SPPC.Tools.LicenseManager
                 CreateEnvironmentSettings(editor.BuildSettings);
                 CreateApiServiceLicense(license);
                 CreateApiServiceEdition(license);
+                ConfigureDockerCompose(license);
             }
 
             return result == DialogResult.OK;
@@ -375,6 +376,18 @@ namespace SPPC.Tools.LicenseManager
             {
                 File.WriteAllText(devEditionPath, json);
             }
+        }
+
+        private static void ConfigureDockerCompose(LicenseModel license)
+        {
+            string solutionRoot = ConfigurationManager.AppSettings["SolutionRootPath"];
+            string path = Path.Combine(solutionRoot, "docker-compose.yml");
+            ITextTemplate template = new DockerCompose(license.LicenseKey);
+            File.WriteAllText(path, template.TransformText());
+
+            path = Path.Combine(solutionRoot, "docker-compose.override.yml");
+            template = new DockerComposeOverride(license.LicenseKey);
+            File.WriteAllText(path, template.TransformText());
         }
 
         private bool ValidateSaveInstance()

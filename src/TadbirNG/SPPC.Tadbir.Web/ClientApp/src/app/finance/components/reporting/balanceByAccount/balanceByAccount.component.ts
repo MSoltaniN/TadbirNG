@@ -258,7 +258,6 @@ export class BalanceByAccountComponent
   ngOnInit() {
     this.entityName = Entities.BalanceByAccount;
     this.viewId = ViewName[this.entityTypeName];
-    debugger;
     this.fillByDefaultValues();
 
     var balanceAccountParam = this.shareDataService.sharingData;
@@ -492,8 +491,6 @@ export class BalanceByAccountComponent
     this.dialogRef = this.dialogService.open({
       content: SelectFormComponent,
     });
-
-    debugger;
 
     this.dialogModel = this.dialogRef.content.instance;
 
@@ -898,7 +895,7 @@ export class BalanceByAccountComponent
         this.getText("Entity.Project")
       );
     }
-
+   
     debugger;
     if (errorMsg) {
       this.showMessage(errorMsg, MessageType.Warning);
@@ -1133,8 +1130,6 @@ export class BalanceByAccountComponent
       }
       default:
     }
-
-    debugger;
 
     this.getReportData(false);
     this.displayTypeName = item.displayType.title;
