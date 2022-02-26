@@ -150,8 +150,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 fiscalPeriod = Mapper.Map<FiscalPeriod>(fiscalPeriodView);
                 await InsertAsync(repository, fiscalPeriod);
-                await CopyInactiveAccountsAsync(fiscalPeriod.Id);
-                await CopyInactiveCurrenciesAsync(fiscalPeriod.Id);
+                await InheritInactiveItemsAsync(fiscalPeriod.Id);
             }
             else
             {
@@ -463,6 +462,15 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private async Task InheritInactiveItemsAsync(int fpId)
+        {
+            if (UserContext.BranchId > 0 && UserContext.FiscalPeriodId > 0)
+            {
+                await CopyInactiveAccountsAsync(fpId);
+                await CopyInactiveCurrenciesAsync(fpId);
+            }
+        }
+
         private async Task CopyInactiveAccountsAsync(int fpId)
         {
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
@@ -486,7 +494,10 @@ namespace SPPC.Tadbir.Persistence
                     accountRepository.Insert(newItem);
                 }
 
-                await UnitOfWork.CommitAsync();
+                if (inactiveItems.Count > 0)
+                {
+                    await UnitOfWork.CommitAsync();
+                }
             }
         }
 
@@ -513,7 +524,10 @@ namespace SPPC.Tadbir.Persistence
                     currencyRepository.Insert(newItem);
                 }
 
-                await UnitOfWork.CommitAsync();
+                if (inactiveItems.Count > 0)
+                {
+                    await UnitOfWork.CommitAsync();
+                }
             }
         }
 
