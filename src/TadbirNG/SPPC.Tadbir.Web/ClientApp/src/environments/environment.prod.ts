@@ -16,6 +16,6 @@ export const environment = {
   LicenseServerUrl: "http://130.185.76.7:9093",
   InstanceKey:
     "Llxw9MF0sjrg6mzvPl+bWDAKSWU2BR2NZpBYHFKUB/qaeAmcLqw7j4JzAn2LVTxNYmadslsODCW2PVlPfhTbdQZVIqB+JoXLy2NMRT7mJGVa2Fy3XJybj7ZVKNvJ+ByOj5g0NGn8+ygw4UfjKTjAV4LP58Y5qoScBTh0t2xiwCf+9kl0wPQ9oFm3/UpjkdwVMtU4mhNNtT8E1OZjD36cMQ==",
-  Version: "1.2.1311.0",
+  Version: "1.2.1313.0",
   SessionAliveInterval: 300000,
 };
