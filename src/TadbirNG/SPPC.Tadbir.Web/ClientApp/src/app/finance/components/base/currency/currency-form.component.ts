@@ -1,41 +1,58 @@
-import { Component, Input, Output, EventEmitter, Renderer2, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { ToastrService } from 'ngx-toastr';
-import { String, DetailComponent } from '@sppc/shared/class';
-import { Currency, TaxCurrency } from '@sppc/finance/models';
-import { CurrencyService, CurrencyEntity } from '@sppc/finance/service';
-import { CurrencyApi } from '@sppc/finance/service/api';
-import { BrowserStorageService, MetaDataService, LookupService } from '@sppc/shared/services';
-import { Entities, MessageType } from '@sppc/shared/enum/metadata';
-import { ViewName } from '@sppc/shared/security';
-import { HttpEventType, HttpClient } from '@angular/common/http';
-
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Renderer2,
+} from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
+import { Currency, TaxCurrency } from "@sppc/finance/models";
+import { CurrencyEntity, CurrencyService } from "@sppc/finance/service";
+import { CurrencyApi } from "@sppc/finance/service/api";
+import { DetailComponent, String } from "@sppc/shared/class";
+import { Entities, MessageType } from "@sppc/shared/enum/metadata";
+import { ViewName } from "@sppc/shared/security";
+import {
+  BrowserStorageService,
+  LookupService,
+  MetaDataService,
+} from "@sppc/shared/services";
+import { ToastrService } from "ngx-toastr";
 
 interface Item {
-  key: string,
-  value: string
+  key: string;
+  value: string;
 }
-
 
 @Component({
-  selector: 'currency-form-component',
-  styles: [`
-    input[type=text],textarea,.ddl-currency { width: 100%; }
+  selector: "currency-form-component",
+  styles: [
+    `
+      input[type="text"],
+      textarea,
+      .ddl-currency {
+        width: 100%;
+      }
 
-.dialog-body{ width: 800px } .dialog-body hr{ border-top: dashed 1px #eee; }
-@media screen and (max-width:800px) {
-  .dialog-body{
-    width: 99%;
-    min-width: 250px;
-  }
-}
-`  ],
-  templateUrl: './currency-form.component.html'
+      .dialog-body {
+        width: 800px;
+      }
+      .dialog-body hr {
+        border-top: dashed 1px #eee;
+      }
+      @media screen and (max-width: 800px) {
+        .dialog-body {
+          width: 99%;
+          min-width: 250px;
+        }
+      }
+    `,
+  ],
+  templateUrl: "./currency-form.component.html",
 })
-
 export class CurrencyFormComponent extends DetailComponent implements OnInit {
-
-
   currencyNameLookup: Array<Item> = [];
   currencyNameData: Array<Item> = [];
   selectedCurrencyName: string;
@@ -43,7 +60,6 @@ export class CurrencyFormComponent extends DetailComponent implements OnInit {
   taxCurrencyData: Array<TaxCurrency> = [];
   currencyId: number;
   minorUnitKey: string;
-  TaxCurrencyErrorMsg: string;
 
   editConfirm: boolean = false;
   selectedCurrencyItem: any;
@@ -79,11 +95,26 @@ export class CurrencyFormComponent extends DetailComponent implements OnInit {
   }
   //Events
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
-    public lookupService: LookupService, public currencyService: CurrencyService, public renderer: Renderer2, public metadata: MetaDataService,public elem:ElementRef) {
-
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.VoucherLine, ViewName.Currency,elem);
-
+  constructor(
+    public toastrService: ToastrService,
+    public translate: TranslateService,
+    public bStorageService: BrowserStorageService,
+    public lookupService: LookupService,
+    public currencyService: CurrencyService,
+    public renderer: Renderer2,
+    public metadata: MetaDataService,
+    public elem: ElementRef
+  ) {
+    super(
+      toastrService,
+      translate,
+      bStorageService,
+      renderer,
+      metadata,
+      Entities.VoucherLine,
+      ViewName.Currency,
+      elem
+    );
   }
 
   ngOnInit(): void {
@@ -95,17 +126,23 @@ export class CurrencyFormComponent extends DetailComponent implements OnInit {
   }
 
   getCurrencyNames() {
-    this.currencyService.getModels(CurrencyApi.CurrencyNamesLookup).subscribe(res => {
-      this.currencyNameLookup = res;
-      this.currencyNameData = res;
+    this.currencyService
+      .getModels(CurrencyApi.CurrencyNamesLookup)
+      .subscribe((res) => {
+        this.currencyNameLookup = res;
+        this.currencyNameData = res;
 
-      if (!this.isNew) {
-        var currencyItem = this.currencyNameData.find(f => f.value == this.model.name);
-        this.editForm.reset(this.model);
-        this.selectedCurrencyName = currencyItem ? currencyItem.key : undefined;
-        this.minorUnitKey = this.model.minorUnitKey;
-      }
-    })
+        if (!this.isNew) {
+          var currencyItem = this.currencyNameData.find(
+            (f) => f.value == this.model.name
+          );
+          this.editForm.reset(this.model);
+          this.selectedCurrencyName = currencyItem
+            ? currencyItem.key
+            : undefined;
+          this.minorUnitKey = this.model.minorUnitKey;
+        }
+      });
   }
 
   onChangeCurrency(item: any) {
@@ -114,56 +151,79 @@ export class CurrencyFormComponent extends DetailComponent implements OnInit {
 
       if (this.isNew) {
         this.getCurrencyInfo(true);
-      }
-      else {
-        this.currencyService.getModels(String.Format(CurrencyApi.CurrencyHasRates, this.currencyId)).subscribe(res => {
-          this.editConfirm = res;
-          if (!this.editConfirm) {
-            this.getCurrencyInfo(true);
-          }
-        })
+      } else {
+        this.currencyService
+          .getModels(
+            String.Format(CurrencyApi.CurrencyHasRates, this.currencyId)
+          )
+          .subscribe((res) => {
+            this.editConfirm = res;
+            if (!this.editConfirm) {
+              this.getCurrencyInfo(true);
+            }
+          });
       }
     }
   }
 
   getCurrencyInfo(confirm: boolean) {
     if (confirm) {
-      this.currencyService.getModels(String.Format(CurrencyApi.CurrencyInfoByName, this.selectedCurrencyItem)).subscribe(res => {
-        var result = res;
-        result.taxCode = undefined;
-        this.editForm.reset(result);
-        this.editForm.patchValue({ name: this.selectedCurrencyItem, taxCode: this.model.taxCode });
-        this.minorUnitKey = res.minorUnitKey;
-      }, error => {
-        if (error.status == 404)
-          this.showMessage(this.getText('App.RecordNotFound'), MessageType.Warning);
-      })
-    }
-    else {
-      var currencyItem = this.currencyNameData.find(f => f.value == this.model.name);
+      this.currencyService
+        .getModels(
+          String.Format(
+            CurrencyApi.CurrencyInfoByName,
+            this.selectedCurrencyItem
+          )
+        )
+        .subscribe(
+          (res) => {
+            var result = res;
+            result.taxCode = undefined;
+            this.editForm.reset(result);
+            this.editForm.patchValue({
+              name: this.selectedCurrencyItem,
+              taxCode: this.model.taxCode,
+            });
+            this.minorUnitKey = res.minorUnitKey;
+          },
+          (error) => {
+            if (error.status == 404)
+              this.showMessage(
+                this.getText("App.RecordNotFound"),
+                MessageType.Warning
+              );
+          }
+        );
+    } else {
+      var currencyItem = this.currencyNameData.find(
+        (f) => f.value == this.model.name
+      );
       this.selectedCurrencyName = currencyItem ? currencyItem.key : undefined;
     }
-      
+
     this.editConfirm = false;
   }
 
   handleFilter(value: any) {
-    this.currencyNameData = this.currencyNameLookup.filter((s) => s.value.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+    this.currencyNameData = this.currencyNameLookup.filter(
+      (s) => s.value.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
   }
 
   handleTaxCodeFilter(value: any) {
-    this.taxCurrencyList = this.taxCurrencyData.filter((s) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+    this.taxCurrencyList = this.taxCurrencyData.filter(
+      (s) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
   }
 
   getTaxCurrencyList() {
-    this.currencyService.getModels(CurrencyApi.TaxCurrencies).subscribe(res => {
-      if (res && res.length > 0) {
-        this.taxCurrencyData = res;
-        this.taxCurrencyList = res;
-      }
-      else {
-        this.TaxCurrencyErrorMsg = this.getText("Currency.TaxCurrencyErrorMsg");
-      }
-    })
+    this.currencyService
+      .getModels(CurrencyApi.TaxCurrencies)
+      .subscribe((res) => {
+        if (res && res.length > 0) {
+          this.taxCurrencyData = res;
+          this.taxCurrencyList = res;
+        }
+      });
   }
 }
