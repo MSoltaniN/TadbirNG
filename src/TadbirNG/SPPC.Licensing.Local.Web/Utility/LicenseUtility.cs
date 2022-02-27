@@ -294,8 +294,6 @@ namespace SPPC.Tadbir.Licensing
             {
                 InstanceKey = instance,
                 HardwareKey = _deviceId.GetRemoteDeviceId(connection),
-                ServerUser = connection.User,
-                ServerPassword = connection.Password
             };
 
             certificate = _crypto.CertificateManager.GenerateSelfSigned(
