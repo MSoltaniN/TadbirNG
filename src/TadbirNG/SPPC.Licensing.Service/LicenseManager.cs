@@ -32,8 +32,6 @@ namespace SPPC.Licensing.Service
 
             var licenseFile = await _repository.GetLicenseFileDataAsync(
                 license.LicenseKey, license.CustomerKey);
-            licenseFile.ServerUser = activation.ServerUser;
-            licenseFile.ServerPassword = activation.ServerPassword;
             return _crypto.Encrypt(JsonHelper.From(licenseFile, false, null, false));
         }
 

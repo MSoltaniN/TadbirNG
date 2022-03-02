@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SPPC.Framework.Common;
 
 namespace SPPC.Tadbir.ViewModel.Core
 {
@@ -90,7 +89,6 @@ namespace SPPC.Tadbir.ViewModel.Core
                 case ErrorType.BadLicense:
                 case ErrorType.RequiresOnlineLicense:
                 case ErrorType.TooManySessions:
-                case ErrorType.InvalidUserPass:
                     StatusCode = 403;
                     break;
                 default:

@@ -110,6 +110,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CrossCutting", "CrossCuttin
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{51995D4F-493E-4589-B7A2-A5101BBF2FF0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Framework.KeyServer", "SPPC.Framework.KeyServer\SPPC.Framework.KeyServer.csproj", "{C8725365-FC6E-4EAE-9C6B-02AFE4AE85F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -248,6 +250,10 @@ Global
 		{A573AFD2-4119-4E70-A732-64866A9414D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A573AFD2-4119-4E70-A732-64866A9414D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A573AFD2-4119-4E70-A732-64866A9414D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8725365-FC6E-4EAE-9C6B-02AFE4AE85F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8725365-FC6E-4EAE-9C6B-02AFE4AE85F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8725365-FC6E-4EAE-9C6B-02AFE4AE85F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8725365-FC6E-4EAE-9C6B-02AFE4AE85F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -298,6 +304,7 @@ Global
 		{E0E5F15E-CEFC-47F7-8F51-C364E9313A65} = {3CD0D026-F011-48CB-913A-3AE1AFA212B8}
 		{9A2A7A39-41F5-4A0A-B932-D8447A4531AC} = {3CD0D026-F011-48CB-913A-3AE1AFA212B8}
 		{51995D4F-493E-4589-B7A2-A5101BBF2FF0} = {3CD0D026-F011-48CB-913A-3AE1AFA212B8}
+		{C8725365-FC6E-4EAE-9C6B-02AFE4AE85F7} = {DBA43C8B-22F7-42C2-BC47-9A65FA939272}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0876E344-B588-49D3-90AF-656CE086FC60}
