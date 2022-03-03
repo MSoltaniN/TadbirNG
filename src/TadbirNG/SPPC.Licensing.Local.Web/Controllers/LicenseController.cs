@@ -60,7 +60,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
         }
 
         // GET: api/license/users/{userId:min(1)}/online
-        [HttpPut]
+        [HttpGet]
         [Route(LicenseApi.OnlineUserLicenseUrl)]
         public async Task<IActionResult> GetOnlineAppLicenseAsync(int userId)
         {

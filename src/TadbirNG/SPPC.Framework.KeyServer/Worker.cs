@@ -31,7 +31,6 @@ namespace SPPC.Framework.KeyServer
             }
 
             responder.Unbind(DefaultEndpoint);
-            await Task.Delay(2000, stoppingToken);
         }
 
         private static bool IsRequestSupported(string request)

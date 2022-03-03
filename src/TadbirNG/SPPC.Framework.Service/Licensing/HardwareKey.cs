@@ -35,10 +35,18 @@ namespace SPPC.Framework.Licensing
 
         private static IPlatformCommands GetTargetCommands(CliRunner runner)
         {
-            string result = runner.Run(SshCommands.Linux.GetOSName.Command);
-            return result.ToLower().Contains("linux")
-                ? SshCommands.Linux
-                : SshCommands.Windows;
+            IPlatformCommands commands;
+            try
+            {
+                string result = runner.Run(SshCommands.Linux.GetOSName.Command);
+                commands = SshCommands.Linux;
+            }
+            catch
+            {
+                commands = SshCommands.Windows;
+            }
+
+            return commands;
         }
 
         private static string CleanupRunnerResult(string result, string key)

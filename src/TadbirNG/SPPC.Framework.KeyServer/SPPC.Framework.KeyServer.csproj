@@ -24,10 +24,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
-    <PackageReference Include="NetMQ" Version="4.0.1.8" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
     <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj" />
   </ItemGroup>
 </Project>

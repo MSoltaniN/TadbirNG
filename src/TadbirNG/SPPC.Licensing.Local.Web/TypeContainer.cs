@@ -59,7 +59,7 @@ namespace SPPC.Licensing.Local.Web
                 };
             });
             _services.AddTransient<ILicenseUtility, LicenseUtility>();
-            _services.AddTransient<IDeviceIdProvider, DeviceIdProvider>();
+            _services.AddTransient<IDeviceIdProvider, NetDeviceIdProvider>();
             _services.AddTransient<ILicensePathProvider, LicenseResourcePaths>();
             _services.AddTransient<ISessionProvider, SessionProvider>();
             _services.AddTransient<ISessionRepository, SessionRepository>();
