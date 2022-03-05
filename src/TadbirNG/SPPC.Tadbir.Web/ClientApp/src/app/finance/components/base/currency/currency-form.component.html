@@ -1,7 +1,5 @@
-
 <div class="dialog-body">
-
-  <div style="padding:15px;" (keydown.esc)="escPress()">
+  <div style="padding: 15px" (keydown.esc)="escPress()">
     <div *ngIf="errorMessages">
       <div *ngFor="let err of errorMessages" class="alert alert-danger">
         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
@@ -9,41 +7,44 @@
       </div>
     </div>
 
-    <div *ngIf="TaxCurrencyErrorMsg">
-      <div class="alert alert-warning">
-        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-        {{ TaxCurrencyErrorMsg }}
-      </div>
-    </div>
-
     <form novalidate [formGroup]="editForm">
-
-
       <div class="row">
         <div class="col-xs-12 col-sm-6 sppc-float">
           <div class="form-group">
-            <label for="name" class="control-label">{{ 'Currency.Name' | translate }}</label>
+            <label for="name" class="control-label">{{
+              "Currency.Name" | translate
+            }}</label>
 
-            <kendo-dropdownlist [data]="currencyNameData" class="ddl-currency"
-                                [textField]="'value'"
-                                [valueField]="'key'"
-                                [valuePrimitive]="true"
-                                [filterable]="true"
-                                [value]="selectedCurrencyName"
-                                [(ngModel)]="selectedCurrencyName"
-                                (valueChange)="onChangeCurrency($event)"
-                                (filterChange)="handleFilter($event)"
-                                formControlName="name"
-                                [ngModelOptions]="{standalone: true}">
+            <kendo-dropdownlist
+              [data]="currencyNameData"
+              class="ddl-currency"
+              [textField]="'value'"
+              [valueField]="'key'"
+              [valuePrimitive]="true"
+              [filterable]="true"
+              [value]="selectedCurrencyName"
+              [(ngModel)]="selectedCurrencyName"
+              (valueChange)="onChangeCurrency($event)"
+              (filterChange)="handleFilter($event)"
+              formControlName="name"
+              [ngModelOptions]="{ standalone: true }"
+            >
             </kendo-dropdownlist>
           </div>
         </div>
 
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
-            <label for="code" class="control-label">{{ 'Currency.Code' | translate }}</label>
+            <label for="code" class="control-label">{{
+              "Currency.Code" | translate
+            }}</label>
 
-            <input type="text" class="k-textbox" formControlName="code" readonly />
+            <input
+              type="text"
+              class="k-textbox"
+              formControlName="code"
+              readonly
+            />
           </div>
         </div>
       </div>
@@ -51,21 +52,33 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6 sppc-float">
           <div class="form-group">
-            <label for="" class="control-label">{{ 'Currency.TaxCurrency' | translate }}</label>
+            <label for="" class="control-label">{{
+              "Currency.TaxCurrency" | translate
+            }}</label>
 
-            <kendo-dropdownlist [data]="taxCurrencyList" class="ddl-currency"
-                                [textField]="'name'"
-                                [valueField]="'code'"
-                                [valuePrimitive]="true"
-                                [filterable]="true"
-                                (filterChange)="handleTaxCodeFilter($event)"
-                                formControlName="taxCode">
+            <kendo-dropdownlist
+              [data]="taxCurrencyList"
+              class="ddl-currency"
+              [textField]="'name'"
+              [valueField]="'code'"
+              [valuePrimitive]="true"
+              [filterable]="true"
+              (filterChange)="handleTaxCodeFilter($event)"
+              formControlName="taxCode"
+            >
             </kendo-dropdownlist>
 
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.taxCode.valid || editForm.controls.taxCode.pristine">
-              <span *ngIf="editForm.controls.taxCode.errors?.required">{{ 'AllValidations.Currency.TaxCodeIsRequired' | translate }}</span>
+            <div
+              class="k-tooltip k-tooltip-validation"
+              [hidden]="
+                editForm.controls.taxCode.valid ||
+                editForm.controls.taxCode.pristine
+              "
+            >
+              <span *ngIf="editForm.controls.taxCode.errors?.required">{{
+                "AllValidations.Currency.TaxCodeIsRequired" | translate
+              }}</span>
             </div>
-
           </div>
         </div>
       </div>
@@ -73,19 +86,31 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6 sppc-float">
           <div class="form-group">
-            <label for="minorUnit" class="control-label">{{ 'Currency.MinorUnit' | translate }}</label>
+            <label for="minorUnit" class="control-label">{{
+              "Currency.MinorUnit" | translate
+            }}</label>
 
-            <input type="text" class="k-textbox" formControlName="minorUnit" readonly />
-
+            <input
+              type="text"
+              class="k-textbox"
+              formControlName="minorUnit"
+              readonly
+            />
           </div>
         </div>
 
         <div class="col-xs-12 col-sm-6">
           <div class="form-group">
-            <label for="decimalCount" class="control-label">{{ 'Currency.DecimalCount' | translate }}</label>
+            <label for="decimalCount" class="control-label">{{
+              "Currency.DecimalCount" | translate
+            }}</label>
 
-            <input type="text" class="k-textbox" formControlName="decimalCount" readonly />
-
+            <input
+              type="text"
+              class="k-textbox"
+              formControlName="decimalCount"
+              readonly
+            />
           </div>
         </div>
       </div>
@@ -93,22 +118,32 @@
       <div class="row">
         <div class="col-xs-12 col-sm-6 sppc-float">
           <div class="form-group">
-            <label for="branchName" class="control-label">{{ 'Currency.BranchName' | translate }}</label>
+            <label for="branchName" class="control-label">{{
+              "Currency.BranchName" | translate
+            }}</label>
 
-            <input type="text" class="k-textbox" formControlName="branchName" readonly />
-
+            <input
+              type="text"
+              class="k-textbox"
+              formControlName="branchName"
+              readonly
+            />
           </div>
         </div>
 
         <div class="col-xs-12 col-sm-6">
-          <div class="form-group" style="margin-top: 23px;">
-            <label for="isActive" class="control-label">{{ 'Currency.IsActive' | translate }}</label>
+          <div class="form-group" style="margin-top: 23px">
+            <label for="isActive" class="control-label">{{
+              "Currency.IsActive" | translate
+            }}</label>
 
-            <kendo-switch formControlName="isActive" class="sppc-switch"
-                          [onLabel]="('User.Active' | translate)"
-                          [offLabel]="('User.Inactive' | translate)">
+            <kendo-switch
+              formControlName="isActive"
+              class="sppc-switch"
+              [onLabel]="'User.Active' | translate"
+              [offLabel]="'User.Inactive' | translate"
+            >
             </kendo-switch>
-
           </div>
         </div>
       </div>
@@ -116,29 +151,50 @@
       <div class="row">
         <div class="col-xs-12 sppc-float">
           <div class="form-group">
-            <label for="description" class="control-label">{{ 'Currency.Description' | translate }}</label>
+            <label for="description" class="control-label">{{
+              "Currency.Description" | translate
+            }}</label>
 
-            <input type="text" class="k-textbox" formControlName="description" />
-
+            <input
+              type="text"
+              class="k-textbox"
+              formControlName="description"
+            />
           </div>
         </div>
       </div>
-
     </form>
-
   </div>
   <kendo-dialog-actions>
-    <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
-    <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+    <button
+      class="k-button k-primary"
+      [disabled]="!editForm.valid"
+      (click)="onSave($event)"
+    >
+      {{ "Buttons.Ok" | translate }}
+    </button>
+    <button class="k-button" (click)="onCancel($event)">
+      {{ "Buttons.Cancel" | translate }}
+    </button>
   </kendo-dialog-actions>
 </div>
 
-<kendo-dialog title="{{'Currency.EditCurrency' | translate}}" *ngIf="editConfirm" (close)="editModel(false)" [minWidth]="250" [width]="450">
-  <p style="margin: 25px 10px;">
-    {{'Currency.EditConfirmMsg' | translate}}
+<kendo-dialog
+  title="{{ 'Currency.EditCurrency' | translate }}"
+  *ngIf="editConfirm"
+  (close)="editModel(false)"
+  [minWidth]="250"
+  [width]="450"
+>
+  <p style="margin: 25px 10px">
+    {{ "Currency.EditConfirmMsg" | translate }}
   </p>
   <kendo-dialog-actions>
-    <button class="k-button" (click)="getCurrencyInfo(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-    <button class="k-button" (click)="getCurrencyInfo(false)">{{ 'Buttons.No' | translate }}</button>
+    <button class="k-button" (click)="getCurrencyInfo(true)" primary="true">
+      {{ "Buttons.Yes" | translate }}
+    </button>
+    <button class="k-button" (click)="getCurrencyInfo(false)">
+      {{ "Buttons.No" | translate }}
+    </button>
   </kendo-dialog-actions>
 </kendo-dialog>

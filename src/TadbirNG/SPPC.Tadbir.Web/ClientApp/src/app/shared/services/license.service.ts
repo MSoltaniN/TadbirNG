@@ -1,91 +1,85 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "@sppc/env/environment";
-import { BrowserStorageService } from '@sppc/shared/services/browserStorage.service';
+import { BrowserStorageService } from "@sppc/shared/services/browserStorage.service";
 import { BaseService } from "../class/base.service";
 
 @Injectable()
 export class LicenseService extends BaseService {
-
-  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+  constructor(
+    public http: HttpClient,
+    public bStorageService: BrowserStorageService
+  ) {
     super(http, bStorageService);
   }
 
-  CheckOfflineLicense(url: string,serverUserName?: string,serverPassword?: string) {
-
+  CheckOfflineLicense(url: string) {
     var newHeader = this.httpHeaders;
     newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
     var options = { headers: newHeader };
-    
-    let userViewModel = null;
-    if(serverUserName && serverPassword)
-      userViewModel = { username: serverUserName, password: serverPassword };
 
-    return this.http.put(url,userViewModel, options)
-      .map(response => <any>(<Response>response));
+    return this.http
+      .get(url, options)
+      .map((response) => <any>(<Response>response));
   }
 
-  ActivateLicense(url: string,userName: string,password: string) {
- 
-    var newHeader = this.httpHeaders;    
+  ActivateLicense(url: string) {
+    var newHeader = this.httpHeaders;
     newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
     var options = { headers: newHeader };
 
-    return this.http.put(url,{ username: userName, password: password }, options)
-      .map(response => <any>(<Response>response));
+    return this.http
+      .put(url, null, options)
+      .map((response) => <any>(<Response>response));
   }
 
-  CheckOnlineLicense(url: string,serverUserName?:string,serverPassword?:string) {
-    
-    var newHeader = this.httpHeaders;    
+  CheckOnlineLicense(url: string) {
+    var newHeader = this.httpHeaders;
     newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
-    var options = { headers: newHeader };    
+    var options = { headers: newHeader };
 
-    let userViewModel = null;
-    if(serverUserName && serverPassword)
-      userViewModel = { username: serverUserName, password: serverPassword };
-
-    return this.http.put(url,userViewModel,options)
-      .map(response => <any>(<Response>response));
+    return this.http
+      .put(url, null, options)
+      .map((response) => <any>(<Response>response));
   }
 
   DeleteCurrentSessionAsync(url: string) {
- 
-    var newHeader = this.httpHeaders;        
+    var newHeader = this.httpHeaders;
     var options = { headers: newHeader };
 
-    return this.http.delete(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http
+      .delete(url, options)
+      .map((response) => <any>(<Response>response));
   }
 
-  GetOpenSessions(url: string)
-  {
-    var newHeader = this.httpHeaders;    
+  GetOpenSessions(url: string) {
+    var newHeader = this.httpHeaders;
     newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
     var options = { headers: newHeader };
 
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http
+      .get(url, options)
+      .map((response) => <any>(<Response>response));
   }
 
-  DeleteOpenSessions(url: string,ids: number[])
-  {
-    var newHeader = this.httpHeaders;    
+  DeleteOpenSessions(url: string, ids: number[]) {
+    var newHeader = this.httpHeaders;
     newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
     var options = { headers: newHeader };
-    let body = JSON.stringify({ paraph: '', items: ids });
+    let body = JSON.stringify({ paraph: "", items: ids });
 
-    return this.http.put(url,body, options)
-      .map(response => <any>(<Response>response));
+    return this.http
+      .put(url, body, options)
+      .map((response) => <any>(<Response>response));
   }
 
-  PutSessionAsActive(url:string)
-  {
-    var newHeader = this.httpHeaders;    
+  PutSessionAsActive(url: string) {
+    var newHeader = this.httpHeaders;
     newHeader = newHeader.append("X-Tadbir-Instance", environment.InstanceKey);
-    var options = { headers: newHeader };    
+    var options = { headers: newHeader };
 
-    return this.http.put(url,null, options)
-      .map(response => <any>(<Response>response));
+    return this.http
+      .put(url, null, options)
+      .map((response) => <any>(<Response>response));
   }
 }
