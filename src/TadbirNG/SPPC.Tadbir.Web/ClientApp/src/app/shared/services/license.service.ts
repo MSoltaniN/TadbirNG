@@ -39,7 +39,7 @@ export class LicenseService extends BaseService {
     var options = { headers: newHeader };
 
     return this.http
-      .put(url, null, options)
+      .get(url, options)
       .map((response) => <any>(<Response>response));
   }
 
