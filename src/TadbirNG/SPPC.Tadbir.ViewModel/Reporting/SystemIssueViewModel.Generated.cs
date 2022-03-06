@@ -16,7 +16,7 @@ using System.ComponentModel.DataAnnotations;
 namespace SPPC.Tadbir.ViewModel.Reporting
 {
     /// <summary>
-    /// آیتم های مربوط به کنترل سیستم را نگهداری میکند
+    /// آیتم های مربوط به کنترل سیستم را نگهداری می کند
     /// </summary>
     public partial class SystemIssueViewModel
     {

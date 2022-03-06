@@ -28,10 +28,10 @@ namespace SPPC.Tadbir.Persistence.Mapping.Reporting
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
 
-            builder.HasOne(d => d.Parent)
-                .WithMany()
-                .OnDelete(DeleteBehavior.ClientSetNull)
+            builder.HasOne(e => e.Parent)
+                .WithMany(p => p.Children)
                 .HasForeignKey(d => d.ParentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_SystemIssue_Reporting_Parent");
             builder.HasOne(d => d.Permission)
                 .WithMany()

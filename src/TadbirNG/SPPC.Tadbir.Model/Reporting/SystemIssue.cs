@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Model.Reporting
 {
     public partial class SystemIssue
     {
         /// <summary>
-        /// شناسه دیتابیسی دستور والد در ساختار درختی
+        /// شناسه دیتابیسی اشکال والد در ساختار درختی
         /// </summary>
         public int? ParentId { get; set; }
 
@@ -20,5 +18,10 @@ namespace SPPC.Tadbir.Model.Reporting
         /// شناسه دیتابیسی موجودیت
         /// </summary>
         public int? ViewId { get; set; }
+
+        /// <summary>
+        /// مجموعه ای از اشکالات زیرشاخه (فرزند) در ساختار درختی
+        /// </summary>
+        public IList<SystemIssue> Children { get; protected set; }
     }
 }

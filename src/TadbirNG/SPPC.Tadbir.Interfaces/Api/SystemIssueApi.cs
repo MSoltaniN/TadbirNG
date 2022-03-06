@@ -6,14 +6,24 @@
     public sealed class SystemIssueApi
     {
         /// <summary>
-        /// API client URL for system issue
+        /// API client URL for all system issues
         /// </summary>
         public const string SystemIssues = "sys-issues";
 
         /// <summary>
-        /// API server route URL for system issue
+        /// API server route URL for all system issues
         /// </summary>
         public const string SystemIssuesUrl = "sys-issues";
+
+        /// <summary>
+        /// API client URL for summary information about all system issues
+        /// </summary>
+        public const string SystemIssuesSummary = "sys-issues/{0}/summary";
+
+        /// <summary>
+        /// API server route URL for summary information about all system issues
+        /// </summary>
+        public const string SystemIssuesSummaryUrl = "sys-issues/{issueId:min(1)}/summary";
 
         /// <summary>
         /// API client URL for unbalanced vouchers

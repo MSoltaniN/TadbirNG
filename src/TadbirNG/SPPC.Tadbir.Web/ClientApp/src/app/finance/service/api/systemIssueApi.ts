@@ -17,6 +17,9 @@ export class SystemIssueApi {
     // sys-issues
     public static SystemIssues = environment.BaseUrl + "/sys-issues";
 
+    // sys-issues/{issueId:min(1)}/summary
+    public static SystemIssuesSummary = environment.BaseUrl + "/sys-issues/{0}/summary";
+
     // sys-issues/vouchers/unbalanced
     public static UnbalancedVouchers = environment.BaseUrl + "/sys-issues/vouchers/unbalanced";
 

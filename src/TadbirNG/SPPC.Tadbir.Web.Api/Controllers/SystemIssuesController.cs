@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -8,7 +7,6 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -60,6 +58,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/sys-issues/{issueId:min(1)}/summary
+        [HttpGet]
+        [Route(SystemIssueApi.SystemIssuesSummaryUrl)]
+        [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
+        public async Task<IActionResult> GetSystemIssueSummariesAsync(int issueId, DateTime from, DateTime to)
+        {
+            var summaries = await _repository.GetSystemIssueSummaries(issueId, GridOptions, from, to);
+            return Json(summaries);
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="from"></param>
@@ -71,11 +83,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
         public async Task<IActionResult> GetUnbalancedVouchersAsync(DateTime from, DateTime to)
         {
-            var (vouchers, itemCount) = await _repository.GetUnbalancedVouchersAsync(GridOptions, from, to);
-            SetItemCount(itemCount);
-            Localize(vouchers.ToArray());
-            SetRowNumbers(vouchers);
-            return Json(vouchers);
+            var vouchers = await _repository.GetUnbalancedVouchersAsync(GridOptions, from, to);
+            Localize(vouchers.Items);
+            return JsonListResult(vouchers);
         }
 
         /// <summary>
@@ -90,11 +100,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
         public async Task<IActionResult> GetVouchersWithNoArticleAsync(DateTime from, DateTime to)
         {
-            var (vouchers, itemCount) = await _repository.GetVouchersWithNoArticleAsync(GridOptions, from, to);
-            SetItemCount(itemCount);
-            Localize(vouchers.ToArray());
-            SetRowNumbers(vouchers);
-            return Json(vouchers);
+            var vouchers = await _repository.GetVouchersWithNoArticleAsync(GridOptions, from, to);
+            Localize(vouchers.Items);
+            return JsonListResult(vouchers);
         }
 
         /// <summary>
@@ -109,10 +117,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
         public async Task<IActionResult> GetMissingVoucherNumbersAsync(DateTime from, DateTime to)
         {
-            var (voucherNumbers, itemCount) = await _repository.GetMissingVoucherNumbersAsync(GridOptions, from, to);
-            SetItemCount(itemCount);
-            SetRowNumbers(voucherNumbers);
-            return Json(voucherNumbers);
+            var vouchers = await _repository.GetMissingVoucherNumbersAsync(GridOptions, from, to);
+            return JsonListResult(vouchers);
         }
 
         /// <summary>
@@ -128,15 +134,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.SystemIssue, (int)SystemIssuePermissions.View)]
         public async Task<IActionResult> GetSystemIssueArticlesAsync(string issueType, DateTime from, DateTime to)
         {
-            var (articles, itemCount) = await _repository.GetSystemIssueArticlesAsync(
-                GridOptions, issueType, from, to);
-            SetItemCount(itemCount);
-            if (issueType != "invalid-acc")
-            {
-                SetRowNumbers(articles);
-            }
-
-            return Json(articles);
+            var articles = await _repository.GetSystemIssueArticlesAsync(GridOptions, issueType, from, to);
+            return JsonListResult(articles);
         }
 
         private void Localize(IList<SystemIssueViewModel> issues)

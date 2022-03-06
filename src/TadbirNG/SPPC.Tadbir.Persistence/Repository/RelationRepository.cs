@@ -1420,15 +1420,15 @@ namespace SPPC.Tadbir.Persistence
             FullAccountCriteriaViewModel criteria, FullAccountViewModel fullAccount)
         {
             string errorKey = String.Empty;
-            if (criteria.RequiresDetailAccount && fullAccount.DetailAccount.Id == 0)
+            if (criteria.RequiresDetailAccount && fullAccount.DetailAccount == null)
             {
                 errorKey = AppStrings.MissingDetailAccountInFullAccount;
             }
-            else if (criteria.RequiresCostCenter && fullAccount.CostCenter.Id == 0)
+            else if (criteria.RequiresCostCenter && fullAccount.CostCenter == null)
             {
                 errorKey = AppStrings.MissingCostCenterInFullAccount;
             }
-            else if (criteria.RequiresProject && fullAccount.Project.Id == 0)
+            else if (criteria.RequiresProject && fullAccount.Project == null)
             {
                 errorKey = AppStrings.MissingProjectInFullAccount;
             }
@@ -1439,7 +1439,7 @@ namespace SPPC.Tadbir.Persistence
         private static string EnsureValidRelationsInFullAccount(
             Account account, FullAccountViewModel fullAccount, FullAccountCriteriaViewModel criteria)
         {
-            if (criteria.RequiresDetailAccount || fullAccount.DetailAccount.Id > 0)
+            if (criteria.RequiresDetailAccount || fullAccount.DetailAccount != null)
             {
                 bool isValidRelation = account.AccountDetailAccounts
                     .Select(ada => ada.DetailId)
@@ -1450,7 +1450,7 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            if (criteria.RequiresCostCenter || fullAccount.CostCenter.Id > 0)
+            if (criteria.RequiresCostCenter || fullAccount.CostCenter != null)
             {
                 bool isValidRelation = account.AccountCostCenters
                     .Select(ac => ac.CostCenterId)
@@ -1461,7 +1461,7 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            if (criteria.RequiresProject || fullAccount.Project.Id > 0)
+            if (criteria.RequiresProject || fullAccount.Project != null)
             {
                 bool isValidRelation = account.AccountProjects
                     .Select(ap => ap.ProjectId)
@@ -1513,7 +1513,7 @@ namespace SPPC.Tadbir.Persistence
             FullAccountCriteriaViewModel criteria, FullAccountViewModel fullAccount)
         {
             string errorKey = String.Empty;
-            if (criteria.RequiresDetailAccount || fullAccount.DetailAccount.Id > 0)
+            if (criteria.RequiresDetailAccount || fullAccount.DetailAccount != null)
             {
                 errorKey = EnsureValidDetailAccountInFullAccount(fullAccount.DetailAccount.Id);
                 if (!String.IsNullOrEmpty(errorKey))
@@ -1522,7 +1522,7 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            if (criteria.RequiresCostCenter || fullAccount.CostCenter.Id > 0)
+            if (criteria.RequiresCostCenter || fullAccount.CostCenter != null)
             {
                 errorKey = EnsureValidCostCenterInFullAccount(fullAccount.CostCenter.Id);
                 if (!String.IsNullOrEmpty(errorKey))
@@ -1531,7 +1531,7 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            if (criteria.RequiresProject || fullAccount.Project.Id > 0)
+            if (criteria.RequiresProject || fullAccount.Project != null)
             {
                 errorKey = EnsureValidProjectInFullAccount(fullAccount.Project.Id);
                 if (!String.IsNullOrEmpty(errorKey))

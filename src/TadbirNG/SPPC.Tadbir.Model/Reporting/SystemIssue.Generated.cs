@@ -32,12 +32,12 @@ namespace SPPC.Tadbir.Model.Reporting
         }
 
         /// <summary>
-        /// Gets or sets the شناسه عنوان در متن های چند زبانه
+        /// شناسه عنوان در متن های چند زبانه
         /// </summary>
         public virtual string TitleKey { get; set; }
 
         /// <summary>
-        /// Gets or sets the آدرس فراخوانی لیست این آیتم
+        /// آدرس فراخوانی لیست این آیتم
         /// </summary>
         public virtual string ApiUrl { get; set; }
 
@@ -52,17 +52,17 @@ namespace SPPC.Tadbir.Model.Reporting
         public virtual bool BranchScope { get; set; }
 
         /// <summary>
-        /// Gets or sets the والد در ساختار درختی
+        /// والد در ساختار درختی
         /// </summary>
         public virtual SystemIssue Parent { get; set; }
 
         /// <summary>
-        /// Gets or sets the دسترسی امنیتی مورد نیاز کاربر 
+        /// دسترسی امنیتی مورد نیاز کاربر 
         /// </summary>
         public virtual Permission Permission { get; set; }
 
         /// <summary>
-        /// Gets or sets the موجودیتی که این ستون در آن تعریف شده است
+        /// موجودیتی که این ستون در آن تعریف شده است
         /// </summary>
         public virtual View View { get; set; }
     }

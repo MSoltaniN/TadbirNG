@@ -31,8 +31,8 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه سطرهای یک موجودیت پایه را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
-        /// پس از اعمال محدودیت های تعریف شده برای شعب و دسترسی به رکوردها از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، کلیه سطرهای یک موجودیت پایه را پس از اعمال محدودیت های تعریف شده
+        /// برای شعب و دسترسی به رکوردها خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TEntity">نوع موجودیتی که سطرهای آن باید خوانده شود</typeparam>
         /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
@@ -79,7 +79,9 @@ namespace SPPC.Tadbir.Persistence
             where TEntity : class, IFiscalEntity
         {
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
-            var query = repository.GetEntityQuery(relatedProperties);
+            var query = repository
+                .GetEntityQuery(relatedProperties)
+                .Where(entity => entity.FiscalPeriodId == UserContext.FiscalPeriodId);
             if (viewId != ViewId.Voucher)
             {
                 query = ApplyOperationBranchFilter(query);
@@ -254,8 +256,8 @@ namespace SPPC.Tadbir.Persistence
         {
             var childTree = GetChildTree(UserContext.BranchId);
             var queryable = records
-                .Where(entity => entity.FiscalPeriodId == UserContext.FiscalPeriodId &&
-                    (entity.BranchId == UserContext.BranchId || childTree.Contains(entity.BranchId)));
+                .Where(entity => entity.BranchId == UserContext.BranchId
+                    || childTree.Contains(entity.BranchId));
             return queryable;
         }
 
