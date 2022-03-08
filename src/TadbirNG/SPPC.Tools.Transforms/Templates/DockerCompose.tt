@@ -68,6 +68,8 @@ services:
    dockerfile: SPPC.Licensing.Local.Web/Dockerfile
   volumes:
    - productdata_LicenseServer:/app/wwwroot
+  networks:
+   - backend
   ports:
    - 9093:80
   extra_hosts:

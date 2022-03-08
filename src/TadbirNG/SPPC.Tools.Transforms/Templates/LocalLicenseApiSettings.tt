@@ -4,12 +4,13 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 {
+  "ConnectionStrings": {
+    "TadbirSysApi": "Server=DbServer;Database=NGTadbirSys;User ID=NgTadbirUser;Password=Demo1234;Trusted_Connection=False"
+  },
   "ServerRoot": "<#= _settings.OnlineServerRoot #>",
   "SSH": {
     "Domain": "<#= _settings.Ssh.Domain #>",
-    "Port": <#= _settings.Ssh.Port #>,
-    "User": "<#= _settings.Ssh.User #>",
-    "Password": "<#= _settings.Ssh.Password #>"
+    "Port": <#= _settings.Ssh.Port #>
   },
   "Logging": {
     "LogLevel": {
@@ -17,5 +18,6 @@
       "Microsoft": "Warning",
       "Microsoft.Hosting.Lifetime": "Information"
     }
-  }
+  },
+  "AllowedHosts": "*"
 }

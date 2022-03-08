@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using NetMQ;
 using NetMQ.Sockets;
 using SPPC.Framework.Common;
@@ -26,13 +25,7 @@ namespace SPPC.Framework.Licensing
             requester.Connect(address);
             requester.SendFrame(HardwareKeyQuery);
             var response = requester.ReceiveFrameString();
-            return Encode(response);
-        }
-
-        private static string Encode(string value)
-        {
-            var bytes = Encoding.UTF8.GetBytes(value);
-            return Convert.ToBase64String(bytes);
+            return response;
         }
 
         private const string HardwareKeyQuery = "hwkey";

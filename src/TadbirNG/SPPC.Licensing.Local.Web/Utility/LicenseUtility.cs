@@ -97,8 +97,8 @@ namespace SPPC.Tadbir.Licensing
             var signature = String.Empty;
             var ignored = new string[]
             {
-                "CustomerKey", "LicenseKey", "HardwareKey", "ClientKey", "Secret", "IsActivated",
-                "OfflineLimit", "LoginCount","ServerUser", "ServerPassword"
+                "CustomerKey", "LicenseKey", "HardwareKey", "ClientKey", "Secret",
+                "IsActivated", "OfflineLimit", "LoginCount"
             };
             var licenseModel = await LoadLicenseAsync();
             if (licenseModel.OfflineLimit == 0 || licenseModel.LoginCount < licenseModel.OfflineLimit)

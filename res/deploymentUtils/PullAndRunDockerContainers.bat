@@ -11,7 +11,7 @@ timeout /t 5
 
 set ServiceName=0
 set /P BuildSpecific="Do you want to pull specific Service?(y/n)"
-if %BuildSpecific%==y ( set /P ServiceName="Enter Service you want to pull(1.sppcTadbirDB  2.sppc.tadbir.web.api 3.sppcTadbirWebNew) 4:sppcLicensingLocalWeb :" ) 
+if %BuildSpecific%==y ( set /P ServiceName="Enter Service you want to pull(1.DbServer  2.ApiServer 3.WebApp 4:LicenseServer) :" ) 
 
 cls
 docker context use remote
@@ -21,16 +21,16 @@ timeout /t 5
 
 cls
 echo Pull services from docker hub...
-if %ServiceName%==0 (  docker pull msn1368/sppctadbirdb:dev
-                       docker pull msn1368/sppctadbirwebapi:latest
-                       docker pull msn1368/sppctadbirwebnew:dev
-                       docker pull msn1368/sppclicensinglocalweb:dev
-                               goto :Run
-                             )
-if %ServiceName%==1 (  docker pull msn1368/sppctadbirdb:dev)
-if %ServiceName%==2 (  docker pull msn1368/sppctadbirwebapi:latest)
-if %ServiceName%==3 (  docker pull msn1368/sppctadbirwebnew:dev)
-if %ServiceName%==4 (  docker pull msn1368/sppclicensinglocalweb:dev)
+if %ServiceName%==0 ( docker pull msn1368/db-server:dev
+                      docker pull msn1368/api-server:latest
+                      docker pull msn1368/web-app:dev
+                      docker pull msn1368/license-server:dev
+                         goto :Run
+                    )
+if %ServiceName%==1 ( docker pull msn1368/db-server:dev)
+if %ServiceName%==2 ( docker pull msn1368/api-server:latest)
+if %ServiceName%==3 ( docker pull msn1368/web-app:dev)
+if %ServiceName%==4 ( docker pull msn1368/license-server:dev)
 
 :Run
 timeout /t 5

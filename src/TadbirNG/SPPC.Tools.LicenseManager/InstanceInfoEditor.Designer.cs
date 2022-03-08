@@ -189,6 +189,7 @@ namespace SPPC.Tools.LicenseManager
             // chkShowPassword
             // 
             this.chkShowPassword.AutoSize = true;
+            this.chkShowPassword.Enabled = false;
             this.chkShowPassword.Location = new System.Drawing.Point(14, 79);
             this.chkShowPassword.Name = "chkShowPassword";
             this.chkShowPassword.Size = new System.Drawing.Size(94, 22);
@@ -201,6 +202,7 @@ namespace SPPC.Tools.LicenseManager
             // 
             this.txtPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPassword.Enabled = false;
             this.txtPassword.Location = new System.Drawing.Point(120, 76);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -220,6 +222,7 @@ namespace SPPC.Tools.LicenseManager
             // 
             this.txtUserName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtUserName.Enabled = false;
             this.txtUserName.Location = new System.Drawing.Point(6, 35);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.RightToLeft = System.Windows.Forms.RightToLeft.No;

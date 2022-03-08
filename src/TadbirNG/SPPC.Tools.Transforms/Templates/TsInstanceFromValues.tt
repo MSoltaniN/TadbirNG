@@ -20,5 +20,6 @@ export const environment = {
   BaseUrl: '<#= _settings.WebApiUrl #>',
   LicenseServerUrl: '<#= _settings.LocalServerUrl #>',
   InstanceKey: '<#= _settings.Key #>',
-  Version: '<#= _settings.Version #>'
+  Version: '<#= _settings.Version #>',
+  SessionAliveInterval: 300000
 };

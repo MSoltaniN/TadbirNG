@@ -64,7 +64,8 @@ namespace SPPC.Licensing.Persistence
                     EndDate = license.EndDate,
                     ActiveModules = license.ActiveModules,
                     IsActivated = license.IsActivated,
-                    OfflineLimit = license.OfflineLimit
+                    OfflineLimit = license.OfflineLimit,
+                    LoginCount = 0
                 };
             }
 

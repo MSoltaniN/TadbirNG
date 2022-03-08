@@ -88,8 +88,9 @@ namespace SPPC.Tools.Transforms.Templates
             #line default
             #line hidden
             this.Write(":dev\r\n  build:\r\n   context: .\r\n   dockerfile: SPPC.Licensing.Local.Web/Dockerfile" +
-                    "\r\n  volumes:\r\n   - productdata_LicenseServer:/app/wwwroot\r\n  ports:\r\n   - 9093:8" +
-                    "0\r\n  extra_hosts:\r\n   - \"host.docker.internal:host-gateway\"\r\n\r\n");
+                    "\r\n  volumes:\r\n   - productdata_LicenseServer:/app/wwwroot\r\n  networks:\r\n   - bac" +
+                    "kend\r\n  ports:\r\n   - 9093:80\r\n  extra_hosts:\r\n   - \"host.docker.internal:host-ga" +
+                    "teway\"\r\n\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

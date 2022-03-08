@@ -27,7 +27,7 @@ namespace SPPC.Tools.Model
                     $"http://{BuildSettingValues.DefaultHostUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
                 WebApiUrl = String.Format(
                     $"http://{BuildSettingValues.DefaultHostUrl}:{BuildSettingValues.DefaultApiPort}");
-                Ssh = new RemoteConnection() { Domain = BuildSettingValues.DefaultHostUrl, Port = 22 };
+                Ssh = new RemoteConnection() { Domain = BuildSettingValues.LocalHostUrl, Port = 5555 };
                 DbServerName = BuildSettingValues.DefaultHostUrl;
                 DbUserName = BuildSettingValues.DefaultDbUser;
                 DbPassword = BuildSettingValues.DefaultDbPassword;
@@ -66,7 +66,7 @@ namespace SPPC.Tools.Model
                     $"http://{BuildSettingValues.LocalHostUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
                 WebApiUrl = String.Format(
                     $"http://{BuildSettingValues.LocalHostUrl}:{BuildSettingValues.DefaultApiPort}");
-                Ssh = new RemoteConnection() { Domain = BuildSettingValues.DockerHostInternalUrl, Port = 22 };
+                Ssh = new RemoteConnection() { Domain = BuildSettingValues.DockerHostInternalUrl, Port = 5555 };
                 DbServerName = BuildSettingValues.DockerDbServer;
                 DbUserName = BuildSettingValues.DefaultDbUser;
                 DbPassword = BuildSettingValues.DefaultDbPassword;
