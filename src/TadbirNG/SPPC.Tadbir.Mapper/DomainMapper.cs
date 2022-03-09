@@ -254,9 +254,9 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.TypeId,
                     opts => opts.MapFrom(src => src.LineTypeId))
                 .AfterMap((viewModel, model) => model.AccountId = viewModel.FullAccount.Account.Id)
-                .AfterMap((viewModel, model) => model.DetailId = AsNullable(viewModel.FullAccount.DetailAccount.Id))
-                .AfterMap((viewModel, model) => model.CostCenterId = AsNullable(viewModel.FullAccount.CostCenter.Id))
-                .AfterMap((viewModel, model) => model.ProjectId = AsNullable(viewModel.FullAccount.Project.Id));
+                .AfterMap((viewModel, model) => model.DetailId = GetNullableId(viewModel.FullAccount.DetailAccount))
+                .AfterMap((viewModel, model) => model.CostCenterId = GetNullableId(viewModel.FullAccount.CostCenter))
+                .AfterMap((viewModel, model) => model.ProjectId = GetNullableId(viewModel.FullAccount.Project));
             mapperConfig.CreateMap<VoucherLine, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(
@@ -573,9 +573,11 @@ namespace SPPC.Tadbir.Mapper
             return JsonHelper.To<TConfig>(setting.Values);
         }
 
-        private static int? AsNullable(int value)
+        private static int? GetNullableId(AccountItemBriefViewModel item)
         {
-            return value > 0 ? value : null;
+            return (item != null && item.Id > 0)
+                ? item.Id
+                : null;
         }
 
         private static FullAccountViewModel BuildFullAccount(

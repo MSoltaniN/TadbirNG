@@ -1349,6 +1349,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            article.FullAccount.DetailAccount =
+                (article.FullAccount.DetailAccount != null && article.FullAccount.DetailAccount.Id > 0)
+                ? article.FullAccount.DetailAccount
+                : null;
+            article.FullAccount.CostCenter =
+                (article.FullAccount.CostCenter != null && article.FullAccount.CostCenter.Id > 0)
+                ? article.FullAccount.CostCenter
+                : null;
+            article.FullAccount.Project =
+                (article.FullAccount.Project != null && article.FullAccount.Project.Id > 0)
+                ? article.FullAccount.Project
+                : null;
             result = await FullAccountValidationResult(article.FullAccount, _relationRepository);
             if (result is BadRequestObjectResult)
             {

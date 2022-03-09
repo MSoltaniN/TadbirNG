@@ -166,13 +166,13 @@ namespace SPPC.Tadbir.Persistence
                 return errorKey;
             }
 
-            errorKey = await EnsureValidItemsInFullAccountAsync(criteria, fullAccount);
+            errorKey = await EnsureValidItemsInFullAccountAsync(fullAccount);
             if (!String.IsNullOrEmpty(errorKey))
             {
                 return errorKey;
             }
 
-            errorKey = EnsureValidRelationsInFullAccount(account, fullAccount, criteria);
+            errorKey = EnsureValidRelationsInFullAccount(account, fullAccount);
             if (!String.IsNullOrEmpty(errorKey))
             {
                 return errorKey;
@@ -203,37 +203,7 @@ namespace SPPC.Tadbir.Persistence
                 Project = project
             };
 
-            var accountModel = Repository
-                .GetAllQuery<Account>(ViewId.Account, acc => acc.Children,
-                    acc => acc.AccountDetailAccounts, acc => acc.AccountCostCenters, acc => acc.AccountProjects)
-                .Where(acc => acc.Id == fullAccount.Account.Id)
-                .SingleOrDefault();
-            string errorKey = EnsureValidAccountInFullAccount(accountModel);
-            if (!String.IsNullOrEmpty(errorKey))
-            {
-                return false;
-            }
-
-            var criteria = GetFullAccountCriteria(accountModel);
-            errorKey = EnsureNoMissingItemInFullAccount(criteria, fullAccount);
-            if (!String.IsNullOrEmpty(errorKey))
-            {
-                return false;
-            }
-
-            errorKey = EnsureValidItemsInFullAccount(criteria, fullAccount);
-            if (!String.IsNullOrEmpty(errorKey))
-            {
-                return false;
-            }
-
-            errorKey = EnsureValidRelationsInFullAccount(accountModel, fullAccount, criteria);
-            if (!String.IsNullOrEmpty(errorKey))
-            {
-                return false;
-            }
-
-            return true;
+            return String.IsNullOrEmpty(LookupFullAccountAsync(fullAccount).Result);
         }
 
         /// <summary>
@@ -1437,9 +1407,9 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private static string EnsureValidRelationsInFullAccount(
-            Account account, FullAccountViewModel fullAccount, FullAccountCriteriaViewModel criteria)
+            Account account, FullAccountViewModel fullAccount)
         {
-            if (criteria.RequiresDetailAccount || fullAccount.DetailAccount != null)
+            if (fullAccount.DetailAccount != null)
             {
                 bool isValidRelation = account.AccountDetailAccounts
                     .Select(ada => ada.DetailId)
@@ -1450,7 +1420,7 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            if (criteria.RequiresCostCenter || fullAccount.CostCenter != null)
+            if (fullAccount.CostCenter != null)
             {
                 bool isValidRelation = account.AccountCostCenters
                     .Select(ac => ac.CostCenterId)
@@ -1461,7 +1431,7 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            if (criteria.RequiresProject || fullAccount.Project != null)
+            if (fullAccount.Project != null)
             {
                 bool isValidRelation = account.AccountProjects
                     .Select(ap => ap.ProjectId)
@@ -1475,11 +1445,10 @@ namespace SPPC.Tadbir.Persistence
             return String.Empty;
         }
 
-        private async Task<string> EnsureValidItemsInFullAccountAsync(
-            FullAccountCriteriaViewModel criteria, FullAccountViewModel fullAccount)
+        private async Task<string> EnsureValidItemsInFullAccountAsync(FullAccountViewModel fullAccount)
         {
             string errorKey = String.Empty;
-            if (criteria.RequiresDetailAccount || fullAccount.DetailAccount.Id > 0)
+            if (fullAccount.DetailAccount != null)
             {
                 errorKey = await EnsureValidDetailAccountInFullAccountAsync(fullAccount.DetailAccount.Id);
                 if (!String.IsNullOrEmpty(errorKey))
@@ -1488,7 +1457,7 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            if (criteria.RequiresCostCenter || fullAccount.CostCenter.Id > 0)
+            if (fullAccount.CostCenter != null)
             {
                 errorKey = await EnsureValidCostCenterInFullAccountAsync(fullAccount.CostCenter.Id);
                 if (!String.IsNullOrEmpty(errorKey))
@@ -1497,43 +1466,9 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            if (criteria.RequiresProject || fullAccount.Project.Id > 0)
+            if (fullAccount.Project != null)
             {
                 errorKey = await EnsureValidProjectInFullAccountAsync(fullAccount.Project.Id);
-                if (!String.IsNullOrEmpty(errorKey))
-                {
-                    return errorKey;
-                }
-            }
-
-            return errorKey;
-        }
-
-        private string EnsureValidItemsInFullAccount(
-            FullAccountCriteriaViewModel criteria, FullAccountViewModel fullAccount)
-        {
-            string errorKey = String.Empty;
-            if (criteria.RequiresDetailAccount || fullAccount.DetailAccount != null)
-            {
-                errorKey = EnsureValidDetailAccountInFullAccount(fullAccount.DetailAccount.Id);
-                if (!String.IsNullOrEmpty(errorKey))
-                {
-                    return errorKey;
-                }
-            }
-
-            if (criteria.RequiresCostCenter || fullAccount.CostCenter != null)
-            {
-                errorKey = EnsureValidCostCenterInFullAccount(fullAccount.CostCenter.Id);
-                if (!String.IsNullOrEmpty(errorKey))
-                {
-                    return errorKey;
-                }
-            }
-
-            if (criteria.RequiresProject || fullAccount.Project != null)
-            {
-                errorKey = EnsureValidProjectInFullAccount(fullAccount.Project.Id);
                 if (!String.IsNullOrEmpty(errorKey))
                 {
                     return errorKey;
@@ -1589,64 +1524,6 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllQuery<Project>(ViewId.Project, prj => prj.Children)
                 .Where(prj => prj.Id == projectId)
                 .SingleOrDefaultAsync();
-            if (project == null)
-            {
-                errorKey = AppStrings.InvalidProjectInFullAccount;
-            }
-            else if (project.Children.Count > 0)
-            {
-                errorKey = AppStrings.NonLeafProjectInFullAccount;
-            }
-
-            return errorKey;
-        }
-
-        private string EnsureValidDetailAccountInFullAccount(int detailId)
-        {
-            string errorKey = String.Empty;
-            var detailAccount = Repository
-                .GetAllQuery<DetailAccount>(
-                    ViewId.DetailAccount, facc => facc.Children, facc => facc.AccountDetailAccounts)
-                .Where(facc => facc.Id == detailId)
-                .SingleOrDefault();
-            if (detailAccount == null)
-            {
-                errorKey = AppStrings.InvalidDetailAccountInFullAccount;
-            }
-            else if (detailAccount.Children.Count > 0)
-            {
-                errorKey = AppStrings.NonLeafDetailAccountInFullAccount;
-            }
-
-            return errorKey;
-        }
-
-        private string EnsureValidCostCenterInFullAccount(int costCenterId)
-        {
-            string errorKey = String.Empty;
-            var costCenter = Repository
-                .GetAllQuery<CostCenter>(ViewId.CostCenter, cc => cc.Children, cc => cc.AccountCostCenters)
-                .Where(cc => cc.Id == costCenterId)
-                .SingleOrDefault();
-            if (costCenter == null)
-            {
-                errorKey = AppStrings.InvalidCostCenterInFullAccount;
-            }
-            else if (costCenter.Children.Count > 0)
-            {
-                errorKey = AppStrings.NonLeafCostCenterInFullAccount;
-            }
-
-            return errorKey;
-        }
-
-        private string EnsureValidProjectInFullAccount(int projectId)
-        {
-            string errorKey = String.Empty;
-            var project = Repository
-                .GetAllQuery<Project>(ViewId.Project, prj => prj.Children, prj => prj.AccountProjects)
-                .Where(prj => prj.Id == projectId)
-                .SingleOrDefault();
             if (project == null)
             {
                 errorKey = AppStrings.InvalidProjectInFullAccount;
