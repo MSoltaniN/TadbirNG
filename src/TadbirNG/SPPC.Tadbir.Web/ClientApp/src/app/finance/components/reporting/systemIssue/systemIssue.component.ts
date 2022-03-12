@@ -66,6 +66,7 @@ export class SystemIssueComponent
   selectedBranchScope: string = BranchScopeType.CurrentBranch;
   isEnabledBranchScope: boolean = true;
 
+  clickedIssues: Array<number> = [];
   checkedIssues: Array<number> = [];
   selectedIssue: Array<number> = [];
   selectedSystemIssue: SystemIssue;
@@ -118,6 +119,7 @@ export class SystemIssueComponent
 
   ngOnInit(): void {
     this.getSystemIssuesList();
+    this.clickedIssues = [];
   }
 
   getSystemIssuesList() {
@@ -212,10 +214,19 @@ export class SystemIssueComponent
       "&to=" +
       this.toDate;
 
-    var currentFilter = this.setFilter(issue.branchScope);
+    var currentFilter = this.getDefaultFilter();
+    var quickFilter = this.getQuickFilter(issue.branchScope);
 
     this.systemIssueService
-      .getAll(apiUrl, this.pageIndex, this.pageSize, this.sort, currentFilter)
+      .getAll(
+        apiUrl,
+        this.pageIndex,
+        this.pageSize,
+        this.sort,
+        currentFilter,
+        quickFilter,
+        false
+      )
       .subscribe((res) => {
         debugger;
         var items = <Array<any>>res.body;
@@ -245,7 +256,7 @@ export class SystemIssueComponent
 
       if (this.selectedSystemIssue && this.selectedSystemIssue.branchScope) {
         if (this.selectedBranchScope == "1") {
-          this.defaultFilter.push(
+          this.quickFilter.push(
             new Filter(
               "BranchId",
               this.BranchId.toString(),
@@ -259,8 +270,16 @@ export class SystemIssueComponent
       this.getDataUrl =
         this.getDataUrl + "?from=" + this.fromDate + "&to=" + this.toDate;
 
-      //below line is used for removing filters and reloading grid data again
-      this.gridFilter.removeFilterGrid();
+      if (
+        this.checkedIssues.findIndex((i) => i == this.selectedSystemIssue.id) ==
+        -1
+      ) {
+        this.listChanged = true;
+        this.clickedIssues.push(this.selectedSystemIssue.id);
+      } else this.listChanged = false;
+
+      this.reloadGrid();
+      this.gridFilter.removeFilterGridOnly();
     }
   }
 
@@ -284,10 +303,19 @@ export class SystemIssueComponent
       "&to=" +
       this.toDate;
 
-    var currentFilter = this.setFilter(issue.branchScope);
+    var currentFilter = this.getDefaultFilter();
+    var quickFilter = this.getQuickFilter(issue.branchScope);
 
     this.systemIssueService
-      .getAll(apiUrl, this.pageIndex, this.pageSize, this.sort, currentFilter)
+      .getAll(
+        apiUrl,
+        this.pageIndex,
+        this.pageSize,
+        this.sort,
+        currentFilter,
+        quickFilter,
+        false
+      )
       .subscribe((res) => {
         if (res.headers != null) {
           var headers = res.headers != undefined ? res.headers : null;
@@ -309,18 +337,8 @@ export class SystemIssueComponent
       });
   }
 
-  setFilter(applyBranchScope: boolean): FilterExpression {
+  getDefaultFilter(): FilterExpression {
     this.defaultFilter = [];
-    if (this.selectedBranchScope == "1" && applyBranchScope) {
-      this.defaultFilter.push(
-        new Filter(
-          "BranchId",
-          this.BranchId.toString(),
-          "== {0}",
-          "System.Int32"
-        )
-      );
-    }
 
     var currentFilter = this.currentFilter
       ? JSON.parse(JSON.stringify(this.currentFilter))
@@ -334,6 +352,32 @@ export class SystemIssueComponent
     });
 
     return currentFilter;
+  }
+
+  getQuickFilter(applyBranchScope: boolean): FilterExpression {
+    this.quickFilter = [];
+    if (this.selectedBranchScope == "1" && applyBranchScope) {
+      this.defaultFilter.push(
+        new Filter(
+          "BranchId",
+          this.BranchId.toString(),
+          "== {0}",
+          "System.Int32"
+        )
+      );
+    }
+
+    let quickFilter: FilterExpression;
+
+    this.quickFilter.forEach((item) => {
+      quickFilter = this.addFilterToFilterExpression(
+        quickFilter,
+        item,
+        FilterExpressionOperator.And
+      );
+    });
+
+    return quickFilter;
   }
 
   changeParam() {
