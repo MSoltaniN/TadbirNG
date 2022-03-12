@@ -1,0 +1,17 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+@echo OFF
+
+:: Build Docker images using custom generated docker-compose files...
+echo Building Docker images...
+docker-compose -f docker-compose.override.yml -f docker-compose.yml build
+
+:: Pushing images to Docker Hub
+echo Pushing images to Docker Hub...
+docker push msn1368/license-server-<#= _imageGuid #>:dev
+docker push msn1368/api-server-<#= _imageGuid #>:latest
+docker push msn1368/web-app-<#= _imageGuid #>:dev
+docker push msn1368/db-server:dev

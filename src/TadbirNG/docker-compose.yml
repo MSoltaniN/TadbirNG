@@ -25,7 +25,7 @@ services:
   image: msn1368/api-server:latest
   build:
    context: .
-   dockerfile: sppc.tadbir.web.api/Dockerfile
+   dockerfile: SPPC.Tadbir.Web.Api/Dockerfile
   depends_on:
    - DbServer
   networks:

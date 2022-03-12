@@ -18,9 +18,9 @@ namespace SPPC.Tools.Transforms.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+    #line 1 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerDeploy.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public partial class DockerCompose : DockerComposeBase
+    public partial class DockerDeploy : DockerDeployBase
     {
 #line hidden
         /// <summary>
@@ -28,82 +28,36 @@ namespace SPPC.Tools.Transforms.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write(@"version: '3.9'
+            this.Write(@"@echo OFF
 
-volumes:
- productdata_DbServer:
- productdata_LicenseServer:
- 
-networks:
- frontend:
- backend:
+:: Build Docker images using custom generated docker-compose files...
+echo Building Docker images...
+docker-compose -f docker-compose.override.yml -f docker-compose.yml build
 
-services:
-
- DbServer:
-  image: msn1368/db-server:dev
-  user: root
-  build:
-   context: ../../res
-   dockerfile: Dockerfile
-  networks:
-   - backend
-  volumes:
-   - productdata_DbServer:/var/opt/mssql/data
-   
- ApiServer:
-  image: msn1368/api-server-");
+:: Pushing images to Docker Hub
+echo Pushing images to Docker Hub...
+docker push msn1368/license-server-");
             
-            #line 30 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            #line 14 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerDeploy.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
             
             #line default
             #line hidden
-            this.Write(@":latest
-  build:
-   context: .
-   dockerfile: SPPC.Tadbir.Web.Api/Dockerfile
-  depends_on:
-   - DbServer
-  networks:
-   - backend
-   - frontend
-
- loadBalancer:
-  image: dockercloud/haproxy:1.2.1
-  depends_on:
-   - ApiServer
-  ports:
-   - 9095:80
-   - 1936:1936
-  links:
-   - ApiServer
-  volumes:
-   - /var/run/docker.sock:/var/run/docker.sock
-  networks:
-   - frontend
-
- WebApp:
-  image: msn1368/web-app-");
+            this.Write(":dev\r\ndocker push msn1368/api-server-");
             
-            #line 55 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            #line 15 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerDeploy.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
             
             #line default
             #line hidden
-            this.Write(":dev\r\n  build: \r\n   context: ./SPPC.Tadbir.Web/ClientApp\r\n   dockerfile: Dockerfi" +
-                    "le\r\n  networks:\r\n   - frontend\r\n  ports:\r\n   - 9090:4200\r\n\r\n LicenseServer:\r\n  i" +
-                    "mage: msn1368/license-server-");
+            this.Write(":latest\r\ndocker push msn1368/web-app-");
             
-            #line 65 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            #line 16 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerDeploy.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
             
             #line default
             #line hidden
-            this.Write(":dev\r\n  build:\r\n   context: .\r\n   dockerfile: SPPC.Licensing.Local.Web/Dockerfile" +
-                    "\r\n  volumes:\r\n   - productdata_LicenseServer:/app/wwwroot\r\n  networks:\r\n   - bac" +
-                    "kend\r\n  ports:\r\n   - 9093:80\r\n  extra_hosts:\r\n   - \"host.docker.internal:host-ga" +
-                    "teway\"\r\n\r\n");
+            this.Write(":dev\r\ndocker push msn1368/db-server:dev\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -115,7 +69,7 @@ services:
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public class DockerComposeBase
+    public class DockerDeployBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;
