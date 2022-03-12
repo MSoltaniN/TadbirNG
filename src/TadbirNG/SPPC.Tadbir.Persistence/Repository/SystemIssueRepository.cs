@@ -43,11 +43,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<SystemIssueViewModel>> GetUserSystemIssuesAsync(int userId)
         {
             UnitOfWork.UseSystemContext();
-            var sysIssues = await FilterInaccessibleIssues();
+            var issues = await FilterInaccessibleIssues();
             UnitOfWork.UseCompanyContext();
 
-            return sysIssues
-                .Select(iss => Mapper.Map<SystemIssueViewModel>(iss))
+            return issues
+                .Select(issue => Mapper.Map<SystemIssueViewModel>(issue))
                 .ToList();
         }
 
@@ -90,9 +90,9 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PagedList<VoucherViewModel>> GetUnbalancedVouchersAsync(
             GridOptions gridOptions, DateTime from, DateTime to)
         {
-            var vouchers = await GetUnbalancedVouchersQuery(from, to)
-                .ToListAsync();
-            var pagedList = new PagedList<VoucherViewModel>(vouchers, gridOptions);
+            var vouchers = await GetUnbalancedVouchersAsync(from, to);
+            var pagedList = new PagedList<VoucherViewModel>(
+                vouchers.Select(v => Mapper.Map<VoucherViewModel>(v)), gridOptions);
             SortPagedListItems(pagedList);
             await OnSourceActionAsync(gridOptions, SourceListId.UnbalancedVouchers);
             return pagedList;
@@ -108,9 +108,9 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PagedList<VoucherViewModel>> GetVouchersWithNoArticleAsync(
             GridOptions gridOptions, DateTime from, DateTime to)
         {
-            var vouchers = await GetNoArticleVouchersQuery(from, to)
-                .ToListAsync();
-            var pagedList = new PagedList<VoucherViewModel>(vouchers, gridOptions);
+            var vouchers = await GetNoArticleVouchersAsync(from, to);
+            var pagedList = new PagedList<VoucherViewModel>(
+                vouchers.Select(v => Mapper.Map<VoucherViewModel>(v)), gridOptions);
             SortPagedListItems(pagedList);
             await OnSourceActionAsync(gridOptions, SourceListId.VouchersWithNoArticle);
             return pagedList;
@@ -148,18 +148,18 @@ namespace SPPC.Tadbir.Persistence
             {
                 case "miss-acc":
                     {
-                        var lines = await GetMissingAccountArticlesQuery(from, to)
-                            .ToListAsync();
-                        result = new PagedList<VoucherLineDetailViewModel>(lines, gridOptions);
+                        var lines = await GetMissingAccountArticlesAsync(from, to);
+                        result = new PagedList<VoucherLineDetailViewModel>(
+                            lines.Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl)), gridOptions);
                         sourceList = SourceListId.ArticlesWithMissingAccount;
                         break;
                     }
 
                 case "zero-amount":
                     {
-                        var lines = await GetZeroAmountArticlesQuery(from, to)
-                            .ToListAsync();
-                        result = new PagedList<VoucherLineDetailViewModel>(lines, gridOptions);
+                        var lines = await GetZeroAmountArticlesAsync(from, to);
+                        result = new PagedList<VoucherLineDetailViewModel>(
+                            lines.Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl)), gridOptions);
                         sourceList = SourceListId.ArticlesHavingZeroAmount;
                         break;
                     }
@@ -167,7 +167,8 @@ namespace SPPC.Tadbir.Persistence
                 case "invalid-acc":
                     {
                         var lines = await GetInvalidAccountArticlesAsync(from, to);
-                        result = new PagedList<VoucherLineDetailViewModel>(lines, gridOptions);
+                        result = new PagedList<VoucherLineDetailViewModel>(
+                            lines.Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl)), gridOptions);
                         sourceList = SourceListId.ArticlesWithInvalidAccountItems;
                         break;
                     }
@@ -175,16 +176,17 @@ namespace SPPC.Tadbir.Persistence
                 case "invalid-acc-balance":
                     {
                         var lines = await GetInvalidBalanceArticlesAsync(to);
-                        result = new PagedList<VoucherLineDetailViewModel>(lines, gridOptions);
+                        result = new PagedList<VoucherLineDetailViewModel>(
+                            lines.Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl)), gridOptions);
                         sourceList = SourceListId.AccountsWithInvalidBalance;
                         break;
                     }
 
                 case "invalid-acc-turnover":
                     {
-                        var lines = await GetInvalidTurnoverArticlesQuery(from, to)
-                            .ToListAsync();
-                        result = new PagedList<VoucherLineDetailViewModel>(lines, gridOptions);
+                        var lines = await GetInvalidTurnoverArticlesAsync(from, to);
+                        result = new PagedList<VoucherLineDetailViewModel>(
+                            lines.Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl)), gridOptions);
                         sourceList = SourceListId.AccountsWithInvalidPeriodTurnover;
                         break;
                     }
@@ -293,86 +295,100 @@ namespace SPPC.Tadbir.Persistence
         private async Task<SystemIssueSummaryViewModel> GetSummaryAsync(
             SystemIssue issue, DateTime from, DateTime to, GridOptions gridOptions)
         {
+            IList<Voucher> vouchers = null;
+            IList<VoucherLine> lines = null;
             var summary = new SystemIssueSummaryViewModel()
             {
                 Id = issue.Id,
                 ParentId = issue.ParentId
             };
-            switch (issue.TitleKey)
+
+            // NOTE: Switch statement was replaced by if-else due to variable scoping limitations...
+            if (issue.TitleKey == AppStrings.UnbalancedVouchers)
             {
-                case AppStrings.UnbalancedVouchers:
-                    summary.ItemCount = await GetUnbalancedVouchersQuery(from, to)
-                        .Apply(gridOptions, false)
-                        .CountAsync();
-                    break;
-
-                case AppStrings.VouchersWithNoArticle:
-                    summary.ItemCount = await GetNoArticleVouchersQuery(from, to)
-                        .Apply(gridOptions, false)
-                        .CountAsync();
-                    break;
-
-                case AppStrings.MissingVoucherNumbers:
-                    var items = await GetMissingVoucherNumbersAsync(from, to);
-                    summary.ItemCount = items
-                        .Apply(gridOptions, false)
-                        .Count();
-                    break;
-
-                case AppStrings.ArticlesWithMissingAccount:
-                    summary.ItemCount = await GetMissingAccountArticlesQuery(from, to)
-                        .Apply(gridOptions, false)
-                        .CountAsync();
-                    break;
-
-                case AppStrings.ArticlesHavingZeroAmount:
-                    summary.ItemCount = await GetZeroAmountArticlesQuery(from, to)
-                        .Apply(gridOptions, false)
-                        .CountAsync();
-                    break;
-
-                case AppStrings.ArticlesWithInvalidAccountItems:
-                    var details = await GetInvalidAccountArticlesAsync(from, to);
-                    summary.ItemCount = details
-                        .Apply(gridOptions, false)
-                        .Count();
-                    break;
-
-                case AppStrings.AccountsWithInvalidBalance:
-                    var lines = await GetInvalidBalanceArticlesAsync(to);
-                    summary.ItemCount = lines
-                        .Apply(gridOptions, false)
-                        .Count();
-                    break;
-
-                case AppStrings.AccountsWithInvalidPeriodTurnover:
-                    summary.ItemCount = await GetInvalidTurnoverArticlesQuery(from, to)
-                        .Apply(gridOptions, false)
-                        .CountAsync();
-                    break;
+                vouchers = await GetUnbalancedVouchersAsync(from, to);
+                summary.ItemCount = vouchers
+                    .Select(v => Mapper.Map<VoucherViewModel>(v))
+                    .Apply(gridOptions, false)
+                    .Count();
+            }
+            else if (issue.TitleKey == AppStrings.VouchersWithNoArticle)
+            {
+                vouchers = await GetNoArticleVouchersAsync(from, to);
+                summary.ItemCount = vouchers
+                    .Select(v => Mapper.Map<VoucherViewModel>(v))
+                    .Apply(gridOptions, false)
+                    .Count();
+            }
+            else if (issue.TitleKey == AppStrings.MissingVoucherNumbers)
+            {
+                var items = await GetMissingVoucherNumbersAsync(from, to);
+                summary.ItemCount = items
+                    .Apply(gridOptions, false)
+                    .Count();
+            }
+            else if (issue.TitleKey == AppStrings.ArticlesWithMissingAccount)
+            {
+                lines = await GetMissingAccountArticlesAsync(from, to);
+                summary.ItemCount = lines
+                    .Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl))
+                    .Apply(gridOptions, false)
+                    .Count();
+            }
+            else if (issue.TitleKey == AppStrings.ArticlesHavingZeroAmount)
+            {
+                lines = await GetZeroAmountArticlesAsync(from, to);
+                summary.ItemCount = lines
+                    .Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl))
+                    .Apply(gridOptions, false)
+                    .Count();
+            }
+            else if (issue.TitleKey == AppStrings.ArticlesWithInvalidAccountItems)
+            {
+                lines = await GetInvalidAccountArticlesAsync(from, to);
+                summary.ItemCount = lines
+                    .Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl))
+                    .Apply(gridOptions, false)
+                    .Count();
+            }
+            else if (issue.TitleKey == AppStrings.AccountsWithInvalidBalance)
+            {
+                lines = await GetInvalidBalanceArticlesAsync(to);
+                summary.ItemCount = lines
+                    .Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl))
+                    .Apply(gridOptions, false)
+                    .Count();
+            }
+            else if (issue.TitleKey == AppStrings.AccountsWithInvalidPeriodTurnover)
+            {
+                lines = await GetInvalidTurnoverArticlesAsync(from, to);
+                summary.ItemCount = lines
+                    .Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl))
+                    .Apply(gridOptions, false)
+                    .Count();
             }
 
             return summary;
         }
 
-        private IQueryable<VoucherViewModel> GetUnbalancedVouchersQuery(DateTime from, DateTime to)
+        private async Task<IList<Voucher>> GetUnbalancedVouchersAsync(DateTime from, DateTime to)
         {
-            return Repository
-                .GetAllOperationQuery<Voucher>(ViewId.Voucher, voucher => voucher.Status)
+            return await Repository
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher, v => v.Status, v => v.Origin, v => v.Branch)
                 .Where(voucher => voucher.SubjectType != (short)SubjectType.Draft
                     && !voucher.IsBalanced
                     && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
-                .Select(voucher => Mapper.Map<VoucherViewModel>(voucher));
+                .ToListAsync();
         }
 
-        private IQueryable<VoucherViewModel> GetNoArticleVouchersQuery(DateTime from, DateTime to)
+        private async Task<IList<Voucher>> GetNoArticleVouchersAsync(DateTime from, DateTime to)
         {
-            return Repository
-                .GetAllOperationQuery<Voucher>(ViewId.Voucher, voucher => voucher.Status)
+            return await Repository
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher, v => v.Status, v => v.Origin, v => v.Branch)
                 .Where(voucher => voucher.SubjectType != (short)SubjectType.Draft
                     && voucher.Lines.Count == 0
                     && voucher.Date.Date >= from.Date && voucher.Date.Date <= to.Date)
-                .Select(voucher => Mapper.Map<VoucherViewModel>(voucher));
+                .ToListAsync();
         }
 
         private async Task<IList<NumberListViewModel>> GetMissingVoucherNumbersAsync(DateTime from, DateTime to)
@@ -398,21 +414,21 @@ namespace SPPC.Tadbir.Persistence
             return allMissingNumbers;
         }
 
-        private IQueryable<VoucherLineDetailViewModel> GetMissingAccountArticlesQuery(DateTime from, DateTime to)
+        private async Task<IList<VoucherLine>> GetMissingAccountArticlesAsync(DateTime from, DateTime to)
         {
-            return GetArticlesQueryAsync(from, to)
+            return await GetArticlesQueryAsync(from, to)
                 .Where(line => line.Account == null)
-                .Select(line => Mapper.Map<VoucherLineDetailViewModel>(line));
+                .ToListAsync();
         }
 
-        private IQueryable<VoucherLineDetailViewModel> GetZeroAmountArticlesQuery(DateTime from, DateTime to)
+        private async Task<IList<VoucherLine>> GetZeroAmountArticlesAsync(DateTime from, DateTime to)
         {
-            return GetArticlesQueryAsync(from, to)
+            return await GetArticlesQueryAsync(from, to)
                 .Where(line => line.Debit == 0 && line.Credit == 0)
-                .Select(line => Mapper.Map<VoucherLineDetailViewModel>(line));
+                .ToListAsync();
         }
 
-        private async Task<IList<VoucherLineDetailViewModel>> GetInvalidBalanceArticlesAsync(DateTime to)
+        private async Task<IList<VoucherLine>> GetInvalidBalanceArticlesAsync(DateTime to)
         {
             var result = new List<VoucherLine>();
             var lines = await Repository.GetAllOperationQuery<VoucherLine>(
@@ -450,12 +466,10 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            return result
-                .Select(item => Mapper.Map<VoucherLineDetailViewModel>(item))
-                .ToList();
+            return result;
         }
 
-        private async Task<IList<VoucherLineDetailViewModel>> GetInvalidAccountArticlesAsync(DateTime from, DateTime to)
+        private async Task<IList<VoucherLine>> GetInvalidAccountArticlesAsync(DateTime from, DateTime to)
         {
             var lines = await GetArticlesQueryAsync(from, to)
                 .ToListAsync();
@@ -465,17 +479,16 @@ namespace SPPC.Tadbir.Persistence
                     Mapper.Map<AccountItemBriefViewModel>(line.DetailAccount),
                     Mapper.Map<AccountItemBriefViewModel>(line.CostCenter),
                     Mapper.Map<AccountItemBriefViewModel>(line.Project)))
-                .Select(line => Mapper.Map<VoucherLineDetailViewModel>(line))
                 .ToList();
         }
 
-        private IQueryable<VoucherLineDetailViewModel> GetInvalidTurnoverArticlesQuery(DateTime from, DateTime to)
+        private async Task<IList<VoucherLine>> GetInvalidTurnoverArticlesAsync(DateTime from, DateTime to)
         {
-            return GetArticlesQueryAsync(from, to)
+            return await GetArticlesQueryAsync(from, to)
                 .Where(line =>
                     (line.Account.TurnoverMode == (short)TurnoverMode.CreditorDuringPeriod && line.Debit != 0)
                     || (line.Account.TurnoverMode == (short)TurnoverMode.DebtorDuringPeriod && line.Credit != 0))
-                .Select(item => Mapper.Map<VoucherLineDetailViewModel>(item));
+                .ToListAsync();
         }
 
         private async Task<IEnumerable<int>> GetChildIssuesAsync(int issueId)
@@ -483,8 +496,12 @@ namespace SPPC.Tadbir.Persistence
             var children = new List<int>();
             var repository = UnitOfWork.GetAsyncRepository<SystemIssue>();
             var issue = await repository.GetByIDAsync(issueId, iss => iss.Children);
-            children.Add(issueId);
-            AddChildren(issue, children);
+            if (issue != null)
+            {
+                children.Add(issueId);
+                AddChildren(issue, children);
+            }
+
             return children;
         }
 
