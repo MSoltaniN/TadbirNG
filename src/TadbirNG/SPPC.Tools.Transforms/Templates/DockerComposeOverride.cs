@@ -29,14 +29,8 @@ namespace SPPC.Tools.Transforms.Templates
         public virtual string TransformText()
         {
             this.Write("version: \'3.9\'\r\n\r\nvolumes:\r\n productdata:\r\n \r\nnetworks:\r\n frontend:\r\n backend:\r\n\r" +
-                    "\nservices:\r\n\r\n DbServer:\r\n  image: msn1368/db-server-");
-            
-            #line 18 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
-            
-            #line default
-            #line hidden
-            this.Write(":dev\r\n  ports: \r\n    - 14433:1433\r\n\r\n ApiServer:\r\n  image: msn1368/api-server-");
+                    "\nservices:\r\n\r\n DbServer:\r\n  image: msn1368/db-server:dev\r\n  ports: \r\n    - 14433" +
+                    ":1433\r\n\r\n ApiServer:\r\n  image: msn1368/api-server-");
             
             #line 23 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));

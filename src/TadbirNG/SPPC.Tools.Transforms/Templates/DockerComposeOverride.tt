@@ -15,7 +15,7 @@ networks:
 services:
 
  DbServer:
-  image: msn1368/db-server-<#= _imageGuid #>:dev
+  image: msn1368/db-server:dev
   ports: 
     - 14433:1433
 

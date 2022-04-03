@@ -50,7 +50,7 @@ CREATE TABLE [Core].[Version] (
 GO
 
 INSERT INTO [Core].[Version] ([VersionID], [Number])
-    VALUES(1, '1.2.1272')
+    VALUES(1, '1.2.1352')
 
 CREATE TABLE [Metadata].[EntityType] (
     [EntityTypeID]   INT              IDENTITY (1, 1) NOT NULL,
@@ -255,7 +255,7 @@ CREATE TABLE [Auth].[Session] (
     [Device]          NVARCHAR(64)     NOT NULL,
     [Browser]         NVARCHAR(64)     NOT NULL,
     [Fingerprint]     NVARCHAR(128)    NOT NULL,
-    [IPAddress]       NVARCHAR(16)     NULL,
+    [IPAddress]       NVARCHAR(32)     NULL,
     [SinceUtc]        DATETIME         NOT NULL,
     [LastActivityUtc] DATETIME         NOT NULL,
     [TimeZone]        NVARCHAR(32)     NULL,
