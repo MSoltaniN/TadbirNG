@@ -1,151 +1,139 @@
-import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
-import "rxjs/Rx";
 import { HttpClient } from "@angular/common/http";
-import { Permission } from '@sppc/core';
-import { BrowserStorageService } from '@sppc/shared/services';
-import { String } from '@sppc/shared/class/source';
-import { Branch } from '@sppc/organization/models';
-import { BaseService } from '@sppc/shared/class';
-import { Role, RoleFull, RoleDetails, UserBrief } from '../models';
-import { RoleApi } from './api';
-import { RelatedItems, RelatedItem } from '@sppc/shared/models';
+import { Injectable } from "@angular/core";
+import { Response } from "@angular/http";
+import { BaseService } from "@sppc/shared/class";
+import { String } from "@sppc/shared/class/source";
+import { Command, RelatedItems, UserProfile } from "@sppc/shared/models";
+import { ShortcutCommand } from "@sppc/shared/models/shortcutCommand";
+import { BrowserStorageService } from "@sppc/shared/services";
+import { Observable } from "rxjs/Observable";
+import { User } from "../models";
+import { UserApi } from "./api";
 
-
-
-export class RoleInfo implements Role {
-    permissions: string[] = [];
-    id: number = 0;
-    name: string;
-    description?: string | undefined;
-    flag: number;
+export class UserInfo implements User {
+  personFirstName: string;
+  personLastName: string;
+  id: number = 0;
+  userName: string;
+  password: string;
+  lastLoginDate?: Date | undefined;
+  isEnabled: boolean = false;
 }
 
-export class PermissionInfo implements Permission {
-    id: number;
-    groupId: number;
-    groupName: string;
-    isEnabled: boolean;
-    name: string;
-    flag: number;
-    description?: string | undefined;
+export class UserProfileInfo implements UserProfile {
+  userName: string;
+  oldPassword: string;
+  newPassword: string;
+  repeatPassword: string;
 }
 
-export class RoleFullInfo implements RoleFull {
-    id: number = 0;
-    role: Role;
-    permissions: Permission[];
-}
-
-export class RelatedItemsInfo implements RelatedItems {
-    id: number;
-    relatedItems: RelatedItem[];
-}
-
-export class RoleDetailsInfo implements RoleDetails {
-    role: Role;
-    permissions: Array<Permission>;
-    branches: Array<Branch>;
-    users: Array<UserBrief>;
+export class CommandInfo implements Command {
+  constructor(
+    public id: number,
+    public title: string = "",
+    public routeUrl: string,
+    public iconName: string = "",
+    public hotKey: string,
+    public children: Command[],
+    public hasPermission: boolean,
+    permissionId?: number | undefined
+  ) {}
 }
 
 @Injectable()
-export class RoleService extends BaseService {
-
-  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+export class UserService extends BaseService {
+  constructor(
+    public http: HttpClient,
+    public bStorageService: BrowserStorageService
+  ) {
     super(http, bStorageService);
   }
 
-    getNewRoleFull() {
-        var url = RoleApi.NewRole;
-        var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
-            .map(response => <any>(<Response>response));
+  changePassword(userProfile: UserProfile): Observable<string> {
+    var body = JSON.stringify(userProfile);
+    var url = String.Format(UserApi.UserPassword, userProfile.userName);
+    var options = { headers: this.httpHeaders };
+    return this.http
+      .put(url, body, options)
+      .map((res) => res)
+      .pipe<string>();
+  }
+
+  getUserRoles(userId: number) {
+    var url = String.Format(UserApi.UserRoles, userId);
+    var options = { headers: this.httpHeaders };
+    return this.http
+      .get(url, options)
+      .map((response) => <any>(<Response>response))
+      .pipe();
+  }
+
+  getCurrentUserHotKeys() {
+    var url = UserApi.CurrentUserHotKeys;
+    var options = { headers: this.httpHeaders };
+    return this.http
+      .get(url, options)
+      .map((response) => <any>(<ShortcutCommand>response))
+      .pipe();
+  }
+
+  modifiedUserRoles(userRoles: RelatedItems) {
+    var body = JSON.stringify(userRoles);
+    var options = { headers: this.httpHeaders };
+    var url = String.Format(UserApi.UserRoles, userRoles.id);
+    return this.http
+      .put(url, body, options)
+      .map((res) => res)
+      .pipe();
+  }
+
+  getCurrentUserCommands(ticket: string) {
+    var url = UserApi.CurrentUserCommands;
+
+    var header = this.httpHeaders;
+    if (header) {
+      header = header.delete("X-Tadbir-AuthTicket");
+      header = header.delete("Accept-Language");
+
+      header = header.append("X-Tadbir-AuthTicket", ticket);
+
+      if (this.CurrentLanguage == "fa")
+        header = header.append("Accept-Language", "fa-IR,fa");
+
+      if (this.CurrentLanguage == "en")
+        header = header.append("Accept-Language", "en-US,en");
     }
 
-    getRoleFull(roleId: number) {
-        var url = String.Format(RoleApi.Role, roleId);
-        var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
-            .map(response => <any>(<Response>response));
+    var options = { headers: header };
+
+    return this.http
+      .get(url, options)
+      .map((response) => <any>(<Response>response))
+      .pipe();
+  }
+
+  getDefaultUserCommands(ticket: string) {
+    var url = UserApi.UserDefaultCommands;
+
+    var header = this.httpHeaders;
+    if (header) {
+      header = header.delete("X-Tadbir-AuthTicket");
+      header = header.delete("Accept-Language");
+
+      header = header.append("X-Tadbir-AuthTicket", ticket);
+
+      if (this.CurrentLanguage == "fa")
+        header = header.append("Accept-Language", "fa-IR,fa");
+
+      if (this.CurrentLanguage == "en")
+        header = header.append("Accept-Language", "en-US,en");
     }
 
+    var options = { headers: header };
 
-    getRoleUsers(roleId: number) {
-        var url = String.Format(RoleApi.RoleUsers, roleId);
-        var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
-            .map(response => <any>(<Response>response));
-    }
-
-    modifiedRoleUsers(roleUsers: RelatedItems) {
-        var body = JSON.stringify(roleUsers);
-        
-        var options = { headers: this.httpHeaders };
-
-        var url = String.Format(RoleApi.RoleUsers, roleUsers.id);
-
-        return this.http.put(url, body, options)
-            .map(res => res)
-            .catch(this.handleError);
-    }
-
-    modifiedRoleCompanies(roleCompanies: RelatedItems) {
-      var body = JSON.stringify(roleCompanies);
-
-      var options = { headers: this.httpHeaders };
-
-      var url = String.Format(RoleApi.RoleCompanies, roleCompanies.id);
-
-      return this.http.put(url, body, options)
-        .map(res => res)
-        .catch(this.handleError);
-    }
-
-    getRoleBranches(roleId: number) {
-        var url = String.Format(RoleApi.RoleBranches, roleId);
-        var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
-            .map(response => <any>(<Response>response));
-    }
-
-    getRoleCompanies(roleId: number) {
-      var url = String.Format(RoleApi.RoleCompanies, roleId);
-      var options = { headers: this.httpHeaders };
-      return this.http.get(url, options)
-        .map(response => <any>(<Response>response));
-    }
-
-    modifiedRoleBranches(roleBranches: RelatedItems) {
-        var body = JSON.stringify(roleBranches);
-        var options = { headers: this.httpHeaders };
-        var url = String.Format(RoleApi.RoleBranches, roleBranches.id);
-        return this.http.put(url, body, options)
-            .map(res => res)
-            .catch(this.handleError);
-    }
-
-    getRoleFiscalPeriods(roleId: number) {
-        var url = String.Format(RoleApi.RoleFiscalPeriods, roleId);
-        var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
-            .map(response => <any>(<Response>response));
-    }
-
-    modifiedRoleFiscalPeriods(roleFPeriods: RelatedItems) {
-        var body = JSON.stringify(roleFPeriods);
-        var options = { headers: this.httpHeaders };
-        var url = String.Format(RoleApi.RoleFiscalPeriods, roleFPeriods.id);
-        return this.http.put(url, body, options)
-            .map(res => res)
-            .catch(this.handleError);
-    }
-
-    getRoleDetail(roleId: number) {
-        var url = String.Format(RoleApi.RoleDetails, roleId);
-        var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
-            .map(response => <any>(<Response>response));
-    }
-
+    return this.http
+      .get(url, options)
+      .map((response) => <any>response)
+      .pipe();
+  }
 }

@@ -39,7 +39,6 @@ import {
 } from "@sppc/shared/services";
 import { ToastrService } from "ngx-toastr";
 import { of } from "rxjs/observable/of";
-import "rxjs/Rx";
 import { AccountFormComponent } from "../account/account-form.component";
 import { AccountGroupsFormComponent } from "./accountGroups-form.component";
 

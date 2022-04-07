@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
@@ -33,8 +35,8 @@ export class AccountRelationsService extends BaseService {
 
   public getChildrens(apiUrl: string) {
     var options = { headers: this.httpHeaders };
-    return this.http.get(apiUrl, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(apiUrl, options).pipe(
+      map(response => <any>(<Response>response)));
   }
 
   public getRelatedComponentModel(apiUrl: string, filter?: FilterExpression) {
@@ -48,8 +50,8 @@ export class AccountRelationsService extends BaseService {
       searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
     var options = { headers: searchHeaders };
 
-    return this.http.get(apiUrl, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(apiUrl, options).pipe(
+      map(response => <any>(<Response>response)));
   }
 
   public getMainComponentModel(apiUrl: string, filter?: FilterExpression) {
@@ -63,8 +65,8 @@ export class AccountRelationsService extends BaseService {
       searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
     var options = { headers: searchHeaders };
 
-    return this.http.get(apiUrl, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(apiUrl, options).pipe(
+      map(response => <any>(<Response>response)));
   }
 
 }

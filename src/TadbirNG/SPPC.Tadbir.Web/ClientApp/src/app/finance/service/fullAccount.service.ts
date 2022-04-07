@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import "rxjs/Rx";
@@ -35,27 +37,27 @@ export class FullAccountService extends BaseService {
 
   GetAccountsLookup() {
     var options = { headers: this.httpHeaders };
-    return this.http.get(LookupApi.EnvironmentAccounts, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(LookupApi.EnvironmentAccounts, options).pipe(
+      map(response => <any>(<Response>response)));
 
   }
 
   GetDetailAccountsLookup() {
     var options = { headers: this.httpHeaders };
-    return this.http.get(LookupApi.EnvironmentDetailAccounts, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(LookupApi.EnvironmentDetailAccounts, options).pipe(
+      map(response => <any>(<Response>response)));
   }
 
   GetCostCentersLookup() {
     var options = { headers: this.httpHeaders };
-    return this.http.get(LookupApi.EnvironmentCostCenters, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(LookupApi.EnvironmentCostCenters, options).pipe(
+      map(response => <any>(<Response>response)));
   }
 
   GetProjectsLookup() {
     var options = { headers: this.httpHeaders };
-    return this.http.get(LookupApi.EnvironmentProjects, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(LookupApi.EnvironmentProjects, options).pipe(
+      map(response => <any>(<Response>response)));
   }
 
   public getFullAccountItemList(apiUrl: string, filter?: FilterExpression) {
@@ -69,7 +71,7 @@ export class FullAccountService extends BaseService {
       searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
     var options = { headers: searchHeaders };
 
-    return this.http.get(apiUrl, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(apiUrl, options).pipe(
+      map(response => <any>(<Response>response)));
   }
 }

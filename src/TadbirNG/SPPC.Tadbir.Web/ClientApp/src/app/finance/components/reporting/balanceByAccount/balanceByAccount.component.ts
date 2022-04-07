@@ -283,7 +283,7 @@ export class BalanceByAccountComponent
 
       this.settingService
         .getSettingById(SettingKey.FinanceReportConfig)
-        .subscribe((res) => {
+        .subscribe((res: any) => {
           if (res) {
             this.openingAsFirstVoucher = res.values.openingAsFirstVoucher;
             this.startTurnoverAsInitBalance =
@@ -895,7 +895,7 @@ export class BalanceByAccountComponent
         this.getText("Entity.Project")
       );
     }
-   
+
     debugger;
     if (errorMsg) {
       this.showMessage(errorMsg, MessageType.Warning);

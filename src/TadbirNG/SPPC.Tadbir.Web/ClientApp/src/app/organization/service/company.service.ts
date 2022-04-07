@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BrowserStorageService } from '@sppc/shared/services';
-import { CompanyDb, FiscalPeriod, Branch } from '@sppc/organization/models';
-import { BaseService } from '@sppc/shared/class';
-import { Observable } from 'rxjs';
-import { CompanyApi } from './api';
-import { String } from '@sppc/shared/class/source';
-import { RelatedItems } from '@sppc/shared/models';
-import { RoleApi } from '@sppc/admin/service/api';
-
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Branch, CompanyDb, FiscalPeriod } from "@sppc/organization/models";
+import { BaseService } from "@sppc/shared/class";
+import { String } from "@sppc/shared/class/source";
+import { RelatedItems } from "@sppc/shared/models";
+import { BrowserStorageService } from "@sppc/shared/services";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { CompanyApi } from "./api";
 
 //export class CompanyInfo implements Company {
 //  parentId?: number | undefined;
@@ -32,32 +31,38 @@ export class CompanyDbInfo implements CompanyDb {
 
 @Injectable()
 export class CompanyService extends BaseService {
-
-  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+  constructor(
+    public http: HttpClient,
+    public bStorageService: BrowserStorageService
+  ) {
     super(http, bStorageService);
   }
 
-
-  public companyValidation(apiUrl: string, model: CompanyDb): Observable<string> {
+  public companyValidation(apiUrl: string, model: CompanyDb) {
     var body = JSON.stringify(model);
-    return this.http.post(apiUrl, body, this.option)
-      .map(res => res)
-      .catch(this.handleError);
+    return this.http.post(apiUrl, body, this.option).pipe(map((res) => res));
   }
 
-
-  public insertInitialCompany(apiUrl: string, company: CompanyDb, branch: Branch, fiscalperiod: FiscalPeriod): Observable<any> {
-    var body = JSON.stringify({ company: company, branch: branch, fiscalperiod: fiscalperiod });
-    return this.http.post(apiUrl, body, this.option)
-      .map(res => res)
-      .catch(this.handleError);
+  public insertInitialCompany(
+    apiUrl: string,
+    company: CompanyDb,
+    branch: Branch,
+    fiscalperiod: FiscalPeriod
+  ): Observable<any> {
+    var body = JSON.stringify({
+      company: company,
+      branch: branch,
+      fiscalperiod: fiscalperiod,
+    });
+    return this.http.post(apiUrl, body, this.option).pipe(map((res) => res));
   }
 
   getCompanyRoles(companyId: number) {
     var url = String.Format(CompanyApi.CompanyRoles, companyId);
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http
+      .get(url, options)
+      .pipe(map((response) => <any>(<Response>response)));
   }
 
   modifiedCompanyRoles(companyRoles: RelatedItems) {
@@ -67,8 +72,6 @@ export class CompanyService extends BaseService {
 
     var url = String.Format(CompanyApi.CompanyRoles, companyRoles.id);
 
-    return this.http.put(url, body, options)
-      .map(res => res)
-      .catch(this.handleError);
+    return this.http.put(url, body, options).pipe(map((res) => res));
   }
 }

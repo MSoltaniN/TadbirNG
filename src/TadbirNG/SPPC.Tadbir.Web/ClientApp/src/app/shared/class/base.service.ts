@@ -1,24 +1,24 @@
-import { EnviromentComponent } from "./enviroment.component";
-import { Response } from "@angular/http";
-import { Observable } from "rxjs/Observable";
 import { HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
-import { BrowserStorageService } from "@sppc/shared/services/browserStorage.service";
-import { String } from '@sppc/shared/class/source';
-import { GridOrderBy } from "@sppc/shared/class/grid.orderby";
-import { FilterExpression } from "@sppc/shared/class/filterExpression";
 import { Injectable } from "@angular/core";
+import { Response } from "@angular/http";
+import { FilterExpression } from "@sppc/shared/class/filterExpression";
+import { GridOrderBy } from "@sppc/shared/class/grid.orderby";
+import { String } from "@sppc/shared/class/source";
+import { BrowserStorageService } from "@sppc/shared/services/browserStorage.service";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 import { OperationId } from "../enum/operationId";
-
-
-
+import { EnviromentComponent } from "./enviroment.component";
 
 @Injectable()
-export class BaseService<T = void | any> extends EnviromentComponent{
-
+export class BaseService<T = void | any> extends EnviromentComponent {
   //option: any;
   //httpHeaders = new HttpHeaders();
 
-  constructor(public http: HttpClient, public bStorageService: BrowserStorageService) {
+  constructor(
+    public http: HttpClient,
+    public bStorageService: BrowserStorageService
+  ) {
     super(bStorageService);
     //this.httpHeaders = this.httpHeaders.append('Content-Type', 'application/json; charset=utf-8');
 
@@ -34,79 +34,101 @@ export class BaseService<T = void | any> extends EnviromentComponent{
   }
 
   public get httpHeaders() {
-    var header = new HttpHeaders(); 
-    header = header.append('Content-Type', 'application/json; charset=utf-8');
+    var header = new HttpHeaders();
+    header = header.append("Content-Type", "application/json; charset=utf-8");
 
-    header = header.append('X-Tadbir-AuthTicket', this.Ticket);
+    header = header.append("X-Tadbir-AuthTicket", this.Ticket);
 
     if (this.CurrentLanguage == "fa")
-      header = header.append('Accept-Language', 'fa-IR,fa');
+      header = header.append("Accept-Language", "fa-IR,fa");
 
     if (this.CurrentLanguage == "en")
-      header = header.append('Accept-Language', 'en-US,en');
+      header = header.append("Accept-Language", "en-US,en");
 
     return header;
   }
 
   public get option() {
-    return { headers: this.httpHeaders }
+    return { headers: this.httpHeaders };
   }
 
   /**
    * لیست رکوردها بر اساس فیلتر و مرتب سازی
-   * @param apiUrl آدرس‌ کامل api  
+   * @param apiUrl آدرس‌ کامل api
    * @param orderby مرتب سازی
    * @param filters فیلتر
    */
-  public getAllForReport(apiUrl: string, orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, operationId: number = OperationId.Print) {
-
+  public getAllForReport(
+    apiUrl: string,
+    orderby?: any,
+    filter?: FilterExpression,
+    quickFilter?: FilterExpression,
+    operationId: number = OperationId.Print
+  ) {
     var sort = new Array<GridOrderBy>();
     if (orderby && orderby.length > 0) {
       for (let item of orderby) {
         sort.push(new GridOrderBy(item.field, item.dir.toUpperCase()));
       }
     }
-    var postItem = { filter: filter, sortColumns: sort, operation: operationId, quickFilter: quickFilter };
+    var postItem = {
+      filter: filter,
+      sortColumns: sort,
+      operation: operationId,
+      quickFilter: quickFilter,
+    };
     var searchHeaders = this.httpHeaders;
     var postBody = JSON.stringify(postItem);
     var base64Body = btoa(encodeURIComponent(postBody));
     if (searchHeaders)
-      searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
+      searchHeaders = searchHeaders.append("X-Tadbir-GridOptions", base64Body);
 
-    return this.http.get(apiUrl, { headers: searchHeaders, observe: "response" })
-      .map(response => <any>(<HttpResponse<any>>response));
+    return this.http
+      .get(apiUrl, { headers: searchHeaders, observe: "response" })
+      .pipe(map((response) => <any>(<HttpResponse<any>>response)));
   }
 
   /**
    * لیست رکوردها بر اساس فیلتر و مرتب سازی
-   * @param apiUrl آدرس‌ کامل api  
+   * @param apiUrl آدرس‌ کامل api
    * @param orderby مرتب سازی
    * @param filters فیلتر
    */
-  public getAllByParamsForReport(apiUrl: string, params: any, orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, operationId: number = OperationId.Print) {
-
+  public getAllByParamsForReport(
+    apiUrl: string,
+    params: any,
+    orderby?: any,
+    filter?: FilterExpression,
+    quickFilter?: FilterExpression,
+    operationId: number = OperationId.Print
+  ) {
     var sort = new Array<GridOrderBy>();
     if (orderby && orderby.length > 0) {
       for (let item of orderby) {
         sort.push(new GridOrderBy(item.field, item.dir.toUpperCase()));
       }
     }
-    var postItem = { filter: filter, sortColumns: sort, operation: operationId, quickFilter: quickFilter };
+    var postItem = {
+      filter: filter,
+      sortColumns: sort,
+      operation: operationId,
+      quickFilter: quickFilter,
+    };
     var searchHeaders = this.httpHeaders;
 
     if (searchHeaders) {
-
       var postBody = JSON.stringify(postItem);
       base64Body = btoa(encodeURIComponent(postBody));
-      searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
+      searchHeaders = searchHeaders.append("X-Tadbir-GridOptions", base64Body);
 
       postBody = JSON.stringify(params);
       var base64Body = btoa(encodeURIComponent(postBody));
-      searchHeaders = searchHeaders.append('X-Tadbir-Parameters', base64Body);
+      searchHeaders = searchHeaders.append("X-Tadbir-Parameters", base64Body);
     }
 
-    return this.http.get(apiUrl, { headers: searchHeaders, observe: "response" })
-      .map(response => <any>(<HttpResponse<any>>response));
+    return this.http
+      .get(apiUrl, { headers: searchHeaders, observe: "response" })
+      .pipe(map((response) => <any>(<HttpResponse<any>>response)));
   }
 
   /**
@@ -118,8 +140,16 @@ export class BaseService<T = void | any> extends EnviromentComponent{
    * @param filter فیلتر اطلاعات گرید
    * @param quickFilter فیلتر سریع
    */
-  public getAll(apiUrl: string, start?: number, count?: number, orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, listChangedValue?: boolean, operationId: number = OperationId.None) {
-
+  public getAll(
+    apiUrl: string,
+    start?: number,
+    count?: number,
+    orderby?: any,
+    filter?: FilterExpression,
+    quickFilter?: FilterExpression,
+    listChangedValue?: boolean,
+    operationId: number = OperationId.None
+  ) {
     var gridPaging = { pageIndex: start, pageSize: count };
     var sort = new Array<GridOrderBy>();
     if (orderby && orderby.length > 0) {
@@ -128,30 +158,45 @@ export class BaseService<T = void | any> extends EnviromentComponent{
       }
     }
 
-    if (listChangedValue == undefined)
-      listChangedValue = true;
+    if (listChangedValue == undefined) listChangedValue = true;
 
-    var postItem = { paging: gridPaging, filter: filter, quickFilter: quickFilter, sortColumns: sort, listChanged: listChangedValue, operation: operationId };
+    var postItem = {
+      paging: gridPaging,
+      filter: filter,
+      quickFilter: quickFilter,
+      sortColumns: sort,
+      listChanged: listChangedValue,
+      operation: operationId,
+    };
     var searchHeaders = this.httpHeaders;
     var postBody = JSON.stringify(postItem);
     var base64Body = btoa(encodeURIComponent(postBody));
     if (searchHeaders)
-      searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
-
+      searchHeaders = searchHeaders.append("X-Tadbir-GridOptions", base64Body);
 
     //var options = { headers: searchHeaders, observe: "response"};
-    return this.http.get(apiUrl, { headers: searchHeaders, observe: "response" })
-      .map(response => <any>(<HttpResponse<any>>response));
+    return this.http
+      .get(apiUrl, { headers: searchHeaders, observe: "response" })
+      .pipe(map((response) => <any>(<HttpResponse<any>>response)));
   }
 
   /**
    * لیست رکوردها بر اساس پارامتر
    * @param apiUrl آدرس‌ کامل api
-   * @param params پارامتر های فرم   
+   * @param params پارامتر های فرم
    */
-  public getAllByParams(apiUrl: string, params: any, start?: number, count?: number, orderby?: any, filter?: FilterExpression, quickFilter?: FilterExpression, listChangedValue?: boolean, operationId: number = OperationId.None) {
-
-    var searchHeaders = this.httpHeaders;  
+  public getAllByParams(
+    apiUrl: string,
+    params: any,
+    start?: number,
+    count?: number,
+    orderby?: any,
+    filter?: FilterExpression,
+    quickFilter?: FilterExpression,
+    listChangedValue?: boolean,
+    operationId: number = OperationId.None
+  ) {
+    var searchHeaders = this.httpHeaders;
 
     var gridPaging = { pageIndex: start, pageSize: count };
     var sort = new Array<GridOrderBy>();
@@ -161,25 +206,30 @@ export class BaseService<T = void | any> extends EnviromentComponent{
       }
     }
 
-    if (listChangedValue == undefined)
-      listChangedValue = true;
+    if (listChangedValue == undefined) listChangedValue = true;
 
-    var postItem = { paging: gridPaging, filter: filter, quickFilter: quickFilter, sortColumns: sort, listChanged: listChangedValue, operation: operationId };
-    
-    
+    var postItem = {
+      paging: gridPaging,
+      filter: filter,
+      quickFilter: quickFilter,
+      sortColumns: sort,
+      listChanged: listChangedValue,
+      operation: operationId,
+    };
+
     if (searchHeaders) {
-
       var postBody = JSON.stringify(postItem);
       base64Body = btoa(encodeURIComponent(postBody));
-      searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
+      searchHeaders = searchHeaders.append("X-Tadbir-GridOptions", base64Body);
 
       postBody = JSON.stringify(params);
       var base64Body = btoa(encodeURIComponent(postBody));
-      searchHeaders = searchHeaders.append('X-Tadbir-Parameters', base64Body);
-    }        
+      searchHeaders = searchHeaders.append("X-Tadbir-Parameters", base64Body);
+    }
 
-    return this.http.get(apiUrl, { headers: searchHeaders, observe: "response" })
-      .map(response => <any>(<HttpResponse<any>>response));
+    return this.http
+      .get(apiUrl, { headers: searchHeaders, observe: "response" })
+      .pipe(map((response) => <any>(<HttpResponse<any>>response)));
   }
 
   /**
@@ -188,8 +238,9 @@ export class BaseService<T = void | any> extends EnviromentComponent{
    */
   public getModels(apiUrl: string) {
     var options = { headers: this.httpHeaders };
-    return this.http.get(apiUrl, options)
-      .map(response => <any>(<Response>response));
+    return this.http
+      .get(apiUrl, options)
+      .pipe(map((response) => <any>(<Response>response)));
   }
 
   /**
@@ -199,8 +250,9 @@ export class BaseService<T = void | any> extends EnviromentComponent{
    */
   public getById(apiUrl: string) {
     var options = { headers: this.httpHeaders };
-    return this.http.get(apiUrl, options)
-      .map(response => <any>(<Response>response));
+    return this.http
+      .get(apiUrl, options)
+      .pipe(map((response) => <any>(<Response>response)));
   }
 
   /**
@@ -208,11 +260,9 @@ export class BaseService<T = void | any> extends EnviromentComponent{
    * @param apiUrl آدرس کامل api
    * @param model رکورد جدید برای افزودن
    */
-  public insert<T>(apiUrl: string, model: T): Observable<string> {
+  public insert<T>(apiUrl: string, model: T) {
     var body = JSON.stringify(model);
-    return this.http.post(apiUrl, body, this.option)
-      .map(res => res)
-      .catch(this.handleError);
+    return this.http.post(apiUrl, body, this.option).pipe(map((res) => res));
   }
 
   /**
@@ -223,9 +273,7 @@ export class BaseService<T = void | any> extends EnviromentComponent{
    */
   public edit<T>(apiUrl: string, model: T): Observable<any> {
     var body = JSON.stringify(model);
-    return this.http.put(apiUrl, body, this.option)
-      .map(res => res)
-      .catch(this.handleError);
+    return this.http.put(apiUrl, body, this.option).pipe(map((res) => res));
   }
 
   /**
@@ -233,10 +281,10 @@ export class BaseService<T = void | any> extends EnviromentComponent{
    * @param apiUrl آدرس کامل api
    * @param modelId شماره id رکورد
    */
-  public delete(apiUrl: string): Observable<string> {
-    return this.http.delete(apiUrl, this.option)
-      .map(response => response)
-      .catch(this.handleError);
+  public delete(apiUrl: string) {
+    return this.http
+      .delete(apiUrl, this.option)
+      .pipe(map((response) => response));
   }
 
   /**
@@ -244,11 +292,11 @@ export class BaseService<T = void | any> extends EnviromentComponent{
    * @param apiUrl آدرس api
    * @param models رکوردها
    */
-  public groupDelete(apiUrl: string, models: number[]): Observable<string> {
-    let body = JSON.stringify({ paraph: '', items: models });
-    return this.http.put(apiUrl, body, this.option)
-      .map(response => response)
-      .catch(this.handleError);
+  public groupDelete(apiUrl: string, models: number[]) {
+    let body = JSON.stringify({ paraph: "", items: models });
+    return this.http
+      .put(apiUrl, body, this.option)
+      .pipe(map((response) => response));
   }
   /**
    * تعداد رکورد بر اساس فیلتر و مرتب سازی
@@ -263,10 +311,11 @@ export class BaseService<T = void | any> extends EnviromentComponent{
     var postBody = JSON.stringify(postItem);
     var base64Body = btoa(encodeURIComponent(postBody));
     if (searchHeaders)
-      searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
+      searchHeaders = searchHeaders.append("X-Tadbir-GridOptions", base64Body);
     var options = { headers: searchHeaders };
-    return this.http.get(apiUrl, options)
-      .map(response => <any>(<Response>response));
+    return this.http
+      .get(apiUrl, options)
+      .pipe(map((response) => <any>(<Response>response)));
   }
 
   /**
@@ -276,15 +325,16 @@ export class BaseService<T = void | any> extends EnviromentComponent{
   public getTotalCount(apiUrl: string) {
     var url = String.Format(apiUrl, this.FiscalPeriodId, this.BranchId);
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http
+      .get(url, options)
+      .pipe(map((response) => <any>(<Response>response)));
   }
 
   /**
-   * 
+   *
    * @param error
    */
   public handleError(error: any) {
-    return Observable.throw(error);
+    throw error;
   }
 }

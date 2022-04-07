@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
@@ -16,8 +18,8 @@ export class FullCodeService extends BaseService
 
     getFullCode(apiUrl: string) {
         var options = { headers: this.httpHeaders };
-        return this.http.get(apiUrl, options)
-            .map(response => <any>(<Response>response));
+        return this.http.get(apiUrl, options).pipe(
+            map(response => <any>(<Response>response)));
     }
 
 }

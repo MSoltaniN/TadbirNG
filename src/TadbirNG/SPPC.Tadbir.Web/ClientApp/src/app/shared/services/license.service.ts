@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "@sppc/env/environment";
@@ -19,8 +21,8 @@ export class LicenseService extends BaseService {
     var options = { headers: newHeader };
 
     return this.http
-      .get(url, options)
-      .map((response) => <any>(<Response>response));
+      .get(url, options).pipe(
+      map((response) => <any>(<Response>response)));
   }
 
   ActivateLicense(url: string) {
@@ -29,8 +31,8 @@ export class LicenseService extends BaseService {
     var options = { headers: newHeader };
 
     return this.http
-      .put(url, null, options)
-      .map((response) => <any>(<Response>response));
+      .put(url, null, options).pipe(
+      map((response) => <any>(<Response>response)));
   }
 
   CheckOnlineLicense(url: string) {
@@ -39,8 +41,8 @@ export class LicenseService extends BaseService {
     var options = { headers: newHeader };
 
     return this.http
-      .get(url, options)
-      .map((response) => <any>(<Response>response));
+      .get(url, options).pipe(
+      map((response) => <any>(<Response>response)));
   }
 
   DeleteCurrentSessionAsync(url: string) {
@@ -48,8 +50,8 @@ export class LicenseService extends BaseService {
     var options = { headers: newHeader };
 
     return this.http
-      .delete(url, options)
-      .map((response) => <any>(<Response>response));
+      .delete(url, options).pipe(
+      map((response) => <any>(<Response>response)));
   }
 
   GetOpenSessions(url: string) {
@@ -58,8 +60,8 @@ export class LicenseService extends BaseService {
     var options = { headers: newHeader };
 
     return this.http
-      .get(url, options)
-      .map((response) => <any>(<Response>response));
+      .get(url, options).pipe(
+      map((response) => <any>(<Response>response)));
   }
 
   DeleteOpenSessions(url: string, ids: number[]) {
@@ -69,8 +71,8 @@ export class LicenseService extends BaseService {
     let body = JSON.stringify({ paraph: "", items: ids });
 
     return this.http
-      .put(url, body, options)
-      .map((response) => <any>(<Response>response));
+      .put(url, body, options).pipe(
+      map((response) => <any>(<Response>response)));
   }
 
   PutSessionAsActive(url: string) {
@@ -79,7 +81,7 @@ export class LicenseService extends BaseService {
     var options = { headers: newHeader };
 
     return this.http
-      .put(url, null, options)
-      .map((response) => <any>(<Response>response));
+      .put(url, null, options).pipe(
+      map((response) => <any>(<Response>response)));
   }
 }

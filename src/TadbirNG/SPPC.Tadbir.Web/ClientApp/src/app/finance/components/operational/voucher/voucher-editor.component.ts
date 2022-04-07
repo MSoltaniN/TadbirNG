@@ -1,92 +1,131 @@
-import { Component, OnInit, Input, Renderer2, Output, EventEmitter, DebugElement, ViewChild, ElementRef } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild,
+} from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
+import { DialogRef, DialogService } from "@progress/kendo-angular-dialog";
+import { RTL } from "@progress/kendo-angular-l10n";
+import {
+  DocumentStatusValue,
+  VoucherOperations,
+  VoucherSubjectTypes,
+} from "@sppc/finance/enum";
+import { Voucher } from "@sppc/finance/models";
+import { InventoryBalance } from "@sppc/finance/models/inventoryBalance";
+import {
+  InventoryBalanceInfo,
+  VoucherInfo,
+  VoucherService,
+} from "@sppc/finance/service";
+import { VoucherApi } from "@sppc/finance/service/api";
+import { DetailComponent, String } from "@sppc/shared/class";
+import {
+  ReportViewerComponent,
+  ViewIdentifierComponent,
+} from "@sppc/shared/components";
+import { ReportManagementComponent } from "@sppc/shared/components/reportManagement/reportManagement.component";
+import { Entities, Layout, MessageType } from "@sppc/shared/enum/metadata";
+import { Item } from "@sppc/shared/models";
+import {
+  DraftVoucherPermissions,
+  ViewName,
+  VoucherPermissions,
+} from "@sppc/shared/security";
+import {
+  BrowserStorageService,
+  ErrorHandlingService,
+  LookupService,
+  MetaDataService,
+} from "@sppc/shared/services";
+import { ToastrService } from "ngx-toastr";
 import "rxjs/Rx";
-import { TranslateService } from '@ngx-translate/core';
-import { RTL } from '@progress/kendo-angular-l10n';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
-import { String, DetailComponent } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
-import { VoucherService, VoucherInfo, InventoryBalanceInfo } from '@sppc/finance/service';
-import { VoucherApi } from '@sppc/finance/service/api';
-import { Voucher } from '@sppc/finance/models';
-import { MetaDataService, BrowserStorageService, LookupService, ErrorHandlingService } from '@sppc/shared/services';
-import { DocumentStatusValue, VoucherOperations, VoucherSubjectTypes } from '@sppc/finance/enum';
-import { ViewName, DraftVoucherPermissions, VoucherPermissions } from '@sppc/shared/security';
-import { LookupApi } from '@sppc/shared/services/api';
-import { Item } from '@sppc/shared/models';
-import { InventoryBalance } from '@sppc/finance/models/inventoryBalance';
-import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
-import { ViewIdentifierComponent, ReportViewerComponent } from '@sppc/shared/components';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
 }
 
-
 @Component({
-  selector: 'voucher-editor',
-  templateUrl: './voucher-editor.component.html',
-  styles: [`
-.voucher-form-content {margin-top:5px; border: solid 1px #3c8dbc; padding: 7px 10px 0;}
-input[type=text], textarea, .ddl-type { width: 100%; }
-.voucher-status-item{ display: inline; margin: 0 10px;}
+  selector: "voucher-editor",
+  templateUrl: "./voucher-editor.component.html",
+  styles: [
+    `
+      .voucher-form-content {
+        margin-top: 5px;
+        border: solid 1px #3c8dbc;
+        padding: 7px 10px 0;
+      }
+      input[type="text"],
+      textarea,
+      .ddl-type {
+        width: 100%;
+      }
+      .voucher-status-item {
+        display: inline;
+        margin: 0 10px;
+      }
 
-/deep/.dialog-padding .k-window-content {padding:15px !important}
+      /deep/.dialog-padding .k-window-content {
+        padding: 15px !important;
+      }
 
-.col-xs-5ths,
-.col-sm-5ths,
-.col-md-5ths,
-.col-lg-5ths,
-.col-sm-4-5ths{
-  position: relative;
-  min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
-}
+      .col-xs-5ths,
+      .col-sm-5ths,
+      .col-md-5ths,
+      .col-lg-5ths,
+      .col-sm-4-5ths {
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+      }
 
-.col-xs-5ths {
-  width: 20%;
-  float: left;
-}
+      .col-xs-5ths {
+        width: 20%;
+        float: left;
+      }
 
-@media (min-width: 768px) {
-  .col-sm-5ths {
-    width: 20%;
-    float: left;
-  }
-  .col-sm-4-5ths{
-    width: 80%;
-    float: left;
-  }
-}
+      @media (min-width: 768px) {
+        .col-sm-5ths {
+          width: 20%;
+          float: left;
+        }
+        .col-sm-4-5ths {
+          width: 80%;
+          float: left;
+        }
+      }
 
-@media (min-width: 992px) {
-  .col-md-5ths {
-    width: 20%;
-    float: left;
-  }
-}
+      @media (min-width: 992px) {
+        .col-md-5ths {
+          width: 20%;
+          float: left;
+        }
+      }
 
-@media (min-width: 1200px) {
-  .col-lg-5ths {
-    width: 20%;
-    float: left;
-  }
-}
-
-
-
-`],
-  providers: [{
-    provide: RTL,
-    useFactory: getLayoutModule,
-    deps: [Layout]
-  }]
+      @media (min-width: 1200px) {
+        .col-lg-5ths {
+          width: 20%;
+          float: left;
+        }
+      }
+    `,
+  ],
+  providers: [
+    {
+      provide: RTL,
+      useFactory: getLayoutModule,
+      deps: [Layout],
+    },
+  ],
 })
-
 export class VoucherEditorComponent extends DetailComponent implements OnInit {
-
   errorMessage: string;
   voucherModel: Voucher;
   voucherTypeList: Array<Item> = [];
@@ -98,12 +137,12 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   //@Output() reloadGrid: EventEmitter<any> = new EventEmitter();
   @Output() cancel: EventEmitter<any> = new EventEmitter();
 
-  isShowBreadcrumb: boolean = true; 
+  isShowBreadcrumb: boolean = true;
   isFirstVoucher: boolean = false;
   isLastVoucher: boolean = false;
   voucherOperationsItem: any;
   deleteConfirmMsg: string;
-  subjectMode: number;  
+  subjectMode: number;
   subjectModeTitle: string;
   draftTitle: string;
   normalTitle: string;
@@ -115,139 +154,170 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
   @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
   @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
-  @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
+  @ViewChild(ReportManagementComponent)
+  reportManager: ReportManagementComponent;
 
-  constructor(private voucherService: VoucherService, public toastrService: ToastrService, public translate: TranslateService, private activeRoute: ActivatedRoute,
-    public renderer: Renderer2, public metadata: MetaDataService, public router: Router, private dialogService: DialogService, private lookupService: LookupService,
-    public bStorageService: BrowserStorageService, public errorHandlingService: ErrorHandlingService,public elem:ElementRef) {
-
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Voucher, ViewName.Voucher,elem);
+  constructor(
+    private voucherService: VoucherService,
+    public toastrService: ToastrService,
+    public translate: TranslateService,
+    private activeRoute: ActivatedRoute,
+    public renderer: Renderer2,
+    public metadata: MetaDataService,
+    public router: Router,
+    private dialogService: DialogService,
+    private lookupService: LookupService,
+    public bStorageService: BrowserStorageService,
+    public errorHandlingService: ErrorHandlingService,
+    public elem: ElementRef
+  ) {
+    super(
+      toastrService,
+      translate,
+      bStorageService,
+      renderer,
+      metadata,
+      Entities.Voucher,
+      ViewName.Voucher,
+      elem
+    );
 
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
-
   ngOnInit() {
-    this.draftTitle = this.getText("Voucher.NormalVoucher");    
+    this.draftTitle = this.getText("Voucher.NormalVoucher");
     this.normalTitle = this.getText("Voucher.DraftVoucher");
     this.voucherOperationsItem = VoucherOperations;
     this.entityNamePermission = "Voucher";
 
     this.setDateDisplayType();
-    this.editForm.reset();        
+    this.editForm.reset();
 
     if (this.voucherItem) {
       this.initVoucherForm(this.voucherItem);
       this.isShowBreadcrumb = false;
       this.subjectMode = this.voucherItem.subjectType;
-      if (this.subjectMode == 1) this.entityNamePermission = "DraftVoucher";      
+      if (this.subjectMode == 1) this.entityNamePermission = "DraftVoucher";
       this.getVoucherType();
-    }
-    else {      
-      this.activeRoute.params.subscribe(params => {
+    } else {
+      this.activeRoute.params.subscribe((params) => {
         if (!this.subjectMode) {
-          this.subjectMode = params['type'] == "draft" ? 1 : 0;
+          this.subjectMode = params["type"] == "draft" ? 1 : 0;
           if (this.subjectMode == 1) this.entityNamePermission = "DraftVoucher";
         }
 
         this.getVoucherType();
 
-        switch (params['mode']) {
+        switch (params["mode"]) {
           case "new": {
             this.newVoucher();
-            this.isLastVoucher = true;            
+            this.isLastVoucher = true;
             break;
           }
           case "last": {
             this.isLastVoucher = true;
-            if(this.subjectMode == 0)
-              this.getVoucher(VoucherApi.LastVoucher);
-            else
-              this.getVoucher(VoucherApi.LastDraftVoucher);
-            
+            if (this.subjectMode == 0) this.getVoucher(VoucherApi.LastVoucher);
+            else this.getVoucher(VoucherApi.LastDraftVoucher);
+
             break;
           }
           case "by-no": {
-            this.byNoVoucher();            
+            this.byNoVoucher();
             break;
           }
           case "first": {
             this.isFirstVoucher = true;
-            if (this.subjectMode == 0)
-              this.getVoucher(VoucherApi.FirstVoucher);
-            else
-              this.getVoucher(VoucherApi.FirstDraftVoucher);            
-            break
+            if (this.subjectMode == 0) this.getVoucher(VoucherApi.FirstVoucher);
+            else this.getVoucher(VoucherApi.FirstDraftVoucher);
+            break;
           }
           case "next": {
-            var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no')
+            var voucherNo = this.activeRoute.snapshot.queryParamMap.get("no");
             if (voucherNo) {
               if (this.subjectMode == 0)
-                this.getVoucher(String.Format(VoucherApi.NextVoucher, voucherNo), true);
+                this.getVoucher(
+                  String.Format(VoucherApi.NextVoucher, voucherNo),
+                  true
+                );
               else
-                this.getVoucher(String.Format(VoucherApi.NextDraftVoucher, voucherNo), true);
-            }            
-            break
+                this.getVoucher(
+                  String.Format(VoucherApi.NextDraftVoucher, voucherNo),
+                  true
+                );
+            }
+            break;
           }
           case "previous": {
-            var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no')
+            var voucherNo = this.activeRoute.snapshot.queryParamMap.get("no");
             if (voucherNo) {
               if (this.subjectMode == 0)
-                this.getVoucher(String.Format(VoucherApi.PreviousVoucher, voucherNo), true);
+                this.getVoucher(
+                  String.Format(VoucherApi.PreviousVoucher, voucherNo),
+                  true
+                );
               else
-                this.getVoucher(String.Format(VoucherApi.PreviousDraftVoucher, voucherNo), true);
-              
+                this.getVoucher(
+                  String.Format(VoucherApi.PreviousDraftVoucher, voucherNo),
+                  true
+                );
             }
-            break
+            break;
           }
-          case "opening-voucher": {                      
-            var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no');
+          case "opening-voucher": {
+            var voucherNo = this.activeRoute.snapshot.queryParamMap.get("no");
             if (voucherNo) {
               if (this.subjectMode == 0)
-                this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
+                this.getVoucher(
+                  String.Format(VoucherApi.VoucherByNo, voucherNo),
+                  true
+                );
               else
-                this.getVoucher(String.Format(VoucherApi.DraftVoucherByNo, voucherNo), true);
-            }
-            else {
+                this.getVoucher(
+                  String.Format(VoucherApi.DraftVoucherByNo, voucherNo),
+                  true
+                );
+            } else {
               this.openingVoucherQuery();
             }
 
             break;
           }
           case "closing-voucher": {
-            this.getVoucher(VoucherApi.ClosingVoucher);            
+            this.getVoucher(VoucherApi.ClosingVoucher);
             break;
           }
-          case "close-temp-accounts":
-            {
-              if (this.InventoryMode == 0) {
-                var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no');
-                if (voucherNo) {
-                  if (this.subjectMode == 0)
-                    this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
-                  else
-                    this.getVoucher(String.Format(VoucherApi.DraftVoucherByNo, voucherNo), true);
-                }
-                else {
-                  this.checkClosingTmp();
-                }
+          case "close-temp-accounts": {
+            if (this.InventoryMode == 0) {
+              var voucherNo = this.activeRoute.snapshot.queryParamMap.get("no");
+              if (voucherNo) {
+                if (this.subjectMode == 0)
+                  this.getVoucher(
+                    String.Format(VoucherApi.VoucherByNo, voucherNo),
+                    true
+                  );
+                else
+                  this.getVoucher(
+                    String.Format(VoucherApi.DraftVoucherByNo, voucherNo),
+                    true
+                  );
+              } else {
+                this.checkClosingTmp();
               }
-              else {
-                this.closingTmpOnInventoryMode1();
-              }
-              
+            } else {
+              this.closingTmpOnInventoryMode1();
+            }
+
             break;
-          }         
-            
+          }
+
           default: {
             this.isShowBreadcrumb = false;
             this.newVoucher();
           }
         }
-      })
+      });
     }
-
-    
   }
 
   //report methods
@@ -257,156 +327,204 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
   setDateDisplayType() {
     if (this.properties && this.properties.get(this.metadataKey))
-      this.voucherDateType = this.properties.get(this.metadataKey).filter(p => p.name == "Date")[0].type;
+      this.voucherDateType = this.properties
+        .get(this.metadataKey)
+        .filter((p) => p.name == "Date")[0].type;
   }
 
   openingVoucherQuery() {
-    this.voucherService.getOpeningVoucherQuery().subscribe(result => {
-      if (result == true) {        
-        //show confirm box
-        this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/opening-voucher', mode: 'opening-voucher' } });
-      }
-      else if (result == false) {
-        //create opening voucher
-        this.getVoucher(VoucherApi.OpeningVoucher);
-      }
-      else {
-        this.initVoucherForm(result);
-      }
+    this.voucherService.getOpeningVoucherQuery().subscribe(
+      (result: Voucher) => {
+        if (result) {
+          //show confirm box
+          this.router.navigate(["/tadbir/home"], {
+            queryParams: {
+              returnUrl: "finance/vouchers/opening-voucher",
+              mode: "opening-voucher",
+            },
+          });
+        } else if (!result) {
+          //create opening voucher
+          this.getVoucher(VoucherApi.OpeningVoucher);
+        } else {
+          this.initVoucherForm(result);
+        }
+      },
+      (err) => {
+        if (err.statusCode == 400) {
+          this.showMessage(
+            this.errorHandlingService.handleError(err),
+            MessageType.Warning
+          );
+          this.router.navigate(["/finance/voucher"]);
+        }
 
-    }, err => {
-      if (err.statusCode == 400) {
-        this.showMessage(this.errorHandlingService.handleError(err), MessageType.Warning);
-        this.router.navigate(['/finance/voucher']);
+        if (err.value) {
+          this.showMessage(err.value, MessageType.Warning);
+          this.router.navigate(["/finance/voucher"]);
+        }
       }
-
-      if (err.value) {
-        this.showMessage(err.value, MessageType.Warning);
-        this.router.navigate(['/finance/voucher']);
-      }
-    });
+    );
   }
 
   /**
-  * ساخت سند بستن حسابها براساس سیستم دایمی  
-  */
-  closingTmpOnInventoryMode1() {    
-    this.voucherService.getClosingAccountsVoucherMode1().subscribe(result => {
-      var voucherNo = result.no;
-      if (voucherNo) {
-        if(this.subjectMode == 0)
-          this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
-        else
-          this.getVoucher(String.Format(VoucherApi.DraftVoucherByNo, voucherNo), true);
-      }
-    }, err => {
-      if (err.statusCode == 400) {
-        this.showMessage(this.errorHandlingService.handleError(err), MessageType.Warning);        
-        this.router.navigate(['/finance/voucher']);
-      }
+   * ساخت سند بستن حسابها براساس سیستم دایمی
+   */
+  closingTmpOnInventoryMode1() {
+    this.voucherService.getClosingAccountsVoucherMode1().subscribe(
+      (result: any) => {
+        var voucherNo = result.no;
+        if (voucherNo) {
+          if (this.subjectMode == 0)
+            this.getVoucher(
+              String.Format(VoucherApi.VoucherByNo, voucherNo),
+              true
+            );
+          else
+            this.getVoucher(
+              String.Format(VoucherApi.DraftVoucherByNo, voucherNo),
+              true
+            );
+        }
+      },
+      (err) => {
+        if (err.statusCode == 400) {
+          this.showMessage(
+            this.errorHandlingService.handleError(err),
+            MessageType.Warning
+          );
+          this.router.navigate(["/finance/voucher"]);
+        }
 
-      if (err.value) {
-        this.showMessage(err.value, MessageType.Warning);
-        this.router.navigate(['/finance/voucher']);
+        if (err.value) {
+          this.showMessage(err.value, MessageType.Warning);
+          this.router.navigate(["/finance/voucher"]);
+        }
       }
-    });
+    );
   }
 
   checkClosingTmp() {
     var bodyItem = new Array<InventoryBalance>();
-    var item = new InventoryBalanceInfo();       
+    var item = new InventoryBalanceInfo();
 
-    this.voucherService.getClosingAccountsVoucher(bodyItem).subscribe(result => {
-      if (result) {
-        //closingAccount created and show voucher
-        //this.initVoucherForm(result);
-        this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/close-temp-accounts', mode: 'closing-tmp' } });
-      }
-      else {
-        //closingAccount not created and show popup
-        this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/close-temp-accounts',mode:'closing-tmp' } });
-      }
-    },
-      err => {       
-        if (err.statusCode == 400) {
-          this.showMessage(this.errorHandlingService.handleError(err), MessageType.Warning);
-          this.router.navigate(['/finance/voucher']);
+    this.voucherService.getClosingAccountsVoucher(bodyItem).subscribe(
+      (result) => {
+        if (result) {
+          //closingAccount created and show voucher
+          //this.initVoucherForm(result);
+          this.router.navigate(["/tadbir/home"], {
+            queryParams: {
+              returnUrl: "finance/vouchers/close-temp-accounts",
+              mode: "closing-tmp",
+            },
+          });
+        } else {
+          //closingAccount not created and show popup
+          this.router.navigate(["/tadbir/home"], {
+            queryParams: {
+              returnUrl: "finance/vouchers/close-temp-accounts",
+              mode: "closing-tmp",
+            },
+          });
         }
-      });
-
+      },
+      (err) => {
+        if (err.statusCode == 400) {
+          this.showMessage(
+            this.errorHandlingService.handleError(err),
+            MessageType.Warning
+          );
+          this.router.navigate(["/finance/voucher"]);
+        }
+      }
+    );
   }
 
-
   newVoucher() {
-    if(this.subjectMode == 0)
-      this.getVoucher(VoucherApi.NewVoucher);
-    else
-      this.getVoucher(VoucherApi.NewDraftVoucher);
+    if (this.subjectMode == 0) this.getVoucher(VoucherApi.NewVoucher);
+    else this.getVoucher(VoucherApi.NewDraftVoucher);
   }
 
   getNewVoucher() {
     if (this.voucherItem || this.isOpenFromList)
-      if (this.subjectMode == 0)
-        this.getVoucher(VoucherApi.NewVoucher);
-      else
-        this.getVoucher(VoucherApi.NewDraftVoucher);
+      if (this.subjectMode == 0) this.getVoucher(VoucherApi.NewVoucher);
+      else this.getVoucher(VoucherApi.NewDraftVoucher);
     else {
-      if (this.subjectMode == 0)
-        this.redirectTo('/finance/vouchers/new')
-      else
-        this.redirectTo('/finance/vouchers/new/draft')
-      
+      if (this.subjectMode == 0) this.redirectTo("/finance/vouchers/new");
+      else this.redirectTo("/finance/vouchers/new/draft");
     }
   }
 
   redirectTo(uri) {
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate([uri]));
+    this.router
+      .navigateByUrl("/", { skipLocationChange: true })
+      .then(() => this.router.navigate([uri]));
   }
 
   byNoVoucher() {
-    var voucherNo = this.activeRoute.snapshot.queryParamMap.get('no');    
+    var voucherNo = this.activeRoute.snapshot.queryParamMap.get("no");
     if (!voucherNo) {
       if (this.subjectMode == 0)
-        this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no', mode: 'by-no' } });
+        this.router.navigate(["/tadbir/home"], {
+          queryParams: { returnUrl: "finance/vouchers/by-no", mode: "by-no" },
+        });
       else
-        this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no', mode: 'by-no', type:'draft' } });
-    }
-    else {
-      var type = this.activeRoute.snapshot.queryParamMap.get('type');
-      if (this.subjectMode == 1 || type == 'draft')
-        this.getVoucher(String.Format(VoucherApi.DraftVoucherByNo, voucherNo), true);        
-      else 
+        this.router.navigate(["/tadbir/home"], {
+          queryParams: {
+            returnUrl: "finance/vouchers/by-no",
+            mode: "by-no",
+            type: "draft",
+          },
+        });
+    } else {
+      var type = this.activeRoute.snapshot.queryParamMap.get("type");
+      if (this.subjectMode == 1 || type == "draft")
+        this.getVoucher(
+          String.Format(VoucherApi.DraftVoucherByNo, voucherNo),
+          true
+        );
+      else
         this.getVoucher(String.Format(VoucherApi.VoucherByNo, voucherNo), true);
     }
-
   }
 
   getVoucher(apiUrl: string, byNo: boolean = false) {
-    this.voucherService.getModels(apiUrl).subscribe(res => {
-
-      this.initVoucherForm(res);
-      this.errorMessage = undefined;      
-      this.isLastVoucher = !res.hasNext;
-      this.isFirstVoucher = !res.hasPrevious;      
-    },
-      err => {
+    this.voucherService.getModels(apiUrl).subscribe(
+      (res) => {
+        this.initVoucherForm(res);
+        this.errorMessage = undefined;
+        this.isLastVoucher = !res.hasNext;
+        this.isFirstVoucher = !res.hasPrevious;
+      },
+      (err) => {
         if (err.statusCode == 404) {
-          this.showMessage(this.getText("Voucher.VoucherNotFound"), MessageType.Warning);
+          this.showMessage(
+            this.getText("Voucher.VoucherNotFound"),
+            MessageType.Warning
+          );
           if (byNo)
-            this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no', mode: 'by-no' } });
+            this.router.navigate(["/tadbir/home"], {
+              queryParams: {
+                returnUrl: "finance/vouchers/by-no",
+                mode: "by-no",
+              },
+            });
         }
 
         if (err.statusCode == 400) {
           this.cancel.emit();
-          this.showMessage(this.errorHandlingService.handleError(err), MessageType.Warning);
-          this.router.navigate(['/finance/voucher']);
+          this.showMessage(
+            this.errorHandlingService.handleError(err),
+            MessageType.Warning
+          );
+          this.router.navigate(["/finance/voucher"]);
         }
-      })
+      }
+    );
   }
 
   initVoucherForm(item: Voucher) {
-
     this.editForm.reset(item);
     this.isLastVoucher = !item.hasNext;
     this.isFirstVoucher = !item.hasPrevious;
@@ -419,26 +537,31 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   voucherTypeListChange(value) {
-    if (this.selectedType == VoucherSubjectTypes.Normal && value == VoucherSubjectTypes.Draft) {
-      if (this.voucherModel.confirmedById != null || this.voucherModel.statusId == DocumentStatusValue.Finalized) {
+    if (
+      this.selectedType == VoucherSubjectTypes.Normal &&
+      value == VoucherSubjectTypes.Draft
+    ) {
+      if (
+        this.voucherModel.confirmedById != null ||
+        this.voucherModel.statusId == DocumentStatusValue.Finalized
+      ) {
         this.showMessage(this.getText("Voucher.SubjectTypeValidation"));
-        setTimeout(() => { this.selectedType = VoucherSubjectTypes.Normal });        
+        setTimeout(() => {
+          this.selectedType = VoucherSubjectTypes.Normal;
+        });
         return;
       }
     }
   }
 
-  getVoucherType() {    
-    if (this.subjectMode == 0)
-      this.subjectModeTitle = this.normalTitle;
+  getVoucherType() {
+    if (this.subjectMode == 0) this.subjectModeTitle = this.normalTitle;
 
-    if (this.subjectMode == 1)
-      this.subjectModeTitle = this.draftTitle;    
+    if (this.subjectMode == 1) this.subjectModeTitle = this.draftTitle;
   }
 
   onSave(e?: any): void {
-    if (this.editForm.valid && this.checkEditPermission()) {      
-
+    if (this.editForm.valid && this.checkEditPermission()) {
       let model: Voucher = this.editForm.value;
       model.branchId = this.BranchId;
       model.fiscalPeriodId = this.FiscalPeriodId;
@@ -446,116 +569,144 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       model.saveCount = this.voucherModel.saveCount;
       model.subjectType = parseInt(this.selectedType);
 
-      if (model.reference == '')
-        model.reference = null;
+      if (model.reference == "") model.reference = null;
 
-      this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model).subscribe(res => {
-        this.editForm.reset(res);
-        this.voucherModel = res;
-        this.errorMessages = undefined;
-        this.showMessage(this.updateMsg, MessageType.Succes);
-      }, (error => {
-        if (e)
-        {
-          if (error)
-            this.errorMessages = this.errorHandlingService.handleError(error);
-        }
-        else
-          this.showMessage(this.errorHandlingService.handleError(error), MessageType.Warning);
-      }));
-
+      this.voucherService
+        .edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model)
+        .subscribe(
+          (res) => {
+            this.editForm.reset(res);
+            this.voucherModel = res;
+            this.errorMessages = undefined;
+            this.showMessage(this.updateMsg, MessageType.Succes);
+          },
+          (error) => {
+            if (e) {
+              if (error)
+                this.errorMessages =
+                  this.errorHandlingService.handleError(error);
+            } else
+              this.showMessage(
+                this.errorHandlingService.handleError(error),
+                MessageType.Warning
+              );
+          }
+        );
     }
   }
 
   nextVoucher() {
     if (this.voucherItem || this.isOpenFromList) {
       if (this.subjectMode == 0)
-        this.getVoucher(String.Format(VoucherApi.NextVoucher, this.voucherModel.no));
+        this.getVoucher(
+          String.Format(VoucherApi.NextVoucher, this.voucherModel.no)
+        );
       else
-        this.getVoucher(String.Format(VoucherApi.NextDraftVoucher, this.voucherModel.no));
+        this.getVoucher(
+          String.Format(VoucherApi.NextDraftVoucher, this.voucherModel.no)
+        );
       this.isFirstVoucher = false;
       this.isLastVoucher = false;
-    }
-    else {
+    } else {
       if (this.subjectMode == 0)
-        this.router.navigate(['/finance/vouchers/next'], { queryParams: { no: this.voucherModel.no } });
+        this.router.navigate(["/finance/vouchers/next"], {
+          queryParams: { no: this.voucherModel.no },
+        });
       else
-        this.router.navigate(['/finance/vouchers/next/draft'], { queryParams: { no: this.voucherModel.no } });
+        this.router.navigate(["/finance/vouchers/next/draft"], {
+          queryParams: { no: this.voucherModel.no },
+        });
     }
   }
 
   previousVoucher() {
     if (this.voucherItem || this.isOpenFromList) {
       if (this.subjectMode == 0)
-        this.getVoucher(String.Format(VoucherApi.PreviousVoucher, this.voucherModel.no));
+        this.getVoucher(
+          String.Format(VoucherApi.PreviousVoucher, this.voucherModel.no)
+        );
       else
-        this.getVoucher(String.Format(VoucherApi.PreviousDraftVoucher, this.voucherModel.no));
+        this.getVoucher(
+          String.Format(VoucherApi.PreviousDraftVoucher, this.voucherModel.no)
+        );
       this.isFirstVoucher = false;
       this.isLastVoucher = false;
-    }
-    else {
-      if(this.subjectMode == 0)
-        this.router.navigate(['/finance/vouchers/previous'], { queryParams: { no: this.voucherModel.no } });
+    } else {
+      if (this.subjectMode == 0)
+        this.router.navigate(["/finance/vouchers/previous"], {
+          queryParams: { no: this.voucherModel.no },
+        });
       else
-        this.router.navigate(['/finance/vouchers/previous/draft'], { queryParams: { no: this.voucherModel.no } });
+        this.router.navigate(["/finance/vouchers/previous/draft"], {
+          queryParams: { no: this.voucherModel.no },
+        });
     }
   }
 
   firstVoucher() {
     if (this.voucherItem || this.isOpenFromList) {
-      if (this.subjectMode == 0)
-        this.getVoucher(VoucherApi.FirstVoucher);
-      else
-        this.getVoucher(VoucherApi.FirstDraftVoucher);
+      if (this.subjectMode == 0) this.getVoucher(VoucherApi.FirstVoucher);
+      else this.getVoucher(VoucherApi.FirstDraftVoucher);
       this.isFirstVoucher = true;
       this.isLastVoucher = false;
-    }
-    else {
+    } else {
       if (this.subjectMode == 0)
-        this.router.navigate(['/finance/vouchers/first']);
-      else
-        this.router.navigate(['/finance/vouchers/first/draft']);
+        this.router.navigate(["/finance/vouchers/first"]);
+      else this.router.navigate(["/finance/vouchers/first/draft"]);
     }
   }
 
   lastVoucher() {
     if (this.voucherItem || this.isOpenFromList) {
-      if (this.subjectMode == 0)
-        this.getVoucher(VoucherApi.LastVoucher);
-      else
-        this.getVoucher(VoucherApi.LastDraftVoucher);
+      if (this.subjectMode == 0) this.getVoucher(VoucherApi.LastVoucher);
+      else this.getVoucher(VoucherApi.LastDraftVoucher);
       this.isFirstVoucher = false;
       this.isLastVoucher = true;
-    }
-    else {
+    } else {
       if (this.subjectMode == 0)
-        this.router.navigate(['/finance/vouchers/last']);
-      else
-        this.router.navigate(['/finance/vouchers/last/draft']);
+        this.router.navigate(["/finance/vouchers/last"]);
+      else this.router.navigate(["/finance/vouchers/last/draft"]);
     }
   }
 
   searchVoucher() {
-    this.router.navigate(['/tadbir/home'], { queryParams: { returnUrl: 'finance/vouchers/by-no', mode: 'by-no' } });
+    this.router.navigate(["/tadbir/home"], {
+      queryParams: { returnUrl: "finance/vouchers/by-no", mode: "by-no" },
+    });
   }
 
   checkHandler() {
-
-    var apiUrl = String.Format(this.voucherModel.statusId == DocumentStatusValue.NotChecked ? VoucherApi.CheckVoucher : VoucherApi.UndoCheckVoucher, this.voucherModel.id);
+    var apiUrl = String.Format(
+      this.voucherModel.statusId == DocumentStatusValue.NotChecked
+        ? VoucherApi.CheckVoucher
+        : VoucherApi.UndoCheckVoucher,
+      this.voucherModel.id
+    );
     if (this.subjectMode == 1) {
-      apiUrl = String.Format(this.voucherModel.statusId == DocumentStatusValue.NotChecked ? VoucherApi.CheckDraftVoucher : VoucherApi.UndoCheckDraftVoucher, this.voucherModel.id);
+      apiUrl = String.Format(
+        this.voucherModel.statusId == DocumentStatusValue.NotChecked
+          ? VoucherApi.CheckDraftVoucher
+          : VoucherApi.UndoCheckDraftVoucher,
+        this.voucherModel.id
+      );
     }
 
-    this.voucherService.changeVoucherStatus(apiUrl).subscribe(res => {
+    this.voucherService.changeVoucherStatus(apiUrl).subscribe(
+      (res) => {
+        this.voucherModel.statusId =
+          this.voucherModel.statusId == DocumentStatusValue.NotChecked
+            ? DocumentStatusValue.Checked
+            : DocumentStatusValue.NotChecked;
 
-      this.voucherModel.statusId = this.voucherModel.statusId == DocumentStatusValue.NotChecked ? DocumentStatusValue.Checked : DocumentStatusValue.NotChecked;
-
-      //this.reloadGrid.emit();
-
-    }, (error => {
-        this.showMessage(this.errorHandlingService.handleError(error), MessageType.Warning);
-    }));
-
+        //this.reloadGrid.emit();
+      },
+      (error) => {
+        this.showMessage(
+          this.errorHandlingService.handleError(error),
+          MessageType.Warning
+        );
+      }
+    );
   }
 
   voucherOperation(item: VoucherOperations) {
@@ -583,39 +734,33 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       isFormDataChenged = false;
 
     if (isFormDataChenged) {
-
       const dialog: DialogRef = this.dialogService.open({
-        title: this.getText('Entity.Voucher'),
-        content: this.getText('Voucher.SaveChanges'),
+        title: this.getText("Entity.Voucher"),
+        content: this.getText("Voucher.SaveChanges"),
         actions: [
-          { text: this.getText('Buttons.Yes'), mode: 1, primary: true },
-          { text: this.getText('Buttons.No'), mode: 0 }
+          { text: this.getText("Buttons.Yes"), mode: 1, primary: true },
+          { text: this.getText("Buttons.No"), mode: 0 },
         ],
         width: 450,
         height: 150,
-        minWidth: 250
+        minWidth: 250,
       });
 
-      dialog.dialog.location.nativeElement.classList.add('dialog-padding');
+      dialog.dialog.location.nativeElement.classList.add("dialog-padding");
 
       dialog.result.subscribe((result) => {
         let res: any = result;
-        if (res.mode == 1)
-          this.onSave();
+        if (res.mode == 1) this.onSave();
 
         this.executeVoucherOperation(item);
-
       });
-
-    }
-    else {
+    } else {
       this.executeVoucherOperation(item);
     }
-
   }
 
   getDate(date: Date): Date {
-    var date = new Date(date)
+    var date = new Date(date);
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
@@ -654,50 +799,71 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   removeHandler() {
-    this.deleteConfirm = true;   
-    this.prepareDeleteConfirm(this.getText('Messages.SelectedItems'));    
+    this.deleteConfirm = true;
+    this.prepareDeleteConfirm(this.getText("Messages.SelectedItems"));
   }
 
   deleteModel(confirm: boolean) {
-    if (confirm) {     
-      this.voucherService.delete(String.Format(VoucherApi.Voucher, this.voucherModel.id)).subscribe(response => {
-        
-        this.showMessage(this.getText('Messages.DeleteOperationSuccessful'), MessageType.Info);
+    if (confirm) {
+      this.voucherService
+        .delete(String.Format(VoucherApi.Voucher, this.voucherModel.id))
+        .subscribe(
+          (response) => {
+            this.showMessage(
+              this.getText("Messages.DeleteOperationSuccessful"),
+              MessageType.Info
+            );
 
-        var url = VoucherApi.NextVoucher;
-        var urlNo = '/finance/vouchers/by-no';
-        if (this.subjectMode == 1) {
-          url = VoucherApi.NextDraftVoucher;
-          urlNo = '/finance/vouchers/by-no/draft';
-        }
-        //try for next voucher
-        this.voucherService.getModels(String.Format(url, this.voucherModel.no)).subscribe(voucher => {
-          if (voucher) {
-            this.router.navigate([urlNo], { queryParams: { no: voucher.no } });
-          }
-          else {
-            
-          }
-        }, (error => {
-              //if next voucher not exists try for previous voucher
-            var url = VoucherApi.PreviousVoucher;            
+            var url = VoucherApi.NextVoucher;
+            var urlNo = "/finance/vouchers/by-no";
             if (this.subjectMode == 1) {
-              url = VoucherApi.PreviousDraftVoucher;              
+              url = VoucherApi.NextDraftVoucher;
+              urlNo = "/finance/vouchers/by-no/draft";
             }
-              this.voucherService.getModels(String.Format(url, this.voucherModel.no)).subscribe(voucher => {
-                if (voucher) {
-                  this.router.navigate([urlNo], { queryParams: { no: voucher.no } });
-                }                
-              }, (error => {
-                  //if previous voucher not exists show voucher list
-                  this.cancel.emit();
-                  this.router.navigate(['/finance/voucher']);                  
-              }))
-        }));
-
-        }, (error => {                    
-          this.showMessage(this.errorHandlingService.handleError(error), MessageType.Warning);
-        }));      
+            //try for next voucher
+            this.voucherService
+              .getModels(String.Format(url, this.voucherModel.no))
+              .subscribe(
+                (voucher) => {
+                  if (voucher) {
+                    this.router.navigate([urlNo], {
+                      queryParams: { no: voucher.no },
+                    });
+                  } else {
+                  }
+                },
+                (error) => {
+                  //if next voucher not exists try for previous voucher
+                  var url = VoucherApi.PreviousVoucher;
+                  if (this.subjectMode == 1) {
+                    url = VoucherApi.PreviousDraftVoucher;
+                  }
+                  this.voucherService
+                    .getModels(String.Format(url, this.voucherModel.no))
+                    .subscribe(
+                      (voucher) => {
+                        if (voucher) {
+                          this.router.navigate([urlNo], {
+                            queryParams: { no: voucher.no },
+                          });
+                        }
+                      },
+                      (error) => {
+                        //if previous voucher not exists show voucher list
+                        this.cancel.emit();
+                        this.router.navigate(["/finance/voucher"]);
+                      }
+                    );
+                }
+              );
+          },
+          (error) => {
+            this.showMessage(
+              this.errorHandlingService.handleError(error),
+              MessageType.Warning
+            );
+          }
+        );
     }
 
     //hide confirm dialog
@@ -707,16 +873,17 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   /**
    * prepare confim message for delete operation
    * @param text is a part of message that use for delete confirm message
-  */
+   */
   public prepareDeleteConfirm(text: string) {
-    this.translate.get("Messages.VoucherDeleteConfirm").subscribe((msg: string) => {
-      this.deleteConfirmMsg = String.Format(msg, text);
-    });
+    this.translate
+      .get("Messages.VoucherDeleteConfirm")
+      .subscribe((msg: string) => {
+        this.deleteConfirmMsg = String.Format(msg, text);
+      });
   }
 
   get isVoucherConfirmed(): boolean {
-    if (this.voucherModel)
-      return this.voucherModel.statusId > 1;
+    if (this.voucherModel) return this.voucherModel.statusId > 1;
 
     return false;
   }
@@ -725,22 +892,25 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     return this.checkEditPermission(false);
   }
 
-  checkEditPermission(showMessage:boolean = true) {
-    if (this.subjectMode == 1 && !this.isAccess(Entities.DraftVoucher, DraftVoucherPermissions.Edit)) {
+  checkEditPermission(showMessage: boolean = true) {
+    if (
+      this.subjectMode == 1 &&
+      !this.isAccess(Entities.DraftVoucher, DraftVoucherPermissions.Edit)
+    ) {
       if (showMessage)
-        this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
+        this.showMessage(this.getText("App.AccessDenied"), MessageType.Warning);
       return false;
     }
 
-    if (this.subjectMode == 0 && !this.isAccess(Entities.Voucher, VoucherPermissions.Edit)) {
+    if (
+      this.subjectMode == 0 &&
+      !this.isAccess(Entities.Voucher, VoucherPermissions.Edit)
+    ) {
       if (showMessage)
-        this.showMessage(this.getText('App.AccessDenied'), MessageType.Warning);
+        this.showMessage(this.getText("App.AccessDenied"), MessageType.Warning);
       return false;
     }
 
     return true;
   }
-
 }
-
-
