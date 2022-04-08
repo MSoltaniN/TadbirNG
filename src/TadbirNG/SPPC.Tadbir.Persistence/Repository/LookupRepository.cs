@@ -661,6 +661,25 @@ namespace SPPC.Tadbir.Persistence
                 .Select(item => Mapper.Map<KeyValue>(item)).ToList();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، لیست دسترسی های سطری مجاز برای یک موجودیت را به صورت مجموعه ای از
+        /// کلیدهای متنی چندزبانه برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی موجودیت مورد نظر</param>
+        /// <returns>لیست دسترسی های سطری مجاز برای یک موجودیت</returns>
+        public async Task<IList<string>> GetValidRowPermissionsAsync(int viewId)
+        {
+            UnitOfWork.UseSystemContext();
+            var repository = UnitOfWork.GetAsyncRepository<ValidRowPermission>();
+            var permissions = await repository
+                .GetEntityQuery()
+                .Where(perm => perm.View.Id == viewId)
+                .Select(perm => perm.AccessMode)
+                .ToListAsync();
+            UnitOfWork.UseCompanyContext();
+            return permissions;
+        }
+
         #endregion
 
         private static string GetFullName(User user)

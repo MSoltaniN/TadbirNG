@@ -3555,4 +3555,28 @@
   <data name="Edition_RowPermissionsDisabled" xml:space="preserve">
     <value>در ویرایش استاندارد امکان تعریف و اعمال دسترسی های سطری وجود ندارد.</value>
   </data>
+  <data name="Access_AllExceptSpecificRecords" xml:space="preserve">
+    <value>دسترسی به تمام سطرها بجز سطرهای مشخص شده</value>
+  </data>
+  <data name="Access_AllExceptSpecificReferences" xml:space="preserve">
+    <value>دسترسی به تمام سطرها بجز سطرهای چند رفرنس</value>
+  </data>
+  <data name="Access_AllRecordsCreatedByUser" xml:space="preserve">
+    <value>دسترسی به تمام سطرهای ایجاد شده توسط کاربر</value>
+  </data>
+  <data name="Access_Default" xml:space="preserve">
+    <value>دسترسی یا عدم دسترسی با توجه به تنظیمات امنیتی</value>
+  </data>
+  <data name="Access_MaxMoneyValue" xml:space="preserve">
+    <value>دسترسی به سطرها تا سقف پولی یا ارزی تعیین شده</value>
+  </data>
+  <data name="Access_MaxQuantityValue" xml:space="preserve">
+    <value>دسترسی به سطرها تا سقف مقداری تعیین شده</value>
+  </data>
+  <data name="Access_SpecificRecords" xml:space="preserve">
+    <value>دسترسی به سطرهای مشخص شده</value>
+  </data>
+  <data name="Access_SpecificReferences" xml:space="preserve">
+    <value>دسترسی به سطرهای چند رفرنس</value>
+  </data>
 </root>

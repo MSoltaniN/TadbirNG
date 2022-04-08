@@ -14,12 +14,6 @@ import { environment } from "@sppc/env/environment";
 
 export class LookupApi {
 
-    // lookup/partners
-    public static Partners = environment.BaseUrl + "/lookup/partners";
-
-    // lookup/units
-    public static Units = environment.BaseUrl + "/lookup/units";
-
     // lookup/roles
     public static Roles = environment.BaseUrl + "/lookup/roles";
 
@@ -100,6 +94,9 @@ export class LookupApi {
 
     // lookup/cities/{provinceCode}
     public static Cities = environment.BaseUrl + "/lookup/cities/{0}";
+
+    // lookup/rowaccess/views/{viewId:min(1)}
+    public static ValidRowPermissions = environment.BaseUrl + "/lookup/rowaccess/views/{0}";
 
     // lookup/inv-acc
     public static InventoryAccounts = environment.BaseUrl + "/lookup/inv-acc"

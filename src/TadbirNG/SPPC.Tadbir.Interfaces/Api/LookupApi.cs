@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Api
 {
@@ -11,26 +10,6 @@ namespace SPPC.Tadbir.Api
         private LookupApi()
         {
         }
-
-        /// <summary>
-        /// API client URL for lookup collection of all business partners
-        /// </summary>
-        public const string Partners = "lookup/partners";
-
-        /// <summary>
-        /// API server route URL for lookup collection of all business partners
-        /// </summary>
-        public const string PartnersUrl = "lookup/partners";
-
-        /// <summary>
-        /// API client URL for lookup collection of all business units
-        /// </summary>
-        public const string Units = "lookup/units";
-
-        /// <summary>
-        /// API server route URL for lookup collection of all business units
-        /// </summary>
-        public const string UnitsUrl = "lookup/units";
 
         /// <summary>
         /// API client URL for lookup collection of all security roles
@@ -126,5 +105,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for cities of province
         /// </summary>
         public const string CitiesUrl = "lookup/cities/{provinceCode}";
+
+        /// <summary>
+        /// API client URL for all row premissions applicable to a view specified by unique identifier
+        /// </summary>
+        public const string ValidRowPermissions = "lookup/rowaccess/views/{0}";
+
+        /// <summary>
+        /// API server route URL for all row premissions applicable to a view specified by unique identifier
+        /// </summary>
+        public const string ValidRowPermissionsUrl = "lookup/rowaccess/views/{viewId:min(1)}";
     }
 }
