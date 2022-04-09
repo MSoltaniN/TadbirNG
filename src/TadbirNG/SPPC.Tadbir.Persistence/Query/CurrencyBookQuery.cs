@@ -5,18 +5,22 @@ namespace SPPC.Tadbir.Persistence
     internal class CurrencyBookQuery
     {
         internal const string ByRowSelect = @"
-SELECT v.Date, v.No, vl.Description, v.Reference,
+SELECT CAST(v.Date AS date) AS Date, v.No, vl.Description, v.Reference,
 vl.CurrencyValue AS [Debit], vl.CurrencyValue AS [Credit],
 vl.Debit AS [BaseCurrencyDebit], vl.Credit AS [BaseCurrencyCredit], vl.Mark, vl.VoucherLineID";
 
+        internal const string ByRowGroupBy = @"ORDER BY CAST(v.Date AS date), v.No";
+
         internal const string ByRowByBranchSelect = @"
-SELECT v.Date, v.No, vl.Description, v.Reference,
+SELECT CAST(v.Date AS date) AS Date, v.No, vl.Description, v.Reference,
 vl.CurrencyValue AS [Debit], vl.CurrencyValue AS [Credit],
 vl.Debit AS [BaseCurrencyDebit], vl.Credit AS [BaseCurrencyCredit], vl.Mark, vl.VoucherLineID,
 br.Name AS [BranchName]";
 
+        internal const string ByRowByBranchGroupBy = @"ORDER BY CAST(v.Date AS date), v.No, br.Name";
+
         internal const string VoucherSumSelect = @"
-SELECT CAST(v.Date AS date), v.No, v.Reference, SUM(vl.Debit) AS [BaseCurrencyDebit],
+SELECT CAST(v.Date AS date) AS Date, v.No, v.Reference, SUM(vl.Debit) AS [BaseCurrencyDebit],
 SUM(vl.Credit) AS [BaseCurrencyCredit], SUM(vl.CurrencyValue) AS [Debit],
 SUM(vl.CurrencyValue) AS [Credit]";
 
@@ -24,7 +28,7 @@ SUM(vl.CurrencyValue) AS [Credit]";
 ORDER BY CAST(v.Date AS date), v.No";
 
         internal const string VoucherSumByBranchSelect = @"
-SELECT CAST(v.Date AS date), v.No, v.Reference, SUM(vl.Debit) AS [BaseCurrencyDebit],
+SELECT CAST(v.Date AS date) AS Date, v.No, v.Reference, SUM(vl.Debit) AS [BaseCurrencyDebit],
 SUM(vl.Credit) AS [BaseCurrencyCredit], SUM(vl.CurrencyValue) AS [Debit],
 SUM(vl.CurrencyValue) AS [Credit], br.Name AS [BranchName]";
 
@@ -32,7 +36,7 @@ SUM(vl.CurrencyValue) AS [Credit], br.Name AS [BranchName]";
 ORDER BY CAST(v.Date AS date), v.No, br.Name";
 
         internal const string DailySumSelect = @"
-SELECT CAST(v.Date AS date), COUNT(vl.RowNo) AS LineCount, SUM(vl.Debit) AS [BaseCurrencyDebit],
+SELECT CAST(v.Date AS date) AS Date, COUNT(vl.RowNo) AS LineCount, SUM(vl.Debit) AS [BaseCurrencyDebit],
 SUM(vl.Credit) AS [BaseCurrencyCredit], SUM(vl.CurrencyValue) AS [Debit],
 SUM(vl.CurrencyValue) AS [Credit]";
 
@@ -40,7 +44,7 @@ SUM(vl.CurrencyValue) AS [Credit]";
 ORDER BY CAST(v.Date AS date)";
 
         internal const string DailySumByBranchSelect = @"
-SELECT CAST(v.Date AS date), COUNT(vl.RowNo) AS LineCount, SUM(vl.Debit) AS [BaseCurrencyDebit],
+SELECT CAST(v.Date AS date) AS Date, COUNT(vl.RowNo) AS LineCount, SUM(vl.Debit) AS [BaseCurrencyDebit],
 SUM(vl.Credit) AS [BaseCurrencyCredit], SUM(vl.CurrencyValue) AS [Debit],
 SUM(vl.CurrencyValue) AS [Credit], br.Name AS [BranchName]";
 
