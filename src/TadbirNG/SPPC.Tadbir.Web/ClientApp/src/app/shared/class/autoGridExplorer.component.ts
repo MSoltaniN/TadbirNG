@@ -26,9 +26,7 @@ import { BrowserStorageService } from "@sppc/shared/services/browserStorage.serv
 import { GridService } from "@sppc/shared/services/grid.service";
 import { MetaDataService } from "@sppc/shared/services/metadata.service";
 import { ToastrService } from "ngx-toastr";
-import { Observable } from "rxjs";
-import { empty } from "rxjs/observable/empty";
-import { of } from "rxjs/observable/of";
+import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
 import { ReloadStatusType } from "../enum";
 import { OperationId } from "../enum/operationId";
@@ -928,7 +926,7 @@ export class AutoGridExplorerComponent<T>
   public getExportData(): Observable<GridDataResult> {
     if (!this.exportAccessed) {
       this.showMessage(this.getText("App.AccessDenied"), MessageType.Warning);
-      return empty<GridDataResult>();
+      return of();
     }
 
     if (this.getDataUrl) {

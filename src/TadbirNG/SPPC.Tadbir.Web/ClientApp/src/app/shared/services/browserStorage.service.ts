@@ -1,62 +1,71 @@
-import { Injectable } from '@angular/core';
-import { String } from '@sppc/shared/class/source';
-import { LZStringService } from 'ng-lz-string';
-import { ContextInfo } from '@sppc/core';
-import { CurrencyBookDefault } from '@sppc/finance/models';
+import { Injectable } from "@angular/core";
+import { ContextInfo } from "@sppc/core";
+import { CurrencyBookDefault } from "@sppc/finance/models";
+import { String } from "@sppc/shared/class/source";
 
 export const SessionKeys = {
-  CurrentContext: 'CurrentContext',
-  FiscalPeriod: 'FiscalPeriod',
-  AppVersion: 'AppVersion',
-  Menu: 'menu',
-  Profile: 'profile_{0}',
-  Setting: 'setting_{0}',
-  LastUserBranch: 'lastUserBranch_{0}_{1}',
-  LastUserFpId: 'lastUserFpId_{0}_{1}',
-  CurrentRoute: 'currentRoute',
-  PreviousRoute:'PreviousRoute',
-  CurrentSkin: 'currentSkin',
-  NumberConfig: 'numberConfig',
-  SystemConfig: 'SystemConfig',
-  TestBalanceConfig: 'testBalanceConfig',
-  DateRangeConfig: 'DateRangeConfig',
-  SelectedDateRange: 'SelectedDateRange',
-  MetadataKey: 'metadata_view_{0}_{1}',
-  QuickSearchConfig: 'QuickSearchConfig_{0}_{1}',
-  SelectForm: 'SelectForm',
-  Lang: 'lang',
-  ViewTreeConfig: 'viewTreeConfig',
-  CurrencyBookDefault: 'CurrencyBookDefault',
-  TestBalance: 'testBalance',
-  SelectedBranch: 'SelectedBranch',
-  SelectedFiscalPeriod: 'SelectedFiscalPeriod',
-  ItemBalance: 'itemBalance',
-  OperationLog: 'OperationLog',
-  BalanceSheet: 'BalanceSheet',
-  Shortcut: 'shortcut',
-  License: 'license',
-  LicenseInfo: 'license-info',
-  QuickReportSetting:'quick-report-{0}-{1}-{2}'
-}
-
+  CurrentContext: "CurrentContext",
+  FiscalPeriod: "FiscalPeriod",
+  AppVersion: "AppVersion",
+  Menu: "menu",
+  Profile: "profile_{0}",
+  Setting: "setting_{0}",
+  LastUserBranch: "lastUserBranch_{0}_{1}",
+  LastUserFpId: "lastUserFpId_{0}_{1}",
+  CurrentRoute: "currentRoute",
+  PreviousRoute: "PreviousRoute",
+  CurrentSkin: "currentSkin",
+  NumberConfig: "numberConfig",
+  SystemConfig: "SystemConfig",
+  TestBalanceConfig: "testBalanceConfig",
+  DateRangeConfig: "DateRangeConfig",
+  SelectedDateRange: "SelectedDateRange",
+  MetadataKey: "metadata_view_{0}_{1}",
+  QuickSearchConfig: "QuickSearchConfig_{0}_{1}",
+  SelectForm: "SelectForm",
+  Lang: "lang",
+  ViewTreeConfig: "viewTreeConfig",
+  CurrencyBookDefault: "CurrencyBookDefault",
+  TestBalance: "testBalance",
+  SelectedBranch: "SelectedBranch",
+  SelectedFiscalPeriod: "SelectedFiscalPeriod",
+  ItemBalance: "itemBalance",
+  OperationLog: "OperationLog",
+  BalanceSheet: "BalanceSheet",
+  Shortcut: "shortcut",
+  License: "license",
+  LicenseInfo: "license-info",
+  QuickReportSetting: "quick-report-{0}-{1}-{2}",
+};
 
 @Injectable()
 export class BrowserStorageService {
-
-  constructor(private lz: LZStringService) { }
+  constructor() {}
 
   setContext(currentUser: ContextInfo, rememberMe: boolean) {
     if (rememberMe)
-      localStorage.setItem(SessionKeys.CurrentContext, JSON.stringify(currentUser));
+      localStorage.setItem(
+        SessionKeys.CurrentContext,
+        JSON.stringify(currentUser)
+      );
     else
-      sessionStorage.setItem(SessionKeys.CurrentContext, JSON.stringify(currentUser));
+      sessionStorage.setItem(
+        SessionKeys.CurrentContext,
+        JSON.stringify(currentUser)
+      );
   }
 
   setCurrentContext(currentUser: ContextInfo) {
     if (this.isRememberMe())
-      localStorage.setItem(SessionKeys.CurrentContext, JSON.stringify(currentUser));
+      localStorage.setItem(
+        SessionKeys.CurrentContext,
+        JSON.stringify(currentUser)
+      );
     else
-      sessionStorage.setItem(SessionKeys.CurrentContext, JSON.stringify(currentUser));
+      sessionStorage.setItem(
+        SessionKeys.CurrentContext,
+        JSON.stringify(currentUser)
+      );
   }
 
   removeCurrentContext() {
@@ -72,16 +81,26 @@ export class BrowserStorageService {
     this.removeLicenseInfo();
   }
 
-  setLastUserBranchAndFpId(userId: number, companyId: string, branchId: string, fpId: string) {
-    localStorage.setItem(String.Format(SessionKeys.LastUserBranch, userId, companyId), branchId);
-    localStorage.setItem(String.Format(SessionKeys.LastUserFpId, userId, companyId), fpId);
+  setLastUserBranchAndFpId(
+    userId: number,
+    companyId: string,
+    branchId: string,
+    fpId: string
+  ) {
+    localStorage.setItem(
+      String.Format(SessionKeys.LastUserBranch, userId, companyId),
+      branchId
+    );
+    localStorage.setItem(
+      String.Format(SessionKeys.LastUserFpId, userId, companyId),
+      fpId
+    );
   }
 
   setFiscalPeriod(item: any) {
     if (this.isRememberMe())
       localStorage.setItem(SessionKeys.FiscalPeriod, JSON.stringify(item));
-    else
-      sessionStorage.setItem(SessionKeys.FiscalPeriod, JSON.stringify(item));
+    else sessionStorage.setItem(SessionKeys.FiscalPeriod, JSON.stringify(item));
   }
 
   setSession(key: any, value: any) {
@@ -90,27 +109,26 @@ export class BrowserStorageService {
 
   getSession(key: any) {
     var value = sessionStorage.getItem(key);
-    if (value)
-      return JSON.parse(value);
+    if (value) return JSON.parse(value);
     return null;
   }
 
-  getLicense():string {
+  getLicense(): string {
     if (sessionStorage.getItem(SessionKeys.License))
       return sessionStorage.getItem(SessionKeys.License);
 
     return null;
   }
 
-  setLicense(value:string) {
-    sessionStorage.setItem(SessionKeys.License, value);    
+  setLicense(value: string) {
+    sessionStorage.setItem(SessionKeys.License, value);
   }
 
   removeLicense() {
     sessionStorage.removeItem(SessionKeys.License);
   }
 
-  removeLicenseInfo() {    
+  removeLicenseInfo() {
     sessionStorage.removeItem(SessionKeys.LicenseInfo);
   }
 
@@ -129,8 +147,7 @@ export class BrowserStorageService {
   getFiscalPeriod(): string {
     if (this.isRememberMe())
       return localStorage.getItem(SessionKeys.FiscalPeriod);
-    else
-      return sessionStorage.getItem(SessionKeys.FiscalPeriod);
+    else return sessionStorage.getItem(SessionKeys.FiscalPeriod);
   }
 
   removeFiscalPeriod() {
@@ -144,15 +161,14 @@ export class BrowserStorageService {
   setMenu(item: any) {
     if (this.isRememberMe())
       localStorage.setItem(SessionKeys.Menu, JSON.stringify(item));
-    else
-      sessionStorage.setItem(SessionKeys.Menu, JSON.stringify(item));
+    else sessionStorage.setItem(SessionKeys.Menu, JSON.stringify(item));
   }
 
-  setShortcut(item: any) {    
-      localStorage.setItem(SessionKeys.Shortcut, JSON.stringify(item));    
+  setShortcut(item: any) {
+    localStorage.setItem(SessionKeys.Shortcut, JSON.stringify(item));
   }
 
-  getShortcut():string {
+  getShortcut(): string {
     return localStorage.getItem(SessionKeys.Shortcut);
   }
 
@@ -182,18 +198,14 @@ export class BrowserStorageService {
 
   getProfile(): string {
     var key = String.Format(SessionKeys.Profile, this.getLanguage());
-    if (this.isRememberMe())
-      return localStorage.getItem(key);
-    else
-      return sessionStorage.getItem(key);
+    if (this.isRememberMe()) return localStorage.getItem(key);
+    else return sessionStorage.getItem(key);
   }
 
   setProfile(item: any) {
     var key = String.Format(SessionKeys.Profile, this.getLanguage());
-    if (this.isRememberMe())
-      localStorage.setItem(key, JSON.stringify(item));
-    else
-      sessionStorage.setItem(key, JSON.stringify(item));
+    if (this.isRememberMe()) localStorage.setItem(key, JSON.stringify(item));
+    else sessionStorage.setItem(key, JSON.stringify(item));
   }
 
   checkVersion(version: string, userId: number) {
@@ -212,35 +224,40 @@ export class BrowserStorageService {
   }
 
   setUserSetting(settings: any, userId: number) {
-    localStorage.setItem(String.Format(SessionKeys.Setting, userId), JSON.stringify(settings));
+    localStorage.setItem(
+      String.Format(SessionKeys.Setting, userId),
+      JSON.stringify(settings)
+    );
   }
 
   getUserSettings(userId: number): string {
     return localStorage.getItem(String.Format(SessionKeys.Setting, userId));
   }
 
-  deleteUserSettings(userId:number)
-  {
+  deleteUserSettings(userId: number) {
     localStorage.removeItem(String.Format(SessionKeys.Setting, userId));
   }
 
   getLastUserBranch(userId: number, companyId: string): string | undefined {
-    var branchId = localStorage.getItem(String.Format(SessionKeys.LastUserBranch, userId, companyId));
+    var branchId = localStorage.getItem(
+      String.Format(SessionKeys.LastUserBranch, userId, companyId)
+    );
     return branchId != "undefined" ? branchId : undefined;
   }
 
   getLastUserFpId(userId: number, companyId: string): string | undefined {
-    var fpId = localStorage.getItem(String.Format(SessionKeys.LastUserFpId, userId, companyId));
+    var fpId = localStorage.getItem(
+      String.Format(SessionKeys.LastUserFpId, userId, companyId)
+    );
     return fpId != "undefined" ? fpId : undefined;
   }
 
   getCurrentUser(): ContextInfo | null {
     var currentUser: ContextInfo;
-    var item: string | null = '';
+    var item: string | null = "";
     if (localStorage.getItem(SessionKeys.CurrentContext)) {
       item = localStorage.getItem(SessionKeys.CurrentContext);
-    }
-    else if (sessionStorage.getItem(SessionKeys.CurrentContext)) {
+    } else if (sessionStorage.getItem(SessionKeys.CurrentContext)) {
       item = sessionStorage.getItem(SessionKeys.CurrentContext);
     }
 
@@ -269,15 +286,12 @@ export class BrowserStorageService {
   }
 
   getMenu(): string {
-    if (this.isRememberMe())
-      return localStorage.getItem(SessionKeys.Menu);
-    else
-      return sessionStorage.getItem(SessionKeys.Menu);
+    if (this.isRememberMe()) return localStorage.getItem(SessionKeys.Menu);
+    else return sessionStorage.getItem(SessionKeys.Menu);
   }
 
   islogin(): boolean {
-    if (this.getCurrentUser())
-      return true;
+    if (this.getCurrentUser()) return true;
     return false;
   }
 
@@ -290,15 +304,14 @@ export class BrowserStorageService {
 
   getMetadata(metadataKey: string): string {
     var metadata = localStorage.getItem(metadataKey);
-    if (metadata)
-      return metadata;    
+    if (metadata) return metadata;
 
     return null;
   }
 
   setMetadata(metadataKey: string, columns: any) {
     var jsonData = JSON.stringify(columns);
-    if (jsonData) {        
+    if (jsonData) {
       localStorage.setItem(metadataKey, jsonData);
     }
   }
@@ -308,7 +321,10 @@ export class BrowserStorageService {
   }
 
   setViewTreeConfig(treeConfig: any[]) {
-    localStorage.setItem(SessionKeys.ViewTreeConfig, JSON.stringify(treeConfig));
+    localStorage.setItem(
+      SessionKeys.ViewTreeConfig,
+      JSON.stringify(treeConfig)
+    );
   }
 
   getNumberConfig(): string {
@@ -338,13 +354,18 @@ export class BrowserStorageService {
   }
 
   setSystemConfig(systemConfig: string) {
-    sessionStorage.setItem(SessionKeys.SystemConfig, JSON.stringify(systemConfig));
+    sessionStorage.setItem(
+      SessionKeys.SystemConfig,
+      JSON.stringify(systemConfig)
+    );
   }
 
   setTestBalanceConfig(numConfig: any) {
-    localStorage.setItem(SessionKeys.TestBalanceConfig, JSON.stringify(numConfig));
+    localStorage.setItem(
+      SessionKeys.TestBalanceConfig,
+      JSON.stringify(numConfig)
+    );
   }
-
 
   removeDateRangeConfig() {
     if (localStorage.getItem(SessionKeys.DateRangeConfig))
@@ -352,7 +373,10 @@ export class BrowserStorageService {
   }
 
   setDateRangeConfig(dateConfig: any) {
-    localStorage.setItem(SessionKeys.DateRangeConfig, JSON.stringify(dateConfig));
+    localStorage.setItem(
+      SessionKeys.DateRangeConfig,
+      JSON.stringify(dateConfig)
+    );
   }
 
   getdateRangeConfig(): string {
@@ -364,7 +388,10 @@ export class BrowserStorageService {
   }
 
   setSelectedDaterange(dataItem: any) {
-    sessionStorage.setItem(SessionKeys.SelectedDateRange, JSON.stringify(dataItem));
+    sessionStorage.setItem(
+      SessionKeys.SelectedDateRange,
+      JSON.stringify(dataItem)
+    );
   }
 
   removeSelectedDateRange() {
@@ -380,17 +407,28 @@ export class BrowserStorageService {
   }
 
   getQuickSearchConfig(viewId: number, userId: number): string {
-    var sessionKey = String.Format(SessionKeys.QuickSearchConfig, viewId.toString(), userId.toString());
+    var sessionKey = String.Format(
+      SessionKeys.QuickSearchConfig,
+      viewId.toString(),
+      userId.toString()
+    );
     return localStorage.getItem(sessionKey);
   }
 
   setQuickSearchConfig(viewId: number, userId: number, value: any) {
-    var sessionKey = String.Format(SessionKeys.QuickSearchConfig, viewId.toString(), userId.toString());
+    var sessionKey = String.Format(
+      SessionKeys.QuickSearchConfig,
+      viewId.toString(),
+      userId.toString()
+    );
     localStorage.setItem(sessionKey, JSON.stringify(value));
   }
 
   setCurrencyBookDefault(model: CurrencyBookDefault) {
-    sessionStorage.setItem(SessionKeys.CurrencyBookDefault, JSON.stringify(model));
+    sessionStorage.setItem(
+      SessionKeys.CurrencyBookDefault,
+      JSON.stringify(model)
+    );
   }
 
   getCurrencyBookDefault(): CurrencyBookDefault | null {
@@ -422,27 +460,42 @@ export class BrowserStorageService {
     sessionStorage.removeItem(SessionKeys.SelectedFiscalPeriod);
   }
 
-  removeSessionStorage(key:string) {
-    sessionStorage.removeItem(key);    
+  removeSessionStorage(key: string) {
+    sessionStorage.removeItem(key);
   }
 
   removeLocalStorage(key: string) {
     localStorage.removeItem(key);
   }
 
-  setQuickReportSetting(viewId: string, userId: string, value:string) {
-    var key = String.Format(SessionKeys.QuickReportSetting, viewId.toString(), userId.toString(), this.getLanguage());
-    localStorage.setItem(key,value);
+  setQuickReportSetting(viewId: string, userId: string, value: string) {
+    var key = String.Format(
+      SessionKeys.QuickReportSetting,
+      viewId.toString(),
+      userId.toString(),
+      this.getLanguage()
+    );
+    localStorage.setItem(key, value);
   }
 
   getQuickReportSetting(viewId: string, userId: string) {
-    var key = String.Format(SessionKeys.QuickReportSetting, viewId.toString(), userId.toString(),this.getLanguage());
+    var key = String.Format(
+      SessionKeys.QuickReportSetting,
+      viewId.toString(),
+      userId.toString(),
+      this.getLanguage()
+    );
     var jsonString = localStorage.getItem(key);
     return jsonString;
   }
 
   removeQuickReportSetting(viewId: string, userId: string) {
-    var key = String.Format(SessionKeys.QuickReportSetting, viewId.toString(), userId.toString(), this.getLanguage());
+    var key = String.Format(
+      SessionKeys.QuickReportSetting,
+      viewId.toString(),
+      userId.toString(),
+      this.getLanguage()
+    );
     var jsonString = localStorage.removeItem(key);
     return jsonString;
   }

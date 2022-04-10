@@ -19,7 +19,6 @@ import {
   MessageType,
 } from "@sppc/shared/enum/metadata";
 import { Command, ListFormViewConfig } from "@sppc/shared/models";
-import { ShortcutCommand } from "@sppc/shared/models/shortcutCommand";
 import {
   BrowserStorageService,
   MetaDataService,
@@ -307,11 +306,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
   }
 
   loadShortcut() {
-    this.userService
-      .getCurrentUserHotKeys()
-      .subscribe((res: Array<ShortcutCommand>) => {
-        this.bStorageService.setShortcut(res);
-      });
+    this.userService.getCurrentUserHotKeys().subscribe((res: any) => {
+      this.bStorageService.setShortcut(res);
+    });
   }
 
   loadMenuAndRoute(currentUser: ContextInfo) {

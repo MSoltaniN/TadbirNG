@@ -30,7 +30,7 @@ import { BrowserStorageService } from "@sppc/shared/services/browserStorage.serv
 import { GridService } from "@sppc/shared/services/grid.service";
 import { MetaDataService } from "@sppc/shared/services/metadata.service";
 import { ToastrService } from "ngx-toastr";
-import { of } from "rxjs/observable/of";
+import { of } from "rxjs";
 import { AccountPermissions } from "../security/permissions";
 import { ErrorHandlingService } from "../services";
 import { DefaultComponent } from "./default.component";

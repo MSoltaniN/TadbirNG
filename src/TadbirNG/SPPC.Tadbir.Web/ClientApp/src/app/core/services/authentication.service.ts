@@ -9,8 +9,7 @@ import { String } from "@sppc/shared/class/source";
 import { CompanyLogin } from "@sppc/shared/models";
 import { BrowserStorageService } from "@sppc/shared/services";
 import { LookupApi } from "@sppc/shared/services/api";
-import { Observable } from "rxjs";
-import { empty } from "rxjs/observable/empty";
+import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
 import { PermissionBrief } from "..";
 import { Context } from "../models/context";
@@ -127,7 +126,7 @@ export class AuthenticationService extends BaseService {
     header = header.append("Content-Type", "application/json; charset=utf-8");
     header = header.append("X-Tadbir-AuthTicket", ticket);
 
-    if (ticket == "") return empty<Response>();
+    if (ticket == "") return of();
     //var jsonContext = atob(ticket);
     //var context = JSON.parse(jsonContext);
     var contextInfo = this.parseJwt(ticket);
@@ -151,7 +150,7 @@ export class AuthenticationService extends BaseService {
     header = header.append("Content-Type", "application/json; charset=utf-8");
     header = header.append("X-Tadbir-AuthTicket", ticket);
 
-    if (ticket == "") return empty<Response>();
+    if (ticket == "") return of();
     //var jsonContext = atob(ticket);
     //var context = JSON.parse(jsonContext);
     var contextInfo = this.parseJwt(ticket);
@@ -178,7 +177,7 @@ export class AuthenticationService extends BaseService {
     header = header.append("Content-Type", "application/json; charset=utf-8");
     header = header.append("X-Tadbir-AuthTicket", ticket);
 
-    if (ticket == "") return empty<Response>();
+    if (ticket == "") return of();
     var contextInfo = this.parseJwt(ticket);
 
     var userId = contextInfo.TadbirContext.Id;
@@ -242,7 +241,7 @@ export class AuthenticationService extends BaseService {
 
     var body = JSON.stringify(specialPassword);
 
-    if (ticket == "") return empty<Response>();
+    if (ticket == "") return of();
     var url = UserApi.SpecialPassword;
     return this.http
       .put(url, body, { headers: header })
