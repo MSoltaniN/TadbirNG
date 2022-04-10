@@ -4800,3 +4800,8 @@ INSERT INTO [Metadata].[ValidRowPermission] ([RowPermissionID], [ViewID], [Acces
 INSERT INTO [Metadata].[ValidRowPermission] ([RowPermissionID], [ViewID], [AccessMode]) VALUES (22, 8, 'Access_AllExceptSpecificRecords')
 
 SET IDENTITY_INSERT [Metadata].[ValidRowPermission] OFF
+
+-- 1.2.1357
+UPDATE [Metadata].[Column]
+SET AllowSorting = 0, AllowFiltering = 0
+WHERE ViewID IN(27,28,29) AND Name = 'Balance'
