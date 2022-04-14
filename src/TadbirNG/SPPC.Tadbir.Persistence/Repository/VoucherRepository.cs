@@ -8,7 +8,6 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
@@ -118,10 +117,10 @@ namespace SPPC.Tadbir.Persistence
         {
             var byNo = default(VoucherViewModel);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var voucherByNo = await repository.GetFirstByCriteriaAsync(
+            var voucherByNo = Repository.ApplyRowFilter(await repository.GetFirstByCriteriaAsync(
                 v => v.FiscalPeriodId == UserContext.FiscalPeriodId
                     && v.No == voucherNo
-                    && v.SubjectType == (short)subject);
+                    && v.SubjectType == (short)subject), ViewId.Voucher);
             if (voucherByNo != null)
             {
                 byNo = Mapper.Map<VoucherViewModel>(voucherByNo);
@@ -140,12 +139,12 @@ namespace SPPC.Tadbir.Persistence
         {
             var first = default(VoucherViewModel);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var firstVoucher = await repository
+            var firstVoucher = Repository.ApplyRowFilter(await repository
                 .GetEntityQuery()
                 .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId
                     && v.SubjectType == (short)subject)
                 .OrderBy(v => v.No)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(), ViewId.Voucher);
             if (firstVoucher != null)
             {
                 first = Mapper.Map<VoucherViewModel>(firstVoucher);
@@ -166,13 +165,13 @@ namespace SPPC.Tadbir.Persistence
         {
             var previous = default(VoucherViewModel);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var previousVoucher = await repository
+            var previousVoucher = Repository.ApplyRowFilter(await repository
                 .GetEntityQuery()
                 .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId
                     && v.No < currentNo
                     && v.SubjectType == (short)subject)
                 .OrderByDescending(v => v.No)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(), ViewId.Voucher);
             if (previousVoucher != null)
             {
                 previous = Mapper.Map<VoucherViewModel>(previousVoucher);
@@ -193,13 +192,13 @@ namespace SPPC.Tadbir.Persistence
         {
             var next = default(VoucherViewModel);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var nextVoucher = await repository
+            var nextVoucher = Repository.ApplyRowFilter(await repository
                 .GetEntityQuery()
                 .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId
                     && v.No > currentNo
                     && v.SubjectType == (short)subject)
                 .OrderBy(v => v.No)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(), ViewId.Voucher);
             if (nextVoucher != null)
             {
                 next = Mapper.Map<VoucherViewModel>(nextVoucher);
@@ -218,12 +217,12 @@ namespace SPPC.Tadbir.Persistence
         {
             var last = default(VoucherViewModel);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var lastVoucher = await repository
+            var lastVoucher = Repository.ApplyRowFilter(await repository
                 .GetEntityQuery()
                 .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId
                     && v.SubjectType == (short)subject)
                 .OrderByDescending(v => v.No)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(), ViewId.Voucher);
             if (lastVoucher != null)
             {
                 last = Mapper.Map<VoucherViewModel>(lastVoucher);
@@ -771,16 +770,18 @@ namespace SPPC.Tadbir.Persistence
         private async Task SetVoucherNavigationAsync(VoucherViewModel voucher)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            int previousCount = await repository.GetCountByCriteriaAsync(
+            var previous = await repository.GetByCriteriaAsync(
                 v => v.FiscalPeriodId == UserContext.FiscalPeriodId
                     && v.No < voucher.No
                     && v.SubjectType == voucher.SubjectType);
-            int nextCount = await repository.GetCountByCriteriaAsync(
+            var filteredPrevious = Repository.ApplyRowFilter(previous.ToList(), ViewId.Voucher);
+            var next = await repository.GetByCriteriaAsync(
                 v => v.FiscalPeriodId == UserContext.FiscalPeriodId
                     && v.No > voucher.No
                     && v.SubjectType == voucher.SubjectType);
-            voucher.HasPrevious = previousCount > 0;
-            voucher.HasNext = nextCount > 0;
+            var filteredNext = Repository.ApplyRowFilter(next.ToList(), ViewId.Voucher);
+            voucher.HasPrevious = filteredPrevious.Count > 0;
+            voucher.HasNext = filteredNext.Count > 0;
         }
 
         private async Task<IEnumerable<VoucherViewModel>> GetVoucherItemsAsync(GridOptions gridOptions)
@@ -795,7 +796,7 @@ namespace SPPC.Tadbir.Persistence
             var vouchers = new List<VoucherViewModel>();
             vouchers.AddRange(result.Rows.Cast<DataRow>()
                 .Select(row => GetVoucherItem(row)));
-            return vouchers;
+            return Repository.ApplyRowFilter(vouchers, ViewId.Voucher);
         }
 
         private async Task<string> GetEnvironmentFiltersAsync(GridOptions gridOptions)
