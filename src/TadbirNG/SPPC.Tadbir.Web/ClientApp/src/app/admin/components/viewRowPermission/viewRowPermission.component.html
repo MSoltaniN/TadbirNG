@@ -61,6 +61,7 @@
         [textField]="'value'"
         [valueField]="'key'"
         [valuePrimitive]="true"
+        (valueChange)="onPermissionChange($event)"
         [(ngModel)]="ddlPermissionTypeSelected"
         [value]="ddlPermissionTypeSelected"
       >

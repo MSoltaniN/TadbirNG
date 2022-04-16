@@ -1,48 +1,98 @@
-import { Component, Input, Output, EventEmitter, Renderer2, ElementRef } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { ToastrService } from 'ngx-toastr';
-import { RTL } from '@progress/kendo-angular-l10n';
-import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
-import { String, DetailComponent, FilterExpression, FilterExpressionBuilder, Filter } from '@sppc/shared/class';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  Renderer2,
+} from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
+import { RTL } from "@progress/kendo-angular-l10n";
+import { TreeItem, TreeItemLookup } from "@progress/kendo-angular-treeview";
+import {
+  ItemInfo,
+  ViewRowPermissionInfo,
+  ViewRowPermissionService,
+} from "@sppc/admin/service";
 import { environment } from "@sppc/env/environment";
-import { Layout, Entities } from '@sppc/shared/enum/metadata';
-import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
-import { ItemInfo, ViewRowPermissionInfo, ViewRowPermissionService } from '@sppc/admin/service';
-
-
-
+import {
+  DetailComponent,
+  Filter,
+  FilterExpression,
+  FilterExpressionBuilder,
+  String,
+} from "@sppc/shared/class";
+import { Entities, Layout } from "@sppc/shared/enum/metadata";
+import { BrowserStorageService, MetaDataService } from "@sppc/shared/services";
+import { ToastrService } from "ngx-toastr";
+import { Observable } from "rxjs";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
 }
 
-
 @Component({
-  selector: 'viewRowPermission-multiple-form-component',
-  templateUrl: './viewRowPermission-multiple-form.component.html',
-  styles: [`
-/deep/ #multipleForm > .k-dialog { width: 800px; }
-@media screen and (max-width:800px) {
-    /deep/ #multipleForm > .k-dialog { width: 90%; min-width:250px; }
-}
-#main-section { border: solid 1px #337ab7; border-radius: 3px; margin:0;}
-    #main-section > .col-sm-6 { padding: 0; }
-    @media screen and (max-width:768px){ #main-section > .col-sm-6 { float:unset !important; }}
-.section-header { border: solid 1px #337ab7; padding: 7px 10px;}  .section-header .input-search-form { width: calc(100% - 200px); }
-.section-body { padding: 10px; border-right: solid 1px #337ab7; border-left: solid 1px #337ab7; height: 450px; overflow-y: scroll; }
-.header-label { margin: 6px 0 5px; display: block; } #frm-btn{ margin-top:15px; }
-.k-treeview { white-space: unset !important;}
-`],
-  providers: [{
-    provide: RTL,
-    useFactory: getLayoutModule,
-    deps: [Layout]
-  }]
-
+  selector: "viewRowPermission-multiple-form-component",
+  templateUrl: "./viewRowPermission-multiple-form.component.html",
+  styles: [
+    `
+      /deep/ #multipleForm > .k-dialog {
+        width: 800px;
+      }
+      @media screen and (max-width: 800px) {
+        /deep/ #multipleForm > .k-dialog {
+          width: 90%;
+          min-width: 250px;
+        }
+      }
+      #main-section {
+        border: solid 1px #337ab7;
+        border-radius: 3px;
+        margin: 0;
+      }
+      #main-section > .col-sm-6 {
+        padding: 0;
+      }
+      @media screen and (max-width: 768px) {
+        #main-section > .col-sm-6 {
+          float: unset !important;
+        }
+      }
+      .section-header {
+        border: solid 1px #337ab7;
+        padding: 7px 10px;
+      }
+      .section-header .input-search-form {
+        width: calc(100% - 200px);
+      }
+      .section-body {
+        padding: 10px;
+        border-right: solid 1px #337ab7;
+        border-left: solid 1px #337ab7;
+        height: 450px;
+        overflow-y: scroll;
+      }
+      .header-label {
+        margin: 6px 0 5px;
+        display: block;
+      }
+      #frm-btn {
+        margin-top: 15px;
+      }
+      .k-treeview {
+        white-space: unset !important;
+      }
+    `,
+  ],
+  providers: [
+    {
+      provide: RTL,
+      useFactory: getLayoutModule,
+      deps: [Layout],
+    },
+  ],
 })
-
 export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
-
   roleItem: ItemInfo;
 
   noData: boolean = false;
@@ -50,8 +100,7 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
   fetchUrl: string;
   rowPermission: ViewRowPermissionInfo;
 
-  entityName: string = '';
-
+  entityName: string = "";
 
   public rowList: ItemInfo[] = [];
   public rowCheckedKeys: number[] = [];
@@ -70,7 +119,7 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
   }
 
   @Input() public set dataItem(item: ViewRowPermissionInfo) {
-
+    debugger;
     this.rowList = [];
     this.rowCheckedKeys = [];
     this.selectedRowList = [];
@@ -78,7 +127,10 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
 
     if (item) {
       this.rowPermission = item;
-      this.getFetchUrl();
+      this.getFetchUrl().subscribe((res: any) => {
+        this.fetchUrl = res.fetchUrl;
+        this.onSearch();
+      });
     }
   }
 
@@ -109,15 +161,31 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
   }
   //Events
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
-    public viewRowPermissionService: ViewRowPermissionService, public bStorageService: BrowserStorageService,public elem:ElementRef) {
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.RowAccess, undefined,elem);
+  constructor(
+    public toastrService: ToastrService,
+    public translate: TranslateService,
+    public renderer: Renderer2,
+    public metadata: MetaDataService,
+    public viewRowPermissionService: ViewRowPermissionService,
+    public bStorageService: BrowserStorageService,
+    public elem: ElementRef
+  ) {
+    super(
+      toastrService,
+      translate,
+      bStorageService,
+      renderer,
+      metadata,
+      Entities.RowAccess,
+      undefined,
+      elem
+    );
   }
 
-  getFetchUrl() {
-    this.metadata.getMetaDataById(this.rowPermission.viewId).subscribe((res: any) => {
-      this.fetchUrl = res.fetchUrl;
-    })
+  getFetchUrl(): Observable<any> {
+    return this.metadata
+      .getMetaDataById(this.rowPermission.viewId)
+      .pipe((res) => res);
   }
 
   public checkByKey(item: TreeItem) {
@@ -126,19 +194,17 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
 
   public handleCheckedChange(itemLookup: TreeItemLookup): void {
     var item = itemLookup.item.dataItem;
-    if (this.rowCheckedKeys.find(f => f == item.key)) {
-      var index = this.selectedRowList.findIndex(f => f.key == item.key);
+    if (this.rowCheckedKeys.find((f) => f == item.key)) {
+      var index = this.selectedRowList.findIndex((f) => f.key == item.key);
       if (index > -1) {
-
-        var index2 = this.selectedRowList.findIndex(f => f.key == item.key);
+        var index2 = this.selectedRowList.findIndex((f) => f.key == item.key);
         if (index2 > -1) {
           this.selectedRowKeys.splice(index2, 1);
         }
 
         this.selectedRowList.splice(index, 1);
       }
-    }
-    else {
+    } else {
       this.selectedRowList.push(item);
       this.selectedRowKeys.push(item.key);
     }
@@ -146,14 +212,14 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
 
   public handleSelectedRowCheckedChange(itemLookup: TreeItemLookup): void {
     var item = itemLookup.item.dataItem;
-    if (this.rowCheckedKeys.find(f => f == item.key)) {
-      var index = this.rowCheckedKeys.findIndex(f => f == item.key);
+    if (this.rowCheckedKeys.find((f) => f == item.key)) {
+      var index = this.rowCheckedKeys.findIndex((f) => f == item.key);
       if (index > -1) {
         this.rowCheckedKeys.splice(index, 1);
       }
     }
 
-    var index = this.selectedRowList.findIndex(f => f.key == item.key);
+    var index = this.selectedRowList.findIndex((f) => f.key == item.key);
     if (index > -1) {
       this.selectedRowList.splice(index, 1);
     }
@@ -161,38 +227,46 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
 
   onSearch() {
     if (this.fetchUrl) {
-
       let filterExp: FilterExpression | undefined;
 
       if (this.searchValue) {
         var filterExpBuilder = new FilterExpressionBuilder();
-        filterExp = filterExpBuilder.New(new Filter("Value", this.searchValue, ".Contains({0})", "System.String"))
+        filterExp = filterExpBuilder
+          .New(
+            new Filter(
+              "Value",
+              this.searchValue,
+              ".Contains({0})",
+              "System.String"
+            )
+          )
           .Build();
       }
 
-      this.viewRowPermissionService.getRowList(environment.BaseUrl + this.fetchUrl, filterExp).subscribe(res => {
-        this.rowList = res;
-        for (let item of this.rowList) {
-          if (this.rowPermission.items && this.rowPermission.items.find(f => f == item.key) && !this.rowCheckedKeys.find(f => f == item.key)) {
-            this.rowCheckedKeys.push(item.key);
-            this.selectedRowList.push(item);
-            this.selectedRowKeys.push(item.key);
+      this.viewRowPermissionService
+        .getRowList(environment.BaseUrl + this.fetchUrl, filterExp)
+        .subscribe((res) => {
+          this.rowList = res;
+          for (let item of this.rowList) {
+            if (
+              this.rowPermission.items &&
+              this.rowPermission.items.find((f) => f == item.key) &&
+              !this.rowCheckedKeys.find((f) => f == item.key)
+            ) {
+              this.rowCheckedKeys.push(item.key);
+              this.selectedRowList.push(item);
+              this.selectedRowKeys.push(item.key);
+            }
           }
-
-        }
-
-      })
-
-    }
-    else
-      this.noData = true;
+        });
+    } else this.noData = true;
   }
 
   /**
    * حذف فیلتر
    */
   removeFilter() {
-    this.searchValue = '';
+    this.searchValue = "";
     this.onSearch();
   }
 

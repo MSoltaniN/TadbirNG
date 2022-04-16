@@ -1,6 +1,7 @@
 import { Component, OnInit, Renderer2 } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { RTL } from "@progress/kendo-angular-l10n";
+import { ViewRowPermission } from "@sppc/admin/models";
 import {
   Item,
   ItemInfo,
@@ -163,6 +164,29 @@ export class ViewRowPermissionComponent
     ];
   }
 
+  onPermissionChange(item: any) {
+    let selectedPermission = "";
+    Object.keys(PermissionType).forEach((key) => {
+      if (parseInt(item) == parseInt(key))
+        selectedPermission = PermissionType[key];
+    });
+
+    if (this.view_Id > -1) {
+      let rowPermissionsArray: Array<ViewRowPermissionInfo> =
+        this.dataItem.rowPermissions;
+      var rowPermissionItem = rowPermissionsArray.find(
+        (f) => f.viewId == this.view_Id && f.accessMode == selectedPermission
+      );
+    }
+
+    if (rowPermissionItem)
+      this.updateLabelText(rowPermissionItem.items.length, rowPermissionItem);
+    else {
+      this.permissionValue3 = "سطری انتخاب نشده";
+      this.permissionValue4 = "سطری انتخاب نشده";
+    }
+  }
+
   handleRoleChange(item: any) {
     if (item) {
       this.viewRowPermissionService
@@ -212,6 +236,26 @@ export class ViewRowPermissionComponent
     this.isActiveSingleForm = false;
   }
 
+  updateLabelText(itemCounts: number, rowPermission: ViewRowPermission) {
+    if (itemCounts > 0) {
+      if (rowPermission.accessMode == "SpecificRecords") {
+        this.permissionValue3 = "سطرهای انتخاب شده";
+      }
+
+      if (rowPermission.accessMode == "AllExceptSpecificRecords") {
+        this.permissionValue4 = "سطرهای انتخاب شده";
+      }
+    } else {
+      if (rowPermission.accessMode == "SpecificRecords") {
+        this.permissionValue3 = "سطری انتخاب نشده";
+      }
+
+      if (rowPermission.accessMode == "AllExceptSpecificRecords") {
+        this.permissionValue4 = "سطری انتخاب نشده";
+      }
+    }
+  }
+
   saveSingleFormHandler(model: Item) {
     this.singleFormSelectedModel = model;
     this.singleFormSelectedValue = model.value;
@@ -230,24 +274,6 @@ export class ViewRowPermissionComponent
       (f) => f.viewId == this.view_Id
     );
     if (rowPermission) {
-      if (
-        rowPermission.items.length > 0 &&
-        rowPermission.accessMode == "SpecificRecords"
-      ) {
-        this.permissionValue3 = "سطرهای انتخاب شده";
-      } else {
-        this.permissionValue3 = "سطری انتخاب نشده";
-      }
-
-      if (
-        rowPermission.items.length > 0 &&
-        rowPermission.accessMode == "AllExceptSpecificRecords"
-      ) {
-        this.permissionValue4 = "سطرهای انتخاب شده";
-      } else {
-        this.permissionValue4 = "سطری انتخاب نشده";
-      }
-
       switch (rowPermission.accessMode) {
         case "Default": {
           this.ddlPermissionTypeSelected = PermissionType.Default;
@@ -260,21 +286,13 @@ export class ViewRowPermissionComponent
         }
         case "SpecificRecords": {
           this.ddlPermissionTypeSelected = PermissionType.SpecificRecords;
-          if (rowPermission.items.length > 0) {
-            this.permissionValue3 = "سطرهای انتخاب شده";
-          } else {
-            this.permissionValue3 = "سطری انتخاب نشده";
-          }
+          this.updateLabelText(rowPermission.items.length, rowPermission);
           break;
         }
         case "AllExceptSpecificRecords": {
           this.ddlPermissionTypeSelected =
             PermissionType.AllExceptSpecificRecords;
-          if (rowPermission.items.length > 0) {
-            this.permissionValue4 = "سطرهای انتخاب شده";
-          } else {
-            this.permissionValue4 = "سطری انتخاب نشده";
-          }
+          this.updateLabelText(rowPermission.items.length, rowPermission);
           break;
         }
         case "SpecificReference": {
@@ -306,12 +324,24 @@ export class ViewRowPermissionComponent
   }
 
   openMultipleForm() {
+    let selectedPermission = "";
+    Object.keys(PermissionType).forEach((key) => {
+      if (this.ddlPermissionTypeSelected == parseInt(key))
+        selectedPermission = PermissionType[key];
+    });
+
     this.errorMessages = undefined;
     this.entity = this.singleFormSelectedModel;
     var row = this.dataItem.rowPermissions.find(
-      (f) => f.viewId == this.view_Id
+      (f) => f.viewId == this.view_Id && f.accessMode == selectedPermission
     );
-    if (row) this.dataRowPermission = row;
+    if (row) {
+      this.dataRowPermission = row;
+    } else {
+      const rowPermission = new ViewRowPermissionInfo();
+      rowPermission.viewId = this.view_Id;
+      this.dataRowPermission = rowPermission;
+    }
 
     this.isActiveMultipleForm = true;
   }
@@ -330,6 +360,16 @@ export class ViewRowPermissionComponent
     this.isChangeMultipleForm = true;
     this.updateDataItem();
 
+    if (this.view_Id > -1) {
+      let rowPermissionsArray: Array<ViewRowPermissionInfo> =
+        this.dataItem.rowPermissions;
+      var rowPermissionItem = rowPermissionsArray.find(
+        (f) => f.viewId == this.view_Id
+      );
+    }
+
+    this.updateLabelText(items.length, rowPermissionItem);
+
     this.isActiveMultipleForm = false;
   }
 
@@ -345,6 +385,7 @@ export class ViewRowPermissionComponent
         (res) => {
           this.showMessage(this.updateMsg, MessageType.Succes);
           this.oldSingleFormSelectedModel = undefined;
+          this.singleFormSelectedModel = undefined;
           this.singleFormSelectedValue = "";
           this.ddlPermissionTypeSelected = 0;
         },
