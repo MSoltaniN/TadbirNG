@@ -1,44 +1,73 @@
-import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { Component, OnInit, Renderer2 } from "@angular/core";
+import { TranslateService } from "@ngx-translate/core";
+import { RTL } from "@progress/kendo-angular-l10n";
+import {
+  Item,
+  ItemInfo,
+  RowPermissionsForRoleInfo,
+  ViewRowPermissionInfo,
+  ViewRowPermissionService,
+} from "@sppc/admin/service";
+import { RoleApi } from "@sppc/admin/service/api";
+import { SettingService } from "@sppc/config/service";
+import { DefaultComponent, String } from "@sppc/shared/class";
+import { PermissionType } from "@sppc/shared/enum";
+import { Entities, Layout, MessageType } from "@sppc/shared/enum/metadata";
+import {
+  BrowserStorageService,
+  ErrorHandlingService,
+  MetaDataService,
+} from "@sppc/shared/services";
+import { LookupApi } from "@sppc/shared/services/api";
+import { ToastrService } from "ngx-toastr";
 import "rxjs/Rx";
-import { TranslateService } from '@ngx-translate/core';
-import { RTL } from '@progress/kendo-angular-l10n';
-import { String, DefaultComponent } from '@sppc/shared/class';
-import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';
-import { MetaDataService, BrowserStorageService, ErrorHandlingService } from '@sppc/shared/services';
-import { SettingService } from '@sppc/config/service';
-import { ItemInfo, Item, RowPermissionsForRoleInfo, ViewRowPermissionInfo, ViewRowPermissionService } from '@sppc/admin/service';
-import { RoleApi } from '@sppc/admin/service/api';
-import { PermissionType } from '@sppc/shared/enum';
-import { LookupApi } from '@sppc/shared/services/api';
-
-
-
-
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
 }
 
 @Component({
-  selector: 'accountRelations',
-  templateUrl: './viewRowPermission.component.html',
-  styles: [`
-.input-frm{ width:100%; }
-.input-frm-btn { width: calc(100% - 125px); }
-#permission-type-panle { height: 150px; border: solid 1px #337ab7; margin-top: 20px;}
-.panel-type-btn{ padding: 40px 25px 40px 10px; }.panel-type,.panel-type-multiple{ padding: 40px 25px; }
-@media screen and (max-width:768px){.panel-type-multiple{ padding:15px 0; }}
-`],
-  providers: [{
-    provide: RTL,
-    useFactory: getLayoutModule,
-    deps: [Layout]
-  }]
+  selector: "accountRelations",
+  templateUrl: "./viewRowPermission.component.html",
+  styles: [
+    `
+      .input-frm {
+        width: 100%;
+      }
+      .input-frm-btn {
+        width: calc(100% - 125px);
+      }
+      #permission-type-panle {
+        height: 150px;
+        border: solid 1px #337ab7;
+        margin-top: 20px;
+      }
+      .panel-type-btn {
+        padding: 40px 25px 40px 10px;
+      }
+      .panel-type,
+      .panel-type-multiple {
+        padding: 40px 25px;
+      }
+      @media screen and (max-width: 768px) {
+        .panel-type-multiple {
+          padding: 15px 0;
+        }
+      }
+    `,
+  ],
+  providers: [
+    {
+      provide: RTL,
+      useFactory: getLayoutModule,
+      deps: [Layout],
+    },
+  ],
 })
-
-export class ViewRowPermissionComponent extends DefaultComponent implements OnInit {
-
+export class ViewRowPermissionComponent
+  extends DefaultComponent
+  implements OnInit
+{
   public isActiveSingleForm: boolean = false;
   public isActiveMultipleForm: boolean = false;
   public isChangeMultipleForm: boolean = false;
@@ -72,59 +101,103 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
 
   oldSingleFormSelectedModel: ItemInfo | undefined;
 
-  public ngOnInit(): void {
-  }
+  public ngOnInit(): void {}
 
-  constructor(public toastrService: ToastrService, public translate: TranslateService, private viewRowPermissionService: ViewRowPermissionService,
-    public renderer: Renderer2, public metadata: MetaDataService,
-    public settingService: SettingService, public bStorageService: BrowserStorageService,public errorHandlingService: ErrorHandlingService) {
-    super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.RowAccess, undefined);
+  constructor(
+    public toastrService: ToastrService,
+    public translate: TranslateService,
+    private viewRowPermissionService: ViewRowPermissionService,
+    public renderer: Renderer2,
+    public metadata: MetaDataService,
+    public settingService: SettingService,
+    public bStorageService: BrowserStorageService,
+    public errorHandlingService: ErrorHandlingService
+  ) {
+    super(
+      toastrService,
+      translate,
+      bStorageService,
+      renderer,
+      metadata,
+      settingService,
+      Entities.RowAccess,
+      undefined
+    );
 
     this.getRoles();
 
     this.ddlPermissionTypeData = [
-      { value: "ViewRowPermission.DdlPermissionItems.Default", key: PermissionType.Default },
-      { value: "ViewRowPermission.DdlPermissionItems.AllRecordsCreatedByUser", key: PermissionType.AllRecordsCreatedByUser },
-      { value: "ViewRowPermission.DdlPermissionItems.SpecificRecords", key: PermissionType.SpecificRecords },
-      { value: "ViewRowPermission.DdlPermissionItems.AllExceptSpecificRecords", key: PermissionType.AllExceptSpecificRecords },
-      { value: "ViewRowPermission.DdlPermissionItems.SpecificReference", key: PermissionType.SpecificReference },
-      { value: "ViewRowPermission.DdlPermissionItems.AllExceptSpecificReference", key: PermissionType.AllExceptSpecificReference },
-      { value: "ViewRowPermission.DdlPermissionItems.MaxMoneyValue", key: PermissionType.MaxMoneyValue },
-      { value: "ViewRowPermission.DdlPermissionItems.MaxQuantityValue", key: PermissionType.MaxQuantityValue }
+      {
+        value: "ViewRowPermission.DdlPermissionItems.Default",
+        key: PermissionType.Default,
+      },
+      {
+        value: "ViewRowPermission.DdlPermissionItems.AllRecordsCreatedByUser",
+        key: PermissionType.AllRecordsCreatedByUser,
+      },
+      {
+        value: "ViewRowPermission.DdlPermissionItems.SpecificRecords",
+        key: PermissionType.SpecificRecords,
+      },
+      {
+        value: "ViewRowPermission.DdlPermissionItems.AllExceptSpecificRecords",
+        key: PermissionType.AllExceptSpecificRecords,
+      },
+      {
+        value: "ViewRowPermission.DdlPermissionItems.SpecificReference",
+        key: PermissionType.SpecificReference,
+      },
+      {
+        value:
+          "ViewRowPermission.DdlPermissionItems.AllExceptSpecificReference",
+        key: PermissionType.AllExceptSpecificReference,
+      },
+      {
+        value: "ViewRowPermission.DdlPermissionItems.MaxMoneyValue",
+        key: PermissionType.MaxMoneyValue,
+      },
+      {
+        value: "ViewRowPermission.DdlPermissionItems.MaxQuantityValue",
+        key: PermissionType.MaxQuantityValue,
+      },
     ];
   }
 
-  
-
   handleRoleChange(item: any) {
-    this.viewRowPermissionService.getById(String.Format(RoleApi.RowAccessSettings, item)).subscribe(res => {
-      this.dataItem = res;
-      this.singleFormSelectedValue = '';
-      this.singleFormSelectedModel = undefined;
-      this.ddlPermissionTypeSelected = 0;
+    if (item) {
+      this.viewRowPermissionService
+        .getById(String.Format(RoleApi.RowAccessSettings, item))
+        .subscribe((res) => {
+          this.dataItem = res;
+          this.singleFormSelectedValue = "";
+          this.singleFormSelectedModel = undefined;
+          this.ddlPermissionTypeSelected = 0;
 
-      this.permissionValue3 = String.Empty;
-      this.permissionValue4 = String.Empty;
-      this.permissionValue5 = String.Empty;
-      this.permissionValue6 = String.Empty;
-      this.numberValue = 0;
-      this.numberValue1 = 0;
-      this.numberValue2 = 0;
-    })
+          this.permissionValue3 = String.Empty;
+          this.permissionValue4 = String.Empty;
+          this.permissionValue5 = String.Empty;
+          this.permissionValue6 = String.Empty;
+          this.numberValue = 0;
+          this.numberValue1 = 0;
+          this.numberValue2 = 0;
+        });
+    }
   }
 
   getRoles() {
     //this.sppcLoading.show();
-    this.viewRowPermissionService.getAll(LookupApi.Roles).subscribe(res => {
+    this.viewRowPermissionService.getAll(LookupApi.Roles).subscribe((res) => {
       var data = res.body;
       this.rolesArray = data;
       this.ddlRolesData = data;
       //this.sppcLoading.hide();
-    })
+    });
   }
 
   handleFilter(value: any) {
-    this.ddlRolesData = this.rolesArray.filter((s) => s.value.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+    this.ddlRolesData = this.rolesArray.filter(
+      (s) => s.value.toLowerCase().indexOf(value.toLowerCase()) !== -1
+    );
   }
 
   openSingleForm() {
@@ -142,26 +215,36 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
   saveSingleFormHandler(model: Item) {
     this.singleFormSelectedModel = model;
     this.singleFormSelectedValue = model.value;
-    if (this.oldSingleFormSelectedModel && this.oldSingleFormSelectedModel != this.singleFormSelectedModel) {      
-      var oldRowPermission = this.dataItem.rowPermissions.find(f => f.viewId == this.oldSingleFormSelectedModel.key);
+    if (
+      this.oldSingleFormSelectedModel &&
+      this.oldSingleFormSelectedModel != this.singleFormSelectedModel
+    ) {
+      var oldRowPermission = this.dataItem.rowPermissions.find(
+        (f) => f.viewId == this.oldSingleFormSelectedModel.key
+      );
       oldRowPermission.accessMode = "Default";
-    }    
+    }
 
     this.view_Id = model.key;
-    var rowPermission = this.dataItem.rowPermissions.find(f => f.viewId == this.view_Id);
+    var rowPermission = this.dataItem.rowPermissions.find(
+      (f) => f.viewId == this.view_Id
+    );
     if (rowPermission) {
-
-      if (rowPermission.items.length > 0 && rowPermission.accessMode == "SpecificRecords") {
+      if (
+        rowPermission.items.length > 0 &&
+        rowPermission.accessMode == "SpecificRecords"
+      ) {
         this.permissionValue3 = "سطرهای انتخاب شده";
-      }
-      else {
+      } else {
         this.permissionValue3 = "سطری انتخاب نشده";
       }
 
-      if (rowPermission.items.length > 0 && rowPermission.accessMode == "AllExceptSpecificRecords") {
+      if (
+        rowPermission.items.length > 0 &&
+        rowPermission.accessMode == "AllExceptSpecificRecords"
+      ) {
         this.permissionValue4 = "سطرهای انتخاب شده";
-      }
-      else {
+      } else {
         this.permissionValue4 = "سطری انتخاب نشده";
       }
 
@@ -171,25 +254,25 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
           break;
         }
         case "AllRecordsCreatedByUser": {
-          this.ddlPermissionTypeSelected = PermissionType.AllRecordsCreatedByUser;
+          this.ddlPermissionTypeSelected =
+            PermissionType.AllRecordsCreatedByUser;
           break;
         }
         case "SpecificRecords": {
           this.ddlPermissionTypeSelected = PermissionType.SpecificRecords;
           if (rowPermission.items.length > 0) {
             this.permissionValue3 = "سطرهای انتخاب شده";
-          }
-          else {
+          } else {
             this.permissionValue3 = "سطری انتخاب نشده";
           }
           break;
         }
         case "AllExceptSpecificRecords": {
-          this.ddlPermissionTypeSelected = PermissionType.AllExceptSpecificRecords;
+          this.ddlPermissionTypeSelected =
+            PermissionType.AllExceptSpecificRecords;
           if (rowPermission.items.length > 0) {
             this.permissionValue4 = "سطرهای انتخاب شده";
-          }
-          else {
+          } else {
             this.permissionValue4 = "سطری انتخاب نشده";
           }
           break;
@@ -200,7 +283,8 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
           break;
         }
         case "AllExceptSpecificReference": {
-          this.ddlPermissionTypeSelected = PermissionType.AllExceptSpecificReference;
+          this.ddlPermissionTypeSelected =
+            PermissionType.AllExceptSpecificReference;
           this.permissionValue6 = rowPermission.textValue;
           break;
         }
@@ -221,12 +305,13 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
     this.isActiveSingleForm = false;
   }
 
-  openMultipleForm() {   
+  openMultipleForm() {
     this.errorMessages = undefined;
     this.entity = this.singleFormSelectedModel;
-    var row = this.dataItem.rowPermissions.find(f => f.viewId == this.view_Id);
-    if (row)
-      this.dataRowPermission = row;
+    var row = this.dataItem.rowPermissions.find(
+      (f) => f.viewId == this.view_Id
+    );
+    if (row) this.dataRowPermission = row;
 
     this.isActiveMultipleForm = true;
   }
@@ -248,27 +333,35 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
     this.isActiveMultipleForm = false;
   }
 
-  saveRowPermission() {    
+  saveRowPermission() {
     this.errorMessages = undefined;
-    this.updateDataItem();    
-    this.viewRowPermissionService.edit<RowPermissionsForRoleInfo>(String.Format(RoleApi.RowAccessSettings, this.ddlSelectedRole), this.dataItem).subscribe(res => {
-
-      this.showMessage(this.updateMsg, MessageType.Succes);
-      this.oldSingleFormSelectedModel = undefined;
-      this.singleFormSelectedValue = '';
-      this.ddlPermissionTypeSelected = 0;
-
-    }, (error => {
-        if (error)
-          this.errorMessages = this.errorHandlingService.handleError(error);;
-    }))
-
+    this.updateDataItem();
+    this.viewRowPermissionService
+      .edit<RowPermissionsForRoleInfo>(
+        String.Format(RoleApi.RowAccessSettings, this.ddlSelectedRole),
+        this.dataItem
+      )
+      .subscribe(
+        (res) => {
+          this.showMessage(this.updateMsg, MessageType.Succes);
+          this.oldSingleFormSelectedModel = undefined;
+          this.singleFormSelectedValue = "";
+          this.ddlPermissionTypeSelected = 0;
+        },
+        (error) => {
+          if (error)
+            this.errorMessages = this.errorHandlingService.handleError(error);
+        }
+      );
   }
 
   updateDataItem() {
-    if (this.view_Id > -1) {      
-      let rowPermissionsArray: Array<ViewRowPermissionInfo> = this.dataItem.rowPermissions;
-      var rowPermissionItem = rowPermissionsArray.find(f => f.viewId == this.view_Id);
+    if (this.view_Id > -1) {
+      let rowPermissionsArray: Array<ViewRowPermissionInfo> =
+        this.dataItem.rowPermissions;
+      var rowPermissionItem = rowPermissionsArray.find(
+        (f) => f.viewId == this.view_Id
+      );
       if (rowPermissionItem) {
         var index = rowPermissionsArray.indexOf(rowPermissionItem);
         switch (this.ddlPermissionTypeSelected) {
@@ -276,7 +369,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
             rowPermissionsArray[index].accessMode = "Default";
             rowPermissionsArray[index].value = 0;
             rowPermissionsArray[index].value2 = 0;
-            rowPermissionsArray[index].textValue = '';
+            rowPermissionsArray[index].textValue = "";
             rowPermissionsArray[index].items = [];
             break;
           }
@@ -284,7 +377,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
             rowPermissionsArray[index].accessMode = "AllRecordsCreatedByUser";
             rowPermissionsArray[index].value = 0;
             rowPermissionsArray[index].value2 = 0;
-            rowPermissionsArray[index].textValue = '';
+            rowPermissionsArray[index].textValue = "";
             rowPermissionsArray[index].items = [];
             break;
           }
@@ -292,16 +385,20 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
             rowPermissionsArray[index].accessMode = "SpecificRecords";
             rowPermissionsArray[index].value = 0;
             rowPermissionsArray[index].value2 = 0;
-            rowPermissionsArray[index].textValue = '';
-            rowPermissionsArray[index].items = this.isChangeMultipleForm ? this.multipleFormItemsSelected : [];
+            rowPermissionsArray[index].textValue = "";
+            rowPermissionsArray[index].items = this.isChangeMultipleForm
+              ? this.multipleFormItemsSelected
+              : [];
             break;
           }
           case PermissionType.AllExceptSpecificRecords: {
             rowPermissionsArray[index].accessMode = "AllExceptSpecificRecords";
             rowPermissionsArray[index].value = 0;
             rowPermissionsArray[index].value2 = 0;
-            rowPermissionsArray[index].textValue = '';
-            rowPermissionsArray[index].items = this.isChangeMultipleForm ? this.multipleFormItemsSelected : [];
+            rowPermissionsArray[index].textValue = "";
+            rowPermissionsArray[index].items = this.isChangeMultipleForm
+              ? this.multipleFormItemsSelected
+              : [];
             break;
           }
           case PermissionType.SpecificReference: {
@@ -314,7 +411,8 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
             break;
           }
           case PermissionType.AllExceptSpecificReference: {
-            rowPermissionsArray[index].accessMode = "AllExceptSpecificReference";
+            rowPermissionsArray[index].accessMode =
+              "AllExceptSpecificReference";
             rowPermissionsArray[index].value = 0;
             rowPermissionsArray[index].value2 = 0;
             rowPermissionsArray[index].textValue = this.permissionValue6;
@@ -326,7 +424,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
             rowPermissionsArray[index].accessMode = "MaxMoneyValue";
             rowPermissionsArray[index].value = this.numberValue1;
             rowPermissionsArray[index].value2 = this.numberValue2;
-            rowPermissionsArray[index].textValue = '';
+            rowPermissionsArray[index].textValue = "";
             rowPermissionsArray[index].items = [];
             this.numberValue1 = 0;
             this.numberValue2 = 0;
@@ -336,7 +434,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
             rowPermissionsArray[index].accessMode = "MaxQuantityValue";
             rowPermissionsArray[index].value = this.numberValue;
             rowPermissionsArray[index].value2 = 0;
-            rowPermissionsArray[index].textValue = '';
+            rowPermissionsArray[index].textValue = "";
             rowPermissionsArray[index].items = [];
             this.numberValue = 0;
             break;
@@ -347,12 +445,11 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
           }
         }
       }
-
     }
   }
 
   cancelRowPermission() {
-    this.singleFormSelectedValue = '';
+    this.singleFormSelectedValue = "";
     this.view_Id = -1;
     this.ddlPermissionTypeSelected = 0;
   }
