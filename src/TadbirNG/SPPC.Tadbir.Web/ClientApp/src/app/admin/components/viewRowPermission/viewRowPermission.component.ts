@@ -204,8 +204,19 @@ export class ViewRowPermissionComponent
           this.numberValue = 0;
           this.numberValue1 = 0;
           this.numberValue2 = 0;
+
+          this.multipleFormItemsSelected = [];
         });
     }
+  }
+
+  getPermissions(viewId) {
+    this.viewRowPermissionService
+      .getAll(String.Format(LookupApi.ValidRowPermissions, viewId))
+      .subscribe((res) => {
+        var data = res.body;
+        this.ddlPermissionTypeData = data;
+      });
   }
 
   getRoles() {
@@ -273,6 +284,9 @@ export class ViewRowPermissionComponent
     var rowPermission = this.dataItem.rowPermissions.find(
       (f) => f.viewId == this.view_Id
     );
+
+    //this.getPermissions(this.view_Id);
+
     if (rowPermission) {
       switch (rowPermission.accessMode) {
         case "Default": {
@@ -350,14 +364,12 @@ export class ViewRowPermissionComponent
     this.errorMessages = undefined;
     this.entity = undefined;
     this.dataRowPermission = undefined;
-    this.multipleFormItemsSelected = [];
     this.isActiveMultipleForm = false;
-    this.isChangeMultipleForm = false;
   }
 
   saveMultipleFormHandler(items: number[]) {
     this.multipleFormItemsSelected = items;
-    this.isChangeMultipleForm = true;
+    //this.isChangeMultipleForm = true;
     this.updateDataItem();
 
     if (this.view_Id > -1) {
@@ -427,9 +439,10 @@ export class ViewRowPermissionComponent
             rowPermissionsArray[index].value = 0;
             rowPermissionsArray[index].value2 = 0;
             rowPermissionsArray[index].textValue = "";
-            rowPermissionsArray[index].items = this.isChangeMultipleForm
-              ? this.multipleFormItemsSelected
-              : [];
+            rowPermissionsArray[index].items = //this.isChangeMultipleForm
+              //?
+              this.multipleFormItemsSelected;
+            //: [];
             break;
           }
           case PermissionType.AllExceptSpecificRecords: {
@@ -437,9 +450,10 @@ export class ViewRowPermissionComponent
             rowPermissionsArray[index].value = 0;
             rowPermissionsArray[index].value2 = 0;
             rowPermissionsArray[index].textValue = "";
-            rowPermissionsArray[index].items = this.isChangeMultipleForm
-              ? this.multipleFormItemsSelected
-              : [];
+            rowPermissionsArray[index].items = //this.isChangeMultipleForm
+              //?
+              this.multipleFormItemsSelected;
+            //: [];
             break;
           }
           case PermissionType.SpecificReference: {
