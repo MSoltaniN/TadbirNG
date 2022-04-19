@@ -15,7 +15,7 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
     /// <summary>
     /// عملیات مورد نیاز برای ارتقاء ساختار یک دیتابیس را پیاده سازی می کند
     /// </summary>
-    public class DbUpgradeUtility
+    public class DbUpgradeUtility : IDbUpgrade
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -27,6 +27,35 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
         }
 
         /// <summary>
+        /// دیتابیس مشخص شده با رشته اتصال را از نظر نیاز به ارتقاء بررسی می کند
+        /// </summary>
+        /// <param name="connection">رشته اتصال به دیتابیس مورد نظر برای ارتقاء</param>
+        /// <param name="scriptPath">مسیر کامل پوشه ای که فایل اسکریپت به روزرسانی در آن قرار دارد</param>
+        /// <returns>در صورت نیاز دیتابیس به ارتقاء مقدار بولی "درست" و در غیر این صورت مقدار
+        /// بولی "نادرست" را برمی گرداند</returns>
+        public bool NeedsUpgrade(string connection, string scriptPath)
+        {
+            Verify.ArgumentNotNullOrEmptyString(connection, nameof(connection));
+            Verify.ArgumentNotNullOrEmptyString(scriptPath, nameof(scriptPath));
+            var versions = new List<Version>();
+            var dbVersion = GetDatabaseVersion(connection);
+            var script = LoadUpdateScript(connection, scriptPath);
+            var regex = new Regex(DbUpgradeConstants.ScriptBlockRegex);
+            foreach (Match match in regex.Matches(script))
+            {
+                versions.Add(new Version(
+                    Int32.Parse(match.Groups[1].Value),
+                    Int32.Parse(match.Groups[2].Value),
+                    Int32.Parse(match.Groups[3].Value)));
+            }
+
+            var latestVersion = versions
+                .OrderByDescending(ver => ver)
+                .FirstOrDefault();
+            return latestVersion > dbVersion;
+        }
+
+        /// <summary>
         /// دیتابیس مشخص شده با رشته اتصال را با استفاده از یک اسکریپت ارتقاء می دهد
         /// </summary>
         /// <param name="connection">رشته اتصال به دیتابیس مورد نظر برای ارتقاء</param>
@@ -34,13 +63,11 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
         /// <returns>تعداد تغییرات اعمال شده روی دیتابیس مورد نظر برای ارتقاء</returns>
         public int UpgradeDatabase(string connection, string scriptPath)
         {
-            var sqlBuilder = new SqlConnectionStringBuilder(connection);
-            var script = sqlBuilder.InitialCatalog == DbUpgradeConstants.SysDbName
-                ? DbUpgradeConstants.SysDbUpgradeScript
-                : DbUpgradeConstants.DbUpgradeScript;
-            var scriptFile = Path.Combine(scriptPath, script);
+            Verify.ArgumentNotNullOrEmptyString(connection, nameof(connection));
+            Verify.ArgumentNotNullOrEmptyString(scriptPath, nameof(scriptPath));
             var version = GetDatabaseVersion(connection);
-            var blocks = GetScriptBlocks(version, File.ReadAllText(scriptFile, Encoding.UTF8));
+            var updateScript = LoadUpdateScript(connection, scriptPath);
+            var blocks = GetScriptBlocks(version, updateScript);
             if (blocks.Count > 0)
             {
                 RunScriptBlocks(blocks);
@@ -74,6 +101,22 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
             return connections;
         }
 
+        private static string LoadUpdateScript(string connection, string scriptFolder)
+        {
+            string updateScript = String.Empty;
+            var sqlBuilder = new SqlConnectionStringBuilder(connection);
+            var scriptFileName = sqlBuilder.InitialCatalog == DbUpgradeConstants.SysDbName
+                ? DbUpgradeConstants.SysDbUpgradeScript
+                : DbUpgradeConstants.DbUpgradeScript;
+            var scriptPath = Path.Combine(scriptFolder, scriptFileName);
+            if (File.Exists(scriptPath))
+            {
+                updateScript = File.ReadAllText(scriptPath, Encoding.UTF8);
+            }
+
+            return updateScript;
+        }
+
         private static string BuildConnectionString(CompanyDb company)
         {
             var builder = new SqlConnectionStringBuilder
@@ -100,8 +143,8 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
         private static Dictionary<Version, string> GetScriptBlocks(Version version, string script)
         {
             var blocks = new Dictionary<Version, string>();
-            var rx = new Regex(DbUpgradeConstants.ScriptBlockRegex);
-            foreach (Match match in rx.Matches(script))
+            var regex = new Regex(DbUpgradeConstants.ScriptBlockRegex);
+            foreach (Match match in regex.Matches(script))
             {
                 var ver = new Version(
                     Int32.Parse(match.Groups[1].Value),

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.IO;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Persistence.DbUpgrade;
@@ -50,9 +51,9 @@ namespace SPPC.Tools.SystemDesignerCli
                     Console.WriteLine("Database '{0}' is up-to-date.", sqlBuilder.InitialCatalog);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.GetErrorInfo());
                 Console.WriteLine();
                 Console.WriteLine("Refresh Database command completed with errors.");
             }
