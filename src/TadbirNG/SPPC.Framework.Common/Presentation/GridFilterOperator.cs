@@ -15,7 +15,7 @@ namespace SPPC.Framework.Presentation
         /// <summary>
         /// عملگر خنثی که عملکرد آن عدم اعمال هر گونه فیلتر است
         /// </summary>
-        public const string True = "true";
+        public const string True = "1 = 1";
 
         /// <summary>
         /// فیلتر بر مبنای برابری مقدار یک فیلد با یک مقدار تعیین شده
