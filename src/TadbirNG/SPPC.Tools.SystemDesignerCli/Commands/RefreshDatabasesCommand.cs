@@ -2,10 +2,9 @@
 using System.Data.SqlClient;
 using System.IO;
 using SPPC.Framework.Extensions;
-using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Persistence.DbUpgrade;
-using SPPC.Tools.Model;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesignerCli
 {
@@ -13,7 +12,7 @@ namespace SPPC.Tools.SystemDesignerCli
     {
         public void Execute()
         {
-            string sysConnection = GetSysConnectionString();
+            string sysConnection = DbConnections.SystemConnection;
             var scriptPath = @"..\..\..\res";
             var dbUpgrade = new DbUpgradeUtility(new SqlServerConsole());
             ReportProgress(dbUpgrade, sysConnection, scriptPath);
@@ -24,13 +23,6 @@ namespace SPPC.Tools.SystemDesignerCli
             }
 
             RefereshRuntimeDbScripts();
-        }
-
-        private static string GetSysConnectionString()
-        {
-            string path = @"..\..\..\src\TadbirNG\SPPC.Tadbir.Web.Api\appsettings.Development.json";
-            var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
-            return appSettings.ConnectionStrings.TadbirSysApi;
         }
 
         private static void ReportProgress(DbUpgradeUtility dbUpgrade, string connection, string scriptPath)

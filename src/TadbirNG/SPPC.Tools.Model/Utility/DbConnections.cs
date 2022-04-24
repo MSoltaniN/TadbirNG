@@ -1,7 +1,7 @@
 ﻿using System.Data.SqlClient;
 using System.IO;
 using SPPC.Framework.Helpers;
-using SPPC.Tools.Model;
+using SPPC.Tadbir.Configuration;
 
 namespace SPPC.Tools.Utility
 {

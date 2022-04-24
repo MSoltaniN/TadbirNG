@@ -100,5 +100,15 @@ namespace SPPC.Framework.Licensing
         /// API server route URL for keeping current application session in active state
         /// </summary>
         public const string SetCurrentSessionAsActiveUrl = "sessions/current/active";
+
+        /// <summary>
+        /// Api client URL for current database server configuration
+        /// </summary>
+        public const string DbServerConfig = "config/dbserver";
+
+        /// <summary>
+        /// Api server route URL for current database server configuration
+        /// </summary>
+        public const string DbServerConfigUrl = "config/dbserver";
     }
 }
