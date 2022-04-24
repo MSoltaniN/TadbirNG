@@ -587,10 +587,10 @@ export class AccountGroupsComponent
             (res) => {
               var data: any = res;
 
-              this.afterGroupDelete(data, this.selectedModelsIdArray);
-
               if (this.selectedItem.id == -1) this.refreshGroupTreeNodes();
               else this.refreshTreeNodes();
+
+              this.afterGroupDelete(data, this.selectedModelsIdArray);
             },
             (error) => {
               this.grid.loading = false;
@@ -614,10 +614,10 @@ export class AccountGroupsComponent
             .delete(String.Format(url, this.deleteModelId))
             .subscribe(
               (response) => {
-                this.afterDelete();
-
                 if (this.selectedItem.id == -1) this.refreshGroupTreeNodes();
                 else this.refreshTreeNodes();
+
+                this.afterDelete();
               },
               (error) => {
                 this.grid.loading = false;
