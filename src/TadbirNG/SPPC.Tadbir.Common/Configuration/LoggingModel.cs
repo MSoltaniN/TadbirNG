@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace SPPC.Tools.Model
+namespace SPPC.Tadbir.Configuration
 {
     public class LoggingModel
     {
-        public bool IncludeScopes { get; set; }
-
         public LogLevelModel LogLevel { get; set; }
     }
 }

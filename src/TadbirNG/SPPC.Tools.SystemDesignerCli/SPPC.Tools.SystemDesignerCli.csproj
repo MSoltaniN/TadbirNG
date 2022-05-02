@@ -34,6 +34,8 @@
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
     <ProjectReference Include="..\SPPC.Framework.Persistence\SPPC.Framework.Persistence.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Model\SPPC.Tadbir.Model.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Persistence\SPPC.Tadbir.Persistence.csproj" />
     <ProjectReference Include="..\SPPC.Tools.Model\SPPC.Tools.Model.csproj" />
     <ProjectReference Include="..\SPPC.Tools.Transforms\SPPC.Tools.Transforms.csproj" />
   </ItemGroup>

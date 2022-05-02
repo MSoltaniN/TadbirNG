@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace SPPC.Tools.Model
+namespace SPPC.Tadbir.Configuration
 {
     public class ConnectionStringsModel
     {

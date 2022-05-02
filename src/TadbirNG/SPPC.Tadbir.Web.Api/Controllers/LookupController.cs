@@ -474,6 +474,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var lookup = await _repository.GetCitiesAsync(provinceCode);
             return Json(lookup);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <returns></returns>
+        // GET: api/lookup/rowaccess/views/{viewId:min(1)}
+        [HttpGet]
+        [Route(LookupApi.ValidRowPermissionsUrl)]
+        public async Task<IActionResult> GetValidRowPermissionsAsync(int viewId)
+        {
+            var permissions = await _repository.GetValidRowPermissionsAsync(viewId);
+            permissions = permissions
+                .Select(perm => _strings[perm].ToString())
+                .ToList();
+            return Json(permissions);
+        }
+
         #endregion
 
         private IList<KeyValue> Localize(IList<KeyValue> keyValues, bool isNameSorted = false)

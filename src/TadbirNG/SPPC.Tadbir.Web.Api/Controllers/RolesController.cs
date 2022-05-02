@@ -521,6 +521,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return _strings.Format(AppStrings.MaxQuantityValueNotSelected, rowPermission.ViewName);
             }
 
+            if (String.IsNullOrEmpty(rowPermission.TextValue)
+                && (rowPermission.AccessMode == RowAccessOptions.SpecificReference
+                    || rowPermission.AccessMode == RowAccessOptions.AllExceptSpecificReference))
+            {
+                return _strings.Format(AppStrings.SpecificReferencesNotSelected, rowPermission.ViewName);
+            }
+
             return String.Empty;
         }
 

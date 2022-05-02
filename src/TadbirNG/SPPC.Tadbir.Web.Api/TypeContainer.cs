@@ -171,6 +171,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<DetailAccountValidator>();
             _services.AddTransient<CostCenterValidator>();
             _services.AddTransient<ProjectValidator>();
+            _services.AddTransient<RowPermissionValidator>();
         }
 
         private void AddUtilityTypes()

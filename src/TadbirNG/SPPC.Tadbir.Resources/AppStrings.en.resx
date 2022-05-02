@@ -3564,4 +3564,31 @@
   <data name="Edition_RowPermissionsDisabled" xml:space="preserve">
     <value>Defining and applying row permissions is not available in Standard edition.</value>
   </data>
+  <data name="Access_AllExceptSpecificRecords" xml:space="preserve">
+    <value>All rows except specified rows</value>
+  </data>
+  <data name="Access_AllExceptSpecificReferences" xml:space="preserve">
+    <value>All rows except rows with specified references</value>
+  </data>
+  <data name="Access_AllRecordsCreatedByUser" xml:space="preserve">
+    <value>All rows created by current user</value>
+  </data>
+  <data name="Access_Default" xml:space="preserve">
+    <value>Allow or deny access based on security settings</value>
+  </data>
+  <data name="Access_MaxMoneyValue" xml:space="preserve">
+    <value>Rows up to specified money or currency limit</value>
+  </data>
+  <data name="Access_MaxQuantityValue" xml:space="preserve">
+    <value>Rows up to specified quantity limit</value>
+  </data>
+  <data name="Access_SpecificRecords" xml:space="preserve">
+    <value>Specified rows</value>
+  </data>
+  <data name="Access_SpecificReferences" xml:space="preserve">
+    <value>All rows with specified references</value>
+  </data>
+  <data name="SpecificReferencesNotSelected" xml:space="preserve">
+    <value>No references are specified to filter {0} items.</value>
+  </data>
 </root>

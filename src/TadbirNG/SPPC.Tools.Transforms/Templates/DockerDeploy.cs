@@ -18,9 +18,9 @@ namespace SPPC.Tools.Transforms.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+    #line 1 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerDeploy.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public partial class DockerComposeOverride : DockerComposeOverrideBase
+    public partial class DockerDeploy : DockerDeployBase
     {
 #line hidden
         /// <summary>
@@ -28,44 +28,36 @@ namespace SPPC.Tools.Transforms.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("version: \'3.9\'\r\n\r\nvolumes:\r\n productdata:\r\n \r\nnetworks:\r\n frontend:\r\n backend:\r\n\r" +
-                    "\nservices:\r\n\r\n DbServer:\r\n  image: msn1368/db-server:dev\r\n  ports: \r\n    - 14433" +
-                    ":1433\r\n\r\n ApiServer:\r\n  image: msn1368/api-server-");
-            
-            #line 23 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
-            
-            #line default
-            #line hidden
-            this.Write(@":latest
-  environment:
-   - ASPNETCORE_ENVIRONMENT=Development
-   - Logging__LogLevel__Microsoft=Information
-   - ASPNETCORE_URLS=http://+:80
-  ports:
-   - 9095:80
-  
- loadBalancer:
-  profiles:
-   - donotstart
+            this.Write(@"@echo OFF
 
- WebApp:
-  image: msn1368/web-app-");
+:: Build Docker images using custom generated docker-compose files...
+echo Building Docker images...
+docker-compose -f docker-compose.override.yml -f docker-compose.yml build
+
+:: Pushing images to Docker Hub
+echo Pushing images to Docker Hub...
+docker push msn1368/license-server-");
             
-            #line 36 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            #line 14 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerDeploy.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
             
             #line default
             #line hidden
-            this.Write(":dev\r\n\r\n\r\n LicenseServer:\r\n  image: msn1368/license-server-");
+            this.Write(":dev\r\ndocker push msn1368/api-server-");
             
-            #line 40 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            #line 15 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerDeploy.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
             
             #line default
             #line hidden
-            this.Write(":dev\r\n  environment:\r\n   - ASPNETCORE_ENVIRONMENT=Development\r\n   - Logging__LogL" +
-                    "evel__Microsoft=Information\r\n");
+            this.Write(":latest\r\ndocker push msn1368/web-app-");
+            
+            #line 16 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerDeploy.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
+            
+            #line default
+            #line hidden
+            this.Write(":dev\r\ndocker push msn1368/db-server:dev\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -77,7 +69,7 @@ namespace SPPC.Tools.Transforms.Templates
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public class DockerComposeOverrideBase
+    public class DockerDeployBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

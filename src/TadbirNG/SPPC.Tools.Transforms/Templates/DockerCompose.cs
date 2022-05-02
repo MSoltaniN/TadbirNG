@@ -28,18 +28,31 @@ namespace SPPC.Tools.Transforms.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("version: \'3.9\'\r\n\r\nvolumes:\r\n productdata_DbServer:\r\n productdata_LicenseServer:\r\n" +
-                    " \r\nnetworks:\r\n frontend:\r\n backend:\r\n\r\nservices:\r\n\r\n DbServer:\r\n  image: msn1368" +
-                    "/db-server-");
-            
-            #line 19 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
-            
-            #line default
-            #line hidden
-            this.Write(":dev\r\n  user: root\r\n  build:\r\n   context: ../../res\r\n   dockerfile: Dockerfile\r\n " +
-                    " networks:\r\n   - backend\r\n  volumes:\r\n   - productdata_DbServer:/var/opt/mssql/d" +
-                    "ata\r\n   \r\n ApiServer:\r\n  image: msn1368/api-server-");
+            this.Write(@"version: '3.9'
+
+volumes:
+ productdata_DbServer:
+ productdata_LicenseServer:
+ 
+networks:
+ frontend:
+ backend:
+
+services:
+
+ DbServer:
+  image: msn1368/db-server:dev
+  user: root
+  build:
+   context: ../../res
+   dockerfile: Dockerfile
+  networks:
+   - backend
+  volumes:
+   - productdata_DbServer:/var/opt/mssql/data
+   
+ ApiServer:
+  image: msn1368/api-server-");
             
             #line 30 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));

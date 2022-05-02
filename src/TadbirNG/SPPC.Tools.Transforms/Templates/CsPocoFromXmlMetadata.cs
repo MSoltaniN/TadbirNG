@@ -205,7 +205,7 @@ foreach(var property in GetNonInheritedProperties())
             this.Write("        public virtual ");
             
             #line 66 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsPocoFromXmlMetadata.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.GetTypeAlias(property)));
+            this.Write(this.ToStringHelper.ToStringWithCulture(GetTypeAlias(property)));
             
             #line default
             #line hidden

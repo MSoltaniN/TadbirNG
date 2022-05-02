@@ -60,6 +60,7 @@ namespace SPPC.Tadbir.Persistence
             UserMap.BuildMapping(modelBuilder.Entity<User>());
             UserRoleMap.BuildMapping(modelBuilder.Entity<UserRole>());
             UserSettingMap.BuildMapping(modelBuilder.Entity<UserSetting>());
+            ValidRowPermissionMap.BuildMapping(modelBuilder.Entity<ValidRowPermission>());
             ViewMap.BuildMapping(modelBuilder.Entity<View>());
             ViewRowPermissionMap.BuildMapping(modelBuilder.Entity<ViewRowPermission>());
         }
