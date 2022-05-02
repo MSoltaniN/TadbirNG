@@ -19,6 +19,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <_WebToolingArtifacts Remove="Properties\PublishProfiles\FolderProfile-Linux.pubxml" />
+    <_WebToolingArtifacts Remove="Properties\PublishProfiles\FolderProfile-Win.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
   </ItemGroup>
 
