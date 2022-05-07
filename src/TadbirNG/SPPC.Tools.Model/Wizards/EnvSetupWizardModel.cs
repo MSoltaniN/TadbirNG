@@ -15,10 +15,6 @@ namespace SPPC.Tools.Model
 
         public string DbPassword { get; set; }
 
-        public string WinUserName { get; set; }
-
-        public string WinPassword { get; set; }
-
         public string InstanceKey { get; set; }
 
         public string RootFolder { get; set; }

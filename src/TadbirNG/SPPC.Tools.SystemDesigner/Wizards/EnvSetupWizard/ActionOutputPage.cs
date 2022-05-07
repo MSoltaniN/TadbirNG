@@ -122,6 +122,8 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 SetStoppedState();
                 return;
             }
+
+            worker.ReportProgress(2);
         }
 
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -132,7 +134,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             _outputBuilder.AppendLine("Environment setup completed successfully.");
-            LogOutput();
             SetStoppedState();
         }
 
@@ -140,19 +141,20 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
         {
             string result = null;
             _outputBuilder.Append("> Generating development settings... (1/7)    ");
-            LogOutput();
+            worker.ReportProgress(0);
             try
             {
-                ITextTemplate template = new WebApiSettings(BuildSettings.Default);
+                var settings = BuildSettings.Local;
+                settings.DbServerName = WizardModel.DbServerName;
+                ITextTemplate template = new WebApiSettings(settings);
                 File.WriteAllText(_params.WebApiSettings, template.TransformText());
 
-                template = new LicenseApiSettings(WizardModel);
+                template = new LicenseApiSettings(settings);
                 File.WriteAllText(_params.LicenseApiSettings, template.TransformText());
 
-                template = new LocalLicenseApiSettings(BuildSettings.Default);
+                template = new LocalLicenseApiSettings(settings);
                 File.WriteAllText(_params.LocalLicenseApiSettings, template.TransformText());
                 _outputBuilder.AppendLine("(OK)");
-                LogOutput();
                 worker.ReportProgress(5);
             }
             catch (Exception ex)
@@ -161,7 +163,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 _outputBuilder.AppendLine();
                 _outputBuilder.AppendFormat("  >> Error : {0}", ex.Message);
                 _outputBuilder.AppendLine();
-                LogOutput();
+                worker.ReportProgress(0);
             }
 
             return result;
@@ -172,12 +174,11 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             string result = null;
             var sql = new SqlServerConsole() { ConnectionString = _params.Connection };
             _outputBuilder.Append("> Creating local licensing database... (2/7)    ");
-            LogOutput();
+            worker.ReportProgress(0);
             try
             {
                 sql.ExecuteNonQuery(EnvSetupParameters.CreateLicenseDbScript);
                 _outputBuilder.AppendLine("(OK)");
-                LogOutput();
                 worker.ReportProgress(10);
             }
             catch (Exception ex)
@@ -186,7 +187,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 _outputBuilder.AppendLine();
                 _outputBuilder.AppendFormat("  >> Error : {0}", ex.Message);
                 _outputBuilder.AppendLine();
-                LogOutput();
+                worker.ReportProgress(0);
             }
 
             return result;
@@ -197,7 +198,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             string result = null;
             var sql = new SqlServerConsole() { ConnectionString = _params.Connection };
             _outputBuilder.Append("> Adding developer license... (3/7)    ");
-            LogOutput();
+            worker.ReportProgress(0);
             try
             {
                 sql.ExecuteNonQuery(String.Format(EnvSetupParameters.InsertDevLicenseScript,
@@ -206,7 +207,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 CreateApiServiceLicense();
                 CreateApiServiceEdition();
                 _outputBuilder.AppendLine("(OK)");
-                LogOutput();
                 worker.ReportProgress(5);
             }
             catch (Exception ex)
@@ -215,7 +215,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 _outputBuilder.AppendLine();
                 _outputBuilder.AppendFormat("  >> Error : {0}", ex.Message);
                 _outputBuilder.AppendLine();
-                LogOutput();
+                worker.ReportProgress(0);
             }
 
             return result;
@@ -225,7 +225,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
         {
             string result = null;
             _outputBuilder.Append("> Generating Angular development environment... (4/7)    ");
-            LogOutput();
+            worker.ReportProgress(0);
             try
             {
                 WizardModel.InstanceKey = GetInstanceKey();
@@ -233,7 +233,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 File.WriteAllText(_params.AngularEnvPath, template.TransformText());
 
                 _outputBuilder.AppendLine("(OK)");
-                LogOutput();
                 worker.ReportProgress(5);
             }
             catch (Exception ex)
@@ -242,7 +241,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 _outputBuilder.AppendLine();
                 _outputBuilder.AppendFormat("  >> Error : {0}", ex.Message);
                 _outputBuilder.AppendLine();
-                LogOutput();
+                worker.ReportProgress(0);
             }
 
             return result;
@@ -253,7 +252,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             string result = null;
             var sql = new SqlServerConsole() { ConnectionString = _params.Connection };
             _outputBuilder.Append("> Creating TadbirNG system database... (5/7)    ");
-            LogOutput();
+            worker.ReportProgress(0);
             try
             {
                 var builder = new StringBuilder();
@@ -261,8 +260,13 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 builder.AppendLine();
                 builder.AppendFormat(File.ReadAllText(_params.SystemDataDbScript), WizardModel.DbServerName);
                 sql.ExecuteNonQuery(builder.ToString());
+                builder.Clear();
+                builder.AppendLine(File.ReadAllText(_params.SystemDbTriggers));
+                sql.ExecuteNonQuery(builder.ToString());
+                builder.Clear();
+                builder.AppendLine(File.ReadAllText(_params.SystemDbJobs));
+                sql.ExecuteNonQuery(builder.ToString());
                 _outputBuilder.AppendLine("(OK)");
-                LogOutput();
                 worker.ReportProgress(25);
             }
             catch (Exception ex)
@@ -271,7 +275,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 _outputBuilder.AppendLine();
                 _outputBuilder.AppendFormat("  >> Error : {0}", ex.Message);
                 _outputBuilder.AppendLine();
-                LogOutput();
+                worker.ReportProgress(0);
             }
 
             return result;
@@ -282,7 +286,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             string result = null;
             var sql = new SqlServerConsole() { ConnectionString = _params.Connection };
             _outputBuilder.Append("> Creating TadbirNG sample database... (6/7)    ");
-            LogOutput();
+            worker.ReportProgress(0);
             try
             {
                 var builder = new StringBuilder();
@@ -293,7 +297,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 builder.AppendLine(File.ReadAllText(_params.SampleDataDbScript));
                 sql.ExecuteNonQuery(builder.ToString());
                 _outputBuilder.AppendLine("(OK)");
-                LogOutput();
                 worker.ReportProgress(25);
             }
             catch (Exception ex)
@@ -302,7 +305,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 _outputBuilder.AppendLine();
                 _outputBuilder.AppendFormat("  >> Error : {0}", ex.Message);
                 _outputBuilder.AppendLine();
-                LogOutput();
+                worker.ReportProgress(0);
             }
 
             return result;
@@ -312,14 +315,13 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
         {
             string result = null;
             _outputBuilder.Append("> Activating developer license... (7/7)    ");
-            LogOutput();
+            worker.ReportProgress(0);
             try
             {
                 _apiClient.AddHeader(Constants.InstanceHeaderName, WizardModel.InstanceKey);
                 _apiClient.Update("Null Data", LicenseApi.ActivateLicense);
                 _outputBuilder.AppendLine("(OK)");
-                LogOutput();
-                worker.ReportProgress(25);
+                worker.ReportProgress(23);
             }
             catch (Exception ex)
             {
@@ -327,7 +329,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 _outputBuilder.AppendLine();
                 _outputBuilder.AppendFormat("  >> Error : {0}", ex.Message);
                 _outputBuilder.AppendLine();
-                LogOutput();
+                worker.ReportProgress(0);
             }
 
             return result;
@@ -341,6 +343,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
 
         private void UpdateProgress(int increment)
         {
+            LogOutput();
             progress.Value += increment;
             lblProgress.Text = String.Format("{0}%", progress.Value);
         }

@@ -10,7 +10,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
         {
             InitializeComponent();
             Info = "General settings and information";
-            chkShowPass.Checked = true;
         }
 
         public EnvSetupWizardModel WizardModel { get; set; }
@@ -37,11 +36,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             }
         }
 
-        private void ShowPass_CheckedChanged(object sender, EventArgs e)
-        {
-            txtWinPassword.PasswordChar = chkShowPass.Checked ? '\0' : '*';
-        }
-
         private void SetupBindings()
         {
             txtRootFolder.DataBindings.Add("Text", WizardModel, "RootFolder",
@@ -49,10 +43,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             txtFirstName.DataBindings.Add("Text", WizardModel, "LicenseeFirstName",
                 false, DataSourceUpdateMode.OnPropertyChanged);
             txtLastName.DataBindings.Add("Text", WizardModel, "LicenseeLastName",
-                false, DataSourceUpdateMode.OnPropertyChanged);
-            txtWinUser.DataBindings.Add("Text", WizardModel, "WinUserName",
-                false, DataSourceUpdateMode.OnPropertyChanged);
-            txtWinPassword.DataBindings.Add("Text", WizardModel, "WinPassword",
                 false, DataSourceUpdateMode.OnPropertyChanged);
         }
     }

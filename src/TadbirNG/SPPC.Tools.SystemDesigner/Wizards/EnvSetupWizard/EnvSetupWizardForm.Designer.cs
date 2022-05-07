@@ -38,7 +38,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             // 
             // btnBack
             // 
-            this.btnBack.Location = new System.Drawing.Point(360, 665);
+            this.btnBack.Location = new System.Drawing.Point(360, 523);
             this.btnBack.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(100, 35);
@@ -49,7 +49,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             // 
             // btnNext
             // 
-            this.btnNext.Location = new System.Drawing.Point(466, 665);
+            this.btnNext.Location = new System.Drawing.Point(466, 523);
             this.btnNext.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(100, 35);
@@ -61,7 +61,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(572, 665);
+            this.btnCancel.Location = new System.Drawing.Point(572, 523);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 35);
@@ -74,7 +74,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.pnlPage.Location = new System.Drawing.Point(17, 79);
             this.pnlPage.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlPage.Name = "pnlPage";
-            this.pnlPage.Size = new System.Drawing.Size(655, 570);
+            this.pnlPage.Size = new System.Drawing.Size(655, 428);
             this.pnlPage.TabIndex = 2;
             // 
             // lblStepInfo
@@ -95,7 +95,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(688, 709);
+            this.ClientSize = new System.Drawing.Size(688, 565);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnNext);
             this.Controls.Add(this.btnCancel);

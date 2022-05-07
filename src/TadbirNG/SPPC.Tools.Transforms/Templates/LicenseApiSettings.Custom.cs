@@ -4,11 +4,11 @@ namespace SPPC.Tools.Transforms.Templates
 {
     public partial class LicenseApiSettings : ITextTemplate
     {
-        public LicenseApiSettings(EnvSetupWizardModel model)
+        public LicenseApiSettings(IBuildSettings settings)
         {
-            _model = model;
+            _settings = settings;
         }
 
-        private readonly EnvSetupWizardModel _model;
+        private readonly IBuildSettings _settings;
     }
 }

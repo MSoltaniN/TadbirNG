@@ -5,12 +5,12 @@
 <#@ import namespace="System.Collections.Generic" #>
 {
   "ConnectionStrings": {
-    "TadbirSysApi": "Server=DbServer;Database=NGTadbirSys;User ID=NgTadbirUser;Password=Demo1234;Trusted_Connection=False"
+    "TadbirSysApi": "Server=<#= _settings.DbServerName.Replace("\\", "\\\\") #>;Database=NGTadbirSys;User ID=<#= _settings.DbUserName #>;Password=<#= _settings.DbPassword #>;Trusted_Connection=False"
   },
   "ServerRoot": "<#= _settings.OnlineServerRoot #>",
-  "SSH": {
-    "Domain": "<#= _settings.Ssh.Domain #>",
-    "Port": <#= _settings.Ssh.Port #>
+  "TCP": {
+    "Domain": "<#= _settings.Tcp.Domain #>",
+    "Port": <#= _settings.Tcp.Port #>
   },
   "Logging": {
     "LogLevel": {
