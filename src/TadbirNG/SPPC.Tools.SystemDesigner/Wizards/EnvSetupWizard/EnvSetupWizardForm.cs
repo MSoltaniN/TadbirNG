@@ -11,15 +11,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
         public EnvSetupWizardForm()
         {
             InitializeComponent();
-            WizardModel = new EnvSetupWizardModel()
-            {
-                DbPassword = "Qwerty@1973",
-                DbServerName = "BE-LAPTOP\\TESTV14",
-                DbUserName = "sa",
-                LicenseeFirstName = "سیمین",
-                LicenseeLastName = "رستگاری",
-                RootFolder = @"D:\Temp\SourceCode\WizardTest\tadbirng"
-            };
+            WizardModel = new EnvSetupWizardModel();
         }
 
         public EnvSetupWizardModel WizardModel { get; set; }
