@@ -222,6 +222,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="provinceCode">کد یکتای استان</param>
         /// <returns>لیست شهرهای یک استان</returns>
         Task<IList<KeyValue>> GetCitiesAsync(string provinceCode);
+
+        /// <summary>
+        /// به روش آسنکرون، لیست دسترسی های سطری مجاز برای یک موجودیت را به صورت مجموعه ای از
+        /// کلیدهای متنی چندزبانه برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی موجودیت مورد نظر</param>
+        /// <returns>لیست دسترسی های سطری مجاز برای یک موجودیت</returns>
+        Task<IList<string>> GetValidRowPermissionsAsync(int viewId);
+
         #endregion
     }
 }

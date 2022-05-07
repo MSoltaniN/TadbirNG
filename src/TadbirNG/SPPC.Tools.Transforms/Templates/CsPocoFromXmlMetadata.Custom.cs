@@ -69,7 +69,7 @@ namespace SPPC.Tools.Transforms.Templates
                 .ToList();
         }
 
-        private string GetTypeAlias(Property property)
+        private static string GetTypeAlias(Property property)
         {
             string builtinTypeName = property.Type.ToString();
             var alias = String.Empty;
@@ -121,7 +121,7 @@ namespace SPPC.Tools.Transforms.Templates
         }
 
         private const string _modelAssembly = "SPPC.Tadbir.Model";
-        private Entity _entity;
-        private string _version;
+        private readonly Entity _entity;
+        private readonly string _version;
     }
 }

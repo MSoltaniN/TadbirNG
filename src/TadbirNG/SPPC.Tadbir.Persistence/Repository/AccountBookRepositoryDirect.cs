@@ -200,11 +200,7 @@ namespace SPPC.Tadbir.Persistence
         {
             string bookQuery = parameters.IsByBranch ? BookQuery.ByRowByBranch : BookQuery.ByRow;
             var book = new AccountBookViewModel();
-            var items = new List<AccountBookItemViewModel>
-            {
-                await GetFirstBookItemAsync(parameters)
-            };
-
+            var items = await GetInitialItemsAsync(parameters);
             var query = new ReportQuery(String.Format(bookQuery,
                 _utility.GetItemName(parameters.ViewId), _utility.GetFieldName(parameters.ViewId),
                 parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
@@ -229,11 +225,7 @@ namespace SPPC.Tadbir.Persistence
         {
             string bookQuery = GetSummaryQuery(byNo, parameters.IsByBranch);
             var book = new AccountBookViewModel();
-            var items = new List<AccountBookItemViewModel>
-            {
-                await GetFirstBookItemAsync(parameters)
-            };
-
+            var items = await GetInitialItemsAsync(parameters);
             items.AddRange(GetQueryResult(fullCode, bookQuery, parameters, byNo));
             foreach (var item in items)
             {
@@ -249,10 +241,7 @@ namespace SPPC.Tadbir.Persistence
         {
             string bookQuery = parameters.IsByBranch ? BookQuery.MonthlySumByBranch : BookQuery.MonthlySum;
             var book = new AccountBookViewModel();
-            var items = new List<AccountBookItemViewModel>
-            {
-                await GetFirstBookItemAsync(parameters)
-            };
+            var items = await GetInitialItemsAsync(parameters);
             items.AddRange(GetQueryResult(fullCode, VoucherOriginId.OpeningVoucher, parameters));
 
             var calendarType = await Config.GetCurrentCalendarAsync();
@@ -284,30 +273,34 @@ namespace SPPC.Tadbir.Persistence
             return book;
         }
 
-        private static void PrepareAccountBook(AccountBookViewModel book,
+        private void PrepareAccountBook(AccountBookViewModel book,
             IList<AccountBookItemViewModel> items, GridOptions gridOptions)
         {
+            string description = Context.Localize(AppStrings.InitialBalance);
+            var initBalance = items
+                .Where(item => item.Description == description)
+                .FirstOrDefault();
             var filteredItems = items
-                .Skip(1)
+                .Where(item => item.Description != description)
                 .Apply(gridOptions, false)
                 .ToList();
-            if (filteredItems.Count == 0)
+
+            if (initBalance != null)
             {
-                book.Items.Add(items[0]);
-                return;
+                filteredItems.Insert(0, initBalance);
             }
 
-            filteredItems.Insert(0, items[0]);
-            decimal balance = filteredItems[0].Balance;
-            foreach (var item in filteredItems.Skip(1))
+            decimal balance = 0.0M;
+            foreach (var item in filteredItems)
             {
                 balance = balance + item.Debit - item.Credit;
                 item.Balance = balance;
             }
 
+            var last = filteredItems.LastOrDefault();
             book.DebitSum = filteredItems.Sum(item => item.Debit);
             book.CreditSum = filteredItems.Sum(item => item.Credit);
-            book.Balance = filteredItems.Last().Balance;
+            book.Balance = last != null ? last.Balance : 0.0M;
             book.TotalCount = filteredItems.Count;
             book.Items.AddRange(filteredItems.ApplyPaging(gridOptions));
         }
@@ -401,6 +394,19 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
+        private async Task<List<AccountBookItemViewModel>> GetInitialItemsAsync(
+            AccountBookParameters parameters)
+        {
+            var quickFilter = parameters.GridOptions.QuickFilter?.ToString();
+            var hasMarkFilter = quickFilter?.Contains("Mark");
+            return hasMarkFilter == true
+                ? new List<AccountBookItemViewModel>()
+                : new List<AccountBookItemViewModel>
+                    {
+                        await GetFirstBookItemAsync(parameters)
+                    };
+        }
+
         private async Task<AccountBookItemViewModel> GetFirstBookItemAsync(
             AccountBookParameters parameters)
         {
@@ -422,6 +428,8 @@ namespace SPPC.Tadbir.Persistence
                     RowNo = 1,
                     VoucherDate = parameters.FromDate
                 };
+                firstItem.Debit = Math.Max(0, firstItem.Balance);
+                firstItem.Credit = Math.Abs(Math.Min(0, firstItem.Balance));
             }
 
             return firstItem;

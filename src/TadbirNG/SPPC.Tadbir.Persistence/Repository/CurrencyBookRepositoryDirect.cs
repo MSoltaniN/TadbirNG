@@ -214,7 +214,9 @@ namespace SPPC.Tadbir.Persistence
             switch (parameters.Mode)
             {
                 case CurrencyBookMode.ByRows:
-                    groupByClause = String.Empty;
+                    groupByClause = parameters.ByBranch
+                        ? CurrencyBookQuery.ByRowByBranchGroupBy
+                        : CurrencyBookQuery.ByRowGroupBy;
                     break;
                 case CurrencyBookMode.VoucherSum:
                     groupByClause = parameters.ByBranch
@@ -312,6 +314,7 @@ namespace SPPC.Tadbir.Persistence
             queryBuilder.AppendLine(GetSelectClause(parameters));
             queryBuilder.AppendLine(GetFromClause(parameters));
             queryBuilder.AppendLine(await GetWhereClauseAsync(parameters));
+            queryBuilder.AppendLine(GetGroupByClause(parameters));
             book.Items.AddRange(GetQueryResult(queryBuilder.ToString(), parameters));
             Array.ForEach(book.Items.ToArray(), item => item.Description = Context.Localize(item.Description));
             PrepareCurrencyBook(book, parameters);
