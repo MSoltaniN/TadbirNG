@@ -1,3 +1,5 @@
+
+import {finalize} from 'rxjs/operators';
 import { BaseComponent } from "./base.component";
 import { Injectable, Renderer2, Optional, Inject, Host, Input, HostListener, OnInit, OnDestroy, ElementRef } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
@@ -143,10 +145,10 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
 
     if (this.properties[this.metadataKey] == undefined) {
 
-      this.metadataService.getMetaDataById(this.viewId).finally(() => {
+      this.metadataService.getMetaDataById(this.viewId).pipe(finalize(() => {
         this.fillFormValidators();
 
-      }).subscribe((res1: any) => {
+      })).subscribe((res1: any) => {
 
         this.properties[this.metadataKey] = res1.properties;
         this.bStorageService.setMetadata(this.metadataKey, this.properties[this.metadataKey]);

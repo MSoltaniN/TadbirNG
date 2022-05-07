@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response, Headers, RequestOptions } from '@angular/http';
 import "rxjs/Rx";
@@ -58,8 +60,8 @@ export class MetaDataService extends BaseService {
     var options = { headers: header };
 
     var url = String.Format(MetadataApi.ViewMetadataById, entityId);
-    return this.http.get(url, options)
-      .map(response => (<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => (<Response>response)));
   }
 
 
@@ -73,8 +75,8 @@ export class MetaDataService extends BaseService {
     var options = { headers: header };
 
     var url = String.Format(ReportApi.ReportMetadataByView, viewId);
-    return this.http.get(url, options)
-      .map(response => (<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => (<Response>response)));
   }
 
   getViews() {
@@ -87,8 +89,8 @@ export class MetaDataService extends BaseService {
     var options = { headers: header };
 
     var url = MetadataApi.ViewsMetaData;
-    return this.http.get(url, options)
-      .map(response => (<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => (<Response>response)));
   }
 
 

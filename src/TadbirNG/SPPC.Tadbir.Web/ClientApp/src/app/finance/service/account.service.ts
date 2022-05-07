@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { AccountApi } from './api/accountApi';
@@ -103,7 +105,7 @@ export class AccountService extends BaseService {
   getAccountById(id: number) {
     var url = String.Format(AccountApi.Account, id);
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => <any>(<Response>response)));
   }
 }

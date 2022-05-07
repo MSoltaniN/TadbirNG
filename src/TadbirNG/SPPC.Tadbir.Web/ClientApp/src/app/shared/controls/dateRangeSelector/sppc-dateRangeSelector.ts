@@ -1,3 +1,5 @@
+
+import {distinctUntilChanged, debounceTime} from 'rxjs/operators';
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms'
 import { ToastrService } from 'ngx-toastr';
@@ -104,9 +106,9 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
       this.myForm.patchValue({ fromDate: this.displayFromDate, toDate: this.displayToDate });
       this.saveTemporarilyDate(this.displayFromDate, this.displayToDate);
 
-      this.myForm.valueChanges
-        .debounceTime(800)
-        .distinctUntilChanged()
+      this.myForm.valueChanges.pipe(
+        debounceTime(800),
+        distinctUntilChanged(),)
         .subscribe(val => {
 
           this.fpStartDate = this.FiscalPeriodStartDate;

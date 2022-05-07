@@ -491,24 +491,26 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     filterModel.values = JSON.stringify(this.currentGFilter.filters);
     gf.filters = this.currentGFilter.filters;
     if (filterModel.id == 0) {
-      this.advanceFilterService.insertFilter(filterModel).subscribe((res) => {
-        this.gFilterSelected = res.id;
-        var fil = this.groupFilters.filter((f) => f.id === gf.id);
-        if (fil.length > 0) {
-          fil[0].id = res.id;
-        } else this.groupFilters.push(res);
+      this.advanceFilterService
+        .insertFilter(filterModel)
+        .subscribe((res: any) => {
+          this.gFilterSelected = res.id;
+          var fil = this.groupFilters.filter((f) => f.id === gf.id);
+          if (fil.length > 0) {
+            fil[0].id = res.id;
+          } else this.groupFilters.push(res);
 
-        gf.id = res.id;
-        this.currentGFilter = gf;
+          gf.id = res.id;
+          this.currentGFilter = gf;
 
-        this.firstLoadFilters(gf);
+          this.firstLoadFilters(gf);
 
-        //this.gFilterSelectChange(res);
-        this.showMessage(
-          this.getText("AdvanceFilter.FilterCopiedSuccess"),
-          MessageType.Succes
-        );
-      });
+          //this.gFilterSelectChange(res);
+          this.showMessage(
+            this.getText("AdvanceFilter.FilterCopiedSuccess"),
+            MessageType.Succes
+          );
+        });
     }
   }
 
@@ -532,7 +534,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
         if (filterModel.id == 0)
           this.advanceFilterService
             .insertFilter(filterModel)
-            .subscribe((res) => {
+            .subscribe((res: any) => {
               this.gFilterSelected = res.id;
 
               var fil = this.groupFilters.filter((f) => f.id === gf.id);
@@ -574,15 +576,17 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     filterModel.userId = this.UserId;
     filterModel.values = JSON.stringify(gf.filters);
     if (filterModel.id == 0)
-      this.advanceFilterService.insertFilter(filterModel).subscribe((res) => {
-        this.gFilterSelected = res.id;
+      this.advanceFilterService
+        .insertFilter(filterModel)
+        .subscribe((res: any) => {
+          this.gFilterSelected = res.id;
 
-        var fil = this.groupFilters.filter((f) => f.id === gf.id);
-        if (fil.length > 0) fil[0].id = res.id;
+          var fil = this.groupFilters.filter((f) => f.id === gf.id);
+          if (fil.length > 0) fil[0].id = res.id;
 
-        gf.id = res.id;
-        this.firstLoadFilters(gf);
-      });
+          gf.id = res.id;
+          this.firstLoadFilters(gf);
+        });
   }
 
   onOk() {

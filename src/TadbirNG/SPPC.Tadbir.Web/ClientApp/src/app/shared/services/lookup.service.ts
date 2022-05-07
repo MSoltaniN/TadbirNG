@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import {  Response } from '@angular/http';
 import "rxjs/Rx";
@@ -18,16 +20,16 @@ export class LookupService extends BaseService {
 
   GetLookup(url: string) {
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => <any>(<Response>response)));
   }
 
   GetAccountsLookup() {
 
     var url = AccountRelationApi.EnvironmentAccountsLookup;
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => <any>(<Response>response)));
 
   }
 
@@ -36,8 +38,8 @@ export class LookupService extends BaseService {
     var url = LookupApi.UserAccessibleCompanyFiscalPeriods;
     url = String.Format(url, companyId, userId);
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => <any>(<Response>response)));
 
   }
 
@@ -46,8 +48,8 @@ export class LookupService extends BaseService {
     var url = LookupApi.UserAccessibleCompanies;
     url = String.Format(url, userId);
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => <any>(<Response>response)));
 
   }
 
@@ -55,32 +57,32 @@ export class LookupService extends BaseService {
 
     var url = LookupApi.Users;    
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => <any>(<Response>response)));
   }
 
   GetEntityLookupAsync() {
 
     var url = LookupApi.EntityTypes;    
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => <any>(<Response>response)));
   }
 
   GetSystemEntityLookupAsync() {
 
     var url = LookupApi.SystemEntityTypes;    
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => <any>(<Response>response)));
   }
 
   GetDetailAccountsLookup() {
 
     var url = AccountRelationApi.EnvironmentDetailAccountsLookup;
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => <any>(<Response>response)));
 
   }
 
@@ -88,8 +90,8 @@ export class LookupService extends BaseService {
 
     var url = AccountRelationApi.EnvironmentCostCentersLookup;
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => <any>(<Response>response)));
 
   }
 
@@ -97,28 +99,28 @@ export class LookupService extends BaseService {
 
     var url = AccountRelationApi.EnvironmentProjectsLookup;
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => <any>(<Response>response)));
 
   }
 
   GetCurrenciesLookup() {
     var options = { headers: this.httpHeaders };
-    return this.http.get(LookupApi.Currencies, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(LookupApi.Currencies, options).pipe(
+      map(response => <any>(<Response>response)));
   }
 
   GetAccountGroupsLookup() {
     var url = LookupApi.AccountGroups;
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => <any>(<Response>response)));
   }
 
   GetInventoryAccountsLookup() {
     var url = LookupApi.InventoryAccounts;
     var options = { headers: this.httpHeaders };
-    return this.http.get(url, options)
-      .map(response => <any>(<Response>response));
+    return this.http.get(url, options).pipe(
+      map(response => <any>(<Response>response)));
   }
 }
