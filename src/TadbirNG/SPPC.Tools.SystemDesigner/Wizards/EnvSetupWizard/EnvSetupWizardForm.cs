@@ -120,11 +120,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 return false;
             }
 
-            if (!EnsureWinLoginInfoIsCorrect())
-            {
-                return false;
-            }
-
             return true;
         }
 
@@ -174,21 +169,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 || String.IsNullOrWhiteSpace(WizardModel.LicenseeLastName))
             {
                 MessageBox.Show(this, "You must enter a first name and last name for your development license.",
-                    "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                validated = false;
-            }
-
-            return validated;
-        }
-
-        private bool EnsureWinLoginInfoIsCorrect()
-        {
-            bool validated = true;
-            if (String.IsNullOrWhiteSpace(WizardModel.WinUserName)
-                || String.IsNullOrWhiteSpace(WizardModel.WinPassword))
-            {
-                MessageBox.Show(this, @"Your local Windows login credentials are required for activation.
-This information stays on your local machine and is not committed to source control.",
                     "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 validated = false;
             }

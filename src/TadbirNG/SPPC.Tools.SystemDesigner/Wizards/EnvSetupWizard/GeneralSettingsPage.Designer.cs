@@ -38,16 +38,8 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.label3 = new System.Windows.Forms.Label();
             this.txtFirstName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.grpWinLogin = new System.Windows.Forms.GroupBox();
-            this.chkShowPass = new System.Windows.Forms.CheckBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtWinPassword = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtWinUser = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.grpProject.SuspendLayout();
             this.grpLicensee.SuspendLayout();
-            this.grpWinLogin.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpProject
@@ -144,95 +136,18 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             this.label2.TabIndex = 0;
             this.label2.Text = "First Name :";
             // 
-            // grpWinLogin
-            // 
-            this.grpWinLogin.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpWinLogin.Controls.Add(this.chkShowPass);
-            this.grpWinLogin.Controls.Add(this.label6);
-            this.grpWinLogin.Controls.Add(this.txtWinPassword);
-            this.grpWinLogin.Controls.Add(this.label4);
-            this.grpWinLogin.Controls.Add(this.txtWinUser);
-            this.grpWinLogin.Controls.Add(this.label5);
-            this.grpWinLogin.Location = new System.Drawing.Point(6, 319);
-            this.grpWinLogin.Name = "grpWinLogin";
-            this.grpWinLogin.Size = new System.Drawing.Size(452, 231);
-            this.grpWinLogin.TabIndex = 2;
-            this.grpWinLogin.TabStop = false;
-            this.grpWinLogin.Text = "Windows Login (developer system)";
-            // 
-            // chkShowPass
-            // 
-            this.chkShowPass.AutoSize = true;
-            this.chkShowPass.Location = new System.Drawing.Point(11, 169);
-            this.chkShowPass.Name = "chkShowPass";
-            this.chkShowPass.Size = new System.Drawing.Size(134, 24);
-            this.chkShowPass.TabIndex = 4;
-            this.chkShowPass.Text = "Show password";
-            this.chkShowPass.UseVisualStyleBackColor = true;
-            this.chkShowPass.CheckedChanged += new System.EventHandler(this.ShowPass_CheckedChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(11, 203);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(303, 20);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "* Note: This is required for license activation.";
-            // 
-            // txtWinPassword
-            // 
-            this.txtWinPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtWinPassword.Location = new System.Drawing.Point(11, 133);
-            this.txtWinPassword.Name = "txtWinPassword";
-            this.txtWinPassword.Size = new System.Drawing.Size(335, 27);
-            this.txtWinPassword.TabIndex = 3;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(11, 105);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(77, 20);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "Password :";
-            // 
-            // txtWinUser
-            // 
-            this.txtWinUser.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtWinUser.Location = new System.Drawing.Point(11, 63);
-            this.txtWinUser.Name = "txtWinUser";
-            this.txtWinUser.Size = new System.Drawing.Size(335, 27);
-            this.txtWinUser.TabIndex = 1;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(11, 35);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(89, 20);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "User Name :";
-            // 
             // GeneralSettingsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.grpWinLogin);
             this.Controls.Add(this.grpLicensee);
             this.Controls.Add(this.grpProject);
             this.Name = "GeneralSettingsPage";
-            this.Size = new System.Drawing.Size(464, 556);
+            this.Size = new System.Drawing.Size(464, 309);
             this.grpProject.ResumeLayout(false);
             this.grpProject.PerformLayout();
             this.grpLicensee.ResumeLayout(false);
             this.grpLicensee.PerformLayout();
-            this.grpWinLogin.ResumeLayout(false);
-            this.grpWinLogin.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -248,12 +163,5 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtFirstName;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.GroupBox grpWinLogin;
-        private System.Windows.Forms.TextBox txtWinPassword;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtWinUser;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.CheckBox chkShowPass;
     }
 }

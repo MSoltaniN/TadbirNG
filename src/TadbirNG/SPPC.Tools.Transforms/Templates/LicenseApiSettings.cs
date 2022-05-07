@@ -18,7 +18,7 @@ namespace SPPC.Tools.Transforms.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\LicenseApiSettings.tt"
+    #line 1 "D:\Temp\SourceCode\WizardTest\tadbirng\src\TadbirNG\SPPC.Tools.Transforms\Templates\LicenseApiSettings.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class LicenseApiSettings : LicenseApiSettingsBase
     {
@@ -30,14 +30,28 @@ namespace SPPC.Tools.Transforms.Templates
         {
             this.Write("{\r\n  \"ConnectionStrings\": {\r\n    \"LicenseDb\": \"Server=");
             
-            #line 8 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\LicenseApiSettings.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_model.DbServerName));
+            #line 8 "D:\Temp\SourceCode\WizardTest\tadbirng\src\TadbirNG\SPPC.Tools.Transforms\Templates\LicenseApiSettings.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.DbServerName.Replace("\\", "\\\\")));
             
             #line default
             #line hidden
-            this.Write(";Database=NGLicense;Trusted_Connection=True\"\r\n  },\r\n  \"Logging\": {\r\n    \"LogLevel" +
-                    "\": {\r\n      \"Default\": \"Information\",\r\n      \"Microsoft\": \"Warning\",\r\n      \"Mic" +
-                    "rosoft.Hosting.Lifetime\": \"Information\"\r\n    }\r\n  }\r\n}\r\n");
+            this.Write(";Database=NGLicense;User ID=");
+            
+            #line 8 "D:\Temp\SourceCode\WizardTest\tadbirng\src\TadbirNG\SPPC.Tools.Transforms\Templates\LicenseApiSettings.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.DbUserName));
+            
+            #line default
+            #line hidden
+            this.Write(";Password=");
+            
+            #line 8 "D:\Temp\SourceCode\WizardTest\tadbirng\src\TadbirNG\SPPC.Tools.Transforms\Templates\LicenseApiSettings.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.DbPassword));
+            
+            #line default
+            #line hidden
+            this.Write(";Trusted_Connection=False\"\r\n  },\r\n  \"Logging\": {\r\n    \"LogLevel\": {\r\n      \"Defau" +
+                    "lt\": \"Information\",\r\n      \"Microsoft\": \"Warning\",\r\n      \"Microsoft.Hosting.Lif" +
+                    "etime\": \"Information\"\r\n    }\r\n  }\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

@@ -63,6 +63,22 @@ namespace SPPC.Tools.Model
             }
         }
 
+        public string SystemDbTriggers
+        {
+            get
+            {
+                return Path.Combine(_model.RootFolder, "res", "TadbirSys_CreateTriggers.sql");
+            }
+        }
+
+        public string SystemDbJobs
+        {
+            get
+            {
+                return Path.Combine(_model.RootFolder, "res", "TadbirSys_CreateJobs.sql");
+            }
+        }
+
         public string SystemDataDbScript
         {
             get

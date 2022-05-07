@@ -27,7 +27,7 @@ namespace SPPC.Tools.Model
         /// <summary>
         /// مشخصات اتصال از راه دور به سیستم عامل مقصد
         /// </summary>
-        RemoteConnection Ssh { get; }
+        RemoteConnection Tcp { get; }
 
         /// <summary>
         /// نام سرور دیتابیسی در برنامه نصب شده

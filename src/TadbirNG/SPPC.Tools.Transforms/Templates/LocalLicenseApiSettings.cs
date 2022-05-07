@@ -18,7 +18,7 @@ namespace SPPC.Tools.Transforms.Templates
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
+    #line 1 "D:\Temp\SourceCode\WizardTest\tadbirng\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class LocalLicenseApiSettings : LocalLicenseApiSettingsBase
     {
@@ -28,26 +28,45 @@ namespace SPPC.Tools.Transforms.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("{\r\n  \"ConnectionStrings\": {\r\n    \"TadbirSysApi\": \"Server=DbServer;Database=NGTadb" +
-                    "irSys;User ID=NgTadbirUser;Password=Demo1234;Trusted_Connection=False\"\r\n  },\r\n  " +
-                    "\"ServerRoot\": \"");
+            this.Write("{\r\n  \"ConnectionStrings\": {\r\n    \"TadbirSysApi\": \"Server=");
             
-            #line 10 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
+            #line 8 "D:\Temp\SourceCode\WizardTest\tadbirng\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.DbServerName.Replace("\\", "\\\\")));
+            
+            #line default
+            #line hidden
+            this.Write(";Database=NGTadbirSys;User ID=");
+            
+            #line 8 "D:\Temp\SourceCode\WizardTest\tadbirng\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.DbUserName));
+            
+            #line default
+            #line hidden
+            this.Write(";Password=");
+            
+            #line 8 "D:\Temp\SourceCode\WizardTest\tadbirng\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.DbPassword));
+            
+            #line default
+            #line hidden
+            this.Write(";Trusted_Connection=False\"\r\n  },\r\n  \"ServerRoot\": \"");
+            
+            #line 10 "D:\Temp\SourceCode\WizardTest\tadbirng\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_settings.OnlineServerRoot));
             
             #line default
             #line hidden
-            this.Write("\",\r\n  \"SSH\": {\r\n    \"Domain\": \"");
+            this.Write("\",\r\n  \"TCP\": {\r\n    \"Domain\": \"");
             
-            #line 12 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.Ssh.Domain));
+            #line 12 "D:\Temp\SourceCode\WizardTest\tadbirng\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.Tcp.Domain));
             
             #line default
             #line hidden
             this.Write("\",\r\n    \"Port\": ");
             
-            #line 13 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.Ssh.Port));
+            #line 13 "D:\Temp\SourceCode\WizardTest\tadbirng\src\TadbirNG\SPPC.Tools.Transforms\Templates\LocalLicenseApiSettings.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_settings.Tcp.Port));
             
             #line default
             #line hidden
