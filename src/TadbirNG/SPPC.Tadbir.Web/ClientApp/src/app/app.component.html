@@ -21,15 +21,24 @@
     </kendo-dialog>
     -->
 
-<ng-progress></ng-progress>
-<div class='container-fluid'>
-  <div class='row'>
+<ngx-loading-bar [color]="'orange'"></ngx-loading-bar>
+<div class="container-fluid">
+  <div class="row">
     <div id="mainContent" class="nopad body-content">
       <router-outlet></router-outlet>
     </div>
   </div>
 </div>
 <!--for report manager (detect screen dpi)-->
-<div id="dpi" style="height: 1in; width: 1in; left: -100%;
-position: absolute; top: -100%;visibility: hidden"></div>
+<div
+  id="dpi"
+  style="
+    height: 1in;
+    width: 1in;
+    left: -100%;
+    position: absolute;
+    top: -100%;
+    visibility: hidden;
+  "
+></div>
 <!--for report manager (detect screen dpi)-->

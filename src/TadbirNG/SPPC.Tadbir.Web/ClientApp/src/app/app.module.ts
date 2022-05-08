@@ -9,9 +9,9 @@ import {
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { BrowserModule } from "@angular/platform-browser";
-import { NgProgressModule } from "@ngx-progressbar/core";
-import { NgProgressHttpModule } from "@ngx-progressbar/http";
-import { NgProgressRouterModule } from "@ngx-progressbar/router";
+import { LoadingBarModule } from "@ngx-loading-bar/core";
+import { LoadingBarHttpClientModule } from "@ngx-loading-bar/http-client";
+import { LoadingBarRouterModule } from "@ngx-loading-bar/router";
 import { AdminModule } from "@sppc/admin/admin.module";
 import { AppRoutingModule } from "@sppc/app-routing.module";
 import { AppComponent } from "@sppc/app.component";
@@ -44,15 +44,18 @@ import { ServiceLocator } from "./service.locator";
     ReactiveFormsModule,
     TextMaskModule,
     HttpClientModule,
-    NgProgressModule.forRoot({
-      direction: "ltr+",
-      spinnerPosition: "left",
-      color: "white",
-      thick: true,
-      meteor: false,
-    }),
-    NgProgressRouterModule,
-    NgProgressHttpModule,
+    LoadingBarModule,
+    LoadingBarRouterModule,
+    LoadingBarHttpClientModule,
+    // NgProgressModule.forRoot({
+    //   direction: "ltr+",
+    //   spinnerPosition: "left",
+    //   color: "white",
+    //   thick: true,
+    //   meteor: false,
+    // }),
+    // NgProgressRouterModule,
+    // NgProgressHttpModule,
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
