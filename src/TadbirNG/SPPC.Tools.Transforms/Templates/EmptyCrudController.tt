@@ -25,8 +25,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     [Produces("application/json")]
     public class <#= name #> : ValidatingController<<#= _model.EntityName #>ViewModel>
     {
-        public <#= name #>(I<#= _model.EntityName #>Repository repository, IStringLocalizer<AppStrings> strings = null)
-            : base(strings)
+        public <#= name #>(I<#= _model.EntityName #>Repository repository, IStringLocalizer<AppStrings> strings,
+            ITokenManager tokenManager)
+            : base(strings, tokenManager)
         {
             _repository = repository;
         }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Domain;
@@ -125,7 +126,7 @@ namespace SPPC.Tadbir.Web.Api.Middleware
                 Code = (int)serviceException.ErrorDetail.ErrorCode,
                 FaultingMethod = serviceException.ErrorDetail.FaultingMethod,
                 FaultType = serviceException.ErrorDetail.FaultType,
-                Message = exception.Message.Replace("'", "\""),
+                Message = exception.GetErrorInfo().Replace("'", "\""),
                 TimestampUtc = DateTime.UtcNow.ToString(AppConstants.TimestampFormat, enCulture),
                 StackTrace = serviceException.ErrorDetail.StackTrace
             };

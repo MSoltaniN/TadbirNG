@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SPPC.Tadbir.ViewModel.Finance
+namespace SPPC.Tadbir.ViewModel.Core
 {
     /// <summary>
     /// اطلاعات مورد نیاز برای گزارش نتیجه عملیات گروهی را نگهداری می کند

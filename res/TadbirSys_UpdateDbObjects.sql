@@ -4876,3 +4876,7 @@ GO
 USE [NGTadbirSys]
 GO
 
+-- 1.2.1365
+ALTER TABLE [Core].[SystemError]
+ALTER COLUMN [Message] varchar(2048) NOT NULL
+GO

@@ -60,11 +60,11 @@ namespace SPPC.Tools.Transforms.Templates
             
             #line default
             #line hidden
-            this.Write("Repository repository, IStringLocalizer<AppStrings> strings = null)\r\n            " +
-                    ": base(strings)\r\n        {\r\n            _repository = repository;\r\n        }\r\n\r\n" +
-                    "        private readonly I");
+            this.Write("Repository repository, IStringLocalizer<AppStrings> strings,\r\n            ITokenM" +
+                    "anager tokenManager)\r\n            : base(strings, tokenManager)\r\n        {\r\n    " +
+                    "        _repository = repository;\r\n        }\r\n\r\n        private readonly I");
             
-            #line 27 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\BlankController.tt"
+            #line 28 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\BlankController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default

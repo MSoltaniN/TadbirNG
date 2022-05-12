@@ -429,16 +429,16 @@ CREATE TABLE [Auth].[RoleCompany] (
 GO
 
 CREATE TABLE [Core].[SystemError](
-	[SystemErrorID]  INT          IDENTITY (1, 1) NOT NULL,
-	[CompanyID]      INT          NULL,
-	[FiscalPeriodID] INT          NULL,
-	[BranchID]       INT          NULL,
-	[TimestampUtc]   VARCHAR(32)  NOT NULL,
-	[Code]           INT          NOT NULL,
-	[Message]        VARCHAR(256) NOT NULL,
-	[FaultingMethod] VARCHAR(64)  NOT NULL,
-	[FaultType]      VARCHAR(64)  NOT NULL,
-	[StackTrace]     TEXT         NULL,
+	[SystemErrorID]  INT           IDENTITY (1, 1) NOT NULL,
+	[CompanyID]      INT           NULL,
+	[FiscalPeriodID] INT           NULL,
+	[BranchID]       INT           NULL,
+	[TimestampUtc]   VARCHAR(32)   NOT NULL,
+	[Code]           INT           NOT NULL,
+	[Message]        VARCHAR(2048) NOT NULL,
+	[FaultingMethod] VARCHAR(64)   NOT NULL,
+	[FaultType]      VARCHAR(64)   NOT NULL,
+	[StackTrace]     TEXT          NULL,
 	[Version]        VARCHAR(16)  CONSTRAINT [DF_Core_SystemError_Version] DEFAULT ('1.0') NOT NULL
     , CONSTRAINT [PK_Core_SystemError] PRIMARY KEY CLUSTERED  ([SystemErrorID] ASC)
     , CONSTRAINT [FK_Core_SystemError_Config_CompanyDb] FOREIGN KEY ([CompanyID]) REFERENCES [Config].[CompanyDb] ([CompanyID])

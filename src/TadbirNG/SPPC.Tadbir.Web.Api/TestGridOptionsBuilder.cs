@@ -3,6 +3,7 @@ using System.Text;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -72,5 +73,19 @@ namespace SPPC.Tadbir.Web.Api
             var urlEncoded = WebUtility.UrlEncode(json);
             return Transform.ToBase64String(Encoding.UTF8.GetBytes(urlEncoded));
         }
+
+        /// <summary>
+        /// Builds and returns a GridOptions instance that has no filter, no sorting and reads first page
+        /// </summary>
+        /// <returns>Encoded GridOptions instance</returns>
+        public static string GetBlankGridOptions()
+        {
+            var gridOptions = new GridOptions();
+            gridOptions.Paging.PageSize = AppConstants.DefaultPageSize;
+            var json = JsonHelper.From(gridOptions, false);
+            var urlEncoded = WebUtility.UrlEncode(json);
+            return Transform.ToBase64String(Encoding.UTF8.GetBytes(urlEncoded));
+        }
+
     }
 }

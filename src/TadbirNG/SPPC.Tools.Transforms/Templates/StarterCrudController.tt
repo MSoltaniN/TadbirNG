@@ -13,9 +13,7 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.<#= _model.EntityArea #>;
-using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 
 <#
@@ -35,10 +33,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="repository">امکان ذخیره و بازیابی اطلاعات <#= _model.EntityPluralPersianName #> در دیتابیس را فراهم می کند</param>
         /// <param name="strings">امکان خواندن متن های چندزبانه را فراهم می کند</param>
-        /// <param name="tokenService">امکان کار با توکن امنیتی برنامه را فراهم می کند</param>
+        /// <param name="tokenManager">امکان کار با توکن امنیتی برنامه را فراهم می کند</param>
         public <#= name #>(I<#= _model.EntityName #>Repository repository, IStringLocalizer<AppStrings> strings,
-            ITokenService tokenService)
-            : base(strings, tokenService)
+            ITokenManager tokenManager)
+            : base(strings, tokenManager)
         {
             _repository = repository;
         }
