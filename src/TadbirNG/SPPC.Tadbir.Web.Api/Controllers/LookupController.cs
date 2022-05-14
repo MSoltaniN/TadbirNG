@@ -485,11 +485,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(LookupApi.ValidRowPermissionsUrl)]
         public async Task<IActionResult> GetValidRowPermissionsAsync(int viewId)
         {
+            var permissionMap = new Dictionary<string, int>
+            {
+                { AppStrings.Access_Default, 1 },
+                { AppStrings.Access_AllRecordsCreatedByUser, 2 },
+                { AppStrings.Access_SpecificRecords, 3 },
+                { AppStrings.Access_AllExceptSpecificRecords, 4 },
+                { AppStrings.Access_SpecificReferences, 5 },
+                { AppStrings.Access_AllExceptSpecificReferences, 6 },
+                { AppStrings.Access_MaxMoneyValue, 7 },
+                { AppStrings.Access_MaxQuantityValue, 8 },
+            };
             var permissions = await _repository.GetValidRowPermissionsAsync(viewId);
-            permissions = permissions
-                .Select(perm => _strings[perm].ToString())
+            var lookup = permissions
+                .Select(perm => new KeyValue(_strings[perm].ToString(), permissionMap[perm].ToString()))
                 .ToList();
-            return Json(permissions);
+            return Json(lookup);
         }
 
         #endregion
