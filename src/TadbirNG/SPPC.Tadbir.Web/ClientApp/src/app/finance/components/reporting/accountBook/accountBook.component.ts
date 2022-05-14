@@ -337,7 +337,7 @@ export class AccountBookComponent
     });
 
     this.translate.get("SelectForm.Title").subscribe((title) => {
-      this.sharedDataService.sharedTitle.next(title);
+      this.sharedDataService.selectFormTitle.next(title);
     });
 
     this.entityName = Entities.AccountBookSingle;
@@ -919,7 +919,7 @@ export class AccountBookComponent
       this.dialogRef.close();
     });
 
-    this.sharedDataService.sharedTitle.subscribe((title: string) => {
+    this.sharedDataService.selectFormTitle.subscribe((title: string) => {
       debugger;
       this.dialogRef.dialog.instance.title = title;
     });

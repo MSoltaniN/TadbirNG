@@ -6,7 +6,7 @@ export class ShareDataService {
   public sharingData: any;
   public sharingSubjectData: Subject<any>;
 
-  public sharedTitle = new BehaviorSubject("");
+  public selectFormTitle = new BehaviorSubject("");
 
   private scope = new Subject<any>();
   public static components: Array<any>;

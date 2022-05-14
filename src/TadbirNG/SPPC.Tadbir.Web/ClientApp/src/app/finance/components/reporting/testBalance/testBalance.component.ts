@@ -327,7 +327,8 @@ export class TestBalanceComponent
     public voucherService: VoucherService,
     public router: Router,
     public shareDataService: ShareDataService,
-    public elem: ElementRef
+    public elem: ElementRef,
+    private sharedDataService: ShareDataService
   ) {
     super(
       toastrService,
@@ -536,6 +537,10 @@ export class TestBalanceComponent
   openSelectForm() {
     this.dialogRef = this.dialogService.open({
       content: SelectFormComponent,
+    });
+
+    this.sharedDataService.selectFormTitle.subscribe((title: string) => {
+      this.dialogRef.dialog.instance.title = title;
     });
 
     this.dialogModel = this.dialogRef.content.instance;

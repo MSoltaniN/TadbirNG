@@ -330,7 +330,7 @@ export class SelectFormComponent
       serchededItem.join(", ")
     );
 
-    this.shareDataService.sharedTitle.next(this.title);
+    this.shareDataService.selectFormTitle.next(this.title);
 
     this.defaultReloadGrid();
   }

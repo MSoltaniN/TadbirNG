@@ -66,6 +66,7 @@ import {
   ReportingService,
 } from "@sppc/shared/services";
 import { LookupApi } from "@sppc/shared/services/api";
+import { ShareDataService } from "@sppc/shared/services/share-data.service";
 import { ToastrService } from "ngx-toastr";
 //#endregion
 
@@ -345,7 +346,8 @@ export class ItemBalanceComponent
     public itemBalanceService: ItemBalanceService,
     public lookupService: LookupService,
     public voucherService: VoucherService,
-    public elem: ElementRef
+    public elem: ElementRef,
+    private sharedDataService: ShareDataService
   ) {
     super(
       toastrService,
@@ -598,6 +600,10 @@ export class ItemBalanceComponent
   openSelectForm() {
     this.dialogRef = this.dialogService.open({
       content: SelectFormComponent,
+    });
+
+    this.sharedDataService.selectFormTitle.subscribe((title: string) => {
+      this.dialogRef.dialog.instance.title = title;
     });
 
     this.dialogModel = this.dialogRef.content.instance;

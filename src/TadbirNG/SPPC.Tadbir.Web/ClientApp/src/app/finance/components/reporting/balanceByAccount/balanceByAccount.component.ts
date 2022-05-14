@@ -237,7 +237,8 @@ export class BalanceByAccountComponent
     public elem: ElementRef,
     public detailAccountService: DetailAccountService,
     public costCenterService: CostCenterService,
-    public projectService: ProjectService
+    public projectService: ProjectService,
+    private sharedDataService: ShareDataService
   ) {
     super(
       toastrService,
@@ -490,6 +491,10 @@ export class BalanceByAccountComponent
   openSelectForm(viewId: number) {
     this.dialogRef = this.dialogService.open({
       content: SelectFormComponent,
+    });
+
+    this.sharedDataService.selectFormTitle.subscribe((title: string) => {
+      this.dialogRef.dialog.instance.title = title;
     });
 
     this.dialogModel = this.dialogRef.content.instance;
