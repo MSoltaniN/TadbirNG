@@ -37,7 +37,7 @@ namespace SPPC.Framework.Helpers
         /// <param name="command">دستور خط فرمان مورد نظر که شامل نام فایل اجرایی و آرگومان های مورد نیاز است</param>
         /// <returns>نتیجه اجرای دستور خط فرمان که شامل خروجی نهایی دستور یا پیغام خطای احتمالی است</returns>
         /// <remarks>در صورتی که زمان انتظار داده نشود، این متد به صورت نامحدود در انتظار تکمیل دستور باقی می ماند</remarks>
-        public async Task<string> RunAsync(string command)
+        public async Task RunAsync(string command)
         {
             _outputBuilder.Clear();
             var process = GetCommandProcess(command);
@@ -45,8 +45,6 @@ namespace SPPC.Framework.Helpers
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
             await process.WaitForExitAsync();
-
-            return _outputBuilder.ToString();
         }
 
         /// <summary>
@@ -81,7 +79,7 @@ namespace SPPC.Framework.Helpers
         private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             _outputBuilder.AppendLine(e.Data);
-            RaiseOutputReceivedEvent(_outputBuilder.ToString());
+            RaiseOutputReceivedEvent(e.Data);
         }
 
         private void RaiseOutputReceivedEvent(string output)

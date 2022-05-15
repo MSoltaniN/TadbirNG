@@ -36,6 +36,10 @@ namespace SPPC.Tadbir.WinRunner
             this.btnStartContainers = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtConsole = new System.Windows.Forms.TextBox();
+            this.progress = new System.Windows.Forms.ProgressBar();
+            this.lblProgress = new System.Windows.Forms.Label();
+            this.pullWorker = new System.ComponentModel.BackgroundWorker();
+            this.startWorker = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // btnExit
@@ -112,8 +116,35 @@ namespace SPPC.Tadbir.WinRunner
             this.txtConsole.Name = "txtConsole";
             this.txtConsole.ReadOnly = true;
             this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtConsole.Size = new System.Drawing.Size(760, 392);
+            this.txtConsole.Size = new System.Drawing.Size(760, 355);
             this.txtConsole.TabIndex = 6;
+            // 
+            // progress
+            // 
+            this.progress.Location = new System.Drawing.Point(12, 407);
+            this.progress.Name = "progress";
+            this.progress.Size = new System.Drawing.Size(659, 29);
+            this.progress.TabIndex = 7;
+            // 
+            // lblProgress
+            // 
+            this.lblProgress.Location = new System.Drawing.Point(682, 412);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(90, 23);
+            this.lblProgress.TabIndex = 8;
+            // 
+            // pullWorker
+            // 
+            this.pullWorker.WorkerReportsProgress = true;
+            this.pullWorker.WorkerSupportsCancellation = true;
+            this.pullWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.PullWorker_DoWork);
+            this.pullWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.Worker_ProgressChanged);
+            // 
+            // startWorker
+            // 
+            this.startWorker.WorkerReportsProgress = true;
+            this.startWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.StartWorker_DoWork);
+            this.startWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.Worker_ProgressChanged);
             // 
             // MainWindow
             // 
@@ -121,6 +152,8 @@ namespace SPPC.Tadbir.WinRunner
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnExit;
             this.ClientSize = new System.Drawing.Size(784, 494);
+            this.Controls.Add(this.lblProgress);
+            this.Controls.Add(this.progress);
             this.Controls.Add(this.txtConsole);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnExit);
@@ -144,6 +177,10 @@ namespace SPPC.Tadbir.WinRunner
         private System.Windows.Forms.Button btnStartContainers;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtConsole;
+        private System.Windows.Forms.ProgressBar progress;
+        private System.Windows.Forms.Label lblProgress;
+        private System.ComponentModel.BackgroundWorker pullWorker;
+        private System.ComponentModel.BackgroundWorker startWorker;
     }
 }
 
