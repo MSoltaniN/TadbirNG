@@ -97,7 +97,10 @@
         <dl>
           <ng-template ngFor let-item [ngForOf]="gridColumns" let-i="index">
             <dt>{{ getColumnTitle(item) }}:</dt>
-            <dd *ngIf="item.type == 'Money'" class="dl-value">
+            <dd
+              *ngIf="item.type == 'Money' || item.type == 'Currency'"
+              class="dl-value"
+            >
               {{
                 getRowValue(item.name, dataItem, item.scriptType)
                   | SppcNumConfig
@@ -105,7 +108,11 @@
               }}
             </dd>
             <dd
-              *ngIf="item.scriptType != 'Date' && item.type != 'Money'"
+              *ngIf="
+                item.scriptType != 'Date' &&
+                item.type != 'Money' &&
+                item.type != 'Currency'
+              "
               class="dl-value"
             >
               {{ getRowValue(item.name, dataItem, item.scriptType) }}
@@ -157,7 +164,7 @@
       <ng-template
         kendoGridCellTemplate
         let-dataItem
-        *ngIf="item.type == 'Money'"
+        *ngIf="item.type == 'Money' || item.type == 'Currency'"
       >
         {{
           getRowValue(item.name, dataItem, item.type) | SppcNumConfig | async
