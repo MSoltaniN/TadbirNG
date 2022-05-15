@@ -25,7 +25,7 @@ import {
   VoucherService,
 } from "@sppc/finance/service";
 import { VoucherApi } from "@sppc/finance/service/api";
-import { DetailComponent, String } from "@sppc/shared/class";
+import { DetailComponent, FilterExpression, String } from "@sppc/shared/class";
 import {
   ReportViewerComponent,
   ViewIdentifierComponent,
@@ -131,6 +131,9 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   voucherTypeList: Array<Item> = [];
   selectedType: string;
   deleteConfirm: boolean;
+
+  @Input() filter: FilterExpression;
+  @Input() quickFilter: FilterExpression;
 
   @Input() voucherItem: Voucher;
   @Input() isOpenFromList: boolean = false;
@@ -490,38 +493,40 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   getVoucher(apiUrl: string, byNo: boolean = false) {
-    this.voucherService.getModels(apiUrl).subscribe(
-      (res) => {
-        this.initVoucherForm(res);
-        this.errorMessage = undefined;
-        this.isLastVoucher = !res.hasNext;
-        this.isFirstVoucher = !res.hasPrevious;
-      },
-      (err) => {
-        if (err.statusCode == 404) {
-          this.showMessage(
-            this.getText("Voucher.VoucherNotFound"),
-            MessageType.Warning
-          );
-          if (byNo)
-            this.router.navigate(["/tadbir/home"], {
-              queryParams: {
-                returnUrl: "finance/vouchers/by-no",
-                mode: "by-no",
-              },
-            });
-        }
+    this.voucherService
+      .getModelsByFilters(apiUrl, this.filter, this.quickFilter)
+      .subscribe(
+        (res) => {
+          this.initVoucherForm(res);
+          this.errorMessage = undefined;
+          this.isLastVoucher = !res.hasNext;
+          this.isFirstVoucher = !res.hasPrevious;
+        },
+        (err) => {
+          if (err.statusCode == 404) {
+            this.showMessage(
+              this.getText("Voucher.VoucherNotFound"),
+              MessageType.Warning
+            );
+            if (byNo)
+              this.router.navigate(["/tadbir/home"], {
+                queryParams: {
+                  returnUrl: "finance/vouchers/by-no",
+                  mode: "by-no",
+                },
+              });
+          }
 
-        if (err.statusCode == 400) {
-          this.cancel.emit();
-          this.showMessage(
-            this.errorHandlingService.handleError(err),
-            MessageType.Warning
-          );
-          this.router.navigate(["/finance/voucher"]);
+          if (err.statusCode == 400) {
+            this.cancel.emit();
+            this.showMessage(
+              this.errorHandlingService.handleError(err),
+              MessageType.Warning
+            );
+            this.router.navigate(["/finance/voucher"]);
+          }
         }
-      }
-    );
+      );
   }
 
   initVoucherForm(item: Voucher) {
