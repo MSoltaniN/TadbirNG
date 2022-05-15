@@ -1,264 +1,578 @@
 <view-identifier [ViewID]="viewId">
-  <report-param ParamName='fromDate' [ParamValue]="fromDate" [ParamInFilter]="true"></report-param>
-  <report-param ParamName='toDate' [ParamValue]="toDate" [ParamInFilter]="true"></report-param>
+  <report-param
+    ParamName="fromDate"
+    [ParamValue]="fromDate"
+    [ParamInFilter]="true"
+  ></report-param>
+  <report-param
+    ParamName="toDate"
+    [ParamValue]="toDate"
+    [ParamInFilter]="true"
+  ></report-param>
 </view-identifier>
 
 <app-bread-cumb [entityTypeName]="'CurrencyBook'"></app-bread-cumb>
-<report-management [ViewIdentity]="viewIdentity" [Grid]="grid" [Sort]="sort"
-                   [Filter]="currentFilter" [QuickFilter]="reportQuickFilter" [RowData]="rowData" [DefaultServiceUrl]="getDataUrl"></report-management>
+<report-management
+  [ViewIdentity]="viewIdentity"
+  [Grid]="grid"
+  [Sort]="sort"
+  [Filter]="currentFilter"
+  [QuickFilter]="reportQuickFilter"
+  [RowData]="rowData"
+  [DefaultServiceUrl]="getDataUrl"
+></report-management>
 <report-setting></report-setting>
 <div class="panel-body">
-
-
-  <kendo-grid id="{{viewId}}"
-              style="width:100%;"
-              #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
-              [data]="rowData"
-              [sortable]="{ allowUnsort: true, mode: 'multiple' }"
-              [sort]="sort"
-              [pageSize]="pageSize"
-              [skip]="skip"
-              [filter]="state.filter"
-              [pageable]="true"
-              [resizable]="true"
-              [filterable]="true"
-              [scrollable]="'scrollable'"
-              (pageChange)="pageChange($event)"
-              (sortChange)="sortChange($event)"
-              (edit)="editHandler($event)"
-              (remove)="removeHandler($event)"
-              [loading]="false"
-              [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-              [selectedKeys]="selectedRows"
-              [kendoGridSelectBy]="selectionKey"
-              (filterChange)="filterChange($event)"
-              (selectedKeysChange)="onSelectedKeysChange($event)"
-              (dataStateChange)="onDataStateChange()"
-              (cellClick)="onCellClick($event)"
-              (dblclick)="rowDoubleClickHandler()"
-              (excelExport)="onExcelExport($event)"
-              sppc-auto-generated-grid-reorder
-              sppc-auto-generated-grid-resize>
-    <kendo-grid-excel [fileName]="excelFileName" [fetchData]="allData"></kendo-grid-excel>
+  <kendo-grid
+    id="{{ viewId }}"
+    style="width: 100%"
+    #GridID
+    [ngClass]="{
+      tRtl: this.currentlang === 'fa',
+      tLtr: this.currentlang === 'en'
+    }"
+    [data]="rowData"
+    [sortable]="{ allowUnsort: true, mode: 'multiple' }"
+    [sort]="sort"
+    [pageSize]="pageSize"
+    [skip]="skip"
+    [filter]="state.filter"
+    [pageable]="true"
+    [resizable]="true"
+    [filterable]="true"
+    [scrollable]="'scrollable'"
+    (pageChange)="pageChange($event)"
+    (sortChange)="sortChange($event)"
+    (edit)="editHandler($event)"
+    (remove)="removeHandler($event)"
+    [loading]="false"
+    [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+    [selectedKeys]="selectedRows"
+    [kendoGridSelectBy]="selectionKey"
+    (filterChange)="filterChange($event)"
+    (selectedKeysChange)="onSelectedKeysChange($event)"
+    (dataStateChange)="onDataStateChange()"
+    (cellClick)="onCellClick($event)"
+    (dblclick)="rowDoubleClickHandler()"
+    (excelExport)="onExcelExport($event)"
+    sppc-auto-generated-grid-reorder
+    sppc-auto-generated-grid-resize
+  >
+    <kendo-grid-excel
+      [fileName]="excelFileName"
+      [fetchData]="allData"
+    ></kendo-grid-excel>
     <ng-template kendoGridNoRecordsTemplate>
-      {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
+      {{
+        showloadingMessage
+          ? ("App.Loading" | translate)
+          : ("App.RecordNotFound" | translate)
+      }}
     </ng-template>
 
-    <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
-                         pagerOf="{{ 'Paging.Of' | translate }}"
-                         pagerItems="{{ 'Paging.Record' | translate }}"
-                         pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}">
+    <kendo-grid-messages
+      pagerPage="{{ 'Paging.Record' | translate }}"
+      pagerOf="{{ 'Paging.Of' | translate }}"
+      pagerItems="{{ 'Paging.Record' | translate }}"
+      pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}"
+    >
     </kendo-grid-messages>
 
     <ng-template kendoPagerTemplate>
       <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
       <kendo-pager-info></kendo-pager-info>
-      <kendo-pager-numeric-buttons [buttonCount]="5"></kendo-pager-numeric-buttons>
+      <kendo-pager-numeric-buttons
+        [buttonCount]="5"
+      ></kendo-pager-numeric-buttons>
       <kendo-pager-next-buttons></kendo-pager-next-buttons>
-      <kendo-pager-page-sizes [pageSizes]="pageSizeArray"></kendo-pager-page-sizes>
+      <kendo-pager-page-sizes
+        [pageSizes]="pageSizeArray"
+      ></kendo-pager-page-sizes>
     </ng-template>
 
     <ng-template kendoGridToolbarTemplate>
-
       <div class="sppc-float">
-        <sppc-dateRangeSelector [viewName]="'CurrencyBook'" (valueChange)="dateValueChange($event)"></sppc-dateRangeSelector>
+        <sppc-dateRangeSelector
+          [viewName]="'CurrencyBook'"
+          (valueChange)="dateValueChange($event)"
+        ></sppc-dateRangeSelector>
       </div>
 
-      <auto-generated-grid-setting [entityTypeName]="entityTypeName"
-                                   (columnsList)="getColumns($event)">
+      <auto-generated-grid-setting
+        [entityTypeName]="entityTypeName"
+        (columnsList)="getColumns($event)"
+      >
       </auto-generated-grid-setting>
-      <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-      <left-action-toolbar class="sppc-float-diff" (onFilterOk)="onAdvanceFilterOk()" [reportSetting]="reportSetting" [reportManager]="reportManager" [parentComponent]="this" [viewId]="viewId"></left-action-toolbar>
-      <button (click)="onVoucherHandler()" class="k-button k-button-icon sppc-float-diff" [disabled]="isEnableVoucherInfoBtn()" title="{{ 'AccountBook.VoucherInfo' | translate }}" style="margin: 0 5px;"><span class="k-icon k-i-filter-add-expression"></span></button>
+      <grid-filter
+        *ngIf="this.grid.filterable"
+        [parentComponent]="this"
+        [showClearFilter]="this.grid.filter.filters.length"
+      ></grid-filter>
+      <left-action-toolbar
+        class="sppc-float-diff"
+        (onFilterOk)="onAdvanceFilterOk()"
+        [reportSetting]="reportSetting"
+        [reportManager]="reportManager"
+        [parentComponent]="this"
+        [viewId]="viewId"
+      ></left-action-toolbar>
+      <button
+        (click)="onVoucherHandler()"
+        class="k-button k-button-icon sppc-float-diff"
+        [disabled]="isEnableVoucherInfoBtn()"
+        title="{{ 'AccountBook.VoucherInfo' | translate }}"
+        style="margin: 0 5px"
+      >
+        <span class="k-icon k-i-filter-add-expression"></span>
+      </button>
     </ng-template>
 
-    <kendo-grid-checkbox-column showSelectAll="true"
-                                width="22"
-                                [resizable]="false"
-                                [reorderable]="false">
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0'">
-        {{ 'AccountBook.Sum' | translate }}
+    <kendo-grid-checkbox-column
+      showSelectAll="true"
+      width="22"
+      [resizable]="false"
+      [reorderable]="false"
+    >
+      <ng-template
+        kendoGridFooterTemplate
+        let-column
+        let-columnIndex="columnIndex"
+        *ngIf="totalRecords > 0 && selectedCurrencyValue != '0'"
+      >
+        {{ "AccountBook.Sum" | translate }}
       </ng-template>
     </kendo-grid-checkbox-column>
-
 
     <kendo-grid-column media="(max-width: 450px)" title="">
       <ng-template kendoGridCellTemplate let-dataItem>
         <dl>
           <ng-template ngFor let-item [ngForOf]="gridColumns" let-i="index">
             <dt>{{ getColumnTitle(item) }}:</dt>
-            <dd *ngIf="item.type == 'Money'" class="dl-value money-item">{{ getRowValue(item.name,dataItem,item.scriptType) | SppcNumConfig | async }}</dd>
-            <dd *ngIf="item.scriptType != 'Date' && item.type != 'Money'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) }}</dd>
-            <dd *ngIf="item.scriptType == 'Date'" class="dl-value">{{ getRowValue(item.name,dataItem,item.scriptType) |  SppcDate: item.type : item.scriptType }}</dd>
+            <dd
+              *ngIf="item.type == 'Money' || item.type == 'Currency'"
+              class="dl-value money-item"
+            >
+              {{
+                getRowValue(item.name, dataItem, item.scriptType)
+                  | SppcNumConfig
+                  | async
+              }}
+            </dd>
+            <dd
+              *ngIf="
+                item.scriptType != 'Date' &&
+                item.type != 'Money' &&
+                item.type != 'Currency'
+              "
+              class="dl-value"
+            >
+              {{ getRowValue(item.name, dataItem, item.scriptType) }}
+            </dd>
+            <dd *ngIf="item.scriptType == 'Date'" class="dl-value">
+              {{
+                getRowValue(item.name, dataItem, item.scriptType)
+                  | SppcDate: item.type:item.scriptType
+              }}
+            </dd>
           </ng-template>
         </dl>
-
       </ng-template>
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 &&  selectedCurrencyValue!= '0'">
+      <ng-template
+        kendoGridFooterTemplate
+        let-column
+        let-columnIndex="columnIndex"
+        *ngIf="totalRecords > 0 && selectedCurrencyValue != '0'"
+      >
         <table>
           <tr>
-            <td>{{ 'AccountBook.DebitSum' | translate }}</td>
+            <td>{{ "AccountBook.DebitSum" | translate }}</td>
             <td>{{ debitSum | SppcNumConfig | async }}</td>
           </tr>
           <tr>
-            <td>{{ 'AccountBook.CreditSum' | translate }}</td>
+            <td>{{ "AccountBook.CreditSum" | translate }}</td>
             <td>{{ creditSum | SppcNumConfig | async }}</td>
           </tr>
           <tr>
-            <td>{{ 'AccountBook.Remained' | translate }}</td>
+            <td>{{ "AccountBook.Remained" | translate }}</td>
             <td>{{ balance | SppcNumConfig | async }}</td>
           </tr>
 
           <tr>
-            <td>{{ 'CurrencyBook.BaseCurrencyDebitSum'  | translate }}</td>
+            <td>{{ "CurrencyBook.BaseCurrencyDebitSum" | translate }}</td>
             <td>{{ baseCurrencyDebitSum | SppcNumConfig | async }}</td>
           </tr>
           <tr>
-            <td>{{ 'CurrencyBook.BaseCurrencyCreditSum'  | translate }}</td>
+            <td>{{ "CurrencyBook.BaseCurrencyCreditSum" | translate }}</td>
             <td>{{ baseCurrencyCreditSum | SppcNumConfig | async }}</td>
           </tr>
           <tr>
-            <td>{{ 'CurrencyBook.BaseCurrencyBalanceSum'  | translate }}</td>
+            <td>{{ "CurrencyBook.BaseCurrencyBalanceSum" | translate }}</td>
             <td>{{ baseCurrencyBalance | SppcNumConfig | async }}</td>
           </tr>
-
         </table>
       </ng-template>
     </kendo-grid-column>
 
-    <kendo-grid-column media="(min-width: 450px)" *ngFor="let item of gridColumnsRow" sppc-auto-grid-column="{{ item.settings }}">
-
+    <kendo-grid-column
+      media="(min-width: 450px)"
+      *ngFor="let item of gridColumnsRow"
+      sppc-auto-grid-column="{{ item.settings }}"
+    >
       <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-        <sppc-auto-grid-filter [metaDataItem]="item" [metaData]="item.scriptType" [column]="column" [filter]="filter"></sppc-auto-grid-filter>
+        <sppc-auto-grid-filter
+          [metaDataItem]="item"
+          [metaData]="item.scriptType"
+          [column]="column"
+          [filter]="filter"
+        ></sppc-auto-grid-filter>
       </ng-template>
 
-      <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'Date'">
-        {{ getRowValue(item.name,dataItem,item.scriptType) |  SppcDate: item.type : item.scriptType  }}
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem
+        *ngIf="item.scriptType == 'Date'"
+      >
+        {{
+          getRowValue(item.name, dataItem, item.scriptType)
+            | SppcDate: item.type:item.scriptType
+        }}
       </ng-template>
 
-      <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.scriptType == 'boolean'">
-        {{ getRowValue(item.name,dataItem,item.scriptType)  }}
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem
+        *ngIf="item.scriptType == 'boolean'"
+      >
+        {{ getRowValue(item.name, dataItem, item.scriptType) }}
       </ng-template>
 
-      <ng-template kendoGridCellTemplate let-dataItem *ngIf="item.type == 'Money'">
+      <ng-template
+        kendoGridCellTemplate
+        let-dataItem
+        *ngIf="item.type == 'Money' || item.type == 'Currency'"
+      >
         <div class="money-item">
-          {{ getRowValue(item.name,dataItem,item.type) | SppcNumConfig | async }}
+          {{
+            getRowValue(item.name, dataItem, item.type) | SppcNumConfig | async
+          }}
         </div>
       </ng-template>
 
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0' && item.name == 'Credit'">
+      <ng-template
+        kendoGridFooterTemplate
+        let-column
+        let-columnIndex="columnIndex"
+        *ngIf="
+          totalRecords > 0 &&
+          selectedCurrencyValue != '0' &&
+          item.name == 'Credit'
+        "
+      >
         {{ creditSum | SppcNumConfig | async }}
       </ng-template>
 
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0' && item.name == 'Debit'">
+      <ng-template
+        kendoGridFooterTemplate
+        let-column
+        let-columnIndex="columnIndex"
+        *ngIf="
+          totalRecords > 0 &&
+          selectedCurrencyValue != '0' &&
+          item.name == 'Debit'
+        "
+      >
         {{ debitSum | SppcNumConfig | async }}
       </ng-template>
 
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0' && item.name == 'Balance'">
+      <ng-template
+        kendoGridFooterTemplate
+        let-column
+        let-columnIndex="columnIndex"
+        *ngIf="
+          totalRecords > 0 &&
+          selectedCurrencyValue != '0' &&
+          item.name == 'Balance'
+        "
+      >
         {{ balance | SppcNumConfig | async }}
       </ng-template>
 
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0' && item.name == 'BaseCurrencyCredit'">
+      <ng-template
+        kendoGridFooterTemplate
+        let-column
+        let-columnIndex="columnIndex"
+        *ngIf="
+          totalRecords > 0 &&
+          selectedCurrencyValue != '0' &&
+          item.name == 'BaseCurrencyCredit'
+        "
+      >
         {{ baseCurrencyCreditSum | SppcNumConfig | async }}
       </ng-template>
 
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0' && item.name == 'BaseCurrencyDebit'">
+      <ng-template
+        kendoGridFooterTemplate
+        let-column
+        let-columnIndex="columnIndex"
+        *ngIf="
+          totalRecords > 0 &&
+          selectedCurrencyValue != '0' &&
+          item.name == 'BaseCurrencyDebit'
+        "
+      >
         {{ baseCurrencyDebitSum | SppcNumConfig | async }}
       </ng-template>
 
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0' && item.name == 'BaseCurrencyBalance'">
+      <ng-template
+        kendoGridFooterTemplate
+        let-column
+        let-columnIndex="columnIndex"
+        *ngIf="
+          totalRecords > 0 &&
+          selectedCurrencyValue != '0' &&
+          item.name == 'BaseCurrencyBalance'
+        "
+      >
         {{ baseCurrencyBalance | SppcNumConfig | async }}
       </ng-template>
 
-      <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0 && selectedCurrencyValue != '0' && item.name == 'BranchName'">
+      <ng-template
+        kendoGridFooterTemplate
+        let-column
+        let-columnIndex="columnIndex"
+        *ngIf="
+          totalRecords > 0 &&
+          selectedCurrencyValue != '0' &&
+          item.name == 'BranchName'
+        "
+      >
         {{ baseCurrencyBalance | SppcNumConfig | async }}
       </ng-template>
 
-
-      <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" *ngIf="item.name == 'Mark'">
-        <input class="k-textbox" [formControl]="formGroup.get(column.field)">
+      <ng-template
+        kendoGridEditTemplate
+        let-column="column"
+        let-formGroup="formGroup"
+        *ngIf="item.name == 'Mark'"
+      >
+        <input class="k-textbox" [formControl]="formGroup.get(column.field)" />
       </ng-template>
-
     </kendo-grid-column>
 
-    <ng-template kendoGridDetailTemplate let-dataItem [kendoGridDetailTemplateShowIf]="isShowDetailGrid">
-      <currency-book-detail [currencyId]="dataItem.currencyId"
-                            [currencyName]="dataItem.currencyName"
-                            [displayType]="displayTypeSelected"
-                            [selectedBranchScope]="branchScopeSelected"
-                            [selectedBranchSeparation]="selectedBranchSeparation"
-                            [voucherStatus]="voucherStatusSelected"
-                            [articleType]="articleTypeSelected"
-                            [selectedAccount]="selectedAccount"
-                            [selectedDetailAccount]="selectedDetailAccount"
-                            [selectedCostCenter]="selectedCostCenter"
-                            [selectedProject]="selectedProject"
-                            [fromDate]="fromDate"
-                            [toDate]="toDate">
+    <ng-template
+      kendoGridDetailTemplate
+      let-dataItem
+      [kendoGridDetailTemplateShowIf]="isShowDetailGrid"
+    >
+      <currency-book-detail
+        [currencyId]="dataItem.currencyId"
+        [currencyName]="dataItem.currencyName"
+        [displayType]="displayTypeSelected"
+        [selectedBranchScope]="branchScopeSelected"
+        [selectedBranchSeparation]="selectedBranchSeparation"
+        [voucherStatus]="voucherStatusSelected"
+        [articleType]="articleTypeSelected"
+        [selectedAccount]="selectedAccount"
+        [selectedDetailAccount]="selectedDetailAccount"
+        [selectedCostCenter]="selectedCostCenter"
+        [selectedProject]="selectedProject"
+        [fromDate]="fromDate"
+        [toDate]="toDate"
+      >
       </currency-book-detail>
     </ng-template>
-
-
   </kendo-grid>
-
-
 
   <div class="section-option">
     <div class="row">
-
       <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
-        <input type="checkbox" name="account" id="account" [(ngModel)]="chbAccount" (ngModelChange)="onChangeCheckboxFullAccount($event,'account')" class="k-checkbox" />
-        <span for="account">{{ 'Entity.Account' | translate }}</span>
+        <input
+          type="checkbox"
+          name="account"
+          id="account"
+          [(ngModel)]="chbAccount"
+          (ngModelChange)="onChangeCheckboxFullAccount($event, 'account')"
+          class="k-checkbox"
+        />
+        <span for="account">{{ "Entity.Account" | translate }}</span>
 
-        <input type="text" class="k-textbox acc-code" [ngModel]="selectedAccount?.fullCode" title="{{selectedAccount?.fullCode}}" [ngClass]="{'acc-code-rtl':this.CurrentLanguage === 'fa','acc-code-ltr':this.CurrentLanguage != 'fa'}" readonly />
-        <input type="text" class="k-textbox acc-name sppc-float" [ngModel]="selectedAccount?.name" title="{{selectedAccount?.name}}" readonly />
+        <input
+          type="text"
+          class="k-textbox acc-code"
+          [ngModel]="selectedAccount?.fullCode"
+          title="{{ selectedAccount?.fullCode }}"
+          [ngClass]="{
+            'acc-code-rtl': this.CurrentLanguage === 'fa',
+            'acc-code-ltr': this.CurrentLanguage != 'fa'
+          }"
+          readonly
+        />
+        <input
+          type="text"
+          class="k-textbox acc-name sppc-float"
+          [ngModel]="selectedAccount?.name"
+          title="{{ selectedAccount?.name }}"
+          readonly
+        />
 
-        <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbAccount" SppcPermissionCheck="View" EntityName="Account" (sppcClick)="openSelectForm('account')" type="button"></button>
+        <button
+          kendoButton
+          class="sppc-float"
+          [icon]="'search'"
+          [disabled]="!chbAccount"
+          SppcPermissionCheck="View"
+          EntityName="Account"
+          (sppcClick)="openSelectForm('account')"
+          type="button"
+        ></button>
       </div>
 
       <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
-        <input type="checkbox" name="detailAccount" id="detailAccount" [(ngModel)]="chbDetailAccount" (ngModelChange)="onChangeCheckboxFullAccount($event,'detailAccount')" class="k-checkbox" />
-        <span for="detailAccount">{{ 'Entity.DetailAccount' | translate }}</span>
+        <input
+          type="checkbox"
+          name="detailAccount"
+          id="detailAccount"
+          [(ngModel)]="chbDetailAccount"
+          (ngModelChange)="onChangeCheckboxFullAccount($event, 'detailAccount')"
+          class="k-checkbox"
+        />
+        <span for="detailAccount">{{
+          "Entity.DetailAccount" | translate
+        }}</span>
 
-        <input type="text" class="k-textbox acc-code" [ngModel]="selectedDetailAccount?.fullCode" title="{{selectedDetailAccount?.fullCode}}" [ngClass]="{'acc-code-rtl':this.CurrentLanguage === 'fa','acc-code-ltr':this.CurrentLanguage != 'fa'}" readonly />
-        <input type="text" class="k-textbox acc-name sppc-float" [ngModel]="selectedDetailAccount?.name" title="{{selectedDetailAccount?.name}}" readonly />
+        <input
+          type="text"
+          class="k-textbox acc-code"
+          [ngModel]="selectedDetailAccount?.fullCode"
+          title="{{ selectedDetailAccount?.fullCode }}"
+          [ngClass]="{
+            'acc-code-rtl': this.CurrentLanguage === 'fa',
+            'acc-code-ltr': this.CurrentLanguage != 'fa'
+          }"
+          readonly
+        />
+        <input
+          type="text"
+          class="k-textbox acc-name sppc-float"
+          [ngModel]="selectedDetailAccount?.name"
+          title="{{ selectedDetailAccount?.name }}"
+          readonly
+        />
 
-        <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbDetailAccount" SppcPermissionCheck="View" EntityName="DetailAccount" (sppcClick)="openSelectForm('detailAccount')" type="button"></button>
+        <button
+          kendoButton
+          class="sppc-float"
+          [icon]="'search'"
+          [disabled]="!chbDetailAccount"
+          SppcPermissionCheck="View"
+          EntityName="DetailAccount"
+          (sppcClick)="openSelectForm('detailAccount')"
+          type="button"
+        ></button>
       </div>
 
       <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
-        <input type="checkbox" name="costCenter" id="costCenter" [(ngModel)]="chbCostCenter" (ngModelChange)="onChangeCheckboxFullAccount($event,'costCenter')" class="k-checkbox" />
-        <span for="costCenter">{{ 'Entity.CostCenter' | translate }}</span>
+        <input
+          type="checkbox"
+          name="costCenter"
+          id="costCenter"
+          [(ngModel)]="chbCostCenter"
+          (ngModelChange)="onChangeCheckboxFullAccount($event, 'costCenter')"
+          class="k-checkbox"
+        />
+        <span for="costCenter">{{ "Entity.CostCenter" | translate }}</span>
 
-        <input type="text" class="k-textbox acc-code" [ngModel]="selectedCostCenter?.fullCode" title="{{selectedCostCenter?.fullCode}}" [ngClass]="{'acc-code-rtl':this.CurrentLanguage === 'fa','acc-code-ltr':this.CurrentLanguage != 'fa'}" readonly />
-        <input type="text" class="k-textbox acc-name sppc-float" [ngModel]="selectedCostCenter?.name" title="{{selectedCostCenter?.name}}" readonly />
+        <input
+          type="text"
+          class="k-textbox acc-code"
+          [ngModel]="selectedCostCenter?.fullCode"
+          title="{{ selectedCostCenter?.fullCode }}"
+          [ngClass]="{
+            'acc-code-rtl': this.CurrentLanguage === 'fa',
+            'acc-code-ltr': this.CurrentLanguage != 'fa'
+          }"
+          readonly
+        />
+        <input
+          type="text"
+          class="k-textbox acc-name sppc-float"
+          [ngModel]="selectedCostCenter?.name"
+          title="{{ selectedCostCenter?.name }}"
+          readonly
+        />
 
-        <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbCostCenter" SppcPermissionCheck="View" EntityName="CostCenter" (sppcClick)="openSelectForm('costCenter')" type="button"></button>
+        <button
+          kendoButton
+          class="sppc-float"
+          [icon]="'search'"
+          [disabled]="!chbCostCenter"
+          SppcPermissionCheck="View"
+          EntityName="CostCenter"
+          (sppcClick)="openSelectForm('costCenter')"
+          type="button"
+        ></button>
       </div>
 
       <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
-        <input type="checkbox" name="project" id="project" [(ngModel)]="chbProject" (ngModelChange)="onChangeCheckboxFullAccount($event,'project')" class="k-checkbox" />
-        <span for="project">{{ 'Entity.Project' | translate }}</span>
+        <input
+          type="checkbox"
+          name="project"
+          id="project"
+          [(ngModel)]="chbProject"
+          (ngModelChange)="onChangeCheckboxFullAccount($event, 'project')"
+          class="k-checkbox"
+        />
+        <span for="project">{{ "Entity.Project" | translate }}</span>
 
-        <input type="text" class="k-textbox acc-code" [ngModel]="selectedProject?.fullCode" title="{{selectedProject?.fullCode}}" [ngClass]="{'acc-code-rtl':this.CurrentLanguage === 'fa','acc-code-ltr':this.CurrentLanguage != 'fa'}" readonly />
-        <input type="text" class="k-textbox acc-name sppc-float" [ngModel]="selectedProject?.name" title="{{selectedProject?.name}}" readonly />
+        <input
+          type="text"
+          class="k-textbox acc-code"
+          [ngModel]="selectedProject?.fullCode"
+          title="{{ selectedProject?.fullCode }}"
+          [ngClass]="{
+            'acc-code-rtl': this.CurrentLanguage === 'fa',
+            'acc-code-ltr': this.CurrentLanguage != 'fa'
+          }"
+          readonly
+        />
+        <input
+          type="text"
+          class="k-textbox acc-name sppc-float"
+          [ngModel]="selectedProject?.name"
+          title="{{ selectedProject?.name }}"
+          readonly
+        />
 
-        <button kendoButton class="sppc-float" [icon]="'search'" [disabled]="!chbProject" SppcPermissionCheck="View" EntityName="Project" (sppcClick)="openSelectForm('project')" type="button"></button>
+        <button
+          kendoButton
+          class="sppc-float"
+          [icon]="'search'"
+          [disabled]="!chbProject"
+          SppcPermissionCheck="View"
+          EntityName="Project"
+          (sppcClick)="openSelectForm('project')"
+          type="button"
+        ></button>
       </div>
-
     </div>
     <div class="row">
+      <div
+        class="col-xs-12 col-sm-3 form-group"
+        [ngClass]="{ 'pull-right': this.CurrentLanguage === 'fa' }"
+      >
+        <label class="control-label">{{
+          "AccountBook.DisplayType" | translate
+        }}</label>
 
-      <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
-        <label class="control-label">{{ 'AccountBook.DisplayType' | translate }}</label>
-
-        <kendo-dropdownlist [data]="displayType"
-                            [textField]="'value'"
-                            [valueField]="'key'"
-                            [valuePrimitive]="true"
-                            [value]="displayTypeSelected"
-                            [(ngModel)]="displayTypeSelected"
-                            (ngModelChange)="changeType()">
+        <kendo-dropdownlist
+          [data]="displayType"
+          [textField]="'value'"
+          [valueField]="'key'"
+          [valuePrimitive]="true"
+          [value]="displayTypeSelected"
+          [(ngModel)]="displayTypeSelected"
+          (ngModelChange)="changeType()"
+        >
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
@@ -267,16 +581,23 @@
           </ng-template>
         </kendo-dropdownlist>
       </div>
-      <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
-        <label class="control-label">{{ 'AccountBook.SelectBranch' | translate }}</label>
+      <div
+        class="col-xs-12 col-sm-3 form-group"
+        [ngClass]="{ 'pull-right': this.CurrentLanguage === 'fa' }"
+      >
+        <label class="control-label">{{
+          "AccountBook.SelectBranch" | translate
+        }}</label>
 
-        <kendo-dropdownlist [data]="branchScope"
-                            [textField]="'value'"
-                            [valueField]="'key'"
-                            [valuePrimitive]="true"
-                            [value]="branchScopeSelected"
-                            [(ngModel)]="branchScopeSelected"
-                            (ngModelChange)="changeParam()">
+        <kendo-dropdownlist
+          [data]="branchScope"
+          [textField]="'value'"
+          [valueField]="'key'"
+          [valuePrimitive]="true"
+          [value]="branchScopeSelected"
+          [(ngModel)]="branchScopeSelected"
+          (ngModelChange)="changeParam()"
+        >
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
@@ -285,36 +606,58 @@
           </ng-template>
         </kendo-dropdownlist>
       </div>
-      <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
-        <label class="control-label">{{ 'AccountBook.BranchSeparation' | translate }}</label>
+      <div
+        class="col-xs-12 col-sm-3 form-group"
+        [ngClass]="{ 'pull-right': this.CurrentLanguage === 'fa' }"
+      >
+        <label class="control-label">{{
+          "AccountBook.BranchSeparation" | translate
+        }}</label>
 
-        <kendo-switch [onLabel]="('AccountBook.OnLabel' | translate)"
-                      [offLabel]="('AccountBook.OffLabel' | translate)"
-                      [(ngModel)]="selectedBranchSeparation"
-                      (ngModelChange)="changeBranchSeparation()">
+        <kendo-switch
+          [onLabel]="'AccountBook.OnLabel' | translate"
+          [offLabel]="'AccountBook.OffLabel' | translate"
+          [(ngModel)]="selectedBranchSeparation"
+          (ngModelChange)="changeBranchSeparation()"
+        >
         </kendo-switch>
       </div>
 
       <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
-        <div style="margin-top:33px">
-          <input type="checkbox" [(ngModel)]="currencyFree" [attr.disabled]="selectedCurrencyValue != '0' ? 'disabled' : null" (ngModelChange)="onChangeCurrencyFree()" name="currencyFree" id="currencyFree" class="k-checkbox" />
-          <span for="currencyFree">{{ 'CurrencyBook.CurrencyFreeRows' | translate }}</span>
+        <div style="margin-top: 33px">
+          <input
+            type="checkbox"
+            [(ngModel)]="currencyFree"
+            [attr.disabled]="selectedCurrencyValue != '0' ? 'disabled' : null"
+            (ngModelChange)="onChangeCurrencyFree()"
+            name="currencyFree"
+            id="currencyFree"
+            class="k-checkbox"
+          />
+          <span for="currencyFree">{{
+            "CurrencyBook.CurrencyFreeRows" | translate
+          }}</span>
         </div>
       </div>
-
     </div>
     <div class="row">
+      <div
+        class="col-xs-12 col-sm-3 form-group"
+        [ngClass]="{ 'pull-right': this.CurrentLanguage === 'fa' }"
+      >
+        <label class="control-label">{{
+          "AccountBook.VoucherStatus" | translate
+        }}</label>
 
-      <div class="col-xs-12 col-sm-3 form-group" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
-        <label class="control-label">{{ 'AccountBook.VoucherStatus' | translate }}</label>
-
-        <kendo-dropdownlist [data]="voucherStatus"
-                            [textField]="'value'"
-                            [valueField]="'key'"
-                            [valuePrimitive]="true"
-                            [value]="voucherStatusSelected"
-                            [(ngModel)]="voucherStatusSelected"
-                            (ngModelChange)="onChangeVoucherStatus()">
+        <kendo-dropdownlist
+          [data]="voucherStatus"
+          [textField]="'value'"
+          [valueField]="'key'"
+          [valuePrimitive]="true"
+          [value]="voucherStatusSelected"
+          [(ngModel)]="voucherStatusSelected"
+          (ngModelChange)="onChangeVoucherStatus()"
+        >
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
@@ -325,31 +668,38 @@
       </div>
 
       <div class="col-xs-12 col-sm-3 form-group sppc-float">
-        <label class="control-label">{{ 'CurrencyBook.Currency' | translate }}</label>
+        <label class="control-label">{{
+          "CurrencyBook.Currency" | translate
+        }}</label>
 
-        <kendo-dropdownlist [data]="filteredCurrencies"
-                            [filterable]="true"
-                            [textField]="'value'"
-                            [valueField]="'key'"
-                            [valuePrimitive]="true"
-                            [value]="selectedCurrencyValue"
-                            [(ngModel)]="selectedCurrencyValue"
-                            (ngModelChange)="onChangeCurrency()"
-                            (filterChange)="handleFilter($event)">
+        <kendo-dropdownlist
+          [data]="filteredCurrencies"
+          [filterable]="true"
+          [textField]="'value'"
+          [valueField]="'key'"
+          [valuePrimitive]="true"
+          [value]="selectedCurrencyValue"
+          [(ngModel)]="selectedCurrencyValue"
+          (ngModelChange)="onChangeCurrency()"
+          (filterChange)="handleFilter($event)"
+        >
         </kendo-dropdownlist>
-
       </div>
 
       <div class="col-xs-12 col-sm-3 form-group sppc-float">
-        <label class="control-label">{{ 'AccountBook.ArticleType' | translate }}</label>
+        <label class="control-label">{{
+          "AccountBook.ArticleType" | translate
+        }}</label>
 
-        <kendo-dropdownlist [data]="articleType"
-                            [textField]="'value'"
-                            [valueField]="'key'"
-                            [valuePrimitive]="true"
-                            [value]="articleTypeSelected"
-                            [(ngModel)]="articleTypeSelected"
-                            (ngModelChange)="changeParam()">
+        <kendo-dropdownlist
+          [data]="articleType"
+          [textField]="'value'"
+          [valueField]="'key'"
+          [valuePrimitive]="true"
+          [value]="articleTypeSelected"
+          [(ngModel)]="articleTypeSelected"
+          (ngModelChange)="changeParam()"
+        >
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
@@ -358,20 +708,25 @@
           </ng-template>
         </kendo-dropdownlist>
       </div>
-
-
 
       <div class="col-xs-12 col-sm-3 form-group">
-        <button class="k-button k-primary" SppcPermissionCheck="Filter" EntityName="CurrencyBook" (sppcClick)="getReportData()"
-                [ngClass]="{'pull-left':this.CurrentLanguage === 'fa','pull-right':this.CurrentLanguage === 'en','btn-compute' : isDefaultBtn,'btn-compute-selectable' : !isDefaultBtn}">
-          {{ 'Buttons.Compute' | translate }}
+        <button
+          class="k-button k-primary"
+          SppcPermissionCheck="Filter"
+          EntityName="CurrencyBook"
+          (sppcClick)="getReportData()"
+          [ngClass]="{
+            'pull-left': this.CurrentLanguage === 'fa',
+            'pull-right': this.CurrentLanguage === 'en',
+            'btn-compute': isDefaultBtn,
+            'btn-compute-selectable': !isDefaultBtn
+          }"
+        >
+          {{ "Buttons.Compute" | translate }}
         </button>
       </div>
-
-
     </div>
 
     <div class="clearfix"></div>
   </div>
-
 </div>

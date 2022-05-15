@@ -244,6 +244,32 @@ export class BaseService<T = void | any> extends EnviromentComponent {
   }
 
   /**
+   * لیستی از اطلاعات را از سرویس میگیرد
+   * @param apiUrl آدرس کامل api
+   */
+  public getModelsByFilters(
+    apiUrl: string,
+    filter: FilterExpression,
+    quickFilter: FilterExpression
+  ) {
+    debugger;
+    var searchHeaders = this.httpHeaders;
+
+    var postItem = {
+      filter: filter,
+      quickFilter: quickFilter,
+    };
+
+    var postBody = JSON.stringify(postItem);
+    const base64Body = btoa(encodeURIComponent(postBody));
+    searchHeaders = searchHeaders.append("X-Tadbir-GridOptions", base64Body);
+
+    return this.http
+      .get(apiUrl, { headers: searchHeaders })
+      .pipe(map((response) => <any>(<Response>response)));
+  }
+
+  /**
    * گرفتن رکورد با استفاده از id رکورد
    * @param apiUrl آدرس کامل api
    * @param modelId شماره id رکورد

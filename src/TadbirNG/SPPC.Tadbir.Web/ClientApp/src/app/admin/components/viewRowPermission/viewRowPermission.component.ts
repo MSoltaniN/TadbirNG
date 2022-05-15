@@ -126,42 +126,6 @@ export class ViewRowPermissionComponent
     );
 
     this.getRoles();
-
-    this.ddlPermissionTypeData = [
-      {
-        value: "ViewRowPermission.DdlPermissionItems.Default",
-        key: PermissionType.Default,
-      },
-      {
-        value: "ViewRowPermission.DdlPermissionItems.AllRecordsCreatedByUser",
-        key: PermissionType.AllRecordsCreatedByUser,
-      },
-      {
-        value: "ViewRowPermission.DdlPermissionItems.SpecificRecords",
-        key: PermissionType.SpecificRecords,
-      },
-      {
-        value: "ViewRowPermission.DdlPermissionItems.AllExceptSpecificRecords",
-        key: PermissionType.AllExceptSpecificRecords,
-      },
-      {
-        value: "ViewRowPermission.DdlPermissionItems.SpecificReference",
-        key: PermissionType.SpecificReference,
-      },
-      {
-        value:
-          "ViewRowPermission.DdlPermissionItems.AllExceptSpecificReference",
-        key: PermissionType.AllExceptSpecificReference,
-      },
-      {
-        value: "ViewRowPermission.DdlPermissionItems.MaxMoneyValue",
-        key: PermissionType.MaxMoneyValue,
-      },
-      {
-        value: "ViewRowPermission.DdlPermissionItems.MaxQuantityValue",
-        key: PermissionType.MaxQuantityValue,
-      },
-    ];
   }
 
   onPermissionChange(item: any) {
@@ -214,8 +178,14 @@ export class ViewRowPermissionComponent
     this.viewRowPermissionService
       .getAll(String.Format(LookupApi.ValidRowPermissions, viewId))
       .subscribe((res) => {
-        var data = res.body;
-        this.ddlPermissionTypeData = data;
+        var data = <Array<any>>res.body;
+        this.ddlPermissionTypeData = data.map(function (item) {
+          let itemInfo = new ItemInfo();
+          itemInfo.key = parseInt(item.value.toString());
+          itemInfo.value = item.key.toString();
+
+          return itemInfo;
+        });
       });
   }
 
@@ -285,7 +255,7 @@ export class ViewRowPermissionComponent
       (f) => f.viewId == this.view_Id
     );
 
-    //this.getPermissions(this.view_Id);
+    this.getPermissions(this.view_Id);
 
     if (rowPermission) {
       switch (rowPermission.accessMode) {
