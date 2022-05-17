@@ -38,6 +38,7 @@ namespace SPPC.Tools.LicenseManager
             this.btnNewCustomer = new System.Windows.Forms.Button();
             this.grdCustomers = new System.Windows.Forms.DataGridView();
             this.tabLicenses = new System.Windows.Forms.TabPage();
+            this.btnNewRelease = new System.Windows.Forms.Button();
             this.btnSaveDockerInstance = new System.Windows.Forms.Button();
             this.btnSaveInstance = new System.Windows.Forms.Button();
             this.btnDeleteLicense = new System.Windows.Forms.Button();
@@ -46,7 +47,6 @@ namespace SPPC.Tools.LicenseManager
             this.cmbCustomer = new System.Windows.Forms.ComboBox();
             this.lblCustomer = new System.Windows.Forms.Label();
             this.grdLicenses = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
             this.tabMain.SuspendLayout();
             this.tabCustomers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdCustomers)).BeginInit();
@@ -163,7 +163,7 @@ namespace SPPC.Tools.LicenseManager
             // 
             // tabLicenses
             // 
-            this.tabLicenses.Controls.Add(this.button1);
+            this.tabLicenses.Controls.Add(this.btnNewRelease);
             this.tabLicenses.Controls.Add(this.btnSaveDockerInstance);
             this.tabLicenses.Controls.Add(this.btnSaveInstance);
             this.tabLicenses.Controls.Add(this.btnDeleteLicense);
@@ -179,6 +179,17 @@ namespace SPPC.Tools.LicenseManager
             this.tabLicenses.TabIndex = 1;
             this.tabLicenses.Text = "مجوزها";
             this.tabLicenses.UseVisualStyleBackColor = true;
+            // 
+            // btnNewRelease
+            // 
+            this.btnNewRelease.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnNewRelease.Location = new System.Drawing.Point(6, 454);
+            this.btnNewRelease.Name = "btnNewRelease";
+            this.btnNewRelease.Size = new System.Drawing.Size(126, 34);
+            this.btnNewRelease.TabIndex = 8;
+            this.btnNewRelease.Text = "ایجاد نسخه";
+            this.btnNewRelease.UseVisualStyleBackColor = true;
+            this.btnNewRelease.Click += new System.EventHandler(this.NewRelease_Click);
             // 
             // btnSaveDockerInstance
             // 
@@ -277,16 +288,6 @@ namespace SPPC.Tools.LicenseManager
             this.grdLicenses.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.LicensesGrid_ColumnAdded);
             this.grdLicenses.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.LicensesGrid_DataBindingComplete);
             // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(6, 454);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(126, 34);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "ایجاد نسخه";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -330,6 +331,6 @@ namespace SPPC.Tools.LicenseManager
         private System.Windows.Forms.Button btnDisplayCustomers;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Button btnSaveDockerInstance;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnNewRelease;
     }
 }

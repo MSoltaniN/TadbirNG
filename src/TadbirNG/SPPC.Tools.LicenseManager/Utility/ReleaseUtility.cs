@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Ionic.Zip;
+using Ionic.Zlib;
 using SPPC.Framework.Common;
+using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Licensing.Model;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms;
 using SPPC.Tools.Transforms.Templates;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.LicenseManager.Utility
 {
@@ -18,6 +23,8 @@ namespace SPPC.Tools.LicenseManager.Utility
         public void GenerateSettings(LicenseModel license)
         {
             var settings = BuildSettings.Docker;
+            settings.Key = GetInstanceKey(license);
+            settings.Version = VersionInfo.GetAppVersion();
             GenerateSettingsWithBackup(PathConfig.LocalServerRoot, new LocalLicenseApiSettings(settings));
             GenerateSettingsWithBackup(PathConfig.WebApiRoot, new WebApiSettings(settings));
             GenerateEnvironmentWithBackup(PathConfig.WebEnvRoot, new TsInstanceFromValues(settings));
@@ -38,9 +45,11 @@ namespace SPPC.Tools.LicenseManager.Utility
             RestoreFile(Path.Combine(PathConfig.WebApiRoot, WebRoot, String.Format($"edition{DevSuffix}")));
             RestoreFile(Path.Combine(PathConfig.WebEnvRoot, EnvFile));
             RestoreFile(Path.Combine(PathConfig.WebEnvRoot, DevEnvFile));
+            RestoreFile(Path.Combine(PathConfig.SolutionRoot, ComposeFile));
+            RestoreFile(Path.Combine(PathConfig.SolutionRoot, OverrideFile));
         }
 
-        public void CreateReleaseArchive(string licenseKey)
+        public void CreateReleaseArchive(string licenseKey, string password)
         {
             // Create a folder named after customer license in TadbirNG Release folder
             PrepareReleaseFolder(licenseKey);
@@ -55,10 +64,13 @@ namespace SPPC.Tools.LicenseManager.Utility
             CreateChecksumFiles(licenseKey);
 
             // Create id file for release version
+            CreateIdFile(licenseKey);
 
             // Make a password-protected ZIP file from folder structure inside release folder
+            CreateZipArchive(licenseKey, password);
 
             // Delete source media inside release folder
+            CleanupReleaseFiles(licenseKey);
         }
 
         #region Settings Generation
@@ -134,6 +146,17 @@ namespace SPPC.Tools.LicenseManager.Utility
             return JsonHelper.From(Reflector.GetProperty(allConfig, edition));
         }
 
+        private string GetInstanceKey(LicenseModel license)
+        {
+            var crypto = new CryptoService(new CertificateManager());
+            var instance = new InstanceModel()
+            {
+                CustomerKey = license.CustomerKey,
+                LicenseKey = license.LicenseKey
+            };
+            return crypto.Encrypt(JsonHelper.From(instance, false));
+        }
+
         private static void BackupFile(string path)
         {
             if (File.Exists(path))
@@ -194,9 +217,11 @@ namespace SPPC.Tools.LicenseManager.Utility
         private static void GenerateDockerCompose(string licenseKey)
         {
             var template = new DockerCompose(licenseKey) as ITextTemplate;
-            File.WriteAllText(Path.Combine(PathConfig.TadbirRelease, ComposeFile), template.TransformText());
+            File.WriteAllText(Path.Combine(
+                PathConfig.TadbirRelease, licenseKey, "runner", ComposeFile), template.TransformText());
             template = new DockerComposeOverride(licenseKey);
-            File.WriteAllText(Path.Combine(PathConfig.TadbirRelease, OverrideFile), template.TransformText());
+            File.WriteAllText(Path.Combine(
+                PathConfig.TadbirRelease, licenseKey, "runner", OverrideFile), template.TransformText());
         }
 
         private static void CreateChecksumFiles(string licenseKey)
@@ -231,6 +256,45 @@ namespace SPPC.Tools.LicenseManager.Utility
 
         private static void CreateIdFile(string licenseKey)
         {
+            string path = Path.Combine(PathConfig.TadbirRelease, licenseKey);
+            var version = VersionInfo.GetAppVersion();
+            File.WriteAllText(Path.Combine(path, String.Format($"v{version}")), licenseKey);
+        }
+
+        private static void CreateZipArchive(string licenseKey, string password)
+        {
+            Verify.ArgumentNotNullOrEmptyString(password, nameof(password));
+            string path = Path.Combine(PathConfig.TadbirRelease,
+                String.Format($"TadbirNG_v{VersionInfo.GetAppVersion()}.zip"));
+            var zipFile = new ZipFile()
+            {
+                CompressionLevel = CompressionLevel.BestCompression,
+                CompressionMethod = CompressionMethod.BZip2,
+                Encryption = EncryptionAlgorithm.WinZipAes128,
+                FlattenFoldersOnExtract = true,
+                Name = path,
+                Password = password
+            };
+            using (zipFile)
+            {
+                zipFile.AddDirectory(Path.Combine(PathConfig.TadbirRelease, licenseKey));
+                zipFile.Save();
+            }
+
+            string newPath = Path.Combine(PathConfig.TadbirRelease, licenseKey, Path.GetFileName(path));
+            File.Move(path, newPath);
+        }
+
+        private static void CleanupReleaseFiles(string licenseKey)
+        {
+            string path = Path.Combine(PathConfig.TadbirRelease, licenseKey);
+            var filesToDelete = new DirectoryInfo(path)
+                .GetFiles("*.*", SearchOption.AllDirectories)
+                .Where(file => !file.Name.EndsWith(".zip", StringComparison.CurrentCultureIgnoreCase))
+                .ToArray();
+            Array.ForEach(filesToDelete, file => File.Delete(file.FullName));
+            Directory.Delete(Path.Combine(path, "runner"));
+            Directory.Delete(Path.Combine(path, "service"));
         }
 
         #endregion

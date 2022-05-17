@@ -311,6 +311,22 @@ namespace SPPC.Tools.LicenseManager
             }
         }
 
+        private void NewRelease_Click(object sender, EventArgs e)
+        {
+            if (grdLicenses.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            var license = grdLicenses.SelectedRows[0].DataBoundItem as LicenseModel;
+            license.Customer = grdCustomers.SelectedRows[0].DataBoundItem as CustomerModel;
+            var form = new CreateRelease()
+            {
+                License = license
+            };
+            form.ShowDialog(this);
+        }
+
         private void ExitButton_Click(object sender, EventArgs e)
         {
             Application.Exit();
