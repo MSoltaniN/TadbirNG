@@ -46,6 +46,7 @@ namespace SPPC.Tools.LicenseManager
             this.cmbCustomer = new System.Windows.Forms.ComboBox();
             this.lblCustomer = new System.Windows.Forms.Label();
             this.grdLicenses = new System.Windows.Forms.DataGridView();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabMain.SuspendLayout();
             this.tabCustomers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdCustomers)).BeginInit();
@@ -64,7 +65,7 @@ namespace SPPC.Tools.LicenseManager
             this.tabMain.Name = "tabMain";
             this.tabMain.RightToLeftLayout = true;
             this.tabMain.SelectedIndex = 0;
-            this.tabMain.Size = new System.Drawing.Size(758, 529);
+            this.tabMain.Size = new System.Drawing.Size(877, 529);
             this.tabMain.TabIndex = 0;
             this.tabMain.SelectedIndexChanged += new System.EventHandler(this.MainTab_SelectedIndexChanged);
             // 
@@ -79,7 +80,7 @@ namespace SPPC.Tools.LicenseManager
             this.tabCustomers.Location = new System.Drawing.Point(4, 27);
             this.tabCustomers.Name = "tabCustomers";
             this.tabCustomers.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCustomers.Size = new System.Drawing.Size(750, 498);
+            this.tabCustomers.Size = new System.Drawing.Size(869, 498);
             this.tabCustomers.TabIndex = 0;
             this.tabCustomers.Text = "مشتریان";
             this.tabCustomers.UseVisualStyleBackColor = true;
@@ -99,7 +100,7 @@ namespace SPPC.Tools.LicenseManager
             // btnDisplayCustomers
             // 
             this.btnDisplayCustomers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDisplayCustomers.Location = new System.Drawing.Point(633, 455);
+            this.btnDisplayCustomers.Location = new System.Drawing.Point(752, 455);
             this.btnDisplayCustomers.Name = "btnDisplayCustomers";
             this.btnDisplayCustomers.Size = new System.Drawing.Size(111, 34);
             this.btnDisplayCustomers.TabIndex = 1;
@@ -110,7 +111,7 @@ namespace SPPC.Tools.LicenseManager
             // btnCustomerLicenses
             // 
             this.btnCustomerLicenses.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCustomerLicenses.Location = new System.Drawing.Point(224, 455);
+            this.btnCustomerLicenses.Location = new System.Drawing.Point(343, 455);
             this.btnCustomerLicenses.Name = "btnCustomerLicenses";
             this.btnCustomerLicenses.Size = new System.Drawing.Size(147, 34);
             this.btnCustomerLicenses.TabIndex = 4;
@@ -121,7 +122,7 @@ namespace SPPC.Tools.LicenseManager
             // btnEditCustomer
             // 
             this.btnEditCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEditCustomer.Location = new System.Drawing.Point(377, 455);
+            this.btnEditCustomer.Location = new System.Drawing.Point(496, 455);
             this.btnEditCustomer.Name = "btnEditCustomer";
             this.btnEditCustomer.Size = new System.Drawing.Size(111, 34);
             this.btnEditCustomer.TabIndex = 3;
@@ -132,7 +133,7 @@ namespace SPPC.Tools.LicenseManager
             // btnNewCustomer
             // 
             this.btnNewCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNewCustomer.Location = new System.Drawing.Point(494, 455);
+            this.btnNewCustomer.Location = new System.Drawing.Point(613, 455);
             this.btnNewCustomer.Name = "btnNewCustomer";
             this.btnNewCustomer.Size = new System.Drawing.Size(133, 34);
             this.btnNewCustomer.TabIndex = 2;
@@ -156,12 +157,13 @@ namespace SPPC.Tools.LicenseManager
             this.grdCustomers.RowHeadersWidth = 51;
             this.grdCustomers.RowTemplate.Height = 24;
             this.grdCustomers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grdCustomers.Size = new System.Drawing.Size(738, 434);
+            this.grdCustomers.Size = new System.Drawing.Size(857, 434);
             this.grdCustomers.TabIndex = 0;
             this.grdCustomers.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.CustomersGrid_ColumnAdded);
             // 
             // tabLicenses
             // 
+            this.tabLicenses.Controls.Add(this.button1);
             this.tabLicenses.Controls.Add(this.btnSaveDockerInstance);
             this.tabLicenses.Controls.Add(this.btnSaveInstance);
             this.tabLicenses.Controls.Add(this.btnDeleteLicense);
@@ -173,7 +175,7 @@ namespace SPPC.Tools.LicenseManager
             this.tabLicenses.Location = new System.Drawing.Point(4, 27);
             this.tabLicenses.Name = "tabLicenses";
             this.tabLicenses.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLicenses.Size = new System.Drawing.Size(750, 498);
+            this.tabLicenses.Size = new System.Drawing.Size(869, 498);
             this.tabLicenses.TabIndex = 1;
             this.tabLicenses.Text = "مجوزها";
             this.tabLicenses.UseVisualStyleBackColor = true;
@@ -181,7 +183,7 @@ namespace SPPC.Tools.LicenseManager
             // btnSaveDockerInstance
             // 
             this.btnSaveDockerInstance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveDockerInstance.Location = new System.Drawing.Point(95, 454);
+            this.btnSaveDockerInstance.Location = new System.Drawing.Point(214, 454);
             this.btnSaveDockerInstance.Name = "btnSaveDockerInstance";
             this.btnSaveDockerInstance.Size = new System.Drawing.Size(150, 34);
             this.btnSaveDockerInstance.TabIndex = 7;
@@ -192,7 +194,7 @@ namespace SPPC.Tools.LicenseManager
             // btnSaveInstance
             // 
             this.btnSaveInstance.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveInstance.Location = new System.Drawing.Point(251, 454);
+            this.btnSaveInstance.Location = new System.Drawing.Point(370, 454);
             this.btnSaveInstance.Name = "btnSaveInstance";
             this.btnSaveInstance.Size = new System.Drawing.Size(150, 34);
             this.btnSaveInstance.TabIndex = 6;
@@ -203,7 +205,7 @@ namespace SPPC.Tools.LicenseManager
             // btnDeleteLicense
             // 
             this.btnDeleteLicense.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDeleteLicense.Location = new System.Drawing.Point(407, 454);
+            this.btnDeleteLicense.Location = new System.Drawing.Point(526, 454);
             this.btnDeleteLicense.Name = "btnDeleteLicense";
             this.btnDeleteLicense.Size = new System.Drawing.Size(102, 34);
             this.btnDeleteLicense.TabIndex = 5;
@@ -214,7 +216,7 @@ namespace SPPC.Tools.LicenseManager
             // btnEditLicense
             // 
             this.btnEditLicense.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEditLicense.Location = new System.Drawing.Point(515, 454);
+            this.btnEditLicense.Location = new System.Drawing.Point(634, 454);
             this.btnEditLicense.Name = "btnEditLicense";
             this.btnEditLicense.Size = new System.Drawing.Size(108, 34);
             this.btnEditLicense.TabIndex = 4;
@@ -225,7 +227,7 @@ namespace SPPC.Tools.LicenseManager
             // btnNewLicense
             // 
             this.btnNewLicense.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNewLicense.Location = new System.Drawing.Point(629, 454);
+            this.btnNewLicense.Location = new System.Drawing.Point(748, 454);
             this.btnNewLicense.Name = "btnNewLicense";
             this.btnNewLicense.Size = new System.Drawing.Size(115, 34);
             this.btnNewLicense.TabIndex = 3;
@@ -238,7 +240,7 @@ namespace SPPC.Tools.LicenseManager
             this.cmbCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCustomer.FormattingEnabled = true;
-            this.cmbCustomer.Location = new System.Drawing.Point(251, 8);
+            this.cmbCustomer.Location = new System.Drawing.Point(370, 8);
             this.cmbCustomer.Name = "cmbCustomer";
             this.cmbCustomer.Size = new System.Drawing.Size(372, 26);
             this.cmbCustomer.TabIndex = 1;
@@ -248,7 +250,7 @@ namespace SPPC.Tools.LicenseManager
             // 
             this.lblCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblCustomer.AutoSize = true;
-            this.lblCustomer.Location = new System.Drawing.Point(637, 11);
+            this.lblCustomer.Location = new System.Drawing.Point(756, 11);
             this.lblCustomer.Name = "lblCustomer";
             this.lblCustomer.Size = new System.Drawing.Size(110, 18);
             this.lblCustomer.TabIndex = 0;
@@ -270,17 +272,27 @@ namespace SPPC.Tools.LicenseManager
             this.grdLicenses.RowHeadersWidth = 51;
             this.grdLicenses.RowTemplate.Height = 24;
             this.grdLicenses.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grdLicenses.Size = new System.Drawing.Size(738, 394);
+            this.grdLicenses.Size = new System.Drawing.Size(857, 394);
             this.grdLicenses.TabIndex = 2;
             this.grdLicenses.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.LicensesGrid_ColumnAdded);
             this.grdLicenses.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.LicensesGrid_DataBindingComplete);
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(6, 454);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(126, 34);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "ایجاد نسخه";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnExit;
-            this.ClientSize = new System.Drawing.Size(782, 553);
+            this.ClientSize = new System.Drawing.Size(901, 553);
             this.Controls.Add(this.tabMain);
             this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Name = "MainWindow";
@@ -318,5 +330,6 @@ namespace SPPC.Tools.LicenseManager
         private System.Windows.Forms.Button btnDisplayCustomers;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Button btnSaveDockerInstance;
+        private System.Windows.Forms.Button button1;
     }
 }
