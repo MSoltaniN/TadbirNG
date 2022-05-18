@@ -46,7 +46,6 @@ namespace SPPC.Tools.LicenseManager
             this.worker = new System.ComponentModel.BackgroundWorker();
             this.progress = new System.Windows.Forms.ProgressBar();
             this.lblProgress = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.lblElapsed = new System.Windows.Forms.Label();
@@ -218,15 +217,6 @@ namespace SPPC.Tools.LicenseManager
             this.lblProgress.TabIndex = 6;
             this.lblProgress.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label6.Location = new System.Drawing.Point(332, 301);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(69, 31);
-            this.label6.TabIndex = 7;
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // lblStatus
             // 
             this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -270,7 +260,6 @@ namespace SPPC.Tools.LicenseManager
             this.Controls.Add(this.lblElapsed);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.lblStatus);
-            this.Controls.Add(this.label6);
             this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.progress);
             this.Controls.Add(this.btnExit);
@@ -310,7 +299,6 @@ namespace SPPC.Tools.LicenseManager
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ProgressBar progress;
         private System.Windows.Forms.Label lblProgress;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lblElapsed;

@@ -39,6 +39,7 @@ namespace SPPC.Tools.LicenseManager
             txtUser.Text = String.Format(
                 $"{License?.Customer?.ContactFirstName} {License?.Customer?.ContactLastName}");
             txtLicenseKey.Text = License?.LicenseKey;
+            txtPassword.Focus();
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -99,7 +100,6 @@ namespace SPPC.Tools.LicenseManager
                 lblStatus.Text = e.UserState.ToString();
             }
 
-            txtConsole.AppendText(Environment.NewLine);
             progress.Value += e.ProgressPercentage;
             lblProgress.Text = String.Format("{0}%", progress.Value);
         }

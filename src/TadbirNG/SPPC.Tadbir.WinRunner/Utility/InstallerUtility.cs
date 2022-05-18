@@ -1,29 +1,147 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.Win32;
+using SPPC.Framework.Common;
+using SPPC.Framework.Helpers;
 
 namespace SPPC.Tadbir.WinRunner.Utility
 {
 #pragma warning disable CA1416 // Validate platform compatibility
     public class InstallerUtility
     {
-        public bool IsAppInstalled()
+        public static bool IsDockerEngineRunning()
         {
-            string root = String.Empty;
-            string path = String.Empty;
+            // This is a simplified approach for detecting docker engine status. A better approach may be preferred.
+            // NOTE: vmmem may only be available under WSL2. In that case, only check for "Docker Desktop.exe"
+            var requiredProcesses = new string[] { "Docker Desktop.exe", "vmmem" };
+            return Process
+                .GetProcesses()
+                .Where(proc => requiredProcesses.Contains(proc.ProcessName))
+                .Any();
+        }
 
+        public static bool VerifyChecksums()
+        {
+            string root = Path.Combine(ChecksumRoot, "runner");
+            string checksumFile = Path.Combine(ChecksumRoot, "runner.sha");
+            if (!VerifyChecksums(root, checksumFile))
+            {
+                return false;
+            }
+
+            root = Path.Combine(ChecksumRoot, "service");
+            checksumFile = Path.Combine(ChecksumRoot, "service.sha");
+            return VerifyChecksums(root, checksumFile);
+        }
+
+        public static List<string> GetDbServers()
+        {
+            var servers = new List<string>();
+            var key = Registry.LocalMachine.OpenSubKey(
+                @"SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL");
+            if (key != null)
+            {
+                foreach (var value in key.GetValueNames())
+                {
+                    if (value == "MSSQLSERVER")
+                    {
+                        servers.Add(Environment.MachineName);
+                    }
+                    else
+                    {
+                        servers.Add(String.Format($"{Environment.MachineName}\\{value}"));
+                    }
+                }
+            }
+
+            return servers;
+        }
+
+        public static void CreateInstallationPath(string path)
+        {
+            var items = new List<string>
+            {
+                path
+            };
+            var dirName = Path.GetDirectoryName(path);
+            while (dirName != null)
+            {
+                items.Add(dirName);
+                dirName = Path.GetDirectoryName(dirName);
+            }
+
+            items.Reverse();
+            foreach (var item in items)
+            {
+                EnsureDirectoryExists(item);
+            }
+
+            EnsureDirectoryExists(Path.Combine(path, "runner"));
+            EnsureDirectoryExists(Path.Combine(path, "service"));
+        }
+
+        public static void CopyFiles(string path, bool createShortcut = true)
+        {
+            string sourceRoot = ChecksumRoot;
+            Array.ForEach(new DirectoryInfo(sourceRoot).GetFiles(),
+                file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
+            sourceRoot = Path.Combine(ChecksumRoot, "runner");
+            Array.ForEach(new DirectoryInfo(sourceRoot).GetFiles(),
+                file => File.Copy(file.FullName, Path.Combine(path, "runner", file.Name)));
+            sourceRoot = Path.Combine(ChecksumRoot, "service");
+            Array.ForEach(new DirectoryInfo(sourceRoot).GetFiles(),
+                file => File.Copy(file.FullName, Path.Combine(path, "service", file.Name)));
+            if (createShortcut)
+            {
+                // Create shortcut to main Runner executable on user's Desktop folder...
+            }
+        }
+
+        public static bool InstallService(string path)
+        {
+            bool installed = true;
+            var runner = new CliRunner();
+            var output = runner.Run("sc query sppckeysrv");
+            var lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+            if (!lines[0].Contains("SERVICE_NAME: sppckeysrv"))
+            {
+                string template =
+                    "sc create sppckeysrv type= own start= auto error= normal displayname= \"SPPC Key Server\" binpath= \"{0}\"";
+                string binPath = Path.Combine(path, "service", "SPPC.Framework.KeyServer.exe");
+                output = runner.Run(String.Format(template, binPath));
+                lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+                installed = !lines[0].Contains("FAILED");
+            }
+
+            return installed;
+        }
+
+        public static bool RunService()
+        {
+            var runner = new CliRunner();
+            var output = runner.Run("sc start sppckeysrv");
+            var lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+            return !lines[0].Contains("FAILED");
+        }
+
+        public static bool IsAppRegistered()
+        {
             // NOTE: Installation info for TadbirNG should be present in the following Registry key:
-            // HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\TadbirNG
+            // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TadbirNG
             var key = Registry.LocalMachine.OpenSubKey(
                 @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TadbirNG", false);
             if (key != null && HasRequiredValues(key))
             {
                 var value = key.GetValue("InstallLocation");
-                root = value?.ToString();
+                string root = value?.ToString();
                 if (!String.IsNullOrEmpty(root))
                 {
-                    path = Path.Combine(root, "runner", "SPPC.Tadbir.WinRunner.exe");
+                    string path = Path.Combine(root, "runner", "SPPC.Tadbir.WinRunner.exe");
                     if (ValidateValues(key, root))
                     {
                         return true;
@@ -34,8 +152,9 @@ namespace SPPC.Tadbir.WinRunner.Utility
             return false;
         }
 
-        public void RegisterApplication(string root, string dbServer, Version version)
+        public static void RegisterApplication(string root, string dbServer, Version version)
         {
+            var appGuid = new Guid("{E9DAA9A7-BB68-472B-8051-5E2ED9386F3C}");
             using var parent = Registry.LocalMachine.OpenSubKey(
                     @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall", true);
             var key = parent.OpenSubKey("TadbirNG", true) ??
@@ -59,7 +178,81 @@ namespace SPPC.Tadbir.WinRunner.Utility
             key.Close();
         }
 
-        #region Registry Validation
+        public static Version GetAppVersion()
+        {
+            var version = new DirectoryInfo(ChecksumRoot)
+                .GetFiles()
+                .Where(file => file.Name.StartsWith("v"))
+                .FirstOrDefault();
+            if (version != null)
+            {
+                return new Version(version.Name.Replace("v", String.Empty));
+            }
+
+            return null;
+        }
+
+        public static string GetCustomerSuffix()
+        {
+            var version = new DirectoryInfo(ChecksumRoot)
+                .GetFiles()
+                .Where(file => file.Name.StartsWith("v"))
+                .FirstOrDefault();
+            if (version != null)
+            {
+                return File
+                    .ReadAllText(version.FullName)
+                    .Substring(0, 8);
+            }
+
+            return null;
+        }
+
+        private static void EnsureDirectoryExists(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+
+        private static bool VerifyChecksums(string root, string checksumFile)
+        {
+            if (!File.Exists(checksumFile))
+            {
+                return false;
+            }
+
+            bool verified = true;
+            var dirInfo = new DirectoryInfo(root);
+            using var sha1 = SHA1.Create();
+            var checksums = JsonHelper.To<Dictionary<string, string>>(File.ReadAllText(checksumFile));
+            foreach (var file in dirInfo.GetFiles())
+            {
+                using var stream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
+                string key = Transform
+                    .ToHexString(sha1.ComputeHash(Encoding.ASCII.GetBytes(file.Name)))
+                    .ToLower();
+                if (checksums.TryGetValue(key, out string checksum))
+                {
+                    string value = Transform
+                        .ToHexString(sha1.ComputeHash(stream))
+                        .ToLower();
+                    if (value != checksum)
+                    {
+                        verified = false;
+                        break;
+                    }
+                }
+                else
+                {
+                    verified = false;
+                    break;
+                }
+            }
+
+            return verified;
+        }
 
         private static bool ValidateValues(RegistryKey key, string root)
         {
@@ -197,7 +390,7 @@ namespace SPPC.Tadbir.WinRunner.Utility
             return true;
         }
 
-        #endregion
+        private const string ChecksumRoot = "_temp_";   // For testing only (correct path is ..)
     }
 #pragma warning restore CA1416 // Validate platform compatibility
 }
