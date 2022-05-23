@@ -28,7 +28,6 @@
   <ItemGroup>
     <Content Remove="wwwroot\edition" />
     <Content Remove="wwwroot\edition.Development.json" />
-    <Content Remove="wwwroot\license.Development.json" />
   </ItemGroup>
 
   <ItemGroup>

@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از شرکت های تعریف شده در برنامه</returns>
-        Task<PagedList<CompanyDbViewModel>> GetCompaniesAsync(GridOptions gridOptions = null);
+        Task<PagedList<CompanyDbViewModel>> GetCompaniesAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون،شرکت با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند

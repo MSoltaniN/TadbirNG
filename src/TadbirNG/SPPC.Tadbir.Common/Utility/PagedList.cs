@@ -16,7 +16,7 @@ namespace SPPC.Tadbir.Utility
         /// </summary>
         /// <param name="all">فهرست کامل سطرهای اطلاعاتی بدون صفحه بندی</param>
         /// <param name="gridOptions">گزینه های موجود برای مرتب سازی، فیلتر و صفحه بندی</param>
-        public PagedList(IEnumerable<T> all, GridOptions gridOptions = null)
+        public PagedList(IEnumerable<T> all = null, GridOptions gridOptions = null)
         {
             SetItems(all ?? new List<T>(), gridOptions ?? new GridOptions());
         }

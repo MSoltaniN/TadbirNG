@@ -55,8 +55,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از شرکت های تعریف شده در برنامه</returns>
-        public async Task<PagedList<CompanyDbViewModel>> GetCompaniesAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<CompanyDbViewModel>> GetCompaniesAsync(GridOptions gridOptions)
         {
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var companies = new List<CompanyDb>();
             if (gridOptions.Operation != (int)OperationId.Print)
             {
@@ -94,7 +95,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات نمایشی شرکت ایجاد یا اصلاح شده</returns>
         public async Task<CompanyDbViewModel> SaveCompanyAsync(CompanyDbViewModel companyView)
         {
-            Verify.ArgumentNotNull(companyView, "companyView");
+            Verify.ArgumentNotNull(companyView, nameof(companyView));
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             CompanyDb company;
             if (companyView.Id == 0)
@@ -188,7 +189,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اگر نام کاربری تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمی گرداند</returns>
         public bool IsDuplicateCompanyUserName(CompanyDbViewModel company)
         {
-            Verify.ArgumentNotNull(company, "company");
+            Verify.ArgumentNotNull(company, nameof(company));
             string userScript = @"SELECT name FROM sys.sql_logins";
             DataTable table = DbConsole.ExecuteQuery(userScript);
             List<DataRow> rows = table.AsEnumerable().ToList();
