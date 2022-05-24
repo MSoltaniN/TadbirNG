@@ -155,7 +155,6 @@ export class RoleComponent
   }
 
   public saveRole(model: RoleFull) {
-    debugger;
     var serviceUrl = this.isNew
       ? RoleApi.Roles
       : String.Format(RoleApi.Role, model.id);

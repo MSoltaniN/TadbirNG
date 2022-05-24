@@ -286,7 +286,6 @@ export class LoginComponent extends DefaultComponent implements OnInit {
           this.checkOfflineLicense();
         },
         (error) => {
-          debugger;
           if (error.type == ErrorType.InvalidUserPass) {
             this.showMessageWithTime(
               this.getText("Messages.ActivationPasswordIsNotCorrect"),

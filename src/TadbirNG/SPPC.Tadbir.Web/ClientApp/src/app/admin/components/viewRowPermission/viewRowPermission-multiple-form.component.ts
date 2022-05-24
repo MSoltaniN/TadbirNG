@@ -119,7 +119,6 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
   }
 
   @Input() public set dataItem(item: ViewRowPermissionInfo) {
-    debugger;
     this.rowList = [];
     this.rowCheckedKeys = [];
     this.selectedRowList = [];

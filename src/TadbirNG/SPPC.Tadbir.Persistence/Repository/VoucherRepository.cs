@@ -47,13 +47,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه جاری</returns>
-        public async Task<PagedList<VoucherViewModel>> GetVouchersAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<VoucherViewModel>> GetVouchersAsync(GridOptions gridOptions)
         {
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var vouchers = new List<VoucherViewModel>();
             if (gridOptions.Operation != (int)OperationId.Print)
             {
-                vouchers.AddRange(await GetVoucherItemsAsync(gridOptions));
-                Array.ForEach(vouchers.ToArray(), v => Localize(v));
+                vouchers.AddRange(await GetVoucherItemsAsync(gridOptions, GetColumnSorting(gridOptions)));
             }
 
             await ReadAsync(gridOptions);
@@ -133,103 +133,81 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اولین سند مالی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>اولین سند مالی</returns>
-        public async Task<VoucherViewModel> GetFirstVoucherAsync(SubjectType subject = SubjectType.Normal)
+        public async Task<VoucherViewModel> GetFirstVoucherAsync(GridOptions gridOptions)
         {
-            var first = default(VoucherViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var firstVoucher = Repository.ApplyRowFilter(await repository
-                .GetEntityQuery()
-                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId
-                    && v.SubjectType == (short)subject)
-                .OrderBy(v => v.No)
-                .FirstOrDefaultAsync(), ViewId.Voucher);
+            var vouchers = await GetVoucherItemsAsync(gridOptions, DefaultSorting);
+            var firstVoucher = vouchers
+                .Apply(gridOptions, false)
+                .FirstOrDefault();
             if (firstVoucher != null)
             {
-                first = Mapper.Map<VoucherViewModel>(firstVoucher);
-                await SetVoucherNavigationAsync(first);
+                await SetVoucherNavigationAsync(firstVoucher);
             }
 
-            return first;
+            return firstVoucher;
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات سند مالی قبلی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
-        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>سند مالی قبلی</returns>
-        public async Task<VoucherViewModel> GetPreviousVoucherAsync(
-            int currentNo, SubjectType subject = SubjectType.Normal)
+        public async Task<VoucherViewModel> GetPreviousVoucherAsync(int currentNo, GridOptions gridOptions)
         {
-            var previous = default(VoucherViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var previousVoucher = Repository.ApplyRowFilter(await repository
-                .GetEntityQuery()
-                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId
-                    && v.No < currentNo
-                    && v.SubjectType == (short)subject)
-                .OrderByDescending(v => v.No)
-                .FirstOrDefaultAsync(), ViewId.Voucher);
+            var vouchers = await GetVoucherItemsAsync(gridOptions, DefaultDescendingSorting);
+            var previousVoucher = vouchers
+                .Apply(gridOptions, false)
+                .Where(v => v.No < currentNo)
+                .FirstOrDefault();
             if (previousVoucher != null)
             {
-                previous = Mapper.Map<VoucherViewModel>(previousVoucher);
-                await SetVoucherNavigationAsync(previous);
+                await SetVoucherNavigationAsync(previousVoucher);
             }
 
-            return previous;
+            return previousVoucher;
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات سند مالی بعدی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
-        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>سند مالی بعدی</returns>
-        public async Task<VoucherViewModel> GetNextVoucherAsync(
-            int currentNo, SubjectType subject = SubjectType.Normal)
+        public async Task<VoucherViewModel> GetNextVoucherAsync(int currentNo, GridOptions gridOptions)
         {
-            var next = default(VoucherViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var nextVoucher = Repository.ApplyRowFilter(await repository
-                .GetEntityQuery()
-                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId
-                    && v.No > currentNo
-                    && v.SubjectType == (short)subject)
-                .OrderBy(v => v.No)
-                .FirstOrDefaultAsync(), ViewId.Voucher);
+            var vouchers = await GetVoucherItemsAsync(gridOptions, DefaultSorting);
+            var nextVoucher = vouchers
+                .Apply(gridOptions, false)
+                .Where(v => v.No > currentNo)
+                .FirstOrDefault();
             if (nextVoucher != null)
             {
-                next = Mapper.Map<VoucherViewModel>(nextVoucher);
-                await SetVoucherNavigationAsync(next);
+                await SetVoucherNavigationAsync(nextVoucher);
             }
 
-            return next;
+            return nextVoucher;
         }
 
         /// <summary>
         /// به روش آسنکرون، آخرین سند مالی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آخرین سند مالی</returns>
-        public async Task<VoucherViewModel> GetLastVoucherAsync(SubjectType subject = SubjectType.Normal)
+        public async Task<VoucherViewModel> GetLastVoucherAsync(GridOptions gridOptions)
         {
-            var last = default(VoucherViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var lastVoucher = Repository.ApplyRowFilter(await repository
-                .GetEntityQuery()
-                .Where(v => v.FiscalPeriodId == UserContext.FiscalPeriodId
-                    && v.SubjectType == (short)subject)
-                .OrderByDescending(v => v.No)
-                .FirstOrDefaultAsync(), ViewId.Voucher);
+            var vouchers = await GetVoucherItemsAsync(gridOptions, DefaultDescendingSorting);
+            var lastVoucher = vouchers
+                .Apply(gridOptions, false)
+                .FirstOrDefault();
             if (lastVoucher != null)
             {
-                last = Mapper.Map<VoucherViewModel>(lastVoucher);
-                await SetVoucherNavigationAsync(last);
+                await SetVoucherNavigationAsync(lastVoucher);
             }
 
-            return last;
+            return lastVoucher;
         }
 
         /// <summary>
@@ -770,33 +748,36 @@ namespace SPPC.Tadbir.Persistence
         private async Task SetVoucherNavigationAsync(VoucherViewModel voucher)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var previous = await repository.GetByCriteriaAsync(
-                v => v.FiscalPeriodId == UserContext.FiscalPeriodId
-                    && v.No < voucher.No
-                    && v.SubjectType == voucher.SubjectType);
-            var filteredPrevious = Repository.ApplyRowFilter(previous.ToList(), ViewId.Voucher);
-            var next = await repository.GetByCriteriaAsync(
-                v => v.FiscalPeriodId == UserContext.FiscalPeriodId
-                    && v.No > voucher.No
-                    && v.SubjectType == voucher.SubjectType);
-            var filteredNext = Repository.ApplyRowFilter(next.ToList(), ViewId.Voucher);
-            voucher.HasPrevious = filteredPrevious.Count > 0;
-            voucher.HasNext = filteredNext.Count > 0;
+            var prevCount = await Repository
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
+                .Where(v => v.No < voucher.No
+                    && v.SubjectType == voucher.SubjectType)
+                .CountAsync();
+            var nextCount = await Repository
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
+                .Where(v => v.No > voucher.No
+                    && v.SubjectType == voucher.SubjectType)
+                .CountAsync();
+            voucher.HasPrevious = prevCount > 0;
+            voucher.HasNext = nextCount > 0;
         }
 
-        private async Task<IEnumerable<VoucherViewModel>> GetVoucherItemsAsync(GridOptions gridOptions)
+        private async Task<IEnumerable<VoucherViewModel>> GetVoucherItemsAsync(
+            GridOptions gridOptions, string orderBy)
         {
             var options = gridOptions ?? new GridOptions();
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             string filters = await GetEnvironmentFiltersAsync(options);
             string listQuery = String.Format(
-                VoucherQuery.EnvironmentVouchers, filters, GetColumnSorting(gridOptions));
+                VoucherQuery.EnvironmentVouchers, filters, orderBy);
             var query = new ReportQuery(listQuery);
             var result = DbConsole.ExecuteQuery(query.Query);
             var vouchers = new List<VoucherViewModel>();
             vouchers.AddRange(result.Rows.Cast<DataRow>()
                 .Select(row => GetVoucherItem(row)));
-            return Repository.ApplyRowFilter(vouchers, ViewId.Voucher);
+            vouchers = Repository.ApplyRowFilter(vouchers, ViewId.Voucher);
+            Array.ForEach(vouchers.ToArray(), v => Localize(v));
+            return vouchers;
         }
 
         private async Task<string> GetEnvironmentFiltersAsync(GridOptions gridOptions)
@@ -859,6 +840,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private const string DefaultSorting = "v.Date, v.No";
+        private const string DefaultDescendingSorting = "v.Date DESC, v.No DESC";
         private readonly ISystemRepository _system;
         private readonly IUserRepository _userRepository;
         private readonly IReportDirectUtility _report;

@@ -19,7 +19,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه جاری</returns>
-        Task<PagedList<VoucherViewModel>> GetVouchersAsync(GridOptions gridOptions = null);
+        Task<PagedList<VoucherViewModel>> GetVouchersAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، سند مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
@@ -46,32 +46,32 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اولین سند مالی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>اولین سند مالی</returns>
-        Task<VoucherViewModel> GetFirstVoucherAsync(SubjectType subject = SubjectType.Normal);
+        Task<VoucherViewModel> GetFirstVoucherAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات سند مالی قبلی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
-        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>سند مالی قبلی</returns>
-        Task<VoucherViewModel> GetPreviousVoucherAsync(int currentNo, SubjectType subject = SubjectType.Normal);
+        Task<VoucherViewModel> GetPreviousVoucherAsync(int currentNo, GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات سند مالی بعدی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
-        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>سند مالی بعدی</returns>
-        Task<VoucherViewModel> GetNextVoucherAsync(int currentNo, SubjectType subject = SubjectType.Normal);
+        Task<VoucherViewModel> GetNextVoucherAsync(int currentNo, GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، آخرین سند مالی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="subject">نوع مفهومی مورد نظر برای سند که پیش فرض آن سند عادی است</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آخرین سند مالی</returns>
-        Task<VoucherViewModel> GetLastVoucherAsync(SubjectType subject = SubjectType.Normal);
+        Task<VoucherViewModel> GetLastVoucherAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، مدل نمایشی دوره مالی مورد استفاده در یک سند مالی را از محل ذخیره خوانده و برمی گرداند

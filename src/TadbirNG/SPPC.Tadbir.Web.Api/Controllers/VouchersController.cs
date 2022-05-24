@@ -393,7 +393,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Navigate)]
         public async Task<IActionResult> GetFirstDraftVoucherAsync()
         {
-            return await GetFirstVoucherByTypeAsync(SubjectType.Draft);
+            return await GetFirstVoucherByTypeAsync();
         }
 
         /// <summary>
@@ -407,7 +407,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Navigate)]
         public async Task<IActionResult> GetPreviousDraftVoucherAsync(int voucherNo)
         {
-            return await GetPreviousVoucherByTypeAsync(voucherNo, SubjectType.Draft);
+            return await GetPreviousVoucherByTypeAsync(voucherNo);
         }
 
         /// <summary>
@@ -421,7 +421,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Navigate)]
         public async Task<IActionResult> GetNextDraftVoucherAsync(int voucherNo)
         {
-            return await GetNextVoucherByTypeAsync(voucherNo, SubjectType.Draft);
+            return await GetNextVoucherByTypeAsync(voucherNo);
         }
 
         /// <summary>
@@ -434,7 +434,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Navigate)]
         public async Task<IActionResult> GetLastDraftVoucherAsync()
         {
-            return await GetLastVoucherByTypeAsync(SubjectType.Draft);
+            return await GetLastVoucherByTypeAsync();
         }
 
         #endregion
@@ -1779,34 +1779,30 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(voucherByNo);
         }
 
-        private async Task<IActionResult> GetFirstVoucherByTypeAsync(
-            SubjectType subject = SubjectType.Normal)
+        private async Task<IActionResult> GetFirstVoucherByTypeAsync()
         {
-            var first = await _repository.GetFirstVoucherAsync(subject);
+            var first = await _repository.GetFirstVoucherAsync(GridOptions);
             Localize(first);
             return JsonReadResult(first);
         }
 
-        private async Task<IActionResult> GetPreviousVoucherByTypeAsync(
-            int currentNo, SubjectType subject = SubjectType.Normal)
+        private async Task<IActionResult> GetPreviousVoucherByTypeAsync(int currentNo)
         {
-            var previous = await _repository.GetPreviousVoucherAsync(currentNo, subject);
+            var previous = await _repository.GetPreviousVoucherAsync(currentNo, GridOptions);
             Localize(previous);
             return JsonReadResult(previous);
         }
 
-        private async Task<IActionResult> GetNextVoucherByTypeAsync(
-            int currentNo, SubjectType subject = SubjectType.Normal)
+        private async Task<IActionResult> GetNextVoucherByTypeAsync(int currentNo)
         {
-            var next = await _repository.GetNextVoucherAsync(currentNo, subject);
+            var next = await _repository.GetNextVoucherAsync(currentNo, GridOptions);
             Localize(next);
             return JsonReadResult(next);
         }
 
-        private async Task<IActionResult> GetLastVoucherByTypeAsync(
-            SubjectType subject = SubjectType.Normal)
+        private async Task<IActionResult> GetLastVoucherByTypeAsync()
         {
-            var last = await _repository.GetLastVoucherAsync(subject);
+            var last = await _repository.GetLastVoucherAsync(GridOptions);
             Localize(last);
             return JsonReadResult(last);
         }

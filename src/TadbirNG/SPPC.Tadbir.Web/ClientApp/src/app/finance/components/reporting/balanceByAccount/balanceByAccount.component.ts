@@ -301,7 +301,6 @@ export class BalanceByAccountComponent
       this.toDate = this.FiscalPeriodEndDate;
 
       if (this.isTestBalanceParams) {
-        debugger;
         this.fillInputParameters(balanceAccountParam);
 
         this.accountService
@@ -901,7 +900,6 @@ export class BalanceByAccountComponent
       );
     }
 
-    debugger;
     if (errorMsg) {
       this.showMessage(errorMsg, MessageType.Warning);
     } else {
@@ -1162,7 +1160,6 @@ export class BalanceByAccountComponent
 
     var data = null;
 
-    debugger;
     if (accountLevelList != undefined && selectedAccountLevel != undefined) {
       var relatedDisplayType = accountLevelList.filter(
         (d) => d.key === selectedAccountLevel
