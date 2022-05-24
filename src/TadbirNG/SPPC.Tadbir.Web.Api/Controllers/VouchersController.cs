@@ -393,7 +393,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Navigate)]
         public async Task<IActionResult> GetFirstDraftVoucherAsync()
         {
-            return await GetFirstVoucherByTypeAsync();
+            return await GetFirstVoucherByTypeAsync(SubjectType.Draft);
         }
 
         /// <summary>
@@ -407,7 +407,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Navigate)]
         public async Task<IActionResult> GetPreviousDraftVoucherAsync(int voucherNo)
         {
-            return await GetPreviousVoucherByTypeAsync(voucherNo);
+            return await GetPreviousVoucherByTypeAsync(voucherNo, SubjectType.Draft);
         }
 
         /// <summary>
@@ -421,7 +421,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Navigate)]
         public async Task<IActionResult> GetNextDraftVoucherAsync(int voucherNo)
         {
-            return await GetNextVoucherByTypeAsync(voucherNo);
+            return await GetNextVoucherByTypeAsync(voucherNo, SubjectType.Draft);
         }
 
         /// <summary>
@@ -434,7 +434,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DraftVoucher, (int)DraftVoucherPermissions.Navigate)]
         public async Task<IActionResult> GetLastDraftVoucherAsync()
         {
-            return await GetLastVoucherByTypeAsync();
+            return await GetLastVoucherByTypeAsync(SubjectType.Draft);
         }
 
         #endregion
@@ -1779,30 +1779,42 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(voucherByNo);
         }
 
-        private async Task<IActionResult> GetFirstVoucherByTypeAsync()
+        private async Task<IActionResult> GetFirstVoucherByTypeAsync(
+            SubjectType subject = SubjectType.Normal)
         {
-            var first = await _repository.GetFirstVoucherAsync(GridOptions);
+            var first = GridOptions != null
+                ? await _repository.GetFirstVoucherAsync(GridOptions)
+                : await _repository.GetFirstVoucherAsync(subject);
             Localize(first);
             return JsonReadResult(first);
         }
 
-        private async Task<IActionResult> GetPreviousVoucherByTypeAsync(int currentNo)
+        private async Task<IActionResult> GetPreviousVoucherByTypeAsync(
+            int currentNo, SubjectType subject = SubjectType.Normal)
         {
-            var previous = await _repository.GetPreviousVoucherAsync(currentNo, GridOptions);
+            var previous = GridOptions != null
+                ? await _repository.GetPreviousVoucherAsync(currentNo, GridOptions)
+                : await _repository.GetPreviousVoucherAsync(currentNo, subject);
             Localize(previous);
             return JsonReadResult(previous);
         }
 
-        private async Task<IActionResult> GetNextVoucherByTypeAsync(int currentNo)
+        private async Task<IActionResult> GetNextVoucherByTypeAsync(
+            int currentNo, SubjectType subject = SubjectType.Normal)
         {
-            var next = await _repository.GetNextVoucherAsync(currentNo, GridOptions);
+            var next = GridOptions != null
+                ? await _repository.GetNextVoucherAsync(currentNo, GridOptions)
+                : await _repository.GetNextVoucherAsync(currentNo, subject);
             Localize(next);
             return JsonReadResult(next);
         }
 
-        private async Task<IActionResult> GetLastVoucherByTypeAsync()
+        private async Task<IActionResult> GetLastVoucherByTypeAsync(
+            SubjectType subject = SubjectType.Normal)
         {
-            var last = await _repository.GetLastVoucherAsync(GridOptions);
+            var last = GridOptions != null
+                ? await _repository.GetLastVoucherAsync(GridOptions)
+                : await _repository.GetLastVoucherAsync(subject);
             Localize(last);
             return JsonReadResult(last);
         }

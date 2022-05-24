@@ -150,6 +150,29 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اولین سند مالی از نوع مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="subject">نوع مفهومی سند مورد نظر که به صورت پیش فرض سند عادی است</param>
+        /// <returns>اولین سند مالی از نوع مشخص شده</returns>
+        public async Task<VoucherViewModel> GetFirstVoucherAsync(SubjectType subject = SubjectType.Normal)
+        {
+            var firstVoucher = default(VoucherViewModel);
+            var first = await Repository
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher, v => v.Status, v => v.Origin)
+                .Where(v => v.SubjectType == (short)subject)
+                .OrderBy(v => v.Date)
+                    .ThenBy(v => v.No)
+                .FirstOrDefaultAsync();
+            if (first != null)
+            {
+                firstVoucher = Mapper.Map<VoucherViewModel>(first);
+                await SetVoucherNavigationAsync(firstVoucher);
+            }
+
+            return firstVoucher;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات سند مالی قبلی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
@@ -164,6 +187,31 @@ namespace SPPC.Tadbir.Persistence
                 .FirstOrDefault();
             if (previousVoucher != null)
             {
+                await SetVoucherNavigationAsync(previousVoucher);
+            }
+
+            return previousVoucher;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی قبلی از نوع مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
+        /// <param name="subject">نوع مفهومی سند مورد نظر که به صورت پیش فرض سند عادی است</param>
+        /// <returns>سند مالی قبلی از نوع مشخص شده</returns>
+        public async Task<VoucherViewModel> GetPreviousVoucherAsync(int currentNo, SubjectType subject = SubjectType.Normal)
+        {
+            var previousVoucher = default(VoucherViewModel);
+            var previous = await Repository
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher, v => v.Status, v => v.Origin)
+                .Where(v => v.SubjectType == (short)subject
+                    && v.No < currentNo)
+                .OrderByDescending(v => v.Date)
+                    .ThenByDescending(v => v.No)
+                .FirstOrDefaultAsync();
+            if (previous != null)
+            {
+                previousVoucher = Mapper.Map<VoucherViewModel>(previous);
                 await SetVoucherNavigationAsync(previousVoucher);
             }
 
@@ -192,6 +240,31 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات سند مالی بعدی از نوع مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="currentNo">شماره سند مالی جاری در برنامه</param>
+        /// <param name="subject">نوع مفهومی سند مورد نظر که به صورت پیش فرض سند عادی است</param>
+        /// <returns>سند مالی بعدی از نوع مشخص شده</returns>
+        public async Task<VoucherViewModel> GetNextVoucherAsync(int currentNo, SubjectType subject = SubjectType.Normal)
+        {
+            var nextVoucher = default(VoucherViewModel);
+            var next = await Repository
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher, v => v.Status, v => v.Origin)
+                .Where(v => v.SubjectType == (short)subject
+                    && v.No > currentNo)
+                .OrderBy(v => v.Date)
+                    .ThenBy(v => v.No)
+                .FirstOrDefaultAsync();
+            if (next != null)
+            {
+                nextVoucher = Mapper.Map<VoucherViewModel>(next);
+                await SetVoucherNavigationAsync(nextVoucher);
+            }
+
+            return nextVoucher;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، آخرین سند مالی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -204,6 +277,29 @@ namespace SPPC.Tadbir.Persistence
                 .FirstOrDefault();
             if (lastVoucher != null)
             {
+                await SetVoucherNavigationAsync(lastVoucher);
+            }
+
+            return lastVoucher;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین سند مالی از نوع مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="subject">نوع مفهومی سند مورد نظر که به صورت پیش فرض سند عادی است</param>
+        /// <returns>آخرین سند مالی از نوع مشخص شده</returns>
+        public async Task<VoucherViewModel> GetLastVoucherAsync(SubjectType subject = SubjectType.Normal)
+        {
+            var lastVoucher = default(VoucherViewModel);
+            var last = await Repository
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher, v => v.Status, v => v.Origin)
+                .Where(v => v.SubjectType == (short)subject)
+                .OrderByDescending(v => v.Date)
+                    .ThenByDescending(v => v.No)
+                .FirstOrDefaultAsync();
+            if (last != null)
+            {
+                lastVoucher = Mapper.Map<VoucherViewModel>(last);
                 await SetVoucherNavigationAsync(lastVoucher);
             }
 
