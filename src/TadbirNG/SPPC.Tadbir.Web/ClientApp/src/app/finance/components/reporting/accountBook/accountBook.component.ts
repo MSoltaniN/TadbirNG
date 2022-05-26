@@ -905,7 +905,6 @@ export class AccountBookComponent
   }
 
   openSelectForm() {
-    debugger;
     this.dialogRef = this.dialogService.open({
       title: " ",
       content: SelectFormComponent,
@@ -920,7 +919,6 @@ export class AccountBookComponent
     });
 
     this.sharedDataService.selectFormTitle.subscribe((title: string) => {
-      debugger;
       this.dialogRef.dialog.instance.title = title;
     });
 

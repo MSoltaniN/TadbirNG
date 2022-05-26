@@ -63,7 +63,7 @@ namespace SPPC.Tadbir.Persistence
                 return new PagedList<CurrencyRateViewModel>(rates, gridOptions);
             }
 
-            return null;
+            return new PagedList<CurrencyRateViewModel>();
         }
 
         /// <summary>

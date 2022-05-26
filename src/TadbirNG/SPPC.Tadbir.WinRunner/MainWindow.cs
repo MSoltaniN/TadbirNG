@@ -24,6 +24,7 @@ namespace SPPC.Tadbir.WinRunner
             var servers = InstallerUtility.GetDbServers();
             servers.Insert(0, "Docker");
             cmbDbServer.DataSource = servers;
+            txtInstallPath.Text = @"C:\SPPC\TadbirNG";
         }
 
         private void Runner_OutputReceived(object sender, OutputReceivedEventArgs e)

@@ -1782,7 +1782,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<IActionResult> GetFirstVoucherByTypeAsync(
             SubjectType subject = SubjectType.Normal)
         {
-            var first = await _repository.GetFirstVoucherAsync(subject);
+            var first = GridOptions != null
+                ? await _repository.GetFirstVoucherAsync(GridOptions)
+                : await _repository.GetFirstVoucherAsync(subject);
             Localize(first);
             return JsonReadResult(first);
         }
@@ -1790,7 +1792,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<IActionResult> GetPreviousVoucherByTypeAsync(
             int currentNo, SubjectType subject = SubjectType.Normal)
         {
-            var previous = await _repository.GetPreviousVoucherAsync(currentNo, subject);
+            var previous = GridOptions != null
+                ? await _repository.GetPreviousVoucherAsync(currentNo, GridOptions)
+                : await _repository.GetPreviousVoucherAsync(currentNo, subject);
             Localize(previous);
             return JsonReadResult(previous);
         }
@@ -1798,7 +1802,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<IActionResult> GetNextVoucherByTypeAsync(
             int currentNo, SubjectType subject = SubjectType.Normal)
         {
-            var next = await _repository.GetNextVoucherAsync(currentNo, subject);
+            var next = GridOptions != null
+                ? await _repository.GetNextVoucherAsync(currentNo, GridOptions)
+                : await _repository.GetNextVoucherAsync(currentNo, subject);
             Localize(next);
             return JsonReadResult(next);
         }
@@ -1806,7 +1812,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<IActionResult> GetLastVoucherByTypeAsync(
             SubjectType subject = SubjectType.Normal)
         {
-            var last = await _repository.GetLastVoucherAsync(subject);
+            var last = GridOptions != null
+                ? await _repository.GetLastVoucherAsync(GridOptions)
+                : await _repository.GetLastVoucherAsync(subject);
             Localize(last);
             return JsonReadResult(last);
         }

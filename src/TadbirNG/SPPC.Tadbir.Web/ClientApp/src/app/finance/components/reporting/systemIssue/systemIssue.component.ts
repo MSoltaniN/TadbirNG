@@ -228,7 +228,6 @@ export class SystemIssueComponent
         false
       )
       .subscribe((res) => {
-        debugger;
         var items = <Array<any>>res.body;
         items.forEach((issue) => {
           if (issue.itemCount != null) {

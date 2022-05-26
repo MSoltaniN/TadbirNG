@@ -252,7 +252,6 @@ export class BaseService<T = void | any> extends EnviromentComponent {
     filter: FilterExpression,
     quickFilter: FilterExpression
   ) {
-    debugger;
     var searchHeaders = this.httpHeaders;
 
     var postItem = {
