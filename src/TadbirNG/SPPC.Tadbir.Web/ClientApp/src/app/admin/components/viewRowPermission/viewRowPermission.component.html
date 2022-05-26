@@ -108,22 +108,30 @@
           <label class="control-label">{{
             "ViewRowPermission.SpecificReference" | translate
           }}</label>
-          <input
+          <!-- <input
             type="text"
             class="k-textbox input-frm"
             [(ngModel)]="permissionValue5"
-          />
+          /> -->
+          <kendo-multiselect
+            [data]="referenceValues"
+            [(ngModel)]="specificSelectedReferences"
+          ></kendo-multiselect>
         </div>
 
         <div class="panel-type" *ngIf="ddlPermissionTypeSelected == 6">
           <label class="control-label">{{
             "ViewRowPermission.AllExceptSpecificReference" | translate
           }}</label>
-          <input
+          <!-- <input
             type="text"
             class="k-textbox input-frm"
             [(ngModel)]="permissionValue6"
-          />
+          /> -->
+          <kendo-multiselect
+            [data]="referenceValues"
+            [(ngModel)]="exceptSelectedReferences"
+          ></kendo-multiselect>
         </div>
 
         <div class="panel-type" *ngIf="ddlPermissionTypeSelected == 8">

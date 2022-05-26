@@ -17,6 +17,7 @@ import { Entities, Layout, MessageType } from "@sppc/shared/enum/metadata";
 import {
   BrowserStorageService,
   ErrorHandlingService,
+  LookupService,
   MetaDataService,
 } from "@sppc/shared/services";
 import { LookupApi } from "@sppc/shared/services/api";
@@ -102,7 +103,14 @@ export class ViewRowPermissionComponent
 
   oldSingleFormSelectedModel: ItemInfo | undefined;
 
-  public ngOnInit(): void {}
+  referenceValues: string[];
+
+  specificSelectedReferences: string[];
+  exceptSelectedReferences: string[];
+
+  public ngOnInit(): void {
+    this.fillReferences();
+  }
 
   constructor(
     public toastrService: ToastrService,
@@ -112,7 +120,8 @@ export class ViewRowPermissionComponent
     public metadata: MetaDataService,
     public settingService: SettingService,
     public bStorageService: BrowserStorageService,
-    public errorHandlingService: ErrorHandlingService
+    public errorHandlingService: ErrorHandlingService,
+    private lookupService: LookupService
   ) {
     super(
       toastrService,
@@ -235,6 +244,13 @@ export class ViewRowPermissionComponent
         this.permissionValue4 = "سطری انتخاب نشده";
       }
     }
+  }
+
+  fillReferences() {
+    this.lookupService.getAll(LookupApi.VoucherReferences).subscribe((res) => {
+      var refs = <string[]>res.body;
+      this.referenceValues = refs;
+    });
   }
 
   saveSingleFormHandler(model: Item) {
@@ -430,7 +446,8 @@ export class ViewRowPermissionComponent
             rowPermissionsArray[index].accessMode = "SpecificReference";
             rowPermissionsArray[index].value = 0;
             rowPermissionsArray[index].value2 = 0;
-            rowPermissionsArray[index].textValue = this.permissionValue5;
+            rowPermissionsArray[index].textValue =
+              this.specificSelectedReferences.join();
             rowPermissionsArray[index].items = [];
             this.permissionValue5 = String.Empty;
             break;
@@ -440,7 +457,8 @@ export class ViewRowPermissionComponent
               "AllExceptSpecificReference";
             rowPermissionsArray[index].value = 0;
             rowPermissionsArray[index].value2 = 0;
-            rowPermissionsArray[index].textValue = this.permissionValue6;
+            rowPermissionsArray[index].textValue =
+              this.exceptSelectedReferences.join(); //this.permissionValue6;
             rowPermissionsArray[index].items = [];
             this.permissionValue6 = String.Empty;
             break;
