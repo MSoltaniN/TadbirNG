@@ -37,7 +37,7 @@
     (remove)="removeHandler($event)"
     [loading]="false"
     [selectable]="{ checkboxOnly: true, mode: 'single' }"
-    (dataStateChange)="onDataStateChange()"
+    (dataStateChange)="onDataStateChange($event)"
     (excelExport)="onExcelExport($event)"
     sppc-auto-generated-grid-reorder
     sppc-auto-generated-grid-resize

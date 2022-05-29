@@ -177,10 +177,16 @@ export class GridFilterComponent
   }
 
   removeFilterGrid(): void {
+    debugger;
     this.grid.filter.filters = [];
     this.showClearFilter = this.grid.filter.filters.length;
 
-    this.parentComponent.filterChange(this.grid.filter);
+    this.parentComponent.currentFilter = undefined;
+    this.parentComponent.state.filter = {
+      logic: "and",
+      filters: [],
+    };
+
     this.parentComponent.reloadGrid();
   }
 

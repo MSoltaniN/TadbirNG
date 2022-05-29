@@ -98,7 +98,7 @@
             [kendoGridSelectBy]="selectionKey"
             (filterChange)="filterChange($event)"
             (selectedKeysChange)="onSelectedKeysChange($event)"
-            (dataStateChange)="onDataStateChange()"
+            (dataStateChange)="onDataStateChange($event)"
             (cellClick)="onCellClick($event)"
             (dblclick)="rowDoubleClickHandler()"
             (excelExport)="onExcelExport($event)"
