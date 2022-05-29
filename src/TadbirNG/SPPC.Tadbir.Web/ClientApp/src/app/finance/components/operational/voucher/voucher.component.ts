@@ -197,7 +197,7 @@ export class VoucherComponent
     this.entityName = Entities.Voucher;
     this.viewId = ViewName[this.entityTypeName];
 
-    if (this.isAccess(Entities.BalanceByAccount, VoucherPermissions.View)) {
+    if (this.isAccess(Entities.Voucher, VoucherPermissions.View)) {
       this.getDataUrl = VoucherApi.EnvironmentVouchers;
     } else {
       this.getDataUrl = "";
@@ -377,8 +377,10 @@ export class VoucherComponent
     this.editDataItem = undefined;
     this.dialogModel.subjectMode = parseInt(this.selectedSubjectType);
 
-    this.dialogModel.filter = this.reportFilter;
-    this.dialogModel.quickFilter = this.reportQuickFilter;
+    this.dialogModel.filter = JSON.parse(JSON.stringify(this.reportFilter));
+    this.dialogModel.quickFilter = JSON.parse(
+      JSON.stringify(this.reportQuickFilter)
+    );
 
     this.dialogRef.result.subscribe((result) => {
       if (result instanceof DialogCloseResult) {
