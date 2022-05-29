@@ -13,3 +13,6 @@ GO
 
 ALTER SERVER ROLE dbcreator ADD MEMBER NgTadbirUser;
 GO
+
+ALTER SERVER ROLE sysadmin ADD MEMBER NgTadbirUser;
+GO

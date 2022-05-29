@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Domain;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
@@ -134,6 +135,29 @@ namespace SPPC.Tadbir.Persistence
             {
                 UnitOfWork.SwitchCompany(BuildConnectionString(company));
             }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی یک موجودیت با شناسه دیتابیسی داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <typeparam name="TEntity">نوع کلاس مدل برای موجودیت</typeparam>
+        /// <typeparam name="TEntityView">نوع کلاس مدل نمایشی برای موجودیت</typeparam>
+        /// <param name="id">شناسه دیتابیسی سطر اطلاعاتی مورد نظر</param>
+        /// <returns>در صورت وجود سطر اطلاعاتی با شناسه داده شده، اطلاعات نمایشی موجودیت و در غیر این صورت
+        /// رفرنس بدون مقدار را برمی گرداند</returns>
+        protected async Task<TEntityView> GetByIdAsync<TEntity, TEntityView>(int id)
+            where TEntity : class, IEntity
+            where TEntityView : class, new()
+        {
+            TEntityView itemView = null;
+            var repository = UnitOfWork.GetAsyncRepository<TEntity>();
+            var item = await repository.GetByIDAsync(id);
+            if (item != null)
+            {
+                itemView = Mapper.Map<TEntityView>(item);
+            }
+
+            return itemView;
         }
 
         /// <summary>

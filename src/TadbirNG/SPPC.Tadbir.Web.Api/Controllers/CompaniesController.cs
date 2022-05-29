@@ -240,11 +240,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.DbName));
             }
 
-            if (companyId == 0 && _repository.IsDuplicateCompanyUserName(company))
-            {
-                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.UserName));
-            }
-
             return Ok();
         }
 

@@ -77,15 +77,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>شرکت مشخص شده با شناسه عددی</returns>
         public async Task<CompanyDbViewModel> GetCompanyAsync(int companyId)
         {
-            CompanyDbViewModel item = null;
-            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var company = await repository.GetByIDAsync(companyId);
-            if (company != null)
-            {
-                item = Mapper.Map<CompanyDbViewModel>(company);
-            }
-
-            return item;
+            return await GetByIdAsync<CompanyDb, CompanyDbViewModel>(companyId);
         }
 
         /// <summary>
@@ -96,14 +88,19 @@ namespace SPPC.Tadbir.Persistence
         public async Task<CompanyDbViewModel> SaveCompanyAsync(CompanyDbViewModel companyView)
         {
             Verify.ArgumentNotNull(companyView, nameof(companyView));
+            if (await IsActivatedCompanyAsync(companyView))
+            {
+                return companyView;
+            }
+
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             CompanyDb company;
             if (companyView.Id == 0)
             {
-                CreateDatabase(companyView);
+                companyView.Server = GetServerName();
+                await PrepareNewCompanyAsync(companyView);
                 company = Mapper.Map<CompanyDb>(companyView);
                 await InsertAsync(repository, company);
-                await ImportLookupsAsync(company.Id);
             }
             else
             {
@@ -167,40 +164,8 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(company, nameof(company));
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             var existing = await repository.GetSingleByCriteriaAsync(
-                comp => comp.Id != company.Id && comp.DbName == company.DbName);
-            if (existing != null)
-            {
-                return true;
-            }
-
-            var isDuplicateDb = IsDuplicateDatabaseName(company.DbName);
-            if (isDuplicateDb)
-            {
-                return !IsTadbirDatabase(company.DbName);
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// مشخص می کند که نام کاربری وارد شده تکراری است یا نه
-        /// </summary>
-        /// <param name="company">شرکت مورد نظر</param>
-        /// <returns>اگر نام کاربری تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمی گرداند</returns>
-        public bool IsDuplicateCompanyUserName(CompanyDbViewModel company)
-        {
-            Verify.ArgumentNotNull(company, nameof(company));
-            string userScript = @"SELECT name FROM sys.sql_logins";
-            DataTable table = DbConsole.ExecuteQuery(userScript);
-            List<DataRow> rows = table.AsEnumerable().ToList();
-            string userName = !String.IsNullOrEmpty(company.UserName)
-                ? company.UserName.ToLower()
-                : String.Empty;
-            return rows.Any(row =>
-                row["name"]
-                    .ToString()
-                    .ToLower()
-                    .Equals(userName));
+                comp => comp.Id != company.Id && (comp.DbName == company.DbName || comp.Name == company.Name));
+            return existing != null && existing.IsActive;
         }
 
         /// <summary>
@@ -355,68 +320,59 @@ namespace SPPC.Tadbir.Persistence
         private void CreateDatabase(CompanyDbViewModel company)
         {
             var sqlBuilder = new StringBuilder();
-            if (!IsDuplicateDatabaseName(company.DbName))
+            var scriptPath = _pathProvider.CompanyScript;
+            if (!File.Exists(scriptPath))
             {
-                var scriptPath = _pathProvider.CompanyScript;
-                if (!File.Exists(scriptPath))
-                {
-                    throw ExceptionBuilder.NewGenericException<FileNotFoundException>();
-                }
-
-                sqlBuilder.AppendFormat(
-                    @"CREATE DATABASE {0}
-                    GO
-                    USE {0}
-                    GO",
-                    company.DbName);
-                sqlBuilder.AppendLine();
-                sqlBuilder.Append(File.ReadAllText(scriptPath));
-                DbConsole.ExecuteNonQuery(sqlBuilder.ToString());
-                sqlBuilder.Clear();
+                throw ExceptionBuilder.NewGenericException<FileNotFoundException>();
             }
 
-            if (String.IsNullOrEmpty(company.UserName))
-            {
-                sqlBuilder.AppendFormat(@"
-                    ALTER AUTHORIZATION ON DATABASE::{0} TO NgTadbirUser;
-                    GO", company.DbName);
-                DbConsole.ExecuteNonQuery(sqlBuilder.ToString());
-            }
-            else
-            {
-                CreateDatabaseLogin(company);
-            }
-
-            SetServerName(company);
+            sqlBuilder.AppendFormat(@"
+                CREATE DATABASE [{0}]
+                GO
+                USE [{0}]
+                GO
+                ALTER DATABASE SCOPED CONFIGURATION SET IDENTITY_CACHE=OFF
+                GO",
+                company.DbName);
+            sqlBuilder.AppendLine();
+            sqlBuilder.Append(File.ReadAllText(scriptPath));
+            DbConsole.ExecuteNonQuery(sqlBuilder.ToString());
         }
 
         private void CreateDatabaseLogin(CompanyDbViewModel company)
         {
-            string loginScript = String.Format(
-                @"CREATE LOGIN [{0}] WITH PASSWORD = '{1}', CHECK_POLICY = OFF, CHECK_EXPIRATION = OFF;
-                    GO
-                    Use [{2}];
-                    GO
-                    IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'{0}')
-                    BEGIN
-                    CREATE USER [{0}] FOR LOGIN [{0}]
-                    EXEC sp_addrolemember N'db_owner', N'{0}'    
-                    END;
-                    GO",
+            string loginScript = String.Format(@"
+                CREATE LOGIN [{0}] WITH PASSWORD = '{1}', CHECK_POLICY = OFF, CHECK_EXPIRATION = OFF;
+                GO
+                ALTER SERVER ROLE securityadmin ADD MEMBER {0};
+                GO
+                ALTER SERVER ROLE dbcreator ADD MEMBER {0};
+                GO
+                ALTER SERVER ROLE sysadmin ADD MEMBER {0};
+                GO
+                ALTER AUTHORIZATION ON DATABASE::{2} TO {0}
+                GO",
                 company.UserName, company.Password, company.DbName);
             DbConsole.ExecuteNonQuery(loginScript);
         }
 
-        private void SetServerName(CompanyDbViewModel company)
+        private string GetServerName()
         {
             string connection = _appConfig.GetConnectionString("TadbirSysApi");
             var sqlBuilder = new SqlConnectionStringBuilder(connection);
-            company.Server = sqlBuilder.DataSource;
+            return sqlBuilder.DataSource;
         }
 
-        private async Task ImportLookupsAsync(int companyId)
+        // NOTE: This method is called immediately after a company database is created. Because current login
+        // automatically owns a new database (i.e. owner of a new database becomes current SQL Server login),
+        // we need to connect to the new database using current login credentials...
+        private async Task ImportLookupsAsync(string dbName)
         {
-            await SetCurrentCompanyAsync(companyId);
+            var csBuilder = new SqlConnectionStringBuilder(UnitOfWork.CompanyConnection)
+            {
+                InitialCatalog = dbName
+            };
+            UnitOfWork.SwitchCompany(csBuilder.ConnectionString);
             UnitOfWork.UseCompanyContext();
 
             await ImportLookupAsync<Province, ProvinceViewModel>(_pathProvider.IranStates);
@@ -450,20 +406,12 @@ namespace SPPC.Tadbir.Persistence
             return table.Rows.Count > 0;
         }
 
-        private bool IsTadbirDatabase(string dbName)
+        private bool IsDuplicateCompanyUserName(string userName)
         {
-            string connectionString = DbConsole.BuildConnectionString(dbName);
-            if (DbConsole.TestConnection(connectionString))
-            {
-                string tableScript = String.Format(
-                    @"SELECT * FROM {0}.INFORMATION_SCHEMA.TABLES
-                        WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME='Account' AND TABLE_SCHEMA='Finance'",
-                        dbName);
-                DataTable table = DbConsole.ExecuteQuery(tableScript);
-                return table.Rows.Count == 1;
-            }
-
-            return false;
+            string userScript = String.Format(
+                $"SELECT name FROM sys.sql_logins WHERE LOWER(name) = '{userName?.ToLower()}'");
+            var table = DbConsole.ExecuteQuery(userScript);
+            return table.Rows.Count > 0;
         }
 
         private async Task<string> GetCompanyRoleDescriptionAsync(int companyId)
@@ -497,6 +445,68 @@ namespace SPPC.Tadbir.Persistence
             else
             {
                 return company => company.IsActive;
+            }
+        }
+
+        private async Task<bool> IsActivatedCompanyAsync(CompanyDbViewModel company)
+        {
+            bool activated = false;
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var inactive = await repository.GetSingleByCriteriaAsync(
+                c => c.Id != company.Id && c.DbName == company.DbName && !c.IsActive);
+            if (inactive != null)
+            {
+                await PrepareNewCompanyAsync(company);
+                OnEntityAction(OperationId.Create);
+                UpdateExisting(company, inactive);
+                inactive.IsActive = true;
+                company.Id = inactive.Id;
+                Log.Description = Context.Localize(GetState(inactive));
+                repository.Update(inactive);
+                await FinalizeActionAsync(inactive);
+                activated = true;
+            }
+
+            return activated;
+        }
+
+        private async Task PrepareNewCompanyAsync(CompanyDbViewModel company)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            if (!IsDuplicateDatabaseName(company.DbName))
+            {
+                CreateDatabase(company);
+                await ImportLookupsAsync(company.DbName);
+            }
+
+            if (String.IsNullOrEmpty(company.UserName))
+            {
+                string script = String.Format(@"
+                    ALTER AUTHORIZATION ON DATABASE::{0} TO {1}
+                    GO", company.DbName, AppConstants.SystemLoginName);
+                DbConsole.ExecuteNonQuery(script);
+            }
+            else if (!IsDuplicateCompanyUserName(company.UserName))
+            {
+                CreateDatabaseLogin(company);
+            }
+            else
+            {
+                // User may have typed wrong password for existing login; Overwrite it with correct password...
+                // NOTE: If user enters wrong password for an existing login NOT assigned to a company, we can't
+                // correct it, because login passwords are inaccessible.
+                string existingPass = await repository
+                    .GetEntityQuery()
+                    .Where(c => c.UserName == company.UserName)
+                    .Select(c => c.Password)
+                    .FirstOrDefaultAsync();
+                company.Password = existingPass ?? company.Password;
+                string script = String.Format(@"
+                    USE [{0}]
+                    GO
+                    ALTER AUTHORIZATION ON DATABASE::{0} TO {1}
+                    GO", company.DbName, company.UserName);
+                DbConsole.ExecuteNonQuery(script);
             }
         }
 
