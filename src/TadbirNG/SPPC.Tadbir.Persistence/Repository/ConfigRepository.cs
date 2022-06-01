@@ -236,14 +236,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="configItems">مجموعه ای از تنظیمات نماهای درختی</param>
         public async Task SaveViewTreeConfigAsync(List<ViewTreeFullConfig> configItems)
         {
-            Verify.ArgumentNotNull(configItems, "configItems");
+            Verify.ArgumentNotNull(configItems, nameof(configItems));
             var repository = UnitOfWork.GetAsyncRepository<ViewSetting>();
             foreach (var configItem in configItems)
             {
                 var existing = await repository.GetSingleByCriteriaAsync(
-                    cfg => cfg.ViewId == configItem.Default.ViewId && cfg.SettingId == (int)SettingId.ViewTree);
+                    cfg => cfg.ViewId == configItem.Default.ViewId);
                 if (existing != null)
                 {
+                    UnclipUsableTreeLevels(configItem);
                     existing.Values = JsonHelper.From(configItem.Current, false);
                     repository.Update(existing);
                 }
@@ -374,14 +375,28 @@ namespace SPPC.Tadbir.Persistence
 
         private static void ClipUsableTreeLevels(ViewTreeFullConfig fullConfig)
         {
+            while (fullConfig.Current.Levels.Count > ConfigConstants.MaxUsableTreeDepth)
+            {
+                fullConfig.Current.Levels.RemoveAt(ConfigConstants.MaxUsableTreeDepth);
+            }
+
             while (fullConfig.Default.Levels.Count > ConfigConstants.MaxUsableTreeDepth)
             {
                 fullConfig.Default.Levels.RemoveAt(ConfigConstants.MaxUsableTreeDepth);
             }
+        }
 
-            while (fullConfig.Current.Levels.Count > ConfigConstants.MaxUsableTreeDepth)
+        private static void UnclipUsableTreeLevels(ViewTreeFullConfig fullConfig)
+        {
+            while (fullConfig.Current.Levels.Count < ConfigConstants.MaxTreeDepth)
             {
-                fullConfig.Current.Levels.RemoveAt(ConfigConstants.MaxUsableTreeDepth);
+                var levelConfig = new ViewTreeLevelConfig()
+                {
+                    Name = ConfigConstants.DefaultLevelNameKey,
+                    No = fullConfig.Current.Levels.Count + 1,
+                    CodeLength = ConfigConstants.DefaultCodeLength
+                };
+                fullConfig.Current.Levels.Add(levelConfig);
             }
         }
 

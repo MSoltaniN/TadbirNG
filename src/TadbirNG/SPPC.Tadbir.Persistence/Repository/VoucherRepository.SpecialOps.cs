@@ -292,10 +292,10 @@ namespace SPPC.Tadbir.Persistence
         private async Task<Voucher> GetCurrentSpecialVoucherAsync(VoucherOriginId origin)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var openingVoucher = await repository.GetSingleByCriteriaAsync(
+            var specialVoucher = await repository.GetSingleByCriteriaAsync(
                 v => v.FiscalPeriodId == UserContext.FiscalPeriodId &&
                 v.OriginId == (int)origin);
-            return openingVoucher;
+            return specialVoucher;
         }
 
         private async Task<Account> GetBranchClosingAccountAsync(int branchId)
