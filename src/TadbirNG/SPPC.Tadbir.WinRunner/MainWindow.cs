@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using SPPC.Framework.Helpers;
@@ -61,85 +60,63 @@ namespace SPPC.Tadbir.WinRunner
             btnInstall.Enabled = false;
             btnExit.Enabled = false;
             timer.Enabled = true;
-            pullWorker.RunWorkerAsync();
+            worker.RunWorkerAsync();
         }
 
-        private void StartService_Click(object sender, EventArgs e)
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            RunConsoleCommand("sc start \"sppckeysrv\"");
-        }
-
-        private void Pull_Click(object sender, EventArgs e)
-        {
-            txtConsole.Focus();
-            txtConsole.Text = String.Empty;
-            _runner.OutputReceived += Runner_OutputReceived;
-            pullWorker.RunWorkerAsync();
-        }
-
-        private void StartContainers_Click(object sender, EventArgs e)
-        {
-            txtConsole.Focus();
-            txtConsole.Text = String.Empty;
-            _runner.OutputReceived += Runner_OutputReceived;
-            startWorker.RunWorkerAsync();
-            LaunchDefaultBrowser("http://localhost:9099");
-        }
-
-        private void PullWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            pullWorker.ReportProgress(0, "آماده سازی اولیه نصب برنامه...");
+            worker.ReportProgress(0, "آماده سازی اولیه نصب برنامه...");
             InstallerUtility.CreateInstallationPath(txtInstallPath.Text);
-            pullWorker.ReportProgress(2);
+            worker.ReportProgress(2);
 
-            pullWorker.ReportProgress(0, "کپی فایلهای مورد نیاز برنامه...");
+            worker.ReportProgress(0, "کپی فایلهای مورد نیاز برنامه...");
             InstallerUtility.CopyFiles(txtInstallPath.Text, chkCreateShortcut.Checked);
-            pullWorker.ReportProgress(8);
+            worker.ReportProgress(8);
 
-            pullWorker.ReportProgress(0, "نصب سرویس...");
+            worker.ReportProgress(0, "نصب سرویس...");
             bool succeeded = InstallerUtility.InstallService(txtInstallPath.Text);
             if (!succeeded)
             {
-                pullWorker.ReportProgress(0, "بروز خطا هنگام نصب سرویس");
+                worker.ReportProgress(0, "بروز خطا هنگام نصب سرویس");
                 return;
             }
 
-            pullWorker.ReportProgress(4);
+            worker.ReportProgress(4);
 
-            pullWorker.ReportProgress(0, "راه اندازی سرویس...");
+            worker.ReportProgress(0, "راه اندازی سرویس...");
             succeeded = InstallerUtility.RunService();
             if (!succeeded)
             {
-                pullWorker.ReportProgress(0, "بروز خطا هنگام راه اندازی سرویس");
+                worker.ReportProgress(0, "بروز خطا هنگام راه اندازی سرویس");
                 return;
             }
 
-            pullWorker.ReportProgress(6);
+            worker.ReportProgress(6);
 
             string suffix = InstallerUtility.GetCustomerSuffix();
             if (String.IsNullOrEmpty(suffix))
             {
-                pullWorker.ReportProgress(0, "بروز خطا هنگام دانلود سرویس های برنامه");
+                worker.ReportProgress(0, "بروز خطا هنگام دانلود سرویس های برنامه");
                 return;
             }
 
-            pullWorker.ReportProgress(0, "دانلود سرویس های برنامه...");
+            worker.ReportProgress(0, "دانلود سرویس های برنامه...");
             _runner.Run(String.Format(PullLicenseTemplate, suffix));
-            pullWorker.ReportProgress(20);
+            worker.ReportProgress(20);
             _runner.Run(String.Format(PullApiTemplate, suffix));
-            pullWorker.ReportProgress(20);
+            worker.ReportProgress(20);
             _runner.Run(String.Format(PullAppTemplate, suffix));
-            pullWorker.ReportProgress(20);
+            worker.ReportProgress(20);
             _runner.Run("docker pull msn1368/db-server:dev");
-            pullWorker.ReportProgress(20);
+            worker.ReportProgress(20);
 
-            pullWorker.ReportProgress(0, "تکمیل مراحل پایانی نصب...");
+            worker.ReportProgress(0, "تکمیل مراحل پایانی نصب...");
             if (!InstallerUtility.IsAppRegistered())
             {
                 var version = InstallerUtility.GetAppVersion();
                 if (version == null)
                 {
-                    pullWorker.ReportProgress(0, "بروز خطا هنگام تکمیل مراحل پایانی نصب");
+                    worker.ReportProgress(0, "بروز خطا هنگام تکمیل مراحل پایانی نصب");
                     return;
                 }
 
@@ -147,7 +124,7 @@ namespace SPPC.Tadbir.WinRunner
             }
         }
 
-        private void PullWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             btnInstall.Enabled = true;
             btnExit.Enabled = true;
@@ -158,12 +135,6 @@ namespace SPPC.Tadbir.WinRunner
                 MessageBoxOptions.RtlReading);
         }
 
-        private void StartWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            _runner.Run("docker-compose -f ..\\..\\..\\src\\TadbirNG\\docker-compose.override.yml -f ..\\..\\..\\src\\TadbirNG\\docker-compose.yml down");
-            _runner.Run("docker-compose -f ..\\..\\..\\src\\TadbirNG\\docker-compose.override.yml -f ..\\..\\..\\src\\TadbirNG\\docker-compose.yml up --no-build");
-        }
-
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             if (e.UserState != null)
@@ -171,7 +142,6 @@ namespace SPPC.Tadbir.WinRunner
                 lblStatus.Text = e.UserState.ToString();
             }
 
-            //txtConsole.AppendText(Environment.NewLine);
             progress.Value += e.ProgressPercentage;
             lblProgress.Text = String.Format("{0}%", progress.Value);
         }
@@ -225,27 +195,10 @@ namespace SPPC.Tadbir.WinRunner
             Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
         }
 
-        private void RunConsoleCommand(string command, bool append = false)
-        {
-            Cursor = Cursors.AppStarting;
-            txtConsole.Focus();
-            if (!append)
-            {
-                _builder.Clear();
-            }
-
-            _builder.Append(_runner.Run(command).Trim());
-            _builder.AppendLine().AppendLine();
-            txtConsole.Text = _builder.ToString();
-            txtConsole.SelectionStart = txtConsole.Text.Length;
-            Cursor = Cursors.Default;
-        }
-
         private const string PullLicenseTemplate = "docker pull msn1368/license-server-{0}:dev";
         private const string PullApiTemplate = "docker pull msn1368/api-server-{0}:latest";
         private const string PullAppTemplate = "docker pull msn1368/web-app-{0}:dev";
         private readonly CliRunner _runner;
-        private readonly StringBuilder _builder = new();
         private TimeSpan _elapsed;
         private string _dbServer;
     }

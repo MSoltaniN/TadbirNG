@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -20,6 +21,17 @@ namespace SPPC.Tools.LicenseManager.Utility
 {
     public class ReleaseUtility
     {
+        public static bool IsDockerEngineRunning()
+        {
+            // This is a simplified approach for detecting docker engine status. A better approach may be preferred.
+            // NOTE: vmmem may only be available under WSL2. In that case, only check for "Docker Desktop.exe"
+            var requiredProcesses = new string[] { "Docker Desktop.exe", "vmmem" };
+            return Process
+                .GetProcesses()
+                .Where(proc => requiredProcesses.Contains(proc.ProcessName))
+                .Any();
+        }
+
         public void GenerateSettings(LicenseModel license)
         {
             var settings = BuildSettings.Docker;
@@ -203,15 +215,24 @@ namespace SPPC.Tools.LicenseManager.Utility
         private static void CopyProgramFiles(string licenseKey)
         {
             // WARNING: This method attempts to copy around 225 MB of program files synchronously
+            // On a normal disk drive (non-SSD) this may take some time.
             string path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "service");
             var dirInfo = new DirectoryInfo(PathConfig.ServicePublishWin);
-            Array.ForEach(dirInfo.GetFiles(),
-                file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
+            var files = dirInfo.GetFiles();
+            if (!files.Any())
+            {
+                Array.ForEach(files,
+                    file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
+            }
 
             path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "runner");
             dirInfo = new DirectoryInfo(PathConfig.RunnerPublish);
-            Array.ForEach(dirInfo.GetFiles(),
+            files = dirInfo.GetFiles();
+            if (!files.Any())
+            {
+                Array.ForEach(files,
                 file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
+            }
         }
 
         private static void GenerateDockerCompose(string licenseKey)
@@ -234,16 +255,16 @@ namespace SPPC.Tools.LicenseManager.Utility
         private static void CreateChecksumFile(string path)
         {
             var dirInfo = new DirectoryInfo(path);
-            using var sha1 = SHA1.Create();
+            using var sha = SHA256.Create();
             var checksum = new Dictionary<string, string>();
             foreach (var file in dirInfo.GetFiles())
             {
                 using var stream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
                 string key = Transform
-                    .ToHexString(sha1.ComputeHash(Encoding.ASCII.GetBytes(file.Name)))
+                    .ToHexString(sha.ComputeHash(Encoding.ASCII.GetBytes(file.Name)))
                     .ToLower();
                 string value = Transform
-                    .ToHexString(sha1.ComputeHash(stream))
+                    .ToHexString(sha.ComputeHash(stream))
                     .ToLower();
                 checksum.Add(key, value);
             }
@@ -266,23 +287,26 @@ namespace SPPC.Tools.LicenseManager.Utility
             Verify.ArgumentNotNullOrEmptyString(password, nameof(password));
             string path = Path.Combine(PathConfig.TadbirRelease,
                 String.Format($"TadbirNG_v{VersionInfo.GetAppVersion()}.zip"));
-            var zipFile = new ZipFile()
+            if (!File.Exists(path))
             {
-                CompressionLevel = CompressionLevel.BestCompression,
-                CompressionMethod = CompressionMethod.BZip2,
-                Encryption = EncryptionAlgorithm.WinZipAes128,
-                FlattenFoldersOnExtract = true,
-                Name = path,
-                Password = password
-            };
-            using (zipFile)
-            {
-                zipFile.AddDirectory(Path.Combine(PathConfig.TadbirRelease, licenseKey));
-                zipFile.Save();
-            }
+                var zipFile = new ZipFile()
+                {
+                    CompressionLevel = CompressionLevel.BestCompression,
+                    CompressionMethod = CompressionMethod.BZip2,
+                    Encryption = EncryptionAlgorithm.WinZipAes128,
+                    FlattenFoldersOnExtract = true,
+                    Name = path,
+                    Password = password
+                };
+                using (zipFile)
+                {
+                    zipFile.AddDirectory(Path.Combine(PathConfig.TadbirRelease, licenseKey));
+                    zipFile.Save();
+                }
 
-            string newPath = Path.Combine(PathConfig.TadbirRelease, licenseKey, Path.GetFileName(path));
-            File.Move(path, newPath);
+                string newPath = Path.Combine(PathConfig.TadbirRelease, licenseKey, Path.GetFileName(path));
+                File.Move(path, newPath);
+            }
         }
 
         private static void CleanupReleaseFiles(string licenseKey)

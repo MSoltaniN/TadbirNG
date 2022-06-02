@@ -32,14 +32,10 @@ namespace SPPC.Tadbir.WinRunner
             this.components = new System.ComponentModel.Container();
             this.btnExit = new System.Windows.Forms.Button();
             this.btnInstall = new System.Windows.Forms.Button();
-            this.btnStartService = new System.Windows.Forms.Button();
-            this.btnPull = new System.Windows.Forms.Button();
-            this.btnStartContainers = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtConsole = new System.Windows.Forms.TextBox();
             this.progress = new System.Windows.Forms.ProgressBar();
-            this.pullWorker = new System.ComponentModel.BackgroundWorker();
-            this.startWorker = new System.ComponentModel.BackgroundWorker();
+            this.worker = new System.ComponentModel.BackgroundWorker();
             this.label2 = new System.Windows.Forms.Label();
             this.txtInstallPath = new System.Windows.Forms.TextBox();
             this.btnBrowse = new System.Windows.Forms.Button();
@@ -75,42 +71,6 @@ namespace SPPC.Tadbir.WinRunner
             this.btnInstall.UseVisualStyleBackColor = true;
             this.btnInstall.Click += new System.EventHandler(this.Install_Click);
             // 
-            // btnStartService
-            // 
-            this.btnStartService.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnStartService.Location = new System.Drawing.Point(658, 123);
-            this.btnStartService.Name = "btnStartService";
-            this.btnStartService.Size = new System.Drawing.Size(114, 29);
-            this.btnStartService.TabIndex = 1;
-            this.btnStartService.Text = "Start Service";
-            this.btnStartService.UseVisualStyleBackColor = true;
-            this.btnStartService.Visible = false;
-            this.btnStartService.Click += new System.EventHandler(this.StartService_Click);
-            // 
-            // btnPull
-            // 
-            this.btnPull.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnPull.Location = new System.Drawing.Point(535, 123);
-            this.btnPull.Name = "btnPull";
-            this.btnPull.Size = new System.Drawing.Size(117, 29);
-            this.btnPull.TabIndex = 2;
-            this.btnPull.Text = "Pull Images";
-            this.btnPull.UseVisualStyleBackColor = true;
-            this.btnPull.Visible = false;
-            this.btnPull.Click += new System.EventHandler(this.Pull_Click);
-            // 
-            // btnStartContainers
-            // 
-            this.btnStartContainers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnStartContainers.Location = new System.Drawing.Point(388, 123);
-            this.btnStartContainers.Name = "btnStartContainers";
-            this.btnStartContainers.Size = new System.Drawing.Size(141, 29);
-            this.btnStartContainers.TabIndex = 3;
-            this.btnStartContainers.Text = "Start Containers";
-            this.btnStartContainers.UseVisualStyleBackColor = true;
-            this.btnStartContainers.Visible = false;
-            this.btnStartContainers.Click += new System.EventHandler(this.StartContainers_Click);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -143,19 +103,13 @@ namespace SPPC.Tadbir.WinRunner
             this.progress.Size = new System.Drawing.Size(659, 29);
             this.progress.TabIndex = 7;
             // 
-            // pullWorker
+            // worker
             // 
-            this.pullWorker.WorkerReportsProgress = true;
-            this.pullWorker.WorkerSupportsCancellation = true;
-            this.pullWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.PullWorker_DoWork);
-            this.pullWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.Worker_ProgressChanged);
-            this.pullWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.PullWorker_RunWorkerCompleted);
-            // 
-            // startWorker
-            // 
-            this.startWorker.WorkerReportsProgress = true;
-            this.startWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.StartWorker_DoWork);
-            this.startWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.Worker_ProgressChanged);
+            this.worker.WorkerReportsProgress = true;
+            this.worker.WorkerSupportsCancellation = true;
+            this.worker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Worker_DoWork);
+            this.worker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.Worker_ProgressChanged);
+            this.worker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Worker_RunWorkerCompleted);
             // 
             // label2
             // 
@@ -276,9 +230,6 @@ namespace SPPC.Tadbir.WinRunner
             this.Controls.Add(this.txtConsole);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnExit);
-            this.Controls.Add(this.btnStartContainers);
-            this.Controls.Add(this.btnPull);
-            this.Controls.Add(this.btnStartService);
             this.Controls.Add(this.btnInstall);
             this.Name = "MainWindow";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -293,14 +244,10 @@ namespace SPPC.Tadbir.WinRunner
         #endregion
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Button btnInstall;
-        private System.Windows.Forms.Button btnStartService;
-        private System.Windows.Forms.Button btnPull;
-        private System.Windows.Forms.Button btnStartContainers;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtConsole;
         private System.Windows.Forms.ProgressBar progress;
-        private System.ComponentModel.BackgroundWorker pullWorker;
-        private System.ComponentModel.BackgroundWorker startWorker;
+        private System.ComponentModel.BackgroundWorker worker;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtInstallPath;
         private System.Windows.Forms.Button btnBrowse;

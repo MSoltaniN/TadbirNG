@@ -64,10 +64,7 @@ namespace SPPC.Tadbir.WinRunner.Utility
 
         public static void CreateInstallationPath(string path)
         {
-            var items = new List<string>
-            {
-                path
-            };
+            var items = new List<string> { path };
             var dirName = Path.GetDirectoryName(path);
             while (dirName != null)
             {
@@ -87,19 +84,24 @@ namespace SPPC.Tadbir.WinRunner.Utility
 
         public static void CopyFiles(string path, bool createShortcut = true)
         {
-            string sourceRoot = ChecksumRoot;
-            Array.ForEach(new DirectoryInfo(sourceRoot).GetFiles(),
-                file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
-            sourceRoot = Path.Combine(ChecksumRoot, "runner");
-            Array.ForEach(new DirectoryInfo(sourceRoot).GetFiles(),
-                file => File.Copy(file.FullName, Path.Combine(path, "runner", file.Name)));
-            sourceRoot = Path.Combine(ChecksumRoot, "service");
-            Array.ForEach(new DirectoryInfo(sourceRoot).GetFiles(),
-                file => File.Copy(file.FullName, Path.Combine(path, "service", file.Name)));
+            CopyFilesIfMissing(ChecksumRoot, path);
+            CopyFilesIfMissing(Path.Combine(ChecksumRoot, "runner"), Path.Combine(path, "runner"));
+            CopyFilesIfMissing(Path.Combine(ChecksumRoot, "service"), Path.Combine(path, "service"));
             if (createShortcut)
             {
                 // Create shortcut to main Runner executable on user's Desktop folder...
             }
+        }
+
+        private static void CopyFilesIfMissing(string fromPath, string toPath)
+        {
+            Array.ForEach(new DirectoryInfo(fromPath).GetFiles(), file =>
+            {
+                if (!File.Exists(Path.Combine(toPath, file.Name)))
+                {
+                    File.Copy(file.FullName, Path.Combine(toPath, file.Name));
+                }
+            });
         }
 
         public static bool InstallService(string path)
@@ -141,7 +143,6 @@ namespace SPPC.Tadbir.WinRunner.Utility
                 string root = value?.ToString();
                 if (!String.IsNullOrEmpty(root))
                 {
-                    string path = Path.Combine(root, "runner", "SPPC.Tadbir.WinRunner.exe");
                     if (ValidateValues(key, root))
                     {
                         return true;

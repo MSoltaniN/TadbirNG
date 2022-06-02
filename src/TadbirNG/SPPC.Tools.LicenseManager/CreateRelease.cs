@@ -14,6 +14,25 @@ namespace SPPC.Tools.LicenseManager
             InitializeComponent();
         }
 
+        public LicenseModel License { get; set; }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            txtCustomer.Text = License?.Customer?.CompanyName;
+            txtUser.Text = String.Format(
+                $"{License?.Customer?.ContactFirstName} {License?.Customer?.ContactLastName}");
+            txtLicenseKey.Text = License?.LicenseKey;
+            txtPassword.Focus();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            _runner.Kill();
+            _utility.RestoreSettings();
+        }
+
         private void Runner_OutputReceived(object sender, OutputReceivedEventArgs e)
         {
             if (txtConsole.InvokeRequired)
@@ -30,22 +49,12 @@ namespace SPPC.Tools.LicenseManager
             }
         }
 
-        public LicenseModel License { get; set; }
-
-        protected override void OnLoad(EventArgs e)
+        private void Runner_Killed(object sender, EventArgs e)
         {
-            base.OnLoad(e);
-            txtCustomer.Text = License?.Customer?.CompanyName;
-            txtUser.Text = String.Format(
-                $"{License?.Customer?.ContactFirstName} {License?.Customer?.ContactLastName}");
-            txtLicenseKey.Text = License?.LicenseKey;
-            txtPassword.Focus();
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-            _utility.RestoreSettings();
+            if (worker.IsBusy)
+            {
+                worker.CancelAsync();
+            }
         }
 
         private void Create_Click(object sender, EventArgs e)
@@ -58,9 +67,18 @@ namespace SPPC.Tools.LicenseManager
                 return;
             }
 
+            if (!ReleaseUtility.IsDockerEngineRunning())
+            {
+                MessageBox.Show("لطفاً پیش از ساخت نسخه، ابتدا برنامه داکر دسکتاپ را اجرا کنید و وارد حساب کاربری سازمان شوید.",
+                    "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.RtlReading);
+                return;
+            }
+
             _elapsed = TimeSpan.Zero;
             txtConsole.Focus();
             _runner.OutputReceived += Runner_OutputReceived;
+            _runner.Killed += Runner_Killed;
             btnCreate.Enabled = false;
             btnExit.Enabled = false;
             timer.Enabled = true;
