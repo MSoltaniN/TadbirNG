@@ -1153,7 +1153,7 @@ export class AccountGroupsComponent
     });
   }
 
-  public onDataStateChange(): void {
+  public onDataStateChange(event): void {
     if (this.rowData && this.rowData.total > 0) {
       var fcolumns = new Array<ColumnBase>();
       this.grid.columns.forEach(function (column) {
