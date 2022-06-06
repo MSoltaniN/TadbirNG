@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetZip" Version="1.16.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
+    <ProjectReference Include="..\SPPC.Framework.Cryptography\SPPC.Framework.Cryptography.csproj" />
+    <ProjectReference Include="..\SPPC.Licensing.Model\SPPC.Licensing.Model.csproj" />
+    <ProjectReference Include="..\SPPC.Tools.Model\SPPC.Tools.Model.csproj" />
+    <ProjectReference Include="..\SPPC.Tools.Transforms\SPPC.Tools.Transforms.csproj" />
+  </ItemGroup>
+
+</Project>

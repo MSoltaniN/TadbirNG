@@ -14,7 +14,6 @@ namespace SPPC.Tools.Transforms.Templates
     using System.Collections.Generic;
     using SPPC.Framework.Extensions;
     using SPPC.Tools.Model;
-    using SPPC.Tools.Utility;
     using System;
     
     /// <summary>
@@ -33,7 +32,7 @@ namespace SPPC.Tools.Transforms.Templates
         {
             this.Write("using System;\r\nusing System.Collections.Generic;\r\n\r\n");
             
-            #line 12 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 11 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
 
     var name = _model.EntityName;
     var plural = name.ToPlural();
@@ -44,63 +43,63 @@ namespace SPPC.Tools.Transforms.Templates
             this.Write("namespace SPPC.Tadbir.Api\r\n{\r\n    /// <summary>\r\n    /// Defines API server route" +
                     "s and API client operation URLs for working with ");
             
-            #line 19 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 18 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.ToLower()));
             
             #line default
             #line hidden
             this.Write(".\r\n    /// </summary>\r\n    public sealed class ");
             
-            #line 21 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 20 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("Api\r\n    {\r\n        /// <summary>\r\n        /// API client URL for all ");
             
-            #line 24 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 23 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name.ToLower()));
             
             #line default
             #line hidden
             this.Write(" items\r\n        /// </summary>\r\n        public const string ");
             
-            #line 26 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 25 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural));
             
             #line default
             #line hidden
             this.Write(" = \"");
             
-            #line 26 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 25 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.CamelCase()));
             
             #line default
             #line hidden
             this.Write("\";\r\n\r\n        /// <summary>\r\n        /// API server route URL for all ");
             
-            #line 29 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 28 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name.ToLower()));
             
             #line default
             #line hidden
             this.Write(" items\r\n        /// </summary>\r\n        public const string ");
             
-            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 30 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural));
             
             #line default
             #line hidden
             this.Write("Url = \"");
             
-            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 30 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.ToLower()));
             
             #line default
             #line hidden
             this.Write("\";\r\n\r\n        /// <summary>\r\n        /// API client URL for a ");
             
-            #line 34 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 33 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name.ToLower()));
             
             #line default
@@ -108,21 +107,21 @@ namespace SPPC.Tools.Transforms.Templates
             this.Write(" item specified by unique identifier\r\n        /// </summary>\r\n        public cons" +
                     "t string ");
             
-            #line 36 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 35 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write(" = \"");
             
-            #line 36 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 35 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.ToLower()));
             
             #line default
             #line hidden
             this.Write("/{0}\";\r\n\r\n        /// <summary>\r\n        /// API server route URL for a ");
             
-            #line 39 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 38 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name.ToLower()));
             
             #line default
@@ -130,21 +129,21 @@ namespace SPPC.Tools.Transforms.Templates
             this.Write(" item specified by unique identifier\r\n        /// </summary>\r\n        public cons" +
                     "t string ");
             
-            #line 41 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 40 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write("Url = \"");
             
-            #line 41 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 40 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.CamelCase()));
             
             #line default
             #line hidden
             this.Write("/{");
             
-            #line 41 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
+            #line 40 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsApiClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name.CamelCase()));
             
             #line default

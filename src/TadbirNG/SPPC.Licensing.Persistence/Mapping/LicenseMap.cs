@@ -45,7 +45,7 @@ namespace SPPC.Licensing.Persistence.Mapping
             builder.Property(e => e.ModifiedDate);
 
             builder.HasOne(e => e.Customer)
-                .WithMany(p => p.Licenses)
+                .WithMany()
                 .HasForeignKey(e => e.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_License_Customer");

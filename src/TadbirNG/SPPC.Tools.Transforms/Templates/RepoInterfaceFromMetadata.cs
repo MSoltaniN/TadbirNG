@@ -12,7 +12,7 @@ namespace SPPC.Tools.Transforms.Templates
     using System.Linq;
     using System.Text;
     using System.Collections.Generic;
-    using SPPC.Tools.Utility;
+    using SPPC.Framework.Extensions;
     using System;
     
     /// <summary>

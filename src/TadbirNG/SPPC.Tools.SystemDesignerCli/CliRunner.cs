@@ -48,7 +48,7 @@ namespace SPPC.Tools.SystemDesignerCli
         {
             Console.WriteLine();
             Console.WriteLine("============================================================");
-            Console.WriteLine("SPPC Framework : Project Command-Line Interface (v1.1)");
+            Console.WriteLine("SPPC Framework : Project Command-Line Interface (v1.2)");
             Console.WriteLine("(c) Copyright {0}, SPPC, All Rights Reserved", DateTime.Now.Year);
             Console.WriteLine("============================================================");
             Console.WriteLine();

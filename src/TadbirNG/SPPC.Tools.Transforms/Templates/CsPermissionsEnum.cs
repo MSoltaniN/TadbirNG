@@ -9,7 +9,7 @@
 // ------------------------------------------------------------------------------
 namespace SPPC.Tools.Transforms.Templates
 {
-    using SPPC.Tools.Utility;
+    using SPPC.Tools.Model;
     using System;
     
     /// <summary>

@@ -12,14 +12,14 @@ namespace SPPC.Tools.Transforms.Templates
     using System.Linq;
     using System.Text;
     using System.Collections.Generic;
-    using SPPC.Tools.Utility;
+    using SPPC.Tools.Model;
     using System;
     
     /// <summary>
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\Temp\SourceCode\WizardTest\tadbirng\src\TadbirNG\SPPC.Tools.Transforms\Templates\NgDevEnvironment.tt"
+    #line 1 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\NgDevEnvironment.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
     public partial class NgDevEnvironment : NgDevEnvironmentBase
     {
@@ -40,14 +40,14 @@ export const environment = {
   LicenseServerUrl: ""http://localhost:7473"",
   InstanceKey: """);
             
-            #line 16 "D:\Temp\SourceCode\WizardTest\tadbirng\src\TadbirNG\SPPC.Tools.Transforms\Templates\NgDevEnvironment.tt"
+            #line 16 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\NgDevEnvironment.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.InstanceKey));
             
             #line default
             #line hidden
             this.Write("\",\r\n  Version: \"");
             
-            #line 17 "D:\Temp\SourceCode\WizardTest\tadbirng\src\TadbirNG\SPPC.Tools.Transforms\Templates\NgDevEnvironment.tt"
+            #line 17 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\NgDevEnvironment.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(VersionInfo.GetAppVersion()));
             
             #line default

@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace SPPC.Tools.Utility
+namespace SPPC.Tools.Model
 {
     /// <summary>
     /// امکان خواندن اطلاعات نسخه برنامه و سرویس را فراهم می کند
@@ -46,8 +46,8 @@ namespace SPPC.Tools.Utility
             return version;
         }
 
-        private const string _apiVersionPath = @"..\..\..\src\TadbirNG\FrameworkSolutionInfo.cs";
-        private const string _appVersionPath = @"..\..\..\src\TadbirNG\TadbirSolutionInfo.cs";
+        private static readonly string _apiVersionPath = Path.Combine(PathConfig.SolutionRoot, "FrameworkSolutionInfo.cs");
+        private static readonly string _appVersionPath = Path.Combine(PathConfig.SolutionRoot, "TadbirSolutionInfo.cs");
         private const string _versionRegex = @"(\d{1,}).(\d{1,}).(\d{1,})";
     }
 }

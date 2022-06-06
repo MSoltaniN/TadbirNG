@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using SPPC.Framework.Persistence;
-using SPPC.Tools.Utility;
+using SPPC.Tools.Model;
 
 namespace SPPC.Tools.SystemDesigner.Forms
 {

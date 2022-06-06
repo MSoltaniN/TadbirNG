@@ -91,6 +91,14 @@ namespace SPPC.Licensing.Web.Controllers
             return Json(licenses);
         }
 
+        [HttpGet]
+        [Route(LicenseApi.LicenseUrl)]
+        public async Task<IActionResult> GetLicenseByIdAsync(int licenseId)
+        {
+            var license = await _repository.GetLicenseAsync(licenseId);
+            return Json(license);
+        }
+
         // POST: api/licenses
         [HttpPost]
         [Route(LicenseApi.LicensesUrl)]

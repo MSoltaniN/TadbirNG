@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms;
 using SPPC.Tools.Transforms.Templates;

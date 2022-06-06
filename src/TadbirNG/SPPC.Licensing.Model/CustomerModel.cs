@@ -10,7 +10,6 @@ namespace SPPC.Licensing.Model
     {
         public CustomerModel()
         {
-            Licenses = new List<LicenseModel>();
             RowGuid = Guid.NewGuid();
             ModifiedDate = DateTime.Now.Date;
         }
@@ -65,8 +64,6 @@ namespace SPPC.Licensing.Model
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(16, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string CellPhone { get; set; }
-
-        public IList<LicenseModel> Licenses { get; }
 
         public Guid RowGuid { get; set; }
 

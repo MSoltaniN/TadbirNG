@@ -39,6 +39,12 @@ namespace SPPC.Licensing.Persistence
             return license;
         }
 
+        public async Task<LicenseModel> GetLicenseAsync(int licenseId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<LicenseModel>();
+            return await repository.GetByIDAsync(licenseId, lic => lic.Customer);
+        }
+
         public async Task<LicenseFileModel> GetLicenseFileDataAsync(string licenseKey, string customerKey)
         {
             var licenseFile = default(LicenseFileModel);

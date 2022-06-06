@@ -3,7 +3,7 @@ using System.IO;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Configuration;
 
-namespace SPPC.Tools.Utility
+namespace SPPC.Tools.Model
 {
     public static class DbConnections
     {
@@ -19,7 +19,7 @@ namespace SPPC.Tools.Utility
 
         private static string GetSystemConnection()
         {
-            string path = @"..\..\..\src\TadbirNG\SPPC.Tadbir.Web.Api\appsettings.Development.json";
+            string path = Path.Combine(PathConfig.WebApiRoot, "appsettings.Development.json");
             var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
             return appSettings.ConnectionStrings.TadbirSysApi;
         }

@@ -38,6 +38,7 @@
     <ProjectReference Include="..\SPPC.Tadbir.Persistence\SPPC.Tadbir.Persistence.csproj" />
     <ProjectReference Include="..\SPPC.Tools.Model\SPPC.Tools.Model.csproj" />
     <ProjectReference Include="..\SPPC.Tools.Transforms\SPPC.Tools.Transforms.csproj" />
+    <ProjectReference Include="..\SPPC.Tools.Utility\SPPC.Tools.Utility.csproj" />
   </ItemGroup>
 
 </Project>

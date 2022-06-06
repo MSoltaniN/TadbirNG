@@ -5,7 +5,6 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="SPPC.Framework.Extensions" #>
 <#@ import namespace="SPPC.Tools.Model" #>
-<#@ import namespace="SPPC.Tools.Utility" #>
 using System;
 using System.Collections.Generic;
 

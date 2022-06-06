@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using SPPC.Tadbir.WinRunner.Utility;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tadbir.WinRunner
 {
@@ -16,7 +17,7 @@ namespace SPPC.Tadbir.WinRunner
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            if (!InstallerUtility.IsDockerEngineRunning())
+            if (!CommonUtility.IsDockerEngineRunning())
             {
                 MessageBox.Show("لطفاً پیش از اجرای این برنامه، ابتدا برنامه داکر دسکتاپ را اجرا کنید و وارد حساب کاربری سازمان شوید.",
                     "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,

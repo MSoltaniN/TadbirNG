@@ -4,7 +4,7 @@ using System.IO;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Persistence.DbUpgrade;
-using SPPC.Tools.Utility;
+using SPPC.Tools.Model;
 
 namespace SPPC.Tools.SystemDesignerCli
 {

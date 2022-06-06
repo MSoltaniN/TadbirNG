@@ -1,6 +1,6 @@
 ﻿<#@ template language="C#" #>
 <#@ assembly name="System.Core" #>
-<#@ import namespace="SPPC.Tools.Utility" #>
+<#@ import namespace="SPPC.Tools.Model" #>
 <#
 string enName = _entity.Entity.Name;
 string faSingular = _entity.SingularName;

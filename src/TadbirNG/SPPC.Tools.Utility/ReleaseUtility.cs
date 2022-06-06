@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -15,23 +14,11 @@ using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms;
 using SPPC.Tools.Transforms.Templates;
-using SPPC.Tools.Utility;
 
-namespace SPPC.Tools.LicenseManager.Utility
+namespace SPPC.Tools.Utility
 {
     public class ReleaseUtility
     {
-        public static bool IsDockerEngineRunning()
-        {
-            // This is a simplified approach for detecting docker engine status. A better approach may be preferred.
-            // NOTE: vmmem may only be available under WSL2. In that case, only check for "Docker Desktop.exe"
-            var requiredProcesses = new string[] { "Docker Desktop.exe", "vmmem" };
-            return Process
-                .GetProcesses()
-                .Where(proc => requiredProcesses.Contains(proc.ProcessName))
-                .Any();
-        }
-
         public void GenerateSettings(LicenseModel license)
         {
             var settings = BuildSettings.Docker;
@@ -226,7 +213,7 @@ namespace SPPC.Tools.LicenseManager.Utility
             }
 
             path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "runner");
-            dirInfo = new DirectoryInfo(PathConfig.RunnerPublish);
+            dirInfo = new DirectoryInfo(PathConfig.RunnerPublishWin);
             files = dirInfo.GetFiles();
             if (!files.Any())
             {

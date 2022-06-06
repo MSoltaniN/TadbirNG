@@ -7,7 +7,7 @@ using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Tests;
 using SPPC.Tadbir.ViewModel.Auth;
-using SPPC.Tools.Utility;
+using SPPC.Tools.Model;
 
 namespace SPPC.Tadbir.Persistence.Tests
 {

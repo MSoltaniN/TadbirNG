@@ -462,7 +462,7 @@ namespace SPPC.Tools.LicenseManager
                 var lookupItem = cmbCustomer.SelectedItem as KeyValue;
                 int? customerId = lookupItem.Key != null
                     ? Int32.Parse(lookupItem.Key)
-                    : (int?)null;
+                    : null;
                 grdLicenses.DataSource = null;
                 grdLicenses.DataSource = LicenseService.GetLicenses(customerId);
                 Cursor = Cursors.Default;
