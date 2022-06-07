@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Api;
 using SPPC.Licensing.Model;
@@ -24,14 +20,17 @@ namespace SPPC.Tools.DeliveryCli
         public static bool ConfirmLicenseId()
         {
             Console.WriteLine("This utility requires a valid license identifier.");
-            Console.WriteLine("Do you wish to continue? (y[Y]/n[N])");
+            Console.Write("Do you wish to continue? (y[Y]/n[N]) ");
             var key = Console.ReadKey();
-            while (Char.ToLower(key.KeyChar) != 'y' || Char.ToLower(key.KeyChar) != 'n')
+            while (Char.ToLower(key.KeyChar) != 'y' && Char.ToLower(key.KeyChar) != 'n')
             {
-                Console.Clear();
+                Console.WriteLine();
+                Console.WriteLine("Invalid key!");
+                Console.Write("(y[Y]/n[N]) ");
                 key = Console.ReadKey();
             }
 
+            Console.WriteLine();
             return Char.ToLower(key.KeyChar) == 'y';
         }
 
@@ -43,11 +42,16 @@ namespace SPPC.Tools.DeliveryCli
             var service = new ServiceClient(_rootUrl);
             while (license == null)
             {
-                license = service.Get<LicenseModel>(LicenseApi.LicenseUrl, licenseId);
+                if (licenseId == 0)
+                {
+                    break;
+                }
+
+                license = service.Get<LicenseModel>(LicenseApi.License, licenseId);
                 if (license == null)
                 {
                     Console.WriteLine("ERROR: No license by given id could be found.");
-                    QueryLicenseId();
+                    licenseId = QueryLicenseId();
                 }
             }
 
@@ -57,13 +61,13 @@ namespace SPPC.Tools.DeliveryCli
         public static int QueryLicenseId()
         {
             int licenseId;
-            Console.Write("License id : ");
+            Console.Write("License id (enter 0 to cancel) : ");
             string userValue = Console.ReadLine();
             while (!Int32.TryParse(userValue, out licenseId))
             {
                 Console.WriteLine();
                 Console.WriteLine("ERROR: License id is invalid. Please enter an integer value.");
-                Console.Write("License id : ");
+                Console.Write("License id (enter 0 to cancel) : ");
                 userValue = Console.ReadLine();
             }
 
@@ -72,7 +76,7 @@ namespace SPPC.Tools.DeliveryCli
 
         public static string QueryZipFilePassword()
         {
-            Console.WriteLine("Please enter a password for delivery zip file :");
+            Console.Write("Please enter a password for delivery zip file : ");
             string password;
             do
             {

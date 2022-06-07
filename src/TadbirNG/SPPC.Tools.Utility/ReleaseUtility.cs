@@ -19,7 +19,7 @@ namespace SPPC.Tools.Utility
 {
     public class ReleaseUtility
     {
-        public void GenerateSettings(LicenseModel license)
+        public static void GenerateSettings(LicenseModel license)
         {
             var settings = BuildSettings.Docker;
             settings.Key = GetInstanceKey(license);
@@ -32,7 +32,7 @@ namespace SPPC.Tools.Utility
                 new DockerCompose(license.LicenseKey), new DockerComposeOverride(license.LicenseKey));
         }
 
-        public void RestoreSettings()
+        public static void RestoreSettings()
         {
             RestoreFile(Path.Combine(PathConfig.LocalServerRoot, ConfigFile));
             RestoreFile(Path.Combine(PathConfig.LocalServerRoot, DevConfigFile));
@@ -48,7 +48,7 @@ namespace SPPC.Tools.Utility
             RestoreFile(Path.Combine(PathConfig.SolutionRoot, OverrideFile));
         }
 
-        public void CreateReleaseArchive(string licenseKey, string password)
+        public static void CreateReleaseArchive(string licenseKey, string password)
         {
             // Create a folder named after customer license in TadbirNG Release folder
             PrepareReleaseFolder(licenseKey);
@@ -145,7 +145,7 @@ namespace SPPC.Tools.Utility
             return JsonHelper.From(Reflector.GetProperty(allConfig, edition));
         }
 
-        private string GetInstanceKey(LicenseModel license)
+        private static string GetInstanceKey(LicenseModel license)
         {
             var crypto = new CryptoService(new CertificateManager());
             var instance = new InstanceModel()

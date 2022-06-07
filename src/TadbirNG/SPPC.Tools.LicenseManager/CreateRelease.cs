@@ -30,7 +30,7 @@ namespace SPPC.Tools.LicenseManager
         {
             base.OnClosing(e);
             _runner.Kill();
-            _utility.RestoreSettings();
+            ReleaseUtility.RestoreSettings();
         }
 
         private void Runner_OutputReceived(object sender, OutputReceivedEventArgs e)
@@ -88,7 +88,7 @@ namespace SPPC.Tools.LicenseManager
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             worker.ReportProgress(0, "ایجاد تنظیمات نسخه جدید...");
-            _utility.GenerateSettings(License);
+            ReleaseUtility.GenerateSettings(License);
             worker.ReportProgress(5);
 
             worker.ReportProgress(0, "ساختن سرویس های داکر...");
@@ -107,7 +107,7 @@ namespace SPPC.Tools.LicenseManager
             worker.ReportProgress(15);
 
             worker.ReportProgress(0, "ساختن فایل نهایی کاربر...");
-            _utility.CreateReleaseArchive(License.LicenseKey, txtPassword.Text);
+            ReleaseUtility.CreateReleaseArchive(License.LicenseKey, txtPassword.Text);
             worker.ReportProgress(10);
         }
 
@@ -149,7 +149,6 @@ namespace SPPC.Tools.LicenseManager
         private const string PushApiTemplate = "docker push msn1368/api-server-{0}:latest";
         private const string PushAppTemplate = "docker push msn1368/web-app-{0}:dev";
         private const string BuildTemplate = "docker-compose -f {0}docker-compose.override.yml -f {0}docker-compose.yml build";
-        private readonly ReleaseUtility _utility = new();
         private readonly CliRunner _runner = new();
         private TimeSpan _elapsed;
     }
