@@ -33,6 +33,36 @@ namespace SPPC.Framework.Helpers
         }
 
         /// <summary>
+        /// برنامه خط فرمان در حال اجرا را به صورت عادی (معادل فشردن کلید ترکیبی کنترل و سی) متوقف می کند
+        /// </summary>
+        public bool Stop()
+        {
+            bool stopped = false;
+            if (ConsoleImports.AttachConsole((uint)_process.Id))
+            {
+                ConsoleImports.SetConsoleCtrlHandler(null, true);
+                try
+                {
+                    if (!ConsoleImports.GenerateConsoleCtrlEvent(ConsoleImports.CTRL_C_EVENT, 0))
+                    {
+                        return false;
+                    }
+
+                    _process.WaitForExit();
+                }
+                finally
+                {
+                    ConsoleImports.SetConsoleCtrlHandler(null, false);
+                    ConsoleImports.FreeConsole();
+                }
+
+                stopped = true;
+            }
+
+            return stopped;
+        }
+
+        /// <summary>
         /// پروسس مربوط به دستور خط فرمان در حال اجرا را به همراه پروسس های زیرمجموعه پیش از اتمام کار متوقف می کند
         /// </summary>
         public void Kill()

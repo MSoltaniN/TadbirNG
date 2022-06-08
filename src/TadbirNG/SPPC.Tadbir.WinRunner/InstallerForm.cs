@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -9,9 +10,9 @@ using SPPC.Tadbir.WinRunner.Utility;
 
 namespace SPPC.Tadbir.WinRunner
 {
-    public partial class MainWindow : Form
+    public partial class InstallerForm : Form
     {
-        public MainWindow()
+        public InstallerForm()
         {
             InitializeComponent();
             _runner = new CliRunner();
@@ -121,6 +122,12 @@ namespace SPPC.Tadbir.WinRunner
                 }
 
                 InstallerUtility.RegisterApplication(txtInstallPath.Text, _dbServer, version);
+            }
+
+            if (chkCreateShortcut.Checked)
+            {
+                string exePath = Path.Combine(txtInstallPath.Text, "runner", "SPPC.Tadbir.WinRunner.exe");
+                InstallerUtility.CreateDesktopShortcut(exePath, "سیستم جدید تدبیر", "سیستم جدید تدبیر");
             }
         }
 

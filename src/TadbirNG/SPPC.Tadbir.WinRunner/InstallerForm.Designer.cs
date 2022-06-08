@@ -1,7 +1,7 @@
 ﻿
 namespace SPPC.Tadbir.WinRunner
 {
-    partial class MainWindow
+    partial class InstallerForm
     {
         /// <summary>
         ///  Required designer variable.

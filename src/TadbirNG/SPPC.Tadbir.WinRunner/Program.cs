@@ -26,16 +26,19 @@ namespace SPPC.Tadbir.WinRunner
                 return;
             }
 
-            if (!InstallerUtility.VerifyChecksums())
-            {
-                MessageBox.Show("برنامه به دلیل دستکاری احتمالی فایل ها قابل اجرا نیست. لطفاً نسخه سالم برنامه را دوباره تهیه نمایید.",
-                    "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.RtlReading);
-                Application.Exit();
-                return;
-            }
+            //if (!InstallerUtility.VerifyChecksums())
+            //{
+            //    MessageBox.Show("برنامه به دلیل دستکاری احتمالی فایل ها قابل اجرا نیست. لطفاً نسخه سالم برنامه را دوباره تهیه نمایید.",
+            //        "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,
+            //        MessageBoxOptions.RtlReading);
+            //    Application.Exit();
+            //    return;
+            //}
 
-            Application.Run(new MainWindow());
+            Form startForm = InstallerUtility.IsAppRegistered()
+                ? new RunnerForm()
+                : new InstallerForm();
+            Application.Run(startForm);
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Win32;
@@ -198,6 +198,20 @@ namespace SPPC.Tadbir.WinRunner.Utility
             return null;
         }
 
+        public static void CreateDesktopShortcut(string path, string name, string description)
+        {
+            IShellLink link = (IShellLink)new ShellLink();
+
+            // Setup shortcut information
+            link.SetDescription(description);
+            link.SetPath(path);
+
+            // Save it
+            IPersistFile file = (IPersistFile)link;
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            file.Save(Path.Combine(desktopPath, String.Format($"{name}.lnk")), false);
+        }
+
         private static void EnsureDirectoryExists(string path)
         {
             if (!Directory.Exists(path))
@@ -215,18 +229,18 @@ namespace SPPC.Tadbir.WinRunner.Utility
 
             bool verified = true;
             var dirInfo = new DirectoryInfo(root);
-            using var sha1 = SHA1.Create();
+            using var sha = SHA256.Create();
             var checksums = JsonHelper.To<Dictionary<string, string>>(File.ReadAllText(checksumFile));
             foreach (var file in dirInfo.GetFiles())
             {
                 using var stream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
                 string key = Transform
-                    .ToHexString(sha1.ComputeHash(Encoding.ASCII.GetBytes(file.Name)))
+                    .ToHexString(sha.ComputeHash(Encoding.ASCII.GetBytes(file.Name)))
                     .ToLower();
                 if (checksums.TryGetValue(key, out string checksum))
                 {
                     string value = Transform
-                        .ToHexString(sha1.ComputeHash(stream))
+                        .ToHexString(sha.ComputeHash(stream))
                         .ToLower();
                     if (value != checksum)
                     {
@@ -284,10 +298,10 @@ namespace SPPC.Tadbir.WinRunner.Utility
                 return false;
             }
 
-            if (!VerifyIntegerValue(key, "EstimatedSize", GetFolderSize(root)))
-            {
-                return false;
-            }
+            //if (!VerifyIntegerValue(key, "EstimatedSize", GetFolderSize(root)))
+            //{
+            //    return false;
+            //}
 
             if (!VerifyInstallOptions(key))
             {
@@ -380,7 +394,7 @@ namespace SPPC.Tadbir.WinRunner.Utility
             return true;
         }
 
-        private const string ChecksumRoot = "_temp_";   // For testing only (correct path is ..)
+        private const string ChecksumRoot = "..";   // For testing only (correct path is ..)
     }
 #pragma warning restore CA1416 // Validate platform compatibility
 }

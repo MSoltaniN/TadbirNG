@@ -142,6 +142,7 @@ namespace SPPC.Tools.LicenseManager
 
         private void Exit_Click(object sender, EventArgs e)
         {
+            ReleaseUtility.RestoreSettings();
             Close();
         }
 

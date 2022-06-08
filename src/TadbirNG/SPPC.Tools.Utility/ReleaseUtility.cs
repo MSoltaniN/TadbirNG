@@ -206,20 +206,14 @@ namespace SPPC.Tools.Utility
             string path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "service");
             var dirInfo = new DirectoryInfo(PathConfig.ServicePublishWin);
             var files = dirInfo.GetFiles();
-            if (!files.Any())
-            {
-                Array.ForEach(files,
-                    file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
-            }
+            Array.ForEach(files,
+                file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
 
             path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "runner");
             dirInfo = new DirectoryInfo(PathConfig.RunnerPublishWin);
             files = dirInfo.GetFiles();
-            if (!files.Any())
-            {
-                Array.ForEach(files,
+            Array.ForEach(files,
                 file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
-            }
         }
 
         private static void GenerateDockerCompose(string licenseKey)
