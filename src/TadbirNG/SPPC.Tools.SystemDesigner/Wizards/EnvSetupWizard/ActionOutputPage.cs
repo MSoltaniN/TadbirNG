@@ -407,9 +407,21 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
 
         private void SetStoppedState()
         {
-            btnStart.Enabled = true;
-            Cursor = Cursors.Default;
-            RaiseStoppedEvent();
+            if (btnStart.InvokeRequired)
+            {
+                btnStart.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    btnStart.Enabled = true;
+                    Cursor = Cursors.Default;
+                    RaiseStoppedEvent();
+                });
+            }
+            else
+            {
+                btnStart.Enabled = true;
+                Cursor = Cursors.Default;
+                RaiseStoppedEvent();
+            }
         }
 
         private readonly InstanceModel _instance;

@@ -1,19 +1,16 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SPPC.Tools.TadbirActivator.Cli")]
+[assembly: AssemblyTitle("SPPC.Tools.Utility")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 
-[assembly: CLSCompliant(true)]
-
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c4ac9ca4-7da1-4b65-97f6-7c70df974d44")]
+[assembly: Guid("90ef9d51-4b86-4c48-978a-cbe2d628c620")]

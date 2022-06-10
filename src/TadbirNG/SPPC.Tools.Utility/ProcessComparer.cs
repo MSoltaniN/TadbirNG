@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
-namespace SPPC.Tadbir.WinRunner.Utility
+namespace SPPC.Tools.Utility
 {
     public class ProcessComparer : IEqualityComparer<Process>
     {

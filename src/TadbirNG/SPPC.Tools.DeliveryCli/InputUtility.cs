@@ -34,6 +34,22 @@ namespace SPPC.Tools.DeliveryCli
             return Char.ToLower(key.KeyChar) == 'y';
         }
 
+        public static string QueryZipFilePassword()
+        {
+            Console.Write("Please enter a password for delivery zip file : ");
+            string password;
+            do
+            {
+                password = Console.ReadLine();
+                if (IsInvalidPassword(password))
+                {
+                    Console.WriteLine($"ERROR: Please enter a password with at least {_minPasswordLength} characters.");
+                }
+            } while (IsInvalidPassword(password));
+
+            return password;
+        }
+
         public static LicenseModel QueryLicense()
         {
             var license = default(LicenseModel);
@@ -74,24 +90,9 @@ namespace SPPC.Tools.DeliveryCli
             return licenseId;
         }
 
-        public static string QueryZipFilePassword()
+        private static bool IsInvalidPassword(string password)
         {
-            Console.Write("Please enter a password for delivery zip file : ");
-            string password;
-            do
-            {
-                password = Console.ReadLine();
-                if (String.IsNullOrEmpty(password))
-                {
-                    Console.WriteLine("ERROR: Password cannot be empty. Please enter a valid password.");
-                }
-                else if (password.Length < _minPasswordLength)
-                {
-                    Console.WriteLine($"ERROR: Please enter a password with at least {_minPasswordLength} characters.");
-                }
-            } while (String.IsNullOrEmpty(password) || password.Length < _minPasswordLength);
-
-            return password;
+            return String.IsNullOrEmpty(password) || password.Length < _minPasswordLength;
         }
 
         private const string _rootUrl = "http://130.185.76.7:9094";

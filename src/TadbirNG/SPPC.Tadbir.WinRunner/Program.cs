@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using SPPC.Tadbir.WinRunner.Utility;
 using SPPC.Tools.Utility;
 
 namespace SPPC.Tadbir.WinRunner

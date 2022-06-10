@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Tools.Model;
@@ -96,15 +94,6 @@ namespace SPPC.Tools.DeliveryCli
             {
                 ReleaseUtility.RestoreSettings();
             }
-        }
-
-        private static void DumpProcessInfo()
-        {
-            var processes = Process
-                .GetProcesses()
-                .OrderBy(proc => proc.ProcessName)
-                .Select(proc => String.Join('\t', proc.Id.ToString(), proc.ProcessName));
-            File.WriteAllText("proc-info.txt", String.Join(Environment.NewLine, processes));
         }
 
         const string PushLicenseTemplate = "docker push msn1368/license-server-{0}:dev";

@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
+using Microsoft.Win32;
 using SPPC.Framework.Helpers;
-using SPPC.Tadbir.WinRunner.Utility;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tadbir.WinRunner
 {
@@ -21,7 +20,7 @@ namespace SPPC.Tadbir.WinRunner
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            var servers = InstallerUtility.GetDbServers();
+            var servers = GetDbServers();
             servers.Insert(0, "Docker");
             cmbDbServer.DataSource = servers;
             txtInstallPath.Text = @"C:\SPPC\TadbirNG";
@@ -112,18 +111,6 @@ namespace SPPC.Tadbir.WinRunner
             worker.ReportProgress(20);
 
             worker.ReportProgress(0, "تکمیل مراحل پایانی نصب...");
-            if (!InstallerUtility.IsAppRegistered())
-            {
-                var version = InstallerUtility.GetAppVersion();
-                if (version == null)
-                {
-                    worker.ReportProgress(0, "بروز خطا هنگام تکمیل مراحل پایانی نصب");
-                    return;
-                }
-
-                InstallerUtility.RegisterApplication(txtInstallPath.Text, _dbServer, version);
-            }
-
             if (chkCreateShortcut.Checked)
             {
                 string exePath = Path.Combine(txtInstallPath.Text, "runner", "SPPC.Tadbir.WinRunner.exe");
@@ -180,6 +167,31 @@ namespace SPPC.Tadbir.WinRunner
             Application.Exit();
         }
 
+#pragma warning disable CA1416 // Validate platform compatibility
+        public static List<string> GetDbServers()
+        {
+            var servers = new List<string>();
+            var key = Registry.LocalMachine.OpenSubKey(
+                @"SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL");
+            if (key != null)
+            {
+                foreach (var value in key.GetValueNames())
+                {
+                    if (value == "MSSQLSERVER")
+                    {
+                        servers.Add(Environment.MachineName);
+                    }
+                    else
+                    {
+                        servers.Add(String.Format($"{Environment.MachineName}\\{value}"));
+                    }
+                }
+            }
+
+            return servers;
+        }
+#pragma warning restore CA1416 // Validate platform compatibility
+
         private void SetDbServer()
         {
             _dbServer = cmbDbServer.SelectedItem.ToString();
@@ -187,19 +199,6 @@ namespace SPPC.Tadbir.WinRunner
             {
                 _dbServer = "DbServer";
             }
-        }
-
-        private static void LaunchDefaultBrowser(string url)
-        {
-            var runner = new CliRunner();
-            string[] lines;
-            do
-            {
-                Thread.Sleep(500);
-                var output = runner.Run("docker ps -f \"name=WebApp\"");
-                lines = output.Split(Environment.NewLine);
-            } while (!lines.Any(line => line.Contains("WebApp")));
-            Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
         }
 
         private const string PullLicenseTemplate = "docker pull msn1368/license-server-{0}:dev";

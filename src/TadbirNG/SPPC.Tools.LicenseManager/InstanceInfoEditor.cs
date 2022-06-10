@@ -35,8 +35,8 @@ namespace SPPC.Tools.LicenseManager
             txtBaseUrl.DataBindings.Add("Text", BuildSettings, "WebApiUrl");
             txtServerUrl.DataBindings.Add("Text", BuildSettings, "LocalServerRoot");
             txtOnlineServerUrl.DataBindings.Add("Text", BuildSettings, "OnlineServerRoot");
-            txtUserName.DataBindings.Add("Text", BuildSettings, "Ssh.User");
-            txtPassword.DataBindings.Add("Text", BuildSettings, "Ssh.Password");
+            txtUserName.DataBindings.Add("Text", BuildSettings, "Tcp.User");
+            txtPassword.DataBindings.Add("Text", BuildSettings, "Tcp.Password");
             txtInstanceKey.DataBindings.Add("Text", BuildSettings, "Key");
             txtVersion.DataBindings.Add("Text", BuildSettings, "Version");
         }
