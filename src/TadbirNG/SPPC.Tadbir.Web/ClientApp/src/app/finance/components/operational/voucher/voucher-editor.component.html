@@ -51,7 +51,7 @@
           </button>
 
           <button
-            class="k-button"
+            class="k-button not-change"
             title="{{ 'Voucher.FirstVoucher' | translate }}"
             [attr.disabled]="isFirstVoucher ? true : null"
             SppcPermissionCheck="Navigate"
@@ -62,8 +62,8 @@
           </button>
 
           <button
-            class="k-button"
-            [attr.disabled]="!isFirstVoucher ? true : null"
+            class="k-button not-change"
+            [attr.disabled]="isFirstVoucher ? true : null"
             title="{{ 'Voucher.PreviousVoucher' | translate }}"
             SppcPermissionCheck="Navigate"
             [EntityName]="entityNamePermission"
@@ -73,8 +73,8 @@
           </button>
 
           <button
-            class="k-button"
-            [attr.disabled]="!isLastVoucher ? true : null"
+            class="k-button not-change"
+            [attr.disabled]="isLastVoucher ? true : null"
             title="{{ 'Voucher.NextVoucher' | translate }}"
             SppcPermissionCheck="Navigate"
             [EntityName]="entityNamePermission"
@@ -84,7 +84,7 @@
           </button>
 
           <button
-            class="k-button"
+            class="k-button not-change"
             title="{{ 'Voucher.LastVoucher' | translate }}"
             [attr.disabled]="isLastVoucher ? true : null"
             SppcPermissionCheck="Navigate"
