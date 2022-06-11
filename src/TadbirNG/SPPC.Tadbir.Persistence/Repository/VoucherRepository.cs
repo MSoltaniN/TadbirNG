@@ -143,7 +143,7 @@ namespace SPPC.Tadbir.Persistence
                 .FirstOrDefault();
             if (firstVoucher != null)
             {
-                await SetVoucherNavigationAsync(firstVoucher);
+                await SetVoucherNavigationAsync(firstVoucher, gridOptions);
             }
 
             return firstVoucher;
@@ -187,7 +187,7 @@ namespace SPPC.Tadbir.Persistence
                 .FirstOrDefault();
             if (previousVoucher != null)
             {
-                await SetVoucherNavigationAsync(previousVoucher);
+                await SetVoucherNavigationAsync(previousVoucher, gridOptions);
             }
 
             return previousVoucher;
@@ -233,7 +233,7 @@ namespace SPPC.Tadbir.Persistence
                 .FirstOrDefault();
             if (nextVoucher != null)
             {
-                await SetVoucherNavigationAsync(nextVoucher);
+                await SetVoucherNavigationAsync(nextVoucher, gridOptions);
             }
 
             return nextVoucher;
@@ -277,7 +277,7 @@ namespace SPPC.Tadbir.Persistence
                 .FirstOrDefault();
             if (lastVoucher != null)
             {
-                await SetVoucherNavigationAsync(lastVoucher);
+                await SetVoucherNavigationAsync(lastVoucher, gridOptions);
             }
 
             return lastVoucher;
@@ -841,21 +841,70 @@ namespace SPPC.Tadbir.Persistence
             return await repository.GetCountByCriteriaAsync(line => line.VoucherId == voucherId);
         }
 
-        private async Task SetVoucherNavigationAsync(VoucherViewModel voucher)
+        private async Task SetVoucherNavigationAsync(VoucherViewModel voucher, GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var prevCount = await Repository
-                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
-                .Where(v => v.No < voucher.No
-                    && v.SubjectType == voucher.SubjectType)
-                .CountAsync();
-            var nextCount = await Repository
-                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
-                .Where(v => v.No > voucher.No
-                    && v.SubjectType == voucher.SubjectType)
-                .CountAsync();
+            int nextCount, prevCount;
+            var options = gridOptions ?? new GridOptions();
+            var query = GetPreviousQuery(voucher, options);
+            if (!options.IsEmpty)
+            {
+                var items = await query.ToListAsync();
+                prevCount = items
+                    .Select(v => Localize(Mapper.Map<VoucherViewModel>(v)))
+                    .ApplyQuickFilter(gridOptions)
+                    .Apply(options, false)
+                    .Count();
+            }
+            else
+            {
+                prevCount = await query.CountAsync();
+            }
+
+            query = GetNextQuery(voucher, options);
+            if (!options.IsEmpty)
+            {
+                var items = await query.ToListAsync();
+                nextCount = items
+                    .Select(v => Localize(Mapper.Map<VoucherViewModel>(v)))
+                    .ApplyQuickFilter(gridOptions)
+                    .Apply(options, false)
+                    .Count();
+            }
+            else
+            {
+                nextCount = await query.CountAsync();
+            }
+
             voucher.HasPrevious = prevCount > 0;
             voucher.HasNext = nextCount > 0;
+        }
+
+        private IQueryable<Voucher> GetPreviousQuery(VoucherViewModel voucher, GridOptions gridOptions)
+        {
+            var query = !gridOptions.IsEmpty
+                ? Repository
+                    .GetAllOperationQuery<Voucher>(ViewId.Voucher, v => v.Status, v => v.Origin)
+                    .Where(v => v.No < voucher.No
+                        && v.SubjectType == voucher.SubjectType)
+                : Repository
+                    .GetAllOperationQuery<Voucher>(ViewId.Voucher)
+                    .Where(v => v.No < voucher.No
+                        && v.SubjectType == voucher.SubjectType);
+            return query;
+        }
+
+        private IQueryable<Voucher> GetNextQuery(VoucherViewModel voucher, GridOptions gridOptions)
+        {
+            var query = !gridOptions.IsEmpty
+                ? Repository
+                    .GetAllOperationQuery<Voucher>(ViewId.Voucher, v => v.Status, v => v.Origin)
+                    .Where(v => v.No > voucher.No
+                        && v.SubjectType == voucher.SubjectType)
+                : Repository
+                    .GetAllOperationQuery<Voucher>(ViewId.Voucher)
+                    .Where(v => v.No > voucher.No
+                        && v.SubjectType == voucher.SubjectType);
+            return query;
         }
 
         private async Task<IEnumerable<VoucherViewModel>> GetVoucherItemsAsync(
@@ -924,7 +973,7 @@ namespace SPPC.Tadbir.Persistence
             return voucherItem;
         }
 
-        private void Localize(VoucherViewModel voucher)
+        private VoucherViewModel Localize(VoucherViewModel voucher)
         {
             if (voucher != null)
             {
@@ -933,6 +982,8 @@ namespace SPPC.Tadbir.Persistence
                 voucher.TypeName = Context.Localize(voucher.TypeName);
                 voucher.Description = Context.Localize(voucher.Description);
             }
+
+            return voucher;
         }
 
         private const string DefaultSorting = "v.Date, v.No";

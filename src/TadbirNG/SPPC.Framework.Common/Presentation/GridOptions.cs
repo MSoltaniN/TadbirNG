@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SPPC.Framework.Presentation
 {
@@ -53,5 +54,17 @@ namespace SPPC.Framework.Presentation
         /// خواندن اولین صفحه، مقدار این ویژگی "نادرست" باشد
         /// </remarks>
         public bool ListChanged { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که آبجکت جاری تنظیمات فیلتر، مرتب سازی یا صفحه بندی دارد یا نه
+        /// </summary>
+        public bool IsEmpty
+        {
+            get
+            {
+                return Filter == null && QuickFilter == null
+                    && !SortColumns.Any() && Paging.PageSize == Int32.MaxValue;
+            }
+        }
     }
 }
