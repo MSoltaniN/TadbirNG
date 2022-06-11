@@ -25,8 +25,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، سند مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="voucherId">شناسه عددی یکی از اسناد مالی موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>سند مالی مشخص شده با شناسه عددی</returns>
-        Task<VoucherViewModel> GetVoucherAsync(int voucherId);
+        Task<VoucherViewModel> GetVoucherAsync(int voucherId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، سند مالی جدیدی را با مقادیر پیشنهادی ایجاد کرده و برمی گرداند

@@ -64,8 +64,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، سند مالی با شناسه دیتابیسی مشخص شده را از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <param name="voucherId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>سند مالی مشخص شده با شناسه دیتابیسی</returns>
-        public async Task<VoucherViewModel> GetVoucherAsync(int voucherId)
+        public async Task<VoucherViewModel> GetVoucherAsync(int voucherId, GridOptions gridOptions = null)
         {
             VoucherViewModel voucher = null;
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
@@ -74,7 +75,7 @@ namespace SPPC.Tadbir.Persistence
             if (existing != null)
             {
                 voucher = Mapper.Map<VoucherViewModel>(existing);
-                await SetVoucherNavigationAsync(voucher);
+                await SetVoucherNavigationAsync(voucher, gridOptions);
             }
 
             return voucher;
@@ -851,7 +852,7 @@ namespace SPPC.Tadbir.Persistence
                 var items = await query.ToListAsync();
                 prevCount = items
                     .Select(v => Localize(Mapper.Map<VoucherViewModel>(v)))
-                    .ApplyQuickFilter(gridOptions)
+                    .ApplyQuickFilter(options)
                     .Apply(options, false)
                     .Count();
             }
