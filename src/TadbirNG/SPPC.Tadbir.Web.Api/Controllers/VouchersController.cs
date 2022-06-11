@@ -1751,7 +1751,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private async Task<IActionResult> GetSingleVoucherAsync(int voucherId)
         {
-            var voucher = await _repository.GetVoucherAsync(voucherId);
+            var voucher = await _repository.GetVoucherAsync(voucherId, GridOptions);
             Localize(voucher);
             return JsonReadResult(voucher);
         }
