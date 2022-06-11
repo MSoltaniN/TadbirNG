@@ -377,10 +377,15 @@ export class VoucherComponent
     this.editDataItem = undefined;
     this.dialogModel.subjectMode = parseInt(this.selectedSubjectType);
 
-    this.dialogModel.filter = JSON.parse(JSON.stringify(this.reportFilter));
-    this.dialogModel.quickFilter = JSON.parse(
-      JSON.stringify(this.reportQuickFilter)
-    );
+    if (this.reportFilter) {
+      this.dialogModel.filter = JSON.parse(JSON.stringify(this.reportFilter));
+    }
+
+    if (this.reportQuickFilter) {
+      this.dialogModel.quickFilter = JSON.parse(
+        JSON.stringify(this.reportQuickFilter)
+      );
+    }
 
     this.dialogRef.result.subscribe((result) => {
       if (result instanceof DialogCloseResult) {
