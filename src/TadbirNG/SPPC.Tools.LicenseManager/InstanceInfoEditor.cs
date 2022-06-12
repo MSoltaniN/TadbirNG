@@ -17,7 +17,6 @@ namespace SPPC.Tools.LicenseManager
         {
             base.OnLoad(e);
             SetupBindings();
-            chkShowPassword.Checked = false;
         }
 
         private void SaveInstanceButton_Click(object sender, EventArgs e)
@@ -35,8 +34,6 @@ namespace SPPC.Tools.LicenseManager
             txtBaseUrl.DataBindings.Add("Text", BuildSettings, "WebApiUrl");
             txtServerUrl.DataBindings.Add("Text", BuildSettings, "LocalServerRoot");
             txtOnlineServerUrl.DataBindings.Add("Text", BuildSettings, "OnlineServerRoot");
-            txtUserName.DataBindings.Add("Text", BuildSettings, "Tcp.User");
-            txtPassword.DataBindings.Add("Text", BuildSettings, "Tcp.Password");
             txtInstanceKey.DataBindings.Add("Text", BuildSettings, "Key");
             txtVersion.DataBindings.Add("Text", BuildSettings, "Version");
         }
@@ -75,11 +72,6 @@ namespace SPPC.Tools.LicenseManager
         private void CancelButton_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void ShowPassword_CheckedChanged(object sender, EventArgs e)
-        {
-            txtPassword.PasswordChar = chkShowPassword.Checked ? '\0' : '*';
         }
     }
 }

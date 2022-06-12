@@ -1,6 +1,5 @@
 ﻿using System;
 using SPPC.Framework.Common;
-using SPPC.Framework.Helpers;
 
 namespace SPPC.Tadbir.ExceptionHandling
 {
