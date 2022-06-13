@@ -410,7 +410,11 @@ export class VoucherComponent
     if (this.clickedRowItem) {
       this.grid.loading = true;
       this.voucherService
-        .getById(String.Format(VoucherApi.Voucher, this.clickedRowItem.id))
+        .getByIdAndFilters(
+          String.Format(VoucherApi.Voucher, this.clickedRowItem.id),
+          this.reportFilter,
+          this.reportQuickFilter
+        )
         .subscribe((res) => {
           this.editDataItem = res;
 
@@ -462,7 +466,11 @@ export class VoucherComponent
     var recordId = this.selectedRows[0]; //.id;
     this.grid.loading = true;
     this.voucherService
-      .getById(String.Format(VoucherApi.Voucher, recordId))
+      .getByIdAndFilters(
+        String.Format(VoucherApi.Voucher, recordId),
+        this.reportFilter,
+        this.reportQuickFilter
+      )
       .subscribe((res) => {
         this.editDataItem = res;
         this.openEditorDialog(false);
