@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace SPPC.Licensing.Local.Web
@@ -15,6 +16,11 @@ namespace SPPC.Licensing.Local.Web
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureHostConfiguration(cfgBuilder =>
+                {
+                    cfgBuilder
+                        .AddJsonFile("appSettings.json");
                 });
     }
 }

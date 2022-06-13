@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Licensing;
 using SPPC.Framework.Mapper;
@@ -11,7 +14,6 @@ using SPPC.Tadbir.Common;
 using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
-using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 
 namespace SPPC.Licensing.Local.Web
@@ -37,6 +39,7 @@ namespace SPPC.Licensing.Local.Web
         /// </summary>
         public void AddServices()
         {
+            //InspectConfiguration();
             AddSecurityTypes();
             AddUtilityTypes();
         }
@@ -74,6 +77,24 @@ namespace SPPC.Licensing.Local.Web
             _services.AddTransient<ISqlConsole, SqlServerConsole>();
             _services.AddTransient<IDbContextAccessor, DbContextAccessor>();
             _services.AddTransient<IRepositoryContext, RepositoryContext>();
+        }
+
+        private void InspectConfiguration()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine("Inspecting configuration...");
+            if (_configuration == null)
+            {
+                builder.AppendLine(String.Format($"WARNING: Configuration is null.{Environment.NewLine}"));
+            }
+            else
+            {
+                builder.AppendLine(String.Join(Environment.NewLine,_configuration
+                    .AsEnumerable()
+                    .Select(item => String.Format($"{item.Key} = {item.Value}"))));
+            }
+
+            File.WriteAllText("startup.log", builder.ToString());
         }
 
         private readonly IServiceCollection _services;

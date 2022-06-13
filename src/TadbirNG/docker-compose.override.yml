@@ -1,8 +1,5 @@
 version: '3.9'
 
-volumes:
- productdata:
- 
 networks:
  frontend:
  backend:
@@ -10,18 +7,16 @@ networks:
 services:
 
  DbServer:
-  image: msn1368/db-server:dev
+  image: msn1368/db-server:latest
   ports: 
     - 14433:1433
 
  ApiServer:
   image: msn1368/api-server:latest
   environment:
-   - ASPNETCORE_ENVIRONMENT=Development
-   - Logging__LogLevel__Microsoft=Information
+   - ASPNETCORE_ENVIRONMENT=Production
+   - Logging__LogLevel__Microsoft=Trace
    - ASPNETCORE_URLS=http://+:80
-  ports:
-   - 9095:80
   
  loadBalancer:
   profiles:
@@ -30,9 +25,8 @@ services:
  WebApp:
   image: msn1368/web-app:dev
 
-
  LicenseServer:
-  image: msn1368/license-server:dev
+  image: msn1368/license-server:latest
   environment:
-   - ASPNETCORE_ENVIRONMENT=Development
-   - Logging__LogLevel__Microsoft=Information
+   - ASPNETCORE_ENVIRONMENT=Production
+   - Logging__LogLevel__Microsoft=Trace

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using SPPC.Framework.Common;
 
@@ -32,7 +33,12 @@ namespace SPPC.Tadbir.Web.Api
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                }).ConfigureHostConfiguration(cfgBuilder =>
+                {
+                    cfgBuilder
+                        .AddJsonFile("appSettings.json");
                 });
+
 
         private static void AnalyzeCurrentApi()
         {

@@ -182,7 +182,7 @@ namespace SPPC.Tadbir.Licensing
             }
 
             _log.AppendLine();
-            File.AppendAllText(@".\wwwroot\license.log", _log.ToString());
+            File.AppendAllText(Path.Combine("wwwroot", "license.log"), _log.ToString());
             return status;
         }
 
@@ -222,7 +222,7 @@ namespace SPPC.Tadbir.Licensing
                     DateTime.Now.ToString(), Constants.CertificateFile, Environment.NewLine);
             }
 
-            File.AppendAllText(@".\wwwroot\license.log", _log.ToString());
+            File.AppendAllText(Path.Combine("wwwroot", "license.log"), _log.ToString());
             return status;
         }
 
@@ -464,7 +464,7 @@ namespace SPPC.Tadbir.Licensing
 
             string info = String.Format(
                 $"Offline licenses issued : {licenseModel.LoginCount}{Environment.NewLine}{Environment.NewLine}");
-            File.AppendAllText(@".\wwwroot\license.log", info);
+            File.AppendAllText(Path.Combine("wwwroot", "license.log"), info);
         }
 
         private void ResetLoginCount(LicenseFileModel license)

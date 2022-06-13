@@ -317,6 +317,15 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        // NOTE: This method compensates for Docker's inability to retain current database context between
+        // consecutive script executions. USE NGTadbir is required by Docker, but is invalid while creating
+        // a new company.
+        private static string GetCompanyScript(string path)
+        {
+            var lines = File.ReadAllLines(path);
+            return String.Join(Environment.NewLine, lines.Skip(3));
+        }
+
         private void CreateDatabase(CompanyDbViewModel company)
         {
             var sqlBuilder = new StringBuilder();
@@ -337,7 +346,7 @@ namespace SPPC.Tadbir.Persistence
                 GO",
                 company.DbName);
             sqlBuilder.AppendLine();
-            sqlBuilder.Append(File.ReadAllText(scriptPath));
+            sqlBuilder.Append(GetCompanyScript(scriptPath));
             DbConsole.ExecuteNonQuery(sqlBuilder.ToString());
         }
 

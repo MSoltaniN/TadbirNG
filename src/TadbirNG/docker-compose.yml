@@ -11,7 +11,7 @@ networks:
 services:
 
  DbServer:
-  image: msn1368/db-server:dev
+  image: msn1368/db-server:latest
   user: root
   build:
    context: ../../res
@@ -30,7 +30,8 @@ services:
    - DbServer
   networks:
    - backend
-   - frontend
+  ports:
+   - 9095:80
 
  loadBalancer:
   image: dockercloud/haproxy:1.2.1
@@ -57,10 +58,12 @@ services:
    - 9099:4200
 
  LicenseServer:
-  image: msn1368/license-server:dev
+  image: msn1368/license-server:latest
   build:
    context: .
    dockerfile: SPPC.Licensing.Local.Web/Dockerfile
+  depends_on:
+   - DbServer
   volumes:
    - productdata_LicenseServer:/app/wwwroot
   networks:
