@@ -28,44 +28,33 @@ namespace SPPC.Tools.Transforms.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("version: \'3.9\'\r\n\r\nvolumes:\r\n productdata:\r\n \r\nnetworks:\r\n frontend:\r\n backend:\r\n\r" +
-                    "\nservices:\r\n\r\n DbServer:\r\n  image: msn1368/db-server:dev\r\n  ports: \r\n    - 14433" +
-                    ":1433\r\n\r\n ApiServer:\r\n  image: msn1368/api-server-");
+            this.Write("version: \'3.9\'\r\n\r\nnetworks:\r\n frontend:\r\n backend:\r\n\r\nservices:\r\n\r\n DbServer:\r\n  " +
+                    "image: msn1368/db-server:latest\r\n  ports: \r\n    - 14433:1433\r\n\r\n ApiServer:\r\n  i" +
+                    "mage: msn1368/api-server-");
             
-            #line 23 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            #line 20 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
             
             #line default
             #line hidden
-            this.Write(@":latest
-  environment:
-   - ASPNETCORE_ENVIRONMENT=Development
-   - Logging__LogLevel__Microsoft=Information
-   - ASPNETCORE_URLS=http://+:80
-  ports:
-   - 9095:80
-  
- loadBalancer:
-  profiles:
-   - donotstart
-
- WebApp:
-  image: msn1368/web-app-");
+            this.Write(":latest\r\n  environment:\r\n   - ASPNETCORE_ENVIRONMENT=Production\r\n   - Logging__Lo" +
+                    "gLevel__Microsoft=Trace\r\n   - ASPNETCORE_URLS=http://+:80\r\n  \r\n loadBalancer:\r\n " +
+                    " profiles:\r\n   - donotstart\r\n\r\n WebApp:\r\n  image: msn1368/web-app-");
             
-            #line 36 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
             
             #line default
             #line hidden
-            this.Write(":dev\r\n\r\n\r\n LicenseServer:\r\n  image: msn1368/license-server-");
+            this.Write(":dev\r\n\r\n LicenseServer:\r\n  image: msn1368/license-server-");
             
-            #line 40 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            #line 34 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
             
             #line default
             #line hidden
-            this.Write(":dev\r\n  environment:\r\n   - ASPNETCORE_ENVIRONMENT=Development\r\n   - Logging__LogL" +
-                    "evel__Microsoft=Information\r\n");
+            this.Write(":latest\r\n  environment:\r\n   - ASPNETCORE_ENVIRONMENT=Production\r\n   - Logging__Lo" +
+                    "gLevel__Microsoft=Trace\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

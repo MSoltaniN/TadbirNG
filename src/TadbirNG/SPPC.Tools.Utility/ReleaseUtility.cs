@@ -35,9 +35,9 @@ namespace SPPC.Tools.Utility
         public static void RestoreSettings()
         {
             RestoreFile(Path.Combine(PathConfig.LocalServerRoot, ConfigFile));
-            RestoreFile(Path.Combine(PathConfig.LocalServerRoot, DevConfigFile));
+            ////RestoreFile(Path.Combine(PathConfig.LocalServerRoot, DevConfigFile));
             RestoreFile(Path.Combine(PathConfig.WebApiRoot, ConfigFile));
-            RestoreFile(Path.Combine(PathConfig.WebApiRoot, DevConfigFile));
+            ////RestoreFile(Path.Combine(PathConfig.WebApiRoot, DevConfigFile));
             RestoreFile(Path.Combine(PathConfig.WebApiRoot, WebRoot, "license"));
             RestoreFile(Path.Combine(PathConfig.WebApiRoot, WebRoot, String.Format($"license{DevSuffix}")));
             RestoreFile(Path.Combine(PathConfig.WebApiRoot, WebRoot, "edition"));
@@ -77,11 +77,9 @@ namespace SPPC.Tools.Utility
         private static void GenerateSettingsWithBackup(string settingsRoot, ITextTemplate template)
         {
             BackupFile(Path.Combine(settingsRoot, ConfigFile));
-            BackupFile(Path.Combine(settingsRoot, DevConfigFile));
 
             string appSettings = template.TransformText();
             File.WriteAllText(Path.Combine(settingsRoot, ConfigFile), appSettings);
-            File.WriteAllText(Path.Combine(settingsRoot, DevConfigFile), appSettings);
         }
 
         private static void GenerateEnvironmentWithBackup(string envRoot, ITextTemplate template)
@@ -160,7 +158,8 @@ namespace SPPC.Tools.Utility
         {
             if (File.Exists(path))
             {
-                string newPath = String.Format($"{path}.old");
+                string fileName = Path.GetFileName(path);
+                string newPath = Path.Combine(Path.GetDirectoryName(path), String.Format($"old_{fileName}"));
                 File.Move(path, newPath);
             }
         }
@@ -172,7 +171,8 @@ namespace SPPC.Tools.Utility
                 File.Delete(path);
             }
 
-            string newPath = String.Format($"{path}.old");
+            string fileName = Path.GetFileName(path);
+            string newPath = Path.Combine(Path.GetDirectoryName(path), String.Format($"old_{fileName}"));
             if (File.Exists(newPath))
             {
                 File.Move(newPath, path);

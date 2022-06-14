@@ -37,12 +37,17 @@ namespace SPPC.Framework.Helpers
         /// </summary>
         public bool Stop()
         {
-            bool stopped = false;
-            if (ConsoleImports.AttachConsole((uint)_process.Id))
+            if (_process == null)
             {
-                ConsoleImports.SetConsoleCtrlHandler(null, true);
-                try
+                return true;
+            }
+
+            bool stopped = false;
+            try
+            {
+                if (ConsoleImports.AttachConsole((uint)_process.Id))
                 {
+                    ConsoleImports.SetConsoleCtrlHandler(null, true);
                     if (!ConsoleImports.GenerateConsoleCtrlEvent(ConsoleImports.CTRL_C_EVENT, 0))
                     {
                         return false;
@@ -50,16 +55,14 @@ namespace SPPC.Framework.Helpers
 
                     _process.WaitForExit();
                 }
-                finally
-                {
-                    ConsoleImports.SetConsoleCtrlHandler(null, false);
-                    ConsoleImports.FreeConsole();
-                }
-
-                stopped = true;
+            }
+            finally
+            {
+                ConsoleImports.SetConsoleCtrlHandler(null, false);
+                ConsoleImports.FreeConsole();
             }
 
-            return stopped;
+            return true;
         }
 
         /// <summary>

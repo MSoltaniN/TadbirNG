@@ -97,7 +97,10 @@ namespace SPPC.Tools.Utility
 
         public static bool IsAppRegistered()
         {
-            return false;
+            var runner = new CliRunner();
+            var output = runner.Run("sc query sppckeysrv");
+            var lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+            return !lines[0].Contains("FAILED");
         }
 
         public static string GetCustomerSuffix()
@@ -123,6 +126,7 @@ namespace SPPC.Tools.Utility
             // Setup shortcut information
             link.SetDescription(description);
             link.SetPath(path);
+            link.SetWorkingDirectory(Path.GetDirectoryName(path));
 
             // Save it
             IPersistFile file = (IPersistFile)link;

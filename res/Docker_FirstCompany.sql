@@ -19,8 +19,8 @@ SET IDENTITY_INSERT [Config].[CompanyDb] OFF
 USE NGTadbir
 GO
 
-INSERT INTO [Corporate].[Branch] ([BranchID], [CompanyID], [Name], [Level])
-VALUES (1, 1, N'دفتر مرکزی', 0)
+INSERT INTO [Corporate].[Branch] ([CompanyID], [Name], [Level])
+VALUES (1, N'دفتر مرکزی', 0)
 
-INSERT INTO [Finance].[FiscalPeriod] ([FiscalPeriodID], [CompanyID], [Name], [StartDate], [EndDate], [InventoryMode])
-VALUES (1, 1, N'سال 1400', '2021-03-21', '2022-03-20', 1)
+INSERT INTO [Finance].[FiscalPeriod] ([CompanyID], [Name], [StartDate], [EndDate], [InventoryMode])
+VALUES (1, N'سال 1400', '2021-03-21', '2022-03-20', 1)
