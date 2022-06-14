@@ -41,7 +41,7 @@ networks:
 services:
 
  DbServer:
-  image: msn1368/db-server:dev
+  image: msn1368/db-server:latest
   user: root
   build:
    context: ../../res
@@ -67,7 +67,8 @@ services:
    - DbServer
   networks:
    - backend
-   - frontend
+  ports:
+   - 9095:80
 
  loadBalancer:
   image: dockercloud/haproxy:1.2.1
@@ -86,24 +87,36 @@ services:
  WebApp:
   image: msn1368/web-app-");
             
-            #line 55 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
             
             #line default
             #line hidden
             this.Write(":dev\r\n  build: \r\n   context: ./SPPC.Tadbir.Web/ClientApp\r\n   dockerfile: Dockerfi" +
-                    "le\r\n  networks:\r\n   - frontend\r\n  ports:\r\n   - 9090:4200\r\n\r\n LicenseServer:\r\n  i" +
+                    "le\r\n  networks:\r\n   - frontend\r\n  ports:\r\n   - 9099:4200\r\n\r\n LicenseServer:\r\n  i" +
                     "mage: msn1368/license-server-");
             
-            #line 65 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            #line 66 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
             
             #line default
             #line hidden
-            this.Write(":dev\r\n  build:\r\n   context: .\r\n   dockerfile: SPPC.Licensing.Local.Web/Dockerfile" +
-                    "\r\n  volumes:\r\n   - productdata_LicenseServer:/app/wwwroot\r\n  networks:\r\n   - bac" +
-                    "kend\r\n  ports:\r\n   - 9093:80\r\n  extra_hosts:\r\n   - \"host.docker.internal:host-ga" +
-                    "teway\"\r\n\r\n");
+            this.Write(@":latest
+  build:
+   context: .
+   dockerfile: SPPC.Licensing.Local.Web/Dockerfile
+  depends_on:
+   - DbServer
+  volumes:
+   - productdata_LicenseServer:/app/wwwroot
+  networks:
+   - backend
+  ports:
+   - 9093:80
+  extra_hosts:
+   - ""host.docker.internal:host-gateway""
+
+");
             return this.GenerationEnvironment.ToString();
         }
     }

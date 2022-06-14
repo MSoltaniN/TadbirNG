@@ -101,13 +101,13 @@ namespace SPPC.Tadbir.WinRunner
             }
 
             worker.ReportProgress(0, "دانلود سرویس های برنامه...");
-            _runner.Run(String.Format(PullLicenseTemplate, suffix));
+            RunCommandWithRetry(String.Format(PullLicenseTemplate, suffix));
             worker.ReportProgress(20);
-            _runner.Run(String.Format(PullApiTemplate, suffix));
+            RunCommandWithRetry(String.Format(PullApiTemplate, suffix));
             worker.ReportProgress(20);
-            _runner.Run(String.Format(PullAppTemplate, suffix));
+            RunCommandWithRetry(String.Format(PullAppTemplate, suffix));
             worker.ReportProgress(20);
-            _runner.Run("docker pull msn1368/db-server:dev");
+            RunCommandWithRetry("docker pull msn1368/db-server:latest");
             worker.ReportProgress(20);
 
             worker.ReportProgress(0, "تکمیل مراحل پایانی نصب...");
@@ -201,7 +201,18 @@ namespace SPPC.Tadbir.WinRunner
             }
         }
 
-        private const string PullLicenseTemplate = "docker pull msn1368/license-server-{0}:dev";
+        private void RunCommandWithRetry(string command)
+        {
+            string result = _runner.Run(command);
+            while (result.Contains("Error response"))
+            {
+                string output = String.Format($"{Environment.NewLine}Retrying...{Environment.NewLine}");
+                Runner_OutputReceived(this, new OutputReceivedEventArgs(output));
+                result = _runner.Run(command);
+            }
+        }
+
+        private const string PullLicenseTemplate = "docker pull msn1368/license-server-{0}:latest";
         private const string PullApiTemplate = "docker pull msn1368/api-server-{0}:latest";
         private const string PullAppTemplate = "docker pull msn1368/web-app-{0}:dev";
         private readonly CliRunner _runner;

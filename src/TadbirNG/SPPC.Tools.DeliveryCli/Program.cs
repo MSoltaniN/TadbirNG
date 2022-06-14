@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
@@ -11,7 +12,6 @@ namespace SPPC.Tools.DeliveryCli
     {
         static void Main(string[] args)
         {
-            ReleaseUtility.RestoreSettings();
             DoPublishProcess();
         }
 
@@ -25,6 +25,8 @@ namespace SPPC.Tools.DeliveryCli
 
         private static void DoPublishProcess()
         {
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
             InputUtility.DisplayBanner();
             if (!CommonUtility.IsDockerEngineRunning())
             {
@@ -37,6 +39,7 @@ namespace SPPC.Tools.DeliveryCli
             _runner.OutputReceived += Runner_OutputReceived;
             if (!InputUtility.ConfirmLicenseId())
             {
+                stopWatch.Stop();
                 return;
             }
 
@@ -44,6 +47,7 @@ namespace SPPC.Tools.DeliveryCli
             var license = InputUtility.QueryLicense();
             if (license == null)
             {
+                stopWatch.Stop();
                 return;
             }
 
@@ -75,7 +79,7 @@ namespace SPPC.Tools.DeliveryCli
                 Console.WriteLine("(75% completed)");
                 Console.WriteLine();
 
-                _runner.Run("docker push msn1368/db-server:dev");
+                _runner.Run("docker push msn1368/db-server");
                 Console.WriteLine("(90% completed)");
                 Console.WriteLine();
 
@@ -93,11 +97,14 @@ namespace SPPC.Tools.DeliveryCli
             finally
             {
                 ReleaseUtility.RestoreSettings();
+                stopWatch.Stop();
             }
+
+            Console.WriteLine(String.Format($"Elapsed Time : {stopWatch.Elapsed}"));
         }
 
-        const string PushLicenseTemplate = "docker push msn1368/license-server-{0}:dev";
-        const string PushApiTemplate = "docker push msn1368/api-server-{0}:latest";
+        const string PushLicenseTemplate = "docker push msn1368/license-server-{0}";
+        const string PushApiTemplate = "docker push msn1368/api-server-{0}";
         const string PushAppTemplate = "docker push msn1368/web-app-{0}:dev";
         static readonly CliRunner _runner = new();
     }
