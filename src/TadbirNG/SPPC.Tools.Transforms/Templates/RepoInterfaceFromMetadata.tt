@@ -8,7 +8,9 @@
 var entityInfo = _model;
 var entity = entityInfo.Entity;
 var plural = entity.Name.ToPlural();
+var camelCase = entity.Name.CamelCase();
 #>
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Utility;
@@ -50,5 +52,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="<#= entity.Name.ToLower() #>Id">شناسه عددی <#= entityInfo.SingularName #> مورد نظر برای حذف</param>
         Task Delete<#= entity.Name #>Async(int <#= entity.Name.ToLower() #>Id);
+
+        /// <summary>
+        /// به روش آسنکرون، <#= entityInfo.PluralName #> مشخص شده با شناسه عددی را حذف می کند
+        /// </summary>
+        /// <param name="<#= camelCase #>Ids">مجموعه ای از شناسه های عددی <#= entityInfo.PluralName #> مورد نظر برای حذف</param>
+        Task Delete<#= plural #>Async(IList<int> <#= camelCase #>Ids);
     }
 }

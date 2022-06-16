@@ -54,8 +54,9 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از <#= entityInfo.PluralName #> تعریف شده</returns>
         public async Task<PagedList<<#= entity.Name #>ViewModel>> Get<#= plural #>Async(GridOptions gridOptions = null)
         {
+            var options = gridOptions ?? new GridOptions();
             var <#= plural.CamelCase() #> = new List<<#= entity.Name #>ViewModel>();
-            if (gridOptions.Operation != (int)OperationId.Print)
+            if (options.Operation != (int)OperationId.Print)
             {
 <# if(entityInfo.IsFiscalEntity)
    { #>
@@ -74,8 +75,8 @@ namespace SPPC.Tadbir.Persistence
 <# } #>
             }
 
-            await ReadAsync(gridOptions);
-            return new PagedList<<#= entity.Name #>ViewModel>(<#= plural.CamelCase() #>, gridOptions);
+            await ReadAsync(options);
+            return new PagedList<<#= entity.Name #>ViewModel>(<#= plural.CamelCase() #>, options);
         }
 
         /// <summary>
@@ -154,6 +155,11 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await OnEntityGroupDeleted(<#= camelCase #>Ids);
+        }
+
+        internal override int? EntityType
+        {
+            get { return (int?)EntityTypeId.<#= entity.Name #>; }
         }
 
         /// <summary>

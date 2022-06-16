@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using SPPC.Tools.Model;
+﻿using SPPC.Tools.Model;
 
 namespace SPPC.Tools.Transforms.Templates
 {

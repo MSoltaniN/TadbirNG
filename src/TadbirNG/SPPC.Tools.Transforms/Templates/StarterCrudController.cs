@@ -159,12 +159,6 @@ var name = String.Format("{0}Controller", plural);
             this.Write("Api.");
             
             #line 58 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_model.IsFiscalEntity ? "Environment" : String.Empty));
-            
-            #line default
-            #line hidden
-            
-            #line 58 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural));
             
             #line default
@@ -184,12 +178,6 @@ var name = String.Format("{0}Controller", plural);
             #line default
             #line hidden
             this.Write("Permissions.View)]\r\n        public async Task<IActionResult> Get");
-            
-            #line 60 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_model.IsFiscalEntity ? "Environment" : String.Empty));
-            
-            #line default
-            #line hidden
             
             #line 60 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural));
@@ -694,9 +682,73 @@ var name = String.Format("{0}Controller", plural);
             #line default
             #line hidden
             this.Write("Id);\r\n            return StatusCode(StatusCodes.Status204NoContent);\r\n        }\r\n" +
-                    "\r\n        /// <summary>\r\n        /// به روش آسنکرون، عمل حذف را برای یکی از ");
+                    "\r\n        /// <summary>\r\n        /// به روش آسنکرون، ");
             
             #line 145 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPluralPersianName));
+            
+            #line default
+            #line hidden
+            this.Write(@" داده شده را - در صورت امکان - حذف می کند
+        /// </summary>
+        /// <param name=""actionDetail"">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // PUT: api/");
+            
+            #line 150 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(plural.ToLower()));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n        [HttpPut]\r\n        [Route(");
+            
+            #line 152 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
+            
+            #line default
+            #line hidden
+            this.Write("Api.");
+            
+            #line 152 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(plural));
+            
+            #line default
+            #line hidden
+            this.Write("Url)]\r\n        [AuthorizeRequest(SecureEntity.");
+            
+            #line 153 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
+            
+            #line default
+            #line hidden
+            this.Write(", (int)");
+            
+            #line 153 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
+            
+            #line default
+            #line hidden
+            this.Write("Permissions.Delete)]\r\n        public async Task<IActionResult> PutExisting");
+            
+            #line 154 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(plural));
+            
+            #line default
+            #line hidden
+            this.Write("AsDeletedAsync(\r\n            [FromBody] ActionDetailViewModel actionDetail)\r\n    " +
+                    "    {\r\n            return await GroupDeleteResultAsync(actionDetail, _repository" +
+                    ".Delete");
+            
+            #line 157 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(plural));
+            
+            #line default
+            #line hidden
+            this.Write("Async);\r\n        }\r\n\r\n        /// <summary>\r\n        /// به روش آسنکرون، عمل حذف " +
+                    "را برای یکی از ");
+            
+            #line 161 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPluralPersianName));
             
             #line default
@@ -704,7 +756,7 @@ var name = String.Format("{0}Controller", plural);
             this.Write(" اعتبارسنجی می کند\r\n        /// </summary>\r\n        /// <param name=\"item\">شناسه " +
                     "دیتابیسی ");
             
-            #line 147 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 163 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityPersianName));
             
             #line default
@@ -717,21 +769,21 @@ var name = String.Format("{0}Controller", plural);
             string message = String.Empty;
             var ");
             
-            #line 153 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 169 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
             #line hidden
             this.Write(" = await _repository.Get");
             
-            #line 153 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 169 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
             #line hidden
             this.Write("Async(item);\r\n            if (");
             
-            #line 154 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 170 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName.ToLower()));
             
             #line default
@@ -739,7 +791,7 @@ var name = String.Format("{0}Controller", plural);
             this.Write(" == null)\r\n            {\r\n                message = _strings.Format(AppStrings.It" +
                     "emByIdNotFound, AppStrings.");
             
-            #line 156 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 172 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
@@ -747,7 +799,7 @@ var name = String.Format("{0}Controller", plural);
             this.Write(", item.ToString());\r\n            }\r\n\r\n            return message;\r\n        }\r\n\r\n " +
                     "       private readonly I");
             
-            #line 162 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
+            #line 178 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\StarterCrudController.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.EntityName));
             
             #line default
