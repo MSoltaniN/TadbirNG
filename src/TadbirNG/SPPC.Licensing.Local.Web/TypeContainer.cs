@@ -39,7 +39,7 @@ namespace SPPC.Licensing.Local.Web
         /// </summary>
         public void AddServices()
         {
-            //InspectConfiguration();
+            InspectConfiguration();
             AddSecurityTypes();
             AddUtilityTypes();
         }
