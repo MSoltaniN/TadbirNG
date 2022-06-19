@@ -201,6 +201,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.initVoucherForm(this.voucherItem);
       this.isShowBreadcrumb = false;
       this.subjectMode = this.voucherItem.subjectType;
+
       if (this.subjectMode == 1) this.entityNamePermission = "DraftVoucher";
       this.getVoucherType();
     } else {
