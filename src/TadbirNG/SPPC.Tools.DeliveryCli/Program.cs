@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
+using SPPC.Licensing.Model;
 using SPPC.Tools.Model;
 using SPPC.Tools.Utility;
 
@@ -43,7 +44,6 @@ namespace SPPC.Tools.DeliveryCli
                 return;
             }
 
-            var password = InputUtility.QueryZipFilePassword();
             var license = InputUtility.QueryLicense();
             if (license == null)
             {
@@ -62,29 +62,25 @@ namespace SPPC.Tools.DeliveryCli
                 var composePath = Path.Combine(PathConfig.SolutionRoot, "docker-compose.yml");
                 var overridePath = Path.Combine(PathConfig.SolutionRoot, "docker-compose.override.yml");
                 _runner.Run(String.Format($"docker-compose -f {overridePath} -f {composePath} build"));
-                Console.WriteLine("(30% completed)");
+                Console.WriteLine("(20% completed)");
                 Console.WriteLine();
 
                 Console.WriteLine("Publishing images to Docker Hub...");
-                var guid = license.LicenseKey.Substring(0, 8);
-                _runner.Run(String.Format(PushLicenseTemplate, guid));
-                Console.WriteLine("(45% completed)");
+                var separator = IsDefaultLicense(license) ? String.Empty : "-";
+                var guid = IsDefaultLicense(license) ? String.Empty : license.LicenseKey.Substring(0, 8);
+                _runner.Run(String.Format(PushLicenseTemplate, separator, guid));
+                Console.WriteLine("(40% completed)");
                 Console.WriteLine();
 
-                _runner.Run(String.Format(PushApiTemplate, guid));
+                _runner.Run(String.Format(PushApiTemplate, separator, guid));
                 Console.WriteLine("(60% completed)");
                 Console.WriteLine();
 
-                _runner.Run(String.Format(PushAppTemplate, guid));
-                Console.WriteLine("(75% completed)");
+                _runner.Run(String.Format(PushAppTemplate, separator, guid));
+                Console.WriteLine("(80% completed)");
                 Console.WriteLine();
 
                 _runner.Run("docker push msn1368/db-server");
-                Console.WriteLine("(90% completed)");
-                Console.WriteLine();
-
-                Console.WriteLine("Building customer delivery file...");
-                ReleaseUtility.CreateReleaseArchive(license.LicenseKey, password);
                 Console.WriteLine("(100% completed)");
                 Console.WriteLine();
                 Console.WriteLine("Customer delivery completed successfully.");
@@ -96,16 +92,22 @@ namespace SPPC.Tools.DeliveryCli
             }
             finally
             {
-                ReleaseUtility.RestoreSettings();
+                ReleaseUtility.RestoreSettings(license.Id);
                 stopWatch.Stop();
             }
 
             Console.WriteLine(String.Format($"Elapsed Time : {stopWatch.Elapsed}"));
         }
 
-        const string PushLicenseTemplate = "docker push msn1368/license-server-{0}";
-        const string PushApiTemplate = "docker push msn1368/api-server-{0}";
-        const string PushAppTemplate = "docker push msn1368/web-app-{0}:dev";
+        static bool IsDefaultLicense(LicenseModel license)
+        {
+            return license.Id == DefaultLicenseId;
+        }
+
+        const string PushLicenseTemplate = "docker push msn1368/license-server{0}{1}";
+        const string PushApiTemplate = "docker push msn1368/api-server{0}{1}";
+        const string PushAppTemplate = "docker push msn1368/web-app{0}{1}:dev";
+        const int DefaultLicenseId = 5;     // Used for building base (no-suffix) images
         static readonly CliRunner _runner = new();
     }
 }

@@ -58,8 +58,9 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
         {
             var column = new ColumnViewModel()
             {
-                AllowFiltering = (name == "RowNo" ? false : true),
-                AllowSorting = true,
+                AllowFiltering = name != "RowNo",
+                AllowSorting = name != "RowNo",
+                Type = SpecialTypeFromType(name, type),
                 DotNetType = type.FullName,
                 Name = name,
                 ScriptType = ScriptTypeFromType(type),
@@ -75,6 +76,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
                     column.Length = lengthAttribute.MaximumLength;
                 }
             }
+
             return column;
         }
 
@@ -147,6 +149,29 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
             return scriptType;
         }
 
+        private string SpecialTypeFromType(string name, Type type)
+        {
+            string specialType;
+            if (name.Contains("Date") || type == typeof(DateTime))
+            {
+                specialType = "Default";
+            }
+            else if (name.Contains("Currency"))
+            {
+                specialType = "Currency";
+            }
+            else if (type == typeof(decimal))
+            {
+                specialType = "Money";
+            }
+            else
+            {
+                specialType = null;
+            }
+
+            return specialType;
+        }
+
         private void LoadColumns()
         {
             foreach (var column in Columns)
@@ -163,16 +188,17 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
             }
            
             int tmpSelectedIndex = Columns
-                                   .IndexOf(Columns.Where(p => p.Name == lbxColumns.SelectedItem.ToString())
-                                   .SingleOrDefault());
+                .IndexOf(Columns.Where(p => p.Name == lbxColumns.SelectedItem.ToString())
+                .SingleOrDefault());
 
-            if (tmpSelectedIndex != _columnSelectedIndex && lbxColumns.SelectedIndex!=-1)
+            if (tmpSelectedIndex != _columnSelectedIndex && lbxColumns.SelectedIndex != -1)
             {
                 SaveColumnDetails(_columnSelectedIndex != -1);
                 _columnSelectedIndex = tmpSelectedIndex;
                 RetrieveColumnDetails();
             }
         }
+
         private void SaveColumnDetails(bool dataExist)
         {
             if(dataExist)
@@ -197,7 +223,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
         private void RetrieveColumnDetails()
         {
             txtName.Text = Columns[_columnSelectedIndex].Name;
-            cmbType.Text = (Columns[_columnSelectedIndex].Type == "" ? "(not set)" : Columns[_columnSelectedIndex].Type);
+            cmbType.Text = Columns[_columnSelectedIndex].Type == "" ? "(not set)" : Columns[_columnSelectedIndex].Type;
             cmbDotNetType.Text = Columns[_columnSelectedIndex].DotNetType;
             cmbStorageType.Text = Columns[_columnSelectedIndex].StorageType;
             cmbScriptType.Text = Columns[_columnSelectedIndex].ScriptType;
@@ -211,7 +237,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
             txtGroupName.Text = Columns[_columnSelectedIndex].GroupName;
             txtExpression.Text = Columns[_columnSelectedIndex].Expression;
         }
-
 
         private void MoveUp_Click(object sender, EventArgs e)
         {

@@ -100,12 +100,14 @@ namespace SPPC.Tadbir.WinRunner
                 return;
             }
 
+            suffix = IsDefaultLicense(suffix) ? String.Empty : suffix;
+            var separator = IsDefaultLicense(suffix) ? String.Empty : "-";
             worker.ReportProgress(0, "دانلود سرویس های برنامه...");
-            RunCommandWithRetry(String.Format(PullLicenseTemplate, suffix));
+            RunCommandWithRetry(String.Format(PullLicenseTemplate, separator, suffix));
             worker.ReportProgress(20);
-            RunCommandWithRetry(String.Format(PullApiTemplate, suffix));
+            RunCommandWithRetry(String.Format(PullApiTemplate, separator, suffix));
             worker.ReportProgress(20);
-            RunCommandWithRetry(String.Format(PullAppTemplate, suffix));
+            RunCommandWithRetry(String.Format(PullAppTemplate, separator, suffix));
             worker.ReportProgress(20);
             RunCommandWithRetry("docker pull msn1368/db-server:latest");
             worker.ReportProgress(20);
@@ -212,9 +214,15 @@ namespace SPPC.Tadbir.WinRunner
             }
         }
 
-        private const string PullLicenseTemplate = "docker pull msn1368/license-server-{0}:latest";
-        private const string PullApiTemplate = "docker pull msn1368/api-server-{0}:latest";
-        private const string PullAppTemplate = "docker pull msn1368/web-app-{0}:dev";
+        private bool IsDefaultLicense(string suffix)
+        {
+            return suffix == DefaultSuffix;
+        }
+
+        private const string DefaultSuffix = "caf7b35f";
+        private const string PullLicenseTemplate = "docker pull msn1368/license-server{0}{1}:latest";
+        private const string PullApiTemplate = "docker pull msn1368/api-server{0}{1}:latest";
+        private const string PullAppTemplate = "docker pull msn1368/web-app{0}{1}:dev";
         private readonly CliRunner _runner;
         private TimeSpan _elapsed;
         private string _dbServer;
