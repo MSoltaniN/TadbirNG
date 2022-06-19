@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 using SPPC.Tools.Model;
 
@@ -20,6 +21,11 @@ namespace SPPC.Tools.SystemDesigner.Wizards.NewCrudEntityWizard
         {
             base.OnLoad(e);
             LoadFirstPage();
+            string codeGenPath = @"..\..\..\res\_codegen_";
+            if (!Directory.Exists(codeGenPath))
+            {
+                Directory.CreateDirectory(codeGenPath);
+            }
         }
 
         private void Back_Click(object sender, EventArgs e)

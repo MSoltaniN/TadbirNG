@@ -4880,3 +4880,13 @@ GO
 ALTER TABLE [Core].[SystemError]
 ALTER COLUMN [Message] varchar(2048) NOT NULL
 GO
+
+-- 1.2.1386
+ALTER TABLE [Metadata].[View]
+ALTER COLUMN [FetchUrl] NVARCHAR(512) NULL
+GO
+
+UPDATE [Metadata].[View]
+SET [FetchUrl] = NULL
+WHERE [FetchUrl] = ''
+GO

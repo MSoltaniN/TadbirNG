@@ -116,101 +116,111 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private void Generate_Click(object sender, EventArgs e)
         {
-            var dal = new SqlDataLayer(_sysConnection);
-            int maxReportId = Convert.ToInt32(dal.QueryScalar("SELECT MAX([ReportID]) FROM [Reporting].[Report]"));
-            int maxLocalReport = Convert.ToInt32(dal.QueryScalar("SELECT MAX([LocalReportID]) FROM [Reporting].[LocalReport]"));
-            int maxParamId = Convert.ToInt32(dal.QueryScalar("SELECT MAX([ParamID]) FROM [Reporting].[Parameter]"));
-            var builder = new StringBuilder();
-            var solutionVersion = GetSolutionVersion();
-
-            builder.AppendLine();
-            builder.AppendFormat("-- {0}", solutionVersion);
-            builder.AppendLine();
-
-            builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Report] ON");
-            int reportId = maxReportId + 1;
-            foreach (DataRow row in _reportTable.Rows)
+            if (_reportTable.Rows.Count > 0)
             {
-                builder.AppendLine("INSERT INTO [Reporting].[Report] " +
-                     "([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])");
-                builder.AppendFormat("    VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10})"
-                    , reportId++
-                    , Convert.ToInt32(row["ParentID"])
-                    , 1
-                    , Convert.ToInt32(row["ViewID"])
-                    , Convert.ToInt32(row["SubsystemID"])
-                    , "''"
-                    , GetNullableValue(row["ServiceUrl"].ToString())
-                    , Convert.ToBoolean(row["IsGroup"]) == true ? 1 : 0
-                    , Convert.ToBoolean(row["IsSystem"]) == true ? 1 : 0
-                    , Convert.ToBoolean(row["IsDefault"]) == true ? 1 : 0
-                    , Convert.ToBoolean(row["IsDynamic"]) == true ? 1 : 0);
+                var dal = new SqlDataLayer(_sysConnection);
+                int maxReportId = Convert.ToInt32(dal.QueryScalar("SELECT MAX([ReportID]) FROM [Reporting].[Report]"));
+                int maxLocalReport = Convert.ToInt32(dal.QueryScalar("SELECT MAX([LocalReportID]) FROM [Reporting].[LocalReport]"));
+                int maxParamId = Convert.ToInt32(dal.QueryScalar("SELECT MAX([ParamID]) FROM [Reporting].[Parameter]"));
+                var builder = new StringBuilder();
+                var solutionVersion = GetSolutionVersion();
+
                 builder.AppendLine();
-            }
-
-            builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Report] OFF");
-            builder.AppendLine();
-
-            builder.AppendLine("SET IDENTITY_INSERT [Reporting].[LocalReport] ON");
-            int localReportId = maxLocalReport + 1;
-            reportId = maxReportId + 1;
-            foreach (DataRow row in _reportTable.Rows)
-            {
-                builder.AppendLine("INSERT INTO [Reporting].[LocalReport] " +
-                    "([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])");
-                builder.AppendFormat("    VALUES ({0}, {1}, {2}, '{3}', {4})"
-                    , localReportId++
-                    , 1
-                    , reportId
-                    , row["EnCaption"].ToString()
-                    , GetTemplateValue(row, "EnTemplatePath"));
+                builder.AppendFormat("-- {0}", solutionVersion);
                 builder.AppendLine();
-                builder.AppendLine("INSERT INTO [Reporting].[LocalReport] " +
-                    "([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])");
-                builder.AppendFormat("    VALUES ({0}, {1}, {2}, N'{3}', {4})"
-                    , localReportId++
-                    , 2
-                    , reportId++
-                    , row["FaCaption"].ToString()
-                    , GetTemplateValue(row, "EnTemplatePath"));
-                builder.AppendLine();
-            }
 
-            builder.AppendLine("SET IDENTITY_INSERT [Reporting].[LocalReport] OFF");
-            builder.AppendLine();
-
-            builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Parameter] ON");
-            int paramId = maxParamId + 1;
-            var sortedKeys = _paramDictionary.Keys.OrderBy(key => key);
-            foreach (int key in sortedKeys)
-            {
-                var parameters = _paramDictionary[key];
-                foreach (DataRow row in parameters.Rows)
+                builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Report] ON");
+                int reportId = maxReportId + 1;
+                foreach (DataRow row in _reportTable.Rows)
                 {
-                    builder.AppendLine("INSERT INTO [Reporting].[Parameter] " +
-                     "([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])");
-                    builder.AppendFormat("    VALUES ({0}, {1}, '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}')"
-                        , paramId++
-                        , maxReportId + key
-                        , row["Name"].ToString()
-                        , row["FieldName"].ToString()
-                        , row["Operator"].ToString()
-                        , row["DataType"].ToString()
-                        , row["ControlType"].ToString()
-                        , row["CaptionKey"].ToString()
-                        , row["CaptionKey"].ToString());
+                    builder.AppendLine("INSERT INTO [Reporting].[Report] " +
+                         "([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])");
+                    builder.AppendFormat("    VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10})"
+                        , reportId++
+                        , Convert.ToInt32(row["ParentID"])
+                        , 1
+                        , Convert.ToInt32(row["ViewID"])
+                        , Convert.ToInt32(row["SubsystemID"])
+                        , "''"
+                        , GetNullableValue(row["ServiceUrl"].ToString())
+                        , Convert.ToBoolean(row["IsGroup"]) == true ? 1 : 0
+                        , Convert.ToBoolean(row["IsSystem"]) == true ? 1 : 0
+                        , Convert.ToBoolean(row["IsDefault"]) == true ? 1 : 0
+                        , Convert.ToBoolean(row["IsDynamic"]) == true ? 1 : 0);
                     builder.AppendLine();
                 }
+
+                builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Report] OFF");
+                builder.AppendLine();
+
+                builder.AppendLine("SET IDENTITY_INSERT [Reporting].[LocalReport] ON");
+                int localReportId = maxLocalReport + 1;
+                reportId = maxReportId + 1;
+                foreach (DataRow row in _reportTable.Rows)
+                {
+                    builder.AppendLine("INSERT INTO [Reporting].[LocalReport] " +
+                        "([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])");
+                    builder.AppendFormat("    VALUES ({0}, {1}, {2}, '{3}', {4})"
+                        , localReportId++
+                        , 1
+                        , reportId
+                        , row["EnCaption"].ToString()
+                        , GetTemplateValue(row, "EnTemplatePath"));
+                    builder.AppendLine();
+                    builder.AppendLine("INSERT INTO [Reporting].[LocalReport] " +
+                        "([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])");
+                    builder.AppendFormat("    VALUES ({0}, {1}, {2}, N'{3}', {4})"
+                        , localReportId++
+                        , 2
+                        , reportId++
+                        , row["FaCaption"].ToString()
+                        , GetTemplateValue(row, "EnTemplatePath"));
+                    builder.AppendLine();
+                }
+
+                builder.AppendLine("SET IDENTITY_INSERT [Reporting].[LocalReport] OFF");
+                builder.AppendLine();
+
+                if (_paramDictionary.Keys.Count > 0)
+                {
+                    builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Parameter] ON");
+                    int paramId = maxParamId + 1;
+                    var sortedKeys = _paramDictionary.Keys.OrderBy(key => key);
+                    foreach (int key in sortedKeys)
+                    {
+                        var parameters = _paramDictionary[key];
+                        foreach (DataRow row in parameters.Rows)
+                        {
+                            builder.AppendLine("INSERT INTO [Reporting].[Parameter] " +
+                             "([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])");
+                            builder.AppendFormat("    VALUES ({0}, {1}, '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}')"
+                                , paramId++
+                                , maxReportId + key
+                                , row["Name"].ToString()
+                                , row["FieldName"].ToString()
+                                , row["Operator"].ToString()
+                                , row["DataType"].ToString()
+                                , row["ControlType"].ToString()
+                                , row["CaptionKey"].ToString()
+                                , row["CaptionKey"].ToString());
+                            builder.AppendLine();
+                        }
+                    }
+
+                    builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Parameter] OFF");
+                    builder.AppendLine();
+                }
+
+                File.AppendAllText(_TadbirSysUpdateScript, builder.ToString());
+                MessageBox.Show("The script was generated.");
+                DialogResult = DialogResult.OK;
+                Close();
             }
-
-            builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Parameter] OFF");
-            builder.AppendLine();
-
-            File.AppendAllText(_TadbirSysUpdateScript, builder.ToString());
-
-            MessageBox.Show("The script was generated.");
-            DialogResult = DialogResult.OK;
-            Close();
+            else
+            {
+                MessageBox.Show("There is nothing to generate.");
+                return;
+            }
         }
 
         private void Cancel_Click(object sender, EventArgs e)

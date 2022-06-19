@@ -50,7 +50,7 @@ CREATE TABLE [Core].[Version] (
 GO
 
 INSERT INTO [Core].[Version] ([VersionID], [Number])
-    VALUES(1, '1.2.1352')
+    VALUES(1, '1.2.1386')
 
 CREATE TABLE [Metadata].[EntityType] (
     [EntityTypeID]   INT              IDENTITY (1, 1) NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE [Metadata].[View] (
     [EntityType]             NVARCHAR(32)     NULL,
     [IsHierarchy]            BIT              NOT NULL,
     [IsCartableIntegrated]   BIT              NOT NULL,
-    [FetchUrl]               NVARCHAR(512)    NOT NULL,
+    [FetchUrl]               NVARCHAR(512)    NULL,
     [SearchUrl]              NVARCHAR(512)    NULL,
     [rowguid]                UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_View_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]           DATETIME         CONSTRAINT [DF_Metadata_View_ModifiedDate] DEFAULT (getdate()) NOT NULL

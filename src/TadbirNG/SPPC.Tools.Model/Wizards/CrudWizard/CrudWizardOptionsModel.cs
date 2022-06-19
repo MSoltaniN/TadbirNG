@@ -17,6 +17,7 @@ namespace SPPC.Tools.Model
         public ControllerModel Controller { get; set; }
 
         public ApiModel Api { get; set; }
+
         public bool HasController { get; set; }
 
         public bool HasModel { get; set; }

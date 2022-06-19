@@ -208,7 +208,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
         private Version GetSolutionVersion()
         {
             var assemblyVersion= GetType().Assembly.GetName().Version;
-            return new Version(assemblyVersion.ToString());
+            return new Version(assemblyVersion.ToString(3));
         }
 
         private int _currentStepNo = 1;

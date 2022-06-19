@@ -1,5 +1,4 @@
-﻿using System;
-using SPPC.Framework.Common;
+﻿using SPPC.Framework.Common;
 using SPPC.Tools.Model;
 
 namespace SPPC.Tools.SystemDesigner.Commands
