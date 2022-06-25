@@ -464,7 +464,9 @@ export class SettingService extends BaseService {
     let fromDate: Date;
     let toDate: Date;
 
-    var dateRangeConfig = this.bStorageService.getdateRangeConfig();
+    var dateRangeConfig = this.bStorageService.getDateRangeConfig(
+      this.CompanyId.toString()
+    );
 
     if (dateRangeConfig) {
       var range = JSON.parse(dateRangeConfig);
@@ -477,7 +479,7 @@ export class SettingService extends BaseService {
       ).toPromise();
       if (response) {
         var res = (<any>response).values;
-        this.bStorageService.setDateRangeConfig(res);
+        this.bStorageService.setDateRangeConfig(res, this.CompanyId.toString());
         dateRange = res.defaultDateRange;
       }
     }

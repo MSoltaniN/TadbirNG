@@ -18,7 +18,7 @@ export const SessionKeys = {
   NumberConfig: "numberConfig",
   SystemConfig: "SystemConfig",
   TestBalanceConfig: "testBalanceConfig",
-  DateRangeConfig: "DateRangeConfig",
+  DateRangeConfig: "DateRangeConfig_{0}",
   SelectedDateRange: "SelectedDateRange",
   MetadataKey: "metadata_view_{0}_{1}",
   QuickSearchConfig: "QuickSearchConfig_{0}_{1}",
@@ -372,15 +372,17 @@ export class BrowserStorageService {
       localStorage.removeItem(SessionKeys.DateRangeConfig);
   }
 
-  setDateRangeConfig(dateConfig: any) {
-    localStorage.setItem(
-      SessionKeys.DateRangeConfig,
-      JSON.stringify(dateConfig)
-    );
+  setDateRangeConfig(dateConfig: any, companyId: string) {
+    debugger;
+    const key = String.Format(SessionKeys.DateRangeConfig, companyId);
+
+    localStorage.setItem(key, JSON.stringify(dateConfig));
   }
 
-  getdateRangeConfig(): string {
-    return localStorage.getItem(SessionKeys.DateRangeConfig);
+  getDateRangeConfig(companyId: string): string {
+    debugger;
+    const key = String.Format(SessionKeys.DateRangeConfig, companyId);
+    return localStorage.getItem(key);
   }
 
   getSelectedDateRange(): string {

@@ -374,7 +374,9 @@ export class AccountBookComponent
       this.dateRange.toDatePicker.dateObject = moment(to);
       this.dateRange.setInitialDates(from, to);
     } else if (this.dateRange) {
-      var dateRangeConfig = this.bStorageService.getdateRangeConfig();
+      var dateRangeConfig = this.bStorageService.getDateRangeConfig(
+        this.CompanyId.toString()
+      );
       var dateRangeType = "";
       if (dateRangeConfig) {
         var range = JSON.parse(dateRangeConfig);

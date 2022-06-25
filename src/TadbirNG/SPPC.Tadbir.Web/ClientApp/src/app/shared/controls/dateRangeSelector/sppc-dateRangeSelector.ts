@@ -1,36 +1,42 @@
-
-import {distinctUntilChanged, debounceTime} from 'rxjs/operators';
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms'
-import { ToastrService } from 'ngx-toastr';
-import * as moment from 'jalali-moment';
-import { BrowserStorageService } from '@sppc/shared/services';
-import { SettingService } from '@sppc/config/service';
-import { MessageType } from '@sppc/shared/enum/metadata';
-import { BaseComponent } from '@sppc/shared/class';
-import { SppcDatepicker } from '../datepicker/sppc-datepicker';
-import { async } from '@angular/core/testing';
-import { DateRangeType } from '@sppc/shared/enum';
-
-
-
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from "@angular/core";
+import { FormControl, FormGroup } from "@angular/forms";
+import { SettingService } from "@sppc/config/service";
+import { BaseComponent } from "@sppc/shared/class";
+import { DateRangeType } from "@sppc/shared/enum";
+import { MessageType } from "@sppc/shared/enum/metadata";
+import { BrowserStorageService } from "@sppc/shared/services";
+import * as moment from "jalali-moment";
+import { ToastrService } from "ngx-toastr";
+import { debounceTime, distinctUntilChanged } from "rxjs/operators";
+import { SppcDatepicker } from "../datepicker/sppc-datepicker";
 
 @Component({
-  selector: 'sppc-dateRangeSelector',
-  templateUrl: './sppc-dateRangeSelector.html',
+  selector: "sppc-dateRangeSelector",
+  templateUrl: "./sppc-dateRangeSelector.html",
   //template: ``,
-  styles: [`
-#drs-content{
-    margin-bottom: 10px;}
-.float-right{float:right;}
-`]
+  styles: [
+    `
+      #drs-content {
+        margin-bottom: 10px;
+      }
+      .float-right {
+        float: right;
+      }
+    `,
+  ],
 })
 export class SppcDateRangeSelector extends BaseComponent implements OnInit {
-
   rtl: boolean = true;
   myForm = new FormGroup({
     fromDate: new FormControl(),
-    toDate: new FormControl()
+    toDate: new FormControl(),
   });
 
   @Input() viewName: string;
@@ -57,37 +63,39 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
   @Output() valueChange = new EventEmitter();
 
-  @ViewChild('fromDate') public fromDatePicker: SppcDatepicker;
-  @ViewChild('toDate') public toDatePicker: SppcDatepicker;
+  @ViewChild("fromDate") public fromDatePicker: SppcDatepicker;
+  @ViewChild("toDate") public toDatePicker: SppcDatepicker;
 
-  constructor(public settingService: SettingService, public toastrService: ToastrService, public bStorageService: BrowserStorageService) {
+  constructor(
+    public settingService: SettingService,
+    public toastrService: ToastrService,
+    public bStorageService: BrowserStorageService
+  ) {
     super(toastrService, bStorageService);
-
-    
   }
 
-  
   ngOnInit() {
-
     (async () => {
-      this.displayFromDate = await this.settingService.getDateConfigAsync("start");
+      this.displayFromDate = await this.settingService.getDateConfigAsync(
+        "start"
+      );
       this.displayToDate = await this.settingService.getDateConfigAsync("end");
-    }
-    )().then(() => {
-
-      var dateRangeConfig = this.bStorageService.getdateRangeConfig();
+    })().then(() => {
+      var dateRangeConfig = this.bStorageService.getDateRangeConfig(
+        this.CompanyId.toString()
+      );
       var dateRangeType = "";
 
       if (dateRangeConfig) {
         var range = JSON.parse(dateRangeConfig);
-        dateRangeType = range ? range.defaultDateRange : DateRangeType.CurrentToCurrent;
+        dateRangeType = range
+          ? range.defaultDateRange
+          : DateRangeType.CurrentToCurrent;
       }
 
-      if (this.InitializeDate)
-        this.initDate(dateRangeType);
+      if (this.InitializeDate) this.initDate(dateRangeType);
 
-      if (this.InitializeTodayDate)
-      {
+      if (this.InitializeTodayDate) {
         this.displayFromDate = undefined;
         this.displayToDate = undefined;
       }
@@ -95,112 +103,127 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
       var lang: string = "fa";
       var item: string | null;
       item = this.bStorageService.getLanguage();
-      if (item)
-        lang = item;
+      if (item) lang = item;
 
-      if (lang == "fa")
-        this.rtl = true;
-      else
-        this.rtl = false;
+      if (lang == "fa") this.rtl = true;
+      else this.rtl = false;
 
-      this.myForm.patchValue({ fromDate: this.displayFromDate, toDate: this.displayToDate });
+      this.myForm.patchValue({
+        fromDate: this.displayFromDate,
+        toDate: this.displayToDate,
+      });
       this.saveTemporarilyDate(this.displayFromDate, this.displayToDate);
 
-      this.myForm.valueChanges.pipe(
-        debounceTime(800),
-        distinctUntilChanged(),)
-        .subscribe(val => {
-
+      this.myForm.valueChanges
+        .pipe(debounceTime(800), distinctUntilChanged())
+        .subscribe((val) => {
           this.fpStartDate = this.FiscalPeriodStartDate;
           this.fpEndDate = this.FiscalPeriodEndDate;
 
           if (val.fromDate && val.toDate) {
-
             if (this.compareDate(val.fromDate, val.toDate) != 1) {
+              if (
+                this.compareDate(val.fromDate, this.fpStartDate) == -1 &&
+                this.ValidateFPDate &&
+                !this.InitializeTodayDate &&
+                (dateRangeType == DateRangeType.FiscalStartToCurrent ||
+                  dateRangeType == DateRangeType.FiscalStartToFiscalEnd)
+              ) {
+                this.showMessage(
+                  "تاریخ ابتدا کوچکتر از ابتدای دوره مالی میباشد",
+                  MessageType.Warning
+                );
+                this.myForm.patchValue({ fromDate: this.fpStartDate });
+              } else if (
+                this.compareDate(val.toDate, this.fpEndDate) == 1 &&
+                this.ValidateFPDate &&
+                !this.InitializeTodayDate &&
+                dateRangeType == DateRangeType.FiscalStartToFiscalEnd
+              ) {
+                this.showMessage(
+                  "تاریخ انتها بزرگتر از انتهای دوره مالی میباشد",
+                  MessageType.Warning
+                );
+                this.myForm.patchValue({ toDate: this.fpEndDate });
+              } else {
+                if (
+                  val.fromDate != this.fromDate ||
+                  val.toDate != this.toDate
+                ) {
+                  this.fromDate = val.fromDate;
+                  this.toDate = val.toDate;
+                  this.valueChange.emit({
+                    fromDate: this.getEmitDate(val.fromDate, false),
+                    toDate: this.getEmitDate(val.toDate, true),
+                  });
 
-             
-
-              if (this.compareDate(val.fromDate, this.fpStartDate) == -1 && this.ValidateFPDate && !this.InitializeTodayDate
-                && (dateRangeType == DateRangeType.FiscalStartToCurrent || dateRangeType == DateRangeType.FiscalStartToFiscalEnd)) {
-                this.showMessage("تاریخ ابتدا کوچکتر از ابتدای دوره مالی میباشد", MessageType.Warning);
-                this.myForm.patchValue({ 'fromDate': this.fpStartDate });
+                  this.saveTemporarilyDate(val.fromDate, val.toDate);
+                }
               }
-              else
-                if (this.compareDate(val.toDate, this.fpEndDate) == 1 && this.ValidateFPDate && !this.InitializeTodayDate
-                  && dateRangeType == DateRangeType.FiscalStartToFiscalEnd) {
-                  this.showMessage("تاریخ انتها بزرگتر از انتهای دوره مالی میباشد", MessageType.Warning);
-                  this.myForm.patchValue({ 'toDate': this.fpEndDate });
-                }
-                else {
-                  if (val.fromDate != this.fromDate || val.toDate != this.toDate) {
-                    this.fromDate = val.fromDate;
-                    this.toDate = val.toDate;
-                    this.valueChange.emit({
-                      fromDate: this.getEmitDate(val.fromDate, false),
-                      toDate: this.getEmitDate(val.toDate, true)
-                    });
-
-                    this.saveTemporarilyDate(val.fromDate, val.toDate);
-                  }
-                }
-
-
-            }
-            else {
-              this.showMessage("محدوده تاریخی انتخابی معتبر نیست", MessageType.Warning);
-              this.myForm.patchValue({ 'fromDate': this.fpStartDate, 'toDate': this.fpEndDate });
+            } else {
+              this.showMessage(
+                "محدوده تاریخی انتخابی معتبر نیست",
+                MessageType.Warning
+              );
+              this.myForm.patchValue({
+                fromDate: this.fpStartDate,
+                toDate: this.fpEndDate,
+              });
               this.saveTemporarilyDate(this.fpStartDate, this.fpEndDate);
             }
           }
-
         });
     });
-
-    
   }
-   
-  
 
-  initDate(dateRangeType:string) {    
-
+  initDate(dateRangeType: string) {
     this.fpStartDate = this.FiscalPeriodStartDate;
     this.fpEndDate = this.FiscalPeriodEndDate;
 
-    if (dateRangeType == DateRangeType.FiscalStartToCurrent || dateRangeType == DateRangeType.FiscalStartToFiscalEnd)
+    if (
+      dateRangeType == DateRangeType.FiscalStartToCurrent ||
+      dateRangeType == DateRangeType.FiscalStartToFiscalEnd
+    ) {
       this.getFromDate();
-
-    if (dateRangeType == DateRangeType.FiscalStartToFiscalEnd)
       this.getToDate();
-        
+    }
+
+    //    if (dateRangeType == DateRangeType.FiscalStartToFiscalEnd) this.getToDate();
   }
 
   setInitialDates(from: Date, to: Date) {
     this.displayFromDate = from;
     this.displayToDate = to;
-    this.myForm.patchValue({ fromDate: this.displayFromDate, toDate: this.displayToDate });
+    this.myForm.patchValue({
+      fromDate: this.displayFromDate,
+      toDate: this.displayToDate,
+    });
 
     this.valueChange.emit({
       fromDate: this.getEmitDate(from, false),
-      toDate: this.getEmitDate(to, true)
+      toDate: this.getEmitDate(to, true),
     });
   }
 
   getEmitDate(date: Date, isToDate: boolean): any {
-    var dateValue = moment(date).format('YYYY/MM/DD');
+    var dateValue = moment(date).format("YYYY/MM/DD");
     if (isToDate) {
-      var myDate = new Date(dateValue + ' ' + '23:59:59');
+      var myDate = new Date(dateValue + " " + "23:59:59");
+    } else {
+      myDate = new Date(dateValue + " " + "00:00:00");
     }
-    else {
-      myDate = new Date(dateValue + ' ' + '00:00:00');
-    }
-    return moment(myDate).format('YYYY/MM/DD HH:mm:ss');
+    return moment(myDate).format("YYYY/MM/DD HH:mm:ss");
   }
 
-
-
-  getFromDate() {    
-    var compareFromDateFpStart = this.compareDate(this.displayFromDate, this.fpStartDate);
-    var compareFromDateFpEnd = this.compareDate(this.displayFromDate, this.fpEndDate);
+  getFromDate() {
+    var compareFromDateFpStart = this.compareDate(
+      this.displayFromDate,
+      this.fpStartDate
+    );
+    var compareFromDateFpEnd = this.compareDate(
+      this.displayFromDate,
+      this.fpEndDate
+    );
 
     if (compareFromDateFpStart == -1 || compareFromDateFpEnd == 1) {
       this.displayFromDate = this.fpStartDate;
@@ -213,9 +236,14 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
   }
 
   getToDate() {
-
-    var compareToDateFpEnd = this.compareDate(this.displayToDate, this.fpEndDate);
-    var compareToDateFpStart = this.compareDate(this.displayToDate, this.fpStartDate);
+    var compareToDateFpEnd = this.compareDate(
+      this.displayToDate,
+      this.fpEndDate
+    );
+    var compareToDateFpStart = this.compareDate(
+      this.displayToDate,
+      this.fpStartDate
+    );
 
     if (compareToDateFpEnd == 1 || compareToDateFpStart == -1) {
       this.displayToDate = this.fpEndDate;
@@ -227,14 +255,12 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
     }
   }
 
-
   compareDate(dateA: Date, dateB: Date): number {
+    var dateValueA = moment(dateA).format("YYYY/MM/DD");
+    var dateValueB = moment(dateB).format("YYYY/MM/DD");
 
-    var dateValueA = moment(dateA).format('YYYY/MM/DD');
-    var dateValueB = moment(dateB).format('YYYY/MM/DD');
-
-    let dA = new Date(dateValueA + ' ' + '00:00:00');
-    let dB = new Date(dateValueB + ' ' + '00:00:00');
+    let dA = new Date(dateValueA + " " + "00:00:00");
+    let dB = new Date(dateValueB + " " + "00:00:00");
 
     var diff = dA.getTime() - dB.getTime();
     var diffDays = Math.ceil(diff / (1000 * 3600 * 24));
@@ -262,26 +288,33 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
       let sessionDateRangeArray: any[] = [];
 
       var dateStorage = this.bStorageService.getSelectedDateRange();
-      if (dateStorage)
-        sessionDateRangeArray = JSON.parse(dateStorage);
+      if (dateStorage) sessionDateRangeArray = JSON.parse(dateStorage);
 
       if (sessionDateRangeArray.length > 0) {
-        var fromIndex = sessionDateRangeArray.findIndex(f => f.key.toLowerCase() == sessionFromDate.toLowerCase());
-        if (fromIndex > -1)
-          sessionDateRangeArray.splice(fromIndex, 1);
+        var fromIndex = sessionDateRangeArray.findIndex(
+          (f) => f.key.toLowerCase() == sessionFromDate.toLowerCase()
+        );
+        if (fromIndex > -1) sessionDateRangeArray.splice(fromIndex, 1);
 
-        var toIndex = sessionDateRangeArray.findIndex(f => f.key.toLowerCase() == sessionToDate.toLowerCase());
-        if (toIndex > -1)
-          sessionDateRangeArray.splice(toIndex, 1);
+        var toIndex = sessionDateRangeArray.findIndex(
+          (f) => f.key.toLowerCase() == sessionToDate.toLowerCase()
+        );
+        if (toIndex > -1) sessionDateRangeArray.splice(toIndex, 1);
       }
 
       this.bStorageService.removeSelectedDateRange();
 
       if (fromDate)
-        sessionDateRangeArray.push({ key: sessionFromDate, value: fromDate.toString() });
+        sessionDateRangeArray.push({
+          key: sessionFromDate,
+          value: fromDate.toString(),
+        });
 
       if (toDate)
-        sessionDateRangeArray.push({ key: sessionToDate, value: toDate.toString() });
+        sessionDateRangeArray.push({
+          key: sessionToDate,
+          value: toDate.toString(),
+        });
 
       if (sessionDateRangeArray.length > 0)
         this.bStorageService.setSelectedDaterange(sessionDateRangeArray);
@@ -298,7 +331,9 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
       var dateStorage = this.bStorageService.getSelectedDateRange();
       if (dateStorage) {
         sessionDateRangeArray = JSON.parse(dateStorage);
-        var dateItem = sessionDateRangeArray.find(f => f.key.toLowerCase() == sessionFromDate.toLowerCase());
+        var dateItem = sessionDateRangeArray.find(
+          (f) => f.key.toLowerCase() == sessionFromDate.toLowerCase()
+        );
         if (dateItem) {
           return new Date(dateItem.value);
         }
@@ -316,7 +351,9 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
       var dateStorage = this.bStorageService.getSelectedDateRange();
       if (dateStorage) {
         sessionDateRangeArray = JSON.parse(dateStorage);
-        var dateItem = sessionDateRangeArray.find(f => f.key.toLowerCase() == sessionToDate.toLowerCase());
+        var dateItem = sessionDateRangeArray.find(
+          (f) => f.key.toLowerCase() == sessionToDate.toLowerCase()
+        );
         if (dateItem) {
           return new Date(dateItem.value);
         }
