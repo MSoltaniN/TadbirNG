@@ -42,7 +42,6 @@ namespace SPPC.Framework.Helpers
                 return true;
             }
 
-            bool stopped = false;
             try
             {
                 if (ConsoleImports.AttachConsole((uint)_process.Id))

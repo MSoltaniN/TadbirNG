@@ -28,24 +28,28 @@ namespace SPPC.Tools.Utility
             GenerateSettingsWithBackup(PathConfig.WebApiRoot, new WebApiSettings(settings));
             GenerateEnvironmentWithBackup(PathConfig.WebEnvRoot, new TsInstanceFromValues(settings));
             CreateLicenseFilesWithBackup(license);
-            GenerateDockerComposeWithBackup(PathConfig.SolutionRoot,
-                new DockerCompose(license.LicenseKey), new DockerComposeOverride(license.LicenseKey));
+            if (!IsDefaultLicenseId(license.Id))
+            {
+                GenerateDockerComposeWithBackup(PathConfig.SolutionRoot,
+                    new DockerCompose(license.LicenseKey), new DockerComposeOverride(license.LicenseKey));
+            }
         }
 
-        public static void RestoreSettings()
+        public static void RestoreSettings(int licenseId = 0)
         {
             RestoreFile(Path.Combine(PathConfig.LocalServerRoot, ConfigFile));
-            ////RestoreFile(Path.Combine(PathConfig.LocalServerRoot, DevConfigFile));
             RestoreFile(Path.Combine(PathConfig.WebApiRoot, ConfigFile));
-            ////RestoreFile(Path.Combine(PathConfig.WebApiRoot, DevConfigFile));
             RestoreFile(Path.Combine(PathConfig.WebApiRoot, WebRoot, "license"));
             RestoreFile(Path.Combine(PathConfig.WebApiRoot, WebRoot, String.Format($"license{DevSuffix}")));
             RestoreFile(Path.Combine(PathConfig.WebApiRoot, WebRoot, "edition"));
             RestoreFile(Path.Combine(PathConfig.WebApiRoot, WebRoot, String.Format($"edition{DevSuffix}")));
             RestoreFile(Path.Combine(PathConfig.WebEnvRoot, EnvFile));
             RestoreFile(Path.Combine(PathConfig.WebEnvRoot, DevEnvFile));
-            RestoreFile(Path.Combine(PathConfig.SolutionRoot, ComposeFile));
-            RestoreFile(Path.Combine(PathConfig.SolutionRoot, OverrideFile));
+            if (!IsDefaultLicenseId(licenseId))
+            {
+                RestoreFile(Path.Combine(PathConfig.SolutionRoot, ComposeFile));
+                RestoreFile(Path.Combine(PathConfig.SolutionRoot, OverrideFile));
+            }
         }
 
         public static void CreateReleaseArchive(string licenseKey, string password)
@@ -179,6 +183,11 @@ namespace SPPC.Tools.Utility
             }
         }
 
+        private static bool IsDefaultLicenseId(int licenseId)
+        {
+            return licenseId == DefaultLicenseId;
+        }
+
         #endregion
 
         #region Zip Archive Creation
@@ -304,8 +313,8 @@ namespace SPPC.Tools.Utility
 
         #endregion
 
+        const int DefaultLicenseId = 5;     // Used for building base (no-suffix) images
         private const string ConfigFile = "appSettings.json";
-        private const string DevConfigFile = "appSettings.Development.json";
         private const string EnvFile = "environment.prod.ts";
         private const string DevEnvFile = "environment.ts";
         private const string ComposeFile = "docker-compose.yml";
