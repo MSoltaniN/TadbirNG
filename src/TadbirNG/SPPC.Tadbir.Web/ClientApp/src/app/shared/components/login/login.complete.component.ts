@@ -291,7 +291,6 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
   loadAllSetting() {
     this.bStorageService.checkVersion(this.version, this.UserId);
-
     this.settingService
       .getListSettingsByUser(this.UserId)
       .subscribe((res: Array<ListFormViewConfig>) => {
@@ -313,7 +312,6 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
   loadMenuAndRoute(currentUser: ContextInfo) {
     //#region load menu
-
     this.userService
       .getCurrentUserCommands(this.Ticket)
       .subscribe((res: Array<Command>) => {
@@ -324,6 +322,12 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
           var url = this.route.snapshot.queryParams["returnUrl"];
           this.router.navigate([url]);
         } else {
+          if (this.FiscalPeriodId == 0 || this.BranchId == 0) {
+            this.bStorageService.removeCurrentRoute();
+            this.router.navigate(["/tadbir/dashboard"]);
+            return;
+          }
+
           var currentRoute = this.bStorageService.getCurrentRoute();
           if (currentRoute && currentRoute.lastIndexOf("?") > 0)
             currentRoute = currentRoute.substring(
