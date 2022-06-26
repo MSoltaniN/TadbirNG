@@ -1,36 +1,27 @@
-
 import { Inject } from "@angular/core";
-import { BrowserStorageService } from "@sppc/shared/services/browserStorage.service";
+import { ContextInfo } from "@sppc/core";
 import { PermissionBrief } from "@sppc/core/models/permissionBrief";
-
-
-
+import { BrowserStorageService } from "@sppc/shared/services/browserStorage.service";
 
 export class EnviromentComponent {
+  constructor(
+    @Inject(BrowserStorageService) public bStorageService: BrowserStorageService
+  ) {}
 
-  constructor(@Inject(BrowserStorageService) public bStorageService: BrowserStorageService) {
-
-  }
-
-  public version: string = '1.0.764';
+  public version: string = "1.0.764";
 
   public get CurrentLanguage(): string {
-
     var lang: string = "fa";
 
     if (this.bStorageService.getLanguage() != null) {
       var item: string | null;
       item = this.bStorageService.getLanguage();
 
-      if (item)
-        lang = item;
-
+      if (item) lang = item;
     }
 
     return lang;
   }
-
-
 
   public get FiscalPeriodId(): number {
     var currentContext = this.bStorageService.getCurrentUser();
@@ -44,7 +35,7 @@ export class EnviromentComponent {
 
   public get BranchId(): number {
     var currentContext = this.bStorageService.getCurrentUser();
-    return currentContext ? currentContext.branchId : 0;;
+    return currentContext ? currentContext.branchId : 0;
   }
 
   public get BranchName(): string {
@@ -54,12 +45,12 @@ export class EnviromentComponent {
 
   public get CompanyId(): number {
     var currentContext = this.bStorageService.getCurrentUser();
-    return currentContext ? currentContext.companyId : 0;;
+    return currentContext ? currentContext.companyId : 0;
   }
 
   public get Ticket(): string {
     var currentContext = this.bStorageService.getCurrentUser();
-    return currentContext ? currentContext.ticket : '';
+    return currentContext ? currentContext.ticket : "";
   }
 
   public get UserId(): number {
@@ -74,11 +65,21 @@ export class EnviromentComponent {
     return userId;
   }
 
+  public extractUserId(currentContext: ContextInfo): number {
+    var userId = 0;
+    if (currentContext) {
+      var context = this.parseJwt(currentContext.ticket);
+      //var context = JSON.parse(jsonContext);
+      userId = currentContext ? parseInt(context.TadbirContext.Id) : 0;
+    }
+    return userId;
+  }
+
   public get IsAdmin(): boolean {
     var currentContext = this.bStorageService.getCurrentUser();
     let isAdmin: boolean = false;
     if (currentContext) {
-      var adminRole = currentContext.roles.find(f => f == 1);
+      var adminRole = currentContext.roles.find((f) => f == 1);
       isAdmin = adminRole ? true : false;
     }
     return isAdmin;
@@ -86,7 +87,7 @@ export class EnviromentComponent {
 
   public get UserName(): string {
     var currentContext = this.bStorageService.getCurrentUser();
-    return currentContext ? currentContext.userName : '';
+    return currentContext ? currentContext.userName : "";
   }
 
   public get Permissions(): Array<PermissionBrief> {
@@ -128,17 +129,17 @@ export class EnviromentComponent {
   public isAccess(entityName: string, action: number): boolean {
     let access: boolean = false;
     var currentContext = this.bStorageService.getCurrentUser();
-    var adminRole = currentContext.roles.find(f => f == 1);
-    if (adminRole)
-      access = true;
+    var adminRole = currentContext.roles.find((f) => f == 1);
+    if (adminRole) access = true;
     else {
       let permissions: Array<PermissionBrief> = this.Permissions;
       let permission: PermissionBrief;
-      let permissionIndex = permissions.findIndex(f => f.entityName == entityName);
+      let permissionIndex = permissions.findIndex(
+        (f) => f.entityName == entityName
+      );
       if (permissionIndex >= 0) {
         permission = permissions[permissionIndex];
-        if ((permission.flags & action) == action)
-          access = true;
+        if ((permission.flags & action) == action) access = true;
       }
     }
     return access;
@@ -146,11 +147,9 @@ export class EnviromentComponent {
 
   /** مدیا جاری را براساس bootstrap 4 برمیگرداند */
   public get media(): string {
-
     var currentMedia: string = "md";
 
-    if (window.innerWidth < 576)
-      currentMedia = "xs";
+    if (window.innerWidth < 576) currentMedia = "xs";
 
     if (window.innerWidth >= 576 && window.innerWidth < 768)
       currentMedia = "sm";
@@ -161,56 +160,51 @@ export class EnviromentComponent {
     if (window.innerWidth >= 992 && window.innerWidth < 1200)
       currentMedia = "l";
 
-    if (window.innerWidth >= 1200)
-      currentMedia = "el";
+    if (window.innerWidth >= 1200) currentMedia = "el";
 
     return currentMedia;
-
   }
 
   public get screenSize(): string {
-
     var size: string;
 
     switch (this.media) {
-      case "xs":
-        {
-          size = 'extraSmall';
-          break;
-        }
-      case "sm":
-        {
-          size = 'small';
-          break;
-        }
-      case "md":
-        {
-          size = 'medium';
-          break;
-        }
-      case "l":
-        {
-          size = 'large';
-          break;
-        }
-      case "el":
-        {
-          size = 'extraLarge';
-          break;
-        }
+      case "xs": {
+        size = "extraSmall";
+        break;
+      }
+      case "sm": {
+        size = "small";
+        break;
+      }
+      case "md": {
+        size = "medium";
+        break;
+      }
+      case "l": {
+        size = "large";
+        break;
+      }
+      case "el": {
+        size = "extraLarge";
+        break;
+      }
     }
     return size;
   }
 
   parseJwt(token) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
+    var base64Url = token.split(".")[1];
+    var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    var jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map(function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("")
+    );
 
     return JSON.parse(jsonPayload);
-  };
-
-
+  }
 }

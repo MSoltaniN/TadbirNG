@@ -34,6 +34,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
   ticket: string = "";
 
   currentLogin: ContextInfo;
+
   currentUserId: number;
 
   public lang: string = "";
@@ -145,18 +146,22 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     this.authenticationService
       .login(this.model.username, this.model.password, this.model.remember)
       .subscribe(
-        (data) => {
-          if (this.authenticationService.islogin()) {
-            this.currentUserId = this.UserId;
+        (loginData: any) => {
+          this.bStorageService.removeCurrentContext();
+
+          if (loginData.userContext) {
+            this.currentUserId = this.extractUserId(loginData.userContext);
+            this.currentLogin = loginData.userContext;
+
             if (
-              this.bStorageService.getCurrentUser().lastLoginDate == null ||
+              this.currentLogin.lastLoginDate == null ||
               this.bStorageService.getLicense() == null
             ) {
               this.checkOfflineLicense();
             }
 
             if (
-              this.bStorageService.getCurrentUser().lastLoginDate != null &&
+              this.currentLogin.lastLoginDate != null &&
               this.bStorageService.getLicense() != null
             ) {
               this.parent.step1 = false;
@@ -188,7 +193,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     this.showSessionForm = false;
   }
 
-  checkOfflineLicense(serverUserName?: string, serverPassword?: string) {
+  checkOfflineLicense() {
     this.licenseService
       .CheckOfflineLicense(
         String.Format(LicenseApi.UserLicenseUrl, this.currentUserId)
@@ -196,10 +201,14 @@ export class LoginComponent extends DefaultComponent implements OnInit {
       .subscribe(
         (res) => {
           this.setLicenseCache(res);
+          this.bStorageService.setContext(
+            this.currentLogin,
+            this.model.remember
+          );
+
           this.duringCheckOfflineLicense = false;
         },
         (error) => {
-          this.currentLogin = this.bStorageService.getCurrentUser();
           this.logOut();
 
           if (error.statusCode == 403) {

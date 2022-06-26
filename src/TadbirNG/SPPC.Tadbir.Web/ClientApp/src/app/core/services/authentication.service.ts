@@ -75,7 +75,8 @@ export class AuthenticationService extends BaseService {
               user.lastLoginDate = contextInfo.TadbirContext.LastLoginDate;
               //user.roles = contextInfo.user.roles;
               user.roles = contextInfo.TadbirContext.Roles;
-              this.bStorageService.setContext(user, remember);
+
+              return { userContext: user, rememberMe: remember };
             }
           }
         })
