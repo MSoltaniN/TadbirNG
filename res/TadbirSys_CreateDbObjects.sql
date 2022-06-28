@@ -50,7 +50,7 @@ CREATE TABLE [Core].[Version] (
 GO
 
 INSERT INTO [Core].[Version] ([VersionID], [Number])
-    VALUES(1, '1.2.1386')
+    VALUES(1, '1.2.1390')
 
 CREATE TABLE [Metadata].[EntityType] (
     [EntityTypeID]   INT              IDENTITY (1, 1) NOT NULL,
