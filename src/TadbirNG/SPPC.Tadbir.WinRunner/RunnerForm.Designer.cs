@@ -36,6 +36,7 @@ namespace SPPC.Tadbir.WinRunner
             this.btnExit = new System.Windows.Forms.Button();
             this.btnRunApp = new System.Windows.Forms.Button();
             this.worker = new System.ComponentModel.BackgroundWorker();
+            this.runWorker = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // lblElapsed
@@ -110,6 +111,10 @@ namespace SPPC.Tadbir.WinRunner
             this.worker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Worker_DoWork);
             this.worker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Worker_RunWorkerCompleted);
             // 
+            // runWorker
+            // 
+            this.runWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.RunWorker_DoWork);
+            // 
             // RunnerForm
             // 
             this.AcceptButton = this.btnRunApp;
@@ -142,5 +147,6 @@ namespace SPPC.Tadbir.WinRunner
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Button btnRunApp;
         private System.ComponentModel.BackgroundWorker worker;
+        private System.ComponentModel.BackgroundWorker runWorker;
     }
 }

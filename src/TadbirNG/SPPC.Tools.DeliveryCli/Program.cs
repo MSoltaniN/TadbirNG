@@ -101,13 +101,14 @@ namespace SPPC.Tools.DeliveryCli
 
         static bool IsDefaultLicense(LicenseModel license)
         {
-            return license.Id == DefaultLicenseId;
+            return license.Id == LocalLicenseId || license.Id == PublishLicenseId;
         }
 
         const string PushLicenseTemplate = "docker push msn1368/license-server{0}{1}";
         const string PushApiTemplate = "docker push msn1368/api-server{0}{1}";
         const string PushAppTemplate = "docker push msn1368/web-app{0}{1}:dev";
-        const int DefaultLicenseId = 5;     // Used for building base (no-suffix) images
+        const int LocalLicenseId = 5;     // Used for building base (no-suffix) images on my local system
+        const int PublishLicenseId = 18;  // Used for building base (no-suffix) images on Linux test bed
         static readonly CliRunner _runner = new();
     }
 }

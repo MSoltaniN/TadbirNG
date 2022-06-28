@@ -185,7 +185,7 @@ namespace SPPC.Tools.Utility
 
         private static bool IsDefaultLicenseId(int licenseId)
         {
-            return licenseId == DefaultLicenseId;
+            return licenseId == LocalLicenseId || licenseId == PublishLicenseId;
         }
 
         #endregion
@@ -313,7 +313,8 @@ namespace SPPC.Tools.Utility
 
         #endregion
 
-        const int DefaultLicenseId = 5;     // Used for building base (no-suffix) images
+        const int LocalLicenseId = 5;     // Used for building base (no-suffix) images on my local system
+        const int PublishLicenseId = 18;  // Used for building base (no-suffix) images on Linux test bed
         private const string ConfigFile = "appSettings.json";
         private const string EnvFile = "environment.prod.ts";
         private const string DevEnvFile = "environment.ts";

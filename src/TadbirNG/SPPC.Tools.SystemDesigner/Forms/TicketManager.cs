@@ -19,8 +19,8 @@ namespace SPPC.Tools.SystemDesigner.Forms
             // TEST CODE -- START
             if (!String.IsNullOrEmpty(txtTicket.Text))
             {
-                var certificate = new X509Certificate2(CertPath, CertPass);
-                txtValue.Text = _crypto.Decrypt(txtTicket.Text, certificate);
+                ////var certificate = new X509Certificate2(CertPath, CertPass);
+                txtValue.Text = _crypto.Decrypt(txtTicket.Text);
             }
             // TEST CODE -- END
             ////var bytes = Transform.FromBase64String(txtTicket.Text);
@@ -33,8 +33,8 @@ namespace SPPC.Tools.SystemDesigner.Forms
             // TEST CODE -- START
             if (!String.IsNullOrEmpty(txtValue.Text))
             {
-                var certificate = new X509Certificate2(CertPath, CertPass);
-                txtTicket.Text = _crypto.Encrypt(txtValue.Text, certificate);
+                ////var certificate = new X509Certificate2(CertPath, CertPass);
+                txtTicket.Text = _crypto.Encrypt(txtValue.Text);
             }
             // TEST CODE -- END
             ////var json = txtValue.Text;
