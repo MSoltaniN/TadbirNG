@@ -69,7 +69,8 @@ export class BranchFormComponent extends DetailComponent implements OnInit {
         model.level = this.parent ? this.parent.level + 1 : 0;
         model.parentId = this.parent ? this.parent.id : null;
       }
-      this.save.emit(model);
+      // this.save.emit(model);
+      this.emitSaveData(this.save,model)
     }
     else if (this.isWizard) {
       this.save.emit(null);
