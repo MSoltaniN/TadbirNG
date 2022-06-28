@@ -237,6 +237,9 @@ export class SelectFormComponent
         if (reloadOption && reloadOption.InsertedModel)
           this.goToLastPage(this.totalRecords);
 
+        if ( this.defaultCriteria )
+          this.defaultFilter = [this.defaultCriteria]
+          
         let currentFilter = undefined;
         if (this.currentFilter)
           currentFilter = JSON.parse(JSON.stringify(this.currentFilter));
