@@ -1,8 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Globalization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
@@ -10,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SPPC.Licensing.Model;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Middleware;
@@ -42,7 +39,7 @@ namespace SPPC.Tadbir.Web.Api
         /// <param name="services">اطلاعا فراداده ای خدمات فعال در سرویس وب جاری</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            InspectConfiguration();
+            ConfigUtility.InspectConfiguration(Configuration);
             services.AddLocalization();
             services
                 .AddControllers(options =>
@@ -92,24 +89,6 @@ namespace SPPC.Tadbir.Web.Api
             {
                 endpoints.MapControllers();
             });
-        }
-
-        private void InspectConfiguration()
-        {
-            var builder = new StringBuilder();
-            builder.AppendLine("Inspecting configuration...");
-            if (Configuration == null)
-            {
-                builder.AppendLine(String.Format($"WARNING: Configuration is null.{Environment.NewLine}"));
-            }
-            else
-            {
-                builder.AppendLine(String.Join(Environment.NewLine, Configuration
-                    .AsEnumerable()
-                    .Select(item => String.Format($"{item.Key} = {item.Value}"))));
-            }
-
-            File.WriteAllText("startup.log", builder.ToString());
         }
 
         private static void ConfigureLocalization(IApplicationBuilder app)

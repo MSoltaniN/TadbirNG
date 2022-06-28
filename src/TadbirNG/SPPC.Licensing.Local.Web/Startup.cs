@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SPPC.Licensing.Model;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Domain;
 
 namespace SPPC.Licensing.Local.Web
@@ -22,6 +23,7 @@ namespace SPPC.Licensing.Local.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigUtility.InspectConfiguration(Configuration);
             services.AddLocalization();
             services.AddControllers()
                 .AddNewtonsoftJson();

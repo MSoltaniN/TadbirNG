@@ -644,7 +644,8 @@ namespace SPPC.Tadbir.Persistence
             var provinces = await repository.GetAllAsync();
             return provinces
                 .OrderBy(item => item.Name)
-                .Select(item => Mapper.Map<KeyValue>(item)).ToList();
+                .Select(item => Mapper.Map<KeyValue>(item))
+                .ToList();
         }
 
         /// <summary>
@@ -658,7 +659,8 @@ namespace SPPC.Tadbir.Persistence
             var cities = await repository.GetByCriteriaAsync(city => city.Province.Code == provinceCode);
             return cities
                 .OrderBy(item => item.Name)
-                .Select(item => Mapper.Map<KeyValue>(item)).ToList();
+                .Select(item => Mapper.Map<KeyValue>(item))
+                .ToList();
         }
 
         /// <summary>

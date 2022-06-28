@@ -39,7 +39,6 @@ namespace SPPC.Licensing.Local.Web
         /// </summary>
         public void AddServices()
         {
-            InspectConfiguration();
             AddSecurityTypes();
             AddUtilityTypes();
         }
@@ -77,24 +76,6 @@ namespace SPPC.Licensing.Local.Web
             _services.AddTransient<ISqlConsole, SqlServerConsole>();
             _services.AddTransient<IDbContextAccessor, DbContextAccessor>();
             _services.AddTransient<IRepositoryContext, RepositoryContext>();
-        }
-
-        private void InspectConfiguration()
-        {
-            var builder = new StringBuilder();
-            builder.AppendLine("Inspecting configuration...");
-            if (_configuration == null)
-            {
-                builder.AppendLine(String.Format($"WARNING: Configuration is null.{Environment.NewLine}"));
-            }
-            else
-            {
-                builder.AppendLine(String.Join(Environment.NewLine,_configuration
-                    .AsEnumerable()
-                    .Select(item => String.Format($"{item.Key} = {item.Value}"))));
-            }
-
-            File.WriteAllText("startup.log", builder.ToString());
         }
 
         private readonly IServiceCollection _services;

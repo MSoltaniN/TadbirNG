@@ -41,34 +41,58 @@ namespace SPPC.Tadbir.Licensing
         /// <returns>نتیجه فعالسازی مجوز به صورت کدهای سیستمی تعریف شده</returns>
         public async Task<ActivationResult> ActivateLicenseAsync(string instance, RemoteConnection connection)
         {
+            _log.Clear();
+            _log.AppendLine("Processing activation request...");
             if (String.IsNullOrWhiteSpace(instance))
             {
+                _log.AppendLine("ERROR: Instance is null.");
+                _log.AppendLine();
+                FlushLogInfo();
                 return ActivationResult.Failed;
             }
 
             ActivationResult result;
+            _log.AppendLine("Preparing activation data...");
             var activation = GetActivationData(instance, connection, out X509Certificate2 certificate);
+            _log.AppendLine("Activation details :");
+            _log.AppendLine(JsonHelper.From(activation));
+            _log.AppendLine();
+            _log.AppendLine("Contacting license server...");
             var license = await GetActivatedLicenseAsync(activation);
             if (_apiClient.LastResponse.Result == ServiceResult.ValidationFailed)
             {
+                _log.AppendLine("ERROR: Instance is invalid.");
+                _log.AppendLine();
                 result = ActivationResult.BadInstance;
             }
             else if (_apiClient.LastResponse.Result == ServiceResult.ServerError)
             {
+                _log.AppendLine("ERROR: Server error occured.");
+                _log.AppendLine();
                 result = ActivationResult.Failed;
             }
             else if (license == String.Empty)
             {
+                _log.AppendLine("INFO: License is already activated.");
+                _log.AppendLine();
                 result = ActivationResult.AlreadyActivated;
             }
             else
             {
+                _log.AppendLine("Registering activated license...");
                 await File.WriteAllTextAsync(LicensePath, license);
                 await ExportCertificateAsync(certificate);
+                _log.AppendLine("INFO: Activation succeeded.");
                 result = ActivationResult.OK;
             }
 
+            FlushLogInfo();
             return result;
+        }
+
+        private void FlushLogInfo()
+        {
+            File.AppendAllText(Path.Combine("wwwroot", "activation.log"), _log.ToString());
         }
 
         /// <summary>

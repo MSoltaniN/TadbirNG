@@ -25,8 +25,8 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// </summary>
         public CityViewModel()
         {
-            this.Name = String.Empty;
-            this.Code = String.Empty;
+            Name = String.Empty;
+            Code = String.Empty;
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -44,31 +46,59 @@ namespace SPPC.Licensing.Web.Controllers
         [Route(LicenseApi.ActivateLicenseUrl)]
         public async Task<IActionResult> PutLicenseAsActivatedAsync([FromBody] ActivationModel activation)
         {
-            if (activation == null)
+            try
             {
-                return BadRequest("Activation data is missing.");
-            }
+                var logBuilder = new StringBuilder();
+                logBuilder.AppendLine("Processing activation request...");
+                logBuilder.AppendLine("Request details :");
+                if (activation == null)
+                {
+                    logBuilder.AppendLine("ERROR: Activation data is missing.");
+                    logBuilder.AppendLine();
+                    FlushLogInfo(logBuilder);
+                    return BadRequest("Activation data is missing.");
+                }
 
-            string json = _crypto.Decrypt(activation.InstanceKey);
-            var internalActivation = new InternalActivationModel()
-            {
-                Instance = JsonHelper.To<InstanceModel>(json),
-                HardwareKey = activation.HardwareKey,
-                ClientKey = activation.ClientKey
-            };
-            if (!EnsureValidRequest(internalActivation))
-            {
-                return BadRequest("Activation failed because license information is invalid.");
-            }
+                logBuilder.AppendLine(JsonHelper.From(activation));
+                logBuilder.AppendLine();
+                string json = _crypto.Decrypt(activation.InstanceKey);
+                var internalActivation = new InternalActivationModel()
+                {
+                    Instance = JsonHelper.To<InstanceModel>(json),
+                    HardwareKey = activation.HardwareKey,
+                    ClientKey = activation.ClientKey
+                };
+                logBuilder.AppendLine();
+                logBuilder.AppendLine("Instance data :");
+                logBuilder.AppendLine(JsonHelper.From(internalActivation));
+                logBuilder.AppendLine();
+                if (!EnsureValidRequest(internalActivation))
+                {
+                    logBuilder.AppendLine("ERROR: Activation failed because license information is invalid.");
+                    logBuilder.AppendLine();
+                    FlushLogInfo(logBuilder);
+                    return BadRequest("Activation failed because license information is invalid.");
+                }
 
-            var status = _repository.GetActivationStatus(internalActivation.Instance?.LicenseKey);
-            if (status.Value)
-            {
-                return Ok(String.Empty);
-            }
+                var status = _repository.GetActivationStatus(internalActivation.Instance?.LicenseKey);
+                if (status.Value)
+                {
+                    logBuilder.AppendLine("INFO: License is already activated.");
+                    logBuilder.AppendLine();
+                    FlushLogInfo(logBuilder);
+                    return Ok(String.Empty);
+                }
 
-            var activatedLicense = await _manager.ActivateLicenseAsync(activation);
-            return Ok(activatedLicense);
+                var activatedLicense = await _manager.ActivateLicenseAsync(activation);
+                logBuilder.AppendLine("INFO: License was successfully activated.");
+                logBuilder.AppendLine();
+                FlushLogInfo(logBuilder);
+                return Ok(activatedLicense);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.ToString());
+            }
         }
 
         #region License Management Methods
@@ -179,6 +209,11 @@ namespace SPPC.Licensing.Web.Controllers
             }
 
             return Ok();
+        }
+
+        private void FlushLogInfo(StringBuilder logBuilder)
+        {
+            System.IO.File.AppendAllText(Path.Combine("wwwroot", "activation.log"), logBuilder.ToString());
         }
 
         private readonly ILicenseRepository _repository;
