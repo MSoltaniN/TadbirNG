@@ -6,16 +6,11 @@ import { BranchComponent } from '@sppc/organization/components/branch/branch.com
 import { CompanyComponent } from '@sppc/organization/components/company/company.component';
 import { FiscalPeriodComponent } from '@sppc/organization/components/fiscalPeriod/fiscalPeriod.component';
 
-const routes: Routes = [{
-  path: 'organization',
-  component: LayoutComponent,
-  canActivate: [AuthGuard],
-  children: [
+const routes: Routes = [
     { path: 'branches', component: BranchComponent },
     { path: 'companies', component: CompanyComponent },
     { path: 'fiscalperiod', component: FiscalPeriodComponent },
-  ]
-}];
+  ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

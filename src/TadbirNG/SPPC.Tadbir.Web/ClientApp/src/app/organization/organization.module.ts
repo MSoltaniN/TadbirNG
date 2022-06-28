@@ -27,6 +27,7 @@ import { CompanyRoleComponent } from '@sppc/organization/components/company/comp
   declarations: [BranchComponent, BranchFormComponent, BranchRolesFormComponent, CompanyComponent, CompanyFormComponent, FiscalPeriodComponent,
     FiscalPeriodFormComponent, FiscalPeriodRolesFormComponent, InitialWizardComponent, CompanyRoleComponent],
   entryComponents: [BranchFormComponent, BranchRolesFormComponent, CompanyFormComponent, InitialWizardComponent, FiscalPeriodFormComponent],
-  providers: [BranchService, CompanyService, FiscalPeriodService]
+  providers: [BranchService, CompanyService, FiscalPeriodService],
+  exports: [OrganizationRoutingModule]
 })
 export class OrganizationModule { }

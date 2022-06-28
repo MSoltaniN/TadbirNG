@@ -19,6 +19,7 @@ import { SystemConfigurationComponent } from '@sppc/config/components/systemConf
     SharedModule    
   ],
   declarations: [SettingsComponent, SettingsFormComponent, ViewTreeConfigComponent, SystemConfigurationComponent],
-  providers: [SettingService]
+  providers: [SettingService],
+  exports: [ConfigRoutingModule]
 })
 export class ConfigModule { }
