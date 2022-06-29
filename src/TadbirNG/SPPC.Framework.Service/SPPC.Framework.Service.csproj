@@ -20,12 +20,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Licensing\DeviceIdProvider.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="NetMQ" Version="4.0.1.8" />
-    <PackageReference Include="SSH.NET" Version="2020.0.1" />
   </ItemGroup>
 
   <ItemGroup>

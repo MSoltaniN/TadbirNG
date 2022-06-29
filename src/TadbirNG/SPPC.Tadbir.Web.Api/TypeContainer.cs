@@ -9,7 +9,6 @@ using SPPC.Framework.Persistence;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Common;
 using SPPC.Tadbir.CrossCutting;
-using SPPC.Tadbir.CrossCutting.Redis;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Mapper;
@@ -190,7 +189,6 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IReportDirectUtility, ReportDirectUtility>();
             _services.AddTransient<IAccountCollectionUtility, AccountCollectionUtility>();
             _services.AddTransient<IAccountItemUtilityFactory, AccountItemUtilityFactory>();
-            _services.AddTransient<ICacheManager, RedisCacheManager>();
             _services.AddTransient<IApiPathProvider, ApiResourcePaths>();
             _services.AddTransient<ICommandFilter, CommandFilter>();
         }
