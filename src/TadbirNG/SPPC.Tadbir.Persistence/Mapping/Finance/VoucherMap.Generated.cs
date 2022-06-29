@@ -46,7 +46,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.StatusId)
                 .HasColumnName("StatusID")
                 .IsRequired();
-            builder.Property(e => e.IssuedById)
+            builder.Property(e => e.CreatedById)
                 .HasColumnName("IssuedByID")
                 .IsRequired();
             builder.Property(e => e.ModifiedById)

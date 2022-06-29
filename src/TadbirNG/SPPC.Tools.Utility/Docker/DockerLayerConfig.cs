@@ -6,6 +6,8 @@ namespace SPPC.Tools.Utility
     {
         public string Id { get; set; }
 
+        public DockerConfig Config { get; set; }
+
         public DockerContainerConfig Container_config { get; set; }
     }
 }

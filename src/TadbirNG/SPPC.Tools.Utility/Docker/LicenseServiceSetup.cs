@@ -11,6 +11,8 @@ namespace SPPC.Tools.Utility
         {
         }
 
+        protected override string ServiceName => "license-server";
+
         protected override ITextTemplate SettingsTemplate => new LocalLicenseApiSettings(_settings);
     }
 }

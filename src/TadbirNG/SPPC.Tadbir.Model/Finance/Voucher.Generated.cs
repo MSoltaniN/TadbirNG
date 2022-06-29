@@ -73,7 +73,7 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// شناسه دیتابیسی کاربر صادرکننده سند مالی
         /// </summary>
-        public virtual int IssuedById { get; set; }
+        public virtual int CreatedById { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی کاربری که آخرین تغییرات را روی سند مالی داده است

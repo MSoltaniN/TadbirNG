@@ -17,13 +17,12 @@ namespace SPPC.Tools.Utility
             _settings = settings;
         }
 
-        public void ConfigureService(string serviceName)
+        public void ConfigureService()
         {
-            Verify.ArgumentNotNullOrEmptyString(serviceName, nameof(serviceName));
             _currentDir = Environment.CurrentDirectory;
 
             // Extract service image file to a temporary folder, using gzip and tar tools...
-            var imageFileName = String.Format($"{serviceName}.tar.gz");
+            var imageFileName = String.Format($"{ServiceName}.tar.gz");
             var path = Path.Combine(Constants.Root, imageFileName);
             var tempPath = ExtractImageFile(path);
 
@@ -44,7 +43,7 @@ namespace SPPC.Tools.Utility
             ReplaceLayerHash();
 
             // Add all items in temporary folder to license-server.tar.gz and cleanup temp folder...
-            Console.WriteLine($"Restoring service image file ({Constants.LicenseServerFile})...");
+            Console.WriteLine($"Restoring service image file ({imageFileName})...");
             RestoreImageFile(imageFileName);
 
             // Load modified image file to Docker...
@@ -53,6 +52,8 @@ namespace SPPC.Tools.Utility
             File.Delete(Path.Combine(tempPath, imageFileName));
             Directory.Delete(tempPath);
         }
+
+        protected abstract string ServiceName { get; }
 
         protected abstract ITextTemplate SettingsTemplate { get; }
 
@@ -72,15 +73,7 @@ namespace SPPC.Tools.Utility
             }
 
             path = Path.Combine(root, Constants.AppSettings);
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }
-
-            var appSettings = Path.Combine(Environment.CurrentDirectory, Constants.AppSettings);
-            File.WriteAllText(appSettings, SettingsTemplate.TransformText());
-            File.Copy(appSettings, Path.Combine(root, Constants.AppSettings));
-            File.Delete(appSettings);
+            File.WriteAllText(path, SettingsTemplate.TransformText());
         }
 
         private string ExtractImageFile(string path)
@@ -117,7 +110,7 @@ namespace SPPC.Tools.Utility
             foreach (var item in dirInfo.GetFiles("json", SearchOption.AllDirectories))
             {
                 var config = JsonHelper.To<DockerLayerConfig>(File.ReadAllText(item.FullName));
-                if (config.Container_config.Cmd != null)
+                if (config.Config?.Entrypoint != null)
                 {
                     layerId = config.Id;
                     break;

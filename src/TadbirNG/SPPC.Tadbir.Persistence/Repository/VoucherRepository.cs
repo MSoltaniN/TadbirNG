@@ -399,7 +399,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 voucher = Mapper.Map<Voucher>(voucherView);
                 voucher.StatusId = (int)DocumentStatusId.NotChecked;
-                voucher.IssuedById = UserContext.Id;
+                voucher.CreatedById = UserContext.Id;
                 voucher.ModifiedById = UserContext.Id;
                 voucher.IssuerName =
                     voucher.ModifierName = displayName;
@@ -781,7 +781,7 @@ namespace SPPC.Tadbir.Persistence
                 Description = description,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 IsBalanced = true,
-                IssuedById = UserContext.Id,
+                CreatedById = UserContext.Id,
                 IssuerName = fullName,
                 ModifiedById = UserContext.Id,
                 ModifierName = fullName,

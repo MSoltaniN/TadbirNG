@@ -256,7 +256,7 @@ namespace SPPC.Tadbir.Persistence
             return (entity != null)
                 ? String.Format(
                     "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7} , {8} : {9}",
-                    AppStrings.Name, entity.Name, AppStrings.Server, entity.Server,
+                    AppStrings.Name, entity.Name,
                     AppStrings.UserName, entity.UserName, AppStrings.Password, entity.Password,
                     AppStrings.Description, entity.Description)
                 : null;
@@ -490,11 +490,12 @@ namespace SPPC.Tadbir.Persistence
                 await ImportLookupsAsync(company.DbName);
             }
 
+            var csBuilder = new SqlConnectionStringBuilder(Context.SystemConnection);
             if (String.IsNullOrEmpty(company.UserName))
             {
                 string script = String.Format(@"
                     ALTER AUTHORIZATION ON DATABASE::{0} TO {1}
-                    GO", company.DbName, AppConstants.SystemLoginName);
+                    GO", company.DbName, csBuilder.UserID);
                 DbConsole.ExecuteNonQuery(script);
             }
             else if (!IsDuplicateCompanyUserName(company.UserName))

@@ -101,7 +101,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// شناسه دیتابیسی کاربر صادرکننده سند مالی
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int IssuedById { get; set; }
+        public int CreatedById { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی کاربری که آخرین تغییرات را روی سند مالی داده است

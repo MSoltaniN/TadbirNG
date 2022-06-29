@@ -57,17 +57,6 @@ namespace SPPC.Tools.Utility
             }
         }
 
-        private static void CopyFilesIfMissing(string fromPath, string toPath)
-        {
-            Array.ForEach(new DirectoryInfo(fromPath).GetFiles(), file =>
-            {
-                if (!File.Exists(Path.Combine(toPath, file.Name)))
-                {
-                    File.Copy(file.FullName, Path.Combine(toPath, file.Name));
-                }
-            });
-        }
-
         public static bool InstallService(string path)
         {
             bool installed = true;
@@ -140,6 +129,17 @@ namespace SPPC.Tools.Utility
             {
                 Directory.CreateDirectory(path);
             }
+        }
+
+        private static void CopyFilesIfMissing(string fromPath, string toPath)
+        {
+            Array.ForEach(new DirectoryInfo(fromPath).GetFiles(), file =>
+            {
+                if (!File.Exists(Path.Combine(toPath, file.Name)))
+                {
+                    File.Copy(file.FullName, Path.Combine(toPath, file.Name));
+                }
+            });
         }
 
         private static bool VerifyChecksums(string root, string checksumFile)

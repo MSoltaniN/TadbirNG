@@ -211,7 +211,7 @@ namespace SPPC.Tadbir.Persistence
 
             var csBuilder = new SqlConnectionStringBuilder(Context.SystemConnection);
             var builder = new StringBuilder();
-            builder.AppendFormat("Server={0};Database={1};Connect Timeout=600;", company.Server, company.DbName);
+            builder.AppendFormat("Server={0};Database={1};Connect Timeout=600;", csBuilder.DataSource, company.DbName);
             if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
             {
                 builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
@@ -220,7 +220,7 @@ namespace SPPC.Tadbir.Persistence
             else
             {
                 builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
-                    AppConstants.SystemLoginName, csBuilder.Password);
+                    csBuilder.UserID, csBuilder.Password);
             }
 
             return builder.ToString();
