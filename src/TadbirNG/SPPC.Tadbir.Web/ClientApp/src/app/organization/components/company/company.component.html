@@ -1,5 +1,14 @@
 <app-bread-cumb [entityTypeName]="entityTypeName"></app-bread-cumb>
 
+<view-identifier [ViewID]="viewId"></view-identifier>
+<report-management
+  [ViewIdentity]="viewIdentity"
+  [Grid]="grid"
+  [Sort]="sort"
+  [Filter]="reportFilter"
+  [RowData]="rowData"
+></report-management>
+
 <report-setting></report-setting>
 <div class="panel-body">
   <kendo-grid
@@ -105,7 +114,6 @@
       <left-action-toolbar
         class="sppc-float-diff"
         (onFilterOk)="onAdvanceFilterOk()"
-        [quickReportDisabled]="true"
         [reportSetting]="reportSetting"
         [reportManager]="reportManager"
         [parentComponent]="this"
