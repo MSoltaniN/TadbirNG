@@ -212,7 +212,7 @@ namespace SPPC.Tools.LicenseManager
                 return;
             }
 
-            if (ConfigureCurrentBuild(BuildSettings.Default))
+            if (ConfigureCurrentBuild(BuildSettings.WebNetwork))
             {
                 MessageBox.Show(this, "شناسه برنامه با موفقیت ثبت شد.",
                     "عملیات موفق", MessageBoxButtons.OK, MessageBoxIcon.Information,
@@ -227,7 +227,7 @@ namespace SPPC.Tools.LicenseManager
                 return;
             }
 
-            if (ConfigureCurrentBuild(BuildSettings.Docker))
+            if (ConfigureCurrentBuild(BuildSettings.DockerLocal))
             {
                 MessageBox.Show(this, "شناسه برنامه با موفقیت ثبت شد.",
                     "عملیات موفق", MessageBoxButtons.OK, MessageBoxIcon.Information,

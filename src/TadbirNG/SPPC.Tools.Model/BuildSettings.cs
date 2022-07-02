@@ -7,20 +7,38 @@ namespace SPPC.Tools.Model
     {
         static BuildSettings()
         {
-            Local = new LocalSettings();
-            Default = new DefaultSettings();
+            WebLocal = new WebLocalSettings();
+            WebNetwork = new WebNetworkSettings();
+            DockerLocal = new DockerLocalSettings();
+            DockerNetwork = new DockerNetworkSettings();
             Docker = new DockerSettings();
         }
 
-        public static IBuildSettings Local { get; }
+        /// <summary>
+        /// تنظیمات مورد استفاده برای اجرای برنامه بدون داکر روی سیستم توسعه دهنده
+        /// </summary>
+        public static IBuildSettings WebLocal { get; }
 
-        public static IBuildSettings Default { get; }
+        /// <summary>
+        /// تنظیمات مورد استفاده برای اجرای برنامه بدون داکر روی سرور مجازی ویندوز
+        /// </summary>
+        public static IBuildSettings WebNetwork { get; }
+
+        /// <summary>
+        /// تنظیمات مورد استفاده برای اجرای برنامه در محیط داکر - قابل دسترسی فقط روی سرور اصلی
+        /// </summary>
+        public static IBuildSettings DockerLocal { get; }
+
+        /// <summary>
+        /// تنظیمات مورد استفاده برای اجرای برنامه در محیط داکر - قابل دسترسی در شبکه
+        /// </summary>
+        public static IBuildSettings DockerNetwork { get; }
 
         public static IBuildSettings Docker { get; }
 
-        private class LocalSettings : IBuildSettings
+        private class WebLocalSettings : IBuildSettings
         {
-            public LocalSettings()
+            public WebLocalSettings()
             {
                 OnlineServerRoot = String.Format(
                     $"http://{BuildSettingValues.LocalHostUrl}:1447");
@@ -31,9 +49,10 @@ namespace SPPC.Tools.Model
                 WebApiUrl = String.Format(
                     $"http://{BuildSettingValues.LocalHostUrl}:8801");
                 Tcp = new RemoteConnection() { Domain = BuildSettingValues.LocalHostUrl, Port = 5555 };
-                DbServerName = BuildSettingValues.DefaultHostUrl;
+                DbServerName = Environment.MachineName;
                 DbUserName = BuildSettingValues.DefaultDbUser;
                 DbPassword = BuildSettingValues.DefaultDbPassword;
+                Version = VersionInfo.GetAppVersion(3);
             }
 
             public string OnlineServerRoot { get; set; }
@@ -57,22 +76,103 @@ namespace SPPC.Tools.Model
             public string Version { get; set; }
         }
 
-        private class DefaultSettings : IBuildSettings
+        private class WebNetworkSettings : IBuildSettings
         {
-            public DefaultSettings()
+            public WebNetworkSettings()
             {
                 OnlineServerRoot = String.Format(
-                    $"http://{BuildSettingValues.DefaultHostUrl}:{BuildSettingValues.DefaultWebLicenseApiPort}");
+                    $"http://{BuildSettingValues.DefaultWinHostUrl}:{BuildSettingValues.DefaultWebLicenseApiPort}");
                 LocalServerRoot = String.Format(
-                    $"http://{BuildSettingValues.DefaultHostUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
+                    $"http://{BuildSettingValues.DefaultWinHostUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
                 LocalServerUrl = String.Format(
-                    $"http://{BuildSettingValues.DefaultHostUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
+                    $"http://{BuildSettingValues.DefaultWinHostUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
                 WebApiUrl = String.Format(
-                    $"http://{BuildSettingValues.DefaultHostUrl}:{BuildSettingValues.DefaultApiPort}");
+                    $"http://{BuildSettingValues.DefaultWinHostUrl}:{BuildSettingValues.DefaultApiPort}");
                 Tcp = new RemoteConnection() { Domain = BuildSettingValues.LocalHostUrl, Port = 5555 };
-                DbServerName = BuildSettingValues.DefaultHostUrl;
+                DbServerName = BuildSettingValues.DefaultWinHostUrl;
                 DbUserName = BuildSettingValues.DefaultDbUser;
                 DbPassword = BuildSettingValues.DefaultDbPassword;
+                Version = VersionInfo.GetAppVersion(3);
+            }
+
+            public string OnlineServerRoot { get; set; }
+
+            public string LocalServerRoot { get; set; }
+
+            public string LocalServerUrl { get; set; }
+
+            public string WebApiUrl { get; set; }
+
+            public RemoteConnection Tcp { get; }
+
+            public string DbServerName { get; set; }
+
+            public string DbUserName { get; set; }
+
+            public string DbPassword { get; set; }
+
+            public string Key { get; set; }
+
+            public string Version { get; set; }
+        }
+
+        private class DockerLocalSettings : IBuildSettings
+        {
+            public DockerLocalSettings()
+            {
+                OnlineServerRoot = String.Format(
+                    $"http://{BuildSettingValues.DefaultWinHostUrl}:{BuildSettingValues.DefaultWebLicenseApiPort}");
+                LocalServerRoot = String.Format(
+                    $"http://{BuildSettingValues.DockerHostInternalUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
+                LocalServerUrl = String.Format(
+                    $"http://{BuildSettingValues.LocalHostUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
+                WebApiUrl = String.Format(
+                    $"http://{BuildSettingValues.LocalHostUrl}:{BuildSettingValues.DefaultApiPort}");
+                Tcp = new RemoteConnection() { Domain = BuildSettingValues.DockerHostInternalUrl, Port = 5555 };
+                DbServerName = BuildSettingValues.DockerDbServer;
+                DbUserName = BuildSettingValues.DefaultDbUser;
+                DbPassword = BuildSettingValues.DefaultDbPassword;
+                Version = VersionInfo.GetAppVersion(3);
+            }
+
+            public string OnlineServerRoot { get; set; }
+
+            public string LocalServerRoot { get; set; }
+
+            public string LocalServerUrl { get; set; }
+
+            public string WebApiUrl { get; set; }
+
+            public RemoteConnection Tcp { get; }
+
+            public string DbServerName { get; set; }
+
+            public string DbUserName { get; set; }
+
+            public string DbPassword { get; set; }
+
+            public string Key { get; set; }
+
+            public string Version { get; set; }
+        }
+
+        private class DockerNetworkSettings : IBuildSettings
+        {
+            public DockerNetworkSettings()
+            {
+                OnlineServerRoot = String.Format(
+                    $"http://{BuildSettingValues.DefaultWinHostUrl}:{BuildSettingValues.DefaultWebLicenseApiPort}");
+                LocalServerRoot = String.Format(
+                    $"http://{BuildSettingValues.DockerHostInternalUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
+                LocalServerUrl = String.Format(
+                    $"http://{BuildSettingValues.DefaultLinHostUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
+                WebApiUrl = String.Format(
+                    $"http://{BuildSettingValues.DefaultLinHostUrl}:{BuildSettingValues.DefaultApiPort}");
+                Tcp = new RemoteConnection() { Domain = BuildSettingValues.DefaultWinHostUrl, Port = 5555 };
+                DbServerName = BuildSettingValues.DockerDbServer;
+                DbUserName = BuildSettingValues.DefaultDbUser;
+                DbPassword = BuildSettingValues.DefaultDbPassword;
+                Version = VersionInfo.GetAppVersion(3);
             }
 
             public string OnlineServerRoot { get; set; }
@@ -101,7 +201,7 @@ namespace SPPC.Tools.Model
             public DockerSettings()
             {
                 OnlineServerRoot = String.Format(
-                    $"http://{BuildSettingValues.DefaultHostUrl}:{BuildSettingValues.DefaultWebLicenseApiPort}");
+                    $"http://{BuildSettingValues.DefaultWinHostUrl}:{BuildSettingValues.DefaultWebLicenseApiPort}");
                 LocalServerRoot = String.Format(
                     $"http://{BuildSettingValues.DockerHostInternalUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
                 LocalServerUrl = String.Format(

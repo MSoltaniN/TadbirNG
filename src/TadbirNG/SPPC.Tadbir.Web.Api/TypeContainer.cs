@@ -8,7 +8,6 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Common;
-using SPPC.Tadbir.CrossCutting;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Mapper;

@@ -4,7 +4,9 @@ namespace SPPC.Tools.Model
 {
     public static class BuildSettingValues
     {
-        public const string DefaultHostUrl = "130.185.76.7";
+        public const string DefaultWinHostUrl = "130.185.76.7";
+
+        public const string DefaultLinHostUrl = "185.231.115.236";
 
         public const string LocalHostUrl = "localhost";
 

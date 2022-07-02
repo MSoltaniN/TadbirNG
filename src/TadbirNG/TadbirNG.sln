@@ -116,7 +116,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Tadbir.WinRunner", "SP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Tools.DeliveryCli", "SPPC.Tools.DeliveryCli\SPPC.Tools.DeliveryCli.csproj", "{A283A741-57AB-4206-B8E5-D7EC9CD2B0BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Tools.Utility", "SPPC.Tools.Utility\SPPC.Tools.Utility.csproj", "{90EF9D51-4B86-4C48-978A-CBE2D628C620}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Tools.Utility", "SPPC.Tools.Utility\SPPC.Tools.Utility.csproj", "{90EF9D51-4B86-4C48-978A-CBE2D628C620}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

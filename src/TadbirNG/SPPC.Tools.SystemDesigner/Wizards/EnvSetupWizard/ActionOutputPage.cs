@@ -144,7 +144,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             worker.ReportProgress(0);
             try
             {
-                var settings = BuildSettings.Local;
+                var settings = BuildSettings.WebLocal;
                 settings.DbServerName = WizardModel.DbServerName;
                 ITextTemplate template = new WebApiSettings(settings);
                 File.WriteAllText(_params.WebApiSettings, template.TransformText());
