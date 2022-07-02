@@ -48,12 +48,19 @@ export class OperationLogsDetailComponent extends DefaultComponent {
     this.cancel.emit();
   }
   //Events
-
+  language = localStorage.getItem('lang');
+  dateDisplayType: string;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
 
     super(toastrService, translate, bStorageService, renderer, metadata, settingService, Entities.OperationLog, ViewName.OperationLog);
+    if (this.language == 'fa'){
+      this.dateDisplayType = 'jalali'
+    } else {
+      this.dateDisplayType = 'gregorian'
+    }
+
   }
 
 }
