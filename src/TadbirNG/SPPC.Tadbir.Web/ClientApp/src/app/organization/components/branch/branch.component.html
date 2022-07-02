@@ -6,6 +6,7 @@
   [Sort]="sort"
   [Filter]="reportFilter"
   [RowData]="rowData"
+  [DefaultServiceUrl]="getDataUrl"
 ></report-management>
 <report-setting></report-setting>
 <kendo-splitter orientation="vertical" style="height: calc(100vh - 95px)">
@@ -220,7 +221,6 @@
               <left-action-toolbar
                 class="sppc-float-diff"
                 (onFilterOk)="onAdvanceFilterOk()"
-                [quickReportDisabled]="true"
                 [reportSetting]="reportSetting"
                 [reportManager]="reportManager"
                 [parentComponent]="this"
