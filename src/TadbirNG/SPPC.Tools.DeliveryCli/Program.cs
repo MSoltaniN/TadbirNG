@@ -13,7 +13,8 @@ namespace SPPC.Tools.DeliveryCli
     {
         static void Main(string[] args)
         {
-            DoPublishProcess();
+            ////DoPublishProcess();
+            ////CreateChecksumFiles();
         }
 
         private static void Runner_OutputReceived(object sender, OutputReceivedEventArgs e)
@@ -99,9 +100,46 @@ namespace SPPC.Tools.DeliveryCli
             Console.WriteLine(String.Format($"Elapsed Time : {stopWatch.Elapsed}"));
         }
 
+        private static void DoConfigureProcess()
+        {
+            var settings = BuildSettings.DockerLocal;
+            settings.DbServerName = "host.docker.internal";
+            settings.DbUserName = "Teymour";
+            settings.DbPassword = "MyBlaBla123456";
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            // Configure license server...
+            Console.WriteLine("Configuring license server...");
+            DockerServiceSetup setup = new LicenseServiceSetup(settings);
+            setup.ConfigureService();
+
+            // Configure api server...
+            Console.WriteLine("Configuring api server...");
+            setup = new ApiServiceSetup(settings);
+            setup.ConfigureService();
+
+            stopwatch.Stop();
+            Console.WriteLine("Successfully configured two services.");
+            Console.WriteLine($"Elapsed time : {stopwatch.Elapsed}");
+            Console.ReadLine();
+        }
+
         static bool IsDefaultLicense(LicenseModel license)
         {
             return license.Id == LocalLicenseId || license.Id == PublishLicenseId;
+        }
+
+        static void CreateChecksumFiles()
+        {
+            var path = Path.Combine(PathConfig.WebApiRoot, "checksum");
+            File.WriteAllText(path, ChecksumUtility.CalculateChecksum(DockerService.ApiServer));
+            path = Path.Combine(PathConfig.LocalServerRoot, "checksum");
+            File.WriteAllText(path, ChecksumUtility.CalculateChecksum(DockerService.LicenseServer));
+            path = Path.Combine(PathConfig.ResourceRoot, "checksum");
+            File.WriteAllText(path, ChecksumUtility.CalculateChecksum(DockerService.DbServer));
+            path = Path.Combine(PathConfig.WebAppRoot, "checksum");
+            File.WriteAllText(path, ChecksumUtility.CalculateChecksum(DockerService.WebApp));
         }
 
         const string PushLicenseTemplate = "docker push msn1368/license-server{0}{1}";

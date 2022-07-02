@@ -4,11 +4,15 @@ namespace SPPC.Tools.Model
 {
     public static class PathConfig
     {
+        public static string ResourceRoot => Path.Combine("..", "..", "..", "res");
+
         public static string SolutionRoot => Path.Combine("..", "..", "..", "src", "TadbirNG");
 
         public static string LocalServerRoot => Path.Combine(SolutionRoot, "SPPC.Licensing.Local.Web");
 
         public static string WebApiRoot => Path.Combine(SolutionRoot, "SPPC.Tadbir.Web.Api");
+
+        public static string WebAppRoot => Path.Combine(SolutionRoot, "SPPC.Tadbir.Web");
 
         public static string WebEnvRoot => Path.Combine(SolutionRoot, "SPPC.Tadbir.Web", "ClientApp", "src", "environments");
 
