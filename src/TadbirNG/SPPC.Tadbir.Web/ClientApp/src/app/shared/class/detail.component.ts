@@ -201,21 +201,6 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
     });
     return msgText;
   }
-
-  /**
-   * برای جلوگیری از ذخیره چندباره دیتا هنگام دابل کلیک
-   */
-   saveData: Subject<any> = new Subject();
-  
-   emitSaveData<T>(emitter:EventEmitter<T>,model:T){
-    this.saveData.next(model);
-    this.saveData.pipe(
-      exhaustMap((data:T) => {
-        return of(emitter.emit(data));
-      }),
-      take(1)
-    ).subscribe() 
-   }
   
   /**
    * برای هندل کردن شورکات های که به یک متد خاص متصل میباشند
