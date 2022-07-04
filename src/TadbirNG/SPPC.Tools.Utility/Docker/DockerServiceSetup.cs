@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Tools.Model;
@@ -17,13 +16,14 @@ namespace SPPC.Tools.Utility
             _settings = settings;
         }
 
-        public void ConfigureService()
+        public void ConfigureService(string imageRoot)
         {
             _currentDir = Environment.CurrentDirectory;
+            _rootFolder = Path.GetDirectoryName(imageRoot);
 
             // Extract service image file to a temporary folder, using gzip and tar tools...
             var imageFileName = String.Format($"{ServiceName}.tar.gz");
-            var path = Path.Combine(Constants.Root, imageFileName);
+            var path = Path.Combine(imageRoot, imageFileName);
             var tempPath = ExtractImageFile(path);
 
             // Find the layer folder that contains Web service settings...
@@ -43,7 +43,7 @@ namespace SPPC.Tools.Utility
             ReplaceLayerHash();
 
             // Add all items in temporary folder to license-server.tar.gz and cleanup temp folder...
-            Console.WriteLine($"Restoring service image file ({imageFileName})...");
+            //Console.WriteLine($"Restoring service image file ({imageFileName})...");
             RestoreImageFile(imageFileName);
 
             // Load modified image file to Docker...
@@ -56,6 +56,8 @@ namespace SPPC.Tools.Utility
         protected abstract string ServiceName { get; }
 
         protected abstract ITextTemplate SettingsTemplate { get; }
+
+        protected virtual string AppLayerFolder => "app";
 
         protected virtual void ConfigureAppLayer(string layerId)
         {
@@ -74,6 +76,11 @@ namespace SPPC.Tools.Utility
 
             path = Path.Combine(root, Constants.AppSettings);
             File.WriteAllText(path, SettingsTemplate.TransformText());
+        }
+
+        protected string RootFolder
+        {
+            get { return _rootFolder; }
         }
 
         private string ExtractImageFile(string path)
@@ -110,7 +117,7 @@ namespace SPPC.Tools.Utility
             foreach (var item in dirInfo.GetFiles("json", SearchOption.AllDirectories))
             {
                 var config = JsonHelper.To<DockerLayerConfig>(File.ReadAllText(item.FullName));
-                if (config.Config?.Entrypoint != null)
+                if (config.Config != null)
                 {
                     layerId = config.Id;
                     break;
@@ -143,11 +150,11 @@ namespace SPPC.Tools.Utility
         private void RestoreAppLayer(string layerId)
         {
             Environment.CurrentDirectory = Path.Combine(Environment.CurrentDirectory, layerId);
-            _runner.Run(String.Format(Constants.TarTemplate, Constants.LayerTarFile, "app"));
+            _runner.Run(String.Format(Constants.TarTemplate, Constants.LayerTarFile, AppLayerFolder));
             _newHash = _crypto
                 .CreateHash(File.ReadAllBytes(Path.Combine(Environment.CurrentDirectory, Constants.LayerTarFile)))
                 .ToLower();
-            DeleteFolder(Path.Combine(Environment.CurrentDirectory, "app"));
+            DeleteFolder(Path.Combine(Environment.CurrentDirectory, AppLayerFolder));
             Environment.CurrentDirectory = Path.GetDirectoryName(Environment.CurrentDirectory);
         }
 
@@ -220,6 +227,7 @@ namespace SPPC.Tools.Utility
         }
 
         protected readonly IBuildSettings _settings;
+        private string _rootFolder;
         private readonly ICryptoService _crypto = new CryptoService(new CertificateManager());
         private readonly CliRunner _runner = new();
         private string _currentDir, _oldHash, _newHash;

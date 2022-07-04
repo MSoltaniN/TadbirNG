@@ -4,9 +4,6 @@ namespace SPPC.Tools.Utility
 {
     internal class Constants
     {
-        internal const string Root = @"D:\Temp\__Test2__";
-        internal const string LicenseServerFile = "license-server.tar.gz";
-        internal const string ApiServerFile = "api-server.tar.gz";
         internal const string GunzipTemplate = "gzip -d {0}";
         internal const string GzipTemplate = "gzip {0}";
         internal const string UntarTemplate = "tar -xf {0}";

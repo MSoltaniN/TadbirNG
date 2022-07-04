@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Data.SqlClient;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
+using SPPC.Framework.Persistence;
+using SPPC.Tools.Model;
 
 namespace SPPC.Tools.Utility
 {
@@ -24,6 +28,33 @@ namespace SPPC.Tools.Utility
             root = Path.Combine(ChecksumRoot, "service");
             checksumFile = Path.Combine(ChecksumRoot, "service.sha");
             return VerifyChecksums(root, checksumFile);
+        }
+
+        public static string[] GetDbLoginNames(string server, string password)
+        {
+            var loginNames = Array.Empty<string>();
+            try
+            {
+                var csBuilder = new SqlConnectionStringBuilder()
+                {
+                    DataSource = server,
+                    InitialCatalog = "master",
+                    UserID = "sa",
+                    Password = password
+                };
+                var dal = new SqlDataLayer(csBuilder.ConnectionString);
+                var result = dal.Query(DbLoginQuery, CommandType.Text, 120);
+                loginNames = result?.Rows
+                    .Cast<DataRow>()
+                    .Select(row => row[0].ToString())
+                    .Prepend("Default")
+                    .ToArray();
+            }
+            catch
+            {
+            }
+
+            return loginNames;
         }
 
         public static void CreateInstallationPath(string path)
@@ -48,12 +79,14 @@ namespace SPPC.Tools.Utility
 
         public static void CopyFiles(string path, bool createShortcut = true)
         {
-            CopyFilesIfMissing(ChecksumRoot, path);
+            ////CopyFilesIfMissing(ChecksumRoot, path);
             CopyFilesIfMissing(Path.Combine(ChecksumRoot, "runner"), Path.Combine(path, "runner"));
             CopyFilesIfMissing(Path.Combine(ChecksumRoot, "service"), Path.Combine(path, "service"));
             if (createShortcut)
             {
                 // Create shortcut to main Runner executable on user's Desktop folder...
+                string exePath = Path.Combine(path, "runner", "Tadbir.exe");
+                CreateDesktopShortcut(exePath, AppTitle, AppTitle);
             }
         }
 
@@ -84,6 +117,12 @@ namespace SPPC.Tools.Utility
             return !lines[0].Contains("FAILED");
         }
 
+        public static void ConfigureDockerService(string root, string service, IBuildSettings settings)
+        {
+            var setup = GetServiceSetup(service, settings);
+            setup.ConfigureService(root);
+        }
+
         public static bool IsAppRegistered()
         {
             var runner = new CliRunner();
@@ -92,35 +131,37 @@ namespace SPPC.Tools.Utility
             return !lines[0].Contains("FAILED");
         }
 
-        public static string GetCustomerSuffix()
+        public static string GetInstanceKey()
         {
-            var version = new DirectoryInfo(ChecksumRoot)
+            string key = null;
+            var versionFile = new DirectoryInfo(ChecksumRoot)
                 .GetFiles()
                 .Where(file => file.Name.StartsWith("v"))
                 .FirstOrDefault();
-            if (version != null)
+            if (versionFile != null)
             {
-                return File
-                    .ReadAllText(version.FullName)
-                    .Substring(0, 8);
+                key = File.ReadAllText(versionFile.FullName);
             }
 
-            return null;
+            return key;
         }
 
-        public static void CreateDesktopShortcut(string path, string name, string description)
+        private static void CreateDesktopShortcut(string path, string name, string description)
         {
-            IShellLink link = (IShellLink)new ShellLink();
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            string linkPath = Path.Combine(desktopPath, String.Format($"{name}.lnk"));
+            if (File.Exists(linkPath))
+            {
+                File.Delete(linkPath);
+            }
 
-            // Setup shortcut information
+            var link = (IShellLink)new ShellLink();
             link.SetDescription(description);
             link.SetPath(path);
             link.SetWorkingDirectory(Path.GetDirectoryName(path));
 
-            // Save it
-            IPersistFile file = (IPersistFile)link;
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-            file.Save(Path.Combine(desktopPath, String.Format($"{name}.lnk")), false);
+            var file = (IPersistFile)link;
+            file.Save(linkPath, false);
         }
 
         private static void EnsureDirectoryExists(string path)
@@ -180,6 +221,30 @@ namespace SPPC.Tools.Utility
             return verified;
         }
 
+        private static DockerServiceSetup GetServiceSetup(string service, IBuildSettings settings)
+        {
+            DockerServiceSetup setup = null;
+            switch (service)
+            {
+                case DockerService.LicenseServer:
+                    setup = new LicenseServiceSetup(settings);
+                    break;
+                case DockerService.ApiServer:
+                    setup = new ApiServiceSetup(settings);
+                    break;
+                case DockerService.WebApp:
+                    setup = new AppServiceSetup(settings);
+                    break;
+                case DockerService.DbServer:
+                    setup = new DbServiceSetup(settings);
+                    break;
+                default:
+                    break;
+            }
+
+            return setup;
+        }
+
         private static int GetFolderSize(string root)
         {
             var directoryInfo = new DirectoryInfo(root);
@@ -190,6 +255,11 @@ namespace SPPC.Tools.Utility
             return (int)Math.Round((double)bytesCount / 1024);
         }
 
+        private const string AppTitle = "سیستم جدید تدبیر";
         private const string ChecksumRoot = "..";
+        private const string DbLoginQuery = @"
+SELECT [name]
+FROM [sys].[server_principals]
+WHERE [is_disabled] = 0 AND [type] = 'S'";
     }
 }

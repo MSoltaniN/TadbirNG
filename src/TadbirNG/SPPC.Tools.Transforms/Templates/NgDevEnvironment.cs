@@ -37,22 +37,22 @@ namespace SPPC.Tools.Transforms.Templates
 export const environment = {
   production: false,
   BaseUrl: 'http://localhost:8801',
-  LicenseServerUrl: ""http://localhost:7473"",
-  InstanceKey: """);
+  LicenseServerUrl: 'http://localhost:7473',
+  InstanceKey: '");
             
             #line 16 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\NgDevEnvironment.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_model.InstanceKey));
             
             #line default
             #line hidden
-            this.Write("\",\r\n  Version: \"");
+            this.Write("\',\r\n  Version: \'");
             
             #line 17 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\NgDevEnvironment.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(VersionInfo.GetAppVersion()));
             
             #line default
             #line hidden
-            this.Write("\",\r\n  SessionAliveInterval: 300000\r\n};\r\n");
+            this.Write("\',\r\n  SessionAliveInterval: 300000\r\n};\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

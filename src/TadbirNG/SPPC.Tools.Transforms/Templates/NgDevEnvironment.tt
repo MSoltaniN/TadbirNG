@@ -12,8 +12,8 @@
 export const environment = {
   production: false,
   BaseUrl: 'http://localhost:8801',
-  LicenseServerUrl: "http://localhost:7473",
-  InstanceKey: "<#= _model.InstanceKey #>",
-  Version: "<#= VersionInfo.GetAppVersion() #>",
+  LicenseServerUrl: 'http://localhost:7473',
+  InstanceKey: '<#= _model.InstanceKey #>',
+  Version: '<#= VersionInfo.GetAppVersion() #>',
   SessionAliveInterval: 300000
 };

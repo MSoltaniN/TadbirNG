@@ -11,6 +11,7 @@
     <CodeAnalysisRuleSet>..\..\..\misc\assets\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
     <ApplicationIcon>Main.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyName>Tadbir</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

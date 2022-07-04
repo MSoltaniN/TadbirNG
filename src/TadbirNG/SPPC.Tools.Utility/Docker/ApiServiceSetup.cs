@@ -21,7 +21,7 @@ namespace SPPC.Tools.Utility
         protected override void ConfigureAppLayer(string layerId)
         {
             base.ConfigureAppLayer(layerId);
-            var source = Path.Combine(Constants.Root, "license");
+            var source = Path.Combine(RootFolder, "license");
             var licenseInfo = _crypto.Decrypt(File.ReadAllText(source));
             var licensePath = Path.Combine(Environment.CurrentDirectory, layerId, "app", "wwwroot", "license");
             File.WriteAllText(licensePath, licenseInfo);

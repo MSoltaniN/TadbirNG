@@ -52,7 +52,6 @@ namespace SPPC.Tools.Model
                 DbServerName = Environment.MachineName;
                 DbUserName = BuildSettingValues.DefaultDbUser;
                 DbPassword = BuildSettingValues.DefaultDbPassword;
-                Version = VersionInfo.GetAppVersion(3);
             }
 
             public string OnlineServerRoot { get; set; }
@@ -92,7 +91,6 @@ namespace SPPC.Tools.Model
                 DbServerName = BuildSettingValues.DefaultWinHostUrl;
                 DbUserName = BuildSettingValues.DefaultDbUser;
                 DbPassword = BuildSettingValues.DefaultDbPassword;
-                Version = VersionInfo.GetAppVersion(3);
             }
 
             public string OnlineServerRoot { get; set; }
@@ -132,7 +130,6 @@ namespace SPPC.Tools.Model
                 DbServerName = BuildSettingValues.DockerDbServer;
                 DbUserName = BuildSettingValues.DefaultDbUser;
                 DbPassword = BuildSettingValues.DefaultDbPassword;
-                Version = VersionInfo.GetAppVersion(3);
             }
 
             public string OnlineServerRoot { get; set; }
@@ -172,7 +169,6 @@ namespace SPPC.Tools.Model
                 DbServerName = BuildSettingValues.DockerDbServer;
                 DbUserName = BuildSettingValues.DefaultDbUser;
                 DbPassword = BuildSettingValues.DefaultDbPassword;
-                Version = VersionInfo.GetAppVersion(3);
             }
 
             public string OnlineServerRoot { get; set; }

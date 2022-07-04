@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.Domain;
+using SPPC.Tools.Model;
 using SPPC.Tools.Utility;
 
 namespace SPPC.Tadbir.WinRunner
@@ -14,7 +17,6 @@ namespace SPPC.Tadbir.WinRunner
         public InstallerForm()
         {
             InitializeComponent();
-            _runner = new CliRunner();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -24,6 +26,11 @@ namespace SPPC.Tadbir.WinRunner
             servers.Insert(0, "Docker");
             cmbDbServer.DataSource = servers;
             txtInstallPath.Text = @"C:\SPPC\TadbirNG";
+            radGlobal.Checked = true;
+            chkShowPass.Checked = false;
+            chkShowAdminPass.Checked = false;
+            txtAdminPassword.Enabled = cmbDbServer.SelectedItem?.ToString() != "Docker";
+            chkShowAdminPass.Enabled = cmbDbServer.SelectedItem?.ToString() != "Docker";
         }
 
         private void Runner_OutputReceived(object sender, OutputReceivedEventArgs e)
@@ -44,19 +51,89 @@ namespace SPPC.Tadbir.WinRunner
             }
         }
 
+        private void Global_CheckedChanged(object sender, EventArgs e)
+        {
+            txtDomain.Enabled = radGlobal.Checked;
+        }
+
+        private void ShowPass_CheckedChanged(object sender, EventArgs e)
+        {
+            txtPassword.PasswordChar = chkShowPass.Checked ? '\0' : '*';
+        }
+
+        private void ShowAdminPass_CheckedChanged(object sender, EventArgs e)
+        {
+            txtAdminPassword.PasswordChar = chkShowAdminPass.Checked ? '\0' : '*';
+        }
+
+        private void DbServer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selected = cmbDbServer.SelectedItem?.ToString();
+            if (selected == "Docker")
+            {
+                txtAdminPassword.Text = null;
+                cmbLogin.Items.Clear();
+                cmbLogin.Items.Add("Default");
+                cmbLogin.SelectedIndex = 0;
+            }
+            else
+            {
+                cmbLogin.Items.Clear();
+            }
+
+            txtAdminPassword.Enabled = selected != "Docker";
+            chkShowAdminPass.Enabled = selected != "Docker";
+        }
+
+        private void Login_DropDown(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrWhiteSpace(txtAdminPassword.Text))
+            {
+                Cursor = Cursors.WaitCursor;
+                var server = cmbDbServer.SelectedItem?.ToString();
+                cmbLogin.Items.Clear();
+                var logins = InstallerUtility.GetDbLoginNames(server, txtAdminPassword.Text);
+                Cursor = Cursors.Default;
+                if (logins.Length == 0)
+                {
+                    MessageBox.Show("رمز ورود راهبر نادرست است.",
+                        "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,
+                        MessageBoxOptions.RtlReading);
+                    return;
+                }
+                else
+                {
+                    cmbLogin.Items.AddRange(logins);
+                }
+            }
+        }
+
+        private void Login_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selected = cmbLogin.SelectedItem?.ToString();
+            if (selected == "sa")
+            {
+                txtPassword.Text = txtAdminPassword.Text;
+            }
+            else if (selected == "Default")
+            {
+                txtPassword.Text = PasswordGenerator.Generate();
+            }
+            else
+            {
+                txtPassword.Text = null;
+            }
+        }
+
         private void Install_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrWhiteSpace(txtInstallPath.Text))
+            if (!ValidateSettings())
             {
-                MessageBox.Show("لطفاً مسیر نصب برنامه را انتخاب کنید.",
-                    "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.RtlReading);
                 return;
             }
 
             txtConsole.Focus();
-            _runner.OutputReceived += Runner_OutputReceived;
-            SetDbServer();
+            SetBuildSettings();
             btnInstall.Enabled = false;
             btnExit.Enabled = false;
             timer.Enabled = true;
@@ -93,36 +170,20 @@ namespace SPPC.Tadbir.WinRunner
 
             worker.ReportProgress(6);
 
-            string suffix = InstallerUtility.GetCustomerSuffix();
-            if (String.IsNullOrEmpty(suffix))
-            {
-                worker.ReportProgress(0, "بروز خطا هنگام دانلود سرویس های برنامه");
-                return;
-            }
-
-            suffix = IsDefaultLicense(suffix) ? String.Empty : suffix;
-            var separator = IsDefaultLicense(suffix) ? String.Empty : "-";
-            worker.ReportProgress(0, "دانلود سرویس های برنامه...");
-            RunCommandWithRetry(String.Format(PullLicenseTemplate, separator, suffix));
+            var root = GetDockerImageRoot();
+            worker.ReportProgress(0, "آماده سازی سرویس های برنامه...");
+            InstallerUtility.ConfigureDockerService(root, DockerService.LicenseServer, _settings);
             worker.ReportProgress(20);
-            RunCommandWithRetry(String.Format(PullApiTemplate, separator, suffix));
+            InstallerUtility.ConfigureDockerService(root, DockerService.ApiServer, _settings);
             worker.ReportProgress(20);
-            RunCommandWithRetry(String.Format(PullAppTemplate, separator, suffix));
+            InstallerUtility.ConfigureDockerService(root, DockerService.WebApp, _settings);
             worker.ReportProgress(20);
-            RunCommandWithRetry("docker pull msn1368/db-server:latest");
+            InstallerUtility.ConfigureDockerService(root, DockerService.DbServer, _settings);
             worker.ReportProgress(20);
-
-            worker.ReportProgress(0, "تکمیل مراحل پایانی نصب...");
-            if (chkCreateShortcut.Checked)
-            {
-                string exePath = Path.Combine(txtInstallPath.Text, "runner", "SPPC.Tadbir.WinRunner.exe");
-                InstallerUtility.CreateDesktopShortcut(exePath, "سیستم جدید تدبیر", "سیستم جدید تدبیر");
-            }
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            btnInstall.Enabled = true;
             btnExit.Enabled = true;
             lblStatus.Text = null;
             timer.Enabled = false;
@@ -135,7 +196,9 @@ namespace SPPC.Tadbir.WinRunner
         {
             if (e.UserState != null)
             {
-                lblStatus.Text = e.UserState.ToString();
+                txtConsole.AppendText(e.UserState.ToString());
+                txtConsole.AppendText(Environment.NewLine);
+                txtConsole.AppendText(Environment.NewLine);
             }
 
             progress.Value += e.ProgressPercentage;
@@ -170,7 +233,7 @@ namespace SPPC.Tadbir.WinRunner
         }
 
 #pragma warning disable CA1416 // Validate platform compatibility
-        public static List<string> GetDbServers()
+        private static List<string> GetDbServers()
         {
             var servers = new List<string>();
             var key = Registry.LocalMachine.OpenSubKey(
@@ -194,37 +257,97 @@ namespace SPPC.Tadbir.WinRunner
         }
 #pragma warning restore CA1416 // Validate platform compatibility
 
-        private void SetDbServer()
+        private bool ValidateSettings()
         {
-            _dbServer = cmbDbServer.SelectedItem.ToString();
-            if (_dbServer == "Docker")
+            if (String.IsNullOrWhiteSpace(txtInstallPath.Text))
             {
-                _dbServer = "DbServer";
+                MessageBox.Show("لطفاً مسیر نصب برنامه را انتخاب کنید.",
+                    "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.RtlReading);
+                return false;
             }
-        }
 
-        private void RunCommandWithRetry(string command)
-        {
-            string result = _runner.Run(command);
-            while (result.Contains("Error response"))
+            if (radGlobal.Checked && String.IsNullOrWhiteSpace(txtDomain.Text))
             {
-                string output = String.Format($"{Environment.NewLine}Retrying...{Environment.NewLine}");
-                Runner_OutputReceived(this, new OutputReceivedEventArgs(output));
-                result = _runner.Run(command);
+                MessageBox.Show("لطفاً آدرس سرور را به صورت دامنه یا آی پی ثابت وارد کنید.",
+                    "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.RtlReading);
+                return false;
             }
+
+            if (cmbDbServer.SelectedIndex == -1)
+            {
+                MessageBox.Show("لطفاً سرور دیتابیس را انتخاب کنید.",
+                    "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.RtlReading);
+                return false;
+            }
+
+            if (cmbLogin.SelectedIndex == -1)
+            {
+                MessageBox.Show("لطفاً کاربر دیتابیس را انتخاب کنید.",
+                    "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.RtlReading);
+                return false;
+            }
+
+            if (String.IsNullOrWhiteSpace(txtPassword.Text))
+            {
+                MessageBox.Show("لطفاً رمز ورود کاربر دیتابیس را وارد کنید.",
+                    "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.RtlReading);
+                return false;
+            }
+
+            return true;
         }
 
-        private bool IsDefaultLicense(string suffix)
+        private void SetBuildSettings()
         {
-            return suffix == DefaultSuffix;
+            _settings = radGlobal.Checked ? BuildSettings.DockerNetwork : BuildSettings.DockerLocal;
+            var dbServer = cmbDbServer.SelectedItem.ToString();
+            if (dbServer == "Docker")
+            {
+                dbServer = DockerService.DbServer;
+            }
+            else
+            {
+                dbServer = dbServer.Replace(Environment.MachineName, BuildSettingValues.DockerHostInternalUrl);
+            }
+
+            _settings.DbServerName = dbServer;
+            var dbLogin = cmbLogin.SelectedItem.ToString();
+            if (dbLogin == "Default")
+            {
+                dbLogin = AppConstants.SystemLoginName;
+            }
+
+            _settings.DbUserName = dbLogin;
+            _settings.DbPassword = txtPassword.Text;
+            string host = txtDomain.Text;
+            if (String.IsNullOrEmpty(txtDomain.Text))
+            {
+                host = "http://localhost";
+            }
+
+            if (!host.StartsWith("http://"))
+            {
+                host = String.Format($"http://{host}");
+            }
+
+            _settings.WebApiUrl = String.Format($"{host}:{BuildSettingValues.DefaultApiPort}");
+            _settings.LocalServerUrl = String.Format($"{host}:{BuildSettingValues.DefaultLicenseApiPort}");
+            _settings.Tcp.Domain = BuildSettingValues.DockerHostInternalUrl;
+            _settings.Key = InstallerUtility.GetInstanceKey();
         }
 
-        private const string DefaultSuffix = "caf7b35f";
-        private const string PullLicenseTemplate = "docker pull msn1368/license-server{0}{1}:latest";
-        private const string PullApiTemplate = "docker pull msn1368/api-server{0}{1}:latest";
-        private const string PullAppTemplate = "docker pull msn1368/web-app{0}{1}:dev";
-        private readonly CliRunner _runner;
+        private static string GetDockerImageRoot()
+        {
+            string root = Path.GetDirectoryName(Environment.CurrentDirectory);
+            return Path.Combine(root, "docker");
+        }
+
         private TimeSpan _elapsed;
-        private string _dbServer;
+        private IBuildSettings _settings;
     }
 }
