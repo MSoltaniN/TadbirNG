@@ -1,7 +1,7 @@
 <kendo-dialog *ngIf="roleList" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (keydown.esc)="escPress()"
               (close)="closeForm()" [minWidth]="250" [width]="450">
   <kendo-dialog-titlebar>
-    <span sppcLongTitle>
+    <span sppcTooltip>
       {{ getTitleText('CompanyRoles.CompanyRolesTitle' | translate) }}
     </span>
   </kendo-dialog-titlebar>

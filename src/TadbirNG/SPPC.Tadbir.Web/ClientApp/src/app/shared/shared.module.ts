@@ -108,7 +108,7 @@ import { SuperuserPasswordComponent } from '@sppc/shared/components/home/superus
 import { MessageBoxService } from './services/message.service';
 import { LicenseInfoComponent } from '@sppc/shared/components/dashboard/license-info.component';
 import { SppcButtonDisable } from './directive/button/buttonDisable.directive';
-import { LongTitleDirective } from './directive/editorForm/long-title.directive';
+import { TooltipDirective } from './directive/editorForm/tooltip.directive';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
@@ -151,7 +151,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput, SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective,SppcButtonDisable,
     FullCodeTestDirective, SpccOnlyNumberDirective, SppcPermissionCheckDirective, SppcTimepicker, AdvanceFilterComponent,
     NotFoundComponent, ClosingTmpComponent, ErrorListComponent, LeftActionToolbarComponent, QuickReportPageSettingComponent, InputDirective, SuperuserPasswordComponent, LicenseInfoComponent,
-    LongTitleDirective,
+    TooltipDirective,
   ],
 
   entryComponents: [TabComponent, SppcGridDatepicker, SelectFormComponent, AdvanceFilterComponent, ErrorListComponent, QuickReportPageSettingComponent, SuperuserPasswordComponent, LicenseInfoComponent],
@@ -171,7 +171,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective, FullCodeTestDirective, SpccOnlyNumberDirective,SppcButtonDisable,
     SppcPermissionCheckDirective, BreadCumbComponent, ViewIdentifierComponent, ReportManagementComponent, QuickReportSettingComponent, ReportParametersComponent, ReportParamComponent,
     ReportViewerComponent, SppcTimepicker, NotFoundComponent, ClosingTmpComponent, ErrorListComponent, LeftActionToolbarComponent, ExcelModule, PDFModule, QuickReportPageSettingComponent, InputDirective,
-    LongTitleDirective,
+    TooltipDirective,
   ]
 })
 export class SharedModule {
