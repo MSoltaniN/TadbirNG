@@ -10,7 +10,7 @@
     "Level": "سطح",
     "AccessDenied": "شما اجازه دسترسی ندارید",
     "PleaseLoadData": "لطفا قبل از تهیه خروجی دکمه محاسبه را کلیک کنید",
-    "Version": "نسخه"    
+    "Version": "نسخه"
   },
   "LicenseInfo": {
     "CustomerName": "نام مشتری",
@@ -49,7 +49,9 @@
     "DashboardTitle": "داشبورد",
     "Home": "خانه",
     "DashboardName": "داشبورد",
-    "White": "سفید"
+    "Setting": "تنظیمات",
+    "White": "سفید",
+    "SettingConfirm": "آیا تنظیمات داشبورد ذخیره شود؟"
   },
   "Exception": {
     "ErrorCode": "کد خطا",
@@ -71,18 +73,18 @@
     "DeleteOperationSuccessful": "عملیات حذف با موفقیت انجام شد",
     "GlobalErrorMessage": "خطایی در هنگام اجرای عملیات رخ داده است",
     "LicenseError": "کنترل مجوز نرم افزار با خطا مواجه شد ! لطفا با مدیر سیستم تماس بگیرید.",
-    "StartingActivation":"نرم افزار فعال سازی نشده است ! برای فعال سازی نرم افزار لطفا از وضعیت اتصال اینترنت اطمینان حاصل کنید . آیا مایل به فعال سازی نرم افزار هستید؟",
-    "ActivationIsSuccessful":"فعال سازی نرم افزار با موفقیت انجام شد",
-    "ActivationIsNotSuccessful":"فعال سازی نرم افزار با خطا مواجه شد.لطفا از وضعیت اتصال اینترنت خود مطمئن شوید!",
-    "CheckingOnlineLicense":" بررسی مجوز نرم افزار",
-    "CheckingOnlineMsg":"نرم افزار نیاز به بررسی مجوز بصورت آنلاین دارد! لطفا از وضعیت اتصال اینترنت اطمینان حاصل کنید . آیا مایل به بررسی مجوز نرم افزار هستید؟",    
-    "OnlineLicenseIsSuccessful":"مجوز نرم افزار با موفقیت بررسی شد",
-    "OnlineLicenseIsNotSuccessful":"بررسی مجوز نرم افزار با خطا مواجه شد",
-    "SoftwareActivation":"فعال سازی نرم افزار",
-    "SoftwareLicense":"مجوز نرم افزار",
-    "TooManySessions":"تعداد جلسات کاربر بیشتر از حد مجاز می باشد",
-    "ActivationPasswordIsNotCorrect":"نام کاربری یا رمز عبور سرور اشتباه می باشد",
-    "OpenSessions":"جلسات کاربری باز"
+    "StartingActivation": "نرم افزار فعال سازی نشده است ! برای فعال سازی نرم افزار لطفا از وضعیت اتصال اینترنت اطمینان حاصل کنید . آیا مایل به فعال سازی نرم افزار هستید؟",
+    "ActivationIsSuccessful": "فعال سازی نرم افزار با موفقیت انجام شد",
+    "ActivationIsNotSuccessful": "فعال سازی نرم افزار با خطا مواجه شد.لطفا از وضعیت اتصال اینترنت خود مطمئن شوید!",
+    "CheckingOnlineLicense": " بررسی مجوز نرم افزار",
+    "CheckingOnlineMsg": "نرم افزار نیاز به بررسی مجوز بصورت آنلاین دارد! لطفا از وضعیت اتصال اینترنت اطمینان حاصل کنید . آیا مایل به بررسی مجوز نرم افزار هستید؟",
+    "OnlineLicenseIsSuccessful": "مجوز نرم افزار با موفقیت بررسی شد",
+    "OnlineLicenseIsNotSuccessful": "بررسی مجوز نرم افزار با خطا مواجه شد",
+    "SoftwareActivation": "فعال سازی نرم افزار",
+    "SoftwareLicense": "مجوز نرم افزار",
+    "TooManySessions": "تعداد جلسات کاربر بیشتر از حد مجاز می باشد",
+    "ActivationPasswordIsNotCorrect": "نام کاربری یا رمز عبور سرور اشتباه می باشد",
+    "OpenSessions": "جلسات کاربری باز"
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
@@ -235,8 +237,7 @@
     "SelectProject": "لطفا پروژه را انتخاب کنید",
     "SelectCostCenter": "لطفا مرکز هزینه را انتخاب کنید",
     "FilterByRef": "لطفا رفرنس را وارد کنید"
-
-  }, 
+  },
   "ItemBalance": {
     "DetailAccount": "تفصیلی شناور",
     "CostCenter": "مرکز هزینه",
@@ -350,7 +351,6 @@
     "CopyFilter": "کپی فیلتر با نام جدید",
     "FilterCopiedSuccess": "فیلتر با موفقیت کپی شد",
     "EditGroupfilter": "ویرایش"
-
   },
   "SystemIssue": {
     "ListTitle": "سیستم ها",
@@ -548,8 +548,6 @@
       "Approved": "تصویب شده",
       "AllVouchers": "کلیه اسناد"
     }
-
-
   },
   "Journal": {
     "ByDate": "بر اساس تاریخ",
@@ -1270,8 +1268,8 @@
     "BtnLogin": "ورود",
     "RememberMe": "مرا به خاطر بسپار",
     "UserIncorrect": "نام کاربری يا کلمه عبور اشتباه می باشد",
-    "ServerUserName":"نام کاربری سرور",
-    "ServerPassword":"کلمه عبور سرور"
+    "ServerUserName": "نام کاربری سرور",
+    "ServerPassword": "کلمه عبور سرور"
   },
   "Sppc-DateRange": {
     "FromDate": "از تاریخ",
@@ -1470,10 +1468,10 @@
       "BranchIsRequired": "لطفا شعبه را انتخاب کنید.",
       "FiscalPeriodIsRequired": "لطفا دوره مالی را انتخاب کنید.",
       "PleaseSelectFiscalPeriod": "شعبه مورد نظر انتخاب شد لطفا دوره مالی را انتخاب کنید",
-      "PleaseSelectBranch":"دوره مالی مورد نظر انتخاب شد لطفا شعبه را انتخاب کنید",
+      "PleaseSelectBranch": "دوره مالی مورد نظر انتخاب شد لطفا شعبه را انتخاب کنید",
       "NoError": "",
-      "ServerUserNameIsRequired":"لطفا نام کاربری سرور را وارد کنید",
-      "ServerPasswordIsRequired":"لطفا کلمه عبور سرور را وارد کنید"
+      "ServerUserNameIsRequired": "لطفا نام کاربری سرور را وارد کنید",
+      "ServerPasswordIsRequired": "لطفا کلمه عبور سرور را وارد کنید"
     },
     "PermissionGroup": {
       "NameIsRequired": "وارد کردن نام اجباری است.",

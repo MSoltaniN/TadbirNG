@@ -501,4 +501,18 @@ export class BrowserStorageService {
     var jsonString = localStorage.removeItem(key);
     return jsonString;
   }
+
+  saveDashboardLayout(options, userId: string, companyId: string) {
+    localStorage.setItem(
+      `dashboard-${userId}-${companyId}`,
+      JSON.stringify(options)
+    );
+  }
+
+  loadDashboardLayout(userId: string, companyId: string) {
+    const key = `dashboard-${userId}-${companyId}`;
+    if (localStorage.getItem(key)) return JSON.parse(localStorage.getItem(key));
+
+    return null;
+  }
 }

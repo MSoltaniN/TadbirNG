@@ -504,18 +504,22 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
           this.isFirstVoucher = !res.hasPrevious;
         },
         (err) => {
-          if (err.statusCode == 404) {
+          if (err == null || err.statusCode == 404) {
             this.showMessage(
               this.getText("Voucher.VoucherNotFound"),
               MessageType.Warning
             );
-            if (byNo)
+
+            if (byNo) {
               this.router.navigate(["/tadbir/home"], {
                 queryParams: {
                   returnUrl: "finance/vouchers/by-no",
                   mode: "by-no",
                 },
               });
+            } else {
+              this.router.navigate(["/finance/voucher"]);
+            }
           }
 
           if (err.statusCode == 400) {

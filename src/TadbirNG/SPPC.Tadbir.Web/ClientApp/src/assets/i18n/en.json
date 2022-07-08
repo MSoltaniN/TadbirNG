@@ -48,8 +48,10 @@
     "GrossSales": "Gross Sales",
     "DashboardTitle": "Dashboard",
     "Home": "Home",
-    "DashboardName": "\"Dashboard\".",
-    "White": "White"
+    "DashboardName": "Dashboard",
+    "Setting": "Setting",
+    "White": "White",
+    "SettingConfirm": "Are you sure about the dashboard settings?"
   },
   "Exception": {
     "ErrorCode": "Error Code",
@@ -71,18 +73,18 @@
     "DeleteOperationSuccessful": "delete operation successful",
     "GlobalErrorMessage": "An error occurred while performing the operation",
     "LicenseError": "Software license control encountered an error! Please contact the system administrator.",
-    "StartingActivation":"The application is not activated! To activate the software, please make sure of the internet connection status. Do you want activation software?",
-    "ActivationIsSuccessful":"Activation is successful",
-    "ActivationIsNotSuccessful":"Activation is not successful",
-    "CheckingOnlineLicense":"Check software licenses",
-    "CheckingOnlineMsg":"The software needs to check the license online! Please check the internet connection status. Do you want to check the software license?",    
-    "OnlineLicenseIsSuccessful":"Software license was successfully verified",
-    "OnlineLicenseIsNotSuccessful":"Error checking software license encountered",
-    "SoftwareActivation":"Software activation",
-    "SoftwareLicense":"Software license",
-    "TooManySessions":"The number of user sessions is more than allowed",
-    "ActivationPasswordIsNotCorrect":"Server username or password  is incorrect",
-    "OpenSessions":"Open user sessions"
+    "StartingActivation": "The application is not activated! To activate the software, please make sure of the internet connection status. Do you want activation software?",
+    "ActivationIsSuccessful": "Activation is successful",
+    "ActivationIsNotSuccessful": "Activation is not successful",
+    "CheckingOnlineLicense": "Check software licenses",
+    "CheckingOnlineMsg": "The software needs to check the license online! Please check the internet connection status. Do you want to check the software license?",
+    "OnlineLicenseIsSuccessful": "Software license was successfully verified",
+    "OnlineLicenseIsNotSuccessful": "Error checking software license encountered",
+    "SoftwareActivation": "Software activation",
+    "SoftwareLicense": "Software license",
+    "TooManySessions": "The number of user sessions is more than allowed",
+    "ActivationPasswordIsNotCorrect": "Server username or password  is incorrect",
+    "OpenSessions": "Open user sessions"
   },
   "Report": {
     "ReportViewer": "View of",
@@ -1140,8 +1142,8 @@
     "BtnLogin": "Login",
     "RememberMe": "Remember Me",
     "UserIncorrect": "username or password is incorrect",
-    "ServerUserName":"Server user name",
-    "ServerPassword":"Server password"
+    "ServerUserName": "Server user name",
+    "ServerPassword": "Server password"
   },
   "Sppc-DateRange": {
     "FromDate": "From Date",
@@ -1340,10 +1342,10 @@
       "BranchIsRequired": "Branch is required.",
       "FiscalPeriodIsRequired": "Fiscal period is required.",
       "PleaseSelectFiscalPeriod": "Branch is selected please select a fiscal period",
-      "PleaseSelectBranch":"Fiscal period is selected please select a branch",
+      "PleaseSelectBranch": "Fiscal period is selected please select a branch",
       "NoError": "",
-      "ServerUserNameIsRequired":"Server user name is required.",
-      "ServerPasswordIsRequired":"Server password is required."
+      "ServerUserNameIsRequired": "Server user name is required.",
+      "ServerPasswordIsRequired": "Server password is required."
     },
     "PermissionGroup": {
       "NameIsRequired": "Name is required.",

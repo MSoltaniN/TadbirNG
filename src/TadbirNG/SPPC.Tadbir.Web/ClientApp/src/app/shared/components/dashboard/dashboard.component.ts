@@ -1,26 +1,43 @@
-import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { DOCUMENT } from '@angular/platform-browser';
-import { ToastrService } from 'ngx-toastr';
-import { TranslateService } from '@ngx-translate/core';
+import { Location } from "@angular/common";
+import { Component, Inject, OnInit, Renderer2 } from "@angular/core";
+import { DOCUMENT } from "@angular/platform-browser";
+import { ActivatedRoute, Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
+import { SettingService } from "@sppc/config/service";
+import { AuthenticationService, Context } from "@sppc/core";
+import { DefaultComponent } from "@sppc/shared/class";
+import { DashboardSummaries } from "@sppc/shared/models";
+import {
+  BrowserStorageService,
+  DashboardService,
+  MetaDataService,
+} from "@sppc/shared/services";
 import { Chart } from "chart.js";
-import { MetaDataService, BrowserStorageService, DashboardService } from '@sppc/shared/services';
-import { Context, AuthenticationService } from '@sppc/core';
-import { SettingService } from '@sppc/config/service';
-import { DefaultComponent } from '@sppc/shared/class';
-import { DashboardSummaries } from '@sppc/shared/models';
+import { ToastrService } from "ngx-toastr";
 
+import {
+  CompactType,
+  DisplayGrid,
+  Draggable,
+  GridsterConfig,
+  GridsterItem,
+  GridType,
+  PushDirections,
+  Resizable,
+} from "angular-gridster2";
 
-
+interface DashboardConfig extends GridsterConfig {
+  draggable: Draggable;
+  resizable: Resizable;
+  pushDirections: PushDirections;
+}
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: "app-dashboard",
+  templateUrl: "./dashboard.component.html",
+  styleUrls: ["./dashboard.component.css"],
 })
 export class DashboardComponent extends DefaultComponent implements OnInit {
-
   currentContext?: Context = undefined;
 
   public showNavbar: boolean = false;
@@ -29,7 +46,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
   public isRtl: boolean;
 
-  public lang: string = '';
+  public lang: string = "";
 
   public companyName: string;
   public branchName: string;
@@ -48,10 +65,19 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   public bankBalance: any;
   public liquidRatio: any;
   public unbalancedVoucherCount: any;
-  // public netSales:any;
-  // public grossSales:any;
 
-  constructor(public router: Router, location: Location,
+  options: DashboardConfig;
+
+  dashboard: Array<GridsterItem>;
+
+  chart1: Array<GridsterItem>;
+  chart2: Array<GridsterItem>;
+
+  isDashboardEditMode: boolean;
+
+  constructor(
+    public router: Router,
+    location: Location,
     private route: ActivatedRoute,
     public authenticationService: AuthenticationService,
     public toastrService: ToastrService,
@@ -61,20 +87,29 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     public settingService: SettingService,
     public bStorageService: BrowserStorageService,
     @Inject(DOCUMENT) public document,
-    public dashboadService: DashboardService) {
-    super(toastrService, translate, bStorageService, renderer, metadata, settingService, '', undefined);
+    public dashboadService: DashboardService
+  ) {
+    super(
+      toastrService,
+      translate,
+      bStorageService,
+      renderer,
+      metadata,
+      settingService,
+      "",
+      undefined
+    );
+
+    this.isDashboardEditMode = false;
 
     this.currentContext = this.bStorageService.getCurrentUser();
 
     var language = this.bStorageService.getLanguage();
     if (language) {
       this.lang = language;
-    }
-    else {
+    } else {
       this.lang = "fa";
-
     }
-
 
     //#region Hide navbar
     if (this.currentContext != undefined) {
@@ -84,55 +119,52 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     Chart.defaults.global.defaultFontFamily = "'SPPC'";
 
     if (this.currentContext.fpId > 0 && this.currentContext.branchId > 0) {
-      this.dashboadService.getDashboardInfo().subscribe((res: DashboardSummaries) => {
+      this.dashboadService
+        .getDashboardInfo()
+        .subscribe((res: DashboardSummaries) => {
+          this.cashierBalance = res.cashierBalance;
+          this.bankBalance = res.bankBalance;
+          this.liquidRatio = res.liquidRatio;
+          this.unbalancedVoucherCount = res.unbalancedVoucherCount;
+          // this.grossSales = res.grossSales;
+          // this.netSales = res.netSales;
+          this.dashboardInfo = res;
 
-        this.cashierBalance = res.cashierBalance;
-        this.bankBalance = res.bankBalance;
-        this.liquidRatio = res.liquidRatio;
-        this.unbalancedVoucherCount = res.unbalancedVoucherCount;
-        // this.grossSales = res.grossSales;
-        // this.netSales = res.netSales;
-        this.dashboardInfo = res;
+          this.drawNetSalesChart();
 
-        this.drawNetSalesChart();
-
-        this.drawGrossSalesChart();
-
-      });
+          this.drawGrossSalesChart();
+        });
     }
 
     //#endregion
 
-    //#region Event in Each Route 
+    //#region Event in Each Route
 
     router.events.subscribe((val) => {
-
-
-      if (location.path().toLowerCase() == '/login' || location.path().toString().indexOf('/login?returnUrl=') >= 0) {
+      if (
+        location.path().toLowerCase() == "/login" ||
+        location.path().toString().indexOf("/login?returnUrl=") >= 0
+      ) {
         this.showNavbar = false;
 
         this.isLogin = true;
-
-      }
-      else {
-
+      } else {
         //#region add class to element
 
         this.isLogin = false;
         this.showNavbar = true;
 
-        var spacePad = this.document.getElementById('spacePad')
+        var spacePad = this.document.getElementById("spacePad");
         var currentLang = this.bStorageService.getLanguage();
-        if (currentLang == 'fa' || currentLang == null) {
+        if (currentLang == "fa" || currentLang == null) {
           if (spacePad) {
-            spacePad.classList.add('pull-right');
-            spacePad.classList.remove('pull-left');
+            spacePad.classList.add("pull-right");
+            spacePad.classList.remove("pull-left");
           }
-        }
-        else {
+        } else {
           if (spacePad) {
-            spacePad.classList.add('pull-left');
-            spacePad.classList.remove('pull-right');
+            spacePad.classList.add("pull-left");
+            spacePad.classList.remove("pull-right");
           }
         }
 
@@ -152,9 +184,8 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         if (currentRoute && currentRoute != currentUrl)
           this.bStorageService.setPreviousRoute(currentRoute);
 
-        if (currentUrl != '/logout' && currentUrl != '/login')
+        if (currentUrl != "/logout" && currentUrl != "/login")
           this.bStorageService.setCurrentRoute(currentUrl);
-
 
         var contextIsEmpty: boolean = true;
 
@@ -170,41 +201,49 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         }
 
         if (contextIsEmpty) {
-          var fps = this.authenticationService.getFiscalPeriod(companyId, ticket);
+          var fps = this.authenticationService.getFiscalPeriod(
+            companyId,
+            ticket
+          );
           if (fps != null) {
-            fps.subscribe(res => {
+            fps.subscribe((res) => {
               //this.fiscalPeriods = res;
-              this.fiscalPeriodName = res.filter((p: any) => p.key == fpId)[0].value;
+              this.fiscalPeriodName = res.filter(
+                (p: any) => p.key == fpId
+              )[0].value;
             });
           }
 
-          var branchList = this.authenticationService.getBranches(companyId, ticket);
+          var branchList = this.authenticationService.getBranches(
+            companyId,
+            ticket
+          );
           if (branchList != null) {
-            branchList.subscribe(res => {
-              this.branchName = res.filter((p: any) => p.key == branchId)[0].value;
+            branchList.subscribe((res) => {
+              this.branchName = res.filter(
+                (p: any) => p.key == branchId
+              )[0].value;
             });
           }
 
-
-          var companiesList = this.authenticationService.getCompanies(this.userName, ticket);
+          var companiesList = this.authenticationService.getCompanies(
+            this.userName,
+            ticket
+          );
           if (companiesList != null) {
-            companiesList.subscribe(res => {
-              this.companyName = res.filter((p: any) => p.key == companyId)[0].value;;
-
+            companiesList.subscribe((res) => {
+              this.companyName = res.filter(
+                (p: any) => p.key == companyId
+              )[0].value;
             });
           }
-
         }
-
-
 
         //#endregion
       }
     });
 
     //#endregion
-
-
   }
 
   canvas: any;
@@ -216,31 +255,32 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
     this.dashboardInfo.netSales.points.forEach(function (value) {
       labels.push(value.xValue);
-    })
+    });
 
     this.dashboardInfo.netSales.points.forEach(function (value) {
       values.push(value.yValue);
-    })
+    });
 
-
-    this.canvas = document.getElementById('netChart');
-    this.ctx = this.canvas.getContext('2d');
+    this.canvas = document.getElementById("netChart");
+    this.ctx = this.canvas.getContext("2d");
     let myChart = new Chart(this.ctx, {
-      type: 'line',
+      type: "line",
 
       data: {
         labels: labels,
-        datasets: [{
-          fill: false,
-          label: this.dashboardInfo.netSales.title,
-          data: values,
-          backgroundColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)'
-          ],
-          borderWidth: 3
-        }]
+        datasets: [
+          {
+            fill: false,
+            label: this.dashboardInfo.netSales.title,
+            data: values,
+            backgroundColor: [
+              "rgba(255, 99, 132, 1)",
+              "rgba(54, 162, 235, 1)",
+              "rgba(255, 206, 86, 1)",
+            ],
+            borderWidth: 3,
+          },
+        ],
       },
       options: {
         responsive: true,
@@ -249,25 +289,23 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
             {
               ticks: {
                 callback: function (label, index, labels) {
-                  return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
+                  return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 },
-              }
-            }
-          ]
+              },
+            },
+          ],
         },
         tooltips: {
-          mode: 'index',
+          mode: "index",
           intersect: false,
           callbacks: {
             label: function (t, d) {
-              return t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
-            }
-          }
-        }
-      }
+              return t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            },
+          },
+        },
+      },
     });
-
-
   }
 
   drawGrossSalesChart() {
@@ -276,23 +314,25 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
     this.dashboardInfo.grossSales.points.forEach(function (value) {
       labels.push(value.xValue);
-    })
+    });
 
     this.dashboardInfo.grossSales.points.forEach(function (value) {
       values.push(value.yValue);
-    })
+    });
 
-    this.canvas = document.getElementById('grossChart');
-    this.ctx = this.canvas.getContext('2d');
+    this.canvas = document.getElementById("grossChart");
+    this.ctx = this.canvas.getContext("2d");
     let myChart = new Chart(this.ctx, {
-      type: 'bar',
+      type: "bar",
       data: {
         labels: labels,
-        datasets: [{
-          label: this.dashboardInfo.grossSales.title,
-          data: values,
-          borderWidth: 1
-        }]
+        datasets: [
+          {
+            label: this.dashboardInfo.grossSales.title,
+            data: values,
+            borderWidth: 1,
+          },
+        ],
       },
       options: {
         responsive: true,
@@ -301,43 +341,137 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
             {
               ticks: {
                 callback: function (label, index, labels) {
-                  return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
+                  return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 },
-              }
-            }
-          ]
+              },
+            },
+          ],
         },
         tooltips: {
-          mode: 'index',
+          mode: "index",
           intersect: false,
           callbacks: {
             label: function (t, d) {
-              return t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
-            }
-          }
-        }
+              return t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            },
+          },
+        },
       },
-
     });
-
-
   }
 
-  ngAfterViewInit() {
-
-
+  changedOptions(): void {
+    this.changeDashboardMode();
+    this.options.api.optionsChanged();
   }
+
+  changeDashboardMode() {
+    if (this.isDashboardEditMode) {
+      this.options.resizable.enabled = true;
+      this.options.draggable.enabled = true;
+      this.options.displayGrid = DisplayGrid.Always;
+    } else {
+      this.options.resizable.enabled = false;
+      this.options.draggable.enabled = false;
+      this.options.displayGrid = DisplayGrid.None;
+    }
+  }
+
+  onSettingClick() {
+    this.isDashboardEditMode = !this.isDashboardEditMode;
+    this.changedOptions();
+  }
+
+  onCancelClick() {
+    this.cancelEditMode();
+  }
+
+  cancelEditMode() {
+    this.isDashboardEditMode = false;
+    this.changedOptions();
+  }
+
+  onOkClick() {
+    this.bStorageService.saveDashboardLayout(
+      this.dashboard,
+      this.UserId.toString(),
+      this.CompanyId.toString()
+    );
+    this.cancelEditMode();
+  }
+
+  ngAfterViewInit() {}
 
   ngOnInit() {
+    this.initDashboard();
 
+    this.dashboard = this.bStorageService.loadDashboardLayout(
+      this.UserId.toString(),
+      this.CompanyId.toString()
+    );
 
-
+    if (!this.dashboard) {
+      this.dashboard = [
+        { cols: 20, rows: 20, y: 0, x: 0, index: 0 },
+        { cols: 20, rows: 20, y: 0, x: 0, index: 1 },
+        // { cols: 10, rows: 12, y: 1, x: 1, index: 2 },
+      ];
+    }
   }
 
-
-
-
-
-
-
+  initDashboard() {
+    this.options = {
+      gridType: GridType.Fit,
+      compactType: CompactType.None,
+      margin: 10,
+      outerMargin: true,
+      outerMarginTop: 5,
+      outerMarginRight: 5,
+      outerMarginBottom: 5,
+      outerMarginLeft: 5,
+      useTransformPositioning: true,
+      mobileBreakpoint: 200,
+      minCols: 40,
+      maxCols: 100,
+      minRows: 40,
+      maxRows: 100,
+      maxItemCols: 100,
+      minItemCols: 1,
+      maxItemRows: 100,
+      minItemRows: 1,
+      maxItemArea: 500,
+      minItemArea: 1,
+      defaultItemCols: 1,
+      defaultItemRows: 1,
+      fixedColWidth: 100,
+      fixedRowHeight: 100,
+      keepFixedHeightInMobile: false,
+      keepFixedWidthInMobile: false,
+      scrollSensitivity: 10,
+      scrollSpeed: 20,
+      enableEmptyCellClick: false,
+      enableEmptyCellContextMenu: false,
+      enableEmptyCellDrop: false,
+      enableEmptyCellDrag: false,
+      emptyCellDragMaxCols: 50,
+      emptyCellDragMaxRows: 50,
+      ignoreMarginInRow: false,
+      draggable: {
+        enabled: false,
+      },
+      resizable: {
+        enabled: false,
+      },
+      swap: true,
+      pushItems: true,
+      disablePushOnDrag: true,
+      disablePushOnResize: false,
+      pushDirections: { north: true, east: true, south: true, west: true },
+      pushResizeItems: true,
+      displayGrid: DisplayGrid.None,
+      disableWindowResize: false,
+      disableWarnings: false,
+      scrollToNewItems: false,
+    };
+  }
 }

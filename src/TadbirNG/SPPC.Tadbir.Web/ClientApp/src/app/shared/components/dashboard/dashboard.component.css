@@ -1,0 +1,78 @@
+.widget {
+  direction: rtl;
+}
+
+.guage {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb {
+  background-color: transparent;
+}
+
+/deep/ body.tRtl .title {
+  float: right !important;
+}
+
+/deep/ body.tLtr .title {
+  float: left !important;
+}
+
+/deep/ body.tRtl .settings {
+  float: left !important;
+  text-align: left;
+}
+
+/deep/ body.tLtr .settings {
+  float: right !important;
+  text-align: right;
+}
+
+.content-header {
+  padding-top: 0px !important;
+}
+
+.title h2 {
+  margin-top: 10px;
+}
+
+.setting {
+  padding-top: 8px;
+  font-size: 15px;
+}
+
+.settings {
+  padding-top: 18px;
+  padding-left: 0px;
+}
+
+i .fa {
+  padding: 4px;
+}
+
+.msg-container {
+  padding: 7px;
+}
+
+.confirm-msg {
+  padding-top: 5px;
+}
+
+/deep/ body.tRtl .settings .confirm-msg {
+  text-align: right;
+  float: right;
+}
+
+/deep/ body.tLtr .settings .confirm-msg {
+  text-align: left;
+  float: left;
+}
+
+/deep/ body.tRtl .settings .dashboard-button {
+  float: left;
+}
+
+/deep/ body.tLtr .settings .dashboard-button {
+  float: right;
+}
