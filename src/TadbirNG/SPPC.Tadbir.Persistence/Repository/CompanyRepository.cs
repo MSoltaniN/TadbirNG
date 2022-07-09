@@ -255,7 +255,7 @@ namespace SPPC.Tadbir.Persistence
         {
             return (entity != null)
                 ? String.Format(
-                    "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7} , {8} : {9}",
+                    "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7}",
                     AppStrings.Name, entity.Name,
                     AppStrings.UserName, entity.UserName, AppStrings.Password, entity.Password,
                     AppStrings.Description, entity.Description)

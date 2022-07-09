@@ -25,5 +25,7 @@ namespace SPPC.Tools.Model
         public const int DefaultWebLicenseApiPort = 9094;
 
         public const int DefaultApiPort = 9095;
+
+        public const string DummyInstanceKey = "AppInstanceKey";
     }
 }

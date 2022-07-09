@@ -4,13 +4,11 @@ namespace SPPC.Tools.Transforms.Templates
 {
     public partial class DockerCompose : ITextTemplate
     {
-        public DockerCompose(string licenseKey)
+        public DockerCompose(string editionTag)
         {
-            _imageGuid = licenseKey
-                .ToLower()
-                .Substring(0, 8);
+            _editionTag = editionTag;
         }
 
-        private readonly string _imageGuid;
+        private readonly string _editionTag;
     }
 }

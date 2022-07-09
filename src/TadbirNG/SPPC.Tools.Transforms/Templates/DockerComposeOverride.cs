@@ -30,31 +30,32 @@ namespace SPPC.Tools.Transforms.Templates
         {
             this.Write("version: \'3.9\'\r\n\r\nnetworks:\r\n frontend:\r\n backend:\r\n\r\nservices:\r\n\r\n DbServer:\r\n  " +
                     "image: msn1368/db-server:latest\r\n  ports: \r\n    - 14433:1433\r\n\r\n ApiServer:\r\n  i" +
-                    "mage: msn1368/api-server-");
+                    "mage: msn1368/api-server:");
             
             #line 20 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
+            this.Write(this.ToStringHelper.ToStringWithCulture(_editionTag));
             
             #line default
             #line hidden
-            this.Write(":latest\r\n  environment:\r\n   - ASPNETCORE_ENVIRONMENT=Production\r\n   - Logging__Lo" +
-                    "gLevel__Microsoft=Trace\r\n   - ASPNETCORE_URLS=http://+:80\r\n  \r\n loadBalancer:\r\n " +
-                    " profiles:\r\n   - donotstart\r\n\r\n WebApp:\r\n  image: msn1368/web-app-");
-            
-            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
-            
-            #line default
-            #line hidden
-            this.Write(":dev\r\n\r\n LicenseServer:\r\n  image: msn1368/license-server-");
-            
-            #line 34 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
-            
-            #line default
-            #line hidden
-            this.Write(":latest\r\n  environment:\r\n   - ASPNETCORE_ENVIRONMENT=Production\r\n   - Logging__Lo" +
-                    "gLevel__Microsoft=Trace\r\n");
+            this.Write(@"
+  environment:
+   - ASPNETCORE_ENVIRONMENT=Production
+   - Logging__LogLevel__Microsoft=Trace
+   - ASPNETCORE_URLS=http://+:80
+  
+ loadBalancer:
+  profiles:
+   - donotstart
+
+ WebApp:
+  image: msn1368/web-app:dev
+
+ LicenseServer:
+  image: msn1368/license-server:latest
+  environment:
+   - ASPNETCORE_ENVIRONMENT=Production
+   - Logging__LogLevel__Microsoft=Trace
+");
             return this.GenerationEnvironment.ToString();
         }
     }
