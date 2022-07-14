@@ -4,7 +4,7 @@ using System.Threading;
 using SPPC.Tools.Model;
 using SPPC.Tools.Utility;
 
-namespace SPPC.Tools.DeliveryCli
+namespace SPPC.Tools.BuildServer
 {
     public static class QuickTest
     {

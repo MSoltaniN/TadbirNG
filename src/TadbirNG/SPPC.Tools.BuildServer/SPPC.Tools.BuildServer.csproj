@@ -8,7 +8,7 @@
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <CodeAnalysisRuleSet>..\..\..\misc\assets\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
-    <AssemblyName>SPPC.Tools.DeliveryCli</AssemblyName>
+    <AssemblyName>SPPC.Tools.BuildServer</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -25,8 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
-    <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj" />
-    <ProjectReference Include="..\SPPC.Licensing.Interfaces\SPPC.Licensing.Interfaces.csproj" />
     <ProjectReference Include="..\SPPC.Licensing.Model\SPPC.Licensing.Model.csproj" />
     <ProjectReference Include="..\SPPC.Tools.Model\SPPC.Tools.Model.csproj" />
     <ProjectReference Include="..\SPPC.Tools.Utility\SPPC.Tools.Utility.csproj" />

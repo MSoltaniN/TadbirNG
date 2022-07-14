@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SPPC.Tools.DeliveryCli
+namespace SPPC.Tools.BuildServer
 {
     internal enum ApiServerPathIndex
     {

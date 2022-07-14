@@ -11,9 +11,16 @@ namespace SPPC.Tools.Utility
 {
     public class ArchiveUtility
     {
-        public static void RedirectOutput()
+        public static void RedirectOutput(bool redirect = true)
         {
-            _runner.OutputReceived += Runner_OutputReceived;
+            if (redirect)
+            {
+                _runner.OutputReceived += Runner_OutputReceived;
+            }
+            else
+            {
+                _runner.OutputReceived -= Runner_OutputReceived;
+            }
         }
 
         public static void GZip(string sourceFile)

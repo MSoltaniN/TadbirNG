@@ -1,25 +1,22 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms.Templates;
 using SPPC.Tools.Utility;
 
-namespace SPPC.Tools.DeliveryCli
+namespace SPPC.Tools.BuildServer
 {
     class Program
     {
         static void Main(string[] args)
         {
-            RunBuildProcess();
-        }
-
-        private static void RunBuildProcess()
-        {
             var stopWatch = new Stopwatch();
-            InputUtility.DisplayBanner();
+            DisplayBanner();
             if (!DockerUtility.IsDockerEngineRunning())
             {
                 Console.WriteLine("ERROR: Build process needs Docker engine to be up and running.");
@@ -31,6 +28,15 @@ namespace SPPC.Tools.DeliveryCli
             _runner.OutputReceived += Runner_OutputReceived;
             stopWatch.Start();
 
+            RunBuildProcess();
+            RunPublishProcess();
+
+            stopWatch.Stop();
+            Console.WriteLine($"Elapsed time : {stopWatch.Elapsed}");
+        }
+
+        private static void RunBuildProcess()
+        {
             // NOTE: For this process to be correct, current clone MUST be pristine
             // (i.e. NO change must be sensed by git)
             // NOTE: ALL builds must be done with caching disabled (--no-cache switch)
@@ -43,6 +49,8 @@ namespace SPPC.Tools.DeliveryCli
             // Pull latest changes from TadbirNG repository...
             var currentDir = Environment.CurrentDirectory;
             Environment.CurrentDirectory = GetRepositoryRoot();
+            ////_runner.Run(String.Format(GitUserNameCommand, GitUserName));
+            ////_runner.Run(String.Format(GitEmailCommand, GitEmail));
             _runner.Run("git pull --progress");
             Environment.CurrentDirectory = currentDir;
 
@@ -82,8 +90,18 @@ namespace SPPC.Tools.DeliveryCli
                 Console.WriteLine($"{DockerService.DbServer} is up-to-date.");
             }
 
-            stopWatch.Stop();
-            Console.WriteLine($"Elapsed time : {stopWatch.Elapsed}");
+            Console.WriteLine();
+            Console.WriteLine("Build process completed successfully.");
+        }
+
+        public static void DisplayBanner()
+        {
+            Console.WriteLine();
+            Console.WriteLine("============================================================");
+            Console.WriteLine("TadbirNG Build Server (v1.2)");
+            Console.WriteLine($"(c) Copyright {DateTime.Now.Year}, SPPC, All Rights Reserved");
+            Console.WriteLine("============================================================");
+            Console.WriteLine();
         }
 
         private static string GetRepositoryRoot()
@@ -215,6 +233,7 @@ namespace SPPC.Tools.DeliveryCli
                 FileUtility.BackupFile(devEnvPath, tempPath);
 
                 var settings = BuildSettings.DockerDummy;
+                settings.Version = VersionInfo.GetAppVersion();
                 var environment = new NgEnvironment(settings).TransformText();
                 File.WriteAllText(envPath, environment);
                 File.WriteAllText(devEnvPath, environment);
@@ -267,12 +286,43 @@ namespace SPPC.Tools.DeliveryCli
 
         private static void RunPublishProcess()
         {
+            // Update cached image files in DockerCache repository
+            ArchiveUtility.RedirectOutput();
+            Console.WriteLine("Updating cache for Db Server...");
+            UpdateServiceCache("db-server");
+            Console.WriteLine("Updating cache for License Server...");
+            UpdateServiceCache("license-server");
+            Console.WriteLine("Updating cache for Web App...");
+            UpdateServiceCache("web-app", "dev");
+            Console.WriteLine("Updating cache for Api Server...");
+            UpdateServiceCache("api-server", "std");
+            UpdateServiceCache("api-server", "pro");
+            UpdateServiceCache("api-server", "ent");
+
+            // Commit changes to DockerCache remote
+            Console.WriteLine("Commiting changes to git remote...");
+            var message = String.Format($"Pushed builds {VersionInfo.GetApiVersion()},UI-{VersionInfo.GetAppVersion()}");
+            _runner.Run(String.Format(GitCommitCommand, message));
+            _runner.Run("git push --progress");
+            Console.WriteLine();
+            Console.WriteLine("Publish process completed successfully.");
         }
 
         private static void UpdateServiceCache(string serviceName, string tag = "latest")
         {
             var currentDir = Environment.CurrentDirectory;
-            Environment.CurrentDirectory = GetDockerCacheRoot();
+            var root = GetDockerCacheRoot();
+            var imageFile = GetImageFileName(serviceName, tag);
+            Environment.CurrentDirectory = Path.Combine(root, serviceName);
+            _runner.Run(String.Format($"docker save msn1368/{serviceName}:{tag} -o {imageFile}.tar"));
+            var tarPath = Path.Combine(Environment.CurrentDirectory, String.Format($"{imageFile}.tar"));
+            var gzPath = Path.Combine(Environment.CurrentDirectory, String.Format($"{imageFile}.tar.gz"));
+            if (File.Exists(gzPath))
+            {
+                File.Delete(gzPath);
+            }
+
+            ArchiveUtility.GZip(tarPath);
             Environment.CurrentDirectory = currentDir;
         }
 
@@ -286,15 +336,37 @@ namespace SPPC.Tools.DeliveryCli
             return Path.Combine(root, "dockercache");
         }
 
+        private static string GetImageFileName(string serviceName, string tag)
+        {
+            var editionTags = new string[] { "std", "pro", "ent" };
+            return editionTags.Contains(tag)
+                ? String.Format($"{serviceName}-{tag}")
+                : serviceName;
+        }
+
         private static void Runner_OutputReceived(object sender, OutputReceivedEventArgs e)
         {
             if (!String.IsNullOrEmpty(e.Output))
             {
                 Console.WriteLine(e.Output.Replace("\n", Environment.NewLine));
+                _logBuilder.AppendLine(e.Output.Replace("\n", Environment.NewLine));
+                if (_logBuilder.Length >= FlushLimit)
+                {
+                    var chunk = _logBuilder.ToString().Substring(0, FlushLimit);
+                    File.AppendAllText("build.log", chunk);
+                    _logBuilder.Remove(0, FlushLimit);
+                }
             }
         }
 
+        ////private const string GitUserName = "build-daemon";
+        ////private const string GitEmail = "babakesl@hotmail.com";
+        ////private const string GitUserNameCommand = "git config --global user.name \"{0}\"";
+        ////private const string GitEmailCommand = "git config --global user.email \"{0}\"";
+        private const int FlushLimit = 65536; // i.e. 64KB
+        private const string GitCommitCommand = "git commit -a -m \"{0}\"";
         private static readonly CliRunner _runner = new();
+        private static readonly StringBuilder _logBuilder = new();
         private static string _licenseChecksum;
         private static string _apiChecksum;
         private static string _appChecksum;
