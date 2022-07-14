@@ -11,7 +11,7 @@ namespace SPPC.Tools.DeliveryCli
         {
             Console.WriteLine();
             Console.WriteLine("============================================================");
-            Console.WriteLine("TadbirNG Customer Delivery tool (v1.2)");
+            Console.WriteLine("TadbirNG Build Server (v1.2)");
             Console.WriteLine($"(c) Copyright {DateTime.Now.Year}, SPPC, All Rights Reserved");
             Console.WriteLine("============================================================");
             Console.WriteLine();

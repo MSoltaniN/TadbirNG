@@ -14,7 +14,11 @@ namespace SPPC.Tools.Model
 
         public static string WebAppRoot => Path.Combine(SolutionRoot, "SPPC.Tadbir.Web");
 
-        public static string WebEnvRoot => Path.Combine(SolutionRoot, "SPPC.Tadbir.Web", "ClientApp", "src", "environments");
+        public static string WebEnvRoot => Path.Combine(WebAppRoot, "ClientApp", "src", "environments");
+
+        public static string ComposePath => Path.Combine(SolutionRoot, "docker-compose.yml");
+
+        public static string OverridePath => Path.Combine(SolutionRoot, "docker-compose.override.yml");
 
         public static string EditionConfig => Path.Combine(SolutionRoot, "SPPC.Tools.LicenseManager", "edition-config.json");
 

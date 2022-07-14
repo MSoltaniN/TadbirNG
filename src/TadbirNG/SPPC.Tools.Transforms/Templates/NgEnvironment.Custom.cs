@@ -2,9 +2,9 @@
 
 namespace SPPC.Tools.Transforms.Templates
 {
-    public partial class TsInstanceFromValues : ITextTemplate
+    public partial class NgEnvironment : ITextTemplate
     {
-        public TsInstanceFromValues(IBuildSettings settings)
+        public NgEnvironment(IBuildSettings settings)
         {
             _settings = settings;
         }

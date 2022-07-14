@@ -353,7 +353,7 @@ namespace SPPC.Tools.LicenseManager
         private static void CreateEnvironmentSettings(IBuildSettings settings)
         {
             string path = ConfigurationManager.AppSettings["ClientInstanceIdPath"];
-            ITextTemplate template = new TsInstanceFromValues(settings);
+            ITextTemplate template = new NgEnvironment(settings);
             File.WriteAllText(path, template.TransformText());
 
             path = ConfigurationManager.AppSettings["LocalServerSettingsPath"];

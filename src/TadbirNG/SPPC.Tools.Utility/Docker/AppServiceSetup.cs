@@ -21,7 +21,7 @@ namespace SPPC.Tools.Utility
 
         protected override void ConfigureAppLayer(string layerId)
         {
-            var path = Path.Combine(Environment.CurrentDirectory, layerId, "usr", "share", "nginx", "html");
+            var path = Path.Combine(Environment.CurrentDirectory, layerId, AppLayerFolder, "share", "nginx", "html");
             var mainFile = new DirectoryInfo(path)
                 .GetFiles("*.*", SearchOption.TopDirectoryOnly)
                 .Where(fi => fi.Name.StartsWith("main")
@@ -30,19 +30,15 @@ namespace SPPC.Tools.Utility
                 .FirstOrDefault();
             if (!String.IsNullOrEmpty(mainFile))
             {
-                var apiServerUrl = String.Format(
-                    $"http://localhost:{BuildSettingValues.DefaultApiPort}");
-                var licenseServerUrl = String.Format(
-                    $"http://localhost:{BuildSettingValues.DefaultLicenseApiPort}");
+                var apiServerUrl = BuildSettings.DockerLocal.WebApiUrl;
+                var licenseServerUrl = BuildSettings.DockerLocal.LocalServerUrl;
                 var contents = File.ReadAllText(mainFile);
                 contents = contents
-                    .Replace(DefaultKey, _settings.Key)
+                    .Replace(BuildSettingValues.DummyInstanceKey, _settings.Key)
                     .Replace(apiServerUrl, _settings.WebApiUrl)
                     .Replace(licenseServerUrl, _settings.LocalServerUrl);
                 File.WriteAllText(mainFile, contents);
             }
         }
-
-        private const string DefaultKey = "AppInstanceKey";
     }
 }

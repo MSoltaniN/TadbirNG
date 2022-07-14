@@ -29,6 +29,7 @@
     <None Remove="Templates\DockerDeploy.tt" />
     <None Remove="Templates\EmptyCrudController.tt" />
     <None Remove="Templates\JsResFromCsViewModels.tt" />
+    <None Remove="Templates\NgEnvironment.tt" />
     <None Remove="Templates\RepoImplementationFromMetadata.tt" />
     <None Remove="Templates\RepoInterfaceFromMetadata.tt" />
     <None Remove="Templates\ResXKeyClass.tt" />
@@ -36,7 +37,6 @@
     <None Remove="Templates\StarterCrudController.tt" />
     <None Remove="Templates\TsApiFromCsApi.tt" />
     <None Remove="Templates\TsConstTypeFromCsValueClass.tt" />
-    <None Remove="Templates\TsInstanceFromValues.tt" />
     <None Remove="Templates\TsModelFromCsViewModel.tt" />
     <None Remove="Templates\TsPermissionsFromCsPermissions.tt" />
     <None Remove="Templates\WebApiSettings.tt" />
@@ -134,10 +134,10 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TsConstTypeFromCsValueClass.cs</LastGenOutput>
     </Content>
-    <Content Include="Templates\TsInstanceFromValues.tt">
+    <Content Include="Templates\NgEnvironment.tt">
       <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>TsInstanceFromValues.cs</LastGenOutput>
+      <LastGenOutput>NgEnvironment.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\TsModelFromCsViewModel.tt">
       <CustomToolNamespace></CustomToolNamespace>
@@ -274,10 +274,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>TsConstTypeFromCsValueClass.tt</DependentUpon>
     </Compile>
-    <Compile Update="Templates\TsInstanceFromValues.cs">
+    <Compile Update="Templates\NgEnvironment.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>TsInstanceFromValues.tt</DependentUpon>
+      <DependentUpon>NgEnvironment.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\TsModelFromCsViewModel.cs">
       <DesignTime>True</DesignTime>
