@@ -24,7 +24,7 @@ namespace SPPC.Tools.Model
         /// نسخه برنامه وب را از فایل مربوطه خوانده و برمی گرداند
         /// </summary>
         /// <returns>نسخه برنامه وب</returns>
-        public static string GetAppVersion(int count = 4)
+        public static string GetAppVersion(int count = 3)
         {
             var appVersion = new Version(GetVersionFromFile(_appVersionPath));
             return appVersion.ToString(count);

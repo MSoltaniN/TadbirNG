@@ -30,7 +30,7 @@ namespace SPPC.Tadbir.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        // (Temporary change to trigger build server)
+        // ((Temporary change to trigger build server))
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
