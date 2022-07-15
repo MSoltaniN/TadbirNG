@@ -22,7 +22,7 @@ namespace SPPC.Tools.BuildServer
                 BuildAndPublish();
                 Console.WriteLine();
                 Console.WriteLine("Waiting for the next hourly build...");
-                Thread.Sleep(TimeSpan.FromHours(1).Milliseconds);
+                Thread.Sleep((int)TimeSpan.FromHours(1).TotalMilliseconds);
             }
         }
 
