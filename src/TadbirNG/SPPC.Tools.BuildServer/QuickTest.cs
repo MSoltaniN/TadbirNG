@@ -8,6 +8,16 @@ namespace SPPC.Tools.BuildServer
 {
     public static class QuickTest
     {
+        public static void TestProcessEnvironment()
+        {
+            // Archive utility sets Path variable in current process environment, using given relative path
+            var archive = new ArchiveUtility(@"..\..\..\misc\tools");
+            Console.WriteLine("Compressing runtimes folder to 'runtimes.tar' ...");
+            archive.Tar("runtimes.tar", "runtimes");
+            Console.WriteLine("Compressing 'runtimes.tar' to 'runtimes.tar.gz' ...");
+            archive.GZip("runtimes.tar");
+        }
+
         public static void GeneratePasswords()
         {
             int length = 1;

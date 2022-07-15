@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tools.Model;
@@ -15,8 +16,19 @@ namespace SPPC.Tools.BuildServer
     {
         static void Main(string[] args)
         {
-            var stopWatch = new Stopwatch();
             DisplayBanner();
+            while (true)
+            {
+                BuildAndPublish();
+                Console.WriteLine();
+                Console.WriteLine("Waiting for the next hourly build...");
+                Thread.Sleep(TimeSpan.FromHours(1).Milliseconds);
+            }
+        }
+
+        private static void BuildAndPublish()
+        {
+            var stopWatch = new Stopwatch();
             if (!DockerUtility.IsDockerEngineRunning())
             {
                 Console.WriteLine("ERROR: Build process needs Docker engine to be up and running.");
@@ -26,13 +38,23 @@ namespace SPPC.Tools.BuildServer
             }
 
             _runner.OutputReceived += Runner_OutputReceived;
-            stopWatch.Start();
+            var exePath = Environment.GetCommandLineArgs()[0];
+            _logPath = Path.Combine(Path.GetDirectoryName(exePath), "build.log");
 
-            RunBuildProcess();
-            RunPublishProcess();
-
-            stopWatch.Stop();
-            Console.WriteLine($"Elapsed time : {stopWatch.Elapsed}");
+            try
+            {
+                stopWatch.Start();
+                RunBuildProcess();
+                RunPublishProcess();
+                stopWatch.Stop();
+                var elapsed = String.Format($"Elapsed time : {stopWatch.Elapsed}");
+                ShowMessage();
+                ShowMessage(elapsed);
+            }
+            finally
+            {
+                File.AppendAllText(_logPath, _logBuilder.ToString());
+            }
         }
 
         private static void RunBuildProcess()
@@ -49,49 +71,52 @@ namespace SPPC.Tools.BuildServer
             // Pull latest changes from TadbirNG repository...
             var currentDir = Environment.CurrentDirectory;
             Environment.CurrentDirectory = GetRepositoryRoot();
-            ////_runner.Run(String.Format(GitUserNameCommand, GitUserName));
-            ////_runner.Run(String.Format(GitEmailCommand, GitEmail));
             _runner.Run("git pull --progress");
             Environment.CurrentDirectory = currentDir;
+            ShowMessage();
 
             if (IsModifiedProject(DockerService.LicenseServer, _licenseChecksum))
             {
+                _licenseChanged = true;
                 RebuildLicenseServer();
             }
             else
             {
-                Console.WriteLine($"{DockerService.LicenseServer} is up-to-date.");
+                ShowMessage($"{DockerService.LicenseServer} is up-to-date.");
             }
 
             if (IsModifiedProject(DockerService.ApiServer, _apiChecksum))
             {
+                _apiChanged = true;
                 RebuildApiServer();
             }
             else
             {
-                Console.WriteLine($"{DockerService.ApiServer} is up-to-date.");
+                ShowMessage($"{DockerService.ApiServer} is up-to-date.");
             }
 
             if (IsModifiedProject(DockerService.WebApp, _appChecksum))
             {
+                _appChanged = true;
                 RebuildWebApp();
             }
             else
             {
-                Console.WriteLine($"{DockerService.WebApp} is up-to-date.");
+                ShowMessage($"{DockerService.WebApp} is up-to-date.");
             }
 
             if (IsModifiedProject(DockerService.DbServer, _dbChecksum))
             {
+                _dbChanged = true;
                 RebuildDbServer();
             }
             else
             {
-                Console.WriteLine($"{DockerService.DbServer} is up-to-date.");
+                ShowMessage($"{DockerService.DbServer} is up-to-date.");
             }
 
-            Console.WriteLine();
-            Console.WriteLine("Build process completed successfully.");
+            ShowMessage();
+            ShowMessage("Build process completed successfully.");
         }
 
         public static void DisplayBanner()
@@ -122,9 +147,9 @@ namespace SPPC.Tools.BuildServer
         {
             // If license server is modified, backup appSettings, generate dummy settings,
             // build base image and restore appSettings...
-            Console.WriteLine();
-            Console.WriteLine("Rebuilding license server...");
-            Console.WriteLine();
+            ShowMessage();
+            ShowMessage("Rebuilding license server...");
+            ShowMessage();
             string tempPath = String.Empty;
             string settingsPath = String.Empty;
             string devSettingsPath = String.Empty;
@@ -142,9 +167,9 @@ namespace SPPC.Tools.BuildServer
                 File.WriteAllText(devSettingsPath, appSettings);
 
                 _runner.Run(String.Format($"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build --no-cache LicenseServer"));
-                Console.WriteLine();
-                Console.WriteLine("[License Server] => Rebuild succeeded.");
-                Console.WriteLine();
+                ShowMessage();
+                ShowMessage("[License Server] => Rebuild succeeded.");
+                ShowMessage();
             }
             finally
             {
@@ -163,7 +188,7 @@ namespace SPPC.Tools.BuildServer
             // 1. Generate docker-compose, override and edition file
             // 2. Build base image for that edition
             // Restore docker-compose, override, appSettings, license and edition files
-            Console.WriteLine();
+            ShowMessage();
             string tempPath = String.Empty;
             var files = new string[]
             {
@@ -199,13 +224,13 @@ namespace SPPC.Tools.BuildServer
                     File.WriteAllText(files[(int)ApiServerPathIndex.Edition], editionData);
                     File.WriteAllText(files[(int)ApiServerPathIndex.DevEdition], editionData);
 
-                    Console.WriteLine($"Building tag {edition}...");
+                    ShowMessage($"Building tag {edition}...");
                     _runner.Run(String.Format($"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build{noCache} ApiServer"));
                 }
 
-                Console.WriteLine();
-                Console.WriteLine("[Api Server] => Rebuild succeeded.");
-                Console.WriteLine();
+                ShowMessage();
+                ShowMessage("[Api Server] => Rebuild succeeded.");
+                ShowMessage();
             }
             finally
             {
@@ -218,9 +243,9 @@ namespace SPPC.Tools.BuildServer
         {
             // If web app is modified, backup production and development environment files,
             // generate dummy environments, build base image and restore environment files
-            Console.WriteLine();
-            Console.WriteLine("Rebuilding web app...");
-            Console.WriteLine();
+            ShowMessage();
+            ShowMessage("Rebuilding web app...");
+            ShowMessage();
             string tempPath = String.Empty;
             string envPath = String.Empty;
             string devEnvPath = String.Empty;
@@ -239,9 +264,9 @@ namespace SPPC.Tools.BuildServer
                 File.WriteAllText(devEnvPath, environment);
 
                 _runner.Run(String.Format($"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build --no-cache WebApp"));
-                Console.WriteLine();
-                Console.WriteLine("[Web App] => Rebuild succeeded.");
-                Console.WriteLine();
+                ShowMessage();
+                ShowMessage("[Web App] => Rebuild succeeded.");
+                ShowMessage();
             }
             finally
             {
@@ -253,14 +278,14 @@ namespace SPPC.Tools.BuildServer
 
         private static void RebuildDbServer()
         {
-            Console.WriteLine();
-            Console.WriteLine("Rebuilding db server...");
-            Console.WriteLine();
+            ShowMessage();
+            ShowMessage("Rebuilding db server...");
+            ShowMessage();
 
             _runner.Run(String.Format($"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build --no-cache DbServer"));
-            Console.WriteLine();
-            Console.WriteLine("[Db Server] => Rebuild succeeded.");
-            Console.WriteLine();
+            ShowMessage();
+            ShowMessage("[Db Server] => Rebuild succeeded.");
+            ShowMessage();
         }
 
         private static string GetEditionData(EditionsConfig editions, string editionTag)
@@ -287,25 +312,44 @@ namespace SPPC.Tools.BuildServer
         private static void RunPublishProcess()
         {
             // Update cached image files in DockerCache repository
-            ArchiveUtility.RedirectOutput();
-            Console.WriteLine("Updating cache for Db Server...");
-            UpdateServiceCache("db-server");
-            Console.WriteLine("Updating cache for License Server...");
-            UpdateServiceCache("license-server");
-            Console.WriteLine("Updating cache for Web App...");
-            UpdateServiceCache("web-app", "dev");
-            Console.WriteLine("Updating cache for Api Server...");
-            UpdateServiceCache("api-server", "std");
-            UpdateServiceCache("api-server", "pro");
-            UpdateServiceCache("api-server", "ent");
+            if (_dbChanged)
+            {
+                ShowMessage("Updating cache for Db Server...");
+                UpdateServiceCache("db-server");
+            }
+
+            if (_licenseChanged)
+            {
+                ShowMessage("Updating cache for License Server...");
+                UpdateServiceCache("license-server");
+            }
+
+            if (_appChanged)
+            {
+                ShowMessage("Updating cache for Web App...");
+                UpdateServiceCache("web-app", "dev");
+            }
+
+            if (_apiChanged)
+            {
+                ShowMessage("Updating cache for Api Server...");
+                UpdateServiceCache("api-server", "std");
+                UpdateServiceCache("api-server", "pro");
+                UpdateServiceCache("api-server", "ent");
+            }
 
             // Commit changes to DockerCache remote
-            Console.WriteLine("Commiting changes to git remote...");
-            var message = String.Format($"Pushed builds {VersionInfo.GetApiVersion()},UI-{VersionInfo.GetAppVersion()}");
+            ShowMessage("Commiting changes to git remote...");
+            var apiVersion = VersionInfo.GetApiVersion();
+            var appVersion = VersionInfo.GetAppVersion();
+            var currentDir = Environment.CurrentDirectory;
+            Environment.CurrentDirectory = GetDockerCacheRoot();
+            var message = String.Format($"Pushed builds {apiVersion},UI-{appVersion}");
             _runner.Run(String.Format(GitCommitCommand, message));
             _runner.Run("git push --progress");
-            Console.WriteLine();
-            Console.WriteLine("Publish process completed successfully.");
+            ShowMessage();
+            ShowMessage("Publish process completed successfully.");
+            Environment.CurrentDirectory = currentDir;
         }
 
         private static void UpdateServiceCache(string serviceName, string tag = "latest")
@@ -322,7 +366,7 @@ namespace SPPC.Tools.BuildServer
                 File.Delete(gzPath);
             }
 
-            ArchiveUtility.GZip(tarPath);
+            _archive.GZip(tarPath);
             Environment.CurrentDirectory = currentDir;
         }
 
@@ -348,28 +392,38 @@ namespace SPPC.Tools.BuildServer
         {
             if (!String.IsNullOrEmpty(e.Output))
             {
-                Console.WriteLine(e.Output.Replace("\n", Environment.NewLine));
-                _logBuilder.AppendLine(e.Output.Replace("\n", Environment.NewLine));
-                if (_logBuilder.Length >= FlushLimit)
-                {
-                    var chunk = _logBuilder.ToString().Substring(0, FlushLimit);
-                    File.AppendAllText("build.log", chunk);
-                    _logBuilder.Remove(0, FlushLimit);
-                }
+                ShowMessage(e.Output.Replace("\n", Environment.NewLine));
+                FlushToLogFile();
             }
         }
 
-        ////private const string GitUserName = "build-daemon";
-        ////private const string GitEmail = "babakesl@hotmail.com";
-        ////private const string GitUserNameCommand = "git config --global user.name \"{0}\"";
-        ////private const string GitEmailCommand = "git config --global user.email \"{0}\"";
-        private const int FlushLimit = 65536; // i.e. 64KB
+        private static void ShowMessage(string message = null)
+        {
+            var msg = message ?? Environment.NewLine;
+            Console.WriteLine(msg);
+            _logBuilder.AppendLine(msg);
+        }
+
+        private static void FlushToLogFile()
+        {
+            if (_logBuilder.Length >= FlushLimit)
+            {
+                var chunk = _logBuilder.ToString().Substring(0, FlushLimit);
+                File.AppendAllText(_logPath, chunk);
+                _logBuilder.Remove(0, FlushLimit);
+            }
+        }
+
+        private const int FlushLimit = 10240; // i.e. 10KB
         private const string GitCommitCommand = "git commit -a -m \"{0}\"";
         private static readonly CliRunner _runner = new();
         private static readonly StringBuilder _logBuilder = new();
+        private static readonly ArchiveUtility _archive = new(@"..\..\..\misc\tools");
+        private static string _logPath;
         private static string _licenseChecksum;
         private static string _apiChecksum;
         private static string _appChecksum;
         private static string _dbChecksum;
+        private static bool _apiChanged, _appChanged, _dbChanged, _licenseChanged;
     }
 }
