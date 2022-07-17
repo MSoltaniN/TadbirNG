@@ -23,7 +23,7 @@
     <div class="form-group">
       <label for="dbName" class="control-label">{{ 'Company.DbName' | translate }}</label>
 
-      <input type="text" class="k-textbox" formControlName="dbName" />
+      <input type="text" class="k-textbox" formControlName="dbName" [attr.disabled]='isNew?null:""'/>
 
       <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.dbName.valid || editForm.controls.dbName.pristine">
         <span *ngIf="editForm.controls.dbName.errors?.required">{{ 'AllValidations.CompanyDb.DbNameIsRequired' | translate }}</span>
