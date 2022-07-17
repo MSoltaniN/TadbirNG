@@ -20,6 +20,7 @@ namespace SPPC.Licensing.Model
         [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string ContactName { get; set; }
 
+        [Display(Name = "تعداد کاربر")]
         public int UserCount { get; set; }
 
         [Display(Name = "ویرایش برنامه")]

@@ -26,13 +26,6 @@ namespace SPPC.Tools.LicenseManager
             txtPassword.Focus();
         }
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-            _runner.Stop();
-            ReleaseUtility.RestoreSettings();
-        }
-
         private void Runner_OutputReceived(object sender, OutputReceivedEventArgs e)
         {
             if (txtConsole.InvokeRequired)
@@ -49,14 +42,6 @@ namespace SPPC.Tools.LicenseManager
             }
         }
 
-        private void Runner_Killed(object sender, EventArgs e)
-        {
-            if (worker.IsBusy)
-            {
-                worker.CancelAsync();
-            }
-        }
-
         private void Create_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(txtPassword.Text))
@@ -67,18 +52,9 @@ namespace SPPC.Tools.LicenseManager
                 return;
             }
 
-            if (!DockerUtility.IsDockerEngineRunning())
-            {
-                MessageBox.Show("لطفاً پیش از ساخت نسخه، ابتدا برنامه داکر دسکتاپ را اجرا کنید و وارد حساب کاربری سازمان شوید.",
-                    "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,
-                    MessageBoxOptions.RtlReading);
-                return;
-            }
-
             _elapsed = TimeSpan.Zero;
             txtConsole.Focus();
             _runner.OutputReceived += Runner_OutputReceived;
-            _runner.Killed += Runner_Killed;
             btnCreate.Enabled = false;
             btnExit.Enabled = false;
             timer.Enabled = true;
@@ -87,28 +63,21 @@ namespace SPPC.Tools.LicenseManager
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
+            worker.ReportProgress(0, "دریافت آخرین نسخه سرویس های داکر...");
+            ReleaseUtility.UpdateImageCache(_runner);
+            worker.ReportProgress(40);
+
+            worker.ReportProgress(0, "کپی فایل های مورد نیاز برنامه...");
+            ReleaseUtility.CopyProgramFiles(License.LicenseKey, License.Edition);
+            worker.ReportProgress(40);
+
             worker.ReportProgress(0, "ایجاد تنظیمات نسخه جدید...");
             ReleaseUtility.GenerateSettings(License);
-            worker.ReportProgress(30);
-
-            ////worker.ReportProgress(0, "ساختن سرویس های داکر...");
-            ////_runner.Run(String.Format(BuildTemplate, @"..\..\..\src\TadbirNG\"));
-            ////worker.ReportProgress(25);
-
-            ////worker.ReportProgress(0, "ارسال سرویس های نسخه به داکر هاب...");
-            ////var guid = License.LicenseKey.Substring(0, 8);
-            ////_runner.Run(String.Format(PushLicenseTemplate, guid));
-            ////worker.ReportProgress(15);
-            ////_runner.Run(String.Format(PushApiTemplate, guid));
-            ////worker.ReportProgress(15);
-            ////_runner.Run(String.Format(PushAppTemplate, guid));
-            ////worker.ReportProgress(15);
-            ////_runner.Run("docker push msn1368/db-server:dev");
-            ////worker.ReportProgress(15);
+            worker.ReportProgress(5);
 
             worker.ReportProgress(0, "ساختن فایل نهایی کاربر...");
-            ReleaseUtility.CreateReleaseArchive(License.LicenseKey, txtPassword.Text);
-            worker.ReportProgress(70);
+            ReleaseUtility.CreateReleaseArchive(License.LicenseKey, License.Edition, txtPassword.Text);
+            worker.ReportProgress(15);
         }
 
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -142,14 +111,9 @@ namespace SPPC.Tools.LicenseManager
 
         private void Exit_Click(object sender, EventArgs e)
         {
-            ReleaseUtility.RestoreSettings();
             Close();
         }
 
-        private const string PushLicenseTemplate = "docker push msn1368/license-server-{0}";
-        private const string PushApiTemplate = "docker push msn1368/api-server-{0}";
-        private const string PushAppTemplate = "docker push msn1368/web-app-{0}:dev";
-        private const string BuildTemplate = "docker-compose -f {0}docker-compose.override.yml -f {0}docker-compose.yml build";
         private readonly CliRunner _runner = new();
         private TimeSpan _elapsed;
     }

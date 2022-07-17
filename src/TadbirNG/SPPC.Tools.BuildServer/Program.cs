@@ -250,7 +250,7 @@ namespace SPPC.Tools.BuildServer
                 FileUtility.BackupFile(devEnvPath, tempPath);
 
                 var settings = BuildSettings.DockerDummy;
-                settings.Version = VersionInfo.GetAppVersion();
+                settings.Version = VersionUtility.GetAppVersion();
                 var environment = new NgEnvironment(settings).TransformText();
                 File.WriteAllText(envPath, environment);
                 File.WriteAllText(devEnvPath, environment);
@@ -325,8 +325,8 @@ namespace SPPC.Tools.BuildServer
 
             // Commit changes to DockerCache remote
             ShowMessage("Commiting changes to git remote...");
-            var apiVersion = VersionInfo.GetApiVersion();
-            var appVersion = VersionInfo.GetAppVersion();
+            var apiVersion = VersionUtility.GetApiVersion();
+            var appVersion = VersionUtility.GetAppVersion();
             var currentDir = Environment.CurrentDirectory;
             Environment.CurrentDirectory = GetDockerCacheRoot();
             var message = String.Format($"Pushed builds {apiVersion},UI-{appVersion}");
@@ -409,7 +409,7 @@ namespace SPPC.Tools.BuildServer
         private const string GitCommitCommand = "git commit -a -m \"{0}\"";
         private static readonly CliRunner _runner = new();
         private static readonly StringBuilder _logBuilder = new();
-        private static readonly ArchiveUtility _archive = new(@"..\..\..\misc\tools");
+        private static readonly ArchiveUtility _archive = new();
         private static readonly Stopwatch _stopwatch = new();
         private static string _logPath;
         private static string _licenseChecksum;

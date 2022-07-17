@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using Ionic.Zip;
+using Ionic.Zlib;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 
@@ -7,12 +9,29 @@ namespace SPPC.Tools.Utility
 {
     public class ArchiveUtility
     {
-        public ArchiveUtility(string toolsPath, bool redirectOutput = true)
+        public ArchiveUtility(string toolsPath = null, bool redirectOutput = true)
         {
             // NOTE: The following line ONLY works in Windows environment, because Windows versions of
-            // gzip and tar are added to misc/tools. Apparently, Linux build server already has gzip in Path.
-            //SetToolsPath(toolsPath);
+            // gzip and tar are added to misc/tools. Apparently, Linux environment already has gzip in Path.
+            SetToolsPath(toolsPath);
             RedirectOutput(redirectOutput);
+        }
+
+        public static void Zip(string zipFile, string sourceFolder, string password = null)
+        {
+            var zip = new ZipFile()
+            {
+                CompressionLevel = CompressionLevel.BestCompression,
+                CompressionMethod = CompressionMethod.BZip2,
+                Encryption = EncryptionAlgorithm.WinZipAes128,
+                FlattenFoldersOnExtract = true,
+                Password = password
+            };
+            using (zip)
+            {
+                zip.AddDirectory(sourceFolder);
+                zip.Save(zipFile);
+            }
         }
 
         public void GZip(string sourceFile)
@@ -42,22 +61,12 @@ namespace SPPC.Tools.Utility
 
         private static void SetToolsPath(string toolsPath)
         {
-            Verify.ArgumentNotNullOrEmptyString(toolsPath, nameof(toolsPath));
-            var currentPath = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
-            var parts = toolsPath.Split('\\');
-            foreach (var part in parts)
+            if (!String.IsNullOrEmpty(toolsPath))
             {
-                if (part == "..")
-                {
-                    currentPath = Path.GetDirectoryName(currentPath);
-                }
-                else if (part != ".")
-                {
-                    currentPath = Path.Combine(currentPath, part);
-                }
+                var currentPath = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
+                var path = FileUtility.GetAbsolutePath(toolsPath, currentPath);
+                Environment.SetEnvironmentVariable("Path", path, EnvironmentVariableTarget.Process);
             }
-
-            Environment.SetEnvironmentVariable("Path", currentPath, EnvironmentVariableTarget.Process);
         }
 
         private static void Runner_OutputReceived(object sender, OutputReceivedEventArgs e)

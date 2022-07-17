@@ -135,6 +135,7 @@ namespace SPPC.Tools.Utility
                 .Select(fi => fi.FullName)
                 .ToList();
 
+            files.Add(Path.Combine(root, "SPPC.Tadbir.Web.csproj"));
             root = Path.Combine(root, "ClientApp");
             var fixedFiles = new string[]
             {
@@ -142,14 +143,20 @@ namespace SPPC.Tools.Utility
             };
             files.AddRange(fixedFiles
                 .Select(f => Path.Combine(root, f)));
-            root = Path.Combine(root, "src");
-            files.AddRange(GetFiles(root, "*.html", false));
-            files.AddRange(GetFiles(root, "*.css", false));
-            files.AddRange(GetFiles(root, "*.ts", false));
-            root = Path.Combine(root, "app");
+            var sourceRoot = Path.Combine(root, "src");
+            files.AddRange(GetFiles(sourceRoot, "*.html", false));
+            files.AddRange(GetFiles(sourceRoot, "*.css", false));
+            files.AddRange(GetFiles(sourceRoot, "*.ts", false));
+            files.AddRange(GetFiles(sourceRoot, "*.json", false));
+            root = Path.Combine(sourceRoot, "app");
             files.AddRange(GetFiles(root, "*.html"));
             files.AddRange(GetFiles(root, "*.css"));
             files.AddRange(GetFiles(root, "*.ts"));
+            root = Path.Combine(sourceRoot, "assets");
+            files.AddRange(GetFiles(root, "*.ico"));
+            files.AddRange(GetFiles(root, "*.png"));
+            root = Path.Combine(sourceRoot, "assets", "i18n");
+            files.AddRange(GetFiles(root, "*.json"));
             return files;
         }
 

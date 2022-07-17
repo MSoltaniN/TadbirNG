@@ -336,7 +336,7 @@ namespace SPPC.Tools.LicenseManager
         {
             var license = grdLicenses.SelectedRows[0].DataBoundItem as LicenseModel;
             settings.Key = GetInstanceKey(license);
-            settings.Version = VersionInfo.GetAppVersion();
+            settings.Version = VersionUtility.GetAppVersion();
             var editor = new InstanceInfoEditor() { BuildSettings = settings };
             var result = editor.ShowDialog(this);
             if (result == DialogResult.OK)

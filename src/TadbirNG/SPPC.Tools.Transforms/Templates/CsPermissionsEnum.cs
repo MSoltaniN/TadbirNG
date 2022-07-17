@@ -41,7 +41,7 @@ string faPlural = _entity.PluralName;
                     " Version: ");
             
             #line 12 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsPermissionsEnum.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(VersionInfo.GetApiVersion()));
+            this.Write(this.ToStringHelper.ToStringWithCulture(VersionUtility.GetApiVersion()));
             
             #line default
             #line hidden

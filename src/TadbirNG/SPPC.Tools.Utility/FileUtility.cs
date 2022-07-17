@@ -46,5 +46,24 @@ namespace SPPC.Tools.Utility
         {
             Array.ForEach(files, file => RestoreFile(file, tempPath));
         }
+
+        public static string GetAbsolutePath(string relativePath, string relativeToPath = null)
+        {
+            var absolutePath = relativeToPath ?? Environment.CurrentDirectory;
+            var parts = relativePath.Split('\\');
+            foreach (var part in parts)
+            {
+                if (part == "..")
+                {
+                    absolutePath = Path.GetDirectoryName(absolutePath);
+                }
+                else if (part != ".")
+                {
+                    absolutePath = Path.Combine(absolutePath, part);
+                }
+            }
+
+            return absolutePath;
+        }
     }
 }

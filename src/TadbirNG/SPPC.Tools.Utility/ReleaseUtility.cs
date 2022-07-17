@@ -2,15 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
-using Ionic.Zip;
-using Ionic.Zlib;
-using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Licensing.Model;
-using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms;
 using SPPC.Tools.Transforms.Templates;
@@ -19,55 +14,59 @@ namespace SPPC.Tools.Utility
 {
     public class ReleaseUtility
     {
+        public static void UpdateImageCache(CliRunner runner)
+        {
+            var cacheRoot = FileUtility.GetAbsolutePath(@"..\..\..\..\dockercache");
+            var currentDir = Environment.CurrentDirectory;
+            Environment.CurrentDirectory = cacheRoot;
+            runner.Run("git pull --progress");
+            Environment.CurrentDirectory = currentDir;
+        }
+
+        public static void CopyProgramFiles(string licenseKey, string edition)
+        {
+            // WARNING: This method attempts to copy around 1.5 GB of program files synchronously
+            // On a normal disk drive (non-SSD) this may take some time.
+            PrepareReleaseFolder(licenseKey);
+            CopyDockerFiles(licenseKey, edition);
+
+            string path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "service");
+            var dirInfo = new DirectoryInfo(PathConfig.ServicePublishWin);
+            var files = dirInfo.GetFiles();
+            Array.ForEach(files,
+                file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
+
+            path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "runner");
+            dirInfo = new DirectoryInfo(PathConfig.RunnerPublishWin);
+            files = dirInfo.GetFiles();
+            Array.ForEach(files,
+                file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
+        }
+
         public static void GenerateSettings(LicenseModel license)
         {
-            var settings = BuildSettings.Docker;
-            settings.Key = GetInstanceKey(license);
-            settings.Version = VersionInfo.GetAppVersion();
-            GenerateSettingsWithBackup(PathConfig.LocalServerRoot, new LocalLicenseApiSettings(settings));
-            GenerateSettingsWithBackup(PathConfig.WebApiRoot, new WebApiSettings(settings));
-            GenerateEnvironmentWithBackup(PathConfig.WebEnvRoot, new NgEnvironment(settings));
-            CreateLicenseFilesWithBackup(license);
-            if (!IsDefaultLicenseId(license.Id))
-            {
-                GenerateDockerComposeWithBackup(PathConfig.SolutionRoot,
-                    new DockerCompose(license.LicenseKey), new DockerComposeOverride(license.LicenseKey));
-            }
+            var crypto = CryptoService.Default;
+
+            // Inside the main package folder, save public part of customer license in encrypted base64 format...
+            string path = Path.Combine(PathConfig.TadbirRelease, license.LicenseKey, "license");
+            File.WriteAllText(path, crypto.Encrypt(GetLicenseData(license)));
+
+            // Inside the main package folder, save instance key in encrypted base64 format...
+            path = Path.Combine(PathConfig.TadbirRelease, license.LicenseKey, $"v{VersionUtility.GetAppVersion()}");
+            File.WriteAllText(path, crypto.Encrypt(GetInstanceKey(license)));
+
+            // Inside the main package folder, make version information file, using base images...
+            path = Path.Combine(PathConfig.TadbirRelease, license.LicenseKey, "version");
+            File.WriteAllText(path, GetVersionInfoData(license.LicenseKey));
         }
 
-        public static void RestoreSettings(int licenseId = 0)
+        public static void CreateReleaseArchive(string licenseKey, string edition, string password)
         {
-            RestoreFile(Path.Combine(PathConfig.LocalServerRoot, ConfigFile));
-            RestoreFile(Path.Combine(PathConfig.WebApiRoot, ConfigFile));
-            RestoreFile(Path.Combine(PathConfig.WebApiRoot, WebRoot, "license"));
-            RestoreFile(Path.Combine(PathConfig.WebApiRoot, WebRoot, String.Format($"license{DevSuffix}")));
-            RestoreFile(Path.Combine(PathConfig.WebApiRoot, WebRoot, "edition"));
-            RestoreFile(Path.Combine(PathConfig.WebApiRoot, WebRoot, String.Format($"edition{DevSuffix}")));
-            RestoreFile(Path.Combine(PathConfig.WebEnvRoot, EnvFile));
-            RestoreFile(Path.Combine(PathConfig.WebEnvRoot, DevEnvFile));
-            if (!IsDefaultLicenseId(licenseId))
-            {
-                RestoreFile(Path.Combine(PathConfig.SolutionRoot, ComposeFile));
-                RestoreFile(Path.Combine(PathConfig.SolutionRoot, OverrideFile));
-            }
-        }
-
-        public static void CreateReleaseArchive(string licenseKey, string password)
-        {
-            // Create a folder named after customer license in TadbirNG Release folder
-            PrepareReleaseFolder(licenseKey);
-
-            // Copy Service and Runner files in corresponding folders
-            CopyProgramFiles(licenseKey);
-
             // Generate customer-specific docker-compose files inside runner folder
-            GenerateDockerCompose(licenseKey);
+            GenerateDockerCompose(licenseKey, GetEditionTag(edition));
 
             // Calculate checksums and create checksum files
             CreateChecksumFiles(licenseKey);
-
-            // Create id file for release version
-            CreateIdFile(licenseKey);
 
             // Make a password-protected ZIP file from folder structure inside release folder
             CreateZipArchive(licenseKey, password);
@@ -77,53 +76,6 @@ namespace SPPC.Tools.Utility
         }
 
         #region Settings Generation
-
-        private static void GenerateSettingsWithBackup(string settingsRoot, ITextTemplate template)
-        {
-            BackupFile(Path.Combine(settingsRoot, ConfigFile));
-
-            string appSettings = template.TransformText();
-            File.WriteAllText(Path.Combine(settingsRoot, ConfigFile), appSettings);
-        }
-
-        private static void GenerateEnvironmentWithBackup(string envRoot, ITextTemplate template)
-        {
-            BackupFile(Path.Combine(envRoot, EnvFile));
-            BackupFile(Path.Combine(envRoot, DevEnvFile));
-
-            string appSettings = template.TransformText();
-            File.WriteAllText(Path.Combine(envRoot, EnvFile), appSettings);
-            File.WriteAllText(Path.Combine(envRoot, DevEnvFile), appSettings);
-        }
-
-        private static void GenerateDockerComposeWithBackup(
-            string root, ITextTemplate compose, ITextTemplate @override)
-        {
-            BackupFile(Path.Combine(root, ComposeFile));
-            BackupFile(Path.Combine(root, OverrideFile));
-
-            File.WriteAllText(Path.Combine(root, ComposeFile), compose.TransformText());
-            File.WriteAllText(Path.Combine(root, OverrideFile), @override.TransformText());
-        }
-
-        private static void CreateLicenseFilesWithBackup(LicenseModel license)
-        {
-            BackupFile(Path.Combine(PathConfig.WebApiRoot, WebRoot, "license"));
-            BackupFile(Path.Combine(
-                PathConfig.WebApiRoot, WebRoot, String.Format($"license{DevSuffix}")));
-            string licenseData = GetLicenseData(license);
-            File.WriteAllText(Path.Combine(PathConfig.WebApiRoot, WebRoot, "license"), licenseData);
-            File.WriteAllText(Path.Combine(
-                PathConfig.WebApiRoot, WebRoot, String.Format($"license{DevSuffix}")), licenseData);
-
-            BackupFile(Path.Combine(PathConfig.WebApiRoot, WebRoot, "edition"));
-            BackupFile(Path.Combine(
-                PathConfig.WebApiRoot, WebRoot, String.Format($"edition{DevSuffix}")));
-            string editionData = GetEditionData(license.Edition);
-            File.WriteAllText(Path.Combine(PathConfig.WebApiRoot, WebRoot, "edition"), editionData);
-            File.WriteAllText(Path.Combine(
-                PathConfig.WebApiRoot, WebRoot, String.Format($"edition{DevSuffix}")), editionData);
-        }
 
         private static string GetLicenseData(LicenseModel license)
         {
@@ -141,51 +93,44 @@ namespace SPPC.Tools.Utility
             return JsonHelper.From(licenseData);
         }
 
-        private static string GetEditionData(string edition)
-        {
-            var allConfig = JsonHelper.To<EditionsConfig>(File.ReadAllText(PathConfig.EditionConfig));
-            return JsonHelper.From(Reflector.GetProperty(allConfig, edition));
-        }
-
         private static string GetInstanceKey(LicenseModel license)
         {
-            var crypto = new CryptoService(new CertificateManager());
             var instance = new InstanceModel()
             {
                 CustomerKey = license.CustomerKey,
                 LicenseKey = license.LicenseKey
             };
-            return crypto.Encrypt(JsonHelper.From(instance, false));
+            return JsonHelper.From(instance, false);
         }
 
-        private static void BackupFile(string path)
+        private static string GetVersionInfoData(string licenseKey)
         {
-            if (File.Exists(path))
+            var versionInfo = new VersionInfo
             {
-                string fileName = Path.GetFileName(path);
-                string newPath = Path.Combine(Path.GetDirectoryName(path), String.Format($"old_{fileName}"));
-                File.Move(path, newPath);
-            }
+                Version = VersionUtility.GetAppVersion()
+            };
+            versionInfo.Services[0] = GetServiceInfo(licenseKey, DockerService.LicenseServerImage);
+            versionInfo.Services[1] = GetServiceInfo(licenseKey, DockerService.ApiServerImage);
+            versionInfo.Services[2] = GetServiceInfo(licenseKey, DockerService.DbServerImage);
+            versionInfo.Services[3] = GetServiceInfo(licenseKey, DockerService.WebAppImage);
+
+            return JsonHelper.From(versionInfo);
         }
 
-        private static void RestoreFile(string path)
+        private static ServiceInfo GetServiceInfo(string licenseKey, string serviceImage)
         {
-            if (File.Exists(path))
+            var imagePath = Path.Combine(
+                PathConfig.TadbirRelease, licenseKey, "docker", $"{serviceImage}.tar.gz");
+            var imageData = File.ReadAllBytes(imagePath);
+            var crypto = CryptoService.Default;
+            return new ServiceInfo()
             {
-                File.Delete(path);
-            }
-
-            string fileName = Path.GetFileName(path);
-            string newPath = Path.Combine(Path.GetDirectoryName(path), String.Format($"old_{fileName}"));
-            if (File.Exists(newPath))
-            {
-                File.Move(newPath, path);
-            }
-        }
-
-        private static bool IsDefaultLicenseId(int licenseId)
-        {
-            return licenseId == LocalLicenseId || licenseId == PublishLicenseId;
+                Name = serviceImage,
+                Sha256 = crypto
+                    .CreateHash(imageData)
+                    .ToLower(),
+                Size = imageData.Length
+            };
         }
 
         #endregion
@@ -194,10 +139,12 @@ namespace SPPC.Tools.Utility
 
         private static void PrepareReleaseFolder(string licenseKey)
         {
+            // Create a folder named after customer license in TadbirNG Release folder
             EnsureDirectoryExists(PathConfig.TadbirRelease);
             EnsureDirectoryExists(Path.Combine(PathConfig.TadbirRelease, licenseKey));
-            EnsureDirectoryExists(Path.Combine(PathConfig.TadbirRelease, licenseKey, "service"));
+            EnsureDirectoryExists(Path.Combine(PathConfig.TadbirRelease, licenseKey, "docker"));
             EnsureDirectoryExists(Path.Combine(PathConfig.TadbirRelease, licenseKey, "runner"));
+            EnsureDirectoryExists(Path.Combine(PathConfig.TadbirRelease, licenseKey, "service"));
         }
 
         private static void EnsureDirectoryExists(string path)
@@ -208,29 +155,38 @@ namespace SPPC.Tools.Utility
             }
         }
 
-        private static void CopyProgramFiles(string licenseKey)
+        private static void CopyDockerFiles(string licenseKey, string edition)
         {
-            // WARNING: This method attempts to copy around 225 MB of program files synchronously
-            // On a normal disk drive (non-SSD) this may take some time.
-            string path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "service");
-            var dirInfo = new DirectoryInfo(PathConfig.ServicePublishWin);
-            var files = dirInfo.GetFiles();
-            Array.ForEach(files,
-                file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
-
-            path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "runner");
-            dirInfo = new DirectoryInfo(PathConfig.RunnerPublishWin);
-            files = dirInfo.GetFiles();
-            Array.ForEach(files,
-                file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
+            string path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "docker");
+            var cacheRoot = FileUtility.GetAbsolutePath(@"..\..\..\..\dockercache");
+            var root = Path.Combine(cacheRoot, DockerService.LicenseServerImage);
+            File.Copy(Path.Combine(root, $"{DockerService.LicenseServerImage}.tar.gz"),
+                Path.Combine(path, $"{DockerService.LicenseServerImage}.tar.gz"));
+            root = Path.Combine(cacheRoot, DockerService.WebAppImage);
+            File.Copy(Path.Combine(root, $"{DockerService.WebAppImage}.tar.gz"),
+                Path.Combine(path, $"{DockerService.WebAppImage}.tar.gz"));
+            root = Path.Combine(cacheRoot, DockerService.DbServerImage);
+            File.Copy(Path.Combine(root, $"{DockerService.DbServerImage}.tar.gz"),
+                Path.Combine(path, $"{DockerService.DbServerImage}.tar.gz"));
+            var editionTag = GetEditionTag(edition);
+            root = Path.Combine(cacheRoot, DockerService.ApiServerImage);
+            File.Copy(Path.Combine(root, $"{DockerService.ApiServerImage}-{editionTag}.tar.gz"),
+                Path.Combine(path, $"{DockerService.ApiServerImage}.tar.gz"));
         }
 
-        private static void GenerateDockerCompose(string licenseKey)
+        private static string GetEditionTag(string edition)
         {
-            var template = new DockerCompose(licenseKey) as ITextTemplate;
+            return edition == "Standard"
+                ? "std"
+                : edition.Substring(0, 3).ToLower();
+        }
+
+        private static void GenerateDockerCompose(string licenseKey, string editionTag)
+        {
+            var template = new DockerCompose(editionTag) as ITextTemplate;
             File.WriteAllText(Path.Combine(
                 PathConfig.TadbirRelease, licenseKey, "runner", ComposeFile), template.TransformText());
-            template = new DockerComposeOverride(licenseKey);
+            template = new DockerComposeOverride(editionTag);
             File.WriteAllText(Path.Combine(
                 PathConfig.TadbirRelease, licenseKey, "runner", OverrideFile), template.TransformText());
         }
@@ -244,59 +200,34 @@ namespace SPPC.Tools.Utility
 
         private static void CreateChecksumFile(string path)
         {
+            var crypto = CryptoService.Default;
             var dirInfo = new DirectoryInfo(path);
-            using var sha = SHA256.Create();
             var checksum = new Dictionary<string, string>();
             foreach (var file in dirInfo.GetFiles())
             {
-                using var stream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read);
-                string key = Transform
-                    .ToHexString(sha.ComputeHash(Encoding.ASCII.GetBytes(file.Name)))
+                string key = crypto
+                    .CreateHash(Encoding.ASCII.GetBytes(file.Name))
                     .ToLower();
-                string value = Transform
-                    .ToHexString(sha.ComputeHash(stream))
+                string value = crypto
+                    .CreateHash(File.ReadAllBytes(file.FullName))
                     .ToLower();
                 checksum.Add(key, value);
             }
 
             var checksums = JsonHelper.From(checksum, false);
             var parent = Path.GetDirectoryName(path);
-            var fileName = String.Format($"{Path.GetFileName(path)}.sha");
+            var fileName = $"{Path.GetFileName(path)}.sha";
             File.WriteAllText(Path.Combine(parent, fileName), checksums);
-        }
-
-        private static void CreateIdFile(string licenseKey)
-        {
-            string path = Path.Combine(PathConfig.TadbirRelease, licenseKey);
-            var version = VersionInfo.GetAppVersion();
-            File.WriteAllText(Path.Combine(path, String.Format($"v{version}")), licenseKey);
         }
 
         private static void CreateZipArchive(string licenseKey, string password)
         {
-            Verify.ArgumentNotNullOrEmptyString(password, nameof(password));
-            string path = Path.Combine(PathConfig.TadbirRelease,
-                String.Format($"TadbirNG_v{VersionInfo.GetAppVersion()}.zip"));
-            if (!File.Exists(path))
-            {
-                var zipFile = new ZipFile()
-                {
-                    CompressionLevel = CompressionLevel.BestCompression,
-                    CompressionMethod = CompressionMethod.BZip2,
-                    Encryption = EncryptionAlgorithm.WinZipAes128,
-                    FlattenFoldersOnExtract = true,
-                    Name = path,
-                    Password = password
-                };
-                using (zipFile)
-                {
-                    zipFile.AddDirectory(Path.Combine(PathConfig.TadbirRelease, licenseKey));
-                    zipFile.Save();
-                }
-
-                string newPath = Path.Combine(PathConfig.TadbirRelease, licenseKey, Path.GetFileName(path));
-                File.Move(path, newPath);
-            }
+            var zipFileName = $"TadbirNG_v{VersionUtility.GetAppVersion()}.zip";
+            var zipPath = Path.Combine(PathConfig.TadbirRelease, zipFileName);
+            var folderPath = Path.Combine(PathConfig.TadbirRelease, licenseKey);
+            ArchiveUtility.Zip(zipPath, folderPath, password);
+            string newPath = Path.Combine(folderPath, zipFileName);
+            File.Move(zipPath, newPath);
         }
 
         private static void CleanupReleaseFiles(string licenseKey)
@@ -307,20 +238,14 @@ namespace SPPC.Tools.Utility
                 .Where(file => !file.Name.EndsWith(".zip", StringComparison.CurrentCultureIgnoreCase))
                 .ToArray();
             Array.ForEach(filesToDelete, file => File.Delete(file.FullName));
+            Directory.Delete(Path.Combine(path, "docker"));
             Directory.Delete(Path.Combine(path, "runner"));
             Directory.Delete(Path.Combine(path, "service"));
         }
 
         #endregion
 
-        const int LocalLicenseId = 5;     // Used for building base (no-suffix) images on my local system
-        const int PublishLicenseId = 18;  // Used for building base (no-suffix) images on Linux test bed
-        private const string ConfigFile = "appSettings.json";
-        private const string EnvFile = "environment.prod.ts";
-        private const string DevEnvFile = "environment.ts";
         private const string ComposeFile = "docker-compose.yml";
         private const string OverrideFile = "docker-compose.override.yml";
-        private const string DevSuffix = ".Development.json";
-        private const string WebRoot = "wwwroot";
     }
 }

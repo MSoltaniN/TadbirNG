@@ -48,7 +48,7 @@ export const environment = {
             this.Write("\',\r\n  Version: \'");
             
             #line 17 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\NgDevEnvironment.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(VersionInfo.GetAppVersion()));
+            this.Write(this.ToStringHelper.ToStringWithCulture(VersionUtility.GetAppVersion()));
             
             #line default
             #line hidden

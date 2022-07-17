@@ -24,7 +24,15 @@ namespace SPPC.Framework.Cryptography
         }
 
         /// <summary>
-        /// Provides services for managing X509 certificates
+        /// Gets an instance with default implementation
+        /// </summary>
+        public static ICryptoService Default
+        {
+            get { return new CryptoService(new CertificateManager()); }
+        }
+
+        /// <summary>
+        /// Gets a service for managing X509 certificates
         /// </summary>
         public ICertificateManager CertificateManager { get; }
 
