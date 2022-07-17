@@ -1,6 +1,16 @@
 <app-bread-cumb [entityTypeName]="entityTypeName"></app-bread-cumb>
-
+<!-- Report -->
+<view-identifier [ViewID]="viewId"> </view-identifier>
+<report-management
+  [ViewIdentity]="viewIdentity"
+  [Grid]="grid"
+  [Sort]="sort"
+  [Filter]="reportFilter"
+  [RowData]="rowData"
+></report-management>
 <report-setting></report-setting>
+<!-- End Report -->
+
 <div class="panel-body">
   <kendo-grid
     id="{{ viewId }}"
@@ -30,9 +40,16 @@
     (filterChange)="filterChange($event)"
     (selectedKeysChange)="onSelectedKeysChange($event)"
     (dataStateChange)="onDataStateChange($event)"
+    (excelExport)="onExcelExport($event)"
     sppc-auto-generated-grid-reorder
     sppc-auto-generated-grid-resize
   >
+  
+  <kendo-grid-excel
+    [fileName]="excelFileName"
+    [fetchData]="allData"
+  ></kendo-grid-excel>
+
     <ng-template kendoGridNoRecordsTemplate>
       {{
         showloadingMessage
@@ -103,6 +120,15 @@
         [parentComponent]="this"
         [showClearFilter]="this.grid.filter.filters.length"
       ></grid-filter>
+
+      <left-action-toolbar
+        class="sppc-float-diff"
+        (onFilterOk)="onAdvanceFilterOk()"
+        [reportSetting]="reportSetting"
+        [reportManager]="reportManager"
+        [parentComponent]="this"
+        [viewId]="viewId"
+      ></left-action-toolbar>
     </ng-template>
 
     <kendo-grid-checkbox-column
