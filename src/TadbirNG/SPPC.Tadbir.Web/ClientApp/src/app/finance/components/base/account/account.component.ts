@@ -211,7 +211,7 @@ export class AccountComponent
             this.reloadGrid();
             this.selectedRows = [];
 
-            this.refreshTreeNodes(model);
+            this.refreshTreeNodes(model.account);
           },
           (error) => {
             this.editDataItem = model;

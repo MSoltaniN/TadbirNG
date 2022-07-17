@@ -83,8 +83,8 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
 
     this.dialogRef.content.instance.save.subscribe((res) => {      
       this.saveHandler(res, isNew);
-      if (isNew)
-        this.refreshTreeNodes();
+      // if (isNew)
+      //   this.refreshTreeNodes();
       if (!this.IsAdmin) {
         this.showMessage(this.getText("Branch.BranchIsNotAccess"), MessageType.Info);
       }
