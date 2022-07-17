@@ -1,0 +1,11 @@
+.icon-button {
+  padding-right: 5px;
+  padding-left: 5px;
+  padding-top: 5px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.box-tools {
+  padding-top: 4px;
+}
