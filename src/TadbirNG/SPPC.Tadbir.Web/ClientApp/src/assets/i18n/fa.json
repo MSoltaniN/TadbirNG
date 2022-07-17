@@ -1232,7 +1232,7 @@
     "FormTitle": "برقراری ارتباط برای '{0}'",
     "NewRelations": "ارتباطات جدید",
     "RemainingRelations": "ارتباطات باقیمانده",
-    "noRemainingRelations": "تمام ارتباطات انتخاب شده اند"
+    "noRemainingRelations": "هیچ گزینه ای برای ایجاد ارتباط وجود ندارد"
   },
   "FiscalPeriod": {
     "New": "دوره مالی جدید",
