@@ -1,0 +1,6 @@
+<ng-container class="box box-info card">
+  <widget-header [editMode]="isEditMode" [title]="headerTitle">
+    <ng-content select="[header]" class="box-header"></ng-content>
+  </widget-header>
+</ng-container>
+<ng-content></ng-content>
