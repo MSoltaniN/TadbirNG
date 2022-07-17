@@ -67,7 +67,7 @@ namespace SPPC.Tools.LicenseManager
                 return;
             }
 
-            if (!CommonUtility.IsDockerEngineRunning())
+            if (!DockerUtility.IsDockerEngineRunning())
             {
                 MessageBox.Show("لطفاً پیش از ساخت نسخه، ابتدا برنامه داکر دسکتاپ را اجرا کنید و وارد حساب کاربری سازمان شوید.",
                     "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,

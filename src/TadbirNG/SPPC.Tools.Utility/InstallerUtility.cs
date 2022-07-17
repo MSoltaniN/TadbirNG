@@ -137,10 +137,11 @@ namespace SPPC.Tools.Utility
             var versionFile = new DirectoryInfo(ChecksumRoot)
                 .GetFiles()
                 .Where(file => file.Name.StartsWith("v"))
+                .Select(file => file.FullName)
                 .FirstOrDefault();
             if (versionFile != null)
             {
-                key = File.ReadAllText(versionFile.FullName);
+                key = File.ReadAllText(versionFile);
             }
 
             return key;

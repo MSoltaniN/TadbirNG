@@ -52,14 +52,14 @@ services:
    - productdata_DbServer:/var/opt/mssql/data
    
  ApiServer:
-  image: msn1368/api-server-");
+  image: msn1368/api-server:");
             
             #line 30 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
+            this.Write(this.ToStringHelper.ToStringWithCulture(_editionTag));
             
             #line default
             #line hidden
-            this.Write(@":latest
+            this.Write(@"
   build:
    context: .
    dockerfile: SPPC.Tadbir.Web.Api/Dockerfile
@@ -85,23 +85,17 @@ services:
    - frontend
 
  WebApp:
-  image: msn1368/web-app-");
-            
-            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
-            
-            #line default
-            #line hidden
-            this.Write(":dev\r\n  build: \r\n   context: ./SPPC.Tadbir.Web/ClientApp\r\n   dockerfile: Dockerfi" +
-                    "le\r\n  networks:\r\n   - frontend\r\n  ports:\r\n   - 9099:4200\r\n\r\n LicenseServer:\r\n  i" +
-                    "mage: msn1368/license-server-");
-            
-            #line 66 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_imageGuid));
-            
-            #line default
-            #line hidden
-            this.Write(@":latest
+  image: msn1368/web-app:dev
+  build: 
+   context: ./SPPC.Tadbir.Web/ClientApp
+   dockerfile: Dockerfile
+  networks:
+   - frontend
+  ports:
+   - 9099:4200
+
+ LicenseServer:
+  image: msn1368/license-server:latest
   build:
    context: .
    dockerfile: SPPC.Licensing.Local.Web/Dockerfile

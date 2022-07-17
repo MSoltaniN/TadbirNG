@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.WinRunner
             Application.SetCompatibleTextRenderingDefault(false);
 
             bool isInstalled = InstallerUtility.IsAppRegistered();
-            if (!CommonUtility.IsDockerEngineRunning())
+            if (!DockerUtility.IsDockerEngineRunning())
             {
                 MessageBox.Show("لطفاً پیش از اجرای این برنامه، ابتدا برنامه داکر دسکتاپ را اجرا کنید و وارد حساب کاربری سازمان شوید.",
                     "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,

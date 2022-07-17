@@ -32,9 +32,9 @@ namespace SPPC.Tools.Model
                     rule.Maximum = Single.MaxValue.ToString();
                     break;
                 case BuiltinType.DateTime:
-                    rule.Minimum = Constants.MinDate;
+                    rule.Minimum = EntityConstants.MinDate;
                     rule.Maximum = DateTime.MaxValue.ToShortDateString();
-                    rule.Format = Constants.DateFormat;
+                    rule.Format = EntityConstants.DateFormat;
                     break;
                 case BuiltinType.TimeSpan:
                     rule.Minimum = TimeSpan.MinValue.ToString();

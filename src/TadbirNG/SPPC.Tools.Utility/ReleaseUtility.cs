@@ -26,7 +26,7 @@ namespace SPPC.Tools.Utility
             settings.Version = VersionInfo.GetAppVersion();
             GenerateSettingsWithBackup(PathConfig.LocalServerRoot, new LocalLicenseApiSettings(settings));
             GenerateSettingsWithBackup(PathConfig.WebApiRoot, new WebApiSettings(settings));
-            GenerateEnvironmentWithBackup(PathConfig.WebEnvRoot, new TsInstanceFromValues(settings));
+            GenerateEnvironmentWithBackup(PathConfig.WebEnvRoot, new NgEnvironment(settings));
             CreateLicenseFilesWithBackup(license);
             if (!IsDefaultLicenseId(license.Id))
             {

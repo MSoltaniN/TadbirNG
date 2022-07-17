@@ -17,7 +17,7 @@ services:
     - 14433:1433
 
  ApiServer:
-  image: msn1368/api-server-<#= _imageGuid #>:latest
+  image: msn1368/api-server:<#= _editionTag #>
   environment:
    - ASPNETCORE_ENVIRONMENT=Production
    - Logging__LogLevel__Microsoft=Trace
@@ -28,10 +28,10 @@ services:
    - donotstart
 
  WebApp:
-  image: msn1368/web-app-<#= _imageGuid #>:dev
+  image: msn1368/web-app:dev
 
  LicenseServer:
-  image: msn1368/license-server-<#= _imageGuid #>:latest
+  image: msn1368/license-server:latest
   environment:
    - ASPNETCORE_ENVIRONMENT=Production
    - Logging__LogLevel__Microsoft=Trace

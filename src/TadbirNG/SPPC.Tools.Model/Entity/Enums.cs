@@ -154,7 +154,7 @@ namespace SPPC.Tools.Model
     /// <summary>
     /// Provides common constant values used throughout the platform.
     /// </summary>
-    public class Constants
+    public class EntityConstants
     {
         /// <summary>
         /// Gets minimum date value suitable for database operations using SQL Server.

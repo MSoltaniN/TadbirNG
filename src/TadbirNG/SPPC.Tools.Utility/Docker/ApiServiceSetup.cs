@@ -23,7 +23,7 @@ namespace SPPC.Tools.Utility
             base.ConfigureAppLayer(layerId);
             var source = Path.Combine(RootFolder, "license");
             var licenseInfo = _crypto.Decrypt(File.ReadAllText(source));
-            var licensePath = Path.Combine(Environment.CurrentDirectory, layerId, "app", "wwwroot", "license");
+            var licensePath = Path.Combine(Environment.CurrentDirectory, layerId, AppLayerFolder, "wwwroot", "license");
             File.WriteAllText(licensePath, licenseInfo);
         }
 

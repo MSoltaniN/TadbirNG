@@ -115,7 +115,7 @@ namespace SPPC.Tools.MetaDesigner.Transforms
                 Name = mapper.GetDefaultName(name, viewType),
                 Type = viewType,
                 BindingMember = mapper.GetDefaultBindingMember(viewType),
-                Format = (type == BuiltinType.DateTime) ? Constants.DateFormat : String.Empty
+                Format = (type == BuiltinType.DateTime) ? EntityConstants.DateFormat : String.Empty
             };
         }
 

@@ -21,14 +21,6 @@ namespace SPPC.Licensing.Local.Web
                 {
                     cfgBuilder
                         .AddJsonFile("appSettings.json", false, false);
-                })
-                .ConfigureAppConfiguration((context, config) =>
-                {
-                    foreach (var source in config.Sources)
-                    {
-                        if (source is FileConfigurationSource fcs)
-                            fcs.ReloadOnChange = false;
-                    }
                 });
     }
 }

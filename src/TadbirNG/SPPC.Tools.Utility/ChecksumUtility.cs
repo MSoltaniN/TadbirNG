@@ -20,7 +20,6 @@ namespace SPPC.Tools.Utility
 
             CopyServiceFiles(serviceName, files);
             ZipFile.CreateFromDirectory(TempFolder, ZipFileName, CompressionLevel.Optimal, false);
-            var crypto = new CryptoService(new CertificateManager());
             string checksum = new CryptoService(new CertificateManager())
                 .CreateHash(File.ReadAllBytes(ZipFileName))
                 .ToLower();

@@ -33,6 +33,26 @@ namespace SPPC.Framework.Helpers
         }
 
         /// <summary>
+        /// مجموعه ای از دستورات خط فرمان را به ترتیب اجرا کرده و خروجی دستورات را به طور پیوسته دریافت می کند
+        /// </summary>
+        /// <param name="batchCommand">رشته متنی چند خطی که در آن هر دستور با تمام آرگومان های مورد نیاز
+        /// در یک خط قرار می گیرد</param>
+        /// <remarks>مجموعه دستورات داده شده می توانند شامل خطوط خالی یا خطوط توضیحات باشند
+        /// که این خطوط نادیده گرفته می شوند.</remarks>
+        public void RunBatch(string batchCommand)
+        {
+            var commands = GetCommands(batchCommand);
+            foreach (var command in commands)
+            {
+                Run(command);
+                if (_lastExitCode != 0)
+                {
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
         /// برنامه خط فرمان در حال اجرا را به صورت عادی (معادل فشردن کلید ترکیبی کنترل و سی) متوقف می کند
         /// </summary>
         public bool Stop()
@@ -53,6 +73,7 @@ namespace SPPC.Framework.Helpers
                     }
 
                     _process.WaitForExit();
+                    _lastExitCode = _process.ExitCode;
                 }
             }
             finally
@@ -79,7 +100,7 @@ namespace SPPC.Framework.Helpers
             }
             catch
             {
-                _process.WaitForExitAsync();
+                _process.WaitForExit();
             }
         }
 
@@ -92,6 +113,19 @@ namespace SPPC.Framework.Helpers
         /// 
         /// </summary>
         public event EventHandler Killed;
+
+        private static string[] GetCommands(string batchCommand)
+        {
+            return batchCommand
+                .Split(Environment.NewLine)
+                .Where(line => !MustIgnoreLine(line))
+                .ToArray();
+        }
+
+        private static bool MustIgnoreLine(string line)
+        {
+            return line.StartsWith(RemarkPrefix) || line == Environment.NewLine;
+        }
 
         private Process GetCommandProcess(string command)
         {
@@ -113,8 +147,14 @@ namespace SPPC.Framework.Helpers
             var process = new Process() { StartInfo = psi };
             process.ErrorDataReceived += Process_DataReceived;
             process.OutputDataReceived += Process_DataReceived;
+            process.Exited += Process_Exited;
             process.EnableRaisingEvents = true;
             return process;
+        }
+
+        private void Process_Exited(object sender, EventArgs e)
+        {
+            _lastExitCode = (int)_process?.ExitCode;
         }
 
         private void Process_DataReceived(object sender, DataReceivedEventArgs e)
@@ -133,7 +173,9 @@ namespace SPPC.Framework.Helpers
             Killed?.Invoke(this, EventArgs.Empty);
         }
 
+        private const string RemarkPrefix = "#";
         private readonly StringBuilder _outputBuilder = new();
         private Process _process;
+        private int _lastExitCode = 0;
     }
 }
