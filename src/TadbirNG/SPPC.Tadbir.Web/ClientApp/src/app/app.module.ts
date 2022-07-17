@@ -28,6 +28,9 @@ import { SharedModule } from "@sppc/shared/shared.module";
 import { TextMaskModule } from "angular2-text-mask";
 import { ServiceLocator } from "./service.locator";
 
+import { ToastrModule } from "ngx-toastr";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -47,6 +50,13 @@ import { ServiceLocator } from "./service.locator";
     LoadingBarModule,
     LoadingBarRouterModule,
     LoadingBarHttpClientModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(
+      {
+        preventDuplicates: true,
+        toastClass:'toast toastr-rtl'
+      }),
     // NgProgressModule.forRoot({
     //   direction: "ltr+",
     //   spinnerPosition: "left",

@@ -37,6 +37,7 @@ import { RoleCompanyFormComponent } from '@sppc/admin/components/role/role-compa
     RoleFiscalPeriodFormComponent, RoleUserFormComponent, UserComponent, UserFormComponent, UserRolesFormComponent, ChangePasswordComponent, ViewRowPermissionComponent,
     ViewRowPermissionSingleFormComponent, ViewRowPermissionMultipleFormComponent, LogSettingComponent, RoleCompanyFormComponent],
   entryComponents: [],
-  providers: [OperationLogService, RoleService, UserService, ViewRowPermissionService]
+  providers: [OperationLogService, RoleService, UserService, ViewRowPermissionService],
+  exports: [AdminRoutingModule]
 })
 export class AdminModule { }
