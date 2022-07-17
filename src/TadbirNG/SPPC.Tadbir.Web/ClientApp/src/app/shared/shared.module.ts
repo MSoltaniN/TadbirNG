@@ -127,6 +127,8 @@ import { MessageBoxService } from "./services/message.service";
 import { ShareDataService } from "./services/share-data.service";
 import { ShortcutService } from "./services/shortcut.service";
 
+import { TooltipDirective } from './directive/editorForm/tooltip.directive';
+
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
@@ -227,7 +229,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     LicenseInfoComponent,
     WidgetComponent,
     WidgetHeaderComponent,
-    WidgetContainerComponent,
+      WidgetContainerComponent,
+      TooltipDirective,
   ],
 
   entryComponents: [
@@ -255,7 +258,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FilterDatePickerDirective, SppcAutoGridFilter, SppcGridFilter, SelectFormComponent, DynamicTabsDirective, TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput,
     SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective, FullCodeTestDirective, SpccOnlyNumberDirective,SppcButtonDisable,
     SppcPermissionCheckDirective, BreadCumbComponent, ViewIdentifierComponent, ReportManagementComponent, QuickReportSettingComponent, ReportParametersComponent, ReportParamComponent,
-    ReportViewerComponent, SppcTimepicker, NotFoundComponent, ClosingTmpComponent, ErrorListComponent, LeftActionToolbarComponent, ExcelModule, PDFModule, QuickReportPageSettingComponent, InputDirective
+    ReportViewerComponent, SppcTimepicker, NotFoundComponent, ClosingTmpComponent, ErrorListComponent, LeftActionToolbarComponent, ExcelModule, PDFModule, QuickReportPageSettingComponent, InputDirective,
+    TooltipDirective,
   ]
 })
 export class SharedModule {
