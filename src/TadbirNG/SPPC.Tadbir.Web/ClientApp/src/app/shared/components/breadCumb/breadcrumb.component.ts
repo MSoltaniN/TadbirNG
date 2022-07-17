@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ViewContainerRef, HostListener, Host } from "@angular/core";
+import { Title } from "@angular/platform-browser";
 import { TranslateService } from "@ngx-translate/core";
 import { ShortcutCommand } from "@sppc/shared/models/shortcutCommand";
 
@@ -21,7 +22,9 @@ export class BreadCumbComponent implements OnInit {
   getEntityFromParent: boolean = true;
   title: string;
 
-  constructor(public parentComponet: ViewContainerRef, public translate: TranslateService) { }
+  constructor(public parentComponet: ViewContainerRef,
+     public translate: TranslateService,
+     private titleService: Title) { }
 
   ngOnInit() {
     if (this.getEntityFromParent) {
@@ -41,6 +44,7 @@ export class BreadCumbComponent implements OnInit {
   getText(key: string): void {
     this.translate.get(key).subscribe((msg: string) => {
       this.title = msg;
+      this.titleService.setTitle(msg)
     });
   }
 
