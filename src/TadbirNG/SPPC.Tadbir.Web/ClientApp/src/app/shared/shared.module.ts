@@ -128,6 +128,7 @@ import { ShareDataService } from "./services/share-data.service";
 import { ShortcutService } from "./services/shortcut.service";
 
 import { TooltipDirective } from './directive/editorForm/tooltip.directive';
+import { AutoFocusDirective } from './directive/input/auto-focus.directive';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -231,6 +232,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     WidgetHeaderComponent,
       WidgetContainerComponent,
       TooltipDirective,
+      AutoFocusDirective,
   ],
 
   entryComponents: [
@@ -259,7 +261,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective, FullCodeTestDirective, SpccOnlyNumberDirective,SppcButtonDisable,
     SppcPermissionCheckDirective, BreadCumbComponent, ViewIdentifierComponent, ReportManagementComponent, QuickReportSettingComponent, ReportParametersComponent, ReportParamComponent,
     ReportViewerComponent, SppcTimepicker, NotFoundComponent, ClosingTmpComponent, ErrorListComponent, LeftActionToolbarComponent, ExcelModule, PDFModule, QuickReportPageSettingComponent, InputDirective,
-    TooltipDirective,
+    TooltipDirective,AutoFocusDirective,
   ]
 })
 export class SharedModule {
