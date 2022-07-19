@@ -59,22 +59,6 @@ namespace SPPC.Tadbir.WinRunner
 
         private void RunWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            Thread.Sleep(15000);
-            var settings = BuildSettings.Docker;
-            settings.DbServerName = ConfigurationManager.AppSettings["DbServerName"];
-            settings.DbUserName = ConfigurationManager.AppSettings["LoginName"];
-            settings.DbPassword = ConfigurationManager.AppSettings["Password"];
-
-            var utility = new DockerUtility();
-            utility.WaitForContainer(DockerService.LicenseServer);
-            ITextTemplate generator = new LocalLicenseApiSettings(settings);
-            File.WriteAllText("appSettings.json", generator.TransformText());
-            utility.ReplaceContainerFile(DockerService.LicenseServer, "appSettings.json", "appSettings.json");
-
-            utility.WaitForContainer(DockerService.ApiServer);
-            generator = new WebApiSettings(settings);
-            File.WriteAllText("appSettings.json", generator.TransformText());
-            utility.ReplaceContainerFile(DockerService.ApiServer, "appSettings.json", "appSettings.json");
         }
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)

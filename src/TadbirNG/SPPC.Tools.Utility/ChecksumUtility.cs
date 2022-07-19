@@ -153,10 +153,10 @@ namespace SPPC.Tools.Utility
             files.AddRange(GetFiles(root, "*.css"));
             files.AddRange(GetFiles(root, "*.ts"));
             root = Path.Combine(sourceRoot, "assets");
-            files.AddRange(GetFiles(root, "*.ico"));
-            files.AddRange(GetFiles(root, "*.png"));
+            files.AddRange(GetFiles(root, "*.ico", false));
+            files.AddRange(GetFiles(root, "*.png", false));
             root = Path.Combine(sourceRoot, "assets", "i18n");
-            files.AddRange(GetFiles(root, "*.json"));
+            files.AddRange(GetFiles(root, "*.json", false));
             return files;
         }
 

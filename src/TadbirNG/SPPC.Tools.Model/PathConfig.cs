@@ -27,5 +27,7 @@ namespace SPPC.Tools.Model
         public static string RunnerPublishWin => Path.Combine("..", "..", "Release", "net5.0-windows", "publish", "win-x64");
 
         public static string TadbirRelease => Path.Combine("..", "..", "..", "..", "TadbirNG Release");
+
+        public static string ToolsFolder => Path.Combine("..", "..", "..", "misc", "tools");
     }
 }

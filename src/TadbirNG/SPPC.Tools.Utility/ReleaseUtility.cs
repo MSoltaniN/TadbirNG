@@ -31,14 +31,20 @@ namespace SPPC.Tools.Utility
             CopyDockerFiles(licenseKey, edition);
 
             string path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "service");
-            var dirInfo = new DirectoryInfo(PathConfig.ServicePublishWin);
-            var files = dirInfo.GetFiles();
+            var files = new DirectoryInfo(PathConfig.ServicePublishWin)
+                .GetFiles();
             Array.ForEach(files,
                 file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
 
             path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "runner");
-            dirInfo = new DirectoryInfo(PathConfig.RunnerPublishWin);
-            files = dirInfo.GetFiles();
+            files = new DirectoryInfo(PathConfig.RunnerPublishWin)
+                .GetFiles();
+            Array.ForEach(files,
+                file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
+
+            path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "tools");
+            files = new DirectoryInfo(PathConfig.ToolsFolder)
+                .GetFiles();
             Array.ForEach(files,
                 file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
         }
@@ -145,6 +151,7 @@ namespace SPPC.Tools.Utility
             EnsureDirectoryExists(Path.Combine(PathConfig.TadbirRelease, licenseKey, "docker"));
             EnsureDirectoryExists(Path.Combine(PathConfig.TadbirRelease, licenseKey, "runner"));
             EnsureDirectoryExists(Path.Combine(PathConfig.TadbirRelease, licenseKey, "service"));
+            EnsureDirectoryExists(Path.Combine(PathConfig.TadbirRelease, licenseKey, "tools"));
         }
 
         private static void EnsureDirectoryExists(string path)
@@ -241,6 +248,7 @@ namespace SPPC.Tools.Utility
             Directory.Delete(Path.Combine(path, "docker"));
             Directory.Delete(Path.Combine(path, "runner"));
             Directory.Delete(Path.Combine(path, "service"));
+            Directory.Delete(Path.Combine(path, "tools"));
         }
 
         #endregion
