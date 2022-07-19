@@ -242,7 +242,7 @@ export class AccountComponent
             var options = new ReloadOption();
             options.InsertedModel = insertedModel;
             this.reloadGrid(options);
-
+            this.highLightNewRow();
             this.refreshTreeNodes(insertedModel);
           },
           (error) => {
