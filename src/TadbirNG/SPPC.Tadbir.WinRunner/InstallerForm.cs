@@ -117,7 +117,7 @@ namespace SPPC.Tadbir.WinRunner
             }
             else if (selected == "Default")
             {
-                txtPassword.Text = PasswordGenerator.Generate();
+                txtPassword.Text = PasswordGenerator.Generate(15);
             }
             else
             {
@@ -147,7 +147,7 @@ namespace SPPC.Tadbir.WinRunner
             worker.ReportProgress(2);
 
             worker.ReportProgress(0, "کپی فایلهای مورد نیاز برنامه...");
-            InstallerUtility.CopyFiles(txtInstallPath.Text, chkCreateShortcut.Checked);
+            InstallerUtility.CopyFiles(txtInstallPath.Text, _settings, chkCreateShortcut.Checked);
             worker.ReportProgress(8);
 
             worker.ReportProgress(0, "نصب سرویس...");
@@ -325,18 +325,18 @@ namespace SPPC.Tadbir.WinRunner
             _settings.DbUserName = dbLogin;
             _settings.DbPassword = txtPassword.Text;
             string host = txtDomain.Text;
-            if (String.IsNullOrEmpty(txtDomain.Text))
+            if (String.IsNullOrEmpty(host))
             {
                 host = "http://localhost";
             }
 
             if (!host.StartsWith("http://"))
             {
-                host = String.Format($"http://{host}");
+                host = $"http://{host}";
             }
 
-            _settings.WebApiUrl = String.Format($"{host}:{BuildSettingValues.DefaultApiPort}");
-            _settings.LocalServerUrl = String.Format($"{host}:{BuildSettingValues.DefaultLicenseApiPort}");
+            _settings.WebApiUrl = $"{host}:{BuildSettingValues.DefaultApiPort}";
+            _settings.LocalServerUrl = $"{host}:{BuildSettingValues.DefaultLicenseApiPort}";
             _settings.Tcp.Domain = BuildSettingValues.DockerHostInternalUrl;
             _settings.Key = InstallerUtility.GetInstanceKey();
         }

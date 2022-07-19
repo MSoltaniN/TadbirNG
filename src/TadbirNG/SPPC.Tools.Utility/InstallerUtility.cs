@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Data.SqlClient;
 using SPPC.Framework.Common;
+using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Tools.Model;
@@ -77,9 +78,11 @@ namespace SPPC.Tools.Utility
             EnsureDirectoryExists(Path.Combine(path, "service"));
         }
 
-        public static void CopyFiles(string path, bool createShortcut = true)
+        public static void CopyFiles(string path, IBuildSettings settings, bool createShortcut = true)
         {
-            ////CopyFilesIfMissing(ChecksumRoot, path);
+            var config = CryptoService.Default.Encrypt(JsonHelper.From(settings));
+            File.WriteAllText(Path.Combine(path, "config"), config);
+            File.Copy(Path.Combine(ChecksumRoot, "version"), Path.Combine(path, "version"));
             CopyFilesIfMissing(Path.Combine(ChecksumRoot, "runner"), Path.Combine(path, "runner"));
             CopyFilesIfMissing(Path.Combine(ChecksumRoot, "service"), Path.Combine(path, "service"));
             if (createShortcut)
@@ -100,7 +103,7 @@ namespace SPPC.Tools.Utility
             {
                 string template =
                     "sc create sppckeysrv type= own start= auto error= normal displayname= \"SPPC Key Server\" binpath= \"{0}\"";
-                string binPath = Path.Combine(path, "service", "SPPC.Framework.KeyServer.exe");
+                string binPath = Path.Combine(path, "service", "KeyServer.exe");
                 output = runner.Run(String.Format(template, binPath));
                 lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
                 installed = !lines[0].Contains("FAILED");

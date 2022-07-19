@@ -13,7 +13,7 @@ namespace SPPC.Tools.Utility
         {
         }
 
-        protected override string ServiceName => "web-app";
+        protected override string ServiceName => DockerService.WebAppImage;
 
         protected override ITextTemplate SettingsTemplate => null;
 

@@ -1,14 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Configuration;
-using System.IO;
-using System.Threading;
 using System.Windows.Forms;
 using SPPC.Framework.Helpers;
-using SPPC.Tools.Model;
-using SPPC.Tools.Transforms;
-using SPPC.Tools.Transforms.Templates;
-using SPPC.Tools.Utility;
 
 namespace SPPC.Tadbir.WinRunner
 {
@@ -54,15 +47,11 @@ namespace SPPC.Tadbir.WinRunner
             _runner.OutputReceived += Runner_OutputReceived;
             btnRunApp.Enabled = false;
             worker.RunWorkerAsync();
-            //runWorker.RunWorkerAsync();
-        }
-
-        private void RunWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
         }
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
+            _runner.Run(String.Format($"{ComposeCommand} down"));
             _runner.Run(String.Format($"{ComposeCommand} up --no-build"));
         }
 
@@ -84,7 +73,6 @@ namespace SPPC.Tadbir.WinRunner
         private void CleanStop()
         {
             _runner.Stop();
-            _runner.Run(String.Format($"{ComposeCommand} down"));
             if (worker.IsBusy)
             {
                 worker.CancelAsync();
