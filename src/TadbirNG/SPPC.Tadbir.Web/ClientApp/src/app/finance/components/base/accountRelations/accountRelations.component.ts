@@ -337,6 +337,10 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
   onCreateRelation() {
     if (this.relatedComponentDropdownSelected > 0 && this.mainComponentSelectedItem > 0) {
       this.isActive = true;
+    } else {
+      this.showMessage(this.getText('Messages.ClickOnCearteRelation'),
+        MessageType.Warning,
+        this.getText('Messages.SelectItemFromMainComponent'))
     }
   }
 

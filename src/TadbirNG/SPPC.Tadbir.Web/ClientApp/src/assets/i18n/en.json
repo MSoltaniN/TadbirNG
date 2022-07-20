@@ -84,7 +84,9 @@
     "SoftwareLicense": "Software license",
     "TooManySessions": "The number of user sessions is more than allowed",
     "ActivationPasswordIsNotCorrect": "Server username or password  is incorrect",
-    "OpenSessions": "Open user sessions"
+    "OpenSessions": "Open user sessions",
+    "SelectItemFromMainComponent": "First, select an item from the main component table.",
+    "ClickOnCearteRelation": "Then click on the 'Create Relation' button."
   },
   "Report": {
     "ReportViewer": "View of",
