@@ -343,7 +343,7 @@
     "Condition": "شرط",
     "PleaseSelectField": "یک فیلد را انتخاب کنید",
     "AddGroupfilter": "درج فیلتر جدید",
-    "DeleteGroupfilter": "حذف فیلترها",
+    "DeleteGroupfilter": "حذف فیلتر",
     "UseForOthers": "قابل استفاده برای همه کاربران",
     "FilterSavedSuccess": "تغییرات با موفقیت ذخیره شد",
     "SaveChanges": "ذخیره فیلتر",
