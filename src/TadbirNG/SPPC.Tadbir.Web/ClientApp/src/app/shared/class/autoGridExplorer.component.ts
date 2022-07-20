@@ -374,6 +374,11 @@ export class AutoGridExplorerComponent<T>
     this.handleSelection({ dataItem: item, index: "0" });
     this.selectedKeys = [];
     this.selectedKeys.push(this.selectedItem.id);
+    // to Auto Scroll in treeNodes section
+    setTimeout(() => {
+      let treeNode = document.getElementById("node-" + item.id)
+      treeNode.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+    }, 0);
   }
 
   /**
