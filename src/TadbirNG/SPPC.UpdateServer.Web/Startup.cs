@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SPPC.Licensing.Model;
+using SPPC.Tadbir.Domain;
 
-namespace SPPC.Licensing.Web
+namespace SPPC.UpdateServer.Web
 {
     public class Startup
     {
@@ -19,7 +19,8 @@ namespace SPPC.Licensing.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
+            services
+                .AddControllers()
                 .AddNewtonsoftJson();
 
             var container = new TypeContainer(services, Configuration);
@@ -38,7 +39,7 @@ namespace SPPC.Licensing.Web
                 options => options
                     .WithOrigins("*")
                     .AllowAnyMethod()
-                    .WithHeaders("Content-Type", "Accept-Language", Constants.LicenseCheckHeaderName));
+                    .WithHeaders("Content-Type", "Accept-Language", AppConstants.ContextHeaderName));
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

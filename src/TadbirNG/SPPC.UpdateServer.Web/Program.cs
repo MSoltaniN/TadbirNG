@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace SPPC.Licensing.Web
+namespace SPPC.UpdateServer.Web
 {
     public class Program
     {
