@@ -13,11 +13,7 @@ namespace SPPC.Tools.Utility
             var chars = new List<char>(GetStarterValue());
             for (int count = MinLength; count <= length; count++)
             {
-                if (count % 7 == 0)
-                {
-                    chars.Add(GetRandomChar(Symbols));
-                }
-                else if (count % 5 == 0)
+                if (count % 5 == 0)
                 {
                     chars.Add(GetRandomChar(Numbers));
                 }
@@ -42,8 +38,7 @@ namespace SPPC.Tools.Utility
             {
                 GetRandomChar(CapitalLetters),
                 GetRandomChar(SmallLetters),
-                GetRandomChar(Numbers),
-                GetRandomChar(Symbols)
+                GetRandomChar(Numbers)
             };
         }
 

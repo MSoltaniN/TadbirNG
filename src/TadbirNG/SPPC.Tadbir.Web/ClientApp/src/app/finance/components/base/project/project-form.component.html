@@ -13,13 +13,6 @@
   <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
 
     <div class="form-group">
-      <label for="branchScope" class="control-label">{{ 'Account.BranchScope' | translate }}</label>
-
-      <sppc-branch-scope formControlName="branchScope" [parentScope]="parentScopeValue" [isNew]="isNew"></sppc-branch-scope>
-
-    </div>
-
-    <div class="form-group">
       <label for="name" class="control-label">{{ 'Project.Name' | translate }}</label>
 
       <input type="text" class="k-textbox" formControlName="name" />
@@ -61,6 +54,13 @@
       <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
         {{ 'AllValidations.Project.DescriptionIsTooLong' | translate }}
       </div>
+    </div>
+
+    <div class="form-group">
+      <label for="branchScope" class="control-label">{{ 'Account.BranchScope' | translate }}</label>
+
+      <sppc-branch-scope formControlName="branchScope" [parentScope]="parentScopeValue" [isNew]="isNew"></sppc-branch-scope>
+
     </div>
   </form>
 </div>

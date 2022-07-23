@@ -16,7 +16,7 @@ namespace SPPC.Tools.Utility
             _settings = settings;
         }
 
-        public void ConfigureService(string imageRoot)
+        public virtual void ConfigureService(string imageRoot, string dockerPath)
         {
             _currentDir = Environment.CurrentDirectory;
             _rootFolder = Path.GetDirectoryName(imageRoot);
@@ -43,11 +43,11 @@ namespace SPPC.Tools.Utility
             ReplaceLayerHash();
 
             // Add all items in temporary folder to license-server.tar.gz and cleanup temp folder...
-            //Console.WriteLine($"Restoring service image file ({imageFileName})...");
             RestoreImageFile(imageFileName);
 
             // Load modified image file to Docker...
-            _runner.Run(String.Format($"docker load -i {imageFileName}"));
+            Environment.SetEnvironmentVariable("Path", dockerPath, EnvironmentVariableTarget.Process);
+            _runner.Run($"docker load -i {imageFileName}");
             Environment.CurrentDirectory = _currentDir;
             File.Delete(Path.Combine(tempPath, imageFileName));
             Directory.Delete(tempPath);
@@ -62,13 +62,7 @@ namespace SPPC.Tools.Utility
         protected virtual void ConfigureAppLayer(string layerId)
         {
             var root = Path.Combine(Environment.CurrentDirectory, layerId, "app");
-            var path = Path.Combine(root, Constants.OldAppSettings);
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }
-
-            path = Path.Combine(root, Constants.DevAppSettings);
+            var path = Path.Combine(root, Constants.DevAppSettings);
             if (File.Exists(path))
             {
                 File.Delete(path);
@@ -87,27 +81,14 @@ namespace SPPC.Tools.Utility
         {
             var gzFile = Path.GetFileName(path);
             var tarFile = gzFile.Replace(".gz", String.Empty);
-            var tempCopyPath = GetTempCopyPath(path);
+            var tempFolder = FileUtility.GetTempFolderPath();
+            var tempCopyPath = Path.Combine(tempFolder, Path.GetFileName(path));
             File.Copy(path, tempCopyPath);
-            Environment.CurrentDirectory = Path.GetDirectoryName(tempCopyPath);
-            _runner.Run(String.Format(Constants.GunzipTemplate, Path.GetFileName(path)));
-            _runner.Run(String.Format(Constants.UntarTemplate, tarFile));
+            Environment.CurrentDirectory = tempFolder;
+            _archive.GunZip(gzFile);
+            _archive.UnTar(tarFile);
             File.Delete(tarFile);
             return Environment.CurrentDirectory;
-        }
-
-        private static string GetTempCopyPath(string path)
-        {
-            var tempFile = Path.GetTempFileName();
-            var tempFolder = String.Format($"bla-{Path.GetFileName(tempFile)}");
-            File.Delete(tempFile);
-            var tempPath = Path.Combine(Path.GetDirectoryName(tempFile), tempFolder);
-            if (!Directory.Exists(tempPath))
-            {
-                Directory.CreateDirectory(tempPath);
-            }
-
-            return Path.Combine(tempPath, Path.GetFileName(path));
         }
 
         private static string GetAppLayerFolder(string tempPath)
@@ -136,7 +117,7 @@ namespace SPPC.Tools.Utility
                 _oldHash = _crypto
                     .CreateHash(File.ReadAllBytes(tarPath))
                     .ToLower();
-                _runner.Run(String.Format(Constants.UntarTemplate, Constants.LayerTarFile));
+                _archive.UnTar(Constants.LayerTarFile);
                 File.Delete(tarPath);
             }
             else
@@ -150,7 +131,7 @@ namespace SPPC.Tools.Utility
         private void RestoreAppLayer(string layerId)
         {
             Environment.CurrentDirectory = Path.Combine(Environment.CurrentDirectory, layerId);
-            _runner.Run(String.Format(Constants.TarTemplate, Constants.LayerTarFile, AppLayerFolder));
+            _archive.Tar(Constants.LayerTarFile, AppLayerFolder);
             _newHash = _crypto
                 .CreateHash(File.ReadAllBytes(Path.Combine(Environment.CurrentDirectory, Constants.LayerTarFile)))
                 .ToLower();
@@ -205,8 +186,8 @@ namespace SPPC.Tools.Utility
                 .GetFiles("*.*", SearchOption.TopDirectoryOnly)
                 .Select(file => file.Name));
             var tarFile = imageFile.Replace(".gz", String.Empty);
-            _runner.Run(String.Format(Constants.TarTemplate, tarFile, String.Join(" ", items)));
-            _runner.Run(String.Format(Constants.GzipTemplate, tarFile));
+            _archive.Tar(tarFile, String.Join(" ", items));
+            _archive.GZip(tarFile);
             CleanUpFolder(Environment.CurrentDirectory, imageFile);
         }
 
@@ -227,9 +208,10 @@ namespace SPPC.Tools.Utility
         }
 
         protected readonly IBuildSettings _settings;
+        protected readonly CliRunner _runner = new();
         private string _rootFolder;
-        private readonly ICryptoService _crypto = new CryptoService(new CertificateManager());
-        private readonly CliRunner _runner = new();
+        private readonly ICryptoService _crypto = CryptoService.Default;
+        private readonly ArchiveUtility _archive = new(@"..\tools", false);
         private string _currentDir, _oldHash, _newHash;
     }
 }

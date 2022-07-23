@@ -403,9 +403,20 @@ namespace SPPC.Tools.BuildServer
                 File.AppendAllText(_logPath, chunk);
                 _logBuilder.Remove(0, FlushLimit);
             }
+
+            // NOTE: The following logic keeps log file size between 2 and 4 MB, effectively discarding older content
+            // Always truncating log file to 4 MB will result in continuous truncation, which would be inefficient.
+            var logInfo = new FileInfo(_logPath);
+            if (logInfo.Length > MaxLogSize)
+            {
+                var log = File.ReadAllText(_logPath);
+                var truncated = log[((int)logInfo.Length - (MaxLogSize / 2))..];
+                File.WriteAllText(_logPath, truncated);
+            }
         }
 
-        private const int FlushLimit = 10240; // i.e. 10KB
+        private const int FlushLimit = 10240;    // i.e. 10 KB
+        private const int MaxLogSize = 4194304;  // i.e.  4 MB
         private const string GitCommitCommand = "git commit -a -m \"{0}\"";
         private static readonly CliRunner _runner = new();
         private static readonly StringBuilder _logBuilder = new();

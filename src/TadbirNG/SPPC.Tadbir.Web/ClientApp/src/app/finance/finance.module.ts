@@ -59,6 +59,7 @@ import { BalanceSheetComponent } from './components/reporting/balanceSheet/balan
     ProjectFormComponent, VoucherEditorComponent, VoucherLineFormComponent, CurrencyRateFormComponent, ProfitLostLabelsComponent],
   providers: [AccountCollectionService, AccountGroupsService, AccountRelationsService, AccountService, CostCenterService, CurrencyService, DetailAccountService,
     FullAccountService, FullCodeService, ProjectService, VoucherLineService, VoucherService, TestBalanceService, ItemBalanceService, SystemIssueService, ProfitLostService],
-  schemas: [NO_ERRORS_SCHEMA]
+  schemas: [NO_ERRORS_SCHEMA],
+  exports: [FinanceRoutingModule]
 })
 export class FinanceModule { }

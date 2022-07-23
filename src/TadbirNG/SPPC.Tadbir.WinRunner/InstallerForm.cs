@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using SPPC.Framework.Helpers;
@@ -115,10 +114,6 @@ namespace SPPC.Tadbir.WinRunner
             {
                 txtPassword.Text = txtAdminPassword.Text;
             }
-            else if (selected == "Default")
-            {
-                txtPassword.Text = PasswordGenerator.Generate();
-            }
             else
             {
                 txtPassword.Text = null;
@@ -147,7 +142,7 @@ namespace SPPC.Tadbir.WinRunner
             worker.ReportProgress(2);
 
             worker.ReportProgress(0, "کپی فایلهای مورد نیاز برنامه...");
-            InstallerUtility.CopyFiles(txtInstallPath.Text, chkCreateShortcut.Checked);
+            InstallerUtility.CopyFiles(txtInstallPath.Text, _settings, chkCreateShortcut.Checked);
             worker.ReportProgress(8);
 
             worker.ReportProgress(0, "نصب سرویس...");
@@ -171,6 +166,7 @@ namespace SPPC.Tadbir.WinRunner
             worker.ReportProgress(6);
 
             var root = GetDockerImageRoot();
+            InstallerUtility.DockerPath = GetDockerExePath();
             worker.ReportProgress(0, "آماده سازی سرویس های برنامه...");
             InstallerUtility.ConfigureDockerService(root, DockerService.LicenseServer, _settings);
             worker.ReportProgress(20);
@@ -255,6 +251,23 @@ namespace SPPC.Tadbir.WinRunner
 
             return servers;
         }
+
+        private static string GetDockerExePath()
+        {
+            string exePath = String.Empty;
+            var key = Registry.LocalMachine.OpenSubKey(
+                @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Docker Desktop");
+            if (key != null)
+            {
+                var location = key.GetValue("InstallLocation")?.ToString();
+                if (location != null)
+                {
+                    exePath = Path.Combine(location, "resources", "bin");
+                }
+            }
+
+            return exePath;
+        }
 #pragma warning restore CA1416 // Validate platform compatibility
 
         private bool ValidateSettings()
@@ -291,7 +304,8 @@ namespace SPPC.Tadbir.WinRunner
                 return false;
             }
 
-            if (String.IsNullOrWhiteSpace(txtPassword.Text))
+            var dbLogin = cmbLogin.SelectedItem.ToString();
+            if (dbLogin != "Default" && String.IsNullOrWhiteSpace(txtPassword.Text))
             {
                 MessageBox.Show("لطفاً رمز ورود کاربر دیتابیس را وارد کنید.",
                     "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,
@@ -323,20 +337,20 @@ namespace SPPC.Tadbir.WinRunner
             }
 
             _settings.DbUserName = dbLogin;
-            _settings.DbPassword = txtPassword.Text;
+            _settings.DbPassword = dbLogin != AppConstants.SystemLoginName ? txtPassword.Text : "Demo1234";
             string host = txtDomain.Text;
-            if (String.IsNullOrEmpty(txtDomain.Text))
+            if (String.IsNullOrEmpty(host))
             {
                 host = "http://localhost";
             }
 
             if (!host.StartsWith("http://"))
             {
-                host = String.Format($"http://{host}");
+                host = $"http://{host}";
             }
 
-            _settings.WebApiUrl = String.Format($"{host}:{BuildSettingValues.DefaultApiPort}");
-            _settings.LocalServerUrl = String.Format($"{host}:{BuildSettingValues.DefaultLicenseApiPort}");
+            _settings.WebApiUrl = $"{host}:{BuildSettingValues.DefaultApiPort}";
+            _settings.LocalServerUrl = $"{host}:{BuildSettingValues.DefaultLicenseApiPort}";
             _settings.Tcp.Domain = BuildSettingValues.DockerHostInternalUrl;
             _settings.Key = InstallerUtility.GetInstanceKey();
         }

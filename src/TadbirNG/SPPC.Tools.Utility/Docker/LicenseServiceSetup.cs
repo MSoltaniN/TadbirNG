@@ -11,7 +11,7 @@ namespace SPPC.Tools.Utility
         {
         }
 
-        protected override string ServiceName => "license-server";
+        protected override string ServiceName => DockerService.LicenseServerImage;
 
         protected override ITextTemplate SettingsTemplate => new LocalLicenseApiSettings(_settings);
     }

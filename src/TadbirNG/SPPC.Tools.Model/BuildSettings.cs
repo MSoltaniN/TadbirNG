@@ -12,7 +12,6 @@ namespace SPPC.Tools.Model
             DockerLocal = new DockerLocalSettings();
             DockerNetwork = new DockerNetworkSettings();
             DockerDummy = new DockerDummySettings();
-            Docker = new DockerSettings();
         }
 
         /// <summary>
@@ -39,8 +38,6 @@ namespace SPPC.Tools.Model
         /// تنظیمات مورد استفاده برای ساخت فایل های پایه برای محیط داکر
         /// </summary>
         public static IBuildSettings DockerDummy { get; }
-
-        public static IBuildSettings Docker { get; }
 
         private class WebLocalSettings : IBuildSettings
         {
@@ -215,45 +212,6 @@ namespace SPPC.Tools.Model
                 DbUserName = "User";
                 DbPassword = "1234";
                 Key = BuildSettingValues.DummyInstanceKey;
-            }
-
-            public string OnlineServerRoot { get; set; }
-
-            public string LocalServerRoot { get; set; }
-
-            public string LocalServerUrl { get; set; }
-
-            public string WebApiUrl { get; set; }
-
-            public RemoteConnection Tcp { get; }
-
-            public string DbServerName { get; set; }
-
-            public string DbUserName { get; set; }
-
-            public string DbPassword { get; set; }
-
-            public string Key { get; set; }
-
-            public string Version { get; set; }
-        }
-
-        private class DockerSettings : IBuildSettings
-        {
-            public DockerSettings()
-            {
-                OnlineServerRoot = String.Format(
-                    $"http://{BuildSettingValues.DefaultWinHostUrl}:{BuildSettingValues.DefaultWebLicenseApiPort}");
-                LocalServerRoot = String.Format(
-                    $"http://{BuildSettingValues.DockerHostInternalUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
-                LocalServerUrl = String.Format(
-                    $"http://{BuildSettingValues.LocalHostUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
-                WebApiUrl = String.Format(
-                    $"http://{BuildSettingValues.LocalHostUrl}:{BuildSettingValues.DefaultApiPort}");
-                Tcp = new RemoteConnection() { Domain = BuildSettingValues.DockerHostInternalUrl, Port = 5555 };
-                DbServerName = BuildSettingValues.DockerDbServer;
-                DbUserName = BuildSettingValues.DefaultDbUser;
-                DbPassword = BuildSettingValues.DefaultDbPassword;
             }
 
             public string OnlineServerRoot { get; set; }

@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LayoutComponent } from '../shared/components/layout/layout.component';
-import { AuthGuard } from '@sppc/core';
 import { AccountComponent } from './components/base/account/account.component';
 import { AccountCollectionComponent } from './components/base/accountCollection/accountCollection.component';
 import { AccountGroupsComponent } from './components/base/accountGroups/accountGroups.component';
@@ -15,7 +13,6 @@ import { VoucherEditorComponent } from './components/operational/voucher/voucher
 import { ViewName } from '@sppc/shared/security';
 import { AccountBookComponent } from './components/reporting/accountBook/accountBook.component';
 import { JournalComponent } from './components/reporting/journal/journal.component';
-import { MetaDataResolver } from '@sppc/shared/class/metadata/metadata.resolver';
 import { currencyRateComponent } from './components/base/currencyRate/currencyRate.component';
 import { TestBalanceComponent } from '@sppc/finance/components/reporting/testBalance/testBalance.component';
 import { CurrencyBookComponent } from '@sppc/finance/components/reporting/currencyBook/currencyBook.component';
@@ -26,14 +23,8 @@ import { ProfitLostComponent } from './components/reporting/profitLoss/profitLos
 import { BalanceSheetComponent } from './components/reporting/balanceSheet/balanceSheet.component';
 
 
-const routes: Routes = [{
-  path: 'finance',
-  component: LayoutComponent,
-  canActivate: [AuthGuard],
-  children: [
-    {
-      path: 'account', component: AccountComponent, data: { viewIds: [ViewName.Account] }      
-    },
+const routes: Routes = [
+    { path: 'account', component: AccountComponent, data: { viewIds: [ViewName.Account] }},
     { path: 'account-collection', component: AccountCollectionComponent },
     { path: 'account-groups', component: AccountGroupsComponent },
     { path: 'accountrelations', component: AccountRelationsComponent },
@@ -55,8 +46,7 @@ const routes: Routes = [{
     { path: 'system-issue', component: SystemIssueComponent },
     { path: 'balance-by-account', component: BalanceByAccountComponent },
     { path: 'bal-sheet', component: BalanceSheetComponent },
-  ]
-}];
+  ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

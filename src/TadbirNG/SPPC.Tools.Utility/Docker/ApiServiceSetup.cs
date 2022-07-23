@@ -14,7 +14,7 @@ namespace SPPC.Tools.Utility
         {
         }
 
-        protected override string ServiceName => "api-server";
+        protected override string ServiceName => DockerService.ApiServerImage;
 
         protected override ITextTemplate SettingsTemplate => new WebApiSettings(_settings);
 
@@ -27,6 +27,6 @@ namespace SPPC.Tools.Utility
             File.WriteAllText(licensePath, licenseInfo);
         }
 
-        private readonly ICryptoService _crypto = new CryptoService(new CertificateManager());
+        private readonly ICryptoService _crypto = CryptoService.Default;
     }
 }

@@ -677,6 +677,7 @@ export class AutoGridExplorerComponent<T>
   //saveHandler(model: any, isNew: boolean): void { };
   saveHandler(model: any, isNew: boolean) {
     this.grid.loading = true;
+    this.service.submitted.next(true)
     if (!isNew) {
       this.service
         .edit<T>(String.Format(this.modelUrl, model.id), model)
@@ -695,8 +696,10 @@ export class AutoGridExplorerComponent<T>
             this.selectedRows = [];
 
             this.refreshTreeNodes(model);
+            this.service.submitted.next(false)
           },
           (error) => {
+            this.service.submitted.next(false)
             this.editDataItem = model;
             this.dialogModel.errorMessages =
               this.errorHandlingService.handleError(error);
@@ -723,8 +726,11 @@ export class AutoGridExplorerComponent<T>
           this.reloadGrid(options);
 
           this.refreshTreeNodes(insertedModel);
+          this.service.submitted.next(false)
         },
         (error) => {
+          this.service.submitted.next(false)
+
           this.dialogModel.errorMessages =
             this.errorHandlingService.handleError(error);
         }

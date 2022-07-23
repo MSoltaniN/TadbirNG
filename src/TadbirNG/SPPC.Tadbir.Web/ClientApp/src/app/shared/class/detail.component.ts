@@ -1,7 +1,7 @@
 
-import {finalize} from 'rxjs/operators';
+import {exhaustMap, finalize, take} from 'rxjs/operators';
 import { BaseComponent } from "./base.component";
-import { Injectable, Renderer2, Optional, Inject, Host, Input, HostListener, OnInit, OnDestroy, ElementRef } from "@angular/core";
+import { Injectable, Renderer2, Optional, Inject, Host, Input, HostListener, OnInit, OnDestroy, ElementRef, EventEmitter } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormControl, ValidatorFn, Validators, AsyncValidatorFn } from "@angular/forms";
@@ -13,6 +13,7 @@ import { ShortcutService } from "../services/shortcut.service";
 import { ServiceLocator } from "@sppc/service.locator";
 import { ShareDataService } from "@sppc/shared/services/share-data.service";
 import { Guid } from "../models";
+import { of, Subject } from 'rxjs';
 
 
 
@@ -200,7 +201,7 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
     });
     return msgText;
   }
-
+  
   /**
    * برای هندل کردن شورکات های که به یک متد خاص متصل میباشند
    * @param event
