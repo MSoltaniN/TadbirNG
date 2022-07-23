@@ -124,7 +124,12 @@
     >
       <widget-container>
         <div class="box-body" body>
-          <canvas id="grossChart" width="500" height="250"></canvas>
+          <!-- <canvas id="grossChart" width="500" height="250"></canvas> -->
+          <chart-widget
+            [type]="'bar'"
+            [data]="grossChartData"
+            [options]="basicOptions"
+          ></chart-widget>
         </div>
       </widget-container>
     </widget>

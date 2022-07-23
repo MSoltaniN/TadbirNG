@@ -123,6 +123,7 @@ import { ReportParamComponent } from "@sppc/shared/components/viewIdentifier/rep
 import { ViewIdentifierComponent } from "@sppc/shared/components/viewIdentifier/view-identifier.component";
 import { GridMessageService } from "@sppc/shared/services/grid-messages.service";
 import { GridsterModule } from "angular-gridster2";
+import { ChartModule } from "primeng/chart";
 import { WidgetContainerComponent } from "./components/dashboard/widget/widget-container/widget-container.component";
 import { WidgetHeaderComponent } from "./components/dashboard/widget/widget-header/widget-header.component";
 import { WidgetComponent } from "./components/dashboard/widget/widget-layout/widget.component";
@@ -132,6 +133,7 @@ import { SppcButtonDisable } from "./directive/button/buttonDisable.directive";
 import { MessageBoxService } from "./services/message.service";
 import { ShareDataService } from "./services/share-data.service";
 import { ShortcutService } from "./services/shortcut.service";
+import { ChartWidgetComponent } from './components/dashboard/widget/chart-widget/chart-widget.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -159,6 +161,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TreeViewModule,
     ContextMenuModule,
     LayoutModule,
+    ChartModule,
     ToastrModule.forRoot({
       preventDuplicates: true,
       toastClass: "toast toastr-rtl",
@@ -248,6 +251,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     WidgetComponent,
     WidgetHeaderComponent,
     WidgetContainerComponent,
+    ChartWidgetComponent,
   ],
 
   entryComponents: [
