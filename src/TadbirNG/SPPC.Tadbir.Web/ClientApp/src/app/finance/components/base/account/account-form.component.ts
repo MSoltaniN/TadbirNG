@@ -32,6 +32,7 @@ interface Item {
 @Component({
   selector: 'account-form-component',
   styles: [`
+  /deep/ .acc-form .k-switch {margin-left: 20px;margin-right: 20px; width:8rem}
 input[type=text],.ddl-acc,textarea { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}
 /deep/ .dialog-body .k-tabstrip > .k-content { padding:15px; }
 .dialog-body{ width: 800px } .dialog-body hr{ border-top: dashed 1px #eee; }
@@ -44,9 +45,9 @@ input[type=text],.ddl-acc,textarea { width: 100%; } /deep/ .k-dialog-buttongroup
 /deep/ .k-tabstrip-top > .k-tabstrip-items { border-color: #f4f4f4; }
 /deep/ .k-tabstrip-top > .k-tabstrip-items .k-item.k-state-active { border-bottom-color: white; }
 
-/deep/ .k-switch-on .k-switch-handle { left: -8px !important; }
-/deep/ .k-switch-off .k-switch-handle { left: -4px !important; }
-/deep/ .k-switch[dir="rtl"] .k-switch-label-on { right: -22px; }
+/* /deep/ .k-switch-on .k-switch-handle { left: 48px !important; } */
+/deep/ .k-switch-off[dir="rtl"] .k-switch-handle{left: calc(100% - 3.25em) !important}
+/deep/ .k-switch-off .k-switch-handle { left: -2px !important; }
 /deep/ .k-switch[dir="rtl"] .k-switch-label-off { left: 0; }
 /deep/ .k-switch-label-on,/deep/ .k-switch-label-off { overflow: initial; }
 .acc-form { min-height: 386px; }
