@@ -16,7 +16,7 @@ namespace SPPC.Tools.Utility
             _settings = settings;
         }
 
-        public virtual void ConfigureService(string imageRoot)
+        public virtual void ConfigureService(string imageRoot, string dockerPath)
         {
             _currentDir = Environment.CurrentDirectory;
             _rootFolder = Path.GetDirectoryName(imageRoot);
@@ -46,7 +46,8 @@ namespace SPPC.Tools.Utility
             RestoreImageFile(imageFileName);
 
             // Load modified image file to Docker...
-            _runner.Run(String.Format($"docker load -i {imageFileName}"));
+            Environment.SetEnvironmentVariable("Path", dockerPath, EnvironmentVariableTarget.Process);
+            _runner.Run($"docker load -i {imageFileName}");
             Environment.CurrentDirectory = _currentDir;
             File.Delete(Path.Combine(tempPath, imageFileName));
             Directory.Delete(tempPath);

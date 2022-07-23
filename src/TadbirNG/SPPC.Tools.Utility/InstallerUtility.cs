@@ -17,6 +17,8 @@ namespace SPPC.Tools.Utility
 {
     public class InstallerUtility
     {
+        public static string DockerPath { get; set; }
+
         public static bool VerifyChecksums()
         {
             string root = Path.Combine(ChecksumRoot, "runner");
@@ -123,7 +125,7 @@ namespace SPPC.Tools.Utility
         public static void ConfigureDockerService(string root, string service, IBuildSettings settings)
         {
             var setup = GetServiceSetup(service, settings);
-            setup.ConfigureService(root);
+            setup.ConfigureService(root, DockerPath);
         }
 
         public static bool IsAppRegistered()
