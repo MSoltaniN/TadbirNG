@@ -135,32 +135,20 @@
     </widget>
   </ng-template>
   <ng-template #chart2>
-    <div class="col-md-12 col-lg-12 noprl widget">
-      <section class="col-lg-12 col-md-12 noprl">
-        <div class="box box-info">
-          <div class="box-header">
-            <i class="fa fa-info-circle"></i>
-            <h3 class="box-title">
-              {{ "Dashboard.NetSales" | translate }}
-            </h3>
-            <!-- tools box -->
-            <div class="pull-left box-tools">
-              <button
-                type="button"
-                class="btn bg-info btn-sm"
-                data-widget="collapse"
-              >
-                <i class="fa fa-minus"></i>
-              </button>
-            </div>
-            <!-- /. tools -->
-          </div>
-          <div class="box-body">
-            <canvas id="netChart" width="500" height="250"></canvas>
-          </div>
+    <widget
+      [isEditMode]="isDashboardEditMode"
+      headerTitle="{{ 'Dashboard.NetSales' | translate }}"
+    >
+      <widget-container>
+        <div class="box-body" body>
+          <chart-widget
+            [type]="'bar'"
+            [data]="netChartData"
+            [options]="basicOptions"
+          ></chart-widget>
         </div>
-      </section>
-    </div>
+      </widget-container>
+    </widget>
   </ng-template>
   <ng-template #guage>
     <div class="col-sm-12 col-md-3 guage">
