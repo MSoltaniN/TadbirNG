@@ -117,6 +117,7 @@ import { ReportParamComponent } from "@sppc/shared/components/viewIdentifier/rep
 import { ViewIdentifierComponent } from "@sppc/shared/components/viewIdentifier/view-identifier.component";
 import { GridMessageService } from "@sppc/shared/services/grid-messages.service";
 import { GridsterModule } from "angular-gridster2";
+import { ChartModule } from "primeng/chart";
 import { WidgetContainerComponent } from "./components/dashboard/widget/widget-container/widget-container.component";
 import { WidgetHeaderComponent } from "./components/dashboard/widget/widget-header/widget-header.component";
 import { WidgetComponent } from "./components/dashboard/widget/widget-layout/widget.component";
@@ -126,6 +127,7 @@ import { SppcButtonDisable } from "./directive/button/buttonDisable.directive";
 import { MessageBoxService } from "./services/message.service";
 import { ShareDataService } from "./services/share-data.service";
 import { ShortcutService } from "./services/shortcut.service";
+import { ChartWidgetComponent } from './components/dashboard/widget/chart-widget/chart-widget.component';
 
 import { TooltipDirective } from './directive/editorForm/tooltip.directive';
 
@@ -145,6 +147,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ButtonsModule,
     PopupModule, TreeViewModule, ContextMenuModule,
     LayoutModule,
+    ChartModule,
+    
     DpDatePickerModule,
     TranslateModule.forRoot({
       loader: {
@@ -231,6 +235,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     WidgetHeaderComponent,
       WidgetContainerComponent,
       TooltipDirective,
+    
+    ChartWidgetComponent,
   ],
 
   entryComponents: [

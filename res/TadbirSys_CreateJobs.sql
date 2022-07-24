@@ -1,10 +1,7 @@
-USE NGTadbirSys
-GO
-
--- Create job for cleaning up expired sessions
 USE [msdb]
 GO
 
+-- Create job for cleaning up expired sessions
 BEGIN TRANSACTION
 DECLARE @ReturnCode INT
 SELECT @ReturnCode = 0
@@ -66,7 +63,4 @@ GOTO EndSave
 QuitWithRollback:
     IF (@@TRANCOUNT > 0) ROLLBACK TRANSACTION
 EndSave:
-GO
-
-USE [NGTadbirSys]
 GO

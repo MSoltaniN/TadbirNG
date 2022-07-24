@@ -16,6 +16,11 @@ namespace SPPC.Tools.BuildServer
     {
         static void Main(string[] args)
         {
+            RunBuildServer();
+        }
+
+        private static void RunBuildServer()
+        {
             DisplayBanner();
             if (!DockerUtility.IsDockerEngineRunning())
             {

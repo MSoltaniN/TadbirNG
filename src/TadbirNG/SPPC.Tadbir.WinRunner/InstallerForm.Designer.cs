@@ -454,6 +454,8 @@ namespace SPPC.Tadbir.WinRunner
             this.Controls.Add(this.tabMain);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnInstall);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "InstallerForm";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;

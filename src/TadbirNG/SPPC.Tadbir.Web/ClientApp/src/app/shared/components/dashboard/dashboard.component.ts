@@ -75,6 +75,36 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
   isDashboardEditMode: boolean;
 
+  grossChartData;
+
+  basicOptions = {
+    plugins: {
+      legend: {
+        labels: {
+          color: "#ebedef",
+        },
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: "#ebedef",
+        },
+        grid: {
+          color: "rgba(255,255,255,0.2)",
+        },
+      },
+      y: {
+        ticks: {
+          color: "#ebedef",
+        },
+        grid: {
+          color: "rgba(255,255,255,0.2)",
+        },
+      },
+    },
+  };
+
   constructor(
     public router: Router,
     location: Location,
@@ -130,9 +160,9 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
           // this.netSales = res.netSales;
           this.dashboardInfo = res;
 
-          this.drawNetSalesChart();
+          //this.drawNetSalesChart();
 
-          this.drawGrossSalesChart();
+          this.drawGrossSalesChart1();
         });
     }
 
@@ -306,6 +336,30 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         },
       },
     });
+  }
+
+  drawGrossSalesChart1() {
+    var labels: Array<string> = [];
+    var values: Array<number> = [];
+
+    this.dashboardInfo.grossSales.points.forEach(function (value) {
+      labels.push(value.xValue);
+    });
+
+    this.dashboardInfo.grossSales.points.forEach(function (value) {
+      values.push(value.yValue);
+    });
+
+    this.grossChartData = {
+      labels: labels,
+      datasets: [
+        {
+          label: this.dashboardInfo.grossSales.title,
+          backgroundColor: "#42A5F5",
+          data: values,
+        },
+      ],
+    };
   }
 
   drawGrossSalesChart() {
