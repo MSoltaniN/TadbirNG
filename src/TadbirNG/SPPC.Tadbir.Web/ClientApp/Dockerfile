@@ -25,6 +25,8 @@ RUN npm uninstall @angular/cli
 RUN npm install -g @angular/cli@6.2.9
 
 # Bundle app source
+# The following COPY operation is a temporary hack to prevent a compile error caused by current webpack version
+COPY src/assets/dist/js/common.js node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/common.js
 COPY . .
 
 ENV NODE_OPTIONS=--max_old_space_size=8192
