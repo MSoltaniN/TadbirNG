@@ -76,6 +76,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   isDashboardEditMode: boolean;
 
   grossChartData;
+  netChartData;
 
   basicOptions = {
     plugins: {
@@ -156,13 +157,10 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
           this.bankBalance = res.bankBalance;
           this.liquidRatio = res.liquidRatio;
           this.unbalancedVoucherCount = res.unbalancedVoucherCount;
-          // this.grossSales = res.grossSales;
-          // this.netSales = res.netSales;
           this.dashboardInfo = res;
 
-          //this.drawNetSalesChart();
-
-          this.drawGrossSalesChart1();
+          this.drawNetSalesChart();
+          this.drawGrossSalesChart();
         });
     }
 
@@ -291,54 +289,19 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       values.push(value.yValue);
     });
 
-    this.canvas = document.getElementById("netChart");
-    this.ctx = this.canvas.getContext("2d");
-    let myChart = new Chart(this.ctx, {
-      type: "line",
-
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            fill: false,
-            label: this.dashboardInfo.netSales.title,
-            data: values,
-            backgroundColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-            ],
-            borderWidth: 3,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                callback: function (label, index, labels) {
-                  return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                },
-              },
-            },
-          ],
+    this.netChartData = {
+      labels: labels,
+      datasets: [
+        {
+          label: this.dashboardInfo.netSales.title,
+          backgroundColor: "#42A5F5",
+          data: values,
         },
-        tooltips: {
-          mode: "index",
-          intersect: false,
-          callbacks: {
-            label: function (t, d) {
-              return t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            },
-          },
-        },
-      },
-    });
+      ],
+    };
   }
 
-  drawGrossSalesChart1() {
+  drawGrossSalesChart() {
     var labels: Array<string> = [];
     var values: Array<number> = [];
 
@@ -360,58 +323,6 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         },
       ],
     };
-  }
-
-  drawGrossSalesChart() {
-    var labels: Array<string> = [];
-    var values: Array<number> = [];
-
-    this.dashboardInfo.grossSales.points.forEach(function (value) {
-      labels.push(value.xValue);
-    });
-
-    this.dashboardInfo.grossSales.points.forEach(function (value) {
-      values.push(value.yValue);
-    });
-
-    this.canvas = document.getElementById("grossChart");
-    this.ctx = this.canvas.getContext("2d");
-    let myChart = new Chart(this.ctx, {
-      type: "bar",
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: this.dashboardInfo.grossSales.title,
-            data: values,
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                callback: function (label, index, labels) {
-                  return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                },
-              },
-            },
-          ],
-        },
-        tooltips: {
-          mode: "index",
-          intersect: false,
-          callbacks: {
-            label: function (t, d) {
-              return t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            },
-          },
-        },
-      },
-    });
   }
 
   changedOptions(): void {
