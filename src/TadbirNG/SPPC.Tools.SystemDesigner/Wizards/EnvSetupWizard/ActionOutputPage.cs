@@ -66,6 +66,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             }
 
             Cursor = Cursors.AppStarting;
+            txtOutput.Focus();
             btnStart.Enabled = false;
             RaiseStartedEvent();
             worker.RunWorkerAsync();
@@ -338,7 +339,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
         private void LogOutput()
         {
             txtOutput.Text = _outputBuilder.ToString();
-            Thread.Sleep(500);
         }
 
         private void UpdateProgress(int increment)
@@ -400,8 +400,8 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 Edition = "Enterprise",
                 UserCount = 5,
                 ActiveModules = 1023,
-                StartDate = DateTime.Parse("2021-11-01"),
-                EndDate = DateTime.Parse("2022-11-01")
+                StartDate = DateTime.Now.Date,
+                EndDate = DateTime.Now.Date + TimeSpan.FromDays(365)
             };
         }
 
