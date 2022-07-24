@@ -73,6 +73,7 @@
     "react-resize-sensor": "^1.0.1",
     "rxjs": "^6.6.7",
     "rxjs-compat": "^6.6.2",
+    "webpack": "^4.29.6",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
@@ -95,8 +96,7 @@
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",
     "tslint": "^5.9.1",
-    "typescript": "^2.9.2",
-    "webpack": "^4.29.0"
+    "typescript": "^2.9.2"
   },
   "optionalDependencies": {
     "node-sass": "^4.11.0"

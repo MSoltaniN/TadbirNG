@@ -7,12 +7,9 @@ import { CompanyComponent } from '@sppc/organization/components/company/company.
 import { FiscalPeriodComponent } from '@sppc/organization/components/fiscalPeriod/fiscalPeriod.component';
 
 const routes: Routes = [
-  { path: 'organization',component: LayoutComponent,canActivate: [AuthGuard],
-    children: [
-      { path: 'branches', component: BranchComponent },
-      { path: 'companies', component: CompanyComponent },
-      { path: 'fiscalperiod', component: FiscalPeriodComponent },
-    ]}
+    { path: 'branches', component: BranchComponent },
+    { path: 'companies', component: CompanyComponent },
+    { path: 'fiscalperiod', component: FiscalPeriodComponent },
   ];
 
 @NgModule({

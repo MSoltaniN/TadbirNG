@@ -21,36 +21,31 @@ import { ItemBalanceComponent } from './components/reporting/itemBalance/itemBal
 import { BalanceByAccountComponent } from '@sppc/finance/components/reporting/balanceByAccount/balanceByAccount.component';
 import { ProfitLostComponent } from './components/reporting/profitLoss/profitLost.component';
 import { BalanceSheetComponent } from './components/reporting/balanceSheet/balanceSheet.component';
-import { AuthGuard } from '@sppc/core';
-import { LayoutComponent } from '@sppc/shared/components/layout/layout.component';
 
 
 const routes: Routes = [
-  { path: "finance", component:LayoutComponent, canActivate: [AuthGuard],
-    children : [
-      { path: 'account', component: AccountComponent, data: { viewIds: [ViewName.Account] }},
-      { path: 'account-collection', component: AccountCollectionComponent },
-      { path: 'account-groups', component: AccountGroupsComponent },
-      { path: 'accountrelations', component: AccountRelationsComponent },
-      { path: 'costCenter', component: CostCenterComponent },
-      { path: 'currency', component: CurrencyComponent },
-      { path: 'detailAccount', component: DetailAccountComponent },
-      { path: 'projects', component: ProjectComponent },
-      { path: 'profit-loss', component: ProfitLostComponent },
-      { path: 'voucher', component: VoucherComponent },
-      { path: 'voucher/:mode', component: VoucherComponent },
-      { path: 'vouchers/:mode', component: VoucherEditorComponent },
-      { path: 'vouchers/:mode/:type', component: VoucherEditorComponent },
-      { path: 'account-book', component: AccountBookComponent },
-      { path: 'journal', component: JournalComponent },
-      { path: 'currency-rate/:id', component: currencyRateComponent },
-      { path: 'balance', component: TestBalanceComponent },
-      { path: 'itembalance', component: ItemBalanceComponent },
-      { path: 'currency-book', component: CurrencyBookComponent },
-      { path: 'system-issue', component: SystemIssueComponent },
-      { path: 'balance-by-account', component: BalanceByAccountComponent },
-      { path: 'bal-sheet', component: BalanceSheetComponent },
-    ]}
+    { path: 'account', component: AccountComponent, data: { viewIds: [ViewName.Account] }},
+    { path: 'account-collection', component: AccountCollectionComponent },
+    { path: 'account-groups', component: AccountGroupsComponent },
+    { path: 'accountrelations', component: AccountRelationsComponent },
+    { path: 'costCenter', component: CostCenterComponent },
+    { path: 'currency', component: CurrencyComponent },
+    { path: 'detailAccount', component: DetailAccountComponent },
+    { path: 'projects', component: ProjectComponent },
+    { path: 'profit-loss', component: ProfitLostComponent },
+    { path: 'voucher', component: VoucherComponent },
+    { path: 'voucher/:mode', component: VoucherComponent },
+    { path: 'vouchers/:mode', component: VoucherEditorComponent },
+    { path: 'vouchers/:mode/:type', component: VoucherEditorComponent },
+    { path: 'account-book', component: AccountBookComponent },
+    { path: 'journal', component: JournalComponent },
+    { path: 'currency-rate/:id', component: currencyRateComponent },
+    { path: 'balance', component: TestBalanceComponent },
+    { path: 'itembalance', component: ItemBalanceComponent },
+    { path: 'currency-book', component: CurrencyBookComponent },
+    { path: 'system-issue', component: SystemIssueComponent },
+    { path: 'balance-by-account', component: BalanceByAccountComponent },
+    { path: 'bal-sheet', component: BalanceSheetComponent },
   ];
 
 @NgModule({
