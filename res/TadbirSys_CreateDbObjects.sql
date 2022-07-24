@@ -49,9 +49,6 @@ CREATE TABLE [Core].[Version] (
 )
 GO
 
-INSERT INTO [Core].[Version] ([VersionID], [Number])
-    VALUES(1, '1.2.1390')
-
 CREATE TABLE [Metadata].[EntityType] (
     [EntityTypeID]   INT              IDENTITY (1, 1) NOT NULL,
     [Name]           NVARCHAR(128)    NOT NULL,
@@ -649,8 +646,8 @@ INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, EntityType, IsHierarchy
 INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, EntityType, IsHierarchy, IsCartableIntegrated, FetchUrl, SearchUrl) VALUES (6, 'DetailAccount', 'DetailAccount', 'Base', 1, 1, N'/lookup/faccounts', N'/faccounts')
 INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, EntityType, IsHierarchy, IsCartableIntegrated, FetchUrl, SearchUrl) VALUES (7, 'CostCenter', 'CostCenter', 'Base', 1, 1, N'/lookup/ccenters', N'/ccenters')
 INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, EntityType, IsHierarchy, IsCartableIntegrated, FetchUrl, SearchUrl) VALUES (8, 'Project', 'Project', 'Base', 1, 1, N'/lookup/projects', N'/projects')
-INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, EntityType, IsHierarchy, IsCartableIntegrated, FetchUrl, SearchUrl) VALUES (9, 'FiscalPeriod', 'FiscalPeriod', 'Core', 0, 1, N'', N'/fperiods/company/{companyid}')
-INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, EntityType, IsHierarchy, IsCartableIntegrated, FetchUrl, SearchUrl) VALUES (10, 'Branch', 'Branch', 'Core', 0, 0, N'', N'/branches/company/{companyid}')
+INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, EntityType, IsHierarchy, IsCartableIntegrated, FetchUrl, SearchUrl) VALUES (9, 'FiscalPeriod', 'FiscalPeriod', 'Core', 0, 1, NULL, N'/fperiods/company/{companyid}')
+INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, EntityType, IsHierarchy, IsCartableIntegrated, FetchUrl, SearchUrl) VALUES (10, 'Branch', 'Branch', 'Core', 0, 0, NULL, N'/branches/company/{companyid}')
 INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, EntityType, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (11, 'CompanyDb', 'Company', 'Core', 0, 0, N'')
 INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, EntityType, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (12, 'AccountGroup', 'AccountGroup', 'Core', 0, 0, N'')
 INSERT INTO [Metadata].[View] (ViewID, Name, EntityName, EntityType, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (13, 'OperationLog', 'OperationLog', 'Core', 0, 0, N'')
@@ -715,6 +712,16 @@ INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [IsHierarchy], [I
 INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [IsHierarchy], [IsCartableIntegrated], [EntityType], [FetchUrl], [SearchUrl])
     VALUES (67, 'BalanceSheet', 'BalanceSheet', 0, 0, '', '', NULL)
 SET IDENTITY_INSERT [Metadata].[View] OFF
+
+UPDATE [Metadata].[View]
+SET [FetchUrl] = NULL
+WHERE [FetchUrl] = ''
+GO
+
+UPDATE [Metadata].[View]
+SET [EntityType] = NULL
+WHERE [EntityType] = ''
+GO
 
 SET IDENTITY_INSERT [Metadata].[Column] ON
 
@@ -3419,12 +3426,6 @@ INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName],
 
 SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 GO
-
--- Sample user settings for UserID = 1 and Account List form (Admin user)...
-SET IDENTITY_INSERT [Config].[UserSetting] ON
-INSERT [Config].[UserSetting] ([UserSettingID], [SettingID], [ViewID], [UserID], [RoleID], [ModelType], [Values])
-    VALUES (1, 4, 1, 1, NULL, N'ListFormViewConfig', N'{"viewId":1,"pageSize":25,"columnViews":[{"name":"Id","large":{"width":0,"index":-1,"designIndex":0,"visibility":"AlwaysHidden"},"medium":{"width":0,"index":-1,"designIndex":0,"visibility":"AlwaysHidden"},"small":{"width":0,"index":-1,"designIndex":0,"visibility":"AlwaysHidden"},"extraSmall":{"width":0,"index":-1,"designIndex":0,"visibility":"AlwaysHidden"}},{"name":"Code","large":{"width":100,"index":0,"designIndex":0,"visibility":"Visible"},"medium":{"width":100,"index":0,"designIndex":0,"visibility":"Visible"},"small":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"extraSmall":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"}},{"name":"FullCode","large":{"width":150,"index":1,"designIndex":0,"visibility":"Visible"},"medium":{"width":150,"index":1,"designIndex":0,"visibility":"Visible"},"small":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"extraSmall":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"}},{"name":"Name","large":{"width":180,"index":2,"designIndex":0,"visibility":"AlwaysVisible"},"medium":{"width":180,"index":2,"designIndex":0,"visibility":"AlwaysVisible"},"small":{"width":125,"index":2,"designIndex":0,"visibility":"AlwaysVisible"},"extraSmall":{"width":125,"index":2,"designIndex":0,"visibility":"AlwaysVisible"}},{"name":"Level","large":{"width":50,"index":4,"designIndex":0,"visibility":"Visible"},"medium":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"small":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"extraSmall":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"}},{"name":"Description","large":{"width":360,"index":3,"designIndex":0,"visibility":"Visible"},"medium":{"width":360,"index":3,"designIndex":0,"visibility":"Visible"},"small":{"width":180,"index":3,"designIndex":0,"visibility":"Visible"},"extraSmall":{"width":180,"index":3,"designIndex":0,"visibility":"Visible"}}]}')
-SET IDENTITY_INSERT [Config].[UserSetting] OFF
 
 SET IDENTITY_INSERT [Metadata].[Command] ON
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (1, NULL, NULL, N'Accounting', NULL, 'folder-close', NULL)

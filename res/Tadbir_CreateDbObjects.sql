@@ -1,4 +1,4 @@
-﻿USE NGTadbir
+﻿USE [NGTadbir]
 GO
 
 SET ANSI_NULLS ON
@@ -1493,7 +1493,3 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (193, 1, 3, 13, NULL, 58, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
-
--- TODO: Add new database scripts BEFORE this command and update [Version] field with each change in database version
-INSERT INTO [Core].[Version] ([VersionID],[Number])
-VALUES(1, '1.2.1390')

@@ -116,14 +116,10 @@ namespace SPPC.Tools.Utility
         {
             var root = PathConfig.ResourceRoot;
             var files = new List<string> { Path.Combine(root, "Dockerfile") };
-            var fixedFiles = new string[]
-            {
-                "TadbirSys_CreateDbObjects.sql", "TadbirSys_QRTemplates.sql",
-                "SetupDefaultLogin.sql", "Docker_FirstCompany.sql",
-                "Tadbir_CreateDbObjects.sql", "Docker_StatesAndCities.sql"
-            };
-            files.AddRange(fixedFiles
-                .Select(f => Path.Combine(root, f)));
+            files.AddRange(new DirectoryInfo(root)
+                .GetFiles("*.sql", SearchOption.TopDirectoryOnly)
+                .Where(scriptFile => !scriptFile.Name.Contains("Update"))
+                .Select(scriptFile => scriptFile.FullName));
             return files;
         }
 

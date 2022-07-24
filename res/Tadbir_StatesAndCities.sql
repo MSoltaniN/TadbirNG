@@ -1,4 +1,4 @@
-﻿USE NGTadbir
+﻿USE [NGTadbir]
 GO
 
 SET IDENTITY_INSERT [Metadata].[Province] ON 
