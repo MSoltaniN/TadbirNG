@@ -15,7 +15,10 @@ import { ViewName } from '@sppc/shared/security';
   templateUrl: './currencyRate-form.component.html',
   styles: [`
     input[type=text],textarea { width: 100%; }
-
+input.active-input {
+  background: #fff !important;
+  border: 1px solid #ccc !important;
+}
 .dialog-body{ width: 800px } .dialog-body hr{ border-top: dashed 1px #eee; }
 @media screen and (max-width:800px) {
   .dialog-body{
