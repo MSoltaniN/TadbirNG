@@ -897,7 +897,7 @@ export class AccountGroupsComponent
             this.selectedRows = [];
             this.reloadGrid();
 
-            this.refreshTreeNodes(model);
+            this.refreshTreeNodes(model.account);
           },
           (error) => {
             this.editDataItem = model;
