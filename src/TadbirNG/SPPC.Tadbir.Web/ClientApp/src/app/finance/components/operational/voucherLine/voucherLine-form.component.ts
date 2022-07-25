@@ -195,6 +195,18 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
     this.setFocus.emit();
   }
 
+  onCurrencyInfoChange() {
+    if (this.isDisplayCurrencyInfo == false) {
+      this.editForm1.patchValue({
+        currencyId: '',
+        currencyValue: ''
+      })
+      this.currencyRate = 0
+      this.changeCurrencyValue();
+      this.onChangeCurrencyRate()
+    }
+  }
+
   onChangeCurrency() {
     if (this.selectedCurrencyValue) {
       var selectedCurrency = this.currenciesRows.find(f => f.id == this.selectedCurrencyValue);
