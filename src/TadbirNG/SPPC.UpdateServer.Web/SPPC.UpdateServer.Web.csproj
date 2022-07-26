@@ -18,8 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj" />
+    <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj" />
+    <ProjectReference Include="..\SPPC.Licensing.Interfaces\SPPC.Licensing.Interfaces.csproj" />
+    <ProjectReference Include="..\SPPC.Licensing.Model\SPPC.Licensing.Model.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj" />
     <ProjectReference Include="..\SPPC.Tools.Model\SPPC.Tools.Model.csproj" />
+    <ProjectReference Include="..\SPPC.Tools.Utility\SPPC.Tools.Utility.csproj" />
   </ItemGroup>
 
 </Project>

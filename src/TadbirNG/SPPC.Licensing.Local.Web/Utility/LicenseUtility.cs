@@ -146,7 +146,7 @@ namespace SPPC.Tadbir.Licensing
         /// <returns>وضعیت بررسی مجوز که نشان می دهد مجوز موجود معتبر هست یا نه</returns>
         public LicenseStatus ValidateLicense(string instance, RemoteConnection connection)
         {
-            var instanceModel = GetInstance(instance);
+            var instanceModel = InstanceFactory.FromCrypto(instance);
             var status = LicenseStatus.OK;
             if (!EnsureLicenseIsActivated())
             {
@@ -470,12 +470,6 @@ namespace SPPC.Tadbir.Licensing
             }
 
             return validated;
-        }
-
-        private InstanceModel GetInstance(string instance)
-        {
-            string json = _crypto.Decrypt(instance);
-            return JsonHelper.To<InstanceModel>(json);
         }
 
         private void UpdateLoginCount(LicenseFileModel licenseModel)

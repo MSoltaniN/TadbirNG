@@ -4,7 +4,6 @@ using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
 using SPPC.Framework.Common;
-using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
@@ -14,7 +13,6 @@ using SPPC.Tools.LicenseManager.Properties;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms;
 using SPPC.Tools.Transforms.Templates;
-using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.LicenseManager
 {
@@ -23,7 +21,6 @@ namespace SPPC.Tools.LicenseManager
         public MainWindow()
         {
             InitializeComponent();
-            _crypto = new CryptoService(new CertificateManager());
         }
 
         private ICustomerService CustomerService
@@ -335,7 +332,7 @@ namespace SPPC.Tools.LicenseManager
         private bool ConfigureCurrentBuild(IBuildSettings settings)
         {
             var license = grdLicenses.SelectedRows[0].DataBoundItem as LicenseModel;
-            settings.Key = GetInstanceKey(license);
+            settings.Key = InstanceFactory.CryptoFromLicense(license);
             settings.Version = VersionUtility.GetAppVersion();
             var editor = new InstanceInfoEditor() { BuildSettings = settings };
             var result = editor.ShowDialog(this);
@@ -370,8 +367,9 @@ namespace SPPC.Tools.LicenseManager
             var customer = CustomerService.GetCustomer(license.CustomerId);
             var path = ConfigurationManager.AppSettings["WebApiLicensePath"];
             var devPath = String.Format("{0}.Development.json", path);
-            var licenseData = GetLicenseData(license, customer);
-            var json = JsonHelper.From(licenseData);
+            var copy = license.GetCopy();
+            copy.Customer = customer;
+            var json = JsonHelper.From(LicenseFactory.FromModel(copy));
             File.WriteAllText(path, json);
             if (!File.Exists(devPath))
             {
@@ -430,20 +428,6 @@ namespace SPPC.Tools.LicenseManager
         private static bool HasModule(Subsystems modules, Subsystems module)
         {
             return (modules & module) != 0;
-        }
-
-        private static LicenseViewModel GetLicenseData(LicenseModel license, CustomerModel customer)
-        {
-            return new LicenseViewModel()
-            {
-                CustomerName = customer.CompanyName,
-                ContactName = String.Format("{0} {1}", customer.ContactFirstName, customer.ContactLastName),
-                Edition = license.Edition,
-                UserCount = license.UserCount,
-                ActiveModules = license.ActiveModules,
-                StartDate = license.StartDate,
-                EndDate = license.EndDate
-            };
         }
 
         private void RefreshCustomerList()
@@ -526,18 +510,7 @@ namespace SPPC.Tools.LicenseManager
             return String.Join("، ", modules.ToArray());
         }
 
-        private string GetInstanceKey(LicenseModel license)
-        {
-            var instance = new InstanceModel()
-            {
-                CustomerKey = license.CustomerKey,
-                LicenseKey = license.LicenseKey
-            };
-            return _crypto.Encrypt(JsonHelper.From(instance, false));
-        }
-
         private ICustomerService _customerService;
         private ILicenseService _licenseService;
-        private readonly ICryptoService _crypto;
     }
 }

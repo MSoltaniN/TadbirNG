@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using SPPC.Framework.Values;
 
 namespace SPPC.Framework.Service
 {
@@ -23,6 +24,24 @@ namespace SPPC.Framework.Service
         /// <param name="name">Name of header to add</param>
         /// <param name="value">Single value to set in added header</param>
         void AddHeader(string name, string value);
+
+        /// <summary>
+        /// Retrieves raw data from a file by sending an HTTP GET request to a Web API service.
+        /// </summary>
+        /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>
+        /// <param name="apiUrlArgs">Variable array of arguments required by the API URL</param>
+        /// <returns>File information as a <see cref="FileResource"/> instance, or null if the file resource
+        /// could not be found</returns>
+        FileResource GetFile(string apiUrl, params object[] apiUrlArgs);
+
+        /// <summary>
+        /// Asynchronously retrieves raw data from a file by sending an HTTP GET request to a Web API service.
+        /// </summary>
+        /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>
+        /// <param name="apiUrlArgs">Variable array of arguments required by the API URL</param>
+        /// <returns>File information as a <see cref="FileResource"/> instance, or null if the file resource
+        /// could not be found</returns>
+        Task<FileResource> GetFileAsync(string apiUrl, params object[] apiUrlArgs);
 
         /// <summary>
         /// Retrieves data by sending an HTTP GET request to a Web API service.

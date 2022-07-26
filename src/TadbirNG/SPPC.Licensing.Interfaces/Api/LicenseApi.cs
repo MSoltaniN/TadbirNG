@@ -52,6 +52,16 @@ namespace SPPC.Licensing.Api
         public const string LicenseUrl = "licenses/{licenseId:min(1)}";
 
         /// <summary>
+        /// API client URL for an application license specified by globaly unique unique identifier (GUID)
+        /// </summary>
+        public const string LicenseByKey = "licenses/{0}";
+
+        /// <summary>
+        /// API server route URL for an application license specified by globaly unique unique identifier (GUID)
+        /// </summary>
+        public const string LicenseByKeyUrl = "licenses/{licenseKey}";
+
+        /// <summary>
         /// API client URL for all application licenses issued to a specific customer
         /// </summary>
         public const string LicensesByCustomer = "licenses/by-customer/{0}";

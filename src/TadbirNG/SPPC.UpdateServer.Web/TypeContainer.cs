@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SPPC.Framework.Service;
 
 namespace SPPC.UpdateServer.Web
 {
@@ -24,6 +25,13 @@ namespace SPPC.UpdateServer.Web
         /// </summary>
         public void AddServices()
         {
+            _services.AddTransient<IApiClient>(provider =>
+            {
+                return new ServiceClient()
+                {
+                    ServiceRoot = _configuration["ServerRoot"]
+                };
+            });
         }
 
         private readonly IServiceCollection _services;

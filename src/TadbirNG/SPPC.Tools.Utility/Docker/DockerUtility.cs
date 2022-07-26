@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
+using SPPC.Tools.Model;
 
 namespace SPPC.Tools.Utility
 {
@@ -24,6 +27,35 @@ namespace SPPC.Tools.Utility
                 .GetProcesses()
                 .Where(proc => requiredProcesses.Contains(proc.ProcessName))
                 .Any();
+        }
+
+        public static ServiceInfo GetServiceInfo(string imagePath)
+        {
+            var serviceName = Path
+                .GetFileName(imagePath)
+                .Replace(".tar.gz", String.Empty)
+                .Replace("-std", String.Empty)
+                .Replace("-pro", String.Empty)
+                .Replace("-ent", String.Empty);
+            var imageData = File.ReadAllBytes(imagePath);
+            var crypto = CryptoService.Default;
+            return new ServiceInfo()
+            {
+                Name = serviceName,
+                Sha256 = crypto
+                    .CreateHash(imageData)
+                    .ToLower(),
+                Size = imageData.Length
+            };
+        }
+
+        public static string GetEditionTag(string edition)
+        {
+            return edition == "Standard"
+                ? "std"
+                : edition?
+                    .Substring(0, 3)
+                    .ToLower();
         }
 
         public void WaitForContainer(string name)

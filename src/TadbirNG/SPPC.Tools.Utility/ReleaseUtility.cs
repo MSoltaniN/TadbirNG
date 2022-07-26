@@ -55,11 +55,13 @@ namespace SPPC.Tools.Utility
 
             // Inside the main package folder, save public part of customer license in encrypted base64 format...
             string path = Path.Combine(PathConfig.TadbirRelease, license.LicenseKey, "license");
-            File.WriteAllText(path, crypto.Encrypt(GetLicenseData(license)));
+            File.WriteAllText(path, crypto.Encrypt(
+                JsonHelper.From(
+                    LicenseFactory.FromModel(license))));
 
             // Inside the main package folder, save instance key in encrypted base64 format...
             path = Path.Combine(PathConfig.TadbirRelease, license.LicenseKey, $"v{VersionUtility.GetAppVersion()}");
-            File.WriteAllText(path, crypto.Encrypt(GetInstanceKey(license)));
+            File.WriteAllText(path, InstanceFactory.CryptoFromLicense(license));
 
             // Inside the main package folder, make version information file, using base images...
             path = Path.Combine(PathConfig.TadbirRelease, license.LicenseKey, "version");
@@ -83,32 +85,6 @@ namespace SPPC.Tools.Utility
 
         #region Settings Generation
 
-        private static string GetLicenseData(LicenseModel license)
-        {
-            var licenseData = new LicenseViewModel()
-            {
-                CustomerName = license.Customer.CompanyName,
-                ContactName = String.Format(
-                    "{0} {1}", license.Customer.ContactFirstName, license.Customer.ContactLastName),
-                Edition = license.Edition,
-                UserCount = license.UserCount,
-                ActiveModules = license.ActiveModules,
-                StartDate = license.StartDate,
-                EndDate = license.EndDate
-            };
-            return JsonHelper.From(licenseData);
-        }
-
-        private static string GetInstanceKey(LicenseModel license)
-        {
-            var instance = new InstanceModel()
-            {
-                CustomerKey = license.CustomerKey,
-                LicenseKey = license.LicenseKey
-            };
-            return JsonHelper.From(instance, false);
-        }
-
         private static string GetVersionInfoData(string licenseKey)
         {
             var versionInfo = new VersionInfo
@@ -127,16 +103,7 @@ namespace SPPC.Tools.Utility
         {
             var imagePath = Path.Combine(
                 PathConfig.TadbirRelease, licenseKey, "docker", $"{serviceImage}.tar.gz");
-            var imageData = File.ReadAllBytes(imagePath);
-            var crypto = CryptoService.Default;
-            return new ServiceInfo()
-            {
-                Name = serviceImage,
-                Sha256 = crypto
-                    .CreateHash(imageData)
-                    .ToLower(),
-                Size = imageData.Length
-            };
+            return DockerUtility.GetServiceInfo(imagePath);
         }
 
         #endregion

@@ -8,14 +8,14 @@ namespace SPPC.Tools.Api
         {
         }
 
-        public const string LatestVersionInfoUrl = "update/versions/latest";
+        public const string LatestVersionInfoUrl = "versions/latest";
 
-        public const string LicenseServerImageUrl = "update/services/license-server";
+        public const string LicenseServerImageUrl = "services/license-server";
 
-        public const string ApiServerImageUrl = "update/services/api-server";
+        public const string ApiServerImageUrl = "services/api-server";
 
-        public const string DbServerImageUrl = "update/services/db-server";
+        public const string DbServerImageUrl = "services/db-server";
 
-        public const string WebAppImageUrl = "update/services/web-app";
+        public const string WebAppImageUrl = "services/web-app";
     }
 }

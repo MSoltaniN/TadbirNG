@@ -19,7 +19,7 @@ namespace SPPC.Licensing.Service
 
         public async Task<string> ActivateLicenseAsync(ActivationModel activation)
         {
-            var instance = JsonHelper.To<InstanceModel>(_crypto.Decrypt(activation.InstanceKey));
+            var instance = InstanceFactory.FromCrypto(activation.InstanceKey);
             var license = _repository.GetLicense(instance?.LicenseKey, instance?.CustomerKey);
             if (license != null)
             {
@@ -41,7 +41,7 @@ namespace SPPC.Licensing.Service
             {
                 HardwardKey = licenseCheck.HardwardKey,
                 Certificate = licenseCheck.Certificate,
-                Instance = JsonHelper.To<InstanceModel>(_crypto.Decrypt(licenseCheck.InstanceKey))
+                Instance = InstanceFactory.FromCrypto(licenseCheck.InstanceKey)
             };
             var status = LicenseStatus.OK;
             if (!await EnsureLicenseExistsAsync())

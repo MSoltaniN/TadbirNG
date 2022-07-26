@@ -61,10 +61,9 @@ namespace SPPC.Licensing.Web.Controllers
 
                 logBuilder.AppendLine(JsonHelper.From(activation));
                 logBuilder.AppendLine();
-                string json = _crypto.Decrypt(activation.InstanceKey);
                 var internalActivation = new InternalActivationModel()
                 {
-                    Instance = JsonHelper.To<InstanceModel>(json),
+                    Instance = InstanceFactory.FromCrypto(activation.InstanceKey),
                     HardwareKey = activation.HardwareKey,
                     ClientKey = activation.ClientKey
                 };
@@ -121,11 +120,26 @@ namespace SPPC.Licensing.Web.Controllers
             return Json(licenses);
         }
 
+        // GET: api/licenses/{licenseId:min(1)}
         [HttpGet]
         [Route(LicenseApi.LicenseUrl)]
         public async Task<IActionResult> GetLicenseByIdAsync(int licenseId)
         {
             var license = await _repository.GetLicenseAsync(licenseId);
+            return Json(license);
+        }
+
+        // GET: api/licenses/{licenseKey}
+        [HttpGet]
+        [Route(LicenseApi.LicenseByKeyUrl)]
+        public async Task<IActionResult> GetLicenseByKeyAsync(string licenseKey)
+        {
+            if (String.IsNullOrEmpty(licenseKey))
+            {
+                return BadRequest("License key cannot be null.");
+            }
+
+            var license = await _repository.GetLicenseAsync(licenseKey);
             return Json(license);
         }
 

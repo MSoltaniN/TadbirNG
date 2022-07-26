@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
@@ -376,8 +375,8 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
         private void CreateApiServiceLicense()
         {
             var path = String.Format(@"{0}\license.Development.json", _params.WebApiRootPath);
-            var licenseData = GetLicenseData();
-            var json = JsonHelper.From(licenseData);
+            var json = JsonHelper.From(
+                LicenseFactory.FromContact(WizardModel.LicenseeFirstName, WizardModel.LicenseeLastName));
             File.WriteAllText(path, json);
         }
 
@@ -389,20 +388,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             var path = String.Format(@"{0}\edition.Development.json", _params.WebApiRootPath);
             string json = JsonHelper.From(allConfig.Enterprise);
             File.WriteAllText(path, json);
-        }
-
-        private LicenseViewModel GetLicenseData()
-        {
-            return new LicenseViewModel()
-            {
-                CustomerName = "تیم توسعه تدبیر وب",
-                ContactName = String.Format("{0} {1}", WizardModel.LicenseeFirstName, WizardModel.LicenseeLastName),
-                Edition = "Enterprise",
-                UserCount = 5,
-                ActiveModules = 1023,
-                StartDate = DateTime.Now.Date,
-                EndDate = DateTime.Now.Date + TimeSpan.FromDays(365)
-            };
         }
 
         private void SetStoppedState()

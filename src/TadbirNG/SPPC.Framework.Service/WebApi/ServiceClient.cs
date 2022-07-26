@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service.Extensions;
+using SPPC.Framework.Values;
 
 namespace SPPC.Framework.Service
 {
@@ -75,6 +76,62 @@ namespace SPPC.Framework.Service
         public void AddHeader(string name, string value)
         {
             _httpClient.DefaultRequestHeaders.Add(name, value);
+        }
+
+        /// <summary>
+        /// Retrieves raw data from a file by sending an HTTP GET request to a Web API service.
+        /// </summary>
+        /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>
+        /// <param name="apiUrlArgs">Variable array of arguments required by the API URL</param>
+        /// <returns>File information as a <see cref="FileResource"/> instance, or null if the file resource
+        /// could not be found</returns>
+        public FileResource GetFile(string apiUrl, params object[] apiUrlArgs)
+        {
+            var file = default(FileResource);
+            var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
+            var response = _httpClient.GetAsync(url).Result;
+            LastResponse = GetResponse(response);
+            if (LastResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
+            {
+                file = new FileResource()
+                {
+                    Name = response.Content.Headers.ContentDisposition.Name,
+                    Size = response.Content.Headers.ContentLength ?? 0L,
+                    ContentType = response.Content.Headers.ContentType.MediaType,
+                    RawData = response.Content
+                        .ReadAsByteArrayAsync()
+                        .Result
+                };
+            }
+
+            return file;
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves raw data from a file by sending an HTTP GET request to a Web API service.
+        /// </summary>
+        /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>
+        /// <param name="apiUrlArgs">Variable array of arguments required by the API URL</param>
+        /// <returns>File information as a <see cref="FileResource"/> instance, or null if the file resource
+        /// could not be found</returns>
+        public async Task<FileResource> GetFileAsync(string apiUrl, params object[] apiUrlArgs)
+        {
+            var file = default(FileResource);
+            var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
+            var response = await _httpClient.GetAsync(url);
+            LastResponse = GetResponse(response);
+            if (LastResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
+            {
+                file = new FileResource()
+                {
+                    Name = response.Content.Headers.ContentDisposition.Name,
+                    Size = response.Content.Headers.ContentLength ?? 0L,
+                    ContentType = response.Content.Headers.ContentType.MediaType,
+                    RawData = await response.Content.ReadAsByteArrayAsync()
+                };
+            }
+
+            return file;
         }
 
         /// <summary>
