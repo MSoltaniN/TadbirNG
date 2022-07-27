@@ -175,6 +175,11 @@ a.circle {
   font-size: 14px;
 }
 
+.ver-info {
+  opacity: 1;
+  transition: 1s all;
+}
+
 /deep/ body.tLtr .ver-info {
   z-index: 810;
   position: fixed;
@@ -199,6 +204,12 @@ a.circle {
   padding-right: 70px;
   text-decoration: underline;
   cursor: pointer;
+}
+
+::ng-deep .sidebar-collapse .ver-info {
+  opacity: 0;
+  visibility: hidden;
+  transition: 0s all;
 }
 
 @media (min-width: 767px) {
