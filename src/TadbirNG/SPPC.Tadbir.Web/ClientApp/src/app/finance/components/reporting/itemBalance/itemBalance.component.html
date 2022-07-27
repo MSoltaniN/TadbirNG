@@ -225,7 +225,7 @@
 
     <kendo-grid-checkbox-column
       showSelectAll="true"
-      width="55"
+      width="65"
       [resizable]="false"
       [reorderable]="false"
     >
@@ -235,7 +235,7 @@
         let-columnIndex="columnIndex"
         *ngIf="totalRecords > 0"
       >
-        {{ "ItemBalance.Sum" | translate }}
+      <span style="font-size: 13px;">{{ "ItemBalance.Sum" | translate }}</span>
       </ng-template>
     </kendo-grid-checkbox-column>
 
