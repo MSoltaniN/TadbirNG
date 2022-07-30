@@ -66,6 +66,6 @@
 </div>
 
 <kendo-dialog-actions>
-  <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ isWizard ? ('Buttons.NextStep' | translate) : ('Buttons.Ok' | translate) }}</button>
+  <button class="k-button k-primary prevent-duplicate" [disabled]="!editForm.valid" (click)="onSave($event)">{{ isWizard ? ('Buttons.NextStep' | translate) : ('Buttons.Ok' | translate) }}</button>
   <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
 </kendo-dialog-actions>

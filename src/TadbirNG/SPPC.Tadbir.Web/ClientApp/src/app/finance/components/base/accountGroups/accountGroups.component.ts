@@ -877,6 +877,7 @@ export class AccountGroupsComponent
 
   saveAccountHandler(model: any, isNew: boolean) {
     this.grid.loading = true;
+    this.gridService.submitted.next(true)
     if (!isNew) {
       this.accountGroupService
         .edit<AccountFullData>(
@@ -896,11 +897,13 @@ export class AccountGroupsComponent
 
             this.selectedRows = [];
             this.reloadGrid();
+            this.gridService.submitted.next(false)
 
             this.refreshTreeNodes(model);
           },
           (error) => {
             this.editDataItem = model;
+            this.gridService.submitted.next(false)
             if (error.messages) this.dialogModel.errorMessages = error.messages;
             else this.dialogModel.errorMessages = error;
           }
@@ -925,10 +928,12 @@ export class AccountGroupsComponent
             var options = new ReloadOption();
             options.InsertedModel = insertedModel;
             this.reloadGrid(options);
+            this.gridService.submitted.next(false)
 
             this.refreshTreeNodes(insertedModel.account);
           },
           (error) => {
+            this.gridService.submitted.next(false)
             if (error.messages) this.dialogModel.errorMessages = error.messages;
             else this.dialogModel.errorMessages = error;
           }
@@ -939,6 +944,7 @@ export class AccountGroupsComponent
 
   saveAccountGroupHandler(model: any, isNew: boolean) {
     this.grid.loading = true;
+    this.gridService.submitted.next(true)
     if (!isNew) {
       this.accountGroupService
         .edit<AccountGroup>(
@@ -956,11 +962,13 @@ export class AccountGroupsComponent
 
             this.selectedRows = [];
             this.reloadGrid();
+            this.gridService.submitted.next(false)
 
             this.refreshGroupTreeNodes(model);
           },
           (error) => {
             this.editDataItem = model;
+            this.gridService.submitted.next(false)
             this.showMessage(
               this.errorHandlingService.handleError(error),
               MessageType.Warning
@@ -986,6 +994,7 @@ export class AccountGroupsComponent
             var options = new ReloadOption();
             options.InsertedModel = insertedModel;
             this.reloadGrid(options);
+            this.gridService.submitted.next(false);
 
             this.refreshGroupTreeNodes(insertedModel);
           },
@@ -994,6 +1003,7 @@ export class AccountGroupsComponent
               this.errorHandlingService.handleError(error),
               MessageType.Warning
             );
+            this.gridService.submitted.next(false)
           }
         );
     }
