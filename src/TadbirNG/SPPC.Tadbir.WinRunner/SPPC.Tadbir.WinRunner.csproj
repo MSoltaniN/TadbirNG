@@ -51,6 +51,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
+    <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj" />
     <ProjectReference Include="..\SPPC.Tools.Model\SPPC.Tools.Model.csproj" />
     <ProjectReference Include="..\SPPC.Tools.Utility\SPPC.Tools.Utility.csproj" />
   </ItemGroup>

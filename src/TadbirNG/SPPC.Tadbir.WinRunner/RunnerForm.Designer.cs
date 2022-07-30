@@ -36,6 +36,7 @@ namespace SPPC.Tadbir.WinRunner
             this.btnExit = new System.Windows.Forms.Button();
             this.btnRunApp = new System.Windows.Forms.Button();
             this.worker = new System.ComponentModel.BackgroundWorker();
+            this.btnCheckForUpdate = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblElapsed
@@ -96,7 +97,7 @@ namespace SPPC.Tadbir.WinRunner
             // btnRunApp
             // 
             this.btnRunApp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRunApp.Location = new System.Drawing.Point(332, 317);
+            this.btnRunApp.Location = new System.Drawing.Point(202, 317);
             this.btnRunApp.Name = "btnRunApp";
             this.btnRunApp.Size = new System.Drawing.Size(131, 29);
             this.btnRunApp.TabIndex = 17;
@@ -110,6 +111,17 @@ namespace SPPC.Tadbir.WinRunner
             this.worker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Worker_DoWork);
             this.worker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Worker_RunWorkerCompleted);
             // 
+            // btnCheckForUpdate
+            // 
+            this.btnCheckForUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCheckForUpdate.Location = new System.Drawing.Point(339, 317);
+            this.btnCheckForUpdate.Name = "btnCheckForUpdate";
+            this.btnCheckForUpdate.Size = new System.Drawing.Size(124, 29);
+            this.btnCheckForUpdate.TabIndex = 23;
+            this.btnCheckForUpdate.Text = "به روزرسانی...";
+            this.btnCheckForUpdate.UseVisualStyleBackColor = true;
+            this.btnCheckForUpdate.Click += new System.EventHandler(this.CheckForUpdate_Click);
+            // 
             // RunnerForm
             // 
             this.AcceptButton = this.btnRunApp;
@@ -117,6 +129,7 @@ namespace SPPC.Tadbir.WinRunner
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnExit;
             this.ClientSize = new System.Drawing.Size(582, 353);
+            this.Controls.Add(this.btnCheckForUpdate);
             this.Controls.Add(this.lblElapsed);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtConsole);
@@ -142,5 +155,6 @@ namespace SPPC.Tadbir.WinRunner
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Button btnRunApp;
         private System.ComponentModel.BackgroundWorker worker;
+        private System.Windows.Forms.Button btnCheckForUpdate;
     }
 }

@@ -38,6 +38,7 @@ namespace SPPC.Framework.Service
         /// and the value must be the full URL of service root.
         /// </remarks>
         public ServiceClient(string root)
+            : base()
         {
             Verify.ArgumentNotNullOrEmptyString(root, nameof(root));
             ServiceRoot = root;
