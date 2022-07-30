@@ -49,6 +49,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 accounts = await Repository
                     .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
+                    .OrderBy(item => item.FullCode)
                     .Select(item => Mapper.Map<AccountViewModel>(item))
                     .ToListAsync();
                 await UpdateInactiveAccountsAsync(accounts);

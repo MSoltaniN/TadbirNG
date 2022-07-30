@@ -1726,6 +1726,7 @@
   },
   {
     "Id": 224,
+    "ParentId": 223,
     "FiscalPeriodId": 1,
     "BranchId": 1,
     "BranchScope": 0,
@@ -1739,6 +1740,7 @@
   },
   {
     "Id": 225,
+    "ParentId": 223,
     "FiscalPeriodId": 1,
     "BranchId": 1,
     "BranchScope": 0,
