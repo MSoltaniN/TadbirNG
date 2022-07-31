@@ -1,3 +1,4 @@
+import * as moment from 'jalali-moment';
 import {
   ChangeDetectorRef,
   Component,
@@ -126,7 +127,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     public bStorageService: BrowserStorageService,
     public cdref: ChangeDetectorRef,
     public ngZone: NgZone,
-    public advanceFilterService: AdvanceFilterService
+    public advanceFilterService: AdvanceFilterService,
   ) {
     super(
       toastrService,
@@ -790,12 +791,14 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
         this.filters = this.groupFilters[index].filters;
       } else this.filters = new Array<FilterRow>();
 
+      let value = this.selectScriptType === 'Date' && this.CurrentLanguage == 'fa'?
+                    this.toJalaliDate(this.selectedValue) : this.selectedValue;
       var row: FilterRow = new FilterRow();
       row.id = Guid.newGuid();
       row.columnName = this.selectedColumn.name;
       row.logicOperator = this.selectedLogicalOperator;
       row.operator = this.selectedOperator.key;
-      row.value = this.selectedValue;
+      row.value = this.selectedValue
       row.operatorTitle = this.getText(selectedOp.value);
       row.columnTitle = selectedCol.title;
       row.logicalOperatorTitle = this.getText(selectedlogOp.value);
@@ -804,7 +807,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
         " " +
         row.operatorTitle +
         " " +
-        this.selectedValue +
+        value +
         " " +
         row.logicalOperatorTitle;
       row.order = this.filters ? this.filters.length : 0;
@@ -815,6 +818,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.selectedValue = "";
 
       this.groupFilters[index].filters = this.filters;
+
       this.showMessage(
         this.getText("AdvanceFilter.FilterInsertedSuccess"),
         MessageType.Succes
@@ -823,6 +827,13 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.revertToDefaultValues();
       //this.saveFiltersToDB(false);
     }
+  }
+
+  toJalaliDate(value:any) {
+    let format: string = "YYYY/MM/DD HH:mm";
+    moment.locale('en');
+    let MomentDate = moment(value).locale('fa').format(format);    
+    return MomentDate;
   }
 
   computeExpressionWithBraces(filters: Array<FilterRow>) {
