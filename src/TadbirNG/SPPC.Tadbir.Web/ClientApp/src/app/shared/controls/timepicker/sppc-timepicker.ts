@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef } from '@angular/core';
+import { Component, OnInit, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator } from '@angular/forms'
 import { DatePipe } from '@angular/common'
 
@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common'
   template: `<dp-date-picker
                            [(ngModel)]="selectedTime"
                            (onChange)=onChangeTime()
+                           (keyUp.space)="onSpaceKey()"
                            mode="time"
                            dir="ltr"
                            theme="dp-material"
@@ -56,7 +57,7 @@ export class SppcTimepicker implements OnInit, ControlValueAccessor, Validator {
   public timeConfig: any;
   public timeLocale: string = 'fa';
   private parseError: boolean = false;
-
+  @Input('setTimeWithSpaceKey') setTimeWithSpaceKey = false
   selectedTime: any;
 
   propagateChange: any = () => { };
@@ -72,6 +73,14 @@ export class SppcTimepicker implements OnInit, ControlValueAccessor, Validator {
     this.timeConfig = {
       locale: this.timeLocale
     };
+  }
+
+  onSpaceKey() {
+    let time = this.datepipe.transform(new Date(), 'HH:mm:ss')
+    if (this.setTimeWithSpaceKey) {
+      this.selectedTime = time
+      this.propagateChange(time);
+    }
   }
 
   onChangeTime() {

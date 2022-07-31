@@ -11,7 +11,7 @@ import { KeyCode } from '@sppc/shared/enum';
   template: `
 <input type="text" #numinput [(ngModel)]="showValue" (ngModelChange)="changeValue()" [OnlyNumber] class="k-textbox num-input" [ngClass]="cssClass" (keyup)="keyPress($event)"/>
 `,
-  styles: [`.num-input { width:100% }`],
+  styles: [`.num-input { width:100%; background: #fff !important; border: 1px solid #ccc !important; }`],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
