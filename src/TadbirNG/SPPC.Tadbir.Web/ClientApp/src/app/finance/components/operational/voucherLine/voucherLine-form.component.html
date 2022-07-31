@@ -47,13 +47,15 @@
                 <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float"></label>
                 <div class="voucher-mode-item">
                   <input type="radio" name="creditDebiteMode" id="mode1" class="k-radio"
-                         [(ngModel)]="creditDebiteMode" value="1" [ngModelOptions]="{standalone: true}" />
+                         [(ngModel)]="creditDebiteMode" value="1" (change)="onCreditDebiteModeChange()"
+                         [ngModelOptions]="{standalone: true}" />
                   <label for="mode1">{{ 'VoucherLine.Debit' | translate }}</label>
                 </div>
 
                 <div class="voucher-mode-item">
                   <input type="radio" name="creditDebiteMode" id="mode2" class="k-radio"
-                         [(ngModel)]="creditDebiteMode" value="2" [ngModelOptions]="{standalone: true}" />
+                         [(ngModel)]="creditDebiteMode" value="2" (change)="onCreditDebiteModeChange()"
+                         [ngModelOptions]="{standalone: true}" />
                   <label for="mode2">{{ 'VoucherLine.Credit' | translate }}</label>
                 </div>
 

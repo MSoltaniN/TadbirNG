@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2, OnInit, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, OnInit, ElementRef, HostListener } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -257,6 +257,16 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
         }
       }
       //endregion
+    }
+  }
+
+  onCreditDebiteModeChange() {
+    if (this.creditDebiteMode == '1') {
+      if (this.editForm1.value.credit != "") 
+        this.editForm1.patchValue({ debit: this.editForm1.value.credit });
+    } else {
+      if (this.editForm1.value.debit != "")
+        this.editForm1.patchValue({ credit: this.editForm1.value.debit });
     }
   }
 
