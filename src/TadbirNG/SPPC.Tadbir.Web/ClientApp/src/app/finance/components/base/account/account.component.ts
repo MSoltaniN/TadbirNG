@@ -191,6 +191,7 @@ export class AccountComponent
 
   saveHandler(model: any, isNew: boolean) {
     this.grid.loading = true;
+    this.gridService.submitted.next(true)
     if (!isNew) {
       this.service
         .edit<AccountFullData>(
@@ -210,11 +211,12 @@ export class AccountComponent
             this.listChanged = false;
             this.reloadGrid();
             this.selectedRows = [];
-
+            this.gridService.submitted.next(false)
             this.refreshTreeNodes(model.account);
           },
           (error) => {
             this.editDataItem = model;
+            this.gridService.submitted.next(false)
             //this.dialogModel.errorMessages = this.errorHandlingService.handleError(error);
             if (error)
               this.dialogModel.errorMessages =
@@ -242,10 +244,11 @@ export class AccountComponent
             var options = new ReloadOption();
             options.InsertedModel = insertedModel;
             this.reloadGrid(options);
-
+            this.gridService.submitted.next(false)
             this.refreshTreeNodes(insertedModel);
           },
           (error) => {
+            this.gridService.submitted.next(false)
             if (error)
               this.dialogModel.errorMessages =
                 this.errorHandlingService.handleError(error);

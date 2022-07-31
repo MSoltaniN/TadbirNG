@@ -166,14 +166,17 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
   }
 
   saveBranchRolesHandler(userRoles: RelatedItems) {
+    this.gridService.submitted.next(true)
     this.branchService.modifiedBranchRoles(userRoles)
       .subscribe(response => {
         this.showMessage(this.getText("Branch.UpdateRoles"), MessageType.Succes);
         this.dialogRef.close();
         this.dialogModel.branchId = undefined;
         this.selectedRows = [];
+        this.gridService.submitted.next(false)
       }, (error => {
         this.dialogModel.errorMessages = error;
+        this.gridService.submitted.next(false)
       }));
   }
 

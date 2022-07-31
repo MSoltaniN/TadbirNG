@@ -177,6 +177,7 @@ export class FiscalPeriodComponent
 
   public saveFiscalPeriodRolesHandler(fPeriodRoles: RelatedItems) {
     this.grid.loading = true;
+    this.gridService.submitted.next(true)
     this.fiscalPeriodService.modifiedFiscalPeriodRoles(fPeriodRoles).subscribe(
       (response) => {
         this.rolesList = false;
@@ -184,10 +185,12 @@ export class FiscalPeriodComponent
           this.getText("FiscalPeriod.UpdateRoles"),
           MessageType.Succes
         );
+        this.gridService.submitted.next(false)
         this.grid.loading = false;
       },
       (error) => {
         this.grid.loading = false;
+        this.gridService.submitted.next(false)
         if (error)
           this.errorMessages = this.errorHandlingService.handleError(error);
       }
