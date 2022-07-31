@@ -199,7 +199,7 @@ namespace SPPC.Licensing.Web.Controllers
         private LicenseCheckModel GetLicenseCheckData()
         {
             var licenseCheck = default(LicenseCheckModel);
-            var header = Request.Headers[Constants.LicenseCheckHeaderName];
+            var header = Request.Headers[LicenseConstants.LicenseCheckHeaderName];
             if (!String.IsNullOrEmpty(header))
             {
                 string json = _crypto.Decrypt(header);

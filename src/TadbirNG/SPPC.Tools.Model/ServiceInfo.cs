@@ -6,6 +6,8 @@ namespace SPPC.Tools.Model
     {
         public string Name { get; set; }
 
+        public string SourceUrl { get; set; }
+
         public string Sha256 { get; set; }
 
         public int Size { get; set; }

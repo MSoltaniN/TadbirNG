@@ -7,16 +7,113 @@ using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
 using SPPC.Tools.Model;
 using SPPC.Framework.Common;
+using SPPC.Framework.Service;
+using SPPC.Licensing.Model;
+using SPPC.Framework.Cryptography;
 
 namespace SPPC.Tools.Utility
 {
     public class UpdateUtility
     {
-        public UpdateUtility(string imageRoot)
+        public UpdateUtility()
         {
-            _imageRoot = FileUtility.GetAbsolutePath(imageRoot);
             _runner = new CliRunner();
             _runner.OutputReceived += Runner_OutputReceived;
+            _apiClient = new ServiceClient(UpdateServerUrl);
+            _archive = new ArchiveUtility(Path.Combine("..", "tools"), false);
+        }
+
+        public UpdateUtility(string imageRoot)
+            : base()
+        {
+            _imageRoot = FileUtility.GetAbsolutePath(imageRoot);
+        }
+
+        public string DockerPath
+        {
+            get
+            {
+                return _dockerPath;
+            }
+            set
+            {
+                Verify.ArgumentNotNullOrEmptyString("value", nameof(value));
+                _dockerPath = value;
+                AddToProcessPath(_dockerPath);
+            }
+        }
+
+        public static (int, int) GetUpdateSummary(VersionInfo current, VersionInfo latest)
+        {
+            int count = 0;
+            double downloadSize = 0;
+            if (current.Services[0].Sha256 != latest.Services[0].Sha256)
+            {
+                count++;
+                downloadSize += FileSize.ToMegaBytes(latest.Services[0].Size, 1);
+            }
+
+            if (current.Services[1].Sha256 != latest.Services[1].Sha256)
+            {
+                count++;
+                downloadSize += FileSize.ToMegaBytes(latest.Services[1].Size, 1);
+            }
+
+            if (current.Services[2].Sha256 != latest.Services[2].Sha256)
+            {
+                count++;
+                downloadSize += FileSize.ToMegaBytes(latest.Services[2].Size, 1);
+            }
+
+            if (current.Services[3].Sha256 != latest.Services[3].Sha256)
+            {
+                count++;
+                downloadSize += FileSize.ToMegaBytes(latest.Services[3].Size, 1);
+            }
+
+            return (count, (int)Math.Round(downloadSize));
+        }
+
+        public static string PrepareUpdateFolder()
+        {
+            var root = Path.GetDirectoryName(Environment.CurrentDirectory);
+            var updateFolder = Path.Combine(root, "docker");
+            if (!Directory.Exists(updateFolder))
+            {
+                var dirInfo = Directory.CreateDirectory(updateFolder);
+                dirInfo.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+            }
+
+            return updateFolder;
+        }
+
+        public bool DownloadService(string updateFolder, ServiceInfo serviceInfo, string instance = null)
+        {
+            if (!String.IsNullOrEmpty(instance))
+            {
+                _apiClient.AddHeader(LicenseConstants.InstanceHeaderName, instance);
+            }
+
+            var file = _apiClient.GetFile(serviceInfo.SourceUrl);
+            var validated = CryptoService.Default.ValidateHash(file.RawData, serviceInfo.Sha256)
+                && file.RawData.Length == serviceInfo.Size;
+            if (validated)
+            {
+                File.WriteAllBytes(Path.Combine(updateFolder, file.Name), file.RawData);
+            }
+
+            _apiClient.RemoveHeader(LicenseConstants.InstanceHeaderName);
+            return validated;
+        }
+
+        public void BackupService(string tempFolder, string serviceName, string tag = "latest")
+        {
+            var currentDir = Environment.CurrentDirectory;
+            Environment.CurrentDirectory = tempFolder;
+            _runner.Run($"docker save msn1368/{serviceName}:{tag} -o {serviceName}.tar");
+            var tarPath = Path.Combine(Environment.CurrentDirectory, $"{serviceName}.tar");
+            _archive.GZip(tarPath);
+            Environment.CurrentDirectory = currentDir;
         }
 
         public VersionInfo GetCurrentVersionInfo(string edition)
@@ -29,10 +126,10 @@ namespace SPPC.Tools.Utility
             {
                 Version = QueryAppVersion()
             };
-            version.Services[0] = GetServiceInfo(DockerService.LicenseServerImage);
-            version.Services[1] = GetServiceInfo(DockerService.ApiServerImage, editionTag);
-            version.Services[2] = GetServiceInfo(DockerService.DbServerImage);
-            version.Services[3] = GetServiceInfo(DockerService.WebAppImage);
+            version.Services.Add(GetServiceInfo(DockerService.LicenseServerImage));
+            version.Services.Add(GetServiceInfo(DockerService.ApiServerImage, editionTag));
+            version.Services.Add(GetServiceInfo(DockerService.DbServerImage));
+            version.Services.Add(GetServiceInfo(DockerService.WebAppImage));
             Environment.CurrentDirectory = currentDir;
             return version;
         }
@@ -63,6 +160,17 @@ namespace SPPC.Tools.Utility
             return DockerUtility.GetServiceInfo(imagePath);
         }
 
+        private static void AddToProcessPath(string path)
+        {
+            var currentPath = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.Process);
+            if (!String.IsNullOrEmpty(currentPath))
+            {
+                currentPath = String.Join(';', currentPath, path);
+            }
+
+            Environment.SetEnvironmentVariable("Path", currentPath, EnvironmentVariableTarget.Process);
+        }
+
         private string QueryAppVersion()
         {
             // NOTE: This method assumes current directory to be root folder of local dockercache clone
@@ -83,7 +191,11 @@ namespace SPPC.Tools.Utility
         }
 
         private const string _logPath = "update.log";
+        private const string UpdateServerUrl = "http://localhost:9092";
+        private string _dockerPath;
         private readonly string _imageRoot;
         private readonly CliRunner _runner;
+        private readonly IApiClient _apiClient;
+        private readonly ArchiveUtility _archive;
     }
 }

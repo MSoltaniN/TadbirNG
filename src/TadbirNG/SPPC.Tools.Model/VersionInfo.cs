@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace SPPC.Tools.Model
 {
@@ -6,11 +6,13 @@ namespace SPPC.Tools.Model
     {
         public VersionInfo()
         {
-            Services = new ServiceInfo[4];
+            Services = new List<ServiceInfo>();
         }
 
         public string Version { get; set; }
 
-        public ServiceInfo[] Services { get; }
+        public string Edition { get; set; }
+
+        public List<ServiceInfo> Services { get; }
     }
 }
