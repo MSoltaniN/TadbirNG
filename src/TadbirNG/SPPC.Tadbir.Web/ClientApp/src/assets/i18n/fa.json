@@ -936,6 +936,7 @@
     "CurrencyRate": "نرخ ارز",
     "CurrencyValue": "مبلغ ارز",
     "CurrencyName": "نوع ارز",
+    "CurrencyInfo": "اطلاعات ارزی",
     "ApproveActionNotPermitted": "عملیات تایید یا تصویب سند فقط برای اسناد عادی امکان پذیر می باشد",
     "NewWithDifference": "آرتیکل جدید به میزان اختلاف",
     "ArticleDescription": "شرح آرتیکل",

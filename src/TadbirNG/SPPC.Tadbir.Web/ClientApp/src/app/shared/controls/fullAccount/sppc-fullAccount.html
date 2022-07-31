@@ -7,7 +7,7 @@
       {{ fullAccount?.costCenter.fullCode }} -
       {{ fullAccount?.project.fullCode }}
     </label>
-    <span class="glyphicon glyphicon-search" (click)="openDialog(itemListRef, accountItem.Account)"></span>
+    <span [ngClass]="{ 'rtl-icon': CurrentLanguage == 'fa'}" class="glyphicon glyphicon-search" (click)="openDialog(itemListRef, accountItem.Account)"></span>
     <div class="fullAccount-item">
       <div formGroupName="account" class="sppc-float">
         <input type="text" class="k-textbox" [(ngModel)]="accountTitle" [ngModelOptions]="{standalone: true}" (keydown.enter)="openDialog(itemListRef, accountItem.Account)" (focus)="onFocus(accountItem.Account)"/>

@@ -17,16 +17,20 @@
   direction: ltr;
 }
 
-  .fullAccount > .glyphicon-search{
-    position:absolute;
-    left:10px;
-  }
+.fullAccount > .glyphicon-search{
+  position:absolute;
+  right: 10px;
+}
+ .fullAccount > .glyphicon-search.rtl-icon {
+  left:10px !important;
+  right: auto;
+}
 
 
-  .fullAccount > .glyphicon-search:hover {
-    cursor: pointer;
-    opacity: .8;
-  }
+.fullAccount > .glyphicon-search:hover {
+  cursor: pointer;
+  opacity: .8;
+}
 
 .fullAccount .fullAccount-item > div {
   width: 50%;
