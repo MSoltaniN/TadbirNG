@@ -260,6 +260,11 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
     }
   }
 
+  @HostListener('document:keydown.shift.control.k')
+  changeCreditDebiteMode() {
+    this.creditDebiteMode = this.creditDebiteMode == '1'? '2' : '1';
+  }
+
   onCreditDebiteModeChange() {
     if (this.creditDebiteMode == '1') {
       if (this.editForm1.value.credit != "") 
