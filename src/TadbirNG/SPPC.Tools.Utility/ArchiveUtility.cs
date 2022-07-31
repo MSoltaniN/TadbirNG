@@ -37,26 +37,26 @@ namespace SPPC.Tools.Utility
         public void GZip(string sourceFile)
         {
             Verify.ArgumentNotNullOrEmptyString(sourceFile, nameof(sourceFile));
-            _runner.Run(String.Format(Constants.GzipTemplate, sourceFile));
+            _runner.Run(String.Format(ToolConstants.GzipTemplate, sourceFile));
         }
 
         public void GunZip(string sourceFile)
         {
             Verify.ArgumentNotNullOrEmptyString(sourceFile, nameof(sourceFile));
-            _runner.Run(String.Format(Constants.GunzipTemplate, sourceFile));
+            _runner.Run(String.Format(ToolConstants.GunzipTemplate, sourceFile));
         }
 
         public void Tar(string tarFile, string sourceFile)
         {
             Verify.ArgumentNotNullOrEmptyString(tarFile, nameof(tarFile));
             Verify.ArgumentNotNullOrEmptyString(sourceFile, nameof(sourceFile));
-            _runner.Run(String.Format(Constants.TarTemplate, tarFile, sourceFile));
+            _runner.Run(String.Format(ToolConstants.TarTemplate, tarFile, sourceFile));
         }
 
         public void UnTar(string tarFile)
         {
             Verify.ArgumentNotNullOrEmptyString(tarFile, nameof(tarFile));
-            _runner.Run(String.Format(Constants.UntarTemplate, tarFile));
+            _runner.Run(String.Format(ToolConstants.UntarTemplate, tarFile));
         }
 
         private static void SetToolsPath(string toolsPath)

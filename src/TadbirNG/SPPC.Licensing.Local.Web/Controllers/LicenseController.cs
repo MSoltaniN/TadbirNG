@@ -290,7 +290,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
 
         private string GetInstance()
         {
-            return Request.Headers[Constants.InstanceHeaderName];
+            return Request.Headers[LicenseConstants.InstanceHeaderName];
         }
 
         private string GetLicense()

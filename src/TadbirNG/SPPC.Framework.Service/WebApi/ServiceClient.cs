@@ -80,6 +80,26 @@ namespace SPPC.Framework.Service
         }
 
         /// <summary>
+        /// Removes an HTTP header specified by name
+        /// </summary>
+        /// <param name="name">Name of header to remove</param>
+        public void RemoveHeader(string name)
+        {
+            if (_httpClient.DefaultRequestHeaders.Contains(name))
+            {
+                _httpClient.DefaultRequestHeaders.Remove(name);
+            }
+        }
+
+        /// <summary>
+        /// Removes all HTTP headers
+        /// </summary>
+        public void RemoveAllHeaders()
+        {
+            _httpClient.DefaultRequestHeaders.Clear();
+        }
+
+        /// <summary>
         /// Retrieves raw data from a file by sending an HTTP GET request to a Web API service.
         /// </summary>
         /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>

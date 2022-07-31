@@ -80,7 +80,7 @@ namespace SPPC.Tadbir.Web.Api
                     .AllowAnyMethod()
                     .WithExposedHeaders(AppConstants.ContextHeaderName, AppConstants.TotalCountHeaderName)
                     .WithHeaders("Content-Type", "Accept-Language", AppConstants.ContextHeaderName,
-                        Constants.InstanceHeaderName, AppConstants.GridOptionsHeaderName,
+                        LicenseConstants.InstanceHeaderName, AppConstants.GridOptionsHeaderName,
                         AppConstants.ParametersHeaderName, AppConstants.LicenseHeaderName));
 
             app.UseStaticFiles();

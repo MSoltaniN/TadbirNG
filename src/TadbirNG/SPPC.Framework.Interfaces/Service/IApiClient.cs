@@ -26,6 +26,17 @@ namespace SPPC.Framework.Service
         void AddHeader(string name, string value);
 
         /// <summary>
+        /// Removes an HTTP header specified by name
+        /// </summary>
+        /// <param name="name">Name of header to remove</param>
+        void RemoveHeader(string name);
+
+        /// <summary>
+        /// Removes all HTTP headers
+        /// </summary>
+        void RemoveAllHeaders();
+
+        /// <summary>
         /// Retrieves raw data from a file by sending an HTTP GET request to a Web API service.
         /// </summary>
         /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>

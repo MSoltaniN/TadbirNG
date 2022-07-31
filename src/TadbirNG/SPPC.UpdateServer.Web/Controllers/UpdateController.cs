@@ -80,7 +80,7 @@ namespace SPPC.UpdateServer.Web.Controllers
         private InstanceModel GetInstanceData()
         {
             var instance = default(InstanceModel);
-            var header = Request.Headers[Constants.InstanceHeaderName];
+            var header = Request.Headers[LicenseConstants.InstanceHeaderName];
             if (!String.IsNullOrEmpty(header))
             {
                 instance = InstanceFactory.FromCrypto(header);

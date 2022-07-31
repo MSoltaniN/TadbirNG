@@ -105,7 +105,7 @@ namespace SPPC.Tadbir.Licensing
         {
             var licenseCheck = await GetLicenseCheckAsync(instance, connection);
             _apiClient.AddHeader(
-                Constants.LicenseCheckHeaderName, _crypto.Encrypt(JsonHelper.From(licenseCheck)));
+                LicenseConstants.LicenseCheckHeaderName, _crypto.Encrypt(JsonHelper.From(licenseCheck)));
             var license = await _apiClient.GetAsync<string>(LicenseApi.License);
             var licenseModel = await LoadLicenseAsync();
             ResetLoginCount(licenseModel);
@@ -160,7 +160,7 @@ namespace SPPC.Tadbir.Licensing
                 status = LicenseStatus.NoLicense;
                 _log.AppendLine();
                 _log.AppendFormat("[{0}] [ERROR] License file '{1}' could not be loaded.{2}",
-                    DateTime.Now.ToString(), Constants.LicenseFile, Environment.NewLine);
+                    DateTime.Now.ToString(), LicenseConstants.LicenseFile, Environment.NewLine);
             }
             else if (EnsureLicenseNotCorrupt(out LicenseFileModel license))
             {
@@ -174,7 +174,7 @@ namespace SPPC.Tadbir.Licensing
                 status = LicenseStatus.NoCertificate;
                 _log.AppendLine();
                 _log.AppendFormat("[{0}] [ERROR] Certificate file '{1}' could not be loaded.{2}",
-                    DateTime.Now.ToString(), Constants.CertificateFile, Environment.NewLine);
+                    DateTime.Now.ToString(), LicenseConstants.CertificateFile, Environment.NewLine);
             }
             else if (!EnsureCertificateIsValid(certificate, license.ClientKey))
             {
@@ -229,7 +229,7 @@ namespace SPPC.Tadbir.Licensing
                 status = LicenseStatus.NoLicense;
                 _log.AppendLine();
                 _log.AppendFormat("[{0}] [ERROR] License file '{1}' could not be loaded.{2}",
-                    DateTime.Now.ToString(), Constants.LicenseFile, Environment.NewLine);
+                    DateTime.Now.ToString(), LicenseConstants.LicenseFile, Environment.NewLine);
             }
             else if (EnsureLicenseNotCorrupt(out _))
             {
@@ -243,7 +243,7 @@ namespace SPPC.Tadbir.Licensing
                 status = LicenseStatus.NoCertificate;
                 _log.AppendLine();
                 _log.AppendFormat("[{0}] [ERROR] Certificate file '{1}' does not exist.{2}",
-                    DateTime.Now.ToString(), Constants.CertificateFile, Environment.NewLine);
+                    DateTime.Now.ToString(), LicenseConstants.CertificateFile, Environment.NewLine);
             }
 
             File.AppendAllText(Path.Combine("wwwroot", "license.log"), _log.ToString());
@@ -321,7 +321,7 @@ namespace SPPC.Tadbir.Licensing
             };
 
             certificate = _crypto.CertificateManager.GenerateSelfSigned(
-                Constants.IssuerName, Constants.SubjectName);
+                LicenseConstants.IssuerName, LicenseConstants.SubjectName);
             activation.ClientKey = Convert.ToBase64String(certificate.GetPublicKey());
             return activation;
         }

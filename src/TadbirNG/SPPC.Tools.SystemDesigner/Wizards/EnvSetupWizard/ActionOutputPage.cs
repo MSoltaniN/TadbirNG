@@ -14,7 +14,7 @@ using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms;
 using SPPC.Tools.Transforms.Templates;
-using Constants = SPPC.Licensing.Model.Constants;
+using LicenseConstants = SPPC.Licensing.Model.LicenseConstants;
 
 namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
 {
@@ -318,7 +318,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             worker.ReportProgress(0);
             try
             {
-                _apiClient.AddHeader(Constants.InstanceHeaderName, WizardModel.InstanceKey);
+                _apiClient.AddHeader(LicenseConstants.InstanceHeaderName, WizardModel.InstanceKey);
                 _apiClient.Update("Null Data", LicenseApi.ActivateLicense);
                 _outputBuilder.AppendLine("(OK)");
                 worker.ReportProgress(23);

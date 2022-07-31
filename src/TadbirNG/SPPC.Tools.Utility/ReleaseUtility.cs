@@ -91,10 +91,10 @@ namespace SPPC.Tools.Utility
             {
                 Version = VersionUtility.GetAppVersion()
             };
-            versionInfo.Services[0] = GetServiceInfo(licenseKey, DockerService.LicenseServerImage);
-            versionInfo.Services[1] = GetServiceInfo(licenseKey, DockerService.ApiServerImage);
-            versionInfo.Services[2] = GetServiceInfo(licenseKey, DockerService.DbServerImage);
-            versionInfo.Services[3] = GetServiceInfo(licenseKey, DockerService.WebAppImage);
+            versionInfo.Services.Add(GetServiceInfo(licenseKey, DockerService.LicenseServerImage));
+            versionInfo.Services.Add(GetServiceInfo(licenseKey, DockerService.ApiServerImage));
+            versionInfo.Services.Add(GetServiceInfo(licenseKey, DockerService.DbServerImage));
+            versionInfo.Services.Add(GetServiceInfo(licenseKey, DockerService.WebAppImage));
 
             return JsonHelper.From(versionInfo);
         }
