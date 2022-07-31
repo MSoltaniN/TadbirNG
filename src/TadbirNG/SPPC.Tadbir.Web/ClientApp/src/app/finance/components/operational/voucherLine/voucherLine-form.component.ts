@@ -216,6 +216,11 @@ export class VoucherLineFormComponent
   }
 
   focusHandler(e: any) {
+    setTimeout(() => {
+      let costField = document.querySelector('.cost-field input');
+      (<HTMLElement>document.activeElement).blur();
+      (<HTMLElement>costField).focus();
+    },200)
     this.setFocus.emit();
   }
 
