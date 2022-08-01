@@ -674,7 +674,6 @@ export class AutoGridExplorerComponent<T>
     this.rowDoubleClickHandler();
   }
 
-  //saveHandler(model: any, isNew: boolean): void { };
   saveHandler(model: any, isNew: boolean) {
     this.grid.loading = true;
     this.service.submitted.next(true)
@@ -694,6 +693,7 @@ export class AutoGridExplorerComponent<T>
             this.listChanged = false;
             this.reloadGrid();
             this.selectedRows = [];
+            this.highLightNewRow();
 
             this.refreshTreeNodes(model);
             this.service.submitted.next(false)
@@ -724,6 +724,7 @@ export class AutoGridExplorerComponent<T>
           var options = new ReloadOption();
           options.Status = ReloadStatusType.AfterDelete;
           this.reloadGrid(options);
+          this.highLightNewRow();
 
           this.refreshTreeNodes(insertedModel);
           this.service.submitted.next(false)

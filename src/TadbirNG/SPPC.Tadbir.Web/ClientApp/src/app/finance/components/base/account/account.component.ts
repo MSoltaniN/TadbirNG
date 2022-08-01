@@ -211,6 +211,7 @@ export class AccountComponent
             this.reloadGrid();
             this.selectedRows = [];
 
+            this.highLightNewRow();
             this.refreshTreeNodes(model.account);
           },
           (error) => {
