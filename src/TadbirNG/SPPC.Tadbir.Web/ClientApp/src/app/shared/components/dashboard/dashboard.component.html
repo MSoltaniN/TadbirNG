@@ -1,12 +1,10 @@
 <section class="content-header col-md-12">
-  <div class="col-md-4 settings">
-    <ng-template [ngIf]="!isDashboardEditMode">
-      <a href="#/tadbir/dashboard" (click)="onSettingClick()"
-        ><i class="fa fa-cog"></i>{{ "Dashboard.Setting" | translate }}</a
-      >
-    </ng-template>
+  <div class="col-md-5 settings">
     <ng-template [ngIf]="isDashboardEditMode">
-      <div class="col-md-12 alert alert-warning msg-container">
+      <div
+        class="alert alert-warning msg-container"
+        [ngClass]="isDashboardEditMode ? 'col-md-8' : ''"
+      >
         <div class="col-md-2 dashboard-button">
           <button (click)="onOkClick()" class="k-button k-primary">
             {{ "Buttons.Ok" | translate }}
@@ -22,8 +20,22 @@
         </div>
       </div>
     </ng-template>
+    <div
+      class="buttons"
+      [ngClass]="isDashboardEditMode ? 'col-md-4' : 'col-md-6'"
+    >
+      <a href="#/tadbir/dashboard" (click)="onAddWidgetClick()"
+        ><i class="fa fa-plus"></i>{{ "Dashboard.AddWidget" | translate }}</a
+      >
+      <a
+        href="#/tadbir/dashboard"
+        *ngIf="!isDashboardEditMode"
+        (click)="onSettingClick()"
+        ><i class="fa fa-cog"></i>{{ "Dashboard.Setting" | translate }}</a
+      >
+    </div>
   </div>
-  <div class="col-md-8 title">
+  <div class="col-md-7 title">
     <h2>
       {{ "Dashboard.DashboardTitle" | translate }}
     </h2>
@@ -102,29 +114,32 @@
   <!-- /.row -->
   <div class="row widgets">
     <div style="height: 100vh; width: 100%; direction: ltr">
-      <gridster [options]="options">
-        <gridster-item [item]="item" *ngFor="let item of dashboard">
-          <ng-container *ngIf="item.index == 0">
-            <ng-container *ngTemplateOutlet="chart1"></ng-container>
-          </ng-container>
-          <ng-container *ngIf="item.index == 1">
-            <ng-container *ngTemplateOutlet="chart2"></ng-container>
-          </ng-container>
-          <!-- <ng-container *ngIf="item.index == 2">
+      <ng-container *ngIf="widgetList$ | async as widgets">
+        <gridster [options]="options">
+          <gridster-item [item]="item" *ngFor="let item of widgets">
+            <ng-container *ngIf="item.id == 1 && item.selected">
+              <ng-container *ngTemplateOutlet="chart1"></ng-container>
+            </ng-container>
+            <ng-container *ngIf="item.id == 2 && item.selected">
+              <ng-container *ngTemplateOutlet="chart2"></ng-container>
+            </ng-container>
+            <!-- <ng-container *ngIf="item.index == 2">
             <ng-container *ngTemplateOutlet="guage"></ng-container>
           </ng-container> -->
-        </gridster-item>
-      </gridster>
+          </gridster-item>
+        </gridster>
+      </ng-container>
     </div>
   </div>
   <ng-template #chart1>
     <widget
+      (closeWidget)="onCloseWidget($event)"
+      [widgetId]="1"
       [isEditMode]="isDashboardEditMode"
       headerTitle="{{ 'Dashboard.GrossSales' | translate }}"
     >
       <widget-container>
         <div class="box-body" body>
-          <!-- <canvas id="grossChart" width="500" height="250"></canvas> -->
           <chart-widget
             [type]="'bar'"
             [data]="grossChartData"
@@ -136,6 +151,8 @@
   </ng-template>
   <ng-template #chart2>
     <widget
+      (closeWidget)="onCloseWidget($event)"
+      [widgetId]="2"
       [isEditMode]="isDashboardEditMode"
       headerTitle="{{ 'Dashboard.NetSales' | translate }}"
     >
@@ -160,4 +177,3 @@
     </div>
   </ng-template>
 </section>
-<!-- /.content -->

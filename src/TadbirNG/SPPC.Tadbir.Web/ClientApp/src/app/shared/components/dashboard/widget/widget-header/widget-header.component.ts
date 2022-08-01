@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 
 @Component({
   selector: "widget-header",
@@ -9,7 +9,14 @@ export class WidgetHeaderComponent implements OnInit {
   @Input() title: string;
   @Input() editMode: boolean;
 
+  @Output() closeClick: EventEmitter<number> = new EventEmitter();
+
   constructor() {}
+
+  onClose() {
+    debugger;
+    this.closeClick.emit();
+  }
 
   ngOnInit() {}
 }

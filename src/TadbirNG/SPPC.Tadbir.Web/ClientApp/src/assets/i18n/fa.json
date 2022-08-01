@@ -51,7 +51,8 @@
     "DashboardName": "داشبورد",
     "Setting": "تنظیمات",
     "White": "سفید",
-    "SettingConfirm": "آیا تنظیمات داشبورد ذخیره شود؟"
+    "SettingConfirm": "آیا تنظیمات داشبورد ذخیره شود؟",
+    "AddWidget": "ویجت جدید"
   },
   "Exception": {
     "ErrorCode": "کد خطا",

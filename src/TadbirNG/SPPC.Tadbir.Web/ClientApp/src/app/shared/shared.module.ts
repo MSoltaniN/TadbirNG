@@ -1,22 +1,26 @@
-import { NgModule, ModuleWithProviders, ErrorHandler, ElementRef } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { CommonModule, DatePipe } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
+import { ModuleWithProviders, NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
-import { MessageService } from '@progress/kendo-angular-l10n';
-import { GridModule, ExcelModule, PDFModule } from '@progress/kendo-angular-grid';
-import { DialogModule } from '@progress/kendo-angular-dialog';
-import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
-import { InputsModule } from '@progress/kendo-angular-inputs';
-import { CalendarModule } from '@progress/kendo-angular-dateinputs';
-import { TreeViewModule } from '@progress/kendo-angular-treeview';
-import { PopupModule } from '@progress/kendo-angular-popup';
-import { ContextMenuModule } from '@progress/kendo-angular-menu';
-import { LayoutModule } from '@progress/kendo-angular-layout';
-import { ButtonsModule } from '@progress/kendo-angular-buttons';
-import { DpDatePickerModule } from 'ng2-jalali-date-picker';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { ButtonsModule } from "@progress/kendo-angular-buttons";
+import { CalendarModule } from "@progress/kendo-angular-dateinputs";
+import { DialogModule } from "@progress/kendo-angular-dialog";
+import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
+import {
+  ExcelModule,
+  GridModule,
+  PDFModule,
+} from "@progress/kendo-angular-grid";
+import { InputsModule } from "@progress/kendo-angular-inputs";
+import { MessageService } from "@progress/kendo-angular-l10n";
+import { LayoutModule } from "@progress/kendo-angular-layout";
+import { ContextMenuModule } from "@progress/kendo-angular-menu";
+import { PopupModule } from "@progress/kendo-angular-popup";
+import { TreeViewModule } from "@progress/kendo-angular-treeview";
+import { DpDatePickerModule } from "ng2-jalali-date-picker";
 
 import { SharedRoutingModule } from "@sppc/shared/shared-routing.module";
 
@@ -118,6 +122,7 @@ import { ViewIdentifierComponent } from "@sppc/shared/components/viewIdentifier/
 import { GridMessageService } from "@sppc/shared/services/grid-messages.service";
 import { GridsterModule } from "angular-gridster2";
 import { ChartModule } from "primeng/chart";
+import { ChartWidgetComponent } from "./components/dashboard/widget/chart-widget/chart-widget.component";
 import { WidgetContainerComponent } from "./components/dashboard/widget/widget-container/widget-container.component";
 import { WidgetHeaderComponent } from "./components/dashboard/widget/widget-header/widget-header.component";
 import { WidgetComponent } from "./components/dashboard/widget/widget-layout/widget.component";
@@ -127,9 +132,11 @@ import { SppcButtonDisable } from "./directive/button/buttonDisable.directive";
 import { MessageBoxService } from "./services/message.service";
 import { ShareDataService } from "./services/share-data.service";
 import { ShortcutService } from "./services/shortcut.service";
-import { ChartWidgetComponent } from './components/dashboard/widget/chart-widget/chart-widget.component';
 
-import { TooltipDirective } from './directive/editorForm/tooltip.directive';
+import { TooltipDirective } from "./directive/editorForm/tooltip.directive";
+
+import { AddWidgetComponent } from "./components/dashboard/add-widget/add-widget.component";
+import { WidgetSettingComponent } from "./components/dashboard/widget/widget-setting/widget-setting.component";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -143,12 +150,20 @@ export function HttpLoaderFactory(http: HttpClient) {
     SharedRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    DialogModule, DropDownsModule, GridModule, InputsModule, CalendarModule, ExcelModule, PDFModule ,
+    DialogModule,
+    DropDownsModule,
+    GridModule,
+    InputsModule,
+    CalendarModule,
+    ExcelModule,
+    PDFModule,
     ButtonsModule,
-    PopupModule, TreeViewModule, ContextMenuModule,
+    PopupModule,
+    TreeViewModule,
+    ContextMenuModule,
     LayoutModule,
     ChartModule,
-    
+
     DpDatePickerModule,
     TranslateModule.forRoot({
       loader: {
@@ -233,10 +248,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     LicenseInfoComponent,
     WidgetComponent,
     WidgetHeaderComponent,
-      WidgetContainerComponent,
-      TooltipDirective,
-    
+    WidgetContainerComponent,
+    TooltipDirective,
+
     ChartWidgetComponent,
+
+    AddWidgetComponent,
+
+    WidgetSettingComponent,
   ],
 
   entryComponents: [
@@ -248,6 +267,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     QuickReportPageSettingComponent,
     SuperuserPasswordComponent,
     LicenseInfoComponent,
+    AddWidgetComponent,
   ],
 
   //providers: [BrowserStorageService, DashboardService, GridService, LookupService, MetaDataService, ReportingService,
@@ -256,17 +276,84 @@ export function HttpLoaderFactory(http: HttpClient) {
   //  DatePipe
   //],
 
-  exports: [CommonModule, LayoutComponent, SppcGridColumn, SppcAutoGridColumn, SppcGridReorder, SppcAutoGeneratedGridReorder, SppcAutoGeneratedGridResize, SppcGridResize, SppcCheckAccess,
-    SppcViewTreeConfig, GridSettingComponent, AutoGeneratedGridSettingComponent, SelectFormGridSettingComponent, SppcDatePipe, SppcNumConfigPipe, ReplaceLineBreaksPipe,
-    FormsModule, ReactiveFormsModule, DialogModule, DropDownsModule, GridModule, InputsModule, CalendarModule, ButtonsModule,
-    PopupModule, TreeViewModule, ContextMenuModule, LayoutModule, DpDatePickerModule, TranslateModule, DashboardComponent, NavMenuComponent, GridFilterComponent,
-    SppcBranchScope, SppcDatepicker, SppcDateRangeSelector, SppcDropDownList, SppcDisplayFullAccountComponent, SppcFullAccountComponent, SppcGridDatepicker, SppcGridDateFilter,
-    FilterDatePickerDirective, SppcAutoGridFilter, SppcGridFilter, SelectFormComponent, DynamicTabsDirective, TabComponent, TabsComponent, SppcMaskTextBox, SppcNumericInput,
-    SppcNumericTextBox, SppcCodeLengthDirective, ConfirmEqualValidator, EditorFormTitleComponent, FullCodeDirective, FullCodeTestDirective, SpccOnlyNumberDirective,SppcButtonDisable,
-    SppcPermissionCheckDirective, BreadCumbComponent, ViewIdentifierComponent, ReportManagementComponent, QuickReportSettingComponent, ReportParametersComponent, ReportParamComponent,
-    ReportViewerComponent, SppcTimepicker, NotFoundComponent, ClosingTmpComponent, ErrorListComponent, LeftActionToolbarComponent, ExcelModule, PDFModule, QuickReportPageSettingComponent, InputDirective,
+  exports: [
+    CommonModule,
+    LayoutComponent,
+    SppcGridColumn,
+    SppcAutoGridColumn,
+    SppcGridReorder,
+    SppcAutoGeneratedGridReorder,
+    SppcAutoGeneratedGridResize,
+    SppcGridResize,
+    SppcCheckAccess,
+    SppcViewTreeConfig,
+    GridSettingComponent,
+    AutoGeneratedGridSettingComponent,
+    SelectFormGridSettingComponent,
+    SppcDatePipe,
+    SppcNumConfigPipe,
+    ReplaceLineBreaksPipe,
+    FormsModule,
+    ReactiveFormsModule,
+    DialogModule,
+    DropDownsModule,
+    GridModule,
+    InputsModule,
+    CalendarModule,
+    ButtonsModule,
+    PopupModule,
+    TreeViewModule,
+    ContextMenuModule,
+    LayoutModule,
+    DpDatePickerModule,
+    TranslateModule,
+    DashboardComponent,
+    NavMenuComponent,
+    GridFilterComponent,
+    SppcBranchScope,
+    SppcDatepicker,
+    SppcDateRangeSelector,
+    SppcDropDownList,
+    SppcDisplayFullAccountComponent,
+    SppcFullAccountComponent,
+    SppcGridDatepicker,
+    SppcGridDateFilter,
+    FilterDatePickerDirective,
+    SppcAutoGridFilter,
+    SppcGridFilter,
+    SelectFormComponent,
+    DynamicTabsDirective,
+    TabComponent,
+    TabsComponent,
+    SppcMaskTextBox,
+    SppcNumericInput,
+    SppcNumericTextBox,
+    SppcCodeLengthDirective,
+    ConfirmEqualValidator,
+    EditorFormTitleComponent,
+    FullCodeDirective,
+    FullCodeTestDirective,
+    SpccOnlyNumberDirective,
+    SppcButtonDisable,
+    SppcPermissionCheckDirective,
+    BreadCumbComponent,
+    ViewIdentifierComponent,
+    ReportManagementComponent,
+    QuickReportSettingComponent,
+    ReportParametersComponent,
+    ReportParamComponent,
+    ReportViewerComponent,
+    SppcTimepicker,
+    NotFoundComponent,
+    ClosingTmpComponent,
+    ErrorListComponent,
+    LeftActionToolbarComponent,
+    ExcelModule,
+    PDFModule,
+    QuickReportPageSettingComponent,
+    InputDirective,
     TooltipDirective,
-  ]
+  ],
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

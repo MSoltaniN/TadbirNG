@@ -1,5 +1,11 @@
 import { Location } from "@angular/common";
-import { Component, Inject, OnInit, Renderer2 } from "@angular/core";
+import {
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnInit,
+  Renderer2,
+} from "@angular/core";
 import { DOCUMENT } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
@@ -15,6 +21,8 @@ import {
 import { Chart } from "chart.js";
 import { ToastrService } from "ngx-toastr";
 
+import { DialogRef, DialogService } from "@progress/kendo-angular-dialog";
+import { Widget } from "@sppc/shared/models/widget";
 import {
   CompactType,
   DisplayGrid,
@@ -25,6 +33,8 @@ import {
   PushDirections,
   Resizable,
 } from "angular-gridster2";
+import { BehaviorSubject } from "rxjs";
+import { AddWidgetComponent } from "./add-widget/add-widget.component";
 
 interface DashboardConfig extends GridsterConfig {
   draggable: Draggable;
@@ -68,12 +78,17 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
   options: DashboardConfig;
 
-  dashboard: Array<GridsterItem>;
+  dashboard: Array<GridsterItem> = [];
+  dashboardSubject = new BehaviorSubject<Array<GridsterItem>>(this.dashboard);
+  widgetList$ = this.dashboardSubject.asObservable();
 
   chart1: Array<GridsterItem>;
   chart2: Array<GridsterItem>;
 
   isDashboardEditMode: boolean;
+  dialogRef: DialogRef;
+  dialogModel: any;
+  selectedWidgets: Widget[];
 
   grossChartData;
   netChartData;
@@ -118,7 +133,9 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     public settingService: SettingService,
     public bStorageService: BrowserStorageService,
     @Inject(DOCUMENT) public document,
-    public dashboadService: DashboardService
+    public dashboadService: DashboardService,
+    private dialogService: DialogService,
+    private chRef: ChangeDetectorRef
   ) {
     super(
       toastrService,
@@ -343,6 +360,10 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   }
 
   onSettingClick() {
+    this.goToEditMode();
+  }
+
+  goToEditMode() {
     this.isDashboardEditMode = !this.isDashboardEditMode;
     this.changedOptions();
   }
@@ -357,12 +378,26 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   }
 
   onOkClick() {
+    this.saveDashboard();
+    this.cancelEditMode();
+  }
+
+  saveDashboard() {
     this.bStorageService.saveDashboardLayout(
       this.dashboard,
       this.UserId.toString(),
       this.CompanyId.toString()
     );
-    this.cancelEditMode();
+
+    this.dashboardSubject.next(this.dashboard.filter((w) => w.selected));
+  }
+
+  onCloseWidget(id: number) {
+    debugger;
+    if (this.dashboard.findIndex((w) => w.id === id) >= 0) {
+      this.dashboard.filter((w) => w.id === id)[0].selected = false;
+      this.saveDashboard();
+    }
   }
 
   ngAfterViewInit() {}
@@ -377,11 +412,56 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
     if (!this.dashboard) {
       this.dashboard = [
-        { cols: 20, rows: 20, y: 0, x: 0, index: 0 },
-        { cols: 20, rows: 20, y: 0, x: 0, index: 1 },
-        // { cols: 10, rows: 12, y: 1, x: 1, index: 2 },
+        {
+          cols: 20,
+          rows: 20,
+          y: 0,
+          x: 0,
+          id: 1,
+          selected: false,
+          name: "GrossSales",
+          title: "فروش نا خالص",
+        },
+        {
+          cols: 20,
+          rows: 20,
+          y: 0,
+          x: 0,
+          id: 2,
+          selected: false,
+          name: "NetSales",
+          title: "فروش خالص",
+        },
       ];
     }
+
+    this.dashboardSubject.next(this.dashboard.filter((w) => w.selected));
+  }
+
+  onAddWidgetClick() {
+    this.goToEditMode();
+
+    this.dialogRef = this.dialogService.open({
+      title: this.getText("Dashboard.AddWidget"),
+      content: AddWidgetComponent,
+    });
+
+    this.dialogModel = this.dialogRef.content.instance;
+    this.dialogModel.selectedWidgets = this.dashboard;
+
+    this.dialogRef.content.instance.save.subscribe((res) => {
+      this.dashboard = res.widgetList;
+      this.saveDashboard();
+
+      this.dialogRef.close();
+    });
+
+    const closeForm = this.dialogRef.content.instance.cancel.subscribe(
+      (res) => {
+        this.dialogRef.close();
+        this.cancelEditMode();
+      }
+    );
   }
 
   initDashboard() {

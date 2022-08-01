@@ -52,11 +52,22 @@ i .fa {
 }
 
 .msg-container {
-  padding: 7px;
+  padding: 2px;
+  margin-bottom: 12px;
 }
 
 .confirm-msg {
   padding-top: 5px;
+}
+
+a i {
+  font-size: large;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.settings .buttons a {
+  padding: 5px;
 }
 
 /deep/ body.tRtl .settings .confirm-msg {
@@ -71,8 +82,12 @@ i .fa {
 
 /deep/ body.tRtl .settings .dashboard-button {
   float: left;
+  padding-left: 3px;
+  padding-right: 3px;
 }
 
 /deep/ body.tLtr .settings .dashboard-button {
   float: right;
+  padding-left: 3px;
+  padding-right: 3px;
 }

@@ -3,9 +3,16 @@
   padding-left: 5px;
   padding-top: 5px;
   font-size: 24px;
-  cursor: pointer;
+  cursor: pointer !important;
+  z-index: 20000;
+  position: relative;
 }
 
 .box-tools {
   padding-top: 4px;
+}
+
+.widget-header {
+  padding-top: 2px;
+  padding-bottom: 0px;
 }

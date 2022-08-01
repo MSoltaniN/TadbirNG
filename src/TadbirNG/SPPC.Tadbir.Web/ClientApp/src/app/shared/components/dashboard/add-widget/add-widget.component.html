@@ -1,0 +1,26 @@
+<div class="form-group">
+  <ul class="list-group">
+    <li
+      *ngFor="let widget of selectedWidgets"
+      class="list-group-item"
+      [ngClass]="widget.selected ? 'disabled' : ''"
+      [class.active]="widget.id == selectedId"
+      (click)="activate(!widget.selected ? widget.id : 0)"
+    >
+      {{ widget.title }}
+    </li>
+  </ul>
+</div>
+
+<kendo-dialog-actions>
+  <button
+    class="k-button k-primary"
+    [disabled]="!selectedId"
+    (click)="onSave($event)"
+  >
+    {{ "Buttons.Ok" | translate }}
+  </button>
+  <button class="k-button" (click)="onCancel($event)">
+    {{ "Buttons.Cancel" | translate }}
+  </button>
+</kendo-dialog-actions>

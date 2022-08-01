@@ -1,5 +1,9 @@
 <ng-container class="box box-info card">
-  <widget-header [editMode]="isEditMode" [title]="headerTitle">
+  <widget-header
+    [editMode]="isEditMode"
+    (closeClick)="onCloseWidget()"
+    [title]="headerTitle"
+  >
     <ng-content select="[header]" class="box-header"></ng-content>
   </widget-header>
 </ng-container>
