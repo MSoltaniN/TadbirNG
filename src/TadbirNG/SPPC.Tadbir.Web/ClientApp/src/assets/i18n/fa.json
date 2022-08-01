@@ -85,7 +85,9 @@
     "SoftwareLicense": "مجوز نرم افزار",
     "TooManySessions": "تعداد جلسات کاربر بیشتر از حد مجاز می باشد",
     "ActivationPasswordIsNotCorrect": "نام کاربری یا رمز عبور سرور اشتباه می باشد",
-    "OpenSessions": "جلسات کاربری باز"
+    "OpenSessions": "جلسات کاربری باز",
+    "SelectItemFromMainComponent": "ابتدا یک مورد را از جدول مولفه اصلی انتخاب کنید.",
+    "ClickOnCearteRelation": "سپس روی دکمه 'ایجاد ارتباط' کلیک نمایید."
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
@@ -344,7 +346,7 @@
     "Condition": "شرط",
     "PleaseSelectField": "یک فیلد را انتخاب کنید",
     "AddGroupfilter": "درج فیلتر جدید",
-    "DeleteGroupfilter": "حذف فیلترها",
+    "DeleteGroupfilter": "حذف فیلتر",
     "UseForOthers": "قابل استفاده برای همه کاربران",
     "FilterSavedSuccess": "تغییرات با موفقیت ذخیره شد",
     "SaveChanges": "ذخیره فیلتر",
@@ -935,6 +937,7 @@
     "CurrencyRate": "نرخ ارز",
     "CurrencyValue": "مبلغ ارز",
     "CurrencyName": "نوع ارز",
+    "CurrencyInfo": "اطلاعات ارزی",
     "ApproveActionNotPermitted": "عملیات تایید یا تصویب سند فقط برای اسناد عادی امکان پذیر می باشد",
     "NewWithDifference": "آرتیکل جدید به میزان اختلاف",
     "ArticleDescription": "شرح آرتیکل",

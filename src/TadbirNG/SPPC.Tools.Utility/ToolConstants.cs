@@ -2,7 +2,7 @@
 
 namespace SPPC.Tools.Utility
 {
-    internal class Constants
+    internal class ToolConstants
     {
         internal const string GunzipTemplate = "gzip -d {0}";
         internal const string GzipTemplate = "gzip {0}";

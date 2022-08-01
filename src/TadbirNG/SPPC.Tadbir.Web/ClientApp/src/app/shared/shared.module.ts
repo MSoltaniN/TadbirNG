@@ -133,7 +133,8 @@ import { MessageBoxService } from "./services/message.service";
 import { ShareDataService } from "./services/share-data.service";
 import { ShortcutService } from "./services/shortcut.service";
 
-import { TooltipDirective } from "./directive/editorForm/tooltip.directive";
+import { TooltipDirective } from './directive/editorForm/tooltip.directive';
+import { AutoFocusDirective } from './directive/input/auto-focus.directive';
 
 import { AddWidgetComponent } from "./components/dashboard/add-widget/add-widget.component";
 import { WidgetSettingComponent } from "./components/dashboard/widget/widget-setting/widget-setting.component";
@@ -252,6 +253,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TooltipDirective,
 
     ChartWidgetComponent,
+      AutoFocusDirective,
 
     AddWidgetComponent,
 
@@ -353,6 +355,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     QuickReportPageSettingComponent,
     InputDirective,
     TooltipDirective,
+    AutoFocusDirective
   ],
 })
 export class SharedModule {

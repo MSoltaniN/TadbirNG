@@ -124,14 +124,17 @@ export class UserComponent
 
   public saveUserRolesHandler(userRoles: RelatedItems) {
     this.grid.loading = true;
+    this.gridService.submitted.next(true)
     this.userService.modifiedUserRoles(userRoles).subscribe(
       (response) => {
         this.rolesList = false;
         this.showMessage(this.getText("User.UpdateRoles"), MessageType.Succes);
         this.grid.loading = false;
+        this.gridService.submitted.next(false)
       },
       (error) => {
         this.grid.loading = false;
+        this.gridService.submitted.next(false)
         this.errorMessages = this.errorHandlingService.handleError(error);
       }
     );

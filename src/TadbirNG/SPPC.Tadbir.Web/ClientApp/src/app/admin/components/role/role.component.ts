@@ -276,15 +276,18 @@ export class RoleComponent
 
   saveRoleCompaniesHandler(roleCompanies: RelatedItems) {
     this.grid.loading = true;
+    this.gridService.submitted.next(true)
     this.roleService.modifiedRoleCompanies(roleCompanies).subscribe(
       (response) => {
         this.companyList = false;
         this.showMessage(this.updateMsg, MessageType.Succes);
         this.grid.loading = false;
+        this.gridService.submitted.next(false)
       },
       (resultOption: ResultOption) => {
         // error handler is called
         this.grid.loading = false;
+        this.gridService.submitted.next(false)
         if (resultOption)
           this.errorMessages = this.errorHandlingService.handleError(
             resultOption.error
@@ -295,15 +298,18 @@ export class RoleComponent
 
   saveRoleUsersHandler(roleUsers: RelatedItems) {
     this.grid.loading = true;
+    this.gridService.submitted.next(true);
     this.roleService.modifiedRoleUsers(roleUsers).subscribe(
       (response) => {
         this.usersList = false;
         this.showMessage(this.updateMsg, MessageType.Succes);
         this.grid.loading = false;
+        this.gridService.submitted.next(false);
       },
       (resultOption: ResultOption) => {
         // error handler is called
         this.grid.loading = false;
+        this.gridService.submitted.next(false);
         if (resultOption)
           this.errorMessages = this.errorHandlingService.handleError(
             resultOption.error
@@ -325,15 +331,18 @@ export class RoleComponent
 
   saveRoleBranchesHandler(roleBranches: RelatedItems) {
     this.grid.loading = true;
+    this.gridService.submitted.next(true);
     this.roleService.modifiedRoleBranches(roleBranches).subscribe(
       (response) => {
         this.roleBranches = false;
         this.showMessage(this.updateMsg, MessageType.Succes);
         this.grid.loading = false;
+        this.gridService.submitted.next(false);
       },
       (resultOption: ResultOption) => {
         // error handler is called
         this.grid.loading = false;
+        this.gridService.submitted.next(false);
         if (resultOption)
           this.errorMessages = this.errorHandlingService.handleError(
             resultOption.error
@@ -356,15 +365,18 @@ export class RoleComponent
 
   saveRoleFiscalPeriodHandler(roleBranches: RelatedItems) {
     this.grid.loading = true;
+    this.gridService.submitted.next(true);
     this.roleService.modifiedRoleFiscalPeriods(roleBranches).subscribe(
       (response) => {
         this.roleFiscalPeriod = false;
         this.showMessage(this.updateMsg, MessageType.Succes);
         this.grid.loading = false;
+        this.gridService.submitted.next(false);
       },
       (resultOption: ResultOption) => {
         // error handler is called
         this.grid.loading = false;
+        this.gridService.submitted.next(false);
         if (resultOption)
           this.errorMessages = this.errorHandlingService.handleError(
             resultOption.error

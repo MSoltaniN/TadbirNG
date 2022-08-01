@@ -2,9 +2,9 @@
 
 namespace SPPC.Licensing.Model
 {
-    public sealed class Constants
+    public sealed class LicenseConstants
     {
-        private Constants()
+        private LicenseConstants()
         {
         }
 

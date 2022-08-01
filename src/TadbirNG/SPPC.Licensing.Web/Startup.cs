@@ -38,7 +38,7 @@ namespace SPPC.Licensing.Web
                 options => options
                     .WithOrigins("*")
                     .AllowAnyMethod()
-                    .WithHeaders("Content-Type", "Accept-Language", Constants.LicenseCheckHeaderName));
+                    .WithHeaders("Content-Type", "Accept-Language", LicenseConstants.LicenseCheckHeaderName));
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

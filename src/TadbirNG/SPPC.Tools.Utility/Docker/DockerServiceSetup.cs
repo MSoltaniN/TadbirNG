@@ -62,13 +62,13 @@ namespace SPPC.Tools.Utility
         protected virtual void ConfigureAppLayer(string layerId)
         {
             var root = Path.Combine(Environment.CurrentDirectory, layerId, "app");
-            var path = Path.Combine(root, Constants.DevAppSettings);
+            var path = Path.Combine(root, ToolConstants.DevAppSettings);
             if (File.Exists(path))
             {
                 File.Delete(path);
             }
 
-            path = Path.Combine(root, Constants.AppSettings);
+            path = Path.Combine(root, ToolConstants.AppSettings);
             File.WriteAllText(path, SettingsTemplate.TransformText());
         }
 
@@ -111,18 +111,18 @@ namespace SPPC.Tools.Utility
         private void ExtractLayerFile(string layerId)
         {
             Environment.CurrentDirectory = Path.Combine(Environment.CurrentDirectory, layerId);
-            var tarPath = Path.Combine(Environment.CurrentDirectory, Constants.LayerTarFile);
+            var tarPath = Path.Combine(Environment.CurrentDirectory, ToolConstants.LayerTarFile);
             if (File.Exists(tarPath))
             {
                 _oldHash = _crypto
                     .CreateHash(File.ReadAllBytes(tarPath))
                     .ToLower();
-                _archive.UnTar(Constants.LayerTarFile);
+                _archive.UnTar(ToolConstants.LayerTarFile);
                 File.Delete(tarPath);
             }
             else
             {
-                Console.WriteLine($"WARNING: Layer file '{Constants.LayerTarFile}' not found.");
+                Console.WriteLine($"WARNING: Layer file '{ToolConstants.LayerTarFile}' not found.");
             }
 
             Environment.CurrentDirectory = Path.GetDirectoryName(Environment.CurrentDirectory);
@@ -131,9 +131,9 @@ namespace SPPC.Tools.Utility
         private void RestoreAppLayer(string layerId)
         {
             Environment.CurrentDirectory = Path.Combine(Environment.CurrentDirectory, layerId);
-            _archive.Tar(Constants.LayerTarFile, AppLayerFolder);
+            _archive.Tar(ToolConstants.LayerTarFile, AppLayerFolder);
             _newHash = _crypto
-                .CreateHash(File.ReadAllBytes(Path.Combine(Environment.CurrentDirectory, Constants.LayerTarFile)))
+                .CreateHash(File.ReadAllBytes(Path.Combine(Environment.CurrentDirectory, ToolConstants.LayerTarFile)))
                 .ToLower();
             DeleteFolder(Path.Combine(Environment.CurrentDirectory, AppLayerFolder));
             Environment.CurrentDirectory = Path.GetDirectoryName(Environment.CurrentDirectory);

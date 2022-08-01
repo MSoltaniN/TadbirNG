@@ -32,7 +32,7 @@
 
 
     <kendo-dialog-actions>        
-        <button class="k-button k-primary" [disabled]="!AssignRolesAccess" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+        <button class="k-button k-primary prevent-duplicate" [disabled]="!AssignRolesAccess" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
         <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
     </kendo-dialog-actions>
 

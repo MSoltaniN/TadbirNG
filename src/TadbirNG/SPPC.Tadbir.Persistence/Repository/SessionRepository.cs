@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Persistence
             var now = DateTime.UtcNow;
             var sessions = await repository.GetAllAsync();
             return sessions
-                .Where(session => now - session.SinceUtc < Constants.SessionTimeout)
+                .Where(session => now - session.SinceUtc < LicenseConstants.SessionTimeout)
                 .Select(session => Mapper.Map<SessionViewModel>(session))
                 .ToList();
         }
@@ -52,7 +52,7 @@ namespace SPPC.Tadbir.Persistence
             var now = DateTime.UtcNow;
             var sessions = await repository.GetAllAsync();
             return sessions
-                .Where(session => now - session.SinceUtc < Constants.SessionTimeout
+                .Where(session => now - session.SinceUtc < LicenseConstants.SessionTimeout
                     && session.UserId == userId)
                 .Select(session => Mapper.Map<SessionViewModel>(session))
                 .ToList();
@@ -133,7 +133,7 @@ namespace SPPC.Tadbir.Persistence
             var now = DateTime.UtcNow;
             var repository = UnitOfWork.GetAsyncRepository<Session>();
             var all = await repository.GetAllAsync();
-            var expired = all.Where(session => now - session.SinceUtc >= Constants.SessionTimeout);
+            var expired = all.Where(session => now - session.SinceUtc >= LicenseConstants.SessionTimeout);
             foreach (var item in expired)
             {
                 repository.Delete(item);
@@ -151,7 +151,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Session>();
             var all = await repository.GetAllAsync();
             var now = DateTime.UtcNow;
-            return all.Count(session => now - session.SinceUtc < Constants.SessionTimeout);
+            return all.Count(session => now - session.SinceUtc < LicenseConstants.SessionTimeout);
         }
 
         private async Task<Session> GetActiveSessionAsync(string userAgent)
@@ -160,7 +160,7 @@ namespace SPPC.Tadbir.Persistence
             var fingerprint = GetFingerprint(userAgent);
             var all = await repository.GetAllAsync();
             return all.FirstOrDefault(session =>
-                DateTime.UtcNow - session.SinceUtc < Constants.SessionTimeout &&
+                DateTime.UtcNow - session.SinceUtc < LicenseConstants.SessionTimeout &&
                 session.Fingerprint == fingerprint);
         }
 

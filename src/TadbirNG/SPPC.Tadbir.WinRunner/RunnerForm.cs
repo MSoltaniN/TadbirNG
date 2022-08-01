@@ -2,10 +2,13 @@
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
+using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service;
+using SPPC.Licensing.Model;
 using SPPC.Tools.Api;
 using SPPC.Tools.Model;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tadbir.WinRunner
 {
@@ -67,6 +70,7 @@ namespace SPPC.Tadbir.WinRunner
         private void CheckForUpdate_Click(object sender, EventArgs e)
         {
             var versionPath = Path.Combine("..", "version");
+            var configPath = Path.Combine("..", "config");
             if (!File.Exists(versionPath))
             {
                 MessageBox.Show("اطلاعات نسخه جاری در دسترس نیست. لطفاً دوباره برنامه را نصب کنید.",
@@ -75,18 +79,27 @@ namespace SPPC.Tadbir.WinRunner
                 return;
             }
 
+            Cursor = Cursors.WaitCursor;
             var current = JsonHelper.To<VersionInfo>(File.ReadAllText(versionPath));
+            var config = JsonHelper.To<RawBuildSettings>(
+                CryptoService.Default.Decrypt(
+                    File.ReadAllText(configPath)));
+            _apiClient.AddHeader(LicenseConstants.InstanceHeaderName, config.Key);
             var latest = _apiClient.Get<VersionInfo>(UpdateApi.LatestVersionInfoUrl);
+            _apiClient.RemoveHeader(LicenseConstants.InstanceHeaderName);
             if (current.Version == latest.Version)
             {
                 MessageBox.Show("شما از آخرین نسخه برنامه استفاده می کنید.",
                     "اطلاع به کاربر", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.RtlReading);
+                Cursor = Cursors.Default;
                 return;
             }
             else if(ConfirmApplicationUpdate(current, latest))
             {
             }
+
+            Cursor = Cursors.Default;
         }
 
         private void Exit_Click(object sender, EventArgs e)
@@ -102,28 +115,10 @@ namespace SPPC.Tadbir.WinRunner
 
         private bool ConfirmApplicationUpdate(VersionInfo current, VersionInfo latest)
         {
-            int downloadSize = 0;
-            if (current.Services[0].Sha256 != latest.Services[0].Sha256)
-            {
-                downloadSize += (int)FileSize.ToMegaBytes(latest.Services[0].Size, 0);
-            }
-
-            if (current.Services[1].Sha256 != latest.Services[1].Sha256)
-            {
-                downloadSize += (int)FileSize.ToMegaBytes(latest.Services[1].Size, 0);
-            }
-
-            if (current.Services[2].Sha256 != latest.Services[2].Sha256)
-            {
-                downloadSize += (int)FileSize.ToMegaBytes(latest.Services[2].Size, 0);
-            }
-
-            if (current.Services[3].Sha256 != latest.Services[3].Sha256)
-            {
-                downloadSize += (int)FileSize.ToMegaBytes(latest.Services[3].Size, 0);
-            }
-
-            var message = $"در جریان به روزرسانی برنامه حدود {downloadSize} مگابایت دانلود می شود. برنامه به روزرسانی شود؟";
+            var summary = UpdateUtility.GetUpdateSummary(current, latest);
+            var message = String.Format(
+                "با ادامه عملیات، حدود {0} مگابایت دانلود می شود.{1}آیا با به روزرسانی برنامه موافق هستید؟",
+                summary.Item2, Environment.NewLine);
             var result = MessageBox.Show(
                 this, message, "دریافت تایید از کاربر", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, MessageBoxOptions.RtlReading);

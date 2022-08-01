@@ -46,7 +46,7 @@ namespace SPPC.Licensing.Local.Web
                 options => options
                     .WithOrigins("*")
                     .AllowAnyMethod()
-                    .WithHeaders("Content-Type", "Accept-Language", Constants.InstanceHeaderName,
+                    .WithHeaders("Content-Type", "Accept-Language", LicenseConstants.InstanceHeaderName,
                         AppConstants.LicenseHeaderName, AppConstants.ContextHeaderName));
             app.UseRouting();
             app.UseAuthorization();

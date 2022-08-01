@@ -21,8 +21,8 @@ namespace SPPC.Licensing.Local.Web
 
         private void InitPaths(string webRootPath)
         {
-            BinLicense = Path.Combine(webRootPath, Constants.LicenseFile);
-            Certificate = Path.Combine(webRootPath, Constants.CertificateFile);
+            BinLicense = Path.Combine(webRootPath, LicenseConstants.LicenseFile);
+            Certificate = Path.Combine(webRootPath, LicenseConstants.CertificateFile);
         }
 
         /// <summary>

@@ -7,7 +7,7 @@
       {{ fullAccount?.costCenter.fullCode }} -
       {{ fullAccount?.project.fullCode }}
     </label>
-    <span class="glyphicon glyphicon-search" (click)="openDialog(itemListRef, accountItem.Account)"></span>
+    <span [ngClass]="{ 'rtl-icon': CurrentLanguage == 'fa'}" class="glyphicon glyphicon-search" (click)="openDialog(itemListRef, accountItem.Account)"></span>
     <div class="fullAccount-item">
       <div formGroupName="account" class="sppc-float">
         <input type="text" class="k-textbox" [(ngModel)]="accountTitle" [ngModelOptions]="{standalone: true}" (keydown.enter)="openDialog(itemListRef, accountItem.Account)" (focus)="onFocus(accountItem.Account)"/>
@@ -58,7 +58,8 @@
                       [selectable]="{enabled: true, mode:'single'}"
                       [kendoGridSelectBy]="'id'"
                       [selectedKeys]="accountSelectedId"
-                      (selectedKeysChange)="accountKeysChange($event)">
+                      (selectedKeysChange)="accountKeysChange($event)"
+                      (dblclick)="onSave()">
             <ng-template kendoGridNoRecordsTemplate></ng-template>
             <kendo-grid-column field="fullCode" title="{{ 'FullAccount.AccountCode' | translate }}">
             </kendo-grid-column>
@@ -90,7 +91,8 @@
                       [selectable]="{enabled: true, mode:'single'}"
                       [kendoGridSelectBy]="'id'"
                       [selectedKeys]="detailAccountSelectedId"
-                      (selectedKeysChange)="detailAccountKeysChange($event)">
+                      (selectedKeysChange)="detailAccountKeysChange($event)"
+                      (dblclick)="onSave()">
             <ng-template kendoGridNoRecordsTemplate></ng-template>
             <kendo-grid-column field="fullCode" title="{{ 'FullAccount.Code' | translate }}">
             </kendo-grid-column>
@@ -122,7 +124,8 @@
                       [selectable]="{enabled: true, mode:'single'}"
                       [kendoGridSelectBy]="'id'"
                       [selectedKeys]="costCenterSelectedId"
-                      (selectedKeysChange)="costCenterKeysChange($event)">
+                      (selectedKeysChange)="costCenterKeysChange($event)"
+                      (dblclick)="onSave()">
             <ng-template kendoGridNoRecordsTemplate></ng-template>
             <kendo-grid-column field="fullCode" title="{{ 'FullAccount.Code' | translate }}">
             </kendo-grid-column>
@@ -154,7 +157,8 @@
                       [selectable]="{enabled: true, mode:'single'}"
                       [kendoGridSelectBy]="'id'"
                       [selectedKeys]="projectSelectedId"
-                      (selectedKeysChange)="projectKeysChange($event)">
+                      (selectedKeysChange)="projectKeysChange($event)"
+                      (dblclick)="onSave()">
             <ng-template kendoGridNoRecordsTemplate></ng-template>
             <kendo-grid-column field="fullCode" title="{{ 'FullAccount.Code' | translate }}">
             </kendo-grid-column>

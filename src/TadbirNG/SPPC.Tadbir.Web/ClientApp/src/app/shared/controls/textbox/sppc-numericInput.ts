@@ -11,7 +11,7 @@ import { KeyCode } from '@sppc/shared/enum';
   template: `
 <input type="text" #numinput [(ngModel)]="showValue" (ngModelChange)="changeValue()" [OnlyNumber] class="k-textbox num-input" [ngClass]="cssClass" (keyup)="keyPress($event)"/>
 `,
-  styles: [`.num-input { width:100% }`],
+  styles: [`.num-input { width:100%; background: #fff !important; border: 1px solid #ccc !important; }`],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -31,6 +31,7 @@ export class SppcNumericInput implements OnInit, ControlValueAccessor, Validator
   @ViewChild('numinput') numInput: ElementRef;
   
   @Input() cssClass: string = "";
+  @Input('naturalNumbers') naturalNumbers = false
   @Input() set decimalCount(decCount: number) {
     this.deciCount = 0
     if (decCount)
@@ -135,6 +136,10 @@ export class SppcNumericInput implements OnInit, ControlValueAccessor, Validator
 
   setComma(num: string, event?: any): string {
     var parts = num.toString().split(".");
+    if (parts[0].charAt(0) == '0' && parts[0].length > 1) {
+      parts[0] = parts[0].slice(1)
+    }
+
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     if (parts.length > 1 && this.deciCount) {
       if (parts[1].length > this.deciCount && event) {

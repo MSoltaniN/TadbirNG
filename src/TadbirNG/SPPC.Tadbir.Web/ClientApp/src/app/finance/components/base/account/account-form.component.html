@@ -23,7 +23,7 @@
                   <div class="form-group">
                     <label for="name" class="control-label">{{ 'Account.Name' | translate }}</label>
 
-                    <input type="text" class="k-textbox" formControlName="name" />
+                    <input sppcAutoFocus type="text" class="k-textbox" formControlName="name" />
 
                     <div class="k-tooltip k-tooltip-validation" [hidden]="accountForm.controls.name.valid || accountForm.controls.name.pristine">
                       <span *ngIf="accountForm.controls.name.errors?.required">{{ 'AllValidations.Account.NameIsRequired' | translate }}</span>
@@ -636,7 +636,7 @@
     </kendo-tabstrip>
   </div>
   <kendo-dialog-actions>
-    <button class="k-button k-primary" [disabled]="isDisabledForm()" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+    <button class="k-button k-primary prevent-duplicate" [disabled]="isDisabledForm()" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
     <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
   </kendo-dialog-actions>
 </div>

@@ -53,6 +53,16 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 
-.btn {
-  margin-right: 5px;
+/* */
+.new-row {
+  background: #d3f96163 !important;
+  animation: fadeOutBackground 2.9s;
+  -webkit-animation: fadeOutBackground 2.9s;
+}
+
+@keyframes fadeOutBackground {
+  0% { background: #d3f96163; }
+  70% { background: #d3f96160; }
+  85% { background: #d3f96113; }
+  100% { background: #d3f96100; }
 }
