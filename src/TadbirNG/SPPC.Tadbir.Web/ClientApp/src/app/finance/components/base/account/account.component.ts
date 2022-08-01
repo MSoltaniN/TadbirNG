@@ -212,6 +212,8 @@ export class AccountComponent
             this.reloadGrid();
             this.selectedRows = [];
             this.gridService.submitted.next(false)
+
+            this.highLightNewRow();
             this.refreshTreeNodes(model.account);
           },
           (error) => {
@@ -245,6 +247,7 @@ export class AccountComponent
             options.InsertedModel = insertedModel;
             this.reloadGrid(options);
             this.gridService.submitted.next(false)
+            this.highLightNewRow();
             this.refreshTreeNodes(insertedModel);
           },
           (error) => {
