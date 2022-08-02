@@ -54,10 +54,10 @@ export class AccountComponent
   extends AutoGridExplorerComponent<Account>
   implements OnInit
 {
-  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportManagementComponent)
+  @ViewChild(ViewIdentifierComponent, {static: false}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportManagementComponent, {static: false})
   reportManager: ReportManagementComponent;
-  @ViewChild(QuickReportSettingComponent)
+  @ViewChild(QuickReportSettingComponent, {static: false})
   reportSetting: QuickReportSettingComponent;
 
   strSearch: string;

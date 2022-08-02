@@ -58,20 +58,20 @@ export class GridExplorerComponent<T>
 
   treeScrollTop: number;
 
-  @ViewChild("treemenu") public treeContextMenu: ContextMenuComponent;
+  @ViewChild("treemenu", {static: true}) public treeContextMenu: ContextMenuComponent;
   public contextmenuItems: any[] = [
     { text: "Buttons.New", icon: "file-add", mode: "New" },
     { text: "Buttons.Edit", icon: "edit", mode: "Edit" },
     { text: "Buttons.Delete", icon: "delete", mode: "Remove" },
   ];
-  @ViewChild("treemenulimited")
+  @ViewChild("treemenulimited", {static: true})
   public treeContextMenuLimited: ContextMenuComponent;
   public contextmenuLimitedItems: any[] = [
     { text: "Buttons.New", icon: "file-add", mode: "New" },
   ];
   selectedContextmenu: any;
 
-  @ViewChild(GridComponent) grid: GridComponent;
+  @ViewChild(GridComponent, {static: false}) grid: GridComponent;
 
   public rowData: GridDataResult;
   public selectedRows: number[] = [];

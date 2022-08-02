@@ -34,9 +34,9 @@ export function getLayoutModule(layout: Layout) {
 
 export class ProjectComponent extends AutoGridExplorerComponent<Project> implements OnInit{
 
-  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
-  @ViewChild(QuickReportSettingComponent) reportSetting: QuickReportSettingComponent;
+  @ViewChild(ViewIdentifierComponent, {static: false}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportManagementComponent, {static: false}) reportManager: ReportManagementComponent;
+  @ViewChild(QuickReportSettingComponent, {static: false}) reportSetting: QuickReportSettingComponent;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,

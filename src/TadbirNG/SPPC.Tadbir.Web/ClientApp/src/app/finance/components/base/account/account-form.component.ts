@@ -108,7 +108,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   groupId: number;
 
   progress: number = 0;
-  @ViewChild('myInput') myInputVariable: ElementRef;
+  @ViewChild('myInput', {static: true}) myInputVariable: ElementRef;
 
   @Input() public parent: Account;
   @Input() public model: AccountFullData;

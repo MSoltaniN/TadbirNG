@@ -9,25 +9,25 @@ const routes: Routes = [
     path: "admin",
     component: LayoutComponent,
     canActivate: [AuthGuard],
-    loadChildren: "./admin/admin.module#AdminModule",
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
   },
   {
     path: "finance",
     component: LayoutComponent,
     canActivate: [AuthGuard],
-    loadChildren: "./finance/finance.module#FinanceModule",
+    loadChildren: () => import("./finance/finance.module").then(m => m.FinanceModule),
   },
   {
     path: "organization",
     component: LayoutComponent,
     canActivate: [AuthGuard],
-    loadChildren: "./organization/organization.module#OrganizationModule",
+    loadChildren: () => import("./organization/organization.module").then(m => m.OrganizationModule),
   },
   {
     path: "config",
     component: LayoutComponent,
     canActivate: [AuthGuard],
-    loadChildren: "./config/config.module#ConfigModule",
+    loadChildren: () => import("./config/config.module").then(m => m.ConfigModule),
   },
   { path: "**", component: NotFoundComponent },
 ];

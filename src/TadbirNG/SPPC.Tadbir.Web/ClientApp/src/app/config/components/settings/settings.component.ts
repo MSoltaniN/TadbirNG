@@ -43,7 +43,7 @@ export function getLayoutModule(layout: Layout) {
   ],
 })
 export class SettingsComponent extends DefaultComponent implements OnInit {
-  @ViewChild(forwardRef(() => SettingsFormComponent))
+  @ViewChild(forwardRef(() => SettingsFormComponent), {static: false})
   private settingForm: SettingsFormComponent;
 
   //public errorMessage = String.Empty;

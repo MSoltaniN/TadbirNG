@@ -249,12 +249,12 @@ export class ItemBalanceComponent
   public formGroup: FormGroup;
   breadCrumbList: Array<any> = [];
 
-  @ViewChild(GridComponent) grid: GridComponent;
-  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
-  @ViewChild(ReportManagementComponent)
+  @ViewChild(GridComponent, {static: false}) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent, {static: false}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent, {static: false}) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent, {static: false})
   reportManager: ReportManagementComponent;
-  @ViewChild(QuickReportSettingComponent)
+  @ViewChild(QuickReportSettingComponent, {static: false})
   reportSetting: QuickReportSettingComponent;
 
   fromDate: Date;

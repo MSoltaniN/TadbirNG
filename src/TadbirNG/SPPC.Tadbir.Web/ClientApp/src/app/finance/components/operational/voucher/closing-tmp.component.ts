@@ -38,7 +38,7 @@ export class ClosingTmpComponent extends DetailComponent implements OnInit {
   creditDebitMode: string = "1";
   creditDebit: number;
 
-  @ViewChild('amount') txtAmount: SppcNumericInput;
+  @ViewChild('amount', {static: true}) txtAmount: SppcNumericInput;
 
   @Output() dataChanged: EventEmitter<any> = new EventEmitter();
 

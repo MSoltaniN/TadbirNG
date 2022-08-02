@@ -55,14 +55,14 @@ export function getLayoutModule(layout: Layout) {
   ],
 })
 export class HomeComponent extends DefaultComponent implements OnInit {
-  @ViewChild("itemListRef") el: TemplateRef<any>;
-  @ViewChild("dialogActions") actionBtn: TemplateRef<any>;
+  @ViewChild("itemListRef", {static: true}) el: TemplateRef<any>;
+  @ViewChild("dialogActions", {static: true}) actionBtn: TemplateRef<any>;
 
-  @ViewChild("elClsoingTmp") elClsoingTmp: TemplateRef<any>;
-  @ViewChild("closingTmpActions") closingTmpActionBtn: TemplateRef<any>;
+  @ViewChild("elClsoingTmp", {static: true}) elClsoingTmp: TemplateRef<any>;
+  @ViewChild("closingTmpActions", {static: true}) closingTmpActionBtn: TemplateRef<any>;
 
-  @ViewChild("elOpenVoucherConfirmBox") elOVConfirmBox: TemplateRef<any>;
-  @ViewChild("elOpenVoucherActions") elOVConfirmBoxActions: TemplateRef<any>;
+  @ViewChild("elOpenVoucherConfirmBox", {static: true}) elOVConfirmBox: TemplateRef<any>;
+  @ViewChild("elOpenVoucherActions", {static: true}) elOVConfirmBoxActions: TemplateRef<any>;
 
   private dialog;
   voucherNo: number;

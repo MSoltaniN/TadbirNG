@@ -64,11 +64,11 @@ export class SystemIssueComponent
   implements OnInit
 {
   // Report
-  @ViewChild(GridComponent) grid: GridComponent;
-  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
-  @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
-  @ViewChild(QuickReportSettingComponent) reportSetting: QuickReportSettingComponent;
+  @ViewChild(GridComponent, {static: false}) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent, {static: false}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent, {static: false}) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent, {static: false}) reportManager: ReportManagementComponent;
+  @ViewChild(QuickReportSettingComponent, {static: false}) reportSetting: QuickReportSettingComponent;
 
   clickedRowItem: any = undefined;
   fromDate: Date;
@@ -97,7 +97,7 @@ export class SystemIssueComponent
     },
   ];
 
-  @ViewChild(GridFilterComponent) gridFilter: GridFilterComponent;
+  @ViewChild(GridFilterComponent, {static: false}) gridFilter: GridFilterComponent;
 
   constructor(
     public toastrService: ToastrService,
