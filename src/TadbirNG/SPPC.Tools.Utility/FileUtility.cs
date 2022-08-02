@@ -65,5 +65,27 @@ namespace SPPC.Tools.Utility
 
             return absolutePath;
         }
+
+        public static void DeleteFolder(string path)
+        {
+            var dirInfo = new DirectoryInfo(path);
+            foreach (var file in dirInfo.GetFiles("*.*", SearchOption.AllDirectories))
+            {
+                File.Delete(file.FullName);
+            }
+
+            DeleteFolderRecursive(path);
+        }
+
+        private static void DeleteFolderRecursive(string path)
+        {
+            var dirInfo = new DirectoryInfo(path);
+            foreach (var folder in dirInfo.GetDirectories("*.*", SearchOption.TopDirectoryOnly))
+            {
+                DeleteFolderRecursive(folder.FullName);
+            }
+
+            Directory.Delete(path);
+        }
     }
 }

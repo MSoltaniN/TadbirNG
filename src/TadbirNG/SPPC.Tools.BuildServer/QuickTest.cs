@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+using SPPC.Framework.Helpers;
 using SPPC.Tools.Model;
 using SPPC.Tools.Utility;
 
@@ -87,6 +88,12 @@ namespace SPPC.Tools.BuildServer
                 Console.WriteLine(ChecksumUtility.CalculateChecksum(DockerService.WebApp));
                 Thread.Sleep(1000);
             }
+        }
+
+        public static void TestRunnerWithExpectedPath()
+        {
+            Environment.CurrentDirectory = @"..\..\..\..\dockercache";
+            var output = new CliRunner().Run("docker image ls");
         }
     }
 }

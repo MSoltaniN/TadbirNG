@@ -232,16 +232,16 @@ namespace SPPC.Tools.Utility
             DockerServiceSetup setup = null;
             switch (service)
             {
-                case DockerService.LicenseServer:
+                case DockerService.LicenseServerImage:
                     setup = new LicenseServiceSetup(settings);
                     break;
-                case DockerService.ApiServer:
+                case DockerService.ApiServerImage:
                     setup = new ApiServiceSetup(settings);
                     break;
-                case DockerService.WebApp:
+                case DockerService.WebAppImage:
                     setup = new AppServiceSetup(settings);
                     break;
-                case DockerService.DbServer:
+                case DockerService.DbServerImage:
                     setup = new DbServiceSetup(settings);
                     break;
                 default:

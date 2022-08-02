@@ -1,9 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
 using SPPC.Tools.Model;
 using SPPC.Framework.Common;
@@ -24,7 +21,7 @@ namespace SPPC.Tools.Utility
         }
 
         public UpdateUtility(string imageRoot)
-            : base()
+            : this()
         {
             _imageRoot = FileUtility.GetAbsolutePath(imageRoot);
         }
@@ -43,7 +40,11 @@ namespace SPPC.Tools.Utility
             }
         }
 
-        public static (int, int) GetUpdateSummary(VersionInfo current, VersionInfo latest)
+        public VersionInfo Current { get; set; }
+
+        public VersionInfo Latest { get; set; }
+
+        public static int GetDownloadSize(VersionInfo current, VersionInfo latest)
         {
             int count = 0;
             double downloadSize = 0;
@@ -71,7 +72,7 @@ namespace SPPC.Tools.Utility
                 downloadSize += FileSize.ToMegaBytes(latest.Services[3].Size, 1);
             }
 
-            return (count, (int)Math.Round(downloadSize));
+            return (int)Math.Round(downloadSize);
         }
 
         public static string PrepareUpdateFolder()
@@ -116,6 +117,88 @@ namespace SPPC.Tools.Utility
             Environment.CurrentDirectory = currentDir;
         }
 
+        public bool UpdateService(string serviceName)
+        {
+            bool updated = false;
+            if (NeedsUpdate(serviceName))
+            {
+                var setupRoot = Path.GetDirectoryName(Environment.CurrentDirectory);
+                var configPath = Path.Combine(setupRoot, "config");
+                if (File.Exists(configPath))
+                {
+                    var config = JsonHelper.To<RawBuildSettings>(
+                        CryptoService.Default.Decrypt(
+                            File.ReadAllText(configPath)));
+                    var root = Path.Combine(setupRoot, "docker");
+                    InstallerUtility.ConfigureDockerService(root, serviceName, config);
+                    updated = true;
+                }
+            }
+            else
+            {
+                updated = true;
+            }
+
+            return updated;
+        }
+
+        public static string GetInstalledEdition()
+        {
+            // NOTE: This method assumes current directory is set to runner folder.
+            string edition = String.Empty;
+            var overridePath = "docker-compose.override.yml";
+            if (File.Exists(overridePath))
+            {
+                var editionTag = File
+                    .ReadAllLines(overridePath)
+                    .Where(line => line.Contains(DockerService.ApiServerImage))
+                    .Select(line => line[line.IndexOf(DockerService.ApiServerImage)..])
+                    .Select(line => line
+                        .Replace(DockerService.ApiServerImage, String.Empty)
+                        .Replace(":", String.Empty))
+                    .FirstOrDefault();
+                edition = DockerUtility.GetEdition(editionTag);
+            }
+
+            return edition;
+        }
+
+        public void RollbackUpdate(string backupFolder)
+        {
+            var currentDir = Environment.CurrentDirectory;
+            Environment.CurrentDirectory = backupFolder;
+            Array.ForEach(new DirectoryInfo(backupFolder)
+                .GetFiles(), fi =>
+                {
+                    _runner.Run($"docker load -i {fi.Name}");
+                });
+            Environment.CurrentDirectory = currentDir;
+        }
+
+        public static void CleanUp(string updateFolder, string backupFolder)
+        {
+            if (Directory.Exists(updateFolder))
+            {
+                FileUtility.DeleteFolder(updateFolder);
+            }
+
+            if (Directory.Exists(backupFolder))
+            {
+                FileUtility.DeleteFolder(backupFolder);
+            }
+        }
+
+        public void FinalizeUpdate()
+        {
+            foreach (var info in Latest.Services)
+            {
+                info.SourceUrl = null;
+            }
+
+            var versionPath = Path.Combine("..", "version");
+            File.WriteAllText(versionPath, JsonHelper.From(Latest));
+        }
+
         public VersionInfo GetCurrentVersionInfo(string edition)
         {
             Verify.ArgumentNotNullOrEmptyString(edition, nameof(edition));
@@ -149,6 +232,17 @@ namespace SPPC.Tools.Utility
             Environment.CurrentDirectory = _imageRoot;
             _runner.Run("git pull --progress");
             Environment.CurrentDirectory = currentDir;
+        }
+
+        public bool NeedsUpdate(string serviceName)
+        {
+            var currentInfo = Current.Services
+                .Where(svc => svc.Name == serviceName)
+                .FirstOrDefault();
+            var latestInfo = Latest.Services
+                .Where(svc => svc.Name == serviceName)
+                .FirstOrDefault();
+            return currentInfo.Sha256 != latestInfo.Sha256;
         }
 
         private static ServiceInfo GetServiceInfo(string serviceName, string editionTag = null)
