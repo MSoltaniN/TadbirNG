@@ -7,7 +7,6 @@ import {
   NO_ERRORS_SCHEMA,
 } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpModule } from "@angular/http";
 import { BrowserModule } from "@angular/platform-browser";
 import { LoadingBarModule } from "@ngx-loading-bar/core";
 import { LoadingBarHttpClientModule } from "@ngx-loading-bar/http-client";
@@ -42,7 +41,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     OrganizationModule,
     AppRoutingModule,
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
-    HttpModule,
     FormsModule,
     ReactiveFormsModule,
     TextMaskModule,

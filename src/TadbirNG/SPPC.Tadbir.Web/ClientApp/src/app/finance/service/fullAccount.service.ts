@@ -1,7 +1,7 @@
 
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
+
 import "rxjs/Rx";
 import { HttpClient } from "@angular/common/http";
 import { AccountItemBriefInfo } from './accountRelations.service';
