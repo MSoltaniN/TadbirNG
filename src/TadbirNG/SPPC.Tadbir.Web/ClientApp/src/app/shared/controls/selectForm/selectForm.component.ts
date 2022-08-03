@@ -71,10 +71,10 @@ export function getLayoutModule(layout: Layout) {
       .search-box span:hover {
         opacity: 0.5;
       }
-      /deep/.sppc-select-form > .k-grid {
+      ::ng-deep.sppc-select-form > .k-grid {
         min-height: 600px;
       }
-      /deep/.sppc-select-form .k-grid-norecords td {
+      ::ng-deep.sppc-select-form .k-grid-norecords td {
         vertical-align: top;
       }
     `,

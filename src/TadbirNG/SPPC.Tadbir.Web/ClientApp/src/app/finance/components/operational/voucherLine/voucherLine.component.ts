@@ -59,7 +59,7 @@ import { VoucherLineFormComponent } from "./voucherLine-form.component";
   templateUrl: "./voucherLine.component.html",
   styles: [
     `
-      /deep/ .panel-primary {
+      ::ng-deep .panel-primary {
         border-color: #989898;
       }
       .voucher-balance {
@@ -89,7 +89,7 @@ import { VoucherLineFormComponent } from "./voucherLine-form.component";
         width: 450px;
         display: block;
       }
-      /deep/.k-footer-template {
+      ::ng-deep.k-footer-template {
         background-color: #b3b3b3;
       }
 

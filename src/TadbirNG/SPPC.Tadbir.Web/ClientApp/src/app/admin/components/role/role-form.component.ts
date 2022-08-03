@@ -25,7 +25,7 @@ export function getLayoutModule(layout: Layout) {
   styles: [`
         input[type=text],textarea { width: 100%; }
         .permission-dialog {width: 100% !important; min-width: 250px !important; height:100%}
-        /deep/ .permission-dialog .k-dialog{ height:100% !important; min-width: unset !important; }
+        ::ng-deep .permission-dialog .k-dialog{ height:100% !important; min-width: unset !important; }
 `
   ],
   templateUrl: './role-form.component.html',

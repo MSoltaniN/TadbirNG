@@ -21,7 +21,7 @@ interface Item {
                             </ng-template>
                </kendo-dropdownlist>
 `,
-  styles: [`/deep/ .ddl-branch-scope { width:100% }`],
+  styles: [`::ng-deep .ddl-branch-scope { width:100% }`],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

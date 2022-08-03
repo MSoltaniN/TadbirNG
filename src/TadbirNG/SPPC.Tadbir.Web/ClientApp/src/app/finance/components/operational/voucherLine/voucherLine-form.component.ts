@@ -26,7 +26,7 @@ interface Item {
       .ddl-type {
         width: 100%;
       }
-      /deep/ kendo-numerictextbox {
+      ::ng-deep kendo-numerictextbox {
         width: 100% !important;
       }
       .dialog-body {

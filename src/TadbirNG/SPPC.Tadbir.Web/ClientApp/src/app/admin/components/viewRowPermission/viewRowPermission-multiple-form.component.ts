@@ -36,11 +36,11 @@ export function getLayoutModule(layout: Layout) {
   templateUrl: "./viewRowPermission-multiple-form.component.html",
   styles: [
     `
-      /deep/ #multipleForm > .k-dialog {
+      ::ng-deep #multipleForm > .k-dialog {
         width: 800px;
       }
       @media screen and (max-width: 800px) {
-        /deep/ #multipleForm > .k-dialog {
+        ::ng-deep #multipleForm > .k-dialog {
           width: 90%;
           min-width: 250px;
         }

@@ -17,8 +17,8 @@ export function getLayoutModule(layout: Layout) {
   selector: 'error-list',
   templateUrl: './errorList.component.html',
   styles: [`
-  /deep/ .sppc-errorlist-form > .k-grid { min-height:500px;max-width:800px; }
-  /deep/ .sppc-errorlist-form .k-grid-norecords td { vertical-align: top; }
+  ::ng-deep .sppc-errorlist-form > .k-grid { min-height:500px;max-width:800px; }
+  ::ng-deep .sppc-errorlist-form .k-grid-norecords td { vertical-align: top; }
   `],
   providers: [{
     provide: RTL,

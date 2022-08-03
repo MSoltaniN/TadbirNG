@@ -43,7 +43,7 @@ export function getLayoutModule(layout: Layout) {
 #level-list > li:last-child{ border-bottom: solid 1px #337ab7; }
 #level-list > li.enable{ cursor: pointer; } #level-list > li.enable:hover{ background-color: #8ab8e0;}
 #level-list > li.disable{ background-color: #fdfdfd; } #level-list > li.selected{ background-color: #337ab7; }
-/deep/.k-grid tr.notEnabled { color: #cac4c4; }
+::ng-deep.k-grid tr.notEnabled { color: #cac4c4; }
 
 .btn-setting {
     position: absolute;

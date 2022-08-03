@@ -16,7 +16,7 @@ export function getLayoutModule(layout: Layout) {
 @Component({
   selector: 'role-fiscalPeriod-form-component',
   templateUrl: './role-fiscalPeriod-form.component.html',
-  styles: ['/deep/ .k-window-title{font-size:15px}'],
+  styles: ['::ng-deep .k-window-title{font-size:15px}'],
   providers: [{
     provide: RTL,
     useFactory: getLayoutModule,

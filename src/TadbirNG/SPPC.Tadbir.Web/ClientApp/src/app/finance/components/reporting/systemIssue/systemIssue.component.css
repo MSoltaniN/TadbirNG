@@ -47,20 +47,20 @@
   padding: 0 20px;
 }
 
-/deep/.k-treeview .k-item {
+::ng-deep.k-treeview .k-item {
   cursor: pointer;
 }
 
-  /deep/.k-treeview .k-item .k-in:hover {
+  ::ng-deep.k-treeview .k-item .k-in:hover {
     color: #337ab7;
   }
 
-  /deep/.k-treeview .k-item .k-state-selected {
+  ::ng-deep.k-treeview .k-item .k-state-selected {
     color: #fff !important;
   }
 
 
-/deep/ #setting-form .k-textbox {
+::ng-deep #setting-form .k-textbox {
   width: 100%;
 }
 
@@ -78,6 +78,6 @@
   right: 30px;
 }
 
-/deep/.issue-tree.k-treeview .k-in {
+::ng-deep.issue-tree.k-treeview .k-in {
   width: 100%;
 }

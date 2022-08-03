@@ -32,9 +32,9 @@ interface Item {
 @Component({
   selector: 'account-form-component',
   styles: [`
-  /deep/ .acc-form .k-switch {margin-left: 20px;margin-right: 20px; width:8rem}
-input[type=text],.ddl-acc,textarea { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}
-/deep/ .dialog-body .k-tabstrip > .k-content { padding:15px; }
+  ::ng-deep .acc-form .k-switch {margin-left: 20px;margin-right: 20px; width:8rem}
+input[type=text],.ddl-acc,textarea { width: 100%; } ::ng-deep .k-dialog-buttongroup {border-color: #f1f1f1;}
+::ng-deep .dialog-body .k-tabstrip > .k-content { padding:15px; }
 .dialog-body{ width: 800px } .dialog-body hr{ border-top: dashed 1px #eee; }
 @media screen and (max-width:800px) {
   .dialog-body{
@@ -42,14 +42,14 @@ input[type=text],.ddl-acc,textarea { width: 100%; } /deep/ .k-dialog-buttongroup
     min-width: 250px;
   }
 }
-/deep/ .k-tabstrip-top > .k-tabstrip-items { border-color: #f4f4f4; }
-/deep/ .k-tabstrip-top > .k-tabstrip-items .k-item.k-state-active { border-bottom-color: white; }
+::ng-deep .k-tabstrip-top > .k-tabstrip-items { border-color: #f4f4f4; }
+::ng-deep .k-tabstrip-top > .k-tabstrip-items .k-item.k-state-active { border-bottom-color: white; }
 
-/* /deep/ .k-switch-on .k-switch-handle { left: 48px !important; } */
-/deep/ .k-switch-off[dir="rtl"] .k-switch-handle{left: calc(100% - 3.25em) !important}
-/deep/ .k-switch-off .k-switch-handle { left: -2px !important; }
-/deep/ .k-switch[dir="rtl"] .k-switch-label-off { left: 0; }
-/deep/ .k-switch-label-on,/deep/ .k-switch-label-off { overflow: initial; }
+/* ::ng-deep .k-switch-on .k-switch-handle { left: 48px !important; } */
+::ng-deep .k-switch-off[dir="rtl"] .k-switch-handle{left: calc(100% - 3.25em) !important}
+::ng-deep .k-switch-off .k-switch-handle { left: -2px !important; }
+::ng-deep .k-switch[dir="rtl"] .k-switch-label-off { left: 0; }
+::ng-deep .k-switch-label-on,::ng-deep .k-switch-label-off { overflow: initial; }
 .acc-form { min-height: 386px; }
 input[type="file"] {
     display: none;

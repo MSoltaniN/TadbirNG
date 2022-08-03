@@ -17,7 +17,7 @@ export function getLayoutModule(layout: Layout) {
   selector: 'role-branch-form-component',
   styles: [`
        .user-dialog {width: 100% !important; height:100% !important}
-       /deep/ .user-dialog .k-dialog{ height:100% !important; min-width: unset !important; }
+       ::ng-deep .user-dialog .k-dialog{ height:100% !important; min-width: unset !important; }
 `
   ],
   templateUrl: './role-branch-form.component.html',

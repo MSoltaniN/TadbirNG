@@ -108,23 +108,23 @@ export function getLayoutModule(layout: Layout) {
       input[type="text"] {
         width: 100%;
       }
-      /deep/.section-option kendo-dropdownlist {
+      ::ng-deep.section-option kendo-dropdownlist {
         width: 100%;
       }
-      /deep/ .k-switch-on .k-switch-handle {
+      ::ng-deep .k-switch-on .k-switch-handle {
         left: -8px !important;
       }
-      /deep/ .k-switch-off .k-switch-handle {
+      ::ng-deep .k-switch-off .k-switch-handle {
         left: -4px !important;
       }
-      /deep/ .k-switch[dir="rtl"] .k-switch-label-on {
+      ::ng-deep .k-switch[dir="rtl"] .k-switch-label-on {
         right: -22px;
       }
-      /deep/ .k-switch[dir="rtl"] .k-switch-label-off {
+      ::ng-deep .k-switch[dir="rtl"] .k-switch-label-off {
         left: 0;
       }
-      /deep/ .k-switch-label-on,
-      /deep/ .k-switch-label-off {
+      ::ng-deep .k-switch-label-on,
+      ::ng-deep .k-switch-label-off {
         overflow: initial;
       }
       .test-balance {
@@ -133,7 +133,7 @@ export function getLayoutModule(layout: Layout) {
       .test-balance label {
         margin-top: 10px;
       }
-      /deep/.k-footer-template {
+      ::ng-deep.k-footer-template {
         background-color: #b3b3b3;
         color: #000;
       }

@@ -21,11 +21,11 @@ export function getLayoutModule(layout: Layout) {
         </div>
 `,
   styles: [`
-/deep/.dialog .k-window-content {
+::ng-deep.dialog .k-window-content {
   padding: 0
 }
 
-/deep/.rtlDialog .k-dialog-wrapper {
+::ng-deep.rtlDialog .k-dialog-wrapper {
   direction: rtl !important;
 }
   `],

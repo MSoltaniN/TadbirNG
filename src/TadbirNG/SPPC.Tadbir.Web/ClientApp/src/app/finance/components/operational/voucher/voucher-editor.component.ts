@@ -71,7 +71,7 @@ export function getLayoutModule(layout: Layout) {
         margin: 0 10px;
       }
 
-      /deep/.dialog-padding .k-window-content {
+      ::ng-deep.dialog-padding .k-window-content {
         padding: 15px !important;
       }
 

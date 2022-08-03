@@ -81,23 +81,23 @@ export function getLayoutModule(layout: Layout) {
       input[type="text"] {
         width: 100%;
       }
-      /deep/.section-option kendo-dropdownlist {
+      ::ng-deep.section-option kendo-dropdownlist {
         width: 100%;
       }
-      /deep/ .k-switch-on .k-switch-handle {
+      ::ng-deep .k-switch-on .k-switch-handle {
         left: -8px !important;
       }
-      /deep/ .k-switch-off .k-switch-handle {
+      ::ng-deep .k-switch-off .k-switch-handle {
         left: -4px !important;
       }
-      /deep/ .k-switch[dir="rtl"] .k-switch-label-on {
+      ::ng-deep .k-switch[dir="rtl"] .k-switch-label-on {
         right: -22px;
       }
-      /deep/ .k-switch[dir="rtl"] .k-switch-label-off {
+      ::ng-deep .k-switch[dir="rtl"] .k-switch-label-off {
         left: 0;
       }
-      /deep/ .k-switch-label-on,
-      /deep/ .k-switch-label-off {
+      ::ng-deep .k-switch-label-on,
+      ::ng-deep .k-switch-label-off {
         overflow: initial;
       }
       .journal-type {
@@ -106,7 +106,7 @@ export function getLayoutModule(layout: Layout) {
       .journal-type label {
         margin-top: 10px;
       }
-      /deep/.k-footer-template {
+      ::ng-deep.k-footer-template {
         background-color: #b3b3b3;
         color: #000;
       }
@@ -124,10 +124,10 @@ export function getLayoutModule(layout: Layout) {
         color: #fff;
         background-image: linear-gradient(#c1e3ff, #337ab7);
       }
-      /deep/ sppc-profitlost .k-grid tr.k-alt {
+      ::ng-deep sppc-profitlost .k-grid tr.k-alt {
         background-color: rgb(248, 251, 253) !important;
       }
-      /deep/ sppc-profitlost .k-grid[dir="rtl"] td,
+      ::ng-deep sppc-profitlost .k-grid[dir="rtl"] td,
       .k-rtl .k-grid td {
         border-width: 0 0px 0 0 !important;
         border: 0 !important;

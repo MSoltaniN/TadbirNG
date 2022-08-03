@@ -25,7 +25,7 @@ interface Item {
   selector: 'accountGroups-form-component',
   styles: [`
         input[type=text],textarea ,input[type=password]{ width: 100%; }
-        /deep/ .ddl-category { width:100% }
+        ::ng-deep .ddl-category { width:100% }
     `],
   templateUrl: './accountGroups-form.component.html',
   providers: [{

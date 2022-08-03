@@ -38,14 +38,14 @@ const matches = (el, selector) => (el.matches || el.msMatchesSelector).call(el, 
   templateUrl: './journal.component.html',
   styles: [`
 .section-option { margin-top: 15px; background-color: #f6f6f6; border: solid 1px #dadde2; padding: 15px 15px 0; }
-.section-option label,input[type=text] { width:100% } /deep/.section-option kendo-dropdownlist { width:100% }
-/deep/ .k-switch-on .k-switch-handle { left: -8px !important; }
-/deep/ .k-switch-off .k-switch-handle { left: -4px !important; }
-/deep/ .k-switch[dir="rtl"] .k-switch-label-on { right: -22px; }
-/deep/ .k-switch[dir="rtl"] .k-switch-label-off { left: 0; }
-/deep/ .k-switch-label-on,/deep/ .k-switch-label-off { overflow: initial; }
+.section-option label,input[type=text] { width:100% } ::ng-deep.section-option kendo-dropdownlist { width:100% }
+::ng-deep .k-switch-on .k-switch-handle { left: -8px !important; }
+::ng-deep .k-switch-off .k-switch-handle { left: -4px !important; }
+::ng-deep .k-switch[dir="rtl"] .k-switch-label-on { right: -22px; }
+::ng-deep .k-switch[dir="rtl"] .k-switch-label-off { left: 0; }
+::ng-deep .k-switch-label-on,::ng-deep .k-switch-label-off { overflow: initial; }
 .journal-type { margin:0 15px 10px; } .journal-type label { margin-top:10px; }
-/deep/.k-footer-template { background-color: #b3b3b3; color: #000;}
+::ng-deep.k-footer-template { background-color: #b3b3b3; color: #000;}
 .btn-compute-default {margin-top: 25px; border: 2px solid #337ab7; color: #337ab7; padding: 5px 25px;}
 .btn-compute { color: #337ab7; transition: All 0.3s 0.1s ease-out;}
 .btn-compute-selectable{ color: #fff; background-image: linear-gradient(#c1e3ff, #337ab7);}
