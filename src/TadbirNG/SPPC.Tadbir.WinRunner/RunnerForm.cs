@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
 using SPPC.Framework.Cryptography;
@@ -17,7 +18,7 @@ namespace SPPC.Tadbir.WinRunner
         public RunnerForm()
         {
             InitializeComponent();
-            _apiClient = new ServiceClient(UpdateServerUrl);
+            _apiClient = new ServiceClient(ConfigurationManager.AppSettings["ServerUrl"]);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -142,7 +143,6 @@ namespace SPPC.Tadbir.WinRunner
         }
 
         private const string ComposeCommand = "docker-compose -f docker-compose.override.yml -f docker-compose.yml";
-        private const string UpdateServerUrl = "http://localhost:9092";
         private readonly CliRunner _runner = new();
         private readonly IApiClient _apiClient;
     }

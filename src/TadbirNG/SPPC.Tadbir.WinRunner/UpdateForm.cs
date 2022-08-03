@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
@@ -52,7 +53,7 @@ namespace SPPC.Tadbir.WinRunner
         {
             _utility = new UpdateUtility()
             {
-                DockerPath = WinUtility.GetDockerExePath(),
+                UpdateServerUrl = ConfigurationManager.AppSettings["ServerUrl"],
                 Current = CurrentVersion,
                 Latest = LatestVersion
             };

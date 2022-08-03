@@ -16,7 +16,7 @@ namespace SPPC.Tools.Utility
     {
         public static void UpdateImageCache(CliRunner runner)
         {
-            var cacheRoot = FileUtility.GetAbsolutePath(@"..\..\..\..\dockercache");
+            var cacheRoot = FileUtility.GetAbsolutePath(PathConfig.DockerCacheRoot);
             var currentDir = Environment.CurrentDirectory;
             Environment.CurrentDirectory = cacheRoot;
             runner.Run("git pull --progress");
@@ -132,7 +132,7 @@ namespace SPPC.Tools.Utility
         private static void CopyDockerFiles(string licenseKey, string edition)
         {
             string path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "docker");
-            var cacheRoot = FileUtility.GetAbsolutePath(@"..\..\..\..\dockercache");
+            var cacheRoot = FileUtility.GetAbsolutePath(PathConfig.DockerCacheRoot);
             var root = Path.Combine(cacheRoot, DockerService.LicenseServerImage);
             File.Copy(Path.Combine(root, $"{DockerService.LicenseServerImage}.tar.gz"),
                 Path.Combine(path, $"{DockerService.LicenseServerImage}.tar.gz"));

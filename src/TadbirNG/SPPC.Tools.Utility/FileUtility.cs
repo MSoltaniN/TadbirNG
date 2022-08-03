@@ -50,7 +50,7 @@ namespace SPPC.Tools.Utility
         public static string GetAbsolutePath(string relativePath, string relativeToPath = null)
         {
             var absolutePath = relativeToPath ?? Environment.CurrentDirectory;
-            var parts = relativePath.Split('\\');
+            var parts = relativePath.Split(Path.DirectorySeparatorChar);
             foreach (var part in parts)
             {
                 if (part == "..")

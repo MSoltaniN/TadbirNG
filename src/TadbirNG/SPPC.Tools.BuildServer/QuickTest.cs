@@ -92,7 +92,7 @@ namespace SPPC.Tools.BuildServer
 
         public static void TestRunnerWithExpectedPath()
         {
-            Environment.CurrentDirectory = @"..\..\..\..\dockercache";
+            Environment.CurrentDirectory = PathConfig.DockerCacheRoot;
             var output = new CliRunner().Run("docker image ls");
         }
     }

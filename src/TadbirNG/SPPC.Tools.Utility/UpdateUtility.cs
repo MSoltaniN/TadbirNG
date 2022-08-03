@@ -16,7 +16,6 @@ namespace SPPC.Tools.Utility
         {
             _runner = new CliRunner();
             _runner.OutputReceived += Runner_OutputReceived;
-            _apiClient = new ServiceClient(UpdateServerUrl);
             _archive = new ArchiveUtility(Path.Combine("..", "tools"), false);
         }
 
@@ -26,23 +25,23 @@ namespace SPPC.Tools.Utility
             _imageRoot = FileUtility.GetAbsolutePath(imageRoot);
         }
 
-        public string DockerPath
-        {
-            get
-            {
-                return _dockerPath;
-            }
-            set
-            {
-                Verify.ArgumentNotNullOrEmptyString("value", nameof(value));
-                _dockerPath = value;
-                AddToProcessPath(_dockerPath);
-            }
-        }
-
         public VersionInfo Current { get; set; }
 
         public VersionInfo Latest { get; set; }
+
+        public string UpdateServerUrl
+        {
+            get
+            {
+                return _updateServerUrl;
+            }
+            set
+            {
+                Verify.ArgumentNotNullOrEmptyString(value, nameof(value));
+                _updateServerUrl = value;
+                _apiClient = new ServiceClient(_updateServerUrl);
+            }
+        }
 
         public static int GetDownloadSize(VersionInfo current, VersionInfo latest)
         {
@@ -203,18 +202,8 @@ namespace SPPC.Tools.Utility
         {
             Verify.ArgumentNotNullOrEmptyString(edition, nameof(edition));
             var editionTag = DockerUtility.GetEditionTag(edition);
-            var currentDir = Environment.CurrentDirectory;
-            Environment.CurrentDirectory = _imageRoot;
-            var version = new VersionInfo()
-            {
-                Version = QueryAppVersion()
-            };
-            version.Services.Add(GetServiceInfo(DockerService.LicenseServerImage));
-            version.Services.Add(GetServiceInfo(DockerService.ApiServerImage, editionTag));
-            version.Services.Add(GetServiceInfo(DockerService.DbServerImage));
-            version.Services.Add(GetServiceInfo(DockerService.WebAppImage));
-            Environment.CurrentDirectory = currentDir;
-            return version;
+            var versionFilePath = Path.Combine(_imageRoot, $"version.{editionTag}");
+            return JsonHelper.To<VersionInfo>(File.ReadAllText(versionFilePath));
         }
 
         public byte[] GetImageData(string serviceName, string edition = null)
@@ -224,14 +213,6 @@ namespace SPPC.Tools.Utility
                 : String.Empty;
             var imagePath = Path.Combine(_imageRoot, serviceName, $"{serviceName}{suffix}.tar.gz");
             return File.ReadAllBytes(imagePath);
-        }
-
-        public void UpdateImageCache()
-        {
-            var currentDir = Environment.CurrentDirectory;
-            Environment.CurrentDirectory = _imageRoot;
-            _runner.Run("git pull --progress");
-            Environment.CurrentDirectory = currentDir;
         }
 
         public bool NeedsUpdate(string serviceName)
@@ -245,51 +226,20 @@ namespace SPPC.Tools.Utility
             return currentInfo.Sha256 != latestInfo.Sha256;
         }
 
-        private static ServiceInfo GetServiceInfo(string serviceName, string editionTag = null)
-        {
-            // NOTE: This method assumes current directory to be root folder of local dockercache clone
-            var suffix = editionTag != null ? $"-{editionTag}" : String.Empty;
-            var imagePath = Path.Combine(
-                Environment.CurrentDirectory, serviceName, $"{serviceName}{suffix}.tar.gz");
-            return DockerUtility.GetServiceInfo(imagePath);
-        }
-
-        private static void AddToProcessPath(string path)
-        {
-            var currentPath = Environment.GetEnvironmentVariable("Path", EnvironmentVariableTarget.Process);
-            if (!String.IsNullOrEmpty(currentPath))
-            {
-                currentPath = String.Join(';', currentPath, path);
-            }
-
-            Environment.SetEnvironmentVariable("Path", currentPath, EnvironmentVariableTarget.Process);
-        }
-
-        private string QueryAppVersion()
-        {
-            // NOTE: This method assumes current directory to be root folder of local dockercache clone
-            var output = _runner.Run("git show --oneline");
-            return output
-                .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
-                .Where(line => line.Contains("UI-"))
-                .Select(line => line[(line.IndexOf("UI-") + 3)..])
-                .FirstOrDefault();
-        }
-
         private void Runner_OutputReceived(object sender, OutputReceivedEventArgs e)
         {
             if (!String.IsNullOrEmpty(e.Output))
             {
-                File.AppendAllText(_logPath, e.Output.Replace("\n", Environment.NewLine));
+                var log = $"{e.Output.Replace("\n", Environment.NewLine)}{Environment.NewLine}";
+                File.AppendAllText(_logPath, log);
             }
         }
 
         private const string _logPath = "update.log";
-        private const string UpdateServerUrl = "http://localhost:9092";
-        private string _dockerPath;
         private readonly string _imageRoot;
         private readonly CliRunner _runner;
-        private readonly IApiClient _apiClient;
         private readonly ArchiveUtility _archive;
+        private IApiClient _apiClient;
+        private string _updateServerUrl;
     }
 }
