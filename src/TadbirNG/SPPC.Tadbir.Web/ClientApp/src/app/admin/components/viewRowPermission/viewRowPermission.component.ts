@@ -22,7 +22,7 @@ import {
 } from "@sppc/shared/services";
 import { LookupApi } from "@sppc/shared/services/api";
 import { ToastrService } from "ngx-toastr";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();

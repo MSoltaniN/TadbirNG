@@ -6,7 +6,7 @@ import {
   OnInit,
   Renderer2,
 } from "@angular/core";
-import { DOCUMENT } from "@angular/platform-browser";
+import { DOCUMENT } from '@angular/common';;
 import { ActivatedRoute, Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { SettingService } from "@sppc/config/service";
@@ -164,7 +164,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       this.showNavbar = true;
     }
 
-    Chart.defaults.global.defaultFontFamily = "'SPPC'";
+    Chart.defaults.font.family = "'SPPC'";
 
     if (this.currentContext.fpId > 0 && this.currentContext.branchId > 0) {
       this.dashboadService

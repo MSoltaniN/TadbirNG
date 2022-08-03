@@ -1,10 +1,10 @@
 import { Component, Host, Inject, OnInit, Renderer2 } from "@angular/core";
-import { DOCUMENT } from "@angular/platform-browser";
+import { DOCUMENT } from '@angular/common';;
 import { ActivatedRoute, Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { DialogService } from "@progress/kendo-angular-dialog";
 import { SettingService } from "@sppc/config/service";
-//import { DOCUMENT } from '@angular/common';
+
 import { AuthenticationService, ContextInfo } from "@sppc/core";
 import { String } from "@sppc/shared/class/source";
 import { MessageType } from "@sppc/shared/enum/metadata";

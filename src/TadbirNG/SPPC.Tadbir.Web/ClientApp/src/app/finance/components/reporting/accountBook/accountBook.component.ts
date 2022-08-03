@@ -70,7 +70,7 @@ import { LookupApi } from "@sppc/shared/services/api";
 import { ShareDataService } from "@sppc/shared/services/share-data.service";
 import * as moment from "jalali-moment";
 import { ToastrService } from "ngx-toastr";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { VoucherEditorComponent } from "../../operational/voucher/voucher-editor.component";
 
 export function getLayoutModule(layout: Layout) {

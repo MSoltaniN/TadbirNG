@@ -54,7 +54,7 @@ import {
 } from "@sppc/shared/services";
 import { LookupApi } from "@sppc/shared/services/api";
 import { ToastrService } from "ngx-toastr";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { VoucherEditorComponent } from "./voucher-editor.component";
 
 export function getLayoutModule(layout: Layout) {

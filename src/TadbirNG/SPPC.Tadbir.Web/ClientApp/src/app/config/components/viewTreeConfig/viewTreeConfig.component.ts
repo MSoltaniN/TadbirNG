@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer2, Output, EventEmitter, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';

@@ -51,7 +51,7 @@ import {
   ReportingService,
 } from "@sppc/shared/services";
 import { ToastrService } from "ngx-toastr";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { VoucherLineFormComponent } from "./voucherLine-form.component";
 
 @Component({

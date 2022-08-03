@@ -1,6 +1,6 @@
-import { Location } from '@angular/common';
+import { DOCUMENT, Location } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, HostListener, Inject, OnInit } from '@angular/core';
-import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { UserService } from '@sppc/admin/service';
 import { AuthenticationService, Context } from '@sppc/core';

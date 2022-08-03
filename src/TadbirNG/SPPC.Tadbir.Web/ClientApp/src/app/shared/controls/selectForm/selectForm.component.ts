@@ -35,7 +35,7 @@ import {
 import { LookupApi } from "@sppc/shared/services/api";
 import { ShareDataService } from "@sppc/shared/services/share-data.service";
 import { ToastrService } from "ngx-toastr";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 
 export interface SearchItem {
   id: number;

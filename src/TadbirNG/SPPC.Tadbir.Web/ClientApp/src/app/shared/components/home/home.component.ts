@@ -19,7 +19,7 @@ import {
   MetaDataService,
 } from "@sppc/shared/services";
 import { ToastrService } from "ngx-toastr";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();

@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer2, ViewChild, ViewEncapsulation, ChangeDetectorRef, NgZone, ElementRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, PageChangeEvent, GridComponent } from '@progress/kendo-angular-grid';
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';

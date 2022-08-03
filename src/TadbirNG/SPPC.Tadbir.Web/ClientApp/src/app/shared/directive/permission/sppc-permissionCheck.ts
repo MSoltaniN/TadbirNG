@@ -5,8 +5,6 @@ import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "@ngx-translate/core";
 import { ViewName, Permissions } from "@sppc/shared/security";
 import { EnviromentComponent } from "@sppc/shared/class";
-import { forEach } from "@angular/router/src/utils/collection";
-
 
 @Directive({
   selector: '[SppcPermissionCheck]',

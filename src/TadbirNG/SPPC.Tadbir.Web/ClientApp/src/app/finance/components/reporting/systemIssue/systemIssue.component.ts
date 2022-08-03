@@ -40,7 +40,7 @@ import {
   MetaDataService,
 } from "@sppc/shared/services";
 import { ToastrService } from "ngx-toastr";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { VoucherEditorComponent } from "../../operational/voucher/voucher-editor.component";
 
 export function getLayoutModule(layout: Layout) {

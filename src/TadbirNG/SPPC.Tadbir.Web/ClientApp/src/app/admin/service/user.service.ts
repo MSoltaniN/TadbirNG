@@ -6,7 +6,7 @@ import { Command, RelatedItems, UserProfile } from "@sppc/shared/models";
 import { ShortcutCommand } from "@sppc/shared/models/shortcutCommand";
 import { BrowserStorageService } from "@sppc/shared/services";
 import { map } from "rxjs/operators";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { User } from "../models";
 import { UserApi } from "./api";
 

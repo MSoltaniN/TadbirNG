@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer2, ChangeDetectorRef, NgZone, ViewChild, HostListener, ElementRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { Layout, Entities, MessageType } from '@sppc/shared/enum/metadata';

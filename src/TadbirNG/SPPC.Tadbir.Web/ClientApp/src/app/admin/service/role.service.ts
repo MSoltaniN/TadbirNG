@@ -8,7 +8,7 @@ import { String } from "@sppc/shared/class/source";
 import { RelatedItem, RelatedItems } from "@sppc/shared/models";
 import { BrowserStorageService } from "@sppc/shared/services";
 import { map } from "rxjs/operators";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { Role, RoleDetails, RoleFull, UserBrief } from "../models";
 import { RoleApi } from "./api";
 

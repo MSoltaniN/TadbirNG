@@ -23,7 +23,7 @@ import {
   MetaDataService,
 } from "@sppc/shared/services";
 import { ToastrService } from "ngx-toastr";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { SettingsFormComponent } from "./settings-form.component";
 
 export function getLayoutModule(layout: Layout) {
