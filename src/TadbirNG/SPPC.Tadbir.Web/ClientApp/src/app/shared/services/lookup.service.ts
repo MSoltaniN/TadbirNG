@@ -1,7 +1,7 @@
 
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { HttpClient } from "@angular/common/http";
 import { AccountRelationApi } from '@sppc/finance/service/api';
 import { BrowserStorageService } from '@sppc/shared/services/browserStorage.service';
