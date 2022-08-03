@@ -71,7 +71,7 @@ export class GridExplorerComponent<T>
   ];
   selectedContextmenu: any;
 
-  @ViewChild(GridComponent, {static: false}) grid: GridComponent;
+  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
 
   public rowData: GridDataResult;
   public selectedRows: number[] = [];

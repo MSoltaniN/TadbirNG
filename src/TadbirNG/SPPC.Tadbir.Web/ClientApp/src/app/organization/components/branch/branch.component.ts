@@ -43,11 +43,11 @@ export function getLayoutModule(layout: Layout) {
 
 export class BranchComponent extends AutoGridExplorerComponent<Branch> implements OnInit {
 
-  @ViewChild(GridComponent, {static: false}) grid: GridComponent;
-  @ViewChild(ViewIdentifierComponent, {static: false}) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportViewerComponent, {static: false}) viewer: ReportViewerComponent;
-  @ViewChild(ReportManagementComponent, {static: false}) reportManager: ReportManagementComponent;
-  @ViewChild(QuickReportSettingComponent, {static: false}) reportSetting: QuickReportSettingComponent;
+  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent, {static: true}) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent, {static: true}) reportManager: ReportManagementComponent;
+  @ViewChild(QuickReportSettingComponent, {static: true}) reportSetting: QuickReportSettingComponent;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,

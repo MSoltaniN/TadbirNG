@@ -56,11 +56,11 @@ export class UserComponent
   isActive: boolean;
 
   // Report
-  @ViewChild(GridComponent, {static: false}) grid: GridComponent;
-  @ViewChild(ViewIdentifierComponent, {static: false}) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportViewerComponent, {static: false}) viewer: ReportViewerComponent;
-  @ViewChild(ReportManagementComponent, {static: false}) reportManager: ReportManagementComponent;
-  @ViewChild(QuickReportSettingComponent, {static: false}) reportSetting: QuickReportSettingComponent;
+  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent, {static: true}) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent, {static: true}) reportManager: ReportManagementComponent;
+  @ViewChild(QuickReportSettingComponent, {static: true}) reportSetting: QuickReportSettingComponent;
 
   //editDataItem?: User = undefined;
   userRolesData: RelatedItemsInfo;

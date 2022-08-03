@@ -30,7 +30,7 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
 
   menuList: Array<Command> = new Array<Command>();
   public icons: { [id: string]: string; } = {};
-  @ViewChild(ReportManagementComponent, {static: false}) reportManager: ReportManagementComponent;
+  @ViewChild(ReportManagementComponent, {static: true}) reportManager: ReportManagementComponent;
   paths: number[] = [];
   currentRoute: string;
   versionTitle: string;

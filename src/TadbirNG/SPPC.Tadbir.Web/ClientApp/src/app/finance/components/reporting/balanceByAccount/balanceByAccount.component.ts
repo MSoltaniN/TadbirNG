@@ -208,14 +208,14 @@ export class BalanceByAccountComponent
 
   private docClickSubscription: any;
 
-  @ViewChild(GridComponent, {static: false}) grid: GridComponent;
-  @ViewChild(ViewIdentifierComponent, {static: false}) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportViewerComponent, {static: false}) viewer: ReportViewerComponent;
-  @ViewChild(ReportManagementComponent, {static: false})
+  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent, {static: true}) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent, {static: true})
   reportManager: ReportManagementComponent;
-  @ViewChild(QuickReportSettingComponent, {static: false})
+  @ViewChild(QuickReportSettingComponent, {static: true})
   reportSetting: QuickReportSettingComponent;
-  @ViewChild(SppcDateRangeSelector, {static: false}) dateRange: SppcDateRangeSelector;
+  @ViewChild(SppcDateRangeSelector, {static: true}) dateRange: SppcDateRangeSelector;
 
   constructor(
     public toastrService: ToastrService,

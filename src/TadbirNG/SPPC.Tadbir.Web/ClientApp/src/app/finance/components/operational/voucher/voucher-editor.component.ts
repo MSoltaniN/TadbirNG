@@ -155,9 +155,9 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
   currentVoucherNo: number;
 
-  @ViewChild(ViewIdentifierComponent, {static: false}) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportViewerComponent, {static: false}) viewer: ReportViewerComponent;
-  @ViewChild(ReportManagementComponent, {static: false})
+  @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent, {static: true}) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent, {static: true})
   reportManager: ReportManagementComponent;
 
   constructor(

@@ -76,7 +76,7 @@ export class TabsComponent implements AfterContentInit {
 
   @ContentChildren(TabComponent) tabs: QueryList<TabComponent>;
 
-  @ViewChild(DynamicTabsDirective, {static: false}) dynamicTabPlaceholder: DynamicTabsDirective;
+  @ViewChild(DynamicTabsDirective, {static: true}) dynamicTabPlaceholder: DynamicTabsDirective;
 
   /*
     Alternative approach of using an anchor directive

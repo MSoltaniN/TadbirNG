@@ -36,9 +36,9 @@ export function getLayoutModule(layout: Layout) {
 
 export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> implements OnInit {
 
-  @ViewChild(ViewIdentifierComponent, {static: false}) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportManagementComponent, {static: false}) reportManager: ReportManagementComponent;
-  @ViewChild(QuickReportSettingComponent, {static: false}) reportSetting: QuickReportSettingComponent;
+  @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportManagementComponent, {static: true}) reportManager: ReportManagementComponent;
+  @ViewChild(QuickReportSettingComponent, {static: true}) reportSetting: QuickReportSettingComponent;
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
