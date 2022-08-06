@@ -305,35 +305,38 @@ namespace SPPC.Tools.BuildServer
             if (_dbChanged)
             {
                 ShowMessage("Updating cache for Db Server...");
-                UpdateServiceCache("db-server");
+                UpdateServiceCache(DockerService.DbServerImage);
             }
 
             if (_licenseChanged)
             {
                 ShowMessage("Updating cache for License Server...");
-                UpdateServiceCache("license-server");
+                UpdateServiceCache(DockerService.LicenseServerImage);
             }
 
             if (_appChanged)
             {
                 ShowMessage("Updating cache for Web App...");
-                UpdateServiceCache("web-app", "dev");
+                UpdateServiceCache(DockerService.WebAppImage, "dev");
             }
 
             if (_apiChanged)
             {
                 ShowMessage("Updating cache for Api Server...");
-                UpdateServiceCache("api-server", "std");
-                UpdateServiceCache("api-server", "pro");
-                UpdateServiceCache("api-server", "ent");
+                UpdateServiceCache(DockerService.ApiServerImage, "std");
+                UpdateServiceCache(DockerService.ApiServerImage, "pro");
+                UpdateServiceCache(DockerService.ApiServerImage, "ent");
             }
+
+            var cacheRoot = FileUtility.GetAbsolutePath(PathConfig.DockerCacheRoot);
+            CreateVersionFiles(cacheRoot);
 
             // Commit changes to DockerCache remote
             ShowMessage("Commiting changes to git remote...");
             var apiVersion = VersionUtility.GetApiVersion();
             var appVersion = VersionUtility.GetAppVersion();
             var currentDir = Environment.CurrentDirectory;
-            Environment.CurrentDirectory = GetDockerCacheRoot();
+            Environment.CurrentDirectory = cacheRoot;
             var message = String.Format($"Pushed builds {apiVersion},UI-{appVersion}");
             _runner.Run(String.Format(GitCommitCommand, message));
             _runner.Run("git push --progress");
@@ -344,7 +347,7 @@ namespace SPPC.Tools.BuildServer
         private static void UpdateServiceCache(string serviceName, string tag = "latest")
         {
             var currentDir = Environment.CurrentDirectory;
-            var root = GetDockerCacheRoot();
+            var root = FileUtility.GetAbsolutePath(PathConfig.DockerCacheRoot);
             var imageFile = GetImageFileName(serviceName, tag);
             Environment.CurrentDirectory = Path.Combine(root, serviceName);
             _runner.Run(String.Format($"docker save msn1368/{serviceName}:{tag} -o {imageFile}.tar"));
@@ -375,6 +378,41 @@ namespace SPPC.Tools.BuildServer
             return editionTags.Contains(tag)
                 ? String.Format($"{serviceName}-{tag}")
                 : serviceName;
+        }
+
+        private static void CreateVersionFiles(string cacheRoot)
+        {
+            var version = new VersionInfo()
+            {
+                Version = VersionUtility.GetAppVersion(),
+                Edition = "Standard"
+            };
+
+            var imagePath = Path.Combine(
+                cacheRoot, DockerService.LicenseServerImage, $"{DockerService.LicenseServerImage}.tar.gz");
+            version.Services.Add(DockerUtility.GetServiceInfo(imagePath));
+            imagePath = Path.Combine(
+                cacheRoot, DockerService.ApiServerImage, $"{DockerService.ApiServerImage}-std.tar.gz");
+            version.Services.Add(DockerUtility.GetServiceInfo(imagePath));
+            imagePath = Path.Combine(
+                cacheRoot, DockerService.DbServerImage, $"{DockerService.DbServerImage}.tar.gz");
+            version.Services.Add(DockerUtility.GetServiceInfo(imagePath));
+            imagePath = Path.Combine(
+                cacheRoot, DockerService.WebAppImage, $"{DockerService.WebAppImage}.tar.gz");
+            version.Services.Add(DockerUtility.GetServiceInfo(imagePath));
+            File.WriteAllText(Path.Combine(cacheRoot, "version.std"), JsonHelper.From(version));
+
+            version.Edition = "Professional";
+            imagePath = Path.Combine(
+                cacheRoot, DockerService.ApiServerImage, $"{DockerService.ApiServerImage}-pro.tar.gz");
+            version.Services[1] = DockerUtility.GetServiceInfo(imagePath);
+            File.WriteAllText(Path.Combine(cacheRoot, "version.pro"), JsonHelper.From(version));
+
+            version.Edition = "Enterprise";
+            imagePath = Path.Combine(
+                cacheRoot, DockerService.ApiServerImage, $"{DockerService.ApiServerImage}-ent.tar.gz");
+            version.Services[1] = DockerUtility.GetServiceInfo(imagePath);
+            File.WriteAllText(Path.Combine(cacheRoot, "version.ent"), JsonHelper.From(version));
         }
 
         private static void Runner_OutputReceived(object sender, OutputReceivedEventArgs e)

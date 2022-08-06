@@ -50,7 +50,7 @@ namespace SPPC.Tools.Utility
         public static string GetAbsolutePath(string relativePath, string relativeToPath = null)
         {
             var absolutePath = relativeToPath ?? Environment.CurrentDirectory;
-            var parts = relativePath.Split('\\');
+            var parts = relativePath.Split(Path.DirectorySeparatorChar);
             foreach (var part in parts)
             {
                 if (part == "..")
@@ -64,6 +64,28 @@ namespace SPPC.Tools.Utility
             }
 
             return absolutePath;
+        }
+
+        public static void DeleteFolder(string path)
+        {
+            var dirInfo = new DirectoryInfo(path);
+            foreach (var file in dirInfo.GetFiles("*.*", SearchOption.AllDirectories))
+            {
+                File.Delete(file.FullName);
+            }
+
+            DeleteFolderRecursive(path);
+        }
+
+        private static void DeleteFolderRecursive(string path)
+        {
+            var dirInfo = new DirectoryInfo(path);
+            foreach (var folder in dirInfo.GetDirectories("*.*", SearchOption.TopDirectoryOnly))
+            {
+                DeleteFolderRecursive(folder.FullName);
+            }
+
+            Directory.Delete(path);
         }
     }
 }

@@ -77,10 +77,12 @@ namespace SPPC.Tadbir.WinRunner
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "انصراف";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.Cancel_Click);
             // 
             // worker
             // 
             this.worker.WorkerReportsProgress = true;
+            this.worker.WorkerSupportsCancellation = true;
             this.worker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Worker_DoWork);
             this.worker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.Worker_ProgressChanged);
             this.worker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Worker_RunWorkerCompleted);
@@ -92,7 +94,7 @@ namespace SPPC.Tadbir.WinRunner
             this.lblElapsed.Name = "lblElapsed";
             this.lblElapsed.Size = new System.Drawing.Size(71, 25);
             this.lblElapsed.TabIndex = 8;
-            this.lblElapsed.Text = "00:00";
+            this.lblElapsed.Text = "00:00:00";
             this.lblElapsed.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label7
@@ -108,6 +110,7 @@ namespace SPPC.Tadbir.WinRunner
             // timer
             // 
             this.timer.Interval = 1000;
+            this.timer.Tick += new System.EventHandler(this.Timer_Tick);
             // 
             // UpdateForm
             // 

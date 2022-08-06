@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using SPPC.Framework.Common;
@@ -12,6 +14,19 @@ namespace SPPC.Framework.Helpers
     public class CliRunner
     {
         /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
+        public CliRunner()
+        {
+            _knownCommandsPath = new Dictionary<string, string>
+            {
+                { "docker", Path.Combine("Docker", "resources", "bin") },
+                { "docker-compose", Path.Combine("Docker", "resources", "bin") },
+                { "git", Path.Combine("Git", "cmd") }
+            };
+        }
+
+        /// <summary>
         /// دستور خط فرمان داده شده را به صورت مستقیم اجرا می کند
         /// </summary>
         /// <param name="command">دستور خط فرمان مورد نظر که شامل نام فایل اجرایی و آرگومان های مورد نیاز است</param>
@@ -23,10 +38,18 @@ namespace SPPC.Framework.Helpers
             _outputBuilder.Clear();
             using (_process = GetCommandProcess(command))
             {
-                _process.Start();
-                _process.BeginOutputReadLine();
-                _process.BeginErrorReadLine();
-                _process.WaitForExit(timeout);
+                try
+                {
+                    RunAndWait(timeout);
+                }
+                catch
+                {
+                    var commandExe = command
+                        .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                        .First();
+                    AddCommandToPath(commandExe);
+                    RunAndWait(timeout);
+                }
             }
 
             return _outputBuilder.ToString();
@@ -152,6 +175,30 @@ namespace SPPC.Framework.Helpers
             return process;
         }
 
+        private void RunAndWait(int timeout)
+        {
+            _process.Start();
+            _process.BeginOutputReadLine();
+            _process.BeginErrorReadLine();
+            _process.WaitForExit(timeout);
+        }
+
+        private void AddCommandToPath(string command)
+        {
+            if (_knownCommandsPath.ContainsKey(command))
+            {
+                var path = Environment
+                    .GetEnvironmentVariable("Path", EnvironmentVariableTarget.Machine)
+                    .Split(';')
+                    .Where(item => item.Contains(_knownCommandsPath[command]))
+                    .FirstOrDefault();
+                if (!String.IsNullOrEmpty(path))
+                {
+                    Environment.SetEnvironmentVariable("Path", path);
+                }
+            }
+        }
+
         private void Process_Exited(object sender, EventArgs e)
         {
             _lastExitCode = (int)_process?.ExitCode;
@@ -175,6 +222,7 @@ namespace SPPC.Framework.Helpers
 
         private const string RemarkPrefix = "#";
         private readonly StringBuilder _outputBuilder = new();
+        private readonly IDictionary<string, string> _knownCommandsPath;
         private Process _process;
         private int _lastExitCode = 0;
     }

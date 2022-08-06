@@ -135,7 +135,7 @@ namespace SPPC.Tools.Utility
             _newHash = _crypto
                 .CreateHash(File.ReadAllBytes(Path.Combine(Environment.CurrentDirectory, ToolConstants.LayerTarFile)))
                 .ToLower();
-            DeleteFolder(Path.Combine(Environment.CurrentDirectory, AppLayerFolder));
+            FileUtility.DeleteFolder(Path.Combine(Environment.CurrentDirectory, AppLayerFolder));
             Environment.CurrentDirectory = Path.GetDirectoryName(Environment.CurrentDirectory);
         }
 
@@ -151,28 +151,6 @@ namespace SPPC.Tools.Utility
                 var content = File.ReadAllText(jsonFile.FullName);
                 File.WriteAllText(jsonFile.FullName, content.Replace(_oldHash, _newHash));
             }
-        }
-
-        private static void DeleteFolder(string path)
-        {
-            var dirInfo = new DirectoryInfo(path);
-            foreach (var file in dirInfo.GetFiles("*.*", SearchOption.AllDirectories))
-            {
-                File.Delete(file.FullName);
-            }
-
-            DeleteFolderRecursive(path);
-        }
-
-        private static void DeleteFolderRecursive(string path)
-        {
-            var dirInfo = new DirectoryInfo(path);
-            foreach (var folder in dirInfo.GetDirectories("*.*", SearchOption.TopDirectoryOnly))
-            {
-                DeleteFolderRecursive(folder.FullName);
-            }
-
-            Directory.Delete(path);
         }
 
         private void RestoreImageFile(string imageFile)
@@ -198,7 +176,7 @@ namespace SPPC.Tools.Utility
                 .GetDirectories("*.*", SearchOption.TopDirectoryOnly)
                 .Select(dir => dir.FullName)
                 .ToArray();
-            Array.ForEach(folders, folder => DeleteFolder(folder));
+            Array.ForEach(folders, folder => FileUtility.DeleteFolder(folder));
             var files = dirInfo
                 .GetFiles("*.*", SearchOption.TopDirectoryOnly)
                 .Select(file => file.FullName)

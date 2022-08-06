@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
-using Microsoft.Win32;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Domain;
 using SPPC.Tools.Model;
@@ -168,13 +166,13 @@ namespace SPPC.Tadbir.WinRunner
             var root = GetDockerImageRoot();
             InstallerUtility.DockerPath = WinUtility.GetDockerExePath();
             worker.ReportProgress(0, "آماده سازی سرویس های برنامه...");
-            InstallerUtility.ConfigureDockerService(root, DockerService.LicenseServer, _settings);
+            InstallerUtility.ConfigureDockerService(root, DockerService.LicenseServerImage, _settings);
             worker.ReportProgress(20);
-            InstallerUtility.ConfigureDockerService(root, DockerService.ApiServer, _settings);
+            InstallerUtility.ConfigureDockerService(root, DockerService.ApiServerImage, _settings);
             worker.ReportProgress(20);
-            InstallerUtility.ConfigureDockerService(root, DockerService.WebApp, _settings);
+            InstallerUtility.ConfigureDockerService(root, DockerService.WebAppImage, _settings);
             worker.ReportProgress(20);
-            InstallerUtility.ConfigureDockerService(root, DockerService.DbServer, _settings);
+            InstallerUtility.ConfigureDockerService(root, DockerService.DbServerImage, _settings);
             worker.ReportProgress(20);
         }
 

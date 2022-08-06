@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
 using SPPC.Framework.Cryptography;
@@ -17,7 +18,7 @@ namespace SPPC.Tadbir.WinRunner
         public RunnerForm()
         {
             InitializeComponent();
-            _apiClient = new ServiceClient(UpdateServerUrl);
+            _apiClient = new ServiceClient(ConfigurationManager.AppSettings["ServerUrl"]);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -92,11 +93,18 @@ namespace SPPC.Tadbir.WinRunner
                 MessageBox.Show("شما از آخرین نسخه برنامه استفاده می کنید.",
                     "اطلاع به کاربر", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.RtlReading);
-                Cursor = Cursors.Default;
-                return;
             }
             else if(ConfirmApplicationUpdate(current, latest))
             {
+                Cursor = Cursors.Default;
+                current.Edition = UpdateUtility.GetInstalledEdition();
+                var updater = new UpdateForm()
+                {
+                    CurrentVersion = current,
+                    LatestVersion = latest,
+                    InstanceKey = config.Key
+                };
+                updater.Show(this);
             }
 
             Cursor = Cursors.Default;
@@ -115,10 +123,10 @@ namespace SPPC.Tadbir.WinRunner
 
         private bool ConfirmApplicationUpdate(VersionInfo current, VersionInfo latest)
         {
-            var summary = UpdateUtility.GetUpdateSummary(current, latest);
+            int downloadSize = UpdateUtility.GetDownloadSize(current, latest);
             var message = String.Format(
                 "با ادامه عملیات، حدود {0} مگابایت دانلود می شود.{1}آیا با به روزرسانی برنامه موافق هستید؟",
-                summary.Item2, Environment.NewLine);
+                downloadSize, Environment.NewLine);
             var result = MessageBox.Show(
                 this, message, "دریافت تایید از کاربر", MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, MessageBoxOptions.RtlReading);
@@ -135,7 +143,6 @@ namespace SPPC.Tadbir.WinRunner
         }
 
         private const string ComposeCommand = "docker-compose -f docker-compose.override.yml -f docker-compose.yml";
-        private const string UpdateServerUrl = "http://localhost:9092";
         private readonly CliRunner _runner = new();
         private readonly IApiClient _apiClient;
     }

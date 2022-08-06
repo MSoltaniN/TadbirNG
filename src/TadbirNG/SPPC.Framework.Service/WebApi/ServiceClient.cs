@@ -116,7 +116,7 @@ namespace SPPC.Framework.Service
             {
                 file = new FileResource()
                 {
-                    Name = response.Content.Headers.ContentDisposition.Name,
+                    Name = response.Content.Headers.ContentDisposition.FileName,
                     Size = response.Content.Headers.ContentLength ?? 0L,
                     ContentType = response.Content.Headers.ContentType.MediaType,
                     RawData = response.Content

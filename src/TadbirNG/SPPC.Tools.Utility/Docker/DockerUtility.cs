@@ -58,6 +58,15 @@ namespace SPPC.Tools.Utility
                     .ToLower();
         }
 
+        public static string GetEdition(string editionTag)
+        {
+            return editionTag == "std"
+                ? "Standard"
+                : (editionTag == "pro"
+                    ? "Professional"
+                    : "Enterprise");
+        }
+
         public void WaitForContainer(string name)
         {
             var container = GetContainer(name);

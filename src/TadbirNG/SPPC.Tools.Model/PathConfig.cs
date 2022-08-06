@@ -16,6 +16,8 @@ namespace SPPC.Tools.Model
 
         public static string WebEnvRoot => Path.Combine(WebAppRoot, "ClientApp", "src", "environments");
 
+        public static string DockerCacheRoot => Path.Combine("..", "..", "..", "..", "dockercache");
+
         public static string ComposePath => Path.Combine(SolutionRoot, "docker-compose.yml");
 
         public static string OverridePath => Path.Combine(SolutionRoot, "docker-compose.override.yml");
