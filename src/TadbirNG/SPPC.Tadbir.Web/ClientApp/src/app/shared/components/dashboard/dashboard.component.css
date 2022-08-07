@@ -54,6 +54,7 @@ i .fa {
 .msg-container {
   padding: 2px;
   margin-bottom: 12px;
+  min-height: 38px;
 }
 
 .confirm-msg {
