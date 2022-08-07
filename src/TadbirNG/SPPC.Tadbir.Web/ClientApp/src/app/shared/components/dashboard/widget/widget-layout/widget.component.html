@@ -2,7 +2,9 @@
   <widget-header
     [editMode]="isEditMode"
     (closeClick)="onCloseWidget()"
+    (settingChange)="onSettingChange($event)"
     [title]="headerTitle"
+    [widgetId]="widgetId"
   >
     <ng-content select="[header]" class="box-header"></ng-content>
   </widget-header>

@@ -52,7 +52,9 @@
     "Setting": "تنظیمات",
     "White": "سفید",
     "SettingConfirm": "آیا تنظیمات داشبورد ذخیره شود؟",
-    "AddWidget": "ویجت جدید"
+    "AddWidget": "ویجت جدید",
+    "WidgetSetting": "تنظیمات ویجت",
+    "ChartType": "نوع نمودار"
   },
   "Exception": {
     "ErrorCode": "کد خطا",

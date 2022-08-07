@@ -51,7 +51,9 @@
     "DashboardName": "Dashboard",
     "Setting": "Setting",
     "White": "White",
-    "SettingConfirm": "Are you sure about the dashboard settings?"
+    "SettingConfirm": "Are you sure about the dashboard settings?",
+    "WidgetSetting": "ٌWidget Settings",
+    "ChartType": "Chart type"
   },
   "Exception": {
     "ErrorCode": "Error Code",

@@ -1,6 +1,1 @@
-<p-chart
-  *ngIf="type == 'bar'"
-  type="bar"
-  [data]="data"
-  [options]="options"
-></p-chart>
+<p-chart #chart [type]="type" [data]="data" [options]="options"></p-chart>
