@@ -169,7 +169,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   ownerForm = new FormGroup({
     id: new FormControl(),
     accountId: new FormControl(),
-    bankName: new FormControl('', [Validators.required, Validators.maxLength(64)]),
+    bankName: new FormControl('', [Validators.required, Validators.maxLength(128)]),
     accountType: new FormControl('', Validators.required),
     bankBranchName: new FormControl('', [Validators.required, Validators.maxLength(64)]),
     branchIndex: new FormControl('', [Validators.required, Validators.maxLength(64)]),

@@ -1376,7 +1376,7 @@
       "DescriptionIsTooLong": "توضیحات می تواند حداکثر 1024 حرف داشته باشد."
     },
     "AccountOwner": {
-      "BankNameIsTooLong": "نام بانک می تواند حداکثر 64 حرف داشته باشد.",
+      "BankNameIsTooLong": "نام بانک می تواند حداکثر 128 حرف داشته باشد.",
       "BankNameIsRequired": "وارد کردن نام بانک اجباری است",
       "BankBranchNameIsRequired": "وارد کردن نام شعبه اجباری است",
       "BankBranchNameIsTooLong": "نام شعبه می تواند حداکثر 64 حرف داشته باشد.",
