@@ -52,7 +52,9 @@
     "Setting": "تنظیمات",
     "White": "سفید",
     "SettingConfirm": "آیا تنظیمات داشبورد ذخیره شود؟",
-    "AddWidget": "ویجت جدید"
+    "AddWidget": "ویجت جدید",
+    "WidgetSetting": "تنظیمات ویجت",
+    "ChartType": "نوع نمودار"
   },
   "Exception": {
     "ErrorCode": "کد خطا",
@@ -274,7 +276,6 @@
     "FilterByRefMsg": "فیلتر رفرنس را وارد کنید",
     "ShowAccountBookHint": "برای مشاهده دفتر حساب لطفا فیلتر تراز براساس تاریخ قرار دهید",
     "LevelIsNotExists": "حساب دارای گردشی در سطوح پایین تر نیست",
-    "PlaeseSelectAnAccount": "لطفا یک حساب را انتخاب کنید",
     "Format": {
       "Balance2Column": "2 ستونی",
       "Balance4Column": "4 ستونی",
@@ -327,10 +328,10 @@
     "GroupFilterNotFound": "هیچ گروه فیلتری درج نشده است!",
     "PleaseInsertGroupFilter": "لطفا ابتدا گروه فیلتر انتخاب شود",
     "InsertFilter": "درج فیلتر",
-    "PlaeseSelectField": "لطفا یک فیلد را انتخاب کنید",
-    "PlaeseEnterValue": "مقدار فیلتر را را وارد کنید",
-    "PlaeseSelectOperator": "عملگر مورد نظر را انتخاب کنید",
-    "PlaeseSelectLogicOperator": "عملگر منطقی را انتخاب کنید",
+    "PleaseSelectField": "یک فیلد را انتخاب کنید",
+    "PleaseEnterValue": "مقدار فیلتر را را وارد کنید",
+    "PleaseSelectOperator": "عملگر مورد نظر را انتخاب کنید",
+    "PleaseSelectLogicOperator": "عملگر منطقی را انتخاب کنید",
     "FilterInsertedSuccess": "فیلتر با موفقیت درج شد",
     "FilterEditedSuccess": "فیلتر با موفقیت ذخیره شد",
     "FilterDeletedSuccess": "فیلتر با موفقیت حذف شد",
@@ -344,7 +345,6 @@
     "SaveFilter": "ذخیره فیلتر",
     "RemoveAllBraces": "حذف همه پرانتز ها",
     "Condition": "شرط",
-    "PleaseSelectField": "یک فیلد را انتخاب کنید",
     "AddGroupfilter": "درج فیلتر جدید",
     "DeleteGroupfilter": "حذف فیلتر",
     "UseForOthers": "قابل استفاده برای همه کاربران",
@@ -528,7 +528,6 @@
     "FilterByRefMsg": "فیلتر رفرنس را وارد کنید",
     "ShowAccountBookHint": "برای مشاهده دفتر حساب لطفا فیلتر تراز براساس تاریخ قرار دهید",
     "LevelIsNotExists": "حساب دارای گردشی در سطوح پایین تر نیست",
-    "PlaeseSelectAnAccount": "لطفا یک حساب را انتخاب کنید",
     "AllDocsSelectHint": "در حالتی که وضعیت اسناد بصورت کلیه اسناد انتخاب شده باشد ممکن است گزارش ناتراز باشد",
     "Format": {
       "Balance2Column": "2 ستونی",

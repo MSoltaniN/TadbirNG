@@ -758,7 +758,7 @@ export class TestBalanceComponent
 
     if (isDetail && !this.selectedModel) {
       this.showMessage(
-        this.getText("Balance.PlaeseSelectAnAccount"),
+        this.getText("Balance.PleaseSelectAccount"),
         MessageType.Warning
       );
       return;

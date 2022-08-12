@@ -1,3 +1,27 @@
-<p>
-  widget-setting works!
-</p>
+<div style="padding: 15px">
+  <div class="form-group">
+    <label for="name" class="control-label">{{
+      "Dashboard.ChartType" | translate
+    }}</label>
+    <kendo-dropdownlist
+      [data]="chartTypes"
+      [textField]="'text'"
+      [valueField]="'value'"
+      [(ngModel)]="chartType"
+    >
+    </kendo-dropdownlist>
+  </div>
+</div>
+
+<kendo-dialog-actions>
+  <button
+    class="k-button k-primary"
+    [disabled]="!chartType"
+    (click)="onSave($event)"
+  >
+    {{ "Buttons.Ok" | translate }}
+  </button>
+  <button class="k-button" (click)="onCancel($event)">
+    {{ "Buttons.Cancel" | translate }}
+  </button>
+</kendo-dialog-actions>
