@@ -19,7 +19,7 @@ namespace SPPC.Tools.Utility
             var cacheRoot = FileUtility.GetAbsolutePath(PathConfig.DockerCacheRoot);
             var currentDir = Environment.CurrentDirectory;
             Environment.CurrentDirectory = cacheRoot;
-            runner.Run("git pull --progress");
+            runner.Run(ToolConstants.GitPullCommand);
             Environment.CurrentDirectory = currentDir;
         }
 
@@ -71,7 +71,7 @@ namespace SPPC.Tools.Utility
         public static void CreateReleaseArchive(string licenseKey, string edition, string password)
         {
             // Generate customer-specific docker-compose files inside runner folder
-            GenerateDockerCompose(licenseKey, GetEditionTag(edition));
+            GenerateDockerCompose(licenseKey, DockerUtility.GetEditionTag(edition));
 
             // Calculate checksums and create checksum files
             CreateChecksumFiles(licenseKey);
@@ -142,17 +142,10 @@ namespace SPPC.Tools.Utility
             root = Path.Combine(cacheRoot, DockerService.DbServerImage);
             File.Copy(Path.Combine(root, $"{DockerService.DbServerImage}.tar.gz"),
                 Path.Combine(path, $"{DockerService.DbServerImage}.tar.gz"));
-            var editionTag = GetEditionTag(edition);
+            var editionTag = DockerUtility.GetEditionTag(edition);
             root = Path.Combine(cacheRoot, DockerService.ApiServerImage);
             File.Copy(Path.Combine(root, $"{DockerService.ApiServerImage}-{editionTag}.tar.gz"),
                 Path.Combine(path, $"{DockerService.ApiServerImage}.tar.gz"));
-        }
-
-        private static string GetEditionTag(string edition)
-        {
-            return edition == "Standard"
-                ? "std"
-                : edition.Substring(0, 3).ToLower();
         }
 
         private static void GenerateDockerCompose(string licenseKey, string editionTag)

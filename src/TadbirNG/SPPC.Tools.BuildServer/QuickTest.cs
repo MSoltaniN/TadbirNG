@@ -95,5 +95,11 @@ namespace SPPC.Tools.BuildServer
             Environment.CurrentDirectory = PathConfig.DockerCacheRoot;
             var output = new CliRunner().Run("docker image ls");
         }
+
+        public static void TestCabMaker()
+        {
+            var archive = new ArchiveUtility(null, false);
+            archive.Cab(@"D:\Temp\__Test__\runner");
+        }
     }
 }

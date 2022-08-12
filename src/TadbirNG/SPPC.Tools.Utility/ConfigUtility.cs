@@ -7,7 +7,7 @@ namespace SPPC.Tools.Utility
 {
     public class ConfigUtility
     {
-        public void GenerateConfig(IBuildSettings settings)
+        public static void GenerateConfig(IBuildSettings settings)
         {
             // Generate settings for license server...
             ITextTemplate template = new LocalLicenseApiSettings(settings);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Ionic.Zip;
 using Ionic.Zlib;
 using SPPC.Framework.Common;
@@ -31,6 +32,23 @@ namespace SPPC.Tools.Utility
             {
                 zip.AddDirectory(sourceFolder);
                 zip.Save(zipFile);
+            }
+        }
+
+        public void Cab(string sourceFolder)
+        {
+            Verify.ArgumentNotNullOrEmptyString(sourceFolder, nameof(sourceFolder));
+            if (Directory.Exists(sourceFolder))
+            {
+                var directiveFile = "files.txt";
+                var cabFile = $"{Path.GetFileName(sourceFolder)}";
+                var fileNames = String.Join(Environment.NewLine,
+                    new DirectoryInfo(sourceFolder)
+                        .GetFiles("*.*", SearchOption.AllDirectories)
+                        .Select(file => $"\"{file.FullName}\""));
+                File.WriteAllText(directiveFile, fileNames);
+                _runner.Run($"makecab /F {directiveFile} /D CabinetNameTemplate={cabFile}*.cab /D CompressionType=LZX /D MaxDiskSize={FileSize.FromMegaBytes(30)} /D DiskDirectoryTemplate=");
+                File.Delete(directiveFile);
             }
         }
 

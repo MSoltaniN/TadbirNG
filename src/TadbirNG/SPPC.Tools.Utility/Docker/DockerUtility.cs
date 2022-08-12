@@ -51,8 +51,8 @@ namespace SPPC.Tools.Utility
 
         public static string GetEditionTag(string edition)
         {
-            return edition == "Standard"
-                ? "std"
+            return edition == Edition.Standard
+                ? Edition.StandardTag
                 : edition?
                     .Substring(0, 3)
                     .ToLower();
@@ -60,11 +60,11 @@ namespace SPPC.Tools.Utility
 
         public static string GetEdition(string editionTag)
         {
-            return editionTag == "std"
-                ? "Standard"
-                : (editionTag == "pro"
-                    ? "Professional"
-                    : "Enterprise");
+            return editionTag == Edition.StandardTag
+                ? Edition.Standard
+                : (editionTag == Edition.ProfessionalTag
+                    ? Edition.Professional
+                    : Edition.Enterprise);
         }
 
         public void WaitForContainer(string name)
