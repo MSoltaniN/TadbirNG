@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using SPPC.Tools.Utility;
 
 namespace SPPC.Tadbir.Setup
 {
-    public partial class DbAccessPage : UserControl
+    public partial class DbAccessPage : UserControl, ISetupWizardPage
     {
         public DbAccessPage()
         {
@@ -19,6 +12,11 @@ namespace SPPC.Tadbir.Setup
         }
 
         public SetupWizardModel WizardModel { get; set; }
+
+        public Func<bool> PageValidator
+        {
+            get { return ValidateSettings; }
+        }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -28,8 +26,8 @@ namespace SPPC.Tadbir.Setup
             cmbDbServer.DataSource = servers;
             chkShowPass.Checked = false;
             chkShowAdminPass.Checked = false;
-            txtAdminPassword.Enabled = cmbDbServer.SelectedItem?.ToString() != "Docker";
-            chkShowAdminPass.Enabled = cmbDbServer.SelectedItem?.ToString() != "Docker";
+            //txtAdminPassword.Enabled = cmbDbServer.SelectedItem?.ToString() != "Docker";
+            //chkShowAdminPass.Enabled = cmbDbServer.SelectedItem?.ToString() != "Docker";
         }
 
         private void ShowPass_CheckedChanged(object sender, EventArgs e)
@@ -95,6 +93,43 @@ namespace SPPC.Tadbir.Setup
             {
                 txtPassword.Text = null;
             }
+        }
+
+        private bool ValidateSettings()
+        {
+            BindValues();
+            if (WizardModel.DbServer == null)
+            {
+                MessageBox.Show("لطفاً سرور دیتابیس را انتخاب کنید.",
+                    "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.RtlReading);
+                return false;
+            }
+
+            if (WizardModel.DbLogin == null)
+            {
+                MessageBox.Show("لطفاً کاربر دیتابیس را انتخاب کنید.",
+                    "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.RtlReading);
+                return false;
+            }
+
+            if (WizardModel.DbLogin != "Default" && String.IsNullOrWhiteSpace(WizardModel.DbPassword))
+            {
+                MessageBox.Show("لطفاً رمز ورود کاربر دیتابیس را وارد کنید.",
+                    "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1,
+                    MessageBoxOptions.RtlReading);
+                return false;
+            }
+
+            return true;
+        }
+
+        private void BindValues()
+        {
+            WizardModel.DbServer = cmbDbServer.SelectedItem?.ToString();
+            WizardModel.DbLogin = cmbLogin.SelectedItem?.ToString();
+            WizardModel.DbPassword = txtPassword.Text;
         }
     }
 }

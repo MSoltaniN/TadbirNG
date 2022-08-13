@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using Microsoft.Data.SqlClient;
 using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
@@ -78,6 +80,7 @@ namespace SPPC.Tools.Utility
 
             EnsureDirectoryExists(Path.Combine(path, "runner"));
             EnsureDirectoryExists(Path.Combine(path, "service"));
+            EnsureDirectoryExists(Path.Combine(path, "setup"));
             EnsureDirectoryExists(Path.Combine(path, "tools"));
         }
 
@@ -89,6 +92,7 @@ namespace SPPC.Tools.Utility
             File.Copy(Path.Combine(ChecksumRoot, "license"), Path.Combine(path, "license"));
             CopyFilesIfMissing(Path.Combine(ChecksumRoot, "runner"), Path.Combine(path, "runner"));
             CopyFilesIfMissing(Path.Combine(ChecksumRoot, "service"), Path.Combine(path, "service"));
+            CopyFilesIfMissing(Path.Combine(ChecksumRoot, "setup"), Path.Combine(path, "setup"));
             CopyFilesIfMissing(Path.Combine(ChecksumRoot, "tools"), Path.Combine(path, "tools"));
             if (createShortcut)
             {
@@ -96,6 +100,19 @@ namespace SPPC.Tools.Utility
                 string exePath = Path.Combine(path, "runner", "Tadbir.exe");
                 CreateDesktopShortcut(exePath, AppTitle, AppTitle);
             }
+        }
+
+        public static void DeleteFiles()
+        {
+            Array.ForEach(new DirectoryInfo("..").GetFiles("*.*", SearchOption.TopDirectoryOnly),
+                fi => File.Delete(fi.FullName));
+            var path = Path.Combine("..", "runner");
+            FileUtility.DeleteFolder(path);
+            path = Path.Combine("..", "service");
+            FileUtility.DeleteFolder(path);
+            path = Path.Combine("..", "tools");
+            FileUtility.DeleteFolder(path);
+            DeleteDesktopShortcut(AppTitle);
         }
 
         public static bool InstallService(string path)
@@ -117,12 +134,57 @@ namespace SPPC.Tools.Utility
             return installed;
         }
 
-        public static bool RunService()
+        public static bool UninstallService()
         {
+            // NOTE: Because SC (Service Control Manager) locks service executable for a while after
+            // deleting the service, we need some delay here, because service folder must be deleted.
+            var runner = new CliRunner();
+            var output = runner.Run("sc delete sppckeysrv");
+            Thread.Sleep(TimeSpan.FromSeconds(20));
+            var lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+            return !lines[0].Contains("FAILED");
+        }
+
+        public static bool StartService()
+        {
+            bool started = false;
             var runner = new CliRunner();
             var output = runner.Run("sc start sppckeysrv");
             var lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
-            return !lines[0].Contains("FAILED");
+            if (!lines[0].Contains("FAILED"))
+            {
+                do
+                {
+                    output = runner.Run("sc query sppckeysrv");
+                    started = output
+                        .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
+                        .Where(line => line.Contains("STATE") && line.Contains("RUNNING"))
+                        .Any();
+                } while (!started);
+            }
+
+            return started;
+        }
+
+        public static bool StopService()
+        {
+            bool stopped = false;
+            var runner = new CliRunner();
+            var output = runner.Run("sc stop sppckeysrv");
+            var lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+            if (!lines[0].Contains("FAILED"))
+            {
+                do
+                {
+                    output = runner.Run("sc query sppckeysrv");
+                    stopped = output
+                        .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
+                        .Where(line => line.Contains("STATE") && line.Contains("STOPPED"))
+                        .Any();
+                } while (!stopped);
+            }
+
+            return stopped;
         }
 
         public static void ConfigureDockerService(string root, string service, IBuildSettings settings)
@@ -131,12 +193,40 @@ namespace SPPC.Tools.Utility
             setup.ConfigureService(root, DockerPath);
         }
 
+        public static void RemoveDockerServices()
+        {
+            var currentDir = Environment.CurrentDirectory;
+            Environment.CurrentDirectory = FileUtility.GetAbsolutePath(@"..\runner");
+            var runner = new CliRunner();
+            var output = runner.Run("docker-compose -f docker-compose.override.yml -f docker-compose.yml down");
+            var imageName = $"msn1368/{DockerService.WebAppImage}:dev";
+            output = runner.Run(String.Format(ToolConstants.DockerRemoveCommand, imageName));
+            imageName = $"msn1368/{DockerService.LicenseServerImage}:latest";
+            output = runner.Run(String.Format(ToolConstants.DockerRemoveCommand, imageName));
+            imageName = $"msn1368/{DockerService.DbServerImage}:latest";
+            output = runner.Run(String.Format(ToolConstants.DockerRemoveCommand, imageName));
+            imageName = $"msn1368/{DockerService.ApiServerImage}:{Edition.StandardTag}";
+            output = runner.Run(String.Format(ToolConstants.DockerRemoveCommand, imageName));
+            imageName = $"msn1368/{DockerService.ApiServerImage}:{Edition.ProfessionalTag}";
+            output = runner.Run(String.Format(ToolConstants.DockerRemoveCommand, imageName));
+            imageName = $"msn1368/{DockerService.ApiServerImage}:{Edition.EnterpriseTag}";
+            output = runner.Run(String.Format(ToolConstants.DockerRemoveCommand, imageName));
+            Environment.CurrentDirectory = currentDir;
+        }
+
         public static bool IsAppRegistered()
         {
             var runner = new CliRunner();
             var output = runner.Run("sc query sppckeysrv");
             var lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
             return !lines[0].Contains("FAILED");
+        }
+
+        public static bool IsAppRunning()
+        {
+            return Process
+                .GetProcessesByName("Tadbir.exe")
+                .Any();
         }
 
         public static string GetInstanceKey()
@@ -171,6 +261,16 @@ namespace SPPC.Tools.Utility
 
             var file = (IPersistFile)link;
             file.Save(linkPath, false);
+        }
+
+        private static void DeleteDesktopShortcut(string name)
+        {
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            string linkPath = Path.Combine(desktopPath, String.Format($"{name}.lnk"));
+            if (File.Exists(linkPath))
+            {
+                File.Delete(linkPath);
+            }
         }
 
         private static void EnsureDirectoryExists(string path)
@@ -252,16 +352,6 @@ namespace SPPC.Tools.Utility
             }
 
             return setup;
-        }
-
-        private static int GetFolderSize(string root)
-        {
-            var directoryInfo = new DirectoryInfo(root);
-            var bytesCount = directoryInfo
-                .GetFiles("*.*", new EnumerationOptions() { RecurseSubdirectories = true })
-                .Select(fi => fi.Length)
-                .Sum();
-            return (int)Math.Round((double)bytesCount / 1024);
         }
 
         private const string AppTitle = "سیستم جدید تدبیر";

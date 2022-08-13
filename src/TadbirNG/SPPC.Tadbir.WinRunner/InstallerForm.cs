@@ -154,7 +154,7 @@ namespace SPPC.Tadbir.WinRunner
             worker.ReportProgress(4);
 
             worker.ReportProgress(0, "راه اندازی سرویس...");
-            succeeded = InstallerUtility.RunService();
+            succeeded = InstallerUtility.StartService();
             if (!succeeded)
             {
                 worker.ReportProgress(0, "بروز خطا هنگام راه اندازی سرویس");

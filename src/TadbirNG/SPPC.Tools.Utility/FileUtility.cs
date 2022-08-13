@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace SPPC.Tools.Utility
 {
@@ -64,6 +65,16 @@ namespace SPPC.Tools.Utility
             }
 
             return absolutePath;
+        }
+
+        public static int GetFolderSize(string root)
+        {
+            var directoryInfo = new DirectoryInfo(root);
+            var bytesCount = directoryInfo
+                .GetFiles("*.*", new EnumerationOptions() { RecurseSubdirectories = true })
+                .Select(fi => fi.Length)
+                .Sum();
+            return (int)Math.Round((double)bytesCount / 1024);
         }
 
         public static void DeleteFolder(string path)

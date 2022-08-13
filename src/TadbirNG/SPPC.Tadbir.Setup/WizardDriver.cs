@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using SPPC.Framework.Common;
 
 namespace SPPC.Tadbir.Setup
 {
@@ -9,6 +10,7 @@ namespace SPPC.Tadbir.Setup
         public WizardDriver()
         {
             Pages = new List<Control>();
+            _validatorMap = new Dictionary<int, Func<bool>>();
         }
 
         public Button NextButton { get; set; }
@@ -19,7 +21,14 @@ namespace SPPC.Tadbir.Setup
 
         public List<Control> Pages { get; }
 
-        public void InitWizard()
+        public void SetPageValidator(int pageNo, Func<bool> validator)
+        {
+            Verify.ArgumentNotOutOfRange(pageNo, 1, Pages.Count, nameof(pageNo));
+            Verify.ArgumentNotNull(validator, nameof(validator));
+            _validatorMap[pageNo] = validator;
+        }
+
+        public void InitWizard(int pageNo = 1)
         {
             if (NextButton != null)
             {
@@ -31,7 +40,7 @@ namespace SPPC.Tadbir.Setup
                 PreviousButton.Click += Previous_Click;
             }
 
-            _currentPageNo = 1;
+            _currentPageNo = pageNo;
             LoadPage(_currentPageNo);
         }
 
@@ -55,6 +64,14 @@ namespace SPPC.Tadbir.Setup
         {
             if (_currentPageNo < Pages.Count)
             {
+                var validator = _validatorMap.ContainsKey(_currentPageNo)
+                    ? _validatorMap[_currentPageNo]
+                    : null;
+                if (validator != null && !validator())
+                {
+                    return;
+                }
+
                 _currentPageNo++;
                 LoadPage(_currentPageNo);
             }
@@ -70,5 +87,6 @@ namespace SPPC.Tadbir.Setup
         }
 
         private int _currentPageNo;
+        private IDictionary<int, Func<bool>> _validatorMap;
     }
 }

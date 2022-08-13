@@ -29,11 +29,14 @@ namespace SPPC.Tadbir.Setup
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pnlPage = new System.Windows.Forms.Panel();
             this.btnPrevious = new System.Windows.Forms.Button();
             this.btnNext = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnExit = new System.Windows.Forms.Button();
+            this.btnSetup = new System.Windows.Forms.Button();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.worker = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // pnlPage
@@ -61,34 +64,48 @@ namespace SPPC.Tadbir.Setup
             this.btnNext.Text = "بعدی";
             this.btnNext.UseVisualStyleBackColor = true;
             // 
-            // btnCancel
+            // btnExit
             // 
-            this.btnCancel.Location = new System.Drawing.Point(518, 345);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(94, 36);
-            this.btnCancel.TabIndex = 3;
-            this.btnCancel.Text = "انصراف";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.Cancel_Click);
+            this.btnExit.Location = new System.Drawing.Point(518, 345);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(94, 36);
+            this.btnExit.TabIndex = 4;
+            this.btnExit.Text = "خروج";
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.Cancel_Click);
             // 
-            // button1
+            // btnSetup
             // 
-            this.button1.Location = new System.Drawing.Point(212, 345);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(120, 36);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "نصب برنامه";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnSetup.Location = new System.Drawing.Point(212, 345);
+            this.btnSetup.Name = "btnSetup";
+            this.btnSetup.Size = new System.Drawing.Size(120, 36);
+            this.btnSetup.TabIndex = 3;
+            this.btnSetup.Text = "نصب برنامه";
+            this.btnSetup.UseVisualStyleBackColor = true;
+            this.btnSetup.Click += new System.EventHandler(this.Setup_Click);
+            // 
+            // timer
+            // 
+            this.timer.Interval = 1000;
+            this.timer.Tick += new System.EventHandler(this.Timer_Tick);
+            // 
+            // worker
+            // 
+            this.worker.WorkerReportsProgress = true;
+            this.worker.WorkerSupportsCancellation = true;
+            this.worker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.Worker_DoWork);
+            this.worker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.Worker_ProgressChanged);
+            this.worker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Worker_RunWorkerCompleted);
             // 
             // SetupWizard
             // 
             this.AcceptButton = this.btnNext;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnCancel;
+            this.CancelButton = this.btnExit;
             this.ClientSize = new System.Drawing.Size(624, 387);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnSetup);
+            this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnNext);
             this.Controls.Add(this.btnPrevious);
             this.Controls.Add(this.pnlPage);
@@ -108,8 +125,10 @@ namespace SPPC.Tadbir.Setup
         private System.Windows.Forms.Panel pnlPage;
         private System.Windows.Forms.Button btnPrevious;
         private System.Windows.Forms.Button btnNext;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnExit;
+        private System.Windows.Forms.Button btnSetup;
+        private System.Windows.Forms.Timer timer;
+        private System.ComponentModel.BackgroundWorker worker;
     }
 }
 

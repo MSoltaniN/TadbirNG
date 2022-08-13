@@ -1,28 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SPPC.Tadbir.Setup
 {
-    public partial class ProgressPage : UserControl
+    public partial class ProgressPage : UserControl, ISetupWizardPage, ISetupProgressPage
     {
         public ProgressPage()
         {
             InitializeComponent();
         }
 
-        protected override void OnLoad(EventArgs e)
+        public SetupWizardModel WizardModel { get; set; }
+
+        public Func<bool> PageValidator
         {
-            base.OnLoad(e);
-            MessageBox.Show(this, "Fucking loaded!");
+            get { return null; }
         }
 
-        public SetupWizardModel WizardModel { get; set; }
+        public Label ElapsedLabel => lblElapsed;
+
+        public Label ProgressLabel => lblProgress;
+
+        public Label StatusLabel => lblStatus;
+
+        public ProgressBar ProgressBar => progress;
+
+        public TextBox ConsoleTextBox => txtConsole;
     }
 }

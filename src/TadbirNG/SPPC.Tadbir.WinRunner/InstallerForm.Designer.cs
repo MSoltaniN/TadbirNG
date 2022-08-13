@@ -142,7 +142,7 @@ namespace SPPC.Tadbir.WinRunner
             // lblStatus
             // 
             this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblStatus.Location = new System.Drawing.Point(269, 385);
+            this.lblStatus.Location = new System.Drawing.Point(341, 389);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(315, 31);
             this.lblStatus.TabIndex = 10;
@@ -151,7 +151,7 @@ namespace SPPC.Tadbir.WinRunner
             // lblProgress
             // 
             this.lblProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblProgress.Location = new System.Drawing.Point(494, 359);
+            this.lblProgress.Location = new System.Drawing.Point(670, 359);
             this.lblProgress.Name = "lblProgress";
             this.lblProgress.Size = new System.Drawing.Size(90, 23);
             this.lblProgress.TabIndex = 9;
@@ -223,7 +223,7 @@ namespace SPPC.Tadbir.WinRunner
             | System.Windows.Forms.AnchorStyles.Right)));
             this.progress.Location = new System.Drawing.Point(10, 353);
             this.progress.Name = "progress";
-            this.progress.Size = new System.Drawing.Size(478, 29);
+            this.progress.Size = new System.Drawing.Size(646, 29);
             this.progress.TabIndex = 8;
             // 
             // txtConsole
@@ -237,13 +237,13 @@ namespace SPPC.Tadbir.WinRunner
             this.txtConsole.ReadOnly = true;
             this.txtConsole.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtConsole.Size = new System.Drawing.Size(574, 192);
+            this.txtConsole.Size = new System.Drawing.Size(750, 192);
             this.txtConsole.TabIndex = 7;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(474, 128);
+            this.label1.Location = new System.Drawing.Point(650, 131);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(110, 20);
             this.label1.TabIndex = 4;

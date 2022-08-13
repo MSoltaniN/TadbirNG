@@ -36,6 +36,12 @@ namespace SPPC.Tools.Utility
             Array.ForEach(files,
                 file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
 
+            path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "setup");
+            files = new DirectoryInfo(PathConfig.SetupPublishWin)
+                .GetFiles();
+            Array.ForEach(files,
+                file => File.Copy(file.FullName, Path.Combine(path, file.Name)));
+
             path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "runner");
             files = new DirectoryInfo(PathConfig.RunnerPublishWin)
                 .GetFiles();
@@ -60,7 +66,7 @@ namespace SPPC.Tools.Utility
                     LicenseFactory.FromModel(license))));
 
             // Inside the main package folder, save instance key in encrypted base64 format...
-            path = Path.Combine(PathConfig.TadbirRelease, license.LicenseKey, $"v{VersionUtility.GetAppVersion()}");
+            path = Path.Combine(PathConfig.TadbirRelease, license.LicenseKey, $"v{VersionUtility.GetReleaseVersion()}");
             File.WriteAllText(path, InstanceFactory.CryptoFromLicense(license));
 
             // Inside the main package folder, make version information file, using base images...
@@ -89,7 +95,7 @@ namespace SPPC.Tools.Utility
         {
             var versionInfo = new VersionInfo
             {
-                Version = VersionUtility.GetAppVersion()
+                Version = VersionUtility.GetReleaseVersion()
             };
             versionInfo.Services.Add(GetServiceInfo(licenseKey, DockerService.LicenseServerImage));
             versionInfo.Services.Add(GetServiceInfo(licenseKey, DockerService.ApiServerImage));
@@ -118,6 +124,7 @@ namespace SPPC.Tools.Utility
             EnsureDirectoryExists(Path.Combine(PathConfig.TadbirRelease, licenseKey, "docker"));
             EnsureDirectoryExists(Path.Combine(PathConfig.TadbirRelease, licenseKey, "runner"));
             EnsureDirectoryExists(Path.Combine(PathConfig.TadbirRelease, licenseKey, "service"));
+            EnsureDirectoryExists(Path.Combine(PathConfig.TadbirRelease, licenseKey, "setup"));
             EnsureDirectoryExists(Path.Combine(PathConfig.TadbirRelease, licenseKey, "tools"));
         }
 
@@ -189,7 +196,7 @@ namespace SPPC.Tools.Utility
 
         private static void CreateZipArchive(string licenseKey, string password)
         {
-            var zipFileName = $"TadbirNG_v{VersionUtility.GetAppVersion()}.zip";
+            var zipFileName = $"TadbirNG_v{VersionUtility.GetReleaseVersion()}.zip";
             var zipPath = Path.Combine(PathConfig.TadbirRelease, zipFileName);
             var folderPath = Path.Combine(PathConfig.TadbirRelease, licenseKey);
             ArchiveUtility.Zip(zipPath, folderPath, password);
@@ -208,6 +215,7 @@ namespace SPPC.Tools.Utility
             Directory.Delete(Path.Combine(path, "docker"));
             Directory.Delete(Path.Combine(path, "runner"));
             Directory.Delete(Path.Combine(path, "service"));
+            Directory.Delete(Path.Combine(path, "setup"));
             Directory.Delete(Path.Combine(path, "tools"));
         }
 
