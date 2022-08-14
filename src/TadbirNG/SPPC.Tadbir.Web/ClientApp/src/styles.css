@@ -66,3 +66,9 @@
   85% { background: #d3f96113; }
   100% { background: #d3f96100; }
 }
+
+input[type=checkbox], input[type=radio] {
+  margin: 4px !important;
+  padding: 6px !important;
+  -webkit-appearance: auto !important;
+}

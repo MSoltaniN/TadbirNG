@@ -113,11 +113,11 @@ export function getLayoutModule(layout: Layout) {
       .btn-compute-default {
         margin-top: 25px;
         border: 2px solid #337ab7;
-        color: #337ab7;
+        color: #f0f0f0;
         padding: 5px 25px;
       }
       .btn-compute {
-        color: #337ab7;
+        color: #f0f0f0;
         transition: All 0.3s 0.1s ease-out;
       }
       .btn-compute-selectable {
