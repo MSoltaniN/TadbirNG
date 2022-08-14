@@ -69,7 +69,6 @@ namespace SPPC.Tadbir.Setup
             worker.ReportProgress(6);
 
             var root = Path.Combine(Path.GetDirectoryName(Environment.CurrentDirectory), "docker");
-            InstallerUtility.DockerPath = WinUtility.GetDockerExePath();
             worker.ReportProgress(0, "آماده سازی سرویس های برنامه...");
             InstallerUtility.ConfigureDockerService(root, DockerService.LicenseServerImage, _settings);
             worker.ReportProgress(20);
@@ -84,6 +83,7 @@ namespace SPPC.Tadbir.Setup
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             btnExit.Enabled = true;
+            btnPrevious.Enabled = false;
              _progressPage.StatusLabel.Text = null;
             timer.Enabled = false;
             MessageBox.Show(this, "نصب برنامه با موفقیت انجام شد.", "تکمیل عملیات",

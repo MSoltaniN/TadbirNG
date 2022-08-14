@@ -30,9 +30,8 @@ namespace SPPC.Tadbir.Setup
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.label1 = new System.Windows.Forms.Label();
             this.btnSetup = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnExit = new System.Windows.Forms.Button();
             this.btnNext = new System.Windows.Forms.Button();
             this.btnPrevious = new System.Windows.Forms.Button();
             this.pnlPage = new System.Windows.Forms.Panel();
@@ -40,20 +39,9 @@ namespace SPPC.Tadbir.Setup
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(600, 60);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "برنامه تدبیر روی این ایستگاه کاری نصب شده است. لطفاً عملیات مورد نظر خود را انتخا" +
-    "ب کرده و روی دکمه \"بعدی\" کلیک کنید.";
-            // 
             // btnSetup
             // 
-            this.btnSetup.Location = new System.Drawing.Point(212, 409);
+            this.btnSetup.Location = new System.Drawing.Point(212, 348);
             this.btnSetup.Name = "btnSetup";
             this.btnSetup.Size = new System.Drawing.Size(120, 36);
             this.btnSetup.TabIndex = 9;
@@ -61,19 +49,19 @@ namespace SPPC.Tadbir.Setup
             this.btnSetup.UseVisualStyleBackColor = true;
             this.btnSetup.Click += new System.EventHandler(this.Setup_Click);
             // 
-            // btnCancel
+            // btnExit
             // 
-            this.btnCancel.Location = new System.Drawing.Point(518, 409);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(94, 36);
-            this.btnCancel.TabIndex = 8;
-            this.btnCancel.Text = "انصراف";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.Cancel_Click);
+            this.btnExit.Location = new System.Drawing.Point(518, 348);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(94, 36);
+            this.btnExit.TabIndex = 8;
+            this.btnExit.Text = "خروج";
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.Cancel_Click);
             // 
             // btnNext
             // 
-            this.btnNext.Location = new System.Drawing.Point(112, 409);
+            this.btnNext.Location = new System.Drawing.Point(112, 348);
             this.btnNext.Name = "btnNext";
             this.btnNext.Size = new System.Drawing.Size(94, 36);
             this.btnNext.TabIndex = 7;
@@ -83,7 +71,7 @@ namespace SPPC.Tadbir.Setup
             // 
             // btnPrevious
             // 
-            this.btnPrevious.Location = new System.Drawing.Point(12, 409);
+            this.btnPrevious.Location = new System.Drawing.Point(12, 348);
             this.btnPrevious.Name = "btnPrevious";
             this.btnPrevious.Size = new System.Drawing.Size(94, 36);
             this.btnPrevious.TabIndex = 6;
@@ -92,7 +80,7 @@ namespace SPPC.Tadbir.Setup
             // 
             // pnlPage
             // 
-            this.pnlPage.Location = new System.Drawing.Point(12, 72);
+            this.pnlPage.Location = new System.Drawing.Point(12, 11);
             this.pnlPage.Name = "pnlPage";
             this.pnlPage.Size = new System.Drawing.Size(600, 320);
             this.pnlPage.TabIndex = 5;
@@ -112,15 +100,16 @@ namespace SPPC.Tadbir.Setup
             // 
             // ModifyWizard
             // 
+            this.AcceptButton = this.btnNext;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 451);
+            this.CancelButton = this.btnExit;
+            this.ClientSize = new System.Drawing.Size(624, 392);
             this.Controls.Add(this.btnSetup);
-            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnNext);
             this.Controls.Add(this.btnPrevious);
             this.Controls.Add(this.pnlPage);
-            this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "ModifyWizard";
@@ -133,10 +122,8 @@ namespace SPPC.Tadbir.Setup
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnSetup;
-        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Button btnNext;
         private System.Windows.Forms.Button btnPrevious;
         private System.Windows.Forms.Panel pnlPage;

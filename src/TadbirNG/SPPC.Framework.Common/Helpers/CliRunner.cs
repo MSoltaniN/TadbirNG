@@ -187,14 +187,10 @@ namespace SPPC.Framework.Helpers
         {
             if (_knownCommandsPath.ContainsKey(command))
             {
-                var path = Environment
-                    .GetEnvironmentVariable("Path", EnvironmentVariableTarget.Machine)
-                    .Split(';')
-                    .Where(item => item.Contains(_knownCommandsPath[command]))
-                    .FirstOrDefault();
+                var path = EnvironmentHelper.FindMachineItemFromPart("Path", _knownCommandsPath[command]);
                 if (!String.IsNullOrEmpty(path))
                 {
-                    Environment.SetEnvironmentVariable("Path", path);
+                    EnvironmentHelper.AddProcessVariable("Path", path);
                 }
             }
         }

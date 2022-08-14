@@ -83,7 +83,7 @@ namespace SPPC.Tools.Utility
             {
                 var currentPath = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
                 var path = FileUtility.GetAbsolutePath(toolsPath, currentPath);
-                Environment.SetEnvironmentVariable("Path", path, EnvironmentVariableTarget.Process);
+                EnvironmentHelper.AddProcessVariable("Path", path);
             }
         }
 

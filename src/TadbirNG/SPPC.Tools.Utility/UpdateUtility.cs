@@ -45,29 +45,24 @@ namespace SPPC.Tools.Utility
 
         public static int GetDownloadSize(VersionInfo current, VersionInfo latest)
         {
-            int count = 0;
             double downloadSize = 0;
             if (current.Services[0].Sha256 != latest.Services[0].Sha256)
             {
-                count++;
                 downloadSize += FileSize.ToMegaBytes(latest.Services[0].Size, 1);
             }
 
             if (current.Services[1].Sha256 != latest.Services[1].Sha256)
             {
-                count++;
                 downloadSize += FileSize.ToMegaBytes(latest.Services[1].Size, 1);
             }
 
             if (current.Services[2].Sha256 != latest.Services[2].Sha256)
             {
-                count++;
                 downloadSize += FileSize.ToMegaBytes(latest.Services[2].Size, 1);
             }
 
             if (current.Services[3].Sha256 != latest.Services[3].Sha256)
             {
-                count++;
                 downloadSize += FileSize.ToMegaBytes(latest.Services[3].Size, 1);
             }
 

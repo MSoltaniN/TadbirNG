@@ -2,7 +2,9 @@
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using SPPC.Framework.Helpers;
 using SPPC.Tools.Api;
@@ -51,17 +53,27 @@ namespace SPPC.Tadbir.WinRunner
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
+            LogOperation("Update process started.");
+            LogOperation();
             _utility = new UpdateUtility()
             {
                 UpdateServerUrl = ConfigurationManager.AppSettings["ServerUrl"],
                 Current = CurrentVersion,
                 Latest = LatestVersion
             };
+            LogOperation("Estimating download size...");
             _downloadSize = UpdateUtility.GetDownloadSize(CurrentVersion, LatestVersion);
+            LogOperation($"Approximate download size : {_downloadSize}");
+            LogOperation();
+            LogOperation("Initializing update...");
             _updateFolder = UpdateUtility.PrepareUpdateFolder();
             PrepareLatestServices();
+            LogOperation("Downloading services...");
             DownloadServices();
+            LogOperation();
+            LogOperation("Preparing backup for current service images...");
             BackupServices();
+            LogOperation();
             DisableCancelButton();
             if (!UpdateServices())
             {
@@ -74,6 +86,7 @@ namespace SPPC.Tadbir.WinRunner
             }
             else
             {
+                LogOperation("Finalizing update...");
                 _utility.FinalizeUpdate();
             }
         }
@@ -92,6 +105,9 @@ namespace SPPC.Tadbir.WinRunner
             MessageBox.Show("به روزرسانی برنامه با موفقیت انجام شد. لطفاً برای اعمال شدن تغییرات، برنامه را دوباره راه اندازی کنید.",
                 "عملیات موفق", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
                 MessageBoxOptions.RtlReading);
+            Environment.CurrentDirectory = Path.GetDirectoryName(
+                Environment.GetCommandLineArgs()[0]);
+            File.AppendAllText("update.log", _logBuilder.ToString());
             Close();
         }
 
@@ -165,15 +181,25 @@ namespace SPPC.Tadbir.WinRunner
                 var serviceInfo = LatestVersion.Services
                     .Where(svc => svc.Name == serviceName)
                     .FirstOrDefault();
+                LogOperation($"Downloading service {serviceName}...");
                 bool downloaded = _utility.DownloadService(_updateFolder, serviceInfo, instance);
                 if (!downloaded)
                 {
+                    LogOperation($"Could not download service {serviceName}. Encountered failed or corrupted download.", true);
                     timer.Enabled = false;
                     MessageBox.Show("بروز خطا هنگام دانلود نسخه جدید سرویس برنامه. لطفاً دوباره تلاش کنید.",
                         "خطا", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
                         MessageBoxOptions.RtlReading);
                     return null;
                 }
+                else
+                {
+                    LogOperation("Service downloaded.");
+                }
+            }
+            else
+            {
+                LogOperation($"Service {serviceName} is up-to-date.");
             }
 
             return progress;
@@ -196,6 +222,7 @@ namespace SPPC.Tadbir.WinRunner
             {
                 _utility.BackupService(_backupFolder, serviceName, tag);
                 worker.ReportProgress(progress.BackupProgress);
+                LogOperation($"Backup completed for service {serviceName}.");
             }
         }
 
@@ -232,9 +259,14 @@ namespace SPPC.Tadbir.WinRunner
             {
                 var progress = GetUpdateProgress(serviceName, _downloadSize);
                 worker.ReportProgress(progress.SetupProgress);
+                if (progress.SetupProgress > 0)
+                {
+                    LogOperation($"Service {serviceName} updated.");
+                }
             }
             else
             {
+                LogOperation($"Error updating service {serviceName}. Performing rollback...");
                 _utility.RollbackUpdate(_backupFolder);
                 updated = false;
             }
@@ -281,10 +313,35 @@ namespace SPPC.Tadbir.WinRunner
             }
         }
 
+        private void LogOperation(string message = null, bool isError = false)
+        {
+            string log = message ?? Environment.NewLine;
+            if (log == Environment.NewLine)
+            {
+                _logBuilder.AppendLine();
+            }
+            else
+            {
+                var logType = isError ? "ERROR" : "INFO";
+                _logBuilder.AppendLine($"[{DateTime.Now.ToShortDateString()} {DateTime.Now.TimeOfDay}] [{logType}] {message}");
+            }
+
+            int chunkSize = (int)FileSize.FromKiloBytes(1);
+            if (_logBuilder.Length >= chunkSize)
+            {
+                var chunk = _logBuilder
+                    .ToString()
+                    .Substring(0, chunkSize);
+                File.AppendAllText("update.log", chunk);
+                _logBuilder.Remove(0, chunkSize);
+            }
+        }
+
         private TimeSpan _elapsed;
         private UpdateUtility _utility;
         private int _downloadSize;
         private string _updateFolder;
         private string _backupFolder;
+        private readonly StringBuilder _logBuilder = new();
     }
 }

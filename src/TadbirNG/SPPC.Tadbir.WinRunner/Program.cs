@@ -16,7 +16,6 @@ namespace SPPC.Tadbir.WinRunner
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            bool isInstalled = InstallerUtility.IsAppRegistered();
             if (!DockerUtility.IsDockerEngineRunning())
             {
                 MessageBox.Show("لطفاً پیش از اجرای این برنامه، ابتدا برنامه داکر دسکتاپ را اجرا کنید.",
@@ -35,10 +34,7 @@ namespace SPPC.Tadbir.WinRunner
             //    return;
             //}
 
-            Form startForm = isInstalled
-                ? new RunnerForm()
-                : new InstallerForm();
-            Application.Run(startForm);
+            Application.Run(new RunnerForm());
         }
     }
 }

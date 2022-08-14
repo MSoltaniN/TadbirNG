@@ -140,7 +140,6 @@ namespace SPPC.Tools.Utility
             // deleting the service, we need some delay here, because service folder must be deleted.
             var runner = new CliRunner();
             var output = runner.Run("sc delete sppckeysrv");
-            Thread.Sleep(TimeSpan.FromSeconds(20));
             var lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
             return !lines[0].Contains("FAILED");
         }
@@ -190,7 +189,7 @@ namespace SPPC.Tools.Utility
         public static void ConfigureDockerService(string root, string service, IBuildSettings settings)
         {
             var setup = GetServiceSetup(service, settings);
-            setup.ConfigureService(root, DockerPath);
+            setup.ConfigureService(root);
         }
 
         public static void RemoveDockerServices()
@@ -200,17 +199,19 @@ namespace SPPC.Tools.Utility
             var runner = new CliRunner();
             var output = runner.Run("docker-compose -f docker-compose.override.yml -f docker-compose.yml down");
             var imageName = $"msn1368/{DockerService.WebAppImage}:dev";
-            output = runner.Run(String.Format(ToolConstants.DockerRemoveCommand, imageName));
+            output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
             imageName = $"msn1368/{DockerService.LicenseServerImage}:latest";
-            output = runner.Run(String.Format(ToolConstants.DockerRemoveCommand, imageName));
+            output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
             imageName = $"msn1368/{DockerService.DbServerImage}:latest";
-            output = runner.Run(String.Format(ToolConstants.DockerRemoveCommand, imageName));
+            output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
             imageName = $"msn1368/{DockerService.ApiServerImage}:{Edition.StandardTag}";
-            output = runner.Run(String.Format(ToolConstants.DockerRemoveCommand, imageName));
+            output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
             imageName = $"msn1368/{DockerService.ApiServerImage}:{Edition.ProfessionalTag}";
-            output = runner.Run(String.Format(ToolConstants.DockerRemoveCommand, imageName));
+            output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
             imageName = $"msn1368/{DockerService.ApiServerImage}:{Edition.EnterpriseTag}";
-            output = runner.Run(String.Format(ToolConstants.DockerRemoveCommand, imageName));
+            output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
+            output = runner.Run(String.Format(ToolConstants.DockerRemoveVolumeCommand, "runner_productdata_DbServer"));
+            output = runner.Run(String.Format(ToolConstants.DockerRemoveVolumeCommand, "runner_productdata_LicenseServer"));
             Environment.CurrentDirectory = currentDir;
         }
 

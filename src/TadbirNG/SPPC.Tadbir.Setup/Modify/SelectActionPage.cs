@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Setup
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            radModify.Checked = true;
+            radRemove.Checked = true;
         }
 
         private bool ConfirmAppRemove()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace SPPC.Tools.Utility
 {
@@ -82,7 +83,7 @@ namespace SPPC.Tools.Utility
             var dirInfo = new DirectoryInfo(path);
             foreach (var file in dirInfo.GetFiles("*.*", SearchOption.AllDirectories))
             {
-                File.Delete(file.FullName);
+                DeleteFileWithRetry(file.FullName);
             }
 
             DeleteFolderRecursive(path);
@@ -96,7 +97,47 @@ namespace SPPC.Tools.Utility
                 DeleteFolderRecursive(folder.FullName);
             }
 
-            Directory.Delete(path);
+            DeleteFolderWithRetry(path);
+        }
+
+        private static void DeleteFileWithRetry(string path, int timeoutSeconds = 5)
+        {
+            bool deleted;
+            do
+            {
+                try
+                {
+                    File.Delete(path);
+                    deleted = true;
+                }
+                catch
+                {
+                    // NOTE: The following delay may be too long or too short,
+                    // but files may remain locked for a while.
+                    deleted = false;
+                    Thread.Sleep(TimeSpan.FromSeconds(timeoutSeconds));
+                }
+            } while (!deleted);
+        }
+
+        private static void DeleteFolderWithRetry(string path, int timeoutSeconds = 5)
+        {
+            bool deleted;
+            do
+            {
+                try
+                {
+                    Directory.Delete(path);
+                    deleted = true;
+                }
+                catch
+                {
+                    // NOTE: The following delay may be too long or too short,
+                    // but folders may remain locked for a while.
+                    deleted = false;
+                    Thread.Sleep(TimeSpan.FromSeconds(timeoutSeconds));
+                }
+            } while (!deleted);
         }
     }
 }

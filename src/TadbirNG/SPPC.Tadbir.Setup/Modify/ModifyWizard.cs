@@ -57,7 +57,7 @@ namespace SPPC.Tadbir.Setup
 
             _progressPage.ConsoleTextBox.Focus();
             btnSetup.Enabled = false;
-            btnCancel.Enabled = false;
+            btnExit.Enabled = false;
             timer.Enabled = true;
             worker.RunWorkerAsync();
         }
@@ -76,7 +76,7 @@ namespace SPPC.Tadbir.Setup
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            btnCancel.Enabled = true;
+            btnExit.Enabled = true;
             _progressPage.StatusLabel.Text = null;
             timer.Enabled = false;
             MessageBox.Show(this, "عملیات مورد نظر با موفقیت انجام شد.", "تکمیل عملیات",
