@@ -15,7 +15,7 @@
         <div class="panel-body">
             <kendo-grid [data]="gridData"
                         [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-                        [selectedKeys]="selectedRows"
+                        [(selectedKeys)]="selectedRows"
                         [kendoGridSelectBy]="selectionKey">
                 <ng-template kendoGridNoRecordsTemplate>
                     {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}

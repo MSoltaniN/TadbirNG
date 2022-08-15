@@ -46,7 +46,7 @@
                         [data]="selectedRowData"
                         [height]="200"
                         [selectable]="{ checkboxOnly: true, mode: 'single' }"
-                        [selectedKeys]="selectedRowsKey"
+                        [(selectedKeys)]="selectedRowsKey"
                         [kendoGridSelectBy]="'id'">
 
               <ng-template kendoGridNoRecordsTemplate>
@@ -89,7 +89,7 @@
                         (pageChange)="pageChange($event)"
                         (sortChange)="sortChange($event)"
                         [selectable]="{ checkboxOnly: true, mode:'single' }"
-                        [selectedKeys]="selectableRowsKey"
+                        [(selectedKeys)]="selectableRowsKey"
                         [kendoGridSelectBy]="'id'"
                         (filterChange)="filterChange($event)"
                         (excelExport)="onExcelExport($event)"
