@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Licensing.Model;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms;
 using SPPC.Tools.Transforms.Templates;
@@ -97,10 +96,10 @@ namespace SPPC.Tools.Utility
             {
                 Version = VersionUtility.GetReleaseVersion()
             };
-            versionInfo.Services.Add(GetServiceInfo(licenseKey, DockerService.LicenseServerImage));
-            versionInfo.Services.Add(GetServiceInfo(licenseKey, DockerService.ApiServerImage));
-            versionInfo.Services.Add(GetServiceInfo(licenseKey, DockerService.DbServerImage));
-            versionInfo.Services.Add(GetServiceInfo(licenseKey, DockerService.WebAppImage));
+            versionInfo.Services.Add(GetServiceInfo(licenseKey, SysParameterUtility.LicenseServer.ImageName));
+            versionInfo.Services.Add(GetServiceInfo(licenseKey, SysParameterUtility.ApiServer.ImageName));
+            versionInfo.Services.Add(GetServiceInfo(licenseKey, SysParameterUtility.DbServer.ImageName));
+            versionInfo.Services.Add(GetServiceInfo(licenseKey, SysParameterUtility.WebApp.ImageName));
 
             return JsonHelper.From(versionInfo);
         }
@@ -140,19 +139,19 @@ namespace SPPC.Tools.Utility
         {
             string path = Path.Combine(PathConfig.TadbirRelease, licenseKey, "docker");
             var cacheRoot = FileUtility.GetAbsolutePath(PathConfig.DockerCacheRoot);
-            var root = Path.Combine(cacheRoot, DockerService.LicenseServerImage);
-            File.Copy(Path.Combine(root, $"{DockerService.LicenseServerImage}.tar.gz"),
-                Path.Combine(path, $"{DockerService.LicenseServerImage}.tar.gz"));
-            root = Path.Combine(cacheRoot, DockerService.WebAppImage);
-            File.Copy(Path.Combine(root, $"{DockerService.WebAppImage}.tar.gz"),
-                Path.Combine(path, $"{DockerService.WebAppImage}.tar.gz"));
-            root = Path.Combine(cacheRoot, DockerService.DbServerImage);
-            File.Copy(Path.Combine(root, $"{DockerService.DbServerImage}.tar.gz"),
-                Path.Combine(path, $"{DockerService.DbServerImage}.tar.gz"));
+            var root = Path.Combine(cacheRoot, SysParameterUtility.LicenseServer.ImageName);
+            File.Copy(Path.Combine(root, $"{SysParameterUtility.LicenseServer.ImageName}.tar.gz"),
+                Path.Combine(path, $"{SysParameterUtility.LicenseServer.ImageName}.tar.gz"));
+            root = Path.Combine(cacheRoot, SysParameterUtility.WebApp.ImageName);
+            File.Copy(Path.Combine(root, $"{SysParameterUtility.WebApp.ImageName}.tar.gz"),
+                Path.Combine(path, $"{SysParameterUtility.WebApp.ImageName}.tar.gz"));
+            root = Path.Combine(cacheRoot, SysParameterUtility.DbServer.ImageName);
+            File.Copy(Path.Combine(root, $"{SysParameterUtility.DbServer.ImageName}.tar.gz"),
+                Path.Combine(path, $"{SysParameterUtility.DbServer.ImageName}.tar.gz"));
             var editionTag = DockerUtility.GetEditionTag(edition);
-            root = Path.Combine(cacheRoot, DockerService.ApiServerImage);
-            File.Copy(Path.Combine(root, $"{DockerService.ApiServerImage}-{editionTag}.tar.gz"),
-                Path.Combine(path, $"{DockerService.ApiServerImage}.tar.gz"));
+            root = Path.Combine(cacheRoot, SysParameterUtility.ApiServer.ImageName);
+            File.Copy(Path.Combine(root, $"{SysParameterUtility.ApiServer.ImageName}-{editionTag}.tar.gz"),
+                Path.Combine(path, $"{SysParameterUtility.ApiServer.ImageName}.tar.gz"));
         }
 
         private static void GenerateDockerCompose(string licenseKey, string editionTag)
@@ -169,29 +168,21 @@ namespace SPPC.Tools.Utility
         {
             var root = Path.Combine(PathConfig.TadbirRelease, licenseKey);
             CreateChecksumFile(Path.Combine(root, "service"));
+            CreateChecksumFile(Path.Combine(root, "setup"));
             CreateChecksumFile(Path.Combine(root, "runner"));
         }
 
         private static void CreateChecksumFile(string path)
         {
             var crypto = CryptoService.Default;
-            var dirInfo = new DirectoryInfo(path);
-            var checksum = new Dictionary<string, string>();
-            foreach (var file in dirInfo.GetFiles())
-            {
-                string key = crypto
-                    .CreateHash(Encoding.ASCII.GetBytes(file.Name))
-                    .ToLower();
-                string value = crypto
-                    .CreateHash(File.ReadAllBytes(file.FullName))
-                    .ToLower();
-                checksum.Add(key, value);
-            }
-
-            var checksums = JsonHelper.From(checksum, false);
+            ArchiveUtility.Zip(ChecksumSource, path);
+            var checksum = crypto
+                .CreateHash(File.ReadAllBytes(ChecksumSource))
+                .ToLower();
+            File.Delete(ChecksumSource);
             var parent = Path.GetDirectoryName(path);
             var fileName = $"{Path.GetFileName(path)}.sha";
-            File.WriteAllText(Path.Combine(parent, fileName), checksums);
+            File.WriteAllText(Path.Combine(parent, fileName), checksum);
         }
 
         private static void CreateZipArchive(string licenseKey, string password)
@@ -223,5 +214,6 @@ namespace SPPC.Tools.Utility
 
         private const string ComposeFile = "docker-compose.yml";
         private const string OverrideFile = "docker-compose.override.yml";
+        private const string ChecksumSource = "items.zip";
     }
 }

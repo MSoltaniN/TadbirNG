@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Domain;
 using SPPC.Tools.Model;
 using SPPC.Tools.Utility;
@@ -70,13 +71,13 @@ namespace SPPC.Tadbir.Setup
 
             var root = Path.Combine(Path.GetDirectoryName(Environment.CurrentDirectory), "docker");
             worker.ReportProgress(0, "آماده سازی سرویس های برنامه...");
-            InstallerUtility.ConfigureDockerService(root, DockerService.LicenseServerImage, _settings);
+            InstallerUtility.ConfigureDockerService(root, SysParameterUtility.LicenseServer.ImageName, _settings);
             worker.ReportProgress(20);
-            InstallerUtility.ConfigureDockerService(root, DockerService.ApiServerImage, _settings);
+            InstallerUtility.ConfigureDockerService(root, SysParameterUtility.ApiServer.ImageName, _settings);
             worker.ReportProgress(20);
-            InstallerUtility.ConfigureDockerService(root, DockerService.WebAppImage, _settings);
+            InstallerUtility.ConfigureDockerService(root, SysParameterUtility.WebApp.ImageName, _settings);
             worker.ReportProgress(20);
-            InstallerUtility.ConfigureDockerService(root, DockerService.DbServerImage, _settings);
+            InstallerUtility.ConfigureDockerService(root, SysParameterUtility.DbServer.ImageName, _settings);
             worker.ReportProgress(20);
         }
 
@@ -166,7 +167,7 @@ namespace SPPC.Tadbir.Setup
             _settings = _model.IsGlobal ? BuildSettings.DockerNetwork : BuildSettings.DockerLocal;
             if (_model.DbServer == "Docker")
             {
-                _model.DbServer = DockerService.DbServer;
+                _model.DbServer = SysParameterUtility.DbServer.Name;
             }
             else
             {

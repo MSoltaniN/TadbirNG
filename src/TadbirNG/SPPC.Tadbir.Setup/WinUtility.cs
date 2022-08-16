@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Microsoft.Win32;
 
 namespace SPPC.Tadbir.Setup
@@ -29,23 +28,6 @@ namespace SPPC.Tadbir.Setup
             }
 
             return servers;
-        }
-
-        public static string GetDockerExePath()
-        {
-            string exePath = String.Empty;
-            var key = Registry.LocalMachine.OpenSubKey(
-                @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Docker Desktop");
-            if (key != null)
-            {
-                var location = key.GetValue("InstallLocation")?.ToString();
-                if (location != null)
-                {
-                    exePath = Path.Combine(location, "resources", "bin");
-                }
-            }
-
-            return exePath;
         }
     }
 #pragma warning restore CA1416 // Validate platform compatibility

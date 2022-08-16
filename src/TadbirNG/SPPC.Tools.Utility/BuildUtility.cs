@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms.Templates;
@@ -45,7 +46,7 @@ namespace SPPC.Tools.Utility
             }
             else
             {
-                OutputProvider($"{DockerService.LicenseServer} is up-to-date.");
+                OutputProvider($"{SysParameterUtility.LicenseServer.Name} is up-to-date.");
             }
 
             if (_apiChanged)
@@ -54,7 +55,7 @@ namespace SPPC.Tools.Utility
             }
             else
             {
-                OutputProvider($"{DockerService.ApiServer} is up-to-date.");
+                OutputProvider($"{SysParameterUtility.ApiServer.Name} is up-to-date.");
             }
 
             if (_appChanged)
@@ -63,7 +64,7 @@ namespace SPPC.Tools.Utility
             }
             else
             {
-                OutputProvider($"{DockerService.WebApp} is up-to-date.");
+                OutputProvider($"{SysParameterUtility.WebApp.Name} is up-to-date.");
             }
 
             if (_dbChanged)
@@ -72,7 +73,7 @@ namespace SPPC.Tools.Utility
             }
             else
             {
-                OutputProvider($"{DockerService.DbServer} is up-to-date.");
+                OutputProvider($"{SysParameterUtility.DbServer.Name} is up-to-date.");
             }
 
             OutputProvider($"Build process completed successfully.{Environment.NewLine}");
@@ -84,27 +85,27 @@ namespace SPPC.Tools.Utility
             if (_dbChanged)
             {
                 OutputProvider("Updating cache for Db Server...");
-                UpdateServiceCache(DockerService.DbServerImage);
+                UpdateServiceCache(SysParameterUtility.DbServer.ImageName);
             }
 
             if (_licenseChanged)
             {
                 OutputProvider("Updating cache for License Server...");
-                UpdateServiceCache(DockerService.LicenseServerImage);
+                UpdateServiceCache(SysParameterUtility.LicenseServer.ImageName);
             }
 
             if (_appChanged)
             {
                 OutputProvider("Updating cache for Web App...");
-                UpdateServiceCache(DockerService.WebAppImage, "dev");
+                UpdateServiceCache(SysParameterUtility.WebApp.ImageName, SysParameterUtility.WebApp.Tag);
             }
 
             if (_apiChanged)
             {
                 OutputProvider("Updating cache for Api Server...");
-                UpdateServiceCache(DockerService.ApiServerImage, Edition.StandardTag);
-                UpdateServiceCache(DockerService.ApiServerImage, Edition.ProfessionalTag);
-                UpdateServiceCache(DockerService.ApiServerImage, Edition.EnterpriseTag);
+                UpdateServiceCache(SysParameterUtility.ApiServer.ImageName, Edition.StandardTag);
+                UpdateServiceCache(SysParameterUtility.ApiServer.ImageName, Edition.ProfessionalTag);
+                UpdateServiceCache(SysParameterUtility.ApiServer.ImageName, Edition.EnterpriseTag);
             }
 
             CreateVersionFiles();
@@ -126,10 +127,10 @@ namespace SPPC.Tools.Utility
         {
             // NOTE: For this process to be correct, current clone MUST be pristine
             // (i.e. NO change must be sensed by git)
-            var licenseChecksum = ChecksumUtility.CalculateChecksum(DockerService.LicenseServer);
-            var apiChecksum = ChecksumUtility.CalculateChecksum(DockerService.ApiServer);
-            var appChecksum = ChecksumUtility.CalculateChecksum(DockerService.WebApp);
-            var dbChecksum = ChecksumUtility.CalculateChecksum(DockerService.DbServer);
+            var licenseChecksum = ChecksumUtility.CalculateChecksum(SysParameterUtility.LicenseServer.Name);
+            var apiChecksum = ChecksumUtility.CalculateChecksum(SysParameterUtility.ApiServer.Name);
+            var appChecksum = ChecksumUtility.CalculateChecksum(SysParameterUtility.WebApp.Name);
+            var dbChecksum = ChecksumUtility.CalculateChecksum(SysParameterUtility.DbServer.Name);
 
             // Pull latest changes from TadbirNG repository...
             var currentDir = Environment.CurrentDirectory;
@@ -138,10 +139,10 @@ namespace SPPC.Tools.Utility
             _runner.Run(ToolConstants.GitPullCommand);
             Environment.CurrentDirectory = currentDir;
 
-            _licenseChanged = IsModifiedProject(DockerService.LicenseServer, licenseChecksum);
-            _apiChanged = IsModifiedProject(DockerService.ApiServer, apiChecksum);
-            _appChanged = IsModifiedProject(DockerService.WebApp, appChecksum);
-            _dbChanged = IsModifiedProject(DockerService.DbServer, dbChecksum);
+            _licenseChanged = IsModifiedProject(SysParameterUtility.LicenseServer.Name, licenseChecksum);
+            _apiChanged = IsModifiedProject(SysParameterUtility.ApiServer.Name, apiChecksum);
+            _appChanged = IsModifiedProject(SysParameterUtility.WebApp.Name, appChecksum);
+            _dbChanged = IsModifiedProject(SysParameterUtility.DbServer.Name, dbChecksum);
         }
 
         private static void CreateVersionFiles()
@@ -161,16 +162,20 @@ namespace SPPC.Tools.Utility
             };
 
             var imagePath = Path.Combine(
-                cacheRoot, DockerService.LicenseServerImage, $"{DockerService.LicenseServerImage}.tar.gz");
+                cacheRoot, SysParameterUtility.LicenseServer.ImageName,
+                $"{SysParameterUtility.LicenseServer.ImageName}.tar.gz");
             version.Services.Add(DockerUtility.GetServiceInfo(imagePath));
             imagePath = Path.Combine(
-                cacheRoot, DockerService.ApiServerImage, $"{DockerService.ApiServerImage}-{editionTag}.tar.gz");
+                cacheRoot, SysParameterUtility.ApiServer.ImageName,
+                $"{SysParameterUtility.ApiServer.ImageName}-{editionTag}.tar.gz");
             version.Services.Add(DockerUtility.GetServiceInfo(imagePath));
             imagePath = Path.Combine(
-                cacheRoot, DockerService.DbServerImage, $"{DockerService.DbServerImage}.tar.gz");
+                cacheRoot, SysParameterUtility.DbServer.ImageName,
+                $"{SysParameterUtility.DbServer.ImageName}.tar.gz");
             version.Services.Add(DockerUtility.GetServiceInfo(imagePath));
             imagePath = Path.Combine(
-                cacheRoot, DockerService.WebAppImage, $"{DockerService.WebAppImage}.tar.gz");
+                cacheRoot, SysParameterUtility.WebApp.ImageName,
+                $"{SysParameterUtility.WebApp.ImageName}.tar.gz");
             version.Services.Add(DockerUtility.GetServiceInfo(imagePath));
             File.WriteAllText(Path.Combine(cacheRoot, $"version.{editionTag}"), JsonHelper.From(version));
         }
@@ -231,7 +236,8 @@ namespace SPPC.Tools.Utility
                 File.WriteAllText(settingsPath, appSettings);
                 File.WriteAllText(devSettingsPath, appSettings);
 
-                _runner.Run(String.Format($"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build --no-cache LicenseServer"));
+                _runner.Run(
+                    $"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build --no-cache {SysParameterUtility.LicenseServer.Name}");
                 OutputProvider($"[License Server] => Rebuild succeeded.{Environment.NewLine}");
             }
             finally
@@ -287,7 +293,8 @@ namespace SPPC.Tools.Utility
                     File.WriteAllText(files[(int)ApiServerPathIndex.DevEdition], editionData);
 
                     OutputProvider($"Building tag {edition}...");
-                    _runner.Run(String.Format($"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build{noCache} ApiServer"));
+                    _runner.Run(
+                        $"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build{noCache} {SysParameterUtility.ApiServer.Name}");
                 }
 
                 OutputProvider($"[Api Server] => Rebuild succeeded.{Environment.NewLine}");
@@ -321,7 +328,8 @@ namespace SPPC.Tools.Utility
                 File.WriteAllText(envPath, environment);
                 File.WriteAllText(devEnvPath, environment);
 
-                _runner.Run(String.Format($"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build --no-cache WebApp"));
+                _runner.Run(
+                    $"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build --no-cache {SysParameterUtility.WebApp.Name}");
                 OutputProvider($"[Web App] => Rebuild succeeded.{Environment.NewLine}");
             }
             finally
@@ -335,17 +343,20 @@ namespace SPPC.Tools.Utility
         private void RebuildDbServer()
         {
             OutputProvider("Rebuilding db server...");
-            _runner.Run(String.Format($"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build --no-cache DbServer"));
+            _runner.Run(
+                $"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build --no-cache {SysParameterUtility.DbServer.Name}");
             OutputProvider($"[Db Server] => Rebuild succeeded.{Environment.NewLine}");
         }
 
-        private void UpdateServiceCache(string serviceName, string tag = "latest")
+        private void UpdateServiceCache(string serviceName, string tag = null)
         {
+            var imageTag = tag ?? SysParameterUtility.DbServer.Tag;
             var currentDir = Environment.CurrentDirectory;
             var root = FileUtility.GetAbsolutePath(PathConfig.DockerCacheRoot);
-            var imageFile = GetImageFileName(serviceName, tag);
+            var imageFile = GetImageFileName(serviceName, imageTag);
             Environment.CurrentDirectory = Path.Combine(root, serviceName);
-            _runner.Run(String.Format($"docker save msn1368/{serviceName}:{tag} -o {imageFile}.tar"));
+            _runner.Run(String.Format(
+                $"docker save {SysParameterUtility.DockerHubHandle}/{serviceName}:{imageTag} -o {imageFile}.tar"));
             var tarPath = Path.Combine(Environment.CurrentDirectory, String.Format($"{imageFile}.tar"));
             var gzPath = Path.Combine(Environment.CurrentDirectory, String.Format($"{imageFile}.tar.gz"));
             if (File.Exists(gzPath))

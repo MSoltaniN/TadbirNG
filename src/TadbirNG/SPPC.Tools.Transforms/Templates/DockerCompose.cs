@@ -12,6 +12,7 @@ namespace SPPC.Tools.Transforms.Templates
     using System.Linq;
     using System.Text;
     using System.Collections.Generic;
+    using SPPC.Tadbir.Configuration;
     using System;
     
     /// <summary>
@@ -28,89 +29,182 @@ namespace SPPC.Tools.Transforms.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write(@"version: '3.9'
-
-volumes:
- productdata_DbServer:
- productdata_LicenseServer:
- 
-networks:
- frontend:
- backend:
-
-services:
-
- DbServer:
-  image: msn1368/db-server:latest
-  user: root
-  build:
-   context: ../../res
-   dockerfile: Dockerfile
-  networks:
-   - backend
-  volumes:
-   - productdata_DbServer:/var/opt/mssql/data
-   
- ApiServer:
-  image: msn1368/api-server:");
+            this.Write("version: \'3.9\'\r\n\r\nvolumes:\r\n productdata_");
+            
+            #line 10 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DbServer.Name));
+            
+            #line default
+            #line hidden
+            this.Write(":\r\n productdata_");
+            
+            #line 11 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.LicenseServer.Name));
+            
+            #line default
+            #line hidden
+            this.Write(":\r\n \r\nnetworks:\r\n frontend:\r\n backend:\r\n\r\nservices:\r\n\r\n ");
+            
+            #line 19 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DbServer.Name));
+            
+            #line default
+            #line hidden
+            this.Write(":\r\n  image: ");
+            
+            #line 20 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DockerHubHandle));
+            
+            #line default
+            #line hidden
+            this.Write("/");
+            
+            #line 20 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DbServer.ImageName));
+            
+            #line default
+            #line hidden
+            this.Write(":");
+            
+            #line 20 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DbServer.Tag));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n  user: root\r\n  build:\r\n   context: ../../res\r\n   dockerfile: Dockerfile\r\n  net" +
+                    "works:\r\n   - backend\r\n  volumes:\r\n   - productdata_");
+            
+            #line 28 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DbServer.Name));
+            
+            #line default
+            #line hidden
+            this.Write(":/var/opt/mssql/data\r\n   \r\n ");
             
             #line 30 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.ApiServer.Name));
+            
+            #line default
+            #line hidden
+            this.Write(":\r\n  image: ");
+            
+            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DockerHubHandle));
+            
+            #line default
+            #line hidden
+            this.Write("/");
+            
+            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.ApiServer.ImageName));
+            
+            #line default
+            #line hidden
+            this.Write(":");
+            
+            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_editionTag));
             
             #line default
             #line hidden
-            this.Write(@"
-  build:
-   context: .
-   dockerfile: SPPC.Tadbir.Web.Api/Dockerfile
-  depends_on:
-   - DbServer
-  networks:
-   - backend
-  ports:
-   - 9095:80
-
- loadBalancer:
-  image: dockercloud/haproxy:1.2.1
-  depends_on:
-   - ApiServer
-  ports:
-   - 9095:80
-   - 1936:1936
-  links:
-   - ApiServer
-  volumes:
-   - /var/run/docker.sock:/var/run/docker.sock
-  networks:
-   - frontend
-
- WebApp:
-  image: msn1368/web-app:dev
-  build: 
-   context: ./SPPC.Tadbir.Web/ClientApp
-   dockerfile: Dockerfile
-  networks:
-   - frontend
-  ports:
-   - 9099:4200
-
- LicenseServer:
-  image: msn1368/license-server:latest
-  build:
-   context: .
-   dockerfile: SPPC.Licensing.Local.Web/Dockerfile
-  depends_on:
-   - DbServer
-  volumes:
-   - productdata_LicenseServer:/app/wwwroot
-  networks:
-   - backend
-  ports:
-   - 9093:80
-  extra_hosts:
-   - ""host.docker.internal:host-gateway""
-
-");
+            this.Write("\r\n  build:\r\n   context: .\r\n   dockerfile: SPPC.Tadbir.Web.Api/Dockerfile\r\n  depen" +
+                    "ds_on:\r\n   - ");
+            
+            #line 36 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DbServer.Name));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n  networks:\r\n   - backend\r\n  ports:\r\n   - 9095:80\r\n\r\n loadBalancer:\r\n  image: d" +
+                    "ockercloud/haproxy:1.2.1\r\n  depends_on:\r\n   - ");
+            
+            #line 45 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.ApiServer.Name));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n  ports:\r\n   - 9095:80\r\n   - 1936:1936\r\n  links:\r\n   - ");
+            
+            #line 50 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.ApiServer.Name));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n  volumes:\r\n   - /var/run/docker.sock:/var/run/docker.sock\r\n  networks:\r\n   - f" +
+                    "rontend\r\n\r\n ");
+            
+            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.WebApp.Name));
+            
+            #line default
+            #line hidden
+            this.Write(":\r\n  image: ");
+            
+            #line 57 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DockerHubHandle));
+            
+            #line default
+            #line hidden
+            this.Write("/");
+            
+            #line 57 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.WebApp.ImageName));
+            
+            #line default
+            #line hidden
+            this.Write(":");
+            
+            #line 57 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.WebApp.Tag));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n  build: \r\n   context: ./SPPC.Tadbir.Web/ClientApp\r\n   dockerfile: Dockerfile\r\n" +
+                    "  networks:\r\n   - frontend\r\n  ports:\r\n   - 9099:4200\r\n\r\n ");
+            
+            #line 66 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.LicenseServer.Name));
+            
+            #line default
+            #line hidden
+            this.Write(":\r\n  image: ");
+            
+            #line 67 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DockerHubHandle));
+            
+            #line default
+            #line hidden
+            this.Write("/");
+            
+            #line 67 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.LicenseServer.ImageName));
+            
+            #line default
+            #line hidden
+            this.Write(":");
+            
+            #line 67 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.LicenseServer.Tag));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n  build:\r\n   context: .\r\n   dockerfile: SPPC.Licensing.Local.Web/Dockerfile\r\n  " +
+                    "depends_on:\r\n   - ");
+            
+            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DbServer.Name));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n  volumes:\r\n   - productdata_");
+            
+            #line 74 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerCompose.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.LicenseServer.Name));
+            
+            #line default
+            #line hidden
+            this.Write(":/app/wwwroot\r\n  networks:\r\n   - backend\r\n  ports:\r\n   - 9093:80\r\n  extra_hosts:\r" +
+                    "\n   - \"host.docker.internal:host-gateway\"\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

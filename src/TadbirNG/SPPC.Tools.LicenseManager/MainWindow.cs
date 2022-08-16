@@ -402,10 +402,6 @@ namespace SPPC.Tools.LicenseManager
             path = Path.Combine(solutionRoot, "docker-compose.override.yml");
             template = new DockerComposeOverride(license.LicenseKey);
             File.WriteAllText(path, template.TransformText());
-
-            path = Path.Combine(solutionRoot, "docker-deploy.bat");
-            template = new DockerDeploy(license.LicenseKey);
-            File.WriteAllText(path, template.TransformText());
         }
 
         private bool ValidateSaveInstance()

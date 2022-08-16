@@ -1,4 +1,5 @@
 ﻿using System;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms;
 
@@ -11,7 +12,7 @@ namespace SPPC.Tools.Utility
         {
         }
 
-        protected override string ServiceName => DockerService.DbServerImage;
+        protected override string ServiceName => SysParameterUtility.DbServer.ImageName;
 
         protected override ITextTemplate SettingsTemplate => null;
 

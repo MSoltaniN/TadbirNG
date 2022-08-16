@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tools.Model;
 using SPPC.Tools.Utility;
 
@@ -44,13 +45,13 @@ namespace SPPC.Tools.BuildServer
         public static void CreateChecksumFiles()
         {
             var path = Path.Combine(PathConfig.WebApiRoot, "checksum");
-            File.WriteAllText(path, ChecksumUtility.CalculateChecksum(DockerService.ApiServer));
+            File.WriteAllText(path, ChecksumUtility.CalculateChecksum(SysParameterUtility.ApiServer.Name));
             path = Path.Combine(PathConfig.LocalServerRoot, "checksum");
-            File.WriteAllText(path, ChecksumUtility.CalculateChecksum(DockerService.LicenseServer));
+            File.WriteAllText(path, ChecksumUtility.CalculateChecksum(SysParameterUtility.LicenseServer.Name));
             path = Path.Combine(PathConfig.ResourceRoot, "checksum");
-            File.WriteAllText(path, ChecksumUtility.CalculateChecksum(DockerService.DbServer));
+            File.WriteAllText(path, ChecksumUtility.CalculateChecksum(SysParameterUtility.DbServer.Name));
             path = Path.Combine(PathConfig.WebAppRoot, "checksum");
-            File.WriteAllText(path, ChecksumUtility.CalculateChecksum(DockerService.WebApp));
+            File.WriteAllText(path, ChecksumUtility.CalculateChecksum(SysParameterUtility.WebApp.Name));
         }
 
         public static void TestChecksum()
@@ -61,7 +62,7 @@ namespace SPPC.Tools.BuildServer
             for (int count = 1; count <= 5; count++)
             {
                 Console.Write($"(Pass {count}) Checksum : ");
-                Console.WriteLine(ChecksumUtility.CalculateChecksum(DockerService.ApiServer));
+                Console.WriteLine(ChecksumUtility.CalculateChecksum(SysParameterUtility.ApiServer.Name));
                 Thread.Sleep(1000);
             }
 
@@ -69,7 +70,7 @@ namespace SPPC.Tools.BuildServer
             for (int count = 1; count <= 5; count++)
             {
                 Console.Write($"(Pass {count}) Checksum : ");
-                Console.WriteLine(ChecksumUtility.CalculateChecksum(DockerService.LicenseServer));
+                Console.WriteLine(ChecksumUtility.CalculateChecksum(SysParameterUtility.LicenseServer.Name));
                 Thread.Sleep(1000);
             }
 
@@ -77,7 +78,7 @@ namespace SPPC.Tools.BuildServer
             for (int count = 1; count <= 5; count++)
             {
                 Console.Write($"(Pass {count}) Checksum : ");
-                Console.WriteLine(ChecksumUtility.CalculateChecksum(DockerService.DbServer));
+                Console.WriteLine(ChecksumUtility.CalculateChecksum(SysParameterUtility.DbServer.Name));
                 Thread.Sleep(1000);
             }
 
@@ -85,7 +86,7 @@ namespace SPPC.Tools.BuildServer
             for (int count = 1; count <= 5; count++)
             {
                 Console.Write($"(Pass {count}) Checksum : ");
-                Console.WriteLine(ChecksumUtility.CalculateChecksum(DockerService.WebApp));
+                Console.WriteLine(ChecksumUtility.CalculateChecksum(SysParameterUtility.WebApp.Name));
                 Thread.Sleep(1000);
             }
         }
@@ -100,6 +101,14 @@ namespace SPPC.Tools.BuildServer
         {
             var archive = new ArchiveUtility(null, false);
             archive.Cab(@"D:\Temp\__Test__\runner");
+        }
+
+        public static void ShowSysParameters()
+        {
+            Console.WriteLine($"Current system parameters :{Environment.NewLine}");
+            var sysParams = JsonHelper.From(SysParameterUtility.AllParameters);
+            Array.ForEach(sysParams.Split(Environment.NewLine),
+                line => Console.WriteLine(line));
         }
     }
 }

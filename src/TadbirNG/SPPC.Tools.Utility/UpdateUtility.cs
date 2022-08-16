@@ -7,6 +7,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
 using SPPC.Framework.Cryptography;
+using SPPC.Tadbir.Configuration;
 
 namespace SPPC.Tools.Utility
 {
@@ -101,11 +102,12 @@ namespace SPPC.Tools.Utility
             return validated;
         }
 
-        public void BackupService(string tempFolder, string serviceName, string tag = "latest")
+        public void BackupService(string tempFolder, string serviceName, string tag = null)
         {
+            var imageTag = tag ?? SysParameterUtility.DbServer.Tag;
             var currentDir = Environment.CurrentDirectory;
             Environment.CurrentDirectory = tempFolder;
-            _runner.Run($"docker save msn1368/{serviceName}:{tag} -o {serviceName}.tar");
+            _runner.Run($"docker save {SysParameterUtility.DockerHubHandle}/{serviceName}:{imageTag} -o {serviceName}.tar");
             var tarPath = Path.Combine(Environment.CurrentDirectory, $"{serviceName}.tar");
             _archive.GZip(tarPath);
             Environment.CurrentDirectory = currentDir;
@@ -145,10 +147,10 @@ namespace SPPC.Tools.Utility
             {
                 var editionTag = File
                     .ReadAllLines(overridePath)
-                    .Where(line => line.Contains(DockerService.ApiServerImage))
-                    .Select(line => line[line.IndexOf(DockerService.ApiServerImage)..])
+                    .Where(line => line.Contains(SysParameterUtility.ApiServer.ImageName))
+                    .Select(line => line[line.IndexOf(SysParameterUtility.ApiServer.ImageName)..])
                     .Select(line => line
-                        .Replace(DockerService.ApiServerImage, String.Empty)
+                        .Replace(SysParameterUtility.ApiServer.ImageName, String.Empty)
                         .Replace(":", String.Empty))
                     .FirstOrDefault();
                 edition = DockerUtility.GetEdition(editionTag);
@@ -208,6 +210,15 @@ namespace SPPC.Tools.Utility
                 : String.Empty;
             var imagePath = Path.Combine(_imageRoot, serviceName, $"{serviceName}{suffix}.tar.gz");
             return File.ReadAllBytes(imagePath);
+        }
+
+        public bool NeedsUpdate()
+        {
+            return Current.Version != Latest.Version
+                || NeedsUpdate(SysParameterUtility.LicenseServer.ImageName)
+                || NeedsUpdate(SysParameterUtility.ApiServer.ImageName)
+                || NeedsUpdate(SysParameterUtility.DbServer.ImageName)
+                || NeedsUpdate(SysParameterUtility.WebApp.ImageName);
         }
 
         public bool NeedsUpdate(string serviceName)

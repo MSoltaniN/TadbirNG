@@ -7,12 +7,12 @@ using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading;
 using Microsoft.Data.SqlClient;
 using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tools.Model;
 
 namespace SPPC.Tools.Utility
@@ -198,20 +198,22 @@ namespace SPPC.Tools.Utility
             Environment.CurrentDirectory = FileUtility.GetAbsolutePath(@"..\runner");
             var runner = new CliRunner();
             var output = runner.Run("docker-compose -f docker-compose.override.yml -f docker-compose.yml down");
-            var imageName = $"msn1368/{DockerService.WebAppImage}:dev";
+            var imageName = $"{SysParameterUtility.GetImageFullName(SysParameterUtility.WebApp)}";
             output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
-            imageName = $"msn1368/{DockerService.LicenseServerImage}:latest";
+            imageName = $"{SysParameterUtility.GetImageFullName(SysParameterUtility.LicenseServer)}";
             output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
-            imageName = $"msn1368/{DockerService.DbServerImage}:latest";
+            imageName = $"{SysParameterUtility.GetImageFullName(SysParameterUtility.DbServer)}";
             output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
-            imageName = $"msn1368/{DockerService.ApiServerImage}:{Edition.StandardTag}";
+            imageName = $"{SysParameterUtility.GetImageFullName(SysParameterUtility.ApiServer, Edition.StandardTag)}";
             output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
-            imageName = $"msn1368/{DockerService.ApiServerImage}:{Edition.ProfessionalTag}";
+            imageName = $"{SysParameterUtility.GetImageFullName(SysParameterUtility.ApiServer, Edition.ProfessionalTag)}";
             output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
-            imageName = $"msn1368/{DockerService.ApiServerImage}:{Edition.EnterpriseTag}";
+            imageName = $"{SysParameterUtility.GetImageFullName(SysParameterUtility.ApiServer, Edition.EnterpriseTag)}";
             output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
-            output = runner.Run(String.Format(ToolConstants.DockerRemoveVolumeCommand, "runner_productdata_DbServer"));
-            output = runner.Run(String.Format(ToolConstants.DockerRemoveVolumeCommand, "runner_productdata_LicenseServer"));
+            output = runner.Run(String.Format(
+                ToolConstants.DockerRemoveVolumeCommand, $"runner_productdata_{SysParameterUtility.DbServer.Name}"));
+            output = runner.Run(String.Format(
+                ToolConstants.DockerRemoveVolumeCommand, $"runner_productdata_{SysParameterUtility.LicenseServer.Name}"));
             Environment.CurrentDirectory = currentDir;
         }
 
@@ -334,22 +336,21 @@ namespace SPPC.Tools.Utility
         private static DockerServiceSetup GetServiceSetup(string service, IBuildSettings settings)
         {
             DockerServiceSetup setup = null;
-            switch (service)
+            if (service == SysParameterUtility.LicenseServer.ImageName)
             {
-                case DockerService.LicenseServerImage:
-                    setup = new LicenseServiceSetup(settings);
-                    break;
-                case DockerService.ApiServerImage:
-                    setup = new ApiServiceSetup(settings);
-                    break;
-                case DockerService.WebAppImage:
-                    setup = new AppServiceSetup(settings);
-                    break;
-                case DockerService.DbServerImage:
-                    setup = new DbServiceSetup(settings);
-                    break;
-                default:
-                    break;
+                setup = new LicenseServiceSetup(settings);
+            }
+            else if (service == SysParameterUtility.ApiServer.ImageName)
+            {
+                setup = new ApiServiceSetup(settings);
+            }
+            else if (service == SysParameterUtility.WebApp.ImageName)
+            {
+                setup = new AppServiceSetup(settings);
+            }
+            else if (service == SysParameterUtility.DbServer.ImageName)
+            {
+                setup = new DbServiceSetup(settings);
             }
 
             return setup;

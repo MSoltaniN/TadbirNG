@@ -26,7 +26,6 @@
     <None Remove="Templates\CsViewModelFromMetadata.tt" />
     <None Remove="Templates\DockerCompose.tt" />
     <None Remove="Templates\DockerComposeOverride.tt" />
-    <None Remove="Templates\DockerDeploy.tt" />
     <None Remove="Templates\EmptyCrudController.tt" />
     <None Remove="Templates\JsResFromCsViewModels.tt" />
     <None Remove="Templates\NgEnvironment.tt" />
@@ -84,10 +83,6 @@
     <Content Include="Templates\DockerComposeOverride.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>DockerComposeOverride.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\DockerDeploy.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>DockerDeploy.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\EmptyCrudController.tt">
       <CustomToolNamespace></CustomToolNamespace>
@@ -208,11 +203,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>DockerComposeOverride.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Templates\DockerDeploy.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DockerDeploy.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\EmptyCrudController.cs">
       <DesignTime>True</DesignTime>

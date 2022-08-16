@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using SPPC.Framework.Cryptography;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms;
 using SPPC.Tools.Transforms.Templates;
@@ -14,7 +15,7 @@ namespace SPPC.Tools.Utility
         {
         }
 
-        protected override string ServiceName => DockerService.ApiServerImage;
+        protected override string ServiceName => SysParameterUtility.ApiServer.ImageName;
 
         protected override ITextTemplate SettingsTemplate => new WebApiSettings(_settings);
 

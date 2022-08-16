@@ -1,4 +1,5 @@
-﻿using SPPC.Tools.Model;
+﻿using SPPC.Tadbir.Configuration;
+using SPPC.Tools.Model;
 using SPPC.Tools.Transforms;
 using SPPC.Tools.Transforms.Templates;
 
@@ -11,7 +12,7 @@ namespace SPPC.Tools.Utility
         {
         }
 
-        protected override string ServiceName => DockerService.LicenseServerImage;
+        protected override string ServiceName => SysParameterUtility.LicenseServer.ImageName;
 
         protected override ITextTemplate SettingsTemplate => new LocalLicenseApiSettings(_settings);
     }

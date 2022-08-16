@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms;
 
@@ -13,7 +14,7 @@ namespace SPPC.Tools.Utility
         {
         }
 
-        protected override string ServiceName => DockerService.WebAppImage;
+        protected override string ServiceName => SysParameterUtility.WebApp.ImageName;
 
         protected override ITextTemplate SettingsTemplate => null;
 
