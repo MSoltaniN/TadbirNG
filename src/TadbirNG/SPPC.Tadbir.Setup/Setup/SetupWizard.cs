@@ -7,7 +7,6 @@ using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.Utility.Model;
-using SPPC.Tools.Utility;
 
 namespace SPPC.Tadbir.Setup
 {

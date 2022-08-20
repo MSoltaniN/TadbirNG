@@ -51,7 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SPPC.Tools.Utility\SPPC.Tools.Utility.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Utility\SPPC.Tadbir.Utility.csproj" />
   </ItemGroup>
 
 </Project>

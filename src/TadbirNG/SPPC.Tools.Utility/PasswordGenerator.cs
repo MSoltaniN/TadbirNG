@@ -7,7 +7,7 @@ namespace SPPC.Tools.Utility
 {
     public class PasswordGenerator
     {
-        public static string Generate(int length = 10)
+        public static string Generate(int length = 15)
         {
             Verify.ArgumentNotOutOfRange(length, MinLength, MaxLength, nameof(length));
             var chars = new List<char>(GetStarterValue());
@@ -53,6 +53,5 @@ namespace SPPC.Tools.Utility
         private const string CapitalLetters = "QWERTYUIOPASDFGHJKLZXCVBNM";
         private const string SmallLetters = "mnbvcxzlkjhgfdsapoiuytrewq";
         private const string Numbers = "1234567890";
-        private const string Symbols = "!@#$%";
     }
 }
