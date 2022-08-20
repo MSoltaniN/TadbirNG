@@ -20,7 +20,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="project-metadata.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="project-metadata.json" />
   </ItemGroup>
 
   <ItemGroup>

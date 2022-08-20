@@ -1,0 +1,72 @@
+﻿{
+  "entities": [
+    {
+      "type": "Goal",
+      "bindings": [
+        {
+          "controlName": "txtProject",
+          "propertyName": "Text",
+          "dataMember": "ProjectName"
+        },
+        {
+          "controlName": "txtTitle",
+          "propertyName": "Text",
+          "dataMember": "Title"
+        },
+        {
+          "controlName": "txtDescription",
+          "propertyName": "Text",
+          "dataMember": "Description"
+        }
+      ],
+      "rules": [
+        {
+          "fieldName": "Title",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 256
+        },
+        {
+          "fieldName": "Description",
+          "required": false,
+          "minLength": 1,
+          "maxLength": 2048
+        }
+      ]
+    },
+    {
+      "type": "Ability",
+      "bindings": [
+        {
+          "controlName": "txtProject",
+          "propertyName": "Text",
+          "dataMember": "ProjectName"
+        },
+        {
+          "controlName": "txtTitle",
+          "propertyName": "Text",
+          "dataMember": "Title"
+        },
+        {
+          "controlName": "txtDescription",
+          "propertyName": "Text",
+          "dataMember": "Description"
+        }
+      ],
+      "rules": [
+        {
+          "fieldName": "Title",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 128
+        },
+        {
+          "fieldName": "Description",
+          "required": false,
+          "minLength": 1,
+          "maxLength": 1024
+        }
+      ]
+    }
+  ]
+}
