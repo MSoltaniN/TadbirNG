@@ -42,15 +42,15 @@ namespace SPPC.Tadbir.Setup
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             worker.ReportProgress(0, "آماده سازی اولیه نصب برنامه...");
-            InstallerUtility.CreateInstallationPath(_model.InstallPath);
+            SetupUtility.CreateInstallationPath(_model.InstallPath);
             worker.ReportProgress(2);
 
             worker.ReportProgress(0, "کپی فایلهای مورد نیاز برنامه...");
-            InstallerUtility.CopyFiles(_model.InstallPath, _settings, _model.CreateShortcut);
+            SetupUtility.CopyFiles(_model.InstallPath, _settings, _model.CreateShortcut);
             worker.ReportProgress(8);
 
             worker.ReportProgress(0, "نصب سرویس...");
-            bool succeeded = InstallerUtility.InstallService(_model.InstallPath);
+            bool succeeded = SetupUtility.InstallService(_model.InstallPath);
             if (!succeeded)
             {
                 worker.ReportProgress(0, "بروز خطا هنگام نصب سرویس");
@@ -60,7 +60,7 @@ namespace SPPC.Tadbir.Setup
             worker.ReportProgress(4);
 
             worker.ReportProgress(0, "راه اندازی سرویس...");
-            succeeded = InstallerUtility.StartService();
+            succeeded = SetupUtility.StartService();
             if (!succeeded)
             {
                 worker.ReportProgress(0, "بروز خطا هنگام راه اندازی سرویس");
@@ -71,13 +71,13 @@ namespace SPPC.Tadbir.Setup
 
             var root = Path.Combine(Path.GetDirectoryName(Environment.CurrentDirectory), "docker");
             worker.ReportProgress(0, "آماده سازی سرویس های برنامه...");
-            InstallerUtility.ConfigureDockerService(root, SysParameterUtility.LicenseServer.ImageName, _settings);
+            SetupUtility.ConfigureDockerService(root, SysParameterUtility.LicenseServer.ImageName, _settings);
             worker.ReportProgress(20);
-            InstallerUtility.ConfigureDockerService(root, SysParameterUtility.ApiServer.ImageName, _settings);
+            SetupUtility.ConfigureDockerService(root, SysParameterUtility.ApiServer.ImageName, _settings);
             worker.ReportProgress(20);
-            InstallerUtility.ConfigureDockerService(root, SysParameterUtility.WebApp.ImageName, _settings);
+            SetupUtility.ConfigureDockerService(root, SysParameterUtility.WebApp.ImageName, _settings);
             worker.ReportProgress(20);
-            InstallerUtility.ConfigureDockerService(root, SysParameterUtility.DbServer.ImageName, _settings);
+            SetupUtility.ConfigureDockerService(root, SysParameterUtility.DbServer.ImageName, _settings);
             worker.ReportProgress(20);
         }
 
@@ -197,7 +197,7 @@ namespace SPPC.Tadbir.Setup
             _settings.WebApiUrl = $"{_model.Domain}:{BuildSettingValues.DefaultApiPort}";
             _settings.LocalServerUrl = $"{_model.Domain}:{BuildSettingValues.DefaultLicenseApiPort}";
             _settings.Tcp.Domain = BuildSettingValues.DockerHostInternalUrl;
-            _settings.Key = InstallerUtility.GetInstanceKey();
+            _settings.Key = SetupUtility.GetInstanceKey();
         }
 
         private SetupWizardModel _model;

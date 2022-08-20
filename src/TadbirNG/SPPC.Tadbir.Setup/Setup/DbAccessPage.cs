@@ -66,7 +66,7 @@ namespace SPPC.Tadbir.Setup
                 Cursor = Cursors.WaitCursor;
                 var server = cmbDbServer.SelectedItem?.ToString();
                 cmbLogin.Items.Clear();
-                var logins = InstallerUtility.GetDbLoginNames(server, txtAdminPassword.Text);
+                var logins = SetupUtility.GetDbLoginNames(server, txtAdminPassword.Text);
                 Cursor = Cursors.Default;
                 if (logins.Length == 0)
                 {

@@ -126,7 +126,7 @@ namespace SPPC.Tools.Utility
                         CryptoService.Default.Decrypt(
                             File.ReadAllText(configPath)));
                     var root = Path.Combine(setupRoot, "docker");
-                    InstallerUtility.ConfigureDockerService(root, serviceName, config);
+                    SetupUtility.ConfigureDockerService(root, serviceName, config);
                     updated = true;
                 }
             }

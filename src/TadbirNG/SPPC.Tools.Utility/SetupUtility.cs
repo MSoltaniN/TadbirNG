@@ -17,7 +17,7 @@ using SPPC.Tools.Model;
 
 namespace SPPC.Tools.Utility
 {
-    public class InstallerUtility
+    public class SetupUtility
     {
         public static string DockerPath { get; set; }
 
@@ -117,73 +117,24 @@ namespace SPPC.Tools.Utility
 
         public static bool InstallService(string path)
         {
-            bool installed = true;
-            var runner = new CliRunner();
-            var output = runner.Run("sc query sppckeysrv");
-            var lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
-            if (!lines[0].Contains("SERVICE_NAME: sppckeysrv"))
-            {
-                string template =
-                    "sc create sppckeysrv type= own start= auto error= normal displayname= \"SPPC Key Server\" binpath= \"{0}\"";
-                string binPath = Path.Combine(path, "service", "KeyServer.exe");
-                output = runner.Run(String.Format(template, binPath));
-                lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
-                installed = !lines[0].Contains("FAILED");
-            }
-
-            return installed;
+            string binPath = Path.Combine(path, "service", "KeyServer.exe");
+            return WinServiceUtility.Install(
+                SysParameterUtility.Service.Name, SysParameterUtility.Service.DisplayName, binPath);
         }
 
         public static bool UninstallService()
         {
-            // NOTE: Because SC (Service Control Manager) locks service executable for a while after
-            // deleting the service, we need some delay here, because service folder must be deleted.
-            var runner = new CliRunner();
-            var output = runner.Run("sc delete sppckeysrv");
-            var lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
-            return !lines[0].Contains("FAILED");
+            return WinServiceUtility.Uninstall(SysParameterUtility.Service.Name);
         }
 
         public static bool StartService()
         {
-            bool started = false;
-            var runner = new CliRunner();
-            var output = runner.Run("sc start sppckeysrv");
-            var lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
-            if (!lines[0].Contains("FAILED"))
-            {
-                do
-                {
-                    output = runner.Run("sc query sppckeysrv");
-                    started = output
-                        .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
-                        .Where(line => line.Contains("STATE") && line.Contains("RUNNING"))
-                        .Any();
-                } while (!started);
-            }
-
-            return started;
+            return WinServiceUtility.Start(SysParameterUtility.Service.Name);
         }
 
         public static bool StopService()
         {
-            bool stopped = false;
-            var runner = new CliRunner();
-            var output = runner.Run("sc stop sppckeysrv");
-            var lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
-            if (!lines[0].Contains("FAILED"))
-            {
-                do
-                {
-                    output = runner.Run("sc query sppckeysrv");
-                    stopped = output
-                        .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
-                        .Where(line => line.Contains("STATE") && line.Contains("STOPPED"))
-                        .Any();
-                } while (!stopped);
-            }
-
-            return stopped;
+            return WinServiceUtility.Stop(SysParameterUtility.Service.Name);
         }
 
         public static void ConfigureDockerService(string root, string service, IBuildSettings settings)
@@ -220,7 +171,7 @@ namespace SPPC.Tools.Utility
         public static bool IsAppRegistered()
         {
             var runner = new CliRunner();
-            var output = runner.Run("sc query sppckeysrv");
+            var output = runner.Run($"sc query {SysParameterUtility.Service.Name}");
             var lines = output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
             return !lines[0].Contains("FAILED");
         }

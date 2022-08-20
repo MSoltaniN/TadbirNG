@@ -30,7 +30,7 @@ namespace SPPC.Tadbir.Setup
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2,
                 MessageBoxOptions.RtlReading);
             bool confirmed = result == DialogResult.Yes;
-            if (confirmed && InstallerUtility.IsAppRunning())
+            if (confirmed && SetupUtility.IsAppRunning())
             {
                 MessageBox.Show(
                     "برنامه تدبیر در حال اجرا است. لطفاً برنامه را متوقف کرده و دوباره تلاش کنید.",

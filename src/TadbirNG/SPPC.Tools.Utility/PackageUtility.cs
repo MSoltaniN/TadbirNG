@@ -11,7 +11,7 @@ using SPPC.Tools.Transforms.Templates;
 
 namespace SPPC.Tools.Utility
 {
-    public class ReleaseUtility
+    public class PackageUtility
     {
         public static void UpdateImageCache(CliRunner runner)
         {

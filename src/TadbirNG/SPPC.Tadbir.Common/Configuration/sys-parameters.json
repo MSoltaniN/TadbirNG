@@ -33,5 +33,9 @@
       "imageName": "web-app",
       "tag": "dev"
     }
+  },
+  "service": {
+    "name": "sppckeysrv",
+    "displayName": "SPPC Key Server"
   }
 }

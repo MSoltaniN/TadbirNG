@@ -1,22 +1,22 @@
 ﻿USE master
 GO
 
-CREATE DATABASE [NGTadbir]
+CREATE DATABASE [@FirstDbName]
 GO
 
-ALTER DATABASE [NGTadbir] SET COMPATIBILITY_LEVEL = 130
+ALTER DATABASE [@FirstDbName] SET COMPATIBILITY_LEVEL = 130
 GO
 
 ALTER DATABASE SCOPED CONFIGURATION SET IDENTITY_CACHE=OFF
 GO
 
-ALTER AUTHORIZATION ON DATABASE::NGTadbir TO NgTadbirUser;
+ALTER AUTHORIZATION ON DATABASE::@FirstDbName TO @LoginName;
 GO
 
-USE NGTadbirSys
+USE @SysDbName
 GO
 
 SET IDENTITY_INSERT [Config].[CompanyDb] ON
 INSERT INTO [Config].[CompanyDb] ([CompanyID], [Name], [DbName], [Server], [IsActive])
-VALUES (1, N'شرکت نمونه', 'NGTadbir', 'DbServer', 1)
+VALUES (1, N'@FirstCompanyName', '@FirstDbName', '@DbServerName', 1)
 SET IDENTITY_INSERT [Config].[CompanyDb] OFF
