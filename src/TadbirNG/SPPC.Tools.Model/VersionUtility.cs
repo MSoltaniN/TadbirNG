@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using SPPC.Framework.Helpers;
-using SPPC.Tools.Model;
+using SPPC.Tadbir.Utility.Model;
 
 namespace SPPC.Tools.Model
 {

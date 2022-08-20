@@ -5,7 +5,8 @@ using System.Linq;
 using System.Windows.Forms;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Domain;
-using SPPC.Tools.Model;
+using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.Utility.Model;
 using SPPC.Tools.Utility;
 
 namespace SPPC.Tadbir.Setup

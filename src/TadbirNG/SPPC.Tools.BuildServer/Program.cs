@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.Utility.Docker;
 using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.BuildServer

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using SPPC.Tools.Model;
+using SPPC.Tadbir.Utility;
 
 namespace SPPC.Tools.LicenseManager
 {

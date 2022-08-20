@@ -5,8 +5,7 @@ using SPPC.Framework.Service;
 using SPPC.Licensing.Api;
 using SPPC.Licensing.Model;
 using SPPC.Tadbir.Configuration;
-using SPPC.Tools.Api;
-using SPPC.Tools.Utility;
+using SPPC.Tadbir.Utility;
 
 namespace SPPC.UpdateServer.Web.Controllers
 {

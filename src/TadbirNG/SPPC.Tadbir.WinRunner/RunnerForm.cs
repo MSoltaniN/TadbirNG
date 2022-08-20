@@ -7,9 +7,8 @@ using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
-using SPPC.Tools.Api;
-using SPPC.Tools.Model;
-using SPPC.Tools.Utility;
+using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.Utility.Model;
 
 namespace SPPC.Tadbir.WinRunner
 {

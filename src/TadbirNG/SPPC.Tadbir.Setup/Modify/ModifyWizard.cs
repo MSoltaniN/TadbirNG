@@ -6,8 +6,8 @@ using System.Linq;
 using System.Windows.Forms;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
-using SPPC.Tools.Model;
-using SPPC.Tools.Utility;
+using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.Utility.Model;
 
 namespace SPPC.Tadbir.Setup
 {
