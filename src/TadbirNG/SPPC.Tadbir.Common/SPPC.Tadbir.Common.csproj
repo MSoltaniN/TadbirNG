@@ -20,7 +20,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Configuration\sys-parameters.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Configuration\sys-parameters.json" />
   </ItemGroup>
 
   <ItemGroup>

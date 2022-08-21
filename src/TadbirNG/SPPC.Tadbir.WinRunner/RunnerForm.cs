@@ -7,9 +7,8 @@ using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
-using SPPC.Tools.Api;
-using SPPC.Tools.Model;
-using SPPC.Tools.Utility;
+using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.Utility.Model;
 
 namespace SPPC.Tadbir.WinRunner
 {
@@ -88,7 +87,12 @@ namespace SPPC.Tadbir.WinRunner
             _apiClient.AddHeader(LicenseConstants.InstanceHeaderName, config.Key);
             var latest = _apiClient.Get<VersionInfo>(UpdateApi.LatestVersionInfoUrl);
             _apiClient.RemoveHeader(LicenseConstants.InstanceHeaderName);
-            if (current.Version == latest.Version)
+            var utility = new UpdateUtility()
+            {
+                Current = current,
+                Latest = latest
+            };
+            if (!utility.NeedsUpdate())
             {
                 MessageBox.Show("شما از آخرین نسخه برنامه استفاده می کنید.",
                     "اطلاع به کاربر", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,

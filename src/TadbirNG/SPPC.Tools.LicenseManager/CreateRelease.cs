@@ -64,19 +64,19 @@ namespace SPPC.Tools.LicenseManager
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             worker.ReportProgress(0, "دریافت آخرین نسخه سرویس های داکر...");
-            ReleaseUtility.UpdateImageCache(_runner);
+            PackageUtility.UpdateImageCache(_runner);
             worker.ReportProgress(40);
 
             worker.ReportProgress(0, "کپی فایل های مورد نیاز برنامه...");
-            ReleaseUtility.CopyProgramFiles(License.LicenseKey, License.Edition);
+            PackageUtility.CopyProgramFiles(License.LicenseKey, License.Edition);
             worker.ReportProgress(40);
 
             worker.ReportProgress(0, "ایجاد تنظیمات نسخه جدید...");
-            ReleaseUtility.GenerateSettings(License);
+            PackageUtility.GenerateSettings(License);
             worker.ReportProgress(5);
 
             worker.ReportProgress(0, "ساختن فایل نهایی کاربر...");
-            ReleaseUtility.CreateReleaseArchive(License.LicenseKey, License.Edition, txtPassword.Text);
+            PackageUtility.CreateReleaseArchive(License.LicenseKey, License.Edition, txtPassword.Text);
             worker.ReportProgress(15);
         }
 

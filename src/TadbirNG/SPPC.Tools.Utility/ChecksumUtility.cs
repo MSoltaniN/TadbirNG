@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using SPPC.Framework.Cryptography;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tools.Model;
 
 namespace SPPC.Tools.Utility
@@ -33,22 +34,21 @@ namespace SPPC.Tools.Utility
         private static IEnumerable<string> GetServiceFiles(string serviceName)
         {
             IEnumerable<string> files = null;
-            switch (serviceName)
+            if (serviceName == SysParameterUtility.ApiServer.Name)
             {
-                case DockerService.ApiServer:
-                    files = GetApiServerFiles();
-                    break;
-                case DockerService.LicenseServer:
-                    files = GetLicenseServerFiles();
-                    break;
-                case DockerService.DbServer:
-                    files = GetDbServerFiles();
-                    break;
-                case DockerService.WebApp:
-                    files = GetWebAppFiles();
-                    break;
-                default:
-                    break;
+                files = GetApiServerFiles();
+            }
+            else if (serviceName == SysParameterUtility.LicenseServer.Name)
+            {
+                files = GetLicenseServerFiles();
+            }
+            else if (serviceName == SysParameterUtility.DbServer.Name)
+            {
+                files = GetDbServerFiles();
+            }
+            else if (serviceName == SysParameterUtility.WebApp.Name)
+            {
+                files = GetWebAppFiles();
             }
 
             return files;
@@ -56,17 +56,14 @@ namespace SPPC.Tools.Utility
 
         private static void CopyServiceFiles(string serviceName, IEnumerable<string> files)
         {
-            switch (serviceName)
+            if (serviceName == SysParameterUtility.WebApp.Name)
             {
-                case DockerService.ApiServer:
-                case DockerService.LicenseServer:
-                case DockerService.DbServer:
-                    Array.ForEach(files.ToArray(), file =>
-                        File.Copy(file, Path.Combine(TempFolder, Path.GetFileName(file))));
-                    break;
-                case DockerService.WebApp:
-                    CopyWebAppFiles(files);
-                    break;
+                CopyWebAppFiles(files);
+            }
+            else
+            {
+                Array.ForEach(files.ToArray(), file =>
+                    File.Copy(file, Path.Combine(TempFolder, Path.GetFileName(file))));
             }
         }
 

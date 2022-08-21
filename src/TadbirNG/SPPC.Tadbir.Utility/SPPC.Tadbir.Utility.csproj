@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <CodeAnalysisRuleSet>..\..\..\misc\assets\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\bin\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\bin\Release\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Templates\WebApiSettings.tt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Templates\WebApiSettings.tt">
+      <LastGenOutput>WebApiSettings.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetZip" Version="1.16.0" />
+    <PackageReference Include="System.CodeDom" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Persistence\SPPC.Framework.Persistence.csproj" />
+    <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj" />
+    <ProjectReference Include="..\SPPC.Licensing.Model\SPPC.Licensing.Model.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Templates\LocalLicenseApiSettings.cs">
+      <DependentUpon>LocalLicenseApiSettings.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Templates\WebApiSettings.cs">
+      <DependentUpon>WebApiSettings.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Templates\LocalLicenseApiSettings.tt">
+      <LastGenOutput>LocalLicenseApiSettings.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+</Project>

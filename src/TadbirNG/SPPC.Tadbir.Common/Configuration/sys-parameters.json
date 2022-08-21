@@ -1,0 +1,41 @@
+﻿{
+  "db": {
+    "loginName": "NgTadbirUser",
+    "password": "Demo1234",
+    "sysDbName": "NGTadbirSys",
+    "firstDbName": "NGTadbir",
+    "firstCompanyName": "شرکت نمونه",
+    "adminUserName": "admin",
+    "adminPassword": "Demo1234",
+    "adminPasswordHash": "b22f213ec710f0b0e86297d10279d69171f50f01a04edf40f472a563e7ad8576",
+    "adminFirstName": "راهبر",
+    "adminLastName": "سیستم"
+  },
+  "docker": {
+    "hubHandle": "msn1368",
+    "license": {
+      "name": "LicenseServer",
+      "imageName": "license-server",
+      "tag": "latest"
+    },
+    "api": {
+      "name": "ApiServer",
+      "imageName": "api-server",
+      "tag": "std|pro|ent"
+    },
+    "db": {
+      "name": "DbServer",
+      "imageName": "db-server",
+      "tag": "latest"
+    },
+    "app": {
+      "name": "WebApp",
+      "imageName": "web-app",
+      "tag": "dev"
+    }
+  },
+  "service": {
+    "name": "sppckeysrv",
+    "displayName": "SPPC Key Server"
+  }
+}

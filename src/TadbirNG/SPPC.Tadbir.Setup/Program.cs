@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using SPPC.Tools.Utility;
+using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.Utility.Docker;
 
 namespace SPPC.Tadbir.Setup
 {
@@ -16,7 +17,7 @@ namespace SPPC.Tadbir.Setup
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            bool isInstalled = InstallerUtility.IsAppRegistered();
+            bool isInstalled = SetupUtility.IsAppRegistered();
             if (!DockerUtility.IsDockerEngineRunning())
             {
                 MessageBox.Show("لطفاً پیش از اجرای این برنامه، ابتدا برنامه داکر دسکتاپ را اجرا کنید.",

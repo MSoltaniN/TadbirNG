@@ -6,12 +6,15 @@ using System.Windows.Forms;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service;
+using SPPC.Framework.Utility;
 using SPPC.Licensing.Model;
 using SPPC.Licensing.Service;
 using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.Utility.Model;
+using SPPC.Tadbir.Utility.Templates;
 using SPPC.Tools.LicenseManager.Properties;
 using SPPC.Tools.Model;
-using SPPC.Tools.Transforms;
 using SPPC.Tools.Transforms.Templates;
 
 namespace SPPC.Tools.LicenseManager
@@ -401,10 +404,6 @@ namespace SPPC.Tools.LicenseManager
 
             path = Path.Combine(solutionRoot, "docker-compose.override.yml");
             template = new DockerComposeOverride(license.LicenseKey);
-            File.WriteAllText(path, template.TransformText());
-
-            path = Path.Combine(solutionRoot, "docker-deploy.bat");
-            template = new DockerDeploy(license.LicenseKey);
             File.WriteAllText(path, template.TransformText());
         }
 

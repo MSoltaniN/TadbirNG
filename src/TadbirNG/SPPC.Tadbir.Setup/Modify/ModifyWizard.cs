@@ -6,8 +6,8 @@ using System.Linq;
 using System.Windows.Forms;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
-using SPPC.Tools.Model;
-using SPPC.Tools.Utility;
+using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.Utility.Model;
 
 namespace SPPC.Tadbir.Setup
 {
@@ -146,7 +146,7 @@ namespace SPPC.Tadbir.Setup
         private void RunRemoveProcess()
         {
             worker.ReportProgress(0, "توقف سرویس...");
-            bool succeeded = InstallerUtility.StopService();
+            bool succeeded = SetupUtility.StopService();
             if (!succeeded)
             {
                 worker.ReportProgress(0, "بروز خطا هنگام توقف سرویس");
@@ -156,7 +156,7 @@ namespace SPPC.Tadbir.Setup
             worker.ReportProgress(20);
 
             worker.ReportProgress(0, "حذف سرویس...");
-            succeeded = InstallerUtility.UninstallService();
+            succeeded = SetupUtility.UninstallService();
             if (!succeeded)
             {
                 worker.ReportProgress(0, "بروز خطا هنگام حذف سرویس");
@@ -166,11 +166,11 @@ namespace SPPC.Tadbir.Setup
             worker.ReportProgress(5);
 
             worker.ReportProgress(0, "حذف سرویس های برنامه...");
-            InstallerUtility.RemoveDockerServices();
+            SetupUtility.RemoveDockerServices();
             worker.ReportProgress(50);
 
             worker.ReportProgress(0, "حذف فایلهای برنامه...");
-            InstallerUtility.DeleteFiles();
+            SetupUtility.DeleteFiles();
             worker.ReportProgress(25);
         }
 

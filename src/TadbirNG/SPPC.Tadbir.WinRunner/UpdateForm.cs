@@ -7,9 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using SPPC.Framework.Helpers;
-using SPPC.Tools.Api;
-using SPPC.Tools.Model;
-using SPPC.Tools.Utility;
+using SPPC.Tadbir.Configuration;
+using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.Utility.Docker;
+using SPPC.Tadbir.Utility.Model;
 
 namespace SPPC.Tadbir.WinRunner
 {
@@ -113,10 +114,10 @@ namespace SPPC.Tadbir.WinRunner
 
         private void PrepareLatestServices()
         {
-            PrepareLatestService(DockerService.LicenseServerImage, UpdateApi.LicenseServerImageUrl);
-            PrepareLatestService(DockerService.ApiServerImage, UpdateApi.ApiServerImageUrl);
-            PrepareLatestService(DockerService.DbServerImage, UpdateApi.DbServerImageUrl);
-            PrepareLatestService(DockerService.WebAppImage, UpdateApi.WebAppImageUrl);
+            PrepareLatestService(SysParameterUtility.LicenseServer.ImageName, UpdateApi.LicenseServerImageUrl);
+            PrepareLatestService(SysParameterUtility.ApiServer.ImageName, UpdateApi.ApiServerImageUrl);
+            PrepareLatestService(SysParameterUtility.DbServer.ImageName, UpdateApi.DbServerImageUrl);
+            PrepareLatestService(SysParameterUtility.WebApp.ImageName, UpdateApi.WebAppImageUrl);
         }
 
         private void PrepareLatestService(string name, string sourceUrl)
@@ -132,25 +133,25 @@ namespace SPPC.Tadbir.WinRunner
 
         private void DownloadServices()
         {
-            if (!DownloadService(DockerService.LicenseServerImage))
+            if (!DownloadService(SysParameterUtility.LicenseServer.ImageName))
             {
                 worker.CancelAsync();
                 CloseForm();
             }
 
-            if (!DownloadService(DockerService.ApiServerImage, InstanceKey))
+            if (!DownloadService(SysParameterUtility.ApiServer.ImageName, InstanceKey))
             {
                 worker.CancelAsync();
                 CloseForm();
             }
 
-            if (!DownloadService(DockerService.DbServerImage))
+            if (!DownloadService(SysParameterUtility.DbServer.ImageName))
             {
                 worker.CancelAsync();
                 CloseForm();
             }
 
-            if (!DownloadService(DockerService.WebAppImage))
+            if (!DownloadService(SysParameterUtility.WebApp.ImageName))
             {
                 worker.CancelAsync();
                 CloseForm();
@@ -209,18 +210,19 @@ namespace SPPC.Tadbir.WinRunner
         {
             _backupFolder = FileUtility.GetTempFolderPath();
             var editionTag = DockerUtility.GetEditionTag(CurrentVersion.Edition);
-            BackupService(DockerService.LicenseServerImage);
-            BackupService(DockerService.ApiServerImage, editionTag);
-            BackupService(DockerService.DbServerImage);
-            BackupService(DockerService.WebAppImage, "dev");
+            BackupService(SysParameterUtility.LicenseServer.ImageName);
+            BackupService(SysParameterUtility.ApiServer.ImageName, editionTag);
+            BackupService(SysParameterUtility.DbServer.ImageName);
+            BackupService(SysParameterUtility.WebApp.ImageName, SysParameterUtility.WebApp.Tag);
         }
 
-        private void BackupService(string serviceName, string tag = "latest")
+        private void BackupService(string serviceName, string tag = null)
         {
+            var imageTag = tag ?? SysParameterUtility.DbServer.Tag;
             var progress = GetUpdateProgress(serviceName, _downloadSize);
             if (progress.BackupProgress > 0)
             {
-                _utility.BackupService(_backupFolder, serviceName, tag);
+                _utility.BackupService(_backupFolder, serviceName, imageTag);
                 worker.ReportProgress(progress.BackupProgress);
                 LogOperation($"Backup completed for service {serviceName}.");
             }
@@ -229,22 +231,22 @@ namespace SPPC.Tadbir.WinRunner
         private bool UpdateServices()
         {
             bool updated = true;
-            if (!UpdateService(DockerService.LicenseServerImage))
+            if (!UpdateService(SysParameterUtility.LicenseServer.ImageName))
             {
                 return false;
             }
 
-            if (!UpdateService(DockerService.ApiServerImage))
+            if (!UpdateService(SysParameterUtility.ApiServer.ImageName))
             {
                 return false;
             }
 
-            if (!UpdateService(DockerService.DbServerImage))
+            if (!UpdateService(SysParameterUtility.DbServer.ImageName))
             {
                 return false;
             }
 
-            if (!UpdateService(DockerService.WebAppImage))
+            if (!UpdateService(SysParameterUtility.WebApp.ImageName))
             {
                 updated = false;
             }

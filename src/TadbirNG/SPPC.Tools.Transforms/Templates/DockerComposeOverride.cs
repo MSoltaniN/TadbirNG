@@ -12,6 +12,7 @@ namespace SPPC.Tools.Transforms.Templates
     using System.Linq;
     using System.Text;
     using System.Collections.Generic;
+    using SPPC.Tadbir.Configuration;
     using System;
     
     /// <summary>
@@ -28,34 +29,122 @@ namespace SPPC.Tools.Transforms.Templates
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("version: \'3.9\'\r\n\r\nnetworks:\r\n frontend:\r\n backend:\r\n\r\nservices:\r\n\r\n DbServer:\r\n  " +
-                    "image: msn1368/db-server:latest\r\n  ports: \r\n    - 14433:1433\r\n\r\n ApiServer:\r\n  i" +
-                    "mage: msn1368/api-server:");
+            this.Write("version: \'3.9\'\r\n\r\nnetworks:\r\n frontend:\r\n backend:\r\n\r\nservices:\r\n\r\n ");
+            
+            #line 15 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DbServer.Name));
+            
+            #line default
+            #line hidden
+            this.Write(":\r\n  image: ");
+            
+            #line 16 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DockerHubHandle));
+            
+            #line default
+            #line hidden
+            this.Write("/");
+            
+            #line 16 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DbServer.ImageName));
+            
+            #line default
+            #line hidden
+            this.Write(":");
+            
+            #line 16 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DbServer.Tag));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n  ports: \r\n    - 14433:1433\r\n\r\n ");
             
             #line 20 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.ApiServer.Name));
+            
+            #line default
+            #line hidden
+            this.Write(":\r\n  image: ");
+            
+            #line 21 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DockerHubHandle));
+            
+            #line default
+            #line hidden
+            this.Write("/");
+            
+            #line 21 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.ApiServer.ImageName));
+            
+            #line default
+            #line hidden
+            this.Write(":");
+            
+            #line 21 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_editionTag));
             
             #line default
             #line hidden
-            this.Write(@"
-  environment:
-   - ASPNETCORE_ENVIRONMENT=Production
-   - Logging__LogLevel__Microsoft=Trace
-   - ASPNETCORE_URLS=http://+:80
-  
- loadBalancer:
-  profiles:
-   - donotstart
-
- WebApp:
-  image: msn1368/web-app:dev
-
- LicenseServer:
-  image: msn1368/license-server:latest
-  environment:
-   - ASPNETCORE_ENVIRONMENT=Production
-   - Logging__LogLevel__Microsoft=Trace
-");
+            this.Write("\r\n  environment:\r\n   - ASPNETCORE_ENVIRONMENT=Production\r\n   - Logging__LogLevel_" +
+                    "_Microsoft=Trace\r\n   - ASPNETCORE_URLS=http://+:80\r\n  \r\n loadBalancer:\r\n  profil" +
+                    "es:\r\n   - donotstart\r\n\r\n ");
+            
+            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.WebApp.Name));
+            
+            #line default
+            #line hidden
+            this.Write(":\r\n  image: ");
+            
+            #line 32 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DockerHubHandle));
+            
+            #line default
+            #line hidden
+            this.Write("/");
+            
+            #line 32 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.WebApp.ImageName));
+            
+            #line default
+            #line hidden
+            this.Write(":");
+            
+            #line 32 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.WebApp.Tag));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n\r\n ");
+            
+            #line 34 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.LicenseServer.Name));
+            
+            #line default
+            #line hidden
+            this.Write(":\r\n  image: ");
+            
+            #line 35 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DockerHubHandle));
+            
+            #line default
+            #line hidden
+            this.Write("/");
+            
+            #line 35 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.LicenseServer.ImageName));
+            
+            #line default
+            #line hidden
+            this.Write(":");
+            
+            #line 35 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\DockerComposeOverride.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.LicenseServer.Tag));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n  environment:\r\n   - ASPNETCORE_ENVIRONMENT=Production\r\n   - Logging__LogLevel_" +
+                    "_Microsoft=Trace\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
