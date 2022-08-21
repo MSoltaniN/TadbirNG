@@ -20,8 +20,6 @@ namespace SPPC.Tadbir.Utility
 {
     public class SetupUtility
     {
-        public static string DockerPath { get; set; }
-
         public static bool VerifyChecksums()
         {
             string root = Path.Combine(ChecksumRoot, "runner");
@@ -65,6 +63,7 @@ namespace SPPC.Tadbir.Utility
 
         public static void CreateInstallationPath(string path)
         {
+            _log.LogInformation("Creating installation path...");
             var items = new List<string> { path };
             var dirName = Path.GetDirectoryName(path);
             while (dirName != null)
@@ -83,10 +82,12 @@ namespace SPPC.Tadbir.Utility
             EnsureDirectoryExists(Path.Combine(path, "service"));
             EnsureDirectoryExists(Path.Combine(path, "setup"));
             EnsureDirectoryExists(Path.Combine(path, "tools"));
+            _log.LogInformation("Done.");
         }
 
         public static void CopyFiles(string path, IBuildSettings settings, bool createShortcut = true)
         {
+            _log.LogInformation("Copying program files...");
             var config = CryptoService.Default.Encrypt(JsonHelper.From(settings));
             File.WriteAllText(Path.Combine(path, "config"), config);
             File.Copy(Path.Combine(ChecksumRoot, "version"), Path.Combine(path, "version"));
@@ -98,75 +99,129 @@ namespace SPPC.Tadbir.Utility
             if (createShortcut)
             {
                 // Create shortcut to main Runner executable on user's Desktop folder...
+                _log.LogInformation("Creating desktop shortcut...");
                 string exePath = Path.Combine(path, "runner", "Tadbir.exe");
                 CreateDesktopShortcut(exePath, AppTitle, AppTitle);
             }
+
+            _log.LogInformation("Done.");
         }
 
         public static void DeleteFiles()
         {
+            _log.LogInformation("Deleting program files...");
             Array.ForEach(new DirectoryInfo("..").GetFiles("*.*", SearchOption.TopDirectoryOnly),
                 fi => File.Delete(fi.FullName));
             var path = Path.Combine("..", "runner");
-            FileUtility.DeleteFolder(path);
+            FileUtility.DeleteFolder(path, _log);
             path = Path.Combine("..", "service");
-            FileUtility.DeleteFolder(path);
+            FileUtility.DeleteFolder(path, _log);
             path = Path.Combine("..", "tools");
-            FileUtility.DeleteFolder(path);
+            FileUtility.DeleteFolder(path, _log);
+            _log.LogInformation("Deleting desktop shortcut...");
             DeleteDesktopShortcut(AppTitle);
+            _log.LogInformation("Done.");
         }
 
         public static bool InstallService(string path)
         {
+            _log.LogInformation("Installing service...");
             string binPath = Path.Combine(path, "service", "KeyServer.exe");
-            return WinServiceUtility.Install(
+            bool succeeded = WinServiceUtility.Install(
                 SysParameterUtility.Service.Name, SysParameterUtility.Service.DisplayName, binPath);
+            if (succeeded)
+            {
+                _log.LogInformation("Done.");
+            }
+            else
+            {
+                _log.LogError("Error occured while installing service.");
+            }
+
+            return succeeded;
         }
 
         public static bool UninstallService()
         {
-            return WinServiceUtility.Uninstall(SysParameterUtility.Service.Name);
+            _log.LogInformation("Uninstalling service...");
+            bool succeeded = WinServiceUtility.Uninstall(SysParameterUtility.Service.Name);
+            if (succeeded)
+            {
+                _log.LogInformation("Done.");
+            }
+            else
+            {
+                _log.LogError("Error occured while uninstalling service.");
+            }
+
+            return succeeded;
         }
 
         public static bool StartService()
         {
-            return WinServiceUtility.Start(SysParameterUtility.Service.Name);
+            _log.LogInformation("Starting service...");
+            bool succeeded = WinServiceUtility.Start(SysParameterUtility.Service.Name);
+            if (succeeded)
+            {
+                _log.LogInformation("Done.");
+            }
+            else
+            {
+                _log.LogError("Error occured while starting service.");
+            }
+
+            return succeeded;
         }
 
         public static bool StopService()
         {
-            return WinServiceUtility.Stop(SysParameterUtility.Service.Name);
+            _log.LogInformation("Stopping service...");
+            bool succeeded = WinServiceUtility.Stop(SysParameterUtility.Service.Name);
+            if (succeeded)
+            {
+                _log.LogInformation("Done.");
+            }
+            else
+            {
+                _log.LogError("Error occured while stopping service.");
+            }
+
+            return succeeded;
         }
 
         public static void ConfigureDockerService(string root, string service, IBuildSettings settings)
         {
+            _log.LogInformation($"Configuring {service}...");
             var setup = GetServiceSetup(service, settings);
             setup.ConfigureService(root);
+            _log.LogInformation($"Done.");
         }
 
         public static void RemoveDockerServices()
         {
+            _log.LogInformation("Removing Docker services...");
             var currentDir = Environment.CurrentDirectory;
             Environment.CurrentDirectory = FileUtility.GetAbsolutePath(@"..\runner");
             var runner = new CliRunner();
-            var output = runner.Run("docker-compose -f docker-compose.override.yml -f docker-compose.yml down");
+            RunAndLogCommand(runner, "docker-compose -f docker-compose.override.yml -f docker-compose.yml down");
             var imageName = $"{SysParameterUtility.GetImageFullName(SysParameterUtility.WebApp)}";
-            output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
+            RunAndLogCommand(runner, String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
             imageName = $"{SysParameterUtility.GetImageFullName(SysParameterUtility.LicenseServer)}";
-            output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
+            RunAndLogCommand(runner, String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
             imageName = $"{SysParameterUtility.GetImageFullName(SysParameterUtility.DbServer)}";
-            output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
+            RunAndLogCommand(runner, String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
             imageName = $"{SysParameterUtility.GetImageFullName(SysParameterUtility.ApiServer, Edition.StandardTag)}";
-            output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
+            RunAndLogCommand(runner, String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
             imageName = $"{SysParameterUtility.GetImageFullName(SysParameterUtility.ApiServer, Edition.ProfessionalTag)}";
-            output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
+            RunAndLogCommand(runner, String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
             imageName = $"{SysParameterUtility.GetImageFullName(SysParameterUtility.ApiServer, Edition.EnterpriseTag)}";
-            output = runner.Run(String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
-            output = runner.Run(String.Format(
+            RunAndLogCommand(runner, String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
+            RunAndLogCommand(runner, String.Format(
                 ToolConstants.DockerRemoveVolumeCommand, $"runner_productdata_{SysParameterUtility.DbServer.Name}"));
-            output = runner.Run(String.Format(
+            RunAndLogCommand(runner, String.Format(
                 ToolConstants.DockerRemoveVolumeCommand, $"runner_productdata_{SysParameterUtility.LicenseServer.Name}"));
             Environment.CurrentDirectory = currentDir;
+            _log.LogInformation("Done.");
         }
 
         public static bool IsAppRegistered()
@@ -198,6 +253,11 @@ namespace SPPC.Tadbir.Utility
             }
 
             return key;
+        }
+
+        public static void FlushLogFile()
+        {
+            _log.Flush();
         }
 
         private static void CreateDesktopShortcut(string path, string name, string description)
@@ -308,11 +368,19 @@ namespace SPPC.Tadbir.Utility
             return setup;
         }
 
+        private static void RunAndLogCommand(CliRunner runner, string command)
+        {
+            var output = runner.Run(command);
+            Array.ForEach(output.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries),
+                line => _log.LogInformation(line));
+        }
+
         private const string AppTitle = "سیستم جدید تدبیر";
         private const string ChecksumRoot = "..";
         private const string DbLoginQuery = @"
 SELECT [name]
 FROM [sys].[server_principals]
 WHERE [is_disabled] = 0 AND [type] = 'S'";
+        private static readonly LogFile _log = new();
     }
 }
