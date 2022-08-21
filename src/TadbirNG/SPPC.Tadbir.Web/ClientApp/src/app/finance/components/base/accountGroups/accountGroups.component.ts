@@ -162,7 +162,7 @@ export class AccountGroupsComponent
 
     this.showloadingMessage = false;
 
-    this.cdref.detectChanges();
+    // this.cdref.detectChanges();
   }
 
   getTreeNode() {
@@ -1164,6 +1164,9 @@ export class AccountGroupsComponent
   }
 
   public onDataStateChange(event): void {
+    this.state = event;
+    this.currentFilter = this.getFilters(this.state.filter);
+    
     if (this.rowData && this.rowData.total > 0) {
       var fcolumns = new Array<ColumnBase>();
       this.grid.columns.forEach(function (column) {
