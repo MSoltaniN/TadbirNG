@@ -162,7 +162,7 @@ export class AccountGroupsComponent
 
     this.showloadingMessage = false;
 
-    // this.cdref.detectChanges();
+    this.cdref.detectChanges();
   }
 
   getTreeNode() {
