@@ -79,6 +79,7 @@ namespace SPPC.Tadbir.Setup
             btnExit.Enabled = true;
             _progressPage.StatusLabel.Text = null;
             timer.Enabled = false;
+            SetupUtility.FlushLogFile();
             MessageBox.Show(this, "عملیات مورد نظر با موفقیت انجام شد.", "تکمیل عملیات",
                 MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
                 MessageBoxOptions.RtlReading);
@@ -172,6 +173,7 @@ namespace SPPC.Tadbir.Setup
             worker.ReportProgress(0, "حذف فایلهای برنامه...");
             SetupUtility.DeleteFiles();
             worker.ReportProgress(25);
+            SetupUtility.FlushLogFile();
         }
 
         private SelectActionPage GetActionPage()

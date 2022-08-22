@@ -4,8 +4,22 @@ using System.Text;
 
 namespace SPPC.Framework.Helpers
 {
+    /// <summary>
+    /// عملیات کمکی برای کار با سرویس های ویندوزی را پیاده سازی می کند
+    /// </summary>
     public class WinServiceUtility
     {
+        /// <summary>
+        /// یک سرویس ویندوزی جدید را با مشخصات داده شده به سرویس های موجود اضافه می کند.
+        /// </summary>
+        /// <param name="name">نام سیستمی سرویس جدید</param>
+        /// <param name="displayName">نام نمایشی سرویس جدید به صورتی که در فهرست سرویس ها دیده می شود</param>
+        /// <param name="binPath">مسیر فایل اجرایی اصلی سرویس</param>
+        /// <param name="typeMode">مدل اجرایی سرویس که به طور پیش فرض در پروسس جداگانه اجرا می شود</param>
+        /// <param name="startMode">نوع راه اندازی سرویس که به طور پیش فرض هنگام شروع به کار سیستم عامل اجرا می شود</param>
+        /// <param name="errorMode">شکل گزارش خطای سرویس که به طور پیش فرض به صورت عادی انجام می شود</param>
+        /// <returns>در صورتی موفق بودن عملیات مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
         public static bool Install(
             string name, string displayName, string binPath, string typeMode = "own",
             string startMode = "auto", string errorMode = "normal")
@@ -25,6 +39,12 @@ namespace SPPC.Framework.Helpers
             return installed;
         }
 
+        /// <summary>
+        /// سرویس مشخص شده با نام سیستمی را از فهرست سرویس ها حذف می کند.
+        /// </summary>
+        /// <param name="name">نام سیستمی سرویس مورد نظر برای حذف</param>
+        /// <returns>در صورتی موفق بودن عملیات مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
         public static bool Uninstall(string name)
         {
             var runner = new CliRunner();
@@ -33,6 +53,12 @@ namespace SPPC.Framework.Helpers
             return !lines[0].Contains("FAILED");
         }
 
+        /// <summary>
+        /// سرویس مشخص شده با نام سیستمی را راه اندازی حذف می کند.
+        /// </summary>
+        /// <param name="name">نام سیستمی سرویس مورد نظر برای راه اندازی</param>
+        /// <returns>در صورتی موفق بودن عملیات مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
         public static bool Start(string name)
         {
             bool started = false;
@@ -54,6 +80,12 @@ namespace SPPC.Framework.Helpers
             return started;
         }
 
+        /// <summary>
+        /// سرویس مشخص شده با نام سیستمی را از متوقف می کند.
+        /// </summary>
+        /// <param name="name">نام سیستمی سرویس مورد نظر برای توقف کار</param>
+        /// <returns>در صورتی موفق بودن عملیات مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
         public static bool Stop(string name)
         {
             bool stopped = false;

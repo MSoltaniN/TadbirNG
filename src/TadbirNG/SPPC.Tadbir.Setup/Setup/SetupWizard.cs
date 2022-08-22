@@ -79,6 +79,7 @@ namespace SPPC.Tadbir.Setup
             worker.ReportProgress(20);
             SetupUtility.ConfigureDockerService(root, SysParameterUtility.DbServer.ImageName, _settings);
             worker.ReportProgress(20);
+            SetupUtility.FlushLogFile();
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -87,6 +88,7 @@ namespace SPPC.Tadbir.Setup
             btnPrevious.Enabled = false;
              _progressPage.StatusLabel.Text = null;
             timer.Enabled = false;
+            SetupUtility.FlushLogFile();
             MessageBox.Show(this, "نصب برنامه با موفقیت انجام شد.", "تکمیل عملیات",
                 MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
                 MessageBoxOptions.RtlReading);
