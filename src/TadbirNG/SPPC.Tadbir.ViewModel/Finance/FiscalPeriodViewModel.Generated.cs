@@ -29,7 +29,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         {
             Name = String.Empty;
             Description = String.Empty;
-            InventoryMode = (int)Domain.InventoryMode.Perpetual;
         }
 
         /// <summary>
@@ -58,12 +57,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         [Display(Name = FieldNames.EndDateField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public DateTime EndDate { get; set; }
-
-        /// <summary>
-        /// نوع سیستم ثبت موجودی که می تواند دائمی (با مقدار 1) یا ادواری (با مقدار 0) باشد
-        /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int InventoryMode { get; set; }
 
         /// <summary>
         /// Detail information related to this fiscal period

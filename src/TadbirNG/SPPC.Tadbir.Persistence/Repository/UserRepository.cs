@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
@@ -709,10 +711,15 @@ namespace SPPC.Tadbir.Persistence
                 UnitOfWork.UseCompanyContext();
                 var fiscalPeriodRepo = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
                 var fiscalPeriod = await fiscalPeriodRepo.GetByIDAsync(fiscalPeriodId);
+                var repository = UnitOfWork.GetAsyncRepository<Setting>();
+                var systemConfig = await repository.GetByIDWithTrackingAsync(8);
+
                 login.FiscalPeriodName = fiscalPeriod?.Name;
-                login.InventoryMode = fiscalPeriod != null
-                    ? fiscalPeriod.InventoryMode
-                    : (int)InventoryMode.Perpetual;
+                login.InventoryMode =
+                    systemConfig != null
+                    ? JsonHelper.To<SystemConfig>(systemConfig.Values).InventoryMode
+                    :
+                    (int)InventoryMode.Perpetual;
 
                 var branchRepo = UnitOfWork.GetAsyncRepository<Branch>();
                 var branch = await branchRepo.GetByIDAsync(branchId);
