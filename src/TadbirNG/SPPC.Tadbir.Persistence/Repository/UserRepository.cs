@@ -9,6 +9,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
@@ -712,7 +713,7 @@ namespace SPPC.Tadbir.Persistence
                 var fiscalPeriodRepo = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
                 var fiscalPeriod = await fiscalPeriodRepo.GetByIDAsync(fiscalPeriodId);
                 var repository = UnitOfWork.GetAsyncRepository<Setting>();
-                var systemConfig = await repository.GetByIDWithTrackingAsync(8);
+                var systemConfig = await repository.GetByIDAsync((int)SettingId.SystemConfiguration);
 
                 login.FiscalPeriodName = fiscalPeriod?.Name;
                 login.InventoryMode =

@@ -5062,7 +5062,7 @@ namespace SPPC.Tadbir.Resources
         /// <summary>
         /// Default text : تغییر سیستم ثبت دوره مالی زمانیکه اسنادی تعریف شده باشند، امکان پذیر نمی باشد
         /// </summary>
-        public const string RequestFailedInventoryModeChangeNotAllowed = "RequestFailedInventoryModeChangeNotAllowed";
+        public const string InventoryModeChangeNotAllowed = "InventoryModeChangeNotAllowed";
 
         /// <summary>
         /// Default text : درخواست مورد نظر به دلیل خالی بودن اطلاعات {0} انجام نشد.
