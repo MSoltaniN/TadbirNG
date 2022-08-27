@@ -54,16 +54,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       {
         preventDuplicates: true,
         toastClass:'toast toastr-rtl'
-      }),
-    // NgProgressModule.forRoot({
-    //   direction: "ltr+",
-    //   spinnerPosition: "left",
-    //   color: "white",
-    //   thick: true,
-    //   meteor: false,
-    // }),
-    // NgProgressRouterModule,
-    // NgProgressHttpModule,
+      })
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

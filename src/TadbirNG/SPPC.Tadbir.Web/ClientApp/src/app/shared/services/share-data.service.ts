@@ -33,6 +33,6 @@ export class ShareDataService {
 
   public clearScope(component: any) {
     ShareDataService.removedComponent = component;
-    return this.scope.next();
+    return this.scope.next('');
   }
 }

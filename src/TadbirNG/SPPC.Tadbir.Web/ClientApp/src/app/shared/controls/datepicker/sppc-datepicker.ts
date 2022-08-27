@@ -344,7 +344,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
       if (typeof this.dateObject === "object") {
         this.parseError = false;
         setTimeout(() => {
-          this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
+          this.propagateChange(this.datepipe.transform(<any>this.dateObject, this.inputDateFormat));
         }, 1);
       }
       else {
@@ -488,7 +488,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
           this.dateObject = this.dateLocale == 'fa' ? moment(dateArray.join(this.spliterChar), 'jYYYY/jM/jD') : moment(dateArray.join(this.spliterChar).toString()).locale('en');
 
           setTimeout(() => {
-            this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
+            this.propagateChange(this.datepipe.transform(<any>this.dateObject, this.inputDateFormat));
           }, 1);
         }
 

@@ -241,22 +241,22 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     else {
       this.accountForm.patchValue({
         name: this.accountModel.name,
-        groupId: this.accountModel.groupId,
+        groupId: <any>this.accountModel.groupId,
         code: this.accountModel.code,
         fullCode: this.accountModel.fullCode,
         description: this.accountModel.description,
-        branchScope: this.accountModel.branchScope,
+        branchScope: <any>this.accountModel.branchScope,
       })
 
       this.featuresForm.patchValue({
-        currencyId: this.accountModel.currencyId,
+        currencyId: <any>this.accountModel.currencyId,
         turnoverMode: this.accountModel.turnoverMode,
-        isActive: this.accountModel.isActive,
-        isCurrencyAdjustable: this.accountModel.isCurrencyAdjustable,
+        isActive: <any>this.accountModel.isActive,
+        isCurrencyAdjustable: <any>this.accountModel.isCurrencyAdjustable,
       })
 
       if (this.customerTaxModel) {
-        this.customerTaxForm.reset(this.customerTaxModel);
+        this.customerTaxForm.reset(<any>this.customerTaxModel);
 
         this.customerTaxForm.patchValue({
           personType: this.customerTaxModel.id > 0 ? this.customerTaxModel.personType.toString() : "1",
@@ -268,7 +268,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
       if (this.accountOwnerModel) {
 
-        this.ownerForm.reset(this.accountOwnerModel)
+        this.ownerForm.reset(<any>this.accountOwnerModel)
 
         this.ownerForm.patchValue({
           accountType: this.accountOwnerModel.id > 0 ? this.accountOwnerModel.accountType.toString() : "0"
@@ -424,15 +424,15 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     var featureValue = this.featuresForm.value;
 
     this.accountModel.name = accountValue.name;
-    this.accountModel.groupId = accountValue.groupId;
+    this.accountModel.groupId = <any>accountValue.groupId;
     this.accountModel.code = accountValue.code;
     this.accountModel.fullCode = accountValue.fullCode;
     this.accountModel.description = accountValue.description;
-    this.accountModel.branchScope = accountValue.branchScope;
-    this.accountModel.currencyId = featureValue.currencyId;
+    this.accountModel.branchScope = <any>accountValue.branchScope;
+    this.accountModel.currencyId = <any>featureValue.currencyId;
     this.accountModel.turnoverMode = featureValue.turnoverMode;
-    this.accountModel.isActive = featureValue.isActive;
-    this.accountModel.isCurrencyAdjustable = featureValue.isCurrencyAdjustable;
+    this.accountModel.isActive = <any>featureValue.isActive;
+    this.accountModel.isCurrencyAdjustable = <any>featureValue.isCurrencyAdjustable;
 
     if (this.accountModel.id <= 0) {
       this.accountModel.branchId = this.BranchId;
@@ -456,7 +456,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       customerTaxInfo.id = this.customerTaxModel.id;
       customerTaxInfo.accountId = this.accountModel.id;
 
-      resultModel.customerTaxInfo = customerTaxInfo;
+      resultModel.customerTaxInfo = <any>customerTaxInfo;
     }
 
     if (!this.isNew && this.accountOwnerModel && this.ownerForm.valid) {
@@ -464,7 +464,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       accountOwner.id = this.accountOwnerModel.id;
       accountOwner.accountId = this.accountModel.id;
 
-      resultModel.accountOwner = accountOwner;
+      resultModel.accountOwner = <any>accountOwner;
     }
 
     this.save.emit(resultModel);

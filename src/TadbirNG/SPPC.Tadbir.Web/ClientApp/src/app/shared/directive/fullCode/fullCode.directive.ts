@@ -1,5 +1,5 @@
 
-import { Directive, ElementRef, HostListener, Input, Inject, AfterViewInit, Renderer } from "@angular/core";
+import { Directive, ElementRef, HostListener, Input, Inject, AfterViewInit, Renderer2 } from "@angular/core";
 import { FullCodeService } from "@sppc/finance/service";
 
 
@@ -31,7 +31,7 @@ export class FullCodeDirective implements AfterViewInit {
                     let event: Event = document.createEvent("Event");
                     event.initEvent('input', true, true);
                     Object.defineProperty(event, 'target', { value: this.fullCodeElement, enumerable: true });
-                    this.renderer.invokeElementMethod(this.fullCodeElement, 'dispatchEvent', [event]);
+                    this.renderer.selectRootElement(this.fullCodeElement).dispatchEvent();
                 }                
             })
         }
@@ -39,7 +39,7 @@ export class FullCodeDirective implements AfterViewInit {
         
     }
 
-    constructor(public el: ElementRef, private renderer: Renderer, private fullCodeService: FullCodeService) { }
+    constructor(public el: ElementRef, private renderer: Renderer2, private fullCodeService: FullCodeService) { }
 
     @HostListener('input') onEvent() {
 
@@ -50,6 +50,6 @@ export class FullCodeDirective implements AfterViewInit {
         let event: Event = document.createEvent("Event");
         event.initEvent('input', true, true);
         Object.defineProperty(event, 'target', { value: this.fullCodeElement, enumerable: true });
-        this.renderer.invokeElementMethod(this.fullCodeElement, 'dispatchEvent', [event]);
+        this.renderer.selectRootElement(this.fullCodeElement).dispatchEvent();
     }
 }

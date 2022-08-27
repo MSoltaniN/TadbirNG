@@ -19,6 +19,6 @@ export class ScopeService {
 
   public clearScope() {
     this.scope = new Subject<any>();
-    return this.scope.next();
+    return this.scope.next('');
   }
 }

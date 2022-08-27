@@ -20,7 +20,7 @@ import { LayoutModule } from "@progress/kendo-angular-layout";
 import { ContextMenuModule } from "@progress/kendo-angular-menu";
 import { PopupModule } from "@progress/kendo-angular-popup";
 import { TreeViewModule } from "@progress/kendo-angular-treeview";
-import { DpDatePickerModule } from "ng2-jalali-date-picker";
+import { DpDatePickerModule } from "@aligorji/ng2-jalali-date-picker";
 
 import { SharedRoutingModule } from "@sppc/shared/shared-routing.module";
 
@@ -359,7 +359,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
 })
 export class SharedModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<SharedModule> {
     // Forcing the whole app to use the returned providers from the AppModule only.
     return {
       ngModule: SharedModule,
