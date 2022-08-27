@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tools.Model;
-using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Commands
 {
@@ -21,7 +21,7 @@ namespace SPPC.Tools.SystemDesigner.Commands
         {
             string sysConnection = DbConnections.SystemConnection;
             string connection = DbConnections.CompanyConnection;
-            if (!sysConnection.Contains("130.185.76.7"))
+            if (!sysConnection.Contains(SysParameterUtility.Servers.WinIpAddress))
             {
                 // Generate script for company databases...
                 _dal = new SqlDataLayer(connection);

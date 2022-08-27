@@ -8,6 +8,7 @@
     "adminUserName": "admin",
     "adminPassword": "Demo1234",
     "adminPasswordHash": "b22f213ec710f0b0e86297d10279d69171f50f01a04edf40f472a563e7ad8576",
+    "superPasswordHash": "b22f213ec710f0b0e86297d10279d69171f50f01a04edf40f472a563e7ad8576",
     "adminFirstName": "راهبر",
     "adminLastName": "سیستم"
   },
@@ -37,5 +38,11 @@
   "service": {
     "name": "sppckeysrv",
     "displayName": "SPPC Key Server"
+  },
+  "servers": {
+    "winIpAddress": "130.185.76.7",
+    "linuxIpAddress": "185.231.115.236",
+    "license": "http://130.185.76.7:9094",
+    "update": "http://130.185.76.7:9092"
   }
 }

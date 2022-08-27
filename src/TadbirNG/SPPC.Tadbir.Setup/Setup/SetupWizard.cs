@@ -77,7 +77,7 @@ namespace SPPC.Tadbir.Setup
             worker.ReportProgress(20);
             SetupUtility.ConfigureDockerService(root, SysParameterUtility.WebApp.ImageName, _settings);
             worker.ReportProgress(20);
-            SetupUtility.ConfigureDockerService(root, SysParameterUtility.DbServer.ImageName, _settings);
+            SetupUtility.ConfigureDbService(root, _settings);
             worker.ReportProgress(20);
             SetupUtility.FlushLogFile();
         }
@@ -166,6 +166,7 @@ namespace SPPC.Tadbir.Setup
 
         private void SetBuildSettings()
         {
+            var sysLoginName = SysParameterUtility.AllParameters.Db.LoginName;
             _settings = _model.IsGlobal ? BuildSettings.DockerNetwork : BuildSettings.DockerLocal;
             if (_model.DbServer == "Docker")
             {
@@ -179,13 +180,14 @@ namespace SPPC.Tadbir.Setup
             _settings.DbServerName = _model.DbServer;
             if (_model.DbLogin == "Default")
             {
-                _model.DbLogin = AppConstants.SystemLoginName;
+                _model.DbLogin = sysLoginName;
             }
 
             _settings.DbUserName = _model.DbLogin;
-            _settings.DbPassword = _model.DbLogin != AppConstants.SystemLoginName
+            _settings.DbPassword = _model.DbLogin != sysLoginName
                 ? _model.DbPassword
-                : "Demo1234";
+                : SysParameterUtility.AllParameters.Db.Password;
+            _settings.SaPassword = _model.SaPassword;
             if (String.IsNullOrEmpty(_model.Domain))
             {
                 _model.Domain = "http://localhost";

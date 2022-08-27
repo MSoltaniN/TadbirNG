@@ -71,6 +71,14 @@ namespace SPPC.Tadbir.Configuration
         }
 
         /// <summary>
+        /// تنظیمات سرورهای سازمانی مورد نیاز برنامه 
+        /// </summary>
+        public static ServerParameters Servers
+        {
+            get { return _sysParams?.Servers; }
+        }
+
+        /// <summary>
         /// نام کامل ایمیج ساخنه شده برای یکی از سرویس های داکری برنامه را برمی گرداند
         /// </summary>
         /// <param name="serviceParams">اطلاعات پارامترهای سیستمی ایمیج مورد نظر</param>

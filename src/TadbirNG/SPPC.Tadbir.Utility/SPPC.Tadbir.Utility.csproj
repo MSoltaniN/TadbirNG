@@ -18,6 +18,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Scripts\SetupDefaultLogin.sql" />
+    <None Remove="Scripts\TadbirSys_CreateDbObjects.sql" />
+    <None Remove="Scripts\TadbirSys_CreateJobs.sql" />
+    <None Remove="Scripts\TadbirSys_CreateTriggers.sql" />
+    <None Remove="Scripts\TadbirSys_QRTemplates.sql" />
+    <None Remove="Scripts\Tadbir_CreateDbObjects.sql" />
+    <None Remove="Scripts\Tadbir_FirstCompany.sql" />
+    <None Remove="Scripts\Tadbir_StatesAndCities.sql" />
+    <None Remove="Scripts\Tadbir_TestEnvironment.sql" />
+    <None Remove="Templates\DockerCompose.tt" />
+    <None Remove="Templates\DockerComposeOverride.tt" />
     <None Remove="Templates\WebApiSettings.tt" />
   </ItemGroup>
 
@@ -26,10 +37,30 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Templates\DockerCompose.tt">
+      <LastGenOutput>DockerCompose.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </Content>
+    <Content Include="Templates\DockerComposeOverride.tt">
+      <LastGenOutput>DockerComposeOverride.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </Content>
     <Content Include="Templates\WebApiSettings.tt">
       <LastGenOutput>WebApiSettings.cs</LastGenOutput>
       <Generator>TextTemplatingFilePreprocessor</Generator>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\SetupDefaultLogin.sql" />
+    <EmbeddedResource Include="Scripts\TadbirSys_CreateDbObjects.sql" />
+    <EmbeddedResource Include="Scripts\TadbirSys_CreateJobs.sql" />
+    <EmbeddedResource Include="Scripts\TadbirSys_CreateTriggers.sql" />
+    <EmbeddedResource Include="Scripts\TadbirSys_QRTemplates.sql" />
+    <EmbeddedResource Include="Scripts\Tadbir_CreateDbObjects.sql" />
+    <EmbeddedResource Include="Scripts\Tadbir_FirstCompany.sql" />
+    <EmbeddedResource Include="Scripts\Tadbir_StatesAndCities.sql" />
+    <EmbeddedResource Include="Scripts\Tadbir_TestEnvironment.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +76,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Templates\DockerCompose.cs">
+      <DependentUpon>DockerCompose.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Templates\DockerComposeOverride.cs">
+      <DependentUpon>DockerComposeOverride.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="Templates\LocalLicenseApiSettings.cs">
       <DependentUpon>LocalLicenseApiSettings.tt</DependentUpon>
       <DesignTime>True</DesignTime>

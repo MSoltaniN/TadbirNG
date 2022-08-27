@@ -77,6 +77,7 @@ namespace SPPC.Tadbir.Setup
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             btnExit.Enabled = true;
+            btnPrevious.Enabled = false;
             _progressPage.StatusLabel.Text = null;
             timer.Enabled = false;
             SetupUtility.FlushLogFile();

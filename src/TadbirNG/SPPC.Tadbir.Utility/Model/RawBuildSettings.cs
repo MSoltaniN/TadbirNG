@@ -25,6 +25,8 @@ namespace SPPC.Tadbir.Utility.Model
 
         public string DbPassword { get; set; }
 
+        public string SaPassword { get; set; }
+
         public string Key { get; set; }
 
         public string Version { get; set; }

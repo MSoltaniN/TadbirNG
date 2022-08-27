@@ -26,8 +26,6 @@ namespace SPPC.Tadbir.Setup
             cmbDbServer.DataSource = servers;
             chkShowPass.Checked = false;
             chkShowAdminPass.Checked = false;
-            //txtAdminPassword.Enabled = cmbDbServer.SelectedItem?.ToString() != "Docker";
-            //chkShowAdminPass.Enabled = cmbDbServer.SelectedItem?.ToString() != "Docker";
         }
 
         private void ShowPass_CheckedChanged(object sender, EventArgs e)
@@ -130,6 +128,7 @@ namespace SPPC.Tadbir.Setup
             WizardModel.DbServer = cmbDbServer.SelectedItem?.ToString();
             WizardModel.DbLogin = cmbLogin.SelectedItem?.ToString();
             WizardModel.DbPassword = txtPassword.Text;
+            WizardModel.SaPassword = txtAdminPassword.Text;
         }
     }
 }

@@ -38,6 +38,8 @@ namespace SPPC.Tadbir.Utility
 
         string DbPassword { get; set; }
 
+        string SaPassword { get; set; }
+
         /// <summary>
         /// شناسه برنامه نصب شده
         /// </summary>

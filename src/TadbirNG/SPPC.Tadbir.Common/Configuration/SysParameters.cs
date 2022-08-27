@@ -21,5 +21,10 @@ namespace SPPC.Tadbir.Configuration
         /// پارامترهای سیستمی مرتبط با سرویس شناسه سخت افزاری
         /// </summary>
         public ServiceParameters Service { get; set; }
+
+        /// <summary>
+        /// پارامترهای سیستمی مرتبط با سرورهای سازمانی مورد استفاده برنامه
+        /// </summary>
+        public ServerParameters Servers { get; set; }
     }
 }

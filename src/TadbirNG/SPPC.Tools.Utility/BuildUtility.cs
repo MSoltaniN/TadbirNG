@@ -291,8 +291,10 @@ namespace SPPC.Tools.Utility
                     // NOTE: There's no need to slow down similar builds; disable Docker cache only once.
                     var noCache = (edition == Edition.StandardTag) ? " --no-cache" : String.Empty;
                     var editionData = GetEditionData(allConfig, edition);
-                    File.WriteAllText(PathConfig.ComposePath, new DockerCompose(edition).TransformText());
-                    File.WriteAllText(PathConfig.OverridePath, new DockerComposeOverride(edition).TransformText());
+                    File.WriteAllText(PathConfig.ComposePath,
+                        new DockerCompose(edition, settings.DbServerName).TransformText());
+                    File.WriteAllText(PathConfig.OverridePath,
+                        new DockerComposeOverride(edition, settings.DbServerName).TransformText());
                     File.WriteAllText(files[(int)ApiServerPathIndex.Edition], editionData);
                     File.WriteAllText(files[(int)ApiServerPathIndex.DevEdition], editionData);
 

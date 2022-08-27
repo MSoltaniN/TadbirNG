@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using SPPC.Framework.Common;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Configuration;
@@ -17,6 +19,11 @@ namespace SPPC.Tadbir.Utility
     /// </remarks>
     public class DbSetupUtility
     {
+        static DbSetupUtility()
+        {
+            LoadScripts();
+        }
+
         public DbSetupUtility(ISqlConsole dbConsole, IBuildSettings settings)
         {
             Verify.ArgumentNotNull(dbConsole, nameof(dbConsole));
@@ -24,26 +31,6 @@ namespace SPPC.Tadbir.Utility
             _dbConsole = dbConsole;
             _settings = settings;
         }
-
-        public string CurrentLoginName { get; set; }
-
-        public string SetupLoginScript { get; set; }
-
-        public string CreateSysDbScript { get; set; }
-
-        public string UpdateTemplatesScript { get; set; }
-
-        public string CreateTriggersScript { get; set; }
-
-        public string CreateJobsScript { get; set; }
-
-        public string FirstCompanyScript { get; set; }
-
-        public string CreateFirstDbScript { get; set; }
-
-        public string TestEnvironmentScript { get; set; }
-
-        public string StateAndCitiesScript { get; set; }
 
         public void ConfigureDatabase()
         {
@@ -79,6 +66,35 @@ namespace SPPC.Tadbir.Utility
         {
         }
 
+        private static void LoadScripts()
+        {
+            var resNamespace = "SPPC.Tadbir.Utility.Scripts.";
+            var extension = ".sql";
+            SetupLoginScript = LoadScript($"{resNamespace}SetupDefaultLogin{extension}");
+            CreateSysDbScript = LoadScript($"{resNamespace}TadbirSys_CreateDbObjects{extension}");
+            UpdateTemplatesScript = LoadScript($"{resNamespace}TadbirSys_QRTemplates{extension}");
+            CreateTriggersScript = LoadScript($"{resNamespace}TadbirSys_CreateTriggers{extension}");
+            CreateJobsScript = LoadScript($"{resNamespace}TadbirSys_CreateJobs{extension}");
+            FirstCompanyScript = LoadScript($"{resNamespace}Tadbir_FirstCompany{extension}");
+            CreateFirstDbScript = LoadScript($"{resNamespace}Tadbir_CreateDbObjects{extension}");
+            TestEnvironmentScript = LoadScript($"{resNamespace}Tadbir_TestEnvironment{extension}");
+            StateAndCitiesScript = LoadScript($"{resNamespace}Tadbir_StatesAndCities{extension}");
+        }
+
+        private static string LoadScript(string resourceName)
+        {
+            var script = String.Empty;
+            var assembly = Assembly.GetAssembly(typeof(DbSetupUtility));
+            if (assembly != null)
+            {
+                using var reader = new StreamReader(
+                    assembly.GetManifestResourceStream(resourceName));
+                script = reader.ReadToEnd();
+            }
+
+            return script;
+        }
+
         private void SetupDefaultLogin()
         {
             if (!String.IsNullOrEmpty(SetupLoginScript))
@@ -103,13 +119,9 @@ namespace SPPC.Tadbir.Utility
         private bool ExistsDatabase(string dbName)
         {
             var script = @"
-USE master
-GO
-
 SELECT [database_id]
 FROM [sys].[databases]
-WHERE [name] = '@DbName'
-";
+WHERE [name] = '@DbName'";
             script = script.Replace("@DbName", dbName);
             var result = _dbConsole.ExecuteQuery(script);
             return result.Rows.Count > 0;
@@ -227,5 +239,15 @@ GO";
 
         private readonly ISqlConsole _dbConsole;
         private readonly IBuildSettings _settings;
+        private static string CurrentLoginName;
+        private static string SetupLoginScript;
+        private static string CreateSysDbScript;
+        private static string UpdateTemplatesScript;
+        private static string CreateTriggersScript;
+        private static string CreateJobsScript;
+        private static string FirstCompanyScript;
+        private static string CreateFirstDbScript;
+        private static string TestEnvironmentScript;
+        private static string StateAndCitiesScript;
     }
 }
