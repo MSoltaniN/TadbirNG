@@ -48,6 +48,11 @@ namespace SPPC.Tadbir.Configuration
         public string AdminPasswordHash { get; set; }
 
         /// <summary>
+        /// شکل درهم شده برای رمز عبور پیش فرض مورد استفاده برای عملیات حساس در برنامه
+        /// </summary>
+        public string SuperPasswordHash { get; set; }
+
+        /// <summary>
         /// نام پیش فرض برای راهبر سیستم
         /// </summary>
         public string AdminFirstName { get; set; }

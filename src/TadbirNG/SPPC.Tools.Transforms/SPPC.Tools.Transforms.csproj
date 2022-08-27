@@ -24,8 +24,6 @@
     <None Remove="Templates\CsPermissionsEnum.tt" />
     <None Remove="Templates\CsPocoFromXmlMetadata.tt" />
     <None Remove="Templates\CsViewModelFromMetadata.tt" />
-    <None Remove="Templates\DockerCompose.tt" />
-    <None Remove="Templates\DockerComposeOverride.tt" />
     <None Remove="Templates\EmptyCrudController.tt" />
     <None Remove="Templates\JsResFromCsViewModels.tt" />
     <None Remove="Templates\NgEnvironment.tt" />
@@ -74,14 +72,6 @@
       <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>CsViewModelFromMetadata.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\DockerCompose.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>DockerCompose.cs</LastGenOutput>
-    </Content>
-    <Content Include="Templates\DockerComposeOverride.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>DockerComposeOverride.cs</LastGenOutput>
     </Content>
     <Content Include="Templates\EmptyCrudController.tt">
       <CustomToolNamespace></CustomToolNamespace>
@@ -188,16 +178,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>CsViewModelFromMetadata.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Templates\DockerCompose.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DockerCompose.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Templates\DockerComposeOverride.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DockerComposeOverride.tt</DependentUpon>
     </Compile>
     <Compile Update="Templates\EmptyCrudController.cs">
       <DesignTime>True</DesignTime>

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.Utility.Model;
 
@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.WinRunner
         public RunnerForm()
         {
             InitializeComponent();
-            _apiClient = new ServiceClient(ConfigurationManager.AppSettings["ServerUrl"]);
+            _apiClient = new ServiceClient(SysParameterUtility.Servers.Update);
         }
 
         protected override void OnClosing(CancelEventArgs e)

@@ -19,5 +19,7 @@ namespace SPPC.Tadbir.Setup
         public string DbLogin { get; set; }
 
         public string DbPassword { get; set; }
+
+        public string SaPassword { get; set; }
     }
 }

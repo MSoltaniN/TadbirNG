@@ -15,6 +15,9 @@ networks:
  backend:
 
 services:
+<#
+if(_dbServer == SysParameterUtility.DbServer.Name)
+{#>
 
  <#= SysParameterUtility.DbServer.Name #>:
   image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.DbServer.ImageName #>:<#= SysParameterUtility.DbServer.Tag #>
@@ -26,7 +29,9 @@ services:
    - backend
   volumes:
    - productdata_<#= SysParameterUtility.DbServer.Name #>:/var/opt/mssql/data
-   
+<#
+}#>
+
  <#= SysParameterUtility.ApiServer.Name #>:
   image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.ApiServer.ImageName #>:<#= _editionTag #>
   build:

@@ -1,5 +1,6 @@
 ﻿using System;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.Configuration;
 
 namespace SPPC.Tadbir.Utility.Model
 {
@@ -53,8 +54,8 @@ namespace SPPC.Tadbir.Utility.Model
                     $"http://{BuildSettingValues.LocalHostUrl}:8801");
                 Tcp = new RemoteConnection() { Domain = BuildSettingValues.LocalHostUrl, Port = 5555 };
                 DbServerName = Environment.MachineName;
-                DbUserName = BuildSettingValues.DefaultDbUser;
-                DbPassword = BuildSettingValues.DefaultDbPassword;
+                DbUserName = SysParameterUtility.AllParameters.Db.LoginName;
+                DbPassword = SysParameterUtility.AllParameters.Db.Password;
             }
 
             public string OnlineServerRoot { get; set; }
@@ -72,6 +73,8 @@ namespace SPPC.Tadbir.Utility.Model
             public string DbUserName { get; set; }
 
             public string DbPassword { get; set; }
+
+            public string SaPassword { get; set; }
 
             public string Key { get; set; }
 
@@ -82,18 +85,19 @@ namespace SPPC.Tadbir.Utility.Model
         {
             public WebNetworkSettings()
             {
+                var winHost = SysParameterUtility.Servers.WinIpAddress;
                 OnlineServerRoot = String.Format(
-                    $"http://{BuildSettingValues.DefaultWinHostUrl}:{BuildSettingValues.DefaultWebLicenseApiPort}");
+                    $"http://{winHost}:{BuildSettingValues.DefaultWebLicenseApiPort}");
                 LocalServerRoot = String.Format(
-                    $"http://{BuildSettingValues.DefaultWinHostUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
+                    $"http://{winHost}:{BuildSettingValues.DefaultLicenseApiPort}");
                 LocalServerUrl = String.Format(
-                    $"http://{BuildSettingValues.DefaultWinHostUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
+                    $"http://{winHost}:{BuildSettingValues.DefaultLicenseApiPort}");
                 WebApiUrl = String.Format(
-                    $"http://{BuildSettingValues.DefaultWinHostUrl}:{BuildSettingValues.DefaultApiPort}");
+                    $"http://{winHost}:{BuildSettingValues.DefaultApiPort}");
                 Tcp = new RemoteConnection() { Domain = BuildSettingValues.LocalHostUrl, Port = 5555 };
-                DbServerName = BuildSettingValues.DefaultWinHostUrl;
-                DbUserName = BuildSettingValues.DefaultDbUser;
-                DbPassword = BuildSettingValues.DefaultDbPassword;
+                DbServerName = winHost;
+                DbUserName = SysParameterUtility.AllParameters.Db.LoginName;
+                DbPassword = SysParameterUtility.AllParameters.Db.Password;
             }
 
             public string OnlineServerRoot { get; set; }
@@ -111,6 +115,8 @@ namespace SPPC.Tadbir.Utility.Model
             public string DbUserName { get; set; }
 
             public string DbPassword { get; set; }
+
+            public string SaPassword { get; set; }
 
             public string Key { get; set; }
 
@@ -121,8 +127,10 @@ namespace SPPC.Tadbir.Utility.Model
         {
             public DockerLocalSettings()
             {
+
+                var winHost = SysParameterUtility.Servers.WinIpAddress;
                 OnlineServerRoot = String.Format(
-                    $"http://{BuildSettingValues.DefaultWinHostUrl}:{BuildSettingValues.DefaultWebLicenseApiPort}");
+                    $"http://{winHost}:{BuildSettingValues.DefaultWebLicenseApiPort}");
                 LocalServerRoot = String.Format(
                     $"http://{BuildSettingValues.DockerHostInternalUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
                 LocalServerUrl = String.Format(
@@ -130,9 +138,9 @@ namespace SPPC.Tadbir.Utility.Model
                 WebApiUrl = String.Format(
                     $"http://{BuildSettingValues.LocalHostUrl}:{BuildSettingValues.DefaultApiPort}");
                 Tcp = new RemoteConnection() { Domain = BuildSettingValues.DockerHostInternalUrl, Port = 5555 };
-                DbServerName = BuildSettingValues.DockerDbServer;
-                DbUserName = BuildSettingValues.DefaultDbUser;
-                DbPassword = BuildSettingValues.DefaultDbPassword;
+                DbServerName = SysParameterUtility.DbServer.Name;
+                DbUserName = SysParameterUtility.AllParameters.Db.LoginName;
+                DbPassword = SysParameterUtility.AllParameters.Db.Password;
             }
 
             public string OnlineServerRoot { get; set; }
@@ -150,6 +158,8 @@ namespace SPPC.Tadbir.Utility.Model
             public string DbUserName { get; set; }
 
             public string DbPassword { get; set; }
+
+            public string SaPassword { get; set; }
 
             public string Key { get; set; }
 
@@ -160,18 +170,20 @@ namespace SPPC.Tadbir.Utility.Model
         {
             public DockerNetworkSettings()
             {
+                var winHost = SysParameterUtility.Servers.WinIpAddress;
+                var linuxHost = SysParameterUtility.Servers.LinuxIpAddress;
                 OnlineServerRoot = String.Format(
-                    $"http://{BuildSettingValues.DefaultWinHostUrl}:{BuildSettingValues.DefaultWebLicenseApiPort}");
+                    $"http://{winHost}:{BuildSettingValues.DefaultWebLicenseApiPort}");
                 LocalServerRoot = String.Format(
                     $"http://{BuildSettingValues.DockerHostInternalUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
                 LocalServerUrl = String.Format(
-                    $"http://{BuildSettingValues.DefaultLinHostUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
+                    $"http://{linuxHost}:{BuildSettingValues.DefaultLicenseApiPort}");
                 WebApiUrl = String.Format(
-                    $"http://{BuildSettingValues.DefaultLinHostUrl}:{BuildSettingValues.DefaultApiPort}");
-                Tcp = new RemoteConnection() { Domain = BuildSettingValues.DefaultWinHostUrl, Port = 5555 };
-                DbServerName = BuildSettingValues.DockerDbServer;
-                DbUserName = BuildSettingValues.DefaultDbUser;
-                DbPassword = BuildSettingValues.DefaultDbPassword;
+                    $"http://{linuxHost}:{BuildSettingValues.DefaultApiPort}");
+                Tcp = new RemoteConnection() { Domain = winHost, Port = 5555 };
+                DbServerName = SysParameterUtility.DbServer.Name;
+                DbUserName = SysParameterUtility.AllParameters.Db.LoginName;
+                DbPassword = SysParameterUtility.AllParameters.Db.Password;
             }
 
             public string OnlineServerRoot { get; set; }
@@ -190,6 +202,8 @@ namespace SPPC.Tadbir.Utility.Model
 
             public string DbPassword { get; set; }
 
+            public string SaPassword { get; set; }
+
             public string Key { get; set; }
 
             public string Version { get; set; }
@@ -199,8 +213,9 @@ namespace SPPC.Tadbir.Utility.Model
         {
             public DockerDummySettings()
             {
+                var winHost = SysParameterUtility.Servers.WinIpAddress;
                 OnlineServerRoot = String.Format(
-                    $"http://{BuildSettingValues.DefaultWinHostUrl}:{BuildSettingValues.DefaultWebLicenseApiPort}");
+                    $"http://{winHost}:{BuildSettingValues.DefaultWebLicenseApiPort}");
                 LocalServerRoot = String.Format(
                     $"http://{BuildSettingValues.DockerHostInternalUrl}:{BuildSettingValues.DefaultLicenseApiPort}");
                 LocalServerUrl = String.Format(
@@ -208,7 +223,7 @@ namespace SPPC.Tadbir.Utility.Model
                 WebApiUrl = String.Format(
                     $"http://{BuildSettingValues.LocalHostUrl}:{BuildSettingValues.DefaultApiPort}");
                 Tcp = new RemoteConnection() { Domain = BuildSettingValues.LocalHostUrl, Port = 5555 };
-                DbServerName = BuildSettingValues.DockerDbServer;
+                DbServerName = SysParameterUtility.DbServer.Name;
                 DbUserName = "User";
                 DbPassword = "1234";
                 Key = BuildSettingValues.DummyInstanceKey;
@@ -229,6 +244,8 @@ namespace SPPC.Tadbir.Utility.Model
             public string DbUserName { get; set; }
 
             public string DbPassword { get; set; }
+
+            public string SaPassword { get; set; }
 
             public string Key { get; set; }
 

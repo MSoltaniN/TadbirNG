@@ -23,31 +23,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Scripts\SetupDefaultLogin.sql" />
-    <None Remove="Scripts\TadbirSys_CreateDbObjects.sql" />
-    <None Remove="Scripts\TadbirSys_CreateJobs.sql" />
-    <None Remove="Scripts\TadbirSys_CreateTriggers.sql" />
-    <None Remove="Scripts\TadbirSys_QRTemplates.sql" />
-    <None Remove="Scripts\Tadbir_CreateDbObjects.sql" />
-    <None Remove="Scripts\Tadbir_FirstCompany.sql" />
-    <None Remove="Scripts\Tadbir_StatesAndCities.sql" />
-    <None Remove="Scripts\Tadbir_TestEnvironment.sql" />
+    <Compile Remove="Scripts\**" />
+    <EmbeddedResource Remove="Scripts\**" />
+    <None Remove="Scripts\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Scripts\SetupDefaultLogin.sql" />
-    <EmbeddedResource Include="Scripts\TadbirSys_CreateDbObjects.sql" />
-    <EmbeddedResource Include="Scripts\TadbirSys_CreateJobs.sql" />
-    <EmbeddedResource Include="Scripts\TadbirSys_CreateTriggers.sql" />
-    <EmbeddedResource Include="Scripts\TadbirSys_QRTemplates.sql" />
-    <EmbeddedResource Include="Scripts\Tadbir_CreateDbObjects.sql" />
-    <EmbeddedResource Include="Scripts\Tadbir_FirstCompany.sql" />
-    <EmbeddedResource Include="Scripts\Tadbir_StatesAndCities.sql" />
-    <EmbeddedResource Include="Scripts\Tadbir_TestEnvironment.sql" />
   </ItemGroup>
 
   <ItemGroup>

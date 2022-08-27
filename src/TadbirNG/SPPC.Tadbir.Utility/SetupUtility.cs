@@ -12,9 +12,11 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
+using SPPC.Framework.Utility;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Utility.Docker;
 using SPPC.Tadbir.Utility.Model;
+using SPPC.Tadbir.Utility.Templates;
 
 namespace SPPC.Tadbir.Utility
 {
@@ -63,6 +65,8 @@ namespace SPPC.Tadbir.Utility
 
         public static void CreateInstallationPath(string path)
         {
+            _log.WriteLine();
+            _log.LogInformation("Setup started.");
             _log.LogInformation("Creating installation path...");
             var items = new List<string> { path };
             var dirName = Path.GetDirectoryName(path);
@@ -96,6 +100,7 @@ namespace SPPC.Tadbir.Utility
             CopyFilesIfMissing(Path.Combine(ChecksumRoot, "service"), Path.Combine(path, "service"));
             CopyFilesIfMissing(Path.Combine(ChecksumRoot, "setup"), Path.Combine(path, "setup"));
             CopyFilesIfMissing(Path.Combine(ChecksumRoot, "tools"), Path.Combine(path, "tools"));
+            AdjustDockerCompose(path, settings.DbServerName);
             if (createShortcut)
             {
                 // Create shortcut to main Runner executable on user's Desktop folder...
@@ -197,6 +202,23 @@ namespace SPPC.Tadbir.Utility
             _log.LogInformation($"Done.");
         }
 
+        public static void ConfigureDbService(string root, IBuildSettings settings)
+        {
+            var service = SysParameterUtility.DbServer.ImageName;
+            _log.LogInformation($"Configuring {service}...");
+            if (settings.DbServerName == SysParameterUtility.DbServer.Name)
+            {
+                var setup = GetServiceSetup(service, settings);
+                setup.ConfigureService(root);
+            }
+            else
+            {
+                ConfigureDbServer(settings);
+            }
+
+            _log.LogInformation($"Done.");
+        }
+
         public static void RemoveDockerServices()
         {
             _log.LogInformation("Removing Docker services...");
@@ -258,6 +280,45 @@ namespace SPPC.Tadbir.Utility
         public static void FlushLogFile()
         {
             _log.Flush();
+        }
+
+        private static void AdjustDockerCompose(string installPath, string dbServer)
+        {
+            if (dbServer == SysParameterUtility.DbServer.Name)
+            {
+                var composePath = Path.Combine(installPath, "runner", "docker-compose.yml");
+                var overridePath = Path.Combine(installPath, "runner", "docker-compose.override.yml");
+                var nameTag = File.ReadAllLines(composePath)
+                    .Where(line => line.Contains(SysParameterUtility.ApiServer.ImageName))
+                    .Select(line => line[line.IndexOf(SysParameterUtility.ApiServer.ImageName)..])
+                    .FirstOrDefault();
+                if (nameTag != null)
+                {
+                    var editionTag = nameTag
+                        .Replace(SysParameterUtility.ApiServer.ImageName, String.Empty)
+                        .Replace(":", String.Empty);
+                    var template = new DockerCompose(editionTag, dbServer) as ITextTemplate;
+                    File.WriteAllText(composePath, template.TransformText());
+                    template = new DockerComposeOverride(editionTag, dbServer);
+                    File.WriteAllText(overridePath, template.TransformText());
+                }
+            }
+        }
+
+        private static void ConfigureDbServer(IBuildSettings settings)
+        {
+            var connBuilder = new SqlConnectionStringBuilder()
+            {
+                DataSource = settings.DbServerName.Replace(
+                    BuildSettingValues.DockerHostInternalUrl, Environment.MachineName),
+                InitialCatalog = "master",
+                UserID = "sa",
+                Password = settings.SaPassword,
+                IntegratedSecurity = false
+            };
+            var sqlConsole = new SqlServerConsole() { ConnectionString = connBuilder.ConnectionString };
+            var utility = new DbSetupUtility(sqlConsole, settings);
+            utility.ConfigureDatabase();
         }
 
         private static void CreateDesktopShortcut(string path, string name, string description)

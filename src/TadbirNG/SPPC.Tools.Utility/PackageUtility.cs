@@ -9,8 +9,8 @@ using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.Utility.Docker;
 using SPPC.Tadbir.Utility.Model;
+using SPPC.Tadbir.Utility.Templates;
 using SPPC.Tools.Model;
-using SPPC.Tools.Transforms.Templates;
 
 namespace SPPC.Tools.Utility
 {
@@ -159,10 +159,11 @@ namespace SPPC.Tools.Utility
 
         private static void GenerateDockerCompose(string licenseKey, string editionTag)
         {
-            var template = new DockerCompose(editionTag) as ITextTemplate;
+            var dbServer = SysParameterUtility.DbServer.Name;
+            var template = new DockerCompose(editionTag, dbServer) as ITextTemplate;
             File.WriteAllText(Path.Combine(
                 PathConfig.TadbirRelease, licenseKey, "runner", ComposeFile), template.TransformText());
-            template = new DockerComposeOverride(editionTag);
+            template = new DockerComposeOverride(editionTag, dbServer);
             File.WriteAllText(Path.Combine(
                 PathConfig.TadbirRelease, licenseKey, "runner", OverrideFile), template.TransformText());
         }
@@ -177,12 +178,7 @@ namespace SPPC.Tools.Utility
 
         private static void CreateChecksumFile(string path)
         {
-            var crypto = CryptoService.Default;
-            ArchiveUtility.Zip(ChecksumSource, path);
-            var checksum = crypto
-                .CreateHash(File.ReadAllBytes(ChecksumSource))
-                .ToLower();
-            File.Delete(ChecksumSource);
+            var checksum = Checksum.Calculate(path);
             var parent = Path.GetDirectoryName(path);
             var fileName = $"{Path.GetFileName(path)}.sha";
             File.WriteAllText(Path.Combine(parent, fileName), checksum);
@@ -217,6 +213,5 @@ namespace SPPC.Tools.Utility
 
         private const string ComposeFile = "docker-compose.yml";
         private const string OverrideFile = "docker-compose.override.yml";
-        private const string ChecksumSource = "items.zip";
     }
 }

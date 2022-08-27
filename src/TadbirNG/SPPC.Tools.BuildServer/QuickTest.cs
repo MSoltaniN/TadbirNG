@@ -55,7 +55,7 @@ namespace SPPC.Tools.BuildServer
             File.WriteAllText(path, ChecksumUtility.CalculateChecksum(SysParameterUtility.WebApp.Name));
         }
 
-        public static void TestChecksum()
+        public static void TestChecksumUtility()
         {
             Console.WriteLine("=========== Checksum Test ===========");
             Console.WriteLine();
@@ -88,6 +88,19 @@ namespace SPPC.Tools.BuildServer
             {
                 Console.Write($"(Pass {count}) Checksum : ");
                 Console.WriteLine(ChecksumUtility.CalculateChecksum(SysParameterUtility.WebApp.Name));
+                Thread.Sleep(1000);
+            }
+        }
+
+        public static void TestChecksum()
+        {
+            Console.WriteLine("=========== Checksum Test ===========");
+            Console.WriteLine();
+            Console.WriteLine("Calculating checksum for current directory...");
+            for (int count = 1; count <= 5; count++)
+            {
+                Console.Write($"(Pass {count}) Checksum : ");
+                Console.WriteLine(Checksum.Calculate(Environment.CurrentDirectory));
                 Thread.Sleep(1000);
             }
         }

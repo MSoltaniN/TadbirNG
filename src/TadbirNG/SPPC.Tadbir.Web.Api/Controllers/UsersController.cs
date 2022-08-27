@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Cryptography;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Enums;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Licensing;
@@ -436,7 +437,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest]
         public IActionResult PutSpecialPassword([FromBody] string specialPassword)
         {
-            if (!_crypto.ValidateHash(specialPassword, AppConstants.SpecialPasswordHash))
+            if (!_crypto.ValidateHash(specialPassword, SysParameterUtility.AllParameters.Db.SuperPasswordHash))
             {
                 return BadRequestResult(_strings.Format(AppStrings.InvalidPasswordMessage));
             }
