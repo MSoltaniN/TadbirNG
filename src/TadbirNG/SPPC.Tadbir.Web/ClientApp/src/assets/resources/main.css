@@ -538,12 +538,12 @@ body.tRtl .sppc-input-num {
 .sppc-switch .k-switch-label-on {
   left: -44px !important;
 }
-.sppc-switch.k-switch[dir="rtl"] .k-switch-label-off {
+/* .sppc-switch.k-switch[dir="rtl"] .k-switch-label-off {
   left: -40px !important;
 }
 .sppc-switch.k-switch[dir="rtl"] .k-switch-label-on {
   right: -45px !important;
-}
+} */
 .tostrlink {
   text-decoration: underline!important;
 }
