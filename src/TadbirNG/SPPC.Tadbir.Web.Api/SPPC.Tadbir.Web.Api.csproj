@@ -36,6 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_WebToolingArtifacts Remove="Properties\PublishProfiles\FolderProfile-WebApi.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="Report.cs" />
     <EmbeddedResource Include="Resources\Reporting\Template\QuickReport.A4.Ltr.mrt" />
     <EmbeddedResource Include="Resources\Reporting\Template\QuickReport.A4.Rtl.mrt" />
