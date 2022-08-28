@@ -474,7 +474,7 @@ export class SppcFullAccountDetailComponent implements OnInit {
       this.isEnableProjectFilter =
         false;
 
-    //this.initDialog(this.selectedItem);
+    this.initDialog(this.selectedItem);
   }
 
   //#region Call Api
