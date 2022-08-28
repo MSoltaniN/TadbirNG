@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, forwardRef, OnDestroy, Optional, Host, SkipSelf } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, OnDestroy, Optional, Host, SkipSelf, ElementRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator, ControlContainer, AbstractControl } from '@angular/forms'
 import { DatePipe } from '@angular/common'
 
@@ -12,7 +12,7 @@ import { BrowserStorageService } from '@sppc/shared/services';
   template: `<dp-date-picker
     class="k-textbox"
     [(ngModel)]="dateObject"
-    (keydown)="onChangeDateKey($event.keyCode)"
+    (keyup)="onChangeDateKey($event.keyCode)"
     (onChange)="onDateChange()" 
     (onGoToCurrent)="onGoToCurrentDate()"
     [config]='dateConfig'
@@ -86,7 +86,9 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
   @Input() displayType: string; //Jalali | Gregorian
 
   private control: AbstractControl | null;
-  constructor(private datepipe: DatePipe, @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer, private bStorageService: BrowserStorageService) {    
+  elm:ElementRef;
+  constructor(elm:ElementRef,private datepipe: DatePipe, @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer, private bStorageService: BrowserStorageService) {    
+    this.elm = elm;
   }  
 
   ngOnInit() {
@@ -267,9 +269,15 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     }
   }
 
+  hideCalendar(hide=true) {
+    let calendar:HTMLCollection = this.elm.nativeElement.getElementsByClassName('dp-popup');
+    if (calendar.length>0) {
+      (<HTMLElement>calendar[0]).hidden = hide;
+    }    
+  }
+
   onChangeDateKey(event: any) {
     var allowKey = false;
-
     switch (event) {
       case KeyCode.Tab: {
         allowKey = true;
@@ -311,7 +319,11 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
       }
     }
 
-    this.onDateFocusOut();
+    if (typeof this.dateObject != 'object') {
+      this.hideCalendar(false)
+    }
+
+    this.onDateFocusOut(true);
 
     return allowKey;
 
@@ -319,6 +331,9 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
 
   onDateChange() {
     this.i++;
+    if (typeof this.dateObject == 'object') {
+      this.hideCalendar();
+    }    
     if (!this.isDisplayDate && this.i <= 2) {
       this.dateObject = null;
 
@@ -337,9 +352,8 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     }
   }
 
-  onDateFocusOut() {
+  onDateFocusOut(keyPress=false) {
     this.parseError = false;
-
     if (this.dateObject != null) {
       if (typeof this.dateObject === "object") {
         this.parseError = false;
@@ -442,11 +456,11 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
                 }
                 case "DD": {
                   var day = +dateArray[i];
-                  if (day == 0 || day > 31 || (monthDate > 6 && day > 30)) {
+                  if (day == 0 || day > 31 || (monthDate > 6 && day > 30) || dateArray[i].length < 2) {
                     this.parseError = true;
                   }
                   else {
-                    if (day < 10) {
+                    if (day < 10 && !keyPress) {
                       dateArray[i] = "0" + day.toString();
                     }
                     else {
