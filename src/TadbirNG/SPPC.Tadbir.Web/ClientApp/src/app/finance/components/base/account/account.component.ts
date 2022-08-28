@@ -213,7 +213,7 @@ export class AccountComponent
             this.selectedRows = [];
             this.gridService.submitted.next(false)
 
-            this.highLightNewRow();
+            this.highLightNewRow(model.account);
             this.refreshTreeNodes(model.account);
           },
           (error) => {
@@ -247,7 +247,7 @@ export class AccountComponent
             options.InsertedModel = insertedModel;
             this.reloadGrid(options);
             this.gridService.submitted.next(false)
-            this.highLightNewRow();
+            this.highLightNewRow(insertedModel);
             this.refreshTreeNodes(insertedModel);
           },
           (error) => {

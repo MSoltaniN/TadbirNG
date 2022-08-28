@@ -375,10 +375,7 @@ export class AutoGridExplorerComponent<T>
     this.selectedKeys = [];
     this.selectedKeys.push(this.selectedItem.id);
     // to Auto Scroll in treeNodes section
-    setTimeout(() => {
-      let treeNode = document.getElementById("node-" + item.id)
-      treeNode.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
-    }, 0);
+    this.scrollToSelectedItem(item);
   }
 
   /**
@@ -698,7 +695,7 @@ export class AutoGridExplorerComponent<T>
             this.listChanged = false;
             this.reloadGrid();
             this.selectedRows = [];
-            this.highLightNewRow();
+            this.highLightNewRow(model);
 
             this.refreshTreeNodes(model);
             this.service.submitted.next(false)
@@ -729,7 +726,7 @@ export class AutoGridExplorerComponent<T>
           var options = new ReloadOption();
           options.Status = ReloadStatusType.AfterDelete;
           this.reloadGrid(options);
-          this.highLightNewRow();
+          this.highLightNewRow(model);
 
           this.refreshTreeNodes(insertedModel);
           this.service.submitted.next(false)

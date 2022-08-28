@@ -42,7 +42,7 @@
             <div class="grid-title">
               <span>{{ 'AccountCollection.SelectedAccounts' | translate }}</span>
             </div>
-            <kendo-grid [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #grid1
+            <kendo-grid class="selected-items-grid" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #grid1
                         [data]="selectedRowData"
                         [pageSize]="collectionGridPageSize"
                         [skip]="collectionGridSkip"
