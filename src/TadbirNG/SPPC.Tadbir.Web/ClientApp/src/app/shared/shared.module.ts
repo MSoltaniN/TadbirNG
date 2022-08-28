@@ -138,6 +138,7 @@ import { AutoFocusDirective } from "./directive/input/auto-focus.directive";
 
 import { AddWidgetComponent } from "./components/dashboard/add-widget/add-widget.component";
 import { WidgetSettingComponent } from "./components/dashboard/widget/widget-setting/widget-setting.component";
+import { SppcFullAccountDetailComponent } from './controls/fullAccount/sppc-full-account-detail/sppc-full-account-detail.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -258,6 +259,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AddWidgetComponent,
 
     WidgetSettingComponent,
+
+    SppcFullAccountDetailComponent,
   ],
 
   entryComponents: [

@@ -399,7 +399,6 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   }
 
   onCloseWidget(id: number) {
-    debugger;
     if (this.dashboard.findIndex((w) => w.id === id) >= 0) {
       this.dashboard.filter((w) => w.id === id)[0].selected = false;
       this.saveDashboard();

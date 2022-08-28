@@ -638,7 +638,6 @@ export class VoucherLineComponent
   }
 
   getVoucher() {
-    debugger;
     this.voucherService
       .getById(String.Format(VoucherApi.Voucher, this.voucherId))
       .subscribe((res) => {

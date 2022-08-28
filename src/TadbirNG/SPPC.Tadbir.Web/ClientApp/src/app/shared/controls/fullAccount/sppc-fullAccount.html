@@ -35,7 +35,8 @@
 </ng-container>
 
 <ng-template #itemListRef>
-  <div style="padding:15px;" (keydown.esc)="escPress()">
+  <sppc-full-account-detail (save)="onSave($event);" [accountItem]="accountItem" [selectedItem]="selectedItem" [fullAccount]="fullAccount" (close)="closeDialog();"></sppc-full-account-detail>
+  <!-- <div style="padding:15px;" (keydown.esc)="escPress()">
     <div class="row">
       <div class="col-xs-12 dialog-item">
         <span class="glyphicon glyphicon-ok" *ngIf="selectedItem == accountItem.Account"></span>
@@ -175,7 +176,7 @@
     <button class="k-button k-primary" [disabled]="accountSelectedId.length == 0" (click)="onSave()">{{ 'Buttons.Ok' | translate }}</button>
     <button class="k-button k-primary" [disabled]="accountSelectedId.length == 0" (click)="onReset()">{{ 'FullAccount.Reset' | translate }}</button>
     <button class="k-button" (click)="closeDialog()">{{ 'Buttons.Cancel' | translate }}</button>
-  </kendo-dialog-actions>
+  </kendo-dialog-actions> -->
 </ng-template>
 
 
