@@ -11,7 +11,9 @@ using SPPC.Tadbir.Common;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -62,6 +64,71 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             string licenseData = System.IO.File.ReadAllText(_pathProvider.License);
             var license = JsonHelper.To<LicenseFileModel>(licenseData);
             return Json(license);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/dashboard/charts
+        [HttpGet]
+        [Route(DashboardApi.ChartsUrl)]
+        public IActionResult GetChartsAsync()
+        {
+            return Ok();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="chart"></param>
+        /// <returns></returns>
+        // POST: api/dashboard/charts
+        [HttpPost]
+        [Route(DashboardApi.ChartsUrl)]
+        public IActionResult PostNewChartAsync([FromBody] ChartViewModel chart)
+        {
+            return Ok(chart);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="chartId"></param>
+        /// <param name="chart"></param>
+        /// <returns></returns>
+        // PUT: api/dashboard/charts/{chartId:min(1)}
+        [HttpPut]
+        [Route(DashboardApi.ChartUrl)]
+        public IActionResult PutModifiedChartAsync(int chartId, [FromBody] ChartViewModel chart)
+        {
+            return Ok(chart);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="chartId"></param>
+        /// <returns></returns>
+        // DELETE: api/dashboard/charts/{chartId:min(1)}
+        [HttpDelete]
+        [Route(DashboardApi.ChartUrl)]
+        public IActionResult DeleteExistingChartAsync(int chartId)
+        {
+            return StatusCode(204);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="actionDetail"></param>
+        /// <returns></returns>
+        // PUT: api/dashboard/charts
+        [HttpPut]
+        [Route(DashboardApi.ChartsUrl)]
+        public IActionResult PutExistingChartsAsDeletedAsync([FromBody] ActionDetailViewModel actionDetail)
+        {
+            return Ok(actionDetail);
         }
 
         private Calendar GetCurrentCalendar()

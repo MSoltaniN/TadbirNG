@@ -27,8 +27,7 @@ namespace SPPC.Tools.MetaDesigner.Engine
         public void Handle(object sender, EventArgs args)
         {
             var cancelled = RaiseExecutingEvent();
-            var menuItem = sender as ToolStripMenuItem;
-            if (menuItem != null && !cancelled.Cancel)
+            if (sender is ToolStripMenuItem menuItem && !cancelled.Cancel)
             {
                 try
                 {

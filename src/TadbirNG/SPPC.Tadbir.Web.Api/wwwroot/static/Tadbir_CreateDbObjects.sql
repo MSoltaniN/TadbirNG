@@ -25,7 +25,7 @@ GO
 CREATE SCHEMA [Finance]
 GO
 
-CREATE SCHEMA [Workflow]
+CREATE SCHEMA [Reporting]
 GO
 
 
@@ -656,6 +656,50 @@ CREATE TABLE [Finance].[InactiveCurrency] (
     , CONSTRAINT [PK_Finance_InactiveCurrency] PRIMARY KEY CLUSTERED ([InactiveCurrencyID] ASC)
     , CONSTRAINT [FK_Finance_InactiveCurrency_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
     , CONSTRAINT [FK_Finance_InactiveCurrency_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+)
+GO
+
+CREATE TABLE [Reporting].[Chart] (
+    [ChartID]          INT              IDENTITY (1, 1) NOT NULL,
+    [Title]            NVARCHAR(128)    NOT NULL,
+    [Type]             VARCHAR(64)      NOT NULL,
+    [Function]         VARCHAR(64)      NOT NULL,
+    [Setting]          NVARCHAR(1024)   NOT NULL,
+    [DefaultSetting]   NVARCHAR(1024)   NOT NULL,
+    [Description]      NVARCHAR(512)    NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_Chart_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_Chart_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_Chart] PRIMARY KEY CLUSTERED ([ChartID] ASC)
+)
+GO
+
+CREATE TABLE [Reporting].[ChartAccount] (
+    [ChartAccountID]   INT              IDENTITY (1, 1) NOT NULL,
+    [ChartID]          INT              NOT NULL,
+    [AccountID]        INT              NULL,
+    [DetailAccountID]  INT              NULL,
+    [CostCenterID]     INT              NULL,
+    [ProjectID]        INT              NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_ChartAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_ChartAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_ChartAccount] PRIMARY KEY CLUSTERED ([ChartAccountID] ASC)
+    , CONSTRAINT [FK_Reporting_ChartAccount_Reporting_Chart] FOREIGN KEY ([ChartID]) REFERENCES [Reporting].[Chart]([ChartID])
+    , CONSTRAINT [FK_Reporting_ChartAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Reporting].[Account]([AccountID])
+    , CONSTRAINT [FK_Reporting_ChartAccount_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Reporting].[DetailAccount]([DetailAccountID])
+    , CONSTRAINT [FK_Reporting_ChartAccount_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Reporting].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_Reporting_ChartAccount_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Reporting].[Project]([ProjectID])
+)
+GO
+
+CREATE TABLE [Reporting].[ChartParameter] (
+    [ChartParameterID]   INT              IDENTITY (1, 1) NOT NULL,
+    [ChartID]            INT              NOT NULL,
+    [Name]               NVARCHAR(32)     NOT NULL,
+    [Type]               NVARCHAR(32)     NOT NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_ChartParameter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Reporting_ChartParameter_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_ChartParameter] PRIMARY KEY CLUSTERED ([ChartParameterID] ASC)
+    , CONSTRAINT [FK_Reporting_ChartParameter_Reporting_Chart] FOREIGN KEY ([ChartID]) REFERENCES [Reporting].[Chart]([ChartID])
 )
 GO
 
