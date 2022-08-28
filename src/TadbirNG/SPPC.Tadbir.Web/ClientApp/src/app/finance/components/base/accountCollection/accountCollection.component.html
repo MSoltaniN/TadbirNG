@@ -42,18 +42,28 @@
             <div class="grid-title">
               <span>{{ 'AccountCollection.SelectedAccounts' | translate }}</span>
             </div>
-            <kendo-grid [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #grid1
+            <kendo-grid class="selected-items-grid" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #grid1
                         [data]="selectedRowData"
+                        [pageSize]="collectionGridPageSize"
+                        [skip]="collectionGridSkip"
+                        [pageable]="true"
+                        [resizable]="true"
+                        (pageChange)="collectionGridpageChange($event)"
                         [height]="200"
-                        [selectable]="{ checkboxOnly: true, mode: 'single' }"
+                        [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
                         [selectedKeys]="selectedRowsKey"
-                        [kendoGridSelectBy]="'id'">
-
+                        [kendoGridSelectBy]="'accountId'"
+                        sppc-auto-generated-grid-reorder sppc-auto-generated-grid-resize
+                        >
+              <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                                   pagerOf="{{ 'Paging.Of' | translate }}"
+                                   pagerItems="{{ 'Paging.Record' | translate }}">
+              </kendo-grid-messages>
               <ng-template kendoGridNoRecordsTemplate>
                 {{ selectedDataloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
               </ng-template>
 
-              <kendo-grid-checkbox-column showSelectAll="false" width="50"></kendo-grid-checkbox-column>
+              <kendo-grid-checkbox-column showSelectAll="true" width="50"></kendo-grid-checkbox-column>
 
               <kendo-grid-column field="accountFullCode" title="{{ 'AccountCollection.FullCode' | translate }}">
               </kendo-grid-column>
@@ -88,7 +98,7 @@
                         [height]="300"
                         (pageChange)="pageChange($event)"
                         (sortChange)="sortChange($event)"
-                        [selectable]="{ checkboxOnly: true, mode:'single' }"
+                        [selectable]="{ checkboxOnly: true, mode: multiSelect.str }"
                         [selectedKeys]="selectableRowsKey"
                         [kendoGridSelectBy]="'id'"
                         (filterChange)="filterChange($event)"
@@ -122,7 +132,7 @@
                 <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" (reloadEvent)="reloadGrid()" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
               </ng-template>
 
-              <kendo-grid-checkbox-column showSelectAll="false" width="20"></kendo-grid-checkbox-column>
+              <kendo-grid-checkbox-column [showSelectAll]="multiSelect.bol" width="50"></kendo-grid-checkbox-column>
 
               <kendo-grid-column width="150" sppc-grid-column="AccountCollection.name">
                 <ng-template kendoGridFilterCellTemplate let-filter let-column="column">

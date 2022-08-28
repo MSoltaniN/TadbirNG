@@ -1252,7 +1252,7 @@
       "DescriptionIsTooLong": "Description can have a maximum of 1024 characters."
     },
     "AccountOwner": {
-      "BankNameIsTooLong": "Bank name can have a maximum of 64 characters.",
+      "BankNameIsTooLong": "Bank name can have a maximum of 128 characters.",
       "BankNameIsRequired": "Bank name is required.",
       "BankBranchNameIsRequired": "Branch name is required.",
       "BankBranchNameIsTooLong": "Branch name can have a maximum of 64 characters.",

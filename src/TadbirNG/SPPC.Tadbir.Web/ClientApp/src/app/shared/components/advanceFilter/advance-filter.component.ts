@@ -902,7 +902,8 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
       filters.forEach((item) => {
         counter++;
-
+        console.log(item);
+        
         if (item.braces) {
           for (var i = item.braces.length; i >= 0; i--) {
             var br = item.braces[i];
@@ -926,6 +927,9 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
             }
           }
         }
+        
+        let value = item.columnName.includes('Date') && this.CurrentLanguage == 'fa'?
+                    this.toJalaliDate(item.value) : item.value;
 
         this.totalFilterExpression +=
           " " +
@@ -939,7 +943,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
           "</span>" +
           " " +
           "<span class='value'>" +
-          item.value +
+          value +
           "</span>" +
           " ";
 
