@@ -50,11 +50,6 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual DateTime EndDate { get; set; }
 
         /// <summary>
-        /// نوع سیستم ثبت موجودی که می تواند دائمی (با مقدار 1) یا ادواری (با مقدار 0) باشد
-        /// </summary>
-        public virtual int InventoryMode { get; set; }
-
-        /// <summary>
         /// Detail information related to this fiscal period
         /// </summary>
         public virtual string Description { get; set; }

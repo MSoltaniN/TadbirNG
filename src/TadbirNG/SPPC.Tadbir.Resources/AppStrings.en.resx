@@ -3591,4 +3591,7 @@
   <data name="SpecificReferencesNotSelected" xml:space="preserve">
     <value>No references are specified to filter {0} items.</value>
   </data>
+  <data name="InventoryModeChangeNotAllowed" xml:space="preserve">
+    <value>It is not possible to change the Inventory mode when vouchers are defined</value>
+  </data>
 </root>

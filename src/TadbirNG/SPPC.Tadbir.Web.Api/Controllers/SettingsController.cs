@@ -137,16 +137,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/settings/sysconfig
         [HttpPut]
         [Route(SettingsApi.SystemConfigUrl)]
-        public async Task<IActionResult> PutSystemConfigAsync([FromBody]SettingBriefViewModel setting)
+        public async Task<IActionResult> PutSystemConfigAsync([FromBody] SettingBriefViewModel setting)
         {
             if (setting == null)
             {
                 return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Settings));
             }
-
-            await _repository.SaveSystemConfigAsync(setting);
-
-            return Ok();
+            if (await _repository.ValidateInventoryModeChangeAsync())
+            {
+                await _repository.SaveSystemConfigAsync(setting);
+                return Ok();
+            }
+            else
+            {
+                return BadRequestResult(_strings.Format(AppStrings.InventoryModeChangeNotAllowed, AppStrings.Settings));
+            }
         }
 
         /// <summary>

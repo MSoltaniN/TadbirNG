@@ -293,6 +293,17 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، امکان تغییر سیستم ثبت دوره مالی جاری را بررسی می کند
+        /// </summary>
+        /// <returns>آیا تغییر سیستم ثبت دوره مالی جاری امکان دارد</returns>
+        public async Task<bool> ValidateInventoryModeChangeAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            return await repository.GetCountByCriteriaAsync(
+                v => v.FiscalPeriodId == UserContext.FiscalPeriodId) == 0 ;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، تنظیمات موجود برای عناوین سفارشی فرم گزارشی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="formId">شناسه دیتابیسی فرم گزارشی</param>

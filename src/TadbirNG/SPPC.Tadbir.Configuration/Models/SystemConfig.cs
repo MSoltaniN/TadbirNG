@@ -39,5 +39,10 @@ namespace SPPC.Tadbir.Configuration.Models
         /// آیا از کدینگ پیش فرض استفاده شود؟
         /// </summary>
         public bool UsesDefaultCoding { get; set; }
+
+        /// <summary>
+        /// نوع سیستم ثبت موجودی که می تواند دائمی (با مقدار 1) یا ادواری (با مقدار 0) باشد
+        /// </summary>
+        public virtual int InventoryMode { get; set; }
     }
 }

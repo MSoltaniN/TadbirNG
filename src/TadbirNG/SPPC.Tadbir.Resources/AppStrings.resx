@@ -3582,4 +3582,7 @@
   <data name="SpecificReferencesNotSelected" xml:space="preserve">
     <value>برای فیلتر سطرهای موجودیت {0} رفرنسی تعیین نشده است.</value>
   </data>
+  <data name="InventoryModeChangeNotAllowed" xml:space="preserve">
+    <value>تغییر سیستم ثبت دوره مالی زمانیکه اسنادی تعریف شده باشند، امکان پذیر نمی باشد</value>
+  </data>
 </root>

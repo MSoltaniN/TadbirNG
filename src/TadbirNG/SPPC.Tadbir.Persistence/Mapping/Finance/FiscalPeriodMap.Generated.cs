@@ -34,8 +34,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.EndDate)
                 .HasColumnType("datetime")
                 .IsRequired();
-            builder.Property(e => e.InventoryMode)
-                .IsRequired();
             builder.Property(e => e.Description)
                 .HasMaxLength(512);
             builder.Property(e => e.RowGuid)
