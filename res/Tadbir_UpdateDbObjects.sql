@@ -648,3 +648,9 @@ CREATE TABLE [Reporting].[ChartParameter] (
     , CONSTRAINT [FK_Reporting_ChartParameter_Reporting_Chart] FOREIGN KEY ([ChartID]) REFERENCES [Reporting].[Chart]([ChartID])
 )
 GO
+
+-- 1.2.1425
+UPDATE [Config].[Setting] 
+SET  [Values] =  N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true,"inventoryMode": 1}' ,
+    [DefaultValues] =  N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true,"inventoryMode": 1}'
+WHERE ModelType = 'SystemConfig'
