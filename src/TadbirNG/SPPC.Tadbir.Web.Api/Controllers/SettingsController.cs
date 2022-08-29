@@ -150,7 +150,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
             else
             {
-                return BadRequestResult(_strings.Format(AppStrings.InventoryModeChangeNotAllowed, AppStrings.Settings));
+                return BadRequestResult(_strings[AppStrings.InventoryModeChangeNotAllowed]);
             }
         }
 
