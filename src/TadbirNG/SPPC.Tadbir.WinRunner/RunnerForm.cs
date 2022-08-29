@@ -89,8 +89,10 @@ namespace SPPC.Tadbir.WinRunner
             _apiClient.RemoveHeader(LicenseConstants.InstanceHeaderName);
             var utility = new UpdateUtility()
             {
+                UpdateServerUrl = SysParameterUtility.Servers.Update,
                 Current = current,
-                Latest = latest
+                Latest = latest,
+                DbServerName = config.DbServerName
             };
             if (!utility.NeedsUpdate())
             {
@@ -98,15 +100,14 @@ namespace SPPC.Tadbir.WinRunner
                     "اطلاع به کاربر", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.RtlReading);
             }
-            else if(ConfirmApplicationUpdate(current, latest))
+            else if(ConfirmApplicationUpdate(utility))
             {
                 Cursor = Cursors.Default;
                 current.Edition = UpdateUtility.GetInstalledEdition();
                 var updater = new UpdateForm()
                 {
-                    CurrentVersion = current,
-                    LatestVersion = latest,
-                    InstanceKey = config.Key
+                    InstanceKey = config.Key,
+                    Updater = utility
                 };
                 updater.Show(this);
             }
@@ -125,9 +126,9 @@ namespace SPPC.Tadbir.WinRunner
             }
         }
 
-        private bool ConfirmApplicationUpdate(VersionInfo current, VersionInfo latest)
+        private bool ConfirmApplicationUpdate(UpdateUtility utility)
         {
-            int downloadSize = UpdateUtility.GetDownloadSize(current, latest);
+            int downloadSize = utility.GetDownloadSize();
             var message = String.Format(
                 "با ادامه عملیات، حدود {0} مگابایت دانلود می شود.{1}آیا با به روزرسانی برنامه موافق هستید؟",
                 downloadSize, Environment.NewLine);
