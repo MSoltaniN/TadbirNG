@@ -26,7 +26,7 @@ export class InputDirective implements OnInit, OnChanges {
       controlName = this.currentElement.attributes["formcontrolname"].nodeValue;
     }
 
-    var component = (<any>this.parentComponet)._view.component;
+    var component = this.parentComponet['_hostLView'][8];
     Object.values(component).forEach((item:any) => {
       if (item && item.controls) {
         if (item.controls[controlName]) {

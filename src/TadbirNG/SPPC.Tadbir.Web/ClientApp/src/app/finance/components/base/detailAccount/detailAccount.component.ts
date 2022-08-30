@@ -15,6 +15,7 @@ import { SettingService } from '@sppc/config/service';
 import { DetailAccountFormComponent } from './detailAccount-form.component';
 import { ViewName, DetailAccountPermissions } from '@sppc/shared/security';
 import { OperationId } from '@sppc/shared/enum/operationId';
+import { GridComponent } from '@progress/kendo-angular-grid';
 
 
 
@@ -34,8 +35,11 @@ export function getLayoutModule(layout: Layout) {
 })
 
 
-export class DetailAccountComponent extends AutoGridExplorerComponent<DetailAccount> implements OnInit {
+export class DetailAccountComponent
+ extends AutoGridExplorerComponent<DetailAccount>
+ implements OnInit {
 
+  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
   @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
   @ViewChild(ReportManagementComponent, {static: true}) reportManager: ReportManagementComponent;
   @ViewChild(QuickReportSettingComponent, {static: true}) reportSetting: QuickReportSettingComponent;

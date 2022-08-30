@@ -98,10 +98,10 @@ export class ReportManagementComponent
 
   @Output() public onDataBind: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild(ReportParametersComponent, {static: true})
+  @ViewChild(ReportParametersComponent)
   public reportParameter: ReportParametersComponent;
   @ViewChild(TreeViewComponent, {static: true}) public treeView: TreeViewComponent;
-  @ViewChild(TabsComponent, {static: true}) public tabsComponent: TabsComponent;
+  @ViewChild(TabsComponent) public tabsComponent!: TabsComponent;
 
   treeData: any[];
   active: boolean = false;

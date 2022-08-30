@@ -56,12 +56,12 @@
             <kendo-treeview [nodes]="mainComponentCategories"
                             [textField]="['name']"
                             kendoTreeViewExpandable
-                            [kendoTreeViewCheckable]="{ mode: 'single', checkChildren: false , checkParents: false }"
-                            [checkBy]="checkById"
-                            [(checkedKeys)]="mainComponentCheckedKeys"
+                            [kendoTreeViewCheckable]="{ mode: 'single', checkChildren: false , checkParents: fasle }"
+                            checkBy="dataItem.id"
                             [hasChildren]="hasChildren"
                             [children]="fetchMainComponentChildren"
                             (checkedChange)="handleMainComponentChecking($event)"
+                            [(checkedKeys)]="mainComponentCheckedKeys"
                             [(expandedKeys)]="mainComponentExpandedKeys">
               <ng-template kendoTreeViewNodeTemplate let-dataItem>
                 {{dataItem.name}} - ({{dataItem.fullCode}})

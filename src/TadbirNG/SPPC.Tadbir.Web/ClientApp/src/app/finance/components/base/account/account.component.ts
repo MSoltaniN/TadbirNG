@@ -10,6 +10,7 @@ import {
 } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { DialogService } from "@progress/kendo-angular-dialog";
+import { GridComponent } from "@progress/kendo-angular-grid";
 import { RTL } from "@progress/kendo-angular-l10n";
 import { SettingService } from "@sppc/config/service";
 import { Account } from "@sppc/finance/models";
@@ -54,6 +55,7 @@ export class AccountComponent
   extends AutoGridExplorerComponent<Account>
   implements OnInit
 {
+  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
   @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
   @ViewChild(ReportManagementComponent, {static: true})
   reportManager: ReportManagementComponent;

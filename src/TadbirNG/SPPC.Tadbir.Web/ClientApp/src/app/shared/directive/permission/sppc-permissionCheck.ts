@@ -63,8 +63,8 @@ export class SppcPermissionCheckDirective implements OnInit, OnDestroy {
     this.permissions.split('|').forEach(it => {
       var eName = this.entityName;
       if (!this.entityName && !this.enum) {
-        var viewId = (<any>this.parentComponet)._view.component.viewId;
-        eName = viewId ? ViewName[viewId] : (<any>this.parentComponet)._view.component.entityType;
+        var viewId = this.parentComponet['_hostLView'][8].viewId;
+        eName = viewId ? ViewName[viewId] : this.parentComponet['_hostLView'][8].entityType;
       }
 
       var enumName = "";

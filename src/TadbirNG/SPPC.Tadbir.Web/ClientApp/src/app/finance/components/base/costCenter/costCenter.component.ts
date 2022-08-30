@@ -15,6 +15,7 @@ import { CostCenterFormComponent } from './costCenter-form.component';
 import { String, AutoGridExplorerComponent } from '@sppc/shared/class';
 import { ViewName, CostCenterPermissions } from '@sppc/shared/security';
 import { OperationId } from '@sppc/shared/enum/operationId';
+import { GridComponent } from '@progress/kendo-angular-grid';
 
 
 
@@ -36,6 +37,7 @@ export function getLayoutModule(layout: Layout) {
 
 export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> implements OnInit {
 
+  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
   @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
   @ViewChild(ReportManagementComponent, {static: true}) reportManager: ReportManagementComponent;
   @ViewChild(QuickReportSettingComponent, {static: true}) reportSetting: QuickReportSettingComponent;

@@ -51,10 +51,7 @@
       </kendo-splitter-pane>
       <kendo-splitter-pane>
         <div class='col-lg-12 col-sm-12 col-md-12 col-xs-12 noprl' [ngClass]="{'pull-left':this.CurrentLanguage === 'fa' , 'pull-right': this.CurrentLanguage === 'en'}">
-          <my-tabs>
-            <!--<my-tab *ngIf="showDesktopTab" tabTitle="{{ 'Report.ReportDesktop' | translate }}">
-            </my-tab>-->
-          </my-tabs>
+          <my-tabs></my-tabs>
           <report-parameters (onOkClick)="onOkParams($event)" [reportId]="currentReportId">
           </report-parameters>
         </div>
