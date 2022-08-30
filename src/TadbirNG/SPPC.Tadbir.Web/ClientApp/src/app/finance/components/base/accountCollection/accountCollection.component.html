@@ -50,12 +50,6 @@
                         [resizable]="true"
                         (pageChange)="collectionGridpageChange($event)"
                         [height]="200"
-<<<<<<< HEAD
-                        [selectable]="{ checkboxOnly: true, mode: 'single' }"
-                        [(selectedKeys)]="selectedRowsKey"
-                        [kendoGridSelectBy]="'id'">
-
-=======
                         [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
                         [selectedKeys]="selectedRowsKey"
                         [kendoGridSelectBy]="'accountId'"
@@ -65,7 +59,6 @@
                                    pagerOf="{{ 'Paging.Of' | translate }}"
                                    pagerItems="{{ 'Paging.Record' | translate }}">
               </kendo-grid-messages>
->>>>>>> c18067e133806dfde4cb542967e0e731f864c124
               <ng-template kendoGridNoRecordsTemplate>
                 {{ selectedDataloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
               </ng-template>
@@ -105,13 +98,8 @@
                         [height]="300"
                         (pageChange)="pageChange($event)"
                         (sortChange)="sortChange($event)"
-<<<<<<< HEAD
-                        [selectable]="{ checkboxOnly: true, mode:'single' }"
-                        [(selectedKeys)]="selectableRowsKey"
-=======
                         [selectable]="{ checkboxOnly: true, mode: multiSelect.str }"
                         [selectedKeys]="selectableRowsKey"
->>>>>>> c18067e133806dfde4cb542967e0e731f864c124
                         [kendoGridSelectBy]="'id'"
                         (filterChange)="filterChange($event)"
                         (excelExport)="onExcelExport($event)"
