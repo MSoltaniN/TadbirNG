@@ -17,7 +17,7 @@
     <div class="form-group">
       <label for="personFirstName" class="control-label">{{ 'User.PersonFirstName' | translate }}</label>
 
-      <input type="text" class="k-textbox" formControlName="personFirstName" />
+      <input sppcAutoFocus type="text" class="k-textbox" formControlName="personFirstName" />
 
       <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.personFirstName.valid || editForm.controls.personFirstName.pristine">
         <span *ngIf="editForm.controls.personFirstName.errors?.required">{{ 'AllValidations.User.PersonFirstNameIsRequired' | translate }}</span>

@@ -306,6 +306,12 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       values.push(value.yValue);
     });
 
+    values[0] = 5;
+    values[1] = 11;
+    values[2] = 7;
+    values[3] = 4;
+    values[4] = 12;
+
     this.netChartData = {
       labels: labels,
       datasets: [

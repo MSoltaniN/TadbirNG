@@ -501,6 +501,34 @@ export class BalanceByAccountComponent
     this.dialogModel.viewID = viewId;
     this.dialogModel.isDisableEntities = true;
 
+    let level:number;
+    switch (viewId) {
+      case 1:
+        level = this.selectedAccountLevel;
+        break;
+      case 6:
+        level = this.selectedDetailAccountLevel;
+        break;
+      case 7:
+        level = this.selectedCCenterLevel;
+        break;
+      case 8:
+        level = this.selectedProjectLevel;
+        break;
+
+      default:
+        break;
+    }
+
+    if (level != undefined) {
+      this.dialogModel.defaultCriteria = new Filter(
+        "level",
+        (level).toString(),
+        " == {0}",
+        "System.Int32"
+      );
+    }
+
     this.dialogRef.content.instance.cancel.subscribe((res) => {
       switch (viewId) {
         case ViewName.Account: {

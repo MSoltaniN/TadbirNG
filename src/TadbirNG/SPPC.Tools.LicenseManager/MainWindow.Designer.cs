@@ -200,6 +200,7 @@ namespace SPPC.Tools.LicenseManager
             this.btnSaveDockerInstance.TabIndex = 7;
             this.btnSaveDockerInstance.Text = "ثبت شناسه داکر";
             this.btnSaveDockerInstance.UseVisualStyleBackColor = true;
+            this.btnSaveDockerInstance.Visible = false;
             this.btnSaveDockerInstance.Click += new System.EventHandler(this.SaveDockerInstance_Click);
             // 
             // btnSaveInstance
@@ -211,6 +212,7 @@ namespace SPPC.Tools.LicenseManager
             this.btnSaveInstance.TabIndex = 6;
             this.btnSaveInstance.Text = "ثبت شناسه برنامه";
             this.btnSaveInstance.UseVisualStyleBackColor = true;
+            this.btnSaveInstance.Visible = false;
             this.btnSaveInstance.Click += new System.EventHandler(this.SaveInstanceButton_Click);
             // 
             // btnDeleteLicense

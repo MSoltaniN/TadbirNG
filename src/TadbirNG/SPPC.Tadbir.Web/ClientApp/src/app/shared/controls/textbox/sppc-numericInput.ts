@@ -104,23 +104,7 @@ export class SppcNumericInput implements OnInit, ControlValueAccessor, Validator
     this.propagateChange(this.hiddenValue);
   }
 
-  changeValue() {
-    //this.showValue = (parseInt(this.showValue) + 2).toString();
-    //this.showValue = this.removeComma(this.showValue);
-    //this.hiddenValue = this.showValue;
-    //if (this.showValue) {
-    //  this.showValue = this.setComma(this.showValue);
-
-    //  this.parseError = false;
-    //}
-    //else {
-    //  this.parseError = true;
-    //}
-
-    //this.hiddenValue = this.removeComma(this.showValue);
-    //this.propagateChange(this.hiddenValue);
-
-  }
+  changeValue() {}
 
   setFocus() {
     setTimeout(() => {
@@ -136,8 +120,15 @@ export class SppcNumericInput implements OnInit, ControlValueAccessor, Validator
 
   setComma(num: string, event?: any): string {
     var parts = num.toString().split(".");
+    // حذف صفر از اول اعداد
     if (parts[0].charAt(0) == '0' && parts[0].length > 1) {
-      parts[0] = parts[0].slice(1)
+      parts[0] = parts[0].slice(1);
+    }
+    // برای جلوگیری از ممیزهای اضافی
+    if (parts.length>2) {
+      let integer = parts[0];
+      parts.shift();
+      parts = [integer,parts.join('')];
     }
 
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");

@@ -16,6 +16,8 @@ namespace SPPC.Tools.Model
 
         public static string WebEnvRoot => Path.Combine(WebAppRoot, "ClientApp", "src", "environments");
 
+        public static string DockerCacheRoot => Path.Combine("..", "..", "..", "..", "dockercache");
+
         public static string ComposePath => Path.Combine(SolutionRoot, "docker-compose.yml");
 
         public static string OverridePath => Path.Combine(SolutionRoot, "docker-compose.override.yml");
@@ -24,7 +26,9 @@ namespace SPPC.Tools.Model
 
         public static string ServicePublishWin => Path.Combine("..", "..", "Release", "net5.0", "publish", "win-x64");
 
-        public static string RunnerPublishWin => Path.Combine("..", "..", "Release", "net5.0-windows", "publish", "win-x64");
+        public static string RunnerPublishWin => Path.Combine("..", "..", "Release", "net5.0-windows", "publish", "win-x64", "runner");
+
+        public static string SetupPublishWin => Path.Combine("..", "..", "Release", "net5.0-windows", "publish", "win-x64", "setup");
 
         public static string TadbirRelease => Path.Combine("..", "..", "..", "..", "TadbirNG Release");
 

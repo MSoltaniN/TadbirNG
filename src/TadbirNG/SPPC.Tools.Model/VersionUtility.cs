@@ -2,7 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using SPPC.Tools.Model;
+using SPPC.Framework.Helpers;
+using SPPC.Tadbir.Utility.Model;
 
 namespace SPPC.Tools.Model
 {
@@ -29,6 +30,19 @@ namespace SPPC.Tools.Model
         {
             var appVersion = new Version(GetVersionFromFile(_appVersionPath));
             return appVersion.ToString(count);
+        }
+
+        public static string GetReleaseVersion()
+        {
+            var version = String.Empty;
+            var path = Path.Combine(PathConfig.DockerCacheRoot, "version.ent");
+            if (File.Exists(path))
+            {
+                var releaseInfo = JsonHelper.To<VersionInfo>(File.ReadAllText(path));
+                version = releaseInfo.Version;
+            }
+
+            return version;
         }
 
         private static string GetVersionFromFile(string path)

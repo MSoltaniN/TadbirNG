@@ -119,7 +119,8 @@ namespace SPPC.Framework.Cryptography
         public X509Certificate2 GetFromFile(string path, string password)
         {
             var rawData = File.ReadAllBytes(path);
-            return new X509Certificate2(rawData, password);
+            return new X509Certificate2(rawData, password,
+                X509KeyStorageFlags.EphemeralKeySet | X509KeyStorageFlags.MachineKeySet);
         }
     }
 }

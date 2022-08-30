@@ -335,6 +335,7 @@ export class AccountGroupsComponent
 
     this.selectedKeys = [];
     this.selectedKeys.push(index);
+    this.scrollToSelectedItem(item);
   }
 
   retriveTreeIndex(item: AccountItemBrief): string {
@@ -901,7 +902,8 @@ export class AccountGroupsComponent
 
             this.selectedRows = [];
             this.reloadGrid();
-            this.gridService.submitted.next(false)
+            this.gridService.submitted.next(false);
+            this.highLightNewRow(model.account);
 
             this.refreshTreeNodes(model.account);
           },
@@ -932,7 +934,8 @@ export class AccountGroupsComponent
             var options = new ReloadOption();
             options.InsertedModel = insertedModel;
             this.reloadGrid(options);
-            this.gridService.submitted.next(false)
+            this.gridService.submitted.next(false);
+            this.highLightNewRow(insertedModel.account);
 
             this.refreshTreeNodes(insertedModel.account);
           },
@@ -966,7 +969,8 @@ export class AccountGroupsComponent
 
             this.selectedRows = [];
             this.reloadGrid();
-            this.gridService.submitted.next(false)
+            this.gridService.submitted.next(false);
+            this.highLightNewRow(model);
 
             this.refreshGroupTreeNodes(model);
           },
@@ -999,6 +1003,7 @@ export class AccountGroupsComponent
             options.InsertedModel = insertedModel;
             this.reloadGrid(options);
             this.gridService.submitted.next(false);
+            this.highLightNewRow(insertedModel);
 
             this.refreshGroupTreeNodes(insertedModel);
           },
@@ -1061,6 +1066,7 @@ export class AccountGroupsComponent
           parentItem.childCount++;
         }
       }
+      this.scrollToSelectedItem(model);
     } else {
       if (this.parentId) {
         //
@@ -1136,6 +1142,7 @@ export class AccountGroupsComponent
           groupId: null,
         });
       }
+      this.scrollToSelectedItem(model);
     } else {
       //delete
       if (this.groupOperation) {
@@ -1168,6 +1175,9 @@ export class AccountGroupsComponent
   }
 
   public onDataStateChange(event): void {
+    this.state = event;
+    this.currentFilter = this.getFilters(this.state.filter);
+    
     if (this.rowData && this.rowData.total > 0) {
       var fcolumns = new Array<ColumnBase>();
       this.grid.columns.forEach(function (column) {

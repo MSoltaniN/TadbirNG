@@ -6,12 +6,15 @@ using System.Windows.Forms;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service;
+using SPPC.Framework.Utility;
 using SPPC.Licensing.Model;
 using SPPC.Licensing.Service;
 using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.Utility.Model;
+using SPPC.Tadbir.Utility.Templates;
 using SPPC.Tools.LicenseManager.Properties;
 using SPPC.Tools.Model;
-using SPPC.Tools.Transforms;
 using SPPC.Tools.Transforms.Templates;
 
 namespace SPPC.Tools.LicenseManager
@@ -204,32 +207,10 @@ namespace SPPC.Tools.LicenseManager
 
         private void SaveInstanceButton_Click(object sender, EventArgs e)
         {
-            if (!ValidateSaveInstance())
-            {
-                return;
-            }
-
-            if (ConfigureCurrentBuild(BuildSettings.WebNetwork))
-            {
-                MessageBox.Show(this, "شناسه برنامه با موفقیت ثبت شد.",
-                    "عملیات موفق", MessageBoxButtons.OK, MessageBoxIcon.Information,
-                    MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
-            }
         }
 
         private void SaveDockerInstance_Click(object sender, EventArgs e)
         {
-            if (!ValidateSaveInstance())
-            {
-                return;
-            }
-
-            if (ConfigureCurrentBuild(BuildSettings.DockerLocal))
-            {
-                MessageBox.Show(this, "شناسه برنامه با موفقیت ثبت شد.",
-                    "عملیات موفق", MessageBoxButtons.OK, MessageBoxIcon.Information,
-                    MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
-            }
         }
 
         private void CustomerCombo_SelectedIndexChanged(object sender, EventArgs e)
@@ -329,107 +310,6 @@ namespace SPPC.Tools.LicenseManager
             Application.Exit();
         }
 
-        private bool ConfigureCurrentBuild(IBuildSettings settings)
-        {
-            var license = grdLicenses.SelectedRows[0].DataBoundItem as LicenseModel;
-            settings.Key = InstanceFactory.CryptoFromLicense(license);
-            settings.Version = VersionUtility.GetAppVersion();
-            var editor = new InstanceInfoEditor() { BuildSettings = settings };
-            var result = editor.ShowDialog(this);
-            if (result == DialogResult.OK)
-            {
-                CreateEnvironmentSettings(editor.BuildSettings);
-                CreateApiServiceLicense(license);
-                CreateApiServiceEdition(license);
-                ConfigureDockerCompose(license);
-            }
-
-            return result == DialogResult.OK;
-        }
-
-        private static void CreateEnvironmentSettings(IBuildSettings settings)
-        {
-            string path = ConfigurationManager.AppSettings["ClientInstanceIdPath"];
-            ITextTemplate template = new NgEnvironment(settings);
-            File.WriteAllText(path, template.TransformText());
-
-            path = ConfigurationManager.AppSettings["LocalServerSettingsPath"];
-            template = new LocalLicenseApiSettings(settings);
-            File.WriteAllText(path, template.TransformText());
-
-            path = ConfigurationManager.AppSettings["WebApiSettingsPath"];
-            template = new WebApiSettings(settings);
-            File.WriteAllText(path, template.TransformText());
-        }
-
-        private void CreateApiServiceLicense(LicenseModel license)
-        {
-            var customer = CustomerService.GetCustomer(license.CustomerId);
-            var path = ConfigurationManager.AppSettings["WebApiLicensePath"];
-            var devPath = String.Format("{0}.Development.json", path);
-            var copy = license.GetCopy();
-            copy.Customer = customer;
-            var json = JsonHelper.From(LicenseFactory.FromModel(copy));
-            File.WriteAllText(path, json);
-            if (!File.Exists(devPath))
-            {
-                File.WriteAllText(devPath, json);
-            }
-        }
-
-        private static void CreateApiServiceEdition(LicenseModel license)
-        {
-            var configPath = ConfigurationManager.AppSettings["EditionConfigPath"];
-            var allConfig = JsonHelper.To<EditionsConfig>(File.ReadAllText(configPath));
-            var path = ConfigurationManager.AppSettings["WebApiLicensePath"];
-            var editionPath = String.Format(@"{0}\edition", Path.GetDirectoryName(path));
-            string json = JsonHelper.From(Reflector.GetProperty(allConfig, license.Edition));
-            File.WriteAllText(editionPath, json);
-            var devEditionPath = String.Format("{0}.Development.json", editionPath);
-            if (!File.Exists(devEditionPath))
-            {
-                File.WriteAllText(devEditionPath, json);
-            }
-        }
-
-        private static void ConfigureDockerCompose(LicenseModel license)
-        {
-            string solutionRoot = ConfigurationManager.AppSettings["SolutionRootPath"];
-            string path = Path.Combine(solutionRoot, "docker-compose.yml");
-            ITextTemplate template = new DockerCompose(license.LicenseKey);
-            File.WriteAllText(path, template.TransformText());
-
-            path = Path.Combine(solutionRoot, "docker-compose.override.yml");
-            template = new DockerComposeOverride(license.LicenseKey);
-            File.WriteAllText(path, template.TransformText());
-
-            path = Path.Combine(solutionRoot, "docker-deploy.bat");
-            template = new DockerDeploy(license.LicenseKey);
-            File.WriteAllText(path, template.TransformText());
-        }
-
-        private bool ValidateSaveInstance()
-        {
-            if (grdLicenses.SelectedRows.Count == 0)
-            {
-                MessageBox.Show(this, "مجوزی انتخاب نشده است.", "ثبت شناسه برنامه", MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.RtlReading);
-                return false;
-            }
-
-            var response = MessageBox.Show(
-                this, "این عملیات پیش از ایجاد نسخه برای کاربر انجام می شود. آیا از ادامه عملیات اطمینان دارید؟",
-                "تأیید عملیات", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2,
-                MessageBoxOptions.RtlReading);
-
-            return response == DialogResult.Yes;
-        }
-
-        private static bool HasModule(Subsystems modules, Subsystems module)
-        {
-            return (modules & module) != 0;
-        }
-
         private void RefreshCustomerList()
         {
             Cursor = Cursors.WaitCursor;
@@ -451,63 +331,6 @@ namespace SPPC.Tools.LicenseManager
                 grdLicenses.DataSource = LicenseService.GetLicenses(customerId);
                 Cursor = Cursors.Default;
             }
-        }
-
-        private string GetActiveModules(int activeModules)
-        {
-            var modules = new List<string>();
-            var modulesFlags = (Subsystems)activeModules;
-            if (HasModule(modulesFlags, Subsystems.Accounting))
-            {
-                modules.Add(Resources.Accounting);
-            }
-
-            if (HasModule(modulesFlags, Subsystems.Budgeting))
-            {
-                modules.Add(Resources.Budgeting);
-            }
-
-            if (HasModule(modulesFlags, Subsystems.CashFlow))
-            {
-                modules.Add(Resources.CashFlow);
-            }
-
-            if (HasModule(modulesFlags, Subsystems.Cheque))
-            {
-                modules.Add(Resources.Cheque);
-            }
-
-            if (HasModule(modulesFlags, Subsystems.Inventory))
-            {
-                modules.Add(Resources.Inventory);
-            }
-
-            if (HasModule(modulesFlags, Subsystems.Personnel))
-            {
-                modules.Add(Resources.Personnel);
-            }
-
-            if (HasModule(modulesFlags, Subsystems.Purchase))
-            {
-                modules.Add(Resources.Purchase);
-            }
-
-            if (HasModule(modulesFlags, Subsystems.Sales))
-            {
-                modules.Add(Resources.Sales);
-            }
-
-            if (HasModule(modulesFlags, Subsystems.WagePayment))
-            {
-                modules.Add(Resources.WagePayment);
-            }
-
-            if (HasModule(modulesFlags, Subsystems.Warehousing))
-            {
-                modules.Add(Resources.Warehousing);
-            }
-
-            return String.Join("، ", modules.ToArray());
         }
 
         private ICustomerService _customerService;

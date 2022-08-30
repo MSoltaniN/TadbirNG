@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +9,6 @@ using SPPC.Licensing.Model;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Persistence;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Licensing.Local.Web.Controllers
@@ -199,20 +197,6 @@ namespace SPPC.Licensing.Local.Web.Controllers
             return NoContent();
         }
 
-        // PUT: api/config/server
-        [HttpPut]
-        [Route(LicenseApi.DbServerConfigUrl)]
-        public IActionResult PutModifiedDbServerConfig([FromBody] RemoteConnection connection)
-        {
-            if (String.IsNullOrEmpty(connection?.Domain))
-            {
-                return BadRequest();
-            }
-
-            ApplyDbConnection(connection);
-            return Ok();
-        }
-
         private IActionResult GetValidationResult(string instance, out bool succeeded)
         {
             succeeded = false;
@@ -296,26 +280,6 @@ namespace SPPC.Licensing.Local.Web.Controllers
         private string GetLicense()
         {
             return Request.Headers[AppConstants.LicenseHeaderName];
-        }
-
-        private static void ApplyDbConnection(RemoteConnection connection)
-        {
-            var configManager = new ApiConfigManager();
-            var config = configManager.LoadConfig<WebConfig>();
-            var sqlBuilder = new SqlConnectionStringBuilder(config.ConnectionStrings.TadbirSysApi)
-            {
-                DataSource = connection.Domain
-            };
-            config.ConnectionStrings.TadbirSysApi = sqlBuilder.ConnectionString;
-            configManager.SaveConfig(config);
-
-            config = configManager.LoadConfig<WebConfig>(true);
-            sqlBuilder = new SqlConnectionStringBuilder(config.ConnectionStrings.TadbirSysApi)
-            {
-                DataSource = connection.Domain
-            };
-            config.ConnectionStrings.TadbirSysApi = sqlBuilder.ConnectionString;
-            configManager.SaveConfig(config, true);
         }
 
         private RemoteConnection GetRemoteConnection()

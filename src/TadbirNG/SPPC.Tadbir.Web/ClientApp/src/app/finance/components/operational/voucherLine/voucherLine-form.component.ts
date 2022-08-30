@@ -300,7 +300,7 @@ export class VoucherLineFormComponent
     }
   }
 
-  @HostListener('document:keydown.shift.control.k')
+  @HostListener('document:keydown.control.Alt.s')
   changeCreditDebiteMode() {
     this.creditDebiteMode = this.creditDebiteMode == '1'? '2' : '1';
   }

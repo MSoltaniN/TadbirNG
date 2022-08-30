@@ -902,7 +902,8 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
       filters.forEach((item) => {
         counter++;
-
+        console.log(item);
+        
         if (item.braces) {
           for (var i = item.braces.length; i >= 0; i--) {
             var br = item.braces[i];
@@ -926,6 +927,9 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
             }
           }
         }
+        
+        let value = item.columnName.includes('Date') && this.CurrentLanguage == 'fa'?
+                    this.toJalaliDate(item.value) : item.value;
 
         this.totalFilterExpression +=
           " " +
@@ -939,7 +943,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
           "</span>" +
           " " +
           "<span class='value'>" +
-          item.value +
+          value +
           "</span>" +
           " ";
 
@@ -981,7 +985,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   isValidate(): Boolean {
     if (!this.selectedColumn) {
       this.showMessage(
-        this.getText("AdvanceFilter.PlaeseSelectField"),
+        this.getText("AdvanceFilter.PleaseSelectField"),
         MessageType.Warning
       );
       return false;
@@ -989,7 +993,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
     if (!this.selectedOperator) {
       this.showMessage(
-        this.getText("AdvanceFilter.PlaeseSelectOperator"),
+        this.getText("AdvanceFilter.PleaseSelectOperator"),
         MessageType.Warning
       );
       return false;
@@ -997,7 +1001,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
     if (!this.selectedValue) {
       this.showMessage(
-        this.getText("AdvanceFilter.PlaeseEnterValue"),
+        this.getText("AdvanceFilter.PleaseEnterValue"),
         MessageType.Warning
       );
       return false;
@@ -1005,7 +1009,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
     if (!this.selectedLogicalOperator) {
       this.showMessage(
-        this.getText("AdvanceFilter.PlaeseSelectLogicOperator"),
+        this.getText("AdvanceFilter.PleaseSelectLogicOperator"),
         MessageType.Warning
       );
       return false;

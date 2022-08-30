@@ -4,8 +4,8 @@ using Microsoft.Extensions.Configuration;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Api;
 using SPPC.Licensing.Model;
-using SPPC.Tools.Api;
-using SPPC.Tools.Utility;
+using SPPC.Tadbir.Configuration;
+using SPPC.Tadbir.Utility;
 
 namespace SPPC.UpdateServer.Web.Controllers
 {
@@ -38,8 +38,8 @@ namespace SPPC.UpdateServer.Web.Controllers
         [Route(UpdateApi.LicenseServerImageUrl)]
         public IActionResult GetLicenseServerAsync()
         {
-            var imageFileName = $"{DockerService.LicenseServerImage}.tar.gz";
-            var imageFileData = _utility.GetImageData(DockerService.LicenseServerImage);
+            var imageFileName = $"{SysParameterUtility.LicenseServer.ImageName}.tar.gz";
+            var imageFileData = _utility.GetImageData(SysParameterUtility.LicenseServer.ImageName);
             return File(imageFileData, ImageMimeType, imageFileName);
         }
 
@@ -54,8 +54,8 @@ namespace SPPC.UpdateServer.Web.Controllers
             }
 
             var license = _apiClient.Get<LicenseViewModel>(LicenseApi.LicenseByKey, instance.LicenseKey);
-            var imageFileName = $"{DockerService.ApiServerImage}.tar.gz";
-            var imageFileData = _utility.GetImageData(DockerService.ApiServerImage, license.Edition);
+            var imageFileName = $"{SysParameterUtility.ApiServer.ImageName}.tar.gz";
+            var imageFileData = _utility.GetImageData(SysParameterUtility.ApiServer.ImageName, license.Edition);
             return File(imageFileData, ImageMimeType, imageFileName);
         }
 
@@ -63,8 +63,8 @@ namespace SPPC.UpdateServer.Web.Controllers
         [Route(UpdateApi.DbServerImageUrl)]
         public IActionResult GetDbServerAsync()
         {
-            var imageFileName = $"{DockerService.DbServerImage}.tar.gz";
-            var imageFileData = _utility.GetImageData(DockerService.DbServerImage);
+            var imageFileName = $"{SysParameterUtility.DbServer.ImageName}.tar.gz";
+            var imageFileData = _utility.GetImageData(SysParameterUtility.DbServer.ImageName);
             return File(imageFileData, ImageMimeType, imageFileName);
         }
 
@@ -72,8 +72,8 @@ namespace SPPC.UpdateServer.Web.Controllers
         [Route(UpdateApi.WebAppImageUrl)]
         public IActionResult GetWebAppAsync()
         {
-            var imageFileName = $"{DockerService.WebAppImage}.tar.gz";
-            var imageFileData = _utility.GetImageData(DockerService.WebAppImage);
+            var imageFileName = $"{SysParameterUtility.WebApp.ImageName}.tar.gz";
+            var imageFileData = _utility.GetImageData(SysParameterUtility.WebApp.ImageName);
             return File(imageFileData, ImageMimeType, imageFileName);
         }
 

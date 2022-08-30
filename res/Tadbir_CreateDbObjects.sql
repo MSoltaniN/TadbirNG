@@ -25,7 +25,7 @@ GO
 CREATE SCHEMA [Finance]
 GO
 
-CREATE SCHEMA [Workflow]
+CREATE SCHEMA [Reporting]
 GO
 
 
@@ -659,6 +659,50 @@ CREATE TABLE [Finance].[InactiveCurrency] (
 )
 GO
 
+CREATE TABLE [Reporting].[Chart] (
+    [ChartID]          INT              IDENTITY (1, 1) NOT NULL,
+    [Title]            NVARCHAR(128)    NOT NULL,
+    [Type]             VARCHAR(64)      NOT NULL,
+    [Function]         VARCHAR(64)      NOT NULL,
+    [Setting]          NVARCHAR(1024)   NOT NULL,
+    [DefaultSetting]   NVARCHAR(1024)   NOT NULL,
+    [Description]      NVARCHAR(512)    NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_Chart_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_Chart_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_Chart] PRIMARY KEY CLUSTERED ([ChartID] ASC)
+)
+GO
+
+CREATE TABLE [Reporting].[ChartAccount] (
+    [ChartAccountID]   INT              IDENTITY (1, 1) NOT NULL,
+    [ChartID]          INT              NOT NULL,
+    [AccountID]        INT              NULL,
+    [DetailAccountID]  INT              NULL,
+    [CostCenterID]     INT              NULL,
+    [ProjectID]        INT              NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_ChartAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_ChartAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_ChartAccount] PRIMARY KEY CLUSTERED ([ChartAccountID] ASC)
+    , CONSTRAINT [FK_Reporting_ChartAccount_Reporting_Chart] FOREIGN KEY ([ChartID]) REFERENCES [Reporting].[Chart]([ChartID])
+    , CONSTRAINT [FK_Reporting_ChartAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Reporting].[Account]([AccountID])
+    , CONSTRAINT [FK_Reporting_ChartAccount_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Reporting].[DetailAccount]([DetailAccountID])
+    , CONSTRAINT [FK_Reporting_ChartAccount_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Reporting].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_Reporting_ChartAccount_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Reporting].[Project]([ProjectID])
+)
+GO
+
+CREATE TABLE [Reporting].[ChartParameter] (
+    [ChartParameterID]   INT              IDENTITY (1, 1) NOT NULL,
+    [ChartID]            INT              NOT NULL,
+    [Name]               NVARCHAR(32)     NOT NULL,
+    [Type]               NVARCHAR(32)     NOT NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_ChartParameter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Reporting_ChartParameter_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_ChartParameter] PRIMARY KEY CLUSTERED ([ChartParameterID] ASC)
+    , CONSTRAINT [FK_Reporting_ChartParameter_Reporting_Chart] FOREIGN KEY ([ChartID]) REFERENCES [Reporting].[Chart]([ChartID])
+)
+GO
+
 CREATE TABLE [Core].[Filter] (
     [FilterID]       INT              IDENTITY (1, 1) NOT NULL,
     [ViewId]         INT              NOT NULL,
@@ -773,7 +817,7 @@ INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelTyp
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (6, 'QuickSearchSettings', 3, 2, 'QuickSearchConfig', N'{}', N'{}', 'QuickSearchSettingsDescription', 0)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
-    VALUES (8, 'SystemConfigurationSettings', 2, 1, 'SystemConfig', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}', 'SystemConfigurationDescription', 1)
+    VALUES (8, 'SystemConfigurationSettings', 2, 1, 'SystemConfig', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true,"inventoryMode": 1}', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true,"inventoryMode": 1}', 'SystemConfigurationDescription', 1)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (9, 'FinanceReportSettings', 2, 1, 'FinanceReportConfig', N'{"openingAsFirstVoucher":false,"startTurnoverAsInitBalance":false}', N'{"openingAsFirstVoucher":false,"startTurnoverAsInitBalance":false}', 'FinanceReportSettingsDescription', 1)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)

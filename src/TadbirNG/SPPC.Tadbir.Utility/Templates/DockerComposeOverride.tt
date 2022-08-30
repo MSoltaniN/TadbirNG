@@ -1,0 +1,43 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="SPPC.Tadbir.Configuration" #>
+version: '3.9'
+
+networks:
+ frontend:
+ backend:
+
+services:
+<#
+if(_dbServer == SysParameterUtility.DbServer.Name)
+{#>
+
+<#= SysParameterUtility.DbServer.Name #>:
+  image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.DbServer.ImageName #>:<#= SysParameterUtility.DbServer.Tag #>
+  ports: 
+    - 14433:1433
+<#
+}#>
+
+ <#= SysParameterUtility.ApiServer.Name #>:
+  image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.ApiServer.ImageName #>:<#= _editionTag #>
+  environment:
+   - ASPNETCORE_ENVIRONMENT=Production
+   - Logging__LogLevel__Microsoft=Trace
+   - ASPNETCORE_URLS=http://+:80
+  
+ loadBalancer:
+  profiles:
+   - donotstart
+
+ <#= SysParameterUtility.WebApp.Name #>:
+  image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.WebApp.ImageName #>:<#= SysParameterUtility.WebApp.Tag #>
+
+ <#= SysParameterUtility.LicenseServer.Name #>:
+  image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.LicenseServer.ImageName #>:<#= SysParameterUtility.LicenseServer.Tag #>
+  environment:
+   - ASPNETCORE_ENVIRONMENT=Production
+   - Logging__LogLevel__Microsoft=Trace

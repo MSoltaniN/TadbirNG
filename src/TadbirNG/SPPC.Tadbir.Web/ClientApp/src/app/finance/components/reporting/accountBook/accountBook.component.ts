@@ -916,6 +916,17 @@ export class AccountBookComponent
 
     this.dialogModel.viewID = this.selectedViewId;
 
+    var model = this.bookType.find((f) => f.key == this.selectedBookType);
+
+    if (model != undefined) {
+      this.dialogModel.defaultCriteria = new Filter(
+        "level",
+        (model.level).toString(),
+        " == {0}",
+        "System.Int32"
+      );
+    }
+
     this.dialogRef.content.instance.cancel.subscribe((res) => {
       this.dialogRef.close();
     });

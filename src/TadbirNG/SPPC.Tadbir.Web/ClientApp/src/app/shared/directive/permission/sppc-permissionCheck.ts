@@ -1,5 +1,5 @@
 
-import { Directive, OnInit, OnDestroy, Input, Output, EventEmitter, HostListener, ViewContainerRef } from "@angular/core";
+import { Directive, OnInit, OnDestroy, Input, Output, EventEmitter, HostListener, ViewContainerRef, AfterContentChecked } from "@angular/core";
 import { Subject, Subscription } from "rxjs";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "@ngx-translate/core";
@@ -11,13 +11,14 @@ import { EnviromentComponent } from "@sppc/shared/class";
   providers:[Permissions]
 })
 
-export class SppcPermissionCheckDirective implements OnInit, OnDestroy {
+export class SppcPermissionCheckDirective implements OnInit, OnDestroy,AfterContentChecked {
 
   @Input('SppcPermissionCheck') permissionKey: string;
   @Input('EntityName') entityName: string;
 
   private permissions :string;
   private enum :string; 
+  private formValue:any = {};
 
   @Output() sppcClick = new EventEmitter();
   private clicks = new Subject();
@@ -26,9 +27,17 @@ export class SppcPermissionCheckDirective implements OnInit, OnDestroy {
   constructor(public parentComponet: ViewContainerRef, private enviroment: EnviromentComponent, private permissionKeys: Permissions,
     public toastrService: ToastrService, public translate: TranslateService) {
   }
-
+  
   ngOnInit() {
     this.subscription = this.clicks.pipe().subscribe(e => this.sppcClick.emit(e));
+  }
+  
+  ngAfterContentChecked(): void {
+    if (this.permissions == 'ChangeStatus') {
+      if (!this.formValue.hasOwnProperty('isActive') || this.formValue.isActive == null) {
+        this.formValue = (<any>this.parentComponet)._view.component.editForm.value
+      }
+    }
   }
 
   ngOnDestroy(): void {
@@ -47,6 +56,12 @@ export class SppcPermissionCheckDirective implements OnInit, OnDestroy {
   clickEvent(event) {
     event.preventDefault();
     event.stopPropagation();
+
+    if (this.permissions == 'ChangeStatus' && !this.haveAccess()) {
+      (<any>this.parentComponet)._view.component.editForm.patchValue({
+        isActive : this.formValue.isActive
+      });
+    }
     if (this.haveAccess())
       this.clicks.next(event);
     else

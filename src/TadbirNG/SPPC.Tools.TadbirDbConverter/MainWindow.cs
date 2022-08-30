@@ -57,7 +57,7 @@ namespace SPPC.Tools.TadbirDbConverter
             var result = _dalFrom.Query(query);
             string insertFunc(FiscalPeriod fp) => String.Format(
                 Scripts.InsertFiscalPeriod, fp.Id, companyId, fp.Name.FromTadbirText(),
-                fp.StartDate, fp.EndDate, FromTadbirInventoryMode(fp.InventoryMode),
+                fp.StartDate, fp.EndDate, 1,
                 fp.Description.FromTadbirText());
             query = GetInsertCommands<FiscalPeriod>(result, insertFunc);
             _dbConsole.ExecuteNonQuery(query);

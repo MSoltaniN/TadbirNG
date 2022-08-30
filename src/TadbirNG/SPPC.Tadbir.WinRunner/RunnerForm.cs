@@ -6,9 +6,9 @@ using SPPC.Framework.Cryptography;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service;
 using SPPC.Licensing.Model;
-using SPPC.Tools.Api;
-using SPPC.Tools.Model;
-using SPPC.Tools.Utility;
+using SPPC.Tadbir.Configuration;
+using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.Utility.Model;
 
 namespace SPPC.Tadbir.WinRunner
 {
@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.WinRunner
         public RunnerForm()
         {
             InitializeComponent();
-            _apiClient = new ServiceClient(UpdateServerUrl);
+            _apiClient = new ServiceClient(SysParameterUtility.Servers.Update);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -87,21 +87,27 @@ namespace SPPC.Tadbir.WinRunner
             _apiClient.AddHeader(LicenseConstants.InstanceHeaderName, config.Key);
             var latest = _apiClient.Get<VersionInfo>(UpdateApi.LatestVersionInfoUrl);
             _apiClient.RemoveHeader(LicenseConstants.InstanceHeaderName);
-            if (current.Version == latest.Version)
+            var utility = new UpdateUtility()
+            {
+                UpdateServerUrl = SysParameterUtility.Servers.Update,
+                Current = current,
+                Latest = latest,
+                DbServerName = config.DbServerName
+            };
+            if (!utility.NeedsUpdate())
             {
                 MessageBox.Show("شما از آخرین نسخه برنامه استفاده می کنید.",
                     "اطلاع به کاربر", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.RtlReading);
             }
-            else if(ConfirmApplicationUpdate(current, latest))
+            else if(ConfirmApplicationUpdate(utility))
             {
                 Cursor = Cursors.Default;
                 current.Edition = UpdateUtility.GetInstalledEdition();
                 var updater = new UpdateForm()
                 {
-                    CurrentVersion = current,
-                    LatestVersion = latest,
-                    InstanceKey = config.Key
+                    InstanceKey = config.Key,
+                    Updater = utility
                 };
                 updater.Show(this);
             }
@@ -120,9 +126,9 @@ namespace SPPC.Tadbir.WinRunner
             }
         }
 
-        private bool ConfirmApplicationUpdate(VersionInfo current, VersionInfo latest)
+        private bool ConfirmApplicationUpdate(UpdateUtility utility)
         {
-            int downloadSize = UpdateUtility.GetDownloadSize(current, latest);
+            int downloadSize = utility.GetDownloadSize();
             var message = String.Format(
                 "با ادامه عملیات، حدود {0} مگابایت دانلود می شود.{1}آیا با به روزرسانی برنامه موافق هستید؟",
                 downloadSize, Environment.NewLine);
@@ -142,7 +148,6 @@ namespace SPPC.Tadbir.WinRunner
         }
 
         private const string ComposeCommand = "docker-compose -f docker-compose.override.yml -f docker-compose.yml";
-        private const string UpdateServerUrl = "http://localhost:9092";
         private readonly CliRunner _runner = new();
         private readonly IApiClient _apiClient;
     }

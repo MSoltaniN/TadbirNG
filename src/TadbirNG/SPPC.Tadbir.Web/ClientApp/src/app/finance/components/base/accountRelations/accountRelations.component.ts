@@ -109,6 +109,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     this.relatedComponentDropdownSelected = 0;
     this.noRelatedResultMessage = false;
     this.deleteKey = [];
+    this.searchValue = '';
 
     if (item > 0) {
       this.isDisableRelatedComponnet = false;
@@ -159,6 +160,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
   public handleRelatedComponentDropDownChange(item: any) {
     this.relatedComponentCheckedKeys = [];
     this.deleteKey = [];
+    this.relatedSearchValue = '';
     if (item > 0) {
       this.relatedComponentDropdownSelected = item;
       this.isEnableRelatedComponentSearchBtn = true;

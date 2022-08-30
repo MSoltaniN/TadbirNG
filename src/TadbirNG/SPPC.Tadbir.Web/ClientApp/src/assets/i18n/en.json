@@ -51,7 +51,9 @@
     "DashboardName": "Dashboard",
     "Setting": "Setting",
     "White": "White",
-    "SettingConfirm": "Are you sure about the dashboard settings?"
+    "SettingConfirm": "Are you sure about the dashboard settings?",
+    "WidgetSetting": "ٌWidget Settings",
+    "ChartType": "Chart type"
   },
   "Exception": {
     "ErrorCode": "Error Code",
@@ -293,10 +295,10 @@
     "DoesNotContain": "Does Not Contain",
     "RecordNotFound": "No filters inserted!",
     "InsertFilter": "Insert Filter",
-    "PlaeseSelectField": "Plaese Select a Field",
-    "PlaeseEnterValue": "Plaese Enter a Value",
-    "PlaeseSelectOperator": "Plaese Select a Operator",
-    "PlaeseSelectLogicOperator": "Plaese Select LogicOperator",
+    "PleaseSelectField": "Please Select a Field",
+    "PleaseEnterValue": "Please Enter a Value",
+    "PleaseSelectOperator": "Please Select a Operator",
+    "PleaseSelectLogicOperator": "Please Select LogicOperator",
     "FilterInsertedSuccess": "The filter was inserted successfully",
     "FilterEditedSuccess": "Filter saved successfully",
     "FilterDeletedSuccess": "Filter successfully removed",
@@ -1250,7 +1252,7 @@
       "DescriptionIsTooLong": "Description can have a maximum of 1024 characters."
     },
     "AccountOwner": {
-      "BankNameIsTooLong": "Bank name can have a maximum of 64 characters.",
+      "BankNameIsTooLong": "Bank name can have a maximum of 128 characters.",
       "BankNameIsRequired": "Bank name is required.",
       "BankBranchNameIsRequired": "Branch name is required.",
       "BankBranchNameIsTooLong": "Branch name can have a maximum of 64 characters.",

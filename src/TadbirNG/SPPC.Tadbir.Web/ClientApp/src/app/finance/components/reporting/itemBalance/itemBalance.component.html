@@ -102,7 +102,7 @@
       <div class="content-header no-padding no-margin">
         <div>
           <section class="content-header" style="padding-top: 0">
-            <h4 class="pull-right">
+            <h4 [ngClass]="CurrentLanguage == 'fa'? 'pull-right': 'pull-left'" >
               {{ "ItemBalance.Title" | translate }}
               {{
                 displayTypeName
@@ -110,7 +110,7 @@
                   : ("ItemBalance.Ledger" | translate)
               }}
             </h4>
-            <ol class="breadcrumb pull-left" style="top: 0">
+            <ol class="breadcrumb" [ngClass]="CurrentLanguage == 'fa'? 'pull-right': 'pull-left'" style="top: 0">
               <li *ngFor="let item of breadCrumbList">
                 <a href="javascript:;" (click)="selectBreadCrumb(item)">{{
                   item.displayType.name

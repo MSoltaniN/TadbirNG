@@ -78,6 +78,7 @@ export function getLayoutModule(layout: Layout) {
 @Component({
   selector: "sppc-itemBalance",
   templateUrl: "./itemBalance.component.html",
+<<<<<<< HEAD
   styles: [
     `
       .section-account button {
@@ -178,6 +179,9 @@ export function getLayoutModule(layout: Layout) {
       }
     `,
   ],
+=======
+  styleUrls: ["./itemBalance.component.css"],
+>>>>>>> c18067e133806dfde4cb542967e0e731f864c124
   providers: [
     {
       provide: RTL,
@@ -1071,7 +1075,7 @@ export class ItemBalanceComponent
 
     if (isDetail && !this.selectedModel) {
       this.showMessage(
-        this.getText("Balance.PlaeseSelectAnAccount"),
+        this.getText("Balance.PleaseSelectAccount"),
         MessageType.Warning
       );
       return;
