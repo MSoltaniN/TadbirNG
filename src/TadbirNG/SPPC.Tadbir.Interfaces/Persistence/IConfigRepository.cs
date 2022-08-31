@@ -82,6 +82,12 @@ namespace SPPC.Tadbir.Persistence
         Task SaveSystemConfigAsync(SettingBriefViewModel configItem);
 
         /// <summary>
+        /// به روش آسنکرون، امکان تغییر سیستم ثبت دوره مالی جاری را بررسی می کند
+        /// </summary>
+        /// <returns>آیا تغییر سیستم ثبت دوره مالی جاری امکان دارد</returns>
+        Task<bool> ValidateInventoryModeChangeAsync();
+
+        /// <summary>
         /// به روش آسنکرون، تنظیمات موجود برای عناوین سفارشی فرم گزارشی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="formId">شناسه دیتابیسی فرم گزارشی</param>

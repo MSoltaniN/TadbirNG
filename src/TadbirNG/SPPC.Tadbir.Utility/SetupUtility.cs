@@ -282,26 +282,29 @@ namespace SPPC.Tadbir.Utility
             _log.Flush();
         }
 
+        public static void FinalizeSetup(string path)
+        {
+            string logPath = Path.Combine(path, "runner", Path.GetFileName(_log.LogPath));
+            File.Copy(_log.LogPath, logPath, true);
+        }
+
         private static void AdjustDockerCompose(string installPath, string dbServer)
         {
-            if (dbServer == SysParameterUtility.DbServer.Name)
+            var composePath = Path.Combine(installPath, "runner", "docker-compose.yml");
+            var overridePath = Path.Combine(installPath, "runner", "docker-compose.override.yml");
+            var nameTag = File.ReadAllLines(composePath)
+                .Where(line => line.Contains(SysParameterUtility.ApiServer.ImageName))
+                .Select(line => line[line.IndexOf(SysParameterUtility.ApiServer.ImageName)..])
+                .FirstOrDefault();
+            if (nameTag != null)
             {
-                var composePath = Path.Combine(installPath, "runner", "docker-compose.yml");
-                var overridePath = Path.Combine(installPath, "runner", "docker-compose.override.yml");
-                var nameTag = File.ReadAllLines(composePath)
-                    .Where(line => line.Contains(SysParameterUtility.ApiServer.ImageName))
-                    .Select(line => line[line.IndexOf(SysParameterUtility.ApiServer.ImageName)..])
-                    .FirstOrDefault();
-                if (nameTag != null)
-                {
-                    var editionTag = nameTag
-                        .Replace(SysParameterUtility.ApiServer.ImageName, String.Empty)
-                        .Replace(":", String.Empty);
-                    var template = new DockerCompose(editionTag, dbServer) as ITextTemplate;
-                    File.WriteAllText(composePath, template.TransformText());
-                    template = new DockerComposeOverride(editionTag, dbServer);
-                    File.WriteAllText(overridePath, template.TransformText());
-                }
+                var editionTag = nameTag
+                    .Replace(SysParameterUtility.ApiServer.ImageName, String.Empty)
+                    .Replace(":", String.Empty);
+                var template = new DockerCompose(editionTag, dbServer) as ITextTemplate;
+                File.WriteAllText(composePath, template.TransformText());
+                template = new DockerComposeOverride(editionTag, dbServer);
+                File.WriteAllText(overridePath, template.TransformText());
             }
         }
 

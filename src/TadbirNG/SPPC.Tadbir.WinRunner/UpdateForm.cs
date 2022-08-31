@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -21,9 +20,7 @@ namespace SPPC.Tadbir.WinRunner
             InitializeComponent();
         }
 
-        public VersionInfo CurrentVersion { get; set; }
-
-        public VersionInfo LatestVersion { get; set; }
+        public UpdateUtility Updater { get; set; }
 
         public string InstanceKey { get; set; }
 
@@ -56,19 +53,13 @@ namespace SPPC.Tadbir.WinRunner
         {
             LogOperation("Update process started.");
             LogOperation();
-            _utility = new UpdateUtility()
-            {
-                UpdateServerUrl = ConfigurationManager.AppSettings["ServerUrl"],
-                Current = CurrentVersion,
-                Latest = LatestVersion
-            };
             LogOperation("Estimating download size...");
-            _downloadSize = UpdateUtility.GetDownloadSize(CurrentVersion, LatestVersion);
+            _downloadSize = Updater.GetDownloadSize();
             LogOperation($"Approximate download size : {_downloadSize}");
             LogOperation();
             LogOperation("Initializing update...");
             _updateFolder = UpdateUtility.PrepareUpdateFolder();
-            PrepareLatestServices();
+            Updater.PrepareLatestServices();
             LogOperation("Downloading services...");
             DownloadServices();
             LogOperation();
@@ -88,7 +79,7 @@ namespace SPPC.Tadbir.WinRunner
             else
             {
                 LogOperation("Finalizing update...");
-                _utility.FinalizeUpdate();
+                Updater.FinalizeUpdate();
             }
         }
 
@@ -112,23 +103,9 @@ namespace SPPC.Tadbir.WinRunner
             Close();
         }
 
-        private void PrepareLatestServices()
+        private bool UsesDockerDbServer()
         {
-            PrepareLatestService(SysParameterUtility.LicenseServer.ImageName, UpdateApi.LicenseServerImageUrl);
-            PrepareLatestService(SysParameterUtility.ApiServer.ImageName, UpdateApi.ApiServerImageUrl);
-            PrepareLatestService(SysParameterUtility.DbServer.ImageName, UpdateApi.DbServerImageUrl);
-            PrepareLatestService(SysParameterUtility.WebApp.ImageName, UpdateApi.WebAppImageUrl);
-        }
-
-        private void PrepareLatestService(string name, string sourceUrl)
-        {
-            var serviceInfo = LatestVersion.Services
-                .Where(svc => svc.Name == name)
-                .FirstOrDefault();
-            if (serviceInfo != null)
-            {
-                serviceInfo.SourceUrl = sourceUrl;
-            }
+            return Updater.DbServerName == SysParameterUtility.DbServer.Name;
         }
 
         private void DownloadServices()
@@ -145,7 +122,7 @@ namespace SPPC.Tadbir.WinRunner
                 CloseForm();
             }
 
-            if (!DownloadService(SysParameterUtility.DbServer.ImageName))
+            if (UsesDockerDbServer() && !DownloadService(SysParameterUtility.DbServer.ImageName))
             {
                 worker.CancelAsync();
                 CloseForm();
@@ -179,11 +156,11 @@ namespace SPPC.Tadbir.WinRunner
             var progress = GetUpdateProgress(serviceName, _downloadSize);
             if (progress.DownloadProgress > 0)
             {
-                var serviceInfo = LatestVersion.Services
+                var serviceInfo = Updater.Latest.Services
                     .Where(svc => svc.Name == serviceName)
                     .FirstOrDefault();
                 LogOperation($"Downloading service {serviceName}...");
-                bool downloaded = _utility.DownloadService(_updateFolder, serviceInfo, instance);
+                bool downloaded = Updater.DownloadService(_updateFolder, serviceInfo, instance);
                 if (!downloaded)
                 {
                     LogOperation($"Could not download service {serviceName}. Encountered failed or corrupted download.", true);
@@ -209,11 +186,14 @@ namespace SPPC.Tadbir.WinRunner
         private void BackupServices()
         {
             _backupFolder = FileUtility.GetTempFolderPath();
-            var editionTag = DockerUtility.GetEditionTag(CurrentVersion.Edition);
+            var editionTag = DockerUtility.GetEditionTag(Updater.Current.Edition);
             BackupService(SysParameterUtility.LicenseServer.ImageName);
             BackupService(SysParameterUtility.ApiServer.ImageName, editionTag);
-            BackupService(SysParameterUtility.DbServer.ImageName);
             BackupService(SysParameterUtility.WebApp.ImageName, SysParameterUtility.WebApp.Tag);
+            if (UsesDockerDbServer())
+            {
+                BackupService(SysParameterUtility.DbServer.ImageName);
+            }
         }
 
         private void BackupService(string serviceName, string tag = null)
@@ -222,7 +202,7 @@ namespace SPPC.Tadbir.WinRunner
             var progress = GetUpdateProgress(serviceName, _downloadSize);
             if (progress.BackupProgress > 0)
             {
-                _utility.BackupService(_backupFolder, serviceName, imageTag);
+                Updater.BackupService(_backupFolder, serviceName, imageTag);
                 worker.ReportProgress(progress.BackupProgress);
                 LogOperation($"Backup completed for service {serviceName}.");
             }
@@ -241,7 +221,7 @@ namespace SPPC.Tadbir.WinRunner
                 return false;
             }
 
-            if (!UpdateService(SysParameterUtility.DbServer.ImageName))
+            if (UsesDockerDbServer() && !UpdateService(SysParameterUtility.DbServer.ImageName))
             {
                 return false;
             }
@@ -257,7 +237,7 @@ namespace SPPC.Tadbir.WinRunner
         private bool UpdateService(string serviceName)
         {
             bool updated = true;
-            if (_utility.UpdateService(serviceName))
+            if (Updater.UpdateService(serviceName))
             {
                 var progress = GetUpdateProgress(serviceName, _downloadSize);
                 worker.ReportProgress(progress.SetupProgress);
@@ -269,7 +249,7 @@ namespace SPPC.Tadbir.WinRunner
             else
             {
                 LogOperation($"Error updating service {serviceName}. Performing rollback...");
-                _utility.RollbackUpdate(_backupFolder);
+                Updater.RollbackUpdate(_backupFolder);
                 updated = false;
             }
 
@@ -279,9 +259,9 @@ namespace SPPC.Tadbir.WinRunner
         private UpdateProgress GetUpdateProgress(string serviceName, int downloadSize)
         {
             var progress = new UpdateProgress();
-            if (_utility.NeedsUpdate(serviceName))
+            if (Updater.NeedsUpdate(serviceName))
             {
-                var latestInfo = LatestVersion.Services
+                var latestInfo = Updater.Latest.Services
                     .Where(svc => svc.Name == serviceName)
                     .FirstOrDefault();
                 var percent = (int)(FileSize.ToMegaBytes(latestInfo.Size) / downloadSize * 100 / 3);
@@ -340,7 +320,6 @@ namespace SPPC.Tadbir.WinRunner
         }
 
         private TimeSpan _elapsed;
-        private UpdateUtility _utility;
         private int _downloadSize;
         private string _updateFolder;
         private string _backupFolder;

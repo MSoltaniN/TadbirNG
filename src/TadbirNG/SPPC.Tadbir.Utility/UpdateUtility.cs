@@ -31,6 +31,8 @@ namespace SPPC.Tadbir.Utility
 
         public VersionInfo Latest { get; set; }
 
+        public string DbServerName { get; set; }
+
         public string UpdateServerUrl
         {
             get
@@ -45,32 +47,6 @@ namespace SPPC.Tadbir.Utility
             }
         }
 
-        public static int GetDownloadSize(VersionInfo current, VersionInfo latest)
-        {
-            double downloadSize = 0;
-            if (current.Services[0].Sha256 != latest.Services[0].Sha256)
-            {
-                downloadSize += FileSize.ToMegaBytes(latest.Services[0].Size, 1);
-            }
-
-            if (current.Services[1].Sha256 != latest.Services[1].Sha256)
-            {
-                downloadSize += FileSize.ToMegaBytes(latest.Services[1].Size, 1);
-            }
-
-            if (current.Services[2].Sha256 != latest.Services[2].Sha256)
-            {
-                downloadSize += FileSize.ToMegaBytes(latest.Services[2].Size, 1);
-            }
-
-            if (current.Services[3].Sha256 != latest.Services[3].Sha256)
-            {
-                downloadSize += FileSize.ToMegaBytes(latest.Services[3].Size, 1);
-            }
-
-            return (int)Math.Round(downloadSize);
-        }
-
         public static string PrepareUpdateFolder()
         {
             var root = Path.GetDirectoryName(Environment.CurrentDirectory);
@@ -82,6 +58,48 @@ namespace SPPC.Tadbir.Utility
             }
 
             return updateFolder;
+        }
+
+        public void PrepareLatestServices()
+        {
+            Verify.ArgumentNotNull(Latest, nameof(Latest));
+            Latest.Services[DockerServiceIndex.LicenseServer].SourceUrl = UpdateApi.LicenseServerImageUrl;
+            Latest.Services[DockerServiceIndex.ApiServer].SourceUrl = UpdateApi.ApiServerImageUrl;
+            Latest.Services[DockerServiceIndex.DbServer].SourceUrl = UpdateApi.DbServerImageUrl;
+            Latest.Services[DockerServiceIndex.WebApp].SourceUrl = UpdateApi.WebAppImageUrl;
+        }
+
+        public int GetDownloadSize()
+        {
+            Verify.ArgumentNotNull(Current, nameof(Current));
+            Verify.ArgumentNotNull(Latest, nameof(Latest));
+            double downloadSize = 0;
+            int index = DockerServiceIndex.LicenseServer;
+            if (Current.Services[index].Sha256 != Latest.Services[index].Sha256)
+            {
+                downloadSize += FileSize.ToMegaBytes(Latest.Services[index].Size, 1);
+            }
+
+            index = DockerServiceIndex.ApiServer;
+            if (Current.Services[index].Sha256 != Latest.Services[index].Sha256)
+            {
+                downloadSize += FileSize.ToMegaBytes(Latest.Services[index].Size, 1);
+            }
+
+            index = DockerServiceIndex.DbServer;
+            if (DbServerName == SysParameterUtility.DbServer.Name
+                && Current.Services[index].Sha256 != Latest.Services[index].Sha256)
+            {
+                downloadSize += FileSize.ToMegaBytes(Latest.Services[index].Size, 1);
+            }
+
+            index = DockerServiceIndex.WebApp;
+            if (Current.Services[index].Sha256 != Latest.Services[index].Sha256)
+            {
+                downloadSize += FileSize.ToMegaBytes(Latest.Services[index].Size, 1);
+            }
+
+            return (int)Math.Round(downloadSize);
         }
 
         public bool DownloadService(string updateFolder, ServiceInfo serviceInfo, string instance = null)
@@ -224,6 +242,12 @@ namespace SPPC.Tadbir.Utility
 
         public bool NeedsUpdate(string serviceName)
         {
+            if (serviceName == SysParameterUtility.DbServer.ImageName
+                && DbServerName != SysParameterUtility.DbServer.Name)
+            {
+                return false;
+            }
+
             var currentInfo = Current.Services
                 .Where(svc => svc.Name == serviceName)
                 .FirstOrDefault();

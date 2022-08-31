@@ -80,6 +80,7 @@ namespace SPPC.Tadbir.Setup
             SetupUtility.ConfigureDbService(root, _settings);
             worker.ReportProgress(20);
             SetupUtility.FlushLogFile();
+            SetupUtility.FinalizeSetup(_model.InstallPath);
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
