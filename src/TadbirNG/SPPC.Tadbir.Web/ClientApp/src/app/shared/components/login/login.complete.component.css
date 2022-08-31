@@ -37,6 +37,10 @@
   margin: 0 -10px;
 }
 
+.btn {
+  margin-inline-start: 3px;
+}
+
 ::ng-deep.dialog-style-wizard > .k-overlay {
   opacity: 0 !important;
 }

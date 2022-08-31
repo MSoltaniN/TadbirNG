@@ -72,3 +72,7 @@ input[type=checkbox], input[type=radio] {
   padding: 6px !important;
   -webkit-appearance: auto !important;
 }
+
+.content-header {
+  width: 100%;
+}

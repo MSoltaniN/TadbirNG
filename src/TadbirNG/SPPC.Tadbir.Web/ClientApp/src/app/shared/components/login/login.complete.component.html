@@ -7,7 +7,7 @@
           <div class="toast-container"></div>
           <div class="form-group">
             <label class="col-md-12">{{ 'Company.CompanyName' | translate }}</label>
-            <kendo-dropdownlist class="col-md-12 sppc-float"
+            <kendo-dropdownlist class="sppc-float"
                                 [data]="compenies" (valueChange)="companyChange($event)" [disabled]="disabledCompany" [valuePrimitive]="true"
                                 [textField]="'value'" [(ngModel)]="companyId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
               <ng-template kendoDropDownListNoDataTemplate>
@@ -17,7 +17,7 @@
           </div>
           <div class="form-group voffset2">
             <label class="col-md-12">{{ 'Branch.BranchName' | translate }}</label>
-            <kendo-dropdownlist [disabled]="disabledBranch" class="col-md-12 sppc-float"
+            <kendo-dropdownlist [disabled]="disabledBranch" class="sppc-float"
                                 [data]="branches" [valuePrimitive]="true"
                                 [textField]="'value'" [(ngModel)]="branchId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
               <ng-template kendoDropDownListNoDataTemplate>
@@ -27,7 +27,7 @@
           </div>
           <div class="form-group voffset2">
             <label class="col-md-12">{{ 'Fiscal.FiscalPeriod' | translate }}</label>
-            <kendo-dropdownlist [disabled]="disabledFiscalPeriod" class="col-md-12 sppc-float"
+            <kendo-dropdownlist [disabled]="disabledFiscalPeriod" class="sppc-float"
                                 [data]="fiscalPeriods" [valuePrimitive]="true"
                                 [textField]="'value'" [(ngModel)]="fiscalPeriodId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
               <ng-template kendoDropDownListNoDataTemplate>

@@ -21,8 +21,9 @@ import { BrowserStorageService } from '@sppc/shared/services';
     (focusout)="onDateFocusOut()">
   </dp-date-picker>`,
   styles: [`
-    ::ng-deep dp-date-picker.dp-material .dp-picker-input { width:100% !important; } 
-    dp-date-picker{width:100%; direction:ltr;} 
+    ::ng-deep dp-date-picker.dp-material .dp-picker-input,::ng-deep dp-date-picker > div { width:100% !important; } 
+    ::ng-deep dp-date-picker > div:nth-child(2) {position: absolute}
+    dp-date-picker{width:100%; direction:ltr; padding:0} 
     ::ng-deep dp-day-calendar{position: fixed;}
     ::ng-deep sppc-datepicker input{
     border-color: rgba(0, 0, 0, 0.15);
