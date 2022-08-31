@@ -114,12 +114,17 @@
             *ngIf="this.selectScriptType === ''"
             >{{ "AdvanceFilter.PleaseSelectField" | translate }}</label
           >
-          <input
+          <!-- <input
             class="k-textbox col-xs-12 col-sm-12 sppc-input-num sppc-float"
             [(ngModel)]="selectedValue"
             [OnlyNumber]
             *ngIf="this.selectScriptType === 'number'"
-          />
+          /> -->
+          <sppc-numericInput [(ngModel)]="selectedValue"
+            *ngIf="this.selectScriptType === 'number'"
+            class="sppc-input-num sppc-float sppc-width-100">
+          </sppc-numericInput>
+
           <input
             class="k-textbox col-xs-12 col-sm-12 sppc-input-num sppc-float"
             [(ngModel)]="selectedValue"
