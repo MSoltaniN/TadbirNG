@@ -20,9 +20,9 @@ export class DashboardApi {
     // dashboard/license
     public static LicenseInfo = environment.BaseUrl + "/dashboard/license";
 
-    // dashboard/charts
-    public static Charts = environment.BaseUrl + "/dashboard/charts";
+    // dashboard/widgets
+    public static Widgets = environment.BaseUrl + "/dashboard/widgets";
 
-    // dashboard/charts/{chartId:min(1)}
-    public static Chart = environment.BaseUrl + "/dashboard/charts/{0}";
+    // dashboard/widgets/{widgetId:min(1)}
+    public static Widget = environment.BaseUrl + "/dashboard/widgets/{0}";
 }
