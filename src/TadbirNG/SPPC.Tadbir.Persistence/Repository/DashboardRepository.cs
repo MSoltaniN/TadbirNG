@@ -5,12 +5,15 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -55,6 +58,197 @@ namespace SPPC.Tadbir.Persistence
                 NetSales = GetMonthlyNetSales(months),
                 GrossSales = GetMonthlyGrossSales(months)
             };
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات کامل داشبورد ایجاد شده توسط کاربر جاری برنامه را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات کامل برای داشبورد کاربر جاری برنامه یا رفرنس بدون مقدار
+        /// در صورتی که داشبوردی برای کاربر جاری وجود نداشته باشد</returns>
+        public DashboardViewModel GetCurrentUserDashboard()
+        {
+            var query = String.Format(DashboardQuery.CurrentDashboardWidgets, UserContext.Id);
+            DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+            var result = DbConsole.ExecuteQuery(query);
+            return GetDashboard(result);
+        }
+
+        private DashboardViewModel GetDashboard(DataTable result)
+        {
+            var fullDashboard = default(DashboardViewModel);
+            if (result.Rows.Count > 0)
+            {
+                int dashboardId = _report.ValueOrDefault<int>(result.Rows[0], "DashboardID");
+                fullDashboard = new DashboardViewModel()
+                {
+                    Id = dashboardId,
+                    UserId = UserContext.Id
+                };
+                var tabs = result.Rows
+                    .Cast<DataRow>()
+                    .Select(row => new DashboardTabViewModel()
+                    {
+                        Id = _report.ValueOrDefault<int>(row, "TabID"),
+                        Index = _report.ValueOrDefault<int>(row, "Index"),
+                        Title = _report.ValueOrDefault(row, "TabTitle")
+                    });
+                foreach (var tab in tabs.GroupBy(t => t.Id))
+                {
+                    fullDashboard.Tabs.Add(tab.First());
+                }
+
+                var tabWidgets = result.Rows
+                    .Cast<DataRow>()
+                    .Select(row => new TabWidgetViewModel()
+                    {
+                        TabId = _report.ValueOrDefault<int>(row, "TabID"),
+                        WidgetId = _report.ValueOrDefault<int>(row, "WidgetID"),
+                        Settings = _report.ValueOrDefault(row, "Settings"),
+                        DefaultSettings = _report.ValueOrDefault(row, "DefaultSettings"),
+                        WidgetTitle = _report.ValueOrDefault(row, "Title"),
+                        WidgetDescription = _report.ValueOrDefault(row, "Description")
+                    })
+                    .ToArray();
+
+                var widgetIds = tabWidgets
+                    .Select(tw => tw.WidgetId)
+                    .Distinct();
+                if (widgetIds.Any())
+                {
+                    var query = String.Format(DashboardQuery.WidgetDetails, String.Join(',', widgetIds));
+                    var details = DbConsole.ExecuteQuery(query);
+                    var widgets = details.Rows
+                        .Cast<DataRow>()
+                        .Select(row => new TabWidgetViewModel()
+                        {
+                            WidgetId = _report.ValueOrDefault<int>(row, "WidgetID"),
+                            WidgetFunctionId = _report.ValueOrDefault<int>(row, "FunctionID"),
+                            WidgetTypeId = _report.ValueOrDefault<int>(row, "TypeID"),
+                            WidgetFunctionName = _report.ValueOrDefault(row, "FunctionName"),
+                            WidgetTypeName = _report.ValueOrDefault(row, "TypeName")
+                        });
+                    foreach (var group in widgets.GroupBy(w => w.WidgetId))
+                    {
+                        var widget = group.First();
+                        Array.ForEach(tabWidgets.Where(item => item.WidgetId == group.Key).ToArray(), tw =>
+                        {
+                            tw.WidgetFunctionId = widget.WidgetFunctionId;
+                            tw.WidgetFunctionName = widget.WidgetFunctionName;
+                            tw.WidgetTypeId = widget.WidgetTypeId;
+                            tw.WidgetTypeName = widget.WidgetTypeName;
+                        });
+                    }
+
+                    query = String.Format(DashboardQuery.WidgetsAccounts, String.Join(',', widgetIds));
+                    var accounts = DbConsole.ExecuteQuery(query);
+                    var widgetAccounts = accounts.Rows
+                        .Cast<DataRow>()
+                        .Select(row => new
+                        {
+                            WidgetId = _report.ValueOrDefault<int>(row, "WidgetID"),
+                            FullAccount = new FullAccountViewModel()
+                            {
+                                Account = new AccountItemBriefViewModel()
+                                {
+                                    Id = _report.ValueOrDefault<int>(row, "AccountID"),
+                                    Name = _report.ValueOrDefault(row, "AccountName"),
+                                    FullCode = _report.ValueOrDefault(row, "AccountFullCode")
+                                },
+                                DetailAccount = new AccountItemBriefViewModel()
+                                {
+                                    Id = _report.ValueOrDefault<int>(row, "DetailAccountID"),
+                                    Name = _report.ValueOrDefault(row, "DetailAccountName"),
+                                    FullCode = _report.ValueOrDefault(row, "DetailAccountFullCode")
+                                },
+                                CostCenter = new AccountItemBriefViewModel()
+                                {
+                                    Id = _report.ValueOrDefault<int>(row, "CostCenterID"),
+                                    Name = _report.ValueOrDefault(row, "CostCenterName"),
+                                    FullCode = _report.ValueOrDefault(row, "CostCenterFullCode")
+                                },
+                                Project = new AccountItemBriefViewModel()
+                                {
+                                    Id = _report.ValueOrDefault<int>(row, "ProjectID"),
+                                    Name = _report.ValueOrDefault(row, "ProjectName"),
+                                    FullCode = _report.ValueOrDefault(row, "ProjectFullCode")
+                                }
+                            }
+                        });
+
+                    query = String.Format(DashboardQuery.WidgetsParameters, String.Join(',', widgetIds));
+                    var parameters = DbConsole.ExecuteQuery(query);
+                    var widgetParameters = parameters.Rows
+                        .Cast<DataRow>()
+                        .Select(row => new
+                        {
+                            WidgetId = _report.ValueOrDefault<int>(row, "WidgetID"),
+                            Parameter = new WidgetParameterViewModel()
+                            {
+                                Name = _report.ValueOrDefault(row, "Name"),
+                                Alias = _report.ValueOrDefault(row, "Alias"),
+                                Type = _report.ValueOrDefault(row, "Type"),
+                                DefaultValue = _report.ValueOrDefault(row, "DefaultValue"),
+                                Description = _report.ValueOrDefault(row, "Description")
+                            }
+                        });
+                    foreach (var tab in fullDashboard.Tabs)
+                    {
+                        tab.Widgets.AddRange(tabWidgets.Where(tw => tw.TabId == tab.Id));
+                        foreach (var widget in tab.Widgets)
+                        {
+                            widget.WidgetAccounts.AddRange(widgetAccounts
+                                .Where(wacc => wacc.WidgetId == widget.WidgetId)
+                                .Select(wacc => wacc.FullAccount));
+                            widget.WidgetParmeters.AddRange(widgetParameters
+                                .Where(wpara => wpara.WidgetId == widget.WidgetId)
+                                .Select(wpara => wpara.Parameter));
+                        }
+                    }
+                }
+            }
+
+            return fullDashboard;
+        }
+
+        private async Task LoadDashboardWidgetsAsync(Dashboard dashboard)
+        {
+            var allTabWidgets = new List<TabWidget>();
+            var tabRepository = UnitOfWork.GetAsyncRepository<DashboardTab>();
+            var tabs = await tabRepository
+                .GetEntityWithTrackingQuery(tab => tab.Widgets)
+                .Where(tab => tab.DashboardId == dashboard.Id)
+                .ToListAsync();
+            dashboard.Tabs.AddRange(tabs);
+            Array.ForEach(tabs.ToArray(), tab => allTabWidgets.AddRange(tab.Widgets));
+            var tabWidgetRepository = UnitOfWork.GetAsyncRepository<TabWidget>();
+            Array.ForEach(allTabWidgets.ToArray(),
+                tabWidget => tabWidgetRepository.LoadReference(tabWidget, tw => tw.Widget));
+            LoadWidgetsReferences(allTabWidgets.Select(tw => tw.Widget));
+        }
+
+        private void LoadWidgetsReferences(IEnumerable<Widget> widgets)
+        {
+            var widgetRepository = UnitOfWork.GetAsyncRepository<Widget>();
+            Array.ForEach(widgets.ToArray(), widget =>
+            {
+                widgetRepository.LoadCollection(widget, w => w.Accounts);
+                widgetRepository.LoadCollection(widget, w => w.Parameters);
+            });
+
+            var accountRepository = UnitOfWork.GetAsyncRepository<WidgetAccount>();
+            var paramRepository = UnitOfWork.GetAsyncRepository<UsedWidgetParameter>();
+            foreach (var widget in widgets)
+            {
+                Array.ForEach(widget.Accounts.ToArray(), account =>
+                {
+                    accountRepository.LoadReference(account, acc => acc.Account);
+                    accountRepository.LoadReference(account, acc => acc.DetailAccount);
+                    accountRepository.LoadReference(account, acc => acc.CostCenter);
+                    accountRepository.LoadReference(account, acc => acc.Project);
+                });
+                Array.ForEach(widget.Parameters.ToArray(),
+                    param => paramRepository.LoadReference(param, uwp => uwp.Parameter));
+            }
         }
 
         private decimal CalculateLiquidRatio()

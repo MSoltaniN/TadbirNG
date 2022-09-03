@@ -23,7 +23,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.ToTable("UsedWidgetParameter", "Reporting");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
-                .HasColumnName("UsedWidgetParameterID");
+                .HasColumnName("WidgetParameterID");
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
@@ -32,7 +32,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasDefaultValueSql("(getdate())");
 
             builder.HasOne(e => e.Widget)
-                .WithMany()
+                .WithMany(e => e.Parameters)
                 .HasForeignKey(e => e.WidgetId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_UsedWidgetParameter_Reporting_Widget");

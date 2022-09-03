@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.Model.Reporting
         /// <summary>
         /// زبانه ای که ویجت مورد نظر به آن اضافه شده است
         /// </summary>
-        public virtual DashboardTab DashboardTab { get; set; }
+        public virtual DashboardTab Tab { get; set; }
 
         /// <summary>
         /// ویجتی که به زبانه مورد نظر در یکی از داشبوردهای موجود اضافه شده است

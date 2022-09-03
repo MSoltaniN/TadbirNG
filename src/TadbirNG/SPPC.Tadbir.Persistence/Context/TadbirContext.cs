@@ -7,6 +7,7 @@ using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Persistence.Mapping;
 using SPPC.Tadbir.Persistence.Mapping.Finance;
 
@@ -48,6 +49,8 @@ namespace SPPC.Tadbir.Persistence
             CurrencyRateMap.BuildMapping(modelBuilder.Entity<CurrencyRate>());
             CustomerTaxInfoMap.BuildMapping(modelBuilder.Entity<CustomerTaxInfo>());
             CustomFormMap.BuildMapping(modelBuilder.Entity<CustomForm>());
+            DashboardMap.BuildMapping(modelBuilder.Entity<Dashboard>());
+            DashboardTabMap.BuildMapping(modelBuilder.Entity<DashboardTab>());
             DetailAccountMap.BuildMapping(modelBuilder.Entity<DetailAccount>());
             DocumentStatusMap.BuildMapping(modelBuilder.Entity<DocumentStatus>());
             DocumentTypeMap.BuildMapping(modelBuilder.Entity<DocumentType>());
@@ -73,17 +76,25 @@ namespace SPPC.Tadbir.Persistence
             RoleBranchMap.BuildMapping(modelBuilder.Entity<RoleBranch>());
             RoleFiscalPeriodMap.BuildMapping(modelBuilder.Entity<RoleFiscalPeriod>());
             RolePermissionMap.BuildMapping(modelBuilder.Entity<RolePermission>());
+            RoleWidgetMap.BuildMapping(modelBuilder.Entity<RoleWidget>());
             SettingMap.BuildMapping(modelBuilder.Entity<Setting>());
             SubsystemMap.BuildMapping(modelBuilder.Entity<Subsystem>());
+            TabWidgetMap.BuildMapping(modelBuilder.Entity<TabWidget>());
             TaxCurrencyMap.BuildMapping(modelBuilder.Entity<TaxCurrency>());
-            VoucherMap.BuildMapping(modelBuilder.Entity<Voucher>());
-            VoucherLineMap.BuildMapping(modelBuilder.Entity<VoucherLine>());
-            VoucherOriginMap.BuildMapping(modelBuilder.Entity<VoucherOrigin>());
+            UsedWidgetParameterMap.BuildMapping(modelBuilder.Entity<UsedWidgetParameter>());
             UserMap.BuildMapping(modelBuilder.Entity<User>());
             UserRoleMap.BuildMapping(modelBuilder.Entity<UserRole>());
             UserSettingMap.BuildMapping(modelBuilder.Entity<UserSetting>());
             ViewRowPermissionMap.BuildMapping(modelBuilder.Entity<ViewRowPermission>());
             ViewSettingMap.BuildMapping(modelBuilder.Entity<ViewSetting>());
+            VoucherMap.BuildMapping(modelBuilder.Entity<Voucher>());
+            VoucherLineMap.BuildMapping(modelBuilder.Entity<VoucherLine>());
+            VoucherOriginMap.BuildMapping(modelBuilder.Entity<VoucherOrigin>());
+            WidgetMap.BuildMapping(modelBuilder.Entity<Widget>());
+            WidgetFunctionMap.BuildMapping(modelBuilder.Entity<WidgetFunction>());
+            WidgetTypeMap.BuildMapping(modelBuilder.Entity<WidgetType>());
+            WidgetParameterMap.BuildMapping(modelBuilder.Entity<WidgetParameter>());
+            WidgetAccountMap.BuildMapping(modelBuilder.Entity<WidgetAccount>());
         }
 
         /// <summary>

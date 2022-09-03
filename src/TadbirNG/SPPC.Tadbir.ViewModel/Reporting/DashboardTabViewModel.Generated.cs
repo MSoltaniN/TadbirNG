@@ -11,6 +11,7 @@
 // ------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
 
@@ -27,6 +28,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public DashboardTabViewModel()
         {
             Title = String.Empty;
+            Widgets = new List<TabWidgetViewModel>();
         }
 
         /// <summary>
@@ -46,5 +48,10 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(128, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Title { get; set; }
+
+        /// <summary>
+        /// مجموعه ویجت های اضافه شده به این برگه داشبورد
+        /// </summary>
+        public List<TabWidgetViewModel> Widgets { get; set; }
     }
 }

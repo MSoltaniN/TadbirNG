@@ -7,7 +7,7 @@ namespace SPPC.Tadbir.Model.Reporting
         /// <summary>
         /// شناسه دیتابیسی برگه ای که ویجت مورد نظر به آن اضافه شده است
         /// </summary>
-        public virtual int DashboardTabId { get; set; }
+        public virtual int TabId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی ویجتی که به برگه مورد نظر در یکی از داشبوردهای موجود اضافه شده است

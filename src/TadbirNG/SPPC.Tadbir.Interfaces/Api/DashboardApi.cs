@@ -47,5 +47,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a widget specified by unique identifier
         /// </summary>
         public const string WidgetUrl = "dashboard/widgets/{widgetId:min(1)}";
+
+        /// <summary>
+        /// API client URL for the dashboard created by (or assigned to) current user
+        /// </summary>
+        public const string CurrentDashboard = "dashboard/current";
+
+        /// <summary>
+        /// API server route URL for the dashboard created by (or assigned to) current user
+        /// </summary>
+        public const string CurrentDashboardUrl = "dashboard/current";
     }
 }

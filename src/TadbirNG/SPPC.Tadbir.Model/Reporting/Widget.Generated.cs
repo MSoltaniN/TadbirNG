@@ -11,6 +11,7 @@
 // ------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Model.Reporting
 {
@@ -28,6 +29,8 @@ namespace SPPC.Tadbir.Model.Reporting
             DefaultSettings = String.Empty;
             Description = String.Empty;
             ModifiedDate = DateTime.Now;
+            Accounts = new List<WidgetAccount>();
+            Parameters = new List<UsedWidgetParameter>();
         }
 
         /// <summary>
@@ -59,5 +62,15 @@ namespace SPPC.Tadbir.Model.Reporting
         /// نوع انتخاب شده برای ویجت
         /// </summary>
         public virtual WidgetType Type { get; set; }
+
+        /// <summary>
+        /// مجموعه ای از بردارهای حساب اضافه شده به این ویجت
+        /// </summary>
+        public virtual IList<WidgetAccount> Accounts { get; }
+
+        /// <summary>
+        /// مجموعه پارامترهایی که برای نمایش گرافیکی ویجت مورد نیاز هستند
+        /// </summary>
+        public virtual IList<UsedWidgetParameter> Parameters { get; }
     }
 }

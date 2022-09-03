@@ -11,13 +11,15 @@
 // ------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.ViewModel.Reporting
 {
     /// <summary>
-    /// اطلاعات یکی از ویجت های استفاده شده در زبانه داشبورد کاربری را نگهداری می کند
+    /// اطلاعات یکی از ویجت های استفاده شده در برگه داشبورد کاربری را نگهداری می کند
     /// </summary>
     public partial class TabWidgetViewModel : ViewModelBase
     {
@@ -28,6 +30,8 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         {
             Settings = String.Empty;
             DefaultSettings = String.Empty;
+            WidgetAccounts = new List<FullAccountViewModel>();
+            WidgetParmeters = new List<WidgetParameterViewModel>();
         }
 
         /// <summary>

@@ -64,6 +64,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(license);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/dashboard/current
+        [HttpGet]
+        [Route(DashboardApi.CurrentDashboardUrl)]
+        public IActionResult GetCurrentDashboard()
+        {
+            var dashboard = _repository.GetCurrentUserDashboard();
+            return Json(dashboard);
+        }
+
         private Calendar GetCurrentCalendar()
         {
             string language = GetPrimaryRequestLanguage();

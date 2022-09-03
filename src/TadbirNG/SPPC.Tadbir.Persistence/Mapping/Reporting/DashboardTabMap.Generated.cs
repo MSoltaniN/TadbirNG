@@ -37,7 +37,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasDefaultValueSql("(getdate())");
 
             builder.HasOne(e => e.Dashboard)
-                .WithMany()
+                .WithMany(e => e.Tabs)
                 .HasForeignKey(e => e.DashboardId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_DashboardTab_Reporting_Dashboard");

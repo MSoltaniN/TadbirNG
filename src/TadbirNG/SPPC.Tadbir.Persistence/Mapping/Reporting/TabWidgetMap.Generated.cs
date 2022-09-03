@@ -37,9 +37,9 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
 
-            builder.HasOne(e => e.DashboardTab)
-                .WithMany()
-                .HasForeignKey(e => e.DashboardTabId)
+            builder.HasOne(e => e.Tab)
+                .WithMany(e => e.Widgets)
+                .HasForeignKey(e => e.TabId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_TabWidget_Reporting_DashboardTab");
             builder.HasOne(e => e.Widget)

@@ -10,7 +10,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
 
@@ -26,6 +26,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// </summary>
         public DashboardViewModel()
         {
+            Tabs = new List<DashboardTabViewModel>();
         }
 
         /// <summary>
@@ -38,5 +39,10 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public int UserId { get; set; }
+
+        /// <summary>
+        /// مجموعه برگه های اضافه شده به این داشبورد
+        /// </summary>
+        public List<DashboardTabViewModel> Tabs { get; }
     }
 }

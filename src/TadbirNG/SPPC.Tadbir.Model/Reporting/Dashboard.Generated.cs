@@ -37,6 +37,6 @@ namespace SPPC.Tadbir.Model.Reporting
         /// <summary>
         /// مجموعه برگه هایی که به این داشبورد اضافه شده است
         /// </summary>
-        public virtual IList<DashboardTab> Tabs { get; }
+        public virtual List<DashboardTab> Tabs { get; }
     }
 }

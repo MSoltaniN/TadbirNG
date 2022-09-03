@@ -11,6 +11,7 @@
 // ------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Model.Reporting
 {
@@ -26,6 +27,7 @@ namespace SPPC.Tadbir.Model.Reporting
         {
             Title = String.Empty;
             ModifiedDate = DateTime.Now;
+            Widgets = new List<TabWidget>();
         }
 
         /// <summary>
@@ -42,5 +44,10 @@ namespace SPPC.Tadbir.Model.Reporting
         /// داشبوردی که این برگه به آن اضافه شده است
         /// </summary>
         public virtual Dashboard Dashboard { get; set; }
+
+        /// <summary>
+        /// مجموعه ویجت هایی که به این برگه داشبورد اضافه شده اند
+        /// </summary>
+        public virtual IList<TabWidget> Widgets { get; }
     }
 }

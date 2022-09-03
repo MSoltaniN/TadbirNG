@@ -32,7 +32,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasDefaultValueSql("(getdate())");
 
             builder.HasOne(e => e.Widget)
-                .WithMany()
+                .WithMany(e => e.Accounts)
                 .HasForeignKey(e => e.WidgetId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_WidgetAccount_Reporting_Widget");

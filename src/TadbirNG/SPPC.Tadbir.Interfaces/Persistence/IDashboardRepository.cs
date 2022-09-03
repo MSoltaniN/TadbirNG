@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Threading.Tasks;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -15,5 +16,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="calendar">تقویم مورد استفاده برای نمودارهای ماهیانه</param>
         /// <returns>اطلاعات مالی محاسبه شده</returns>
         Task<DashboardSummariesViewModel> GetSummariesAsync(Calendar calendar);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات کامل داشبورد ایجاد شده توسط کاربر جاری برنامه را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات کامل برای داشبورد کاربر جاری برنامه یا رفرنس بدون مقدار
+        /// در صورتی که داشبوردی برای کاربر جاری وجود نداشته باشد</returns>
+        DashboardViewModel GetCurrentUserDashboard();
     }
 }
