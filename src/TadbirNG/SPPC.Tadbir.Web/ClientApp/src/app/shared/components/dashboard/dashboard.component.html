@@ -3,14 +3,14 @@
     <ng-template [ngIf]="isDashboardEditMode">
       <div
         class="alert alert-warning msg-container"
-        [ngClass]="isDashboardEditMode ? 'col-md-8' : ''"
+        [ngClass]="isDashboardEditMode ? 'col-md-7' : ''"
       >
-        <div class="col-md-2 dashboard-button">
+        <div class="dashboard-button">
           <button (click)="onOkClick()" class="k-button k-primary">
             {{ "Buttons.Ok" | translate }}
           </button>
         </div>
-        <div class="col-md-2 dashboard-button">
+        <div class="dashboard-button">
           <button (click)="onCancelClick()" class="k-button k-primary">
             {{ "Buttons.Cancel" | translate }}
           </button>
@@ -114,21 +114,106 @@
   <!-- /.row -->
   <div class="row widgets">
     <div style="height: 100vh; width: 100%; direction: ltr">
-      <ng-container *ngIf="widgetList$ | async as widgets">
+      <!-- <kendo-tabstrip
+        *ngIf="currentDashboard"
+        style="width: 100%; min-height: 100vh; direction: rtl"
+      >
+        <kendo-tabstrip-tab
+          *ngFor="
+            let tab of currentDashboard.tabs;
+            let i = index;
+            let firstIndex = first
+          "
+          [title]="tab.title"
+          [selected]="firstIndex - 1 === tab.index"
+        >
+          <ng-template kendoTabContent>
+            <ng-container *ngIf="getWidgets(tab.id) | async as widgets">
+              <gridster [options]="options">
+                <gridster-item [item]="item" *ngFor="let item of widgets">
+                  <ng-container *ngIf="item.typeId == 0">
+                    <widget
+                      (closeWidget)="onCloseWidget($event)"
+                      [widgetId]="item.id"
+                      [isEditMode]="isDashboardEditMode"
+                      [headerTitle]="item.title"
+                    >
+                      <widget-container>
+                        <div class="box-body" body>
+                          <chart-widget
+                            [type]="'bar'"
+                            [data]="grossChartData"
+                            [options]="basicOptions"
+                          ></chart-widget>
+                        </div>
+                      </widget-container>
+                    </widget>
+                  </ng-container>
+                </gridster-item>
+              </gridster>
+            </ng-container>
+          </ng-template>
+        </kendo-tabstrip-tab>
+      </kendo-tabstrip> -->
+      <p-tabView *ngIf="currentDashboard">
+        <p-tabPanel
+          [header]="tab.title"
+          *ngFor="
+            let tab of currentDashboard.tabs;
+            let i = index;
+            let firstIndex = first
+          "
+        >
+          <ng-container *ngIf="getWidgets(tab.id) | async as widgets">
+            <gridster [options]="options">
+              <gridster-item [item]="item" *ngFor="let item of widgets">
+                <ng-container *ngIf="item.typeId == 0">
+                  <widget
+                    (closeWidget)="onCloseWidget($event)"
+                    [widgetId]="item.id"
+                    [isEditMode]="isDashboardEditMode"
+                    [headerTitle]="item.title"
+                  >
+                    <widget-container>
+                      <div class="box-body" body>
+                        <chart-widget
+                          [type]="'bar'"
+                          [data]="grossChartData"
+                          [options]="basicOptions"
+                        ></chart-widget>
+                      </div>
+                    </widget-container>
+                  </widget>
+                </ng-container>
+              </gridster-item>
+            </gridster>
+          </ng-container>
+        </p-tabPanel>
+      </p-tabView>
+      <!-- <ng-container *ngIf="getWidgets(1) | async as widgets">
         <gridster [options]="options">
           <gridster-item [item]="item" *ngFor="let item of widgets">
-            <ng-container *ngIf="item.id == 1 && item.selected">
-              <ng-container *ngTemplateOutlet="chart1"></ng-container>
+            <ng-container *ngIf="item.typeId == 0">
+              <widget
+                (closeWidget)="onCloseWidget($event)"
+                [widgetId]="item.id"
+                [isEditMode]="isDashboardEditMode"
+                [headerTitle]="item.title"
+              >
+                <widget-container>
+                  <div class="box-body" body>
+                    <chart-widget
+                      [type]="'bar'"
+                      [data]="grossChartData"
+                      [options]="basicOptions"
+                    ></chart-widget>
+                  </div>
+                </widget-container>
+              </widget>
             </ng-container>
-            <ng-container *ngIf="item.id == 2 && item.selected">
-              <ng-container *ngTemplateOutlet="chart2"></ng-container>
-            </ng-container>
-            <!-- <ng-container *ngIf="item.index == 2">
-            <ng-container *ngTemplateOutlet="guage"></ng-container>
-          </ng-container> -->
           </gridster-item>
         </gridster>
-      </ng-container>
+      </ng-container> -->
     </div>
   </div>
   <ng-template #chart1>

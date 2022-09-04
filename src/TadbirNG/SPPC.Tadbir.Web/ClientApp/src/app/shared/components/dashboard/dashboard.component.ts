@@ -33,13 +33,20 @@ import {
   PushDirections,
   Resizable,
 } from "angular-gridster2";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subject } from "rxjs";
 import { AddWidgetComponent } from "./add-widget/add-widget.component";
+import { DashboardApi } from "@sppc/shared/services/api";
+import { Dashboard } from "@sppc/shared/models/dashboard";
 
 interface DashboardConfig extends GridsterConfig {
   draggable: Draggable;
   resizable: Resizable;
   pushDirections: PushDirections;
+}
+
+class WidgetTabSubject {
+  widgets: Subject<GridsterItem[]>;
+  tabId: number;
 }
 
 @Component({
@@ -82,6 +89,8 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   dashboardSubject = new BehaviorSubject<Array<GridsterItem>>(this.dashboard);
   widgetList$ = this.dashboardSubject.asObservable();
 
+  tabSubjects: Array<WidgetTabSubject> = [];
+
   chart1: Array<GridsterItem>;
   chart2: Array<GridsterItem>;
 
@@ -89,6 +98,8 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   dialogRef: DialogRef;
   dialogModel: any;
   selectedWidgets: Widget[];
+
+  currentDashboard: Dashboard;
 
   grossChartData;
   netChartData;
@@ -482,9 +493,9 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       outerMarginLeft: 5,
       useTransformPositioning: true,
       mobileBreakpoint: 200,
-      minCols: 40,
+      minCols: 50,
       maxCols: 100,
-      minRows: 40,
+      minRows: 50,
       maxRows: 100,
       maxItemCols: 100,
       minItemCols: 1,
@@ -524,5 +535,48 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       disableWarnings: false,
       scrollToNewItems: false,
     };
+
+    this.dashboadService
+      .getCurrentDashboard()
+      .subscribe((dashboard: Dashboard) => {
+        this.currentDashboard = dashboard;
+        this.fillDashboardSubjects();
+      });
+  }
+
+  getWidgets(tabId) {
+    return this.tabSubjects
+      .filter((f) => f.tabId == tabId)[0]
+      .widgets.asObservable();
+  }
+
+  fillDashboardSubjects() {
+    let widgets = [];
+    if (this.currentDashboard) {
+      this.currentDashboard.tabs.forEach((tab) => {
+        this.currentDashboard.tabs
+          .find((t) => t.id == tab.id)
+          .widgets.forEach((widget) => {
+            widgets.push({
+              cols: 20,
+              rows: 20,
+              y: 0,
+              x: 0,
+              id: widget.widgetId,
+              selected: false,
+              title: widget.widgetTitle,
+              typeId: widget.widgetTypeId,
+            });
+          });
+
+        debugger;
+        let subject = new BehaviorSubject<Array<GridsterItem>>(widgets);
+        let tabSubject = new WidgetTabSubject();
+        tabSubject.tabId = tab.id;
+        tabSubject.widgets = subject;
+
+        this.tabSubjects.push(tabSubject);
+      });
+    }
   }
 }
