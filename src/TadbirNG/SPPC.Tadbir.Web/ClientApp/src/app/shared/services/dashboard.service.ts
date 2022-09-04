@@ -31,7 +31,7 @@ export class DashboardService extends BaseService {
   }
 
   getWidgetList() {
-    var url = DashboardApi.WidgetsUrl;
+    var url = DashboardApi.WidgetsLookup;
     var options = { headers: this.httpHeaders };
     return this.http
       .get(url, options)
