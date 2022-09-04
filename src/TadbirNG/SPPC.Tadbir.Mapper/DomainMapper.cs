@@ -565,6 +565,10 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.PeriodTurnoverItem1, opts => opts.MapFrom(src => src.PeriodTurnover))
                 .ForMember(dest => dest.EndBalanceItem1, opts => opts.MapFrom(src => src.EndBalance))
                 .ForMember(dest => dest.BalanceItem1, opts => opts.MapFrom(src => src.Balance));
+
+            mapperConfig.CreateMap<WidgetFunction, WidgetFunctionViewModel>();
+            mapperConfig.CreateMap<WidgetType, WidgetTypeViewModel>();
+            mapperConfig.CreateMap<Widget, WidgetViewModel>();
         }
 
         private static TConfig MapConfigType<TConfig>(Setting setting)

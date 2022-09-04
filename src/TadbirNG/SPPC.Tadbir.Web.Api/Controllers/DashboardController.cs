@@ -8,10 +8,12 @@ using SPPC.Framework.Helpers;
 using SPPC.Licensing.Model;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Common;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -74,7 +76,106 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public IActionResult GetCurrentDashboard()
         {
             var dashboard = _repository.GetCurrentUserDashboard();
+            Localize(dashboard);
             return Json(dashboard);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/dashboard/lookup/functions
+        [HttpGet]
+        [Route(DashboardApi.WidgetFunctionsLookupUrl)]
+        public async Task<IActionResult> GetWidgetFunctionsLookupAsync()
+        {
+            var lookup = await _repository.GetWidgetFunctionsLookupAsync();
+            Array.ForEach(lookup.ToArray(), item => item.Name = _strings[item.Name]);
+            return Json(lookup);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/dashboard/lookup/wtypes
+        [HttpGet]
+        [Route(DashboardApi.WidgetTypesLookupUrl)]
+        public async Task<IActionResult> GetWidgetTypesLookupAsync()
+        {
+            var lookup = await _repository.GetWidgetTypesLookupAsync();
+            Array.ForEach(lookup.ToArray(), item => item.Name = _strings[item.Name]);
+            return Json(lookup);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/dashboard/lookup/widgets
+        [HttpGet]
+        [Route(DashboardApi.WidgetsLookupUrl)]
+        public async Task<IActionResult> GetWidgetsLookupAsync()
+        {
+            var lookup = await _repository.GetWidgetsLookupAsync();
+            Array.ForEach(lookup.ToArray(), widget =>
+            {
+                widget.FunctionName = _strings[widget.FunctionName];
+                widget.TypeName = _strings[widget.TypeName];
+            });
+            return Json(lookup);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/dashboard/functions/debit-to
+        [HttpGet]
+        [Route(DashboardApi.DebitTurnoverFunctionUrl)]
+        public async Task<IActionResult> GetDebitTurnoverAsync(
+            DateTime? from, DateTime? to, WidgetDateUnit? unit)
+        {
+            return Ok();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/dashboard/functions/credit-to
+        [HttpGet]
+        [Route(DashboardApi.CreditTurnoverFunctionUrl)]
+        public async Task<IActionResult> GetCreditTurnoverAsync(
+            DateTime? from, DateTime? to, WidgetDateUnit? unit)
+        {
+            return Ok();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/dashboard/functions/net-to
+        [HttpGet]
+        [Route(DashboardApi.NetTurnoverFunctionUrl)]
+        public async Task<IActionResult> GetNetTurnoverAsync(
+            DateTime? from, DateTime? to, WidgetDateUnit? unit)
+        {
+            return Ok();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/dashboard/functions/balance
+        [HttpGet]
+        [Route(DashboardApi.BalanceFunctionUrl)]
+        public async Task<IActionResult> GetBalanceAsync(
+            DateTime? from, DateTime? to, WidgetDateUnit? unit)
+        {
+            return Ok();
         }
 
         private Calendar GetCurrentCalendar()
@@ -93,6 +194,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             summaries.NetSales.Legend = _strings[summaries.NetSales.Legend ?? String.Empty];
             Array.ForEach(summaries.NetSales.Points.ToArray(), point => point.XValue = _strings[point.XValue]);
             Array.ForEach(summaries.GrossSales.Points.ToArray(), point => point.XValue = _strings[point.XValue]);
+        }
+
+        private void Localize(DashboardViewModel dashboard)
+        {
+            if (dashboard == null)
+            {
+                return;
+            }
+
+            foreach (var tab in dashboard.Tabs)
+            {
+                foreach (var widget in tab.Widgets)
+                {
+                    widget.WidgetFunctionName = _strings[widget.WidgetFunctionName];
+                    widget.WidgetTypeName = _strings[widget.WidgetTypeName];
+                }
+            }
         }
 
         private readonly IDashboardRepository _repository;

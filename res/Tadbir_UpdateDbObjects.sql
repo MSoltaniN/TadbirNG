@@ -618,7 +618,7 @@ CREATE TABLE [Reporting].[DashboardTab] (
     [DashboardTabID]   INT              IDENTITY (1, 1) NOT NULL,
     [DashboardID]      INT              NOT NULL,
     [Index]            INT              NOT NULL,
-	[Title]            VARCHAR(128)     NOT NULL,
+	[Title]            NVARCHAR(128)    NOT NULL,
     [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_DashboardTab_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_DashboardTab_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Reporting_DashboardTab] PRIMARY KEY CLUSTERED ([DashboardTabID] ASC)
@@ -736,3 +736,32 @@ UPDATE [Config].[Setting]
 SET  [Values] =  N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true,"inventoryMode": 1}' ,
     [DefaultValues] =  N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true,"inventoryMode": 1}'
 WHERE ModelType = 'SystemConfig'
+
+-- 1.2.1428
+SET IDENTITY_INSERT [Reporting].[WidgetFunction] ON 
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name], [ServiceUrl]) VALUES (1, N'Function_DebitTurnover', N'debit-to')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name], [ServiceUrl]) VALUES (2, N'Function_CreditTurnover', N'credit-to')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name], [ServiceUrl]) VALUES (3, N'Function_NetTurnover', N'net-to')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name], [ServiceUrl]) VALUES (4, N'Function_Balance', N'balance')
+SET IDENTITY_INSERT [Reporting].[WidgetFunction] OFF
+
+SET IDENTITY_INSERT [Reporting].[WidgetType] ON 
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (1, N'Chart_ColumnChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (2, N'Chart_BarChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (3, N'Chart_LineGraph')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (4, N'Chart_PieChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (5, N'Chart_AreaGraph')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (6, N'Chart_ScatterPlot')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (7, N'Chart_BubbleChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (8, N'Chart_StackedColumnChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (9, N'Chart_StackedBarChart')
+SET IDENTITY_INSERT [Reporting].[WidgetType] OFF
+
+SET IDENTITY_INSERT [Reporting].[WidgetParameter] ON 
+INSERT [Reporting].[WidgetParameter] ([WidgetParameterID], [Name], [Alias], [Type], [DefaultValue])
+  VALUES (1, N'FromDate', N'from', N'System.DateTime', N'FiscalPeriodStart')
+INSERT [Reporting].[WidgetParameter] ([WidgetParameterID], [Name], [Alias], [Type], [DefaultValue])
+  VALUES (2, N'ToDate', N'to', N'System.DateTime', N'FiscalPeriodEnd')
+INSERT [Reporting].[WidgetParameter] ([WidgetParameterID], [Name], [Alias], [Type], [DefaultValue])
+  VALUES (3, N'DateUnit', N'unit', N'System.Int32', N'Monthly')
+SET IDENTITY_INSERT [Reporting].[WidgetParameter] OFF
