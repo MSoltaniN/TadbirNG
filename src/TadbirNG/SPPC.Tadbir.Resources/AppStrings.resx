@@ -3585,4 +3585,43 @@
   <data name="InventoryModeChangeNotAllowed" xml:space="preserve">
     <value>تغییر سیستم ثبت دوره مالی زمانی که اسنادی تعریف شده باشند، امکان پذیر نیست.</value>
   </data>
+  <data name="Chart_AreaGraph" xml:space="preserve">
+    <value>نمودار سطحی</value>
+  </data>
+  <data name="Chart_BarChart" xml:space="preserve">
+    <value>نمودار میله ای</value>
+  </data>
+  <data name="Chart_BubbleChart" xml:space="preserve">
+    <value>نمودار حبابی</value>
+  </data>
+  <data name="Chart_ColumnChart" xml:space="preserve">
+    <value>نمودار ستونی</value>
+  </data>
+  <data name="Chart_LineGraph" xml:space="preserve">
+    <value>نمودار خطی</value>
+  </data>
+  <data name="Chart_PieChart" xml:space="preserve">
+    <value>نمودار کیکی</value>
+  </data>
+  <data name="Chart_ScatterPlot" xml:space="preserve">
+    <value>نمودار پراکندگی</value>
+  </data>
+  <data name="Chart_StackedBarChart" xml:space="preserve">
+    <value>نمودار میله ای پشته ای</value>
+  </data>
+  <data name="Chart_StackedColumnChart" xml:space="preserve">
+    <value>نمودار ستونی پشته ای</value>
+  </data>
+  <data name="Function_Balance" xml:space="preserve">
+    <value>مانده</value>
+  </data>
+  <data name="Function_CreditTurnover" xml:space="preserve">
+    <value>گردش بستانکار</value>
+  </data>
+  <data name="Function_DebitTurnover" xml:space="preserve">
+    <value>گردش بدهکار</value>
+  </data>
+  <data name="Function_NetTurnover" xml:space="preserve">
+    <value>گردش خالص</value>
+  </data>
 </root>

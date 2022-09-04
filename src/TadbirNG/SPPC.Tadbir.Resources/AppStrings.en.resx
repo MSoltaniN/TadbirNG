@@ -3594,4 +3594,43 @@
   <data name="InventoryModeChangeNotAllowed" xml:space="preserve">
     <value>Changing inventory mode is not allowed when one or more vouchers exist.</value>
   </data>
+  <data name="Chart_AreaGraph" xml:space="preserve">
+    <value>Area graph</value>
+  </data>
+  <data name="Chart_BarChart" xml:space="preserve">
+    <value>Bar chart</value>
+  </data>
+  <data name="Chart_BubbleChart" xml:space="preserve">
+    <value>Bubble chart</value>
+  </data>
+  <data name="Chart_ColumnChart" xml:space="preserve">
+    <value>Column chart</value>
+  </data>
+  <data name="Chart_LineGraph" xml:space="preserve">
+    <value>Line graph</value>
+  </data>
+  <data name="Chart_PieChart" xml:space="preserve">
+    <value>Pie chart</value>
+  </data>
+  <data name="Chart_ScatterPlot" xml:space="preserve">
+    <value>Scatter plot</value>
+  </data>
+  <data name="Chart_StackedBarChart" xml:space="preserve">
+    <value>Bar chart (stacked)</value>
+  </data>
+  <data name="Chart_StackedColumnChart" xml:space="preserve">
+    <value>Column chart (stacked)</value>
+  </data>
+  <data name="Function_Balance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="Function_CreditTurnover" xml:space="preserve">
+    <value>Credit turnover</value>
+  </data>
+  <data name="Function_DebitTurnover" xml:space="preserve">
+    <value>Debit turnover</value>
+  </data>
+  <data name="Function_NetTurnover" xml:space="preserve">
+    <value>Net turnover</value>
+  </data>
 </root>

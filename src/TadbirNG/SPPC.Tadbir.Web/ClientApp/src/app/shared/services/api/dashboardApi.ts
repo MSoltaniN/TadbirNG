@@ -4,7 +4,7 @@
 //     Runtime Version: 1.1.412
 //     Template Version: 1.0
 //     Generation Date: 10/01/2018 03:43:44 ب.ظ
-//
+//  
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 // </auto-generated>
@@ -13,19 +13,22 @@
 import { environment } from "@sppc/env/environment";
 
 export class DashboardApi {
-  // dashboard/summaries
-  public static Summaries = environment.BaseUrl + "/dashboard/summaries";
 
-  // dashboard/license
-  public static LicenseInfo = environment.BaseUrl + "/dashboard/license";
+    // dashboard/summaries
+    public static Summaries = environment.BaseUrl + "/dashboard/summaries";
 
-  // dashboard/widgets
-  public static Widgets = environment.BaseUrl + "/dashboard/widgets";
+    // dashboard/license
+    public static LicenseInfo = environment.BaseUrl + "/dashboard/license";
 
-  // dashboard/widgets/{widgetId:min(1)}
-  public static Widget = environment.BaseUrl + "/dashboard/widgets/{0}";
+    // dashboard/current
+    public static CurrentDashboard = environment.BaseUrl + "/dashboard/current";
 
-  public static WidgetsUrl = environment.BaseUrl + "/dashboard/widgets";
+    // dashboard/lookup/functions
+    public static WidgetFunctionsLookup = environment.BaseUrl + "/dashboard/lookup/functions";
 
-  public static CurrentDashboard = environment.BaseUrl + "/dashboard/current";
+    // dashboard/lookup/wtypes
+    public static WidgetTypesLookup = environment.BaseUrl + "/dashboard/lookup/wtypes";
+
+    // dashboard/lookup/widgets
+    public static WidgetsLookup = environment.BaseUrl + "/dashboard/lookup/widgets";
 }

@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
@@ -23,5 +24,23 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات کامل برای داشبورد کاربر جاری برنامه یا رفرنس بدون مقدار
         /// در صورتی که داشبوردی برای کاربر جاری وجود نداشته باشد</returns>
         DashboardViewModel GetCurrentUserDashboard();
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات توابع محاسباتی قابل استفاده در ویجت ها را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات توابع محاسباتی</returns>
+        Task<List<WidgetFunctionViewModel>> GetWidgetFunctionsLookupAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات انواع نمودارهای قابل استفاده در ویجت ها را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات انواع نمودارها</returns>
+        Task<List<WidgetTypeViewModel>> GetWidgetTypesLookupAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات ویجت های قابل دسترسی توسط کاربر جاری را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات ویجت های قابل دسترسی</returns>
+        Task<List<WidgetViewModel>> GetWidgetsLookupAsync();
     }
 }
