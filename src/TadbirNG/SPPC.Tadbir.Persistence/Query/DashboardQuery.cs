@@ -26,13 +26,10 @@ FROM [Reporting].[Dashboard] AS [dbd]
 WHERE [dbd].[UserID] = {0}";
 
         internal const string WidgetDetails = @"
-SELECT [wgt].[WidgetID], [wgt].[FunctionID], [func].[Name] AS [FunctionName], [wgt].[TypeID], [type].[Name] AS [TypeName],
-  [acc].[AccountID], [acc].[DetailAccountID], [acc].[CostCenterID], [acc].[ProjectID], [uwp].[ParameterID]
+SELECT [wgt].[WidgetID], [wgt].[FunctionID], [func].[Name] AS [FunctionName], [wgt].[TypeID], [type].[Name] AS [TypeName]
 FROM [Reporting].[Widget] AS [wgt]
   INNER JOIN [Reporting].[WidgetFunction] AS [func] ON [wgt].[FunctionID] = [func].[WidgetFunctionID]
   INNER JOIN [Reporting].[WidgetType] AS [type] ON [wgt].[TypeID] = [type].[WidgetTypeID]
-  INNER JOIN [Reporting].[UsedWidgetParameter] AS [uwp] ON [wgt].[WidgetID] = [uwp].[WidgetID]
-  INNER JOIN [Reporting].[WidgetAccount] AS [acc] ON [wgt].[WidgetID] = [acc].[WidgetID]
 WHERE [wgt].[WidgetID] IN({0})";
 
         internal const string WidgetsAccounts = @"

@@ -155,7 +155,10 @@
           </ng-template>
         </kendo-tabstrip-tab>
       </kendo-tabstrip> -->
-      <p-tabView *ngIf="currentDashboard">
+      <p-tabView
+        *ngIf="currentDashboard"
+        [(activeIndex)]="currentDashboardTabIndex"
+      >
         <p-tabPanel
           [header]="tab.title"
           *ngFor="
@@ -167,7 +170,7 @@
           <ng-container *ngIf="getWidgets(tab.id) | async as widgets">
             <gridster [options]="options">
               <gridster-item [item]="item" *ngFor="let item of widgets">
-                <ng-container *ngIf="item.typeId == 0">
+                <ng-container *ngIf="item.typeId == 2">
                   <widget
                     (closeWidget)="onCloseWidget($event)"
                     [widgetId]="item.id"
@@ -178,7 +181,6 @@
                       <div class="box-body" body>
                         <chart-widget
                           [type]="'bar'"
-                          [data]="grossChartData"
                           [options]="basicOptions"
                         ></chart-widget>
                       </div>
