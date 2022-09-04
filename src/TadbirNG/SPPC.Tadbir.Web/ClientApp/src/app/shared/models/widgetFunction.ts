@@ -11,11 +11,10 @@
 // ------------------------------------------------------------------------------
 
 
-export interface Widget {
+export interface WidgetFunction {
     id: number;
-    createdById: number;
-    title: string;
-    defaultSettings: string;
+    name: string;
+    serviceUrl: string;
     description?: string;
     rowNo: number;
 }

@@ -10,12 +10,22 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
+import { FullAccount } from "../../finance/models/fullAccount";
+import { WidgetParameter } from "./widgetParameter";
 
-export interface Widget {
+export interface TabWidget {
+    tabId: number;
+    widgetId: number;
+    widgetTitle: string;
+    widgetFunctionId: number;
+    widgetFunctionName: string;
+    widgetTypeId: number;
+    widgetTypeName: string;
+    widgetDescription: string;
+    widgetAccounts: Array<FullAccount>;
+    widgetParmeters: Array<WidgetParameter>;
     id: number;
-    createdById: number;
-    title: string;
+    settings: string;
     defaultSettings: string;
-    description?: string;
     rowNo: number;
 }

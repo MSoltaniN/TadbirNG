@@ -7,6 +7,11 @@
           "name": "types",
           "required": true,
           "allowMultiple": true
+        },
+        {
+          "name": "area",
+          "required": false,
+          "allowMultiple": false
         }
       ],
       "description": "Generates TypeScript view model interfaces from existing C# view model classes.",

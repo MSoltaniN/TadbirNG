@@ -10,12 +10,12 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
+import { TabWidget } from "./tabWidget";
 
-export interface Widget {
+export interface DashboardTab {
     id: number;
-    createdById: number;
+    index: number;
     title: string;
-    defaultSettings: string;
-    description?: string;
+    widgets: Array<TabWidget>;
     rowNo: number;
 }

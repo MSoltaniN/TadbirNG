@@ -10,12 +10,11 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
+import { DashboardTab } from "./dashboardTab";
 
-export interface Widget {
+export interface Dashboard {
     id: number;
-    createdById: number;
-    title: string;
-    defaultSettings: string;
-    description?: string;
+    userId: number;
+    tabs: Array<DashboardTab>;
     rowNo: number;
 }

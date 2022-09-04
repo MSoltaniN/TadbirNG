@@ -11,11 +11,9 @@
 // ------------------------------------------------------------------------------
 
 
-export interface Widget {
+export interface WidgetType {
     id: number;
-    createdById: number;
-    title: string;
-    defaultSettings: string;
+    name: string;
     description?: string;
     rowNo: number;
 }
