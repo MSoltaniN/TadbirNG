@@ -33,13 +33,19 @@ import {
   PushDirections,
   Resizable,
 } from "angular-gridster2";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, observable, of, Subject } from "rxjs";
 import { AddWidgetComponent } from "./add-widget/add-widget.component";
+import { Dashboard } from "@sppc/shared/models/dashboard";
 
 interface DashboardConfig extends GridsterConfig {
   draggable: Draggable;
   resizable: Resizable;
   pushDirections: PushDirections;
+}
+
+class WidgetTabSubject {
+  widgets: Subject<GridsterItem[]>;
+  tabId: number;
 }
 
 @Component({
@@ -82,6 +88,8 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   dashboardSubject = new BehaviorSubject<Array<GridsterItem>>(this.dashboard);
   widgetList$ = this.dashboardSubject.asObservable();
 
+  tabSubjects: Array<WidgetTabSubject> = [];
+
   chart1: Array<GridsterItem>;
   chart2: Array<GridsterItem>;
 
@@ -89,6 +97,9 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   dialogRef: DialogRef;
   dialogModel: any;
   selectedWidgets: Widget[];
+
+  currentDashboard: Dashboard;
+  currentDashboardTabIndex: number = 0;
 
   grossChartData;
   netChartData;
@@ -336,16 +347,16 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       values.push(value.yValue);
     });
 
-    this.grossChartData = {
-      labels: labels,
-      datasets: [
-        {
-          label: this.dashboardInfo.grossSales.title,
-          backgroundColor: "#42A5F5",
-          data: values,
-        },
-      ],
-    };
+    // this.grossChartData = {
+    //   labels: labels,
+    //   datasets: [
+    //     {
+    //       label: this.dashboardInfo.grossSales.title,
+    //       backgroundColor: "#42A5F5",
+    //       data: values,
+    //     },
+    //   ],
+    // };
   }
 
   changedOptions(): void {
@@ -416,32 +427,32 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       this.CompanyId.toString()
     );
 
-    if (!this.dashboard) {
-      this.dashboard = [
-        {
-          cols: 20,
-          rows: 20,
-          y: 0,
-          x: 0,
-          id: 1,
-          selected: false,
-          name: "GrossSales",
-          title: "فروش نا خالص",
-        },
-        {
-          cols: 20,
-          rows: 20,
-          y: 0,
-          x: 0,
-          id: 2,
-          selected: false,
-          name: "NetSales",
-          title: "فروش خالص",
-        },
-      ];
-    }
+    // if (!this.dashboard) {
+    //   this.dashboard = [
+    //     {
+    //       cols: 20,
+    //       rows: 20,
+    //       y: 0,
+    //       x: 0,
+    //       id: 1,
+    //       selected: false,
+    //       name: "GrossSales",
+    //       title: "فروش نا خالص",
+    //     },
+    //     {
+    //       cols: 20,
+    //       rows: 20,
+    //       y: 0,
+    //       x: 0,
+    //       id: 2,
+    //       selected: false,
+    //       name: "NetSales",
+    //       title: "فروش خالص",
+    //     },
+    //   ];
+    // }
 
-    this.dashboardSubject.next(this.dashboard.filter((w) => w.selected));
+    // this.dashboardSubject.next(this.dashboard.filter((w) => w.selected));
   }
 
   onAddWidgetClick() {
@@ -453,10 +464,12 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     });
 
     this.dialogModel = this.dialogRef.content.instance;
-    this.dialogModel.selectedWidgets = this.dashboard;
+    this.dialogModel.selectedWidgets =
+      this.currentDashboard.tabs[this.currentDashboardTabIndex].widgets;
 
     this.dialogRef.content.instance.save.subscribe((res) => {
-      this.dashboard = res.widgetList;
+      debugger;
+      this.addNewWidget(res.widget);
       this.saveDashboard();
 
       this.dialogRef.close();
@@ -482,9 +495,9 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       outerMarginLeft: 5,
       useTransformPositioning: true,
       mobileBreakpoint: 200,
-      minCols: 40,
+      minCols: 50,
       maxCols: 100,
-      minRows: 40,
+      minRows: 50,
       maxRows: 100,
       maxItemCols: 100,
       minItemCols: 1,
@@ -524,5 +537,80 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       disableWarnings: false,
       scrollToNewItems: false,
     };
+
+    this.dashboadService
+      .getCurrentDashboard()
+      .subscribe((dashboard: Dashboard) => {
+        this.currentDashboard = dashboard;
+        this.fillDashboardSubjects();
+      });
+  }
+
+  getWidgets(tabId) {
+    return this.tabSubjects
+      .filter((f) => f.tabId == tabId)[0]
+      .widgets.asObservable();
+  }
+
+  getWidgetsSubject(tabId) {
+    return this.tabSubjects.filter((f) => f.tabId == tabId)[0];
+  }
+
+  addNewWidget(widget) {
+    const currentTab =
+      this.currentDashboard.tabs[this.currentDashboardTabIndex];
+
+    const newWidget = {
+      cols: 20,
+      rows: 20,
+      y: 0,
+      x: 0,
+      id: widget.id,
+      title: widget.title,
+      typeId: widget.typeId,
+    };
+
+    this.getWidgetsSubject(currentTab.id).widgets.next(
+      this.createWidgets(currentTab.id, newWidget)
+    );
+  }
+
+  createWidgets(tabId, newWidget = undefined) {
+    let widgets = [];
+    this.currentDashboard.tabs
+      .find((t) => t.id == tabId)
+      .widgets.forEach((widget) => {
+        widgets.push({
+          cols: 20,
+          rows: 20,
+          y: 0,
+          x: 0,
+          id: widget.widgetId,
+          selected: false,
+          title: widget.widgetTitle,
+          typeId: widget.widgetTypeId,
+        });
+      });
+
+    if (newWidget) widgets.push(newWidget);
+
+    return widgets;
+  }
+
+  fillDashboardSubjects() {
+    let widgets = [];
+    if (this.currentDashboard) {
+      this.currentDashboard.tabs.forEach((tab) => {
+        widgets = this.createWidgets(tab.id);
+
+        debugger;
+        let subject = new BehaviorSubject<Array<GridsterItem>>(widgets);
+        let tabSubject = new WidgetTabSubject();
+        tabSubject.tabId = tab.id;
+        tabSubject.widgets = subject;
+
+        this.tabSubjects.push(tabSubject);
+      });
+    }
   }
 }

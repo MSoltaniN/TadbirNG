@@ -1,5 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Widget } from "@sppc/shared/models/widget";
+import { DashboardService } from "@sppc/shared/services";
 
 @Component({
   selector: "add-widget",
@@ -7,13 +8,26 @@ import { Widget } from "@sppc/shared/models/widget";
   styleUrls: ["./add-widget.component.css"],
 })
 export class AddWidgetComponent implements OnInit {
-  constructor() {}
+  constructor(private dashboardService: DashboardService) {}
   selectedWidgets: Widget[];
+
   selectedId;
+  widgets: Widget[];
+
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<any> = new EventEmitter();
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.dashboardService.getWidgetList().subscribe((widgetList: Widget[]) => {
+      this.widgets = widgetList;
+    });
+  }
+
+  widgetIsUsed(widgetId) {
+    return (
+      this.selectedWidgets.findIndex((w: any) => w.widgetId == widgetId) >= 0
+    );
+  }
 
   activate(id: number) {
     this.selectedId = id;
@@ -22,14 +36,11 @@ export class AddWidgetComponent implements OnInit {
   onSave(e: any): void {
     e.preventDefault();
     if (this.selectedId) {
-      const index = this.selectedWidgets.findIndex(
-        (w) => w.id === this.selectedId
-      );
+      const index = this.widgets.findIndex((w) => w.id === this.selectedId);
 
-      this.selectedWidgets[index].selected = true;
       this.save.emit({
-        widget: this.selectedWidgets[index],
-        widgetList: this.selectedWidgets,
+        widget: this.widgets[index],
+        widgetList: this.widgets,
       });
     }
   }

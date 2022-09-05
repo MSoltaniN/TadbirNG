@@ -138,6 +138,7 @@ import { AutoFocusDirective } from "./directive/input/auto-focus.directive";
 
 import { AddWidgetComponent } from "./components/dashboard/add-widget/add-widget.component";
 import { WidgetSettingComponent } from "./components/dashboard/widget/widget-setting/widget-setting.component";
+import { TabViewModule } from "primeng/tabview";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -164,7 +165,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ContextMenuModule,
     LayoutModule,
     ChartModule,
-
+    TabViewModule,
     DpDatePickerModule,
     TranslateModule.forRoot({
       loader: {
@@ -251,7 +252,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     WidgetHeaderComponent,
     WidgetContainerComponent,
     TooltipDirective,
-
     ChartWidgetComponent,
     AutoFocusDirective,
 

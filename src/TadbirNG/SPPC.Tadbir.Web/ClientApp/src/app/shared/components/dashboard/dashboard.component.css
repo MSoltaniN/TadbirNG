@@ -92,3 +92,19 @@ a i {
   padding-left: 3px;
   padding-right: 3px;
 }
+
+/deep/ gridster
+{
+  min-height: calc(100vh - 50px);
+}
+
+/deep/ .ui-tabview-nav
+{
+  flex-direction: row-reverse;
+  display: flex;
+}
+
+/deep/ .ui-tabview-title
+{
+  cursor: pointer;
+}
