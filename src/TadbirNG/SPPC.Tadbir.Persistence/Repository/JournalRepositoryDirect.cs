@@ -913,10 +913,7 @@ namespace SPPC.Tadbir.Persistence
             var journal = new JournalViewModel();
             var items = new List<JournalItemViewModel>();
             int length = Config.GetLevelCodeLength(0);
-            var calendarType = await Config.GetCurrentCalendarAsync();
-            Calendar calendar = (calendarType == CalendarType.Jalali)
-                ? new PersianCalendar() as Calendar
-                : new GregorianCalendar();
+            var calendar = await Config.GetCurrentCalendarAsync();
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
 
             var monthJournal = new List<JournalItemViewModel>();

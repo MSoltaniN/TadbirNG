@@ -26,7 +26,6 @@ namespace SPPC.Tadbir.Model.Reporting
         public WidgetFunction()
         {
             Name = String.Empty;
-            ServiceUrl = String.Empty;
             Description = String.Empty;
             ModifiedDate = DateTime.Now;
         }
@@ -35,11 +34,6 @@ namespace SPPC.Tadbir.Model.Reporting
         /// نام چندزبانه تابع محاسباتی
         /// </summary>
         public virtual string Name { get; set; }
-
-        /// <summary>
-        /// آدرس وب متد مورد استفاده برای محاسبه کمیت مورد نظر در سرویس وب
-        /// </summary>
-        public virtual string ServiceUrl { get; set; }
 
         /// <summary>
         /// شرح تابع محاسباتی که برای اطلاعات تکمیلی تابع قابل استفاده است

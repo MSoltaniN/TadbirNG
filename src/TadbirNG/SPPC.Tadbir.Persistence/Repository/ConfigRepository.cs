@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -69,7 +70,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، نوع تقویم پیش فرض برای زبان جاری برنامه را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مقدار عددی متناظر با نوع شمارشی موجود برای تقویم پیش فرض</returns>
-        public async Task<CalendarType> GetCurrentCalendarAsync()
+        public async Task<CalendarType> GetCurrentCalendarTypeAsync()
         {
             var calendar = CalendarType.Jalali;
             var systemConfig = await GetConfigByTypeAsync<SystemConfig>();
@@ -85,6 +86,18 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، تقویم پیش فرض برنامه را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>پیاده سازی استاندارد موجود برای تقویم پیش فرض</returns>
+        public async Task<Calendar> GetCurrentCalendarAsync()
+        {
+            var calendarType = await GetCurrentCalendarTypeAsync();
+            return (calendarType == CalendarType.Jalali)
+                ? new PersianCalendar()
+                : new GregorianCalendar();
+        }
+
+        /// <summary>
         /// به روش آسنکرون، تاریخ داده شده را با توجه به تنظیمات تقویم پیش فرض به صورت رشته متنی برمی گرداند
         /// </summary>
         /// <param name="date">تاریخ مورد نظر برای نمایش متنی</param>
@@ -92,7 +105,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<string> GetDateDisplayAsync(DateTime date)
         {
             string dateDisplay = date.ToShortDateString(false);
-            var calendar = await GetCurrentCalendarAsync();
+            var calendar = await GetCurrentCalendarTypeAsync();
             if (calendar == CalendarType.Jalali)
             {
                 dateDisplay = JalaliDateTime
@@ -485,7 +498,7 @@ namespace SPPC.Tadbir.Persistence
                         if (accCodeLength > configCodeLength)
                         {
                             diffLength = accCodeLength - configCodeLength;
-                            item.Code = item.Code.Substring(diffLength);
+                            item.Code = item.Code[diffLength..];
                         }
                         else
                         {

@@ -244,11 +244,7 @@ namespace SPPC.Tadbir.Persistence
             var items = await GetInitialItemsAsync(parameters);
             items.AddRange(GetQueryResult(fullCode, VoucherOriginId.OpeningVoucher, parameters));
 
-            var calendarType = await Config.GetCurrentCalendarAsync();
-            Calendar calendar = (calendarType == CalendarType.Jalali)
-                ? new PersianCalendar() as Calendar
-                : new GregorianCalendar();
-
+            var calendar = await Config.GetCurrentCalendarAsync();
             var monthlyBook = new List<AccountBookItemViewModel>();
             var monthEnum = new MonthEnumerator(parameters.FromDate, parameters.ToDate, calendar);
             var monthParams = parameters.GetCopy();

@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -42,5 +44,16 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>اطلاعات ویجت های قابل دسترسی</returns>
         Task<List<WidgetViewModel>> GetWidgetsLookupAsync();
+
+        /// <summary>
+        /// اطلاعات ویجت مشخص شده را با توجه به پارامترهای داده شده محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
+        /// <param name="fromDate">تاریخ ابتدا برای محاسبه اطلاعات</param>
+        /// <param name="toDate">تاریخ انتها برای محاسبه اطلاعات</param>
+        /// <param name="unit">واحد زمانی مورد نظر برای نمایش ریز اطلاعات در نمودار</param>
+        /// <returns>اطلاعات مورد نیاز برای نمایش در نمودار</returns>
+        Task<ChartSeriesViewModel> GetWidgetDataAsync(
+            int widgetId, DateTime? fromDate, DateTime? toDate, WidgetDateUnit? unit);
     }
 }

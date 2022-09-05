@@ -27,8 +27,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(64);
-            builder.Property(e => e.ServiceUrl)
-                .HasMaxLength(512);
             builder.Property(e => e.Description)
                 .HasMaxLength(512);
             builder.Property(e => e.RowGuid)

@@ -130,52 +130,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        // GET: api/dashboard/functions/debit-to
+        // GET: api/dashboard/widgets/{widgetId:min(1)}/data
         [HttpGet]
-        [Route(DashboardApi.DebitTurnoverFunctionUrl)]
-        public async Task<IActionResult> GetDebitTurnoverAsync(
-            DateTime? from, DateTime? to, WidgetDateUnit? unit)
+        [Route(DashboardApi.WidgetDataUrl)]
+        public async Task<IActionResult> GetWidgetDataAsync(
+            int widgetId, DateTime? from, DateTime? to, WidgetDateUnit? unit)
         {
-            return Ok();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        // GET: api/dashboard/functions/credit-to
-        [HttpGet]
-        [Route(DashboardApi.CreditTurnoverFunctionUrl)]
-        public async Task<IActionResult> GetCreditTurnoverAsync(
-            DateTime? from, DateTime? to, WidgetDateUnit? unit)
-        {
-            return Ok();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        // GET: api/dashboard/functions/net-to
-        [HttpGet]
-        [Route(DashboardApi.NetTurnoverFunctionUrl)]
-        public async Task<IActionResult> GetNetTurnoverAsync(
-            DateTime? from, DateTime? to, WidgetDateUnit? unit)
-        {
-            return Ok();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        // GET: api/dashboard/functions/balance
-        [HttpGet]
-        [Route(DashboardApi.BalanceFunctionUrl)]
-        public async Task<IActionResult> GetBalanceAsync(
-            DateTime? from, DateTime? to, WidgetDateUnit? unit)
-        {
-            return Ok();
+            var widgetData = await _repository.GetWidgetDataAsync(widgetId, from, to, unit);
+            return Json(widgetData);
         }
 
         private Calendar GetCurrentCalendar()

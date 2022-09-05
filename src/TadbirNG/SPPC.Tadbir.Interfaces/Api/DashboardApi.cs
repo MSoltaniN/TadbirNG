@@ -69,43 +69,13 @@ namespace SPPC.Tadbir.Api
         public const string WidgetsLookupUrl = "dashboard/lookup/widgets";
 
         /// <summary>
-        /// API client URL for debit turnover function calculated for one or more account vectors
+        /// API client URL for calculated data of one or more account vectors in a specific widget
         /// </summary>
-        public const string DebitTurnoverFunction = "dashboard/functions/debit-to";
+        public const string WidgetData = "dashboard/widgets/{0}/data";
 
         /// <summary>
-        /// API server route URL for debit turnover function calculated for one or more account vectors
+        /// API server route URL for calculated data of one or more account vectors in a specific widget
         /// </summary>
-        public const string DebitTurnoverFunctionUrl = "dashboard/functions/debit-to";
-
-        /// <summary>
-        /// API client URL for credit turnover function calculated for one or more account vectors
-        /// </summary>
-        public const string CreditTurnoverFunction = "dashboard/functions/credit-to";
-
-        /// <summary>
-        /// API server route URL for credit turnover function calculated for one or more account vectors
-        /// </summary>
-        public const string CreditTurnoverFunctionUrl = "dashboard/functions/credit-to";
-
-        /// <summary>
-        /// API client URL for net turnover function calculated for one or more account vectors
-        /// </summary>
-        public const string NetTurnoverFunction = "dashboard/functions/net-to";
-
-        /// <summary>
-        /// API server route URL for net turnover function calculated for one or more account vectors
-        /// </summary>
-        public const string NetTurnoverFunctionUrl = "dashboard/functions/net-to";
-
-        /// <summary>
-        /// API client URL for balance function calculated for one or more account vectors
-        /// </summary>
-        public const string BalanceFunction = "dashboard/functions/balance";
-
-        /// <summary>
-        /// API server route URL for balance function calculated for one or more account vectors
-        /// </summary>
-        public const string BalanceFunctionUrl = "dashboard/functions/balance";
+        public const string WidgetDataUrl = "dashboard/widgets/{widgetId:min(1)}/data";
     }
 }

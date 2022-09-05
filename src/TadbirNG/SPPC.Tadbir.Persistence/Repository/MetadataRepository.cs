@@ -121,7 +121,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns> اطلاعات فراداده ای تعریف شده برای همه موجودیت ها</returns>
         public async Task<IList<ViewViewModel>> GetViewsMetadataAsync()
         {
-            _currentCalendar = await _config.GetCurrentCalendarAsync();
+            _currentCalendar = await _config.GetCurrentCalendarTypeAsync();
             var repository = UnitOfWork.GetAsyncRepository<View>();
             var views = await repository.GetAllAsync(vu => vu.Columns);
 
@@ -398,7 +398,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task PrepareColumnsAsync(ViewViewModel view)
         {
-            var calendar = _currentCalendar ?? await _config.GetCurrentCalendarAsync();
+            var calendar = _currentCalendar ?? await _config.GetCurrentCalendarTypeAsync();
             var columns = view.Columns
                 .OrderBy(col => col.DisplayIndex)
                 .ToArray();

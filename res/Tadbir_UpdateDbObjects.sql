@@ -765,3 +765,8 @@ INSERT [Reporting].[WidgetParameter] ([WidgetParameterID], [Name], [Alias], [Typ
 INSERT [Reporting].[WidgetParameter] ([WidgetParameterID], [Name], [Alias], [Type], [DefaultValue])
   VALUES (3, N'DateUnit', N'unit', N'System.Int32', N'Monthly')
 SET IDENTITY_INSERT [Reporting].[WidgetParameter] OFF
+
+-- 1.2.1429
+ALTER TABLE [Reporting].[WidgetFunction]
+DROP COLUMN [ServiceUrl]
+GO

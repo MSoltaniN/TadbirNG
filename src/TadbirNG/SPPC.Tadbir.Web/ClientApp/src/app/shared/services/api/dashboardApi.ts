@@ -31,4 +31,7 @@ export class DashboardApi {
 
     // dashboard/lookup/widgets
     public static WidgetsLookup = environment.BaseUrl + "/dashboard/lookup/widgets";
+
+    // dashboard/widgets/{widgetId:min(1)}/data
+    public static WidgetData = environment.BaseUrl + "/dashboard/widgets/{0}/data";
 }

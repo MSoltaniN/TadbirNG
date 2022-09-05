@@ -683,7 +683,6 @@ GO
 CREATE TABLE [Reporting].[WidgetFunction] (
     [WidgetFunctionID] INT              IDENTITY (1, 1) NOT NULL,
     [Name]         NVARCHAR(64)     NOT NULL,
-    [ServiceUrl]   NVARCHAR(512)    NULL,
     [Description]  NVARCHAR(512)    NULL,
     [rowguid]      UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_WidgetFunction_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate] DATETIME         CONSTRAINT [DF_Reporting_WidgetFunction_ModifiedDate] DEFAULT (getdate()) NOT NULL
@@ -878,10 +877,10 @@ GO
 
 -- Insert system records...
 SET IDENTITY_INSERT [Reporting].[WidgetFunction] ON 
-INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name], [ServiceUrl]) VALUES (1, N'Function_DebitTurnover', N'dashboard/functions/debit-to')
-INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name], [ServiceUrl]) VALUES (2, N'Function_CreditTurnover', N'dashboard/functions/credit-to')
-INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name], [ServiceUrl]) VALUES (3, N'Function_NetTurnover', N'dashboard/functions/net-to')
-INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name], [ServiceUrl]) VALUES (4, N'Function_Balance', N'dashboard/functions/balance')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (1, N'Function_DebitTurnover')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (2, N'Function_CreditTurnover')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (3, N'Function_NetTurnover')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (4, N'Function_Balance')
 SET IDENTITY_INSERT [Reporting].[WidgetFunction] OFF
 
 SET IDENTITY_INSERT [Reporting].[WidgetType] ON 

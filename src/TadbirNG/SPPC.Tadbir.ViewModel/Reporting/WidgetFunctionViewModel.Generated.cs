@@ -27,7 +27,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public WidgetFunctionViewModel()
         {
             Name = String.Empty;
-            ServiceUrl = String.Empty;
             Description = String.Empty;
         }
 
@@ -42,12 +41,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Name { get; set; }
-
-        /// <summary>
-        /// آدرس وب متد مورد استفاده برای محاسبه کمیت مورد نظر در سرویس وب
-        /// </summary>
-        [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string ServiceUrl { get; set; }
 
         /// <summary>
         /// شرح تابع محاسباتی که برای اطلاعات تکمیلی تابع قابل استفاده است
