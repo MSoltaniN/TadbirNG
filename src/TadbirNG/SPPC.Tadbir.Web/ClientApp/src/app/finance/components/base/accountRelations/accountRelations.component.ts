@@ -180,7 +180,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
   public handleMainComponentChecking(itemLookup: TreeItemLookup): void {
     var itemId = itemLookup.item.dataItem.id;
     this.mainComponentModel = itemLookup.item.dataItem;
-    if (this.mainComponentCheckedKeys.find(f => f == itemId) == itemId) {
+    if (this.mainComponentSelectedItem == itemId) { // !this.mainComponentCheckedKeys.find(f => f == itemId) == itemId
       this.mainComponentCheckedKeys = [];
       this.relatedComponentCheckedKeys = [];
       this.relatedComponentCategories = undefined;

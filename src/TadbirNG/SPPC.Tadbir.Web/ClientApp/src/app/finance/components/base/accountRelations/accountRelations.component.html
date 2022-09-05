@@ -57,7 +57,7 @@
                             [textField]="['name']"
                             kendoTreeViewExpandable
                             [kendoTreeViewCheckable]="{ mode: 'single', checkChildren: false , checkParents: fasle }"
-                            checkBy="dataItem.id"
+                            [checkBy]="checkById"
                             [hasChildren]="hasChildren"
                             [children]="fetchMainComponentChildren"
                             (checkedChange)="handleMainComponentChecking($event)"

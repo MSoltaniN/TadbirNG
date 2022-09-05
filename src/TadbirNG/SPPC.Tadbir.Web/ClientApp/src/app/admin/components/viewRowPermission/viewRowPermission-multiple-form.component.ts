@@ -193,14 +193,14 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
 
   public handleCheckedChange(itemLookup: TreeItemLookup): void {
     var item = itemLookup.item.dataItem;
-    if (this.rowCheckedKeys.find((f) => f == item.key)) {
+    
+    if (this.selectedRowKeys.find((f) => f == item.key)) {
       var index = this.selectedRowList.findIndex((f) => f.key == item.key);
       if (index > -1) {
         var index2 = this.selectedRowList.findIndex((f) => f.key == item.key);
         if (index2 > -1) {
-          this.selectedRowKeys.splice(index2, 1);
+            this.selectedRowKeys.splice(index2, 1);
         }
-
         this.selectedRowList.splice(index, 1);
       }
     } else {
