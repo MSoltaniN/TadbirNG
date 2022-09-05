@@ -2,12 +2,12 @@
 
 namespace SPPC.Tadbir.Model.Reporting
 {
-    public partial class ChartAccount
+    public partial class WidgetAccount
     {
         /// <summary>
-        /// شناسه دیتابیسی نموداری که این بردار حساب برای آن انتخاب شده است
+        /// شناسه دیتابیسی ویجتی که این بردار حساب برای آن انتخاب شده است
         /// </summary>
-        public virtual int ChartId { get; set; }
+        public virtual int WidgetId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی مولفه سرفصل حسابداری در این بردار حساب

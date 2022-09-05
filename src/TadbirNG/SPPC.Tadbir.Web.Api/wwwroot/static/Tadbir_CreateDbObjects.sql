@@ -659,47 +659,128 @@ CREATE TABLE [Finance].[InactiveCurrency] (
 )
 GO
 
-CREATE TABLE [Reporting].[Chart] (
-    [ChartID]          INT              IDENTITY (1, 1) NOT NULL,
-    [Title]            NVARCHAR(128)    NOT NULL,
-    [Type]             VARCHAR(64)      NOT NULL,
-    [Function]         VARCHAR(64)      NOT NULL,
-    [Setting]          NVARCHAR(1024)   NOT NULL,
-    [DefaultSetting]   NVARCHAR(1024)   NOT NULL,
-    [Description]      NVARCHAR(512)    NULL,
-    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_Chart_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_Chart_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Reporting_Chart] PRIMARY KEY CLUSTERED ([ChartID] ASC)
+CREATE TABLE [Reporting].[Dashboard] (
+    [DashboardID]      INT              IDENTITY (1, 1) NOT NULL,
+    [UserID]           INT              NOT NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_Dashboard_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_Dashboard_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_Dashboard] PRIMARY KEY CLUSTERED ([DashboardID] ASC)
 )
 GO
 
-CREATE TABLE [Reporting].[ChartAccount] (
-    [ChartAccountID]   INT              IDENTITY (1, 1) NOT NULL,
-    [ChartID]          INT              NOT NULL,
+CREATE TABLE [Reporting].[DashboardTab] (
+    [DashboardTabID]   INT              IDENTITY (1, 1) NOT NULL,
+    [DashboardID]      INT              NOT NULL,
+    [Index]            INT              NOT NULL,
+	[Title]            NVARCHAR(128)    NOT NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_DashboardTab_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_DashboardTab_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_DashboardTab] PRIMARY KEY CLUSTERED ([DashboardTabID] ASC)
+    , CONSTRAINT [FK_Reporting_DashboardTab_Reporting_Dashboard] FOREIGN KEY ([DashboardID]) REFERENCES [Reporting].[Dashboard]([DashboardID])
+)
+GO
+
+CREATE TABLE [Reporting].[WidgetFunction] (
+    [WidgetFunctionID] INT              IDENTITY (1, 1) NOT NULL,
+    [Name]         NVARCHAR(64)     NOT NULL,
+    [Description]  NVARCHAR(512)    NULL,
+    [rowguid]      UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_WidgetFunction_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate] DATETIME         CONSTRAINT [DF_Reporting_WidgetFunction_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_WidgetFunction] PRIMARY KEY CLUSTERED ([WidgetFunctionID] ASC)
+)
+GO
+
+CREATE TABLE [Reporting].[WidgetType] (
+    [WidgetTypeID]     INT              IDENTITY (1, 1) NOT NULL,
+    [Name]             NVARCHAR(64)     NOT NULL,
+    [Description]      NVARCHAR(512)    NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_WidgetType_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_WidgetType_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_WidgetType] PRIMARY KEY CLUSTERED ([WidgetTypeID] ASC)
+)
+GO
+
+CREATE TABLE [Reporting].[WidgetParameter] (
+    [WidgetParameterID]  INT              IDENTITY (1, 1) NOT NULL,
+    [Name]          NVARCHAR(64)     NOT NULL,
+    [Alias]         NVARCHAR(64)     NOT NULL,
+    [Type]          NVARCHAR(64)     NOT NULL,
+    [DefaultValue]  NVARCHAR(128)    NOT NULL,
+    [Description]   NVARCHAR(512)    NULL,
+    [rowguid]       UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_WidgetParameter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]  DATETIME         CONSTRAINT [DF_Reporting_WidgetParameter_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_WidgetParameter] PRIMARY KEY CLUSTERED ([WidgetParameterID] ASC)
+)
+GO
+
+CREATE TABLE [Reporting].[Widget] (
+    [WidgetID]         INT              IDENTITY (1, 1) NOT NULL,
+    [CreatedByID]      INT              NOT NULL,
+    [FunctionID]       INT              NOT NULL,
+    [TypeID]           INT              NOT NULL,
+    [Title]            NVARCHAR(128)    NOT NULL,
+    [DefaultSettings]  NVARCHAR(1024)   NOT NULL,
+    [Description]      NVARCHAR(512)    NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_Widget_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_Widget_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_Widget] PRIMARY KEY CLUSTERED ([WidgetID] ASC)
+    , CONSTRAINT [FK_Reporting_Widget_Reporting_WidgetFunction] FOREIGN KEY ([FunctionID]) REFERENCES [Reporting].[WidgetFunction]([WidgetFunctionID])
+    , CONSTRAINT [FK_Reporting_Widget_Reporting_WidgetType] FOREIGN KEY ([TypeID]) REFERENCES [Reporting].[WidgetType]([WidgetTypeID])
+)
+GO
+
+CREATE TABLE [Reporting].[WidgetAccount] (
+    [WidgetAccountID]  INT              IDENTITY (1, 1) NOT NULL,
+    [WidgetID]         INT              NOT NULL,
     [AccountID]        INT              NULL,
     [DetailAccountID]  INT              NULL,
     [CostCenterID]     INT              NULL,
     [ProjectID]        INT              NULL,
-    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_ChartAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_ChartAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Reporting_ChartAccount] PRIMARY KEY CLUSTERED ([ChartAccountID] ASC)
-    , CONSTRAINT [FK_Reporting_ChartAccount_Reporting_Chart] FOREIGN KEY ([ChartID]) REFERENCES [Reporting].[Chart]([ChartID])
-    , CONSTRAINT [FK_Reporting_ChartAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Reporting].[Account]([AccountID])
-    , CONSTRAINT [FK_Reporting_ChartAccount_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Reporting].[DetailAccount]([DetailAccountID])
-    , CONSTRAINT [FK_Reporting_ChartAccount_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Reporting].[CostCenter]([CostCenterID])
-    , CONSTRAINT [FK_Reporting_ChartAccount_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Reporting].[Project]([ProjectID])
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_WidgetAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_WidgetAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_WidgetAccount] PRIMARY KEY CLUSTERED ([WidgetAccountID] ASC)
+    , CONSTRAINT [FK_Reporting_WidgetAccount_Reporting_Widget] FOREIGN KEY ([WidgetID]) REFERENCES [Reporting].[Widget]([WidgetID])
+    , CONSTRAINT [FK_Reporting_WidgetAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
+    , CONSTRAINT [FK_Reporting_WidgetAccount_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailAccountID])
+    , CONSTRAINT [FK_Reporting_WidgetAccount_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_Reporting_WidgetAccount_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project]([ProjectID])
 )
 GO
 
-CREATE TABLE [Reporting].[ChartParameter] (
-    [ChartParameterID]   INT              IDENTITY (1, 1) NOT NULL,
-    [ChartID]            INT              NOT NULL,
-    [Name]               NVARCHAR(32)     NOT NULL,
-    [Type]               NVARCHAR(32)     NOT NULL,
-    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_ChartParameter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Reporting_ChartParameter_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Reporting_ChartParameter] PRIMARY KEY CLUSTERED ([ChartParameterID] ASC)
-    , CONSTRAINT [FK_Reporting_ChartParameter_Reporting_Chart] FOREIGN KEY ([ChartID]) REFERENCES [Reporting].[Chart]([ChartID])
+CREATE TABLE [Reporting].[UsedWidgetParameter] (
+    [WidgetParameterID] INT              IDENTITY (1, 1) NOT NULL,
+    [WidgetID]          INT              NOT NULL,
+    [ParameterID]       INT              NOT NULL,
+    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_UsedWidgetParameter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Reporting_UsedWidgetParameter_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_UsedWidgetParameter] PRIMARY KEY CLUSTERED ([WidgetParameterID] ASC)
+    , CONSTRAINT [FK_Reporting_UsedWidgetParameter_Reporting_Widget] FOREIGN KEY ([WidgetID]) REFERENCES [Reporting].[Widget]([WidgetID])
+    , CONSTRAINT [FK_Reporting_UsedWidgetParameter_Reporting_Parameter] FOREIGN KEY ([ParameterID]) REFERENCES [Reporting].[WidgetParameter]([WidgetParameterID])
+)
+GO
+
+CREATE TABLE [Reporting].[TabWidget] (
+    [TabWidgetID]     INT              IDENTITY (1, 1) NOT NULL,
+    [TabID]           INT              NOT NULL,
+    [WidgetID]        INT              NOT NULL,
+    [Settings]        NVARCHAR(1024)   NOT NULL,
+    [DefaultSettings] NVARCHAR(1024)   NOT NULL,
+    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_TabWidget_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Reporting_TabWidget_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_TabWidget] PRIMARY KEY CLUSTERED ([TabWidgetID] ASC)
+    , CONSTRAINT [FK_Reporting_TabWidget_Reporting_Widget] FOREIGN KEY ([WidgetID]) REFERENCES [Reporting].[Widget]([WidgetID])
+    , CONSTRAINT [FK_Reporting_TabWidget_Reporting_DashboardTab] FOREIGN KEY ([TabID]) REFERENCES [Reporting].[DashboardTab]([DashboardTabID])
+)
+GO
+
+CREATE TABLE [Auth].[RoleWidget] (
+    [RoleWidgetID] INT              IDENTITY (1, 1) NOT NULL,
+    [RoleID]       INT              NOT NULL,
+    [WidgetID]     INT              NOT NULL,
+    [rowguid]      UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_RoleWidget_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate] DATETIME         CONSTRAINT [DF_Auth_RoleWidget_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Auth_RoleWidget] PRIMARY KEY CLUSTERED ([RoleWidgetID] ASC)
+    , CONSTRAINT [FK_Auth_RoleWidget_Reporting_Widget] FOREIGN KEY ([WidgetID]) REFERENCES [Reporting].[Widget]([WidgetID])
 )
 GO
 
@@ -795,6 +876,34 @@ CREATE TABLE [Metadata].[City] (
 GO
 
 -- Insert system records...
+SET IDENTITY_INSERT [Reporting].[WidgetFunction] ON 
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (1, N'Function_DebitTurnover')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (2, N'Function_CreditTurnover')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (3, N'Function_NetTurnover')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (4, N'Function_Balance')
+SET IDENTITY_INSERT [Reporting].[WidgetFunction] OFF
+
+SET IDENTITY_INSERT [Reporting].[WidgetType] ON 
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (1, N'Chart_ColumnChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (2, N'Chart_BarChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (3, N'Chart_LineGraph')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (4, N'Chart_PieChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (5, N'Chart_AreaGraph')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (6, N'Chart_ScatterPlot')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (7, N'Chart_BubbleChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (8, N'Chart_StackedColumnChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (9, N'Chart_StackedBarChart')
+SET IDENTITY_INSERT [Reporting].[WidgetType] OFF
+
+SET IDENTITY_INSERT [Reporting].[WidgetParameter] ON 
+INSERT [Reporting].[WidgetParameter] ([WidgetParameterID], [Name], [Alias], [Type], [DefaultValue])
+  VALUES (1, N'FromDate', N'from', N'System.DateTime', N'FiscalPeriodStart')
+INSERT [Reporting].[WidgetParameter] ([WidgetParameterID], [Name], [Alias], [Type], [DefaultValue])
+  VALUES (2, N'ToDate', N'to', N'System.DateTime', N'FiscalPeriodEnd')
+INSERT [Reporting].[WidgetParameter] ([WidgetParameterID], [Name], [Alias], [Type], [DefaultValue])
+  VALUES (3, N'DateUnit', N'unit', N'System.Int32', N'Monthly')
+SET IDENTITY_INSERT [Reporting].[WidgetParameter] OFF
+
 SET IDENTITY_INSERT [Core].[DocumentStatus] ON
 INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (1, N'NotChecked')
 INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (2, N'Checked')
@@ -817,7 +926,7 @@ INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelTyp
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (6, 'QuickSearchSettings', 3, 2, 'QuickSearchConfig', N'{}', N'{}', 'QuickSearchSettingsDescription', 0)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
-    VALUES (8, 'SystemConfigurationSettings', 2, 1, 'SystemConfig', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}', 'SystemConfigurationDescription', 1)
+    VALUES (8, 'SystemConfigurationSettings', 2, 1, 'SystemConfig', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true,"inventoryMode": 1}', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true,"inventoryMode": 1}', 'SystemConfigurationDescription', 1)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (9, 'FinanceReportSettings', 2, 1, 'FinanceReportConfig', N'{"openingAsFirstVoucher":false,"startTurnoverAsInitBalance":false}', N'{"openingAsFirstVoucher":false,"startTurnoverAsInitBalance":false}', 'FinanceReportSettingsDescription', 1)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)

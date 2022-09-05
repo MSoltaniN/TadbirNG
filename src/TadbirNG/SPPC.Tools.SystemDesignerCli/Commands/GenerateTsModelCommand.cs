@@ -20,6 +20,7 @@ namespace SPPC.Tools.SystemDesignerCli
             }
 
             _typeNames = args[0].Split(',');
+            _area = args.Length > 1 ? args[1] : null;
         }
 
         public void Execute()
@@ -41,7 +42,8 @@ namespace SPPC.Tools.SystemDesignerCli
                     .Last()
                     .Replace("ViewModel", String.Empty)
                     .CamelCase();
-                string fullName = String.Format("{0}.{1}", csAssembly, typeName);
+                string fullName = String.Format("{0}{2}.{1}", csAssembly, typeName,
+                    _area != null ? $".{_area}" : String.Empty);
                 string generatedPath = String.Format(@"{0}\{1}.ts", tsAppPath, tsTypeName);
                 var csType = assembly.GetType(fullName);
 
@@ -52,5 +54,6 @@ namespace SPPC.Tools.SystemDesignerCli
         }
 
         private readonly string[] _typeNames;
+        private readonly string _area;
     }
 }

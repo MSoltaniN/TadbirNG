@@ -20,9 +20,18 @@ export class DashboardApi {
     // dashboard/license
     public static LicenseInfo = environment.BaseUrl + "/dashboard/license";
 
-    // dashboard/charts
-    public static Charts = environment.BaseUrl + "/dashboard/charts";
+    // dashboard/current
+    public static CurrentDashboard = environment.BaseUrl + "/dashboard/current";
 
-    // dashboard/charts/{chartId:min(1)}
-    public static Chart = environment.BaseUrl + "/dashboard/charts/{0}";
+    // dashboard/lookup/functions
+    public static WidgetFunctionsLookup = environment.BaseUrl + "/dashboard/lookup/functions";
+
+    // dashboard/lookup/wtypes
+    public static WidgetTypesLookup = environment.BaseUrl + "/dashboard/lookup/wtypes";
+
+    // dashboard/lookup/widgets
+    public static WidgetsLookup = environment.BaseUrl + "/dashboard/lookup/widgets";
+
+    // dashboard/widgets/{widgetId:min(1)}/data
+    public static WidgetData = environment.BaseUrl + "/dashboard/widgets/{0}/data";
 }

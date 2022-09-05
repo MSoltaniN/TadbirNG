@@ -196,4 +196,35 @@ namespace SPPC.Tadbir.Domain
         /// </summary>
         Form = 3
     }
+
+    /// <summary>
+    /// داده شمارشی برای واحد زمانی مورد نیاز برای نمایش گرافیکی ویجت نموداری
+    /// </summary>
+    public enum WidgetDateUnit
+    {
+        /// <summary>
+        /// واحد زمانی نامشخص
+        /// </summary>
+        None = 0,
+
+        /// <summary>
+        /// نمایش نمودار زمانی به صورت روزانه
+        /// </summary>
+        Daily = 1,
+
+        /// <summary>
+        /// نمایش نمودار زمانی به صورت هفتگی
+        /// </summary>
+        Weekly = 2,
+
+        /// <summary>
+        /// نمایش نمودار زمانی به صورت ماهانه
+        /// </summary>
+        Monthly = 3,
+
+        /// <summary>
+        /// نمایش نمودار زمانی به صورت فصلی
+        /// </summary>
+        Quarterly = 4
+    }
 }

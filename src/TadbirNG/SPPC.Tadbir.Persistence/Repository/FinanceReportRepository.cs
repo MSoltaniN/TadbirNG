@@ -159,7 +159,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<IList<VoucherSummaryViewModel>> GetVoucherSummaryItemsAsync(
             GridOptions gridOptions, bool byNo = false)
         {
-            var calendar = await _system.Config.GetCurrentCalendarAsync();
+            var calendar = await _system.Config.GetCurrentCalendarTypeAsync();
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             var query = byNo
                 ? new ReportQuery(VoucherQuery.VoucherSummaryByNo)
@@ -427,7 +427,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task SetVoucherDateAsync(StandardVoucherViewModel voucher)
         {
-            var calendar = await _system.Config.GetCurrentCalendarAsync();
+            var calendar = await _system.Config.GetCurrentCalendarTypeAsync();
             if (calendar == CalendarType.Jalali)
             {
                 voucher.Date = JalaliDateTime

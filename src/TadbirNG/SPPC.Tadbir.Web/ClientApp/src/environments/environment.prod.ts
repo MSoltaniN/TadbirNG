@@ -12,9 +12,10 @@
 
 export const environment = {
   production: true,
-  BaseUrl: 'http://130.185.76.7:9095',
-  LicenseServerUrl: 'http://130.185.76.7:9093',
-  InstanceKey: '1t+pZUqsAON98ziv0RUgdT+LSPzui9wnPven/aNaj0lJJp6Bu873fB+Cwi+zJiE15I/5IbuUy4FpBDLuDw9PRO1n3vYRcPOevKth1PG5eGbalCjx8jaxsYb9V1cb545WVjjCS4n9+tk3SbOhBjqbu8kIJOezWNo8RLcfzkjA0GMXUinO5IcvF1lSOf7Aer91vczu0ahcMC8VLahBoLUS6g==',
-  Version: '1.2.1347',
+  BaseUrl: "http://130.185.76.7:9095",
+  LicenseServerUrl: "http://130.185.76.7:9093",
+  InstanceKey:
+    "1t+pZUqsAON98ziv0RUgdT+LSPzui9wnPven/aNaj0lJJp6Bu873fB+Cwi+zJiE15I/5IbuUy4FpBDLuDw9PRO1n3vYRcPOevKth1PG5eGbalCjx8jaxsYb9V1cb545WVjjCS4n9+tk3SbOhBjqbu8kIJOezWNo8RLcfzkjA0GMXUinO5IcvF1lSOf7Aer91vczu0ahcMC8VLahBoLUS6g==",
+  Version: "1.2.1349",
   SessionAliveInterval: 300000,
 };

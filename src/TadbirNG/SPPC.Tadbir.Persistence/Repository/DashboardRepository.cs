@@ -17,17 +17,20 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای تهیه اطلاعات خلاصه در داشبورد را پیاده سازی می کند
     /// </summary>
-    public class DashboardRepository : RepositoryBase, IDashboardRepository
+    public partial class DashboardRepository : RepositoryBase, IDashboardRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
+        /// <param name="system"></param>
         /// <param name="report"></param>
-        public DashboardRepository(IRepositoryContext context, IReportDirectUtility report)
+        public DashboardRepository(IRepositoryContext context, ISystemRepository system,
+            IReportDirectUtility report)
             : base(context)
         {
             _report = report;
+            Config = system.Config;
         }
 
         /// <summary>

@@ -8,10 +8,10 @@ using SPPC.Framework.Helpers;
 using SPPC.Licensing.Model;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Common;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -70,65 +70,74 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        // GET: api/dashboard/charts
+        // GET: api/dashboard/current
         [HttpGet]
-        [Route(DashboardApi.ChartsUrl)]
-        public IActionResult GetChartsAsync()
+        [Route(DashboardApi.CurrentDashboardUrl)]
+        public IActionResult GetCurrentDashboard()
         {
-            return Ok();
+            var dashboard = _repository.GetCurrentUserDashboard();
+            Localize(dashboard);
+            return Json(dashboard);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="chart"></param>
         /// <returns></returns>
-        // POST: api/dashboard/charts
-        [HttpPost]
-        [Route(DashboardApi.ChartsUrl)]
-        public IActionResult PostNewChartAsync([FromBody] ChartViewModel chart)
+        // GET: api/dashboard/lookup/functions
+        [HttpGet]
+        [Route(DashboardApi.WidgetFunctionsLookupUrl)]
+        public async Task<IActionResult> GetWidgetFunctionsLookupAsync()
         {
-            return Ok(chart);
+            var lookup = await _repository.GetWidgetFunctionsLookupAsync();
+            Array.ForEach(lookup.ToArray(), item => item.Name = _strings[item.Name]);
+            return Json(lookup);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="chartId"></param>
-        /// <param name="chart"></param>
         /// <returns></returns>
-        // PUT: api/dashboard/charts/{chartId:min(1)}
-        [HttpPut]
-        [Route(DashboardApi.ChartUrl)]
-        public IActionResult PutModifiedChartAsync(int chartId, [FromBody] ChartViewModel chart)
+        // GET: api/dashboard/lookup/wtypes
+        [HttpGet]
+        [Route(DashboardApi.WidgetTypesLookupUrl)]
+        public async Task<IActionResult> GetWidgetTypesLookupAsync()
         {
-            return Ok(chart);
+            var lookup = await _repository.GetWidgetTypesLookupAsync();
+            Array.ForEach(lookup.ToArray(), item => item.Name = _strings[item.Name]);
+            return Json(lookup);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="chartId"></param>
         /// <returns></returns>
-        // DELETE: api/dashboard/charts/{chartId:min(1)}
-        [HttpDelete]
-        [Route(DashboardApi.ChartUrl)]
-        public IActionResult DeleteExistingChartAsync(int chartId)
+        // GET: api/dashboard/lookup/widgets
+        [HttpGet]
+        [Route(DashboardApi.WidgetsLookupUrl)]
+        public async Task<IActionResult> GetWidgetsLookupAsync()
         {
-            return StatusCode(204);
+            var lookup = await _repository.GetWidgetsLookupAsync();
+            Array.ForEach(lookup.ToArray(), widget =>
+            {
+                widget.FunctionName = _strings[widget.FunctionName];
+                widget.TypeName = _strings[widget.TypeName];
+            });
+            return Json(lookup);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="actionDetail"></param>
         /// <returns></returns>
-        // PUT: api/dashboard/charts
-        [HttpPut]
-        [Route(DashboardApi.ChartsUrl)]
-        public IActionResult PutExistingChartsAsDeletedAsync([FromBody] ActionDetailViewModel actionDetail)
+        // GET: api/dashboard/widgets/{widgetId:min(1)}/data
+        [HttpGet]
+        [Route(DashboardApi.WidgetDataUrl)]
+        public async Task<IActionResult> GetWidgetDataAsync(
+            int widgetId, DateTime? from, DateTime? to, WidgetDateUnit? unit)
         {
-            return Ok(actionDetail);
+            var widgetData = await _repository.GetWidgetDataAsync(widgetId, from, to, unit);
+            return Json(widgetData);
         }
 
         private Calendar GetCurrentCalendar()
@@ -147,6 +156,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             summaries.NetSales.Legend = _strings[summaries.NetSales.Legend ?? String.Empty];
             Array.ForEach(summaries.NetSales.Points.ToArray(), point => point.XValue = _strings[point.XValue]);
             Array.ForEach(summaries.GrossSales.Points.ToArray(), point => point.XValue = _strings[point.XValue]);
+        }
+
+        private void Localize(DashboardViewModel dashboard)
+        {
+            if (dashboard == null)
+            {
+                return;
+            }
+
+            foreach (var tab in dashboard.Tabs)
+            {
+                foreach (var widget in tab.Widgets)
+                {
+                    widget.WidgetFunctionName = _strings[widget.WidgetFunctionName];
+                    widget.WidgetTypeName = _strings[widget.WidgetTypeName];
+                }
+            }
         }
 
         private readonly IDashboardRepository _repository;

@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Utility
 
                 if (month < Calendar.GetMonthsInYear(year))
                 {
-                    month = month + 1;
+                    month++;
                 }
                 else
                 {
@@ -75,7 +75,7 @@ namespace SPPC.Tadbir.Utility
             if (months.Count > 0)
             {
                 var first = months[0];
-                var last = months[months.Count - 1];
+                var last = months[^1];
                 first.Start = StartDate;
                 last.End = EndDate;
             }

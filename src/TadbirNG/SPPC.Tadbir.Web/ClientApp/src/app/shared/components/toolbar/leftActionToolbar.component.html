@@ -1,5 +1,7 @@
 <button *ngIf="advanceFilterDisabled == false" kendoButton class="hidden-xs lm advance-filter sh-advance-filter" title="{{ 'AdvanceFilter.Title' | translate }}" (click)="showAdvanceFilterComponent()"
-        [icon]="'zoom'" type="button"></button>
+        type="button">
+        <img src="/assets/advance-filter.svg" style="width:20px;height:20px;cursor:pointer"/>
+</button>
 <button *ngIf="quickReportDisabled == false" kendoButton class="hidden-xs lm report-setting sh-report-setting" title="{{ 'Report.ReportSetting' | translate }}" (click)="showQuickReportSetting()"
         [icon]="'form-element'" type="button"></button>
 <button *ngIf="quickReportDisabled == false" kendoButton class="hidden-xs lm print sh-print" title="{{ 'Report.Print' | translate }}" (click)="showReportManager()"

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using SPPC.Framework.Mapper;
+﻿using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.ViewModel.Auth;
 

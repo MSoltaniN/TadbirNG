@@ -292,7 +292,7 @@
     },
     "VoucherStatuses": {
       "Committed": "ثبت شده",
-      "Finalized": "ثبت قطعی شده",
+      "Finalized": "ثبت قطعی",
       "Accepted": "تایید شده",
       "Approved": "تصویب شده",
       "AllVouchers": "کلیه اسناد"
@@ -545,7 +545,7 @@
     },
     "VoucherStatuses": {
       "Committed": "ثبت شده",
-      "Finalized": "ثبت قطعی شده",
+      "Finalized": "ثبت قطعی",
       "Accepted": "تایید شده",
       "Approved": "تصویب شده",
       "AllVouchers": "کلیه اسناد"
@@ -583,7 +583,7 @@
     },
     "VoucherStatuses": {
       "Committed": "ثبت شده",
-      "Finalized": "ثبت قطعی شده",
+      "Finalized": "ثبت قطعی",
       "Accepted": "تایید شده",
       "Approved": "تصویب شده",
       "AllVouchers": "کلیه اسناد",

@@ -29,23 +29,53 @@ namespace SPPC.Tadbir.Api
         public const string LicenseInfoUrl = "dashboard/license";
 
         /// <summary>
-        /// API client URL for all charts currently defined in dashboard
+        /// API client URL for the dashboard created by (or assigned to) current user
         /// </summary>
-        public const string Charts = "dashboard/charts";
+        public const string CurrentDashboard = "dashboard/current";
 
         /// <summary>
-        /// API server route URL for all charts currently defined in dashboard
+        /// API server route URL for the dashboard created by (or assigned to) current user
         /// </summary>
-        public const string ChartsUrl = "dashboard/charts";
+        public const string CurrentDashboardUrl = "dashboard/current";
 
         /// <summary>
-        /// API client URL for a charts specified by unique identifier
+        /// API client URL for all usable widget functions
         /// </summary>
-        public const string Chart = "dashboard/charts/{chartId:min(1)}";
+        public const string WidgetFunctionsLookup = "dashboard/lookup/functions";
 
         /// <summary>
-        /// API server route URL for a charts specified by unique identifier
+        /// API server route URL for all usable widget functions
         /// </summary>
-        public const string ChartUrl = "dashboard/charts/{0}";
+        public const string WidgetFunctionsLookupUrl = "dashboard/lookup/functions";
+
+        /// <summary>
+        /// API client URL for all usable widget types
+        /// </summary>
+        public const string WidgetTypesLookup = "dashboard/lookup/wtypes";
+
+        /// <summary>
+        /// API server route URL for all usable widget types
+        /// </summary>
+        public const string WidgetTypesLookupUrl = "dashboard/lookup/wtypes";
+
+        /// <summary>
+        /// API client URL for all usable widgets
+        /// </summary>
+        public const string WidgetsLookup = "dashboard/lookup/widgets";
+
+        /// <summary>
+        /// API server route URL for all usable widgets
+        /// </summary>
+        public const string WidgetsLookupUrl = "dashboard/lookup/widgets";
+
+        /// <summary>
+        /// API client URL for calculated data of one or more account vectors in a specific widget
+        /// </summary>
+        public const string WidgetData = "dashboard/widgets/{0}/data";
+
+        /// <summary>
+        /// API server route URL for calculated data of one or more account vectors in a specific widget
+        /// </summary>
+        public const string WidgetDataUrl = "dashboard/widgets/{widgetId:min(1)}/data";
     }
 }

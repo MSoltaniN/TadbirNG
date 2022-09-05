@@ -771,7 +771,7 @@ namespace SPPC.Tadbir.Persistence
             var fiscalPeriod = await repository.GetByIDAsync(fiscalPeriodId);
             adjusted.FiscalPeriodId = fiscalPeriodId;
 
-            var calendarType = await Config.GetCurrentCalendarAsync();
+            var calendarType = await Config.GetCurrentCalendarTypeAsync();
             if (calendarType == CalendarType.Jalali)
             {
                 var periodStart = JalaliDateTime.FromDateTime(fiscalPeriod.StartDate);
