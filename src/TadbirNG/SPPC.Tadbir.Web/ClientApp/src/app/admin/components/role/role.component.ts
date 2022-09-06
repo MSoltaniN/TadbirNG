@@ -176,6 +176,7 @@ export class RoleComponent
     this.saveHandler(model, this.isNew, this.roleService, serviceUrl)
       .then((success: ResultOption) => {
         this.isActive = false;
+        this.highLightNewRow(model.role);
       })
       .catch((resultOption: ResultOption) => {
         // error handler is called

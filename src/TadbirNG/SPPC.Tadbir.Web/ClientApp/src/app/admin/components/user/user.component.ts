@@ -147,6 +147,7 @@ export class UserComponent
     this.saveHandler(model, this.isNew, this.userService, serviceUrl)
       .then((success: ResultOption) => {
         this.isActive = false;
+        this.highLightNewRow(model.userName)
       })
       .catch((error: ResultOption) => {
         // error handler is called

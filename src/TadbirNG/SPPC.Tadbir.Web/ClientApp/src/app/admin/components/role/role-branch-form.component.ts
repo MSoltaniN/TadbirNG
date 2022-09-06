@@ -5,6 +5,7 @@ import { Layout } from '@sppc/shared/enum/metadata';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { DetailComponent } from '@sppc/shared/class';
 import { RelatedItems } from '@sppc/shared/models';
+import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
 
 
 
@@ -61,7 +62,14 @@ export class RoleBranchFormComponent extends DetailComponent {
   @Output() saveRoleBranches: EventEmitter<RelatedItems> = new EventEmitter();
   ////create properties
 
+  checkById(item: TreeItem) {
+    return item.dataItem.id;
+  }
 
+  handleCheckingRows(item: TreeItemLookup) {
+    console.log(this.gridData,this.selectedRows,item.item);
+    
+  }
 
   //////Events
   public onSave(e: any): void {
