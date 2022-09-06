@@ -63,8 +63,8 @@ FROM [Finance].[Voucher] AS [v]
   LEFT OUTER JOIN [Finance].[DetailAccount] AS [facc] ON [vl].[DetailID] = [facc].[DetailAccountID]
   LEFT OUTER JOIN [Finance].[CostCenter] AS [cc] ON [vl].[CostCenterID] = [cc].[CostCenterID]
   LEFT OUTER JOIN [Finance].[Project] AS [prj] ON [vl].[ProjectID] = [prj].[ProjectID]
-WHERE [v].[Date] >= '{1}' AND [v].[Date] <= '{2}' AND [v].[FiscalPeriodID] = {3} AND [v].[SubjectType] = 0
-GROUP BY {4}";
+WHERE [v].[Date] >= '{1}' AND [v].[Date] <= '{2}' AND [v].[FiscalPeriodID] = {3} AND [v].[SubjectType] = 0 AND {4}
+GROUP BY {5}";
 
         internal const string CreditTurnover = @"
 SELECT {0}, SUM([vl].[Credit]) AS [Credit]
@@ -74,8 +74,8 @@ FROM [Finance].[Voucher] AS [v]
   LEFT OUTER JOIN [Finance].[DetailAccount] AS [facc] ON [vl].[DetailID] = [facc].[DetailAccountID]
   LEFT OUTER JOIN [Finance].[CostCenter] AS [cc] ON [vl].[CostCenterID] = [cc].[CostCenterID]
   LEFT OUTER JOIN [Finance].[Project] AS [prj] ON [vl].[ProjectID] = [prj].[ProjectID]
-WHERE [v].[Date] >= '{1}' AND [v].[Date] <= '{2}' AND [v].[FiscalPeriodID] = {3} AND [v].[SubjectType] = 0
-GROUP BY {4}";
+WHERE [v].[Date] >= '{1}' AND [v].[Date] <= '{2}' AND [v].[FiscalPeriodID] = {3} AND [v].[SubjectType] = 0 AND {4}
+GROUP BY {5}";
 
         internal const string NetTurnover = @"
 SELECT {0}, ABS(SUM([vl].[Debit]) - SUM([vl].[Credit])) AS [Net]
@@ -85,8 +85,8 @@ FROM [Finance].[Voucher] AS [v]
   LEFT OUTER JOIN [Finance].[DetailAccount] AS [facc] ON [vl].[DetailID] = [facc].[DetailAccountID]
   LEFT OUTER JOIN [Finance].[CostCenter] AS [cc] ON [vl].[CostCenterID] = [cc].[CostCenterID]
   LEFT OUTER JOIN [Finance].[Project] AS [prj] ON [vl].[ProjectID] = [prj].[ProjectID]
-WHERE [v].[Date] >= '{1}' AND [v].[Date] <= '{2}' AND [v].[FiscalPeriodID] = {3} AND [v].[SubjectType] = 0
-GROUP BY {4}";
+WHERE [v].[Date] >= '{1}' AND [v].[Date] <= '{2}' AND [v].[FiscalPeriodID] = {3} AND [v].[SubjectType] = 0 AND {4}
+GROUP BY {5}";
 
         internal const string Balance = @"
 SELECT {0}, SUM([vl].[Debit] - [vl].[Credit]) AS [Balance]
@@ -96,7 +96,7 @@ FROM [Finance].[Voucher] AS [v]
   LEFT OUTER JOIN [Finance].[DetailAccount] AS [facc] ON [vl].[DetailID] = [facc].[DetailAccountID]
   LEFT OUTER JOIN [Finance].[CostCenter] AS [cc] ON [vl].[CostCenterID] = [cc].[CostCenterID]
   LEFT OUTER JOIN [Finance].[Project] AS [prj] ON [vl].[ProjectID] = [prj].[ProjectID]
-WHERE [v].[Date] <= '{1}' AND [v].[FiscalPeriodID] = {2} AND [v].[SubjectType] = 0
-GROUP BY {3}";
+WHERE [v].[Date] <= '{1}' AND [v].[FiscalPeriodID] = {2} AND [v].[SubjectType] = 0 AND {3}
+GROUP BY {4}";
     }
 }

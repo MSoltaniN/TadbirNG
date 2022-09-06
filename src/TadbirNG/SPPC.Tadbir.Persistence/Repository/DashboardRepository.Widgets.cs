@@ -40,6 +40,13 @@ namespace SPPC.Tadbir.Persistence
             public DateTime ToDate { get; set; }
         }
 
+        private enum ExpressionUsage
+        {
+            Select = 0,
+            Where = 1,
+            GroupBy = 2
+        }
+
         /// <summary>
         /// امکان دسترسی به تنظیمات جاری برنامه را فراهم می کند
         /// </summary>
@@ -408,13 +415,14 @@ namespace SPPC.Tadbir.Persistence
         {
             decimal turnover = 0.0M;
             var query = String.Format(
-                DashboardQuery.DebitTurnover, GetFullAccountSelectList(fullAccount, true),
+                DashboardQuery.DebitTurnover, GetFullAccountExpressions(fullAccount, ExpressionUsage.Select),
                 from.ToShortDateString(false), to.ToShortDateString(false), UserContext.FiscalPeriodId,
-                GetFullAccountSelectList(fullAccount, false));
+                GetFullAccountExpressions(fullAccount, ExpressionUsage.Where),
+                GetFullAccountExpressions(fullAccount, ExpressionUsage.GroupBy));
             var result = DbConsole.ExecuteQuery(query);
             if (result.Rows.Count > 0)
             {
-                turnover = GetCalculatedValue(result, fullAccount, "Debit");
+                turnover = _report.ValueOrDefault<decimal>(result.Rows[0], "Debit");
             }
 
             return turnover;
@@ -424,13 +432,14 @@ namespace SPPC.Tadbir.Persistence
         {
             decimal turnover = 0.0M;
             var query = String.Format(
-                DashboardQuery.CreditTurnover, GetFullAccountSelectList(fullAccount, true),
+                DashboardQuery.CreditTurnover, GetFullAccountExpressions(fullAccount, ExpressionUsage.Select),
                 from.ToShortDateString(false), to.ToShortDateString(false), UserContext.FiscalPeriodId,
-                GetFullAccountSelectList(fullAccount, false));
+                GetFullAccountExpressions(fullAccount, ExpressionUsage.Where),
+                GetFullAccountExpressions(fullAccount, ExpressionUsage.GroupBy));
             var result = DbConsole.ExecuteQuery(query);
             if (result.Rows.Count > 0)
             {
-                turnover = GetCalculatedValue(result, fullAccount, "Credit");
+                turnover = _report.ValueOrDefault<decimal>(result.Rows[0], "Credit");
             }
 
             return turnover;
@@ -440,13 +449,14 @@ namespace SPPC.Tadbir.Persistence
         {
             decimal turnover = 0.0M;
             var query = String.Format(
-                DashboardQuery.NetTurnover, GetFullAccountSelectList(fullAccount, true),
+                DashboardQuery.NetTurnover, GetFullAccountExpressions(fullAccount, ExpressionUsage.Select),
                 from.ToShortDateString(false), to.ToShortDateString(false), UserContext.FiscalPeriodId,
-                GetFullAccountSelectList(fullAccount, false));
+                GetFullAccountExpressions(fullAccount, ExpressionUsage.Where),
+                GetFullAccountExpressions(fullAccount, ExpressionUsage.GroupBy));
             var result = DbConsole.ExecuteQuery(query);
             if (result.Rows.Count > 0)
             {
-                turnover = GetCalculatedValue(result, fullAccount, "Net");
+                turnover = _report.ValueOrDefault<decimal>(result.Rows[0], "Net");
             }
 
             return turnover;
@@ -456,96 +466,69 @@ namespace SPPC.Tadbir.Persistence
         {
             decimal balance = 0.0M;
             var query = String.Format(
-                DashboardQuery.Balance, GetFullAccountSelectList(fullAccount, true),
+                DashboardQuery.Balance, GetFullAccountExpressions(fullAccount, ExpressionUsage.Select),
                 to.ToShortDateString(false), UserContext.FiscalPeriodId,
-                GetFullAccountSelectList(fullAccount, false));
+                GetFullAccountExpressions(fullAccount, ExpressionUsage.Where),
+                GetFullAccountExpressions(fullAccount, ExpressionUsage.GroupBy));
             var result = DbConsole.ExecuteQuery(query);
             if (result.Rows.Count > 0)
             {
-                balance = GetCalculatedValue(result, fullAccount, "Balance");
+                balance = _report.ValueOrDefault<decimal>(result.Rows[0], "Balance");
             }
 
             return balance;
         }
 
-        private string GetFullAccountSelectList(FullAccountViewModel fullAccount, bool withAlias)
+        private string GetFullAccountExpressions(FullAccountViewModel fullAccount, ExpressionUsage usage)
         {
             var selectList = new List<string>();
             if (fullAccount.Account.Id > 0)
             {
                 var codeLength = Config.GetLevelCodeLength(ViewId.Account, fullAccount.Account.Level);
-                var selectItem = withAlias
+                var selectItem = usage == ExpressionUsage.Select
                     ? $"SUBSTRING([acc].[FullCode], 1, {codeLength}) AS [Account]"
-                    : $"SUBSTRING([acc].[FullCode], 1, {codeLength})";
+                    : (usage == ExpressionUsage.GroupBy
+                        ? $"SUBSTRING([acc].[FullCode], 1, {codeLength})"
+                        : $"SUBSTRING([acc].[FullCode], 1, {codeLength}) = '{fullAccount.Account.FullCode}'");
                 selectList.Add(selectItem);
             }
 
             if (fullAccount.DetailAccount.Id > 0)
             {
                 var codeLength = Config.GetLevelCodeLength(ViewId.DetailAccount, fullAccount.DetailAccount.Level);
-                var selectItem = withAlias
+                var selectItem = usage == ExpressionUsage.Select
                     ? $"SUBSTRING([facc].[FullCode], 1, {codeLength}) AS [DetailAccount]"
-                    : $"SUBSTRING([facc].[FullCode], 1, {codeLength})";
+                    : (usage == ExpressionUsage.GroupBy
+                        ? $"SUBSTRING([facc].[FullCode], 1, {codeLength})"
+                        : $"SUBSTRING([facc].[FullCode], 1, {codeLength}) = '{fullAccount.DetailAccount.FullCode}'");
                 selectList.Add(selectItem);
             }
 
             if (fullAccount.CostCenter.Id > 0)
             {
                 var codeLength = Config.GetLevelCodeLength(ViewId.CostCenter, fullAccount.CostCenter.Level);
-                var selectItem = withAlias
+                var selectItem = usage == ExpressionUsage.Select
                     ? $"SUBSTRING([cc].[FullCode], 1, {codeLength}) AS [CostCenter]"
-                    : $"SUBSTRING([cc].[FullCode], 1, {codeLength})";
+                    : (usage == ExpressionUsage.GroupBy
+                        ? $"SUBSTRING([cc].[FullCode], 1, {codeLength})"
+                        : $"SUBSTRING([cc].[FullCode], 1, {codeLength}) = '{fullAccount.CostCenter.FullCode}'");
                 selectList.Add(selectItem);
             }
 
             if (fullAccount.Project.Id > 0)
             {
                 var codeLength = Config.GetLevelCodeLength(ViewId.Project, fullAccount.Project.Level);
-                var selectItem = withAlias
+                var selectItem = usage == ExpressionUsage.Select
                     ? $"SUBSTRING([prj].[FullCode], 1, {codeLength}) AS [Project]"
-                    : $"SUBSTRING([prj].[FullCode], 1, {codeLength})";
+                    : (usage == ExpressionUsage.GroupBy
+                        ? $"SUBSTRING([prj].[FullCode], 1, {codeLength})"
+                        : $"SUBSTRING([prj].[FullCode], 1, {codeLength}) = '{fullAccount.Project.FullCode}'");
                 selectList.Add(selectItem);
             }
 
-            return String.Join(",", selectList);
-        }
-
-        private decimal GetCalculatedValue(DataTable result, FullAccountViewModel fullAccount, string field)
-        {
-            var rows = result.Rows
-                .Cast<DataRow>()
-                .Select(row => new
-                {
-                    Account = _report.ValueOrDefault(row, "Account"),
-                    DetailAccount = _report.ValueOrDefault(row, "DetailAccount"),
-                    CostCenter = _report.ValueOrDefault(row, "CostCenter"),
-                    Project = _report.ValueOrDefault(row, "Project"),
-                    Value = _report.ValueOrDefault<decimal>(row, field)
-                });
-            if (fullAccount.Account.Id > 0)
-            {
-                rows = rows
-                    .Where(row => row.Account == fullAccount.Account.FullCode);
-            }
-            if (fullAccount.DetailAccount.Id > 0)
-            {
-                rows = rows
-                    .Where(row => row.DetailAccount == fullAccount.DetailAccount.FullCode);
-            }
-            if (fullAccount.CostCenter.Id > 0)
-            {
-                rows = rows
-                    .Where(row => row.CostCenter == fullAccount.CostCenter.FullCode);
-            }
-            if (fullAccount.Project.Id > 0)
-            {
-                rows = rows
-                    .Where(row => row.Project == fullAccount.Project.FullCode);
-            }
-
-            return rows.Any()
-                ? rows.First().Value
-                : 0.0M;
+            return usage == ExpressionUsage.Where
+                ? String.Join(" AND ", selectList)
+                : String.Join(",", selectList);
         }
 
         private delegate decimal FunctionEvaluator(FullAccountViewModel fullAccount, DateTime from, DateTime to);
