@@ -3633,4 +3633,7 @@
   <data name="Function_NetTurnover" xml:space="preserve">
     <value>Net turnover</value>
   </data>
+  <data name="Widget" xml:space="preserve">
+    <value>Widget</value>
+  </data>
 </root>

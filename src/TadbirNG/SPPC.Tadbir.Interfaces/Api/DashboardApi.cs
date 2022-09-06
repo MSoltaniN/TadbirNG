@@ -77,5 +77,25 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for calculated data of one or more account vectors in a specific widget
         /// </summary>
         public const string WidgetDataUrl = "dashboard/widgets/{widgetId:min(1)}/data";
+
+        /// <summary>
+        /// API client URL for all widgets added to a dashboard tab
+        /// </summary>
+        public const string TabWidgets = "dashboard/tabs/{0}/widgets";
+
+        /// <summary>
+        /// API server route URL for all widgets added to a dashboard tab
+        /// </summary>
+        public const string TabWidgetsUrl = "dashboard/tabs/{tabId:min(1)}/widgets";
+
+        /// <summary>
+        /// API client URL for a specific widget added to a dashboard tab
+        /// </summary>
+        public const string TabWidget = "dashboard/tabs/{0}/widgets/{1}";
+
+        /// <summary>
+        /// API server route URL for a specific widget added to a dashboard tab
+        /// </summary>
+        public const string TabWidgetUrl = "dashboard/tabs/{tabId:min(1)}/widgets/{widgetId:min(1)}";
     }
 }

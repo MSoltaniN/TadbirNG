@@ -55,5 +55,19 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات مورد نیاز برای نمایش در نمودار</returns>
         Task<ChartSeriesViewModel> GetWidgetDataAsync(
             int widgetId, DateTime? fromDate, DateTime? toDate, WidgetDateUnit? unit);
+
+        /// <summary>
+        /// به روش آسنکرون، یکی از ویجت های قابل دسترسی توسط کاربر جاری را در برگه تعیین شده اضافه یا اصلاح می کند
+        /// </summary>
+        /// <param name="tabWidget">اطلاعات ویجت مورد نظر برای ایجاد یا اصلاح به برگه داشبورد</param>
+        /// <returns>آخرین اطلاعات ویجت اضافه یا اصلاح شده در برگه داشبورد</returns>
+        Task<TabWidgetViewModel> SaveTabWidgetAsync(TabWidgetViewModel tabWidget);
+
+        /// <summary>
+        /// به روش آسنکرون، ویجت داده شده را از برگه مورد نظر در داشبورد کاربر جاری حذف می کند
+        /// </summary>
+        /// <param name="tabId">شناسه دیتابیسی برگه ای که ویجت از آن حذف می شود</param>
+        /// <param name="widgetId">شناسه دیتابیسی ویجتی که از برگه مورد نظر حذف می شود</param>
+        Task DeleteTabWidgetAsync(int tabId, int widgetId);
     }
 }

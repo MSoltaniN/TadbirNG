@@ -3624,4 +3624,7 @@
   <data name="Function_NetTurnover" xml:space="preserve">
     <value>گردش خالص</value>
   </data>
+  <data name="Widget" xml:space="preserve">
+    <value>ویجت</value>
+  </data>
 </root>
