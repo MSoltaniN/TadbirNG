@@ -163,7 +163,20 @@ namespace SPPC.Tadbir.Persistence
                 var saved = Mapper.Map<TabWidget>(tabWidget);
                 repository.Insert(saved);
                 await UnitOfWork.CommitAsync();
-                return Mapper.Map<TabWidgetViewModel>(saved);
+                var widgetRepository = UnitOfWork.GetAsyncRepository<Widget>();
+                var widgetInfo = await widgetRepository
+                    .GetEntityQuery()
+                    .Where(wgt => wgt.Id == tabWidget.WidgetId)
+                    .Select(wgt => new
+                    {
+                        wgt.Title,
+                        wgt.TypeId
+                    })
+                    .SingleOrDefaultAsync();
+                var mapped = Mapper.Map<TabWidgetViewModel>(saved);
+                mapped.WidgetTitle = widgetInfo.Title;
+                mapped.WidgetTypeId = widgetInfo.TypeId;
+                return mapped;
             }
             else
             {

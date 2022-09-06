@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.ViewModel.Reporting
