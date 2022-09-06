@@ -24,9 +24,12 @@ export class AddWidgetComponent implements OnInit {
   }
 
   widgetIsUsed(widgetId) {
-    return (
-      this.selectedWidgets.findIndex((w: any) => w.widgetId == widgetId) >= 0
-    );
+    if (this.selectedWidgets)
+      return (
+        this.selectedWidgets.findIndex((w: any) => w.widgetId == widgetId) >= 0
+      );
+
+    return false;
   }
 
   activate(id: number) {
