@@ -34,18 +34,6 @@
   ::ng-deep.section-option kendo-dropdownlist {
     width: 100%;
   }
-  ::ng-deep .k-switch-on .k-switch-handle {
-    left: -8px !important;
-  }
-  ::ng-deep .k-switch-off .k-switch-handle {
-    left: -4px !important;
-  }
-  ::ng-deep .k-switch[dir="rtl"] .k-switch-label-on {
-    right: -22px;
-  }
-  ::ng-deep .k-switch[dir="rtl"] .k-switch-label-off {
-    left: 0;
-  }
   ::ng-deep .k-switch-label-on,
   ::ng-deep .k-switch-label-off {
     overflow: initial;

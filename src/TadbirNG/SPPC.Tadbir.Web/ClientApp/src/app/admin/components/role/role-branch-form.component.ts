@@ -18,6 +18,7 @@ export function getLayoutModule(layout: Layout) {
   selector: 'role-branch-form-component',
   styles: [`
        .user-dialog {width: 100% !important; height:100% !important}
+       ::ng-deep .k-treeview .k-i-collapse, ::ng-deep .k-treeview .k-i-expand {margin-left: -5px !important}
        ::ng-deep .user-dialog .k-dialog{ height:100% !important; min-width: unset !important; }
 `
   ],
@@ -67,8 +68,7 @@ export class RoleBranchFormComponent extends DetailComponent {
   }
 
   handleCheckingRows(item: TreeItemLookup) {
-    console.log(this.gridData,this.selectedRows,item.item);
-    
+
   }
 
   //////Events

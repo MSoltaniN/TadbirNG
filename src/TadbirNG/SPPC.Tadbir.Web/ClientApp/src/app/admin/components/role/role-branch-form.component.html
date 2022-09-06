@@ -27,13 +27,14 @@
                 <kendo-grid-column sppc-grid-column="RoleBranches.name">
                 </kendo-grid-column>
             </kendo-grid> -->
-            <kendo-treeview [nodes]="gridData" textField="name"
+            <kendo-treeview [nodes]="gridData" [textField]="['name']"
                             [loadOnDemand]="false"
                             kendoTreeViewExpandable
                             kendoTreeViewCheckable
                             kendoTreeViewFlatDataBinding
                             [checkBy]="checkById"
                             (checkedChange)="handleCheckingRows($event)"
+                            idField="id"
                             parentIdField="parentId"
                             [(checkedKeys)]="selectedRows">
             </kendo-treeview>

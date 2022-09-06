@@ -97,7 +97,7 @@ export class SystemIssueComponent
     },
   ];
 
-  @ViewChild(GridFilterComponent, {static: true}) gridFilter: GridFilterComponent;
+  @ViewChild(GridFilterComponent) gridFilter: GridFilterComponent;
 
   constructor(
     public toastrService: ToastrService,
