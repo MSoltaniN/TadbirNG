@@ -46,7 +46,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="start">پارامتر خروجی برای تنظیم تاریخ ابتدا در محدوده تاریخی پیش فرض</param>
         /// <param name="end">پارامتر خروجی برای تنظیم تاریخ انتها در محدوده تاریخی پیش فرض</param>
-        public void GetCurrentFiscalDateRange(out DateTime start, out DateTime end)
+        public void GetDefaultFiscalDateRange(out DateTime start, out DateTime end)
         {
             var config = GetConfigByTypeAsync<DateRangeConfig>().Result;
             Verify.ArgumentNotNull(UserContext);
@@ -64,6 +64,19 @@ namespace SPPC.Tadbir.Persistence
                     ? DateTime.Now
                     : fiscalPeriod.EndDate;
             }
+        }
+
+        /// <summary>
+        /// محدوده تاریخی دوره مالی جاری برنامه را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="start">پارامتر خروجی برای تنظیم تاریخ ابتدا در محدوده تاریخی</param>
+        /// <param name="end">پارامتر خروجی برای تنظیم تاریخ انتها در محدوده تاریخی</param>
+        public void GetCurrentFiscalDateRange(out DateTime start, out DateTime end)
+        {
+            var repository = UnitOfWork.GetRepository<FiscalPeriod>();
+            var fiscalPeriod = repository.GetByID(UserContext.FiscalPeriodId);
+            start = fiscalPeriod.StartDate;
+            end = fiscalPeriod.EndDate;
         }
 
         /// <summary>

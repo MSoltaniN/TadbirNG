@@ -52,10 +52,10 @@ namespace SPPC.Tadbir.Persistence
         /// در صورتی که داشبوردی برای کاربر جاری وجود نداشته باشد</returns>
         public DashboardViewModel GetCurrentUserDashboard()
         {
-            var query = String.Format(DashboardQuery.CurrentDashboardWidgets, UserContext.Id);
+            var query = String.Format(DashboardQuery.CurrentDashboard, UserContext.Id);
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-            var widgets = DbConsole.ExecuteQuery(query);
-            return GetDashboard(widgets);
+            var dashboardResult = DbConsole.ExecuteQuery(query);
+            return GetDashboard(dashboardResult);
         }
 
         /// <summary>
@@ -110,9 +110,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var dataSeries = default(ChartSeriesViewModel);
             var dateUnit = unit ?? WidgetDateUnit.Monthly;
-            Config.GetCurrentFiscalDateRange(out DateTime from, out DateTime to);
-            from = fromDate ?? from;
-            to = toDate ?? to;
+            Config.GetCurrentFiscalDateRange(out DateTime start, out DateTime end);
+            start = fromDate ?? start;
+            end = toDate ?? end;
             var repository = UnitOfWork.GetAsyncRepository<Widget>();
             var widget = await repository
                 .GetEntityWithTrackingQuery(wgt => wgt.Function, wgt => wgt.Accounts)
@@ -123,15 +123,15 @@ namespace SPPC.Tadbir.Persistence
                 DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
                 var accountRepository = UnitOfWork.GetAsyncRepository<WidgetAccount>();
                 var fullAccounts = GetFullAccounts(widget.Accounts, accountRepository);
-                var values = await GetFunctionValuesAsync(from, to, dateUnit);
-                var evaluator = GetFunctionEvaluator(widget.Function);
+                var values = await GetFunctionValuesAsync(start, end, dateUnit);
+                var evaluator = GetFunctionEvaluator(widget.Function.Name);
                 dataSeries = new ChartSeriesViewModel();
                 dataSeries.Labels.AddRange(values.Select(value => value.XLabel));
                 foreach (var fullAccount in fullAccounts)
                 {
                     var serie = new ChartSerieViewModel()
                     {
-                        Label = $"{fullAccount.Account.FullCode}-{fullAccount.DetailAccount.FullCode}-{fullAccount.CostCenter.FullCode}-{fullAccount.Project.FullCode}"
+                        Label = GetFullAccountLabel(fullAccount)
                     };
                     serie.Data.AddRange(values
                         .OrderBy(value => value.FromDate)
@@ -143,21 +143,23 @@ namespace SPPC.Tadbir.Persistence
             return dataSeries;
         }
 
-        private DashboardViewModel GetDashboard(DataTable widgets)
+        private DashboardViewModel GetDashboard(DataTable dashboardResult)
         {
-            var dashboard = DashboardFromWidgets(widgets);
+            var dashboard = DashboardFromResult(dashboardResult);
             if (dashboard != null)
             {
-                var tabWidgets = widgets.Rows
+                var query = String.Format(DashboardQuery.CurrentDashboardWidgets, dashboard.Id);
+                var widgetResult = DbConsole.ExecuteQuery(query);
+                var tabWidgets = widgetResult.Rows
                     .Cast<DataRow>()
                     .Select(row => new TabWidgetViewModel()
                     {
                         TabId = _report.ValueOrDefault<int>(row, "TabID"),
                         WidgetId = _report.ValueOrDefault<int>(row, "WidgetID"),
-                        Settings = _report.ValueOrDefault(row, "Settings"),
-                        DefaultSettings = _report.ValueOrDefault(row, "DefaultSettings"),
                         WidgetTitle = _report.ValueOrDefault(row, "Title"),
-                        WidgetDescription = _report.ValueOrDefault(row, "Description")
+                        WidgetDescription = _report.ValueOrDefault(row, "Description"),
+                        Settings = _report.ValueOrDefault(row, "Settings"),
+                        DefaultSettings = _report.ValueOrDefault(row, "DefaultSettings")
                     })
                     .ToList();
 
@@ -165,17 +167,17 @@ namespace SPPC.Tadbir.Persistence
                 var widgetIds = tabWidgets
                     .Select(tw => tw.WidgetId)
                     .Distinct();
-                var widgetAccounts = GetWidgetAccounts(widgetIds);
-                var widgetParameters = GetWidgetParameters(widgetIds);
+                var accounts = GetWidgetAccounts(widgetIds);
+                var parameters = GetWidgetParameters(widgetIds);
                 foreach (var tab in dashboard.Tabs)
                 {
                     tab.Widgets.AddRange(tabWidgets.Where(tw => tw.TabId == tab.Id));
                     foreach (var widget in tab.Widgets)
                     {
-                        widget.WidgetAccounts.AddRange(widgetAccounts
+                        widget.WidgetAccounts.AddRange(accounts
                             .Where(wacc => wacc.WidgetId == widget.WidgetId)
                             .Select(wacc => wacc.FullAccount));
-                        widget.WidgetParmeters.AddRange(widgetParameters
+                        widget.WidgetParmeters.AddRange(parameters
                             .Where(wpara => wpara.WidgetId == widget.WidgetId)
                             .Select(wpara => wpara.Parameter));
                     }
@@ -185,29 +187,25 @@ namespace SPPC.Tadbir.Persistence
             return dashboard;
         }
 
-        private DashboardViewModel DashboardFromWidgets(DataTable widgets)
+        private DashboardViewModel DashboardFromResult(DataTable dashboardResult)
         {
             var dashboard = default(DashboardViewModel);
-            if (widgets.Rows.Count > 0)
+            if (dashboardResult.Rows.Count > 0)
             {
-                int dashboardId = _report.ValueOrDefault<int>(widgets.Rows[0], "DashboardID");
+                int dashboardId = _report.ValueOrDefault<int>(dashboardResult.Rows[0], "DashboardID");
                 dashboard = new DashboardViewModel()
                 {
                     Id = dashboardId,
                     UserId = UserContext.Id
                 };
-                var tabs = widgets.Rows
+                dashboard.Tabs.AddRange(dashboardResult.Rows
                     .Cast<DataRow>()
                     .Select(row => new DashboardTabViewModel()
                     {
                         Id = _report.ValueOrDefault<int>(row, "TabID"),
-                        Index = _report.ValueOrDefault<int>(row, "Index"),
+                        Index = _report.ValueOrDefault<int>(row, "TabIndex"),
                         Title = _report.ValueOrDefault(row, "TabTitle")
-                    });
-                foreach (var group in tabs.GroupBy(tab => tab.Id))
-                {
-                    dashboard.Tabs.Add(group.First());
-                }
+                    }));
             }
 
             return dashboard;
@@ -221,8 +219,8 @@ namespace SPPC.Tadbir.Persistence
             if (widgetIds.Any())
             {
                 var query = String.Format(DashboardQuery.WidgetDetails, String.Join(',', widgetIds));
-                var details = DbConsole.ExecuteQuery(query);
-                var allWidgets = details.Rows
+                var detailsResult = DbConsole.ExecuteQuery(query);
+                var details = detailsResult.Rows
                     .Cast<DataRow>()
                     .Select(row => new TabWidgetViewModel()
                     {
@@ -232,10 +230,12 @@ namespace SPPC.Tadbir.Persistence
                         WidgetFunctionName = _report.ValueOrDefault(row, "FunctionName"),
                         WidgetTypeName = _report.ValueOrDefault(row, "TypeName")
                     });
-                foreach (var group in allWidgets.GroupBy(w => w.WidgetId))
+                foreach (var group in details.GroupBy(w => w.WidgetId))
                 {
                     var widget = group.First();
-                    Array.ForEach(tabWidgets.Where(item => item.WidgetId == group.Key).ToArray(), tw =>
+                    Array.ForEach(tabWidgets
+                        .Where(item => item.WidgetId == group.Key)
+                        .ToArray(), tw =>
                     {
                         tw.WidgetFunctionId = widget.WidgetFunctionId;
                         tw.WidgetFunctionName = widget.WidgetFunctionName;
@@ -248,12 +248,12 @@ namespace SPPC.Tadbir.Persistence
 
         private IEnumerable<AccountByWidget> GetWidgetAccounts(IEnumerable<int> widgetIds)
         {
-            var widgetAccounts = new List<AccountByWidget>();
+            var accounts = new List<AccountByWidget>();
             if (widgetIds.Any())
             {
                 var query = String.Format(DashboardQuery.WidgetsAccounts, String.Join(',', widgetIds));
-                var accounts = DbConsole.ExecuteQuery(query);
-                widgetAccounts.AddRange(accounts.Rows
+                var accountsResult = DbConsole.ExecuteQuery(query);
+                accounts.AddRange(accountsResult.Rows
                     .Cast<DataRow>()
                     .Select(row => new AccountByWidget
                     {
@@ -288,18 +288,18 @@ namespace SPPC.Tadbir.Persistence
                     }));
             }
 
-            return widgetAccounts;
+            return accounts;
         }
 
         private IEnumerable<ParameterByWidget> GetWidgetParameters(IEnumerable<int> widgetIds)
         {
-            var widgetParameters = new List<ParameterByWidget>();
+            var parameters = new List<ParameterByWidget>();
             if (widgetIds.Any())
             {
 
                 var query = String.Format(DashboardQuery.WidgetsParameters, String.Join(',', widgetIds));
-                var parameters = DbConsole.ExecuteQuery(query);
-                widgetParameters.AddRange(parameters.Rows
+                var parametersResult = DbConsole.ExecuteQuery(query);
+                parameters.AddRange(parametersResult.Rows
                     .Cast<DataRow>()
                     .Select(row => new ParameterByWidget
                     {
@@ -315,7 +315,7 @@ namespace SPPC.Tadbir.Persistence
                     }));
             }
 
-            return widgetParameters;
+            return parameters;
         }
 
         private IList<FullAccountViewModel> GetFullAccounts(
@@ -376,10 +376,10 @@ namespace SPPC.Tadbir.Persistence
             return values;
         }
 
-        private FunctionEvaluator GetFunctionEvaluator(WidgetFunction function)
+        private FunctionEvaluator GetFunctionEvaluator(string functionName)
         {
             var evaluator = default(FunctionEvaluator);
-            switch (function.Name)
+            switch (functionName)
             {
                 case AppStrings.Function_DebitTurnover:
                     evaluator = CalculateDebitTurnover;
@@ -396,6 +396,12 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return evaluator;
+        }
+
+        private static string GetFullAccountLabel(FullAccountViewModel fullAccount)
+        {
+            return $"{fullAccount.Account.FullCode}-{fullAccount.DetailAccount.FullCode}-" +
+                $"{fullAccount.CostCenter.FullCode}-{fullAccount.Project.FullCode}";
         }
 
         private decimal CalculateDebitTurnover(FullAccountViewModel fullAccount, DateTime from, DateTime to)

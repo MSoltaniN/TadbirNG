@@ -16,14 +16,19 @@ FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
 WHERE v.Date >= '{0}' AND v.Date <= '{1}' AND {2}";
 
+        internal const string CurrentDashboard = @"
+SELECT [dbd].[DashboardID], [tab].[DashboardTabID] AS [TabID], [tab].[Index] AS [TabIndex], [tab].[Title] AS [TabTitle]
+FROM [Reporting].[Dashboard] AS [dbd]
+  INNER JOIN [Reporting].[DashboardTab] AS [tab] ON [dbd].[DashboardID] = [tab].[DashboardID]
+WHERE [dbd].[UserID] = {0}";
+
         internal const string CurrentDashboardWidgets = @"
-SELECT [wgt].[WidgetID], [tab].[DashboardTabID] AS [TabID], [dbd].[DashboardID], [tab].[Index], [tab].[Title] AS [TabTitle],
-  [twgt].[Settings], [wgt].[Title], [wgt].[Description], [wgt].[DefaultSettings]
+SELECT [twgt].[TabID], [twgt].[WidgetID], [wgt].[Title], [wgt].[Description], [twgt].[Settings], [twgt].[DefaultSettings]
 FROM [Reporting].[Dashboard] AS [dbd]
   INNER JOIN [Reporting].[DashboardTab] AS [tab] ON [dbd].[DashboardID] = [tab].[DashboardID]
   INNER JOIN [Reporting].[TabWidget] AS [twgt] ON [tab].[DashboardTabID] = [twgt].[TabID]
   INNER JOIN [Reporting].[Widget] AS [wgt] ON [twgt].[WidgetID] = [wgt].[WidgetID]
-WHERE [dbd].[UserID] = {0}";
+WHERE [dbd].[DashboardID] = {0}";
 
         internal const string WidgetDetails = @"
 SELECT [wgt].[WidgetID], [wgt].[FunctionID], [func].[Name] AS [FunctionName], [wgt].[TypeID], [type].[Name] AS [TypeName]
