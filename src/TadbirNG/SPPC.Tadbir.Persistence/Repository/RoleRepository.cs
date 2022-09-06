@@ -400,15 +400,18 @@ namespace SPPC.Tadbir.Persistence
             RelatedItemsViewModel roleBranches = null;
             UnitOfWork.UseCompanyContext();
             var relatedRepository = UnitOfWork.GetAsyncRepository<RoleBranch>();
-            var roleBranchesModel = relatedRepository.GetByCriteria(
-                rb => rb.RoleId == roleId, rb => rb.Branch);
+            var roleBranchesModel = await relatedRepository
+                .GetEntityQuery()
+                .Include(rb => rb.Branch)
+                    .ThenInclude(br => br.Parent)
+                .Where(rb => rb.RoleId == roleId)
+                .ToListAsync();
+            var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
+            var allBranches = await branchRepository.GetAllAsync(br => br.Parent);
             var enabledBranches = roleBranchesModel
                 .Select(rb => rb.Branch)
                 .Select(br => Mapper.Map<RelatedItemViewModel>(br))
                 .ToArray();
-            var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
-            var allBranches = await branchRepository
-                .GetAllAsync();
             var disabledBranches = allBranches
                 .Select(br => Mapper.Map<RelatedItemViewModel>(br))
                 .Except(enabledBranches, new EntityEqualityComparer<RelatedItemViewModel>())

@@ -664,7 +664,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (from == null || to == null)
             {
                 DateTime rangeFrom, rangeTo;
-                _configRepository.GetCurrentFiscalDateRange(out rangeFrom, out rangeTo);
+                _configRepository.GetDefaultFiscalDateRange(out rangeFrom, out rangeTo);
                 from = from ?? rangeFrom;
                 to = to ?? rangeTo;
             }

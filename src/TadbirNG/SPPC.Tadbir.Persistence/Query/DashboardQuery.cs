@@ -16,14 +16,19 @@ FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
 WHERE v.Date >= '{0}' AND v.Date <= '{1}' AND {2}";
 
+        internal const string CurrentDashboard = @"
+SELECT [dbd].[DashboardID], [tab].[DashboardTabID] AS [TabID], [tab].[Index] AS [TabIndex], [tab].[Title] AS [TabTitle]
+FROM [Reporting].[Dashboard] AS [dbd]
+  INNER JOIN [Reporting].[DashboardTab] AS [tab] ON [dbd].[DashboardID] = [tab].[DashboardID]
+WHERE [dbd].[UserID] = {0}";
+
         internal const string CurrentDashboardWidgets = @"
-SELECT [wgt].[WidgetID], [tab].[DashboardTabID] AS [TabID], [dbd].[DashboardID], [tab].[Index], [tab].[Title] AS [TabTitle],
-  [twgt].[Settings], [wgt].[Title], [wgt].[Description], [wgt].[DefaultSettings]
+SELECT [twgt].[TabID], [twgt].[WidgetID], [wgt].[Title], [wgt].[Description], [twgt].[Settings], [twgt].[DefaultSettings]
 FROM [Reporting].[Dashboard] AS [dbd]
   INNER JOIN [Reporting].[DashboardTab] AS [tab] ON [dbd].[DashboardID] = [tab].[DashboardID]
   INNER JOIN [Reporting].[TabWidget] AS [twgt] ON [tab].[DashboardTabID] = [twgt].[TabID]
   INNER JOIN [Reporting].[Widget] AS [wgt] ON [twgt].[WidgetID] = [wgt].[WidgetID]
-WHERE [dbd].[UserID] = {0}";
+WHERE [dbd].[DashboardID] = {0}";
 
         internal const string WidgetDetails = @"
 SELECT [wgt].[WidgetID], [wgt].[FunctionID], [func].[Name] AS [FunctionName], [wgt].[TypeID], [type].[Name] AS [TypeName]
@@ -58,8 +63,8 @@ FROM [Finance].[Voucher] AS [v]
   LEFT OUTER JOIN [Finance].[DetailAccount] AS [facc] ON [vl].[DetailID] = [facc].[DetailAccountID]
   LEFT OUTER JOIN [Finance].[CostCenter] AS [cc] ON [vl].[CostCenterID] = [cc].[CostCenterID]
   LEFT OUTER JOIN [Finance].[Project] AS [prj] ON [vl].[ProjectID] = [prj].[ProjectID]
-WHERE [v].[Date] >= '{1}' AND [v].[Date] <= '{2}' AND [v].[FiscalPeriodID] = {3} AND [v].[SubjectType] = 0
-GROUP BY {4}";
+WHERE [v].[Date] >= '{1}' AND [v].[Date] <= '{2}' AND [v].[FiscalPeriodID] = {3} AND [v].[SubjectType] = 0 AND {4}
+GROUP BY {5}";
 
         internal const string CreditTurnover = @"
 SELECT {0}, SUM([vl].[Credit]) AS [Credit]
@@ -69,8 +74,8 @@ FROM [Finance].[Voucher] AS [v]
   LEFT OUTER JOIN [Finance].[DetailAccount] AS [facc] ON [vl].[DetailID] = [facc].[DetailAccountID]
   LEFT OUTER JOIN [Finance].[CostCenter] AS [cc] ON [vl].[CostCenterID] = [cc].[CostCenterID]
   LEFT OUTER JOIN [Finance].[Project] AS [prj] ON [vl].[ProjectID] = [prj].[ProjectID]
-WHERE [v].[Date] >= '{1}' AND [v].[Date] <= '{2}' AND [v].[FiscalPeriodID] = {3} AND [v].[SubjectType] = 0
-GROUP BY {4}";
+WHERE [v].[Date] >= '{1}' AND [v].[Date] <= '{2}' AND [v].[FiscalPeriodID] = {3} AND [v].[SubjectType] = 0 AND {4}
+GROUP BY {5}";
 
         internal const string NetTurnover = @"
 SELECT {0}, ABS(SUM([vl].[Debit]) - SUM([vl].[Credit])) AS [Net]
@@ -80,8 +85,8 @@ FROM [Finance].[Voucher] AS [v]
   LEFT OUTER JOIN [Finance].[DetailAccount] AS [facc] ON [vl].[DetailID] = [facc].[DetailAccountID]
   LEFT OUTER JOIN [Finance].[CostCenter] AS [cc] ON [vl].[CostCenterID] = [cc].[CostCenterID]
   LEFT OUTER JOIN [Finance].[Project] AS [prj] ON [vl].[ProjectID] = [prj].[ProjectID]
-WHERE [v].[Date] >= '{1}' AND [v].[Date] <= '{2}' AND [v].[FiscalPeriodID] = {3} AND [v].[SubjectType] = 0
-GROUP BY {4}";
+WHERE [v].[Date] >= '{1}' AND [v].[Date] <= '{2}' AND [v].[FiscalPeriodID] = {3} AND [v].[SubjectType] = 0 AND {4}
+GROUP BY {5}";
 
         internal const string Balance = @"
 SELECT {0}, SUM([vl].[Debit] - [vl].[Credit]) AS [Balance]
@@ -91,7 +96,7 @@ FROM [Finance].[Voucher] AS [v]
   LEFT OUTER JOIN [Finance].[DetailAccount] AS [facc] ON [vl].[DetailID] = [facc].[DetailAccountID]
   LEFT OUTER JOIN [Finance].[CostCenter] AS [cc] ON [vl].[CostCenterID] = [cc].[CostCenterID]
   LEFT OUTER JOIN [Finance].[Project] AS [prj] ON [vl].[ProjectID] = [prj].[ProjectID]
-WHERE [v].[Date] <= '{1}' AND [v].[FiscalPeriodID] = {2} AND [v].[SubjectType] = 0
-GROUP BY {3}";
+WHERE [v].[Date] <= '{1}' AND [v].[FiscalPeriodID] = {2} AND [v].[SubjectType] = 0 AND {3}
+GROUP BY {4}";
     }
 }

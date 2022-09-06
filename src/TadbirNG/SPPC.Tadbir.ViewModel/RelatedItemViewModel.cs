@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.ViewModel
 {
@@ -12,6 +11,11 @@ namespace SPPC.Tadbir.ViewModel
         /// شناسه دیتابیسی سطر اطلاعاتی
         /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی رکورد والد این سطر اطلاعاتی مرتبط - برای موجودیت های مرتبط درختی
+        /// </summary>
+        public int? ParentId { get; set; }
 
         /// <summary>
         /// نام یا عنوان سطر اطلاعاتی
