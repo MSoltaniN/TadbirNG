@@ -361,7 +361,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
   changedOptions(): void {
     this.changeDashboardMode();
-    this.options.api.optionsChanged();
+    this.options.api?.optionsChanged();
   }
 
   changeDashboardMode() {
