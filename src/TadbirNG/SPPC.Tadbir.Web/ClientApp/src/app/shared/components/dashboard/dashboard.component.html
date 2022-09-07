@@ -114,48 +114,8 @@
   <!-- /.row -->
   <div class="row widgets">
     <div style="height: 100vh; width: 100%; direction: ltr">
-      <!-- <kendo-tabstrip
-        *ngIf="currentDashboard"
-        style="width: 100%; min-height: 100vh; direction: rtl"
-      >
-        <kendo-tabstrip-tab
-          *ngFor="
-            let tab of currentDashboard.tabs;
-            let i = index;
-            let firstIndex = first
-          "
-          [title]="tab.title"
-          [selected]="firstIndex - 1 === tab.index"
-        >
-          <ng-template kendoTabContent>
-            <ng-container *ngIf="getWidgets(tab.id) | async as widgets">
-              <gridster [options]="options">
-                <gridster-item [item]="item" *ngFor="let item of widgets">
-                  <ng-container *ngIf="item.typeId == 0">
-                    <widget
-                      (closeWidget)="onCloseWidget($event)"
-                      [widgetId]="item.id"
-                      [isEditMode]="isDashboardEditMode"
-                      [headerTitle]="item.title"
-                    >
-                      <widget-container>
-                        <div class="box-body" body>
-                          <chart-widget
-                            [type]="'bar'"
-                            [data]="grossChartData"
-                            [options]="basicOptions"
-                          ></chart-widget>
-                        </div>
-                      </widget-container>
-                    </widget>
-                  </ng-container>
-                </gridster-item>
-              </gridster>
-            </ng-container>
-          </ng-template>
-        </kendo-tabstrip-tab>
-      </kendo-tabstrip> -->
       <p-tabView
+        (onChange)="onTabChange($event)"
         *ngIf="currentDashboard"
         [(activeIndex)]="currentDashboardTabIndex"
       >
@@ -168,7 +128,7 @@
           "
         >
           <ng-container *ngIf="getWidgets(tab.id) | async as widgets">
-            <gridster [options]="options">
+            <gridster [options]="widgetOptions[tab.id]">
               <gridster-item [item]="item" *ngFor="let item of widgets">
                 <ng-container *ngIf="item.typeId == 2">
                   <widget
@@ -180,6 +140,7 @@
                     <widget-container>
                       <div class="box-body" body>
                         <chart-widget
+                          [data]="widgetData[item.id + '-' + tab.id]"
                           [type]="'bar'"
                           [options]="basicOptions"
                         ></chart-widget>

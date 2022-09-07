@@ -108,3 +108,11 @@ a i {
 {
   cursor: pointer;
 }
+
+/deep/ li.ui-state-active a span
+{ 
+  border-bottom-style: solid;
+  font-weight: bolder;
+  font-size: medium;
+  color: rgb(0, 96, 206);
+}

@@ -150,6 +150,63 @@ namespace SPPC.Tadbir.Persistence
             return dataSeries;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، یکی از ویجت های قابل دسترسی توسط کاربر جاری را در برگه تعیین شده اضافه یا اصلاح می کند
+        /// </summary>
+        /// <param name="tabWidget">اطلاعات ویجت مورد نظر برای ایجاد یا اصلاح به برگه داشبورد</param>
+        /// <returns>آخرین اطلاعات ویجت اضافه یا اصلاح شده در برگه داشبورد</returns>
+        public async Task<TabWidgetViewModel> SaveTabWidgetAsync(TabWidgetViewModel tabWidget)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<TabWidget>();
+            if (tabWidget.Id == 0)
+            {
+                var saved = Mapper.Map<TabWidget>(tabWidget);
+                repository.Insert(saved);
+                await UnitOfWork.CommitAsync();
+                var widgetRepository = UnitOfWork.GetAsyncRepository<Widget>();
+                var widgetInfo = await widgetRepository
+                    .GetEntityQuery()
+                    .Where(wgt => wgt.Id == tabWidget.WidgetId)
+                    .Select(wgt => new
+                    {
+                        wgt.Title,
+                        wgt.TypeId
+                    })
+                    .SingleOrDefaultAsync();
+                var mapped = Mapper.Map<TabWidgetViewModel>(saved);
+                mapped.WidgetTitle = widgetInfo.Title;
+                mapped.WidgetTypeId = widgetInfo.TypeId;
+                return mapped;
+            }
+            else
+            {
+                var existing = await repository.GetByIDAsync(tabWidget.Id);
+                if (existing != null)
+                {
+                    // TODO: Update tab-widget values here... 
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ویجت داده شده را از برگه مورد نظر در داشبورد کاربر جاری حذف می کند
+        /// </summary>
+        /// <param name="tabId">شناسه دیتابیسی برگه ای که ویجت از آن حذف می شود</param>
+        /// <param name="widgetId">شناسه دیتابیسی ویجتی که از برگه مورد نظر حذف می شود</param>
+        public async Task DeleteTabWidgetAsync(int tabId, int widgetId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<TabWidget>();
+            var existing = await repository.GetFirstByCriteriaAsync(
+                tw => tw.TabId == tabId && tw.WidgetId == widgetId);
+            if (existing != null)
+            {
+                repository.Delete(existing);
+                await UnitOfWork.CommitAsync();
+            }
+        }
+
         private DashboardViewModel GetDashboard(DataTable dashboardResult)
         {
             var dashboard = DashboardFromResult(dashboardResult);

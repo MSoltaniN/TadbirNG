@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Helpers;
@@ -138,6 +139,52 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var widgetData = await _repository.GetWidgetDataAsync(widgetId, from, to, unit);
             return Json(widgetData);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tabId"></param>
+        /// <param name="tabWidget"></param>
+        /// <returns></returns>
+        // POST: api/dashboard/tabs/{tabId:min(1)}/widgets
+        [HttpPost]
+        [Route(DashboardApi.TabWidgetsUrl)]
+        public async Task<IActionResult> PostNewTabWidgetAsync(
+            int tabId, [FromBody] TabWidgetViewModel tabWidget)
+        {
+            if (tabWidget == null)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Widget));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequestResult(ModelState);
+            }
+
+            if (tabWidget.TabId != tabId)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Widget));
+            }
+
+            var posted = await _repository.SaveTabWidgetAsync(tabWidget);
+            return StatusCode(StatusCodes.Status201Created, posted);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tabId"></param>
+        /// <param name="widgetId"></param>
+        /// <returns></returns>
+        // DELETE: api/dashboard/tabs/{tabId:min(1)}/widgets/{widgetId:min(1)}
+        [HttpDelete]
+        [Route(DashboardApi.TabWidgetUrl)]
+        public async Task<IActionResult> DeleteExistingTabWidgetAsync(int tabId, int widgetId)
+        {
+            await _repository.DeleteTabWidgetAsync(tabId, widgetId);
+            return StatusCode(StatusCodes.Status204NoContent);
         }
 
         private Calendar GetCurrentCalendar()

@@ -4,6 +4,8 @@ import { HttpClient } from "@angular/common/http";
 import { BrowserStorageService } from "@sppc/shared/services/browserStorage.service";
 import { BaseService } from "@sppc/shared/class/base.service";
 import { DashboardApi } from "./api";
+import { String } from "@sppc/shared/class/source";
+import { TabWidget } from "../models";
 
 @Injectable()
 export class DashboardService extends BaseService {
@@ -38,11 +40,36 @@ export class DashboardService extends BaseService {
       .pipe(map((response) => <any>(<Response>response)));
   }
 
+  getWidgetData(widgetId) {
+    var url = DashboardApi.WidgetData;
+    url = String.Format(url, widgetId);
+
+    var options = { headers: this.httpHeaders };
+    return this.http
+      .get(url, options)
+      .pipe(map((response) => <any>(<Response>response)));
+  }
+
   getCurrentDashboard() {
     var url = DashboardApi.CurrentDashboard;
     var options = { headers: this.httpHeaders };
     return this.http
       .get(url, options)
       .pipe(map((response) => <any>(<Response>response)));
+  }
+
+  addTabWidget(tabId, tabWidget: TabWidget) {
+    var url = DashboardApi.TabWidgets;
+    url = String.Format(url, tabId);
+
+    var body = JSON.stringify(tabWidget);
+    return this.http.post(url, body, this.option).pipe(map((res) => res));
+  }
+
+  removeTabWidget(tabId, widgetId) {
+    var url = DashboardApi.TabWidget;
+    url = String.Format(url, tabId, widgetId);
+
+    return this.http.delete(url, this.option).pipe(map((res) => res));
   }
 }

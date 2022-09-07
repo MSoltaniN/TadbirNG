@@ -12,7 +12,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { SettingService } from "@sppc/config/service";
 import { AuthenticationService, Context } from "@sppc/core";
 import { DefaultComponent } from "@sppc/shared/class";
-import { DashboardSummaries } from "@sppc/shared/models";
+import { DashboardSummaries, TabWidget } from "@sppc/shared/models";
 import {
   BrowserStorageService,
   DashboardService,
@@ -33,9 +33,11 @@ import {
   PushDirections,
   Resizable,
 } from "angular-gridster2";
-import { BehaviorSubject, observable, of, Subject } from "rxjs";
+import { BehaviorSubject, Subject } from "rxjs";
 import { AddWidgetComponent } from "./add-widget/add-widget.component";
 import { Dashboard } from "@sppc/shared/models/dashboard";
+import { FullAccount } from "@sppc/finance/models";
+import { WidgetParameter } from "@sppc/shared/models/widgetParameter";
 
 interface DashboardConfig extends GridsterConfig {
   draggable: Draggable;
@@ -46,6 +48,23 @@ interface DashboardConfig extends GridsterConfig {
 class WidgetTabSubject {
   widgets: Subject<GridsterItem[]>;
   tabId: number;
+}
+
+class TabWidgetInfo implements TabWidget {
+  tabId: number;
+  widgetId: number;
+  widgetTitle: string;
+  widgetFunctionId: number;
+  widgetFunctionName: string;
+  widgetTypeId: number;
+  widgetTypeName: string;
+  widgetDescription: string;
+  widgetAccounts: FullAccount[];
+  widgetParmeters: WidgetParameter[];
+  id: number;
+  settings: string;
+  defaultSettings: string;
+  rowNo: number;
 }
 
 @Component({
@@ -100,6 +119,8 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
   currentDashboard: Dashboard;
   currentDashboardTabIndex: number = 0;
+  widgetData: { [id: string]: any } = {};
+  widgetOptions: { [id: string]: DashboardConfig } = {};
 
   grossChartData;
   netChartData;
@@ -346,43 +367,35 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     this.dashboardInfo.grossSales.points.forEach(function (value) {
       values.push(value.yValue);
     });
-
-    // this.grossChartData = {
-    //   labels: labels,
-    //   datasets: [
-    //     {
-    //       label: this.dashboardInfo.grossSales.title,
-    //       backgroundColor: "#42A5F5",
-    //       data: values,
-    //     },
-    //   ],
-    // };
   }
 
-  changedOptions(): void {
-    this.changeDashboardMode();
-    this.options.api?.optionsChanged();
+  changedOptions(tabId): void {
+    this.changeDashboardMode(tabId);
+    if (this.widgetOptions[tabId].api)
+      this.widgetOptions[tabId].api.optionsChanged();
   }
 
-  changeDashboardMode() {
+  changeDashboardMode(tabId) {
     if (this.isDashboardEditMode) {
-      this.options.resizable.enabled = true;
-      this.options.draggable.enabled = true;
-      this.options.displayGrid = DisplayGrid.Always;
+      this.widgetOptions[tabId].resizable.enabled = true;
+      this.widgetOptions[tabId].draggable.enabled = true;
+      this.widgetOptions[tabId].displayGrid = DisplayGrid.Always;
     } else {
-      this.options.resizable.enabled = false;
-      this.options.draggable.enabled = false;
-      this.options.displayGrid = DisplayGrid.None;
+      this.widgetOptions[tabId].resizable.enabled = false;
+      this.widgetOptions[tabId].draggable.enabled = false;
+      this.widgetOptions[tabId].displayGrid = DisplayGrid.None;
     }
   }
 
   onSettingClick() {
-    this.goToEditMode();
+    const currentTab =
+      this.currentDashboard.tabs[this.currentDashboardTabIndex];
+    this.goToEditMode(currentTab.id);
   }
 
-  goToEditMode() {
+  goToEditMode(tabId) {
     this.isDashboardEditMode = !this.isDashboardEditMode;
-    this.changedOptions();
+    this.changedOptions(tabId);
   }
 
   onCancelClick() {
@@ -391,7 +404,9 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
   cancelEditMode() {
     this.isDashboardEditMode = false;
-    this.changedOptions();
+    const currentTab =
+      this.currentDashboard.tabs[this.currentDashboardTabIndex];
+    this.changedOptions(currentTab.id);
   }
 
   onOkClick() {
@@ -400,21 +415,18 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   }
 
   saveDashboard() {
-    this.bStorageService.saveDashboardLayout(
-      this.dashboard,
-      this.UserId.toString(),
-      this.CompanyId.toString()
-    );
-
-    this.dashboardSubject.next(this.dashboard.filter((w) => w.selected));
+    // this.bStorageService.saveDashboardLayout(
+    //   this.dashboard,
+    //   this.UserId.toString(),
+    //   this.CompanyId.toString()
+    // );
+    //this.dashboardSubject.next(this.dashboard.filter((w) => w.selected));
   }
 
-  onCloseWidget(id: number) {
-    debugger;
-    if (this.dashboard.findIndex((w) => w.id === id) >= 0) {
-      this.dashboard.filter((w) => w.id === id)[0].selected = false;
-      this.saveDashboard();
-    }
+  onCloseWidget(widgetId: number) {
+    const currentTab =
+      this.currentDashboard.tabs[this.currentDashboardTabIndex];
+    this.removeWidget(currentTab.id, widgetId);
   }
 
   ngAfterViewInit() {}
@@ -455,8 +467,17 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     // this.dashboardSubject.next(this.dashboard.filter((w) => w.selected));
   }
 
+  onTabChange($event) {
+    const currentTab =
+      this.currentDashboard.tabs[this.currentDashboardTabIndex];
+    if (this.widgetOptions[currentTab.id].api)
+      this.widgetOptions[currentTab.id].api.optionsChanged();
+  }
+
   onAddWidgetClick() {
-    this.goToEditMode();
+    const currentTab =
+      this.currentDashboard.tabs[this.currentDashboardTabIndex];
+    this.goToEditMode(currentTab.id);
 
     this.dialogRef = this.dialogService.open({
       title: this.getText("Dashboard.AddWidget"),
@@ -468,7 +489,6 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       this.currentDashboard.tabs[this.currentDashboardTabIndex].widgets;
 
     this.dialogRef.content.instance.save.subscribe((res) => {
-      debugger;
       this.addNewWidget(res.widget);
       this.saveDashboard();
 
@@ -481,6 +501,24 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         this.cancelEditMode();
       }
     );
+  }
+
+  removeWidget(tabId, widgetId) {
+    const currentTab = this.currentDashboard.tabs.filter(
+      (t) => t.id == tabId
+    )[0];
+    const tabWidget = currentTab.widgets.find((w) => w.widgetId == widgetId);
+
+    this.dashboadService
+      .removeTabWidget(tabId, tabWidget.widgetId)
+      .subscribe(() => {
+        const index = currentTab.widgets.findIndex(
+          (w) => w.widgetId == widgetId
+        );
+        currentTab.widgets.splice(index, 1);
+        const widgets = this.getWidgetList(currentTab.id);
+        this.getWidgetsSubject(currentTab.id).widgets.next(widgets);
+      });
   }
 
   initDashboard() {
@@ -560,39 +598,87 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     const currentTab =
       this.currentDashboard.tabs[this.currentDashboardTabIndex];
 
-    const newWidget = {
-      cols: 20,
-      rows: 20,
-      y: 0,
-      x: 0,
-      id: widget.id,
-      title: widget.title,
-      typeId: widget.typeId,
-    };
+    // const newWidget = {
+    //   cols: 20,
+    //   rows: 20,
+    //   y: 0,
+    //   x: 0,
+    //   id: widget.id,
+    //   title: widget.title,
+    //   typeId: widget.typeId,
+    // };
 
-    this.getWidgetsSubject(currentTab.id).widgets.next(
-      this.createWidgets(currentTab.id, newWidget)
-    );
+    // const promiseWidget = new Promise((resolve) => {
+    //this.addNewWidgetToList(currentTab.id);
+
+    let tabWidgetInfo = new TabWidgetInfo();
+    tabWidgetInfo.tabId = currentTab.id;
+    tabWidgetInfo.widgetId = widget.id;
+    const setting = { height: 20, width: 20, x: 0, y: 0 };
+    tabWidgetInfo.defaultSettings = JSON.stringify(setting);
+    tabWidgetInfo.settings = JSON.stringify(setting);
+
+    this.dashboadService
+      .addTabWidget(currentTab.id, tabWidgetInfo)
+      .subscribe((newTabWidget: TabWidget) => {
+        currentTab.widgets.push(newTabWidget);
+        const widgets = this.getWidgetList(currentTab.id);
+        this.getWidgetsSubject(currentTab.id).widgets.next(widgets);
+      });
+
+    //   resolve(true);
+    // });
+
+    // promiseWidget.then(() => {
+
+    // });
   }
 
-  createWidgets(tabId, newWidget = undefined) {
+  getWidgetData(widgetId, tabId) {
+    return this.dashboadService.getWidgetData(widgetId).subscribe((res) => {
+      this.widgetData[widgetId + "-" + tabId] = res;
+    });
+  }
+
+  widgetHasData(widgetId, tabId) {
+    if (this.widgetData[widgetId + "-" + tabId]) return true;
+    return false;
+  }
+
+  // addNewWidgetToList(tabId, newWidget = undefined) {
+  //   if (newWidget) {
+
+  //   }
+
+  //   // if (newWidget) {
+  //   //   //add post method here to save new widget into db
+
+  //   //   widgets.push(newWidget);
+  //   //   this.getWidgetData(newWidget.id, tabId);
+  //   // }
+  // }
+
+  getWidgetList(tabId) {
     let widgets = [];
+
     this.currentDashboard.tabs
       .find((t) => t.id == tabId)
       .widgets.forEach((widget) => {
+        const setting = JSON.parse(widget.settings);
+        debugger;
         widgets.push({
-          cols: 20,
-          rows: 20,
-          y: 0,
-          x: 0,
+          cols: setting.width,
+          rows: setting.height,
+          y: setting.y,
+          x: setting.x,
           id: widget.widgetId,
-          selected: false,
           title: widget.widgetTitle,
           typeId: widget.widgetTypeId,
         });
-      });
 
-    if (newWidget) widgets.push(newWidget);
+        if (!this.widgetHasData(widget.widgetId, tabId))
+          this.getWidgetData(widget.widgetId, tabId);
+      });
 
     return widgets;
   }
@@ -601,9 +687,10 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     let widgets = [];
     if (this.currentDashboard) {
       this.currentDashboard.tabs.forEach((tab) => {
-        widgets = this.createWidgets(tab.id);
+        widgets = this.getWidgetList(tab.id);
 
-        debugger;
+        this.widgetOptions[tab.id] = JSON.parse(JSON.stringify(this.options));
+
         let subject = new BehaviorSubject<Array<GridsterItem>>(widgets);
         let tabSubject = new WidgetTabSubject();
         tabSubject.tabId = tab.id;

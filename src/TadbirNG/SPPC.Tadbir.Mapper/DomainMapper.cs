@@ -569,6 +569,10 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<WidgetFunction, WidgetFunctionViewModel>();
             mapperConfig.CreateMap<WidgetType, WidgetTypeViewModel>();
             mapperConfig.CreateMap<Widget, WidgetViewModel>();
+            mapperConfig.CreateMap<TabWidget, TabWidgetViewModel>()
+                .ForMember(dest => dest.WidgetAccounts, opts => opts.Ignore())
+                .ForMember(dest => dest.WidgetParmeters, opts => opts.Ignore());
+            mapperConfig.CreateMap<TabWidgetViewModel, TabWidget>();
         }
 
         private static TConfig MapConfigType<TConfig>(Setting setting)

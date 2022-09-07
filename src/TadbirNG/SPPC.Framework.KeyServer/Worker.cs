@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
@@ -31,6 +32,7 @@ namespace SPPC.Framework.KeyServer
             }
 
             responder.Unbind(DefaultEndpoint);
+            await Task.Delay(TimeSpan.FromSeconds(1.0), CancellationToken.None);
         }
 
         private static bool IsRequestSupported(string request)
