@@ -4,7 +4,7 @@
 //     Runtime Version: 1.1.412
 //     Template Version: 1.0
 //     Generation Date: 10/01/2018 03:43:44 ب.ظ
-//  
+//
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 // </auto-generated>
@@ -13,25 +13,38 @@
 import { environment } from "@sppc/env/environment";
 
 export class DashboardApi {
+  // dashboard/summaries
+  public static Summaries = environment.BaseUrl + "/dashboard/summaries";
 
-    // dashboard/summaries
-    public static Summaries = environment.BaseUrl + "/dashboard/summaries";
+  // dashboard/license
+  public static LicenseInfo = environment.BaseUrl + "/dashboard/license";
 
-    // dashboard/license
-    public static LicenseInfo = environment.BaseUrl + "/dashboard/license";
+  // dashboard/current
+  public static CurrentDashboard = environment.BaseUrl + "/dashboard/current";
 
-    // dashboard/current
-    public static CurrentDashboard = environment.BaseUrl + "/dashboard/current";
+  // dashboard/lookup/functions
+  public static WidgetFunctionsLookup =
+    environment.BaseUrl + "/dashboard/lookup/functions";
 
-    // dashboard/lookup/functions
-    public static WidgetFunctionsLookup = environment.BaseUrl + "/dashboard/lookup/functions";
+  // dashboard/lookup/wtypes
+  public static WidgetTypesLookup =
+    environment.BaseUrl + "/dashboard/lookup/wtypes";
 
-    // dashboard/lookup/wtypes
-    public static WidgetTypesLookup = environment.BaseUrl + "/dashboard/lookup/wtypes";
+  // dashboard/lookup/widgets
+  public static WidgetsLookup =
+    environment.BaseUrl + "/dashboard/lookup/widgets";
 
-    // dashboard/lookup/widgets
-    public static WidgetsLookup = environment.BaseUrl + "/dashboard/lookup/widgets";
+  // dashboard/widgets/{widgetId:min(1)}/data
+  public static WidgetData =
+    environment.BaseUrl + "/dashboard/widgets/{0}/data";
 
-    // dashboard/widgets/{widgetId:min(1)}/data
-    public static WidgetData = environment.BaseUrl + "/dashboard/widgets/{0}/data";
+  public static TabWidgets =
+    environment.BaseUrl + "/dashboard/tabs/{0}/widgets";
+
+  /// <summary>
+  /// API server route URL for all widgets added to a dashboard tab
+  /// </summary>
+
+  public static TabWidget =
+    environment.BaseUrl + "/dashboard/tabs/{0}/widgets/{1}";
 }
