@@ -124,6 +124,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Tadbir.Setup", "SPPC.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Tadbir.Utility", "SPPC.Tadbir.Utility\SPPC.Tadbir.Utility.csproj", "{284833D4-7F6E-4D33-9328-5BA31292587E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Tools.Maintenance", "SPPC.Tools.Maintenance\SPPC.Tools.Maintenance.csproj", "{E9E42264-0D09-420A-BFBE-B0B18A4BD6A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -290,6 +292,10 @@ Global
 		{284833D4-7F6E-4D33-9328-5BA31292587E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{284833D4-7F6E-4D33-9328-5BA31292587E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{284833D4-7F6E-4D33-9328-5BA31292587E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9E42264-0D09-420A-BFBE-B0B18A4BD6A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9E42264-0D09-420A-BFBE-B0B18A4BD6A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9E42264-0D09-420A-BFBE-B0B18A4BD6A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9E42264-0D09-420A-BFBE-B0B18A4BD6A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -347,6 +353,7 @@ Global
 		{3979A795-C6A5-4673-94A9-0B429B729310} = {E0E5F15E-CEFC-47F7-8F51-C364E9313A65}
 		{FE23AE15-39CB-49B2-82A5-D14C21675BA4} = {8CE7B6BD-8BBC-49DA-AB7C-BEB44AFE7912}
 		{284833D4-7F6E-4D33-9328-5BA31292587E} = {EEE5370A-5C2C-4209-ABC2-FBF2A72B0B68}
+		{E9E42264-0D09-420A-BFBE-B0B18A4BD6A6} = {51995D4F-493E-4589-B7A2-A5101BBF2FF0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0876E344-B588-49D3-90AF-656CE086FC60}
