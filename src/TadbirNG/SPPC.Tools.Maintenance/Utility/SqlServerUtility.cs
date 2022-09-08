@@ -24,7 +24,7 @@ namespace SPPC.Tools.Maintenance
 
         public string BackupDatabase(string dbName, DbBackupOptions options)
         {
-            Verify.ArgumentNotNull(dbName, nameof(dbName));
+            Verify.ArgumentNotNullOrEmptyString(dbName, nameof(dbName));
             Verify.ArgumentNotNull(options, nameof(options));
             var server = new Server(_instanceName);
             var backup = new Backup()

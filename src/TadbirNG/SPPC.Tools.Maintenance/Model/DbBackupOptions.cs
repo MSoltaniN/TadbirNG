@@ -6,6 +6,11 @@ namespace SPPC.Tools.Maintenance
 {
     public class DbBackupOptions
     {
+        public DbBackupOptions()
+        {
+            FileName = String.Empty;
+        }
+
         public static DbBackupOptions DefaultFileOptions
         {
             get { return GetDefaultFileOptions(); }

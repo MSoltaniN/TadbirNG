@@ -23,12 +23,6 @@ namespace SPPC.Tools.Maintenance
             }
         }
 
-        private void Ftp_ValidateCertificate(BaseFtpClient control, FtpSslValidationEventArgs e)
-        {
-            e.Accept = true;
-            e.PolicyErrors = SslPolicyErrors.None;
-        }
-
         public event EventHandler<FtpProgressEventArgs> FtpProgress;
 
         public string UploadFile(string localUri, string remoteUri, bool compressed = true)
@@ -98,6 +92,12 @@ namespace SPPC.Tools.Maintenance
             var zipUri = Path.Combine(_tempUri, $"{compressedName}.zip");
             ZipFile.CreateFromDirectory(localUri, zipUri, CompressionLevel.Optimal, true);
             return zipUri;
+        }
+
+        private void Ftp_ValidateCertificate(BaseFtpClient control, FtpSslValidationEventArgs e)
+        {
+            e.Accept = true;
+            e.PolicyErrors = SslPolicyErrors.None;
         }
 
         private void RaiseFtpProgressEvent(FtpProgress progress)
