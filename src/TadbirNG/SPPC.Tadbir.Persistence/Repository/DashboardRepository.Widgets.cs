@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
@@ -28,7 +31,7 @@ namespace SPPC.Tadbir.Persistence
         {
             public int WidgetId { get; set; }
 
-            public WidgetParameterViewModel Parameter { get; set; }
+            public FunctionParameterViewModel Parameter { get; set; }
         }
 
         private class WidgetFunctionValues
@@ -102,6 +105,43 @@ namespace SPPC.Tadbir.Persistence
                 .GetEntityQuery(widget => widget.Function, widget => widget.Type)
                 .Select(type => Mapper.Map<WidgetViewModel>(type))
                 .ToListAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، فهرست ویجت های ایجادشده توسط کاربر جاری برنامه را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>ویجت های ایجادشده توسط کاربر جاری</returns>
+        public async Task<PagedList<WidgetViewModel>> GetCurrentUserWidgetsAsync(
+            GridOptions gridOptions = null)
+        {
+            return await GetWidgetsByCriteria(wgt => wgt.CreatedById == UserContext.Id, gridOptions);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، فهرست ویجت های قابل دسترسی توسط کاربر جاری برنامه را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>ویجت های قابل دسترسی توسط کاربر جاری</returns>
+        public async Task<PagedList<WidgetViewModel>> GetAccessibleWidgetsAsync(
+            GridOptions gridOptions = null)
+        {
+            Expression<Func<Widget, bool>> criteria = wgt => true;
+            if (!UserContext.Roles.Contains(AppConstants.AdminRoleId))
+            {
+                var roleWidgetRepository = UnitOfWork.GetAsyncRepository<RoleWidget>();
+                var widgetIds = await roleWidgetRepository
+                    .GetEntityQuery()
+                    .Where(rw => UserContext.Roles.Contains(rw.RoleId))
+                    .Select(rw => rw.WidgetId)
+                    .Distinct()
+                    .ToListAsync();
+                criteria = UserContext.Roles.Contains(AppConstants.AdminRoleId)
+                    ? wgt => true
+                    : wgt => widgetIds.Contains(wgt.Id) || wgt.CreatedById == UserContext.Id;
+            }
+
+            return await GetWidgetsByCriteria(criteria, gridOptions);
         }
 
         /// <summary>
@@ -241,7 +281,7 @@ namespace SPPC.Tadbir.Persistence
                         widget.WidgetAccounts.AddRange(accounts
                             .Where(wacc => wacc.WidgetId == widget.WidgetId)
                             .Select(wacc => wacc.FullAccount));
-                        widget.WidgetParmeters.AddRange(parameters
+                        widget.WidgetParameters.AddRange(parameters
                             .Where(wpara => wpara.WidgetId == widget.WidgetId)
                             .Select(wpara => wpara.Parameter));
                     }
@@ -368,7 +408,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(row => new ParameterByWidget
                     {
                         WidgetId = _report.ValueOrDefault<int>(row, "WidgetID"),
-                        Parameter = new WidgetParameterViewModel()
+                        Parameter = new FunctionParameterViewModel()
                         {
                             Name = _report.ValueOrDefault(row, "Name"),
                             Alias = _report.ValueOrDefault(row, "Alias"),
@@ -586,6 +626,42 @@ namespace SPPC.Tadbir.Persistence
             return usage == ExpressionUsage.Where
                 ? String.Join(" AND ", selectList)
                 : String.Join(",", selectList);
+        }
+
+        private async Task<PagedList<WidgetViewModel>> GetWidgetsByCriteria(
+            Expression<Func<Widget, bool>> criteria, GridOptions gridOptions = null)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Widget>();
+            var userWidgets = await repository.GetByCriteriaAsync(
+                criteria, wgt => wgt.Function, wgt => wgt.Type);
+            var widgets = userWidgets
+                .Select(wgt => Mapper.Map<WidgetViewModel>(wgt))
+                .ToList();
+            await SetUserFullNamesAsync(widgets);
+            return new PagedList<WidgetViewModel>(widgets, gridOptions);
+        }
+
+        private async Task SetUserFullNamesAsync(List<WidgetViewModel> widgets)
+        {
+            UnitOfWork.UseSystemContext();
+            var userIds = widgets
+                .Select(wgt => wgt.CreatedById)
+                .Distinct();
+            var repository = UnitOfWork.GetAsyncRepository<User>();
+            var userMap = new Dictionary<int, string>(await repository
+                .GetEntityQuery(usr => usr.Person)
+                .Where(usr => userIds.Contains(usr.Id))
+                .Select(usr => new KeyValuePair<int, string>(
+                    usr.Id, $"{usr.Person.LastName}, {usr.Person.FirstName}"))
+                .ToListAsync());
+            Array.ForEach(widgets.ToArray(), widget =>
+            {
+                if (userMap.ContainsKey(widget.CreatedById))
+                {
+                    widget.CreatedByFullName = userMap[widget.CreatedById];
+                }
+            });
+            UnitOfWork.UseCompanyContext();
         }
 
         private delegate decimal FunctionEvaluator(FullAccountViewModel fullAccount, DateTime from, DateTime to);

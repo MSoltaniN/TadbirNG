@@ -2,7 +2,7 @@
 
 namespace SPPC.Tadbir.Model.Reporting
 {
-    public partial class UsedWidgetParameter
+    public partial class UsedParameter
     {
         /// <summary>
         /// شناسه دیتابیسی ویجتی که این پارامتر برای نمایش آن در داشبورد مورد نیاز است

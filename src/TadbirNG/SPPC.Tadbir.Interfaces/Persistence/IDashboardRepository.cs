@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -44,6 +46,20 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>اطلاعات ویجت های قابل دسترسی</returns>
         Task<List<WidgetViewModel>> GetWidgetsLookupAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، فهرست ویجت های ایجادشده توسط کاربر جاری برنامه را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>ویجت های ایجادشده توسط کاربر جاری</returns>
+        Task<PagedList<WidgetViewModel>> GetCurrentUserWidgetsAsync(GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، فهرست ویجت های قابل دسترسی توسط کاربر جاری برنامه را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>ویجت های قابل دسترسی توسط کاربر جاری</returns>
+        Task<PagedList<WidgetViewModel>> GetAccessibleWidgetsAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// اطلاعات ویجت مشخص شده را با توجه به پارامترهای داده شده محاسبه کرده و برمی گرداند

@@ -571,7 +571,7 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Widget, WidgetViewModel>();
             mapperConfig.CreateMap<TabWidget, TabWidgetViewModel>()
                 .ForMember(dest => dest.WidgetAccounts, opts => opts.Ignore())
-                .ForMember(dest => dest.WidgetParmeters, opts => opts.Ignore());
+                .ForMember(dest => dest.WidgetParameters, opts => opts.Ignore());
             mapperConfig.CreateMap<TabWidgetViewModel, TabWidget>();
         }
 

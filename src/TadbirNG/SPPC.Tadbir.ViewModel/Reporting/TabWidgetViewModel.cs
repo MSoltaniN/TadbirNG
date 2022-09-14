@@ -53,6 +53,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// مجموعه پارامترهای مورد نیاز برای نمایش گرافیکی ویجت
         /// </summary>
-        public List<WidgetParameterViewModel> WidgetParmeters { get; }
+        public List<FunctionParameterViewModel> WidgetParameters { get; }
     }
 }

@@ -124,6 +124,15 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// نام و نام خانوادگی کاربر جاری را با قالب پیش فرض برمی گرداند
+        /// </summary>
+        /// <returns>نام و نام خانوادگی کاربر جاری</returns>
+        protected string GetCurrentUserFullName()
+        {
+            return $"{UserContext.PersonLastName}, {UserContext.PersonFirstName}";
+        }
+
+        /// <summary>
         /// به روش آسنکرون، شرکت جاری در برنامه را به شرکت مشخص شده تغییر می دهد
         /// </summary>
         /// <param name="companyId">شناسه دیتابیسی شرکت مورد نظر</param>

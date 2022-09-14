@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Api
 {
@@ -67,6 +66,26 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all usable widgets
         /// </summary>
         public const string WidgetsLookupUrl = "dashboard/lookup/widgets";
+
+        /// <summary>
+        /// API client URL for all widgets created by current user
+        /// </summary>
+        public const string Widgets = "dashboard/widgets";
+
+        /// <summary>
+        /// API server route URL for all widgets created by current user
+        /// </summary>
+        public const string WidgetsUrl = "dashboard/widgets";
+
+        /// <summary>
+        /// API client URL for all widgets accessible to current user
+        /// </summary>
+        public const string AllWidgets = "dashboard/widgets/all";
+
+        /// <summary>
+        /// API server route URL for all widgets accessible to current user
+        /// </summary>
+        public const string AllWidgetsUrl = "dashboard/widgets/all";
 
         /// <summary>
         /// API client URL for calculated data of one or more account vectors in a specific widget

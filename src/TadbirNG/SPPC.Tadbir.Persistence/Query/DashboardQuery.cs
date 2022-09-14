@@ -50,10 +50,12 @@ FROM [Reporting].[WidgetAccount] AS [wacc]
 WHERE [wacc].[WidgetID] IN ({0})";
 
         internal const string WidgetsParameters = @"
-SELECT [uwp].[WidgetID], [wp].[Name], [wp].[Alias], [wp].[Type], [wp].[DefaultValue], [wp].[Description]
-FROM [Reporting].[UsedWidgetParameter] AS [uwp]
-  INNER JOIN [Reporting].[WidgetParameter] AS [wp] ON [uwp].[ParameterID] = [wp].[WidgetParameterID]
-WHERE [uwp].[WidgetID] IN ({0})";
+SELECT [wgt].[WidgetID], [para].[Name], [para].[Alias], [para].[Type], [para].[DefaultValue], [para].[Description]
+FROM [Reporting].[Widget] AS [wgt]
+  INNER JOIN [Reporting].[WidgetFunction] AS [func] ON [func].[WidgetFunctionID] = [wgt].[FunctionID]
+  INNER JOIN [Reporting].[UsedParameter] AS [upara] ON [upara].[FunctionID] = [func].[WidgetFunctionID]
+  INNER JOIN [Reporting].[FunctionParameter] AS [para] ON [para].[FunctionParameterID] = [upara].[ParameterID]
+WHERE [wgt].[WidgetID] IN ({0})";
 
         internal const string DebitTurnover = @"
 SELECT {0}, SUM([vl].[Debit]) AS [Debit]

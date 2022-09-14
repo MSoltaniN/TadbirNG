@@ -31,7 +31,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
             Settings = String.Empty;
             DefaultSettings = String.Empty;
             WidgetAccounts = new List<FullAccountViewModel>();
-            WidgetParmeters = new List<WidgetParameterViewModel>();
+            WidgetParameters = new List<FunctionParameterViewModel>();
         }
 
         /// <summary>

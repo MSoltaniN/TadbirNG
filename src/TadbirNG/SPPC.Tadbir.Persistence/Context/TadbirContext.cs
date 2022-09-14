@@ -81,7 +81,7 @@ namespace SPPC.Tadbir.Persistence
             SubsystemMap.BuildMapping(modelBuilder.Entity<Subsystem>());
             TabWidgetMap.BuildMapping(modelBuilder.Entity<TabWidget>());
             TaxCurrencyMap.BuildMapping(modelBuilder.Entity<TaxCurrency>());
-            UsedWidgetParameterMap.BuildMapping(modelBuilder.Entity<UsedWidgetParameter>());
+            UsedParameterMap.BuildMapping(modelBuilder.Entity<UsedParameter>());
             UserMap.BuildMapping(modelBuilder.Entity<User>());
             UserRoleMap.BuildMapping(modelBuilder.Entity<UserRole>());
             UserSettingMap.BuildMapping(modelBuilder.Entity<UserSetting>());
@@ -93,7 +93,7 @@ namespace SPPC.Tadbir.Persistence
             WidgetMap.BuildMapping(modelBuilder.Entity<Widget>());
             WidgetFunctionMap.BuildMapping(modelBuilder.Entity<WidgetFunction>());
             WidgetTypeMap.BuildMapping(modelBuilder.Entity<WidgetType>());
-            WidgetParameterMap.BuildMapping(modelBuilder.Entity<WidgetParameter>());
+            FunctionParameterMap.BuildMapping(modelBuilder.Entity<FunctionParameter>());
             WidgetAccountMap.BuildMapping(modelBuilder.Entity<WidgetAccount>());
         }
 

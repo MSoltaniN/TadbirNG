@@ -131,6 +131,42 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
+        // GET: api/dashboard/widgets
+        [HttpGet]
+        [Route(DashboardApi.WidgetsUrl)]
+        public async Task<IActionResult> GetUserWidgetsAsync()
+        {
+            var userWidgets = await _repository.GetCurrentUserWidgetsAsync(GridOptions);
+            Array.ForEach(userWidgets.Items.ToArray(), item =>
+            {
+                item.FunctionName = _strings[item.FunctionName];
+                item.TypeName = _strings[item.TypeName];
+            });
+            return JsonListResult(userWidgets);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/dashboard/widgets
+        [HttpGet]
+        [Route(DashboardApi.AllWidgetsUrl)]
+        public async Task<IActionResult> GetAccessibleWidgetsAsync()
+        {
+            var allWidgets = await _repository.GetAccessibleWidgetsAsync(GridOptions);
+            Array.ForEach(allWidgets.Items.ToArray(), item =>
+            {
+                item.FunctionName = _strings[item.FunctionName];
+                item.TypeName = _strings[item.TypeName];
+            });
+            return JsonListResult(allWidgets);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         // GET: api/dashboard/widgets/{widgetId:min(1)}/data
         [HttpGet]
         [Route(DashboardApi.WidgetDataUrl)]

@@ -37,14 +37,17 @@ export class DashboardApi {
   // dashboard/widgets/{widgetId:min(1)}/data
   public static WidgetData =
     environment.BaseUrl + "/dashboard/widgets/{0}/data";
-
+  // dashboard/tabs/{tabId:min(1)}/widgets
   public static TabWidgets =
     environment.BaseUrl + "/dashboard/tabs/{0}/widgets";
 
-  /// <summary>
-  /// API server route URL for all widgets added to a dashboard tab
-  /// </summary>
-
+  // dashboard/tabs/{tabId:min(1)}/widgets/{widgetId:min(1)}
   public static TabWidget =
     environment.BaseUrl + "/dashboard/tabs/{0}/widgets/{1}";
+
+  // dashboard/widgets
+  public static Widgets = environment.BaseUrl + "/dashboard/widgets"
+
+  // dashboard/widgets/all
+  public static AllWidgets = environment.BaseUrl + "/dashboard/widgets/all"
 }
