@@ -96,6 +96,8 @@ namespace SPPC.Tools.Maintenance
 
         private void Ftp_ValidateCertificate(BaseFtpClient control, FtpSslValidationEventArgs e)
         {
+            // NOTE: Because most Iranian providers use untrusted certificates, FTP connection fails immediately.
+            // We need to implement the unsafe practice of accepting and trusting all server certificates here...
             e.Accept = true;
             e.PolicyErrors = SslPolicyErrors.None;
         }

@@ -46,11 +46,13 @@ namespace SPPC.Tools.Maintenance
             stopwatch.Stop();
             Console.WriteLine("Backup completed.");
             Console.WriteLine($"Elapsed : {stopwatch.Elapsed}");
+            Console.WriteLine("Press any key to quit...");
+            Console.ReadKey();
         }
 
         private static void Backup_TaskStarted(object sender, TaskStartedEventArgs e)
         {
-            var current = SetConsoleColor(ConsoleColor.Blue);
+            var current = SetConsoleColor(ConsoleColor.DarkGreen);
             Console.WriteLine($"{e.TaskType} {e.TargetType} '{e.Name}'");
             ResetConsoleColor(current);
         }
@@ -59,7 +61,7 @@ namespace SPPC.Tools.Maintenance
         {
             if (e.Succeeded)
             {
-                var current = SetConsoleColor(ConsoleColor.Green);
+                var current = SetConsoleColor(ConsoleColor.DarkGreen);
                 Console.WriteLine($"(Succeeded) {e.TaskType} {e.TargetType} '{e.Name}'");
                 ResetConsoleColor(current);
                 Console.WriteLine();
@@ -77,7 +79,7 @@ namespace SPPC.Tools.Maintenance
         private static void Backup_FtpProgress(object sender, FtpProgressEventArgs e)
         {
             var current = SetConsoleColor(ConsoleColor.Blue);
-            Console.Write($"\r{e.Message}    ");
+            Console.Write($"\r{e.Message}    \r");
             ResetConsoleColor(current);
             if (e.IsComplete)
             {
