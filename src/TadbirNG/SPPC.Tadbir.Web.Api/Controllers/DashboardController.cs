@@ -149,7 +149,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        // GET: api/dashboard/widgets
+        // GET: api/dashboard/widgets/all
         [HttpGet]
         [Route(DashboardApi.AllWidgetsUrl)]
         public async Task<IActionResult> GetAccessibleWidgetsAsync()
@@ -175,6 +175,79 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var widgetData = await _repository.GetWidgetDataAsync(widgetId, from, to, unit);
             return Json(widgetData);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="widgetId"></param>
+        /// <returns></returns>
+        // GET: api/dashboard/widgets/{widgetId:min(1)}
+        [HttpGet]
+        [Route(DashboardApi.WidgetUrl)]
+        public async Task<IActionResult> GetWidgetAsync(int widgetId)
+        {
+            var widget = await _repository.GetWidgetAsync(widgetId);
+            widget.FunctionName = _strings[widget.FunctionName];
+            widget.TypeName = _strings[widget.TypeName];
+            return JsonReadResult(widget);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="widget"></param>
+        /// <returns></returns>
+        // POST: api/dashboard/widgets
+        [HttpPost]
+        [Route(DashboardApi.Widgets)]
+        public async Task<IActionResult> PostNewWidgetAsync([FromBody] WidgetViewModel widget)
+        {
+            if (widget == null)
+            {
+                var message = _strings.Format(AppStrings.RequestFailedNoData, AppStrings.Widget);
+                return BadRequestResult(message);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequestResult(ModelState);
+            }
+
+            var savedWidget = await _repository.SaveWidgetAsync(widget);
+            return StatusCode(StatusCodes.Status201Created, savedWidget);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="widgetId"></param>
+        /// <param name="widget"></param>
+        /// <returns></returns>
+        // PUT: api/dashboard/widgets/{widgetId:min(1)}
+        [HttpPut]
+        [Route(DashboardApi.WidgetUrl)]
+        public async Task<IActionResult> PutModifiedWidgetAsync(int widgetId, [FromBody] WidgetViewModel widget)
+        {
+            if (widget == null)
+            {
+                var message = _strings.Format(AppStrings.RequestFailedNoData, AppStrings.Widget);
+                return BadRequestResult(message);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequestResult(ModelState);
+            }
+
+            if (widget.Id != widgetId)
+            {
+                var message = _strings.Format(AppStrings.RequestFailedConflict, AppStrings.Widget);
+                return BadRequestResult(message);
+            }
+
+            var savedWidget = await _repository.SaveWidgetAsync(widget);
+            return Ok(savedWidget);
         }
 
         /// <summary>

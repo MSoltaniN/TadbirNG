@@ -33,6 +33,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// مجموعه ای از بردارهای حساب که به ویجت اضافه شده اند
         /// </summary>
-        public List<FullAccountViewModel> WidgetAccounts { get; }
+        public List<FullAccountViewModel> Accounts { get; }
     }
 }

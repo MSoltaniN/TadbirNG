@@ -136,9 +136,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(rw => rw.WidgetId)
                     .Distinct()
                     .ToListAsync();
-                criteria = UserContext.Roles.Contains(AppConstants.AdminRoleId)
-                    ? wgt => true
-                    : wgt => widgetIds.Contains(wgt.Id) || wgt.CreatedById == UserContext.Id;
+                criteria = wgt => widgetIds.Contains(wgt.Id) || wgt.CreatedById == UserContext.Id;
             }
 
             return await GetWidgetsByCriteria(criteria, gridOptions);
@@ -188,6 +186,76 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return dataSeries;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون اطلاعات نمایشی ویجت مورد نظر را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
+        /// <returns>اطلاعات نمایشی ویجت مورد نظر</returns>
+        public async Task<WidgetViewModel> GetWidgetAsync(int widgetId)
+        {
+            var existing = default(WidgetViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<Widget>();
+            var widget = await repository
+                .GetEntityQuery(wgt => wgt.Function, wgt => wgt.Type)
+                .Include(wgt => wgt.Accounts)
+                    .ThenInclude(acc => acc.Account)
+                .Include(wgt => wgt.Accounts)
+                    .ThenInclude(acc => acc.DetailAccount)
+                .Include(wgt => wgt.Accounts)
+                    .ThenInclude(acc => acc.CostCenter)
+                .Include(wgt => wgt.Accounts)
+                    .ThenInclude(acc => acc.Project)
+                .Where(wgt => wgt.Id == widgetId)
+                .SingleOrDefaultAsync();
+            if (widget != null)
+            {
+                existing = Mapper.Map<WidgetViewModel>(widget);
+            }
+
+            return existing;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات ویجت داده شده را در دیتابیس ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="widget">ویجت مورد نظر برای ایجاد یا اصلاح</param>
+        /// <returns>اطلاعات ویجت ایجاد یا اصلاح شده در دیتابیس</returns>
+        public async Task<WidgetViewModel> SaveWidgetAsync(WidgetViewModel widget)
+        {
+            var savedWidget = default(WidgetViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<Widget>();
+            if (widget.Id == 0)
+            {
+                var newWidget = Mapper.Map<Widget>(widget);
+                newWidget.CreatedById = UserContext.Id;
+                repository.Insert(newWidget, wgt => wgt.Accounts);
+                await UnitOfWork.CommitAsync();
+                savedWidget = Mapper.Map<WidgetViewModel>(newWidget);
+            }
+            else
+            {
+                var existing = await repository.GetByIDWithTrackingAsync(widget.Id, wgt => wgt.Accounts);
+                if (existing != null)
+                {
+                    existing.Accounts.Clear();
+                    existing.Title = widget.Title;
+                    existing.TypeId = widget.TypeId;
+                    existing.FunctionId = widget.FunctionId;
+                    existing.Description = widget.Description;
+                    existing.DefaultSettings = widget.DefaultSettings;
+                    repository.Update(existing);
+                    await UnitOfWork.CommitAsync();
+
+                    Array.ForEach(widget.Accounts.ToArray(), acc => existing.Accounts.Add(Mapper.Map<WidgetAccount>(acc)));
+                    repository.Update(existing);
+                    await UnitOfWork.CommitAsync();
+                    savedWidget = Mapper.Map<WidgetViewModel>(existing);
+                }
+            }
+
+            return savedWidget;
         }
 
         /// <summary>

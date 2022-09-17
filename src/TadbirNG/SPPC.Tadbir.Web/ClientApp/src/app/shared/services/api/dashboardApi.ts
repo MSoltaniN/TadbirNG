@@ -50,4 +50,7 @@ export class DashboardApi {
 
   // dashboard/widgets/all
   public static AllWidgets = environment.BaseUrl + "/dashboard/widgets/all"
+
+  // dashboard/widgets/{widgetId:min(1)}
+  public static Widget = environment.BaseUrl + "/dashboard/widgets/{0}"
 }

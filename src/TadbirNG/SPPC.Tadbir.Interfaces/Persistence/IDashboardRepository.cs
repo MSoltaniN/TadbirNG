@@ -73,6 +73,20 @@ namespace SPPC.Tadbir.Persistence
             int widgetId, DateTime? fromDate, DateTime? toDate, WidgetDateUnit? unit);
 
         /// <summary>
+        /// به روش آسنکرون اطلاعات نمایشی ویجت مورد نظر را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
+        /// <returns>اطلاعات نمایشی ویجت مورد نظر</returns>
+        Task<WidgetViewModel> GetWidgetAsync(int widgetId);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات ویجت داده شده را در دیتابیس ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="widget">ویجت مورد نظر برای ایجاد یا اصلاح</param>
+        /// <returns>اطلاعات ویجت ایجاد یا اصلاح شده در دیتابیس</returns>
+        Task<WidgetViewModel> SaveWidgetAsync(WidgetViewModel widget);
+
+        /// <summary>
         /// به روش آسنکرون، یکی از ویجت های قابل دسترسی توسط کاربر جاری را در برگه تعیین شده اضافه یا اصلاح می کند
         /// </summary>
         /// <param name="tabWidget">اطلاعات ویجت مورد نظر برای ایجاد یا اصلاح به برگه داشبورد</param>

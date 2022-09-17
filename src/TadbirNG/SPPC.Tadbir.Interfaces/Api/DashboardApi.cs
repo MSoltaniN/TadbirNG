@@ -78,6 +78,16 @@ namespace SPPC.Tadbir.Api
         public const string WidgetsUrl = "dashboard/widgets";
 
         /// <summary>
+        /// API client URL for a widget specified by unique identifier
+        /// </summary>
+        public const string Widget = "dashboard/widgets/{0}";
+
+        /// <summary>
+        /// API server route URL for a widget specified by unique identifier
+        /// </summary>
+        public const string WidgetUrl = "dashboard/widgets/{widgetId:min(1)}";
+
+        /// <summary>
         /// API client URL for all widgets accessible to current user
         /// </summary>
         public const string AllWidgets = "dashboard/widgets/all";
