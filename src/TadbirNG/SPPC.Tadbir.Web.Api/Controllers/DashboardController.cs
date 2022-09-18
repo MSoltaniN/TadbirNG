@@ -15,6 +15,7 @@ using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
+using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -74,6 +75,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/dashboard/current
         [HttpGet]
         [Route(DashboardApi.CurrentDashboardUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
         public IActionResult GetCurrentDashboard()
         {
             var dashboard = _repository.GetCurrentUserDashboard();
@@ -116,6 +118,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/dashboard/lookup/widgets
         [HttpGet]
         [Route(DashboardApi.WidgetsLookupUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
         public async Task<IActionResult> GetWidgetsLookupAsync()
         {
             var lookup = await _repository.GetWidgetsLookupAsync();
@@ -134,6 +137,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/dashboard/widgets
         [HttpGet]
         [Route(DashboardApi.WidgetsUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
         public async Task<IActionResult> GetUserWidgetsAsync()
         {
             var userWidgets = await _repository.GetCurrentUserWidgetsAsync(GridOptions);
@@ -152,6 +156,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/dashboard/widgets/all
         [HttpGet]
         [Route(DashboardApi.AllWidgetsUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
         public async Task<IActionResult> GetAccessibleWidgetsAsync()
         {
             var allWidgets = await _repository.GetAccessibleWidgetsAsync(GridOptions);
@@ -170,6 +175,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/dashboard/widgets/{widgetId:min(1)}/data
         [HttpGet]
         [Route(DashboardApi.WidgetDataUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
         public async Task<IActionResult> GetWidgetDataAsync(
             int widgetId, DateTime? from, DateTime? to, WidgetDateUnit? unit)
         {
@@ -185,11 +191,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/dashboard/widgets/{widgetId:min(1)}
         [HttpGet]
         [Route(DashboardApi.WidgetUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageWidgets)]
         public async Task<IActionResult> GetWidgetAsync(int widgetId)
         {
             var widget = await _repository.GetWidgetAsync(widgetId);
-            widget.FunctionName = _strings[widget.FunctionName];
-            widget.TypeName = _strings[widget.TypeName];
+            if (widget != null)
+            {
+                widget.FunctionName = _strings[widget.FunctionName];
+                widget.TypeName = _strings[widget.TypeName];
+            }
+
             return JsonReadResult(widget);
         }
 
@@ -201,6 +212,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // POST: api/dashboard/widgets
         [HttpPost]
         [Route(DashboardApi.Widgets)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageWidgets)]
         public async Task<IActionResult> PostNewWidgetAsync([FromBody] WidgetViewModel widget)
         {
             if (widget == null)
@@ -227,6 +239,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/dashboard/widgets/{widgetId:min(1)}
         [HttpPut]
         [Route(DashboardApi.WidgetUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageWidgets)]
         public async Task<IActionResult> PutModifiedWidgetAsync(int widgetId, [FromBody] WidgetViewModel widget)
         {
             if (widget == null)
@@ -259,6 +272,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // POST: api/dashboard/tabs/{tabId:min(1)}/widgets
         [HttpPost]
         [Route(DashboardApi.TabWidgetsUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
         public async Task<IActionResult> PostNewTabWidgetAsync(
             int tabId, [FromBody] TabWidgetViewModel tabWidget)
         {
@@ -290,6 +304,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // DELETE: api/dashboard/tabs/{tabId:min(1)}/widgets/{widgetId:min(1)}
         [HttpDelete]
         [Route(DashboardApi.TabWidgetUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
         public async Task<IActionResult> DeleteExistingTabWidgetAsync(int tabId, int widgetId)
         {
             await _repository.DeleteTabWidgetAsync(tabId, widgetId);
