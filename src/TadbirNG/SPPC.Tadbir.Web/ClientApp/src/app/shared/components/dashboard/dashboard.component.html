@@ -1,9 +1,9 @@
 <section class="content-header col-md-12">
-  <div class="col-md-7 col-lg-5 col-xs-12 settings">
+  <div class="col-md-9 col-lg-7 col-xs-12 settings">
     <ng-template [ngIf]="isDashboardEditMode">
       <div
         class="alert alert-warning msg-container"
-        [ngClass]="isDashboardEditMode ? 'col-md-7' : ''"
+        [ngClass]="isDashboardEditMode ? 'col-md-5' : ''"
       >
         <div class="dashboard-button">
           <button (click)="onOkClick()" class="k-button k-primary">
@@ -24,6 +24,9 @@
       class="buttons"
       [ngClass]="isDashboardEditMode ? 'col-md-4' : 'col-md-6'"
     >
+      <a href="#/tadbir/dashboard" (click)="onAddTabClick()"
+        ><i class="fa fa-plus"></i>{{ "Dashboard.AddTab" | translate }}</a
+      >
       <a href="#/tadbir/dashboard" (click)="onAddWidgetClick()"
         ><i class="fa fa-plus"></i>{{ "Dashboard.AddWidget" | translate }}</a
       >
@@ -35,7 +38,7 @@
       >
     </div>
   </div>
-  <div class="col-md-5 col-lg-7 col-xs-12 title">
+  <div class="col-md-7 col-lg-5 col-xs-12 title">
     <h2>
       {{ "Dashboard.DashboardTitle" | translate }}
     </h2>
@@ -127,6 +130,12 @@
             let firstIndex = first
           "
         >
+          <ng-template pTemplate="header">
+            <span (click)="removeTab(tab.id)" *ngIf="isDashboardEditMode">
+              <i class="fa fa-trash remove-tab"></i>
+            </span>
+            <span class="tab-title">{{ tab.title }}</span>
+          </ng-template>
           <ng-container *ngIf="getWidgets(tab.id) | async as widgets">
             <gridster [options]="widgetOptions[tab.id]">
               <gridster-item [item]="item" *ngFor="let item of widgets">
