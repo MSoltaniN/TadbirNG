@@ -53,7 +53,9 @@
     "White": "White",
     "SettingConfirm": "Are you sure about the dashboard settings?",
     "WidgetSetting": "ٌWidget Settings",
-    "ChartType": "Chart type"
+    "ChartType": "Chart type",
+    "AddTab":"برگه جدید",
+    "TabName":"نام برگه"
   },
   "Exception": {
     "ErrorCode": "Error Code",

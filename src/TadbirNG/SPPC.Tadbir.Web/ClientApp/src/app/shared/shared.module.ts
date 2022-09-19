@@ -140,6 +140,7 @@ import { AddWidgetComponent } from "./components/dashboard/add-widget/add-widget
 import { WidgetSettingComponent } from "./components/dashboard/widget/widget-setting/widget-setting.component";
 import { TabViewModule } from "primeng/tabview";
 import { ManageWidgetsComponents } from "./components/dashboard/manage-widgets/manage-widgets.component";
+import { TabWidgetComponent } from "./components/dashboard/tab-widget/tab-widget.component";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -259,7 +260,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     AddWidgetComponent,
 
     WidgetSettingComponent,
-    ManageWidgetsComponents
+    ManageWidgetsComponents,
+
+    TabWidgetComponent,
   ],
 
   entryComponents: [
@@ -273,6 +276,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LicenseInfoComponent,
     AddWidgetComponent,
     WidgetSettingComponent,
+    TabWidgetComponent,
   ],
 
   //providers: [BrowserStorageService, DashboardService, GridService, LookupService, MetaDataService, ReportingService,

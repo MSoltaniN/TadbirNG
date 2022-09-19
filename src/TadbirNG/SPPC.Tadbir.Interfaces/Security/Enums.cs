@@ -1658,4 +1658,31 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         All = 0x1f
     }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به عملیات داشبورد را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum DashboardPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به عملیات داشبورد
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مدیریت داشبورد
+        /// </summary>
+        ManageDashboard = 0x1,
+
+        /// <summary>
+        /// دسترسی مدیریت ویجت ها
+        /// </summary>
+        ManageWidgets = 0x2,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات داشبورد
+        /// </summary>
+        All = 0x3
+    }
 }

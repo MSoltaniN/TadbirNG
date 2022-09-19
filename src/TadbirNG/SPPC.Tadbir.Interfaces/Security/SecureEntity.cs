@@ -185,5 +185,10 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت ترازنامه
         /// </summary>
         public const string BalanceSheet = "BalanceSheet";
+
+        /// <summary>
+        /// نام موجودیت داشبورد
+        /// </summary>
+        public const string Dashboard = "Dashboard";
     }
 }

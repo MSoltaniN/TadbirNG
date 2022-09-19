@@ -53,6 +53,8 @@
     "White": "سفید",
     "SettingConfirm": "آیا تنظیمات داشبورد ذخیره شود؟",
     "AddWidget": "ویجت جدید",
+    "AddTab":"برگه جدید",
+    "TabName":"نام برگه",
     "WidgetSetting": "تنظیمات ویجت",
     "ChartType": "نوع نمودار"
   },
