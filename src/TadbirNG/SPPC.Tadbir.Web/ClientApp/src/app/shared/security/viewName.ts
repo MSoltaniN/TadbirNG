@@ -69,5 +69,6 @@ export enum ViewName {
   ProfitLossSimple = 64,
   ComparativeProfitLossSimple = 66,
   ComparativeProfitLoss = 65,
-  BalanceSheet = 67
+  BalanceSheet = 67,
+  Widget = 68
 }

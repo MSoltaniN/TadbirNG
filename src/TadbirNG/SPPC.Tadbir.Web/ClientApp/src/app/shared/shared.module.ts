@@ -139,8 +139,8 @@ import { AutoFocusDirective } from "./directive/input/auto-focus.directive";
 import { AddWidgetComponent } from "./components/dashboard/add-widget/add-widget.component";
 import { WidgetSettingComponent } from "./components/dashboard/widget/widget-setting/widget-setting.component";
 import { TabViewModule } from "primeng/tabview";
-import { ManageWidgetsComponents } from "./components/dashboard/manage-widgets/manage-widgets.component";
 import { TabWidgetComponent } from "./components/dashboard/tab-widget/tab-widget.component";
+import { ManageWidgetsComponent } from "./components/dashboard/manage-widgets/manage-widgets.component";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -260,7 +260,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AddWidgetComponent,
 
     WidgetSettingComponent,
-    ManageWidgetsComponents,
+    ManageWidgetsComponent,
 
     TabWidgetComponent,
   ],
