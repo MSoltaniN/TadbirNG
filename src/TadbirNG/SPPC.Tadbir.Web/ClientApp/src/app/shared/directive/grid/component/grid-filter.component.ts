@@ -177,7 +177,6 @@ export class GridFilterComponent
   }
 
   removeFilterGrid(): void {
-    debugger;
     this.grid.filter.filters = [];
     this.showClearFilter = this.grid.filter.filters.length;
 

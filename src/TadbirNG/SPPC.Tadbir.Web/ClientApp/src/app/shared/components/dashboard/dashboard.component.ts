@@ -481,7 +481,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     const currentTab =
       this.currentDashboard.tabs[this.currentDashboardTabIndex];
 
-    if (!this.isDashboardEditMode) this.goToEditMode(); //this.goToEditMode(currentTab.id);
+    if (!this.isDashboardEditMode) this.goToEditMode();
 
     this.dialogRef = this.dialogService.open({
       title: this.getText("Dashboard.AddWidget"),
