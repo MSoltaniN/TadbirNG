@@ -214,7 +214,8 @@
     "SystemIssue": "کنترل سیستم",
     "BalanceByAccount": "مانده به تفکیک حساب",
     "ProfitLoss": "سود و زیان",
-    "BalanceSheet": "ترازنامه"
+    "BalanceSheet": "ترازنامه",
+    "Widgets": "ویجت ها"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",

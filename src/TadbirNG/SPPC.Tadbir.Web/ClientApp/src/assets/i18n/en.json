@@ -193,7 +193,8 @@
     "TestBalance": "Balance",
     "CurrencyBook": "Currency Book",
     "SystemIssue": "System Control",
-    "BalanceByAccount": "Balance By Account"
+    "BalanceByAccount": "Balance By Account",
+    "Widgets": "Widgets"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": " Number Of Vouchers Selected :",
