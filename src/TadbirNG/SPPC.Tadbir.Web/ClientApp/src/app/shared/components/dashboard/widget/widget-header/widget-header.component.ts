@@ -40,7 +40,6 @@ export class WidgetHeaderComponent implements OnInit {
     this.dialogModel.widgetId = this.widgetId;
 
     this.dialogRef.content.instance.save.subscribe((res) => {
-      debugger;
       this.settingChange.emit(res);
       this.dialogRef.close();
     });
