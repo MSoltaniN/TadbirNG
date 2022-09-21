@@ -71,6 +71,13 @@ a i {
   padding: 5px;
 }
 
+.remove-tab{
+  padding-right:3px;
+  padding-left: 3px;
+}
+
+
+
 /deep/ body.tRtl .settings .confirm-msg {
   text-align: right;
   float: right;
@@ -109,7 +116,7 @@ a i {
   cursor: pointer;
 }
 
-/deep/ li.ui-state-active a span
+/deep/ li.ui-state-active a span.tab-title
 { 
   border-bottom-style: solid;
   font-weight: bolder;

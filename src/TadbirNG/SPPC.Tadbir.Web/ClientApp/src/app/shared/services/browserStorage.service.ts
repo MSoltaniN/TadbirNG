@@ -373,14 +373,12 @@ export class BrowserStorageService {
   }
 
   setDateRangeConfig(dateConfig: any, companyId: string) {
-    debugger;
     const key = String.Format(SessionKeys.DateRangeConfig, companyId);
 
     localStorage.setItem(key, JSON.stringify(dateConfig));
   }
 
   getDateRangeConfig(companyId: string): string {
-    debugger;
     const key = String.Format(SessionKeys.DateRangeConfig, companyId);
     return localStorage.getItem(key);
   }

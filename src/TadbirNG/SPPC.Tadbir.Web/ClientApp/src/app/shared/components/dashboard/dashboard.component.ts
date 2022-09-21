@@ -38,6 +38,7 @@ import { AddWidgetComponent } from "./add-widget/add-widget.component";
 import { Dashboard } from "@sppc/shared/models/dashboard";
 import { FullAccount } from "@sppc/finance/models";
 import { WidgetParameter } from "@sppc/shared/models/widgetParameter";
+import { TabWidgetComponent } from "./tab-widget/tab-widget.component";
 
 interface DashboardConfig extends GridsterConfig {
   draggable: Draggable;
@@ -388,14 +389,16 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   }
 
   onSettingClick() {
-    const currentTab =
-      this.currentDashboard.tabs[this.currentDashboardTabIndex];
-    this.goToEditMode(currentTab.id);
+    //const currentTab =
+    //this.currentDashboard.tabs[this.currentDashboardTabIndex];
+    this.goToEditMode();
   }
 
-  goToEditMode(tabId) {
+  goToEditMode() {
     this.isDashboardEditMode = !this.isDashboardEditMode;
-    this.changedOptions(tabId);
+    this.currentDashboard.tabs.forEach((tab) => {
+      this.changedOptions(tab.id);
+    });
   }
 
   onCancelClick() {
@@ -404,9 +407,9 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
   cancelEditMode() {
     this.isDashboardEditMode = false;
-    const currentTab =
-      this.currentDashboard.tabs[this.currentDashboardTabIndex];
-    this.changedOptions(currentTab.id);
+    this.currentDashboard.tabs.forEach((tab) => {
+      this.changedOptions(tab.id);
+    });
   }
 
   onOkClick() {
@@ -477,7 +480,8 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   onAddWidgetClick() {
     const currentTab =
       this.currentDashboard.tabs[this.currentDashboardTabIndex];
-    this.goToEditMode(currentTab.id);
+
+    if (!this.isDashboardEditMode) this.goToEditMode();
 
     this.dialogRef = this.dialogService.open({
       title: this.getText("Dashboard.AddWidget"),
@@ -499,6 +503,33 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       (res) => {
         this.dialogRef.close();
         this.cancelEditMode();
+      }
+    );
+  }
+
+  onAddTabClick() {
+    this.dialogRef = this.dialogService.open({
+      title: this.getText("Dashboard.AddTab"),
+      content: TabWidgetComponent,
+    });
+
+    this.dialogRef.content.instance.save.subscribe((tabName) => {
+      debugger;
+      let tab: any = {};
+      tab.index = this.currentDashboard.tabs.length;
+      tab.title = tabName;
+      tab.id = this.currentDashboard.tabs.length + 1;
+      tab.rowNo = tab.id;
+      tab.widgets = [];
+
+      //TODO:posts record to DashboardTab table
+      this.currentDashboard.tabs.push(tab);
+      this.dialogRef.close();
+    });
+
+    const closeForm = this.dialogRef.content.instance.cancel.subscribe(
+      (res) => {
+        this.dialogRef.close();
       }
     );
   }
@@ -585,9 +616,19 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   }
 
   getWidgets(tabId) {
-    return this.tabSubjects
-      .filter((f) => f.tabId == tabId)[0]
-      .widgets.asObservable();
+    if (this.tabSubjects.findIndex((f) => f.tabId == tabId) >= 0) {
+      return this.tabSubjects
+        .filter((f) => f.tabId == tabId)[0]
+        .widgets.asObservable();
+    }
+
+    return null;
+  }
+
+  removeTab(tabId) {
+    //TODO:posts record to DashboardTab table
+    const index = this.currentDashboard.tabs.findIndex((t) => t.id == tabId);
+    this.currentDashboard.tabs.splice(index, 1);
   }
 
   getWidgetsSubject(tabId) {
