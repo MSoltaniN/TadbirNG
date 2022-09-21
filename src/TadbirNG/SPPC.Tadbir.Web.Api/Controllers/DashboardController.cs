@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Licensing.Model;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Common;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
@@ -16,6 +20,7 @@ using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Filters;
+using io = System.IO;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -40,33 +45,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _pathProvider = pathProvider;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        // GET: api/dashboard/summaries
-        [HttpGet]
-        [Route(DashboardApi.SummariesUrl)]
-        public async Task<IActionResult> GetSummariesAsync()
-        {
-            var summaries = await _repository.GetSummariesAsync(GetCurrentCalendar());
-            Localize(summaries);
-            return Json(summaries);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        // GET: api/dashboard/license
-        [HttpGet]
-        [Route(DashboardApi.LicenseInfoUrl)]
-        public IActionResult GetLicenseInfo()
-        {
-            string licenseData = System.IO.File.ReadAllText(_pathProvider.License);
-            var license = JsonHelper.To<LicenseFileModel>(licenseData);
-            return Json(license);
-        }
+        #region Dashboard Management
 
         /// <summary>
         /// 
@@ -82,6 +61,219 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             Localize(dashboard);
             return Json(dashboard);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tabId"></param>
+        /// <param name="tabWidget"></param>
+        /// <returns></returns>
+        // POST: api/dashboard/tabs/{tabId:min(1)}/widgets
+        [HttpPost]
+        [Route(DashboardApi.TabWidgetsUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
+        public async Task<IActionResult> PostNewTabWidgetAsync(
+            int tabId, [FromBody] TabWidgetViewModel tabWidget)
+        {
+            var result = GetTabWidgetValidationResult(tabWidget, tabId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var posted = await _repository.SaveTabWidgetAsync(tabWidget);
+            return StatusCode(StatusCodes.Status201Created, posted);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tabId"></param>
+        /// <param name="widgetId"></param>
+        /// <returns></returns>
+        // DELETE: api/dashboard/tabs/{tabId:min(1)}/widgets/{widgetId:min(1)}
+        [HttpDelete]
+        [Route(DashboardApi.TabWidgetUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
+        public async Task<IActionResult> DeleteExistingTabWidgetAsync(int tabId, int widgetId)
+        {
+            await _repository.DeleteTabWidgetAsync(tabId, widgetId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        #endregion
+
+        #region Widget Management
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/dashboard/widgets
+        [HttpGet]
+        [Route(DashboardApi.WidgetsUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
+        public async Task<IActionResult> GetUserWidgetsAsync()
+        {
+            var userWidgets = await _repository.GetCurrentUserWidgetsAsync(GridOptions);
+            Array.ForEach(userWidgets.Items.ToArray(), item =>
+            {
+                Localize(item);
+            });
+            return JsonListResult(userWidgets);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/dashboard/widgets/all
+        [HttpGet]
+        [Route(DashboardApi.AllWidgetsUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
+        public async Task<IActionResult> GetAccessibleWidgetsAsync()
+        {
+            var allWidgets = await _repository.GetAccessibleWidgetsAsync(GridOptions);
+            Array.ForEach(allWidgets.Items.ToArray(), item =>
+            {
+                Localize(item);
+            });
+            return JsonListResult(allWidgets);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="widgetId"></param>
+        /// <returns></returns>
+        // GET: api/dashboard/widgets/{widgetId:min(1)}/usage
+        [HttpGet]
+        [Route(DashboardApi.WidgetUsageUrl)]
+        public async Task<string> QueryWidgetUsageAsync(int widgetId)
+        {
+            string confirmMessage = String.Empty;
+            int usageCount = await _repository.GetWidgetUsageCountAsync(widgetId);
+            if (usageCount > 0)
+            {
+                confirmMessage = _strings[AppStrings.ConfirmUsedWidgetDelete];
+            }
+
+            return confirmMessage;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/dashboard/widgets/{widgetId:min(1)}/data
+        [HttpGet]
+        [Route(DashboardApi.WidgetDataUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
+        public async Task<IActionResult> GetWidgetDataAsync(int widgetId)
+        {
+            var parameters = GetParameters();
+            var widgetData = await _repository.GetWidgetDataAsync(widgetId, parameters);
+            return Json(widgetData);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="widgetId"></param>
+        /// <returns></returns>
+        // GET: api/dashboard/widgets/{widgetId:min(1)}
+        [HttpGet]
+        [Route(DashboardApi.WidgetUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageWidgets)]
+        public async Task<IActionResult> GetWidgetAsync(int widgetId)
+        {
+            var widget = await _repository.GetWidgetAsync(widgetId);
+            Localize(widget);
+            return JsonReadResult(widget);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="widget"></param>
+        /// <returns></returns>
+        // POST: api/dashboard/widgets
+        [HttpPost]
+        [Route(DashboardApi.Widgets)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageWidgets)]
+        public async Task<IActionResult> PostNewWidgetAsync([FromBody] WidgetViewModel widget)
+        {
+            var result = GetWidgetValidationResult(widget);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var savedWidget = await _repository.SaveWidgetAsync(widget);
+            return StatusCode(StatusCodes.Status201Created, savedWidget);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="widgetId"></param>
+        /// <param name="widget"></param>
+        /// <returns></returns>
+        // PUT: api/dashboard/widgets/{widgetId:min(1)}
+        [HttpPut]
+        [Route(DashboardApi.WidgetUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageWidgets)]
+        public async Task<IActionResult> PutModifiedWidgetAsync(int widgetId, [FromBody] WidgetViewModel widget)
+        {
+            var result = GetWidgetValidationResult(widget, widgetId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var savedWidget = await _repository.SaveWidgetAsync(widget);
+            return Ok(savedWidget);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="widgetId"></param>
+        /// <returns></returns>
+        // DELETE: api/dashboard/widgets/{widgetId:min(1)}
+        [HttpDelete]
+        [Route(DashboardApi.WidgetUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageWidgets)]
+        public async Task<IActionResult> DeleteExistingWidgetAsync(int widgetId)
+        {
+            var existing = await _repository.GetWidgetAsync(widgetId);
+            var result = GetWidgetValidationResult(existing, widgetId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.DeleteWidgetAsync(widgetId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="functionId"></param>
+        /// <returns></returns>
+        // GET: api/dashboard/functions/{functionId:min(1)}/params
+        [HttpGet]
+        [Route(DashboardApi.FunctionParametersUrl)]
+        public async Task<IActionResult> GetFunctionParametersAsync(int functionId)
+        {
+            var parameters = await _repository.GetFunctionParametersAsync(functionId);
+            return Json(parameters);
+        }
+
+        #endregion
+
+        #region Data Lookup
 
         /// <summary>
         /// 
@@ -124,123 +316,63 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var lookup = await _repository.GetWidgetsLookupAsync();
             Array.ForEach(lookup.ToArray(), widget =>
             {
-                widget.FunctionName = _strings[widget.FunctionName];
-                widget.TypeName = _strings[widget.TypeName];
+                Localize(widget);
             });
             return Json(lookup);
         }
 
+        #endregion
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        // GET: api/dashboard/widgets
+        // GET: api/dashboard/summaries
         [HttpGet]
-        [Route(DashboardApi.WidgetsUrl)]
-        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
-        public async Task<IActionResult> GetUserWidgetsAsync()
+        [Route(DashboardApi.SummariesUrl)]
+        public async Task<IActionResult> GetSummariesAsync()
         {
-            var userWidgets = await _repository.GetCurrentUserWidgetsAsync(GridOptions);
-            Array.ForEach(userWidgets.Items.ToArray(), item =>
-            {
-                item.FunctionName = _strings[item.FunctionName];
-                item.TypeName = _strings[item.TypeName];
-            });
-            return JsonListResult(userWidgets);
+            var summaries = await _repository.GetSummariesAsync(GetCurrentCalendar());
+            Localize(summaries);
+            return Json(summaries);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        // GET: api/dashboard/widgets/all
+        // GET: api/dashboard/license
         [HttpGet]
-        [Route(DashboardApi.AllWidgetsUrl)]
-        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
-        public async Task<IActionResult> GetAccessibleWidgetsAsync()
+        [Route(DashboardApi.LicenseInfoUrl)]
+        public IActionResult GetLicenseInfo()
         {
-            var allWidgets = await _repository.GetAccessibleWidgetsAsync(GridOptions);
-            Array.ForEach(allWidgets.Items.ToArray(), item =>
-            {
-                item.FunctionName = _strings[item.FunctionName];
-                item.TypeName = _strings[item.TypeName];
-            });
-            return JsonListResult(allWidgets);
+            string licenseData = io::File.ReadAllText(_pathProvider.License);
+            var license = JsonHelper.To<LicenseFileModel>(licenseData);
+            return Json(license);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        // GET: api/dashboard/widgets/{widgetId:min(1)}/data
-        [HttpGet]
-        [Route(DashboardApi.WidgetDataUrl)]
-        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
-        public async Task<IActionResult> GetWidgetDataAsync(
-            int widgetId, DateTime? from, DateTime? to, WidgetDateUnit? unit)
+        private Calendar GetCurrentCalendar()
         {
-            var widgetData = await _repository.GetWidgetDataAsync(widgetId, from, to, unit);
-            return Json(widgetData);
+            string language = GetPrimaryRequestLanguage();
+            return language == "fa"
+                ? new PersianCalendar()
+                : new GregorianCalendar() as Calendar;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="widgetId"></param>
-        /// <returns></returns>
-        // GET: api/dashboard/widgets/{widgetId:min(1)}
-        [HttpGet]
-        [Route(DashboardApi.WidgetUrl)]
-        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageWidgets)]
-        public async Task<IActionResult> GetWidgetAsync(int widgetId)
+        private List<ParameterSummary> GetParameters()
         {
-            var widget = await _repository.GetWidgetAsync(widgetId);
-            if (widget != null)
+            var parameters = new List<ParameterSummary>();
+            if (Request.Headers.ContainsKey(AppConstants.ParametersHeaderName))
             {
-                widget.FunctionName = _strings[widget.FunctionName];
-                widget.TypeName = _strings[widget.TypeName];
+                var json = Encoding.UTF8.GetString(
+                    Transform.FromBase64String(Request.Headers[AppConstants.ParametersHeaderName]));
+                parameters = JsonHelper.To<List<ParameterSummary>>(json);
             }
 
-            return JsonReadResult(widget);
+            return parameters;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="widget"></param>
-        /// <returns></returns>
-        // POST: api/dashboard/widgets
-        [HttpPost]
-        [Route(DashboardApi.Widgets)]
-        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageWidgets)]
-        public async Task<IActionResult> PostNewWidgetAsync([FromBody] WidgetViewModel widget)
-        {
-            if (widget == null)
-            {
-                var message = _strings.Format(AppStrings.RequestFailedNoData, AppStrings.Widget);
-                return BadRequestResult(message);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequestResult(ModelState);
-            }
-
-            var savedWidget = await _repository.SaveWidgetAsync(widget);
-            return StatusCode(StatusCodes.Status201Created, savedWidget);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="widgetId"></param>
-        /// <param name="widget"></param>
-        /// <returns></returns>
-        // PUT: api/dashboard/widgets/{widgetId:min(1)}
-        [HttpPut]
-        [Route(DashboardApi.WidgetUrl)]
-        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageWidgets)]
-        public async Task<IActionResult> PutModifiedWidgetAsync(int widgetId, [FromBody] WidgetViewModel widget)
+        private IActionResult GetWidgetValidationResult(WidgetViewModel widget, int widgetId = 0)
         {
             if (widget == null)
             {
@@ -259,24 +391,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(message);
             }
 
-            var savedWidget = await _repository.SaveWidgetAsync(widget);
-            return Ok(savedWidget);
+            if (widgetId > 0 && widget.CreatedById != SecurityContext.User.Id)
+            {
+                var message = _strings[AppStrings.CannotModifyOtherUserWidget];
+                return BadRequestResult(message);
+            }
+
+            return Ok();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="tabId"></param>
-        /// <param name="tabWidget"></param>
-        /// <returns></returns>
-        // POST: api/dashboard/tabs/{tabId:min(1)}/widgets
-        [HttpPost]
-        [Route(DashboardApi.TabWidgetsUrl)]
-        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
-        public async Task<IActionResult> PostNewTabWidgetAsync(
-            int tabId, [FromBody] TabWidgetViewModel tabWidget)
+        private IActionResult GetTabWidgetValidationResult(TabWidgetViewModel widget, int tabId)
         {
-            if (tabWidget == null)
+            if (widget == null)
             {
                 return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Widget));
             }
@@ -286,37 +412,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(ModelState);
             }
 
-            if (tabWidget.TabId != tabId)
+            if (widget.TabId != tabId)
             {
                 return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Widget));
             }
 
-            var posted = await _repository.SaveTabWidgetAsync(tabWidget);
-            return StatusCode(StatusCodes.Status201Created, posted);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="tabId"></param>
-        /// <param name="widgetId"></param>
-        /// <returns></returns>
-        // DELETE: api/dashboard/tabs/{tabId:min(1)}/widgets/{widgetId:min(1)}
-        [HttpDelete]
-        [Route(DashboardApi.TabWidgetUrl)]
-        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
-        public async Task<IActionResult> DeleteExistingTabWidgetAsync(int tabId, int widgetId)
-        {
-            await _repository.DeleteTabWidgetAsync(tabId, widgetId);
-            return StatusCode(StatusCodes.Status204NoContent);
-        }
-
-        private Calendar GetCurrentCalendar()
-        {
-            string language = GetPrimaryRequestLanguage();
-            return language == "fa"
-                ? new PersianCalendar()
-                : new GregorianCalendar() as Calendar;
+            return Ok();
         }
 
         private void Localize(DashboardSummariesViewModel summaries)
@@ -331,18 +432,33 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private void Localize(DashboardViewModel dashboard)
         {
-            if (dashboard == null)
+            if (dashboard != null)
             {
-                return;
-            }
-
-            foreach (var tab in dashboard.Tabs)
-            {
-                foreach (var widget in tab.Widgets)
+                Array.ForEach(dashboard.Tabs.ToArray(), tab =>
                 {
-                    widget.WidgetFunctionName = _strings[widget.WidgetFunctionName];
-                    widget.WidgetTypeName = _strings[widget.WidgetTypeName];
-                }
+                    Array.ForEach(tab.Widgets.ToArray(), widget =>
+                    {
+                        Localize(widget);
+                    });
+                });
+            }
+        }
+
+        private void Localize(TabWidgetViewModel widget)
+        {
+            if (widget != null)
+            {
+                widget.WidgetFunctionName = _strings[widget.WidgetFunctionName];
+                widget.WidgetTypeName = _strings[widget.WidgetTypeName];
+            }
+        }
+
+        private void Localize(WidgetViewModel widget)
+        {
+            if (widget != null)
+            {
+                widget.FunctionName = _strings[widget.FunctionName];
+                widget.TypeName = _strings[widget.TypeName];
             }
         }
 

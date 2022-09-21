@@ -3636,4 +3636,22 @@
   <data name="Widget" xml:space="preserve">
     <value>Widget</value>
   </data>
+  <data name="CannotModifyOtherUserWidget" xml:space="preserve">
+    <value>Widgets created by other users cannot be modified or deleted.</value>
+  </data>
+  <data name="ConfirmUsedWidgetDelete" xml:space="preserve">
+    <value>This widget is being used in one or more dashboard tabs. Are you sure you want to delete it?</value>
+  </data>
+  <data name="Gauge_Circular" xml:space="preserve">
+    <value>Circular gauge</value>
+  </data>
+  <data name="Gauge_Digital" xml:space="preserve">
+    <value>Digital gauge</value>
+  </data>
+  <data name="Gauge_Linear" xml:space="preserve">
+    <value>Linear gauge</value>
+  </data>
+  <data name="Gauge_StateIndicator" xml:space="preserve">
+    <value>State indicator gauge</value>
+  </data>
 </root>

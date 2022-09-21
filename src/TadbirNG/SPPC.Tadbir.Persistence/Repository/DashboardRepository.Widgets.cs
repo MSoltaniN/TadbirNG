@@ -6,8 +6,10 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Reporting;
@@ -20,40 +22,7 @@ namespace SPPC.Tadbir.Persistence
 {
     public partial class DashboardRepository
     {
-        private class AccountByWidget
-        {
-            public int WidgetId { get; set; }
-
-            public FullAccountViewModel FullAccount { get; set; }
-        }
-
-        private class ParameterByWidget
-        {
-            public int WidgetId { get; set; }
-
-            public FunctionParameterViewModel Parameter { get; set; }
-        }
-
-        private class WidgetFunctionValues
-        {
-            public string XLabel { get; set; }
-
-            public DateTime FromDate { get; set; }
-
-            public DateTime ToDate { get; set; }
-        }
-
-        private enum ExpressionUsage
-        {
-            Select = 0,
-            Where = 1,
-            GroupBy = 2
-        }
-
-        /// <summary>
-        /// امکان دسترسی به تنظیمات جاری برنامه را فراهم می کند
-        /// </summary>
-        public IConfigRepository Config { get; }
+        #region Dashboard Management
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات کامل داشبورد ایجاد شده توسط کاربر جاری برنامه را خوانده و برمی گرداند
@@ -66,196 +35,6 @@ namespace SPPC.Tadbir.Persistence
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             var dashboardResult = DbConsole.ExecuteQuery(query);
             return GetDashboard(dashboardResult);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات توابع محاسباتی قابل استفاده در ویجت ها را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات توابع محاسباتی</returns>
-        public async Task<List<WidgetFunctionViewModel>> GetWidgetFunctionsLookupAsync()
-        {
-            var repository = UnitOfWork.GetAsyncRepository<WidgetFunction>();
-            return await repository
-                .GetEntityQuery()
-                .Select(func => Mapper.Map<WidgetFunctionViewModel>(func))
-                .ToListAsync();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات انواع نمودارهای قابل استفاده در ویجت ها را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات انواع نمودارها</returns>
-        public async Task<List<WidgetTypeViewModel>> GetWidgetTypesLookupAsync()
-        {
-            var repository = UnitOfWork.GetAsyncRepository<WidgetType>();
-            return await repository
-                .GetEntityQuery()
-                .Select(type => Mapper.Map<WidgetTypeViewModel>(type))
-                .ToListAsync();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات ویجت های قابل دسترسی توسط کاربر جاری را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات ویجت های قابل دسترسی</returns>
-        public async Task<List<WidgetViewModel>> GetWidgetsLookupAsync()
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Widget>();
-            return await repository
-                .GetEntityQuery(widget => widget.Function, widget => widget.Type)
-                .Select(type => Mapper.Map<WidgetViewModel>(type))
-                .ToListAsync();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، فهرست ویجت های ایجادشده توسط کاربر جاری برنامه را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>ویجت های ایجادشده توسط کاربر جاری</returns>
-        public async Task<PagedList<WidgetViewModel>> GetCurrentUserWidgetsAsync(
-            GridOptions gridOptions = null)
-        {
-            return await GetWidgetsByCriteria(wgt => wgt.CreatedById == UserContext.Id, gridOptions);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، فهرست ویجت های قابل دسترسی توسط کاربر جاری برنامه را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>ویجت های قابل دسترسی توسط کاربر جاری</returns>
-        public async Task<PagedList<WidgetViewModel>> GetAccessibleWidgetsAsync(
-            GridOptions gridOptions = null)
-        {
-            Expression<Func<Widget, bool>> criteria = wgt => true;
-            if (!UserContext.Roles.Contains(AppConstants.AdminRoleId))
-            {
-                var roleWidgetRepository = UnitOfWork.GetAsyncRepository<RoleWidget>();
-                var widgetIds = await roleWidgetRepository
-                    .GetEntityQuery()
-                    .Where(rw => UserContext.Roles.Contains(rw.RoleId))
-                    .Select(rw => rw.WidgetId)
-                    .Distinct()
-                    .ToListAsync();
-                criteria = wgt => widgetIds.Contains(wgt.Id) || wgt.CreatedById == UserContext.Id;
-            }
-
-            return await GetWidgetsByCriteria(criteria, gridOptions);
-        }
-
-        /// <summary>
-        /// اطلاعات ویجت مشخص شده را با توجه به پارامترهای داده شده محاسبه کرده و برمی گرداند
-        /// </summary>
-        /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
-        /// <param name="fromDate">تاریخ ابتدا برای محاسبه اطلاعات</param>
-        /// <param name="toDate">تاریخ انتها برای محاسبه اطلاعات</param>
-        /// <param name="unit">واحد زمانی مورد نظر برای نمایش ریز اطلاعات در نمودار</param>
-        /// <returns>اطلاعات مورد نیاز برای نمایش در نمودار</returns>
-        public async Task<ChartSeriesViewModel> GetWidgetDataAsync(
-            int widgetId, DateTime? fromDate, DateTime? toDate, WidgetDateUnit? unit)
-        {
-            var dataSeries = default(ChartSeriesViewModel);
-            var dateUnit = unit ?? WidgetDateUnit.Monthly;
-            Config.GetCurrentFiscalDateRange(out DateTime start, out DateTime end);
-            start = fromDate ?? start;
-            end = toDate ?? end;
-            var repository = UnitOfWork.GetAsyncRepository<Widget>();
-            var widget = await repository
-                .GetEntityWithTrackingQuery(wgt => wgt.Function, wgt => wgt.Accounts)
-                .Where(wgt => wgt.Id == widgetId)
-                .FirstOrDefaultAsync();
-            if (widget != null)
-            {
-                DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-                var accountRepository = UnitOfWork.GetAsyncRepository<WidgetAccount>();
-                var fullAccounts = GetFullAccounts(widget.Accounts, accountRepository);
-                var values = await GetFunctionValuesAsync(start, end, dateUnit);
-                var evaluator = GetFunctionEvaluator(widget.Function.Name);
-                dataSeries = new ChartSeriesViewModel();
-                dataSeries.Labels.AddRange(values.Select(value => value.XLabel));
-                foreach (var fullAccount in fullAccounts)
-                {
-                    var serie = new ChartSerieViewModel()
-                    {
-                        Label = GetFullAccountLabel(fullAccount)
-                    };
-                    serie.Data.AddRange(values
-                        .OrderBy(value => value.FromDate)
-                        .Select(value => evaluator(fullAccount, value.FromDate, value.ToDate)));
-                    dataSeries.Datasets.Add(serie);
-                }
-            }
-
-            return dataSeries;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون اطلاعات نمایشی ویجت مورد نظر را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
-        /// <returns>اطلاعات نمایشی ویجت مورد نظر</returns>
-        public async Task<WidgetViewModel> GetWidgetAsync(int widgetId)
-        {
-            var existing = default(WidgetViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<Widget>();
-            var widget = await repository
-                .GetEntityQuery(wgt => wgt.Function, wgt => wgt.Type)
-                .Include(wgt => wgt.Accounts)
-                    .ThenInclude(acc => acc.Account)
-                .Include(wgt => wgt.Accounts)
-                    .ThenInclude(acc => acc.DetailAccount)
-                .Include(wgt => wgt.Accounts)
-                    .ThenInclude(acc => acc.CostCenter)
-                .Include(wgt => wgt.Accounts)
-                    .ThenInclude(acc => acc.Project)
-                .Where(wgt => wgt.Id == widgetId)
-                .SingleOrDefaultAsync();
-            if (widget != null)
-            {
-                existing = Mapper.Map<WidgetViewModel>(widget);
-            }
-
-            return existing;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات ویجت داده شده را در دیتابیس ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="widget">ویجت مورد نظر برای ایجاد یا اصلاح</param>
-        /// <returns>اطلاعات ویجت ایجاد یا اصلاح شده در دیتابیس</returns>
-        public async Task<WidgetViewModel> SaveWidgetAsync(WidgetViewModel widget)
-        {
-            var savedWidget = default(WidgetViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<Widget>();
-            if (widget.Id == 0)
-            {
-                var newWidget = Mapper.Map<Widget>(widget);
-                newWidget.CreatedById = UserContext.Id;
-                repository.Insert(newWidget, wgt => wgt.Accounts);
-                await UnitOfWork.CommitAsync();
-                savedWidget = Mapper.Map<WidgetViewModel>(newWidget);
-            }
-            else
-            {
-                var existing = await repository.GetByIDWithTrackingAsync(widget.Id, wgt => wgt.Accounts);
-                if (existing != null)
-                {
-                    existing.Accounts.Clear();
-                    existing.Title = widget.Title;
-                    existing.TypeId = widget.TypeId;
-                    existing.FunctionId = widget.FunctionId;
-                    existing.Description = widget.Description;
-                    existing.DefaultSettings = widget.DefaultSettings;
-                    repository.Update(existing);
-                    await UnitOfWork.CommitAsync();
-
-                    Array.ForEach(widget.Accounts.ToArray(), acc => existing.Accounts.Add(Mapper.Map<WidgetAccount>(acc)));
-                    repository.Update(existing);
-                    await UnitOfWork.CommitAsync();
-                    savedWidget = Mapper.Map<WidgetViewModel>(existing);
-                }
-            }
-
-            return savedWidget;
         }
 
         /// <summary>
@@ -312,6 +91,400 @@ namespace SPPC.Tadbir.Persistence
             {
                 repository.Delete(existing);
                 await UnitOfWork.CommitAsync();
+            }
+        }
+
+        #endregion
+
+        #region Widget Management
+
+        /// <summary>
+        /// به روش آسنکرون، فهرست ویجت های ایجادشده توسط کاربر جاری برنامه را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>ویجت های ایجادشده توسط کاربر جاری</returns>
+        public async Task<PagedList<WidgetViewModel>> GetCurrentUserWidgetsAsync(
+            GridOptions gridOptions = null)
+        {
+            return await GetWidgetsByCriteria(wgt => wgt.CreatedById == UserContext.Id, gridOptions);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، فهرست ویجت های قابل دسترسی توسط کاربر جاری برنامه را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>ویجت های قابل دسترسی توسط کاربر جاری</returns>
+        public async Task<PagedList<WidgetViewModel>> GetAccessibleWidgetsAsync(
+            GridOptions gridOptions = null)
+        {
+            Expression<Func<Widget, bool>> criteria = wgt => true;
+            if (!UserContext.Roles.Contains(AppConstants.AdminRoleId))
+            {
+                var roleWidgetRepository = UnitOfWork.GetAsyncRepository<RoleWidget>();
+                var widgetIds = await roleWidgetRepository
+                    .GetEntityQuery()
+                    .Where(rw => UserContext.Roles.Contains(rw.RoleId))
+                    .Select(rw => rw.WidgetId)
+                    .Distinct()
+                    .ToListAsync();
+                criteria = wgt => widgetIds.Contains(wgt.Id) || wgt.CreatedById == UserContext.Id;
+            }
+
+            return await GetWidgetsByCriteria(criteria, gridOptions);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد موارد استفاده از ویجت داده شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
+        /// <returns>تعداد موارد استفاده از ویجت</returns>
+        public async Task<int> GetWidgetUsageCountAsync(int widgetId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<TabWidget>();
+            int usageCount = await repository.GetCountByCriteriaAsync(
+                tw => tw.WidgetId == widgetId);
+            return usageCount;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات ویجت مشخص شده را با توجه به پارامترهای داده شده محاسبه کرده و برمی گرداند
+        /// </summary>
+        /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
+        /// <param name="parameters">پارامترهای مورد نیاز برای تابع محاسباتی ویجت</param>
+        /// <returns>اطلاعات مورد نیاز برای نمایش در ویجت</returns>
+        public async Task<object> GetWidgetDataAsync(int widgetId, IList<ParameterSummary> parameters)
+        {
+            var data = default(object);
+            var repository = UnitOfWork.GetAsyncRepository<Widget>();
+            var typeName = await repository
+                .GetEntityQuery(wgt => wgt.Type)
+                .Where(wgt => wgt.Id == widgetId)
+                .Select(wgt => wgt.Type.Name)
+                .SingleOrDefaultAsync();
+            if ((bool)typeName?.StartsWith("Chart"))
+            {
+                data = await GetChartWidgetDataAsync(widgetId, parameters);
+            }
+
+            return data;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون اطلاعات نمایشی ویجت مورد نظر را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
+        /// <returns>اطلاعات نمایشی ویجت مورد نظر</returns>
+        public async Task<WidgetViewModel> GetWidgetAsync(int widgetId)
+        {
+            var existing = default(WidgetViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<Widget>();
+            var widget = await repository
+                .GetEntityQuery(wgt => wgt.Function, wgt => wgt.Type)
+                .Include(wgt => wgt.Accounts)
+                    .ThenInclude(acc => acc.Account)
+                .Include(wgt => wgt.Accounts)
+                    .ThenInclude(acc => acc.DetailAccount)
+                .Include(wgt => wgt.Accounts)
+                    .ThenInclude(acc => acc.CostCenter)
+                .Include(wgt => wgt.Accounts)
+                    .ThenInclude(acc => acc.Project)
+                .Where(wgt => wgt.Id == widgetId)
+                .SingleOrDefaultAsync();
+            if (widget != null)
+            {
+                existing = Mapper.Map<WidgetViewModel>(widget);
+            }
+
+            return existing;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات ویجت داده شده را در دیتابیس ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="widget">ویجت مورد نظر برای ایجاد یا اصلاح</param>
+        /// <returns>اطلاعات ویجت ایجاد یا اصلاح شده در دیتابیس</returns>
+        public async Task<WidgetViewModel> SaveWidgetAsync(WidgetViewModel widget)
+        {
+            var savedWidget = default(WidgetViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<Widget>();
+            if (widget.Id == 0)
+            {
+                var newWidget = Mapper.Map<Widget>(widget);
+                newWidget.CreatedById = UserContext.Id;
+                repository.Insert(newWidget, wgt => wgt.Accounts);
+                await UnitOfWork.CommitAsync();
+                savedWidget = Mapper.Map<WidgetViewModel>(newWidget);
+            }
+            else
+            {
+                var existing = await repository.GetByIDWithTrackingAsync(widget.Id, wgt => wgt.Accounts);
+                if (existing != null)
+                {
+                    existing.Accounts.Clear();
+                    UpdateExisting(widget, existing);
+                    repository.Update(existing);
+                    await UnitOfWork.CommitAsync();
+
+                    Array.ForEach(widget.Accounts.ToArray(),
+                        acc => existing.Accounts.Add(Mapper.Map<WidgetAccount>(acc)));
+                    repository.Update(existing);
+                    await UnitOfWork.CommitAsync();
+                    savedWidget = Mapper.Map<WidgetViewModel>(existing);
+                }
+            }
+
+            return savedWidget;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات ویجت داده شده را از دیتابیس حذف می کند
+        /// </summary>
+        /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر برای حذف</param>
+        public async Task DeleteWidgetAsync(int widgetId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Widget>();
+            var widget = await repository.GetByIDWithTrackingAsync(widgetId, wgt => wgt.Accounts);
+            if (widget != null)
+            {
+                var roleWidgetRepository = UnitOfWork.GetAsyncRepository<RoleWidget>();
+                var roleWidgets = await roleWidgetRepository.GetByCriteriaAsync(
+                    rw => rw.WidgetId == widgetId);
+                Array.ForEach(roleWidgets.ToArray(), rw => roleWidgetRepository.Delete(rw));
+
+                var tabWidgetRepository = UnitOfWork.GetAsyncRepository<TabWidget>();
+                var tabWidgets = await tabWidgetRepository.GetByCriteriaAsync(
+                    tw => tw.WidgetId == widgetId);
+                Array.ForEach(tabWidgets.ToArray(), tw => tabWidgetRepository.Delete(tw));
+
+                widget.Accounts.Clear();
+                repository.Delete(widget);
+                await UnitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، پارامترهای مورد نیاز تابع محاسباتی داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="functionId">شناسه دیتابیسی تابع محاسباتی مورد نظر</param>
+        /// <returns>پارامترهای مورد نیاز تابع محاسباتی</returns>
+        public async Task<IList<ParameterSummary>> GetFunctionParametersAsync(int functionId)
+        {
+            var parameters = new List<ParameterSummary>();
+            var repository = UnitOfWork.GetAsyncRepository<WidgetFunction>();
+            var function = await repository
+                .GetEntityQuery()
+                .Include(func => func.Parameters)
+                    .ThenInclude(param => param.Parameter)
+                .Where(func => func.Id == functionId)
+                .SingleOrDefaultAsync();
+            if (function != null)
+            {
+                parameters.AddRange(function.Parameters
+                    .Select(param => new ParameterSummary()
+                    {
+                        Name = param.Parameter.Name,
+                        Type = param.Parameter.Type,
+                        Value = GetParameterValue(param.Parameter.Name)
+                    }));
+            }
+
+            return parameters;
+        }
+
+        #endregion
+
+        #region Data Lookup
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات توابع محاسباتی قابل استفاده در ویجت ها را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات توابع محاسباتی</returns>
+        public async Task<List<WidgetFunctionViewModel>> GetWidgetFunctionsLookupAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<WidgetFunction>();
+            return await repository
+                .GetEntityQuery()
+                .Select(func => Mapper.Map<WidgetFunctionViewModel>(func))
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات انواع نمودارهای قابل استفاده در ویجت ها را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات انواع نمودارها</returns>
+        public async Task<List<WidgetTypeViewModel>> GetWidgetTypesLookupAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<WidgetType>();
+            return await repository
+                .GetEntityQuery()
+                .Select(type => Mapper.Map<WidgetTypeViewModel>(type))
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات ویجت های قابل دسترسی توسط کاربر جاری را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات ویجت های قابل دسترسی</returns>
+        public async Task<List<WidgetViewModel>> GetWidgetsLookupAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Widget>();
+            return await repository
+                .GetEntityQuery(widget => widget.Function, widget => widget.Type)
+                .Select(type => Mapper.Map<WidgetViewModel>(type))
+                .ToListAsync();
+        }
+
+        #endregion
+
+        /// <summary>
+        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
+        /// </summary>
+        /// <param name="widget">مدل نمایشی شامل آخرین تغییرات</param>
+        /// <param name="existing">سطر اطلاعاتی موجود</param>
+        protected static void UpdateExisting(WidgetViewModel widget, Widget existing)
+        {
+            existing.Title = widget.Title;
+            existing.TypeId = widget.TypeId;
+            existing.FunctionId = widget.FunctionId;
+            existing.Description = widget.Description;
+            existing.DefaultSettings = widget.DefaultSettings;
+        }
+
+        private class AccountByWidget
+        {
+            public int WidgetId { get; set; }
+
+            public FullAccountViewModel FullAccount { get; set; }
+        }
+
+        private class ParameterByWidget
+        {
+            public int WidgetId { get; set; }
+
+            public FunctionParameterViewModel Parameter { get; set; }
+        }
+
+        private class WidgetFunctionValues
+        {
+            public string XLabel { get; set; }
+
+            public DateTime FromDate { get; set; }
+
+            public DateTime ToDate { get; set; }
+        }
+
+        private enum ExpressionUsage
+        {
+            Select = 0,
+            Where = 1,
+            GroupBy = 2
+        }
+
+        private IConfigRepository Config { get; }
+
+        private object GetParameterValue(string name)
+        {
+            object value = null;
+            if (name == "FromDate" || name == "ToDate")
+            {
+                Config.GetCurrentFiscalDateRange(out DateTime from, out DateTime to);
+                value = name == "FromDate" ? from : to;
+            }
+            else if (name == "DateUnit")
+            {
+                value = (int)WidgetDateUnit.Monthly;
+            }
+            else if (name == "MinValue" || name == "MaxValue")
+            {
+                value = name == "MinValue" ? 0 : 100;
+            }
+
+            return value;
+        }
+
+        private async Task<ChartSeriesViewModel> GetChartWidgetDataAsync(
+            int widgetId, IList<ParameterSummary> parameters)
+        {
+            var dataSeries = default(ChartSeriesViewModel);
+            GetChartWidgetParameters(parameters, out DateTime from, out DateTime to, out WidgetDateUnit unit);
+            var repository = UnitOfWork.GetAsyncRepository<Widget>();
+            var widget = await repository
+                .GetEntityWithTrackingQuery(wgt => wgt.Function, wgt => wgt.Accounts)
+                .Where(wgt => wgt.Id == widgetId)
+                .FirstOrDefaultAsync();
+            if (widget != null)
+            {
+                DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+                var accountRepository = UnitOfWork.GetAsyncRepository<WidgetAccount>();
+                var fullAccounts = GetFullAccounts(widget.Accounts, accountRepository);
+                var values = await GetFunctionValuesAsync(from, to, unit);
+                var evaluator = GetFunctionEvaluator(widget.Function.Name);
+                dataSeries = new ChartSeriesViewModel();
+                dataSeries.Labels.AddRange(values.Select(value => value.XLabel));
+                foreach (var fullAccount in fullAccounts)
+                {
+                    var serie = new ChartSerieViewModel()
+                    {
+                        Label = GetFullAccountLabel(fullAccount)
+                    };
+                    serie.Data.AddRange(values
+                        .OrderBy(value => value.FromDate)
+                        .Select(value => evaluator(fullAccount, value.FromDate, value.ToDate)));
+                    dataSeries.Datasets.Add(serie);
+                }
+            }
+
+            return dataSeries;
+        }
+
+        private void GetChartWidgetParameters(
+            IList<ParameterSummary> parameters, out DateTime from, out DateTime to,
+            out WidgetDateUnit unit)
+        {
+            Config.GetCurrentFiscalDateRange(out from, out to);
+            unit = WidgetDateUnit.Monthly;
+            var param = parameters
+                .Where(p => p.Name == "FromDate")
+                .FirstOrDefault();
+            if (param != null)
+            {
+                from = Convert.ToDateTime(param.Value);
+            }
+
+            param = parameters
+                .Where(p => p.Name == "ToDate")
+                .FirstOrDefault();
+            if (param != null)
+            {
+                to = Convert.ToDateTime(param.Value);
+            }
+
+            param = parameters
+                .Where(p => p.Name == "DateUnit")
+                .FirstOrDefault();
+            if (param != null)
+            {
+                unit = (WidgetDateUnit)Convert.ToInt32(param.Value);
+            }
+        }
+
+        private async Task SetDefaultSettingsAsync(Widget widget)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<WidgetFunction>();
+            var function = await repository
+                .GetEntityQuery()
+                .Include(func => func.Parameters)
+                    .ThenInclude(param => param.Parameter)
+                .Where(func => func.Id == widget.FunctionId)
+                .SingleOrDefaultAsync();
+            if (function != null)
+            {
+                var settings = JsonHelper.To<WidgetConfig>(widget.DefaultSettings);
+                Array.ForEach(function.Parameters
+                    .Select(param => param.Parameter)
+                    .ToArray(), param =>
+                {
+                });
             }
         }
 

@@ -3627,4 +3627,22 @@
   <data name="Widget" xml:space="preserve">
     <value>ویجت</value>
   </data>
+  <data name="CannotModifyOtherUserWidget" xml:space="preserve">
+    <value>این ویجت توسط کاربر دیگری ایجاد شده و قابل اصلاح یا حذف نیست.</value>
+  </data>
+  <data name="ConfirmUsedWidgetDelete" xml:space="preserve">
+    <value>این ویجت در تعدادی از برگه های داشبورد استفاده شده است. آیا از حذف آن اطمینان دارید؟</value>
+  </data>
+  <data name="Gauge_Circular" xml:space="preserve">
+    <value>درجه دایره ای</value>
+  </data>
+  <data name="Gauge_Digital" xml:space="preserve">
+    <value>درجه دیجیتال</value>
+  </data>
+  <data name="Gauge_Linear" xml:space="preserve">
+    <value>درجه خطی</value>
+  </data>
+  <data name="Gauge_StateIndicator" xml:space="preserve">
+    <value>درجه نمایش وضعیت</value>
+  </data>
 </root>
