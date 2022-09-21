@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
-using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
@@ -211,24 +210,32 @@ namespace SPPC.Tadbir.Persistence
             {
                 var newWidget = Mapper.Map<Widget>(widget);
                 newWidget.CreatedById = UserContext.Id;
+                await SetPropertyNamesAsync(newWidget);
+                OnEntityAction(OperationId.Create);
+                Log.Description = Context.Localize(GetState(newWidget));
                 repository.Insert(newWidget, wgt => wgt.Accounts);
-                await UnitOfWork.CommitAsync();
+                await FinalizeActionAsync(newWidget);
                 savedWidget = Mapper.Map<WidgetViewModel>(newWidget);
             }
             else
             {
-                var existing = await repository.GetByIDWithTrackingAsync(widget.Id, wgt => wgt.Accounts);
+                var existing = await repository.GetByIDWithTrackingAsync(
+                    widget.Id, wgt => wgt.Accounts, wgt => wgt.Function, wgt => wgt.Type);
                 if (existing != null)
                 {
                     existing.Accounts.Clear();
+                    string oldState = GetState(existing);
+                    OnEntityAction(OperationId.Edit);
                     UpdateExisting(widget, existing);
-                    repository.Update(existing);
-                    await UnitOfWork.CommitAsync();
-
+                    await SetPropertyNamesAsync(existing);
+                    Log.Description = Context.Localize(
+                        String.Format("{0} : ({1}) , {2} : ({3})",
+                        AppStrings.Old, Context.Localize(oldState),
+                        AppStrings.New, Context.Localize(GetState(existing))));
                     Array.ForEach(widget.Accounts.ToArray(),
                         acc => existing.Accounts.Add(Mapper.Map<WidgetAccount>(acc)));
-                    repository.Update(existing);
-                    await UnitOfWork.CommitAsync();
+                    repository.Update(existing, wgt => wgt.Accounts);
+                    await FinalizeActionAsync(existing);
                     savedWidget = Mapper.Map<WidgetViewModel>(existing);
                 }
             }
@@ -257,8 +264,8 @@ namespace SPPC.Tadbir.Persistence
                 Array.ForEach(tabWidgets.ToArray(), tw => tabWidgetRepository.Delete(tw));
 
                 widget.Accounts.Clear();
-                repository.Delete(widget);
-                await UnitOfWork.CommitAsync();
+                await SetPropertyNamesAsync(widget);
+                await DeleteAsync(repository, widget);
             }
         }
 
@@ -336,18 +343,35 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
+        internal override int? EntityType => (int?)EntityTypeId.Widget;
+
         /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="widget">مدل نمایشی شامل آخرین تغییرات</param>
         /// <param name="existing">سطر اطلاعاتی موجود</param>
-        protected static void UpdateExisting(WidgetViewModel widget, Widget existing)
+        protected override void UpdateExisting(WidgetViewModel widget, Widget existing)
         {
             existing.Title = widget.Title;
             existing.TypeId = widget.TypeId;
             existing.FunctionId = widget.FunctionId;
             existing.Description = widget.Description;
             existing.DefaultSettings = widget.DefaultSettings;
+        }
+
+        /// <summary>
+        /// اطلاعات خلاصه ویجت داده شده را به صورت یک رشته متنی برمی گرداند
+        /// </summary>
+        /// <param name="entity">یکی از ویجت های موجود</param>
+        /// <returns>اطلاعات خلاصه ویجت داده شده به صورت رشته متنی</returns>
+        protected override string GetState(Widget entity)
+        {
+            return (entity != null)
+                ? String.Format(
+                    "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7}",
+                    AppStrings.Title, entity.Title, AppStrings.FunctionName, entity.Function?.Name,
+                    AppStrings.TypeName, entity.Type?.Name, AppStrings.Description, entity.Description)
+                : null;
         }
 
         private class AccountByWidget
@@ -400,6 +424,25 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return value;
+        }
+
+        private async Task SetPropertyNamesAsync(Widget widget)
+        {
+            var functionRepository = UnitOfWork.GetAsyncRepository<WidgetFunction>();
+            widget.Function = new WidgetFunction() { Id = widget.FunctionId };
+            widget.Function.Name = await functionRepository
+                .GetEntityQuery()
+                .Where(func => func.Id == widget.FunctionId)
+                .Select(func => func.Name)
+                .SingleOrDefaultAsync();
+
+            var typeRepository = UnitOfWork.GetAsyncRepository<WidgetType>();
+            widget.Type = new WidgetType() { Id = widget.TypeId };
+            widget.Type.Name = await typeRepository
+                .GetEntityQuery()
+                .Where(type => type.Id == widget.TypeId)
+                .Select(type => type.Name)
+                .SingleOrDefaultAsync();
         }
 
         private async Task<ChartSeriesViewModel> GetChartWidgetDataAsync(
@@ -465,26 +508,6 @@ namespace SPPC.Tadbir.Persistence
             if (param != null)
             {
                 unit = (WidgetDateUnit)Convert.ToInt32(param.Value);
-            }
-        }
-
-        private async Task SetDefaultSettingsAsync(Widget widget)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<WidgetFunction>();
-            var function = await repository
-                .GetEntityQuery()
-                .Include(func => func.Parameters)
-                    .ThenInclude(param => param.Parameter)
-                .Where(func => func.Id == widget.FunctionId)
-                .SingleOrDefaultAsync();
-            if (function != null)
-            {
-                var settings = JsonHelper.To<WidgetConfig>(widget.DefaultSettings);
-                Array.ForEach(function.Parameters
-                    .Select(param => param.Parameter)
-                    .ToArray(), param =>
-                {
-                });
             }
         }
 

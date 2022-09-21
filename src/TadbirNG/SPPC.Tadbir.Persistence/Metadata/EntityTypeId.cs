@@ -20,5 +20,7 @@ namespace SPPC.Tadbir.Persistence
         TaxCurrency = 16,
         Voucher = 17,
         DraftVoucher = 18,
+        DashboardTab = 19,
+        Widget = 20
     }
 }
