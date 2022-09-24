@@ -4,6 +4,9 @@ using SPPC.Tadbir.Configuration;
 
 namespace SPPC.Tadbir.Utility.Model
 {
+    /// <summary>
+    /// کلاس کمکی برای دسترسی آسان به انواع تنظیمات آماده برای برنامه
+    /// </summary>
     public static class BuildSettings
     {
         static BuildSettings()
