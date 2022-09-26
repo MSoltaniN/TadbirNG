@@ -66,6 +66,109 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// 
         /// </summary>
         /// <param name="tabId"></param>
+        /// <returns></returns>
+        // GET: api/dashboard/tabs/{tabId:min(1)}
+        [HttpGet]
+        [Route(DashboardApi.DashboardTabUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
+        public async Task<IActionResult> GetDashboardTabAsync(int tabId)
+        {
+            var tab = await _repository.GetDashboardTabAsync(tabId);
+            return JsonReadResult(tab);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tab"></param>
+        /// <returns></returns>
+        // POST: api/dashboard/tabs
+        [HttpPost]
+        [Route(DashboardApi.DashboardTabsUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
+        public async Task<IActionResult> PostNewDashboardTabAsync([FromBody] DashboardTabViewModel tab)
+        {
+            var result = GetDashboardTabValidationResult(tab);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var created = await _repository.SaveDashboardTabAsync(tab);
+            return StatusCode(StatusCodes.Status201Created, created);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tabId"></param>
+        /// <param name="tab"></param>
+        /// <returns></returns>
+        // PUT: api/dashboard/tabs/{tabId:min(1)}
+        [HttpPut]
+        [Route(DashboardApi.DashboardTabUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
+        public async Task<IActionResult> PutModifiedDashboardTabAsync(
+            int tabId, [FromBody] DashboardTabViewModel tab)
+        {
+            var result = GetDashboardTabValidationResult(tab, tabId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var edited = await _repository.SaveDashboardTabAsync(tab);
+            return Ok(edited);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tabs"></param>
+        /// <returns></returns>
+        // PUT: api/dashboard/tabs
+        [HttpPut]
+        [Route(DashboardApi.DashboardTabsUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
+        public async Task<IActionResult> PutModifiedDashboardTabsAsync(
+            [FromBody] IList<DashboardTabViewModel> tabs)
+        {
+            var result = GetDashboardTabsValidationResult(tabs);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SaveDashboardTabsAsync(tabs);
+            return Ok();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tabId"></param>
+        /// <returns></returns>
+        // DELETE: api/dashboard/tabs/{tabId:min(1)}
+        [HttpDelete]
+        [Route(DashboardApi.DashboardTabUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
+        public async Task<IActionResult> DeleteExistingDashboardTabAsync(int tabId)
+        {
+            var tab = await _repository.GetDashboardTabAsync(tabId);
+            var result = GetDashboardTabValidationResult(tab, tabId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.DeleteDashboardTabAsync(tabId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tabId"></param>
         /// <param name="tabWidget"></param>
         /// <returns></returns>
         // POST: api/dashboard/tabs/{tabId:min(1)}/widgets
@@ -370,6 +473,54 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return parameters;
+        }
+
+        private IActionResult GetDashboardTabValidationResult(DashboardTabViewModel tab, int tabId = 0)
+        {
+            if (tab == null)
+            {
+                var message = _strings.Format(AppStrings.RequestFailedNoData, AppStrings.DashboardTab);
+                return BadRequestResult(message);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequestResult(ModelState);
+            }
+
+            if (tab.Id != tabId)
+            {
+                var message = _strings.Format(AppStrings.RequestFailedConflict, AppStrings.DashboardTab);
+                return BadRequestResult(message);
+            }
+
+            return Ok();
+        }
+
+        private IActionResult GetDashboardTabsValidationResult(IList<DashboardTabViewModel> tabs)
+        {
+            if (tabs == null)
+            {
+                var message = _strings.Format(AppStrings.RequestFailedNoData, AppStrings.DashboardTab);
+                return BadRequestResult(message);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequestResult(ModelState);
+            }
+
+            var indices = String.Join(String.Empty, Enumerable.Range(1, tabs.Count));
+            var tabIndices = String.Join(String.Empty,
+                tabs.OrderBy(tab => tab.Index)
+                    .Select(tab => tab.Index)
+                    .ToArray());
+            if (indices != tabIndices)
+            {
+                return BadRequestResult(_strings[AppStrings.IncorrectTabIndices]);
+            }
+
+            return Ok();
         }
 
         private IActionResult GetWidgetValidationResult(WidgetViewModel widget, int widgetId = 0)

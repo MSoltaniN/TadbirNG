@@ -3657,4 +3657,7 @@
   <data name="DashboardTab" xml:space="preserve">
     <value>برگه داشبورد</value>
   </data>
+  <data name="IncorrectTabIndices" xml:space="preserve">
+    <value>شماره ترتیبی برگه های داشبورد نادرست است.</value>
+  </data>
 </root>

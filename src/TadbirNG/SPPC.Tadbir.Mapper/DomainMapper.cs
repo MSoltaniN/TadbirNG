@@ -571,6 +571,10 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.EndBalanceItem1, opts => opts.MapFrom(src => src.EndBalance))
                 .ForMember(dest => dest.BalanceItem1, opts => opts.MapFrom(src => src.Balance));
 
+            mapperConfig.CreateMap<DashboardTab, DashboardTabViewModel>()
+                .ForMember(dest => dest.Widgets, opts => opts.Ignore());
+            mapperConfig.CreateMap<DashboardTabViewModel, DashboardTab>()
+                .ForMember(dest => dest.Widgets, opts => opts.Ignore());
             mapperConfig.CreateMap<WidgetFunction, WidgetFunctionViewModel>();
             mapperConfig.CreateMap<WidgetType, WidgetTypeViewModel>();
             mapperConfig.CreateMap<Widget, WidgetViewModel>();

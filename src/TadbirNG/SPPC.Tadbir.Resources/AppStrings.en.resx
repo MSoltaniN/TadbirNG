@@ -3666,4 +3666,7 @@
   <data name="DashboardTab" xml:space="preserve">
     <value>Dashboard tab</value>
   </data>
+  <data name="IncorrectTabIndices" xml:space="preserve">
+    <value>One or more tab indices are incorrect.</value>
+  </data>
 </root>

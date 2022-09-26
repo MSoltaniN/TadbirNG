@@ -24,6 +24,32 @@ namespace SPPC.Tadbir.Persistence
         DashboardViewModel GetCurrentUserDashboard();
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی یکی از برگه های موجود را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="tabId">شناسه دیتابیسی برگه مورد نظر</param>
+        /// <returns>اطلاعات نمایشی برگه مورد نظر</returns>
+        Task<DashboardTabViewModel> GetDashboardTabAsync(int tabId);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی یک برگه داشبورد را در دیتابیس ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="tab">اطلاعات برگه مورد نظر برای ایجاد یا اصلاح</param>
+        /// <returns>اطلاعات برگه ایجاد یا اصلاح شده در دیتابیس</returns>
+        Task<DashboardTabViewModel> SaveDashboardTabAsync(DashboardTabViewModel tab);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی چند برگه داشبورد را در دیتابیس ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="tabs">اطلاعات برگه های مورد نظر برای ایجاد یا اصلاح</param>
+        Task SaveDashboardTabsAsync(IList<DashboardTabViewModel> tabs);
+
+        /// <summary>
+        /// به روش آسنکرون، برگه مشخص شده را در دیتابیس حذف می کند
+        /// </summary>
+        /// <param name="tabId">شناسه دستابیسی برگه مورد نظر برای حذف</param>
+        Task DeleteDashboardTabAsync(int tabId);
+
+        /// <summary>
         /// به روش آسنکرون، یکی از ویجت های قابل دسترسی توسط کاربر جاری را در برگه تعیین شده اضافه یا اصلاح می کند
         /// </summary>
         /// <param name="tabWidget">اطلاعات ویجت مورد نظر برای ایجاد یا اصلاح به برگه داشبورد</param>

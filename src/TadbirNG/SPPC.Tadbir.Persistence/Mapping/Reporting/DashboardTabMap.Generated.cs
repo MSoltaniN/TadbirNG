@@ -39,7 +39,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasOne(e => e.Dashboard)
                 .WithMany(e => e.Tabs)
                 .HasForeignKey(e => e.DashboardId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Reporting_DashboardTab_Reporting_Dashboard");
         }
     }

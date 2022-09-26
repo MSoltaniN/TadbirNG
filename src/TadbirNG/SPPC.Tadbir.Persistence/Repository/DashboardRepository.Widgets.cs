@@ -37,6 +37,97 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی یکی از برگه های موجود را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="tabId">شناسه دیتابیسی برگه مورد نظر</param>
+        /// <returns>اطلاعات نمایشی برگه مورد نظر</returns>
+        public async Task<DashboardTabViewModel> GetDashboardTabAsync(int tabId)
+        {
+            var tab = default(DashboardTabViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<Dashboard>();
+            var existing = await repository
+                .GetEntityQuery(dbd => dbd.Tabs)
+                .Where(dbd => dbd.UserId == UserContext.Id)
+                .Select(dbd => dbd.Tabs.Where(tab => tab.Id == tabId).FirstOrDefault())
+                .SingleOrDefaultAsync();
+            if (existing != null)
+            {
+                tab = Mapper.Map<DashboardTabViewModel>(existing);
+            }
+
+            return tab;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی یک برگه داشبورد را در دیتابیس ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="tab">اطلاعات برگه مورد نظر برای ایجاد یا اصلاح</param>
+        /// <returns>اطلاعات برگه ایجاد یا اصلاح شده در دیتابیس</returns>
+        public async Task<DashboardTabViewModel> SaveDashboardTabAsync(DashboardTabViewModel tab)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<DashboardTab>();
+            if (tab.Id == 0)
+            {
+                var newTab = Mapper.Map<DashboardTab>(tab);
+                repository.Insert(newTab);
+                await UnitOfWork.CommitAsync();
+                tab.Id = newTab.Id;
+            }
+            else
+            {
+                var existing = await repository.GetByIDAsync(tab.Id);
+                if (existing != null)
+                {
+                    UpdateExisting(tab, existing);
+                    repository.Update(existing);
+                    await UnitOfWork.CommitAsync();
+                }
+            }
+
+            return tab;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی چند برگه داشبورد را در دیتابیس ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="tabs">اطلاعات برگه های مورد نظر برای ایجاد یا اصلاح</param>
+        public async Task SaveDashboardTabsAsync(IList<DashboardTabViewModel> tabs)
+        {
+            if (!tabs.Any())
+            {
+                return;
+            }
+
+            var repository = UnitOfWork.GetAsyncRepository<Dashboard>();
+            int dashboardId = tabs
+                .Select(tab => tab.DashboardId)
+                .First();
+            var dashboard = await repository.GetByIDWithTrackingAsync(dashboardId, dbd => dbd.Tabs);
+            if (dashboard != null)
+            {
+                dashboard.Tabs.Clear();
+                dashboard.Tabs.AddRange(tabs.Select(tab => Mapper.Map<DashboardTab>(tab)));
+                repository.Update(dashboard);
+                await UnitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، برگه مشخص شده را در دیتابیس حذف می کند
+        /// </summary>
+        /// <param name="tabId">شناسه دستابیسی برگه مورد نظر برای حذف</param>
+        public async Task DeleteDashboardTabAsync(int tabId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<DashboardTab>();
+            var existing = await repository.GetByIDAsync(tabId);
+            if (existing != null)
+            {
+                repository.Delete(existing);
+                await UnitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
         /// به روش آسنکرون، یکی از ویجت های قابل دسترسی توسط کاربر جاری را در برگه تعیین شده اضافه یا اصلاح می کند
         /// </summary>
         /// <param name="tabWidget">اطلاعات ویجت مورد نظر برای ایجاد یا اصلاح به برگه داشبورد</param>
@@ -357,6 +448,17 @@ namespace SPPC.Tadbir.Persistence
             existing.FunctionId = widget.FunctionId;
             existing.Description = widget.Description;
             existing.DefaultSettings = widget.DefaultSettings;
+        }
+
+        /// <summary>
+        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
+        /// </summary>
+        /// <param name="tab">مدل نمایشی شامل آخرین تغییرات</param>
+        /// <param name="existing">سطر اطلاعاتی موجود</param>
+        protected static void UpdateExisting(DashboardTabViewModel tab, DashboardTab existing)
+        {
+            existing.Title = tab.Title;
+            existing.Index = tab.Index;
         }
 
         /// <summary>
