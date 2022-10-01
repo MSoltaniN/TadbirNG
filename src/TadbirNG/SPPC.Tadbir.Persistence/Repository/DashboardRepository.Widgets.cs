@@ -147,10 +147,12 @@ namespace SPPC.Tadbir.Persistence
                     .Select(wgt => new
                     {
                         wgt.Title,
-                        wgt.TypeId
+                        wgt.TypeId,
+                        wgt.DefaultSettings
                     })
                     .SingleOrDefaultAsync();
                 var mapped = Mapper.Map<TabWidgetViewModel>(saved);
+                mapped.DefaultSettings = widgetInfo.DefaultSettings;
                 mapped.WidgetTitle = widgetInfo.Title;
                 mapped.WidgetTypeId = widgetInfo.TypeId;
                 return mapped;
@@ -160,7 +162,11 @@ namespace SPPC.Tadbir.Persistence
                 var existing = await repository.GetByIDAsync(tabWidget.Id);
                 if (existing != null)
                 {
-                    // TODO: Update tab-widget values here... 
+                    existing.Settings = tabWidget.Settings;
+                    existing.TabId = tabWidget.TabId;
+                    repository.Update(existing);
+                    await UnitOfWork.CommitAsync();
+                    return tabWidget;
                 }
             }
 
@@ -846,100 +852,10 @@ namespace SPPC.Tadbir.Persistence
             return values;
         }
 
-        private FunctionEvaluator GetFunctionEvaluator(string functionName)
-        {
-            var evaluator = default(FunctionEvaluator);
-            switch (functionName)
-            {
-                case AppStrings.Function_DebitTurnover:
-                    evaluator = CalculateDebitTurnover;
-                    break;
-                case AppStrings.Function_CreditTurnover:
-                    evaluator = CalculateCreditTurnover;
-                    break;
-                case AppStrings.Function_NetTurnover:
-                    evaluator = CalculateNetTurnover;
-                    break;
-                case AppStrings.Function_Balance:
-                    evaluator = CalculateBalance;
-                    break;
-            }
-
-            return evaluator;
-        }
-
         private static string GetFullAccountLabel(FullAccountViewModel fullAccount)
         {
             return $"{fullAccount.Account.FullCode}-{fullAccount.DetailAccount.FullCode}-" +
                 $"{fullAccount.CostCenter.FullCode}-{fullAccount.Project.FullCode}";
-        }
-
-        private decimal CalculateDebitTurnover(FullAccountViewModel fullAccount, DateTime from, DateTime to)
-        {
-            decimal turnover = 0.0M;
-            var query = String.Format(
-                DashboardQuery.DebitTurnover, GetFullAccountExpressions(fullAccount, ExpressionUsage.Select),
-                from.ToShortDateString(false), to.ToShortDateString(false), UserContext.FiscalPeriodId,
-                GetFullAccountExpressions(fullAccount, ExpressionUsage.Where),
-                GetFullAccountExpressions(fullAccount, ExpressionUsage.GroupBy));
-            var result = DbConsole.ExecuteQuery(query);
-            if (result.Rows.Count > 0)
-            {
-                turnover = _report.ValueOrDefault<decimal>(result.Rows[0], "Debit");
-            }
-
-            return turnover;
-        }
-
-        private decimal CalculateCreditTurnover(FullAccountViewModel fullAccount, DateTime from, DateTime to)
-        {
-            decimal turnover = 0.0M;
-            var query = String.Format(
-                DashboardQuery.CreditTurnover, GetFullAccountExpressions(fullAccount, ExpressionUsage.Select),
-                from.ToShortDateString(false), to.ToShortDateString(false), UserContext.FiscalPeriodId,
-                GetFullAccountExpressions(fullAccount, ExpressionUsage.Where),
-                GetFullAccountExpressions(fullAccount, ExpressionUsage.GroupBy));
-            var result = DbConsole.ExecuteQuery(query);
-            if (result.Rows.Count > 0)
-            {
-                turnover = _report.ValueOrDefault<decimal>(result.Rows[0], "Credit");
-            }
-
-            return turnover;
-        }
-
-        private decimal CalculateNetTurnover(FullAccountViewModel fullAccount, DateTime from, DateTime to)
-        {
-            decimal turnover = 0.0M;
-            var query = String.Format(
-                DashboardQuery.NetTurnover, GetFullAccountExpressions(fullAccount, ExpressionUsage.Select),
-                from.ToShortDateString(false), to.ToShortDateString(false), UserContext.FiscalPeriodId,
-                GetFullAccountExpressions(fullAccount, ExpressionUsage.Where),
-                GetFullAccountExpressions(fullAccount, ExpressionUsage.GroupBy));
-            var result = DbConsole.ExecuteQuery(query);
-            if (result.Rows.Count > 0)
-            {
-                turnover = _report.ValueOrDefault<decimal>(result.Rows[0], "Net");
-            }
-
-            return turnover;
-        }
-
-        private decimal CalculateBalance(FullAccountViewModel fullAccount, DateTime from, DateTime to)
-        {
-            decimal balance = 0.0M;
-            var query = String.Format(
-                DashboardQuery.Balance, GetFullAccountExpressions(fullAccount, ExpressionUsage.Select),
-                to.ToShortDateString(false), UserContext.FiscalPeriodId,
-                GetFullAccountExpressions(fullAccount, ExpressionUsage.Where),
-                GetFullAccountExpressions(fullAccount, ExpressionUsage.GroupBy));
-            var result = DbConsole.ExecuteQuery(query);
-            if (result.Rows.Count > 0)
-            {
-                balance = _report.ValueOrDefault<decimal>(result.Rows[0], "Balance");
-            }
-
-            return balance;
         }
 
         private string GetFullAccountExpressions(FullAccountViewModel fullAccount, ExpressionUsage usage)
@@ -1029,7 +945,5 @@ namespace SPPC.Tadbir.Persistence
             });
             UnitOfWork.UseCompanyContext();
         }
-
-        private delegate decimal FunctionEvaluator(FullAccountViewModel fullAccount, DateTime from, DateTime to);
     }
 }
