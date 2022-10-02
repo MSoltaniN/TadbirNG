@@ -137,9 +137,6 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<TabWidget>();
             if (tabWidget.Id == 0)
             {
-                var saved = Mapper.Map<TabWidget>(tabWidget);
-                repository.Insert(saved);
-                await UnitOfWork.CommitAsync();
                 var widgetRepository = UnitOfWork.GetAsyncRepository<Widget>();
                 var widgetInfo = await widgetRepository
                     .GetEntityQuery()
@@ -151,26 +148,38 @@ namespace SPPC.Tadbir.Persistence
                         wgt.DefaultSettings
                     })
                     .SingleOrDefaultAsync();
-                var mapped = Mapper.Map<TabWidgetViewModel>(saved);
-                mapped.DefaultSettings = widgetInfo.DefaultSettings;
-                mapped.WidgetTitle = widgetInfo.Title;
-                mapped.WidgetTypeId = widgetInfo.TypeId;
-                return mapped;
-            }
-            else
-            {
-                var existing = await repository.GetByIDAsync(tabWidget.Id);
-                if (existing != null)
-                {
-                    existing.Settings = tabWidget.Settings;
-                    existing.TabId = tabWidget.TabId;
-                    repository.Update(existing);
-                    await UnitOfWork.CommitAsync();
-                    return tabWidget;
-                }
+                tabWidget.WidgetTitle = widgetInfo.Title;
+                tabWidget.WidgetTypeId = widgetInfo.TypeId;
+                tabWidget.DefaultSettings = widgetInfo.DefaultSettings;
+                tabWidget.Settings = widgetInfo.DefaultSettings;
+                repository.Insert(Mapper.Map<TabWidget>(tabWidget));
+                await UnitOfWork.CommitAsync();
+                return tabWidget;
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات ویجت های اضافه شده به برگه داشبورد را اصلاح می کند.
+        /// </summary>
+        /// <param name="tabWidgets">مجموعه ویجت های اضافه شده به داشبورد کاربر جاری</param>
+        public async Task SaveTabWidgetsAsync(IList<TabWidgetViewModel> tabWidgets)
+        {
+            var tabWidgetIds = tabWidgets.Select(wgt => wgt.Id);
+            var repository = UnitOfWork.GetAsyncRepository<TabWidget>();
+            var existingItems = await repository.GetByCriteriaAsync(
+                wgt => tabWidgetIds.Contains(wgt.Id));
+            foreach (var item in existingItems)
+            {
+                var tabWidget = tabWidgets
+                    .Where(twgt => twgt.Id == item.Id)
+                    .FirstOrDefault();
+                item.Settings = tabWidget.Settings;
+                repository.Update(item);
+            }
+
+            await UnitOfWork.CommitAsync();
         }
 
         /// <summary>

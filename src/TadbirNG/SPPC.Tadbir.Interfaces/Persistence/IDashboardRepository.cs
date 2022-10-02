@@ -57,6 +57,12 @@ namespace SPPC.Tadbir.Persistence
         Task<TabWidgetViewModel> SaveTabWidgetAsync(TabWidgetViewModel tabWidget);
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات ویجت های اضافه شده به برگه داشبورد را اصلاح می کند.
+        /// </summary>
+        /// <param name="tabWidgets">مجموعه ویجت های اضافه شده به داشبورد کاربر جاری</param>
+        Task SaveTabWidgetsAsync(IList<TabWidgetViewModel> tabWidgets);
+
+        /// <summary>
         /// به روش آسنکرون، ویجت داده شده را از برگه مورد نظر در داشبورد کاربر جاری حذف می کند
         /// </summary>
         /// <param name="tabId">شناسه دیتابیسی برگه ای که ویجت از آن حذف می شود</param>

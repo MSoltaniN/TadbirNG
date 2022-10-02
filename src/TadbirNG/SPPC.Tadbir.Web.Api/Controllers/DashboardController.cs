@@ -192,6 +192,33 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// 
         /// </summary>
         /// <param name="tabId"></param>
+        /// <param name="tabWidgets"></param>
+        /// <returns></returns>
+        // PUT: api/dashboard/tabs/{tabId:min(1)}/widgets
+        [HttpPut]
+        [Route(DashboardApi.TabWidgetsUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
+        public async Task<IActionResult> PutModofiedTabWidgetsAsync(
+            int tabId, [FromBody] IList<TabWidgetViewModel> tabWidgets)
+        {
+            if (tabWidgets == null)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Widget));
+            }
+
+            if (tabWidgets.Any(twgt => twgt.TabId != tabId))
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Widget));
+            }
+
+            await _repository.SaveTabWidgetsAsync(tabWidgets);
+            return Ok();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tabId"></param>
         /// <param name="widgetId"></param>
         /// <returns></returns>
         // DELETE: api/dashboard/tabs/{tabId:min(1)}/widgets/{widgetId:min(1)}
