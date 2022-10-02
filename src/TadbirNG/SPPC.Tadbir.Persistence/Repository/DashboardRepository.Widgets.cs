@@ -639,6 +639,7 @@ namespace SPPC.Tadbir.Persistence
                     .Cast<DataRow>()
                     .Select(row => new TabWidgetViewModel()
                     {
+                        Id = _report.ValueOrDefault<int>(row, "TabWidgetID"),
                         TabId = _report.ValueOrDefault<int>(row, "TabID"),
                         WidgetId = _report.ValueOrDefault<int>(row, "WidgetID"),
                         WidgetTitle = _report.ValueOrDefault(row, "Title"),

@@ -22,6 +22,9 @@ export class DashboardApi {
   // dashboard/tabs/{tabId:min(1)}
   public static DashboardTab = environment.BaseUrl + "/dashboard/tabs/{0}";
 
+  // dashboard/tabs/widgets
+  public static AllTabWidgets = environment.BaseUrl + "/dashboard/tabs/widgets";
+
   // dashboard/tabs/{tabId:min(1)}/widgets
   public static TabWidgets = environment.BaseUrl + "/dashboard/tabs/{0}/widgets";
 

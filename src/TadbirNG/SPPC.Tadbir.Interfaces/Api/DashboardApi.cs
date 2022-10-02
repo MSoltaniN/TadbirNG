@@ -40,6 +40,16 @@ namespace SPPC.Tadbir.Api
         public const string DashboardTabUrl = "dashboard/tabs/{tabId:min(1)}";
 
         /// <summary>
+        /// API client URL for all widgets in all dashboard tabs
+        /// </summary>
+        public const string AllTabWidgets = "dashboard/tabs/widgets";
+
+        /// <summary>
+        /// API server route URL for all widgets in all dashboard tabs
+        /// </summary>
+        public const string AllTabWidgetsUrl = "dashboard/tabs/widgets";
+
+        /// <summary>
         /// API client URL for all widgets added to a dashboard tab
         /// </summary>
         public const string TabWidgets = "dashboard/tabs/{0}/widgets";
