@@ -217,7 +217,7 @@
     "BalanceByAccount": "مانده به تفکیک حساب",
     "ProfitLoss": "سود و زیان",
     "BalanceSheet": "ترازنامه",
-    "Widgets": "ویجت ها"
+    "Widget": "ویجت ها"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",
@@ -1330,7 +1330,10 @@
     "TypeName": "نوع ویجت",
     "CreatedByFullName": "نام سازنده",
     "Accounts": "حسابها",
-    "Description": "توضیحات"
+    "Description": "توضیحات",
+    "MyWidgets": "ویجت های من",
+    "AllWidgets": "همه ویجت ها",
+    "WidgetOwner": "لیست ویجت ها"
   },
   "GroupActionResult": {
     "Id": "شماره  ",
@@ -1557,6 +1560,14 @@
       "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
       "CategoryIsRequired": "وارد کردن ماهیت اجباری است.",
       "CategoryIsTooLong": "ماهیت می تواند حداکثر 64 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 256 حرف داشته باشد."
+    },
+    "Widget": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "FunctionIsRequired": "انخاب تابع اجباری است.",
+      "TypeIsRequired": "انخاب نوع ویجت اجباری است.",
+      "DescriptionIsRequired": "وارد کردن توضیحات اجباری است.",
       "DescriptionIsTooLong": "شرح می تواند حداکثر 256 حرف داشته باشد."
     }
   }

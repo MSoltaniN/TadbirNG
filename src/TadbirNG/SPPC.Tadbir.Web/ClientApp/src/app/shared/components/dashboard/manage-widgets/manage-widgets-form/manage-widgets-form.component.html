@@ -16,8 +16,8 @@
           <input sppcAutoFocus type="text" class="k-textbox" formControlName="title" />
   
           <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.title.valid || editForm.controls.title.pristine">
-            <span *ngIf="editForm.controls.title.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
-            <span *ngIf="editForm.controls.title.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
+            <span *ngIf="editForm.controls.title.errors?.required">{{ 'AllValidations.Widget.NameIsRequired' | translate }}</span>
+            <span *ngIf="editForm.controls.title.errors?.maxlength">{{ 'AllValidations.Widget.NameIsTooLong' | translate }}</span>
           </div>
         </div>
       </div>
@@ -36,9 +36,7 @@
                               formControlName="functionId">
           </kendo-dropdownlist>
           <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.functionId.valid || editForm.controls.functionId.pristine">
-            <span *ngIf="editForm.controls.functionId.errors?.required">{{ 'AllValidations.CompanyDb.DbNameIsRequired' | translate }}</span>
-            <span *ngIf="editForm.controls.functionId.errors?.maxlength">{{ 'AllValidations.CompanyDb.DbNameIsTooLong' | translate }}</span>
-            <span *ngIf="editForm.controls.functionId.errors?.pattern">{{ 'AllValidations.CompanyDb.DbNamePatternNotValid' | translate }}</span>
+            <span *ngIf="editForm.controls.functionId.errors?.required">{{ 'AllValidations.Widget.FunctionIsRequired' | translate }}</span>
           </div>
         </div>
       </div>
@@ -60,7 +58,7 @@
           </kendo-dropdownlist>
     
           <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.typeId.valid || editForm.controls.typeId.pristine">
-            <span *ngIf="editForm.controls.typeId.errors?.maxlength">{{ 'AllValidations.CompanyDb.UserNameIsTooLong' | translate }}</span>
+            <span *ngIf="editForm.controls.typeId.errors?.required">{{ 'AllValidations.Widget.TypeIsRequired' | translate }}</span>
           </div>
         </div>
       </div>
@@ -72,7 +70,8 @@
           <textarea class="k-textarea" formControlName="description"></textarea>
     
           <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
-            {{ 'AllValidations.CompanyDb.DescriptionIsTooLong' | translate }}
+            <span *ngIf="editForm.controls.typeId.errors?.required">{{ 'AllValidations.Widget.DescriptionIsRequired' | translate }}</span>
+            <span *ngIf="editForm.controls.typeId.errors?.required">{{ 'AllValidations.Widget.DescriptionIsTooLong' | translate }}</span>
           </div>
         </div>
       </div>

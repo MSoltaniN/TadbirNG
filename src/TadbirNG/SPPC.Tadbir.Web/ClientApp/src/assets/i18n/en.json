@@ -196,7 +196,7 @@
     "CurrencyBook": "Currency Book",
     "SystemIssue": "System Control",
     "BalanceByAccount": "Balance By Account",
-    "Widgets": "Widgets"
+    "Widget": "Widgets"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": " Number Of Vouchers Selected :",
@@ -1210,6 +1210,17 @@
   "MetaDataValidation": {
     "CodeLength": "Code length is not allowed"
   },
+  "Widget": {
+    "Title": "Widget Title",
+    "FunctionName": "Function name",
+    "TypeName": "Widget type",
+    "CreatedByFullName": "Created by",
+    "Accounts": "Accounts",
+    "Description": "Description",
+    "MyWidgets": "My widgets",
+    "AllWidgets": "All widgets",
+    "WidgetOwner": "Widget Group"
+  },
   "AllValidations": {
     "Account": {
       "CodeIsRequired": "Code is required.",
@@ -1426,6 +1437,14 @@
       "CategoryIsRequired": "Category is required.",
       "CategoryIsTooLong": "Category can have a maximum of 128 characters.",
       "DescriptionIsTooLong": "Description can have a maximum of 256 characters."
+    },
+    "Widget": {
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "FunctionIsRequired": "Selecting the Function is mandatory.",
+      "TypeIsRequired": "Selecting the widget type is mandatory.",
+      "DescriptionIsRequired": "Description is required.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 256 حرف داشته باشد."
     }
   }
 }

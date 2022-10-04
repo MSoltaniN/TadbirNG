@@ -141,6 +141,9 @@ export class BreadCumbComponent implements OnInit {
       case "balancesheet":
         this.getText("Entity.BalanceSheet");
         break;
+      case "widget":
+        this.getText("Entity.Widget");
+        break;
     }
   }
 
