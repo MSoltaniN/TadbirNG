@@ -3367,7 +3367,7 @@
     <value>Normal</value>
   </data>
   <data name="TypeName" xml:space="preserve">
-    <value>Voucher type</value>
+    <value>Type</value>
   </data>
   <data name="DraftVoucher" xml:space="preserve">
     <value>Draft voucher</value>
@@ -3635,5 +3635,38 @@
   </data>
   <data name="Widget" xml:space="preserve">
     <value>Widget</value>
+  </data>
+  <data name="CannotModifyOtherUserWidget" xml:space="preserve">
+    <value>Widgets created by other users cannot be modified or deleted.</value>
+  </data>
+  <data name="ConfirmUsedWidgetDelete" xml:space="preserve">
+    <value>This widget is being used in one or more dashboard tabs. Are you sure you want to delete it?</value>
+  </data>
+  <data name="Gauge_Circular" xml:space="preserve">
+    <value>Circular gauge</value>
+  </data>
+  <data name="Gauge_Digital" xml:space="preserve">
+    <value>Digital gauge</value>
+  </data>
+  <data name="Gauge_Linear" xml:space="preserve">
+    <value>Linear gauge</value>
+  </data>
+  <data name="Gauge_StateIndicator" xml:space="preserve">
+    <value>State indicator gauge</value>
+  </data>
+  <data name="CreatedByFullName" xml:space="preserve">
+    <value>Created by</value>
+  </data>
+  <data name="FunctionName" xml:space="preserve">
+    <value>Function</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="DashboardTab" xml:space="preserve">
+    <value>Dashboard tab</value>
+  </data>
+  <data name="IncorrectTabIndices" xml:space="preserve">
+    <value>One or more tab indices are incorrect.</value>
   </data>
 </root>

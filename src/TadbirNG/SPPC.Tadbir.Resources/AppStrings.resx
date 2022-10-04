@@ -3358,7 +3358,7 @@
     <value>عادی</value>
   </data>
   <data name="TypeName" xml:space="preserve">
-    <value>نوع سند</value>
+    <value>نوع</value>
   </data>
   <data name="DraftVoucher" xml:space="preserve">
     <value>سند پیش‌نویس</value>
@@ -3626,5 +3626,38 @@
   </data>
   <data name="Widget" xml:space="preserve">
     <value>ویجت</value>
+  </data>
+  <data name="CannotModifyOtherUserWidget" xml:space="preserve">
+    <value>این ویجت توسط کاربر دیگری ایجاد شده و قابل اصلاح یا حذف نیست.</value>
+  </data>
+  <data name="ConfirmUsedWidgetDelete" xml:space="preserve">
+    <value>این ویجت در تعدادی از برگه های داشبورد استفاده شده است. آیا از حذف آن اطمینان دارید؟</value>
+  </data>
+  <data name="Gauge_Circular" xml:space="preserve">
+    <value>درجه دایره ای</value>
+  </data>
+  <data name="Gauge_Digital" xml:space="preserve">
+    <value>درجه دیجیتال</value>
+  </data>
+  <data name="Gauge_Linear" xml:space="preserve">
+    <value>درجه خطی</value>
+  </data>
+  <data name="Gauge_StateIndicator" xml:space="preserve">
+    <value>درجه نمایش وضعیت</value>
+  </data>
+  <data name="CreatedByFullName" xml:space="preserve">
+    <value>کاربر ایجادکننده</value>
+  </data>
+  <data name="FunctionName" xml:space="preserve">
+    <value>تابع</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>عنوان</value>
+  </data>
+  <data name="DashboardTab" xml:space="preserve">
+    <value>برگه داشبورد</value>
+  </data>
+  <data name="IncorrectTabIndices" xml:space="preserve">
+    <value>شماره ترتیبی برگه های داشبورد نادرست است.</value>
   </data>
 </root>

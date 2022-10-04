@@ -8,16 +8,18 @@ using System.Threading.Tasks;
 using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// عملیات مورد نیاز برای تهیه اطلاعات خلاصه در داشبورد را پیاده سازی می کند
     /// </summary>
-    public partial class DashboardRepository : RepositoryBase, IDashboardRepository
+    public partial class DashboardRepository : EntityLoggingRepository<Widget, WidgetViewModel>, IDashboardRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -27,7 +29,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="report"></param>
         public DashboardRepository(IRepositoryContext context, ISystemRepository system,
             IReportDirectUtility report)
-            : base(context)
+            : base(context, system?.Logger)
         {
             _report = report;
             Config = system.Config;

@@ -23,7 +23,7 @@ FROM [Reporting].[Dashboard] AS [dbd]
 WHERE [dbd].[UserID] = {0}";
 
         internal const string CurrentDashboardWidgets = @"
-SELECT [twgt].[TabID], [twgt].[WidgetID], [wgt].[Title], [wgt].[Description], [twgt].[Settings], [twgt].[DefaultSettings]
+SELECT [twgt].[TabWidgetID], [twgt].[TabID], [twgt].[WidgetID], [wgt].[Title], [wgt].[Description], [twgt].[Settings], [twgt].[DefaultSettings]
 FROM [Reporting].[Dashboard] AS [dbd]
   INNER JOIN [Reporting].[DashboardTab] AS [tab] ON [dbd].[DashboardID] = [tab].[DashboardID]
   INNER JOIN [Reporting].[TabWidget] AS [twgt] ON [tab].[DashboardTabID] = [twgt].[TabID]
