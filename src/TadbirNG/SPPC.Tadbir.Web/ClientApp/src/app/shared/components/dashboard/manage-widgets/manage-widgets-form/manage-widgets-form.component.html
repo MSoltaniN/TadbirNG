@@ -1,0 +1,89 @@
+<div style="padding:15px;" (keydown.esc)="escPress()">
+
+  <div *ngIf="errorMessages">
+    <div *ngFor="let err of errorMessages" class="alert alert-danger">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+      {{ err }}
+    </div>
+  </div>
+
+  <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
+    <div>
+      <div class="col-xs-12 col-sm-6 sppc-float">
+        <div class="form-group">
+          <label for="name" class="control-label">{{ 'Widget.Title' | translate }}</label>
+  
+          <input sppcAutoFocus type="text" class="k-textbox" formControlName="title" />
+  
+          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.title.valid || editForm.controls.title.pristine">
+            <span *ngIf="editForm.controls.title.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
+            <span *ngIf="editForm.controls.title.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-xs-12 col-sm-6 sppc-float">
+        <div class="form-group">
+          <label for="dbName" class="control-label">{{ 'Widget.FunctionName' | translate }}</label>
+    
+          <kendo-dropdownlist [data]="functionsList" class=""
+                              [textField]="'name'"
+                              [valueField]="'id'"
+                              [valuePrimitive]="true"
+                              [value]="selectedFunction"
+                              (valueChange)="onChangeFunction($event)"
+                              [(ngModel)]="selectedFunction"
+                              formControlName="functionId">
+          </kendo-dropdownlist>
+          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.functionId.valid || editForm.controls.functionId.pristine">
+            <span *ngIf="editForm.controls.functionId.errors?.required">{{ 'AllValidations.CompanyDb.DbNameIsRequired' | translate }}</span>
+            <span *ngIf="editForm.controls.functionId.errors?.maxlength">{{ 'AllValidations.CompanyDb.DbNameIsTooLong' | translate }}</span>
+            <span *ngIf="editForm.controls.functionId.errors?.pattern">{{ 'AllValidations.CompanyDb.DbNamePatternNotValid' | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="clear">
+      <div class="col-xs-12 col-sm-6 sppc-float">
+        <div class="form-group">
+          <label class="control-label">{{ 'Widget.TypeName' | translate }}</label>
+  
+          <kendo-dropdownlist [data]="typesList" class=""
+                              [textField]="'name'"
+                              [valueField]="'id'"
+                              [valuePrimitive]="true"
+                              [value]="selectedType"
+                              (valueChange)="onChangeType($event)"
+                              [(ngModel)]="selectedType"
+                              formControlName="typeId">
+          </kendo-dropdownlist>
+    
+          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.typeId.valid || editForm.controls.typeId.pristine">
+            <span *ngIf="editForm.controls.typeId.errors?.maxlength">{{ 'AllValidations.CompanyDb.UserNameIsTooLong' | translate }}</span>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-xs-12 col-sm-6 sppc-float">
+        <div class="form-group">
+          <label for="description" class="control-label">{{ 'Widget.Description' | translate }}</label>
+    
+          <textarea class="k-textarea" formControlName="description"></textarea>
+    
+          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+            {{ 'AllValidations.CompanyDb.DescriptionIsTooLong' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <widget-accounts [selectedAccounts]="widgetAccounts" [isNew]="isNew" (setWidgetAccounts)="setWidgetAccounts($event);"></widget-accounts>
+
+</div>
+
+<kendo-dialog-actions>
+  <button class="k-button k-primary prevent-duplicate" [disabled]="!editForm.valid" (click)="onSave($event)">{{ isWizard ? ('Buttons.NextStep' | translate) : ('Buttons.Ok' | translate) }}</button>
+  <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+</kendo-dialog-actions>

@@ -1,0 +1,131 @@
+import { Component, ElementRef, EventEmitter, Input,
+   OnInit, Output, Renderer2, TemplateRef } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { DialogCloseResult, DialogRef, DialogService } from '@progress/kendo-angular-dialog';
+import { FullAccount } from '@sppc/finance/models';
+import { CurrencyService, FullAccountInfo } from '@sppc/finance/service';
+import { DetailComponent } from '@sppc/shared/class';
+import { Entities } from '@sppc/shared/enum/metadata';
+import { Widget } from '@sppc/shared/models/widget';
+import { WidgetFunction } from '@sppc/shared/models/widgetFunction';
+import { WidgetType } from '@sppc/shared/models/widgetType';
+import { ViewName } from '@sppc/shared/security';
+import { BrowserStorageService, LookupService, MetaDataService } from '@sppc/shared/services';
+import { DashboardApi } from '@sppc/shared/services/api';
+import { ToastrService } from 'ngx-toastr';
+import { map } from 'rxjs/operators';
+import { WidgetService } from '../../services/widget.service';
+
+@Component({
+  selector: 'app-manage-widgets-form',
+  templateUrl: './manage-widgets-form.component.html',
+  styleUrls: ['./manage-widgets-form.component.css']
+})
+export class ManageWidgetsFormComponent extends DetailComponent implements OnInit {
+
+  constructor(
+    public toastrService: ToastrService,
+    public translate: TranslateService,
+    public bStorageService: BrowserStorageService,
+    public currencyService: CurrencyService,
+    public lookupService: LookupService,
+    public renderer: Renderer2,
+    public metadata: MetaDataService,
+    public elem: ElementRef,
+    public dialogService: DialogService,
+    private widgetService: WidgetService,
+  ) {
+    super(
+      toastrService,
+      translate,
+      bStorageService,
+      renderer,
+      metadata,
+      Entities.Widget,
+      ViewName.Widget,
+      elem
+    );
+  }
+
+  @Input() public model: Widget;
+  @Input() public isNew: boolean = false;
+  @Input() public errorMessage: string = '';
+
+  @Input() public isWizard: boolean = false;
+
+  @Input() functionsList: WidgetFunction[];
+  @Input() typesList: WidgetType[];
+
+  @Output() cancel: EventEmitter<any> = new EventEmitter();
+  @Output() save: EventEmitter<Widget> = new EventEmitter();
+
+  private dialogRef: DialogRef;
+  
+  widgetAccounts: FullAccount[] = [];
+  selectedType: any;
+  selectedFunction: any;
+
+  @Output() setFocus: EventEmitter<any> = new EventEmitter();
+
+  ngOnInit() {
+
+    setTimeout(() => {
+      this.editForm.reset(this.model);
+      this.editForm.patchValue({
+        createdById: this.widgetService.UserId,
+        createdByFullName: this.widgetService.UserName
+      });
+      this.widgetAccounts = this.model.accounts;
+    })
+  }
+
+  focusHandler(event) {
+    console.log(event);
+  }
+
+  setWidgetAccounts(event) {
+    this.widgetAccounts = event;
+  }
+
+  onChangeFunction(id) {
+    let functionName = this.functionsList.find(item => item.id == id).name;
+    this.editForm.patchValue({
+      functionName: functionName
+    });
+  }
+
+  onChangeType(id) {
+    let typeName = this.typesList.find(item => item.id == id).name;
+    this.editForm.patchValue({
+      typeName: typeName
+    });
+  }
+
+  public onSave(e: any): void {
+    e.preventDefault();
+    if (this.editForm.valid) {
+      let values = this.editForm.value;
+      values.Accounts = this.widgetAccounts;
+      if (this.isNew) {
+        values.id = 0;
+      }
+      values.defaultSettings = "tsttt";
+
+      this.save.emit(values);
+    }
+  }
+
+  public onCancel(e: any): void {
+    e.preventDefault();
+    this.closeForm();
+  }
+
+  private closeForm(): void {
+    this.cancel.emit();
+  }
+
+  escPress() {
+    this.closeForm();
+  }
+}

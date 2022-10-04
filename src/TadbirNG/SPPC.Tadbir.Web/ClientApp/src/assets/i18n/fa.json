@@ -1324,6 +1324,14 @@
     "ArchiveMsgConfirm": "آیا برای بایگانی رویدادهای فعال مطمئن هستید؟",
     "PleaseSelectRowsAsDeleteArchive": "لطفا برای حذف از بایگانی رویداد های مورد نظر را انتخاب کنید"
   },
+  "Widget": {
+    "Title": "نام ویجت",
+    "FunctionName": "نام تابع",
+    "TypeName": "نوع ویجت",
+    "CreatedByFullName": "نام سازنده",
+    "Accounts": "حسابها",
+    "Description": "توضیحات"
+  },
   "GroupActionResult": {
     "Id": "شماره  ",
     "Name": "نام",

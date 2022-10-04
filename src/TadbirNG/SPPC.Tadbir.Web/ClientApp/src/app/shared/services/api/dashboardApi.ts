@@ -53,4 +53,7 @@ export class DashboardApi {
 
   // dashboard/widgets/{widgetId:min(1)}
   public static Widget = environment.BaseUrl + "/dashboard/widgets/{0}"
+
+  //
+  public static params = environment.BaseUrl + "/dashboard/functions/{0}/params"
 }

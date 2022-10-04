@@ -1,0 +1,11 @@
+::ng-deep .widgetForm > .k-dialog {
+    width: 800px;
+  }
+
+.k-dropdown, .k-textbox, .k-textarea {
+    width: 100%;
+}
+
+.clear {
+  clear: both;
+}

@@ -66,6 +66,9 @@ export class SppcFullAccountDetailComponent implements OnInit {
   constructor(private fullAccountService: FullAccountService) {}
 
   ngOnInit() {
+    if (this.accountItem == undefined) {
+      this.accountItem = AccountRelationsType;
+    }
     this.initDialog(this.selectedItem);
     debugger;
     if (this.fullAccount.account.id > 0) {
@@ -556,7 +559,8 @@ export class SppcFullAccountDetailComponent implements OnInit {
   //#endregion
 
   initDialog(item: number) {
-    if (this.fullAccount.account.id > 0) this.isNew = false;
+    if (this.fullAccount.account.id > 0)
+        this.isNew = false;
     else this.isNew = true;
 
     switch (item) {

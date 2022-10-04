@@ -142,6 +142,9 @@ import { SppcFullAccountDetailComponent } from './controls/fullAccount/sppc-full
 import { TabViewModule } from "primeng/tabview";
 import { TabWidgetComponent } from "./components/dashboard/tab-widget/tab-widget.component";
 import { ManageWidgetsComponent } from "./components/dashboard/manage-widgets/manage-widgets.component";
+import { WidgetService } from "./components/dashboard/services/widget.service";
+import { ManageWidgetsFormComponent } from './components/dashboard/manage-widgets/manage-widgets-form/manage-widgets-form.component';
+import { WidgetAccountsComponent } from './components/dashboard/manage-widgets/widget-accounts/widget-accounts.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -266,6 +269,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     SppcFullAccountDetailComponent,
 
     TabWidgetComponent,
+
+    ManageWidgetsFormComponent,
+
+    WidgetAccountsComponent,
   ],
 
   entryComponents: [
@@ -280,6 +287,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AddWidgetComponent,
     WidgetSettingComponent,
     TabWidgetComponent,
+    SppcFullAccountDetailComponent,
+    ManageWidgetsFormComponent
   ],
 
   //providers: [BrowserStorageService, DashboardService, GridService, LookupService, MetaDataService, ReportingService,
@@ -392,6 +401,7 @@ export class SharedModule {
         ShortcutService,
         ShareDataService,
         MessageBoxService,
+        WidgetService
       ],
     };
   }
