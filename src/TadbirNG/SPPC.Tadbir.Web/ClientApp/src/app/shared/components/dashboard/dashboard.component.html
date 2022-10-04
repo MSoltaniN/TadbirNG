@@ -46,84 +46,17 @@
 </section>
 
 <!-- Main content -->
-<section class="content">
-  <!-- Small boxes (Stat box) -->
-  <div class="row">
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-aqua">
-        <div class="inner">
-          <h4>{{ cashierBalance | number }}</h4>
-          <p>{{ "Dashboard.InventoryFunds" | translate }}</p>
-        </div>
-        <div class="icon">
-          <i class="ion ion-bag"></i>
-        </div>
-        <a href="#/tadbir/dashboard" class="small-box-footer"
-          >اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i
-        ></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-green">
-        <div class="inner">
-          <h4>{{ bankBalance | number }}</h4>
-          <p>{{ "Dashboard.BankBalance" | translate }}</p>
-        </div>
-        <div class="icon">
-          <i class="ion ion-stats-bars"></i>
-        </div>
-        <a href="#/tadbir/dashboard" class="small-box-footer"
-          >اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i
-        ></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-yellow">
-        <div class="inner">
-          <h4>{{ unbalancedVoucherCount }}</h4>
-          <p>{{ "Dashboard.UnverifiedDocuments" | translate }}</p>
-        </div>
-        <div class="icon">
-          <i class="ion ion-person-add"></i>
-        </div>
-        <a href="#/tadbir/dashboard" class="small-box-footer"
-          >اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i
-        ></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-red">
-        <div class="inner">
-          <h4>{{ liquidRatio }}</h4>
-          <p>{{ "Dashboard.CurrentRatio" | translate }}</p>
-        </div>
-        <div class="icon">
-          <i class="ion ion-pie-graph"></i>
-        </div>
-        <a href="#/tadbir/dashboard" class="small-box-footer"
-          >اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i
-        ></a>
-      </div>
-    </div>
-    <!-- ./col -->
-  </div>
-  <!-- /.row -->
+<section class="content">  
   <div class="row widgets">
     <div style="height: 100vh; width: 100%; direction: ltr">
-      <p-tabView
+      <p-tabView #tabContainer        
         (onChange)="onTabChange($event)"
         *ngIf="currentDashboard"
         [(activeIndex)]="currentDashboardTabIndex"
       >
         <p-tabPanel
-          [header]="tab.title"
+          [header]="tab.title"   
+          [id]="tab.id"       
           *ngFor="
             let tab of currentDashboard.tabs;
             let i = index;
@@ -139,7 +72,7 @@
           <ng-container *ngIf="getWidgets(tab.id) | async as widgets">
             <gridster [options]="widgetOptions[tab.id]">
               <gridster-item [item]="item" *ngFor="let item of widgets">
-                <ng-container *ngIf="item.typeId == 2">
+                <ng-container *ngIf="item.typeId == 2 || item.typeId == 1">
                   <widget
                     (closeWidget)="onCloseWidget($event)"
                     [widgetId]="item.id"
@@ -150,8 +83,8 @@
                       <div class="box-body" body>
                         <chart-widget
                           [data]="widgetData[item.id + '-' + tab.id]"
-                          [type]="'bar'"
-                          [options]="basicOptions"
+                          [type]="getChartType(item.typeId)"
+                          [options]="getOptions(item.typeId)"
                         ></chart-widget>
                       </div>
                     </widget-container>

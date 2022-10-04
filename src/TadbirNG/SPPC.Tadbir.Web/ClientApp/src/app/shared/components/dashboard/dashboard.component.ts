@@ -5,6 +5,7 @@ import {
   Inject,
   OnInit,
   Renderer2,
+  ViewChild,
 } from "@angular/core";
 import { DOCUMENT } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -39,6 +40,7 @@ import { Dashboard } from "@sppc/shared/models/dashboard";
 import { FullAccount } from "@sppc/finance/models";
 import { WidgetParameter } from "@sppc/shared/models/widgetParameter";
 import { TabWidgetComponent } from "./tab-widget/tab-widget.component";
+import { TabView } from "primeng/tabview";
 
 interface DashboardConfig extends GridsterConfig {
   draggable: Draggable;
@@ -118,15 +120,35 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   dialogModel: any;
   selectedWidgets: Widget[];
 
+  @ViewChild(TabView) tabContainer: TabView;
   currentDashboard: Dashboard;
+
   currentDashboardTabIndex: number = 0;
+
+  Colors = [
+    "#970272",
+    "#978b02",
+    "#029722",
+    "#0d19fd",
+    "#0dfdbd",
+    "#fd610d",
+    "#ba9ffe",
+  ];
+
+  get currentDashboardTab() {
+    const tab = this.tabContainer.tabs.filter((t) => t.selected)[0];
+    return this.currentDashboard.tabs.filter(
+      (t) => t.id == tab.viewContainer.element.nativeElement.id
+    )[0];
+  }
+
   widgetData: { [id: string]: any } = {};
   widgetOptions: { [id: string]: DashboardConfig } = {};
 
   grossChartData;
   netChartData;
 
-  basicOptions = {
+  basicOptions: any = {
     plugins: {
       legend: {
         labels: {
@@ -209,8 +231,8 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
           this.unbalancedVoucherCount = res.unbalancedVoucherCount;
           this.dashboardInfo = res;
 
-          this.drawNetSalesChart();
-          this.drawGrossSalesChart();
+          // this.drawNetSalesChart();
+          // this.drawGrossSalesChart();
         });
     }
 
@@ -324,50 +346,36 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     //#endregion
   }
 
-  canvas: any;
-  ctx: any;
+  getChartType(type: number) {
+    let chartType = "";
 
-  drawNetSalesChart() {
-    var labels: Array<string> = [];
-    var values: Array<number> = [];
+    switch (type) {
+      case 1: //column
+        chartType = "bar";
+        break;
+      case 2: //bar
+        chartType = "horizontalBar";
+        break;
+      default:
+        break;
+    }
 
-    this.dashboardInfo.netSales.points.forEach(function (value) {
-      labels.push(value.xValue);
-    });
-
-    this.dashboardInfo.netSales.points.forEach(function (value) {
-      values.push(value.yValue);
-    });
-
-    values[0] = 5;
-    values[1] = 11;
-    values[2] = 7;
-    values[3] = 4;
-    values[4] = 12;
-
-    this.netChartData = {
-      labels: labels,
-      datasets: [
-        {
-          label: this.dashboardInfo.netSales.title,
-          backgroundColor: "#42A5F5",
-          data: values,
-        },
-      ],
-    };
+    return chartType;
   }
 
-  drawGrossSalesChart() {
-    var labels: Array<string> = [];
-    var values: Array<number> = [];
+  getOptions(type: number) {
+    let options = this.basicOptions;
 
-    this.dashboardInfo.grossSales.points.forEach(function (value) {
-      labels.push(value.xValue);
-    });
+    switch (type) {
+      case 1: //column
+        break;
+      case 2: //bar
+        break;
+      default:
+        break;
+    }
 
-    this.dashboardInfo.grossSales.points.forEach(function (value) {
-      values.push(value.yValue);
-    });
+    return options;
   }
 
   changedOptions(tabId): void {
@@ -424,11 +432,42 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     //   this.CompanyId.toString()
     // );
     //this.dashboardSubject.next(this.dashboard.filter((w) => w.selected));
+
+    //const tab = this.currentDashboard.tabs[this.currentDashboardTabIndex];
+
+    //const tab = this.currentDashboardTab;
+    // 0
+    //this.options.
+    debugger;
+    const dashboardId = this.currentDashboard.id;
+
+    let widgetsToUpdate = [];
+    this.currentDashboard.tabs.forEach((tab) => {
+      this.getWidgets(this.currentDashboardTab.id).subscribe(
+        (changedWidgets) => {
+          changedWidgets.forEach((item, index) => {
+            const setting = JSON.parse(tab.widgets[index].settings);
+            setting.width = item.cols;
+            setting.height = item.rows;
+            setting.x = item.x;
+            setting.y = item.y;
+
+            tab.widgets[index].settings = JSON.stringify(setting);
+            widgetsToUpdate.push(tab.widgets[index]);
+          });
+        }
+      );
+
+      //TODO:change method
+
+      this.dashboadService
+        .saveDashboardWidgets(widgetsToUpdate)
+        .subscribe(() => {});
+    });
   }
 
   onCloseWidget(widgetId: number) {
-    const currentTab =
-      this.currentDashboard.tabs[this.currentDashboardTabIndex];
+    const currentTab = this.currentDashboardTab;
     this.removeWidget(currentTab.id, widgetId);
   }
 
@@ -471,15 +510,13 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   }
 
   onTabChange($event) {
-    const currentTab =
-      this.currentDashboard.tabs[this.currentDashboardTabIndex];
+    const currentTab = this.currentDashboardTab;
     if (this.widgetOptions[currentTab.id].api)
       this.widgetOptions[currentTab.id].api.optionsChanged();
   }
 
   onAddWidgetClick() {
-    const currentTab =
-      this.currentDashboard.tabs[this.currentDashboardTabIndex];
+    const tab = this.currentDashboard.tabs[this.currentDashboardTabIndex];
 
     if (!this.isDashboardEditMode) this.goToEditMode();
 
@@ -489,12 +526,14 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     });
 
     this.dialogModel = this.dialogRef.content.instance;
-    this.dialogModel.selectedWidgets =
-      this.currentDashboard.tabs[this.currentDashboardTabIndex].widgets;
+    // const tabId = this.currentDashboardTab.id;
+    // const tab = this.currentDashboard.tabs.filter(
+    //   (t) => t.id.toString() == tabId
+    // )[0];
+    this.dialogModel.selectedWidgets = tab.widgets;
 
     this.dialogRef.content.instance.save.subscribe((res) => {
       this.addNewWidget(res.widget);
-      this.saveDashboard();
 
       this.dialogRef.close();
     });
@@ -514,17 +553,20 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     });
 
     this.dialogRef.content.instance.save.subscribe((tabName) => {
-      debugger;
       let tab: any = {};
       tab.index = this.currentDashboard.tabs.length;
       tab.title = tabName;
-      tab.id = this.currentDashboard.tabs.length + 1;
-      tab.rowNo = tab.id;
+      //tab.id = this.currentDashboard.tabs.length + 1;
       tab.widgets = [];
+      tab.dashboardId = this.currentDashboard.id;
 
       //TODO:posts record to DashboardTab table
-      this.currentDashboard.tabs.push(tab);
-      this.dialogRef.close();
+      this.dashboadService.addDashboardTab(tab).subscribe((res: any) => {
+        tab.id = res.id;
+        this.currentDashboard.tabs.push(tab);
+        this.fillDashboardSubjects();
+        this.dialogRef.close();
+      });
     });
 
     const closeForm = this.dialogRef.content.instance.cancel.subscribe(
@@ -565,9 +607,9 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       useTransformPositioning: true,
       mobileBreakpoint: 200,
       minCols: 50,
-      maxCols: 100,
+      maxCols: 200,
       minRows: 50,
-      maxRows: 100,
+      maxRows: 200,
       maxItemCols: 100,
       minItemCols: 1,
       maxItemRows: 100,
@@ -627,8 +669,10 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
   removeTab(tabId) {
     //TODO:posts record to DashboardTab table
-    const index = this.currentDashboard.tabs.findIndex((t) => t.id == tabId);
-    this.currentDashboard.tabs.splice(index, 1);
+    this.dashboadService.removeDashboardTab(tabId).subscribe(() => {
+      const index = this.currentDashboard.tabs.findIndex((t) => t.id == tabId);
+      this.currentDashboard.tabs.splice(index, 1);
+    });
   }
 
   getWidgetsSubject(tabId) {
@@ -652,6 +696,9 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     // const promiseWidget = new Promise((resolve) => {
     //this.addNewWidgetToList(currentTab.id);
 
+    const tabId = this.currentDashboardTab.id;
+    const tab = this.currentDashboard.tabs.filter((t) => t.id == tabId)[0];
+
     let tabWidgetInfo = new TabWidgetInfo();
     tabWidgetInfo.tabId = currentTab.id;
     tabWidgetInfo.widgetId = widget.id;
@@ -662,21 +709,19 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     this.dashboadService
       .addTabWidget(currentTab.id, tabWidgetInfo)
       .subscribe((newTabWidget: TabWidget) => {
-        currentTab.widgets.push(newTabWidget);
+        tab.widgets.push(newTabWidget);
         const widgets = this.getWidgetList(currentTab.id);
         this.getWidgetsSubject(currentTab.id).widgets.next(widgets);
       });
-
-    //   resolve(true);
-    // });
-
-    // promiseWidget.then(() => {
-
-    // });
   }
 
   getWidgetData(widgetId, tabId) {
     return this.dashboadService.getWidgetData(widgetId).subscribe((res) => {
+      res.datasets.forEach((item, index) => {
+        item.backgroundColor = this.Colors[index];
+        item.borderWidth = 1;
+      });
+
       this.widgetData[widgetId + "-" + tabId] = res;
     });
   }
@@ -705,8 +750,8 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     this.currentDashboard.tabs
       .find((t) => t.id == tabId)
       .widgets.forEach((widget) => {
-        const setting = JSON.parse(widget.settings);
         debugger;
+        const setting = JSON.parse(widget.settings);
         widgets.push({
           cols: setting.width,
           rows: setting.height,
