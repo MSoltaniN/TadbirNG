@@ -1,4 +1,4 @@
-<div style="padding:15px;" (keydown.esc)="escPress()">
+<div style="padding:15px;" (keydown.esc)="escPress($event)">
   <div class="row">
     <div class="col-xs-12 dialog-item">
       <span class="glyphicon glyphicon-ok" *ngIf="selectedItem == accountItem.Account"></span>
@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div class="col-xs-12 col-sm-4 dialog-item" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+    <div class="col-xs-12 col-sm-4 dialog-item">
       <span class="glyphicon glyphicon-ok" *ngIf="selectedItem == accountItem.DetailAccount"></span>
       <span>{{ 'FullAccount.DetailAccount' | translate }}</span>
 
@@ -66,7 +66,7 @@
       </div>
     </div>
 
-    <div class="col-xs-12 col-sm-4 dialog-item" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
+    <div class="col-xs-12 col-sm-4 dialog-item" >
       <span class="glyphicon glyphicon-ok" *ngIf="selectedItem == accountItem.CostCenter"></span>
       <span>{{ 'FullAccount.CostCenter' | translate }}</span>
 

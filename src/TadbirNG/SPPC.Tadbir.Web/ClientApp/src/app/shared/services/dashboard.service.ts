@@ -6,6 +6,7 @@ import { BaseService } from "@sppc/shared/class/base.service";
 import { DashboardApi } from "./api";
 import { String } from "@sppc/shared/class/source";
 import { TabWidget } from "../models";
+import { DashboardTab } from "../models/dashboardTab";
 
 @Injectable()
 export class DashboardService extends BaseService {
@@ -71,5 +72,26 @@ export class DashboardService extends BaseService {
     url = String.Format(url, tabId, widgetId);
 
     return this.http.delete(url, this.option).pipe(map((res) => res));
+  }
+
+  addDashboardTab(dashboardTab: DashboardTab) {
+    var url = DashboardApi.DashboardTabs;
+
+    var body = JSON.stringify(dashboardTab);
+    return this.http.post(url, body, this.option).pipe(map((res) => res));
+  }
+
+  removeDashboardTab(tabId) {
+    var url = DashboardApi.DashboardTab;
+    url = String.Format(url, tabId);
+
+    return this.http.delete(url, this.option).pipe(map((res) => res));
+  }
+
+  saveDashboardWidgets(dashboradTabs: TabWidget[]) {
+    var url = DashboardApi.AllTabWidgets;
+
+    var body = JSON.stringify(dashboradTabs);
+    return this.http.put(url, body, this.option).pipe(map((res) => res));
   }
 }
