@@ -426,40 +426,36 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   }
 
   saveDashboard() {
-    // this.bStorageService.saveDashboardLayout(
-    //   this.dashboard,
-    //   this.UserId.toString(),
-    //   this.CompanyId.toString()
-    // );
-    //this.dashboardSubject.next(this.dashboard.filter((w) => w.selected));
-
-    //const tab = this.currentDashboard.tabs[this.currentDashboardTabIndex];
-
-    //const tab = this.currentDashboardTab;
-    // 0
-    //this.options.
-    debugger;
     const dashboardId = this.currentDashboard.id;
 
     let widgetsToUpdate = [];
-    this.currentDashboard.tabs.forEach((tab) => {
-      this.getWidgets(this.currentDashboardTab.id).subscribe(
-        (changedWidgets) => {
-          changedWidgets.forEach((item, index) => {
-            const setting = JSON.parse(tab.widgets[index].settings);
-            setting.width = item.cols;
-            setting.height = item.rows;
-            setting.x = item.x;
-            setting.y = item.y;
 
-            tab.widgets[index].settings = JSON.stringify(setting);
-            widgetsToUpdate.push(tab.widgets[index]);
-          });
-        }
-      );
+    const promise = new Promise((resolve) => {
+      this.currentDashboard.tabs.forEach((tab) => {
+        this.getWidgets(tab.id).subscribe((changedWidgets) => {
+          if (changedWidgets) {
+            changedWidgets.forEach((item, index) => {
+              if (tab.widgets.length > 0) {
+                const setting = JSON.parse(tab.widgets[index].settings);
+                setting.width = item.cols;
+                setting.height = item.rows;
+                setting.x = item.x;
+                setting.y = item.y;
 
-      //TODO:change method
+                tab.dashboardId = dashboardId;
+                tab.widgets[index].settings = JSON.stringify(setting);
+                widgetsToUpdate.push(tab.widgets[index]);
+              }
+            });
+          }
+        });
+        //TODO:change method
+      });
 
+      resolve(true);
+    });
+
+    promise.then(() => {
       this.dashboadService
         .saveDashboardWidgets(widgetsToUpdate)
         .subscribe(() => {});
@@ -731,26 +727,12 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     return false;
   }
 
-  // addNewWidgetToList(tabId, newWidget = undefined) {
-  //   if (newWidget) {
-
-  //   }
-
-  //   // if (newWidget) {
-  //   //   //add post method here to save new widget into db
-
-  //   //   widgets.push(newWidget);
-  //   //   this.getWidgetData(newWidget.id, tabId);
-  //   // }
-  // }
-
   getWidgetList(tabId) {
     let widgets = [];
 
     this.currentDashboard.tabs
       .find((t) => t.id == tabId)
       .widgets.forEach((widget) => {
-        debugger;
         const setting = JSON.parse(widget.settings);
         widgets.push({
           cols: setting.width,
