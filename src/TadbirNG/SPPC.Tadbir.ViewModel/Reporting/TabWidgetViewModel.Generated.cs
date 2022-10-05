@@ -42,14 +42,12 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// <summary>
         /// تنظیمات نمایشی و محاسباتی جاری برای ویجت
         /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(1024, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Settings { get; set; }
 
         /// <summary>
         /// تنظیمات نمایشی و محاسباتی پیش فرض برای ویجت که در هر زمان توسط کاربر قابل اعمال شدن است
         /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(1024, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string DefaultSettings { get; set; }
     }

@@ -145,15 +145,19 @@ namespace SPPC.Tadbir.Persistence
                     {
                         wgt.Title,
                         wgt.TypeId,
+                        wgt.FunctionId,
                         wgt.DefaultSettings
                     })
                     .SingleOrDefaultAsync();
                 tabWidget.WidgetTitle = widgetInfo.Title;
                 tabWidget.WidgetTypeId = widgetInfo.TypeId;
+                tabWidget.WidgetFunctionId = widgetInfo.FunctionId;
                 tabWidget.DefaultSettings = widgetInfo.DefaultSettings;
                 tabWidget.Settings = widgetInfo.DefaultSettings;
-                repository.Insert(Mapper.Map<TabWidget>(tabWidget));
+                var saved = Mapper.Map<TabWidget>(tabWidget);
+                repository.Insert(saved);
                 await UnitOfWork.CommitAsync();
+                tabWidget.Id = saved.Id;
                 return tabWidget;
             }
 
