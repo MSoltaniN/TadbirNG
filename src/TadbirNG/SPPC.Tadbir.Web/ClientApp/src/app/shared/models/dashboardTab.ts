@@ -4,7 +4,7 @@
 //     Runtime Version: 1.2.1427
 //     Template Version: 1.0
 //     Generation Date: 2022-09-04 11:07:04 AM
-//  
+//
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 // </auto-generated>
@@ -13,9 +13,10 @@
 import { TabWidget } from "./tabWidget";
 
 export interface DashboardTab {
-    id: number;
-    index: number;
-    title: string;
-    widgets: Array<TabWidget>;
-    rowNo: number;
+  id: number;
+  index: number;
+  title: string;
+  widgets: Array<TabWidget>;
+  rowNo: number;
+  dashboardId: number;
 }
