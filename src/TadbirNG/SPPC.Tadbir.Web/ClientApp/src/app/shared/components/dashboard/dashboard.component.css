@@ -11,20 +11,25 @@
   background-color: transparent;
 }
 
-/deep/ body.tRtl .title {
+::ng-deep body.tRtl .title {
   float: right !important;
 }
 
-/deep/ body.tLtr .title {
+::ng-deep body.tLtr .title {
   float: left !important;
 }
 
-/deep/ body.tRtl .settings {
+::ng-deep .settings {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+::ng-deep body.tRtl .settings {
   float: left !important;
   text-align: left;
 }
 
-/deep/ body.tLtr .settings {
+::ng-deep body.tLtr .settings {
   float: right !important;
   text-align: right;
 }
@@ -67,6 +72,8 @@ a i {
   padding-right: 6px;
 }
 
+.buttons {padding: 5px;}
+
 .settings .buttons a {
   padding: 5px;
 }
@@ -78,45 +85,45 @@ a i {
 
 
 
-/deep/ body.tRtl .settings .confirm-msg {
+::ng-deep body.tRtl .settings .confirm-msg {
   text-align: right;
   float: right;
 }
 
-/deep/ body.tLtr .settings .confirm-msg {
+::ng-deep body.tLtr .settings .confirm-msg {
   text-align: left;
   float: left;
 }
 
-/deep/ body.tRtl .settings .dashboard-button {
+::ng-deep body.tRtl .settings .dashboard-button {
   float: left;
   padding-left: 3px;
   padding-right: 3px;
 }
 
-/deep/ body.tLtr .settings .dashboard-button {
+::ng-deep body.tLtr .settings .dashboard-button {
   float: right;
   padding-left: 3px;
   padding-right: 3px;
 }
 
-/deep/ gridster
+::ng-deep gridster
 {
   min-height: calc(100vh - 50px);
 }
 
-/deep/ .ui-tabview-nav
+::ng-deep .ui-tabview-nav
 {
   flex-direction: row-reverse;
   display: flex;
 }
 
-/deep/ .ui-tabview-title
+::ng-deep .ui-tabview-title
 {
   cursor: pointer;
 }
 
-/deep/ li.ui-state-active a span.tab-title
+::ng-deep li.ui-state-active a span.tab-title
 { 
   border-bottom-style: solid;
   font-weight: bolder;

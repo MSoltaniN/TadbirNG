@@ -56,7 +56,8 @@
     "AddTab":"برگه جدید",
     "TabName":"نام برگه",
     "WidgetSetting": "تنظیمات ویجت",
-    "ChartType": "نوع نمودار"
+    "ChartType": "نوع نمودار",
+    "ManageWidgets": "مدیریت ویجت ها"
   },
   "Exception": {
     "ErrorCode": "کد خطا",
@@ -179,6 +180,7 @@
     "FieldName": "نام ستون"
   },
   "Entity": {
+    "Dashboard": "داشبورد",
     "Account": "حساب",
     "Voucher": "مدیریت اسناد",
     "VoucherLine": "آرتیکل سند",

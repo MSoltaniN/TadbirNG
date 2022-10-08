@@ -54,8 +54,9 @@
     "SettingConfirm": "Are you sure about the dashboard settings?",
     "WidgetSetting": "ٌWidget Settings",
     "ChartType": "Chart type",
-    "AddTab":"برگه جدید",
-    "TabName":"نام برگه"
+    "AddTab":"Add new Tab",
+    "TabName":"Tab name",
+    "ManageWidgets": "Manage widgets"
   },
   "Exception": {
     "ErrorCode": "Error Code",

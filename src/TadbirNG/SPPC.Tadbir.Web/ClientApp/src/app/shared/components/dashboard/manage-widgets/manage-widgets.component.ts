@@ -2,8 +2,10 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  EventEmitter,
   NgZone,
   OnInit,
+  Output,
   Renderer2,
   ViewChild,
 } from "@angular/core";
@@ -43,6 +45,9 @@ export function getLayoutModule(layout: Layout) {
   selector: "manage-widgets",
   templateUrl: "./manage-widgets.component.html",
   styles: [`
+    ::ng-deep .manage-widgets > .k-dialog {
+      width: 80%;
+    }
     .mb-2 {margin:0 0 2rem 0;}
     .mx-1 {margin: 0 1rem;}
   `],
@@ -66,7 +71,8 @@ export class ManageWidgetsComponent
   @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
   @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
   @ViewChild(QuickReportSettingComponent) reportSetting: QuickReportSettingComponent;
-
+  
+  @Output() close = new EventEmitter()
   public dialogRef: DialogRef;
   public dialogModel: any;
 
@@ -134,7 +140,6 @@ export class ManageWidgetsComponent
   }
 
   onChangeWidgetOwner(event) {
-    console.log(event);
     this.getDataUrl = event == 1? DashboardApi.Widgets: DashboardApi.AllWidgets;
     this.reloadGrid();
   }
@@ -225,5 +230,14 @@ export class ManageWidgetsComponent
       this.prepareDeleteConfirm(record.name);
       this.deleteModelId = recordId;
     }
+  }
+
+  private closeForm(): void {
+    this.settingService.setTitle("Entity.Dashboard");
+    this.close.emit();
+  }
+
+  escPress() {
+    this.closeForm();
   }
 }

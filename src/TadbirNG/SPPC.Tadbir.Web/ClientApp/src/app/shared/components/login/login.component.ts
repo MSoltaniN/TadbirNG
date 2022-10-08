@@ -1,5 +1,5 @@
 import { Component, Host, Inject, OnInit, Renderer2 } from "@angular/core";
-import { DOCUMENT } from "@angular/platform-browser";
+import { DOCUMENT, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { DialogService } from "@progress/kendo-angular-dialog";
@@ -76,7 +76,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     @Inject(DOCUMENT) public document,
     private licenseService: LicenseService,
     private dashborardService: DashboardService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
   ) {
     super(
       toastrService,
@@ -94,6 +94,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
   ngOnInit() {
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams["returnUrl"] || "/";
+    this.settingService.setTitle("Login.Title");
   }
 
   changeLang(language: string) {

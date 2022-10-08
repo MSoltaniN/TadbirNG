@@ -39,6 +39,7 @@ import { Dashboard } from "@sppc/shared/models/dashboard";
 import { FullAccount } from "@sppc/finance/models";
 import { WidgetParameter } from "@sppc/shared/models/widgetParameter";
 import { TabWidgetComponent } from "./tab-widget/tab-widget.component";
+import { ManageWidgetsComponent } from "./manage-widgets/manage-widgets.component";
 
 interface DashboardConfig extends GridsterConfig {
   draggable: Draggable;
@@ -437,6 +438,8 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   ngOnInit() {
     this.initDashboard();
 
+    this.settingService.setTitle("Entity.Dashboard");
+
     this.dashboard = this.bStorageService.loadDashboardLayout(
       this.UserId.toString(),
       this.CompanyId.toString()
@@ -475,6 +478,25 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       this.currentDashboard.tabs[this.currentDashboardTabIndex];
     if (this.widgetOptions[currentTab.id].api)
       this.widgetOptions[currentTab.id].api.optionsChanged();
+  }
+
+  onManageWidgetsClick() {
+    this.dialogRef = this.dialogService.open({
+      title: this.getText("Dashboard.ManageWidgets"),
+      content: ManageWidgetsComponent,
+    });
+
+    this.dialogRef.dialog.location.nativeElement.classList.add('manage-widgets');
+    this.dialogModel = this.dialogRef.content.instance;
+
+    this.dialogRef.dialog.onDestroy(() => {
+      this.settingService.setTitle("Entity.Dashboard");
+    })
+    this.dialogRef.content.instance.close.subscribe(
+      (res) => {
+        this.dialogRef.close();
+      }
+    );
   }
 
   onAddWidgetClick() {

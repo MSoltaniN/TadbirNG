@@ -1,10 +1,9 @@
 import { Component, ElementRef, EventEmitter, Input,
-   OnInit, Output, Renderer2, TemplateRef } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+   OnInit, Output, Renderer2 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { DialogCloseResult, DialogRef, DialogService } from '@progress/kendo-angular-dialog';
+import { DialogRef, DialogService } from '@progress/kendo-angular-dialog';
 import { FullAccount } from '@sppc/finance/models';
-import { CurrencyService, FullAccountInfo } from '@sppc/finance/service';
+import { CurrencyService } from '@sppc/finance/service';
 import { DetailComponent } from '@sppc/shared/class';
 import { Entities } from '@sppc/shared/enum/metadata';
 import { Widget } from '@sppc/shared/models/widget';
@@ -12,7 +11,6 @@ import { WidgetFunction } from '@sppc/shared/models/widgetFunction';
 import { WidgetType } from '@sppc/shared/models/widgetType';
 import { ViewName } from '@sppc/shared/security';
 import { BrowserStorageService, LookupService, MetaDataService } from '@sppc/shared/services';
-import { DashboardApi } from '@sppc/shared/services/api';
 import { ToastrService } from 'ngx-toastr';
 import { map } from 'rxjs/operators';
 import { WidgetService } from '../../services/widget.service';
@@ -109,8 +107,10 @@ export class ManageWidgetsFormComponent extends DetailComponent implements OnIni
       values.Accounts = this.widgetAccounts;
       if (this.isNew) {
         values.id = 0;
+        values.defaultSettings = {"x":0,"y":0,"width":20,"height":20};
+      } else {
+        values.defaultSettings = this.model.defaultSettings;
       }
-      values.defaultSettings = "tsttt";
 
       this.save.emit(values);
     }
