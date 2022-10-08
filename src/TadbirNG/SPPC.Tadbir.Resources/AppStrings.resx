@@ -3660,4 +3660,22 @@
   <data name="IncorrectTabIndices" xml:space="preserve">
     <value>شماره ترتیبی برگه های داشبورد نادرست است.</value>
   </data>
+  <data name="Function_GrossNetSales" xml:space="preserve">
+    <value>فروش خالص/ناخالص</value>
+  </data>
+  <data name="Function_GrossSales" xml:space="preserve">
+    <value>فروش ناخالص</value>
+  </data>
+  <data name="Function_LiquidRatio" xml:space="preserve">
+    <value>نسبت جاری</value>
+  </data>
+  <data name="Function_NetSales" xml:space="preserve">
+    <value>فروش خالص</value>
+  </data>
+  <data name="Gauge_Accelerator" xml:space="preserve">
+    <value>درجه ساده</value>
+  </data>
+  <data name="Gauge_Thermometer" xml:space="preserve">
+    <value>درجه دماسنجی</value>
+  </data>
 </root>

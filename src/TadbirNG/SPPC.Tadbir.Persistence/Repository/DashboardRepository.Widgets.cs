@@ -5,11 +5,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Domain.Reporting;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Resources;
@@ -273,6 +273,10 @@ namespace SPPC.Tadbir.Persistence
             if ((bool)typeName?.StartsWith("Chart"))
             {
                 data = await GetChartWidgetDataAsync(widgetId, parameters);
+            }
+            else if ((bool)typeName?.StartsWith("Gauge"))
+            {
+                data = await GetGaugeWidgetDataAsync(widgetId, parameters);
             }
 
             return data;
@@ -582,7 +586,7 @@ namespace SPPC.Tadbir.Persistence
                 var accountRepository = UnitOfWork.GetAsyncRepository<WidgetAccount>();
                 var fullAccounts = GetFullAccounts(widget.Accounts, accountRepository);
                 var values = await GetFunctionValuesAsync(from, to, unit);
-                var evaluator = GetFunctionEvaluator(widget.Function.Name);
+                var evaluator = GetChartFunctionEvaluator(widget.Function.Name);
                 dataSeries = new ChartSeriesViewModel();
                 dataSeries.Labels.AddRange(values.Select(value => value.XLabel));
                 foreach (var fullAccount in fullAccounts)
@@ -629,6 +633,67 @@ namespace SPPC.Tadbir.Persistence
             if (param != null)
             {
                 unit = (WidgetDateUnit)Convert.ToInt32(param.Value);
+            }
+        }
+
+        private async Task<GaugeDataViewModel> GetGaugeWidgetDataAsync(
+            int widgetId, IList<ParameterSummary> parameters)
+        {
+            var gaugeData = default(GaugeDataViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<Widget>();
+            var widget = await repository.GetByIDAsync(widgetId, wgt => wgt.Function);
+            if (widget != null)
+            {
+                GetGaugeWidgetParameters(
+                    parameters, out DateTime from, out DateTime to, out decimal min, out decimal max);
+                var evaluator = GetGaugeFunctionEvaluator(widget.Function.Name);
+                gaugeData = new GaugeDataViewModel()
+                {
+                    MinValue = min,
+                    MaxValue = max,
+                    Value = evaluator(from, to)
+                };
+            }
+
+            return gaugeData;
+        }
+
+        private void GetGaugeWidgetParameters(
+            IList<ParameterSummary> parameters, out DateTime from, out DateTime to, out decimal min, out decimal max)
+        {
+            Config.GetCurrentFiscalDateRange(out from, out to);
+            min = WidgetConstants.GaugeMinValue;
+            max = WidgetConstants.GaugeMaxValue;
+            var param = parameters
+                .Where(p => p.Name == "FromDate")
+                .FirstOrDefault();
+            if (param != null)
+            {
+                from = Convert.ToDateTime(param.Value);
+            }
+
+            param = parameters
+                .Where(p => p.Name == "ToDate")
+                .FirstOrDefault();
+            if (param != null)
+            {
+                to = Convert.ToDateTime(param.Value);
+            }
+
+            param = parameters
+                .Where(p => p.Name == "MinValue")
+                .FirstOrDefault();
+            if (param != null)
+            {
+                min = Convert.ToDecimal(param.Value);
+            }
+
+            param = parameters
+                .Where(p => p.Name == "MaxValue")
+                .FirstOrDefault();
+            if (param != null)
+            {
+                max = Convert.ToDecimal(param.Value);
             }
         }
 

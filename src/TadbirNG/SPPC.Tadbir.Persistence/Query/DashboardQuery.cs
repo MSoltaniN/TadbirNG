@@ -8,7 +8,8 @@ namespace SPPC.Tadbir.Persistence
 SELECT SUM(vl.Debit - vl.Credit) AS Balance
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
-WHERE {0}";
+WHERE [v].[Date] >= '{0}' AND [v].[Date] <= '{1}' AND [v].[FiscalPeriodID] = {2} AND [v].[SubjectType] = 0
+    AND [vl].AccountID IN({3})";
 
         internal const string CollectionBalanceByDate = @"
 SELECT SUM(vl.Debit - vl.Credit) AS Balance
