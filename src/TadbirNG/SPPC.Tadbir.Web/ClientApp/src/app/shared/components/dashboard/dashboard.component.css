@@ -71,18 +71,12 @@ a i {
   padding: 5px;
 }
 
-<<<<<<< HEAD
-::ng-deep body.tRtl .settings .confirm-msg {
-=======
 .remove-tab{
   padding-right:3px;
   padding-left: 3px;
 }
 
-
-
 /deep/ body.tRtl .settings .confirm-msg {
->>>>>>> 5f8ecafd03db3255bba3e2badb171e51298bfa1d
   text-align: right;
   float: right;
 }
