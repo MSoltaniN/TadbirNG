@@ -765,7 +765,10 @@
     "DefaultBtn": "Default Settings",
     "PersianCalendar": "Persian Calendar",
     "ADCalendar": "Gregorian Calendar",
-    "DefaultCoding": "Basic coding suggested by the system (If selected, default accounts will be automatically created)"
+    "DefaultCoding": "Basic coding suggested by the system (If selected, default accounts will be automatically created)",
+    "InventoryMode": "Inventory mode",
+    "Periodic": "Periodic",
+    "Permanent": "Permanent"
   },
   "ViewRowPermission": {
     "DdlPermissionItems": {

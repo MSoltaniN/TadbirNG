@@ -57,6 +57,28 @@
       </div>
     </div>
 
+    <div class="col-xs-12 col-sm-6 sppc-float">
+      <div class="form-group">
+        <label>{{ 'Settings.InventoryMode' | translate }}</label>
+        <br>
+
+        <label for="radio1">{{ 'Settings.Permanent' | translate }}</label>
+        <input
+            type="radio" [(ngModel)]="inventoryMode"
+            name="inventoryMode" class="k-radio mx-7" id="radio1" [value]="0"
+          />
+
+        <label for="radio2" [class]="CurrentLanguage == 'fa'? 'mr-25': 'ml-25' ">
+          {{ 'Settings.Periodic' | translate }}
+        </label>
+        <input
+            type="radio" [(ngModel)]="inventoryMode"
+            name="inventoryMode" class="k-radio mx-7" id="radio2" [value]="1"
+          />
+
+      </div>
+    </div>
+
     <div class="col-xs-12">
       <div class="form-group">
         <input type="checkbox" name="committed" id="committed" class="k-checkbox" [(ngModel)]="useDefaultCoding" [disabled]="isExistAccount" />

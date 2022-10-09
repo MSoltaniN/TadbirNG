@@ -25,6 +25,7 @@
   height: 30px;
   vertical-align: middle;
   text-align: center;
+  padding: 5px 0;
 }
 
 .group-filter .form-group {
