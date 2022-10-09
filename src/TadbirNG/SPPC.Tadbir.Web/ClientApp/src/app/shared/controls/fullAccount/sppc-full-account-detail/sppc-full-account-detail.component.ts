@@ -67,7 +67,7 @@ export class SppcFullAccountDetailComponent implements OnInit {
 
   ngOnInit() {
     this.initDialog(this.selectedItem);
-    debugger;
+
     if (this.fullAccount.account.id > 0) {
       this.isNew = false;
       this.accountSelectedId.push(this.fullAccount.account.id);

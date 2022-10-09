@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { WidgetSetting } from "@sppc/shared/models/widgetSetting";
 
 @Component({
   selector: "app-widget-setting",
@@ -14,9 +15,13 @@ export class WidgetSettingComponent implements OnInit {
   @Input() chartType;
   widgetId: number;
 
+  @Input() setting: WidgetSetting;
+
+  chartColors = new WidgetSetting().Colors;
+
   chartTypes: Array<{ text: string; value: string }> = [
-    { text: "ستونی", value: "bar" },
-    { text: "خطی", value: "line" },
+    { text: "ستونی", value: "1" },
+    { text: "ستونی (افقی)", value: "2" },
   ];
 
   ngOnInit() {
@@ -24,9 +29,15 @@ export class WidgetSettingComponent implements OnInit {
   }
 
   onSave(e: any): void {
-    this.save.emit({
-      chartType: this.chartType.value,
-    });
+    this.save.emit(this.setting);
+  }
+
+  onChangeChartTypes(item: any, index: number) {
+    this.setting.series[index].type = item;
+  }
+
+  onChangeColor(item: any, index: number) {
+    this.setting.series[index].backgroundColor = item;
   }
 
   onCancel(e: any): void {

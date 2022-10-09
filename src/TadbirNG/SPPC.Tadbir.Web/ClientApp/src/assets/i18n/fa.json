@@ -56,7 +56,12 @@
     "AddTab":"برگه جدید",
     "TabName":"نام برگه",
     "WidgetSetting": "تنظیمات ویجت",
-    "ChartType": "نوع نمودار"
+    "ChartType": "نوع نمودار",
+    "GeneralSettings":"تنظیمات عمومی",
+    "SeriesSettings":"سری ها",
+    "ParamSettings":"پارامتر",
+    "ChartColor":"رنگ",
+    "SerieName":"نام سری"
   },
   "Exception": {
     "ErrorCode": "کد خطا",

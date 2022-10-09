@@ -1,0 +1,81 @@
+/deep/ li.ui-state-active a span.tab-title
+{ 
+  border-bottom-style: solid;
+  font-weight: bolder;
+  font-size: medium;
+  color: rgb(0, 96, 206);
+}
+
+/deep/ .ui-tabview-title
+{
+  cursor: pointer;
+}
+
+/deep/ .ui-tabview-nav
+{
+  flex-direction: row-reverse;
+  display: flex;
+}
+
+.serie-title
+{
+    font-weight: bold;
+
+}
+
+.color-pal
+{
+    min-width: 50px
+}
+
+
+/deep/ body.tLtr .setting-container .ui-tabview-nav 
+{
+    flex-direction: row-reverse;
+}
+
+/deep/ body.tRtl .setting-container .ui-tabview-nav 
+{
+    flex-direction: row;
+}
+
+/deep/ body.tLtr .setting-container .ui-tabview-nav 
+{
+    flex-direction: row-reverse;
+}
+
+hr
+{
+    margin: 8px;
+}
+
+/deep/ .ui-tabview-panels
+{
+    
+    background-color: aliceblue;
+    min-height: 400px;
+
+}
+
+
+.series-header
+{
+    list-style-type: none;
+    display: flex;
+    padding-right: 0;
+}
+
+.series-body
+{
+    list-style-type: none;
+    padding-right: 0;
+}
+
+.series-body li
+{    
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border-bottom: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: lightgray;
+}

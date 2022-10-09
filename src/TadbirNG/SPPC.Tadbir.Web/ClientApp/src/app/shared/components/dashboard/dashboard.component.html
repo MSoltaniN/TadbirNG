@@ -72,18 +72,19 @@
           <ng-container *ngIf="getWidgets(tab.id) | async as widgets">
             <gridster [options]="widgetOptions[tab.id]">
               <gridster-item [item]="item" *ngFor="let item of widgets">
-                <ng-container *ngIf="item.typeId == 2 || item.typeId == 1">
+                <ng-container *ngIf="item.typeId == 2 || item.typeId == 1">                 
                   <widget
                     (closeWidget)="onCloseWidget($event)"
                     [widgetId]="item.id"
                     [isEditMode]="isDashboardEditMode"
                     [headerTitle]="item.title"
+                    [setting]="widgetSettings[item.id + '-' + tab.id]"
                   >
                     <widget-container>
                       <div class="box-body" body>
                         <chart-widget
                           [data]="widgetData[item.id + '-' + tab.id]"
-                          [type]="getChartType(item.typeId)"
+                          [type]="dashboardService.getChartType(item.typeId)"
                           [options]="getOptions(item.typeId)"
                         ></chart-widget>
                       </div>
