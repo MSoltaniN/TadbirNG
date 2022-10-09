@@ -27,6 +27,9 @@ export class DashboardService extends BaseService {
       case 2: //bar
         chartType = "horizontalBar";
         break;
+      case 3: //line
+        chartType = "line";
+        break;
       default:
         break;
     }

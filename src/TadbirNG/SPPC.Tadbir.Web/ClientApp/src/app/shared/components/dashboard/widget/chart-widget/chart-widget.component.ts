@@ -20,6 +20,9 @@ export class ChartWidgetComponent implements OnInit {
   ngOnInit() {}
 
   changeSettings(settings: WidgetSetting) {
+    debugger;
+    this.type = "bar";
+
     settings.series.forEach((item) => {
       const index = this.data.datasets.findIndex((ds) => ds.label == item.name);
       if (index >= 0) {
@@ -27,9 +30,8 @@ export class ChartWidgetComponent implements OnInit {
           parseInt(item.type)
         );
 
-        this.type = "";
-
         this.data.datasets[index].backgroundColor = item.backgroundColor;
+        this.data.datasets[index].fill = false;
       }
     });
 
@@ -38,9 +40,7 @@ export class ChartWidgetComponent implements OnInit {
       settings.series.length
     ) {
       this.type = this.dashboardService.getChartType(1);
-    }
-
-    if (
+    } else if (
       settings.series.filter((p) => p.type == "2").length ==
       settings.series.length
     ) {

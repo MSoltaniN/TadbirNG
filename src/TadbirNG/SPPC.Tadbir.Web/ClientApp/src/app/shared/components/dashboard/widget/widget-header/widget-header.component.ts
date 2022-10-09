@@ -40,7 +40,7 @@ export class WidgetHeaderComponent implements OnInit {
       width: 800,
       height: 550,
     });
-
+    debugger;
     this.dialogModel = this.dialogRef.content.instance;
     this.dialogModel.widgetId = this.widgetId;
     this.dialogModel.setting = this.setting;

@@ -513,17 +513,17 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       content: ManageWidgetsComponent,
     });
 
-    this.dialogRef.dialog.location.nativeElement.classList.add('manage-widgets');
+    this.dialogRef.dialog.location.nativeElement.classList.add(
+      "manage-widgets"
+    );
     this.dialogModel = this.dialogRef.content.instance;
 
     this.dialogRef.dialog.onDestroy(() => {
       this.settingService.setTitle("Entity.Dashboard");
-    })
-    this.dialogRef.content.instance.close.subscribe(
-      (res) => {
-        this.dialogRef.close();
-      }
-    );
+    });
+    this.dialogRef.content.instance.close.subscribe((res) => {
+      this.dialogRef.close();
+    });
   }
 
   onAddWidgetClick() {
@@ -737,7 +737,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         item.borderWidth = 1;
       });
 
-      this.initSeriesOptions(widgetType, tabId, res.datasets);
+      this.initSeriesOptions(widgetType, widgetId, tabId, res.datasets);
 
       this.widgetData[widgetId + "-" + tabId] = res;
     });
@@ -748,46 +748,38 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     return false;
   }
 
-  initSeriesOptions(widgetType, tabId, dataSets: any[]) {
-    this.currentDashboard.tabs
+  initSeriesOptions(widgetType, widgetId, tabId, dataSets: any[]) {
+    const widget = this.currentDashboard.tabs
       .find((t) => t.id == tabId)
-      .widgets.forEach((widget) => {
-        const setting = JSON.parse(widget.settings);
-        if (!setting.series) {
-          setting.series = new Array<SerieItem>();
-        }
+      .widgets.filter((w) => w.widgetId == widgetId)[0];
 
-        dataSets.forEach((item, index) => {
-          debugger;
-          let serieItem: any = {};
-          serieItem.name = item.label;
-          serieItem.backgroundColor = new WidgetSetting().Colors[index];
-          serieItem.borderWidth = 1;
-          serieItem.type = widgetType.toString();
-          const id = widget.widgetId + "-" + tabId;
-          if (
-            this.widgetSettings[id] &&
-            this.widgetSettings[id].series.findIndex(
-              (s) => s.name == serieItem.name
-            ) >= 0
-          ) {
-            this.widgetSettings[id][
-              this.widgetSettings[id].series.findIndex(
-                (s) => s.name == serieItem.name
-              )
-            ] = serieItem;
-          } else {
-            if (!this.widgetSettings[id]) {
-              this.widgetSettings[id] = new WidgetSetting();
-              this.widgetSettings[id].series = new Array<SerieItem>();
-            }
+    const id = widget.widgetId + "-" + tabId;
+    this.widgetSettings[id] = new WidgetSetting();
+    this.widgetSettings[id].series = [];
 
-            this.widgetSettings[id].series.push(serieItem);
-          }
-        });
+    dataSets.forEach((item, index) => {
+      debugger;
+      let serieItem: any = {};
+      serieItem.name = item.label;
+      serieItem.backgroundColor = new WidgetSetting().Colors[index];
+      serieItem.borderWidth = 1;
+      serieItem.type = widgetType.toString();
 
-        debugger;
-      });
+      if (
+        this.widgetSettings[id] &&
+        this.widgetSettings[id].series.findIndex(
+          (s) => s.name == serieItem.name
+        ) >= 0
+      ) {
+        this.widgetSettings[id][
+          this.widgetSettings[id].series.findIndex(
+            (s) => s.name == serieItem.name
+          )
+        ] = serieItem;
+      } else {
+        this.widgetSettings[id].series.push(serieItem);
+      }
+    });
   }
 
   getWidgetList(tabId) {
