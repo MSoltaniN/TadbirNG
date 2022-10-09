@@ -61,8 +61,7 @@
     "SeriesSettings":"سری ها",
     "ParamSettings":"پارامتر",
     "ChartColor":"رنگ",
-    "SerieName":"نام سری"
-    "ChartType": "نوع نمودار",
+    "SerieName":"نام سری",
     "ManageWidgets": "مدیریت ویجت ها"
   },
   "Exception": {
