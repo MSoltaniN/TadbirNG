@@ -7,6 +7,8 @@ import { HomeComponent } from './components/home/home.component';
 import { ReportManagementComponent } from './components/reportManagement/reportManagement.component';
 import { LoginContainerComponent } from './components/login/login.container.component';
 import { LogoutComponent } from './components/login/logout.component';
+import { ManageWidgetsComponent } from './components/dashboard/manage-widgets/manage-widgets.component';
+// import { ManageWidgetsComponents } from './components/dashboard/manage-widgets/manage-widgets.component';
 
 const routes: Routes = [
 
@@ -20,7 +22,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'login', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent },
+      { path: 'dashboard', component: DashboardComponent},
+      { path: 'widgets', component: ManageWidgetsComponent},
       { path: 'home', component: HomeComponent },
       { path: 'reports', component: ReportManagementComponent },
     ]

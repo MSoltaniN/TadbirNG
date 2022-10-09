@@ -54,8 +54,9 @@
     "SettingConfirm": "Are you sure about the dashboard settings?",
     "WidgetSetting": "ٌWidget Settings",
     "ChartType": "Chart type",
-    "AddTab":"برگه جدید",
-    "TabName":"نام برگه"
+    "AddTab":"Add new Tab",
+    "TabName":"Tab name",
+    "ManageWidgets": "Manage widgets"
   },
   "Exception": {
     "ErrorCode": "Error Code",
@@ -195,7 +196,8 @@
     "TestBalance": "Balance",
     "CurrencyBook": "Currency Book",
     "SystemIssue": "System Control",
-    "BalanceByAccount": "Balance By Account"
+    "BalanceByAccount": "Balance By Account",
+    "Widget": "Widgets"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": " Number Of Vouchers Selected :",
@@ -763,7 +765,10 @@
     "DefaultBtn": "Default Settings",
     "PersianCalendar": "Persian Calendar",
     "ADCalendar": "Gregorian Calendar",
-    "DefaultCoding": "Basic coding suggested by the system (If selected, default accounts will be automatically created)"
+    "DefaultCoding": "Basic coding suggested by the system (If selected, default accounts will be automatically created)",
+    "InventoryMode": "Inventory mode",
+    "Periodic": "Periodic",
+    "Permanent": "Permanent"
   },
   "ViewRowPermission": {
     "DdlPermissionItems": {
@@ -1209,6 +1214,17 @@
   "MetaDataValidation": {
     "CodeLength": "Code length is not allowed"
   },
+  "Widget": {
+    "Title": "Widget Title",
+    "FunctionName": "Function name",
+    "TypeName": "Widget type",
+    "CreatedByFullName": "Created by",
+    "Accounts": "Accounts",
+    "Description": "Description",
+    "MyWidgets": "My widgets",
+    "AllWidgets": "All widgets",
+    "WidgetOwner": "Widget Group"
+  },
   "AllValidations": {
     "Account": {
       "CodeIsRequired": "Code is required.",
@@ -1425,6 +1441,14 @@
       "CategoryIsRequired": "Category is required.",
       "CategoryIsTooLong": "Category can have a maximum of 128 characters.",
       "DescriptionIsTooLong": "Description can have a maximum of 256 characters."
+    },
+    "Widget": {
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "FunctionIsRequired": "Selecting the Function is mandatory.",
+      "TypeIsRequired": "Selecting the widget type is mandatory.",
+      "DescriptionIsRequired": "Description is required.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 256 حرف داشته باشد."
     }
   }
 }

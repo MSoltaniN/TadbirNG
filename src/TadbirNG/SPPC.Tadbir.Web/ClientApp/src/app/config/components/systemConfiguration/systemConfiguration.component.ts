@@ -30,7 +30,11 @@ export function getLayoutModule(layout: Layout) {
 @Component({
   selector: 'system-configuration',
   templateUrl: './systemConfiguration.component.html',
-  styles: [``],
+  styles: [`
+    .mx-7 {margin: 6px 7px !important;}
+    .mr-25 {margin-right: 25px !important}
+    .ml-25 {margin-left: 25px !important}
+  `],
   providers: [{
     provide: RTL,
     useFactory: getLayoutModule,
@@ -53,6 +57,7 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
     { key: 0, value: "Settings.PersianCalendar" },
     { key: 1, value: "Settings.ADCalendar" }
   ];
+  inventoryMode: number = 0;
 
   isRefreshTreeView: boolean = false;
 
@@ -71,6 +76,7 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
     this.selectedCurrencyName = configValue.defaultCurrencyNameKey;
     this.useDefaultCoding = configValue.usesDefaultCoding;
     this.decimalCount = configValue.defaultDecimalCount;
+    this.inventoryMode = configValue.inventoryMode;
   }
 
 
@@ -148,6 +154,7 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
     configValue.defaultCurrencyNameKey = this.selectedCurrencyName;
     configValue.usesDefaultCoding = this.useDefaultCoding;
     configValue.defaultDecimalCount = this.decimalCount;
+    configValue.inventoryMode = this.inventoryMode;
 
     this.systemConfigModel.values = configValue;
 
@@ -156,6 +163,8 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
       this.bStorageService.setSystemConfig(configValue);      
       this.updateMetadatas();
       this.isRefreshTreeView = true;
+    },err => {
+      this.showMessage(err.messages[0],MessageType.Error);
     })
   }
 

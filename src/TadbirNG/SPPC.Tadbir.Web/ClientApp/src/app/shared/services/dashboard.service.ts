@@ -17,6 +17,23 @@ export class DashboardService extends BaseService {
     super(http, bStorageService);
   }
 
+  getChartType(type: number) {
+    let chartType = "";
+
+    switch (type) {
+      case 1: //column
+        chartType = "bar";
+        break;
+      case 2: //bar
+        chartType = "horizontalBar";
+        break;
+      default:
+        break;
+    }
+
+    return chartType;
+  }
+
   getDashboardInfo() {
     var url = DashboardApi.Summaries;
     var options = { headers: this.httpHeaders };

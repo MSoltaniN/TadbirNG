@@ -5,6 +5,7 @@
     (settingChange)="onSettingChange($event)"
     [title]="headerTitle"
     [widgetId]="widgetId"
+    [setting] = "setting"
   >
     <ng-content select="[header]" class="box-header"></ng-content>
   </widget-header>

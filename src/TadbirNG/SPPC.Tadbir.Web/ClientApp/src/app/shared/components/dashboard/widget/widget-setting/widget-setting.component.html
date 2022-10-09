@@ -1,22 +1,91 @@
-<div style="padding: 15px">
-  <div class="form-group">
-    <label for="name" class="control-label">{{
-      "Dashboard.ChartType" | translate
-    }}</label>
-    <kendo-dropdownlist
-      [data]="chartTypes"
-      [textField]="'text'"
-      [valueField]="'value'"
-      [(ngModel)]="chartType"
-    >
-    </kendo-dropdownlist>
-  </div>
+<div class="setting-container">
+  <p-tabView 
+      >
+        <p-tabPanel>
+          <ng-template pTemplate="header">           
+            <span class="tab-title">{{"Dashboard.GeneralSettings" | translate }}</span>
+          </ng-template>
+          <div class="form-group">
+            
+          </div>
+        </p-tabPanel>
+        <p-tabPanel>
+          <ng-template pTemplate="header">           
+            <span class="tab-title">{{"Dashboard.SeriesSettings" | translate }}</span>
+          </ng-template>            
+            <ul class="series-header">
+              <li class="col-md-12">
+                <div class="form-group">                  
+                  <div class="col-md-4">
+                    <label class="control-label serie-title">{{
+                      "Dashboard.ChartType" | translate
+                    }}</label>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="control-label serie-title">{{
+                      "Dashboard.ChartColor" | translate
+                    }}</label>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="control-label serie-title">{{
+                      "Dashboard.SerieName" | translate
+                    }}</label>
+                  </div>
+                </div>
+              </li>
+            </ul>        
+            <hr>
+            <ul class="series-body" *ngIf="setting && setting.series">
+              <li *ngFor="let serie of setting.series; let i = index" class="col-md-12">
+                <div class="form-group">                  
+                  <div class="col-md-4">  
+                    <kendo-dropdownlist
+                    (valueChange)="onChangeChartTypes($event, i)"
+                      [data]="chartTypes"
+                      textField="text"
+                      valueField="value"
+                      [valuePrimitive]="true"
+                      [value]="serie.type"                       
+                    >
+                    </kendo-dropdownlist>
+                  </div>
+                  <div class="col-md-4">                    
+                    <kendo-dropdownlist
+                    (valueChange)="onChangeColor($event , i)"
+                      [data]="chartColors"
+                      [value]="serie.backgroundColor"                                          
+                    >                
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                      <span [style.backgroundColor]="dataItem" class="color-pal">{{dataItem}}</span> 
+                    </ng-template>
+                    </kendo-dropdownlist>
+                  </div>
+                  <div  class="col-md-4">
+                    <label class="control-label">{{
+                      serie.name
+                    }}</label>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            
+          
+        </p-tabPanel>
+        <p-tabPanel>
+          <ng-template pTemplate="header">           
+            <span class="tab-title">{{"Dashboard.ParamSettings" | translate }}</span>
+          </ng-template>
+          <div class="form-group">
+            
+          </div>
+        </p-tabPanel>
+  </p-tabView>
+  
 </div>
 
 <kendo-dialog-actions>
   <button
-    class="k-button k-primary"
-    [disabled]="!chartType"
+    class="k-button k-primary"   
     (click)="onSave($event)"
   >
     {{ "Buttons.Ok" | translate }}

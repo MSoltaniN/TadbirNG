@@ -10,11 +10,19 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
+import { FullAccount } from "@sppc/finance/models";
+
 
 export interface Widget {
     id: number;
     createdById: number;
+    CreatedByFullName: string;
     title: string;
+    functionId: string;
+    FunctionName: string;
+    typeId: string;
+    TypeName: string;
+    accounts: FullAccount[];
     defaultSettings: string;
     description?: string;
     rowNo: number;

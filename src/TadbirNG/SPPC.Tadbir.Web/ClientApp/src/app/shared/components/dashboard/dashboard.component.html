@@ -1,9 +1,35 @@
 <section class="content-header col-md-12">
-  <div class="col-md-9 col-lg-7 col-xs-12 settings">
+  <div class="col-md-12 col-lg-2 col-xs-12 title">
+    <h2>
+      {{ "Dashboard.DashboardTitle" | translate }}
+    </h2>
+  </div>
+  <div class="col-md-12 col-lg-10 col-xs-12 settings">
+    <div
+      class="buttons"
+      [ngClass]="isDashboardEditMode ? 'col-lg-7 col-md-6' : 'col-md-12'"
+    >
+      <a href="#/tadbir/dashboard" (click)="onManageWidgetsClick()">
+        <i class="fa fa-cubes"></i>{{ "Dashboard.ManageWidgets" | translate }}
+      </a>
+      <a href="#/tadbir/dashboard" (click)="onAddTabClick()">
+        <i class="fa fa-plus"></i>{{ "Dashboard.AddTab" | translate }}
+      </a>
+      <a href="#/tadbir/dashboard" (click)="onAddWidgetClick()">
+        <i class="fa fa-plus"></i>{{ "Dashboard.AddWidget" | translate }}
+      </a>
+      <a
+        href="#/tadbir/dashboard"
+        *ngIf="!isDashboardEditMode"
+        (click)="onSettingClick()"
+      >
+        <i class="fa fa-cog"></i>{{ "Dashboard.Setting" | translate }}
+      </a>
+    </div>
     <ng-template [ngIf]="isDashboardEditMode">
       <div
         class="alert alert-warning msg-container"
-        [ngClass]="isDashboardEditMode ? 'col-md-5' : ''"
+        [ngClass]="isDashboardEditMode ? 'col-lg-5 col-md-6' : ''"
       >
         <div class="dashboard-button">
           <button (click)="onOkClick()" class="k-button k-primary">
@@ -20,28 +46,6 @@
         </div>
       </div>
     </ng-template>
-    <div
-      class="buttons" style="display: contents;"
-      [ngClass]="isDashboardEditMode ? 'col-md-4' : 'col-md-6'"
-    >
-      <a href="#/tadbir/dashboard" (click)="onAddTabClick()"
-        ><i class="fa fa-plus"></i>{{ "Dashboard.AddTab" | translate }}</a
-      >
-      <a href="#/tadbir/dashboard" (click)="onAddWidgetClick()"
-        ><i class="fa fa-plus"></i>{{ "Dashboard.AddWidget" | translate }}</a
-      >
-      <a
-        href="#/tadbir/dashboard"
-        *ngIf="!isDashboardEditMode"
-        (click)="onSettingClick()"
-        ><i class="fa fa-cog"></i>{{ "Dashboard.Setting" | translate }}</a
-      >
-    </div>
-  </div>
-  <div class="col-md-7 col-lg-5 col-xs-12 title">
-    <h2>
-      {{ "Dashboard.DashboardTitle" | translate }}
-    </h2>
   </div>
 </section>
 
@@ -72,18 +76,19 @@
           <ng-container *ngIf="getWidgets(tab.id) | async as widgets">
             <gridster [options]="widgetOptions[tab.id]">
               <gridster-item [item]="item" *ngFor="let item of widgets">
-                <ng-container *ngIf="item.typeId == 2 || item.typeId == 1">
+                <ng-container *ngIf="item.typeId == 2 || item.typeId == 1">                 
                   <widget
                     (closeWidget)="onCloseWidget($event)"
                     [widgetId]="item.id"
                     [isEditMode]="isDashboardEditMode"
                     [headerTitle]="item.title"
+                    [setting]="widgetSettings[item.id + '-' + tab.id]"
                   >
                     <widget-container>
                       <div class="box-body" body>
                         <chart-widget
                           [data]="widgetData[item.id + '-' + tab.id]"
-                          [type]="getChartType(item.typeId)"
+                          [type]="dashboardService.getChartType(item.typeId)"
                           [options]="getOptions(item.typeId)"
                         ></chart-widget>
                       </div>

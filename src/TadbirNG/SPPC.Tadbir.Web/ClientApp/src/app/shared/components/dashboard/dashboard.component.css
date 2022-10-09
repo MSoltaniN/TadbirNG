@@ -19,6 +19,11 @@
   float: left !important;
 }
 
+::ng-deep .settings {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 ::ng-deep body.tRtl .settings {
   float: left !important;
   text-align: left;
@@ -67,6 +72,8 @@ a i {
   padding-right: 6px;
 }
 
+.buttons {padding: 5px;}
+
 .settings .buttons a {
   padding: 5px;
 }
@@ -76,7 +83,7 @@ a i {
   padding-left: 3px;
 }
 
-/deep/ body.tRtl .settings .confirm-msg {
+::ng-deep body.tRtl .settings .confirm-msg {
   text-align: right;
   float: right;
 }
@@ -98,23 +105,23 @@ a i {
   padding-right: 3px;
 }
 
-/deep/ gridster
+::ng-deep gridster
 {
   min-height: calc(100vh - 50px);
 }
 
-/deep/ .ui-tabview-nav
+::ng-deep .ui-tabview-nav
 {
   flex-direction: row-reverse;
   display: flex;
 }
 
-/deep/ .ui-tabview-title
+::ng-deep .ui-tabview-title
 {
   cursor: pointer;
 }
 
-/deep/ li.ui-state-active a span.tab-title
+::ng-deep li.ui-state-active a span.tab-title
 { 
   border-bottom-style: solid;
   font-weight: bolder;

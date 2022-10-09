@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { DialogService } from "@progress/kendo-angular-dialog";
+import { SerieItem } from "@sppc/shared/models/serieItem";
+import { WidgetSetting } from "@sppc/shared/models/widgetSetting";
 import { WidgetSettingComponent } from "../widget-setting/widget-setting.component";
 
 @Component({
@@ -17,6 +19,8 @@ export class WidgetHeaderComponent implements OnInit {
   dialogModel;
   settingTitle: string;
 
+  @Input() setting: WidgetSetting;
+
   @Output() closeClick: EventEmitter<number> = new EventEmitter();
   @Output() settingChange: EventEmitter<any> = new EventEmitter();
 
@@ -26,7 +30,6 @@ export class WidgetHeaderComponent implements OnInit {
   ) {}
 
   onClose() {
-    debugger;
     this.closeClick.emit();
   }
 
@@ -34,10 +37,13 @@ export class WidgetHeaderComponent implements OnInit {
     this.dialogRef = this.dialogService.open({
       title: this.settingTitle,
       content: WidgetSettingComponent,
+      width: 800,
+      height: 550,
     });
 
     this.dialogModel = this.dialogRef.content.instance;
     this.dialogModel.widgetId = this.widgetId;
+    this.dialogModel.setting = this.setting;
 
     this.dialogRef.content.instance.save.subscribe((res) => {
       this.settingChange.emit(res);

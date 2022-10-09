@@ -40,7 +40,10 @@ import { Dashboard } from "@sppc/shared/models/dashboard";
 import { FullAccount } from "@sppc/finance/models";
 import { WidgetParameter } from "@sppc/shared/models/widgetParameter";
 import { TabWidgetComponent } from "./tab-widget/tab-widget.component";
+import { ManageWidgetsComponent } from "./manage-widgets/manage-widgets.component";
 import { TabView } from "primeng/tabview";
+import { SerieItem } from "@sppc/shared/models/serieItem";
+import { WidgetSetting } from "@sppc/shared/models/widgetSetting";
 
 interface DashboardConfig extends GridsterConfig {
   draggable: Draggable;
@@ -125,16 +128,6 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
   currentDashboardTabIndex: number = 0;
 
-  Colors = [
-    "#970272",
-    "#978b02",
-    "#029722",
-    "#0d19fd",
-    "#0dfdbd",
-    "#fd610d",
-    "#ba9ffe",
-  ];
-
   get currentDashboardTab() {
     const tab = this.tabContainer.tabs.filter((t) => t.selected)[0];
     return this.currentDashboard.tabs.filter(
@@ -144,6 +137,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
   widgetData: { [id: string]: any } = {};
   widgetOptions: { [id: string]: DashboardConfig } = {};
+  widgetSettings: { [id: string]: WidgetSetting } = {};
 
   grossChartData;
   netChartData;
@@ -188,7 +182,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     public settingService: SettingService,
     public bStorageService: BrowserStorageService,
     @Inject(DOCUMENT) public document,
-    public dashboadService: DashboardService,
+    public dashboardService: DashboardService,
     private dialogService: DialogService,
     private chRef: ChangeDetectorRef
   ) {
@@ -222,7 +216,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     Chart.defaults.font.family = "'SPPC'";
 
     if (this.currentContext.fpId > 0 && this.currentContext.branchId > 0) {
-      this.dashboadService
+      this.dashboardService
         .getDashboardInfo()
         .subscribe((res: DashboardSummaries) => {
           this.cashierBalance = res.cashierBalance;
@@ -346,22 +340,22 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     //#endregion
   }
 
-  getChartType(type: number) {
-    let chartType = "";
+  // getChartType(type: number) {
+  //   let chartType = "";
 
-    switch (type) {
-      case 1: //column
-        chartType = "bar";
-        break;
-      case 2: //bar
-        chartType = "horizontalBar";
-        break;
-      default:
-        break;
-    }
+  //   switch (type) {
+  //     case 1: //column
+  //       chartType = "bar";
+  //       break;
+  //     case 2: //bar
+  //       chartType = "horizontalBar";
+  //       break;
+  //     default:
+  //       break;
+  //   }
 
-    return chartType;
-  }
+  //   return chartType;
+  // }
 
   getOptions(type: number) {
     let options = this.basicOptions;
@@ -456,7 +450,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     });
 
     promise.then(() => {
-      this.dashboadService
+      this.dashboardService
         .saveDashboardWidgets(widgetsToUpdate)
         .subscribe(() => {});
     });
@@ -471,6 +465,8 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
   ngOnInit() {
     this.initDashboard();
+
+    this.settingService.setTitle("Entity.Dashboard");
 
     this.dashboard = this.bStorageService.loadDashboardLayout(
       this.UserId.toString(),
@@ -509,6 +505,25 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     const currentTab = this.currentDashboardTab;
     if (this.widgetOptions[currentTab.id].api)
       this.widgetOptions[currentTab.id].api.optionsChanged();
+  }
+
+  onManageWidgetsClick() {
+    this.dialogRef = this.dialogService.open({
+      title: this.getText("Dashboard.ManageWidgets"),
+      content: ManageWidgetsComponent,
+    });
+
+    this.dialogRef.dialog.location.nativeElement.classList.add('manage-widgets');
+    this.dialogModel = this.dialogRef.content.instance;
+
+    this.dialogRef.dialog.onDestroy(() => {
+      this.settingService.setTitle("Entity.Dashboard");
+    })
+    this.dialogRef.content.instance.close.subscribe(
+      (res) => {
+        this.dialogRef.close();
+      }
+    );
   }
 
   onAddWidgetClick() {
@@ -557,7 +572,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       tab.dashboardId = this.currentDashboard.id;
 
       //TODO:posts record to DashboardTab table
-      this.dashboadService.addDashboardTab(tab).subscribe((res: any) => {
+      this.dashboardService.addDashboardTab(tab).subscribe((res: any) => {
         tab.id = res.id;
         this.currentDashboard.tabs.push(tab);
         this.fillDashboardSubjects();
@@ -578,7 +593,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     )[0];
     const tabWidget = currentTab.widgets.find((w) => w.widgetId == widgetId);
 
-    this.dashboadService
+    this.dashboardService
       .removeTabWidget(tabId, tabWidget.widgetId)
       .subscribe(() => {
         const index = currentTab.widgets.findIndex(
@@ -645,7 +660,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       scrollToNewItems: false,
     };
 
-    this.dashboadService
+    this.dashboardService
       .getCurrentDashboard()
       .subscribe((dashboard: Dashboard) => {
         this.currentDashboard = dashboard;
@@ -665,7 +680,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
   removeTab(tabId) {
     //TODO:posts record to DashboardTab table
-    this.dashboadService.removeDashboardTab(tabId).subscribe(() => {
+    this.dashboardService.removeDashboardTab(tabId).subscribe(() => {
       const index = this.currentDashboard.tabs.findIndex((t) => t.id == tabId);
       this.currentDashboard.tabs.splice(index, 1);
     });
@@ -698,11 +713,15 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     let tabWidgetInfo = new TabWidgetInfo();
     tabWidgetInfo.tabId = currentTab.id;
     tabWidgetInfo.widgetId = widget.id;
-    const setting = { height: 20, width: 20, x: 0, y: 0 };
-    tabWidgetInfo.defaultSettings = JSON.stringify(setting);
+    const setting = {
+      height: 20,
+      width: 20,
+      x: 0,
+      y: 0,
+    };
     tabWidgetInfo.settings = JSON.stringify(setting);
 
-    this.dashboadService
+    this.dashboardService
       .addTabWidget(currentTab.id, tabWidgetInfo)
       .subscribe((newTabWidget: TabWidget) => {
         tab.widgets.push(newTabWidget);
@@ -711,12 +730,14 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       });
   }
 
-  getWidgetData(widgetId, tabId) {
-    return this.dashboadService.getWidgetData(widgetId).subscribe((res) => {
+  getWidgetData(widgetType, widgetId, tabId) {
+    return this.dashboardService.getWidgetData(widgetId).subscribe((res) => {
       res.datasets.forEach((item, index) => {
-        item.backgroundColor = this.Colors[index];
+        item.backgroundColor = new WidgetSetting().Colors[index];
         item.borderWidth = 1;
       });
+
+      this.initSeriesOptions(widgetType, tabId, res.datasets);
 
       this.widgetData[widgetId + "-" + tabId] = res;
     });
@@ -725,6 +746,48 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   widgetHasData(widgetId, tabId) {
     if (this.widgetData[widgetId + "-" + tabId]) return true;
     return false;
+  }
+
+  initSeriesOptions(widgetType, tabId, dataSets: any[]) {
+    this.currentDashboard.tabs
+      .find((t) => t.id == tabId)
+      .widgets.forEach((widget) => {
+        const setting = JSON.parse(widget.settings);
+        if (!setting.series) {
+          setting.series = new Array<SerieItem>();
+        }
+
+        dataSets.forEach((item, index) => {
+          debugger;
+          let serieItem: any = {};
+          serieItem.name = item.label;
+          serieItem.backgroundColor = new WidgetSetting().Colors[index];
+          serieItem.borderWidth = 1;
+          serieItem.type = widgetType.toString();
+          const id = widget.widgetId + "-" + tabId;
+          if (
+            this.widgetSettings[id] &&
+            this.widgetSettings[id].series.findIndex(
+              (s) => s.name == serieItem.name
+            ) >= 0
+          ) {
+            this.widgetSettings[id][
+              this.widgetSettings[id].series.findIndex(
+                (s) => s.name == serieItem.name
+              )
+            ] = serieItem;
+          } else {
+            if (!this.widgetSettings[id]) {
+              this.widgetSettings[id] = new WidgetSetting();
+              this.widgetSettings[id].series = new Array<SerieItem>();
+            }
+
+            this.widgetSettings[id].series.push(serieItem);
+          }
+        });
+
+        debugger;
+      });
   }
 
   getWidgetList(tabId) {
@@ -742,10 +805,11 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
           id: widget.widgetId,
           title: widget.widgetTitle,
           typeId: widget.widgetTypeId,
+          series: new Array<SerieItem>(),
         });
 
         if (!this.widgetHasData(widget.widgetId, tabId))
-          this.getWidgetData(widget.widgetId, tabId);
+          this.getWidgetData(widget.widgetTypeId, widget.widgetId, tabId);
       });
 
     return widgets;
