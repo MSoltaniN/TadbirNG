@@ -62,6 +62,8 @@
     "ParamSettings":"پارامتر",
     "ChartColor":"رنگ",
     "SerieName":"نام سری"
+    "ChartType": "نوع نمودار",
+    "ManageWidgets": "مدیریت ویجت ها"
   },
   "Exception": {
     "ErrorCode": "کد خطا",
@@ -184,6 +186,7 @@
     "FieldName": "نام ستون"
   },
   "Entity": {
+    "Dashboard": "داشبورد",
     "Account": "حساب",
     "Voucher": "مدیریت اسناد",
     "VoucherLine": "آرتیکل سند",
@@ -221,7 +224,8 @@
     "SystemIssue": "کنترل سیستم",
     "BalanceByAccount": "مانده به تفکیک حساب",
     "ProfitLoss": "سود و زیان",
-    "BalanceSheet": "ترازنامه"
+    "BalanceSheet": "ترازنامه",
+    "Widget": "ویجت ها"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",
@@ -1328,6 +1332,17 @@
     "ArchiveMsgConfirm": "آیا برای بایگانی رویدادهای فعال مطمئن هستید؟",
     "PleaseSelectRowsAsDeleteArchive": "لطفا برای حذف از بایگانی رویداد های مورد نظر را انتخاب کنید"
   },
+  "Widget": {
+    "Title": "نام ویجت",
+    "FunctionName": "نام تابع",
+    "TypeName": "نوع ویجت",
+    "CreatedByFullName": "نام سازنده",
+    "Accounts": "حسابها",
+    "Description": "توضیحات",
+    "MyWidgets": "ویجت های من",
+    "AllWidgets": "همه ویجت ها",
+    "WidgetOwner": "لیست ویجت ها"
+  },
   "GroupActionResult": {
     "Id": "شماره  ",
     "Name": "نام",
@@ -1553,6 +1568,14 @@
       "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
       "CategoryIsRequired": "وارد کردن ماهیت اجباری است.",
       "CategoryIsTooLong": "ماهیت می تواند حداکثر 64 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 256 حرف داشته باشد."
+    },
+    "Widget": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "FunctionIsRequired": "انخاب تابع اجباری است.",
+      "TypeIsRequired": "انخاب نوع ویجت اجباری است.",
+      "DescriptionIsRequired": "وارد کردن توضیحات اجباری است.",
       "DescriptionIsTooLong": "شرح می تواند حداکثر 256 حرف داشته باشد."
     }
   }

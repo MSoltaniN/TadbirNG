@@ -1,14 +1,15 @@
-import { Component, OnInit, Input, ViewContainerRef, HostListener, Host } from "@angular/core";
+import { Component, OnInit, Input, ViewContainerRef, HostListener, Host, OnDestroy } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { TranslateService } from "@ngx-translate/core";
 import { ShortcutCommand } from "@sppc/shared/models/shortcutCommand";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-bread-cumb',
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.css']
 })
-export class BreadCumbComponent implements OnInit {
+export class BreadCumbComponent implements OnInit,OnDestroy {
     
 
   @Input() public set entityTypeName(name: string) {
@@ -21,6 +22,7 @@ export class BreadCumbComponent implements OnInit {
 
   getEntityFromParent: boolean = true;
   title: string;
+  subs$: Subscription;
 
   constructor(public parentComponet: ViewContainerRef,
      public translate: TranslateService,
@@ -41,8 +43,12 @@ export class BreadCumbComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.subs$.unsubscribe();
+  }
+
   getText(key: string): void {
-    this.translate.get(key).subscribe((msg: string) => {
+    this.subs$ = this.translate.get(key).subscribe((msg: string) => {
       this.title = msg;
       this.titleService.setTitle(msg)
     });
@@ -140,6 +146,9 @@ export class BreadCumbComponent implements OnInit {
         break;
       case "balancesheet":
         this.getText("Entity.BalanceSheet");
+        break;
+      case "widget":
+        this.getText("Entity.Widget");
         break;
     }
   }

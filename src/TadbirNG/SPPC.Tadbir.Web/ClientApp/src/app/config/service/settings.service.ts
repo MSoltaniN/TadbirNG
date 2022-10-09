@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Response } from "@angular/http";
+import { Title } from "@angular/platform-browser";
+import { TranslateService } from "@ngx-translate/core";
 import { BaseService } from "@sppc/shared/class/base.service";
 //import { String, BaseService } from '@sppc/shared/class';
 import { String } from "@sppc/shared/class/source";
@@ -138,9 +140,17 @@ export class QuickSearchColumnConfigInfo implements QuickSearchColumnConfig {
 export class SettingService extends BaseService {
   constructor(
     public http: HttpClient,
-    public bStorageService: BrowserStorageService
+    public bStorageService: BrowserStorageService,
+    private titleService: Title,
+    private translate: TranslateService
   ) {
     super(http, bStorageService);
+  }
+
+  setTitle(key: string): void {
+    this.translate.get(key).subscribe((msg: string) => {
+      this.titleService.setTitle(msg)
+    });
   }
 
   public getSettingsCategories(apiUrl: string) {
