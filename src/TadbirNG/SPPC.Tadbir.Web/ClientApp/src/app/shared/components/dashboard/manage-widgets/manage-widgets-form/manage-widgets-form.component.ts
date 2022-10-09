@@ -107,7 +107,7 @@ export class ManageWidgetsFormComponent extends DetailComponent implements OnIni
       values.Accounts = this.widgetAccounts;
       if (this.isNew) {
         values.id = 0;
-        values.defaultSettings = {"x":0,"y":0,"width":20,"height":20};
+        values.defaultSettings = '{"x":0,"y":0,"width":20,"height":20}';
       } else {
         values.defaultSettings = this.model.defaultSettings;
       }
