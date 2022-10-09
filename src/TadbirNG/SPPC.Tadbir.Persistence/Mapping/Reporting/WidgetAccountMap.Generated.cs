@@ -34,7 +34,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasOne(e => e.Widget)
                 .WithMany(e => e.Accounts)
                 .HasForeignKey(e => e.WidgetId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Reporting_WidgetAccount_Reporting_Widget");
             builder.HasOne(e => e.Account)
                 .WithMany()

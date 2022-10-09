@@ -215,6 +215,11 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
 
+            mapperConfig.CreateMap<AccountItemBriefViewModel, Account>();
+            mapperConfig.CreateMap<AccountItemBriefViewModel, DetailAccount>();
+            mapperConfig.CreateMap<AccountItemBriefViewModel, CostCenter>();
+            mapperConfig.CreateMap<AccountItemBriefViewModel, Project>();
+
             mapperConfig.CreateMap<Voucher, VoucherViewModel>()
                 .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
                 .ForMember(dest => dest.Reference, opts => opts.NullSubstitute(String.Empty))
@@ -566,12 +571,27 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.EndBalanceItem1, opts => opts.MapFrom(src => src.EndBalance))
                 .ForMember(dest => dest.BalanceItem1, opts => opts.MapFrom(src => src.Balance));
 
+            mapperConfig.CreateMap<DashboardTab, DashboardTabViewModel>()
+                .ForMember(dest => dest.Widgets, opts => opts.Ignore());
+            mapperConfig.CreateMap<DashboardTabViewModel, DashboardTab>()
+                .ForMember(dest => dest.Widgets, opts => opts.Ignore());
             mapperConfig.CreateMap<WidgetFunction, WidgetFunctionViewModel>();
             mapperConfig.CreateMap<WidgetType, WidgetTypeViewModel>();
             mapperConfig.CreateMap<Widget, WidgetViewModel>();
+            mapperConfig.CreateMap<WidgetViewModel, Widget>();
+            mapperConfig.CreateMap<FullAccountViewModel, WidgetAccount>()
+                .ForMember(dest => dest.AccountId, opts => opts.MapFrom(src => GetNullableId(src.Account)))
+                .ForMember(dest => dest.DetailAccountId, opts => opts.MapFrom(src => GetNullableId(src.DetailAccount)))
+                .ForMember(dest => dest.CostCenterId, opts => opts.MapFrom(src => GetNullableId(src.CostCenter)))
+                .ForMember(dest => dest.ProjectId, opts => opts.MapFrom(src => GetNullableId(src.Project)))
+                .ForMember(dest => dest.Account, opts => opts.Ignore())
+                .ForMember(dest => dest.DetailAccount, opts => opts.Ignore())
+                .ForMember(dest => dest.CostCenter, opts => opts.Ignore())
+                .ForMember(dest => dest.Project, opts => opts.Ignore());
+            mapperConfig.CreateMap<WidgetAccount, FullAccountViewModel>();
             mapperConfig.CreateMap<TabWidget, TabWidgetViewModel>()
                 .ForMember(dest => dest.WidgetAccounts, opts => opts.Ignore())
-                .ForMember(dest => dest.WidgetParmeters, opts => opts.Ignore());
+                .ForMember(dest => dest.WidgetParameters, opts => opts.Ignore());
             mapperConfig.CreateMap<TabWidgetViewModel, TabWidget>();
         }
 

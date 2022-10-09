@@ -548,7 +548,7 @@ namespace SPPC.Tadbir.Persistence
             if (voucher != null)
             {
                 voucher.ConfirmedById = isConfirmed ? UserContext.Id : (int?)null;
-                voucher.ConfirmerName = isConfirmed ? GetCurrentUserDisplayName() : null;
+                voucher.ConfirmerName = isConfirmed ? GetCurrentUserFullName() : null;
                 repository.Update(voucher);
                 OnDocumentConfirmation(isConfirmed);
                 await FinalizeActionAsync(voucher);
@@ -568,7 +568,7 @@ namespace SPPC.Tadbir.Persistence
             if (voucher != null)
             {
                 voucher.ApprovedById = isApproved ? UserContext.Id : (int?)null;
-                voucher.ApproverName = isApproved ? GetCurrentUserDisplayName() : null;
+                voucher.ApproverName = isApproved ? GetCurrentUserFullName() : null;
                 repository.Update(voucher);
                 OnDocumentApproval(isApproved);
                 await FinalizeActionAsync(voucher);
@@ -625,8 +625,8 @@ namespace SPPC.Tadbir.Persistence
                     voucher.ApprovedById = isConfirmed ? UserContext.Id : (int?)null;
                     if (isConfirmed)
                     {
-                        voucher.ConfirmerName = GetCurrentUserDisplayName();
-                        voucher.ApproverName = GetCurrentUserDisplayName();
+                        voucher.ConfirmerName = GetCurrentUserFullName();
+                        voucher.ApproverName = GetCurrentUserFullName();
                     }
 
                     repository.Update(voucher);
@@ -769,7 +769,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<Voucher> GetNewVoucherAsync(string description, VoucherOriginId origin)
         {
             var subject = SubjectType.Normal;
-            string fullName = UserContext.PersonLastName + ", " + UserContext.PersonFirstName;
+            string fullName = GetCurrentUserFullName();
             DateTime date = await GetLastVoucherDateAsync();
             int no = await GetLastVoucherNoAsync();
             int dailyNo = await GetNextDailyNoAsync(date, subject);
@@ -829,11 +829,6 @@ namespace SPPC.Tadbir.Persistence
                 .Select(v => v.DailyNo)
                 .FirstOrDefault();
             return (lastNo + 1);
-        }
-
-        private string GetCurrentUserDisplayName()
-        {
-            return String.Format("{0}, {1}", UserContext.PersonLastName, UserContext.PersonFirstName);
         }
 
         private async Task<int> GetVoucherLineCountAsync(int voucherId)

@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// عملیات مورد نیاز برای تهیه اطلاعات خلاصه در داشبورد را پیاده سازی می کند
     /// </summary>
-    public partial class DashboardRepository : RepositoryBase, IDashboardRepository
+    public partial class DashboardRepository : EntityLoggingRepository<Widget, WidgetViewModel>, IDashboardRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -27,7 +25,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="report"></param>
         public DashboardRepository(IRepositoryContext context, ISystemRepository system,
             IReportDirectUtility report)
-            : base(context)
+            : base(context, system?.Logger)
         {
             _report = report;
             Config = system.Config;
@@ -51,22 +49,13 @@ namespace SPPC.Tadbir.Persistence
             var months = monthEnum.GetMonths();
             return new DashboardSummariesViewModel()
             {
-                LiquidRatio = CalculateLiquidRatio(),
+                //LiquidRatio = CalculateLiquidRatio(currentPeriod.EndDate),
                 UnbalancedVoucherCount = await GetUnbalancedVoucherCountAsync(),
-                BankBalance = GetCollectionBalance(AccountCollectionId.Bank),
-                CashierBalance = GetCollectionBalance(AccountCollectionId.Cashier),
+                //BankBalance = GetCollectionBalance(AccountCollectionId.Bank, currentPeriod.EndDate),
+                //CashierBalance = GetCollectionBalance(AccountCollectionId.Cashier, currentPeriod.EndDate),
                 NetSales = GetMonthlyNetSales(months),
                 GrossSales = GetMonthlyGrossSales(months)
             };
-        }
-
-        private decimal CalculateLiquidRatio()
-        {
-            decimal liquidAssets = GetCollectionBalance(AccountCollectionId.LiquidAssets);
-            decimal liquidLiabilities = Math.Max(1.0M, Math.Abs(
-                GetCollectionBalance(AccountCollectionId.LiquidLiabilities)));
-            decimal liquidRatio = Math.Round(liquidAssets / liquidLiabilities, 2);
-            return liquidRatio;
         }
 
         private async Task<int> GetUnbalancedVoucherCountAsync()
@@ -136,48 +125,5 @@ namespace SPPC.Tadbir.Persistence
             deficitAccounts.AddRange(_report.GetUsableAccounts(AccountCollectionId.SalesDiscount));
             return deficitAccounts;
         }
-
-        private decimal GetCollectionBalance(AccountCollectionId collectionId)
-        {
-            var accounts = _report.GetUsableAccounts(collectionId);
-            return GetCollectionBalance(accounts);
-        }
-
-        private decimal GetCollectionBalance(IEnumerable<AccountItemBriefViewModel> accounts,
-            DateTime? from = null, DateTime? to = null)
-        {
-            decimal balance = 0.0M;
-            var reportQuery = default(ReportQuery);
-            if (accounts.Any())
-            {
-                DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-                var filterBuilder = new StringBuilder(_report.GetEnvironmentFilters());
-                filterBuilder.AppendFormat(" AND vl.AccountID IN({0})",
-                    String.Join(",", accounts.Select(acc => acc.Id)));
-                filterBuilder.Replace("BranchID", "vl.BranchID");
-                if (from == null || to == null)
-                {
-                    reportQuery = new ReportQuery(String.Format(
-                        DashboardQuery.CollectionBalance, filterBuilder.ToString()));
-                }
-                else
-                {
-                    var fromDate = from.Value.ToShortDateString(false);
-                    var toDate = to.Value.ToShortDateString(false);
-                    reportQuery = new ReportQuery(String.Format(
-                        DashboardQuery.CollectionBalanceByDate, fromDate, toDate, filterBuilder.ToString()));
-                }
-
-                var result = DbConsole.ExecuteQuery(reportQuery.Query);
-                if (result.Rows.Count > 0)
-                {
-                    balance = _report.ValueOrDefault<decimal>(result.Rows[0], "Balance");
-                }
-            }
-
-            return balance;
-        }
-
-        private readonly IReportDirectUtility _report;
     }
 }

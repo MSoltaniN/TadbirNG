@@ -1,0 +1,141 @@
+<div style="padding:15px;" (keydown.esc)="escPress($event)">
+  <div class="row">
+    <div class="col-xs-12 dialog-item">
+      <span class="glyphicon glyphicon-ok" *ngIf="selectedItem == accountItem.Account"></span>
+      <span>{{ 'FullAccount.Account' | translate }}</span>
+
+      <div class="row search-box">
+        <input type="text" class="k-textbox" [(ngModel)]="accFilterValue" (keydown.enter)="handleFilter(accountItem.Account)" />
+        <button class="k-button k-primary" (click)="handleFilter(accountItem.Account)">
+          <span class="k-i-filter k-icon"></span>
+        </button>
+
+        <button class="k-button" *ngIf="isEnableAccountFilter" (click)="clearFilter(accountItem.Account)">
+          <span class="k-icon k-i-filter-clear"></span>
+        </button>
+      </div>
+      <div class="fullAccount-grid">
+
+        <kendo-grid [data]="accountsRows"
+                    [height]="199"
+                    [selectable]="{enabled: true, mode:'single'}"
+                    [kendoGridSelectBy]="'id'"
+                    [selectedKeys]="accountSelectedId"
+                    (selectedKeysChange)="accountKeysChange($event)"
+                    (dblclick)="onSave()">
+          <ng-template kendoGridNoRecordsTemplate></ng-template>
+          <kendo-grid-column field="fullCode" title="{{ 'FullAccount.AccountCode' | translate }}">
+          </kendo-grid-column>
+          <kendo-grid-column field="name" title="{{ 'FullAccount.AccountName' | translate }}">
+          </kendo-grid-column>
+        </kendo-grid>
+
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-4 dialog-item">
+      <span class="glyphicon glyphicon-ok" *ngIf="selectedItem == accountItem.DetailAccount"></span>
+      <span>{{ 'FullAccount.DetailAccount' | translate }}</span>
+
+      <div class="row search-box">
+        <input type="text" class="k-textbox" [(ngModel)]="dAccFilterValue" (keydown.enter)="handleFilter(accountItem.DetailAccount)" />
+        <button class="k-button k-primary" (click)="handleFilter(accountItem.DetailAccount)">
+          <span class="k-i-filter k-icon"></span>
+        </button>
+
+        <button class="k-button" *ngIf="isEnableDetailAccountFilter" (click)="clearFilter(accountItem.DetailAccount)">
+          <span class="k-icon k-i-filter-clear"></span>
+        </button>
+      </div>
+      <div class="fullAccount-grid">
+
+        <kendo-grid [data]="detailAccountsRows"
+                    [height]="199"
+                    [selectable]="{enabled: true, mode:'single'}"
+                    [kendoGridSelectBy]="'id'"
+                    [selectedKeys]="detailAccountSelectedId"
+                    (selectedKeysChange)="detailAccountKeysChange($event)"
+                    (dblclick)="onSave()">
+          <ng-template kendoGridNoRecordsTemplate></ng-template>
+          <kendo-grid-column field="fullCode" title="{{ 'FullAccount.Code' | translate }}">
+          </kendo-grid-column>
+          <kendo-grid-column field="name" title="{{ 'FullAccount.Name' | translate }}">
+          </kendo-grid-column>
+        </kendo-grid>
+
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-4 dialog-item" >
+      <span class="glyphicon glyphicon-ok" *ngIf="selectedItem == accountItem.CostCenter"></span>
+      <span>{{ 'FullAccount.CostCenter' | translate }}</span>
+
+      <div class="row search-box">
+        <input type="text" class="k-textbox" [(ngModel)]="cCenterFilterValue" (keydown.enter)="handleFilter(accountItem.CostCenter)" />
+        <button class="k-button k-primary" (click)="handleFilter(accountItem.CostCenter)">
+          <span class="k-i-filter k-icon"></span>
+        </button>
+
+        <button class="k-button" *ngIf="isEnableCostCenterFilter" (click)="clearFilter(accountItem.CostCenter)">
+          <span class="k-icon k-i-filter-clear"></span>
+        </button>
+      </div>
+      <div class="fullAccount-grid">
+
+        <kendo-grid [data]="costCentersRows"
+                    [height]="199"
+                    [selectable]="{enabled: true, mode:'single'}"
+                    [kendoGridSelectBy]="'id'"
+                    [selectedKeys]="costCenterSelectedId"
+                    (selectedKeysChange)="costCenterKeysChange($event)"
+                    (dblclick)="onSave()">
+          <ng-template kendoGridNoRecordsTemplate></ng-template>
+          <kendo-grid-column field="fullCode" title="{{ 'FullAccount.Code' | translate }}">
+          </kendo-grid-column>
+          <kendo-grid-column field="name" title="{{ 'FullAccount.Name' | translate }}">
+          </kendo-grid-column>
+        </kendo-grid>
+
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-4 dialog-item">
+      <span class="glyphicon glyphicon-ok" *ngIf="selectedItem == accountItem.Project"></span>
+      <span>{{ 'FullAccount.Project' | translate }}</span>
+
+      <div class="row search-box">
+        <input type="text" class="k-textbox" [(ngModel)]="pFilterValue" (keydown.enter)="handleFilter(accountItem.Project)" />
+        <button class="k-button k-primary" (click)="handleFilter(accountItem.Project)">
+          <span class="k-i-filter k-icon"></span>
+        </button>
+
+        <button class="k-button" *ngIf="isEnableProjectFilter" (click)="clearFilter(accountItem.Project)">
+          <span class="k-icon k-i-filter-clear"></span>
+        </button>
+      </div>
+      <div class="fullAccount-grid">
+
+        <kendo-grid [data]="projectsRows"
+                    [height]="199"
+                    [selectable]="{enabled: true, mode:'single'}"
+                    [kendoGridSelectBy]="'id'"
+                    [selectedKeys]="projectSelectedId"
+                    (selectedKeysChange)="projectKeysChange($event)"
+                    (dblclick)="onSave()">
+          <ng-template kendoGridNoRecordsTemplate></ng-template>
+          <kendo-grid-column field="fullCode" title="{{ 'FullAccount.Code' | translate }}">
+          </kendo-grid-column>
+          <kendo-grid-column field="name" title="{{ 'FullAccount.Name' | translate }}">
+          </kendo-grid-column>
+        </kendo-grid>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<kendo-dialog-actions>
+  <button class="k-button k-primary" [disabled]="accountSelectedId.length == 0" (click)="onSave()">{{ 'Buttons.Ok' | translate }}</button>
+  <button class="k-button k-primary" [disabled]="accountSelectedId.length == 0" (click)="onReset()">{{ 'FullAccount.Reset' | translate }}</button>
+  <button class="k-button" (click)="closeDialog()">{{ 'Buttons.Cancel' | translate }}</button>
+</kendo-dialog-actions>

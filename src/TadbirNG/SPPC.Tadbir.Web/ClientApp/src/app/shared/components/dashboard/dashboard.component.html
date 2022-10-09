@@ -1,9 +1,9 @@
 <section class="content-header col-md-12">
-  <div class="col-md-7 col-lg-5 col-xs-12 settings">
+  <div class="col-md-9 col-lg-7 col-xs-12 settings">
     <ng-template [ngIf]="isDashboardEditMode">
       <div
         class="alert alert-warning msg-container"
-        [ngClass]="isDashboardEditMode ? 'col-md-7' : ''"
+        [ngClass]="isDashboardEditMode ? 'col-md-5' : ''"
       >
         <div class="dashboard-button">
           <button (click)="onOkClick()" class="k-button k-primary">
@@ -24,6 +24,9 @@
       class="buttons" style="display: contents;"
       [ngClass]="isDashboardEditMode ? 'col-md-4' : 'col-md-6'"
     >
+      <a href="#/tadbir/dashboard" (click)="onAddTabClick()"
+        ><i class="fa fa-plus"></i>{{ "Dashboard.AddTab" | translate }}</a
+      >
       <a href="#/tadbir/dashboard" (click)="onAddWidgetClick()"
         ><i class="fa fa-plus"></i>{{ "Dashboard.AddWidget" | translate }}</a
       >
@@ -35,7 +38,7 @@
       >
     </div>
   </div>
-  <div class="col-md-5 col-lg-7 col-xs-12 title">
+  <div class="col-md-7 col-lg-5 col-xs-12 title">
     <h2>
       {{ "Dashboard.DashboardTitle" | translate }}
     </h2>
@@ -43,94 +46,33 @@
 </section>
 
 <!-- Main content -->
-<section class="content">
-  <!-- Small boxes (Stat box) -->
-  <div class="row">
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-aqua">
-        <div class="inner">
-          <h4>{{ cashierBalance | number }}</h4>
-          <p>{{ "Dashboard.InventoryFunds" | translate }}</p>
-        </div>
-        <div class="icon">
-          <i class="ion ion-bag"></i>
-        </div>
-        <a href="#/tadbir/dashboard" class="small-box-footer"
-          >اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i
-        ></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-green">
-        <div class="inner">
-          <h4>{{ bankBalance | number }}</h4>
-          <p>{{ "Dashboard.BankBalance" | translate }}</p>
-        </div>
-        <div class="icon">
-          <i class="ion ion-stats-bars"></i>
-        </div>
-        <a href="#/tadbir/dashboard" class="small-box-footer"
-          >اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i
-        ></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-yellow">
-        <div class="inner">
-          <h4>{{ unbalancedVoucherCount }}</h4>
-          <p>{{ "Dashboard.UnverifiedDocuments" | translate }}</p>
-        </div>
-        <div class="icon">
-          <i class="ion ion-person-add"></i>
-        </div>
-        <a href="#/tadbir/dashboard" class="small-box-footer"
-          >اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i
-        ></a>
-      </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-      <!-- small box -->
-      <div class="small-box bg-red">
-        <div class="inner">
-          <h4>{{ liquidRatio }}</h4>
-          <p>{{ "Dashboard.CurrentRatio" | translate }}</p>
-        </div>
-        <div class="icon">
-          <i class="ion ion-pie-graph"></i>
-        </div>
-        <a href="#/tadbir/dashboard" class="small-box-footer"
-          >اطلاعات بیشتر <i class="fa fa-arrow-circle-left"></i
-        ></a>
-      </div>
-    </div>
-    <!-- ./col -->
-  </div>
-  <!-- /.row -->
+<section class="content">  
   <div class="row widgets">
     <div style="height: 100vh; width: 100%; direction: ltr">
-      <p-tabView
+      <p-tabView #tabContainer        
         (onChange)="onTabChange($event)"
         *ngIf="currentDashboard"
         [(activeIndex)]="currentDashboardTabIndex"
       >
         <p-tabPanel
-          [header]="tab.title"
+          [header]="tab.title"   
+          [id]="tab.id"       
           *ngFor="
             let tab of currentDashboard.tabs;
             let i = index;
             let firstIndex = first
           "
         >
+          <ng-template pTemplate="header">
+            <span (click)="removeTab(tab.id)" *ngIf="isDashboardEditMode">
+              <i class="fa fa-trash remove-tab"></i>
+            </span>
+            <span class="tab-title">{{ tab.title }}</span>
+          </ng-template>
           <ng-container *ngIf="getWidgets(tab.id) | async as widgets">
             <gridster [options]="widgetOptions[tab.id]">
               <gridster-item [item]="item" *ngFor="let item of widgets">
-                <ng-container *ngIf="item.typeId == 2">
+                <ng-container *ngIf="item.typeId == 2 || item.typeId == 1">
                   <widget
                     (closeWidget)="onCloseWidget($event)"
                     [widgetId]="item.id"
@@ -141,8 +83,8 @@
                       <div class="box-body" body>
                         <chart-widget
                           [data]="widgetData[item.id + '-' + tab.id]"
-                          [type]="'bar'"
-                          [options]="basicOptions"
+                          [type]="getChartType(item.typeId)"
+                          [options]="getOptions(item.typeId)"
                         ></chart-widget>
                       </div>
                     </widget-container>

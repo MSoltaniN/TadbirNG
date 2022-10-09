@@ -8,7 +8,8 @@ namespace SPPC.Tadbir.Persistence
 SELECT SUM(vl.Debit - vl.Credit) AS Balance
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
-WHERE {0}";
+WHERE [v].[Date] >= '{0}' AND [v].[Date] <= '{1}' AND [v].[FiscalPeriodID] = {2} AND [v].[SubjectType] = 0
+    AND [vl].AccountID IN({3})";
 
         internal const string CollectionBalanceByDate = @"
 SELECT SUM(vl.Debit - vl.Credit) AS Balance
@@ -23,7 +24,7 @@ FROM [Reporting].[Dashboard] AS [dbd]
 WHERE [dbd].[UserID] = {0}";
 
         internal const string CurrentDashboardWidgets = @"
-SELECT [twgt].[TabID], [twgt].[WidgetID], [wgt].[Title], [wgt].[Description], [twgt].[Settings], [twgt].[DefaultSettings]
+SELECT [twgt].[TabWidgetID], [twgt].[TabID], [twgt].[WidgetID], [wgt].[Title], [wgt].[Description], [twgt].[Settings], [twgt].[DefaultSettings]
 FROM [Reporting].[Dashboard] AS [dbd]
   INNER JOIN [Reporting].[DashboardTab] AS [tab] ON [dbd].[DashboardID] = [tab].[DashboardID]
   INNER JOIN [Reporting].[TabWidget] AS [twgt] ON [tab].[DashboardTabID] = [twgt].[TabID]
@@ -50,10 +51,12 @@ FROM [Reporting].[WidgetAccount] AS [wacc]
 WHERE [wacc].[WidgetID] IN ({0})";
 
         internal const string WidgetsParameters = @"
-SELECT [uwp].[WidgetID], [wp].[Name], [wp].[Alias], [wp].[Type], [wp].[DefaultValue], [wp].[Description]
-FROM [Reporting].[UsedWidgetParameter] AS [uwp]
-  INNER JOIN [Reporting].[WidgetParameter] AS [wp] ON [uwp].[ParameterID] = [wp].[WidgetParameterID]
-WHERE [uwp].[WidgetID] IN ({0})";
+SELECT [wgt].[WidgetID], [para].[Name], [para].[Alias], [para].[Type], [para].[DefaultValue], [para].[Description]
+FROM [Reporting].[Widget] AS [wgt]
+  INNER JOIN [Reporting].[WidgetFunction] AS [func] ON [func].[WidgetFunctionID] = [wgt].[FunctionID]
+  INNER JOIN [Reporting].[UsedParameter] AS [upara] ON [upara].[FunctionID] = [func].[WidgetFunctionID]
+  INNER JOIN [Reporting].[FunctionParameter] AS [para] ON [para].[FunctionParameterID] = [upara].[ParameterID]
+WHERE [wgt].[WidgetID] IN ({0})";
 
         internal const string DebitTurnover = @"
 SELECT {0}, SUM([vl].[Debit]) AS [Debit]

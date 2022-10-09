@@ -11,8 +11,10 @@
 // ------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.ViewModel.Reporting
 {
@@ -29,6 +31,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
             Title = String.Empty;
             DefaultSettings = String.Empty;
             Description = String.Empty;
+            Accounts = new List<FullAccountViewModel>();
         }
 
         /// <summary>

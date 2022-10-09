@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasOne(e => e.Widget)
                 .WithMany()
                 .HasForeignKey(e => e.WidgetId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Auth_RoleWidget_Reporting_Widget");
         }
     }
