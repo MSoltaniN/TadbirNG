@@ -276,6 +276,9 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
         }
 
         if (!registerData) { //Add data to datastore
+          let bools = (<Array<any>>dataSet.tables.list[0].columns.list).filter(col => col.dataType.name == 'Boolean');
+          this.getBooleanTranslate(bools);
+          
           this.report.regData("data", "data", dataSet);
         }
 
@@ -342,6 +345,17 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
         this.showDesginedReportViewer(reportData, this.report);
       }
     }, 10);
+  }
+
+  getBooleanTranslate(args:any) {
+    args.forEach(col => {
+      let arrays = [];
+      (<Array<any>>col.storage.values).forEach(item => {
+        item = item == true? this.translate.instant('Report.TrueLabel'): this.translate.instant('Report.FalseLabel');
+        arrays.push(item);
+      });
+      col.storage.values = arrays;
+    });
   }
 
   convertToShamsiDate(rows: any, cols: Array<QuickReportColumnConfig>) {
