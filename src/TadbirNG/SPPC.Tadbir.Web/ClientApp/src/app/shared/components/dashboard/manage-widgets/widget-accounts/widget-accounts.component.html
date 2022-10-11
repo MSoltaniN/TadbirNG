@@ -36,11 +36,10 @@
                   (pageChange)="onPageChange($event)"
                   (sortChange)="sortChange($event)"
                   (edit)="editHandler($event)"
-                  (remove)="removeHandler($event)"
+                  (remove)="removeHandler()"
                   [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-                  [selectedKeys]="selectedRows"
-                  [kendoGridSelectBy]="id"
-                  (selectedKeysChange)="onSelectedKeysChange($event)"
+                  [(selectedKeys)]="selectedRows"
+                  [kendoGridSelectBy]="getSelectedRow"
                   sppc-auto-generated-grid-reorder
                   sppc-auto-generated-grid-resize
                 >

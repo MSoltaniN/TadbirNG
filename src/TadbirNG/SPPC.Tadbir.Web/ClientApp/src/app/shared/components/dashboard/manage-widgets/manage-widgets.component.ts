@@ -33,7 +33,6 @@ import {
 import { DashboardApi } from "@sppc/shared/services/api";
 import { ToastrService } from "ngx-toastr";
 import { map } from "rxjs/operators";
-import "rxjs/Rx";
 import { WidgetService } from "../services/widget.service";
 import { ManageWidgetsFormComponent } from "./manage-widgets-form/manage-widgets-form.component";
 
@@ -66,7 +65,7 @@ export class ManageWidgetsComponent
 
   errorMessage: string;
 
-  @ViewChild(GridComponent) grid: GridComponent;
+  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
   @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
   @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
   @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;

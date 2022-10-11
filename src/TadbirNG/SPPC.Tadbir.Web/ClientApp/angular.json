@@ -29,6 +29,8 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/resources/css/stimulsoft/stimulsoft.viewer.office2013.whiteblue.css",
               "src/assets/resources/css/stimulsoft/stimulsoft.designer.office2013.whiteblue.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css"
             ]
           },

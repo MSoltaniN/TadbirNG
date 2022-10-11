@@ -50,16 +50,17 @@
 </section>
 
 <!-- Main content -->
-<section class="content">  
+<section class="content clear">  
   <div class="row widgets">
     <div style="height: 100vh; width: 100%; direction: ltr">
       <p-tabView #tabContainer        
         (onChange)="onTabChange($event)"
+        [class]="this.CurrentLanguage == 'fa'? 'rtl': 'ltr'"
         *ngIf="currentDashboard"
         [(activeIndex)]="currentDashboardTabIndex"
       >
         <p-tabPanel
-          [header]="tab.title"   
+          [header]="tab.title"
           [id]="tab.id"       
           *ngFor="
             let tab of currentDashboard.tabs;
@@ -68,7 +69,7 @@
           "
         >
           <ng-template pTemplate="header">
-            <span (click)="removeTab(tab.id)" *ngIf="isDashboardEditMode">
+            <span (click)="removeTab(tab.id)" *ngIf="isDashboardEditMode" class="w-tab-icon">
               <i class="fa fa-trash remove-tab"></i>
             </span>
             <span class="tab-title">{{ tab.title }}</span>

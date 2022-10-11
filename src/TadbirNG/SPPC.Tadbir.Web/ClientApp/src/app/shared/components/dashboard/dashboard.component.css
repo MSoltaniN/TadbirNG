@@ -2,6 +2,14 @@
   direction: rtl;
 }
 
+.rtl {
+  direction: rtl;
+}
+
+.ltr {
+  direction: ltr;
+}
+
 .guage {
   display: flex;
   align-items: center;
@@ -127,4 +135,24 @@ a i {
   font-weight: bolder;
   font-size: medium;
   color: rgb(0, 96, 206);
+}
+
+::ng-deep .p-tabview .p-tabview-nav li {
+  font-size: 14px;
+  font-family: 'SPPC';
+}
+
+::ng-deep .w-tab-icon {
+  color: brown;
+  margin-inline-end: 5px;
+  transition: all 0.3s;
+}
+
+::ng-deep .w-tab-icon:hover {
+  color: red;
+  transition: all 0.3s;
+}
+
+::ng-deep .p-tabview-panels{
+  direction: ltr;
 }
