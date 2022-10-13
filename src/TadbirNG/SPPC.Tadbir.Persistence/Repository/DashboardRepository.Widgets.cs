@@ -582,23 +582,21 @@ namespace SPPC.Tadbir.Persistence
                 .FirstOrDefaultAsync();
             if (widget != null)
             {
+                var functionName = widget.Function.Name;
                 DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-                var accountRepository = UnitOfWork.GetAsyncRepository<WidgetAccount>();
-                var fullAccounts = GetFullAccounts(widget.Accounts, accountRepository);
-                var values = await GetFunctionValuesAsync(from, to, unit);
-                var evaluator = GetChartFunctionEvaluator(widget.Function.Name);
-                dataSeries = new ChartSeriesViewModel();
-                dataSeries.Labels.AddRange(values.Select(value => value.XLabel));
-                foreach (var fullAccount in fullAccounts)
+                if (functionName.StartsWith("Function_"))
                 {
-                    var serie = new ChartSerieViewModel()
-                    {
-                        Label = GetFullAccountLabel(fullAccount)
-                    };
-                    serie.Data.AddRange(values
-                        .OrderBy(value => value.FromDate)
-                        .Select(value => evaluator(fullAccount, value.FromDate, value.ToDate)));
-                    dataSeries.Datasets.Add(serie);
+                    var accountRepository = UnitOfWork.GetAsyncRepository<WidgetAccount>();
+                    var fullAccounts = GetFullAccounts(widget.Accounts, accountRepository);
+                    var values = await GetTurnoverFunctionValuesAsync(from, to, unit);
+                    dataSeries = GetBasicFunctionData(functionName, values, fullAccounts);
+                }
+                else
+                {
+                    var values = functionName.StartsWith("FunctionXT")
+                        ? await GetTurnoverFunctionValuesAsync(from, to, unit)
+                        : await GetBalanceFunctionValuesAsync(from, to, unit);
+                    dataSeries = GetSpecialFunctionData(functionName, values);
                 }
             }
 
@@ -646,7 +644,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 GetGaugeWidgetParameters(
                     parameters, out DateTime from, out DateTime to, out decimal min, out decimal max);
-                var evaluator = GetGaugeFunctionEvaluator(widget.Function.Name);
+                var evaluator = GetFunctionEvaluator(widget.Function.Name);
                 gaugeData = new GaugeDataViewModel()
                 {
                     MinValue = min,
@@ -910,7 +908,7 @@ namespace SPPC.Tadbir.Persistence
             return fullAccounts;
         }
 
-        private async Task<IList<WidgetFunctionValues>> GetFunctionValuesAsync(
+        private async Task<IList<WidgetFunctionValues>> GetTurnoverFunctionValuesAsync(
             DateTime from, DateTime to, WidgetDateUnit unit)
         {
             var values = new List<WidgetFunctionValues>();
@@ -924,6 +922,28 @@ namespace SPPC.Tadbir.Persistence
                     {
                         XLabel = Context.Localize(month.Name),
                         FromDate = month.Start,
+                        ToDate = month.End
+                    }));
+            }
+
+            return values;
+        }
+
+        private async Task<IList<WidgetFunctionValues>> GetBalanceFunctionValuesAsync(
+            DateTime from, DateTime to, WidgetDateUnit unit)
+        {
+            var values = new List<WidgetFunctionValues>();
+            var calendar = await Config.GetCurrentCalendarAsync();
+            Config.GetCurrentFiscalDateRange(out DateTime startDate, out DateTime _);
+            if (unit == WidgetDateUnit.Monthly)
+            {
+                var enumerator = new MonthEnumerator(from, to, calendar);
+                values.AddRange(enumerator
+                    .GetMonths()
+                    .Select(month => new WidgetFunctionValues()
+                    {
+                        XLabel = Context.Localize(month.Name),
+                        FromDate = startDate,
                         ToDate = month.End
                     }));
             }

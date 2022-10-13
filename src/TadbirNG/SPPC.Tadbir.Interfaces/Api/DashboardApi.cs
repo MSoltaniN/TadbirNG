@@ -170,16 +170,6 @@ namespace SPPC.Tadbir.Api
         #endregion
 
         /// <summary>
-        /// API client URL for summary values in the main dashboard
-        /// </summary>
-        public const string Summaries = "dashboard/summaries";
-
-        /// <summary>
-        /// API server route URL for summary values in the main dashboard
-        /// </summary>
-        public const string SummariesUrl = "dashboard/summaries";
-
-        /// <summary>
         /// API client URL for general license information
         /// </summary>
         public const string LicenseInfo = "dashboard/license";

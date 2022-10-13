@@ -6,14 +6,15 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
     public partial class DashboardRepository
     {
-        private ChartFunctionEvaluator GetChartFunctionEvaluator(string functionName)
+        private WidgetFunctionEvaluator GetFunctionEvaluator(string functionName)
         {
-            var evaluator = default(ChartFunctionEvaluator);
+            var evaluator = default(WidgetFunctionEvaluator);
             switch (functionName)
             {
                 case AppStrings.Function_DebitTurnover:
@@ -28,25 +29,65 @@ namespace SPPC.Tadbir.Persistence
                 case AppStrings.Function_Balance:
                     evaluator = CalculateBalance;
                     break;
-            }
-
-            return evaluator;
-        }
-
-        private GaugeFunctionEvaluator GetGaugeFunctionEvaluator(string functionName)
-        {
-            var evaluator = default(GaugeFunctionEvaluator);
-            switch (functionName)
-            {
-                case AppStrings.Function_LiquidRatio:
+                case AppStrings.FunctionXT_GrossSales:
+                    evaluator = CalculateGrossSales;
+                    break;
+                case AppStrings.FunctionXT_NetSales:
+                    evaluator = CalculateNetSales;
+                    break;
+                case AppStrings.FunctionXB_LiquidRatio:
                     evaluator = CalculateLiquidRatio;
+                    break;
+                case AppStrings.FunctionXB_BankBalance:
+                    evaluator = CalculateBankBalance;
+                    break;
+                case AppStrings.FunctionXB_CashBalance:
+                    evaluator = CalculateCashBalance;
                     break;
             }
 
             return evaluator;
         }
 
-        private decimal CalculateDebitTurnover(FullAccountViewModel fullAccount, DateTime from, DateTime to)
+        private ChartSeriesViewModel GetBasicFunctionData(string functionName,
+            IEnumerable<WidgetFunctionValues> values, IEnumerable<FullAccountViewModel> fullAccounts)
+        {
+            var dataSeries = new ChartSeriesViewModel();
+            dataSeries.Labels.AddRange(values.Select(value => value.XLabel));
+            var evaluator = GetFunctionEvaluator(functionName);
+            foreach (var fullAccount in fullAccounts)
+            {
+                var serie = new ChartSerieViewModel()
+                {
+                    Label = GetFullAccountLabel(fullAccount)
+                };
+                serie.Data.AddRange(values
+                    .OrderBy(value => value.FromDate)
+                    .Select(value => evaluator(value.FromDate, value.ToDate, fullAccount)));
+                dataSeries.Datasets.Add(serie);
+            }
+
+            return dataSeries;
+        }
+
+        private ChartSeriesViewModel GetSpecialFunctionData(
+            string functionName, IEnumerable<WidgetFunctionValues> values)
+        {
+            var dataSeries = new ChartSeriesViewModel();
+            dataSeries.Labels.AddRange(values.Select(value => value.XLabel));
+            var evaluator = GetFunctionEvaluator(functionName);
+            var serie = new ChartSerieViewModel()
+            {
+                Label = functionName
+            };
+            serie.Data.AddRange(values
+                .OrderBy(value => value.FromDate)
+                .Select(value => evaluator(value.FromDate, value.ToDate)));
+            dataSeries.Datasets.Add(serie);
+            return dataSeries;
+        }
+
+        private decimal CalculateDebitTurnover(DateTime from, DateTime to, FullAccountViewModel fullAccount)
         {
             decimal turnover = 0.0M;
             var query = String.Format(
@@ -63,7 +104,7 @@ namespace SPPC.Tadbir.Persistence
             return turnover;
         }
 
-        private decimal CalculateCreditTurnover(FullAccountViewModel fullAccount, DateTime from, DateTime to)
+        private decimal CalculateCreditTurnover(DateTime from, DateTime to, FullAccountViewModel fullAccount)
         {
             decimal turnover = 0.0M;
             var query = String.Format(
@@ -80,7 +121,7 @@ namespace SPPC.Tadbir.Persistence
             return turnover;
         }
 
-        private decimal CalculateNetTurnover(FullAccountViewModel fullAccount, DateTime from, DateTime to)
+        private decimal CalculateNetTurnover(DateTime from, DateTime to, FullAccountViewModel fullAccount)
         {
             decimal turnover = 0.0M;
             var query = String.Format(
@@ -97,7 +138,7 @@ namespace SPPC.Tadbir.Persistence
             return turnover;
         }
 
-        private decimal CalculateBalance(FullAccountViewModel fullAccount, DateTime from, DateTime to)
+        private decimal CalculateBalance(DateTime from, DateTime to, FullAccountViewModel fullAccount)
         {
             decimal balance = 0.0M;
             var query = String.Format(
@@ -114,7 +155,23 @@ namespace SPPC.Tadbir.Persistence
             return balance;
         }
 
-        private decimal CalculateLiquidRatio(DateTime from, DateTime to)
+        private decimal CalculateGrossSales(DateTime from, DateTime to, FullAccountViewModel fullAccount = null)
+        {
+            var balance = GetCollectionBalance(AccountCollectionId.Sales, from, to);
+            return Math.Abs(balance);
+        }
+
+        private decimal CalculateNetSales(DateTime from, DateTime to, FullAccountViewModel fullAccount = null)
+        {
+            var grossSales = CalculateGrossSales(from, to);
+            var deficitAccounts = new List<AccountItemBriefViewModel>();
+            deficitAccounts.AddRange(_report.GetUsableAccounts(AccountCollectionId.SalesRefund));
+            deficitAccounts.AddRange(_report.GetUsableAccounts(AccountCollectionId.SalesDiscount));
+            var refundDiscount = GetCollectionBalance(deficitAccounts.Select(acc => acc.Id), from, to);
+            return Math.Abs(grossSales - refundDiscount);
+        }
+
+        private decimal CalculateLiquidRatio(DateTime from, DateTime to, FullAccountViewModel fullAccount = null)
         {
             decimal liquidAssets = GetCollectionBalance(AccountCollectionId.LiquidAssets, from, to);
             decimal liquidLiabilities = Math.Max(1.0M, Math.Abs(
@@ -123,23 +180,34 @@ namespace SPPC.Tadbir.Persistence
             return liquidRatio;
         }
 
+        private decimal CalculateBankBalance(DateTime from, DateTime to, FullAccountViewModel fullAccount = null)
+        {
+            return GetCollectionBalance(AccountCollectionId.Bank, from, to);
+        }
+
+        private decimal CalculateCashBalance(DateTime from, DateTime to, FullAccountViewModel fullAccount = null)
+        {
+            return GetCollectionBalance(AccountCollectionId.Cashier, from, to);
+        }
+
         private decimal GetCollectionBalance(AccountCollectionId collectionId, DateTime from, DateTime to)
         {
             var accounts = _report.GetUsableAccounts(collectionId);
-            return GetCollectionBalance(accounts, from, to);
+            var accountIds = accounts.Select(acc => acc.Id);
+            return GetCollectionBalance(accountIds, from, to);
         }
 
         private decimal GetCollectionBalance(
-            IEnumerable<AccountItemBriefViewModel> accounts, DateTime from, DateTime to)
+            IEnumerable<int> accountIds, DateTime from, DateTime to)
         {
             decimal balance = 0.0M;
-            if (accounts.Any())
+            if (accountIds.Any())
             {
                 DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
                 var query = String.Format(
                     DashboardQuery.CollectionBalance, from.ToShortDateString(false),
                     to.ToShortDateString(false), UserContext.FiscalPeriodId,
-                    String.Join(",", accounts.Select(acc => acc.Id)));
+                    String.Join(",", accountIds));
                 var result = DbConsole.ExecuteQuery(query);
                 if (result.Rows.Count > 0)
                 {
@@ -151,7 +219,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly IReportDirectUtility _report;
-        private delegate decimal ChartFunctionEvaluator(FullAccountViewModel fullAccount, DateTime from, DateTime to);
-        private delegate decimal GaugeFunctionEvaluator(DateTime from, DateTime to);
+        private delegate decimal WidgetFunctionEvaluator(
+            DateTime from, DateTime to, FullAccountViewModel fullAccount = null);
     }
 }

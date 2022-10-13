@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
@@ -152,12 +151,5 @@ namespace SPPC.Tadbir.Persistence
         Task<List<WidgetViewModel>> GetWidgetsLookupAsync();
 
         #endregion
-
-        /// <summary>
-        /// به روش آسنکرون، مقادیر خلاصه محاسبه شده برای نمایش در داشبورد را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="calendar">تقویم مورد استفاده برای نمودارهای ماهیانه</param>
-        /// <returns>اطلاعات مالی محاسبه شده</returns>
-        Task<DashboardSummariesViewModel> GetSummariesAsync(Calendar calendar);
     }
 }
