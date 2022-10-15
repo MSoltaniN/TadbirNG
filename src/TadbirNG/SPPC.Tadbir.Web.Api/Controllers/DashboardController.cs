@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +16,6 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Filters;
 using io = System.IO;
@@ -297,6 +295,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var parameters = GetParameters();
             var widgetData = await _repository.GetWidgetDataAsync(widgetId, parameters);
+            if (widgetData is ChartSeriesViewModel chartData)
+            {
+                Array.ForEach(chartData.Datasets.ToArray(), dataset => dataset.Label = _strings[dataset.Label]);
+                return Json(chartData);
+            }
+
             return Json(widgetData);
         }
 
@@ -451,20 +455,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         ///
         /// </summary>
         /// <returns></returns>
-        // GET: api/dashboard/summaries
-        [HttpGet]
-        [Route(DashboardApi.SummariesUrl)]
-        public async Task<IActionResult> GetSummariesAsync()
-        {
-            var summaries = await _repository.GetSummariesAsync(GetCurrentCalendar());
-            Localize(summaries);
-            return Json(summaries);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
         // GET: api/dashboard/license
         [HttpGet]
         [Route(DashboardApi.LicenseInfoUrl)]
@@ -473,14 +463,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             string licenseData = io::File.ReadAllText(_pathProvider.License);
             var license = JsonHelper.To<LicenseFileModel>(licenseData);
             return Json(license);
-        }
-
-        private Calendar GetCurrentCalendar()
-        {
-            string language = GetPrimaryRequestLanguage();
-            return language == "fa"
-                ? new PersianCalendar()
-                : new GregorianCalendar() as Calendar;
         }
 
         private List<ParameterSummary> GetParameters()
@@ -590,16 +572,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
-        }
-
-        private void Localize(DashboardSummariesViewModel summaries)
-        {
-            summaries.GrossSales.Title = _strings[summaries.GrossSales.Title ?? String.Empty];
-            summaries.GrossSales.Legend = _strings[summaries.GrossSales.Legend ?? String.Empty];
-            summaries.NetSales.Title = _strings[summaries.NetSales.Title ?? String.Empty];
-            summaries.NetSales.Legend = _strings[summaries.NetSales.Legend ?? String.Empty];
-            Array.ForEach(summaries.NetSales.Points.ToArray(), point => point.XValue = _strings[point.XValue]);
-            Array.ForEach(summaries.GrossSales.Points.ToArray(), point => point.XValue = _strings[point.XValue]);
         }
 
         private void Localize(DashboardViewModel dashboard)

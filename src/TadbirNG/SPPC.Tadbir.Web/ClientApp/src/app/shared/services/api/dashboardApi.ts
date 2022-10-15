@@ -61,11 +61,6 @@ export class DashboardApi {
   public static WidgetsLookup =
     environment.BaseUrl + "/dashboard/lookup/widgets";
 
-  // dashboard/summaries
-  public static Summaries = environment.BaseUrl + "/dashboard/summaries";
-  
-  //
-  public static params = environment.BaseUrl + "/dashboard/functions/{0}/params"
   // dashboard/license
   public static LicenseInfo = environment.BaseUrl + "/dashboard/license";
 }

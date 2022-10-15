@@ -3669,22 +3669,22 @@
   <data name="IncorrectTabIndices" xml:space="preserve">
     <value>One or more tab indices are incorrect.</value>
   </data>
-  <data name="Function_GrossNetSales" xml:space="preserve">
+  <data name="FunctionXT_GrossNetSales" xml:space="preserve">
     <value>Gross/Net sales</value>
   </data>
-  <data name="Function_GrossSales" xml:space="preserve">
+  <data name="FunctionXT_GrossSales" xml:space="preserve">
     <value>Gross sales</value>
   </data>
-  <data name="Function_LiquidRatio" xml:space="preserve">
+  <data name="FunctionXB_LiquidRatio" xml:space="preserve">
     <value>Liquid ratio</value>
   </data>
-  <data name="Function_NetSales" xml:space="preserve">
+  <data name="FunctionXT_NetSales" xml:space="preserve">
     <value>Net sales</value>
   </data>
-  <data name="Gauge_Accelerator" xml:space="preserve">
-    <value>Simple gauge</value>
+  <data name="FunctionXB_BankBalance" xml:space="preserve">
+    <value>Bank balance</value>
   </data>
-  <data name="Gauge_Thermometer" xml:space="preserve">
-    <value>Thermometer gauge</value>
+  <data name="FunctionXB_CashBalance" xml:space="preserve">
+    <value>Cash balance</value>
   </data>
 </root>
