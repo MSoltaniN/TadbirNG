@@ -542,10 +542,7 @@ export class DefaultComponent extends BaseComponent {
    * @param key is key of message like 'Buttons.Ok'
    */
   public getText(key: string): string {
-    var msgText = "";
-    this.translateService.get(key).subscribe((msg: string) => {
-      msgText = msg;
-    });
+    var msgText = this.translateService.instant(key);
     return msgText;
   }
 
