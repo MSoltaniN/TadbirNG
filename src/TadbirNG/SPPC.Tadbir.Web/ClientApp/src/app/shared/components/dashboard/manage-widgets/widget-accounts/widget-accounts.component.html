@@ -76,7 +76,7 @@
                     <button
                       (click)="removeHandler()"
                       class="k-button k-button-icon"
-                      [disabled]="selectedRows.length != 1"
+                      [disabled]="selectedRows.length == 0"
                       title="{{ 'Buttons.Delete' | translate }}"
                     >
                       <span class="k-icon k-i-delete"></span>
