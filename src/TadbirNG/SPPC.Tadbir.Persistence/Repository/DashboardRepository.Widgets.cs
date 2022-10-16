@@ -341,7 +341,6 @@ namespace SPPC.Tadbir.Persistence
                     string oldState = GetState(existing);
                     OnEntityAction(OperationId.Edit);
                     UpdateExisting(widget, existing);
-                    await SetPropertyNamesAsync(existing);
                     Log.Description = Context.Localize(
                         String.Format("{0} : ({1}) , {2} : ({3})",
                         AppStrings.Old, Context.Localize(oldState),
