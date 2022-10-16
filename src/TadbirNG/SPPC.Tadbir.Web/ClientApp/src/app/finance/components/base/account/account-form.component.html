@@ -35,8 +35,8 @@
                 <div class="col-xs-12 col-sm-6">
                   <div class="form-group">
                     <label for="groupId" class="control-label">{{ 'Account.AccountGroup' | translate }}</label>
-
-                    <kendo-dropdownlist class="ddl-acc" [disabled]="parent || model.groupId"
+                    <!-- [disabled]="parent || model.groupId" -->
+                    <kendo-dropdownlist class="ddl-acc" 
                                         [data]="accGroupList"
                                         [textField]="'value'"
                                         [valueField]="'key'"

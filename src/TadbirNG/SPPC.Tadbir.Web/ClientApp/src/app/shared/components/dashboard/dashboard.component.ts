@@ -217,7 +217,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
     if (this.currentContext.fpId > 0 && this.currentContext.branchId > 0) {
       this.dashboardService
-        .getDashboardInfo()
+        .getCurrentDashboard()
         .subscribe((res: DashboardSummaries) => {
           this.cashierBalance = res.cashierBalance;
           this.bankBalance = res.bankBalance;

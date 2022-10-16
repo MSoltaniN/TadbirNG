@@ -76,7 +76,7 @@
                     <button
                       (click)="removeHandler()"
                       class="k-button k-button-icon"
-                      [disabled]="selectedRows.length == 0"
+                      [disabled]="selectedRows.length != 1"
                       title="{{ 'Buttons.Delete' | translate }}"
                     >
                       <span class="k-icon k-i-delete"></span>
@@ -91,14 +91,14 @@
 
                   <kendo-grid-column [width]="100" field="account.name" title="{{ 'VoucherLine.FullAccount.Account.Name' | translate }}">
                   </kendo-grid-column>
-    
-                  <kendo-grid-column [width]="100" field="project.name" title="{{ 'VoucherLine.FullAccount.Project.Name' | translate }}">
+                  
+                  <kendo-grid-column [width]="150" field="detailAccount.name" title="{{ 'VoucherLine.FullAccount.DetailAccount.Name' | translate }}">
                   </kendo-grid-column>
 
                   <kendo-grid-column [width]="150" field="costCenter.name" title="{{ 'VoucherLine.FullAccount.CostCenter.Name' | translate }}">
                   </kendo-grid-column>
 
-                  <kendo-grid-column [width]="150" field="detailAccount.name" title="{{ 'VoucherLine.FullAccount.DetailAccount.Name' | translate }}">
+                  <kendo-grid-column [width]="100" field="project.name" title="{{ 'VoucherLine.FullAccount.Project.Name' | translate }}">
                   </kendo-grid-column>
 
                 </kendo-grid>
