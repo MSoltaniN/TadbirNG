@@ -12,7 +12,7 @@
       <a href="#/tadbir/dashboard" (click)="onManageWidgetsClick()">
         <i class="fa fa-cubes"></i>{{ "Dashboard.ManageWidgets" | translate }}
       </a>
-      <a href="#/tadbir/dashboard" (click)="onAddTabClick()">
+      <a href="#/tadbir/dashboard" *ngIf="this.currentDashboard" (click)="onAddTabClick()">
         <i class="fa fa-plus"></i>{{ "Dashboard.AddTab" | translate }}
       </a>
       <a href="#/tadbir/dashboard" (click)="onAddWidgetClick()">
