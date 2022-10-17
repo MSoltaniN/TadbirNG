@@ -49,22 +49,30 @@ namespace SPPC.Tadbir.WinRunner
             }
         }
 
-        private void RunApp_Click(object sender, EventArgs e)
+        private void btnRunStopApp_Click(object sender, EventArgs e)
         {
             txtConsole.Focus();
-            _runner.OutputReceived += Runner_OutputReceived;
-            btnRunApp.Enabled = false;
+            _startRunner.OutputReceived += Runner_OutputReceived;
+            btnRunApp.Enabled = false; 
             worker.RunWorkerAsync();
         }
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            _runner.Run(String.Format($"{ComposeCommand} down"));
-            _runner.Run(String.Format($"{ComposeCommand} up --no-build"));
+            _startRunner.Run(String.Format($"{ComposeCommand} down"));
+            _startRunner.Run(String.Format($"{ComposeCommand} up --no-build"));
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+        }
+        private void CleanStop()
+        {
+            _stopRunner.Run($"{ComposeCommand} stop");
+            if (worker.IsBusy)
+            {
+                worker.CancelAsync();
+            }
         }
 
         private void CheckForUpdate_Click(object sender, EventArgs e)
@@ -115,16 +123,6 @@ namespace SPPC.Tadbir.WinRunner
             Cursor = Cursors.Default;
         }
 
-        private void Exit_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("می خواهید سرویس های برنامه را متوقف کنید؟",
-                "خطا", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2,
-                MessageBoxOptions.RtlReading) == DialogResult.Yes)
-            {
-                CleanStop();
-                Application.Exit();
-            }
-        }
 
         private bool ConfirmApplicationUpdate(UpdateUtility utility)
         {
@@ -138,17 +136,9 @@ namespace SPPC.Tadbir.WinRunner
             return result == DialogResult.Yes;
         }
 
-        private void CleanStop()
-        {
-            _runner.Stop();
-            if (worker.IsBusy)
-            {
-                worker.CancelAsync();
-            }
-        }
 
-        private const string ComposeCommand = "docker-compose -f docker-compose.override.yml -f docker-compose.yml";
-        private readonly CliRunner _runner = new();
+        private const string ComposeCommand = "docker compose -f \"docker-compose.yml\" -f \"docker-compose.override.yml\"  -p \"tadbirng\"";
+        private readonly CliRunner _startRunner = new(), _stopRunner= new();
         private readonly IApiClient _apiClient;
     }
 }

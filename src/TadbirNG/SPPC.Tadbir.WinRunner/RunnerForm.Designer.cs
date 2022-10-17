@@ -92,7 +92,6 @@ namespace SPPC.Tadbir.WinRunner
             this.btnExit.TabIndex = 18;
             this.btnExit.Text = "خروج";
             this.btnExit.UseVisualStyleBackColor = true;
-            this.btnExit.Click += new System.EventHandler(this.Exit_Click);
             // 
             // btnRunApp
             // 
@@ -103,7 +102,6 @@ namespace SPPC.Tadbir.WinRunner
             this.btnRunApp.TabIndex = 17;
             this.btnRunApp.Text = "اجرای برنامه";
             this.btnRunApp.UseVisualStyleBackColor = true;
-            this.btnRunApp.Click += new System.EventHandler(this.RunApp_Click);
             // 
             // worker
             // 
