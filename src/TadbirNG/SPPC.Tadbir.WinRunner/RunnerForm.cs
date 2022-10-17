@@ -100,7 +100,7 @@ namespace SPPC.Tadbir.WinRunner
                     "اطلاع به کاربر", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
                     MessageBoxOptions.RtlReading);
             }
-            else if(ConfirmApplicationUpdate(utility))
+            else if (ConfirmApplicationUpdate(utility))
             {
                 Cursor = Cursors.Default;
                 current.Edition = UpdateUtility.GetInstalledEdition();
