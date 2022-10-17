@@ -16,6 +16,9 @@ export class DashboardApi {
   // dashboard/current
   public static CurrentDashboard = environment.BaseUrl + "/dashboard/current";
 
+  // dashboard/new
+  public static NewDashboard = environment.BaseUrl + "/dashboard/new";
+
   // dashboard/tabs
   public static DashboardTabs = environment.BaseUrl + "/dashboard/tabs";
 

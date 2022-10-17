@@ -3687,4 +3687,10 @@
   <data name="FunctionXB_CashBalance" xml:space="preserve">
     <value>Cash balance</value>
   </data>
+  <data name="OnlyOneDashboardAllowedPerUser" xml:space="preserve">
+    <value>Creating more than one dashboard for current user is not allowed.</value>
+  </data>
+  <data name="NewDashboardTab" xml:space="preserve">
+    <value>New Tab</value>
+  </data>
 </root>

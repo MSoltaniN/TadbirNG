@@ -23,6 +23,20 @@ namespace SPPC.Tadbir.Persistence
         DashboardViewModel GetCurrentUserDashboard();
 
         /// <summary>
+        /// به روش آسنکرون، داشبورد جدیدی برای کاربر جاری ایجاد کرده و اولین ویجت را به آن اضافه می کند
+        /// </summary>
+        /// <param name="tabWidget">اولین ویجت در داشبورد کاربر جاری که به برگه پیش فرض اضافه می شود</param>
+        /// <returns>اطلاعات داشبورد ایجاد شده برای کاربر جاری</returns>
+        Task<DashboardViewModel> CreateCurrentUserDashboardAsync(TabWidgetViewModel tabWidget);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که داشبورد برای کاربر جاری ایجاد شده یا نه
+        /// </summary>
+        /// <returns>اگر برای کاربر جاری داشبورد ایجاد شده باشد، مقدار بولی "درست" و
+        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
+        Task<bool> IsCurrentDashboardCreatedAsync();
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات نمایشی یکی از برگه های موجود را خوانده و برمی گرداند
         /// </summary>
         /// <param name="tabId">شناسه دیتابیسی برگه مورد نظر</param>
