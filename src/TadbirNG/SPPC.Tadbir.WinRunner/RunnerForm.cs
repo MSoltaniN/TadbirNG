@@ -20,17 +20,6 @@ namespace SPPC.Tadbir.WinRunner
             _apiClient = new ServiceClient(SysParameterUtility.Servers.Update);
         }
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-            if (MessageBox.Show("می خواهید سرویس های برنامه را متوقف کنید؟",
-                "خطا", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2,
-                MessageBoxOptions.RtlReading) == DialogResult.Yes)
-            {
-                CleanStop();
-            }
-        }
-
         private void Runner_OutputReceived(object sender, OutputReceivedEventArgs e)
         {
             if (txtConsole.InvokeRequired)
@@ -49,7 +38,7 @@ namespace SPPC.Tadbir.WinRunner
             }
         }
 
-        private void RunApp_Click(object sender, EventArgs e)
+        private void btnRunApp_Click(object sender, EventArgs e)
         {
             txtConsole.Focus();
             _runner.OutputReceived += Runner_OutputReceived;
@@ -60,7 +49,7 @@ namespace SPPC.Tadbir.WinRunner
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             _runner.Run(String.Format($"{ComposeCommand} down"));
-            _runner.Run(String.Format($"{ComposeCommand} up --no-build"));
+            _runner.Run(String.Format($"{ComposeCommand} up --no-build -d"));
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -115,16 +104,6 @@ namespace SPPC.Tadbir.WinRunner
             Cursor = Cursors.Default;
         }
 
-        private void Exit_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("می خواهید سرویس های برنامه را متوقف کنید؟",
-                "خطا", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2,
-                MessageBoxOptions.RtlReading) == DialogResult.Yes)
-            {
-                CleanStop();
-                Application.Exit();
-            }
-        }
 
         private bool ConfirmApplicationUpdate(UpdateUtility utility)
         {
@@ -138,16 +117,18 @@ namespace SPPC.Tadbir.WinRunner
             return result == DialogResult.Yes;
         }
 
-        private void CleanStop()
+        private void btnExit_Click(object sender, EventArgs e)
         {
-            _runner.Stop();
-            if (worker.IsBusy)
-            {
-                worker.CancelAsync();
-            }
+            Application.Exit();
         }
 
-        private const string ComposeCommand = "docker-compose -f docker-compose.override.yml -f docker-compose.yml";
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            Application.Exit();
+        }
+
+        private const string ComposeCommand = "docker compose -f \"docker-compose.yml\" -f \"docker-compose.override.yml\"  -p \"tadbirng\"";
         private readonly CliRunner _runner = new();
         private readonly IApiClient _apiClient;
     }

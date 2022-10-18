@@ -42,9 +42,10 @@ namespace SPPC.Tadbir.WinRunner
             // lblElapsed
             // 
             this.lblElapsed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblElapsed.Location = new System.Drawing.Point(460, 14);
+            this.lblElapsed.Location = new System.Drawing.Point(748, 22);
+            this.lblElapsed.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.lblElapsed.Name = "lblElapsed";
-            this.lblElapsed.Size = new System.Drawing.Size(103, 25);
+            this.lblElapsed.Size = new System.Drawing.Size(167, 40);
             this.lblElapsed.TabIndex = 22;
             this.lblElapsed.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblElapsed.Visible = false;
@@ -53,9 +54,10 @@ namespace SPPC.Tadbir.WinRunner
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(316, 14);
+            this.label7.Location = new System.Drawing.Point(514, 22);
+            this.label7.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(115, 20);
+            this.label7.Size = new System.Drawing.Size(182, 32);
             this.label7.TabIndex = 21;
             this.label7.Text = "زمان صرف شده :";
             this.label7.Visible = false;
@@ -65,45 +67,49 @@ namespace SPPC.Tadbir.WinRunner
             this.txtConsole.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtConsole.Location = new System.Drawing.Point(21, 41);
+            this.txtConsole.Location = new System.Drawing.Point(34, 66);
+            this.txtConsole.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.txtConsole.Multiline = true;
             this.txtConsole.Name = "txtConsole";
             this.txtConsole.ReadOnly = true;
             this.txtConsole.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtConsole.Size = new System.Drawing.Size(542, 251);
+            this.txtConsole.Size = new System.Drawing.Size(878, 399);
             this.txtConsole.TabIndex = 20;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 14);
+            this.label1.Location = new System.Drawing.Point(34, 22);
+            this.label1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(110, 20);
+            this.label1.Size = new System.Drawing.Size(173, 32);
             this.label1.TabIndex = 19;
             this.label1.Text = "خروجی عملیات :";
             // 
             // btnExit
             // 
             this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExit.Location = new System.Drawing.Point(469, 317);
+            this.btnExit.Location = new System.Drawing.Point(762, 507);
+            this.btnExit.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(94, 29);
+            this.btnExit.Size = new System.Drawing.Size(153, 46);
             this.btnExit.TabIndex = 18;
             this.btnExit.Text = "خروج";
             this.btnExit.UseVisualStyleBackColor = true;
-            this.btnExit.Click += new System.EventHandler(this.Exit_Click);
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // btnRunApp
             // 
             this.btnRunApp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRunApp.Location = new System.Drawing.Point(202, 317);
+            this.btnRunApp.Location = new System.Drawing.Point(328, 507);
+            this.btnRunApp.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.btnRunApp.Name = "btnRunApp";
-            this.btnRunApp.Size = new System.Drawing.Size(131, 29);
+            this.btnRunApp.Size = new System.Drawing.Size(213, 46);
             this.btnRunApp.TabIndex = 17;
             this.btnRunApp.Text = "اجرای برنامه";
             this.btnRunApp.UseVisualStyleBackColor = true;
-            this.btnRunApp.Click += new System.EventHandler(this.RunApp_Click);
+            this.btnRunApp.Click += new System.EventHandler(this.btnRunApp_Click);
             // 
             // worker
             // 
@@ -114,9 +120,10 @@ namespace SPPC.Tadbir.WinRunner
             // btnCheckForUpdate
             // 
             this.btnCheckForUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCheckForUpdate.Location = new System.Drawing.Point(339, 317);
+            this.btnCheckForUpdate.Location = new System.Drawing.Point(551, 507);
+            this.btnCheckForUpdate.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.btnCheckForUpdate.Name = "btnCheckForUpdate";
-            this.btnCheckForUpdate.Size = new System.Drawing.Size(124, 29);
+            this.btnCheckForUpdate.Size = new System.Drawing.Size(202, 46);
             this.btnCheckForUpdate.TabIndex = 23;
             this.btnCheckForUpdate.Text = "به روزرسانی...";
             this.btnCheckForUpdate.UseVisualStyleBackColor = true;
@@ -125,10 +132,10 @@ namespace SPPC.Tadbir.WinRunner
             // RunnerForm
             // 
             this.AcceptButton = this.btnRunApp;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnExit;
-            this.ClientSize = new System.Drawing.Size(582, 353);
+            this.ClientSize = new System.Drawing.Size(946, 565);
             this.Controls.Add(this.btnCheckForUpdate);
             this.Controls.Add(this.lblElapsed);
             this.Controls.Add(this.label7);
@@ -136,6 +143,7 @@ namespace SPPC.Tadbir.WinRunner
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnRunApp);
+            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.Name = "RunnerForm";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;
