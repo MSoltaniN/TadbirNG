@@ -34,7 +34,7 @@
       (pageChange)="pageChange($event)"
       (sortChange)="sortChange($event)"
       (edit)="editHandler($event)"
-      (remove)="removeHandler()"
+      (remove)="removeHandler($event)"
       [loading]="false"
       [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
       [(selectedKeys)]="selectedRows"
