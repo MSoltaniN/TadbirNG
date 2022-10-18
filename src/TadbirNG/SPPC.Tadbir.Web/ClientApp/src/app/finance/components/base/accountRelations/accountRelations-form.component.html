@@ -35,6 +35,14 @@
                     </div>                   
                 </div>
                 <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}">
+                    <label *ngIf="relatedComponentCategories" class="my-k-label" for="selectAll">
+                        <input type="checkbox" name="selectAll"
+                               [checked]="relatedComponentCategories.length == relatedComponentCheckedKeys.length"
+                               class="k-checkbox" id="selectAll"
+                               (click)="selectAll()"
+                        >
+                        {{ 'AccountRelations.SelectAll' | translate }}
+                    </label>
                     <kendo-treeview [nodes]="relatedComponentCategories"
                                     [textField]="['name']"
                                     kendoTreeViewExpandable

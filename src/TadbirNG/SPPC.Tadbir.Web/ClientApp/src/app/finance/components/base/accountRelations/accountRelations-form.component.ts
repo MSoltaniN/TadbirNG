@@ -174,6 +174,42 @@ export class AccountRelationsFormComponent extends DetailComponent {
     else {
       this.resultCategories.push(item);
       this.resultCheckedKeys.push(item.id);
+    } 
+  }
+
+  selectAll() {
+    let selectedAllItems;
+    let resultIsFull;
+
+    if (this.relatedComponentCategories.length > 0) {
+      selectedAllItems = this.relatedComponentCategories.length <= this.relatedComponentCheckedKeys.length;
+      resultIsFull = this.relatedComponentCategories.length == this.resultCategories.length;
+      let cleared = false;
+
+      this.relatedComponentCategories.forEach(item => {
+
+        if ((this.relatedComponentCheckedKeys.find(f => f == item.id) && selectedAllItems) || cleared) {
+          var index = this.relatedComponentCheckedKeys.findIndex(f => f == item.id);
+          if (index > -1) {
+            this.relatedComponentCheckedKeys.splice(0, this.relatedComponentCheckedKeys.length);
+          }
+          cleared = true;
+        } else {
+          if (this.relatedComponentCheckedKeys.filter(i => i.id == item.id).length == 0) {
+            this.relatedComponentCheckedKeys.push(item.id);
+          }
+          if (this.resultCategories.filter(i => i.id == item.id).length == 0) {
+            this.resultCategories.push(item);
+            this.resultCheckedKeys.push(item.id);
+          }
+        }
+
+        var index = this.resultCategories.findIndex(f => f.id == item.id);
+        if (index > -1 && resultIsFull) {
+          this.resultCategories.splice(index, 1);
+        }
+
+      });
     }
   }
 

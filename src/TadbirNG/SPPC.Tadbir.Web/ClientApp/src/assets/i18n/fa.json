@@ -1246,7 +1246,8 @@
     "FormTitle": "برقراری ارتباط برای '{0}'",
     "NewRelations": "ارتباطات جدید",
     "RemainingRelations": "ارتباطات باقیمانده",
-    "noRemainingRelations": "هیچ گزینه ای برای ایجاد ارتباط وجود ندارد"
+    "noRemainingRelations": "هیچ گزینه ای برای ایجاد ارتباط وجود ندارد",
+    "SelectAll": "انتخاب همه"
   },
   "FiscalPeriod": {
     "New": "دوره مالی جدید",
