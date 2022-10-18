@@ -217,7 +217,7 @@ export class ManageWidgetsComponent
       });
   }
 
-  removeHandler() {
+  removeHandler(event) {
     this.deleteConfirm = true;
 
     if (this.groupOperation) {
