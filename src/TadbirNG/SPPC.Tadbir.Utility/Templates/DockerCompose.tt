@@ -22,9 +22,15 @@ if(_dbServer == SysParameterUtility.DbServer.Name)
  <#= SysParameterUtility.DbServer.Name #>:
   image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.DbServer.ImageName #>:<#= SysParameterUtility.DbServer.Tag #>
   user: root
+<#
+#if DEBUG
+#>
   build:
    context: ../../res
    dockerfile: Dockerfile
+<#
+#endif
+#>
   networks:
    - backend
   volumes:
@@ -34,9 +40,15 @@ if(_dbServer == SysParameterUtility.DbServer.Name)
 
  <#= SysParameterUtility.ApiServer.Name #>:
   image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.ApiServer.ImageName #>:<#= _editionTag #>
+<#
+#if DEBUG
+#>
   build:
    context: .
    dockerfile: SPPC.Tadbir.Web.Api/Dockerfile
+<#
+#endif
+#>
   depends_on:
    - <#= SysParameterUtility.DbServer.Name #>
   networks:
@@ -60,9 +72,15 @@ if(_dbServer == SysParameterUtility.DbServer.Name)
 
  <#= SysParameterUtility.WebApp.Name #>:
   image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.WebApp.ImageName #>:<#= SysParameterUtility.WebApp.Tag #>
+<#
+#if DEBUG
+#>
   build: 
    context: ./SPPC.Tadbir.Web/ClientApp
    dockerfile: Dockerfile
+<#
+#endif
+#>
   networks:
    - frontend
   ports:
@@ -70,9 +88,15 @@ if(_dbServer == SysParameterUtility.DbServer.Name)
 
  <#= SysParameterUtility.LicenseServer.Name #>:
   image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.LicenseServer.ImageName #>:<#= SysParameterUtility.LicenseServer.Tag #>
+<#
+#if DEBUG
+#>
   build:
    context: .
    dockerfile: SPPC.Licensing.Local.Web/Dockerfile
+<#
+#endif
+#>
   depends_on:
    - <#= SysParameterUtility.DbServer.Name #>
   volumes:

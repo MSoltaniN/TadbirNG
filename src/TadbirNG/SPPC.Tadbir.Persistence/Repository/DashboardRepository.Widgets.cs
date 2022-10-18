@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Common;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
@@ -34,6 +35,51 @@ namespace SPPC.Tadbir.Persistence
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             var dashboardResult = DbConsole.ExecuteQuery(query);
             return GetDashboard(dashboardResult);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، داشبورد جدیدی برای کاربر جاری ایجاد کرده و اولین ویجت را به آن اضافه می کند
+        /// </summary>
+        /// <param name="tabWidget">اولین ویجت در داشبورد کاربر جاری که به برگه پیش فرض اضافه می شود</param>
+        /// <returns>اطلاعات داشبورد ایجاد شده برای کاربر جاری</returns>
+        public async Task<DashboardViewModel> CreateCurrentUserDashboardAsync(TabWidgetViewModel tabWidget)
+        {
+            Verify.ArgumentNotNull(tabWidget, nameof(tabWidget));
+            if (await IsCurrentDashboardCreatedAsync())
+            {
+                return null;
+            }
+
+            var repository = UnitOfWork.GetAsyncRepository<Dashboard>();
+            var dashboard = new Dashboard() { UserId = UserContext.Id };
+            dashboard.Tabs.Add(new DashboardTab()
+            {
+                Index = 1,
+                Title = AppStrings.NewDashboardTab
+            });
+            repository.Insert(dashboard, dbd => dbd.Tabs);
+            await UnitOfWork.CommitAsync();
+            tabWidget.TabId = dashboard.Tabs
+                .Select(tab => tab.Id)
+                .First();
+            await SaveTabWidgetAsync(tabWidget);
+            return GetCurrentUserDashboard();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که داشبورد برای کاربر جاری ایجاد شده یا نه
+        /// </summary>
+        /// <returns>اگر برای کاربر جاری داشبورد ایجاد شده باشد، مقدار بولی "درست" و
+        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsCurrentDashboardCreatedAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Dashboard>();
+            var dashboardId = await repository
+                .GetEntityQuery()
+                .Where(dbd => dbd.UserId == UserContext.Id)
+                .Select(dbd => dbd.Id)
+                .FirstOrDefaultAsync();
+            return dashboardId > 0;
         }
 
         /// <summary>
@@ -755,6 +801,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(row => new DashboardTabViewModel()
                     {
                         Id = _report.ValueOrDefault<int>(row, "TabID"),
+                        DashboardId = dashboardId,
                         Index = _report.ValueOrDefault<int>(row, "TabIndex"),
                         Title = _report.ValueOrDefault(row, "TabTitle")
                     }));

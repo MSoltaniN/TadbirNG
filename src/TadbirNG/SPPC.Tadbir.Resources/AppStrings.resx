@@ -3678,4 +3678,10 @@
   <data name="FunctionXB_CashBalance" xml:space="preserve">
     <value>موجودی صندوق</value>
   </data>
+  <data name="OnlyOneDashboardAllowedPerUser" xml:space="preserve">
+    <value>امکان ایجاد بیش از یک داشبورد برای کاربر جاری وجود ندارد.</value>
+  </data>
+  <data name="NewDashboardTab" xml:space="preserve">
+    <value>برگه جدید</value>
+  </data>
 </root>

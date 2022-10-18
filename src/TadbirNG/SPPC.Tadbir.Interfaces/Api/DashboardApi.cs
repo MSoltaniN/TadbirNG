@@ -20,6 +20,16 @@ namespace SPPC.Tadbir.Api
         public const string CurrentDashboardUrl = "dashboard/current";
 
         /// <summary>
+        /// API client URL for a new dashboard created by (or assigned to) current user
+        /// </summary>
+        public const string NewDashboard = "dashboard/new";
+
+        /// <summary>
+        /// API server route URL for a new dashboard created by (or assigned to) current user
+        /// </summary>
+        public const string NewDashboardUrl = "dashboard/new";
+
+        /// <summary>
         /// API client URL for all tabs added to current dashboard
         /// </summary>
         public const string DashboardTabs = "dashboard/tabs";

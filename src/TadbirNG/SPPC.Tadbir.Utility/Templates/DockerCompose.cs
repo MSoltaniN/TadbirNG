@@ -80,17 +80,34 @@ if(_dbServer == SysParameterUtility.DbServer.Name)
             
             #line default
             #line hidden
-            this.Write("\r\n  user: root\r\n  build:\r\n   context: ../../res\r\n   dockerfile: Dockerfile\r\n  net" +
-                    "works:\r\n   - backend\r\n  volumes:\r\n   - productdata_");
+            this.Write("\r\n  user: root\r\n");
+            
+            #line 25 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+
+#if DEBUG
+
+            
+            #line default
+            #line hidden
+            this.Write("  build:\r\n   context: ../../res\r\n   dockerfile: Dockerfile\r\n");
             
             #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+
+#endif
+
+            
+            #line default
+            #line hidden
+            this.Write("  networks:\r\n   - backend\r\n  volumes:\r\n   - productdata_");
+            
+            #line 37 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DbServer.Name));
             
             #line default
             #line hidden
             this.Write(":/var/opt/mssql/data\r\n");
             
-            #line 32 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 38 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
 
 }
             
@@ -98,36 +115,53 @@ if(_dbServer == SysParameterUtility.DbServer.Name)
             #line hidden
             this.Write("\r\n ");
             
-            #line 35 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 41 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.ApiServer.Name));
             
             #line default
             #line hidden
             this.Write(":\r\n  image: ");
             
-            #line 36 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 42 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DockerHubHandle));
             
             #line default
             #line hidden
             this.Write("/");
             
-            #line 36 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 42 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.ApiServer.ImageName));
             
             #line default
             #line hidden
             this.Write(":");
             
-            #line 36 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 42 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_editionTag));
             
             #line default
             #line hidden
-            this.Write("\r\n  build:\r\n   context: .\r\n   dockerfile: SPPC.Tadbir.Web.Api/Dockerfile\r\n  depen" +
-                    "ds_on:\r\n   - ");
+            this.Write("\r\n");
             
-            #line 41 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 43 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+
+#if DEBUG
+
+            
+            #line default
+            #line hidden
+            this.Write("  build:\r\n   context: .\r\n   dockerfile: SPPC.Tadbir.Web.Api/Dockerfile\r\n");
+            
+            #line 49 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+
+#endif
+
+            
+            #line default
+            #line hidden
+            this.Write("  depends_on:\r\n   - ");
+            
+            #line 53 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DbServer.Name));
             
             #line default
@@ -135,14 +169,14 @@ if(_dbServer == SysParameterUtility.DbServer.Name)
             this.Write("\r\n  networks:\r\n   - backend\r\n  ports:\r\n   - 9095:80\r\n\r\n loadBalancer:\r\n  image: d" +
                     "ockercloud/haproxy:1.2.1\r\n  depends_on:\r\n   - ");
             
-            #line 50 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 62 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.ApiServer.Name));
             
             #line default
             #line hidden
             this.Write("\r\n  ports:\r\n   - 9095:80\r\n   - 1936:1936\r\n  links:\r\n   - ");
             
-            #line 55 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 67 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.ApiServer.Name));
             
             #line default
@@ -150,72 +184,106 @@ if(_dbServer == SysParameterUtility.DbServer.Name)
             this.Write("\r\n  volumes:\r\n   - /var/run/docker.sock:/var/run/docker.sock\r\n  networks:\r\n   - f" +
                     "rontend\r\n\r\n ");
             
-            #line 61 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 73 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.WebApp.Name));
             
             #line default
             #line hidden
             this.Write(":\r\n  image: ");
             
-            #line 62 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 74 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DockerHubHandle));
             
             #line default
             #line hidden
             this.Write("/");
             
-            #line 62 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 74 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.WebApp.ImageName));
             
             #line default
             #line hidden
             this.Write(":");
             
-            #line 62 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 74 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.WebApp.Tag));
             
             #line default
             #line hidden
-            this.Write("\r\n  build: \r\n   context: ./SPPC.Tadbir.Web/ClientApp\r\n   dockerfile: Dockerfile\r\n" +
-                    "  networks:\r\n   - frontend\r\n  ports:\r\n   - 9099:4200\r\n\r\n ");
+            this.Write("\r\n");
             
-            #line 71 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 75 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+
+#if DEBUG
+
+            
+            #line default
+            #line hidden
+            this.Write("  build: \r\n   context: ./SPPC.Tadbir.Web/ClientApp\r\n   dockerfile: Dockerfile\r\n");
+            
+            #line 81 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+
+#endif
+
+            
+            #line default
+            #line hidden
+            this.Write("  networks:\r\n   - frontend\r\n  ports:\r\n   - 9099:4200\r\n\r\n ");
+            
+            #line 89 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.LicenseServer.Name));
             
             #line default
             #line hidden
             this.Write(":\r\n  image: ");
             
-            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 90 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DockerHubHandle));
             
             #line default
             #line hidden
             this.Write("/");
             
-            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 90 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.LicenseServer.ImageName));
             
             #line default
             #line hidden
             this.Write(":");
             
-            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 90 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.LicenseServer.Tag));
             
             #line default
             #line hidden
-            this.Write("\r\n  build:\r\n   context: .\r\n   dockerfile: SPPC.Licensing.Local.Web/Dockerfile\r\n  " +
-                    "depends_on:\r\n   - ");
+            this.Write("\r\n");
             
-            #line 77 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 91 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+
+#if DEBUG
+
+            
+            #line default
+            #line hidden
+            this.Write("  build:\r\n   context: .\r\n   dockerfile: SPPC.Licensing.Local.Web/Dockerfile\r\n");
+            
+            #line 97 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+
+#endif
+
+            
+            #line default
+            #line hidden
+            this.Write("  depends_on:\r\n   - ");
+            
+            #line 101 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.DbServer.Name));
             
             #line default
             #line hidden
             this.Write("\r\n  volumes:\r\n   - productdata_");
             
-            #line 79 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
+            #line 103 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tadbir.Utility\Templates\DockerCompose.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(SysParameterUtility.LicenseServer.Name));
             
             #line default

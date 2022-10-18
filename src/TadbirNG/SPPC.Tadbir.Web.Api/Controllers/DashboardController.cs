@@ -63,6 +63,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        // POST: api/dashboard/new
+        [HttpPost]
+        [Route(DashboardApi.NewDashboardUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
+        public async Task<IActionResult> PostNewDashboardAsync([FromBody] TabWidgetViewModel widget)
+        {
+            var result = GetTabWidgetValidationResult(widget, 0);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (await _repository.IsCurrentDashboardCreatedAsync())
+            {
+                return BadRequestResult(_strings[AppStrings.OnlyOneDashboardAllowedPerUser]);
+            }
+
+            var dashboard = await _repository.CreateCurrentUserDashboardAsync(widget);
+            Localize(dashboard);
+            return Json(dashboard);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="tabId"></param>
         /// <returns></returns>
         // GET: api/dashboard/tabs/{tabId:min(1)}
@@ -580,6 +606,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 Array.ForEach(dashboard.Tabs.ToArray(), tab =>
                 {
+                    tab.Title = _strings[tab.Title];
                     Array.ForEach(tab.Widgets.ToArray(), widget =>
                     {
                         Localize(widget);
