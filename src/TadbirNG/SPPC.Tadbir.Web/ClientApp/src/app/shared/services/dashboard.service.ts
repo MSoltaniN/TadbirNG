@@ -27,19 +27,14 @@ export class DashboardService extends BaseService {
       case 2: //bar
         chartType = "horizontalBar";
         break;
+      case 3: //line
+        chartType = "line";
+        break;
       default:
         break;
     }
 
     return chartType;
-  }
-
-  getDashboardInfo() {
-    var url = DashboardApi.Summaries;
-    var options = { headers: this.httpHeaders };
-    return this.http
-      .get(url, options)
-      .pipe(map((response) => <any>(<Response>response)));
   }
 
   getLincenseInfo() {

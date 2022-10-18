@@ -881,10 +881,11 @@ INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (1, N'Fu
 INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (2, N'Function_CreditTurnover')
 INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (3, N'Function_NetTurnover')
 INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (4, N'Function_Balance')
-INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (5, N'Function_LiquidRatio')
-INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (6, N'Function_GrossSales')
-INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (7, N'Function_NetSales')
-INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (8, N'Function_GrossNetSales')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (5, N'FunctionXB_LiquidRatio')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (6, N'FunctionXT_GrossSales')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (7, N'FunctionXT_NetSales')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (8, N'FunctionXB_BankBalance')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (9, N'FunctionXB_CashBalance')
 SET IDENTITY_INSERT [Reporting].[WidgetFunction] OFF
 
 SET IDENTITY_INSERT [Reporting].[WidgetType] ON 
@@ -940,6 +941,9 @@ INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterI
 INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (22, 8, 1)
 INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (23, 8, 2)
 INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (24, 8, 3)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (25, 9, 1)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (26, 9, 2)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (27, 9, 3)
 SET IDENTITY_INSERT [Reporting].[UsedParameter] OFF
 
 SET IDENTITY_INSERT [Core].[DocumentStatus] ON

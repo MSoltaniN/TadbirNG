@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Common;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
@@ -34,6 +35,51 @@ namespace SPPC.Tadbir.Persistence
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             var dashboardResult = DbConsole.ExecuteQuery(query);
             return GetDashboard(dashboardResult);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، داشبورد جدیدی برای کاربر جاری ایجاد کرده و اولین ویجت را به آن اضافه می کند
+        /// </summary>
+        /// <param name="tabWidget">اولین ویجت در داشبورد کاربر جاری که به برگه پیش فرض اضافه می شود</param>
+        /// <returns>اطلاعات داشبورد ایجاد شده برای کاربر جاری</returns>
+        public async Task<DashboardViewModel> CreateCurrentUserDashboardAsync(TabWidgetViewModel tabWidget)
+        {
+            Verify.ArgumentNotNull(tabWidget, nameof(tabWidget));
+            if (await IsCurrentDashboardCreatedAsync())
+            {
+                return null;
+            }
+
+            var repository = UnitOfWork.GetAsyncRepository<Dashboard>();
+            var dashboard = new Dashboard() { UserId = UserContext.Id };
+            dashboard.Tabs.Add(new DashboardTab()
+            {
+                Index = 1,
+                Title = AppStrings.NewDashboardTab
+            });
+            repository.Insert(dashboard, dbd => dbd.Tabs);
+            await UnitOfWork.CommitAsync();
+            tabWidget.TabId = dashboard.Tabs
+                .Select(tab => tab.Id)
+                .First();
+            await SaveTabWidgetAsync(tabWidget);
+            return GetCurrentUserDashboard();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که داشبورد برای کاربر جاری ایجاد شده یا نه
+        /// </summary>
+        /// <returns>اگر برای کاربر جاری داشبورد ایجاد شده باشد، مقدار بولی "درست" و
+        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsCurrentDashboardCreatedAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Dashboard>();
+            var dashboardId = await repository
+                .GetEntityQuery()
+                .Where(dbd => dbd.UserId == UserContext.Id)
+                .Select(dbd => dbd.Id)
+                .FirstOrDefaultAsync();
+            return dashboardId > 0;
         }
 
         /// <summary>
@@ -341,7 +387,6 @@ namespace SPPC.Tadbir.Persistence
                     string oldState = GetState(existing);
                     OnEntityAction(OperationId.Edit);
                     UpdateExisting(widget, existing);
-                    await SetPropertyNamesAsync(existing);
                     Log.Description = Context.Localize(
                         String.Format("{0} : ({1}) , {2} : ({3})",
                         AppStrings.Old, Context.Localize(oldState),
@@ -582,23 +627,21 @@ namespace SPPC.Tadbir.Persistence
                 .FirstOrDefaultAsync();
             if (widget != null)
             {
+                var functionName = widget.Function.Name;
                 DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-                var accountRepository = UnitOfWork.GetAsyncRepository<WidgetAccount>();
-                var fullAccounts = GetFullAccounts(widget.Accounts, accountRepository);
-                var values = await GetFunctionValuesAsync(from, to, unit);
-                var evaluator = GetChartFunctionEvaluator(widget.Function.Name);
-                dataSeries = new ChartSeriesViewModel();
-                dataSeries.Labels.AddRange(values.Select(value => value.XLabel));
-                foreach (var fullAccount in fullAccounts)
+                if (functionName.StartsWith("Function_"))
                 {
-                    var serie = new ChartSerieViewModel()
-                    {
-                        Label = GetFullAccountLabel(fullAccount)
-                    };
-                    serie.Data.AddRange(values
-                        .OrderBy(value => value.FromDate)
-                        .Select(value => evaluator(fullAccount, value.FromDate, value.ToDate)));
-                    dataSeries.Datasets.Add(serie);
+                    var accountRepository = UnitOfWork.GetAsyncRepository<WidgetAccount>();
+                    var fullAccounts = GetFullAccounts(widget.Accounts, accountRepository);
+                    var values = await GetTurnoverFunctionValuesAsync(from, to, unit);
+                    dataSeries = GetBasicFunctionData(functionName, values, fullAccounts);
+                }
+                else
+                {
+                    var values = functionName.StartsWith("FunctionXT")
+                        ? await GetTurnoverFunctionValuesAsync(from, to, unit)
+                        : await GetBalanceFunctionValuesAsync(from, to, unit);
+                    dataSeries = GetSpecialFunctionData(functionName, values);
                 }
             }
 
@@ -646,7 +689,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 GetGaugeWidgetParameters(
                     parameters, out DateTime from, out DateTime to, out decimal min, out decimal max);
-                var evaluator = GetGaugeFunctionEvaluator(widget.Function.Name);
+                var evaluator = GetFunctionEvaluator(widget.Function.Name);
                 gaugeData = new GaugeDataViewModel()
                 {
                     MinValue = min,
@@ -758,6 +801,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(row => new DashboardTabViewModel()
                     {
                         Id = _report.ValueOrDefault<int>(row, "TabID"),
+                        DashboardId = dashboardId,
                         Index = _report.ValueOrDefault<int>(row, "TabIndex"),
                         Title = _report.ValueOrDefault(row, "TabTitle")
                     }));
@@ -910,7 +954,7 @@ namespace SPPC.Tadbir.Persistence
             return fullAccounts;
         }
 
-        private async Task<IList<WidgetFunctionValues>> GetFunctionValuesAsync(
+        private async Task<IList<WidgetFunctionValues>> GetTurnoverFunctionValuesAsync(
             DateTime from, DateTime to, WidgetDateUnit unit)
         {
             var values = new List<WidgetFunctionValues>();
@@ -924,6 +968,28 @@ namespace SPPC.Tadbir.Persistence
                     {
                         XLabel = Context.Localize(month.Name),
                         FromDate = month.Start,
+                        ToDate = month.End
+                    }));
+            }
+
+            return values;
+        }
+
+        private async Task<IList<WidgetFunctionValues>> GetBalanceFunctionValuesAsync(
+            DateTime from, DateTime to, WidgetDateUnit unit)
+        {
+            var values = new List<WidgetFunctionValues>();
+            var calendar = await Config.GetCurrentCalendarAsync();
+            Config.GetCurrentFiscalDateRange(out DateTime startDate, out DateTime _);
+            if (unit == WidgetDateUnit.Monthly)
+            {
+                var enumerator = new MonthEnumerator(from, to, calendar);
+                values.AddRange(enumerator
+                    .GetMonths()
+                    .Select(month => new WidgetFunctionValues()
+                    {
+                        XLabel = Context.Localize(month.Name),
+                        FromDate = startDate,
                         ToDate = month.End
                     }));
             }

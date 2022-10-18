@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
@@ -22,6 +21,20 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات کامل برای داشبورد کاربر جاری برنامه یا رفرنس بدون مقدار
         /// در صورتی که داشبوردی برای کاربر جاری وجود نداشته باشد</returns>
         DashboardViewModel GetCurrentUserDashboard();
+
+        /// <summary>
+        /// به روش آسنکرون، داشبورد جدیدی برای کاربر جاری ایجاد کرده و اولین ویجت را به آن اضافه می کند
+        /// </summary>
+        /// <param name="tabWidget">اولین ویجت در داشبورد کاربر جاری که به برگه پیش فرض اضافه می شود</param>
+        /// <returns>اطلاعات داشبورد ایجاد شده برای کاربر جاری</returns>
+        Task<DashboardViewModel> CreateCurrentUserDashboardAsync(TabWidgetViewModel tabWidget);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که داشبورد برای کاربر جاری ایجاد شده یا نه
+        /// </summary>
+        /// <returns>اگر برای کاربر جاری داشبورد ایجاد شده باشد، مقدار بولی "درست" و
+        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند</returns>
+        Task<bool> IsCurrentDashboardCreatedAsync();
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات نمایشی یکی از برگه های موجود را خوانده و برمی گرداند
@@ -152,12 +165,5 @@ namespace SPPC.Tadbir.Persistence
         Task<List<WidgetViewModel>> GetWidgetsLookupAsync();
 
         #endregion
-
-        /// <summary>
-        /// به روش آسنکرون، مقادیر خلاصه محاسبه شده برای نمایش در داشبورد را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="calendar">تقویم مورد استفاده برای نمودارهای ماهیانه</param>
-        /// <returns>اطلاعات مالی محاسبه شده</returns>
-        Task<DashboardSummariesViewModel> GetSummariesAsync(Calendar calendar);
     }
 }

@@ -16,6 +16,9 @@ export class DashboardApi {
   // dashboard/current
   public static CurrentDashboard = environment.BaseUrl + "/dashboard/current";
 
+  // dashboard/new
+  public static NewDashboard = environment.BaseUrl + "/dashboard/new";
+
   // dashboard/tabs
   public static DashboardTabs = environment.BaseUrl + "/dashboard/tabs";
 
@@ -61,11 +64,6 @@ export class DashboardApi {
   public static WidgetsLookup =
     environment.BaseUrl + "/dashboard/lookup/widgets";
 
-  // dashboard/summaries
-  public static Summaries = environment.BaseUrl + "/dashboard/summaries";
-  
-  //
-  public static params = environment.BaseUrl + "/dashboard/functions/{0}/params"
   // dashboard/license
   public static LicenseInfo = environment.BaseUrl + "/dashboard/license";
 }

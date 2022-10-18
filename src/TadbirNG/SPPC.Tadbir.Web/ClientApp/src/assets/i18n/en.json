@@ -1116,7 +1116,8 @@
     "FormTitle": "Relations for '{0}'",
     "NewRelations": "New Relations",
     "RemainingRelations": "Remaining Relations",
-    "noRemainingRelations": "There is no option to create relation"
+    "noRemainingRelations": "There is no option to create relation",
+    "SelectAll": "Select All"
   },
   "FiscalPeriod": {
     "New": "New Fiscal Period",

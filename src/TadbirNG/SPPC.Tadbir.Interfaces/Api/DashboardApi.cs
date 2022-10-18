@@ -20,6 +20,16 @@ namespace SPPC.Tadbir.Api
         public const string CurrentDashboardUrl = "dashboard/current";
 
         /// <summary>
+        /// API client URL for a new dashboard created by (or assigned to) current user
+        /// </summary>
+        public const string NewDashboard = "dashboard/new";
+
+        /// <summary>
+        /// API server route URL for a new dashboard created by (or assigned to) current user
+        /// </summary>
+        public const string NewDashboardUrl = "dashboard/new";
+
+        /// <summary>
         /// API client URL for all tabs added to current dashboard
         /// </summary>
         public const string DashboardTabs = "dashboard/tabs";
@@ -168,16 +178,6 @@ namespace SPPC.Tadbir.Api
         public const string WidgetsLookupUrl = "dashboard/lookup/widgets";
 
         #endregion
-
-        /// <summary>
-        /// API client URL for summary values in the main dashboard
-        /// </summary>
-        public const string Summaries = "dashboard/summaries";
-
-        /// <summary>
-        /// API server route URL for summary values in the main dashboard
-        /// </summary>
-        public const string SummariesUrl = "dashboard/summaries";
 
         /// <summary>
         /// API client URL for general license information

@@ -20,8 +20,9 @@ export class WidgetSettingComponent implements OnInit {
   chartColors = new WidgetSetting().Colors;
 
   chartTypes: Array<{ text: string; value: string }> = [
-    { text: "ستونی", value: "1" },
-    { text: "ستونی (افقی)", value: "2" },
+    { text: "نمودار ستونی", value: "1" },
+    { text: "نمودار میله ای", value: "2" },
+    { text: "نمودار خطی", value: "3" },
   ];
 
   ngOnInit() {

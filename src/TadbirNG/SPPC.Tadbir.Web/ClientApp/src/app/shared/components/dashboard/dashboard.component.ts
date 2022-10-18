@@ -217,14 +217,15 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
     if (this.currentContext.fpId > 0 && this.currentContext.branchId > 0) {
       this.dashboardService
-        .getDashboardInfo()
+        .getCurrentDashboard()
         .subscribe((res: DashboardSummaries) => {
-          this.cashierBalance = res.cashierBalance;
-          this.bankBalance = res.bankBalance;
-          this.liquidRatio = res.liquidRatio;
-          this.unbalancedVoucherCount = res.unbalancedVoucherCount;
-          this.dashboardInfo = res;
-
+          if (res) {
+            this.cashierBalance = res.cashierBalance;
+            this.bankBalance = res.bankBalance;
+            this.liquidRatio = res.liquidRatio;
+            this.unbalancedVoucherCount = res.unbalancedVoucherCount;
+            this.dashboardInfo = res;
+          }
           // this.drawNetSalesChart();
           // this.drawGrossSalesChart();
         });
@@ -398,9 +399,11 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
   goToEditMode() {
     this.isDashboardEditMode = !this.isDashboardEditMode;
-    this.currentDashboard.tabs.forEach((tab) => {
-      this.changedOptions(tab.id);
-    });
+    if (this.currentDashboard) {
+      this.currentDashboard.tabs.forEach((tab) => {
+        this.changedOptions(tab.id);
+      });
+    }
   }
 
   onCancelClick() {
@@ -513,22 +516,20 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       content: ManageWidgetsComponent,
     });
 
-    this.dialogRef.dialog.location.nativeElement.classList.add('manage-widgets');
+    this.dialogRef.dialog.location.nativeElement.classList.add(
+      "manage-widgets"
+    );
     this.dialogModel = this.dialogRef.content.instance;
 
     this.dialogRef.dialog.onDestroy(() => {
       this.settingService.setTitle("Entity.Dashboard");
-    })
-    this.dialogRef.content.instance.close.subscribe(
-      (res) => {
-        this.dialogRef.close();
-      }
-    );
+    });
+    this.dialogRef.content.instance.close.subscribe((res) => {
+      this.dialogRef.close();
+    });
   }
 
   onAddWidgetClick() {
-    const tab = this.currentDashboard.tabs[this.currentDashboardTabIndex];
-
     if (!this.isDashboardEditMode) this.goToEditMode();
 
     this.dialogRef = this.dialogService.open({
@@ -537,11 +538,11 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     });
 
     this.dialogModel = this.dialogRef.content.instance;
-    // const tabId = this.currentDashboardTab.id;
-    // const tab = this.currentDashboard.tabs.filter(
-    //   (t) => t.id.toString() == tabId
-    // )[0];
-    this.dialogModel.selectedWidgets = tab.widgets;
+
+    if (this.currentDashboard) {
+      const tab = this.currentDashboard.tabs[this.currentDashboardTabIndex];
+      this.dialogModel.selectedWidgets = tab.widgets;
+    }
 
     this.dialogRef.content.instance.save.subscribe((res) => {
       this.addNewWidget(res.widget);
@@ -565,7 +566,11 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
     this.dialogRef.content.instance.save.subscribe((tabName) => {
       let tab: any = {};
-      tab.index = this.currentDashboard.tabs.length;
+      if (this.currentDashboard && this.currentDashboard.tabs)
+        tab.index =
+          Math.max(...this.currentDashboard.tabs.map((t) => t.index)) + 1;
+      else tab.index = 1;
+
       tab.title = tabName;
       //tab.id = this.currentDashboard.tabs.length + 1;
       tab.widgets = [];
@@ -691,27 +696,25 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   }
 
   addNewWidget(widget) {
-    const currentTab =
-      this.currentDashboard.tabs[this.currentDashboardTabIndex];
 
-    // const newWidget = {
-    //   cols: 20,
-    //   rows: 20,
-    //   y: 0,
-    //   x: 0,
-    //   id: widget.id,
-    //   title: widget.title,
-    //   typeId: widget.typeId,
-    // };
-
-    // const promiseWidget = new Promise((resolve) => {
-    //this.addNewWidgetToList(currentTab.id);
+    let tabWidgetInfo = new TabWidgetInfo();
+    let currentTabId = 0;
 
     const tabId = this.currentDashboardTab.id;
     const tab = this.currentDashboard.tabs.filter((t) => t.id == tabId)[0];
 
-    let tabWidgetInfo = new TabWidgetInfo();
-    tabWidgetInfo.tabId = currentTab.id;
+    if(this.currentDashboard)
+    {
+      const currentTab =
+      this.currentDashboard.tabs[this.currentDashboardTabIndex];
+      currentTabId = currentTab.id;
+      tabWidgetInfo.tabId = currentTabId;      
+    }
+    else
+    {
+      tabWidgetInfo.tabId = 0;
+    }
+        
     tabWidgetInfo.widgetId = widget.id;
     const setting = {
       height: 20,
@@ -722,11 +725,11 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     tabWidgetInfo.settings = JSON.stringify(setting);
 
     this.dashboardService
-      .addTabWidget(currentTab.id, tabWidgetInfo)
+      .addTabWidget(currentTabId, tabWidgetInfo)
       .subscribe((newTabWidget: TabWidget) => {
         tab.widgets.push(newTabWidget);
-        const widgets = this.getWidgetList(currentTab.id);
-        this.getWidgetsSubject(currentTab.id).widgets.next(widgets);
+        const widgets = this.getWidgetList(newTabWidget.tabId);        
+        this.getWidgetsSubject(newTabWidget.tabId).widgets.next(widgets);
       });
   }
 
@@ -737,7 +740,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         item.borderWidth = 1;
       });
 
-      this.initSeriesOptions(widgetType, tabId, res.datasets);
+      this.initSeriesOptions(widgetType, widgetId, tabId, res.datasets);
 
       this.widgetData[widgetId + "-" + tabId] = res;
     });
@@ -748,46 +751,38 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     return false;
   }
 
-  initSeriesOptions(widgetType, tabId, dataSets: any[]) {
-    this.currentDashboard.tabs
+  initSeriesOptions(widgetType, widgetId, tabId, dataSets: any[]) {
+    const widget = this.currentDashboard.tabs
       .find((t) => t.id == tabId)
-      .widgets.forEach((widget) => {
-        const setting = JSON.parse(widget.settings);
-        if (!setting.series) {
-          setting.series = new Array<SerieItem>();
-        }
+      .widgets.filter((w) => w.widgetId == widgetId)[0];
 
-        dataSets.forEach((item, index) => {
-          debugger;
-          let serieItem: any = {};
-          serieItem.name = item.label;
-          serieItem.backgroundColor = new WidgetSetting().Colors[index];
-          serieItem.borderWidth = 1;
-          serieItem.type = widgetType.toString();
-          const id = widget.widgetId + "-" + tabId;
-          if (
-            this.widgetSettings[id] &&
-            this.widgetSettings[id].series.findIndex(
-              (s) => s.name == serieItem.name
-            ) >= 0
-          ) {
-            this.widgetSettings[id][
-              this.widgetSettings[id].series.findIndex(
-                (s) => s.name == serieItem.name
-              )
-            ] = serieItem;
-          } else {
-            if (!this.widgetSettings[id]) {
-              this.widgetSettings[id] = new WidgetSetting();
-              this.widgetSettings[id].series = new Array<SerieItem>();
-            }
+    const id = widget.widgetId + "-" + tabId;
+    this.widgetSettings[id] = new WidgetSetting();
+    this.widgetSettings[id].series = [];
 
-            this.widgetSettings[id].series.push(serieItem);
-          }
-        });
+    dataSets.forEach((item, index) => {
+      debugger;
+      let serieItem: any = {};
+      serieItem.name = item.label;
+      serieItem.backgroundColor = new WidgetSetting().Colors[index];
+      serieItem.borderWidth = 1;
+      serieItem.type = widgetType.toString();
 
-        debugger;
-      });
+      if (
+        this.widgetSettings[id] &&
+        this.widgetSettings[id].series.findIndex(
+          (s) => s.name == serieItem.name
+        ) >= 0
+      ) {
+        this.widgetSettings[id][
+          this.widgetSettings[id].series.findIndex(
+            (s) => s.name == serieItem.name
+          )
+        ] = serieItem;
+      } else {
+        this.widgetSettings[id].series.push(serieItem);
+      }
+    });
   }
 
   getWidgetList(tabId) {

@@ -115,15 +115,14 @@ export class ManageWidgetsComponent
   selectedOwner: number;
 
   ngOnInit() {
-
     this.entityName = Entities.Widget;
     this.viewId = ViewName[this.entityTypeName];
-    this.setOwnerList()
+    this.setOwnerList();
   
-    this.getDataUrl = this.selectedOwner == 1? DashboardApi.Widgets: DashboardApi.AllWidgets;
+    this.getDataUrl = DashboardApi.Widgets;
     this.reloadGrid();
-    
     this.cdref.detectChanges();    
+
   }
 
   async setOwnerList() {
@@ -217,7 +216,7 @@ export class ManageWidgetsComponent
       });
   }
 
-  removeHandler() {
+  removeHandler(event) {
     this.deleteConfirm = true;
 
     if (this.groupOperation) {

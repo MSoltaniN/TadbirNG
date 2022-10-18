@@ -70,3 +70,13 @@ kendo-dropdownlist {
     min-width: 150px !important;
     margin: 0 5px !important;
 }
+
+::ng-deep #main-section.relation-form .k-dropdown {
+    width: 150px;
+}
+
+.my-k-label {
+    display: flex;
+    gap: 10px;
+    line-height: normal;
+}
