@@ -70,3 +70,15 @@
   85% { background: #d3f96113; }
   100% { background: #d3f96100; }
 }
+
+.searchbox {
+  position: relative;
+  padding: 0 5px 5px;
+}
+.searchbox .k-icon {
+  position: absolute;
+  top: 20%;
+  z-index: 9;
+}
+body.tRtl .searchbox .k-icon{ left:0; }
+body.tLtr .searchbox .k-icon{ right:0; }

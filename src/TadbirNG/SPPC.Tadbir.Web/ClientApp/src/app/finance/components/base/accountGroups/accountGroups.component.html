@@ -18,6 +18,13 @@
             [ngClass]="{ 'k-rtl': this.CurrentLanguage === 'fa' }"
             style="margin-top: 15px"
           >
+            <label for="search" class="searchbox">
+              <span class="k-input-icon k-icon k-i-search"></span>
+              <input type="text" id="search" class="k-textbox k-input"
+                    #searchInNodes placeholder="Search"
+                    (keyup)="filterTreeNodes(searchInNodes.value)"
+              >
+            </label>
             <kendo-treeview
               [nodes]="firstTreeNode"
               textField="name"
