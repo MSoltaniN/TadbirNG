@@ -123,6 +123,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Tadbir.Setup", "SPPC.Tadbir.Setup\SPPC.Tadbir.Setup.csproj", "{FE23AE15-39CB-49B2-82A5-D14C21675BA4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Tadbir.Utility", "SPPC.Tadbir.Utility\SPPC.Tadbir.Utility.csproj", "{284833D4-7F6E-4D33-9328-5BA31292587E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CA8BDDFE-4B13-4DD0-B89E-F3E473A82E6A} = {CA8BDDFE-4B13-4DD0-B89E-F3E473A82E6A}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Tools.Maintenance", "SPPC.Tools.Maintenance\SPPC.Tools.Maintenance.csproj", "{E9E42264-0D09-420A-BFBE-B0B18A4BD6A6}"
 EndProject

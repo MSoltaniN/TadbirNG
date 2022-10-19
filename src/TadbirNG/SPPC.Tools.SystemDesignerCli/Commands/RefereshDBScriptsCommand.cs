@@ -1,28 +1,24 @@
-﻿using SPPC.Framework.Extensions;
-using SPPC.Framework.Persistence;
-using SPPC.Tadbir.Configuration;
-using SPPC.Tadbir.Persistence.DbUpgrade;
-using SPPC.Tools.Model;
-using System;
-using System.Configuration;
+﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using SPPC.Framework.Extensions;
+using SPPC.Tadbir.Configuration;
+using SPPC.Tools.Model;
 
 namespace SPPC.Tools.SystemDesignerCli
 {
     public class RefreshDBScriptsCommand : ICliCommand
     {
-        public void Execute()
+        static RefreshDBScriptsCommand()
         {
-            var scriptPath = @"..\..\..\res";
-            ReportProgress(scriptPath);
+            DbScriptPath = Path.Combine(PathConfig.SolutionRoot, "SPPC.Tadbir.Utility", "Scripts");
         }
 
-        private static void ReportProgress(string scriptPath)
+        public void Execute()
         {
             try
             {
-                Console.WriteLine("Refresh Database Scripts ...");
+                Console.WriteLine("Refreshing database scripts ...");
                 Console.WriteLine();
                 RefereshRuntimeDbScripts();
             }
@@ -36,45 +32,45 @@ namespace SPPC.Tools.SystemDesignerCli
 
         private static void RefereshRuntimeDbScripts()
         {
-            foreach (var fileItem in Directory.EnumerateFiles(_TadbirUtilityDbScriptPath))
+            foreach (var fileItem in Directory.EnumerateFiles(DbScriptPath))
             {
-                String fileName = Path.GetFileName(fileItem);
-
-                if (File.Exists(Path.Combine(_mainDbScriptPath, fileName)))
+                string fileName = Path.GetFileName(fileItem);
+                if (File.Exists(Path.Combine(PathConfig.ResourceRoot, fileName)))
                 {
-                    File.Copy(Path.Combine(_mainDbScriptPath, fileName), Path.Combine(_TadbirUtilityDbScriptPath, fileName), true);
-                    ReplaceDefByParams(Path.Combine(_TadbirUtilityDbScriptPath, fileName));
+                    File.Copy(
+                        Path.Combine(PathConfig.ResourceRoot, fileName),
+                        Path.Combine(DbScriptPath, fileName), true);
+                    ReplaceValuesByParameters(Path.Combine(DbScriptPath, fileName));
                 }
             }
         }
 
-        private static void ReplaceDefByParams(string filePath)
+        private static void ReplaceValuesByParameters(string filePath)
         {
             var dbParams = SysParameterUtility.AllParameters.Db;
             var dockerDB = SysParameterUtility.AllParameters.Docker.Db;
-            String temp = File.ReadAllText(filePath);
+            string script = File.ReadAllText(filePath);
 
-            temp = Regex.Replace(temp, RegExpression(dbParams.LoginName), "@LoginName");
-            temp = Regex.Replace(temp, RegExpression(dbParams.Password), "@Password");
-            temp = Regex.Replace(temp, RegExpression(dbParams.SysDbName), "@SysDbName");
-            temp = Regex.Replace(temp, RegExpression(dbParams.AdminUserName), "@AdminUserName");
-            temp = Regex.Replace(temp, RegExpression(dbParams.AdminPasswordHash), "@AdminPasswordHash");
-            temp = Regex.Replace(temp, RegExpression(dbParams.AdminFirstName), "@AdminFirstName");
-            temp = Regex.Replace(temp, RegExpression(dbParams.AdminLastName), "@AdminLastName");
-            temp = Regex.Replace(temp, RegExpression(dbParams.FirstCompanyName), "@FirstCompanyName");
-            temp = Regex.Replace(temp, RegExpression(dbParams.FirstDbName), "@FirstDbName");
-            temp = Regex.Replace(temp, RegExpression(dockerDB.Name), "@DbServerName");
+            script = Regex.Replace(script, GetRegex(dbParams.LoginName), "@LoginName");
+            script = Regex.Replace(script, GetRegex(dbParams.Password), "@Password");
+            script = Regex.Replace(script, GetRegex(dbParams.SysDbName), "@SysDbName");
+            script = Regex.Replace(script, GetRegex(dbParams.AdminUserName), "@AdminUserName");
+            script = Regex.Replace(script, GetRegex(dbParams.AdminPasswordHash), "@AdminPasswordHash");
+            script = Regex.Replace(script, GetRegex(dbParams.AdminFirstName), "@AdminFirstName");
+            script = Regex.Replace(script, GetRegex(dbParams.AdminLastName), "@AdminLastName");
+            script = Regex.Replace(script, GetRegex(dbParams.FirstCompanyName), "@FirstCompanyName");
+            script = Regex.Replace(script, GetRegex(dbParams.FirstDbName), "@FirstDbName");
+            script = Regex.Replace(script, GetRegex(dockerDB.Name), "@DbServerName");
 
-            File.WriteAllText(filePath, temp);
+            File.WriteAllText(filePath, script);
         }
 
-        private static string RegExpression(string input)
+        private static string GetRegex(string input)
         {
-            //for pick up text from spaces,brackets[] or single qutation mark ' or semi colon ;
-            return string.Format(@"(?<=\[){0}(?=\])|(?<='){0}(?=')|(?<=\s){0}(?=\s)|(?<=:){0}|{0}(?=;)", input);
+            // Pick up text between spaces, brackets ([]) or quotation marks ('') or before colon (:) and semi-colon (;)
+            return String.Format(@"(?<=\[){0}(?=\])|(?<='){0}(?=')|(?<=\s){0}(?=\s)|(?<=:){0}|{0}(?=;)", input);
         }
 
-        private const string _mainDbScriptPath = @"..\..\..\res";
-        private const string _TadbirUtilityDbScriptPath = @"..\..\..\src\TadbirNG\SPPC.Tadbir.Utility\Scripts";
+        private static readonly string DbScriptPath;
     }
 }
