@@ -27,12 +27,11 @@ export class WidgetSettingComponent implements OnInit {
   ];
 
   ngOnInit() {
-    //if (this.chartType > 0) this.typeSelected = this.chartType;
-    debugger;
     this.chartTitle = this.setting.title;
   }
 
   onSave(e: any): void {
+    this.setting.title = this.chartTitle;
     this.save.emit(this.setting);
   }
 

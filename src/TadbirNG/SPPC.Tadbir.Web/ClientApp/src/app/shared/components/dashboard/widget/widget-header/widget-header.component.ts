@@ -33,19 +33,18 @@ export class WidgetHeaderComponent implements OnInit {
   }
 
   onSettingClick() {
-    debugger;
     this.dialogRef = this.dialogService.open({
       title: this.settingTitle,
       content: WidgetSettingComponent,
       width: 800,
       height: 550,
     });
-    debugger;
     this.dialogModel = this.dialogRef.content.instance;
     this.dialogModel.widgetId = this.widgetId;
     this.dialogModel.setting = this.setting;
 
     this.dialogRef.content.instance.save.subscribe((res) => {
+      this.title = res.title;
       this.settingChange.emit(res);
       this.dialogRef.close();
     });

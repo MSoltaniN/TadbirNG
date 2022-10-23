@@ -1,17 +1,19 @@
 import { Injectable } from "@angular/core";
+import { isNumber } from "util";
 import { BaseService } from "../class";
 import { WidgetSetting } from "../models/widgetSetting";
 
 @Injectable()
 export class ChartService extends BaseService {
   applyChartSetting(setting: WidgetSetting, data: any) {
-    setting.series.forEach((item) => {
-      const index = data.datasets.findIndex((ds) => ds.label == item.name);
+    setting.series.forEach((item, index) => {
       if (index >= 0) {
-        data.datasets[index].type = this.getChartType(parseInt(item.type));
+        if (isNaN(parseInt(item.type))) data.datasets[index].type = item.type;
+        else data.datasets[index].type = this.getChartType(parseInt(item.type));
 
         data.datasets[index].backgroundColor = item.backgroundColor;
         data.datasets[index].fill = false;
+        data.datasets[index].label = item.name;
       }
     });
 
@@ -19,19 +21,22 @@ export class ChartService extends BaseService {
   }
 
   getAdjustedChartType(settings: WidgetSetting) {
+    let type = "bar";
     if (
       settings.series &&
       settings.series.filter((p) => p.type == "1").length ==
         settings.series.length
     ) {
-      return this.getChartType(1);
+      type = this.getChartType(1);
     } else if (
       settings.series &&
       settings.series.filter((p) => p.type == "2").length ==
         settings.series.length
     ) {
-      return this.getChartType(2);
+      type = this.getChartType(2);
     }
+
+    return type;
   }
 
   getChartType(type: number) {
