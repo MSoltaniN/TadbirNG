@@ -17,24 +17,11 @@ export class DashboardService extends BaseService {
     super(http, bStorageService);
   }
 
-  getChartType(type: number) {
-    let chartType = "";
+  postPostNewDashboard(tabWidget: TabWidget) {
+    var url = DashboardApi.NewDashboard;
 
-    switch (type) {
-      case 1: //column
-        chartType = "bar";
-        break;
-      case 2: //bar
-        chartType = "horizontalBar";
-        break;
-      case 3: //line
-        chartType = "line";
-        break;
-      default:
-        break;
-    }
-
-    return chartType;
+    var body = JSON.stringify(tabWidget);
+    return this.http.post(url, body, this.option).pipe(map((res) => res));
   }
 
   getLincenseInfo() {

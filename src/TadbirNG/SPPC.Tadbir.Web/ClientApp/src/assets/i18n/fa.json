@@ -62,7 +62,8 @@
     "ParamSettings":"پارامتر",
     "ChartColor":"رنگ",
     "SerieName":"نام سری",
-    "ManageWidgets": "مدیریت ویجت ها"
+    "ManageWidgets": "مدیریت ویجت ها",
+    "WidgetTitle":"عنوان ویجت"
   },
   "Exception": {
     "ErrorCode": "کد خطا",

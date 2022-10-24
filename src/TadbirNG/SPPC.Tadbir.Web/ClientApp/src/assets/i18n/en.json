@@ -56,7 +56,8 @@
     "ChartType": "Chart type",
     "AddTab":"Add new Tab",
     "TabName":"Tab name",
-    "ManageWidgets": "Manage widgets"
+    "ManageWidgets": "Manage widgets",
+    "WidgetTitle":"Widget title"
   },
   "Exception": {
     "ErrorCode": "Error Code",

@@ -88,8 +88,8 @@
                     <widget-container>
                       <div class="box-body" body>
                         <chart-widget
-                          [data]="widgetData[item.id + '-' + tab.id]"
-                          [type]="dashboardService.getChartType(item.typeId)"
+                          [data]="getData(item.id , tab.id)"
+                          [type]="getChartType(item.typeId,item.id,tab.id)"
                           [options]="getOptions(item.typeId)"
                         ></chart-widget>
                       </div>

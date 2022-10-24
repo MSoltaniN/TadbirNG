@@ -579,22 +579,39 @@ export class AutoGridExplorerComponent<T>
   }
 
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
-  openEditorDialog(isNew: boolean) {
-    //this.dialogRef = this.dialogService.open({
-    //  title: this.getEditorTitle(isNew),
-    //  content: AccountFormComponent,
-    //});
-    //this.dialogModel = this.dialogRef.content.instance;
-    //this.dialogModel.parent = this.parent;
-    //this.dialogModel.model = this.editDataItem;
-    //this.dialogModel.isNew = isNew;
-    //this.dialogModel.errorMessages = undefined;
-    //this.dialogRef.content.instance.save.subscribe((res) => {
-    //  this.saveHandler(res, isNew);
-    //});
-    //const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
-    //  this.dialogRef.close();
-    //});
+  openEditorDialog(isNew: boolean) {}
+
+  /**
+   * برای جستجو در بین لیست درختی
+   * @param value مقدار مورد جستجو
+   */
+  public filterTreeNodes(value: string): void {
+    if (value != "") {
+    this.firstTreeNode = this.search(this.treeNodes, value);
+    } else {
+      this.getTreeNode();
+    }
+  }
+
+  private contains(text: string, term: string): boolean {
+    // return text.toLowerCase().indexOf((term || "").toLowerCase()) >= 0;
+    return text.toLowerCase().trim().match(term.toLowerCase().trim())?true:false;
+  }
+
+  private search(items: any[], term: string): any[] {
+    return items.reduce((acc, item) => {
+      if (this.contains(item.name, term)) {
+        acc.push(item);
+      } else if (this.hasChildren(item)) {
+        const newItems:any = this.fetchChildren(item);
+
+        if (newItems.length > 0) {
+          acc = [...newItems];
+        }
+      }
+
+      return acc;
+    }, []);
   }
 
   getEditorTitle(isNew: boolean): string {

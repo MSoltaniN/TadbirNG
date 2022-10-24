@@ -38,8 +38,7 @@ export class WidgetComponent implements OnInit, OnChanges {
     this.closeWidget.emit(this.widgetId);
   }
 
-  onSettingChange(changedSetting: WidgetSetting) {
-    debugger;
+  onSettingChange(changedSetting: WidgetSetting) {   
     this.chart.changeSettings(changedSetting);
   }
 

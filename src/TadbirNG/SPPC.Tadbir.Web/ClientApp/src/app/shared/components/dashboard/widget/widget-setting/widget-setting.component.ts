@@ -17,6 +17,7 @@ export class WidgetSettingComponent implements OnInit {
 
   @Input() setting: WidgetSetting;
 
+  chartTitle: string;
   chartColors = new WidgetSetting().Colors;
 
   chartTypes: Array<{ text: string; value: string }> = [
@@ -26,10 +27,11 @@ export class WidgetSettingComponent implements OnInit {
   ];
 
   ngOnInit() {
-    //if (this.chartType > 0) this.typeSelected = this.chartType;
+    this.chartTitle = this.setting.title;
   }
 
   onSave(e: any): void {
+    this.setting.title = this.chartTitle;
     this.save.emit(this.setting);
   }
 

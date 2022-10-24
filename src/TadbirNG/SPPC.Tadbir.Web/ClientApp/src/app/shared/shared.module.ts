@@ -145,6 +145,7 @@ import { ManageWidgetsComponent } from "./components/dashboard/manage-widgets/ma
 import { WidgetService } from "./components/dashboard/services/widget.service";
 import { ManageWidgetsFormComponent } from './components/dashboard/manage-widgets/manage-widgets-form/manage-widgets-form.component';
 import { WidgetAccountsComponent } from './components/dashboard/manage-widgets/widget-accounts/widget-accounts.component';
+import { ChartService } from "./services/widget.service";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -386,6 +387,7 @@ export class SharedModule {
       providers: [
         BrowserStorageService,
         DashboardService,
+        ChartService,
         GridService,
         LookupService,
         MetaDataService,

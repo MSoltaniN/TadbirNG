@@ -28,6 +28,16 @@
     min-width: 50px
 }
 
+.control-label
+{
+    padding: 5px;
+}
+
+.input-text
+{
+    min-width: 200px;
+    padding: 5px;
+}
 
 /deep/ body.tLtr .setting-container .ui-tabview-nav 
 {
@@ -57,6 +67,10 @@ hr
 
 }
 
+.series-text
+{
+    max-width: 150px;
+}
 
 .series-header
 {
@@ -76,6 +90,17 @@ hr
     padding-bottom: 5px;
     padding-top: 5px;
     border-bottom: 1px;
+    padding-right: 0;
     border-bottom-style: solid;
     border-bottom-color: lightgray;
 }
+
+.circle {
+    margin-top: 5px;
+    width: 15px;
+    height: 15px;
+    -webkit-border-radius: 16px;
+    -moz-border-radius: 16px;
+    border-radius: 16px;   
+    padding: 0; 
+  }

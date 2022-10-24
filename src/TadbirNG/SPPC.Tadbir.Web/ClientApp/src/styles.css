@@ -80,3 +80,14 @@ input[type=checkbox], input[type=radio] {
 .content-header {
   width: 100%;
 }
+.searchbox {
+  position: relative;
+  padding: 0 5px 5px;
+}
+.searchbox .k-icon {
+  position: absolute;
+  top: 20%;
+  z-index: 9;
+}
+body.tRtl .searchbox .k-icon{ left:0; }
+body.tLtr .searchbox .k-icon{ right:0; }
