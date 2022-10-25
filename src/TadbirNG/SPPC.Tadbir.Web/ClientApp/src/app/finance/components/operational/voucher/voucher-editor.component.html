@@ -385,3 +385,24 @@
     </button>
   </kendo-dialog-actions>
 </kendo-dialog>
+
+<!-- برای هنگامی که هیچ سندی وجود ندارد. -->
+<kendo-dialog
+title="{{ 'Voucher.NoVoucherTitle' | translate }}"
+*ngIf="noVoucher[0]"
+(close)="closeNoVoucherModal()"
+[minWidth]="250"
+[width]="450"
+>
+  <p>
+    {{ "Voucher.NoVoucherMessage" | translate }}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="noVoucherHandler(true,noVoucher[1])" primary="true">
+      {{ "Buttons.Yes" | translate }}
+    </button>
+    <button class="k-button" (click)="noVoucherHandler(false,noVoucher[1])">
+      {{ "Buttons.No" | translate }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>

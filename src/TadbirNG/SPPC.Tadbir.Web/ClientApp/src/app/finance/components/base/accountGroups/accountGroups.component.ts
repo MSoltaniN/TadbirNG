@@ -409,6 +409,40 @@ export class AccountGroupsComponent
     }
   }
 
+  /**
+   * برای جستجو در بین لیست درختی
+   * @param value مقدار مورد جستجو
+   */
+   public filterTreeNodes(value: string) {
+    if (value != "") {
+    this.firstTreeNode = this.search(this.treeNodes, value);
+    } else {
+      this.getTreeNode();
+    }
+  }
+
+  private contains(text: string, term: string): boolean {
+    // return text.toLowerCase().indexOf((term || "").toLowerCase()) >= 0;
+    return text.toLowerCase().trim().match(term.toLowerCase().trim())?true:false;
+  }
+
+  private search(items: any[], term: string): any[] {
+    return items.reduce((acc, item) => {
+      if (this.contains(item.name, term)) {
+        acc.push(item);
+      } else if (this.hasChildren(item)) {
+        const newItems:any = this.fetchChildren(item);
+
+        if (newItems.length > 0) {
+          acc = [...newItems];
+        }
+      }
+
+      return acc;
+    }, []);
+  }
+
+
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
   openEditorDialog(isNew: boolean) {
     if (this.selectedItem.id == -1) {

@@ -989,7 +989,9 @@
     "ConfirmedVouchers": "Unconfirmed Vouchers",
     "ApprovedVouchers": "Unapproved Vouchers",
     "CommittedVouchers": "Uncommitted Vouchers",
-    "FinalizedVouchers": "Unfinalized Vouchers"
+    "FinalizedVouchers": "Unfinalized Vouchers",
+    "NoVoucherTitle": "There is no voucher",
+    "NoVoucherMessage": "There is no voucher. Should a new accounting voucher be created?"
   },
   "User": {
     "New": "New User",

@@ -160,6 +160,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   @ViewChild(ReportManagementComponent, {static: true})
   reportManager: ReportManagementComponent;
 
+  /**
+   * برای باز شدن مودال تعیین تکلیف هنگامی که هیچ سندی جوجود ندارد
+   */
+  noVoucher = [false,false];
+
   constructor(
     private voucherService: VoucherService,
     public toastrService: ToastrService,
@@ -509,17 +514,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
               this.getText("Voucher.VoucherNotFound"),
               MessageType.Warning
             );
-
-            if (byNo) {
-              this.router.navigate(["/tadbir/home"], {
-                queryParams: {
-                  returnUrl: "finance/vouchers/by-no",
-                  mode: "by-no",
-                },
-              });
-            } else {
-              this.router.navigate(["/finance/voucher"]);
-            }
+            this.noVoucher = [true,byNo];
           }
 
           if (err.statusCode == 400) {
@@ -532,6 +527,27 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
           }
         }
       );
+  }
+
+  noVoucherHandler(status:boolean,byNo) {
+    if (status == false) {
+      if (byNo) {
+        this.router.navigate(["/tadbir/home"], {
+          queryParams: {
+            returnUrl: "finance/vouchers/by-no",
+            mode: "by-no",
+          },
+        });
+      } else {
+        this.router.navigate(["/finance/voucher"]);
+      }
+    } else {
+      this.router.navigate(['/finance/vouchers/new'])
+    }
+  }
+
+  closeNoVoucherModal() {
+    this.noVoucher[0] = false;
   }
 
   initVoucherForm(item: Voucher) {
