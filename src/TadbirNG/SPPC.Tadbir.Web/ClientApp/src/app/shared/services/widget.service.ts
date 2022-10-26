@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { isNumber } from "util";
 import { BaseService } from "../class";
 import { WidgetSetting } from "../models/widgetSetting";
 

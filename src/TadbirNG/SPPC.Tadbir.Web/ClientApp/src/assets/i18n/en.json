@@ -1277,7 +1277,7 @@
       "BankNameIsTooLong": "Bank name can have a maximum of 128 characters.",
       "BankNameIsRequired": "Bank name is required.",
       "BankBranchNameIsRequired": "Branch name is required.",
-      "BankBranchNameIsTooLong": "Branch name can have a maximum of 64 characters.",
+      "BankBranchNameIsTooLong": "Branch name can have a maximum of 128 characters.",
       "BranchIndexIsRequired": "Branch index is required.",
       "BranchIndexIsTooLong": "Branch index can have a maximum of 64 characters.",
       "AccountNumberIsRequired": "Account number is required.",

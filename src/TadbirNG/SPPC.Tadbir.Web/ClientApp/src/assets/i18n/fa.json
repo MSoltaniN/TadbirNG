@@ -1407,7 +1407,7 @@
       "BankNameIsTooLong": "نام بانک می تواند حداکثر 128 حرف داشته باشد.",
       "BankNameIsRequired": "وارد کردن نام بانک اجباری است",
       "BankBranchNameIsRequired": "وارد کردن نام شعبه اجباری است",
-      "BankBranchNameIsTooLong": "نام شعبه می تواند حداکثر 64 حرف داشته باشد.",
+      "BankBranchNameIsTooLong": "نام شعبه می تواند حداکثر 128 حرف داشته باشد.",
       "BranchIndexIsRequired": "وارد کردن شاخص شعبه اجباری است",
       "BranchIndexIsTooLong": "شاخص شعبه می تواند حداکثر 64 حرف داشته باشد.",
       "AccountNumberIsRequired": "وارد کردن شماره حساب اجباری است",
