@@ -107,7 +107,6 @@ export class SppcFullAccountComponent
   }
 
   ngOnInit(): void {
-    debugger;
     this.accountItem = AccountRelationsType;
 
     this.fullAccount = this.controlContainer.value;
@@ -648,7 +647,6 @@ export class SppcFullAccountComponent
    * ذخیره بردار حساب انتخاب شده
    */
   onSave(item) {
-    debugger;
     this.accountTitle = item.account.name;
     this.detailAccountTitle = item.detailAccount.name;
     this.costCenterTitle = item.costCenter.name;
