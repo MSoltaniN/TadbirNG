@@ -85,6 +85,16 @@ hr
     padding-right: 0;
 }
 
+.color-item 
+{
+    width: 20px;
+    height: 20px;
+}
+
+.color-box{
+    max-width: 150px;
+}
+
 .series-body li
 {    
     padding-bottom: 5px;

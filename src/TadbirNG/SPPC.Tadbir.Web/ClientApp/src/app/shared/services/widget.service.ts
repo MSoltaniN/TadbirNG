@@ -34,6 +34,11 @@ export class ChartService extends BaseService {
         settings.series.length
     ) {
       type = this.getChartType(2);
+    } else if (
+      settings.series &&
+      settings.series.filter((p) => p.type == "4").length > 0
+    ) {
+      type = this.getChartType(4);
     }
 
     return type;
@@ -51,6 +56,9 @@ export class ChartService extends BaseService {
         break;
       case 3: //line
         chartType = "line";
+        break;
+      case 4: //pie
+        chartType = "pie";
         break;
       default:
         break;

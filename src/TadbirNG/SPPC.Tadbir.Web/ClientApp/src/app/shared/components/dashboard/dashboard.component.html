@@ -76,7 +76,7 @@
           <ng-container *ngIf="getWidgets(tab.id) | async as widgets">
             <gridster [options]="widgetOptions[tab.id]">
               <gridster-item [item]="item" *ngFor="let item of widgets">
-                <ng-container *ngIf="item.typeId == 2 || item.typeId == 1 || item.typeId == 3">                 
+                <ng-container *ngIf="item.typeId == 2 || item.typeId == 1 || item.typeId == 3 || item.typeId == 4">                 
                   <widget
                     (closeWidget)="onCloseWidget($event)"
                     [widgetId]="item.id"

@@ -138,14 +138,15 @@ import { AutoFocusDirective } from "./directive/input/auto-focus.directive";
 
 import { AddWidgetComponent } from "./components/dashboard/add-widget/add-widget.component";
 import { WidgetSettingComponent } from "./components/dashboard/widget/widget-setting/widget-setting.component";
-import { SppcFullAccountDetailComponent } from './controls/fullAccount/sppc-full-account-detail/sppc-full-account-detail.component';
+import { SppcFullAccountDetailComponent } from "./controls/fullAccount/sppc-full-account-detail/sppc-full-account-detail.component";
 import { TabViewModule } from "primeng/tabview";
 import { TabWidgetComponent } from "./components/dashboard/tab-widget/tab-widget.component";
 import { ManageWidgetsComponent } from "./components/dashboard/manage-widgets/manage-widgets.component";
 import { WidgetService } from "./components/dashboard/services/widget.service";
-import { ManageWidgetsFormComponent } from './components/dashboard/manage-widgets/manage-widgets-form/manage-widgets-form.component';
-import { WidgetAccountsComponent } from './components/dashboard/manage-widgets/widget-accounts/widget-accounts.component';
+import { ManageWidgetsFormComponent } from "./components/dashboard/manage-widgets/manage-widgets-form/manage-widgets-form.component";
+import { WidgetAccountsComponent } from "./components/dashboard/manage-widgets/widget-accounts/widget-accounts.component";
 import { ChartService } from "./services/widget.service";
+import { ColorPickerModule } from "ngx-color-picker";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -181,6 +182,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient],
       },
     }),
+    ColorPickerModule,
   ],
 
   declarations: [
@@ -289,7 +291,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     WidgetSettingComponent,
     TabWidgetComponent,
     SppcFullAccountDetailComponent,
-    ManageWidgetsFormComponent
+    ManageWidgetsFormComponent,
   ],
 
   //providers: [BrowserStorageService, DashboardService, GridService, LookupService, MetaDataService, ReportingService,
@@ -403,7 +405,7 @@ export class SharedModule {
         ShortcutService,
         ShareDataService,
         MessageBoxService,
-        WidgetService
+        WidgetService,
       ],
     };
   }
