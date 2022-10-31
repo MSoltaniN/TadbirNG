@@ -447,6 +447,12 @@
 
       <kendo-tabstrip-tab [title]="getText('Account.AccountOwnerTitle')" *ngIf="!isDisableAccountOwnerTab">
         <ng-template kendoTabContent>
+          <div *ngIf="errorMessages">
+            <div *ngFor="let err of errorMessages" class="alert alert-danger">
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              {{ err }}
+            </div>
+          </div>
           <form novalidate [formGroup]="ownerForm">
             <div>
               <div class="row">
