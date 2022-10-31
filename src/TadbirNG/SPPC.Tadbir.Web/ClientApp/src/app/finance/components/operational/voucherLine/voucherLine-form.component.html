@@ -30,13 +30,13 @@
               <div class="form-group row" *ngIf="creditDebiteMode == '1'">
                 <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float">{{ 'VoucherLine.Amount' | translate }}</label>
 
-                <sppc-numericInput formControlName="debit" (keyup)="onDebitChange()" [decimalCount]="decimalCount" class="col-xs-8 col-sm-9 sppc-input-num sppc-float"></sppc-numericInput>               
+                <sppc-numericInput [autoFocus]="true" formControlName="debit" (keyup)="onDebitChange()" [decimalCount]="decimalCount" class="col-xs-8 col-sm-9 sppc-input-num sppc-float"></sppc-numericInput>               
               </div>
 
               <div class="form-group row" *ngIf="creditDebiteMode == '2'">
                 <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float">{{ 'VoucherLine.Amount' | translate }}</label>
 
-                <sppc-numericInput formControlName="credit" (keyup)="onCreditChange()" [decimalCount]="decimalCount" class="col-xs-8 col-sm-9 sppc-input-num sppc-float"></sppc-numericInput>                
+                <sppc-numericInput [autoFocus]="true" formControlName="credit" (keyup)="onCreditChange()" [decimalCount]="decimalCount" class="col-xs-8 col-sm-9 sppc-input-num sppc-float"></sppc-numericInput>                
               </div>
             </div>
           </div>
