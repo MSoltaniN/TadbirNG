@@ -748,7 +748,7 @@ throw new Error('AdminLTE requires jQuery')
     if (this.options.expandOnHover
       || ($('body').is(Selector.mini + Selector.layoutFixed))) {
       this.expandOnHover()
-      $('body').addClass(ClassName.expandFeature)
+      $('body').addClass(ClassName.open)
     }
 
     $(Selector.contentWrapper).click(function () {
@@ -771,10 +771,12 @@ throw new Error('AdminLTE requires jQuery')
     if (windowWidth <= this.options.collapseScreenSize) {
       isOpen = $('body').hasClass(ClassName.open)
     }
-
+    
     if (!isOpen) {
-      this.open()
+      $('body').removeClass('siderbar-closed');
+      this.open();
     } else {
+      $('body').addClass('siderbar-closed');
       this.close()
     }
   }
@@ -798,8 +800,9 @@ throw new Error('AdminLTE requires jQuery')
       $('body').addClass(ClassName.collapsed)
         .trigger($.Event(Event.collapsed))
     } else {
-      $('body').removeClass(ClassName.open + ' ' + ClassName.collapsed)
-        .trigger($.Event(Event.collapsed))
+      // $('body').removeClass(ClassName.open);
+      $('body').removeClass(ClassName.collapsed)
+        .trigger($.Event(Event.collapsed));
     }
   }
 
