@@ -147,6 +147,7 @@ import { ManageWidgetsFormComponent } from "./components/dashboard/manage-widget
 import { WidgetAccountsComponent } from "./components/dashboard/manage-widgets/widget-accounts/widget-accounts.component";
 import { ChartService } from "./services/widget.service";
 import { ColorPickerModule } from "ngx-color-picker";
+import { NgxEchartsModule } from "ngx-echarts";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -183,6 +184,9 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
     }),
     ColorPickerModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import("echarts"),
+    }),
   ],
 
   declarations: [

@@ -20,9 +20,11 @@ import { ChartWidgetComponent } from "../chart-widget/chart-widget.component";
 export class WidgetComponent implements OnInit, OnChanges {
   @Input() headerTitle: string;
   @Input() widgetId: string;
+  @Input() tabId: string;
   @Input() isEditMode: boolean;
 
   @Output() settingClick: EventEmitter<any> = new EventEmitter();
+  @Output() settingChanged: EventEmitter<any> = new EventEmitter();
   @Output() closeWidget: EventEmitter<any> = new EventEmitter();
 
   @Input() setting: WidgetSetting;
@@ -38,8 +40,14 @@ export class WidgetComponent implements OnInit, OnChanges {
     this.closeWidget.emit(this.widgetId);
   }
 
-  onSettingChange(changedSetting: WidgetSetting) {   
-    this.chart.changeSettings(changedSetting);
+  onSettingChange(changedSetting: WidgetSetting) {
+    debugger;
+    //this.chart.changeSettings(changedSetting);
+    this.settingChanged.emit({
+      widgetId: this.widgetId,
+      tabId: this.tabId,
+      setting: changedSetting,
+    });
   }
 
   ngOnInit() {}
