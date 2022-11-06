@@ -330,9 +330,11 @@
                   *ngIf="subjectMode === 0"
                   type="text"
                   class="k-textbox"
+                  formControlName="originName"
                   value="{{ 'Voucher.NormalVoucher' | translate }}"
                   readonly
-                />
+                  />
+                  <!--  -->
                 <input
                   *ngIf="subjectMode === 1"
                   type="text"

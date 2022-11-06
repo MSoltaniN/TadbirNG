@@ -164,6 +164,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
    * برای باز شدن مودال تعیین تکلیف هنگامی که هیچ سندی جوجود ندارد
    */
   noVoucher = [false,false];
+  isNewVoucher = false;
 
   constructor(
     private voucherService: VoucherService,
@@ -221,6 +222,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         switch (params["mode"]) {
           case "new": {
             this.newVoucher();
+            this.isNewVoucher = true;
             this.isLastVoucher = true;
             break;
           }
@@ -327,6 +329,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         }
       });
     }
+
   }
 
   //report methods
@@ -507,6 +510,13 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
           this.errorMessage = undefined;
           this.isLastVoucher = !res.hasNext;
           this.isFirstVoucher = !res.hasPrevious;
+          if (this.isNewVoucher) {
+            this.translate.get('Voucher.NormalVoucher').subscribe(res => {
+              this.editForm.patchValue({
+                originName: res
+              })
+            });
+          }
         },
         (err) => {
           if (err == null || err.statusCode == 404) {
