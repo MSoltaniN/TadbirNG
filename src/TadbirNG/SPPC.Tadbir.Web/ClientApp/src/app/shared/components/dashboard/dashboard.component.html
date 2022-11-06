@@ -80,16 +80,18 @@
                   <widget
                     (closeWidget)="onCloseWidget($event)"
                     [widgetId]="item.id"
+                    [tabId]="tab.id"
                     [isEditMode]="isDashboardEditMode"
                     [headerTitle]="item.title"
                     [setting]="widgetSettings[item.id + '-' + tab.id]"
+                    (settingChanged)="onSettingChanged($event)"
                   >
                     <widget-container>
                       <div class="box-body" body>
                         <chart-widget
                           [data]="getData(item.id , tab.id)"
                           [type]="getChartType(item.typeId,item.id,tab.id)"
-                          [options]="getOptions(item.typeId)"
+                          [initOptions]="getOptions(item.typeId,item.id,tab.id)"
                         ></chart-widget>
                       </div>
                     </widget-container>
@@ -138,7 +140,7 @@
           <chart-widget
             [type]="'bar'"
             [data]="grossChartData"
-            [options]="basicOptions"
+            [initOptions]="basicOptions"
           ></chart-widget>
         </div>
       </widget-container>
@@ -156,7 +158,7 @@
           <chart-widget
             [type]="'bar'"
             [data]="netChartData"
-            [options]="basicOptions"
+            [initOptions]="basicOptions"
           ></chart-widget>
         </div>
       </widget-container>

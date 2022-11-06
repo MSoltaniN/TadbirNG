@@ -360,19 +360,25 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   //   return chartType;
   // }
 
-  getOptions(type: number) {
-    let options = this.basicOptions;
+  onSettingChanged(option) {
+    debugger;
+    const id = option.widgetId + "-" + option.tabId;
+    this.widgetSettings[id].series = option.setting.series;
+    const data = this.chartService.applyChartSetting(
+      this.widgetSettings[id],
+      this.widgetData[id]
+    );
+    this.widgetData[id] = data;
+  }
 
-    switch (type) {
-      case 1: //column
-        break;
-      case 2: //bar
-        break;
-      default:
-        break;
-    }
+  getOptions(typeId, widgetId, tabId) {
+    const id = widgetId + "-" + tabId;
+    const data = this.widgetData[id];
+    const type = this.chartService.getAdjustedChartType(
+      this.widgetSettings[id]
+    );
 
-    return options;
+    return this.chartService.getOptions(type, data);
   }
 
   changedOptions(tabId): void {
@@ -630,7 +636,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       mobileBreakpoint: 200,
       minCols: 50,
       maxCols: 200,
-      minRows: 50,
+      minRows: 40,
       maxRows: 200,
       maxItemCols: 100,
       minItemCols: 1,
@@ -759,7 +765,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       res.datasets.forEach((item, index) => {
         if (init) {
           item.name = item.label;
-          item.type = this.chartService.getChartType(widgetType);
+          item.type = this.chartService.getChartTypeName(widgetType);
         }
 
         const seriesItem: SerieItem = {
@@ -808,7 +814,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     }
 
     if (type == "" || type == undefined)
-      type = this.chartService.getChartType(typeId);
+      type = this.chartService.getChartTypeName(typeId);
 
     console.log(type);
     return type;
