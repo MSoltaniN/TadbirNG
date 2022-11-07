@@ -19,16 +19,16 @@
             <ul class="series-header">
               <li class="col-md-12">
                 <div class="form-group">                  
-                  <div class="col-md-4">
+                  <div class="col-md-8">
                     <label class="control-label serie-title">{{
                       "Dashboard.ChartType" | translate
                     }}</label>
                   </div>
-                  <div class="col-md-4">
+                  <!-- <div class="col-md-4">
                     <label class="control-label serie-title">{{
                       "Dashboard.ChartColor" | translate
                     }}</label>
-                  </div>
+                  </div> -->
                   <div class="col-md-4">
                     <label class="control-label serie-title">{{
                       "Dashboard.SerieName" | translate
@@ -38,10 +38,10 @@
               </li>
             </ul>        
             <hr>
-            <ul class="series-body" *ngIf="setting && setting.series">
-              <li *ngFor="let serie of setting.series; let i = index" class="col-md-12">
+            <ul class="series-body" *ngIf="clonedSetting && clonedSetting.series">
+              <li *ngFor="let serie of clonedSetting.series; let i = index" class="col-md-12">
                 <div class="form-group">                  
-                  <div class="col-md-4">                      
+                  <div class="col-md-9">                      
                     <kendo-dropdownlist
                     class="ddl-acc"
                     (valueChange)="onChangeChartTypes($event, i)"
@@ -53,25 +53,24 @@
                     >
                     </kendo-dropdownlist>
                   </div>
-                  <div class="col-md-4">                    
-                    <kendo-dropdownlist
-                    class="ddl-acc"
-                    (valueChange)="onChangeColor($event , i)"
-                      [data]="chartColors"
-                      [value]="serie.backgroundColor"                                          
-                    >                
-                    <ng-template kendoDropDownListItemTemplate let-dataItem>
-                      <span [style.backgroundColor]="dataItem" class="color-pal">{{dataItem}}</span> 
-                    </ng-template>
-                    </kendo-dropdownlist>
+                  <!-- <div class="col-md-3">  
+                    <ng-container *ngIf="serie.type == 4" >
+                      <div *ngIf="serie.backgroundColor.length > 0">
+                        <input *ngFor="let color of serie.backgroundColor; index as i;"
+                         class="color-item" [id]="i" [(colorPicker)]="pieColors[i]" [style.background]="pieColors[i]"/>
+                      </div>
+                      
+                    </ng-container>  
+                    <ng-container *ngIf="serie.type == 1 || serie.type == 2 || serie.type == 3">    
+                     
+                    <input class="color-box" [(colorPicker)]="serie.backgroundColor" [style.background]="serie.backgroundColor"/>
+                    </ng-container>  
+                    
+                  </div> -->
+                  <div  class="col-md-3">                  
+                    <input type="text" class="k-textbox series-text" [(ngModel)]="clonedSetting.series[i].name" /> 
                   </div>
-                  <div  class="col-md-3">
-                    <!-- <label class="control-label">{{
-                      serie.name
-                    }}</label> -->
-                    <input type="text" class="k-textbox series-text" [(ngModel)]="setting.series[i].name" /> 
-                  </div>
-                  <div [style.backgroundColor]="serie.backgroundColor" class="circle col-md-1"></div>
+                  <!-- <div [style.backgroundColor]="serie.backgroundColor" class="circle col-md-1"></div> -->
                 </div>
               </li>
             </ul>
@@ -101,3 +100,7 @@
     {{ "Buttons.Cancel" | translate }}
   </button>
 </kendo-dialog-actions>
+
+<ng-template #colors>
+
+</ng-template>

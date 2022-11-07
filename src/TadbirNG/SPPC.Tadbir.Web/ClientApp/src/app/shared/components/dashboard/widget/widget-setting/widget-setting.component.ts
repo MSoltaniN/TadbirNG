@@ -15,7 +15,11 @@ export class WidgetSettingComponent implements OnInit {
   @Input() chartType;
   widgetId: number;
 
-  @Input() setting: WidgetSetting;
+  clonedSetting: WidgetSetting;
+
+  @Input() set setting(value: WidgetSetting) {
+    if (value) this.clonedSetting = JSON.parse(JSON.stringify(value));
+  }
 
   chartTitle: string;
   chartColors = new WidgetSetting().Colors;
@@ -24,26 +28,47 @@ export class WidgetSettingComponent implements OnInit {
     { text: "نمودار ستونی", value: "1" },
     { text: "نمودار میله ای", value: "2" },
     { text: "نمودار خطی", value: "3" },
+    { text: "نمودار دایره ای", value: "4" },
   ];
 
   ngOnInit() {
-    this.chartTitle = this.setting.title;
+    if (this.clonedSetting.series.findIndex((s) => s.type == "4") >= 0) {
+      this.pieColors = JSON.parse(
+        JSON.stringify(this.clonedSetting.series[0].backgroundColor)
+      );
+    }
+
+    this.chartTitle = this.clonedSetting.title;
   }
 
   onSave(e: any): void {
-    this.setting.title = this.chartTitle;
-    this.save.emit(this.setting);
+    // if (this.setting.series.findIndex((s) => s.type == "4") >= 0) {
+    //   this.setting.series[0].backgroundColor = this.pieColors;
+    // }
+    this.clonedSetting.title = this.chartTitle;
+    this.save.emit(this.clonedSetting);
   }
 
   onChangeChartTypes(item: any, index: number) {
-    this.setting.series[index].type = item;
+    if (this.clonedSetting.series[index].type == "4" && item != "4") {
+      this.clonedSetting.series[index].backgroundColor =
+        this.clonedSetting.series[index].backgroundColor[0];
+    }
+    if (this.clonedSetting.series[index].type != "4" && item == "4") {
+      this.clonedSetting.series[index].backgroundColor = JSON.parse(
+        JSON.stringify(this.pieColors)
+      );
+    }
+    this.clonedSetting.series[index].type = item;
   }
 
-  onChangeColor(item: any, index: number) {
-    this.setting.series[index].backgroundColor = item;
-  }
+  // onChangeColor(item: any, index: number) {
+  //   this.setting.series[index].backgroundColor = item;
+  // }
 
   onCancel(e: any): void {
     this.cancel.emit();
   }
+
+  pieColors: any[] = [];
 }

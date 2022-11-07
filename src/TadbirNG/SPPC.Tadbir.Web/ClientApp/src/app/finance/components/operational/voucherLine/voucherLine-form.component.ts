@@ -300,6 +300,12 @@ export class VoucherLineFormComponent
     }
   }
 
+  @HostListener('document:keydown.enter')
+  onEnterKey() {
+    this.isEnableSaveBtn = false;
+    this.onSave(true);
+  }
+
   @HostListener('document:keydown.control.Alt.s')
   changeCreditDebiteMode() {
     this.creditDebiteMode = this.creditDebiteMode == '1'? '2' : '1';

@@ -28,7 +28,7 @@ import { TextMaskModule } from "angular2-text-mask";
 import { ServiceLocator } from "./service.locator";
 
 import { ToastrModule } from "ngx-toastr";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [AppComponent],

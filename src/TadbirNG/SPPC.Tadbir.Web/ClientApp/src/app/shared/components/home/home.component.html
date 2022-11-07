@@ -7,7 +7,7 @@
 <ng-template #itemListRef>
   <div class="form-group" style="padding: 15px;" (keydown.enter)="passVoucherId()">
     <label class="control-label">{{'Voucher.VoucherNo' | translate}}</label>
-    <input type="text" class="k-textbox" [(ngModel)]="voucherNo" [OnlyNumber] />
+    <input type="text" class="k-textbox" [(ngModel)]="voucherNo" [OnlyNumber] sppcAutoFocus/>
   </div>
 </ng-template>
 

@@ -732,7 +732,8 @@
     "SelectCollection": "Please select account collection.",
     "SelectedAccount": "This account is selected.",
     "AccountViewAccess": "You do not have access to viewing selected accounts.",
-    "AccountRemoveAccess": "This account is defined in the above branches and can not be deleted."
+    "AccountRemoveAccess": "This account is defined in the above branches and can not be deleted.",
+    "DeleteTaxConfirmMsg": "This account has tax information or bank information, which will be deleted when it is removed from the account collection."
   },
   "Settings": {
     "AccountRelation": {

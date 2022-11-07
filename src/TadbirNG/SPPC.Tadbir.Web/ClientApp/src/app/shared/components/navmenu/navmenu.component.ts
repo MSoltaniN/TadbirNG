@@ -1,4 +1,4 @@
-import { Component, Renderer2, ElementRef, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, Renderer2, ElementRef, OnInit, AfterViewInit, ViewChild, HostListener } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -164,4 +164,18 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
 
   isCollapsed: boolean = true;
 
+  @HostListener('mouseenter') onMouseEnter() {
+    let body = document.querySelector('body');
+    if (body.classList.contains('siderbar-closed')) {
+      body.classList.remove('sidebar-collapse');
+    }
+  }
+
+  @HostListener('mouseleave') 
+  onMouseLeave() {
+    let body = document.querySelector('body');
+    if (body.classList.contains('siderbar-closed')) {
+      body.classList.add('sidebar-collapse');
+    }
+  }
 }

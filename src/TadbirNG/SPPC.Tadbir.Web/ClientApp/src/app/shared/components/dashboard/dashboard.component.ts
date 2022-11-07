@@ -360,19 +360,25 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   //   return chartType;
   // }
 
-  getOptions(type: number) {
-    let options = this.basicOptions;
+  onSettingChanged(option) {
+    debugger;
+    const id = option.widgetId + "-" + option.tabId;
+    this.widgetSettings[id].series = option.setting.series;
+    const data = this.chartService.applyChartSetting(
+      this.widgetSettings[id],
+      this.widgetData[id]
+    );
+    this.widgetData[id] = data;
+  }
 
-    switch (type) {
-      case 1: //column
-        break;
-      case 2: //bar
-        break;
-      default:
-        break;
-    }
+  getOptions(typeId, widgetId, tabId) {
+    const id = widgetId + "-" + tabId;
+    const data = this.widgetData[id];
+    const type = this.chartService.getAdjustedChartType(
+      this.widgetSettings[id]
+    );
 
-    return options;
+    return this.chartService.getOptions(type, data);
   }
 
   changedOptions(tabId): void {
@@ -630,7 +636,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       mobileBreakpoint: 200,
       minCols: 50,
       maxCols: 200,
-      minRows: 50,
+      minRows: 40,
       maxRows: 200,
       maxItemCols: 100,
       minItemCols: 1,
@@ -743,32 +749,44 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
   getWidgetData(widgetType, widgetId, tabId) {
     return this.dashboardService.getWidgetData(widgetId).subscribe((res) => {
-      debugger;
       let init = false;
       const series = [];
       const id = widgetId + "-" + tabId;
       if (this.widgetSettings[id].series.length == 0) init = true;
 
+      // if (widgetType == 4)
+      //   res.datasets = [
+      //     {
+      //       label: "test",
+      //       data: [10, 52, 5, 0, 15, 20, 14, 80, 70, 50, 45, 60],
+      //     },
+      //   ];
+
       res.datasets.forEach((item, index) => {
-        item.backgroundColor = new WidgetSetting().Colors[index];
-        item.borderWidth = 1;
         if (init) {
           item.name = item.label;
-          item.type = this.chartService.getChartType(widgetType);
+          item.type = this.chartService.getChartTypeName(widgetType);
         }
 
         const seriesItem: SerieItem = {
-          backgroundColor: item.backgroundColor,
-          borderWidth: item.borderWidth,
           name: item.label,
           type: widgetType.toString(),
         };
+
+        if (widgetType == 1 || widgetType == 2 || widgetType == 3) {
+          seriesItem.backgroundColor = new WidgetSetting().Colors[index];
+          seriesItem.borderWidth = "1";
+        }
+
+        if (widgetType == 4) {
+          seriesItem.backgroundColor = new WidgetSetting().Colors;
+        }
+
         series.push(seriesItem);
       });
 
       if (!init) {
         if (this.widgetSettings[id]) {
-          //series = this.widgetSettings[id].series;
           res = this.chartService.applyChartSetting(
             this.widgetSettings[id],
             res
@@ -778,13 +796,6 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         this.widgetSettings[id].series = series;
         res = this.chartService.applyChartSetting(this.widgetSettings[id], res);
       }
-      //this.initSeriesOptions(widgetType, widgetId, tabId, res.datasets);
-      // res.datasets = this.getDataOptions(
-      //   widgetType,
-      //   widgetId,
-      //   tabId,
-      //   res.datasets
-      // );
 
       this.widgetData[widgetId + "-" + tabId] = res;
     });
@@ -803,8 +814,9 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     }
 
     if (type == "" || type == undefined)
-      type = this.chartService.getChartType(typeId);
+      type = this.chartService.getChartTypeName(typeId);
 
+    console.log(type);
     return type;
   }
 

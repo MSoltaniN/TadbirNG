@@ -279,13 +279,6 @@ export class AccountComponent
 
   public showReport() {
     if (this.validateReport()) {
-      /*this.reportManager.directShowReport().then(Response => {
-        if (!Response) {
-          this.showMessage(this.getText("Report.PleaseSetQReportSetting"));
-          this.showReportSetting();
-        }
-      });*/
-
       if (!this.reportManager.directShowReport()) {
         this.showMessage(this.getText("Report.PleaseSetQReportSetting"));
         this.showReportSetting();
