@@ -1,6 +1,6 @@
 export interface SerieItem {
   name: string;
-  backgroundColor: string;
+  backgroundColor?: any;
   type: string;
-  borderWidth: string;
+  borderWidth?: string;
 }

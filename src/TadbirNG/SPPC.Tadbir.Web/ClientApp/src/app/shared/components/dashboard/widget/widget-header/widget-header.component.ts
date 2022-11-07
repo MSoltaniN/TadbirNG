@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { DialogService } from "@progress/kendo-angular-dialog";
-import { SerieItem } from "@sppc/shared/models/serieItem";
 import { WidgetSetting } from "@sppc/shared/models/widgetSetting";
 import { WidgetSettingComponent } from "../widget-setting/widget-setting.component";
 
@@ -40,12 +39,12 @@ export class WidgetHeaderComponent implements OnInit {
       width: 800,
       height: 550,
     });
-    debugger;
     this.dialogModel = this.dialogRef.content.instance;
     this.dialogModel.widgetId = this.widgetId;
     this.dialogModel.setting = this.setting;
 
     this.dialogRef.content.instance.save.subscribe((res) => {
+      this.title = res.title;
       this.settingChange.emit(res);
       this.dialogRef.close();
     });

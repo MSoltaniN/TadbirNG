@@ -5,7 +5,7 @@
       <span>{{ 'FullAccount.Account' | translate }}</span>
 
       <div class="row search-box">
-        <input type="text" class="k-textbox" [(ngModel)]="accFilterValue" (keydown.enter)="handleFilter(accountItem.Account)" />
+        <input sppcAutoFocus type="text" class="k-textbox" [(ngModel)]="accFilterValue" (keydown.enter)="handleFilter(accountItem.Account)" />
         <button class="k-button k-primary" (click)="handleFilter(accountItem.Account)">
           <span class="k-i-filter k-icon"></span>
         </button>

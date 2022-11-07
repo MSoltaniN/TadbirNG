@@ -44,6 +44,7 @@ import { ManageWidgetsComponent } from "./manage-widgets/manage-widgets.componen
 import { TabView } from "primeng/tabview";
 import { SerieItem } from "@sppc/shared/models/serieItem";
 import { WidgetSetting } from "@sppc/shared/models/widgetSetting";
+import { ChartService } from "@sppc/shared/services/widget.service";
 
 interface DashboardConfig extends GridsterConfig {
   draggable: Draggable;
@@ -184,7 +185,8 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     @Inject(DOCUMENT) public document,
     public dashboardService: DashboardService,
     private dialogService: DialogService,
-    private chRef: ChangeDetectorRef
+    private chRef: ChangeDetectorRef,
+    private chartService: ChartService
   ) {
     super(
       toastrService,
@@ -358,19 +360,25 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   //   return chartType;
   // }
 
-  getOptions(type: number) {
-    let options = this.basicOptions;
+  onSettingChanged(option) {
+    debugger;
+    const id = option.widgetId + "-" + option.tabId;
+    this.widgetSettings[id].series = option.setting.series;
+    const data = this.chartService.applyChartSetting(
+      this.widgetSettings[id],
+      this.widgetData[id]
+    );
+    this.widgetData[id] = data;
+  }
 
-    switch (type) {
-      case 1: //column
-        break;
-      case 2: //bar
-        break;
-      default:
-        break;
-    }
+  getOptions(typeId, widgetId, tabId) {
+    const id = widgetId + "-" + tabId;
+    const data = this.widgetData[id];
+    const type = this.chartService.getAdjustedChartType(
+      this.widgetSettings[id]
+    );
 
-    return options;
+    return this.chartService.getOptions(type, data);
   }
 
   changedOptions(tabId): void {
@@ -392,14 +400,12 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   }
 
   onSettingClick() {
-    //const currentTab =
-    //this.currentDashboard.tabs[this.currentDashboardTabIndex];
     this.goToEditMode();
   }
 
   goToEditMode() {
-    this.isDashboardEditMode = !this.isDashboardEditMode;
     if (this.currentDashboard) {
+      this.isDashboardEditMode = !this.isDashboardEditMode;
       this.currentDashboard.tabs.forEach((tab) => {
         this.changedOptions(tab.id);
       });
@@ -434,10 +440,16 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
             changedWidgets.forEach((item, index) => {
               if (tab.widgets.length > 0) {
                 const setting = JSON.parse(tab.widgets[index].settings);
+                const widgetSetting =
+                  this.widgetSettings[item.id + "-" + tab.id];
                 setting.width = item.cols;
                 setting.height = item.rows;
                 setting.x = item.x;
                 setting.y = item.y;
+
+                if (widgetSetting.series.length > 0)
+                  setting.series = widgetSetting.series;
+                if (widgetSetting.title) setting.title = widgetSetting.title;
 
                 tab.dashboardId = dashboardId;
                 tab.widgets[index].settings = JSON.stringify(setting);
@@ -624,7 +636,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       mobileBreakpoint: 200,
       minCols: 50,
       maxCols: 200,
-      minRows: 50,
+      minRows: 40,
       maxRows: 200,
       maxItemCols: 100,
       minItemCols: 1,
@@ -696,25 +708,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   }
 
   addNewWidget(widget) {
-
     let tabWidgetInfo = new TabWidgetInfo();
-    let currentTabId = 0;
-
-    const tabId = this.currentDashboardTab.id;
-    const tab = this.currentDashboard.tabs.filter((t) => t.id == tabId)[0];
-
-    if(this.currentDashboard)
-    {
-      const currentTab =
-      this.currentDashboard.tabs[this.currentDashboardTabIndex];
-      currentTabId = currentTab.id;
-      tabWidgetInfo.tabId = currentTabId;      
-    }
-    else
-    {
-      tabWidgetInfo.tabId = 0;
-    }
-        
     tabWidgetInfo.widgetId = widget.id;
     const setting = {
       height: 20,
@@ -724,23 +718,84 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     };
     tabWidgetInfo.settings = JSON.stringify(setting);
 
-    this.dashboardService
-      .addTabWidget(currentTabId, tabWidgetInfo)
-      .subscribe((newTabWidget: TabWidget) => {
-        tab.widgets.push(newTabWidget);
-        const widgets = this.getWidgetList(newTabWidget.tabId);        
-        this.getWidgetsSubject(newTabWidget.tabId).widgets.next(widgets);
-      });
+    let currentTabId = 0;
+    if (this.currentDashboard) {
+      const tabId = this.currentDashboardTab.id;
+      const tab = this.currentDashboard.tabs.filter((t) => t.id == tabId)[0];
+      const currentTab =
+        this.currentDashboard.tabs[this.currentDashboardTabIndex];
+      currentTabId = currentTab.id;
+      tabWidgetInfo.tabId = currentTabId;
+
+      this.dashboardService
+        .addTabWidget(currentTabId, tabWidgetInfo)
+        .subscribe((newTabWidget: TabWidget) => {
+          tab.widgets.push(newTabWidget);
+          const widgets = this.getWidgetList(newTabWidget.tabId);
+          this.getWidgetsSubject(newTabWidget.tabId).widgets.next(widgets);
+        });
+    } else {
+      tabWidgetInfo.tabId = 0;
+
+      this.dashboardService
+        .postPostNewDashboard(tabWidgetInfo)
+        .subscribe((dashboard: any) => {
+          this.currentDashboard = dashboard;
+          this.fillDashboardSubjects();
+          this.goToEditMode();
+        });
+    }
   }
 
   getWidgetData(widgetType, widgetId, tabId) {
     return this.dashboardService.getWidgetData(widgetId).subscribe((res) => {
+      let init = false;
+      const series = [];
+      const id = widgetId + "-" + tabId;
+      if (this.widgetSettings[id].series.length == 0) init = true;
+
+      // if (widgetType == 4)
+      //   res.datasets = [
+      //     {
+      //       label: "test",
+      //       data: [10, 52, 5, 0, 15, 20, 14, 80, 70, 50, 45, 60],
+      //     },
+      //   ];
+
       res.datasets.forEach((item, index) => {
-        item.backgroundColor = new WidgetSetting().Colors[index];
-        item.borderWidth = 1;
+        if (init) {
+          item.name = item.label;
+          item.type = this.chartService.getChartTypeName(widgetType);
+        }
+
+        const seriesItem: SerieItem = {
+          name: item.label,
+          type: widgetType.toString(),
+        };
+
+        if (widgetType == 1 || widgetType == 2 || widgetType == 3) {
+          seriesItem.backgroundColor = new WidgetSetting().Colors[index];
+          seriesItem.borderWidth = "1";
+        }
+
+        if (widgetType == 4) {
+          seriesItem.backgroundColor = new WidgetSetting().Colors;
+        }
+
+        series.push(seriesItem);
       });
 
-      this.initSeriesOptions(widgetType, widgetId, tabId, res.datasets);
+      if (!init) {
+        if (this.widgetSettings[id]) {
+          res = this.chartService.applyChartSetting(
+            this.widgetSettings[id],
+            res
+          );
+        }
+      } else {
+        this.widgetSettings[id].series = series;
+        res = this.chartService.applyChartSetting(this.widgetSettings[id], res);
+      }
 
       this.widgetData[widgetId + "-" + tabId] = res;
     });
@@ -751,38 +806,83 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     return false;
   }
 
-  initSeriesOptions(widgetType, widgetId, tabId, dataSets: any[]) {
+  getChartType(typeId, widgetId, tabId) {
+    const setting = this.widgetSettings[widgetId + "-" + tabId];
+    let type = "";
+    if (setting) {
+      type = this.chartService.getAdjustedChartType(setting);
+    }
+
+    if (type == "" || type == undefined)
+      type = this.chartService.getChartTypeName(typeId);
+
+    console.log(type);
+    return type;
+  }
+
+  initSeries(widgetType: string, series: any[]) {
+    //this.widgetSettings[id].series = series;
+    const newSeries: any[] = [];
+    series.forEach((item, index) => {
+      let serieItem: any = {};
+      let label = item.label;
+      let backGroundColor = new WidgetSetting().Colors[index];
+      let borderWidth = 1;
+      let type = widgetType.toString();
+
+      if (series && series[index]) {
+        label = series[index].name;
+        backGroundColor = series[index].backgroundColor;
+        borderWidth = series[index].borderWidth;
+        type = series[index].type;
+      }
+
+      serieItem.name = label;
+      serieItem.backgroundColor = backGroundColor;
+      serieItem.borderWidth = borderWidth;
+      serieItem.type = type; //this.chartService.getChartType(parseInt(type));
+
+      newSeries.push(serieItem);
+    });
+
+    return newSeries;
+  }
+
+  getDataOptions(widgetType, widgetId, tabId, dataSets: any[]) {
     const widget = this.currentDashboard.tabs
       .find((t) => t.id == tabId)
       .widgets.filter((w) => w.widgetId == widgetId)[0];
 
     const id = widget.widgetId + "-" + tabId;
-    this.widgetSettings[id] = new WidgetSetting();
-    this.widgetSettings[id].series = [];
+    let series = [];
+    if (this.widgetSettings[id]) {
+      series = this.widgetSettings[id].series;
+    }
 
+    const newDataSet: any[] = [];
     dataSets.forEach((item, index) => {
-      debugger;
       let serieItem: any = {};
-      serieItem.name = item.label;
-      serieItem.backgroundColor = new WidgetSetting().Colors[index];
-      serieItem.borderWidth = 1;
-      serieItem.type = widgetType.toString();
+      let label = item.label;
+      let backGroundColor = new WidgetSetting().Colors[index];
+      let borderWidth = 1;
+      let type = widgetType.toString();
 
-      if (
-        this.widgetSettings[id] &&
-        this.widgetSettings[id].series.findIndex(
-          (s) => s.name == serieItem.name
-        ) >= 0
-      ) {
-        this.widgetSettings[id][
-          this.widgetSettings[id].series.findIndex(
-            (s) => s.name == serieItem.name
-          )
-        ] = serieItem;
-      } else {
-        this.widgetSettings[id].series.push(serieItem);
+      if (series && series[index]) {
+        label = series[index].name;
+        backGroundColor = series[index].backgroundColor;
+        borderWidth = series[index].borderWidth;
+        type = series[index].type;
       }
+
+      item.name = label;
+      item.backgroundColor = backGroundColor;
+      item.borderWidth = borderWidth;
+      item.type = type;
+
+      newDataSet.push(item);
     });
+
+    return newDataSet;
   }
 
   getWidgetList(tabId) {
@@ -798,16 +898,53 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
           y: setting.y,
           x: setting.x,
           id: widget.widgetId,
-          title: widget.widgetTitle,
+          title: setting.title ? setting.title : widget.widgetTitle,
           typeId: widget.widgetTypeId,
-          series: new Array<SerieItem>(),
+          series: setting.series ? setting.series : new Array<SerieItem>(),
         });
+
+        const colors = [
+          "#970272",
+          "#978b02",
+          "#029722",
+          "#0d19fd",
+          "#0dfdbd",
+          "#fd610d",
+          "#ba9ffe",
+        ];
+
+        const set: WidgetSetting = {
+          series: [],
+          title: setting.title ? setting.title : widget.widgetTitle,
+          Colors: colors,
+        };
+
+        if (setting.series || setting.title) {
+          set.series = this.initSeries(
+            widget.widgetTypeId.toString(),
+            setting.series
+          );
+
+          this.widgetSettings[widget.widgetId + "-" + tabId] = set;
+        } else {
+          this.widgetSettings[widget.widgetId + "-" + tabId] = set;
+        }
 
         if (!this.widgetHasData(widget.widgetId, tabId))
           this.getWidgetData(widget.widgetTypeId, widget.widgetId, tabId);
       });
 
     return widgets;
+  }
+
+  getData(widgetId, tabId) {
+    const data = this.widgetData[widgetId + "-" + tabId];
+    if (data) {
+      //const setting = this.widgetSettings[widgetId+ '-' + tabId];
+      //const newData = this.chartService.applyChartSetting(setting,data);
+      //return newData;
+    }
+    return data;
   }
 
   fillDashboardSubjects() {

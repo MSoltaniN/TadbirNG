@@ -62,7 +62,8 @@
     "ParamSettings":"پارامتر",
     "ChartColor":"رنگ",
     "SerieName":"نام سری",
-    "ManageWidgets": "مدیریت ویجت ها"
+    "ManageWidgets": "مدیریت ویجت ها",
+    "WidgetTitle":"عنوان ویجت"
   },
   "Exception": {
     "ErrorCode": "کد خطا",
@@ -850,7 +851,8 @@
     "SelectCollection": "لطفا مجموعه حساب را انتخاب کنید",
     "SelectedAccount": "این حساب انتخاب شده است",
     "AccountViewAccess": "شما دسترسی دیدن حساب های انتخاب شده را ندارید",
-    "AccountRemoveAccess": "این حساب در شعبه های بالاتر تعریف شده است و قابل حذف نیست"
+    "AccountRemoveAccess": "این حساب در شعبه های بالاتر تعریف شده است و قابل حذف نیست",
+    "DeleteTaxConfirmMsg": "این حساب دارای اطلاعات مالیاتی و یا اطلاعات بانکی است که با خارج شدن از مجموعه حساب مورد نظر این اطلاعات حذف میگردد."
   },
   "Settings": {
     "AccountRelation": {
@@ -1112,7 +1114,9 @@
       "NotFinalized": "اسناد ثبت قطعی نشده",
       "NotConfirmed": "اسناد تایید نشده",
       "NotApproved": "اسناد تصویب نشده"
-    }
+    },
+    "NoVoucherTitle": "سندی وجود ندارد",
+    "NoVoucherMessage": "هیچ سندی وجود ندارد.آیا سند حسابداری جدیدی ایجاد شود؟"
   },
   "User": {
     "New": "کاربر جدید",

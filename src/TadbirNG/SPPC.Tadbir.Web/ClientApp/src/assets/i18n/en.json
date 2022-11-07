@@ -56,7 +56,8 @@
     "ChartType": "Chart type",
     "AddTab":"Add new Tab",
     "TabName":"Tab name",
-    "ManageWidgets": "Manage widgets"
+    "ManageWidgets": "Manage widgets",
+    "WidgetTitle":"Widget title"
   },
   "Exception": {
     "ErrorCode": "Error Code",
@@ -731,7 +732,8 @@
     "SelectCollection": "Please select account collection.",
     "SelectedAccount": "This account is selected.",
     "AccountViewAccess": "You do not have access to viewing selected accounts.",
-    "AccountRemoveAccess": "This account is defined in the above branches and can not be deleted."
+    "AccountRemoveAccess": "This account is defined in the above branches and can not be deleted.",
+    "DeleteTaxConfirmMsg": "This account has tax information or bank information, which will be deleted when it is removed from the account collection."
   },
   "Settings": {
     "AccountRelation": {
@@ -988,7 +990,9 @@
     "ConfirmedVouchers": "Unconfirmed Vouchers",
     "ApprovedVouchers": "Unapproved Vouchers",
     "CommittedVouchers": "Uncommitted Vouchers",
-    "FinalizedVouchers": "Unfinalized Vouchers"
+    "FinalizedVouchers": "Unfinalized Vouchers",
+    "NoVoucherTitle": "There is no voucher",
+    "NoVoucherMessage": "There is no voucher. Should a new accounting voucher be created?"
   },
   "User": {
     "New": "New User",

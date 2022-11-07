@@ -162,7 +162,29 @@
     </div>
 
     <div class="clearfix"></div>
-
+    <kendo-dialog
+            title="{{ 'Account.Delete' | translate }}"
+            *ngIf="deleteConfirm"
+            (close)="deleteConfirm = false"
+            [minWidth]="250"
+            [width]="450"
+          >
+            <p>
+              {{ "AccountCollection.DeleteTaxConfirmMsg" | translate }}
+            </p>
+            <kendo-dialog-actions>
+              <button
+                class="k-button"
+                (click)="removeAccount(true)"
+                primary="true"
+              >
+                {{ "Buttons.Yes" | translate }}
+              </button>
+              <button class="k-button" (click)="deleteConfirm = false">
+                {{ "Buttons.No" | translate }}
+              </button>
+            </kendo-dialog-actions>
+          </kendo-dialog>
   </div>
 </div>
 
