@@ -88,6 +88,13 @@
       ],
       "description": "Generates C# model layer classes from XML entity metadata.",
       "handlerType": "SPPC.Tools.SystemDesignerCli.GenerateCsModelCommand, ngdes"
+    },
+    {
+      "name": "refdbscripts",
+      "parameters": [
+      ],
+      "description": "Refreshes system and company database scripts.",
+      "handlerType": "SPPC.Tools.SystemDesignerCli.RefreshDBScriptsCommand, ngdes"
     }
   ]
 }
