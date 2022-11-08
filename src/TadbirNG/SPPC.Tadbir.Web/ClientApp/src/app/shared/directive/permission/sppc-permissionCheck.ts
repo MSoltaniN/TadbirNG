@@ -35,7 +35,7 @@ export class SppcPermissionCheckDirective implements OnInit, OnDestroy,AfterCont
   ngAfterContentChecked(): void {
     if (this.permissions == 'ChangeStatus') {
       if (!this.formValue.hasOwnProperty('isActive') || this.formValue.isActive == null) {
-        this.formValue = (<any>this.parentComponet)._view.component.editForm.value
+        this.formValue = this.parentComponet['_hostLView'][8].editForm.value
       }
     }
   }

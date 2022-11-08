@@ -178,7 +178,7 @@ export class ChartService extends BaseService {
   getBarSeries(dataset: any[]) {
     const series: any[] = [];
     dataset.forEach((d) => {
-      debugger;
+      // debugger;
       let type = d.type;
       if (d.type == "horizontalBar") type = "bar";
 

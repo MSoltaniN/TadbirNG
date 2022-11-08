@@ -1,11 +1,7 @@
-import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 import {
   Component,
-  EventEmitter,
   Input,
   OnInit,
-  Output,
-  ViewChild,
 } from "@angular/core";
 import { WidgetSetting } from "@sppc/shared/models/widgetSetting";
 import { ChartService } from "@sppc/shared/services/widget.service";
