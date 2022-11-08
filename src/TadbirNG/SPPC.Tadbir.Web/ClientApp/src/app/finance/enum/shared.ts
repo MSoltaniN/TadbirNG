@@ -42,4 +42,13 @@ export enum BookDisplayTypeResource {
   MonthlySum = "AccountBook.DisplayByMonthlySum",
 }
 
-   
+export enum AccountCollectionItemType {
+  /** بدهکاران تجاری */
+  TradeDebtors = 31,
+
+  /** بستانکاران تجاری */
+  TradeCreditors = 32,
+
+  /** بانکی */
+  Bank = 17
+}
