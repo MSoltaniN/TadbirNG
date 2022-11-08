@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SPPC.CodeChallenge.Common\SPPC.CodeChallenge.Common.csproj" />
+    <ProjectReference Include="..\SPPC.CodeChallenge.ViewModel\SPPC.CodeChallenge.ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Api\" />
+  </ItemGroup>
+
+</Project>
