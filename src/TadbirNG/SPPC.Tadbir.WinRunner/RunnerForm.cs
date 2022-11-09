@@ -38,7 +38,7 @@ namespace SPPC.Tadbir.WinRunner
             }
         }
 
-        private void btnRunApp_Click(object sender, EventArgs e)
+        private void RunApp_Click(object sender, EventArgs e)
         {
             txtConsole.Focus();
             _runner.OutputReceived += Runner_OutputReceived;
@@ -104,7 +104,6 @@ namespace SPPC.Tadbir.WinRunner
             Cursor = Cursors.Default;
         }
 
-
         private bool ConfirmApplicationUpdate(UpdateUtility utility)
         {
             int downloadSize = utility.GetDownloadSize();
@@ -117,18 +116,12 @@ namespace SPPC.Tadbir.WinRunner
             return result == DialogResult.Yes;
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
+        private void Exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-            Application.Exit();
-        }
-
-        private const string ComposeCommand = "docker compose -f \"docker-compose.yml\" -f \"docker-compose.override.yml\"  -p \"tadbirng\"";
+        private const string ComposeCommand = "docker compose -f \"docker-compose.yml\" -f \"docker-compose.override.yml\" -p \"tadbirng\"";
         private readonly CliRunner _runner = new();
         private readonly IApiClient _apiClient;
     }
