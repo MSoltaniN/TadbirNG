@@ -61,6 +61,11 @@ namespace SPPC.Tadbir.Configuration
         /// <summary>
         /// تنظیمات سفارشی سازی عناوین در گزارش های خاص
         /// </summary>
-        FormLabel = 10
+        FormLabel = 10,
+
+        /// <summary>
+        /// تنظیمات کاربری در رابطه با زیرسیستم های مختلف
+        /// </summary>
+        UserProfile = 11
     }
 }

@@ -881,6 +881,11 @@ INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (1, N'Fu
 INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (2, N'Function_CreditTurnover')
 INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (3, N'Function_NetTurnover')
 INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (4, N'Function_Balance')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (5, N'FunctionXB_LiquidRatio')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (6, N'FunctionXT_GrossSales')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (7, N'FunctionXT_NetSales')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (8, N'FunctionXB_BankBalance')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (9, N'FunctionXB_CashBalance')
 SET IDENTITY_INSERT [Reporting].[WidgetFunction] OFF
 
 SET IDENTITY_INSERT [Reporting].[WidgetType] ON 
@@ -893,6 +898,9 @@ INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (6, N'Chart_Scat
 INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (7, N'Chart_BubbleChart')
 INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (8, N'Chart_StackedColumnChart')
 INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (9, N'Chart_StackedBarChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (10, N'Gauge_Circular')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (11, N'Gauge_Digital')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (12, N'Gauge_Linear')
 SET IDENTITY_INSERT [Reporting].[WidgetType] OFF
 
 SET IDENTITY_INSERT [Reporting].[FunctionParameter] ON
@@ -921,6 +929,21 @@ INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterI
 INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (10, 4, 1)
 INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (11, 4, 2)
 INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (12, 4, 3)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (13, 5, 2)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (14, 5, 4)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (15, 5, 5)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (16, 6, 1)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (17, 6, 2)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (18, 6, 3)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (19, 7, 1)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (20, 7, 2)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (21, 7, 3)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (22, 8, 1)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (23, 8, 2)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (24, 8, 3)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (25, 9, 1)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (26, 9, 2)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (27, 9, 3)
 SET IDENTITY_INSERT [Reporting].[UsedParameter] OFF
 
 SET IDENTITY_INSERT [Core].[DocumentStatus] ON
@@ -950,6 +973,8 @@ INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelTyp
     VALUES (9, 'FinanceReportSettings', 2, 1, 'FinanceReportConfig', N'{"openingAsFirstVoucher":false,"startTurnoverAsInitBalance":false}', N'{"openingAsFirstVoucher":false,"startTurnoverAsInitBalance":false}', 'FinanceReportSettingsDescription', 1)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (10, 'FormLabelSettings', 2, 3, 'FormLabelConfig', N'{}', N'{}', NULL, 0)
+INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
+    VALUES (11, 'UserProfileSettings', 3, 1, 'UserProfileConfig', N'{}', N'{}', 'UserProfileSettingsDescription', 0)
 SET IDENTITY_INSERT [Config].[Setting] OFF
 
 SET IDENTITY_INSERT [Config].[ViewSetting] ON
