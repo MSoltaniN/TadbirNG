@@ -29,6 +29,8 @@ namespace SPPC.CodeChallenge.ViewModel.Core
             AdminSystem = String.Empty;
             Manager = String.Empty;
             Address = String.Empty;
+            Tuition = 1000000M;
+            Capacity = 10;
         }
 
         /// <summary>
