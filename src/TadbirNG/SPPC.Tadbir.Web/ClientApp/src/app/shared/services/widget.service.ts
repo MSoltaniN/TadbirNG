@@ -114,10 +114,13 @@ export class ChartService extends BaseService {
         break;
       case "line": //line
         options = this.getLineChartOptions(data);
+        break;
       case "pie": //pie
         options = this.getPieChartOptions(data);
+        break;
       case "Gauge_Circular": //pie
         options = this.getGaugeChartOptions(data);
+        break;
       default:
         break;
     }

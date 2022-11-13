@@ -622,7 +622,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         delete this.widgetData[id];
 
         const widgets = this.getWidgetList(currentTab.id);
-        debugger;
+
         this.getWidgetsSubject(currentTab.id).widgets.next(widgets);
       });
   }
@@ -738,8 +738,6 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
           tab.widgets.push(newTabWidget);
           const widgets = this.getWidgetList(newTabWidget.tabId);
           this.getWidgetsSubject(newTabWidget.tabId).widgets.next(widgets);
-          // debugger;
-          // this.widgets[tab.id] = widgets;
         });
     } else {
       tabWidgetInfo.tabId = 0;
@@ -789,7 +787,6 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       }
 
       if (widgetType == 10 || widgetType == 11 || widgetType == 12) {
-        debugger;
         const seriesItem: SerieItem = {
           name: widgetTitle,
           type: widgetType.toString(),
@@ -951,7 +948,6 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
           //this.widgetSettings[widget.widgetId + "-" + tabId] = set;
         }
 
-        debugger;
         if (!this.widgetHasData(widget.widgetId, tabId))
           this.getWidgetData(
             widget.widgetTypeId,
