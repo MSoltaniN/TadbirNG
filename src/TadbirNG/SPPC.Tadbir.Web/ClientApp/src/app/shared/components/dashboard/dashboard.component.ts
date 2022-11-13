@@ -763,14 +763,6 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         init = true;
       }
 
-      if (widgetType == 4)
-        res.datasets = [
-          {
-            label: "test",
-            data: [10, 52, 5, 0, 15, 20, 14, 80, 70, 50, 45, 60],
-          },
-        ];
-
       res.datasets.forEach((item, index) => {
         if (init) {
           item.name = item.label;

@@ -101,6 +101,8 @@ export class ChartService extends BaseService {
         options = this.getLineChartOptions(data);
       case "pie": //pie
         options = this.getPieChartOptions(data);
+      case "gauge_10": //pie
+        options = this.getGaugeChartOptions(data);
       default:
         break;
     }
@@ -198,6 +200,34 @@ export class ChartService extends BaseService {
     }
   }
 
+  getGaugeChartOptions(data) {
+    debugger;
+    if (data) {
+      let option = {
+        tooltip: {
+          formatter: "{a} <br/>{b} : {c}%",
+        },
+        name: "gauge",
+        type: "gauge",
+        progress: {
+          show: true,
+        },
+        detail: {
+          valueAnimation: true,
+          formatter: "{value}",
+        },
+        data: [
+          {
+            value: data.value,
+            name: "",
+          },
+        ],
+      };
+
+      return option;
+    }
+  }
+
   getBarSeries(dataset: any[]) {
     const series: any[] = [];
     dataset.forEach((d) => {
@@ -228,6 +258,9 @@ export class ChartService extends BaseService {
         break;
       case 4: //pie
         chartType = "pie";
+        break;
+      case 10: //gauge 10
+        chartType = "gauge_10";
         break;
       default:
         break;
