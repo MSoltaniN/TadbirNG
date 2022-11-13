@@ -27,7 +27,6 @@ export class ChartWidgetComponent implements OnInit, AfterContentInit {
 
   constructor(private chartService: ChartService) {
     this.id = Math.floor(Math.random() * 999999);
-    console.log(this.id);
   }
   ngAfterContentInit(): void {
     //this.setOption();
@@ -44,7 +43,7 @@ export class ChartWidgetComponent implements OnInit, AfterContentInit {
 
   @Input() set initOptions(value) {
     if (value) this.options = JSON.parse(JSON.stringify(value));
-
+    console.log(this.options);
     //this.setOption();
   }
 

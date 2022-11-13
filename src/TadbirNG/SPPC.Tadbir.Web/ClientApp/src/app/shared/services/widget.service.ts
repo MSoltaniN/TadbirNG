@@ -42,6 +42,21 @@ export class ChartService extends BaseService {
       settings.series.filter((p) => p.type == "4").length > 0
     ) {
       type = this.getChartTypeAlias(4);
+    } else if (
+      settings.series &&
+      settings.series.filter((p) => p.type == "10").length > 0
+    ) {
+      type = this.getChartTypeAlias(10);
+    } else if (
+      settings.series &&
+      settings.series.filter((p) => p.type == "11").length > 0
+    ) {
+      type = this.getChartTypeAlias(11);
+    } else if (
+      settings.series &&
+      settings.series.filter((p) => p.type == "12").length > 0
+    ) {
+      type = this.getChartTypeAlias(12);
     }
 
     return type;
@@ -101,7 +116,7 @@ export class ChartService extends BaseService {
         options = this.getLineChartOptions(data);
       case "pie": //pie
         options = this.getPieChartOptions(data);
-      case "gauge_10": //pie
+      case "Gauge_Circular": //pie
         options = this.getGaugeChartOptions(data);
       default:
         break;
@@ -201,25 +216,30 @@ export class ChartService extends BaseService {
   }
 
   getGaugeChartOptions(data) {
-    debugger;
     if (data) {
       let option = {
         tooltip: {
           formatter: "{a} <br/>{b} : {c}%",
         },
-        name: "gauge",
-        type: "gauge",
-        progress: {
-          show: true,
-        },
-        detail: {
-          valueAnimation: true,
-          formatter: "{value}",
-        },
-        data: [
+        series: [
           {
-            value: data.value,
-            name: "",
+            name: "Pressure",
+            type: "gauge",
+            min: data.minValue,
+            max: data.maxValue,
+            progress: {
+              show: true,
+            },
+            detail: {
+              valueAnimation: true,
+              formatter: "{value}",
+            },
+            data: [
+              {
+                value: data.value,
+                name: "",
+              },
+            ],
           },
         ],
       };
@@ -260,7 +280,7 @@ export class ChartService extends BaseService {
         chartType = "pie";
         break;
       case 10: //gauge 10
-        chartType = "gauge_10";
+        chartType = "Gauge_Circular";
         break;
       default:
         break;

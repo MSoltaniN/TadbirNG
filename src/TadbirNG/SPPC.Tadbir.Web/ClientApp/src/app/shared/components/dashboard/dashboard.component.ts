@@ -754,7 +754,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     }
   }
 
-  getWidgetData(widgetType, widgetId, tabId) {
+  getWidgetData(widgetType, widgetId, tabId, widgetTitle) {
     return this.dashboardService.getWidgetData(widgetId).subscribe((res) => {
       let init = false;
       const series = [];
@@ -763,39 +763,55 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         init = true;
       }
 
-      res.datasets.forEach((item, index) => {
-        if (init) {
-          item.name = item.label;
-          item.type = this.chartService.getChartTypeName(widgetType);
-        }
+      if (res.datasets) {
+        res.datasets.forEach((item, index) => {
+          if (init) {
+            item.name = item.label;
+            item.type = this.chartService.getChartTypeName(widgetType);
+          }
 
+          const seriesItem: SerieItem = {
+            name: item.label,
+            type: widgetType.toString(),
+          };
+
+          if (widgetType == 1 || widgetType == 2 || widgetType == 3) {
+            seriesItem.backgroundColor = new WidgetSetting().Colors[index];
+            seriesItem.borderWidth = "1";
+          }
+
+          if (widgetType == 4) {
+            seriesItem.backgroundColor = new WidgetSetting().Colors;
+          }
+
+          series.push(seriesItem);
+        });
+      }
+
+      if (widgetType == 10 || widgetType == 11 || widgetType == 12) {
+        debugger;
         const seriesItem: SerieItem = {
-          name: item.label,
+          name: widgetTitle,
           type: widgetType.toString(),
         };
-
-        if (widgetType == 1 || widgetType == 2 || widgetType == 3) {
-          seriesItem.backgroundColor = new WidgetSetting().Colors[index];
-          seriesItem.borderWidth = "1";
-        }
-
-        if (widgetType == 4) {
-          seriesItem.backgroundColor = new WidgetSetting().Colors;
-        }
-
-        series.push(seriesItem);
-      });
-
-      if (!init) {
-        if (this.widgetSettings[id]) {
+        this.widgetSettings[id].series = [seriesItem];
+      }
+      //gauge
+      if (widgetType != 10) {
+        if (!init) {
+          if (this.widgetSettings[id]) {
+            res = this.chartService.applyChartSetting(
+              this.widgetSettings[id],
+              res
+            );
+          }
+        } else {
+          this.widgetSettings[id].series = series;
           res = this.chartService.applyChartSetting(
             this.widgetSettings[id],
             res
           );
         }
-      } else {
-        this.widgetSettings[id].series = series;
-        res = this.chartService.applyChartSetting(this.widgetSettings[id], res);
       }
 
       this.widgetData[widgetId + "-" + tabId] = res;
@@ -917,9 +933,11 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
           "#ba9ffe",
         ];
 
+        const title = setting.title ? setting.title : widget.widgetTitle;
+
         const set: WidgetSetting = {
           series: [],
-          title: setting.title ? setting.title : widget.widgetTitle,
+          title: title,
           Colors: colors,
         };
 
@@ -933,8 +951,14 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
           //this.widgetSettings[widget.widgetId + "-" + tabId] = set;
         }
 
+        debugger;
         if (!this.widgetHasData(widget.widgetId, tabId))
-          this.getWidgetData(widget.widgetTypeId, widget.widgetId, tabId);
+          this.getWidgetData(
+            widget.widgetTypeId,
+            widget.widgetId,
+            tabId,
+            title
+          );
       });
 
     return widgets;
