@@ -99,6 +99,8 @@ export class ChartService extends BaseService {
         break;
       case "line": //line
         options = this.getLineChartOptions(data);
+      case "pie": //pie
+        options = this.getPieChartOptions(data);
       default:
         break;
     }
@@ -176,10 +178,29 @@ export class ChartService extends BaseService {
     }
   }
 
+  getPieChartOptions(data) {
+    if (data) {
+      let option = {
+        tooltip: {
+          trigger: "item",
+        },
+        grid: {
+          left: "5%",
+          bottom: "3%",
+          top: "10%",
+          containLabel: true,
+        },
+        legend: { show: true },
+        series: this.getBarSeries(data.datasets),
+      };
+
+      return option;
+    }
+  }
+
   getBarSeries(dataset: any[]) {
     const series: any[] = [];
     dataset.forEach((d) => {
-      debugger;
       let type = d.type;
       if (d.type == "horizontalBar") type = "bar";
 

@@ -12,7 +12,11 @@
       <a href="#/tadbir/dashboard" (click)="onManageWidgetsClick()">
         <i class="fa fa-cubes"></i>{{ "Dashboard.ManageWidgets" | translate }}
       </a>
-      <a href="#/tadbir/dashboard" *ngIf="this.currentDashboard" (click)="onAddTabClick()">
+      <a
+        href="#/tadbir/dashboard"
+        *ngIf="this.currentDashboard"
+        (click)="onAddTabClick()"
+      >
         <i class="fa fa-plus"></i>{{ "Dashboard.AddTab" | translate }}
       </a>
       <a href="#/tadbir/dashboard" (click)="onAddWidgetClick()">
@@ -50,17 +54,18 @@
 </section>
 
 <!-- Main content -->
-<section class="content clear" style="padding-top: 0;">  
+<section class="content clear" style="padding-top: 0">
   <div class="row widgets">
     <div style="height: 100vh; width: 100%; direction: ltr">
-      <p-tabView #tabContainer        
+      <p-tabView
+        #tabContainer
         (onChange)="onTabChange($event)"
         *ngIf="currentDashboard"
         [(activeIndex)]="currentDashboardTabIndex"
       >
         <p-tabPanel
-          [header]="tab.title"   
-          [id]="tab.id"       
+          [header]="tab.title"
+          [id]="tab.id"
           *ngFor="
             let tab of currentDashboard.tabs;
             let i = index;
@@ -76,7 +81,14 @@
           <ng-container *ngIf="getWidgets(tab.id) | async as widgets">
             <gridster [options]="widgetOptions[tab.id]">
               <gridster-item [item]="item" *ngFor="let item of widgets">
-                <ng-container *ngIf="item.typeId == 2 || item.typeId == 1 || item.typeId == 3 || item.typeId == 4">                 
+                <ng-container
+                  *ngIf="
+                    item.typeId == 2 ||
+                    item.typeId == 1 ||
+                    item.typeId == 3 ||
+                    item.typeId == 4
+                  "
+                >
                   <widget
                     (closeWidget)="onCloseWidget($event)"
                     [widgetId]="item.id"
@@ -89,9 +101,11 @@
                     <widget-container>
                       <div class="box-body" body>
                         <chart-widget
-                          [data]="getData(item.id , tab.id)"
-                          [type]="getChartType(item.typeId,item.id,tab.id)"
-                          [initOptions]="getOptions(item.typeId,item.id,tab.id)"
+                          [data]="getData(item.id, tab.id)"
+                          [type]="getChartType(item.typeId, item.id, tab.id)"
+                          [initOptions]="
+                            getOptions(item.typeId, item.id, tab.id)
+                          "
                         ></chart-widget>
                       </div>
                     </widget-container>
@@ -102,30 +116,6 @@
           </ng-container>
         </p-tabPanel>
       </p-tabView>
-      <!-- <ng-container *ngIf="getWidgets(1) | async as widgets">
-        <gridster [options]="options">
-          <gridster-item [item]="item" *ngFor="let item of widgets">
-            <ng-container *ngIf="item.typeId == 0">
-              <widget
-                (closeWidget)="onCloseWidget($event)"
-                [widgetId]="item.id"
-                [isEditMode]="isDashboardEditMode"
-                [headerTitle]="item.title"
-              >
-                <widget-container>
-                  <div class="box-body" body>
-                    <chart-widget
-                      [type]="'bar'"
-                      [data]="grossChartData"
-                      [options]="basicOptions"
-                    ></chart-widget>
-                  </div>
-                </widget-container>
-              </widget>
-            </ng-container>
-          </gridster-item>
-        </gridster>
-      </ng-container> -->
     </div>
   </div>
   <ng-template #chart1>
