@@ -75,6 +75,10 @@ export class SettingsFormComponent extends DetailComponent {
     startTurnoverAsInitBalance: new FormControl()
   });
 
+  public userProfileConfig = new FormGroup({
+    showDashboardAtStartup: new FormControl(),
+  });
+
   public ddlNumberPrecision: Array<Item2>;
   public ddlSeparatorMode: Array<Item>;
   public selectedDDLDecimalPrecisionValue: string;
@@ -153,6 +157,12 @@ export class SettingsFormComponent extends DetailComponent {
           this.updateList.emit(this.selectedItemModel);
           break;
         }
+      case SettingsType.UserProfileConfig:
+        {
+          this.selectedItemModel.values = this.userProfileConfig.value;
+          this.updateList.emit(this.selectedItemModel);
+          break;
+        }
       default:
         {
           break;
@@ -197,6 +207,11 @@ export class SettingsFormComponent extends DetailComponent {
       case SettingsType.RelationsConfig:
         {
           this.accountRelationsForm.reset(objectValue);
+          break;
+        }
+      case SettingsType.UserProfileConfig:
+        {
+          this.userProfileConfig.reset(objectValue);
           break;
         }
       default:

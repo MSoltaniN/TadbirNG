@@ -761,6 +761,9 @@
       "OpeningAsFirstVoucher": "Use opening voucher as first voucher",
       "StartTurnoverAsInitBalance": "Start turnover as initial balance"
     },
+    "UserProfile": {
+      "ShowDashboardAtStartup": "show dashboard at startup"
+    },
     "Description": "Description",
     "TitleText": "Settings List",
     "DefaultCalendar": "Default Calendar",

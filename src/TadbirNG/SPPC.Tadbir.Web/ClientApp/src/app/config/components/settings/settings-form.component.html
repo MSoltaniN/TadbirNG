@@ -114,3 +114,15 @@
 <div *ngIf="selectedItemType == 'SystemConfig'" class="settings-form">
   <system-configuration [model]="selectedItemModel"></system-configuration>
 </div>
+
+<div *ngIf="selectedItemType == 'UserProfileConfig'" class="settings-form">
+    <form novalidate [formGroup]="userProfileConfig">
+        <div class="form-group">
+            <label for="isEnabled" class="control-label">{{ 'Settings.UserProfile.ShowDashboardAtStartup' | translate }}</label>
+            <kendo-switch formControlName="showDashboardAtStartup" class="sppc-switch"
+                          [onLabel]="('User.Active' | translate)"
+                          [offLabel]="('User.Inactive' | translate)">
+            </kendo-switch>
+          </div>
+    </form>
+</div>
