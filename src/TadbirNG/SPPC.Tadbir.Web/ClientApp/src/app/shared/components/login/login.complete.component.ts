@@ -322,7 +322,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
           var url = this.route.snapshot.queryParams["returnUrl"];
           this.router.navigate([url]);
         } else {
+
           if (this.FiscalPeriodId == 0 || this.BranchId == 0) {
+            this.navigateToHome();
             this.bStorageService.removeCurrentRoute();
             this.router.navigate(["/tadbir/dashboard"]);
             return;
@@ -342,12 +344,20 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
             this.bStorageService.removeCurrentRoute();
             this.router.navigate([currentRoute]);
           } else {
+            this.navigateToHome();
             this.router.navigate(["/tadbir/dashboard"]);
           }
         }
       });
 
     //#endregion
+  }
+
+  navigateToHome() {
+    if (!this.isAccess('dashboard',1)) {
+      this.router.navigate(["/tadbir/home"]);
+      return
+    }
   }
 
   /**
