@@ -1,5 +1,6 @@
 import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 import {
+  AfterContentInit,
   Component,
   EventEmitter,
   Input,
@@ -16,7 +17,7 @@ import * as echarts from "echarts";
   templateUrl: "./chart-widget.component.html",
   styleUrls: ["./chart-widget.component.css"],
 })
-export class ChartWidgetComponent implements OnInit {
+export class ChartWidgetComponent implements OnInit, AfterContentInit {
   @Input() type: string = "bar";
   @Input() data;
   // @Input() initOptions;
@@ -26,6 +27,9 @@ export class ChartWidgetComponent implements OnInit {
 
   constructor(private chartService: ChartService) {
     this.id = Math.floor(Math.random() * 999999);
+  }
+  ngAfterContentInit(): void {
+    //this.setOption();
   }
 
   // @Input() set initOptions(value) {
@@ -38,16 +42,34 @@ export class ChartWidgetComponent implements OnInit {
   // }
 
   @Input() set initOptions(value) {
-    console.log(value);
     if (value) this.options = JSON.parse(JSON.stringify(value));
+    console.log(this.options);
+    //this.setOption();
   }
 
-  ngOnInit() {}
+  getWidth() {
+    const element: any = document.getElementById(this.id.toString());
+    if (element) {
+      let echartsObj = echarts.getInstanceByDom(element);
+      if (echartsObj) return echartsObj.getWidth();
+    }
+  }
+
+  getHeight() {
+    const element: any = document.getElementById(this.id.toString());
+    if (element) {
+      let echartsObj = echarts.getInstanceByDom(element);
+      if (echartsObj) return echartsObj.getHeight();
+    }
+  }
+
+  ngOnInit() {
+    console.table("options:" + this.id + " " + this.options);
+  }
 
   changeSettings(settings: WidgetSetting) {
     debugger;
-    //this.data = this.chartService.applyChartSetting(settings, this.data);
-    //this.type = this.chartService.getAdjustedChartType(settings);
+
     const singleType = settings.series.every(
       (val, i, arr) => val.type === arr[0].type
     );

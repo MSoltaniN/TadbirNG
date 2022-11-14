@@ -42,6 +42,21 @@ export class ChartService extends BaseService {
       settings.series.filter((p) => p.type == "4").length > 0
     ) {
       type = this.getChartTypeAlias(4);
+    } else if (
+      settings.series &&
+      settings.series.filter((p) => p.type == "10").length > 0
+    ) {
+      type = this.getChartTypeAlias(10);
+    } else if (
+      settings.series &&
+      settings.series.filter((p) => p.type == "11").length > 0
+    ) {
+      type = this.getChartTypeAlias(11);
+    } else if (
+      settings.series &&
+      settings.series.filter((p) => p.type == "12").length > 0
+    ) {
+      type = this.getChartTypeAlias(12);
     }
 
     return type;
@@ -99,6 +114,13 @@ export class ChartService extends BaseService {
         break;
       case "line": //line
         options = this.getLineChartOptions(data);
+        break;
+      case "pie": //pie
+        options = this.getPieChartOptions(data);
+        break;
+      case "Gauge_Circular": //pie
+        options = this.getGaugeChartOptions(data);
+        break;
       default:
         break;
     }
@@ -176,10 +198,62 @@ export class ChartService extends BaseService {
     }
   }
 
+  getPieChartOptions(data) {
+    if (data) {
+      let option = {
+        tooltip: {
+          trigger: "item",
+        },
+        grid: {
+          left: "5%",
+          bottom: "3%",
+          top: "10%",
+          containLabel: true,
+        },
+        legend: { show: true },
+        series: this.getBarSeries(data.datasets),
+      };
+
+      return option;
+    }
+  }
+
+  getGaugeChartOptions(data) {
+    if (data) {
+      let option = {
+        tooltip: {
+          formatter: "{a} <br/>{b} : {c}%",
+        },
+        series: [
+          {
+            name: "Pressure",
+            type: "gauge",
+            min: data.minValue,
+            max: data.maxValue,
+            progress: {
+              show: true,
+            },
+            detail: {
+              valueAnimation: true,
+              formatter: "{value}",
+            },
+            data: [
+              {
+                value: data.value,
+                name: "",
+              },
+            ],
+          },
+        ],
+      };
+
+      return option;
+    }
+  }
+
   getBarSeries(dataset: any[]) {
     const series: any[] = [];
     dataset.forEach((d) => {
-      debugger;
       let type = d.type;
       if (d.type == "horizontalBar") type = "bar";
 
@@ -207,6 +281,9 @@ export class ChartService extends BaseService {
         break;
       case 4: //pie
         chartType = "pie";
+        break;
+      case 10: //gauge 10
+        chartType = "Gauge_Circular";
         break;
       default:
         break;

@@ -53,6 +53,9 @@ export class SettingsApi {
     // settings/labels/forms/{formId:min(1)}
     public static FormLabelsConfig = environment.BaseUrl + "/settings/labels/forms/{0}";
 
+    // settings/profile
+    public static UserProfileConfig = environment.BaseUrl + "/settings/profile";
+
     // settings/log
     public static LogSettings = environment.BaseUrl + "/settings/log";
 

@@ -371,6 +371,62 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، تنظیمات کاربری موجود را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="userId">شناسه دیتابیسی کاربر مورد نظر</param>
+        /// <returns>مقادیر جاری تنظیمات کاربری برای کاربر مورد نظر</returns>
+        public async Task<UserProfileConfig> GetUserProfileConfigAsync(int userId)
+        {
+            var userProfile = default(UserProfileConfig);
+            var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
+            var existing = await repository
+                .GetSingleByCriteriaAsync(
+                    cfg => cfg.ModelType == typeof(UserProfileConfig).Name
+                        && cfg.UserId == userId);
+            if (existing == null)
+            {
+                userProfile = new UserProfileConfig();
+            }
+            else
+            {
+                userProfile = JsonHelper.To<UserProfileConfig>(existing.Values);
+            }
+
+            return userProfile;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت تنظیمات کاربری را ذخیره می کند
+        /// </summary>
+        /// <param name="userId">شناسه دیتابیسی کاربر مورد نظر</param>
+        /// <param name="profile">آخرین وضعیت تنظیمات کاربری برای کاربر مورد نظر</param>
+        public async Task SaveUserProfileConfigAsync(int userId, UserProfileConfig profile)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<UserSetting>();
+            var existing = await repository
+                .GetSingleByCriteriaAsync(
+                    cfg => cfg.ModelType == typeof(UserProfileConfig).Name
+                        && cfg.UserId == userId);
+            if (existing == null)
+            {
+                var userSetting = new UserSetting()
+                {
+                    SettingId = (int)SettingId.UserProfile,
+                    ModelType = typeof(UserProfileConfig).Name,
+                    UserId = userId,
+                    Values = JsonHelper.From(profile, false)
+                };
+                repository.Insert(userSetting);
+            }
+            else
+            {
+                existing.Values = JsonHelper.From(profile, false);
+            }
+
+            await UnitOfWork.CommitAsync();
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="level"></param>

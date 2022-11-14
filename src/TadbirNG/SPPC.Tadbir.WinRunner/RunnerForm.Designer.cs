@@ -29,8 +29,6 @@ namespace SPPC.Tadbir.WinRunner
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblElapsed = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.txtConsole = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnExit = new System.Windows.Forms.Button();
@@ -38,27 +36,6 @@ namespace SPPC.Tadbir.WinRunner
             this.worker = new System.ComponentModel.BackgroundWorker();
             this.btnCheckForUpdate = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // lblElapsed
-            // 
-            this.lblElapsed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblElapsed.Location = new System.Drawing.Point(460, 14);
-            this.lblElapsed.Name = "lblElapsed";
-            this.lblElapsed.Size = new System.Drawing.Size(103, 25);
-            this.lblElapsed.TabIndex = 22;
-            this.lblElapsed.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblElapsed.Visible = false;
-            // 
-            // label7
-            // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(316, 14);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(115, 20);
-            this.label7.TabIndex = 21;
-            this.label7.Text = "زمان صرف شده :";
-            this.label7.Visible = false;
             // 
             // txtConsole
             // 
@@ -130,8 +107,6 @@ namespace SPPC.Tadbir.WinRunner
             this.CancelButton = this.btnExit;
             this.ClientSize = new System.Drawing.Size(582, 353);
             this.Controls.Add(this.btnCheckForUpdate);
-            this.Controls.Add(this.lblElapsed);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.txtConsole);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnExit);
@@ -147,9 +122,6 @@ namespace SPPC.Tadbir.WinRunner
         }
 
         #endregion
-
-        private System.Windows.Forms.Label lblElapsed;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtConsole;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnExit;

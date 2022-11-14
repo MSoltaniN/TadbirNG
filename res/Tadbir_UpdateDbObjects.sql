@@ -340,3 +340,9 @@ INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterI
 INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (26, 9, 2)
 INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (27, 9, 3)
 SET IDENTITY_INSERT [Reporting].[UsedParameter] OFF
+
+-- 1.2.1450
+SET IDENTITY_INSERT [Config].[Setting] ON
+INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
+    VALUES (11, 'UserProfileSettings', 3, 1, 'UserProfileConfig', N'{}', N'{}', 'UserProfileSettingsDescription', 0)
+SET IDENTITY_INSERT [Config].[Setting] OFF

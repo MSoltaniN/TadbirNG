@@ -136,6 +136,16 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string FormLabelsConfigUrl = "settings/labels/forms/{formId:min(1)}";
 
+        /// <summary>
+        /// API client URL for profile settings of current user
+        /// </summary>
+        public const string UserProfileConfig = "settings/profile";
+
+        /// <summary>
+        /// API server route URL for profile settings of current user
+        /// </summary>
+        public const string UserProfileConfigUrl = "settings/profile";
+
         #region Log Settings API
 
         /// <summary>
