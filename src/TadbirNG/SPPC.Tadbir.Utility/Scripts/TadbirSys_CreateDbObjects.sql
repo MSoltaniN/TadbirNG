@@ -3503,8 +3503,8 @@ INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, R
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (48, 11, 179, N'DraftVoucherByNo', N'/finance/vouchers/by-no/draft', N'list', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (49, 11, 189, N'LastDraftVoucher', N'/finance/vouchers/last/draft', N'list', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (50, 39, 201, N'BalanceSheet', N'/finance/bal-sheet', N'list', NULL)
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (51, 37, 210, N'ManageDashboard', N'/tadbir/dashboard', N'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
-
 
 SET IDENTITY_INSERT [Reporting].[SystemIssue] ON 
 INSERT [Reporting].[SystemIssue] ([SystemIssueID], [ParentID], [PermissionID], [ViewID], [TitleKey], [ApiUrl], [DeleteApiUrl], [BranchScope]) 

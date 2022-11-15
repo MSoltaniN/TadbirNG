@@ -959,9 +959,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var values = new List<WidgetFunctionValues>();
             var calendar = await Config.GetCurrentCalendarAsync();
+            var enumerator = new DateSpanEnumerator(from, to, calendar);
             if (unit == WidgetDateUnit.Monthly)
             {
-                var enumerator = new MonthEnumerator(from, to, calendar);
                 values.AddRange(enumerator
                     .GetMonths()
                     .Select(month => new WidgetFunctionValues()
@@ -969,6 +969,17 @@ namespace SPPC.Tadbir.Persistence
                         XLabel = Context.Localize(month.Name),
                         FromDate = month.Start,
                         ToDate = month.End
+                    }));
+            }
+            else if (unit == WidgetDateUnit.Weekly)
+            {
+                values.AddRange(enumerator
+                    .GetWeeks()
+                    .Select(week => new WidgetFunctionValues()
+                    {
+                        XLabel = String.Format(Context.Localize(AppStrings.WeekX), week.Name),
+                        FromDate = week.Start,
+                        ToDate = week.End
                     }));
             }
 
@@ -981,9 +992,9 @@ namespace SPPC.Tadbir.Persistence
             var values = new List<WidgetFunctionValues>();
             var calendar = await Config.GetCurrentCalendarAsync();
             Config.GetCurrentFiscalDateRange(out DateTime startDate, out DateTime _);
+            var enumerator = new DateSpanEnumerator(from, to, calendar);
             if (unit == WidgetDateUnit.Monthly)
             {
-                var enumerator = new MonthEnumerator(from, to, calendar);
                 values.AddRange(enumerator
                     .GetMonths()
                     .Select(month => new WidgetFunctionValues()
@@ -991,6 +1002,17 @@ namespace SPPC.Tadbir.Persistence
                         XLabel = Context.Localize(month.Name),
                         FromDate = startDate,
                         ToDate = month.End
+                    }));
+            }
+            else if (unit == WidgetDateUnit.Weekly)
+            {
+                values.AddRange(enumerator
+                    .GetWeeks()
+                    .Select(week => new WidgetFunctionValues()
+                    {
+                        XLabel = String.Format(Context.Localize(AppStrings.WeekX), week.Name),
+                        FromDate = startDate,
+                        ToDate = week.End
                     }));
             }
 

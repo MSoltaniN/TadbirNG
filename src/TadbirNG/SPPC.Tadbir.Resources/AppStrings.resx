@@ -3690,4 +3690,10 @@
   <data name="UserProfileSettingsDescription" xml:space="preserve">
     <value>تنظیمات کاربری در رابطه با زیرسیستم های مختلف</value>
   </data>
+  <data name="ManageDashboard" xml:space="preserve">
+    <value>مدیریت داشبورد</value>
+  </data>
+  <data name="WeekX" xml:space="preserve">
+    <value>هفته {0}</value>
+  </data>
 </root>
