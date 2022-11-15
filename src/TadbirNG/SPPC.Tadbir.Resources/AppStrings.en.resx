@@ -3699,4 +3699,7 @@
   <data name="UserProfileSettingsDescription" xml:space="preserve">
     <value>User settings related to different subsystems</value>
   </data>
+  <data name="ManageDashboard" xml:space="preserve">
+    <value>Manage Dashboard</value>
+  </data>
 </root>
