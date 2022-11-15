@@ -246,7 +246,7 @@ namespace SPPC.Tadbir.Persistence
 
             var calendar = await Config.GetCurrentCalendarAsync();
             var monthlyBook = new List<AccountBookItemViewModel>();
-            var monthEnum = new MonthEnumerator(parameters.FromDate, parameters.ToDate, calendar);
+            var monthEnum = new DateSpanEnumerator(parameters.FromDate, parameters.ToDate, calendar);
             var monthParams = parameters.GetCopy();
             foreach (var month in monthEnum.GetMonths())
             {

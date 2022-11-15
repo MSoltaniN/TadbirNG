@@ -3,29 +3,29 @@
 namespace SPPC.Tadbir.Utility
 {
     /// <summary>
-    /// اطلاعات ابتدا و انتهای یکی از ماه های یک تقویم را نگهداری می کند
+    /// اطلاعات ابتدا و انتهای یکی از فواصل زمانی - ماه، هفته، فصل و غیره - در یک تقویم را نگهداری می کند
     /// </summary>
-    public class MonthInfo
+    public class DateSpanInfo
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        public MonthInfo()
+        public DateSpanInfo()
         {
         }
 
         /// <summary>
-        /// نام محلی شده ماه در تقویم مربوطه
+        /// نام محلی شده فاصله زمانی در تقویم مربوطه
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// تاریخ ابتدای ماه در تقویم مرجع (میلادی)
+        /// تاریخ ابتدای فاصله زمانی در تقویم مرجع - میلادی
         /// </summary>
         public DateTime Start { get; set; }
 
         /// <summary>
-        /// تاریخ انتهای ماه در تقویم مرجع (میلادی)
+        /// تاریخ انتهای فاصله زمانی در تقویم مرجع - میلادی
         /// </summary>
         public DateTime End { get; set; }
 
@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Utility
         public override string ToString()
         {
             return String.Format(
-                "Month : {1}{0}From {2} to {3}",
+                "Name : {1}{0}From {2} to {3}",
                 Environment.NewLine, Name, Start, End);
         }
     }

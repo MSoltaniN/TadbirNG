@@ -3693,4 +3693,7 @@
   <data name="ManageDashboard" xml:space="preserve">
     <value>مدیریت داشبورد</value>
   </data>
+  <data name="WeekX" xml:space="preserve">
+    <value>هفته {0}</value>
+  </data>
 </root>
