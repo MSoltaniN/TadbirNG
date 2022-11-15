@@ -421,6 +421,7 @@ namespace SPPC.Tadbir.Persistence
             else
             {
                 existing.Values = JsonHelper.From(profile, false);
+                repository.Update(existing);
             }
 
             await UnitOfWork.CommitAsync();

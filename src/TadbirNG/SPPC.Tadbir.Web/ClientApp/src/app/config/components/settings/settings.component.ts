@@ -210,19 +210,10 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
     //#endregion
 
     if (this.itemUpdatedModel.modelType == "UserProfileConfig") {
-      let model = new SettingBriefInfo()
-      model.id = this.itemUpdatedModel.id;
-      model.title = this.itemUpdatedModel.title;
-      model.modelType = this.itemUpdatedModel.modelType;
-      model.values = this.itemUpdatedModel.values;
-      model.defaultValues = {};
-      model.description = this.itemUpdatedModel.description;
       this.settingsService
-      .putUserProfileSettings(SettingsApi.UserProfileConfig, model)
+      .putUserProfileSettings(SettingsApi.UserProfileConfig, this.itemUpdatedModel.values)
       .subscribe(
         (res) => {
-          console.log(res);
-          
           this.showMessage(this.updateMsg, MessageType.Succes);
         },
         (error) => {
