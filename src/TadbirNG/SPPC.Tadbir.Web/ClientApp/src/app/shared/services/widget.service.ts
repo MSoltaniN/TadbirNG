@@ -1,10 +1,17 @@
 import { Injectable } from "@angular/core";
-import { isNumber } from "util";
+import { Subject } from "rxjs";
 import { BaseService } from "../class";
 import { WidgetSetting } from "../models/widgetSetting";
 
 @Injectable()
 export class ChartService extends BaseService {
+  widgetToRefreshSubject = new Subject();
+  widgetToRefresh$ = this.widgetToRefreshSubject.asObservable();
+
+  refreshDashboard() {
+    this.widgetToRefreshSubject.next();
+  }
+
   applyChartSetting(setting: WidgetSetting, data: any) {
     setting.series.forEach((item, index) => {
       if (index >= 0) {
@@ -204,6 +211,7 @@ export class ChartService extends BaseService {
         tooltip: {
           trigger: "item",
         },
+        showEmptyCircle: true,
         grid: {
           left: "5%",
           bottom: "3%",
