@@ -211,7 +211,7 @@ export class ChartService extends BaseService {
           containLabel: true,
         },
         legend: { show: true },
-        series: this.getBarSeries(data.datasets),
+        series: this.getPieSeries(data.datasets),
       };
 
       return option;
@@ -261,6 +261,20 @@ export class ChartService extends BaseService {
         name: d.label,
         data: d.data,
         type: type,
+      });
+    });
+    return series;
+  }
+
+  getPieSeries(dataset: any[]) {
+    const series: any[] = [];
+    dataset.forEach((d) => {
+      let type = d.type;
+      series.push({
+        name: d.label,
+        data: d.data,
+        type: type,
+        label: { show: false },
       });
     });
     return series;

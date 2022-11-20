@@ -364,6 +364,8 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   onSettingChanged(option) {
     const id = option.widgetId + "-" + option.tabId;
     this.widgetSettings[id].series = option.setting.series;
+    this.widgetSettings[id].title = option.setting.title;
+
     const data = this.chartService.applyChartSetting(
       this.widgetSettings[id],
       this.widgetData[id]
@@ -446,7 +448,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
                 setting.height = item.rows;
                 setting.x = item.x;
                 setting.y = item.y;
-
+                debugger;
                 if (widgetSetting.series.length > 0)
                   setting.series = widgetSetting.series;
                 if (widgetSetting.title) setting.title = widgetSetting.title;
