@@ -35,7 +35,7 @@
                     </div>                   
                 </div>
                 <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}">
-                    <label *ngIf="relatedComponentCategories" class="my-k-label" for="selectAll">
+                    <label *ngIf="relatedComponentCategories && !resultMessage" class="my-k-label" for="selectAll">
                         <input type="checkbox" name="selectAll"
                                [checked]="relatedComponentCategories.length == relatedComponentCheckedKeys.length"
                                class="k-checkbox" id="selectAll"

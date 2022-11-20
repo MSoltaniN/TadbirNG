@@ -160,8 +160,6 @@ export class AccountGroupsComponent
 
     this.reloadGrid();
 
-    this.showloadingMessage = false;
-
     this.cdref.detectChanges();
   }
 

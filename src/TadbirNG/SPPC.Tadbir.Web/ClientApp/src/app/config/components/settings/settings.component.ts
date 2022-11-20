@@ -124,7 +124,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
               11,
               -1,
               "تنظیمات داشبورد",
-              'تنظیمات مربوط به نمایش داشبورد هنگام وروی',
+              'تنظیمات مربوط به نمایش داشبورد هنگام ورود.',
               "UserProfileConfig"
             )
             treeData.push(userProfileConfig);
