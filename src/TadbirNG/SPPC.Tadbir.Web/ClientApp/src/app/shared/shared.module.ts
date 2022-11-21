@@ -152,6 +152,10 @@ export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
 
+export function loadEcharts(): any {
+  return import("echarts");
+}
+
 @NgModule({
   imports: [
     GaugesModule,
@@ -184,8 +188,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     ColorPickerModule,
     NgxEchartsModule.forRoot({
-      echarts: () => import("echarts"),
+      echarts: loadEcharts,
     }),
+    ,
   ],
 
   declarations: [
