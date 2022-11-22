@@ -39,7 +39,6 @@ namespace SPPC.Tadbir.Web.Api
         /// <param name="services">اطلاعا فراداده ای خدمات فعال در سرویس وب جاری</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            ConfigUtility.InspectConfiguration(Configuration);
             services.AddLocalization();
             services
                 .AddControllers(options =>

@@ -3705,4 +3705,10 @@
   <data name="WeekX" xml:space="preserve">
     <value>Week {0}</value>
   </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="ManageWidgets" xml:space="preserve">
+    <value>Manage Widgets</value>
+  </data>
 </root>

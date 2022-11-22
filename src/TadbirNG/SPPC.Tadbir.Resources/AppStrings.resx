@@ -3696,4 +3696,10 @@
   <data name="WeekX" xml:space="preserve">
     <value>هفته {0}</value>
   </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>داشبورد</value>
+  </data>
+  <data name="ManageWidgets" xml:space="preserve">
+    <value>مدیریت ویجت ها</value>
+  </data>
 </root>
