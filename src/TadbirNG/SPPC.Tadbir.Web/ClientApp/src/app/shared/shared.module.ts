@@ -147,13 +147,14 @@ import { WidgetAccountsComponent } from "./components/dashboard/manage-widgets/w
 import { ChartService } from "./services/widget.service";
 import { ColorPickerModule } from "ngx-color-picker";
 import { NgxEchartsModule } from "ngx-echarts";
+import * as echarts from 'echarts';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
 }
 
 export function loadEcharts(): any {
-  return import("echarts");
+  return echarts;
 }
 
 @NgModule({
@@ -188,9 +189,8 @@ export function loadEcharts(): any {
     }),
     ColorPickerModule,
     NgxEchartsModule.forRoot({
-      echarts: loadEcharts,
+      echarts:  echarts,
     }),
-    ,
   ],
 
   declarations: [
