@@ -154,6 +154,7 @@
     "ExportToExcel": "ارسال به اکسل"
   },
   "Buttons": {
+    "Add": "جدید",
     "Ok": "تایید",
     "Cancel": "انصراف",
     "Yes": "بله",
@@ -1343,6 +1344,7 @@
     "PleaseSelectRowsAsDeleteArchive": "لطفا برای حذف از بایگانی رویداد های مورد نظر را انتخاب کنید"
   },
   "Widget": {
+    "New": "ویجت جدید",
     "Title": "نام ویجت",
     "FunctionName": "نام تابع",
     "TypeName": "نوع ویجت",

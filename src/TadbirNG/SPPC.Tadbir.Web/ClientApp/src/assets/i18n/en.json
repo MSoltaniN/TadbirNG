@@ -130,6 +130,7 @@
     "ExportToExcel": "Export to excel"
   },
   "Buttons": {
+    "Add": "New",
     "Ok": "Ok",
     "Cancel": "Cancel",
     "Yes": "Yes",
@@ -1223,6 +1224,7 @@
     "CodeLength": "Code length is not allowed"
   },
   "Widget": {
+    "New": "New Widget",
     "Title": "Widget Title",
     "FunctionName": "Function name",
     "TypeName": "Widget type",
