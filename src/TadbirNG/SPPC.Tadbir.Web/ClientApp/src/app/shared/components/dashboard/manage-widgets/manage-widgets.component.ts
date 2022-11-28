@@ -24,6 +24,7 @@ import {
 import { QuickReportSettingComponent } from "@sppc/shared/components/reportManagement/QuickReport-Setting.component";
 import { ReportManagementComponent } from "@sppc/shared/components/reportManagement/reportManagement.component";
 import { Entities, Layout, MessageType } from "@sppc/shared/enum/metadata";
+import { OperationId } from "@sppc/shared/enum/operationId";
 import { Widget } from "@sppc/shared/models/widget";
 import { WidgetFunction } from "@sppc/shared/models/widgetFunction";
 import { WidgetType } from "@sppc/shared/models/widgetType";
@@ -242,6 +243,12 @@ export class ManageWidgetsComponent
       this.prepareDeleteConfirm(record.name);
       this.deleteModelId = recordId;
     }
+  }
+
+  onAdvanceFilterOk() {
+    this.enableViewListChanged(this.viewId);
+    this.operationId = OperationId.Filter;
+    this.reloadGrid();
   }
 
   private closeForm(): void {
