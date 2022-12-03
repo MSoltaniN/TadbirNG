@@ -3702,4 +3702,10 @@
   <data name="ManageWidgets" xml:space="preserve">
     <value>مدیریت ویجت ها</value>
   </data>
+  <data name="CannotDeleteLastDashboardTab" xml:space="preserve">
+    <value>آخرین برگه داشبورد قابل حذف نیست.</value>
+  </data>
+  <data name="CannotDeleteUsedDashboardTab" xml:space="preserve">
+    <value>پیش از حذف برگه از داشبورد، ابتدا باید ویجت های اضافه شده به برگه را حذف کنید.</value>
+  </data>
 </root>

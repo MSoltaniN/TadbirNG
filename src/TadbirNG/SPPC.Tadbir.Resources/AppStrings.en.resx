@@ -3711,4 +3711,10 @@
   <data name="ManageWidgets" xml:space="preserve">
     <value>Manage Widgets</value>
   </data>
+  <data name="CannotDeleteLastDashboardTab" xml:space="preserve">
+    <value>Last tab cannot be deleted.</value>
+  </data>
+  <data name="CannotDeleteUsedDashboardTab" xml:space="preserve">
+    <value>Before deleting this tab, you need to remove existing widgets from it.</value>
+  </data>
 </root>

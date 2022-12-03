@@ -195,3 +195,8 @@ SET IDENTITY_INSERT [Metadata].[Command] ON
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
     VALUES (51, 37, 210, N'ManageDashboard', N'/tadbir/dashboard', N'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
+
+-- 1.2.1454
+UPDATE [Metadata].[Column]
+SET [IsNullable] = 1
+WHERE [ViewID] = 68 AND [Name] = 'Description'

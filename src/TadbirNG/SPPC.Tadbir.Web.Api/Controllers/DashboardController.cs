@@ -178,11 +178,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
         public async Task<IActionResult> DeleteExistingDashboardTabAsync(int tabId)
         {
-            var tab = await _repository.GetDashboardTabAsync(tabId);
-            var result = GetDashboardTabValidationResult(tab, tabId);
-            if (result is BadRequestObjectResult)
+            var existing = await _repository.GetDashboardTabAsync(tabId);
+            if (existing == null)
             {
-                return result;
+                var message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.DashboardTab, tabId.ToString());
+                return BadRequestResult(message);
+            }
+
+            int count = await _repository.GetTabWidgetCountAsync(tabId);
+            if (count > 0)
+            {
+                string message = _strings[AppStrings.CannotDeleteUsedDashboardTab];
+                return BadRequestResult(message);
+            }
+
+            if (await _repository.IsSoleDashboardTab(tabId))
+            {
+                string message = _strings[AppStrings.CannotDeleteLastDashboardTab];
+                return BadRequestResult(message);
             }
 
             await _repository.DeleteDashboardTabAsync(tabId);
@@ -260,7 +273,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/dashboard/widgets
         [HttpGet]
         [Route(DashboardApi.WidgetsUrl)]
-        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageWidgets)]
         public async Task<IActionResult> GetUserWidgetsAsync()
         {
             var userWidgets = await _repository.GetCurrentUserWidgetsAsync(GridOptions);
@@ -278,7 +291,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/dashboard/widgets/all
         [HttpGet]
         [Route(DashboardApi.AllWidgetsUrl)]
-        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageWidgets)]
         public async Task<IActionResult> GetAccessibleWidgetsAsync()
         {
             var allWidgets = await _repository.GetAccessibleWidgetsAsync(GridOptions);
@@ -297,16 +310,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/dashboard/widgets/{widgetId:min(1)}/usage
         [HttpGet]
         [Route(DashboardApi.WidgetUsageUrl)]
-        public async Task<string> QueryWidgetUsageAsync(int widgetId)
+        public async Task<int> QueryWidgetUsageAsync(int widgetId)
         {
-            string confirmMessage = String.Empty;
-            int usageCount = await _repository.GetWidgetUsageCountAsync(widgetId);
-            if (usageCount > 0)
-            {
-                confirmMessage = _strings[AppStrings.ConfirmUsedWidgetDelete];
-            }
-
-            return confirmMessage;
+            return await _repository.GetWidgetUsageCountAsync(widgetId);
         }
 
         /// <summary>
@@ -393,18 +399,33 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// 
         /// </summary>
         /// <param name="widgetId"></param>
+        /// <param name="confirmed">مشخص می کند که در صورت استفاده شدن از ویجت مورد نظر برای حذف، کاربر عمل حذف
+        /// ویجت استفاده شده را تایید کرده یا نه؟</param>
         /// <returns></returns>
         // DELETE: api/dashboard/widgets/{widgetId:min(1)}
         [HttpDelete]
         [Route(DashboardApi.WidgetUrl)]
         [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageWidgets)]
-        public async Task<IActionResult> DeleteExistingWidgetAsync(int widgetId)
+        public async Task<IActionResult> DeleteExistingWidgetAsync(int widgetId, bool confirmed = false)
         {
             var existing = await _repository.GetWidgetAsync(widgetId);
-            var result = GetWidgetValidationResult(existing, widgetId);
-            if (result is BadRequestObjectResult)
+            if (existing == null)
             {
-                return result;
+                var message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Widget, widgetId.ToString());
+                return BadRequestResult(message);
+            }
+
+            if (existing.CreatedById != SecurityContext.User.Id)
+            {
+                var message = _strings[AppStrings.CannotModifyOtherUserWidget];
+                return BadRequestResult(message);
+            }
+
+            int usageCount = await _repository.GetWidgetUsageCountAsync(widgetId);
+            if (usageCount > 0 && !confirmed)
+            {
+                string message = _strings[AppStrings.ConfirmUsedWidgetDelete];
+                return Ok(message);
             }
 
             await _repository.DeleteWidgetAsync(widgetId);
