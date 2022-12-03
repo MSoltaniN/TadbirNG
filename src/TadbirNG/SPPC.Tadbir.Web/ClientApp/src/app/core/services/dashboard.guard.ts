@@ -26,7 +26,7 @@ export class DashboardGuard implements CanActivate {
   }
 
   navigateToHome() {
-    if (!this.enviroment.isAccess('dashboard',1)) {
+    if (!this.enviroment.isAccess('Dashboard',1)) {
       // if (this.settingService.CurrentLanguage == 'fa') {
       //   this.toastr.warning('Access Denied!');
       // } else {

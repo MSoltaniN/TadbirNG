@@ -43,7 +43,6 @@ export class ChartWidgetComponent implements OnInit, AfterContentInit {
 
   @Input() set initOptions(value) {
     if (value) this.options = JSON.parse(JSON.stringify(value));
-    console.log(this.options);
     //this.setOption();
   }
 
