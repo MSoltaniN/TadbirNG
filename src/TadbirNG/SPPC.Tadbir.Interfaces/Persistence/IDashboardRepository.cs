@@ -37,10 +37,11 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsCurrentDashboardCreatedAsync();
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی یکی از برگه های موجود را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات نمایشی یکی از برگه های موجود در داشبورد کاربر جاری را خوانده و برمی گرداند
         /// </summary>
         /// <param name="tabId">شناسه دیتابیسی برگه مورد نظر</param>
-        /// <returns>اطلاعات نمایشی برگه مورد نظر</returns>
+        /// <returns>اطلاعات نمایشی برگه مورد نظر یا رفرنس بدون مقدار در صورتی که برگه مورد نظر
+        /// در داشبورد کاربر جاری نباشد</returns>
         Task<DashboardTabViewModel> GetDashboardTabAsync(int tabId);
 
         /// <summary>
@@ -63,10 +64,25 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteDashboardTabAsync(int tabId);
 
         /// <summary>
-        /// به روش آسنکرون، یکی از ویجت های قابل دسترسی توسط کاربر جاری را در برگه تعیین شده اضافه یا اصلاح می کند
+        /// به روش آسنکرون، تعداد ویجت های اضافه شده به برگه مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="tabWidget">اطلاعات ویجت مورد نظر برای ایجاد یا اصلاح به برگه داشبورد</param>
-        /// <returns>آخرین اطلاعات ویجت اضافه یا اصلاح شده در برگه داشبورد</returns>
+        /// <param name="tabId">شناسه دیتابیسی یکی از برگه های موجود</param>
+        /// <returns>تعداد ویجت های اضافه شده به برگه</returns>
+        Task<int> GetTabWidgetCountAsync(int tabId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که برگه داده شده تنها برگه داشبورد است یا نه
+        /// </summary>
+        /// <param name="tabId">شناسه دیتابیسی برگه مورد نظر</param>
+        /// <returns>در صورتی که برگه مشخص شده تنها برگه داشبورد باشد، مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        Task<bool> IsSoleDashboardTab(int tabId);
+
+        /// <summary>
+        /// به روش آسنکرون، یکی از ویجت های قابل دسترسی توسط کاربر جاری را در برگه تعیین شده اضافه می کند
+        /// </summary>
+        /// <param name="tabWidget">اطلاعات ویجت مورد نظر برای اضافه کردن به برگه داشبورد</param>
+        /// <returns>آخرین اطلاعات ویجت اضافه شده در برگه داشبورد</returns>
         Task<TabWidgetViewModel> SaveTabWidgetAsync(TabWidgetViewModel tabWidget);
 
         /// <summary>

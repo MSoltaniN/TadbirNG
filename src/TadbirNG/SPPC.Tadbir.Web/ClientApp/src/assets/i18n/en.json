@@ -130,6 +130,7 @@
     "ExportToExcel": "Export to excel"
   },
   "Buttons": {
+    "Add": "New",
     "Ok": "Ok",
     "Cancel": "Cancel",
     "Yes": "Yes",
@@ -761,6 +762,9 @@
       "OpeningAsFirstVoucher": "Use opening voucher as first voucher",
       "StartTurnoverAsInitBalance": "Start turnover as initial balance"
     },
+    "UserProfile": {
+      "ShowDashboardAtStartup": "show dashboard at startup"
+    },
     "Description": "Description",
     "TitleText": "Settings List",
     "DefaultCalendar": "Default Calendar",
@@ -1220,6 +1224,7 @@
     "CodeLength": "Code length is not allowed"
   },
   "Widget": {
+    "New": "New Widget",
     "Title": "Widget Title",
     "FunctionName": "Function name",
     "TypeName": "Widget type",

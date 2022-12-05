@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SPPC.CodeChallenge.Interfaces\SPPC.CodeChallenge.Interfaces.csproj" />
+    <ProjectReference Include="..\SPPC.CodeChallenge.Model\SPPC.CodeChallenge.Model.csproj" />
+    <ProjectReference Include="..\SPPC.CodeChallenge.ViewModel\SPPC.CodeChallenge.ViewModel.csproj" />
+  </ItemGroup>
+
+</Project>

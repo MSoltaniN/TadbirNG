@@ -154,6 +154,7 @@
     "ExportToExcel": "ارسال به اکسل"
   },
   "Buttons": {
+    "Add": "جدید",
     "Ok": "تایید",
     "Cancel": "انصراف",
     "Yes": "بله",
@@ -880,6 +881,9 @@
       "OpeningAsFirstVoucher": "سند افتتاحیه به عنوان اولین سند",
       "StartTurnoverAsInitBalance": "انعکاس گردش ابتدای دوره در مانده ابتدا"
     },
+    "UserProfile": {
+      "ShowDashboardAtStartup": "نمایش داشبورد هنگام ورود به برنامه"
+    },
     "Description": "توضیحات",
     "TitleText": "لیست تنظیمات",
     "DefaultCalendar": "تقویم پیش فرض",
@@ -1340,6 +1344,7 @@
     "PleaseSelectRowsAsDeleteArchive": "لطفا برای حذف از بایگانی رویداد های مورد نظر را انتخاب کنید"
   },
   "Widget": {
+    "New": "ویجت جدید",
     "Title": "نام ویجت",
     "FunctionName": "نام تابع",
     "TypeName": "نوع ویجت",

@@ -563,6 +563,13 @@ export class AutoGridExplorerComponent<T>
         this.grid.loading = false;
 
         this.listChanged = true;
+      }, (err) => {
+        this.showloadingMessage = false;
+        this.grid.loading = false;
+        this.showMessage(
+          this.errorHandlingService.handleError(err),
+          MessageType.Warning
+        );
       });
   }
 
@@ -774,34 +781,6 @@ export class AutoGridExplorerComponent<T>
         this.service.groupDelete(this.environmentModelsUrl, rowsId).subscribe(
           (res) => {
             var data: any = res;
-
-            //if (data && data.length > 0) {
-            //  //show errorlist component
-            //  this.openErrorListDialog(data, rowsId.length);
-            //}
-            //else {
-            //  this.showMessage(this.deleteMsg, MessageType.Info);
-
-            //  var pageIndexDecrease = false;
-            //  if (this.rowData.data.length == this.selectedRows.length && this.pageIndex > 1)
-            //    pageIndexDecrease = true;
-
-            //  var pageCount = Math.floor((this.rowData.total - this.selectedRows.length) / this.pageSize) + 1;
-            //  if (this.pageIndex > 0 && this.pageIndex > pageCount)
-            //    pageIndexDecrease = true;
-
-            //  if (pageIndexDecrease)
-            //    this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
-            //}
-
-            //this.selectedRows = [];
-            //this.groupOperation = false;
-            ////log is off after delete model
-            //this.listChanged = false;
-            //var options = new ReloadOption();
-            //options.Status = ReloadStatusType.AfterDelete;
-            //this.reloadGrid(options);
-
             this.afterGroupDelete(data, rowsId);
 
             this.refreshTreeNodes();
@@ -822,15 +801,6 @@ export class AutoGridExplorerComponent<T>
             .delete(String.Format(this.modelUrl, this.deleteModelId))
             .subscribe(
               (response) => {
-                //this.deleteModelId = 0;
-                //this.showMessage(this.deleteMsg, MessageType.Info);
-                //if (this.rowData.data.length == 1 && this.pageIndex > 1)
-                //  this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
-
-                //this.selectedRows = [];
-                ////log is off after delete model
-                //this.listChanged = false;
-                //this.reloadGrid();
                 this.afterDelete();
 
                 this.refreshTreeNodes();

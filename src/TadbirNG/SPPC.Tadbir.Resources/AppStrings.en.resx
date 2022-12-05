@@ -3693,4 +3693,28 @@
   <data name="NewDashboardTab" xml:space="preserve">
     <value>New Tab</value>
   </data>
+  <data name="UserProfileSettings" xml:space="preserve">
+    <value>User Settings</value>
+  </data>
+  <data name="UserProfileSettingsDescription" xml:space="preserve">
+    <value>User settings related to different subsystems</value>
+  </data>
+  <data name="ManageDashboard" xml:space="preserve">
+    <value>Manage Dashboard</value>
+  </data>
+  <data name="WeekX" xml:space="preserve">
+    <value>Week {0}</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="ManageWidgets" xml:space="preserve">
+    <value>Manage Widgets</value>
+  </data>
+  <data name="CannotDeleteLastDashboardTab" xml:space="preserve">
+    <value>Last tab cannot be deleted.</value>
+  </data>
+  <data name="CannotDeleteUsedDashboardTab" xml:space="preserve">
+    <value>Before deleting this tab, you need to remove existing widgets from it.</value>
+  </data>
 </root>

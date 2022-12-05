@@ -32,9 +32,7 @@ export class WidgetComponent implements OnInit, OnChanges {
   @ContentChild(ChartWidgetComponent) chart: ChartWidgetComponent;
 
   constructor() {}
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
 
   onCloseWidget() {
     this.closeWidget.emit(this.widgetId);

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Threading;
+using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Utility;
@@ -123,6 +125,50 @@ namespace SPPC.Tools.BuildServer
             var sysParams = JsonHelper.From(SysParameterUtility.AllParameters);
             Array.ForEach(sysParams.Split(Environment.NewLine),
                 line => Console.WriteLine(line));
+        }
+
+        public static void TestWeekEnumeration1()
+        {
+            var startDate = new DateTime(2022, 5, 15);
+            var endDate = new DateTime(2022, 11, 15);
+            var persian = new PersianCalendar();
+            var persianEnum = new DateSpanEnumerator(startDate, endDate, persian);
+            Console.WriteLine($"Enumerating weeks...");
+            Console.WriteLine($"from {JalaliDateTime.FromDateTime(startDate).ToShortDateString()}");
+            Console.WriteLine($"to {JalaliDateTime.FromDateTime(endDate).ToShortDateString()}");
+            foreach (var week in persianEnum.GetWeeks())
+            {
+                var start = $"{JalaliDateTime.FromDateTime(week.Start).ToShortDateString()}";
+                var end = $"{JalaliDateTime.FromDateTime(week.End).ToShortDateString()}";
+                Console.Write($"Week {week.Name} : {persian.GetDayOfWeek(week.Start)} {start} to ");
+                Console.WriteLine($"{persian.GetDayOfWeek(week.End)} {end}");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Press ENTER to quit...");
+            Console.ReadLine();
+        }
+
+        public static void TestWeekEnumeration2()
+        {
+            var startDate = new DateTime(2022, 5, 15);
+            var endDate = new DateTime(2022, 11, 15);
+            var gregorian = new GregorianCalendar();
+            var gregorianEnum = new DateSpanEnumerator(startDate, endDate, gregorian);
+            Console.WriteLine($"Enumerating weeks...");
+            Console.WriteLine($"from {startDate.ToShortDateString()}");
+            Console.WriteLine($"to {endDate.ToShortDateString()}");
+            foreach (var week in gregorianEnum.GetWeeks())
+            {
+                var start = $"{week.Start.ToShortDateString()}";
+                var end = $"{week.End.ToShortDateString()}";
+                Console.Write($"Week {week.Name} : {gregorian.GetDayOfWeek(week.Start)} {start} to ");
+                Console.WriteLine($"{gregorian.GetDayOfWeek(week.End)} {end}");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("Press ENTER to quit...");
+            Console.ReadLine();
         }
     }
 }

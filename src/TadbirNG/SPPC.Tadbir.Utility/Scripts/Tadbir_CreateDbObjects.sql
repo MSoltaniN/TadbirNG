@@ -1,4 +1,4 @@
-﻿USE [@FirstDbName]
+USE [@FirstDbName]
 GO
 
 SET ANSI_NULLS ON
@@ -25,7 +25,7 @@ GO
 CREATE SCHEMA [Finance]
 GO
 
-CREATE SCHEMA [Workflow]
+CREATE SCHEMA [Reporting]
 GO
 
 
@@ -659,6 +659,131 @@ CREATE TABLE [Finance].[InactiveCurrency] (
 )
 GO
 
+CREATE TABLE [Reporting].[Dashboard] (
+    [DashboardID]      INT              IDENTITY (1, 1) NOT NULL,
+    [UserID]           INT              NOT NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_Dashboard_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_Dashboard_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_Dashboard] PRIMARY KEY CLUSTERED ([DashboardID] ASC)
+)
+GO
+
+CREATE TABLE [Reporting].[DashboardTab] (
+    [DashboardTabID]   INT              IDENTITY (1, 1) NOT NULL,
+    [DashboardID]      INT              NOT NULL,
+    [Index]            INT              NOT NULL,
+	[Title]            NVARCHAR(128)    NOT NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_DashboardTab_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_DashboardTab_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_DashboardTab] PRIMARY KEY CLUSTERED ([DashboardTabID] ASC)
+    , CONSTRAINT [FK_Reporting_DashboardTab_Reporting_Dashboard] FOREIGN KEY ([DashboardID]) REFERENCES [Reporting].[Dashboard]([DashboardID])
+)
+GO
+
+CREATE TABLE [Reporting].[WidgetFunction] (
+    [WidgetFunctionID] INT              IDENTITY (1, 1) NOT NULL,
+    [Name]         NVARCHAR(64)     NOT NULL,
+    [Description]  NVARCHAR(512)    NULL,
+    [rowguid]      UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_WidgetFunction_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate] DATETIME         CONSTRAINT [DF_Reporting_WidgetFunction_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_WidgetFunction] PRIMARY KEY CLUSTERED ([WidgetFunctionID] ASC)
+)
+GO
+
+CREATE TABLE [Reporting].[WidgetType] (
+    [WidgetTypeID]     INT              IDENTITY (1, 1) NOT NULL,
+    [Name]             NVARCHAR(64)     NOT NULL,
+    [Description]      NVARCHAR(512)    NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_WidgetType_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_WidgetType_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_WidgetType] PRIMARY KEY CLUSTERED ([WidgetTypeID] ASC)
+)
+GO
+
+CREATE TABLE [Reporting].[FunctionParameter] (
+    [FunctionParameterID]   INT              IDENTITY (1, 1) NOT NULL,
+    [Name]                  NVARCHAR(64)     NOT NULL,
+    [Alias]                 NVARCHAR(64)     NOT NULL,
+    [Type]                  NVARCHAR(64)     NOT NULL,
+    [DefaultValue]          NVARCHAR(128)    NOT NULL,
+    [Description]           NVARCHAR(512)    NULL,
+    [rowguid]               UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_FunctionParameter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]          DATETIME         CONSTRAINT [DF_Reporting_FunctionParameter_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_FunctionParameter] PRIMARY KEY CLUSTERED ([FunctionParameterID] ASC)
+)
+GO
+
+CREATE TABLE [Reporting].[UsedParameter] (
+    [UsedParameterID]   INT              IDENTITY (1, 1) NOT NULL,
+    [ParameterID]       INT              NOT NULL,
+    [FunctionID]        INT              NOT NULL,
+    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_UsedParameter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Reporting_UsedParameter_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_UsedParameter] PRIMARY KEY CLUSTERED ([UsedParameterID] ASC)
+    , CONSTRAINT [FK_Reporting_UsedParameter_Reporting_Parameter] FOREIGN KEY ([ParameterID]) REFERENCES [Reporting].[FunctionParameter]([FunctionParameterID])
+    , CONSTRAINT [FK_Reporting_UsedParameter_Reporting_Function] FOREIGN KEY ([FunctionID]) REFERENCES [Reporting].[WidgetFunction]([WidgetFunctionID])
+)
+GO
+
+CREATE TABLE [Reporting].[Widget] (
+    [WidgetID]         INT              IDENTITY (1, 1) NOT NULL,
+    [CreatedByID]      INT              NOT NULL,
+    [FunctionID]       INT              NOT NULL,
+    [TypeID]           INT              NOT NULL,
+    [Title]            NVARCHAR(128)    NOT NULL,
+    [DefaultSettings]  NVARCHAR(1024)   NOT NULL,
+    [Description]      NVARCHAR(512)    NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_Widget_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_Widget_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_Widget] PRIMARY KEY CLUSTERED ([WidgetID] ASC)
+    , CONSTRAINT [FK_Reporting_Widget_Reporting_WidgetFunction] FOREIGN KEY ([FunctionID]) REFERENCES [Reporting].[WidgetFunction]([WidgetFunctionID])
+    , CONSTRAINT [FK_Reporting_Widget_Reporting_WidgetType] FOREIGN KEY ([TypeID]) REFERENCES [Reporting].[WidgetType]([WidgetTypeID])
+)
+GO
+
+CREATE TABLE [Reporting].[WidgetAccount] (
+    [WidgetAccountID]  INT              IDENTITY (1, 1) NOT NULL,
+    [WidgetID]         INT              NOT NULL,
+    [AccountID]        INT              NULL,
+    [DetailAccountID]  INT              NULL,
+    [CostCenterID]     INT              NULL,
+    [ProjectID]        INT              NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_WidgetAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_WidgetAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_WidgetAccount] PRIMARY KEY CLUSTERED ([WidgetAccountID] ASC)
+    , CONSTRAINT [FK_Reporting_WidgetAccount_Reporting_Widget] FOREIGN KEY ([WidgetID]) REFERENCES [Reporting].[Widget]([WidgetID])
+    , CONSTRAINT [FK_Reporting_WidgetAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
+    , CONSTRAINT [FK_Reporting_WidgetAccount_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailAccountID])
+    , CONSTRAINT [FK_Reporting_WidgetAccount_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_Reporting_WidgetAccount_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project]([ProjectID])
+)
+GO
+
+CREATE TABLE [Reporting].[TabWidget] (
+    [TabWidgetID]     INT              IDENTITY (1, 1) NOT NULL,
+    [TabID]           INT              NOT NULL,
+    [WidgetID]        INT              NOT NULL,
+    [Settings]        NVARCHAR(1024)   NOT NULL,
+    [DefaultSettings] NVARCHAR(1024)   NOT NULL,
+    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_TabWidget_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Reporting_TabWidget_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_TabWidget] PRIMARY KEY CLUSTERED ([TabWidgetID] ASC)
+    , CONSTRAINT [FK_Reporting_TabWidget_Reporting_Widget] FOREIGN KEY ([WidgetID]) REFERENCES [Reporting].[Widget]([WidgetID])
+    , CONSTRAINT [FK_Reporting_TabWidget_Reporting_DashboardTab] FOREIGN KEY ([TabID]) REFERENCES [Reporting].[DashboardTab]([DashboardTabID])
+)
+GO
+
+CREATE TABLE [Auth].[RoleWidget] (
+    [RoleWidgetID] INT              IDENTITY (1, 1) NOT NULL,
+    [RoleID]       INT              NOT NULL,
+    [WidgetID]     INT              NOT NULL,
+    [rowguid]      UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_RoleWidget_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate] DATETIME         CONSTRAINT [DF_Auth_RoleWidget_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Auth_RoleWidget] PRIMARY KEY CLUSTERED ([RoleWidgetID] ASC)
+    , CONSTRAINT [FK_Auth_RoleWidget_Reporting_Widget] FOREIGN KEY ([WidgetID]) REFERENCES [Reporting].[Widget]([WidgetID])
+)
+GO
+
 CREATE TABLE [Core].[Filter] (
     [FilterID]       INT              IDENTITY (1, 1) NOT NULL,
     [ViewId]         INT              NOT NULL,
@@ -751,6 +876,76 @@ CREATE TABLE [Metadata].[City] (
 GO
 
 -- Insert system records...
+SET IDENTITY_INSERT [Reporting].[WidgetFunction] ON 
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (1, N'Function_DebitTurnover')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (2, N'Function_CreditTurnover')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (3, N'Function_NetTurnover')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (4, N'Function_Balance')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (5, N'FunctionXB_LiquidRatio')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (6, N'FunctionXT_GrossSales')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (7, N'FunctionXT_NetSales')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (8, N'FunctionXB_BankBalance')
+INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (9, N'FunctionXB_CashBalance')
+SET IDENTITY_INSERT [Reporting].[WidgetFunction] OFF
+
+SET IDENTITY_INSERT [Reporting].[WidgetType] ON 
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (1, N'Chart_ColumnChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (2, N'Chart_BarChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (3, N'Chart_LineGraph')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (4, N'Chart_PieChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (5, N'Chart_AreaGraph')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (6, N'Chart_ScatterPlot')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (7, N'Chart_BubbleChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (8, N'Chart_StackedColumnChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (9, N'Chart_StackedBarChart')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (10, N'Gauge_Circular')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (11, N'Gauge_Digital')
+INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (12, N'Gauge_Linear')
+SET IDENTITY_INSERT [Reporting].[WidgetType] OFF
+
+SET IDENTITY_INSERT [Reporting].[FunctionParameter] ON
+INSERT [Reporting].[FunctionParameter] ([FunctionParameterID], [Name], [Alias], [Type], [DefaultValue])
+  VALUES (1, N'FromDate', N'from', N'System.DateTime', N'FiscalPeriodStart')
+INSERT [Reporting].[FunctionParameter] ([FunctionParameterID], [Name], [Alias], [Type], [DefaultValue])
+  VALUES (2, N'ToDate', N'to', N'System.DateTime', N'FiscalPeriodEnd')
+INSERT [Reporting].[FunctionParameter] ([FunctionParameterID], [Name], [Alias], [Type], [DefaultValue])
+  VALUES (3, N'DateUnit', N'unit', N'System.Int32', N'Monthly')
+INSERT [Reporting].[FunctionParameter] ([FunctionParameterID], [Name], [Alias], [Type], [DefaultValue])
+  VALUES (4, N'MinValue', N'min', N'System.Int32', N'0')
+INSERT [Reporting].[FunctionParameter] ([FunctionParameterID], [Name], [Alias], [Type], [DefaultValue])
+  VALUES (5, N'MaxValue', N'max', N'System.Int32', N'100')
+SET IDENTITY_INSERT [Reporting].[FunctionParameter] OFF
+
+SET IDENTITY_INSERT [Reporting].[UsedParameter] ON
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (1, 1, 1)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (2, 1, 2)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (3, 1, 3)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (4, 2, 1)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (5, 2, 2)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (6, 2, 3)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (7, 3, 1)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (8, 3, 2)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (9, 3, 3)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (10, 4, 1)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (11, 4, 2)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (12, 4, 3)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (13, 5, 2)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (14, 5, 4)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (15, 5, 5)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (16, 6, 1)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (17, 6, 2)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (18, 6, 3)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (19, 7, 1)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (20, 7, 2)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (21, 7, 3)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (22, 8, 1)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (23, 8, 2)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (24, 8, 3)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (25, 9, 1)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (26, 9, 2)
+INSERT [Reporting].[UsedParameter] ([UsedParameterID], [FunctionID], [ParameterID]) VALUES (27, 9, 3)
+SET IDENTITY_INSERT [Reporting].[UsedParameter] OFF
+
 SET IDENTITY_INSERT [Core].[DocumentStatus] ON
 INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (1, N'NotChecked')
 INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (2, N'Checked')
@@ -773,11 +968,13 @@ INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelTyp
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (6, 'QuickSearchSettings', 3, 2, 'QuickSearchConfig', N'{}', N'{}', 'QuickSearchSettingsDescription', 0)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
-    VALUES (8, 'SystemConfigurationSettings', 2, 1, 'SystemConfig', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true}', 'SystemConfigurationDescription', 1)
+    VALUES (8, 'SystemConfigurationSettings', 2, 1, 'SystemConfig', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true,"inventoryMode": 1}', N'{"defaultCurrencyNameKey":"CUnit_IranianRial","defaultDecimalCount":0,"defaultCalendar":0,"defaultCalendars": [{"language":"fa", "calendar":0}, {"language":"en", "calendar":1}],"usesDefaultCoding":true,"inventoryMode": 1}', 'SystemConfigurationDescription', 1)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (9, 'FinanceReportSettings', 2, 1, 'FinanceReportConfig', N'{"openingAsFirstVoucher":false,"startTurnoverAsInitBalance":false}', N'{"openingAsFirstVoucher":false,"startTurnoverAsInitBalance":false}', 'FinanceReportSettingsDescription', 1)
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (10, 'FormLabelSettings', 2, 3, 'FormLabelConfig', N'{}', N'{}', NULL, 0)
+INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
+    VALUES (11, 'UserProfileSettings', 3, 1, 'UserProfileConfig', N'{}', N'{}', 'UserProfileSettingsDescription', 0)
 SET IDENTITY_INSERT [Config].[Setting] OFF
 
 SET IDENTITY_INSERT [Config].[ViewSetting] ON
@@ -807,6 +1004,8 @@ INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (15, N'Settin
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (16, N'TaxCurrency')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (17, N'Voucher')
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (18, N'DraftVoucher')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (19, N'DashboardTab')
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID],[Name]) VALUES (20, N'Widget')
 SET IDENTITY_INSERT [Metadata].[EntityType] OFF
 
 SET IDENTITY_INSERT [Metadata].[Operation] ON
@@ -1492,4 +1691,24 @@ INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, Sour
     VALUES (192, 1, 3, 12, NULL, 58, 1)
 INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
     VALUES (193, 1, 3, 13, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (194, 1, 3, NULL, 19, 2, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (195, 1, 3, NULL, 19, 3, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (196, 1, 3, NULL, 19, 4, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (197, 1, 3, NULL, 19, 6, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (198, 1, 3, NULL, 19, 54, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (199, 1, 3, NULL, 20, 2, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (200, 1, 3, NULL, 20, 3, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (201, 1, 3, NULL, 20, 4, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (202, 1, 3, NULL, 20, 6, 1)
+INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
+    VALUES (203, 1, 3, NULL, 20, 54, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF

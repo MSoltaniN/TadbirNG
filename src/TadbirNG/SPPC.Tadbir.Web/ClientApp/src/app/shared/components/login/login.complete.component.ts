@@ -4,7 +4,9 @@ import { TranslateService } from "@ngx-translate/core";
 import { DialogRef, DialogService } from "@progress/kendo-angular-dialog";
 import { RTL } from "@progress/kendo-angular-l10n";
 import { UserService } from "@sppc/admin/service";
+import { UserProfileConfig } from "@sppc/config/models/userProfileConfig";
 import { SettingService } from "@sppc/config/service";
+import { SettingsApi } from "@sppc/config/service/api";
 import {
   AuthenticationService,
   CompanyLoginInfo,
@@ -25,6 +27,7 @@ import {
   SessionKeys,
 } from "@sppc/shared/services";
 import { ToastrService } from "ngx-toastr";
+import { take } from "rxjs/operators";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -322,6 +325,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
           var url = this.route.snapshot.queryParams["returnUrl"];
           this.router.navigate([url]);
         } else {
+
           if (this.FiscalPeriodId == 0 || this.BranchId == 0) {
             this.bStorageService.removeCurrentRoute();
             this.router.navigate(["/tadbir/dashboard"]);

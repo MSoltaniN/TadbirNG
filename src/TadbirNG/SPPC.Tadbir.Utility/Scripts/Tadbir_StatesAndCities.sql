@@ -1,4 +1,4 @@
-﻿USE [@FirstDbName]
+USE [@FirstDbName]
 GO
 
 SET IDENTITY_INSERT [Metadata].[Province] ON 

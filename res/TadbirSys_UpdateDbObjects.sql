@@ -189,3 +189,14 @@ SET IDENTITY_INSERT [Auth].[Permission] ON
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (210, 36, N'ManageDashboard', 1)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (211, 36, N'ManageWidgets', 2)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
+
+-- 1.2.1451
+SET IDENTITY_INSERT [Metadata].[Command] ON
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
+    VALUES (51, 37, 210, N'ManageDashboard', N'/tadbir/dashboard', N'list', NULL)
+SET IDENTITY_INSERT [Metadata].[Command] OFF
+
+-- 1.2.1454
+UPDATE [Metadata].[Column]
+SET [IsNullable] = 1
+WHERE [ViewID] = 68 AND [Name] = 'Description'

@@ -83,18 +83,18 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی یکی از برگه های موجود را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات نمایشی یکی از برگه های موجود در داشبورد کاربر جاری را خوانده و برمی گرداند
         /// </summary>
         /// <param name="tabId">شناسه دیتابیسی برگه مورد نظر</param>
-        /// <returns>اطلاعات نمایشی برگه مورد نظر</returns>
+        /// <returns>اطلاعات نمایشی برگه مورد نظر یا رفرنس بدون مقدار در صورتی که برگه مورد نظر
+        /// در داشبورد کاربر جاری نباشد</returns>
         public async Task<DashboardTabViewModel> GetDashboardTabAsync(int tabId)
         {
             var tab = default(DashboardTabViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<Dashboard>();
+            var repository = UnitOfWork.GetAsyncRepository<DashboardTab>();
             var existing = await repository
-                .GetEntityQuery(dbd => dbd.Tabs)
-                .Where(dbd => dbd.UserId == UserContext.Id)
-                .Select(dbd => dbd.Tabs.Where(tab => tab.Id == tabId).FirstOrDefault())
+                .GetEntityQuery()
+                .Where(tab => tab.Id == tabId && tab.Dashboard.UserId == UserContext.Id)
                 .SingleOrDefaultAsync();
             if (existing != null)
             {
@@ -115,9 +115,10 @@ namespace SPPC.Tadbir.Persistence
             if (tab.Id == 0)
             {
                 var newTab = Mapper.Map<DashboardTab>(tab);
-                repository.Insert(newTab);
-                await UnitOfWork.CommitAsync();
+                newTab.Index = GetNextTabIndex(tab.DashboardId);
+                await InsertTabAsync(repository, newTab);
                 tab.Id = newTab.Id;
+                tab.Index = newTab.Index;
             }
             else
             {
@@ -144,18 +145,20 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
-            var repository = UnitOfWork.GetAsyncRepository<Dashboard>();
-            int dashboardId = tabs
-                .Select(tab => tab.DashboardId)
-                .First();
-            var dashboard = await repository.GetByIDWithTrackingAsync(dashboardId, dbd => dbd.Tabs);
-            if (dashboard != null)
+            var tabIds = tabs.Select(tab => tab.Id);
+            var repository = UnitOfWork.GetAsyncRepository<DashboardTab>();
+            var existingTabs = await repository.GetByCriteriaAsync(tab => tabIds.Contains(tab.Id));
+            foreach (var tab in existingTabs)
             {
-                dashboard.Tabs.Clear();
-                dashboard.Tabs.AddRange(tabs.Select(tab => Mapper.Map<DashboardTab>(tab)));
-                repository.Update(dashboard);
-                await UnitOfWork.CommitAsync();
+                var tabView = tabs.FirstOrDefault(item => item.Id == tab.Id);
+                if (tabView != null)
+                {
+                    UpdateExisting(tabView, tab);
+                    repository.Update(tab);
+                }
             }
+
+            await UnitOfWork.CommitAsync();
         }
 
         /// <summary>
@@ -164,20 +167,65 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="tabId">شناسه دستابیسی برگه مورد نظر برای حذف</param>
         public async Task DeleteDashboardTabAsync(int tabId)
         {
-            var repository = UnitOfWork.GetAsyncRepository<DashboardTab>();
-            var existing = await repository.GetByIDAsync(tabId);
-            if (existing != null)
+            int dashboardId = await GetDashboardIdAsync(tabId);
+            if (dashboardId > 0)
             {
-                repository.Delete(existing);
-                await UnitOfWork.CommitAsync();
+                var repository = UnitOfWork.GetAsyncRepository<DashboardTab>();
+                var tabs = await repository.GetByCriteriaAsync(tab => tab.DashboardId == dashboardId);
+                var tabToDelete = tabs.Single(tab => tab.Id == tabId);
+                foreach (var tab in tabs)
+                {
+                    if (tab.Id == tabId)
+                    {
+                        repository.Delete(tab);
+                    }
+                    else if (tab.Index > tabToDelete.Index)
+                    {
+                        tab.Index -= 1;
+                        repository.Update(tab);
+                    }
+                }
+
+                await DeleteTabAsync(tabToDelete);
             }
         }
 
         /// <summary>
-        /// به روش آسنکرون، یکی از ویجت های قابل دسترسی توسط کاربر جاری را در برگه تعیین شده اضافه یا اصلاح می کند
+        /// به روش آسنکرون، تعداد ویجت های اضافه شده به برگه مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="tabWidget">اطلاعات ویجت مورد نظر برای ایجاد یا اصلاح به برگه داشبورد</param>
-        /// <returns>آخرین اطلاعات ویجت اضافه یا اصلاح شده در برگه داشبورد</returns>
+        /// <param name="tabId">شناسه دیتابیسی یکی از برگه های موجود</param>
+        /// <returns>تعداد ویجت های اضافه شده به برگه</returns>
+        public async Task<int> GetTabWidgetCountAsync(int tabId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<TabWidget>();
+            return await repository.GetCountByCriteriaAsync(tw => tw.TabId == tabId);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که برگه داده شده تنها برگه داشبورد است یا نه
+        /// </summary>
+        /// <param name="tabId">شناسه دیتابیسی برگه مورد نظر</param>
+        /// <returns>در صورتی که برگه مشخص شده تنها برگه داشبورد باشد، مقدار بولی "درست" و در غیر این صورت
+        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsSoleDashboardTab(int tabId)
+        {
+            bool isSoleTab = false;
+            int dashboardId = await GetDashboardIdAsync(tabId);
+            if (dashboardId > 0)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<DashboardTab>();
+                int count = await repository.GetCountByCriteriaAsync(tab => tab.DashboardId == dashboardId);
+                isSoleTab = count == 1;
+            }
+
+            return isSoleTab;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، یکی از ویجت های قابل دسترسی توسط کاربر جاری را در برگه تعیین شده اضافه می کند
+        /// </summary>
+        /// <param name="tabWidget">اطلاعات ویجت مورد نظر برای اضافه کردن به برگه داشبورد</param>
+        /// <returns>آخرین اطلاعات ویجت اضافه شده در برگه داشبورد</returns>
         public async Task<TabWidgetViewModel> SaveTabWidgetAsync(TabWidgetViewModel tabWidget)
         {
             var repository = UnitOfWork.GetAsyncRepository<TabWidget>();
@@ -195,6 +243,11 @@ namespace SPPC.Tadbir.Persistence
                         wgt.DefaultSettings
                     })
                     .SingleOrDefaultAsync();
+                if (widgetInfo == null)
+                {
+                    return tabWidget;
+                }
+
                 tabWidget.WidgetTitle = widgetInfo.Title;
                 tabWidget.WidgetTypeId = widgetInfo.TypeId;
                 tabWidget.WidgetFunctionId = widgetInfo.FunctionId;
@@ -207,7 +260,7 @@ namespace SPPC.Tadbir.Persistence
                 return tabWidget;
             }
 
-            return null;
+            return tabWidget;
         }
 
         /// <summary>
@@ -273,18 +326,14 @@ namespace SPPC.Tadbir.Persistence
             GridOptions gridOptions = null)
         {
             Expression<Func<Widget, bool>> criteria = wgt => true;
-            if (!UserContext.Roles.Contains(AppConstants.AdminRoleId))
-            {
-                var roleWidgetRepository = UnitOfWork.GetAsyncRepository<RoleWidget>();
-                var widgetIds = await roleWidgetRepository
-                    .GetEntityQuery()
-                    .Where(rw => UserContext.Roles.Contains(rw.RoleId))
-                    .Select(rw => rw.WidgetId)
-                    .Distinct()
-                    .ToListAsync();
-                criteria = wgt => widgetIds.Contains(wgt.Id) || wgt.CreatedById == UserContext.Id;
-            }
-
+            var roleWidgetRepository = UnitOfWork.GetAsyncRepository<RoleWidget>();
+            var widgetIds = await roleWidgetRepository
+                .GetEntityQuery()
+                .Where(rw => UserContext.Roles.Contains(rw.RoleId))
+                .Select(rw => rw.WidgetId)
+                .Distinct()
+                .ToListAsync();
+            criteria = wgt => widgetIds.Contains(wgt.Id) || wgt.CreatedById == UserContext.Id;
             return await GetWidgetsByCriteria(criteria, gridOptions);
         }
 
@@ -387,6 +436,8 @@ namespace SPPC.Tadbir.Persistence
                     string oldState = GetState(existing);
                     OnEntityAction(OperationId.Edit);
                     UpdateExisting(widget, existing);
+                    repository.LoadReference(existing, wgt => wgt.Function);
+                    repository.LoadReference(existing, wgt => wgt.Type);
                     Log.Description = Context.Localize(
                         String.Format("{0} : ({1}) , {2} : ({3})",
                         AppStrings.Old, Context.Localize(oldState),
@@ -493,11 +544,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات ویجت های قابل دسترسی</returns>
         public async Task<List<WidgetViewModel>> GetWidgetsLookupAsync()
         {
-            var repository = UnitOfWork.GetAsyncRepository<Widget>();
-            return await repository
-                .GetEntityQuery(widget => widget.Function, widget => widget.Type)
-                .Select(type => Mapper.Map<WidgetViewModel>(type))
-                .ToListAsync();
+            var lookup = await GetAccessibleWidgetsAsync();
+            return lookup.Items;
         }
 
         #endregion
@@ -575,6 +623,13 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private IConfigRepository Config { get; }
+
+        private static string GetState(DashboardTab tab)
+        {
+            return (tab != null)
+                ? $"{AppStrings.Title} : {tab.Title} , {AppStrings.No} : {tab.Index}"
+                : null;
+        }
 
         private object GetParameterValue(string name)
         {
@@ -959,9 +1014,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var values = new List<WidgetFunctionValues>();
             var calendar = await Config.GetCurrentCalendarAsync();
+            var enumerator = new DateSpanEnumerator(from, to, calendar);
             if (unit == WidgetDateUnit.Monthly)
             {
-                var enumerator = new MonthEnumerator(from, to, calendar);
                 values.AddRange(enumerator
                     .GetMonths()
                     .Select(month => new WidgetFunctionValues()
@@ -969,6 +1024,17 @@ namespace SPPC.Tadbir.Persistence
                         XLabel = Context.Localize(month.Name),
                         FromDate = month.Start,
                         ToDate = month.End
+                    }));
+            }
+            else if (unit == WidgetDateUnit.Weekly)
+            {
+                values.AddRange(enumerator
+                    .GetWeeks()
+                    .Select(week => new WidgetFunctionValues()
+                    {
+                        XLabel = String.Format(Context.Localize(AppStrings.WeekX), week.Name),
+                        FromDate = week.Start,
+                        ToDate = week.End
                     }));
             }
 
@@ -981,9 +1047,9 @@ namespace SPPC.Tadbir.Persistence
             var values = new List<WidgetFunctionValues>();
             var calendar = await Config.GetCurrentCalendarAsync();
             Config.GetCurrentFiscalDateRange(out DateTime startDate, out DateTime _);
+            var enumerator = new DateSpanEnumerator(from, to, calendar);
             if (unit == WidgetDateUnit.Monthly)
             {
-                var enumerator = new MonthEnumerator(from, to, calendar);
                 values.AddRange(enumerator
                     .GetMonths()
                     .Select(month => new WidgetFunctionValues()
@@ -991,6 +1057,17 @@ namespace SPPC.Tadbir.Persistence
                         XLabel = Context.Localize(month.Name),
                         FromDate = startDate,
                         ToDate = month.End
+                    }));
+            }
+            else if (unit == WidgetDateUnit.Weekly)
+            {
+                values.AddRange(enumerator
+                    .GetWeeks()
+                    .Select(week => new WidgetFunctionValues()
+                    {
+                        XLabel = String.Format(Context.Localize(AppStrings.WeekX), week.Name),
+                        FromDate = startDate,
+                        ToDate = week.End
                     }));
             }
 
@@ -1053,6 +1130,45 @@ namespace SPPC.Tadbir.Persistence
             return usage == ExpressionUsage.Where
                 ? String.Join(" AND ", selectList)
                 : String.Join(",", selectList);
+        }
+
+        private async Task<int> GetDashboardIdAsync(int tabId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<DashboardTab>();
+            return await repository
+                .GetEntityQuery()
+                .Where(tab => tab.Id == tabId)
+                .Select(tab => tab.DashboardId)
+                .SingleOrDefaultAsync();
+        }
+
+        private int GetNextTabIndex(int dashboardId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<DashboardTab>();
+            var lastIndex = repository
+                .GetEntityQuery()
+                .Where(tab => tab.DashboardId == dashboardId)
+                .Max(tab => tab.Index);
+            return lastIndex + 1;
+        }
+
+        private async Task InsertTabAsync(IRepository<DashboardTab> repository, DashboardTab tab)
+        {
+            OnEntityAction(OperationId.Create);
+            Log.EntityTypeId = (int)EntityTypeId.DashboardTab;
+            Log.Description = Context.Localize(GetState(tab));
+            repository.Insert(tab);
+            await UnitOfWork.CommitAsync();
+            Log.EntityId = tab.Id;
+            await TrySaveLogAsync();
+        }
+
+        private async Task DeleteTabAsync(DashboardTab tab)
+        {
+            OnEntityAction(OperationId.Delete);
+            Log.Description = Context.Localize(GetState(tab));
+            await UnitOfWork.CommitAsync();
+            await TrySaveLogAsync();
         }
 
         private async Task<PagedList<WidgetViewModel>> GetWidgetsByCriteria(

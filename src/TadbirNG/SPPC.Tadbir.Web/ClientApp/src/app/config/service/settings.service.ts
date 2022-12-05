@@ -165,6 +165,12 @@ export class SettingService extends BaseService {
     return this.http.put(apiUrl, body, options).pipe(map((res) => res));
   }
 
+  public putUserProfileSettings(apiUrl: string, value: any) {
+    var body = JSON.stringify(value);
+    var options = { headers: this.httpHeaders };
+    return this.http.put(apiUrl, body, options).pipe(map((res) => res));
+  }
+
   getViewTreeSettings(viewId: number) {
     var url = String.Format(SettingsApi.ViewTreeSettingsByView, viewId);
     return this.http

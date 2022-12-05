@@ -29,6 +29,7 @@ export class WidgetSettingComponent implements OnInit {
     { text: "نمودار میله ای", value: "2" },
     { text: "نمودار خطی", value: "3" },
     { text: "نمودار دایره ای", value: "4" },
+    { text: "گیج عقریه ای", value: "10" },
   ];
 
   ngOnInit() {

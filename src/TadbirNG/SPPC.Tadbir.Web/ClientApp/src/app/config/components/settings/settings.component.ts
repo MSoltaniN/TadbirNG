@@ -118,7 +118,37 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
               )
             );
           }
+
+          if (this.CurrentLanguage == "fa") {
+            let userProfileConfig = new SettingTreeNodeInfo(
+              11,
+              -1,
+              "تنظیمات داشبورد",
+              'تنظیمات مربوط به نمایش داشبورد هنگام ورود.',
+              "UserProfileConfig"
+            )
+            treeData.push(userProfileConfig);
+            this.settingsCategories.push(userProfileConfig);
+          } else {
+            let userProfileConfig = new SettingTreeNodeInfo(
+              11,
+              -1,
+              "Dashboard Setting",
+              "showDashboardAtStartup",
+              "UserProfileConfig"
+            )
+            treeData.push(userProfileConfig);
+            this.settingsCategories.push(userProfileConfig);
+          }
         }
+
+        this.settingsService
+        .getSettingsCategories(SettingsApi.UserProfileConfig)
+        .subscribe(res => {
+          let userProfileConfig = this.settingsCategories.find(i => i.modelType == "UserProfileConfig");
+          userProfileConfig.values = res;
+        })
+
         this.settingModel = JSON.parse(JSON.stringify(treeData));
       });
   }
@@ -127,6 +157,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
     this.itemSelectedModel = this.settingsCategories.find(
       (f) => f.id == item.dataItem.id
     );
+
     if (this.lastSelectedType && this.lastSelectedType != "SystemConfig") {
       this.settingForm.updateListHandler();
       this.updateList(this.lastSelectedType);
@@ -178,8 +209,9 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
     this.bStorageService.removeSelectedDateRange();
     //#endregion
 
-    this.settingsService
-      .putSettingsCategories(SettingsApi.AllSettings, this.settingsCategories)
+    if (this.itemUpdatedModel.modelType == "UserProfileConfig") {
+      this.settingsService
+      .putUserProfileSettings(SettingsApi.UserProfileConfig, this.itemUpdatedModel.values)
       .subscribe(
         (res) => {
           this.showMessage(this.updateMsg, MessageType.Succes);
@@ -188,6 +220,18 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
           this.errorMessages = this.errorHandlingService.handleError(error);
         }
       );
+    } else {
+      this.settingsService
+        .putSettingsCategories(SettingsApi.AllSettings, this.settingsCategories)
+        .subscribe(
+          (res) => {
+            this.showMessage(this.updateMsg, MessageType.Succes);
+          },
+          (error) => {
+            this.errorMessages = this.errorHandlingService.handleError(error);
+          }
+        );
+    }
   }
 
   onDefaultSettings() {

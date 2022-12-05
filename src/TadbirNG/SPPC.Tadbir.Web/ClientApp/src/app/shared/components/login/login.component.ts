@@ -48,17 +48,6 @@ export class LoginComponent extends DefaultComponent implements OnInit {
   private duringCheckOfflineLicense: boolean = false;
   private duringCheckOnlineLicense: boolean = false;
 
-  // public activationForm = new FormGroup({
-  //   userName: new FormControl("", [
-  //     Validators.required,
-  //     Validators.maxLength(128),
-  //   ]),
-  //   password: new FormControl("", [
-  //     Validators.required,
-  //     Validators.maxLength(128),
-  //   ]),
-  // });
-
   serverUserName: string = "";
   serverPassword: string = "";
 
@@ -243,16 +232,6 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         }
       );
   }
-
-  // showServerPasswordForm() {
-  //   this.showMessageWithTime(
-  //     this.getText("Messages.ActivationPasswordIsNotCorrect"),
-  //     MessageType.Error,
-  //     3000
-  //   );
-  //   this.activationForm.reset();
-  //   //this.showServerForm = true;
-  // }
 
   convertToShamsi(date) {
     var shamsiDate = moment(date).locale("fa").format("YYYY/MM/DD HH:mm");

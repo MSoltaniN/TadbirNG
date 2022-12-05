@@ -393,6 +393,39 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/settings/profile
+        [HttpGet]
+        [Route(SettingsApi.UserProfileConfigUrl)]
+        public async Task<IActionResult> GetCurrentUserProfileAsync()
+        {
+            var profile = await _repository.GetUserProfileConfigAsync(SecurityContext.User.Id);
+            return Json(profile);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="profile"></param>
+        /// <returns></returns>
+        // PUT: api/settings/profile
+        [HttpPut]
+        [Route(SettingsApi.UserProfileConfigUrl)]
+        public async Task<IActionResult> PutModifiedCurrentUserProfileAsync(
+            [FromBody] UserProfileConfig profile)
+        {
+            if (profile == null)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Settings));
+            }
+
+            await _repository.SaveUserProfileConfigAsync(SecurityContext.User.Id, profile);
+            return Ok();
+        }
+
         private void Localize(ViewTreeFullConfig viewSettings, int viewId)
         {
             if (viewId == ViewId.Account)

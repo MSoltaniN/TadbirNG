@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32802.440
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackEnd", "BackEnd", "{5B3BCA53-96D2-47BE-BA98-3428F1D9599A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CrossCutting", "CrossCutting", "{7DD67003-6991-4DF5-A766-92D56468F1F9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{9DE7C2F2-672F-4977-9CB2-12A2678A4FE7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FrontEnd", "FrontEnd", "{2237E5B4-689B-46FE-B7D1-EF92166C69B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.CodeChallenge.Persistence", "SPPC.CodeChallenge.Persistence\SPPC.CodeChallenge.Persistence.csproj", "{6FB86BEE-539C-480B-8BBB-9EA920E78512}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.CodeChallenge.Interfaces", "SPPC.CodeChallenge.Interfaces\SPPC.CodeChallenge.Interfaces.csproj", "{6F37FF2E-C583-439B-A320-4B8CE5B3C20F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.CodeChallenge.SchoolManager", "SPPC.CodeChallenge.SchoolManager\SPPC.CodeChallenge.SchoolManager.csproj", "{BAF24D1B-D2A3-4076-8DF4-94255DA83A49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.CodeChallenge.Model", "SPPC.CodeChallenge.Model\SPPC.CodeChallenge.Model.csproj", "{72E62F92-3E39-43A7-8082-96A5470276F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.CodeChallenge.ViewModel", "SPPC.CodeChallenge.ViewModel\SPPC.CodeChallenge.ViewModel.csproj", "{FD8C562C-EB35-45D0-AF2B-87A30C5A2644}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.CodeChallenge.Mapper", "SPPC.CodeChallenge.Mapper\SPPC.CodeChallenge.Mapper.csproj", "{4C722867-846D-47AF-A659-C98651AB6C1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.CodeChallenge.WebApi", "SPPC.CodeChallenge.WebApi\SPPC.CodeChallenge.WebApi.csproj", "{415A90B6-799B-4584-A540-310E1C869DF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.CodeChallenge.Common", "SPPC.CodeChallenge.Common\SPPC.CodeChallenge.Common.csproj", "{E62047D3-628C-4101-A895-E577FFFAB3C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6FB86BEE-539C-480B-8BBB-9EA920E78512}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FB86BEE-539C-480B-8BBB-9EA920E78512}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FB86BEE-539C-480B-8BBB-9EA920E78512}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FB86BEE-539C-480B-8BBB-9EA920E78512}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F37FF2E-C583-439B-A320-4B8CE5B3C20F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F37FF2E-C583-439B-A320-4B8CE5B3C20F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F37FF2E-C583-439B-A320-4B8CE5B3C20F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F37FF2E-C583-439B-A320-4B8CE5B3C20F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAF24D1B-D2A3-4076-8DF4-94255DA83A49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAF24D1B-D2A3-4076-8DF4-94255DA83A49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAF24D1B-D2A3-4076-8DF4-94255DA83A49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAF24D1B-D2A3-4076-8DF4-94255DA83A49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72E62F92-3E39-43A7-8082-96A5470276F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72E62F92-3E39-43A7-8082-96A5470276F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72E62F92-3E39-43A7-8082-96A5470276F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72E62F92-3E39-43A7-8082-96A5470276F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD8C562C-EB35-45D0-AF2B-87A30C5A2644}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD8C562C-EB35-45D0-AF2B-87A30C5A2644}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD8C562C-EB35-45D0-AF2B-87A30C5A2644}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD8C562C-EB35-45D0-AF2B-87A30C5A2644}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C722867-846D-47AF-A659-C98651AB6C1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C722867-846D-47AF-A659-C98651AB6C1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C722867-846D-47AF-A659-C98651AB6C1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C722867-846D-47AF-A659-C98651AB6C1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{415A90B6-799B-4584-A540-310E1C869DF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{415A90B6-799B-4584-A540-310E1C869DF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{415A90B6-799B-4584-A540-310E1C869DF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{415A90B6-799B-4584-A540-310E1C869DF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E62047D3-628C-4101-A895-E577FFFAB3C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E62047D3-628C-4101-A895-E577FFFAB3C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E62047D3-628C-4101-A895-E577FFFAB3C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E62047D3-628C-4101-A895-E577FFFAB3C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6FB86BEE-539C-480B-8BBB-9EA920E78512} = {5B3BCA53-96D2-47BE-BA98-3428F1D9599A}
+		{6F37FF2E-C583-439B-A320-4B8CE5B3C20F} = {7DD67003-6991-4DF5-A766-92D56468F1F9}
+		{BAF24D1B-D2A3-4076-8DF4-94255DA83A49} = {2237E5B4-689B-46FE-B7D1-EF92166C69B3}
+		{72E62F92-3E39-43A7-8082-96A5470276F0} = {9DE7C2F2-672F-4977-9CB2-12A2678A4FE7}
+		{FD8C562C-EB35-45D0-AF2B-87A30C5A2644} = {9DE7C2F2-672F-4977-9CB2-12A2678A4FE7}
+		{4C722867-846D-47AF-A659-C98651AB6C1E} = {9DE7C2F2-672F-4977-9CB2-12A2678A4FE7}
+		{415A90B6-799B-4584-A540-310E1C869DF3} = {5B3BCA53-96D2-47BE-BA98-3428F1D9599A}
+		{E62047D3-628C-4101-A895-E577FFFAB3C3} = {7DD67003-6991-4DF5-A766-92D56468F1F9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F977E84C-A9D6-4B62-A83F-41F3F3D87D85}
+	EndGlobalSection
+EndGlobal

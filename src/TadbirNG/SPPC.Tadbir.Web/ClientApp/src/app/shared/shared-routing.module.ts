@@ -8,6 +8,7 @@ import { ReportManagementComponent } from './components/reportManagement/reportM
 import { LoginContainerComponent } from './components/login/login.container.component';
 import { LogoutComponent } from './components/login/logout.component';
 import { ManageWidgetsComponent } from './components/dashboard/manage-widgets/manage-widgets.component';
+import { DashboardGuard } from '@sppc/core/services/dashboard.guard';
 // import { ManageWidgetsComponents } from './components/dashboard/manage-widgets/manage-widgets.component';
 
 const routes: Routes = [
@@ -22,7 +23,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'login', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent},
+      { path: 'dashboard', component: DashboardComponent, canActivate:[DashboardGuard]},
       { path: 'widgets', component: ManageWidgetsComponent},
       { path: 'home', component: HomeComponent },
       { path: 'reports', component: ReportManagementComponent },

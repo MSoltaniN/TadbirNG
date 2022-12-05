@@ -116,6 +116,20 @@ namespace SPPC.Tadbir.Persistence
         Task SaveFormLabelConfigAsync(FormLabelConfig labelConfig);
 
         /// <summary>
+        /// به روش آسنکرون، تنظیمات کاربری موجود را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="userId">شناسه دیتابیسی کاربر مورد نظر</param>
+        /// <returns>مقادیر جاری تنظیمات کاربری برای کاربر مورد نظر</returns>
+        Task<UserProfileConfig> GetUserProfileConfigAsync(int userId);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت تنظیمات کاربری را ذخیره می کند
+        /// </summary>
+        /// <param name="userId">شناسه دیتابیسی کاربر مورد نظر</param>
+        /// <param name="profile">آخرین وضعیت تنظیمات کاربری برای کاربر مورد نظر</param>
+        Task SaveUserProfileConfigAsync(int userId, UserProfileConfig profile);
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="level"></param>
