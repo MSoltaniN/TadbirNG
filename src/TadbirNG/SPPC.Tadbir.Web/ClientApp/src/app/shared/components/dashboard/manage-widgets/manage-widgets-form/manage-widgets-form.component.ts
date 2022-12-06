@@ -40,8 +40,8 @@ export class ManageWidgetsFormComponent extends DetailComponent implements OnIni
       bStorageService,
       renderer,
       metadata,
-      Entities.Widget,
-      ViewName.Widget,
+      Entities.Dashboard,
+      ViewName.Dashboard,
       elem
     );
   }

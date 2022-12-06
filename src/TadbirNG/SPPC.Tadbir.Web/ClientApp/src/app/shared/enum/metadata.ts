@@ -122,7 +122,7 @@ export const Entities = {
   DraftVouchers: 'DraftVouchers',
   Vouchers: 'Vouchers',
   BalanceSheet:'BalanceSheet',
-  Widget: "Widget"
+  Dashboard: "Dashboard"
 }
 
 export const CustomForm =
