@@ -506,17 +506,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       .getModelsByFilters(apiUrl, this.filter, this.quickFilter)
       .subscribe(
         (res) => {
+          res.originName = '';
           this.initVoucherForm(res);
           this.errorMessage = undefined;
           this.isLastVoucher = !res.hasNext;
           this.isFirstVoucher = !res.hasPrevious;
-          if (this.isNewVoucher) {
-            this.translate.get('Voucher.NormalVoucher').subscribe(res => {
-              this.editForm.patchValue({
-                originName: res
-              })
-            });
-          }
         },
         (err) => {
           if (err == null || err.statusCode == 404) {
