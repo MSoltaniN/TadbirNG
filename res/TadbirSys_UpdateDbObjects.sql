@@ -1,4 +1,4 @@
-USE [NGTadbirSys]
+﻿USE [NGTadbirSys]
 GO
 
 -- 1.2.1328
@@ -200,3 +200,30 @@ SET IDENTITY_INSERT [Metadata].[Command] OFF
 UPDATE [Metadata].[Column]
 SET [IsNullable] = 1
 WHERE [ViewID] = 68 AND [Name] = 'Description'
+
+-- 1.2.1455
+UPDATE [Metadata].[View]
+SET [EntityName] = 'Dashboard'
+WHERE [Name] = 'Widget'
+
+UPDATE [Metadata].[Column]
+SET [AllowSorting] = 0, [AllowFiltering] = 0
+WHERE [ViewID] = 68 AND [Name] = 'RowNo'
+
+SET IDENTITY_INSERT [Reporting].[Report] ON
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (91, 7, 1, 68, 1, '', N'dashboard/widgets', 0, 1, 0, 1)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (92, 7, 1, 68, 1, '', N'dashboard/widgets/all', 0, 1, 0, 1)
+SET IDENTITY_INSERT [Reporting].[Report] OFF
+
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (273, 1, 91, 'My Widgets', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (274, 2, 91, N'ویجت های من', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (275, 1, 92, 'All Widgets', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (276, 2, 92, N'همه ویجت ها', NULL)
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF

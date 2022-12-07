@@ -335,14 +335,12 @@ namespace SPPC.Tadbir.Persistence
                 throw ExceptionBuilder.NewGenericException<FileNotFoundException>();
             }
 
-            // NOTE: Identity caching must be disabled, but older SQL Server versions
-            // do not support it. Required T-SQL statement is temporarily commented out.
             sqlBuilder.AppendFormat(@"
                 CREATE DATABASE [{0}]
                 GO
                 USE [{0}]
-                --GO
-                --ALTER DATABASE SCOPED CONFIGURATION SET IDENTITY_CACHE=OFF
+                GO
+                ALTER DATABASE SCOPED CONFIGURATION SET IDENTITY_CACHE=OFF
                 GO",
                 company.DbName);
             sqlBuilder.AppendLine();
