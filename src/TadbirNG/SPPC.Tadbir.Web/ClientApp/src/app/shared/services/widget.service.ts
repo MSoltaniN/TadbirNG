@@ -261,16 +261,18 @@ export class ChartService extends BaseService {
 
   getBarSeries(dataset: any[]) {
     const series: any[] = [];
-    dataset.forEach((d) => {
-      let type = d.type;
-      if (d.type == "horizontalBar") type = "bar";
-
-      series.push({
-        name: d.label,
-        data: d.data,
-        type: type,
+    if (dataset) {
+      dataset.forEach((d) => {
+        let type = d.type;
+        if (d.type == "horizontalBar") type = "bar";
+  
+        series.push({
+          name: d.label,
+          data: d.data,
+          type: type,
+        });
       });
-    });
+    }
     return series;
   }
 

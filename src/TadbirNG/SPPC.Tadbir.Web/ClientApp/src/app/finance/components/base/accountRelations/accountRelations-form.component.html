@@ -35,23 +35,18 @@
                     </div>                   
                 </div>
                 <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}">
-                    <label *ngIf="relatedComponentCategories && !resultMessage" class="my-k-label" for="selectAll">
-                        <input type="checkbox" name="selectAll"
-                               [checked]="relatedComponentCategories.length == relatedComponentCheckedKeys.length"
-                               class="k-checkbox" id="selectAll"
-                               (click)="selectAll()"
-                        >
-                        {{ 'AccountRelations.SelectAll' | translate }}
-                    </label>
                     <kendo-treeview [nodes]="relatedComponentCategories"
                                     [textField]="['name']"
-                                    kendoTreeViewExpandable
-                                    [kendoTreeViewCheckable]="{ mode: 'multiple', checkChildren: false , checkParents: false }"
+                                    kendoTreeViewFlatDataBinding
+                                    [kendoTreeViewCheckable]="{ mode: 'multiple', checkChildren: true , checkParents: true }"
                                     [checkBy]="checkById"
+                                    idField="id"
+                                    parentIdField="parentId"
                                     [(checkedKeys)]="relatedComponentCheckedKeys"
+                                    [isChecked]="isCheckedKeys"
                                     (checkedChange)="handleCheckedChange($event)">
                         <ng-template kendoTreeViewNodeTemplate let-dataItem>
-                            {{dataItem.name}} - ({{dataItem.fullCode}})
+                            {{ dataItem.id == -1? (dataItem.name | translate): dataItem.name + (' - ') + dataItem.fullCode }}
                         </ng-template>
                     </kendo-treeview>
                 </div>
@@ -68,6 +63,7 @@
                                     kendoTreeViewExpandable
                                     [kendoTreeViewCheckable]="{ mode: 'multiple'}"
                                     [checkBy]="checkById"
+                                    [isChecked]="isCheckedResultKeys"
                                     [(checkedKeys)]="resultCheckedKeys"
                                     (checkedChange)="handleResultCheckedChange($event)">
                         <ng-template kendoTreeViewNodeTemplate let-dataItem>
