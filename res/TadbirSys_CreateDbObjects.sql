@@ -712,7 +712,7 @@ INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [IsHierarchy], [I
 INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [IsHierarchy], [IsCartableIntegrated], [EntityType], [FetchUrl], [SearchUrl])
     VALUES (67, 'BalanceSheet', 'BalanceSheet', 0, 0, '', '', NULL)
 INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [IsHierarchy], [IsCartableIntegrated], [EntityType], [FetchUrl], [SearchUrl])
-    VALUES (68, 'Widget', 'Widget', 0, 0, 'Core', NULL, NULL)
+    VALUES (68, 'Widget', 'Dashboard', 0, 0, 'Core', NULL, NULL)
 SET IDENTITY_INSERT [Metadata].[View] OFF
 
 UPDATE [Metadata].[View]
@@ -2642,6 +2642,10 @@ INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID
     VALUES (89, 16, 1, 2, 2, 'Voucher-Summary-By-Date', N'reports/finance/vouchers/sum-by-date', 0, 1, 0, 0)
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
     VALUES (90, 16, 1, 2, 2, 'Voucher-Summary-By-No', N'reports/finance/vouchers/sum-by-no', 0, 1, 0, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (91, 7, 1, 68, 1, '', N'dashboard/widgets', 0, 1, 0, 1)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (92, 7, 1, 68, 1, '', N'dashboard/widgets/all', 0, 1, 0, 1)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON
@@ -3169,6 +3173,14 @@ INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], 
     VALUES (271, 1, 90, 'Accounting Voucher Summary - By Voucher No', NULL)
 INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
     VALUES (272, 2, 90, N'خلاصه اسناد حسابداری - بر اساس شماره سند', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (273, 1, 91, 'My Widgets', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (274, 2, 91, N'ویجت های من', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (275, 1, 92, 'All Widgets', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (276, 2, 92, N'همه ویجت ها', NULL)
 SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
 
 SET IDENTITY_INSERT [Reporting].[Parameter] ON 
