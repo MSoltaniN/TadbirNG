@@ -9,7 +9,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import { WidgetSetting } from "@sppc/shared/models/widgetSetting";
-import { ChartService } from "@sppc/shared/services/widget.service";
+import { ChartService } from "@sppc/shared/services/chart.service";
 import * as echarts from "echarts";
 
 @Component({
