@@ -46,6 +46,8 @@ import { TabView } from "primeng/tabview";
 import { SerieItem } from "@sppc/shared/models/serieItem";
 import { WidgetSetting } from "@sppc/shared/models/widgetSetting";
 import { ChartService } from "@sppc/shared/services/widget.service";
+import { take } from "rxjs/operators";
+import { MessageType } from "@sppc/shared/enum/metadata";
 
 interface DashboardConfig extends GridsterConfig {
   draggable: Draggable;
@@ -228,6 +230,7 @@ export class DashboardComponent
     if (this.currentContext.fpId > 0 && this.currentContext.branchId > 0) {
       this.dashboardService
         .getCurrentDashboard()
+        .pipe(take(2))
         .subscribe((res: DashboardSummaries) => {
           if (res) {
             this.cashierBalance = res.cashierBalance;
@@ -245,7 +248,7 @@ export class DashboardComponent
 
     //#region Event in Each Route
 
-    router.events.subscribe((val) => {
+    router.events.pipe(take(2)).subscribe((val) => {
       if (
         location.path().toLowerCase() == "/login" ||
         location.path().toString().indexOf("/login?returnUrl=") >= 0
@@ -311,7 +314,7 @@ export class DashboardComponent
             ticket
           );
           if (fps != null) {
-            fps.subscribe((res) => {
+            fps.pipe(take(2)).subscribe((res) => {
               //this.fiscalPeriods = res;
               this.fiscalPeriodName = res.filter(
                 (p: any) => p.key == fpId
@@ -324,7 +327,7 @@ export class DashboardComponent
             ticket
           );
           if (branchList != null) {
-            branchList.subscribe((res) => {
+            branchList.pipe(take(2)).subscribe((res) => {
               this.branchName = res.filter(
                 (p: any) => p.key == branchId
               )[0].value;
@@ -336,7 +339,7 @@ export class DashboardComponent
             ticket
           );
           if (companiesList != null) {
-            companiesList.subscribe((res) => {
+            companiesList.pipe(take(2)).subscribe((res) => {
               this.companyName = res.filter(
                 (p: any) => p.key == companyId
               )[0].value;
@@ -432,7 +435,7 @@ export class DashboardComponent
 
     const promise = new Promise((resolve) => {
       this.currentDashboard.tabs.forEach((tab) => {
-        this.getWidgets(tab.id).subscribe((changedWidgets) => {
+        this.getWidgets(tab.id).pipe(take(1)).subscribe((changedWidgets) => {
           if (changedWidgets) {
             changedWidgets.forEach((item, index) => {
               if (tab.widgets.length > 0) {
@@ -464,6 +467,7 @@ export class DashboardComponent
     promise.then(() => {
       this.dashboardService
         .saveDashboardWidgets(widgetsToUpdate)
+        .pipe(take(2))
         .subscribe(() => {});
     });
   }
@@ -585,7 +589,7 @@ export class DashboardComponent
       tab.dashboardId = this.currentDashboard.id;
 
       //TODO:posts record to DashboardTab table
-      this.dashboardService.addDashboardTab(tab).subscribe((res: any) => {
+      this.dashboardService.addDashboardTab(tab).pipe(take(2)).subscribe((res: any) => {
         tab.id = res.id;
         this.currentDashboard.tabs.push(tab);
         this.fillDashboardSubjects();
@@ -608,6 +612,7 @@ export class DashboardComponent
 
     this.dashboardService
       .removeTabWidget(tabId, tabWidget.widgetId)
+      .pipe(take(2))
       .subscribe(() => {
         const index = currentTab.widgets.findIndex(
           (w) => w.widgetId == widgetId
@@ -681,6 +686,7 @@ export class DashboardComponent
 
     this.dashboardService
       .getCurrentDashboard()
+      .pipe(take(2))
       .subscribe((dashboard: Dashboard) => {
         this.currentDashboard = dashboard;
         this.fillDashboardSubjects();
@@ -699,10 +705,21 @@ export class DashboardComponent
 
   removeTab(tabId) {
     //TODO:posts record to DashboardTab table
-    this.dashboardService.removeDashboardTab(tabId).subscribe(() => {
-      const index = this.currentDashboard.tabs.findIndex((t) => t.id == tabId);
-      this.currentDashboard.tabs.splice(index, 1);
-    });
+    this.getWidgets(tabId).pipe(
+      take(1)
+    ).subscribe(async (res) => {
+      if (res.length) {
+        let msg = await this.translateService.get('Messages.FirstRemoveWidgets').toPromise();
+        this.showMessage(msg,MessageType.Warning);
+      } else {
+        this.dashboardService.removeDashboardTab(tabId)
+        .pipe(take(2))
+        .subscribe(() => {
+          const index = this.currentDashboard.tabs.findIndex((t) => t.id == tabId);
+          this.currentDashboard.tabs.splice(index, 1);
+        });
+      }
+    })
   }
 
   getWidgetsSubject(tabId) {
@@ -731,6 +748,7 @@ export class DashboardComponent
 
       this.dashboardService
         .addTabWidget(currentTabId, tabWidgetInfo)
+        .pipe(take(2))
         .subscribe((newTabWidget: TabWidget) => {
           tab.widgets.push(newTabWidget);
           const widgets = this.getWidgetList(newTabWidget.tabId);
@@ -741,6 +759,7 @@ export class DashboardComponent
 
       this.dashboardService
         .postPostNewDashboard(tabWidgetInfo)
+        .pipe(take(2))
         .subscribe((dashboard: any) => {
           this.currentDashboard = dashboard;
           this.fillDashboardSubjects();
@@ -756,7 +775,7 @@ export class DashboardComponent
     widgetTitle,
     settingSeries: any[]
   ) {
-    return this.dashboardService.getWidgetData(widgetId).subscribe((res) => {
+    return this.dashboardService.getWidgetData(widgetId).pipe(take(2)).subscribe((res) => {
       let init = false;
       const series = [];
       const id = widgetId + "-" + tabId;

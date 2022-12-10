@@ -148,7 +148,7 @@ export class BreadCumbComponent implements OnInit,OnDestroy {
       case "balancesheet":
         this.getText("Entity.BalanceSheet");
         break;
-      case "widget":
+      case "dashboard":
         this.getText("Entity.Widget");
         break;
     }

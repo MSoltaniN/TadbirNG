@@ -40,8 +40,8 @@ export class ManageWidgetsFormComponent extends DetailComponent implements OnIni
       bStorageService,
       renderer,
       metadata,
-      Entities.Widget,
-      ViewName.Widget,
+      Entities.Dashboard,
+      ViewName.Dashboard,
       elem
     );
   }
@@ -70,10 +70,18 @@ export class ManageWidgetsFormComponent extends DetailComponent implements OnIni
 
     setTimeout(() => {
       this.editForm.reset(this.model);
-      this.editForm.patchValue({
-        createdById: this.widgetService.UserId,
-        createdByFullName: this.widgetService.UserName
-      });
+      if (this.isNew) {
+        this.editForm.patchValue({
+          createdById: this.widgetService.UserId,
+          createdByFullName: this.widgetService.UserName
+        });
+      } else {
+        this.editForm.patchValue({
+          createdByFullName: 'null'
+        });
+      }
+      console.log(this.model);
+      
       this.widgetAccounts = this.model.accounts;
     })
   }

@@ -19,6 +19,11 @@ export enum GlobalPermissions {
   Export = 8
 }
 
+export enum DashboardPermissions {
+  ManageDashboard = 1,
+  ManageWidgets = 2,
+}
+
 export enum AccountPermissions {
     None = 0,
     View = 1,

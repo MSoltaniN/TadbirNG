@@ -13,6 +13,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Domain.Reporting;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Reporting;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -20,8 +21,25 @@ using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
-    public partial class DashboardRepository
+    /// <summary>
+    /// عملیات مورد نیاز برای تهیه اطلاعات خلاصه در داشبورد را پیاده سازی می کند
+    /// </summary>
+    public partial class DashboardRepository : EntityLoggingRepository<Widget, WidgetViewModel>, IDashboardRepository
     {
+        /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
+        /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
+        /// <param name="system"></param>
+        /// <param name="report"></param>
+        public DashboardRepository(IRepositoryContext context, ISystemRepository system,
+            IReportDirectUtility report)
+            : base(context, system?.Logger)
+        {
+            _report = report;
+            Config = system.Config;
+        }
+
         #region Dashboard Management
 
         /// <summary>
@@ -1174,14 +1192,26 @@ namespace SPPC.Tadbir.Persistence
         private async Task<PagedList<WidgetViewModel>> GetWidgetsByCriteria(
             Expression<Func<Widget, bool>> criteria, GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<Widget>();
-            var userWidgets = await repository.GetByCriteriaAsync(
-                criteria, wgt => wgt.Function, wgt => wgt.Type);
-            var widgets = userWidgets
-                .Select(wgt => Mapper.Map<WidgetViewModel>(wgt))
-                .ToList();
-            await SetUserFullNamesAsync(widgets);
-            return new PagedList<WidgetViewModel>(widgets, gridOptions);
+            var widgets = new List<WidgetViewModel>();
+            var options = gridOptions ?? new GridOptions();
+            if (options.Operation != (int)OperationId.Print)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<Widget>();
+                var userWidgets = await repository.GetByCriteriaAsync(
+                    criteria, wgt => wgt.Function, wgt => wgt.Type);
+                widgets = userWidgets
+                    .Select(wgt => Mapper.Map<WidgetViewModel>(wgt))
+                    .ToList();
+                await SetUserFullNamesAsync(widgets);
+                Array.ForEach(widgets.ToArray(), wgt =>
+                {
+                    wgt.FunctionName = Context.Localize(wgt.FunctionName);
+                    wgt.TypeName = Context.Localize(wgt.TypeName);
+                });
+            }
+
+            await ReadAsync(options);
+            return new PagedList<WidgetViewModel>(widgets, options);
         }
 
         private async Task SetUserFullNamesAsync(List<WidgetViewModel> widgets)

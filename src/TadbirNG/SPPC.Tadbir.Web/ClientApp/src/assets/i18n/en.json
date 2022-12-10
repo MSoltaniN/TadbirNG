@@ -92,7 +92,8 @@
     "ActivationPasswordIsNotCorrect": "Server username or password  is incorrect",
     "OpenSessions": "Open user sessions",
     "SelectItemFromMainComponent": "First, select an item from the main component table.",
-    "ClickOnCearteRelation": "Then click on the 'Create Relation' button."
+    "ClickOnCearteRelation": "Then click on the 'Create Relation' button.",
+    "FirstRemoveWidgets": "Before removing the tab from the dashboard, you must first remove the widgets added to the tab."
   },
   "Report": {
     "ReportViewer": "View of",

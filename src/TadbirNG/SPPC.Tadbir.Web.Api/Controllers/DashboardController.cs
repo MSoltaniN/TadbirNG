@@ -277,10 +277,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetUserWidgetsAsync()
         {
             var userWidgets = await _repository.GetCurrentUserWidgetsAsync(GridOptions);
-            Array.ForEach(userWidgets.Items.ToArray(), item =>
-            {
-                Localize(item);
-            });
             return JsonListResult(userWidgets);
         }
 
@@ -295,10 +291,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccessibleWidgetsAsync()
         {
             var allWidgets = await _repository.GetAccessibleWidgetsAsync(GridOptions);
-            Array.ForEach(allWidgets.Items.ToArray(), item =>
-            {
-                Localize(item);
-            });
             return JsonListResult(allWidgets);
         }
 

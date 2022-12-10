@@ -7,7 +7,7 @@ import { SettingService } from '@sppc/config/service';
 import { ServiceLocator } from "@sppc/service.locator";
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
 import { AdvanceFilterComponent } from "@sppc/shared/components/advanceFilter/advance-filter.component";
-import { Permissions, GlobalPermissions } from "@sppc/shared/security/permissions";
+import { Permissions, GlobalPermissions, DashboardPermissions } from "@sppc/shared/security/permissions";
 import { FilterExpression } from '@sppc/shared/class/filterExpression';
 import { FilterRow } from "@sppc/shared/models";
 import { MessageType, Entities } from '@sppc/shared/enum/metadata';
@@ -106,14 +106,21 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
   async getGlobalPermissions() {
     
     if (this.viewId) {
-      var entityName = await this.getEntityName(this.viewId)
-      var code = <number>GlobalPermissions.Export;
+      var entityName = await this.getEntityName(this.viewId);
+
+      var code = entityName == Entities.Dashboard? 
+        <number>DashboardPermissions.ManageWidgets:
+        <number>GlobalPermissions.Export;
       this.exportAccessed = this.isAccess(entityName, code);
 
-      code = <number>GlobalPermissions.Filter;
+      code = entityName == Entities.Dashboard? 
+        <number>DashboardPermissions.ManageWidgets:
+        <number>GlobalPermissions.Filter;
       this.filterAccessed = this.isAccess(entityName, code);
 
-      code = <number>GlobalPermissions.Print;
+      code = entityName == Entities.Dashboard? 
+        <number>DashboardPermissions.ManageWidgets:
+        <number>GlobalPermissions.Print;
       this.printAccessed = this.isAccess(entityName, code);      
     }    
   }

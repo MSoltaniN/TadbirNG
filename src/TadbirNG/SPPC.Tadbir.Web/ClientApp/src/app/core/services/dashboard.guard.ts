@@ -4,6 +4,7 @@ import { UserProfileConfig } from '@sppc/config/models/userProfileConfig';
 import { SettingService } from '@sppc/config/service';
 import { SettingsApi } from '@sppc/config/service/api';
 import { EnviromentComponent } from '@sppc/shared/class';
+import { DashboardPermissions } from '@sppc/shared/security';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -26,7 +27,7 @@ export class DashboardGuard implements CanActivate {
   }
 
   navigateToHome() {
-    if (!this.enviroment.isAccess('Dashboard',1)) {
+    if (!this.enviroment.isAccess('Dashboard',DashboardPermissions.ManageDashboard)) {
       // if (this.settingService.CurrentLanguage == 'fa') {
       //   this.toastr.warning('Access Denied!');
       // } else {
