@@ -1,75 +1,85 @@
 version: '3.9'
 
 volumes:
- productdata_DbServer:
- productdata_LicenseServer:
+  productdata_DbServer:
+  productdata_LicenseServer:
  
 networks:
- frontend:
- backend:
+  frontend:
+  backend:
 
 services:
 
- DbServer:
-  image: msn1368/db-server:latest
-  user: root
-  build:
-   context: ../../res
-   dockerfile: Dockerfile
-  networks:
-   - backend
-  volumes:
-   - productdata_DbServer:/var/opt/mssql/data
+  DbServer:
+    image: msn1368/db-server:latest
+    user: root
+    build:
+      context: ../../res
+      dockerfile: Dockerfile
+    networks:
+      - backend
+    ports: 
+      - 14433:1433
+    volumes:
+      - productdata_DbServer:/var/opt/mssql/data
    
- ApiServer:
-  image: msn1368/api-server:latest
-  build:
-   context: .
-   dockerfile: SPPC.Tadbir.Web.Api/Dockerfile
-  depends_on:
-   - DbServer
-  networks:
-   - backend
-  ports:
-   - 9095:80
+  ApiServer:
+    image: msn1368/api-server:latest
+    build:
+      context: .
+      dockerfile: SPPC.Tadbir.Web.Api/Dockerfile
+    depends_on:
+      - DbServer
+    networks:
+      - backend
+    ports:
+      - 9095:80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - Logging__LogLevel__Microsoft=Trace
+      - ASPNETCORE_URLS=http://+:80
 
- loadBalancer:
-  image: dockercloud/haproxy:1.2.1
-  depends_on:
-   - ApiServer
-  ports:
-   - 9095:80
-   - 1936:1936
-  links:
-   - ApiServer
-  volumes:
-   - /var/run/docker.sock:/var/run/docker.sock
-  networks:
-   - frontend
+  loadBalancer:
+    image: dockercloud/haproxy:1.2.1
+    depends_on:
+      - ApiServer
+    ports:
+      - 9095:80
+      - 1936:1936
+    links:
+      - ApiServer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - frontend
+    profiles:
+      - donotstart
 
- WebApp:
-  image: msn1368/web-app:dev
-  build: 
-   context: ./SPPC.Tadbir.Web/ClientApp
-   dockerfile: Dockerfile
-  networks:
-   - frontend
-  ports:
-   - 9099:4200
+  WebApp:
+    image: msn1368/web-app:dev
+    build: 
+      context: ./SPPC.Tadbir.Web/ClientApp
+      dockerfile: Dockerfile
+    networks:
+      - frontend
+    ports:
+      - 9099:4200
 
- LicenseServer:
-  image: msn1368/license-server:latest
-  build:
-   context: .
-   dockerfile: SPPC.Licensing.Local.Web/Dockerfile
-  depends_on:
-   - DbServer
-  volumes:
-   - productdata_LicenseServer:/app/wwwroot
-  networks:
-   - backend
-  ports:
-   - 9093:80
-  extra_hosts:
-   - "host.docker.internal:host-gateway"
-
+  LicenseServer:
+    image: msn1368/license-server:latest
+    build:
+      context: .
+      dockerfile: SPPC.Licensing.Local.Web/Dockerfile
+    depends_on:
+      - DbServer
+    volumes:
+      - productdata_LicenseServer:/app/wwwroot
+    networks:
+      - backend
+    ports:
+      - 9093:80
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - Logging__LogLevel__Microsoft=Trace

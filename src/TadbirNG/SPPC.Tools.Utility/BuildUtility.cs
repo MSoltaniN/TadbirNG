@@ -241,7 +241,7 @@ namespace SPPC.Tools.Utility
                 File.WriteAllText(devSettingsPath, appSettings);
 
                 _runner.Run(
-                    $"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build --no-cache {SysParameterUtility.LicenseServer.Name}");
+                    $"docker compose -f {PathConfig.ComposePath} build --no-cache {SysParameterUtility.LicenseServer.Name}");
                 OutputProvider($"[License Server] => Rebuild succeeded.{Environment.NewLine}");
             }
             finally
@@ -300,7 +300,7 @@ namespace SPPC.Tools.Utility
 
                     OutputProvider($"Building tag {edition}...");
                     _runner.Run(
-                        $"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build{noCache} {SysParameterUtility.ApiServer.Name}");
+                        $"docker compose -f {PathConfig.ComposePath} build{noCache} {SysParameterUtility.ApiServer.Name}");
                 }
 
                 OutputProvider($"[Api Server] => Rebuild succeeded.{Environment.NewLine}");
@@ -335,7 +335,7 @@ namespace SPPC.Tools.Utility
                 File.WriteAllText(devEnvPath, environment);
 
                 _runner.Run(
-                    $"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build --no-cache {SysParameterUtility.WebApp.Name}");
+                    $"docker compose -f {PathConfig.ComposePath} build --no-cache {SysParameterUtility.WebApp.Name}");
                 OutputProvider($"[Web App] => Rebuild succeeded.{Environment.NewLine}");
             }
             finally
@@ -350,7 +350,7 @@ namespace SPPC.Tools.Utility
         {
             OutputProvider("Rebuilding db server...");
             _runner.Run(
-                $"docker-compose -f {PathConfig.OverridePath} -f {PathConfig.ComposePath} build --no-cache {SysParameterUtility.DbServer.Name}");
+                $"docker compose -f {PathConfig.ComposePath} build --no-cache {SysParameterUtility.DbServer.Name}");
             OutputProvider($"[Db Server] => Rebuild succeeded.{Environment.NewLine}");
         }
 
