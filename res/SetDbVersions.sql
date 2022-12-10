@@ -1,3 +1,4 @@
+-- [Some neutral change to trigger build server]
 USE [NGTadbirSys]
 GO
 
