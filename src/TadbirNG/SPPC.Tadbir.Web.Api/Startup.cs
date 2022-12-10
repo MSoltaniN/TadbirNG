@@ -54,7 +54,7 @@ namespace SPPC.Tadbir.Web.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        // [Some neutral change to trigger build server]
+        // (Some neutral change to trigger build server)
         /// <summary>
         /// خدمات زیرساختی مورد نیاز در مسیر اجرایی سرویس وب را پیکربندی می کند
         /// </summary>

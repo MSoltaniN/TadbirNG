@@ -1,5 +1,8 @@
 version: '3.9'
 
+volumes:
+ productdata:
+ 
 networks:
  frontend:
  backend:
@@ -17,6 +20,8 @@ services:
    - ASPNETCORE_ENVIRONMENT=Production
    - Logging__LogLevel__Microsoft=Trace
    - ASPNETCORE_URLS=http://+:80
+  ports:
+   - 9095:80
   
  loadBalancer:
   profiles:
