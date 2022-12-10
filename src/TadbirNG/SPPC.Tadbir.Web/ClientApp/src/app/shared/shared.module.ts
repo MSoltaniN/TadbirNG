@@ -144,7 +144,7 @@ import { ManageWidgetsComponent } from "./components/dashboard/manage-widgets/ma
 import { WidgetService } from "./components/dashboard/services/widget.service";
 import { ManageWidgetsFormComponent } from "./components/dashboard/manage-widgets/manage-widgets-form/manage-widgets-form.component";
 import { WidgetAccountsComponent } from "./components/dashboard/manage-widgets/widget-accounts/widget-accounts.component";
-import { ChartService } from "./services/widget.service";
+import { ChartService } from "./services/chart.service";
 import { ColorPickerModule } from "ngx-color-picker";
 import { NgxEchartsModule } from "ngx-echarts";
 import * as echarts from 'echarts';

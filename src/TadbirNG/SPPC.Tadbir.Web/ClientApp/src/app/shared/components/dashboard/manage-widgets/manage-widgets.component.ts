@@ -34,7 +34,7 @@ import {
   MetaDataService,
 } from "@sppc/shared/services";
 import { DashboardApi } from "@sppc/shared/services/api";
-import { ChartService } from "@sppc/shared/services/widget.service";
+import { ChartService } from "@sppc/shared/services/chart.service";
 import { ToastrService } from "ngx-toastr";
 import { map } from "rxjs/operators";
 import "rxjs/Rx";

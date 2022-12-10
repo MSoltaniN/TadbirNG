@@ -45,7 +45,7 @@ import { ManageWidgetsComponent } from "./manage-widgets/manage-widgets.componen
 import { TabView } from "primeng/tabview";
 import { SerieItem } from "@sppc/shared/models/serieItem";
 import { WidgetSetting } from "@sppc/shared/models/widgetSetting";
-import { ChartService } from "@sppc/shared/services/widget.service";
+import { ChartService } from "@sppc/shared/services/chart.service";
 import { take } from "rxjs/operators";
 import { MessageType } from "@sppc/shared/enum/metadata";
 
