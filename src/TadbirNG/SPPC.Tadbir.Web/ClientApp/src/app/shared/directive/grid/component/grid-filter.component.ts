@@ -45,39 +45,6 @@ export class GridFilterComponent
   @Input() public showClearFilter: number = 0;
   @Input() public parentComponent: any;
 
-  //@HostListener('document:keypress', ['$event'])
-  //handleKeyboardEvent(event: KeyboardEvent) {
-  //  if (event.key == 'Enter') {
-  //    var filterInput = false;
-  //    var element: any = event.srcElement;
-  //    var object = element;
-  //    if (element.hasAttribute('kendofilterinput')) {
-  //      filterInput = true;
-  //    }
-  //    else {
-  //      var level = 5;
-  //      while (object.offsetParent && level > 0) {
-  //        object = object.offsetParent;
-  //        level = level - 1;
-  //        if (element.hasAttribute('kendofilterinput') || object.hasAttribute('kendofilterinput')) {
-  //          filterInput = true;
-  //          break;
-  //        }
-  //      }
-  //    }
-
-  //    if (filterInput) {
-
-  //      event.stopPropagation();
-  //      setTimeout(() => {
-  //        this.parentComponent.reloadGrid();
-  //      }, 300);
-
-  //    }
-
-  //  }
-  //}
-
   globalListenFunc: Function;
 
   constructor(
@@ -94,11 +61,6 @@ export class GridFilterComponent
   }
 
   ngOnDestroy(): void {}
-
-  //@HostListener('window:keydown', ['$event'])
-  //keyEvent(event: KeyboardEvent) {
-  //  console.log(event);
-  //}
 
   @HostListener("document:keydown", ["$event"])
   handleClick(event: KeyboardEvent) {
@@ -148,20 +110,6 @@ export class GridFilterComponent
   ngOnInit(): void {
     if (this.CurrentLanguage == "fa") this.rtl = true;
     else this.rtl = false;
-
-    //const elements = <any>document.querySelectorAll('[kendofilterinput]');
-    //elements.forEach(element => {
-
-    //  this.globalListenFunc = this.renderer.listen(element, 'keypress', e => {
-    //    console.log(e);
-    //    if (e.key == 'Enter') {
-    //      setTimeout(() => {
-    //        this.parentComponent.reloadGrid();
-    //      }, 300);
-    //    }
-
-    //  });
-    //});
   }
 
   @Output() reloadEvent = new EventEmitter();
