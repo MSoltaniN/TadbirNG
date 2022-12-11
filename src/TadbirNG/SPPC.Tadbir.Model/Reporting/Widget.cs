@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using SPPC.Tadbir.Model.Auth;
 
 namespace SPPC.Tadbir.Model.Reporting
 {
@@ -13,5 +15,10 @@ namespace SPPC.Tadbir.Model.Reporting
         /// شناسه دیتابیسی نوع انتخاب شده برای ویجت
         /// </summary>
         public virtual int TypeId { get; set; }
+
+        /// <summary>
+        /// Get a collection of existing associations between roles and widgets  
+        /// </summary>
+        public virtual IList<RoleWidget> RoleWidgets{ get; protected set; }
     }
 }

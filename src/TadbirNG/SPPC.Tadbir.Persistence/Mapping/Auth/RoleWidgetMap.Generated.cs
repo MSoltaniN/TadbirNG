@@ -34,7 +34,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasDefaultValueSql("(getdate())");
 
             builder.HasOne(e => e.Widget)
-                .WithMany()
+                .WithMany(d => d.RoleWidgets)
                 .HasForeignKey(e => e.WidgetId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Auth_RoleWidget_Reporting_Widget");

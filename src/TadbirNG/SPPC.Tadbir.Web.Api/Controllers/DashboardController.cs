@@ -16,6 +16,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Filters;
 using io = System.IO;
@@ -26,7 +27,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     ///
     /// </summary>
     [Produces("application/json")]
-    public class DashboardController : ApiControllerBase
+    public class DashboardController : ValidatingController<WidgetViewModel>
     {
         /// <summary>
         ///
@@ -41,6 +42,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             _repository = repository;
             _pathProvider = pathProvider;
+        }
+
+        /// <summary>
+        /// کلید متن چندزبانه برای نام موجودیت داشبورد
+        /// </summary>
+        protected override string EntityNameKey
+        {
+            get { return AppStrings.Dashboard; }
         }
 
         #region Dashboard Management
@@ -446,6 +455,49 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(parameters);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات خلاصه برای نقش های دارای دسترسی به ویجت داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
+        /// <returns>اطلاعات خلاصه برای نقش های دارای دسترسی به دوره مالی</returns>
+        // GET: api/dashboard/{widgetId:min(1)}/roles
+        [HttpGet]
+        [Route(DashboardApi.WidgetRolesUrl)]
+        public async Task<IActionResult> GetWidgetRolesAsync(int widgetId)
+        {
+            var roles = await _repository.GetWidgetRolesAsync(widgetId);
+            Localize(roles);
+            return JsonReadResult(roles);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، نقش های دارای دسترسی به ویجت داده شده را در دیتابیس اصلاح می کند
+        /// </summary>
+        /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
+        /// <param name="widgetRoles">اطلاعات جدید برای نقش های دارای دسترسی به ویجت</param>
+        /// <returns>در صورت بروز خطا، کد وضعیت 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 را برمی گرداند</returns>
+        // PUT: api/dashboard/{widgetId:min(1)}/roles
+        [HttpPut]
+        [Route(DashboardApi.WidgetRolesUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageWidgets)]
+        public async Task<IActionResult> PutModifiedWidgetRolesAsync(
+            int widgetId, [FromBody] RelatedItemsViewModel widgetRoles)
+        {
+            var result = BasicValidationResult(widgetRoles, widgetId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SaveWidgetRolesAsync(widgetRoles);
+            return Ok();
+        }
+
+        private void Localize(RelatedItemsViewModel roles)
+        {
+            Array.ForEach(roles.RelatedItems.ToArray(), item => item.Name = _strings[item.Name]);
+        }
         #endregion
 
         #region Data Lookup

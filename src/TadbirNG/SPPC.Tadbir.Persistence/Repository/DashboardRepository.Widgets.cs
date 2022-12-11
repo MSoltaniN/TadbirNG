@@ -15,6 +15,7 @@ using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
@@ -506,6 +507,140 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return parameters;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، دسترسی نقش های مرتبط با ویجت مورد نظر را برمی گرداند 
+        /// </summary>
+        /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
+        /// <returns></returns>
+        public async Task<RelatedItemsViewModel> GetWidgetRolesAsync(int widgetId)
+        {
+            RelatedItemsViewModel widgetRoles = null;
+            var repository = UnitOfWork.GetAsyncRepository<Widget>();
+            var existing = await repository.GetByIDAsync(widgetId, br => br.RoleWidgets);
+            if (existing != null)
+            {
+                UnitOfWork.UseSystemContext();
+                var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
+                var enabledRoleIds = existing.RoleWidgets.Select(rfp => rfp.RoleId);
+                var enabledRoles = await roleRepository
+                    .GetEntityQuery()
+                    .Where(r => enabledRoleIds.Contains(r.Id))
+                    .Select(r => Mapper.Map<RelatedItemViewModel>(r))
+                    .ToArrayAsync();
+                var disabledRoles = await roleRepository
+                    .GetEntityQuery()
+                    .Where(r => !enabledRoleIds.Contains(r.Id))
+                    .Select(r => Mapper.Map<RelatedItemViewModel>(r))
+                    .ToArrayAsync();
+                Array.ForEach(enabledRoles, item => item.IsSelected = true);
+                UnitOfWork.UseCompanyContext();
+
+                widgetRoles = new RelatedItemsViewModel() { Id = widgetId };
+                Array.ForEach(enabledRoles
+                    .Concat(disabledRoles)
+                    .OrderBy(item => item.Id)
+                    .ToArray(), item => widgetRoles.RelatedItems.Add(item));
+            }
+
+            return widgetRoles;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون ، آخرین وضعیت نقش های مرتبط با ویجت مورد نظر را برمی گرداند
+        /// </summary>
+        /// <param name="widgetRoles">اطلاعات نمایشی نقش های دارای دسترسی</param>
+        /// <returns></returns>
+        public async Task SaveWidgetRolesAsync(RelatedItemsViewModel widgetRoles)
+        {
+            Verify.ArgumentNotNull(widgetRoles, nameof(widgetRoles));
+            var repository = UnitOfWork.GetAsyncRepository<RoleWidget>();
+            var existing = await repository.GetByCriteriaAsync(rfp => rfp.WidgetId == widgetRoles.Id);
+            if (AreRolesModified(existing, widgetRoles))
+            {
+                if (existing.Count > 0)
+                {
+                    RemoveUnassignedRoles(repository, existing, widgetRoles);
+                }
+
+                AddNewRoles(repository, existing, widgetRoles);
+                await UnitOfWork.CommitAsync();
+                OnEntityAction(OperationId.RoleAccess);
+                Log.Description = await GetWidgetRoleDescriptionAsync(widgetRoles.Id);
+                await TrySaveLogAsync();
+            }
+        }
+        private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
+        {
+            return left.Count() == right.Count()
+                   && left.All(value => right.Contains(value));
+        }
+
+        private static bool AreRolesModified(
+           IList<RoleWidget> existing, RelatedItemsViewModel roleItems)
+        {
+            var existingItems = existing
+                .Select(rfp => rfp.RoleId)
+                .ToArray();
+            var enabledItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected)
+                .Select(item => item.Id)
+                .ToArray();
+            return !AreEqual(existingItems, enabledItems);
+        }
+
+        private static void RemoveUnassignedRoles(
+            IRepository<RoleWidget> repository, IList<RoleWidget> existing,
+            RelatedItemsViewModel roleItems)
+        {
+            var currentItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected)
+                .Select(item => item.Id);
+            var removedItems = existing
+                .Select(rfp => rfp.RoleId)
+                .Where(id => !currentItems.Contains(id))
+                .ToArray();
+            foreach (int id in removedItems)
+            {
+                var removed = existing
+                    .Where(rfp => rfp.RoleId == id)
+                    .Single();
+                repository.Delete(removed);
+            }
+        }
+
+        private static void AddNewRoles(
+            IRepository<RoleWidget> repository, IList<RoleWidget> existing,
+            RelatedItemsViewModel roleItems)
+        {
+            var currentItems = existing.Select(rfp => rfp.RoleId);
+            var newItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected
+                    && !currentItems.Contains(item.Id));
+            foreach (var item in newItems)
+            {
+                var roleWidget = new RoleWidget()
+                {
+                    WidgetId = roleItems.Id,
+                    RoleId = item.Id
+                };
+                repository.Insert(roleWidget);
+            }
+        }
+        private async Task<string> GetWidgetRoleDescriptionAsync(int widgetId)
+        {
+            string description = String.Empty;
+            var repository = UnitOfWork.GetAsyncRepository<Widget>();
+            var widget = await repository.GetByIDAsync(widgetId);
+            if (widget != null)
+            {
+                string template = Context.Localize(AppStrings.RolesWithAccessToResource);
+                string entity = Context.Localize(AppStrings.Widget).ToLower();
+                description = String.Format(template, entity, widget.Title);
+            }
+
+            return description;
         }
 
         #endregion
