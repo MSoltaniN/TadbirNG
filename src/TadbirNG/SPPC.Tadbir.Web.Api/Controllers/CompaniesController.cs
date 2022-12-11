@@ -235,7 +235,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (await _repository.IsDuplicateCompanyAsync(company))
+            var duplicates = await _repository.GetDuplicateCompaniesAsync(company);
+            var duplicate = duplicates.FirstOrDefault(comp => comp.Name == company.Name);
+            if (duplicate != null)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.CompanyName));
+            }
+
+            duplicate = duplicates.FirstOrDefault(comp => comp.DbName == company.DbName);
+            if (duplicate != null)
             {
                 return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.DbName));
             }

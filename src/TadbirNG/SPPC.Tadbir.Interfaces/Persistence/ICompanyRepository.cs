@@ -46,11 +46,12 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteCompaniesAsync(IEnumerable<int> items);
 
         /// <summary>
-        /// به روش آسنکرون، مشخص می کند که نام وارد شده برای دیتابیس تکراری است یا نه
+        /// به روش آسنکرون، مجموعه ای از شرکت های موجود را برمی گرداند که نام شرکت یا نام دیتابیس آنها
+        /// مشابه شرکت داده شده است
         /// </summary>
         /// <param name="company">شرکت مورد نظر</param>
-        /// <returns>اگر نام دیتابیس تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمی گرداند</returns>
-        Task<bool> IsDuplicateCompanyAsync(CompanyDbViewModel company);
+        /// <returns>مجموعه ای از شرکت های موجود با نام شرکت یا نام دیتابیس تکراری</returns>
+        Task<IEnumerable<CompanyDbViewModel>> GetDuplicateCompaniesAsync(CompanyDbViewModel company);
 
         /// <summary>
         /// به روش آسنکرون، نقش های دارای دسترسی به یک شرکت را خوانده و برمی گرداند
