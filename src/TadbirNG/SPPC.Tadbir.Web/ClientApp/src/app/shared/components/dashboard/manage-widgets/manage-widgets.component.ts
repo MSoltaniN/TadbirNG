@@ -152,6 +152,7 @@ export class ManageWidgetsComponent
     this.getDataUrl =
       event == 1 ? DashboardApi.Widgets : DashboardApi.AllWidgets;
     this.reloadGrid();
+    this.selectedRows = [];
   }
 
   async getFunctions() {

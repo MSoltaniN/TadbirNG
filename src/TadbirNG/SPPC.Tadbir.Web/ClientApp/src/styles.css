@@ -91,3 +91,5 @@ input[type=checkbox], input[type=radio] {
 }
 body.tRtl .searchbox .k-icon{ left:0; }
 body.tLtr .searchbox .k-icon{ right:0; }
+
+.m-20 { margin: 20px !important; }

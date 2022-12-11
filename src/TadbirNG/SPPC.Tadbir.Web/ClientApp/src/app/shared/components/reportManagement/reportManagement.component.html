@@ -84,7 +84,7 @@
 </kendo-dialog>
 <kendo-dialog title="{{'Report.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteReport(false)" [minWidth]="250"
         [width]="450" [height]="150">
-        <p>
+        <p class="m-20">
                 {{ this.deleteConfirmMsg }}
         </p>
         <kendo-dialog-actions>
