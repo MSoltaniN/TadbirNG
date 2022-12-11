@@ -665,7 +665,7 @@ export class DashboardComponent
         enabled: false,
       },
       resizable: {
-        enabled: true,
+        enabled: false,
       },
       swap: true,
       pushItems: true,
