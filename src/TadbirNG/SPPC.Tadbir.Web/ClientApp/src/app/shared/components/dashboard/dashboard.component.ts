@@ -8,7 +8,7 @@ import {
   Renderer2,
   ViewChild,
 } from "@angular/core";
-import { DOCUMENT } from '@angular/common';;
+import { DOCUMENT } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { SettingService } from "@sppc/config/service";
@@ -435,29 +435,31 @@ export class DashboardComponent
 
     const promise = new Promise((resolve) => {
       this.currentDashboard.tabs.forEach((tab) => {
-        this.getWidgets(tab.id).pipe(take(1)).subscribe((changedWidgets) => {
-          if (changedWidgets) {
-            changedWidgets.forEach((item, index) => {
-              if (tab.widgets.length > 0) {
-                const setting = JSON.parse(tab.widgets[index].settings);
-                const widgetSetting =
-                  this.widgetSettings[item.id + "-" + tab.id];
-                setting.width = item.cols;
-                setting.height = item.rows;
-                setting.x = item.x;
-                setting.y = item.y;
-                debugger;
-                if (widgetSetting.series.length > 0)
-                  setting.series = widgetSetting.series;
-                if (widgetSetting.title) setting.title = widgetSetting.title;
+        this.getWidgets(tab.id)
+          .pipe(take(1))
+          .subscribe((changedWidgets) => {
+            if (changedWidgets) {
+              changedWidgets.forEach((item, index) => {
+                if (tab.widgets.length > 0) {
+                  const setting = JSON.parse(tab.widgets[index].settings);
+                  const widgetSetting =
+                    this.widgetSettings[item.id + "-" + tab.id];
+                  setting.width = item.cols;
+                  setting.height = item.rows;
+                  setting.x = item.x;
+                  setting.y = item.y;
+                  debugger;
+                  if (widgetSetting.series.length > 0)
+                    setting.series = widgetSetting.series;
+                  if (widgetSetting.title) setting.title = widgetSetting.title;
 
-                tab.dashboardId = dashboardId;
-                tab.widgets[index].settings = JSON.stringify(setting);
-                widgetsToUpdate.push(tab.widgets[index]);
-              }
-            });
-          }
-        });
+                  tab.dashboardId = dashboardId;
+                  tab.widgets[index].settings = JSON.stringify(setting);
+                  widgetsToUpdate.push(tab.widgets[index]);
+                }
+              });
+            }
+          });
         //TODO:change method
       });
 
@@ -589,12 +591,15 @@ export class DashboardComponent
       tab.dashboardId = this.currentDashboard.id;
 
       //TODO:posts record to DashboardTab table
-      this.dashboardService.addDashboardTab(tab).pipe(take(2)).subscribe((res: any) => {
-        tab.id = res.id;
-        this.currentDashboard.tabs.push(tab);
-        this.fillDashboardSubjects();
-        this.dialogRef.close();
-      });
+      this.dashboardService
+        .addDashboardTab(tab)
+        .pipe(take(2))
+        .subscribe((res: any) => {
+          tab.id = res.id;
+          this.currentDashboard.tabs.push(tab);
+          this.fillDashboardSubjects();
+          this.dialogRef.close();
+        });
     });
 
     const closeForm = this.dialogRef.content.instance.cancel.subscribe(
@@ -631,7 +636,7 @@ export class DashboardComponent
 
   initDashboard() {
     this.options = {
-      gridType: GridType.Fit,
+      gridType: GridType.ScrollVertical,
       compactType: CompactType.None,
       margin: 10,
       outerMargin: true,
@@ -641,20 +646,10 @@ export class DashboardComponent
       outerMarginLeft: 5,
       useTransformPositioning: true,
       mobileBreakpoint: 200,
-      minCols: 50,
-      maxCols: 200,
-      minRows: 40,
-      maxRows: 200,
-      maxItemCols: 100,
-      minItemCols: 1,
-      maxItemRows: 100,
-      minItemRows: 1,
-      maxItemArea: 500,
-      minItemArea: 1,
-      defaultItemCols: 1,
-      defaultItemRows: 1,
-      fixedColWidth: 100,
-      fixedRowHeight: 100,
+      minCols: 25,
+      maxCols: 100,
+      minRows: 25,
+      maxRows: 100,
       keepFixedHeightInMobile: false,
       keepFixedWidthInMobile: false,
       scrollSensitivity: 10,
@@ -705,21 +700,26 @@ export class DashboardComponent
 
   removeTab(tabId) {
     //TODO:posts record to DashboardTab table
-    this.getWidgets(tabId).pipe(
-      take(1)
-    ).subscribe(async (res) => {
-      if (res.length) {
-        let msg = await this.translateService.get('Messages.FirstRemoveWidgets').toPromise();
-        this.showMessage(msg,MessageType.Warning);
-      } else {
-        this.dashboardService.removeDashboardTab(tabId)
-        .pipe(take(2))
-        .subscribe(() => {
-          const index = this.currentDashboard.tabs.findIndex((t) => t.id == tabId);
-          this.currentDashboard.tabs.splice(index, 1);
-        });
-      }
-    })
+    this.getWidgets(tabId)
+      .pipe(take(1))
+      .subscribe(async (res) => {
+        if (res.length) {
+          let msg = await this.translateService
+            .get("Messages.FirstRemoveWidgets")
+            .toPromise();
+          this.showMessage(msg, MessageType.Warning);
+        } else {
+          this.dashboardService
+            .removeDashboardTab(tabId)
+            .pipe(take(2))
+            .subscribe(() => {
+              const index = this.currentDashboard.tabs.findIndex(
+                (t) => t.id == tabId
+              );
+              this.currentDashboard.tabs.splice(index, 1);
+            });
+        }
+      });
   }
 
   getWidgetsSubject(tabId) {
@@ -775,69 +775,72 @@ export class DashboardComponent
     widgetTitle,
     settingSeries: any[]
   ) {
-    return this.dashboardService.getWidgetData(widgetId).pipe(take(2)).subscribe((res) => {
-      let init = false;
-      const series = [];
-      const id = widgetId + "-" + tabId;
-      if (this.widgetSettings[id].series.length == 0) {
-        init = true;
-      }
+    return this.dashboardService
+      .getWidgetData(widgetId)
+      .pipe(take(2))
+      .subscribe((res) => {
+        let init = false;
+        const series = [];
+        const id = widgetId + "-" + tabId;
+        if (this.widgetSettings[id].series.length == 0) {
+          init = true;
+        }
 
-      if (res.datasets) {
-        res.datasets.forEach((item, index) => {
-          if (init) {
-            item.name = item.label;
-            if (settingSeries.length > 0 && settingSeries[index])
-              widgetType = settingSeries[index].type;
+        if (res.datasets) {
+          res.datasets.forEach((item, index) => {
+            if (init) {
+              item.name = item.label;
+              if (settingSeries.length > 0 && settingSeries[index])
+                widgetType = settingSeries[index].type;
 
-            item.type = this.chartService.getChartTypeName(widgetType);
-          }
+              item.type = this.chartService.getChartTypeName(widgetType);
+            }
 
+            const seriesItem: SerieItem = {
+              name: item.label,
+              type: widgetType.toString(),
+            };
+
+            if (widgetType == 1 || widgetType == 2 || widgetType == 3) {
+              seriesItem.backgroundColor = new WidgetSetting().Colors[index];
+              seriesItem.borderWidth = "1";
+            }
+
+            if (widgetType == 4) {
+              seriesItem.backgroundColor = new WidgetSetting().Colors;
+            }
+
+            series.push(seriesItem);
+          });
+        }
+
+        if (widgetType == 10 || widgetType == 11 || widgetType == 12) {
           const seriesItem: SerieItem = {
-            name: item.label,
+            name: widgetTitle,
             type: widgetType.toString(),
           };
-
-          if (widgetType == 1 || widgetType == 2 || widgetType == 3) {
-            seriesItem.backgroundColor = new WidgetSetting().Colors[index];
-            seriesItem.borderWidth = "1";
-          }
-
-          if (widgetType == 4) {
-            seriesItem.backgroundColor = new WidgetSetting().Colors;
-          }
-
-          series.push(seriesItem);
-        });
-      }
-
-      if (widgetType == 10 || widgetType == 11 || widgetType == 12) {
-        const seriesItem: SerieItem = {
-          name: widgetTitle,
-          type: widgetType.toString(),
-        };
-        this.widgetSettings[id].series = [seriesItem];
-      }
-      //gauge
-      if (widgetType != 10) {
-        if (!init) {
-          if (this.widgetSettings[id]) {
+          this.widgetSettings[id].series = [seriesItem];
+        }
+        //gauge
+        if (widgetType != 10) {
+          if (!init) {
+            if (this.widgetSettings[id]) {
+              res = this.chartService.applyChartSetting(
+                this.widgetSettings[id],
+                res
+              );
+            }
+          } else {
+            this.widgetSettings[id].series = series;
             res = this.chartService.applyChartSetting(
               this.widgetSettings[id],
               res
             );
           }
-        } else {
-          this.widgetSettings[id].series = series;
-          res = this.chartService.applyChartSetting(
-            this.widgetSettings[id],
-            res
-          );
         }
-      }
 
-      this.widgetData[widgetId + "-" + tabId] = res;
-    });
+        this.widgetData[widgetId + "-" + tabId] = res;
+      });
   }
 
   widgetHasData(widgetId, tabId) {
