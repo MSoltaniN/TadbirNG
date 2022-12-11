@@ -121,7 +121,7 @@ namespace SPPC.Tadbir.WinRunner
             Application.Exit();
         }
 
-        private const string ComposeCommand = "docker compose -f \"docker-compose.yml\" -f \"docker-compose.override.yml\" -p \"tadbirng\"";
+        private const string ComposeCommand = "docker compose -f \"docker-compose.yml\" -p \"tadbirng\"";
         private readonly CliRunner _runner = new();
         private readonly IApiClient _apiClient;
     }

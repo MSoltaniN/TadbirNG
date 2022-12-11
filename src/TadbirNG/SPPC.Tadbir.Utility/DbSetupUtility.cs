@@ -30,6 +30,7 @@ namespace SPPC.Tadbir.Utility
             Verify.ArgumentNotNull(settings, nameof(settings));
             _dbConsole = dbConsole;
             _settings = settings;
+            CurrentLoginName = SysParameterUtility.AllParameters.Db.LoginName;
         }
 
         public void ConfigureDatabase()

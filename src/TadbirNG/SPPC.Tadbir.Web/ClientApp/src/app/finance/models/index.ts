@@ -8,7 +8,7 @@ export * from './accountItemRelations';
 export * from './CostCenter';
 export * from './currency';
 export * from './DetailAccount';
-export * from './fullaccount';
+export * from './fullAccount';
 export * from './Project';
 export * from './voucher';
 export * from './voucherLine';
