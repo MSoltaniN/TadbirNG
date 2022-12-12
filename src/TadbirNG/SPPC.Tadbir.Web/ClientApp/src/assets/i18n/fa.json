@@ -227,7 +227,7 @@
     "BalanceByAccount": "مانده به تفکیک حساب",
     "ProfitLoss": "سود و زیان",
     "BalanceSheet": "ترازنامه",
-    "Widget": "ویجت ها"
+    "Widget": "ویجت"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",
@@ -1354,7 +1354,8 @@
     "Description": "توضیحات",
     "MyWidgets": "ویجت های من",
     "AllWidgets": "همه ویجت ها",
-    "WidgetOwner": "لیست ویجت ها"
+    "WidgetOwner": "لیست ویجت ها",
+    "Delete": "حذف ویجت"
   },
   "GroupActionResult": {
     "Id": "شماره  ",
