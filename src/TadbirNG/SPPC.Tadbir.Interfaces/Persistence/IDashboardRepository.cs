@@ -4,7 +4,6 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel;
-using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -160,18 +159,18 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<ParameterSummary>> GetFunctionParametersAsync(int functionId);
 
         /// <summary>
-        /// به روش آسنکرون، دسترسی نقش های مرتبط با ویجت مورد نظر را برمی گرداند 
+        /// به روش آسنکرون، نقش های دارای دسترسی به ویجت مورد نظر را خوانده و برمی گرداند 
         /// </summary>
         /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
-        /// <returns></returns>
+        /// <returns>نقش های دارای دسترسی به ویجت داده شده</returns>
         Task<RelatedItemsViewModel> GetWidgetRolesAsync(int widgetId);
-        
+
         /// <summary>
-        /// به روش آسنکرون ، آخرین وضعیت نقش های مرتبط با ویجت مورد نظر را برمی گرداند
+        /// به روش آسنکرون، آخرین وضعیت نقش های دارای دسترسی به ویجت مورد نظر را ذخیره می کند
         /// </summary>
         /// <param name="widgetRoles">اطلاعات نمایشی نقش های دارای دسترسی</param>
-        /// <returns></returns>
         Task SaveWidgetRolesAsync(RelatedItemsViewModel widgetRoles);
+
         #endregion
 
         #region Data Lookup
@@ -195,6 +194,5 @@ namespace SPPC.Tadbir.Persistence
         Task<List<WidgetViewModel>> GetWidgetsLookupAsync();
 
         #endregion
-
     }
 }

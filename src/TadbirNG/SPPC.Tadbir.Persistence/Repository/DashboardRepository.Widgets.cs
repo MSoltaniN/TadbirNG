@@ -510,10 +510,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، دسترسی نقش های مرتبط با ویجت مورد نظر را برمی گرداند 
+        /// به روش آسنکرون، نقش های دارای دسترسی به ویجت مورد نظر را خوانده و برمی گرداند 
         /// </summary>
         /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
-        /// <returns></returns>
+        /// <returns>نقش های دارای دسترسی به ویجت داده شده</returns>
         public async Task<RelatedItemsViewModel> GetWidgetRolesAsync(int widgetId)
         {
             RelatedItemsViewModel widgetRoles = null;
@@ -523,7 +523,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 UnitOfWork.UseSystemContext();
                 var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
-                var enabledRoleIds = existing.RoleWidgets.Select(rfp => rfp.RoleId);
+                var enabledRoleIds = existing.RoleWidgets.Select(rw => rw.RoleId);
                 var enabledRoles = await roleRepository
                     .GetEntityQuery()
                     .Where(r => enabledRoleIds.Contains(r.Id))
@@ -531,7 +531,7 @@ namespace SPPC.Tadbir.Persistence
                     .ToArrayAsync();
                 var disabledRoles = await roleRepository
                     .GetEntityQuery()
-                    .Where(r => !enabledRoleIds.Contains(r.Id))
+                    .Where(r => UserContext.Roles.Contains(r.Id) && !enabledRoleIds.Contains(r.Id))
                     .Select(r => Mapper.Map<RelatedItemViewModel>(r))
                     .ToArrayAsync();
                 Array.ForEach(enabledRoles, item => item.IsSelected = true);
@@ -540,7 +540,7 @@ namespace SPPC.Tadbir.Persistence
                 widgetRoles = new RelatedItemsViewModel() { Id = widgetId };
                 Array.ForEach(enabledRoles
                     .Concat(disabledRoles)
-                    .OrderBy(item => item.Id)
+                    .OrderBy(item => item.Name)
                     .ToArray(), item => widgetRoles.RelatedItems.Add(item));
             }
 
@@ -548,10 +548,9 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون ، آخرین وضعیت نقش های مرتبط با ویجت مورد نظر را برمی گرداند
+        /// به روش آسنکرون، آخرین وضعیت نقش های دارای دسترسی به ویجت مورد نظر را ذخیره می کند
         /// </summary>
         /// <param name="widgetRoles">اطلاعات نمایشی نقش های دارای دسترسی</param>
-        /// <returns></returns>
         public async Task SaveWidgetRolesAsync(RelatedItemsViewModel widgetRoles)
         {
             Verify.ArgumentNotNull(widgetRoles, nameof(widgetRoles));
@@ -571,6 +570,7 @@ namespace SPPC.Tadbir.Persistence
                 await TrySaveLogAsync();
             }
         }
+
         private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
         {
             return left.Count() == right.Count()

@@ -19,6 +19,6 @@ namespace SPPC.Tadbir.Model.Reporting
         /// <summary>
         /// Get a collection of existing associations between roles and widgets  
         /// </summary>
-        public virtual IList<RoleWidget> RoleWidgets{ get; protected set; }
+        public virtual IList<RoleWidget> RoleWidgets { get; protected set; }
     }
 }

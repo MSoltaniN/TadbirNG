@@ -27,7 +27,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     ///
     /// </summary>
     [Produces("application/json")]
-    public class DashboardController : ValidatingController<WidgetViewModel>
+    public class DashboardController : ApiControllerBase
     {
         /// <summary>
         ///
@@ -42,14 +42,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             _repository = repository;
             _pathProvider = pathProvider;
-        }
-
-        /// <summary>
-        /// کلید متن چندزبانه برای نام موجودیت داشبورد
-        /// </summary>
-        protected override string EntityNameKey
-        {
-            get { return AppStrings.Dashboard; }
         }
 
         #region Dashboard Management
@@ -121,7 +113,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
         public async Task<IActionResult> PostNewDashboardTabAsync([FromBody] DashboardTabViewModel tab)
         {
-            var result = GetDashboardTabValidationResult(tab);
+            var result = GetBasicValidationResult(tab, AppStrings.DashboardTab);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -144,7 +136,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedDashboardTabAsync(
             int tabId, [FromBody] DashboardTabViewModel tab)
         {
-            var result = GetDashboardTabValidationResult(tab, tabId);
+            var result = GetBasicValidationResult(tab, AppStrings.DashboardTab, tabId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -459,7 +451,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات خلاصه برای نقش های دارای دسترسی به ویجت داده شده را برمی گرداند
         /// </summary>
         /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
-        /// <returns>اطلاعات خلاصه برای نقش های دارای دسترسی به دوره مالی</returns>
+        /// <returns>اطلاعات خلاصه برای نقش های دارای دسترسی به ویجت داده شده</returns>
         // GET: api/dashboard/{widgetId:min(1)}/roles
         [HttpGet]
         [Route(DashboardApi.WidgetRolesUrl)]
@@ -484,7 +476,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedWidgetRolesAsync(
             int widgetId, [FromBody] RelatedItemsViewModel widgetRoles)
         {
-            var result = BasicValidationResult(widgetRoles, widgetId);
+            var result = GetBasicValidationResult(widgetRoles, AppStrings.WidgetAccess, widgetId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -577,11 +569,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return parameters;
         }
 
-        private IActionResult GetDashboardTabValidationResult(DashboardTabViewModel tab, int tabId = 0)
+        private IActionResult GetBasicValidationResult<TModel>(TModel model, string modelKey, int modelId = 0)
         {
-            if (tab == null)
+            if (model == null)
             {
-                var message = _strings.Format(AppStrings.RequestFailedNoData, AppStrings.DashboardTab);
+                var message = _strings.Format(AppStrings.RequestFailedNoData, modelKey);
                 return BadRequestResult(message);
             }
 
@@ -590,9 +582,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(ModelState);
             }
 
-            if (tab.Id != tabId)
+            int id = (int)Reflector.GetProperty(model, "Id");
+            if (id != modelId)
             {
-                var message = _strings.Format(AppStrings.RequestFailedConflict, AppStrings.DashboardTab);
+                var message = _strings.Format(AppStrings.RequestFailedConflict, modelKey);
                 return BadRequestResult(message);
             }
 
@@ -627,21 +620,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private IActionResult GetWidgetValidationResult(WidgetViewModel widget, int widgetId = 0)
         {
-            if (widget == null)
+            var result = GetBasicValidationResult(widget, AppStrings.Widget, widgetId);
+            if (result is BadRequestObjectResult)
             {
-                var message = _strings.Format(AppStrings.RequestFailedNoData, AppStrings.Widget);
-                return BadRequestResult(message);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequestResult(ModelState);
-            }
-
-            if (widget.Id != widgetId)
-            {
-                var message = _strings.Format(AppStrings.RequestFailedConflict, AppStrings.Widget);
-                return BadRequestResult(message);
+                return result;
             }
 
             if (widgetId > 0 && widget.CreatedById != SecurityContext.User.Id)

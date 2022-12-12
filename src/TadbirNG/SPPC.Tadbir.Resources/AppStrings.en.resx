@@ -3717,4 +3717,7 @@
   <data name="CannotDeleteUsedDashboardTab" xml:space="preserve">
     <value>Before deleting this tab, you need to remove existing widgets from it.</value>
   </data>
+  <data name="WidgetAccess" xml:space="preserve">
+    <value>Widget access</value>
+  </data>
 </root>
