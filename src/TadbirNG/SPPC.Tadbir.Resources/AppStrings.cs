@@ -6005,6 +6005,11 @@ namespace SPPC.Tadbir.Resources
         public const string Widget = "Widget";
 
         /// <summary>
+        /// Default text : دسترسی به ویجت
+        /// </summary>
+        public const string WidgetAccess = "WidgetAccess";
+
+        /// <summary>
         /// Default text : مبلغ بدهکار و بستانکار صفر در آرتیکل نادرست است.
         /// </summary>
         public const string ZeroDebitAndCreditNotAllowed = "ZeroDebitAndCreditNotAllowed";

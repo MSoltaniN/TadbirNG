@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Utility;
-using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -157,6 +157,19 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="functionId">شناسه دیتابیسی تابع محاسباتی مورد نظر</param>
         /// <returns>پارامترهای مورد نیاز تابع محاسباتی</returns>
         Task<IList<ParameterSummary>> GetFunctionParametersAsync(int functionId);
+
+        /// <summary>
+        /// به روش آسنکرون، نقش های دارای دسترسی به ویجت مورد نظر را خوانده و برمی گرداند 
+        /// </summary>
+        /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
+        /// <returns>نقش های دارای دسترسی به ویجت داده شده</returns>
+        Task<RelatedItemsViewModel> GetWidgetRolesAsync(int widgetId);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت نقش های دارای دسترسی به ویجت مورد نظر را ذخیره می کند
+        /// </summary>
+        /// <param name="widgetRoles">اطلاعات نمایشی نقش های دارای دسترسی</param>
+        Task SaveWidgetRolesAsync(RelatedItemsViewModel widgetRoles);
 
         #endregion
 
