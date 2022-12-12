@@ -8,7 +8,7 @@ using SPPC.Tadbir.ViewModel.Config;
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    /// عملیات مورد نیاز برای مدیریت شرکت را پیاده سازی میکند.
+    /// عملیات مورد نیاز برای مدیریت شرکت را تعریف میکند.
     /// </summary>
     public interface ICompanyRepository : IRepositoryBase
     {

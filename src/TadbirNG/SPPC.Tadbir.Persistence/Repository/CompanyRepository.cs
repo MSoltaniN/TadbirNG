@@ -167,7 +167,8 @@ namespace SPPC.Tadbir.Persistence
             return await repository
                 .GetEntityQuery()
                 .Where(comp => comp.Id != company.Id &&
-                    (comp.DbName == company.DbName || comp.Name == company.Name))
+                    (comp.DbName.ToLower() == company.DbName.ToLower()
+                        || comp.Name.ToLower() == company.Name.ToLower()))
                 .Select(comp => Mapper.Map<CompanyDbViewModel>(comp))
                 .ToListAsync();
         }
