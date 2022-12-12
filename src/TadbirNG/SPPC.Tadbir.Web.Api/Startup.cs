@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SPPC.Licensing.Model;
-using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Middleware;
@@ -54,7 +53,7 @@ namespace SPPC.Tadbir.Web.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        // Some neutral change to trigger build server
+        // [Some neutral change to trigger build server]
         /// <summary>
         /// خدمات زیرساختی مورد نیاز در مسیر اجرایی سرویس وب را پیکربندی می کند
         /// </summary>

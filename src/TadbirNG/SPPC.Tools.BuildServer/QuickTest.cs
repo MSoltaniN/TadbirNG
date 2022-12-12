@@ -6,6 +6,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.Utility.Templates;
 using SPPC.Tools.Model;
 using SPPC.Tools.Utility;
 
@@ -169,6 +170,12 @@ namespace SPPC.Tools.BuildServer
             Console.WriteLine();
             Console.WriteLine("Press ENTER to quit...");
             Console.ReadLine();
+        }
+
+        public static void TestDockerComposeOverrideGeneration()
+        {
+            var template = new DockerComposeOverride("std", "DbServer");
+            var content = template.TransformText();
         }
     }
 }

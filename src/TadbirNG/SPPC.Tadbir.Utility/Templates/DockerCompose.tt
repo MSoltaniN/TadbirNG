@@ -7,103 +7,103 @@
 version: '3.9'
 
 volumes:
- productdata_<#= SysParameterUtility.DbServer.Name #>:
- productdata_<#= SysParameterUtility.LicenseServer.Name #>:
+  productdata_<#= SysParameterUtility.DbServer.Name #>:
+  productdata_<#= SysParameterUtility.LicenseServer.Name #>:
  
 networks:
- frontend:
- backend:
+  frontend:
+  backend:
 
 services:
 <#
 if(_dbServer == SysParameterUtility.DbServer.Name)
 {#>
 
- <#= SysParameterUtility.DbServer.Name #>:
-  image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.DbServer.ImageName #>:<#= SysParameterUtility.DbServer.Tag #>
-  user: root
+  <#= SysParameterUtility.DbServer.Name #>:
+    image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.DbServer.ImageName #>:<#= SysParameterUtility.DbServer.Tag #>
+    user: root
 <#
 #if DEBUG
 #>
-  build:
-   context: ../../res
-   dockerfile: Dockerfile
+    build:
+      context: ../../res
+      dockerfile: Dockerfile
 <#
 #endif
 #>
   networks:
-   - backend
+    - backend
   volumes:
-   - productdata_<#= SysParameterUtility.DbServer.Name #>:/var/opt/mssql/data
+    - productdata_<#= SysParameterUtility.DbServer.Name #>:/var/opt/mssql/data
 <#
 }#>
 
- <#= SysParameterUtility.ApiServer.Name #>:
-  image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.ApiServer.ImageName #>:<#= _editionTag #>
+  <#= SysParameterUtility.ApiServer.Name #>:
+    image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.ApiServer.ImageName #>:<#= _editionTag #>
 <#
 #if DEBUG
 #>
-  build:
-   context: .
-   dockerfile: SPPC.Tadbir.Web.Api/Dockerfile
+    build:
+      context: .
+      dockerfile: SPPC.Tadbir.Web.Api/Dockerfile
 <#
 #endif
 #>
-  depends_on:
-   - <#= SysParameterUtility.DbServer.Name #>
-  networks:
-   - backend
-  ports:
-   - 9095:80
+    depends_on:
+      - <#= SysParameterUtility.DbServer.Name #>
+    networks:
+      - backend
+    ports:
+      - 9095:80
 
- loadBalancer:
-  image: dockercloud/haproxy:1.2.1
-  depends_on:
-   - <#= SysParameterUtility.ApiServer.Name #>
-  ports:
-   - 9095:80
-   - 1936:1936
-  links:
-   - <#= SysParameterUtility.ApiServer.Name #>
-  volumes:
-   - /var/run/docker.sock:/var/run/docker.sock
-  networks:
-   - frontend
+  loadBalancer:
+    image: dockercloud/haproxy:1.2.1
+    depends_on:
+      - <#= SysParameterUtility.ApiServer.Name #>
+    ports:
+      - 9095:80
+      - 1936:1936
+    links:
+      - <#= SysParameterUtility.ApiServer.Name #>
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - frontend
 
- <#= SysParameterUtility.WebApp.Name #>:
-  image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.WebApp.ImageName #>:<#= SysParameterUtility.WebApp.Tag #>
+  <#= SysParameterUtility.WebApp.Name #>:
+    image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.WebApp.ImageName #>:<#= SysParameterUtility.WebApp.Tag #>
 <#
 #if DEBUG
 #>
-  build: 
-   context: ./SPPC.Tadbir.Web/ClientApp
-   dockerfile: Dockerfile
+    build: 
+      context: ./SPPC.Tadbir.Web/ClientApp
+      dockerfile: Dockerfile
 <#
 #endif
 #>
-  networks:
-   - frontend
-  ports:
-   - 9099:4200
+    networks:
+      - frontend
+    ports:
+      - 9099:4200
 
- <#= SysParameterUtility.LicenseServer.Name #>:
-  image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.LicenseServer.ImageName #>:<#= SysParameterUtility.LicenseServer.Tag #>
+  <#= SysParameterUtility.LicenseServer.Name #>:
+    image: <#= SysParameterUtility.DockerHubHandle #>/<#= SysParameterUtility.LicenseServer.ImageName #>:<#= SysParameterUtility.LicenseServer.Tag #>
 <#
 #if DEBUG
 #>
-  build:
-   context: .
-   dockerfile: SPPC.Licensing.Local.Web/Dockerfile
+    build:
+      context: .
+      dockerfile: SPPC.Licensing.Local.Web/Dockerfile
 <#
 #endif
 #>
-  depends_on:
-   - <#= SysParameterUtility.DbServer.Name #>
-  volumes:
-   - productdata_<#= SysParameterUtility.LicenseServer.Name #>:/app/wwwroot
-  networks:
-   - backend
-  ports:
-   - 9093:80
-  extra_hosts:
-   - "host.docker.internal:host-gateway"
+    depends_on:
+      - <#= SysParameterUtility.DbServer.Name #>
+    volumes:
+      - productdata_<#= SysParameterUtility.LicenseServer.Name #>:/app/wwwroot
+    networks:
+      - backend
+    ports:
+      - 9093:80
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

@@ -161,11 +161,11 @@ namespace SPPC.Tadbir.Utility
         {
             // NOTE: This method assumes current directory is set to runner folder.
             string edition = String.Empty;
-            var overridePath = "docker-compose.override.yml";
-            if (File.Exists(overridePath))
+            var composePath = "docker-compose.yml";
+            if (File.Exists(composePath))
             {
                 var editionTag = File
-                    .ReadAllLines(overridePath)
+                    .ReadAllLines(composePath)
                     .Where(line => line.Contains(SysParameterUtility.ApiServer.ImageName))
                     .Select(line => line[line.IndexOf(SysParameterUtility.ApiServer.ImageName)..])
                     .Select(line => line

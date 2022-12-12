@@ -225,7 +225,7 @@ namespace SPPC.Tadbir.Utility
             var currentDir = Environment.CurrentDirectory;
             Environment.CurrentDirectory = FileUtility.GetAbsolutePath(@"..\runner");
             var runner = new CliRunner();
-            RunAndLogCommand(runner, "docker-compose -f docker-compose.override.yml -f docker-compose.yml down");
+            RunAndLogCommand(runner, "docker-compose -f docker-compose.yml down");
             var imageName = $"{SysParameterUtility.GetImageFullName(SysParameterUtility.WebApp)}";
             RunAndLogCommand(runner, String.Format(ToolConstants.DockerRemoveImageCommand, imageName));
             imageName = $"{SysParameterUtility.GetImageFullName(SysParameterUtility.LicenseServer)}";

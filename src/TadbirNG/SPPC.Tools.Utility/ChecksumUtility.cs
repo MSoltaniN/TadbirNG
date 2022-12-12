@@ -69,14 +69,26 @@ namespace SPPC.Tools.Utility
 
         private static void CopyWebAppFiles(IEnumerable<string> files)
         {
-            var indexTsFiles = files
-                .Where(file => file.Contains("index.ts"))
-                .OrderBy(file => file);
-            Array.ForEach(files.Except(indexTsFiles).ToArray(), file =>
-                File.Copy(file, Path.Combine(TempFolder, Path.GetFileName(file))));
-            int counter = 1;
-            Array.ForEach(indexTsFiles.ToArray(), file =>
-                File.Copy(file, Path.Combine(TempFolder, String.Format($"index.ts.{counter++}"))));
+            if (files.Any())
+            {
+                var sorted = files.OrderBy(file => Path.GetFileName(file));
+                var lastFile = sorted.First();
+                File.Copy(lastFile, Path.Combine(TempFolder, Path.GetFileName(lastFile)));
+                int counter = 1;
+                foreach (var file in sorted.Skip(1))
+                {
+                    if (Path.GetFileName(file) == Path.GetFileName(lastFile))
+                    {
+                        File.Copy(file, Path.Combine(TempFolder, Path.GetFileName($"{file}.{counter++}")));
+                    }
+                    else
+                    {
+                        lastFile = file;
+                        counter = 1;
+                        File.Copy(file, Path.Combine(TempFolder, Path.GetFileName(file)));
+                    }
+                }
+            }
         }
 
         private static IEnumerable<string> GetApiServerFiles()

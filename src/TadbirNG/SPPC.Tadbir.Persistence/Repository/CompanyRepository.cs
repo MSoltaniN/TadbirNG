@@ -155,17 +155,22 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، مشخص می کند که نام وارد شده برای دیتابیس تکراری است یا نه
+        /// به روش آسنکرون، مجموعه ای از شرکت های موجود را برمی گرداند که نام شرکت یا نام دیتابیس آنها
+        /// مشابه شرکت داده شده است
         /// </summary>
         /// <param name="company">شرکت مورد نظر</param>
-        /// <returns>اگر نام دیتابیس تکراری بود مقدار درست در غیر اینصورت مقدار نادرست را برمی گرداند</returns>
-        public async Task<bool> IsDuplicateCompanyAsync(CompanyDbViewModel company)
+        /// <returns>مجموعه ای از شرکت های موجود با نام شرکت یا نام دیتابیس تکراری</returns>
+        public async Task<IEnumerable<CompanyDbViewModel>> GetDuplicateCompaniesAsync(CompanyDbViewModel company)
         {
             Verify.ArgumentNotNull(company, nameof(company));
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var existing = await repository.GetSingleByCriteriaAsync(
-                comp => comp.Id != company.Id && (comp.DbName == company.DbName || comp.Name == company.Name));
-            return existing != null && existing.IsActive;
+            return await repository
+                .GetEntityQuery()
+                .Where(comp => comp.Id != company.Id &&
+                    (comp.DbName.ToLower() == company.DbName.ToLower()
+                        || comp.Name.ToLower() == company.Name.ToLower()))
+                .Select(comp => Mapper.Map<CompanyDbViewModel>(comp))
+                .ToListAsync();
         }
 
         /// <summary>
