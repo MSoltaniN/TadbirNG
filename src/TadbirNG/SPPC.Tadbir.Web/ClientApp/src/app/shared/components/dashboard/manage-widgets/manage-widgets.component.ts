@@ -126,10 +126,13 @@ export class ManageWidgetsComponent
   typesList: WidgetType[];
   widgetOwner: any;
   selectedOwner: number;
+  confirmDeleteUsedWidgetMsg: string;
+  confirmDeleteUsedWidget: boolean = false;
 
   ngOnInit() {
     this.entityName = Entities.Dashboard;
     this.viewId = ViewName[this.entityTypeName];
+    this.localizeMsg("Widget");
     this.setOwnerList();
 
     this.getDataUrl = DashboardApi.Widgets;
@@ -241,6 +244,69 @@ export class ManageWidgetsComponent
       this.deleteModelId = recordId;
     }
   }
+
+  deleteModel(confirm: boolean) {
+    if (confirm) {
+      if (this.groupOperation) {
+        //حذف گروهی
+      } else {
+        //حذف تکی
+        this.grid.loading = true;
+        this.gridService
+          .delete(String.Format(this.modelUrl, this.deleteModelId))
+          .subscribe(
+            async (response) => {
+
+              if (response != null) {
+                this.deleteConfirm = false;
+                this.confirmDeleteUsedWidget = true;
+                this.confirmDeleteUsedWidgetMsg = response.toString();
+              } else {
+                this.afterDelete();
+                this.grid.loading = false;
+              }
+            },
+            (error) => {
+              this.grid.loading = false;
+              this.showMessage(
+                this.errorHandlingService.handleError(error),
+                MessageType.Warning
+              );
+            }
+          );
+      }
+    }
+
+    //hide confirm dialog
+    this.deleteConfirm = false;
+  }
+
+  deleteUsedWidget(confirm: boolean) {
+    if (confirm) {
+      //حذف تکی
+      let url = String.Format(this.modelUrl, this.deleteModelId) + '?confirmed=true'
+      this.grid.loading = true;
+      this.gridService
+        .delete(url)
+        .subscribe(
+          async (res) => {
+            this.afterDelete();
+            this.grid.loading = false;
+          },
+          (error) => {
+            this.grid.loading = false;
+            this.showMessage(
+              this.errorHandlingService.handleError(error),
+              MessageType.Warning
+            );
+          }
+        );
+    }
+
+    this.confirmDeleteUsedWidget = false;
+    this.grid.loading = false;
+  }
+
 
   onAdvanceFilterOk() {
     this.enableViewListChanged(this.viewId);
