@@ -200,7 +200,7 @@
     "CurrencyBook": "Currency Book",
     "SystemIssue": "System Control",
     "BalanceByAccount": "Balance By Account",
-    "Widget": "Widgets"
+    "Widget": "Widget"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": " Number Of Vouchers Selected :",
@@ -1234,7 +1234,9 @@
     "Description": "Description",
     "MyWidgets": "My widgets",
     "AllWidgets": "All widgets",
-    "WidgetOwner": "Widget Group"
+    "WidgetOwner": "Widget Group",
+    "Widget": "Widget",
+    "Delete": "Delete Widget"
   },
   "AllValidations": {
     "Account": {

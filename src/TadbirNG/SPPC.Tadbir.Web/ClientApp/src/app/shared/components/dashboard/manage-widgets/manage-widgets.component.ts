@@ -36,6 +36,7 @@ import {
 import { DashboardApi } from "@sppc/shared/services/api";
 import { ChartService } from "@sppc/shared/services/chart.service";
 import { ToastrService } from "ngx-toastr";
+import { lastValueFrom } from "rxjs";
 import { map } from "rxjs/operators";
 import { WidgetInfo, WidgetService } from "../services/widget.service";
 import { ManageWidgetsFormComponent } from "./manage-widgets-form/manage-widgets-form.component";
@@ -125,10 +126,13 @@ export class ManageWidgetsComponent
   typesList: WidgetType[];
   widgetOwner: any;
   selectedOwner: number;
+  confirmDeleteUsedWidgetMsg: string;
+  confirmDeleteUsedWidget: boolean = false;
 
   ngOnInit() {
     this.entityName = Entities.Dashboard;
     this.viewId = ViewName[this.entityTypeName];
+    this.localizeMsg("Widget");
     this.setOwnerList();
 
     this.getDataUrl = DashboardApi.Widgets;
@@ -240,6 +244,75 @@ export class ManageWidgetsComponent
       this.prepareDeleteConfirm(record.name);
       this.deleteModelId = recordId;
     }
+  }
+
+  deleteModel(confirm: boolean) {
+    if (confirm) {
+      if (this.groupOperation) {
+        //حذف گروهی
+      } else {
+        //حذف تکی
+        this.grid.loading = true;
+        this.gridService
+          .delete(String.Format(this.modelUrl, this.deleteModelId))
+          .subscribe(
+            async (response) => {
+
+              if (response != null) {
+                this.deleteConfirm = false;
+                this.confirmDeleteUsedWidget = true;
+                this.confirmDeleteUsedWidgetMsg = response.toString();
+              } else {
+                // let msg = await lastValueFrom(this.translateService.get("Messages.Deleted"))
+                // let entityType = await lastValueFrom(this.translateService.get("Widget.Widget"));
+                // this.deleteMsg = String.Format(msg, entityType);
+                this.afterDelete();
+                this.grid.loading = false;
+              }
+            },
+            (error) => {
+              this.grid.loading = false;
+              this.showMessage(
+                this.errorHandlingService.handleError(error),
+                MessageType.Warning
+              );
+            }
+          );
+      }
+    }
+
+    //hide confirm dialog
+    this.deleteConfirm = false;
+  }
+
+  deleteUsedWidget(confirm: boolean) {
+    if (confirm) {
+      //حذف تکی
+      let url = String.Format(this.modelUrl, this.deleteModelId) + '?confirmed=true'
+      this.grid.loading = true;
+      this.gridService
+        .delete(url)
+        .subscribe(
+          async (res) => {
+            // let msg = await lastValueFrom(this.translateService.get("Messages.Deleted"));
+            // let entityType = await lastValueFrom(this.translateService.get("Widget.Widget"));
+            // this.deleteMsg = String.Format(msg, entityType);
+
+            this.afterDelete();
+            this.grid.loading = false;
+          },
+          (error) => {
+            this.grid.loading = false;
+            this.showMessage(
+              this.errorHandlingService.handleError(error),
+              MessageType.Warning
+            );
+          }
+        );
+    }
+
+    this.confirmDeleteUsedWidget = false;
+    this.grid.loading = false;
   }
 
   onAdvanceFilterOk() {

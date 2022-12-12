@@ -230,7 +230,7 @@
   </div>
   
   <kendo-dialog
-    title="{{ 'Voucher.Delete' | translate }}"
+    title="{{ 'Widget.Delete' | translate }}"
     *ngIf="deleteConfirm"
     (close)="deleteModel(false)"
     [minWidth]="250"
@@ -244,6 +244,26 @@
         {{ "Buttons.Yes" | translate }}
       </button>
       <button class="k-button" (click)="deleteModel(false)">
+        {{ "Buttons.No" | translate }}
+      </button>
+    </kendo-dialog-actions>
+  </kendo-dialog>
+  <!-- مودال تایید حذف ویجت هنگامی که ویجت توسط دیگر کاربران استفاده شده باشد -->
+  <kendo-dialog
+    title="{{ 'Widget.Delete' | translate }}"
+    *ngIf="confirmDeleteUsedWidget"
+    (close)="deleteUsedWidget(false)"
+    [minWidth]="250"
+    [width]="450"
+  >
+    <p class="m-20">
+      {{ this.confirmDeleteUsedWidgetMsg }}
+    </p>
+    <kendo-dialog-actions>
+      <button class="k-button" (click)="deleteUsedWidget(true)" primary="true">
+        {{ "Buttons.Yes" | translate }}
+      </button>
+      <button class="k-button" (click)="deleteUsedWidget(false)">
         {{ "Buttons.No" | translate }}
       </button>
     </kendo-dialog-actions>
