@@ -1026,13 +1026,13 @@
   "Branch": {
     "BranchName": "شعبه",
     "New": "شعبه جدید",
-    "NewSubBrench": "درج زیر شعبه جدید",
+    "NewSubBrench": "شعبه زیرمجموعه جدید",
     "Delete": "حذف شعبه",
     "Name": "نام",
     "Description": "شرح",
     "Roles": "نقش ها",
-    "UpdateRoles": "نقش های شعبه با موفقیت ویرایش شد",
-    "RolesTitle": "لیست نقش های قابل دسترس به شعبه",
+    "UpdateRoles": "نقش های دارای دسترسی با موفقیت ویرایش شد",
+    "RolesTitle": "نقش های دارای دسترسی به شعبه",
     "NotFoundData": "شعبه ای وجود ندارد",
     "LedgerBranch": "شعب سطح اول",
     "CreateBranch": "ایجاد شعبه",
@@ -1179,13 +1179,13 @@
   "RoleCompanies": {
     "Name": "نام شرکت",
     "Description": "توضیحات",
-    "RoleCompaniesTitle": "شرکت قابل دسترسی توسط '{0}'",
+    "RoleCompaniesTitle": "شرکت های قابل دسترسی توسط '{0}'",
     "RecordNotFound": "این نقش به هیچ شرکتی دسترسی ندارد"
   },
   "CompanyRoles": {
     "Name": "نام نقش",
     "Description": "توضیحات",
-    "CompanyRolesTitle": "نقش قابل دسترسی توسط '{0}'",
+    "CompanyRolesTitle": "نقش های دارای دسترسی به '{0}'",
     "RecordNotFound": "این شرکت به هیچ نقشی دسترسی ندارد"
   },
   "RoleFiscalPeriod": {
@@ -1265,9 +1265,9 @@
     "StartDate": "تاریخ شروع",
     "EndDate": "تاریخ پایان",
     "Description": "شرح",
-    "UpdateRoles": "نقش های دوره مالی با موفقیت ویرایش شد",
+    "UpdateRoles": "نقش های دارای دسترسی با موفقیت ویرایش شد",
     "Roles": "نقش ها",
-    "RolesTitle": "لیست نقش های دوره مالی",
+    "RolesTitle": "نقش های دارای دسترسی به دوره مالی",
     "CreateFiscalPeriod": "ایجاد دوره مالی",
     "ChangeFiscalPeriod": "تغییر دوره مالی"
   },

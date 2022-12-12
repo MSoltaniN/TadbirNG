@@ -16,6 +16,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Filters;
 using io = System.IO;
@@ -112,7 +113,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageDashboard)]
         public async Task<IActionResult> PostNewDashboardTabAsync([FromBody] DashboardTabViewModel tab)
         {
-            var result = GetDashboardTabValidationResult(tab);
+            var result = GetBasicValidationResult(tab, AppStrings.DashboardTab);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -135,7 +136,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedDashboardTabAsync(
             int tabId, [FromBody] DashboardTabViewModel tab)
         {
-            var result = GetDashboardTabValidationResult(tab, tabId);
+            var result = GetBasicValidationResult(tab, AppStrings.DashboardTab, tabId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -438,6 +439,49 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(parameters);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات خلاصه برای نقش های دارای دسترسی به ویجت داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
+        /// <returns>اطلاعات خلاصه برای نقش های دارای دسترسی به ویجت داده شده</returns>
+        // GET: api/dashboard/{widgetId:min(1)}/roles
+        [HttpGet]
+        [Route(DashboardApi.WidgetRolesUrl)]
+        public async Task<IActionResult> GetWidgetRolesAsync(int widgetId)
+        {
+            var roles = await _repository.GetWidgetRolesAsync(widgetId);
+            Localize(roles);
+            return JsonReadResult(roles);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، نقش های دارای دسترسی به ویجت داده شده را در دیتابیس اصلاح می کند
+        /// </summary>
+        /// <param name="widgetId">شناسه دیتابیسی ویجت مورد نظر</param>
+        /// <param name="widgetRoles">اطلاعات جدید برای نقش های دارای دسترسی به ویجت</param>
+        /// <returns>در صورت بروز خطا، کد وضعیت 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 را برمی گرداند</returns>
+        // PUT: api/dashboard/{widgetId:min(1)}/roles
+        [HttpPut]
+        [Route(DashboardApi.WidgetRolesUrl)]
+        [AuthorizeRequest(SecureEntity.Dashboard, (int)DashboardPermissions.ManageWidgets)]
+        public async Task<IActionResult> PutModifiedWidgetRolesAsync(
+            int widgetId, [FromBody] RelatedItemsViewModel widgetRoles)
+        {
+            var result = GetBasicValidationResult(widgetRoles, AppStrings.WidgetAccess, widgetId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SaveWidgetRolesAsync(widgetRoles);
+            return Ok();
+        }
+
+        private void Localize(RelatedItemsViewModel roles)
+        {
+            Array.ForEach(roles.RelatedItems.ToArray(), item => item.Name = _strings[item.Name]);
+        }
         #endregion
 
         #region Data Lookup
@@ -517,11 +561,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return parameters;
         }
 
-        private IActionResult GetDashboardTabValidationResult(DashboardTabViewModel tab, int tabId = 0)
+        private IActionResult GetBasicValidationResult<TModel>(TModel model, string modelKey, int modelId = 0)
         {
-            if (tab == null)
+            if (model == null)
             {
-                var message = _strings.Format(AppStrings.RequestFailedNoData, AppStrings.DashboardTab);
+                var message = _strings.Format(AppStrings.RequestFailedNoData, modelKey);
                 return BadRequestResult(message);
             }
 
@@ -530,9 +574,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(ModelState);
             }
 
-            if (tab.Id != tabId)
+            int id = (int)Reflector.GetProperty(model, "Id");
+            if (id != modelId)
             {
-                var message = _strings.Format(AppStrings.RequestFailedConflict, AppStrings.DashboardTab);
+                var message = _strings.Format(AppStrings.RequestFailedConflict, modelKey);
                 return BadRequestResult(message);
             }
 
@@ -567,21 +612,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private IActionResult GetWidgetValidationResult(WidgetViewModel widget, int widgetId = 0)
         {
-            if (widget == null)
+            var result = GetBasicValidationResult(widget, AppStrings.Widget, widgetId);
+            if (result is BadRequestObjectResult)
             {
-                var message = _strings.Format(AppStrings.RequestFailedNoData, AppStrings.Widget);
-                return BadRequestResult(message);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequestResult(ModelState);
-            }
-
-            if (widget.Id != widgetId)
-            {
-                var message = _strings.Format(AppStrings.RequestFailedConflict, AppStrings.Widget);
-                return BadRequestResult(message);
+                return result;
             }
 
             if (widgetId > 0 && widget.CreatedById != SecurityContext.User.Id)

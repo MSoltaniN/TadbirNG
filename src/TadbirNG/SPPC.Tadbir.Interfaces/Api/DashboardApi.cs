@@ -143,6 +143,16 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string FunctionParametersUrl = "dashboard/functions/{functionId:min(1)}/params";
 
+        /// <summary>
+        /// API client URL for all roles who can access a specific widget
+        /// </summary>
+        public const string WidgetRoles = "dashboard/widgets/{0}/roles";
+
+        /// <summary>
+        /// API server route URL for all roles who can access a specific widget
+        /// </summary>
+        public const string WidgetRolesUrl = "dashboard/widgets/{widgetId:min(1)}/roles";
+
         #endregion
 
         #region Data Lookup
