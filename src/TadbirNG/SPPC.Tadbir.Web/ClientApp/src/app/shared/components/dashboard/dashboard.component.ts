@@ -717,6 +717,8 @@ export class DashboardComponent
         .subscribe(() => {
           const index = this.currentDashboard.tabs.findIndex((t) => t.id == tabId);
           this.currentDashboard.tabs.splice(index, 1);
+        }, err => {
+          this.showMessage(err.messages[0],MessageType.Warning)
         });
       }
     })
