@@ -1782,7 +1782,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<IActionResult> GetFirstVoucherByTypeAsync(
             SubjectType subject = SubjectType.Normal)
         {
-            var first = GridOptions != null
+            var first = !GridOptions.IsEmpty
                 ? await _repository.GetFirstVoucherAsync(GridOptions)
                 : await _repository.GetFirstVoucherAsync(subject);
             Localize(first);
@@ -1792,7 +1792,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<IActionResult> GetPreviousVoucherByTypeAsync(
             int currentNo, SubjectType subject = SubjectType.Normal)
         {
-            var previous = GridOptions != null
+            var previous = !GridOptions.IsEmpty
                 ? await _repository.GetPreviousVoucherAsync(currentNo, GridOptions)
                 : await _repository.GetPreviousVoucherAsync(currentNo, subject);
             Localize(previous);
@@ -1802,7 +1802,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<IActionResult> GetNextVoucherByTypeAsync(
             int currentNo, SubjectType subject = SubjectType.Normal)
         {
-            var next = GridOptions != null
+            var next = !GridOptions.IsEmpty
                 ? await _repository.GetNextVoucherAsync(currentNo, GridOptions)
                 : await _repository.GetNextVoucherAsync(currentNo, subject);
             Localize(next);
@@ -1812,7 +1812,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<IActionResult> GetLastVoucherByTypeAsync(
             SubjectType subject = SubjectType.Normal)
         {
-            var last = GridOptions != null
+            var last = !GridOptions.IsEmpty
                 ? await _repository.GetLastVoucherAsync(GridOptions)
                 : await _repository.GetLastVoucherAsync(subject);
             Localize(last);
