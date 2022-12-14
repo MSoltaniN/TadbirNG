@@ -920,6 +920,7 @@
     "BranchIsNotAccess": "The created branch will not be visible until the current user is granted access"
   },
   "Voucher": {
+    "Voucher": "Voucher",
     "New": "New Voucher",
     "Edit": "Edit",
     "Delete": "Delete",
