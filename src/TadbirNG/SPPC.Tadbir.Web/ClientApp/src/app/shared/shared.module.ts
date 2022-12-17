@@ -148,6 +148,7 @@ import { ChartService } from "./services/chart.service";
 import { ColorPickerModule } from "ngx-color-picker";
 import { NgxEchartsModule } from "ngx-echarts";
 import * as echarts from 'echarts';
+import { WidgetRolesFormComponent } from './components/dashboard/manage-widgets/widget-roles-form/widget-roles-form.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -283,6 +284,8 @@ export function loadEcharts(): any {
     ManageWidgetsFormComponent,
 
     WidgetAccountsComponent,
+
+    WidgetRolesFormComponent,
   ],
 
   entryComponents: [
@@ -299,6 +302,7 @@ export function loadEcharts(): any {
     TabWidgetComponent,
     SppcFullAccountDetailComponent,
     ManageWidgetsFormComponent,
+    WidgetRolesFormComponent
   ],
 
   exports: [

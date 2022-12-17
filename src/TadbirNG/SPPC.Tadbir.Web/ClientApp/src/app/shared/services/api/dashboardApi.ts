@@ -66,4 +66,7 @@ export class DashboardApi {
 
   // dashboard/license
   public static LicenseInfo = environment.BaseUrl + "/dashboard/license";
+
+  //
+  public static WidgetRoles = environment.BaseUrl + "/dashboard/widgets/{0}/roles";
 }
