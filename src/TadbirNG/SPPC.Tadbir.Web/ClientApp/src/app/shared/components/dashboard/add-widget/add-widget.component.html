@@ -20,8 +20,8 @@
               id="{{ viewId }}"
               #GridID
               [ngClass]="{
-                tRtl: this.currentlang === 'fa',
-                tLtr: this.currentlang === 'en'
+                tRtl: this.CurrentLanguage === 'fa',
+                tLtr: this.CurrentLanguage === 'en'
               }"
               [data]="widgets"
               [height]="300"
