@@ -11,9 +11,10 @@
 // ------------------------------------------------------------------------------
 
 import { FullAccount } from "@sppc/finance/models";
+import { IEntity } from "./IEntity";
 
 
-export interface Widget {
+export interface Widget extends IEntity {
     id: number;
     createdById: number;
     CreatedByFullName: string;

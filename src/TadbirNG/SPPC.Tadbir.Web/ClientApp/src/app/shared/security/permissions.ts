@@ -516,6 +516,9 @@ export class Permissions {
       case "specialvoucherpermissions":
         id = <any>SpecialVoucherPermissions[<any>premissionName];
         break;
+      case "dashboardpermissions":
+        id = <any>SpecialVoucherPermissions[<any>premissionName];
+        break;
     }
 
     return id;

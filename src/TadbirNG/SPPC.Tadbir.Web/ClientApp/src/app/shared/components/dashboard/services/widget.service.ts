@@ -1,10 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FullAccount } from "@sppc/finance/models";
-import { BaseService } from "@sppc/shared/class";
+import { BaseService, String } from "@sppc/shared/class";
+import { RelatedItems } from "@sppc/shared/models";
 import { Widget } from "@sppc/shared/models/widget";
 import { BrowserStorageService } from "@sppc/shared/services";
 import { DashboardApi } from "@sppc/shared/services/api";
+import { map } from "rxjs/operators";
 
 
 export class WidgetInfo implements Widget {
@@ -47,6 +49,21 @@ export class WidgetService extends BaseService {
     let url = DashboardApi.Widget;
     let options = { headers: this.httpHeaders }
     return this.http.get(url, options);
+  }
+
+  getWidgetRoles(widgetId: number) {
+    var url = String.Format(DashboardApi.WidgetRoles, widgetId);
+    var options = { headers: this.httpHeaders };
+    return this.http
+      .get(url, options)
+      .pipe(map((response) => <any>(<Response>response)));
+  }
+
+  modifiedWidgetRoles(widgetRoles: RelatedItems) {
+    var body = JSON.stringify(widgetRoles);
+    var options = { headers: this.httpHeaders };
+    var url = String.Format(DashboardApi.WidgetRoles, widgetRoles.id);
+    return this.http.put(url, body, options).pipe(map((res) => res));
   }
 
 }
