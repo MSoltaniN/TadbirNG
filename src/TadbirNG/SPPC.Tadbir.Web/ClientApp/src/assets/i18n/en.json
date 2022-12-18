@@ -1236,8 +1236,8 @@
     "MyWidgets": "My widgets",
     "AllWidgets": "All widgets",
     "WidgetOwner": "Widget Group",
-    "Widget": "Widget",
-    "Delete": "Delete Widget"
+    "Delete": "Delete Widget",
+    "RolesTitle": "Roles who can access the widget"
   },
   "AllValidations": {
     "Account": {

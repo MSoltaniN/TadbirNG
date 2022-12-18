@@ -1356,8 +1356,8 @@
     "MyWidgets": "ویجت های من",
     "AllWidgets": "همه ویجت ها",
     "WidgetOwner": "لیست ویجت ها",
-    "Widget": "ویجت",
-    "Delete": "حذف ویجت"
+    "Delete": "حذف ویجت",
+    "RolesTitle": "نقش های دارای دسترسی به ویجت"
   },
   "GroupActionResult": {
     "Id": "شماره  ",
