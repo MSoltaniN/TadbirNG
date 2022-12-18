@@ -9,7 +9,7 @@ export class ChartService extends BaseService {
   widgetToRefresh$ = this.widgetToRefreshSubject.asObservable();
 
   refreshDashboard() {
-    this.widgetToRefreshSubject.next('');
+    this.widgetToRefreshSubject.next("");
   }
 
   applyChartSetting(setting: WidgetSetting, data: any) {
@@ -265,7 +265,7 @@ export class ChartService extends BaseService {
       dataset.forEach((d) => {
         let type = d.type;
         if (d.type == "horizontalBar") type = "bar";
-  
+
         series.push({
           name: d.label,
           data: d.data,

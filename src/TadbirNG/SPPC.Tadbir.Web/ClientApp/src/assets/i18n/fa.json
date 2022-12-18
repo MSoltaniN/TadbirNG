@@ -63,7 +63,9 @@
     "ChartColor":"رنگ",
     "SerieName":"نام سری",
     "ManageWidgets": "مدیریت ویجت ها",
-    "WidgetTitle":"عنوان ویجت"
+    "WidgetTitle":"عنوان ویجت",
+    "WidgetNoData":"!دیتا موجود نیست",
+    "WidgetInProgress":"در حال بارگذاری دیتا ..."
   },
   "Exception": {
     "ErrorCode": "کد خطا",

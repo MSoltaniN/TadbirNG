@@ -80,6 +80,13 @@ export class DashboardService extends BaseService {
     return this.http.post(url, body, this.option).pipe(map((res) => res));
   }
 
+  updateDashboardTab(dashboardTabs: DashboardTab[]) {
+    var url = DashboardApi.DashboardTabs;
+
+    var body = JSON.stringify(dashboardTabs);
+    return this.http.put(url, body, this.option).pipe(map((res) => res));
+  }
+
   removeDashboardTab(tabId) {
     var url = DashboardApi.DashboardTab;
     url = String.Format(url, tabId);

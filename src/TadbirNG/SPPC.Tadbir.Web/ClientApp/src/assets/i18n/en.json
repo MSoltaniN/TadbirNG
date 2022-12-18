@@ -57,7 +57,9 @@
     "AddTab":"Add new Tab",
     "TabName":"Tab name",
     "ManageWidgets": "Manage widgets",
-    "WidgetTitle":"Widget title"
+    "WidgetTitle":"Widget title",
+    "WidgetNoData":"Data is not available!",
+    "WidgetInProgress":"Loading data ..."
   },
   "Exception": {
     "ErrorCode": "Error Code",

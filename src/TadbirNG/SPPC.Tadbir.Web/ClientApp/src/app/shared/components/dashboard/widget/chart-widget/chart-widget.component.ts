@@ -1,5 +1,6 @@
 import {
   AfterContentInit,
+  ChangeDetectorRef,
   Component,
   Input,
   OnInit,
@@ -63,8 +64,6 @@ export class ChartWidgetComponent implements OnInit, AfterContentInit {
   }
 
   changeSettings(settings: WidgetSetting) {
-    debugger;
-
     const singleType = settings.series.every(
       (val, i, arr) => val.type === arr[0].type
     );
@@ -86,10 +85,6 @@ export class ChartWidgetComponent implements OnInit, AfterContentInit {
     // setTimeout(() => {
     //   this.options = Object.assign({}, newOptions);
     //   echartsObj.setOption(newOptions, true, true);
-    // }, 10);
-
-    // setTimeout(() => {
-    //   this.chart.reinit();
     // }, 10);
   }
 }

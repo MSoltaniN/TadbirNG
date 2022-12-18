@@ -29,6 +29,7 @@ import {
   CompactType,
   DisplayGrid,
   Draggable,
+  GridsterComponent,
   GridsterConfig,
   GridsterItem,
   GridType,
@@ -48,6 +49,7 @@ import { WidgetSetting } from "@sppc/shared/models/widgetSetting";
 import { ChartService } from "@sppc/shared/services/chart.service";
 import { take } from "rxjs/operators";
 import { MessageType } from "@sppc/shared/enum/metadata";
+import * as echarts from "echarts";
 
 interface DashboardConfig extends GridsterConfig {
   draggable: Draggable;
@@ -58,6 +60,7 @@ interface DashboardConfig extends GridsterConfig {
 class WidgetTabSubject {
   widgets: Subject<GridsterItem[]>;
   tabId: number;
+  hasData: boolean;
 }
 
 class TabWidgetInfo implements TabWidget {
@@ -113,13 +116,14 @@ export class DashboardComponent
   public bankBalance: any;
   public liquidRatio: any;
   public unbalancedVoucherCount: any;
+  private editInlineTabName: number = 0;
 
   options: DashboardConfig;
 
   dashboard: Array<GridsterItem> = [];
   dashboardSubject = new BehaviorSubject<Array<GridsterItem>>(this.dashboard);
   widgetList$ = this.dashboardSubject.asObservable();
-
+  tabTitle: string;
   tabSubjects: Array<WidgetTabSubject> = [];
 
   isDashboardEditMode: boolean;
@@ -139,10 +143,13 @@ export class DashboardComponent
     )[0];
   }
 
+  widgetStatus: { [id: string]: any } = {};
   widgetData: { [id: string]: any } = {};
   widgetOptions: { [id: string]: DashboardConfig } = {};
   widgetSettings: { [id: string]: WidgetSetting } = {};
   widgets: { [id: string]: GridsterItem[] } = {};
+
+  @ViewChild(GridsterComponent) gridSter: GridsterComponent;
 
   grossChartData;
   netChartData;
@@ -359,7 +366,6 @@ export class DashboardComponent
   }
 
   onSettingChanged(option) {
-    debugger;
     const id = option.widgetId + "-" + option.tabId;
     this.widgetSettings[id].series = option.setting.series;
     this.widgetSettings[id].title = option.setting.title;
@@ -369,6 +375,17 @@ export class DashboardComponent
       this.widgetData[id]
     );
     this.widgetData[id] = data;
+
+    const element: any = document.getElementById(
+      option.setting.chartId.toString()
+    );
+    let echartsObj = echarts.getInstanceByDom(element);
+    const height = echartsObj.getHeight();
+    const width = echartsObj.getWidth();
+    echartsObj.resize({ width: width + 1, height: height + 1 });
+    setTimeout(() => {
+      echartsObj.resize({ width: width - 1, height: height - 1 });
+    }, 10);
   }
 
   getOptions(typeId, widgetId, tabId) {
@@ -448,7 +465,7 @@ export class DashboardComponent
                   setting.height = item.rows;
                   setting.x = item.x;
                   setting.y = item.y;
-                  debugger;
+
                   if (widgetSetting.series.length > 0)
                     setting.series = widgetSetting.series;
                   if (widgetSetting.title) setting.title = widgetSetting.title;
@@ -470,6 +487,10 @@ export class DashboardComponent
       this.dashboardService
         .saveDashboardWidgets(widgetsToUpdate)
         .pipe(take(2))
+        .subscribe(() => {});
+
+      this.dashboardService
+        .updateDashboardTab(this.currentDashboard.tabs)
         .subscribe(() => {});
     });
   }
@@ -634,6 +655,27 @@ export class DashboardComponent
       });
   }
 
+  tabTitleDblClick(tabId: number, title: string) {
+    this.editInlineTabName = tabId;
+    this.tabTitle = title;
+  }
+
+  onTitleEnterKey(tabId: number) {
+    this.editInlineTabName = 0;
+    this.saveTabTitle(tabId, this.tabTitle);
+  }
+
+  onBlurTabName(tabId: number) {
+    this.editInlineTabName = 0;
+    this.saveTabTitle(tabId, this.tabTitle);
+  }
+
+  saveTabTitle(tabId: number, title: string) {
+    this.currentDashboard.tabs.find((t) => t.id === tabId).title = title;
+  }
+
+  updateTabName() {}
+
   initDashboard() {
     this.options = {
       gridType: GridType.ScrollVertical,
@@ -646,9 +688,9 @@ export class DashboardComponent
       outerMarginLeft: 5,
       useTransformPositioning: true,
       mobileBreakpoint: 200,
-      minCols: 25,
+      minCols: 35,
       maxCols: 100,
-      minRows: 25,
+      minRows: 50,
       maxRows: 100,
       keepFixedHeightInMobile: false,
       keepFixedWidthInMobile: false,
@@ -775,13 +817,16 @@ export class DashboardComponent
     widgetTitle,
     settingSeries: any[]
   ) {
+    const id = widgetId + "-" + tabId;
+    this.widgetStatus[id] = "progress";
     return this.dashboardService
       .getWidgetData(widgetId)
       .pipe(take(2))
       .subscribe((res) => {
+        this.widgetStatus[id] = "done";
         let init = false;
         const series = [];
-        const id = widgetId + "-" + tabId;
+        //const id = widgetId + "-" + tabId;
         if (this.widgetSettings[id].series.length == 0) {
           init = true;
         }
@@ -823,20 +868,20 @@ export class DashboardComponent
         }
         //gauge
         if (widgetType != 10) {
-          if (!init) {
-            if (this.widgetSettings[id]) {
-              res = this.chartService.applyChartSetting(
-                this.widgetSettings[id],
-                res
-              );
-            }
-          } else {
-            this.widgetSettings[id].series = series;
-            res = this.chartService.applyChartSetting(
-              this.widgetSettings[id],
-              res
-            );
-          }
+          // if (!init) {
+          //   if (this.widgetSettings[id]) {
+          //     res = this.chartService.applyChartSetting(
+          //       this.widgetSettings[id],
+          //       res
+          //     );
+          //   }
+          // } else {
+          this.widgetSettings[id].series = series;
+          res = this.chartService.applyChartSetting(
+            this.widgetSettings[id],
+            res
+          );
+          //}
         }
 
         this.widgetData[widgetId + "-" + tabId] = res;

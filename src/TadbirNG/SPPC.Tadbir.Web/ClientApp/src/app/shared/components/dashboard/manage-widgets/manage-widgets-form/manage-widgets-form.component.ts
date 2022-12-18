@@ -127,7 +127,7 @@ export class ManageWidgetsFormComponent
       values.Accounts = this.widgetAccounts;
       if (this.isNew) {
         values.id = 0;
-        values.defaultSettings = '{"x":0,"y":0,"width":10,"height":8}';
+        values.defaultSettings = '{"x":0,"y":0,"width":15,"height":10}';
       } else {
         values.defaultSettings = this.model.defaultSettings;
       }

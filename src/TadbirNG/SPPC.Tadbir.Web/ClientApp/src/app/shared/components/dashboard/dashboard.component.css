@@ -19,6 +19,24 @@
   background-color: transparent;
 }
 
+.grid-ster
+{
+  font-family: 'SPPC';
+}
+
+.no-data
+{
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 30%;
+}
+
+.input-tab-name
+{
+  width:100px;
+}
+
 ::ng-deep body.tRtl .title {
   float: right !important;
 }
