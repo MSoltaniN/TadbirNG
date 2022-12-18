@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { RowArgs, RowClassArgs } from "@progress/kendo-angular-grid";
 import { Widget } from "@sppc/shared/models/widget";
-import { DashboardService } from "@sppc/shared/services";
+import { BrowserStorageService, DashboardService } from "@sppc/shared/services";
 
 @Component({
   selector: "add-widget",
@@ -8,11 +9,26 @@ import { DashboardService } from "@sppc/shared/services";
   styleUrls: ["./add-widget.component.css"],
 })
 export class AddWidgetComponent implements OnInit {
-  constructor(private dashboardService: DashboardService) {}
-  selectedWidgets: Widget[];
+  constructor(private dashboardService: DashboardService,
+              public bStorageService: BrowserStorageService,
+              ) {}
+  @Input() selectedWidgets: Widget[];
 
   selectedId;
   widgets: Widget[];
+  selectedKeys: any[];
+  public get CurrentLanguage(): string {
+    var lang: string = "fa";
+
+    if (this.bStorageService.getLanguage() != null) {
+      var item: string | null;
+      item = this.bStorageService.getLanguage();
+
+      if (item) lang = item;
+    }
+
+    return lang;
+  }
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<any> = new EventEmitter();
@@ -21,6 +37,7 @@ export class AddWidgetComponent implements OnInit {
     this.dashboardService.getWidgetList().subscribe((widgetList: Widget[]) => {
       this.widgets = widgetList;
     });
+    this.selectionToggleClass = this.selectionToggleClass.bind(this);
   }
 
   widgetIsUsed(widgetId) {
@@ -32,8 +49,23 @@ export class AddWidgetComponent implements OnInit {
     return false;
   }
 
+  selectionToggleClass(context:RowClassArgs){
+    let isDisabled = false;
+    if (this.selectedWidgets)
+      isDisabled = this.selectedWidgets.findIndex((w: any) => w.widgetId == context.dataItem.id) >= 0
+    return { 'k-disabled' : isDisabled };
+  }
+
   activate(id: number) {
     this.selectedId = id;
+  }
+
+  getSelectedRow(item: RowArgs) {
+    return item.dataItem.id;
+  }
+
+  onSelectedKeyChange(keys) {
+    this.selectedId = keys[0];
   }
 
   onSave(e: any): void {

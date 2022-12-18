@@ -198,49 +198,7 @@ export class FiscalPeriodComponent
       }
     );
   }
-  /*
-  public saveHandler(model: FiscalPeriod, isNew: boolean) {
-    model.companyId = this.CompanyId;
-    if (!isNew) {
-      this.fiscalPeriodService.edit<FiscalPeriod>(String.Format(FiscalPeriodApi.FiscalPeriod, model.id), model)
-        .subscribe(response => {
-          this.editDataItem = undefined;
-          this.showMessage(this.updateMsg, MessageType.Succes);
 
-          this.dialogRef.close();
-          this.dialogModel.errorMessages = undefined;
-          this.dialogModel.model = undefined;
-
-          this.reloadGrid();
-          this.selectedRows = [];
-        }, (error => {
-          this.editDataItem = model;
-          this.dialogModel.errorMessages = error;
-        }));
-    }
-    else {
-      this.fiscalPeriodService.insert<FiscalPeriod>(FiscalPeriodApi.FiscalPeriods, model)
-        .subscribe((response: any) => {
-          this.editDataItem = undefined;
-          this.showMessage(this.insertMsg, MessageType.Succes);
-          var insertedModel = response;
-
-          this.dialogRef.close();
-          this.dialogModel.errorMessages = undefined;
-          this.dialogModel.model = undefined;
-
-          var options = new ReloadOption();
-          options.InsertedModel = insertedModel
-          this.reloadGrid(options);
-          
-          this.selectedRows = [];
-
-        }, (error => {
-          this.dialogModel.errorMessages = error;
-        }));
-    }
-  }
-*/
   public rolesHandler() {
     if (this.selectedRows.length == 1) {
       this.rolesList = true;

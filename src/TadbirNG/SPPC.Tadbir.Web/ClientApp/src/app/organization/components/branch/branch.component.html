@@ -194,7 +194,7 @@
                 (sppcClick)="rolesHandler()"
                 class="k-button k-button-icon"
                 [disabled]="selectedRows.length != 1"
-                title="{{ 'Branch.Roles' | translate }}"
+                title="{{ 'Branch.RolesTitle' | translate }}"
               >
                 <span class="k-icon k-i-sort-asc"></span>
               </button>
@@ -337,7 +337,7 @@
             [minWidth]="250"
             [width]="450"
           >
-            <p>
+            <p >
               {{ deleteConfirmMsg }}
             </p>
             <kendo-dialog-actions>

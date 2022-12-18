@@ -604,7 +604,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       this.voucherService
         .edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model)
         .subscribe(
-          (res) => {
+          async (res) => {
+            let entityType = await this.translate.get("Voucher.Voucher").toPromise();
+            let msg = await this.translate.get("Messages.Updated").toPromise();
+            this.updateMsg = String.Format(msg, entityType);
+
             this.editForm.reset(res);
             this.voucherModel = res;
             this.errorMessages = undefined;

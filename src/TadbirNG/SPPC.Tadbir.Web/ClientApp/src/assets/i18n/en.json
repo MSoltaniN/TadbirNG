@@ -130,11 +130,11 @@
   "Exports": {
     "True": "True",
     "False": "False",
-    "ExportToExcel": "Export to excel"
+    "ExportToExcel": "Export to Excel"
   },
   "Buttons": {
     "Add": "New",
-    "Ok": "Ok",
+    "Ok": "OK",
     "Cancel": "Cancel",
     "Yes": "Yes",
     "No": "No",
@@ -144,7 +144,7 @@
     "GroupDelete": "Delete Group",
     "Setting": "Setting",
     "Search": "Search",
-    "Filter": "filter",
+    "Filter": "Filter",
     "DeleteFilter": "Delete Filter",
     "OkAndNew": "Save And New",
     "Help": "Help",
@@ -152,7 +152,7 @@
     "Tools": "Tools",
     "Save": "Save",
     "Close": "Close",
-    "Subset": "subset",
+    "Subset": "Subset",
     "Compute": "Compute",
     "Next": "Next",
     "Previous": "Previous",
@@ -167,9 +167,9 @@
   },
   "Entity": {
     "Account": "Account",
-    "Voucher": "Vouchers Managment",
+    "Voucher": "Vouchers Management",
     "VoucherLine": "Voucher Article",
-    "VoucherEditor": "Voucher detail",
+    "VoucherEditor": "Voucher Detail",
     "User": "User",
     "Role": "Role",
     "Password": "Password",
@@ -202,7 +202,7 @@
     "CurrencyBook": "Currency Book",
     "SystemIssue": "System Control",
     "BalanceByAccount": "Balance By Account",
-    "Widget": "Widgets"
+    "Widget": "Widget"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": " Number Of Vouchers Selected :",
@@ -277,7 +277,7 @@
     "SearchTitle": "Search"
   },
   "AdvanceFilter": {
-    "Title": "Advance Filter",
+    "Title": "Advanced Filter",
     "Braces": "Parentheses",
     "EditFilter": "Edit Filter",
     "RemoveFilter": "Delete Filter",
@@ -908,13 +908,13 @@
   "Branch": {
     "BranchName": "Branch",
     "New": "New Branch",
-    "NewSubBrench": "New Sub Branch",
+    "NewSubBrench": "New Branch Division",
     "Delete": "Delete Branch",
     "Name": "Name",
     "Description": "Description",
     "Roles": "Roles",
-    "UpdateRoles": "Branch roles have been successfully edited",
-    "RolesTitle": "List of available roles to the branch",
+    "UpdateRoles": "Roles with access have been successfully edited",
+    "RolesTitle": "Roles who can access the branch",
     "NotFoundData": "Not Found Branch",
     "LedgerBranch": "Branches",
     "CreateBranch": "Create Branch",
@@ -922,6 +922,7 @@
     "BranchIsNotAccess": "The created branch will not be visible until the current user is granted access"
   },
   "Voucher": {
+    "Voucher": "Voucher",
     "New": "New Voucher",
     "Edit": "Edit",
     "Delete": "Delete",
@@ -1040,32 +1041,32 @@
     "Companies": "Companies"
   },
   "RoleUsers": {
-    "Name": "Name",
+    "Name": "Full Name",
     "UserName": "User Name",
     "PersonFirstName": "First Name",
     "PersonLastName": "Last Name",
     "IsEnabled": "Status",
-    "RoleUsers": "Users have the role of '{0}'",
+    "RoleUsersTitle": "Users with role '{0}'",
     "RecordNotFound": "This role has not been assigned to any user"
   },
   "RoleBranches": {
     "Name": " Branch Name",
     "Description": "Description",
     "RoleBranchesTitle": "Branches accessible by '{0}'",
-    "RecordNotFound": "This role has no branch"
+    "RecordNotFound": "This role cannot access any branch"
   },
   "RoleCompanies": {
     "Name": " Company Name",
     "Description": "Description",
     "RoleCompaniesTitle": "Companies accessible by '{0}'",
-    "RecordNotFound": "This role has no company"
+    "RecordNotFound": "This role cannot access any company"
   },
   "RoleFiscalPeriod": {
     "Name": "Fiscal Period Name",
     "RoleFiscalPeriodTitle": "Fiscal periods accessible by '{0}'"
   },
   "RoleDetail": {
-    "RoleDetailTitle": "Role details '{0}'"
+    "RoleDetailTitle": "Role details for '{0}'"
   },
   "DetailAccount": {
     "New": "New Detail Account",
@@ -1137,9 +1138,9 @@
     "StartDate": "Start Date",
     "EndDate": "End Date",
     "Description": "Description",
-    "UpdateRoles": "Fiscal period roles have been successfully edited",
+    "UpdateRoles": "Roles with access have been successfully edited",
     "Roles": "Roles",
-    "RolesTitle": "Fiscal Period Roles List",
+    "RolesTitle": "Roles who can access fiscal period",
     "CreateFiscalPeriod": "Create Fiscal Period",
     "ChangeFiscalPeriod": "Change Fiscal Period"
   },
@@ -1236,7 +1237,9 @@
     "Description": "Description",
     "MyWidgets": "My widgets",
     "AllWidgets": "All widgets",
-    "WidgetOwner": "Widget Group"
+    "WidgetOwner": "Widget Group",
+    "Delete": "Delete Widget",
+    "RolesTitle": "Roles who can access the widget"
   },
   "AllValidations": {
     "Account": {

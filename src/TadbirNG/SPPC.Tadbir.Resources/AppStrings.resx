@@ -3708,4 +3708,7 @@
   <data name="CannotDeleteUsedDashboardTab" xml:space="preserve">
     <value>پیش از حذف برگه از داشبورد، ابتدا باید ویجت های اضافه شده به برگه را حذف کنید.</value>
   </data>
+  <data name="WidgetAccess" xml:space="preserve">
+    <value>دسترسی به ویجت</value>
+  </data>
 </root>

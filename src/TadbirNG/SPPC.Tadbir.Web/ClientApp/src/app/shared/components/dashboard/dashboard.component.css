@@ -174,3 +174,7 @@ a i {
 ::ng-deep .p-tabview-panels{
   direction: ltr;
 }
+
+::ng-deep .k-window-content {
+  overflow-x: hidden;
+}

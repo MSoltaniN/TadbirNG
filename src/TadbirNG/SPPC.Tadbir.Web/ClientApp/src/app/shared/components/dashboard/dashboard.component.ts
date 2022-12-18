@@ -742,26 +742,23 @@ export class DashboardComponent
 
   removeTab(tabId) {
     //TODO:posts record to DashboardTab table
-    this.getWidgets(tabId)
-      .pipe(take(1))
-      .subscribe(async (res) => {
-        if (res.length) {
-          let msg = await this.translateService
-            .get("Messages.FirstRemoveWidgets")
-            .toPromise();
-          this.showMessage(msg, MessageType.Warning);
-        } else {
-          this.dashboardService
-            .removeDashboardTab(tabId)
-            .pipe(take(2))
-            .subscribe(() => {
-              const index = this.currentDashboard.tabs.findIndex(
-                (t) => t.id == tabId
-              );
-              this.currentDashboard.tabs.splice(index, 1);
-            });
-        }
-      });
+    this.getWidgets(tabId).pipe(
+      take(1)
+    ).subscribe(async (res) => {
+      if (res.length) {
+        let msg = await this.translateService.get('Messages.FirstRemoveWidgets').toPromise();
+        this.showMessage(msg,MessageType.Warning);
+      } else {
+        this.dashboardService.removeDashboardTab(tabId)
+        .pipe(take(2))
+        .subscribe(() => {
+          const index = this.currentDashboard.tabs.findIndex((t) => t.id == tabId);
+          this.currentDashboard.tabs.splice(index, 1);
+        }, err => {
+          this.showMessage(err.messages[0],MessageType.Warning)
+        });
+      }
+    })
   }
 
   getWidgetsSubject(tabId) {
