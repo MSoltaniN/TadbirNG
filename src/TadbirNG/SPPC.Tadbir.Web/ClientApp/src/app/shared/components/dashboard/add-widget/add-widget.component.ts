@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { RowArgs, RowClassArgs } from "@progress/kendo-angular-grid";
 import { Widget } from "@sppc/shared/models/widget";
-import { DashboardService } from "@sppc/shared/services";
+import { BrowserStorageService, DashboardService } from "@sppc/shared/services";
 
 @Component({
   selector: "add-widget",
@@ -9,12 +9,26 @@ import { DashboardService } from "@sppc/shared/services";
   styleUrls: ["./add-widget.component.css"],
 })
 export class AddWidgetComponent implements OnInit {
-  constructor(private dashboardService: DashboardService) {}
+  constructor(private dashboardService: DashboardService,
+              public bStorageService: BrowserStorageService,
+              ) {}
   @Input() selectedWidgets: Widget[];
 
   selectedId;
   widgets: Widget[];
   selectedKeys: any[];
+  public get CurrentLanguage(): string {
+    var lang: string = "fa";
+
+    if (this.bStorageService.getLanguage() != null) {
+      var item: string | null;
+      item = this.bStorageService.getLanguage();
+
+      if (item) lang = item;
+    }
+
+    return lang;
+  }
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<any> = new EventEmitter();

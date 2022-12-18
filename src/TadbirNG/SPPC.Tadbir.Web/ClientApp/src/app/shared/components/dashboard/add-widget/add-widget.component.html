@@ -17,11 +17,10 @@
     <div class="voucher-form-content">
         <div class="panel-body">
             <kendo-grid
-              id="{{ viewId }}"
               #GridID
               [ngClass]="{
-                tRtl: this.currentlang === 'fa',
-                tLtr: this.currentlang === 'en'
+                tRtl: this.CurrentLanguage === 'fa',
+                tLtr: this.CurrentLanguage === 'en'
               }"
               [data]="widgets"
               [height]="300"
@@ -37,20 +36,20 @@
 
               <kendo-grid-checkbox-column
                 showSelectAll="false"
-                [width]="45"
+                [width]="50"
               >
               </kendo-grid-checkbox-column>
 
-              <kendo-grid-column [width]="100" field="title" title="{{ 'Widget.Title' | translate }}">
+              <kendo-grid-column [width]="130" field="title" title="{{ 'Widget.Title' | translate }}">
               </kendo-grid-column>
               
-              <kendo-grid-column [width]="150" field="functionName" title="{{ 'Widget.FunctionName' | translate }}">
+              <kendo-grid-column [width]="130" field="functionName" title="{{ 'Widget.FunctionName' | translate }}">
               </kendo-grid-column>
 
-              <kendo-grid-column [width]="150" field="typeName" title="{{ 'Widget.TypeName' | translate }}">
+              <kendo-grid-column [width]="130" field="typeName" title="{{ 'Widget.TypeName' | translate }}">
               </kendo-grid-column>
 
-              <kendo-grid-column [width]="100" field="description" title="{{ 'Widget.Description' | translate }}">
+              <kendo-grid-column [width]="150" field="description" title="{{ 'Widget.Description' | translate }}">
               </kendo-grid-column>
 
             </kendo-grid>
