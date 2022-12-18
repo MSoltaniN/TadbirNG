@@ -278,6 +278,15 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
         if (!registerData) { //Add data to datastore
           let bools = (<Array<any>>dataSet.tables.list[0].columns.list).filter(col => col.dataType.name == 'Boolean');
           this.getBooleanTranslate(bools);
+
+          if (this.CurrentLanguage == 'fa') {
+            let rowNo = (<Array<any>>dataSet.tables.list[0].columns.list).filter(col => col.columnName == 'rowNo');
+            let code = (<Array<any>>dataSet.tables.list[0].columns.list).filter(col => col.columnName == 'code');
+            let fullCode = (<Array<any>>dataSet.tables.list[0].columns.list).filter(col => col.columnName == "fullCode");
+            this.enNumsToFa(rowNo);
+            this.enNumsToFa(code);
+            this.enNumsToFa(fullCode);
+          }
           
           this.report.regData("data", "data", dataSet);
         }
@@ -345,6 +354,18 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
         this.showDesginedReportViewer(reportData, this.report);
       }
     }, 10);
+  }
+
+  enNumsToFa(args:any) {
+    const farsiDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+    args.forEach(col => {
+      let arrays = [];
+      (<Array<any>>col.storage.values).forEach(item => {
+        item = item.toString().replace(/\d/g, x => farsiDigits[x]);
+        arrays.push(item);
+      });
+      col.storage.values = arrays;
+    });
   }
 
   getBooleanTranslate(args:any) {

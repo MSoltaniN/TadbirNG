@@ -302,7 +302,6 @@ export class VoucherLineFormComponent
 
   @HostListener('document:keydown.enter')
   onEnterKey() {
-    this.isEnableSaveBtn = false;
     this.onSave(true);
   }
 

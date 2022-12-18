@@ -227,3 +227,8 @@ INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], 
 INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
     VALUES (276, 2, 92, N'همه ویجت ها', NULL)
 SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
+
+-- 1.2.1460
+UPDATE [Metadata].[Column]
+SET [IsNullable] = 1
+WHERE [ViewID] = 2 AND [Name] IN('OriginName', 'TypeName')

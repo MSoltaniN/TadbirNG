@@ -263,9 +263,6 @@ export class ManageWidgetsComponent
                 this.confirmDeleteUsedWidget = true;
                 this.confirmDeleteUsedWidgetMsg = response.toString();
               } else {
-                // let msg = await lastValueFrom(this.translateService.get("Messages.Deleted"))
-                // let entityType = await lastValueFrom(this.translateService.get("Widget.Widget"));
-                // this.deleteMsg = String.Format(msg, entityType);
                 this.afterDelete();
                 this.grid.loading = false;
               }
@@ -294,10 +291,6 @@ export class ManageWidgetsComponent
         .delete(url)
         .subscribe(
           async (res) => {
-            // let msg = await lastValueFrom(this.translateService.get("Messages.Deleted"));
-            // let entityType = await lastValueFrom(this.translateService.get("Widget.Widget"));
-            // this.deleteMsg = String.Format(msg, entityType);
-
             this.afterDelete();
             this.grid.loading = false;
           },
