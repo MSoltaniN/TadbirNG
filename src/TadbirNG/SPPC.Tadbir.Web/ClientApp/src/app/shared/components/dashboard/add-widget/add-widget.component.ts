@@ -17,6 +17,10 @@ export class AddWidgetComponent implements OnInit {
   selectedId;
   widgets: Widget[];
   selectedKeys: any[];
+
+  @Output() cancel: EventEmitter<any> = new EventEmitter();
+  @Output() save: EventEmitter<any> = new EventEmitter();
+
   public get CurrentLanguage(): string {
     var lang: string = "fa";
 
@@ -29,9 +33,6 @@ export class AddWidgetComponent implements OnInit {
 
     return lang;
   }
-
-  @Output() cancel: EventEmitter<any> = new EventEmitter();
-  @Output() save: EventEmitter<any> = new EventEmitter();
 
   ngOnInit() {
     this.dashboardService.getWidgetList().subscribe((widgetList: Widget[]) => {

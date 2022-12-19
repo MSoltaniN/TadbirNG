@@ -1460,11 +1460,12 @@
     },
     "Widget": {
       "NameIsRequired": "Name is required.",
-      "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "NameIsTooLong": "The name can have a maximum of 64 characters.",
       "FunctionIsRequired": "Selecting the Function is mandatory.",
       "TypeIsRequired": "Selecting the widget type is mandatory.",
       "DescriptionIsRequired": "Description is required.",
-      "DescriptionIsTooLong": "شرح می تواند حداکثر 256 حرف داشته باشد."
+      "DescriptionIsTooLong": "The description can have a maximum of 256 characters.",
+      "AccountIdIsRequired": "Account selection is required for this function."
     }
   }
 }
