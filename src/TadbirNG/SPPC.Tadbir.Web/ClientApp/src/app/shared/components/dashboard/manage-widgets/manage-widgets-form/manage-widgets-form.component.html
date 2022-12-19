@@ -52,6 +52,7 @@
                               [valueField]="'id'"
                               [valuePrimitive]="true"
                               [value]="selectedType"
+                              [itemDisabled]="disabledType"
                               (valueChange)="onChangeType($event)"
                               [(ngModel)]="selectedType"
                               formControlName="typeId">
@@ -78,7 +79,12 @@
     </div>
   </form>
 
-  <widget-accounts [selectedAccounts]="widgetAccounts" [isNew]="isNew" (setWidgetAccounts)="setWidgetAccounts($event);"></widget-accounts>
+  <widget-accounts *ngIf="accountRequired" [selectedAccounts]="widgetAccounts"
+   [isNew]="isNew"
+   [accountRequired]="accountRequired"
+   (setWidgetAccounts)="setWidgetAccounts($event);"
+   >
+  </widget-accounts>
 
 </div>
 
