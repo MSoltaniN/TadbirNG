@@ -482,6 +482,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             Array.ForEach(roles.RelatedItems.ToArray(), item => item.Name = _strings[item.Name]);
         }
+
         #endregion
 
         #region Data Lookup

@@ -109,7 +109,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetNewAccountAsync(int accountId)
         {
             var newAccountFull = await _repository.GetNewChildAccountAsync(
-                accountId > 0 ? accountId : (int?)null);
+                accountId > 0 ? accountId : null);
             if (newAccountFull == null)
             {
                 return BadRequestResult(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.Account));

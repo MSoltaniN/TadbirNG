@@ -50,16 +50,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// توکن امنیتی کدگذاری شده داده شده را به صورت اطلاعات محیطی و امنیتی تبدیل کرده و برمی گرداند
-        /// </summary>
-        /// <param name="ticket">توکن امنیتی کدگذاری شده به صورت متنی</param>
-        /// <returns>اطلاعات محیطی و امنیتی به دست آمده از توکن</returns>
-        protected SecurityContext SecurityContextFromTicket(string ticket)
-        {
-            return _tokenManager.GetSecurityContext(ticket) as SecurityContext;
-        }
-
-        /// <summary>
         /// تعداد کل سطرهای اطلاعاتی فهرست جاری را به صورت هدر خاص برنامه به درخواست اضافه می کند
         /// </summary>
         /// <param name="count">تعداد کل سطرها با در نظر گرفتن فیلترهای فعال</param>
@@ -192,7 +182,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var parameters = Request.Headers[AppConstants.ParametersHeaderName];
             if (String.IsNullOrEmpty(parameters))
             {
-                return default(T);
+                return default;
             }
 
             var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(parameters));
@@ -202,13 +192,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private SecurityContext GetSecurityContext()
         {
-            var context = Request.Headers[AppConstants.ContextHeaderName];
-            if (String.IsNullOrEmpty(context))
+            var ticket = Request.Headers[AppConstants.ContextHeaderName];
+            if (String.IsNullOrEmpty(ticket))
             {
                 return null;
             }
 
-            return SecurityContextFromTicket(context);
+            return _tokenManager.GetSecurityContext(ticket) as SecurityContext;
         }
 
         private GridOptions GetGridOptions()
