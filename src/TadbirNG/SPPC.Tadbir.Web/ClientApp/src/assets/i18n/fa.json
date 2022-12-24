@@ -1591,7 +1591,8 @@
       "FunctionIsRequired": "انخاب تابع اجباری است.",
       "TypeIsRequired": "انخاب نوع ویجت اجباری است.",
       "DescriptionIsRequired": "وارد کردن توضیحات اجباری است.",
-      "DescriptionIsTooLong": "شرح می تواند حداکثر 256 حرف داشته باشد."
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 256 حرف داشته باشد.",
+      "AccountIdIsRequired": "انتخاب حساب برای این تابع اجباری است."
     }
   }
 }

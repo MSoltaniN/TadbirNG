@@ -130,3 +130,7 @@ a i {
   font-size: medium;
   color: rgb(0, 96, 206);
 }
+
+::ng-deep .k-window-content {
+  overflow-x: hidden;
+}

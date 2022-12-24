@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, Input,
    OnInit, Output, Renderer2 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogRef, DialogService } from '@progress/kendo-angular-dialog';
+import { ItemArgs } from '@progress/kendo-angular-dropdowns';
 import { FullAccount } from '@sppc/finance/models';
 import { CurrencyService } from '@sppc/finance/service';
 import { DetailComponent } from '@sppc/shared/class';
@@ -12,8 +13,24 @@ import { WidgetType } from '@sppc/shared/models/widgetType';
 import { ViewName } from '@sppc/shared/security';
 import { BrowserStorageService, LookupService, MetaDataService } from '@sppc/shared/services';
 import { ToastrService } from 'ngx-toastr';
-import { map } from 'rxjs/operators';
 import { WidgetService } from '../../services/widget.service';
+
+export enum RequiredAccountFunctions {
+  // گردش بدهکار
+  DebtorTurnover = 1,
+  // گردش بستانکار
+  CreditTurnover = 2,
+  // گردش خالص
+  NetTurnover = 3,
+  // مانده
+  Balance = 4,
+};
+
+export enum GaugesTypes {
+  Gauge_Circular = 10,
+  Gauge_Digital = 11,
+  Gauge_Linear = 12,
+};
 
 @Component({
   selector: 'app-manage-widgets-form',
@@ -58,16 +75,16 @@ export class ManageWidgetsFormComponent extends DetailComponent implements OnIni
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<Widget> = new EventEmitter();
 
-  private dialogRef: DialogRef;
-  
   widgetAccounts: FullAccount[] = [];
   selectedType: any;
   selectedFunction: any;
+  accountRequired: boolean = false;
 
   @Output() setFocus: EventEmitter<any> = new EventEmitter();
 
   ngOnInit() {
 
+    this.disabledType = this.disabledType.bind(this);
     setTimeout(() => {
       this.editForm.reset(this.model);
       if (this.isNew) {
@@ -80,8 +97,6 @@ export class ManageWidgetsFormComponent extends DetailComponent implements OnIni
           createdByFullName: 'null'
         });
       }
-      console.log(this.model);
-      
       this.widgetAccounts = this.model.accounts;
     })
   }
@@ -94,11 +109,24 @@ export class ManageWidgetsFormComponent extends DetailComponent implements OnIni
     this.widgetAccounts = event;
   }
 
-  onChangeFunction(id) {
+  onChangeFunction(id:number) {
+    if (id in RequiredAccountFunctions) {
+      this.accountRequired = true;
+    } else {
+      this.accountRequired = false;
+    }
     let functionName = this.functionsList.find(item => item.id == id).name;
     this.editForm.patchValue({
       functionName: functionName
     });
+  }
+
+  disabledType(item: ItemArgs) {
+    if (this.selectedFunction in RequiredAccountFunctions && item.dataItem.id in GaugesTypes) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   onChangeType(id) {
@@ -108,7 +136,7 @@ export class ManageWidgetsFormComponent extends DetailComponent implements OnIni
     });
   }
 
-  public onSave(e: any): void {
+  public async onSave(e: any) {
     e.preventDefault();
     if (this.editForm.valid) {
       let values = this.editForm.value;
@@ -120,7 +148,14 @@ export class ManageWidgetsFormComponent extends DetailComponent implements OnIni
         values.defaultSettings = this.model.defaultSettings;
       }
 
-      this.save.emit(values);
+      if (this.accountRequired && !this.widgetAccounts) {
+        let msg = await this.translate.get('AllValidations.Widget.AccountIdIsRequired').toPromise();
+        this.errorMessages = [msg];
+      } else {
+        this.errorMessages = [];
+        this.save.emit(values);
+      }
+
     }
   }
 
