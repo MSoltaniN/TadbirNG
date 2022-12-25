@@ -78,6 +78,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         protected IActionResult BranchValidationResult<TFiscalView>(TFiscalView item)
             where TFiscalView : class, IFiscalEntityView
         {
+            Verify.ArgumentNotNull(item, nameof(item));
             var currentContext = SecurityContext.User;
             if (item.BranchId != currentContext.BranchId)
             {
@@ -99,7 +100,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         protected IActionResult ConfigValidationResult<TTreeView>(TTreeView item, ViewTreeConfig treeConfig)
             where TTreeView : class, ITreeEntityView
         {
-            Verify.ArgumentNotNull(treeConfig, "treeConfig");
+            Verify.ArgumentNotNull(treeConfig, nameof(treeConfig));
             if (item.Level == treeConfig.MaxDepth)
             {
                 string message = String.Format(_strings[AppStrings.TreeLevelsAreTooDeep],
@@ -108,15 +109,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var levelConfig = treeConfig.Levels[item.Level];
-            int codeLen = levelConfig.CodeLength;
-            if (item.Code.Length != codeLen)
+            int codeLength = levelConfig.CodeLength;
+            if (item.Code.Length != codeLength)
             {
                 string message = String.Format(_strings[AppStrings.LevelCodeLengthIsIncorrect],
                     _strings[EntityNameKey], levelConfig.Name, levelConfig.CodeLength);
                 return BadRequestResult(message);
             }
 
-            var invalidCode = new string('0', codeLen);
+            var invalidCode = new string('0', codeLength);
             if (item.Code == invalidCode)
             {
                 string message = String.Format(_strings[AppStrings.InvalidLevelCode], item.Code);
@@ -134,7 +135,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="repository">امکان خواندن وضعیت بردارهای حساب را فراهم می کند</param>
         /// <returns>در صورت نبود خطای اعتبارسنجی کد وضعیتی 200 و در غیر این صورت
         /// متن خطا را با کد وضعیتی 400 برای درخواست نامعتبر برمی گرداند</returns>
-        protected async Task<IActionResult> FullAccountValidationResult(
+        protected async Task<IActionResult> FullAccountValidationResultAsync(
             FullAccountViewModel fullAccount, IRelationRepository repository)
         {
             Verify.ArgumentNotNull(repository, nameof(repository));
@@ -145,23 +146,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، عمل حذف گروهی را برای سطرهای مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
-        /// </summary>
-        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای اطلاعاتی مورد نظر برای حذف</param>
-        /// <returns>مجموعه ای از پیغام های خطای اعتبارسنجی</returns>
-        protected async Task<IEnumerable<string>> ValidateGroupDeleteAsync(IEnumerable<int> items)
-        {
-            var messages = new List<string>();
-            foreach (int item in items)
-            {
-                messages.Add(await ValidateDeleteAsync(item));
-            }
-
-            return messages
-                .Where(msg => !String.IsNullOrEmpty(msg));
         }
 
         /// <summary>

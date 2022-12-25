@@ -15,6 +15,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Common;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
@@ -350,6 +351,9 @@ namespace SPPC.Tadbir.Persistence
                 company.DbName);
             sqlBuilder.AppendLine();
             sqlBuilder.Append(GetCompanyScript(scriptPath));
+            sqlBuilder.AppendLine();
+            sqlBuilder.AppendLine(
+                $"INSERT INTO [Core].[Version] ([VersionID], [Number]) VALUES (1, '{DbVersions.CompanyDbVersion}')");
             DbConsole.ExecuteNonQuery(sqlBuilder.ToString());
         }
 

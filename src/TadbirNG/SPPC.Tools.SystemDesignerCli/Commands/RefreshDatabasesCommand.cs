@@ -13,7 +13,7 @@ namespace SPPC.Tools.SystemDesignerCli
         public void Execute()
         {
             string sysConnection = DbConnections.SystemConnection;
-            var scriptPath = @"..\..\..\res";
+            var scriptPath = PathConfig.ResourceRoot;
             var dbUpgrade = new DbUpgradeUtility(new SqlServerConsole());
             ReportProgress(dbUpgrade, sysConnection, scriptPath);
             var companyConnections = dbUpgrade.GetCompanyConnections(sysConnection);

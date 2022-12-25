@@ -1361,7 +1361,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 (article.FullAccount.Project != null && article.FullAccount.Project.Id > 0)
                 ? article.FullAccount.Project
                 : null;
-            result = await FullAccountValidationResult(article.FullAccount, _relationRepository);
+            result = await FullAccountValidationResultAsync(article.FullAccount, _relationRepository);
             if (result is BadRequestObjectResult)
             {
                 return result;

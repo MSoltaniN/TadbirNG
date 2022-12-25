@@ -17,6 +17,7 @@ export class AddWidgetComponent implements OnInit {
   selectedId;
   widgets: Widget[];
   selectedKeys: any[];
+  viewId: number;
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<any> = new EventEmitter();
@@ -39,6 +40,7 @@ export class AddWidgetComponent implements OnInit {
       this.widgets = widgetList;
     });
     this.selectionToggleClass = this.selectionToggleClass.bind(this);
+    this.viewId = 68; // !!! Hard-coded Value !!! TODO: Fix undeclared variable in html file, line 20
   }
 
   widgetIsUsed(widgetId) {
