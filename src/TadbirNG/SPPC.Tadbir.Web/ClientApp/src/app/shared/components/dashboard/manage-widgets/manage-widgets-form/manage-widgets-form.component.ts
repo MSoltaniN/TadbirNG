@@ -100,6 +100,7 @@ export class ManageWidgetsFormComponent
         });
       }
       this.widgetAccounts = this.model.accounts;
+      this.enableSelectAccountForm(this.selectedFunction)
     });
   }
 
@@ -112,15 +113,19 @@ export class ManageWidgetsFormComponent
   }
 
   onChangeFunction(id:number) {
+    this.enableSelectAccountForm(id);
+    let functionName = this.functionsList.find(item => item.id == id).name;
+    this.editForm.patchValue({
+      functionName: functionName,
+    });
+  }
+
+  enableSelectAccountForm(id: number) {
     if (id in RequiredAccountFunctions) {
       this.accountRequired = true;
     } else {
       this.accountRequired = false;
     }
-    let functionName = this.functionsList.find(item => item.id == id).name;
-    this.editForm.patchValue({
-      functionName: functionName,
-    });
   }
 
   disabledType(item: ItemArgs) {
