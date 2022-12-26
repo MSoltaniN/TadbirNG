@@ -78,6 +78,11 @@ export class AccountRelationsFormComponent extends DetailComponent implements On
   public onSave(e: any): void {
     e.preventDefault();
 
+    let selectAllIndex = this.relatedComponentCheckedKeys.findIndex(id => id == -1);
+    if (selectAllIndex > -1) {
+      this.relatedComponentCheckedKeys.splice(selectAllIndex,1);
+    }
+
     var relationModel = new AccountItemRelationsInfo();
     relationModel.id = this.mainComponentModel.id;
     relationModel.relatedItemIds = this.relatedComponentCheckedKeys;
