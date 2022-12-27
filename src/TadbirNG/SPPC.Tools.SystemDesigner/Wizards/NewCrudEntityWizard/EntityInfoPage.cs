@@ -36,11 +36,20 @@ namespace SPPC.Tools.SystemDesigner.Wizards.NewCrudEntityWizard
             }
         }
 
+        private static Repository LoadXmlMetadataRepository(string path)
+        {
+            var serializer = new BasicXmlSerializer();
+            var repository = serializer.Deserialize(path, typeof(Repository)) as Repository;
+            Array.ForEach(repository.Entities.ToArray(), entity => entity.Repository = repository);
+            return repository;
+        }
+
         private void SetupBindings()
         {
             txtSingularName.DataBindings.Add("Text", EntityInfo, "SingularName");
             txtPluralName.DataBindings.Add("Text", EntityInfo, "PluralName");
             chkIsFiscal.DataBindings.Add("Checked", EntityInfo, "IsFiscalEntity");
+            chkIsSystem.DataBindings.Add("Checked", EntityInfo, "IsSystemEntity");
         }
 
         private bool ValidateModel()
@@ -49,14 +58,6 @@ namespace SPPC.Tools.SystemDesigner.Wizards.NewCrudEntityWizard
                 && !String.IsNullOrWhiteSpace(EntityInfo.PluralName)
                 && EntityInfo.Entity != null;
             return isComplete;
-        }
-
-        private Repository LoadXmlMetadataRepository(string path)
-        {
-            var serializer = new BasicXmlSerializer();
-            var repository = serializer.Deserialize(path, typeof(Repository)) as Repository;
-            Array.ForEach(repository.Entities.ToArray(), entity => entity.Repository = repository);
-            return repository;
         }
     }
 }

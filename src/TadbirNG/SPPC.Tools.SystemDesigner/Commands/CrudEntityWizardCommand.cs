@@ -16,6 +16,7 @@ namespace SPPC.Tools.SystemDesigner.Commands
             if (_model.Options.HasController)
             {
                 GenerateController();
+                GenerateEntityResources();
             }
 
             if (_model.Options.HasModel || _model.Options.HasViewModel
@@ -77,6 +78,14 @@ namespace SPPC.Tools.SystemDesigner.Commands
 
         private void GeneratePermissions()
         {
+            var command = new GeneratePermissionsCommand(_model);
+            command.Execute();
+        }
+
+        private void GenerateEntityResources()
+        {
+            var command = new AddEntityResourceCommand(_model.EntityInfo);
+            command.Execute();
         }
 
         private void GenerateClientTypes()
