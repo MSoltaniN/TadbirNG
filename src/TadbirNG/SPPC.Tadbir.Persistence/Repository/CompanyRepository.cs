@@ -463,8 +463,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             var inactive = await repository.GetSingleByCriteriaAsync(
                 c => c.Id != company.Id && !c.IsActive &&
-                (c.DbName.ToLower() == company.DbName.ToLower() ||
-                    c.Name.ToLower() == company.Name.ToLower()));
+                c.DbName.ToLower() == company.DbName.ToLower());
             if (inactive != null)
             {
                 await PrepareNewCompanyAsync(company);
