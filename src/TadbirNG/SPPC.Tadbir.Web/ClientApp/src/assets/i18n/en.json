@@ -1151,7 +1151,11 @@
   "Paging": {
     "Record": "Record",
     "Of": "Of",
-    "ItemsPerPage": "Items Per Page"
+    "ItemsPerPage": "Items Per Page",
+    "NextPage": "Next Page",
+    "PreviousPage": "Previous Page",
+    "FirstPage": "Go to the First page",
+    "LastPage": "Go to the Last Page"
   },
   "Grid": {
     "noRecords": "row not found!!!!!!!!!!"
