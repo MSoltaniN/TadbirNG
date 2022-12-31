@@ -231,7 +231,7 @@ export class DashboardComponent
     Chart.defaults.font.family = "'SPPC'";
 
     this.subscription = this.chartService.widgetToRefresh$.subscribe(() => {
-      this.fillDashboardSubjects(true);
+      this.refreshDashboard();
     });
 
     if (this.currentContext.fpId > 0 && this.currentContext.branchId > 0) {
@@ -538,6 +538,16 @@ export class DashboardComponent
     // }
 
     // this.dashboardSubject.next(this.dashboard.filter((w) => w.selected));
+  }
+
+  refreshDashboard() {
+    this.dashboardService
+      .getCurrentDashboard()
+      .pipe(take(2))
+      .subscribe((dashboard: Dashboard) => {
+        this.currentDashboard = dashboard;
+        this.fillDashboardSubjects(true);
+      });
   }
 
   onTabChange($event) {
@@ -1033,17 +1043,15 @@ export class DashboardComponent
 
   getData(widgetId, tabId) {
     const data = this.widgetData[widgetId + "-" + tabId];
-    if (data) {
-      //const setting = this.widgetSettings[widgetId+ '-' + tabId];
-      //const newData = this.chartService.applyChartSetting(setting,data);
-      //return newData;
-    }
     return data;
   }
 
   fillDashboardSubjects(forceRefresh: boolean = false) {
     let widgets = [];
     if (this.currentDashboard) {
+      if (forceRefresh) {
+        this.tabSubjects = [];
+      }
       this.currentDashboard.tabs.forEach((tab) => {
         widgets = this.getWidgetList(tab.id, forceRefresh);
 
