@@ -17,5 +17,7 @@ namespace SPPC.Tools.Model
         public string PluralName { get; set; }
 
         public bool IsFiscalEntity { get; set; }
+
+        public bool IsSystemEntity { get; set; }
     }
 }

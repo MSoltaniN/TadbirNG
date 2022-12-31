@@ -38,11 +38,13 @@
             this.txtSingularName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.chkIsSystem = new System.Windows.Forms.CheckBox();
             this.grpEntity.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpEntity
             // 
+            this.grpEntity.Controls.Add(this.chkIsSystem);
             this.grpEntity.Controls.Add(this.chkIsFiscal);
             this.grpEntity.Controls.Add(this.cmbEntity);
             this.grpEntity.Controls.Add(this.label5);
@@ -54,8 +56,10 @@
             this.grpEntity.Controls.Add(this.label1);
             this.grpEntity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpEntity.Location = new System.Drawing.Point(0, 0);
+            this.grpEntity.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.grpEntity.Name = "grpEntity";
-            this.grpEntity.Size = new System.Drawing.Size(650, 420);
+            this.grpEntity.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.grpEntity.Size = new System.Drawing.Size(650, 525);
             this.grpEntity.TabIndex = 1;
             this.grpEntity.TabStop = false;
             this.grpEntity.Text = "Entity Information";
@@ -63,9 +67,10 @@
             // chkIsFiscal
             // 
             this.chkIsFiscal.AutoSize = true;
-            this.chkIsFiscal.Location = new System.Drawing.Point(16, 142);
+            this.chkIsFiscal.Location = new System.Drawing.Point(16, 178);
+            this.chkIsFiscal.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chkIsFiscal.Name = "chkIsFiscal";
-            this.chkIsFiscal.Size = new System.Drawing.Size(263, 21);
+            this.chkIsFiscal.Size = new System.Drawing.Size(275, 24);
             this.chkIsFiscal.TabIndex = 8;
             this.chkIsFiscal.Text = "Depends on fiscal period and branch";
             this.chkIsFiscal.UseVisualStyleBackColor = true;
@@ -74,78 +79,93 @@
             // 
             this.cmbEntity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbEntity.FormattingEnabled = true;
-            this.cmbEntity.Location = new System.Drawing.Point(183, 38);
+            this.cmbEntity.Location = new System.Drawing.Point(183, 48);
+            this.cmbEntity.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbEntity.Name = "cmbEntity";
-            this.cmbEntity.Size = new System.Drawing.Size(214, 24);
+            this.cmbEntity.Size = new System.Drawing.Size(214, 28);
             this.cmbEntity.TabIndex = 1;
             this.cmbEntity.SelectedIndexChanged += new System.EventHandler(this.Entity_SelectedIndexChanged);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(413, 109);
+            this.label5.Location = new System.Drawing.Point(413, 136);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(53, 17);
+            this.label5.Size = new System.Drawing.Size(57, 20);
             this.label5.TabIndex = 7;
             this.label5.Text = "(plural)";
             // 
             // txtPluralName
             // 
-            this.txtPluralName.Location = new System.Drawing.Point(183, 106);
+            this.txtPluralName.Location = new System.Drawing.Point(183, 132);
+            this.txtPluralName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtPluralName.Name = "txtPluralName";
-            this.txtPluralName.Size = new System.Drawing.Size(214, 22);
+            this.txtPluralName.Size = new System.Drawing.Size(214, 27);
             this.txtPluralName.TabIndex = 6;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 109);
+            this.label6.Location = new System.Drawing.Point(13, 136);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(152, 17);
+            this.label6.Size = new System.Drawing.Size(154, 20);
             this.label6.TabIndex = 5;
             this.label6.Text = "Entity name (Persian) :";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(413, 75);
+            this.label4.Location = new System.Drawing.Point(413, 94);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(68, 17);
+            this.label4.Size = new System.Drawing.Size(71, 20);
             this.label4.TabIndex = 4;
             this.label4.Text = "(singular)";
             // 
             // txtSingularName
             // 
-            this.txtSingularName.Location = new System.Drawing.Point(183, 72);
+            this.txtSingularName.Location = new System.Drawing.Point(183, 90);
+            this.txtSingularName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSingularName.Name = "txtSingularName";
-            this.txtSingularName.Size = new System.Drawing.Size(214, 22);
+            this.txtSingularName.Size = new System.Drawing.Size(214, 27);
             this.txtSingularName.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 75);
+            this.label2.Location = new System.Drawing.Point(13, 94);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(152, 17);
+            this.label2.Size = new System.Drawing.Size(154, 20);
             this.label2.TabIndex = 2;
             this.label2.Text = "Entity name (Persian) :";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 41);
+            this.label1.Location = new System.Drawing.Point(13, 51);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(90, 17);
+            this.label1.Size = new System.Drawing.Size(94, 20);
             this.label1.TabIndex = 0;
             this.label1.Text = "Entity name :";
             // 
+            // chkIsSystem
+            // 
+            this.chkIsSystem.AutoSize = true;
+            this.chkIsSystem.Location = new System.Drawing.Point(16, 213);
+            this.chkIsSystem.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.chkIsSystem.Name = "chkIsSystem";
+            this.chkIsSystem.Size = new System.Drawing.Size(119, 24);
+            this.chkIsSystem.TabIndex = 9;
+            this.chkIsSystem.Text = "System entity";
+            this.chkIsSystem.UseVisualStyleBackColor = true;
+            // 
             // EntityInfoPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.grpEntity);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "EntityInfoPage";
-            this.Size = new System.Drawing.Size(650, 420);
+            this.Size = new System.Drawing.Size(650, 525);
             this.grpEntity.ResumeLayout(false);
             this.grpEntity.PerformLayout();
             this.ResumeLayout(false);
@@ -164,5 +184,6 @@
         private System.Windows.Forms.TextBox txtSingularName;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox chkIsSystem;
     }
 }
