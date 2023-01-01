@@ -35,8 +35,11 @@ namespace SPPC.Tadbir.Utility
         {
             TotalCount = all
                 .Apply(gridOptions, false)
+                .ApplyQuickFilter(gridOptions, false)
                 .Count();
-            Items = new List<T>(all.Apply(gridOptions));
+            Items = new List<T>(all
+                .Apply(gridOptions)
+                .ApplyQuickFilter(gridOptions));
         }
     }
 }
