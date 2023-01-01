@@ -23,7 +23,7 @@ import {
 } from "@progress/kendo-angular-grid";
 import { CompositeFilterDescriptor } from "@progress/kendo-data-query";
 import { SettingService } from "@sppc/config/service";
-import { DocumentStatusValue } from "@sppc/finance/enum";
+import { DocumentStatusValue, VoucherOperations } from "@sppc/finance/enum";
 import { Voucher, VoucherLine } from "@sppc/finance/models";
 import {
   VoucherLineInfo,
@@ -257,6 +257,14 @@ export class VoucherLineComponent
     }
 
     this.reloadGrid();
+
+    this.voucherService.changeVoucher$.asObservable().subscribe(res => {
+      setTimeout(() => {
+        if (res == 'changed'){
+          this.reloadGrid();
+        }
+      }, 0);
+    })
   }
 
   /**

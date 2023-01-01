@@ -506,7 +506,6 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       .getModelsByFilters(apiUrl, this.filter, this.quickFilter)
       .subscribe(
         (res) => {
-          res.originName = '';
           this.initVoucherForm(res);
           this.errorMessage = undefined;
           this.isLastVoucher = !res.hasNext;
@@ -564,6 +563,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.subjectMode = this.voucherModel.subjectType;
 
     this.currentVoucherNo = this.voucherModel.no;
+
+    this.voucherService.changeVoucher$.next('changed');
   }
 
   voucherTypeListChange(value) {
