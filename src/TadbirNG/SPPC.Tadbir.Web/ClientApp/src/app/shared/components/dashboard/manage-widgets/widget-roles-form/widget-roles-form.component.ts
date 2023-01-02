@@ -5,7 +5,6 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { DefaultComponent, DetailComponent } from '@sppc/shared/class';
 import { Entities, Layout } from '@sppc/shared/enum/metadata';
 import { RelatedItems } from '@sppc/shared/models';
-import { Widget } from '@sppc/shared/models/widget';
 import { DashboardPermissions, SecureEntity, ViewName } from '@sppc/shared/security';
 import { BrowserStorageService, MetaDataService } from '@sppc/shared/services';
 import { ToastrService } from 'ngx-toastr';
