@@ -19,7 +19,8 @@ namespace SPPC.Framework.Extensions
         /// <param name="gridOptions">Options for filtering, sorting and paging items</param>
         /// <param name="withPaging">Indicates if paging needs to be applied; default is true.</param>
         /// <returns>This object</returns>
-        public static IQueryable<T> Apply<T>(this IQueryable<T> queryable, GridOptions gridOptions, bool withPaging = true)
+        public static IQueryable<T> Apply<T>(
+            this IQueryable<T> queryable, GridOptions gridOptions, bool withPaging = true)
         {
             Verify.ArgumentNotNull(queryable, nameof(queryable));
             var options = gridOptions ?? new GridOptions();
@@ -34,13 +35,8 @@ namespace SPPC.Framework.Extensions
                 queryable = queryable.OrderBy(ordering);
             }
 
-            options.Paging ??= new GridPaging();
-            options.Paging.PageIndex = Math.Max(1, options.Paging.PageIndex);   // Prevent zero or negative page index
-            options.Paging.PageSize = Math.Max(1, options.Paging.PageSize);     // Prevent zero or negative page size
-            queryable = (withPaging)
-                ? queryable
-                    .Skip((options.Paging.PageIndex - 1) * options.Paging.PageSize)
-                    .Take(options.Paging.PageSize)
+            queryable = withPaging
+                ? ApplyPaging(queryable, options)
                 : queryable;
 
             return queryable;
@@ -52,14 +48,19 @@ namespace SPPC.Framework.Extensions
         /// <typeparam name="T">Type of items in queryable instance</typeparam>
         /// <param name="queryable">Self reference (this) of queryable instance</param>
         /// <param name="gridOptions">Options for filtering, sorting and paging items</param>
+        /// <param name="withPaging">Indicates if paging needs to be applied; default is true.</param>
         /// <returns>This object</returns>
-        public static IQueryable<T> ApplyQuickFilter<T>(this IQueryable<T> queryable, GridOptions gridOptions)
+        public static IQueryable<T> ApplyQuickFilter<T>(
+            this IQueryable<T> queryable, GridOptions gridOptions, bool withPaging = true)
         {
             Verify.ArgumentNotNull(queryable, nameof(queryable));
             var options = gridOptions ?? new GridOptions();
             if (options.QuickFilter != null)
             {
                 queryable = queryable.Where(options.QuickFilter.ToString());
+                queryable = withPaging
+                    ? ApplyPaging(queryable, options)
+                    : queryable;
             }
 
             return queryable;
