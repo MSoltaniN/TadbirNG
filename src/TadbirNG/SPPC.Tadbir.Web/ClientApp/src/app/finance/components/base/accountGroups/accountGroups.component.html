@@ -32,7 +32,9 @@
               kendoTreeViewSelectable
               [hasChildren]="hasChildren"
               [children]="fetchChildren"
-              [(expandedKeys)]="expandedKeys"
+              [isExpanded]="isExpanded"
+              (collapse)="handleCollapse($event)"
+              (expand)="handleExpand($event)"
               [(selectedKeys)]="selectedKeys"
               (selectionChange)="handleSelection($event)"
               (nodeClick)="onNodeClick($event)"
