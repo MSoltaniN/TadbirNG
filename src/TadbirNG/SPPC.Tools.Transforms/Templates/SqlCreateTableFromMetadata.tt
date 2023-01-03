@@ -3,16 +3,6 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#
-string dbName = "ApplicationDb";
-if (_entities.Length > 0)
-{
-    dbName = _entities[0].Repository.Database;
-}
-#>
-USE [<#= dbName #>]
-GO
-
 SET ANSI_NULLS ON
 GO
 
