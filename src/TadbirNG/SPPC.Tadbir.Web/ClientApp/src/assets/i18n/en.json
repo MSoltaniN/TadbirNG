@@ -1349,7 +1349,8 @@
     },
     "FullAccount": {
       "AccountIdIsRequired": "Account is required.",
-      "NoError": ""
+      "NoError": "",
+      "AvailableItemsRequired": "Please select all available items."
     },
     "Project": {
       "CodeIsRequired": "Code is required.",

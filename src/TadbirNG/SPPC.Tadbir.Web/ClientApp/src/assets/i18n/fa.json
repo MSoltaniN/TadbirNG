@@ -1476,7 +1476,8 @@
     },
     "FullAccount": {
       "AccountIdIsRequired": "وارد کردن حساب اجباری است.",
-      "NoError": ""
+      "NoError": "",
+      "AvailableItemsRequired": "لطفا همه موارد موجود را انتخاب نمایید."
     },
     "Project": {
       "CodeIsRequired": "وارد کردن کد اجباری است.",

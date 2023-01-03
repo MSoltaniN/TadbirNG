@@ -35,7 +35,7 @@
 </ng-container>
 
 <ng-template #itemListRef>
-  <sppc-full-account-detail (save)="onSave($event);" [accountItem]="accountItem" [selectedItem]="selectedItem" [fullAccount]="fullAccount" (close)="closeDialog();"></sppc-full-account-detail>
+  <sppc-full-account-detail (save)="onSave($event);" [strictMode]="true" [accountItem]="accountItem" [selectedItem]="selectedItem" [fullAccount]="fullAccount" (close)="closeDialog();"></sppc-full-account-detail>
 </ng-template>
 
 
