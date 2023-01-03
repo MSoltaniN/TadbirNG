@@ -27,6 +27,9 @@ namespace SPPC.Framework.Extensions
             if (options.Filter != null)
             {
                 queryable = queryable.Where(options.Filter.ToString());
+                queryable = withPaging
+                    ? ApplyPaging(queryable, options)
+                    : queryable;
             }
 
             if (options.SortColumns.Count > 0)
@@ -34,10 +37,6 @@ namespace SPPC.Framework.Extensions
                 string ordering = String.Join(", ", options.SortColumns.Select(col => col.ToString()));
                 queryable = queryable.OrderBy(ordering);
             }
-
-            queryable = withPaging
-                ? ApplyPaging(queryable, options)
-                : queryable;
 
             return queryable;
         }
