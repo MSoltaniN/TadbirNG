@@ -58,6 +58,11 @@ export class SppcFullAccountDetailComponent implements OnInit {
   //accountFullCode: string;
 
   @Input() fullAccount: FullAccountInfo;
+  @Input() set accTitleFilterValue(value:string) {
+    if (value) {
+      this.accountTitle = value;
+    }
+  }
 
   @Output() setFocus: EventEmitter<any> = new EventEmitter();
 
