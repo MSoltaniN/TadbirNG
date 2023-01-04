@@ -143,8 +143,6 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
     }));  
   }
 
-  
-
   async rolesHandler() {
     var branchId = this.selectedRows[0];
 
@@ -227,13 +225,6 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
 
           var context = this.authenticationService.parseJwt(this.Ticket);
 
-          //currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
-          //currentUser.fiscalPeriodName = contextInfo.fiscalPeriodName;
-          //currentUser.branchName = contextInfo.branchName;
-          //currentUser.companyName = contextInfo.companyName;
-          //currentUser.ticket = newTicket;
-          //currentUser.roles = contextInfo.roles;
-
           currentUser.permissions = context.TadbirContext.Permissions;
           currentUser.fiscalPeriodName = context.TadbirContext.FiscalPeriodName;
           currentUser.branchName = context.TadbirContext.BranchName;
@@ -261,5 +252,3 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
     });
   }
 }
-
-

@@ -26,6 +26,8 @@
           >
             <kendo-treeview
               [nodes]="firstTreeNode"
+              [filterable]="true"
+              (filterChange)="filterTreeNodes($event)"
               textField="name"
               kendoTreeViewExpandable
               kendoTreeViewSelectable
