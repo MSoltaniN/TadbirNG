@@ -1383,8 +1383,7 @@
       "FullCodeIsTooLong": "کد کامل می تواند حداکثر 512 حرف داشته باشد.",
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 512 حرف داشته باشد.",
-      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
-      "NoError": ""
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد."
     },
     "CustomerTaxInfo": {
       "CustomerFirstNameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
@@ -1447,14 +1446,12 @@
       "FullCodeIsTooLong": "کد کامل می تواند حداکثر 256 حرف داشته باشد.",
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 256 حرف داشته باشد.",
-      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
-      "NoError": ""
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد."
     },
     "Currency": {
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
-      "TaxCodeIsRequired": "وارد کردن ارز مرتبط مالیاتی اجباری است.",
-      "NoError": ""
+      "TaxCodeIsRequired": "وارد کردن ارز مرتبط مالیاتی اجباری است."
     },
     "DetailAccount": {
       "CodeIsRequired": "وارد کردن کد اجباری است.",
@@ -1463,20 +1460,17 @@
       "FullCodeIsTooLong": "کد کامل می تواند حداکثر 512 حرف داشته باشد.",
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 256 حرف داشته باشد.",
-      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
-      "NoError": ""
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد."
     },
     "FiscalPeriod": {
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
       "StartDateIsRequired": "وارد کردن تاریخ شروع اجباری است.",
       "EndDateIsRequired": "وارد کردن تاریخ پایان اجباری است.",
-      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
-      "NoError": ""
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد."
     },
     "FullAccount": {
       "AccountIdIsRequired": "وارد کردن حساب اجباری است.",
-      "NoError": "",
       "AvailableItemsRequired": "لطفا همه موارد موجود را انتخاب نمایید."
     },
     "Project": {
@@ -1486,15 +1480,13 @@
       "FullCodeIsTooLong": "کد کامل می تواند حداکثر 256 حرف داشته باشد.",
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 256 حرف داشته باشد.",
-      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
-      "NoError": ""
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد."
     },
     "VoucherLine": {
       "CurrencyIdIsRequired": "وارد کردن نوع ارز اجباری است.",
       "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
       "DebitIsRequired": "وارد کردن بدهکار اجباری است.",
-      "CreditIsRequired": "وارد کردن بستانکار اجباری است.",
-      "NoError": ""
+      "CreditIsRequired": "وارد کردن بستانکار اجباری است."
     },
     "Voucher": {
       "NoIsRequired": "وارد کردن شماره اجباری است.",
@@ -1504,8 +1496,7 @@
       "DailyNoIsRequired": "وارد کردن شماره روزانه اجباری است.",
       "ReferenceIsTooLong": "رفرنس می تواند حداکثر 64 حرف داشته باشد.",
       "AssociationIsTooLong": "شماره عطف می تواند حداکثر 64 حرف داشته باشد.",
-      "TypeIsRequired": "وارد کردن نوع سند اجباری است.",
-      "NoError": ""
+      "TypeIsRequired": "وارد کردن نوع سند اجباری است."
     },
     "Login": {
       "UserNameIsRequired": "وارد کردن نام کاربری اجباری است.",
@@ -1513,40 +1504,31 @@
       "PasswordIsRequired": "وارد کردن رمز ورود اجباری است.",
       "PasswordIsTooLong": "رمز ورود می تواند حداکثر 32 حرف داشته باشد.",
       "CompanyIsRequired": "لطفا شرکت را انتخاب کنید.",
-      "BranchIsRequired": "لطفا شعبه را انتخاب کنید.",
-      "FiscalPeriodIsRequired": "لطفا دوره مالی را انتخاب کنید.",
       "PleaseSelectFiscalPeriod": "شعبه مورد نظر انتخاب شد لطفا دوره مالی را انتخاب کنید",
-      "PleaseSelectBranch": "دوره مالی مورد نظر انتخاب شد لطفا شعبه را انتخاب کنید",
-      "NoError": "",
-      "ServerUserNameIsRequired": "لطفا نام کاربری سرور را وارد کنید",
-      "ServerPasswordIsRequired": "لطفا کلمه عبور سرور را وارد کنید"
+      "PleaseSelectBranch": "دوره مالی مورد نظر انتخاب شد لطفا شعبه را انتخاب کنید"
     },
     "PermissionGroup": {
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
       "EntityNameIsTooLong": "نام موجودیت می تواند حداکثر 64 حرف داشته باشد.",
-      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
-      "NoError": ""
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد."
     },
     "Permission": {
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 128 حرف داشته باشد.",
-      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
-      "NoError": ""
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد."
     },
     "Role": {
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
-      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
-      "NoError": ""
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد."
     },
     "UserProfile": {
       "OldPasswordIsRequired": "وارد کردن رمز ورود قدیم اجباری است.",
       "NewPasswordIsRequired": "وارد کردن رمز ورود جدید اجباری است.",
       "NewPasswordLengthRange": "طول رمز ورود جدید باید بین 6 و 20 حرف باشد.",
       "RepeatPasswordIsRequired": "وارد کردن تکرار رمز ورود اجباری است.",
-      "RepeatPasswordAndNewPasswordDoNotMatch": "تکرار رمز ورود و رمز ورود جدید متفاوت هستند.",
-      "NoError": ""
+      "RepeatPasswordAndNewPasswordDoNotMatch": "تکرار رمز ورود و رمز ورود جدید متفاوت هستند."
     },
     "User": {
       "PersonFirstNameIsRequired": "وارد کردن نام اجباری است.",
@@ -1556,20 +1538,17 @@
       "UserNameIsRequired": "وارد کردن نام کاربری اجباری است.",
       "UserNameIsTooLong": "نام کاربری می تواند حداکثر 64 حرف داشته باشد.",
       "PasswordIsRequired": "وارد کردن رمز ورود اجباری است.",
-      "PasswordLengthRange": "طول رمز ورود باید بین 4 و 32 حرف باشد.",
-      "NoError": ""
+      "PasswordLengthRange": "طول رمز ورود باید بین 4 و 32 حرف باشد."
     },
     "Branch": {
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 128 حرف داشته باشد.",
-      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
-      "NoError": ""
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد."
     },
     "Company": {
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 128 حرف داشته باشد.",
-      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
-      "NoError": ""
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد."
     },
     "CompanyDb": {
       "NameIsRequired": "وارد کردن نام اجباری است.",
@@ -1583,8 +1562,7 @@
       "UserNameIsTooLong": "نام کاربری دیتابیس می تواند حداکثر 32 حرف داشته باشد.",
       "PasswordIsTooLong": "کلمه عبور دیتابیس می تواند حداکثر 32 حرف داشته باشد.",
       "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
-      "DbNamePatternNotValid": "فقط حروف لاتین و کاراکتر '_' و '-' مجاز میباشد",
-      "NoError": ""
+      "DbNamePatternNotValid": "فقط حروف لاتین و کاراکتر '_' و '-' مجاز میباشد"
     },
     "AccountGroup": {
       "NameIsRequired": "وارد کردن نام اجباری است.",
