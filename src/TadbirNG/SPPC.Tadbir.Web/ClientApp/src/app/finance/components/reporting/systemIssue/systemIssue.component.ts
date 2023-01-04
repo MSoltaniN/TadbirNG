@@ -266,7 +266,7 @@ export class SystemIssueComponent
     this.getReportData();
   }
 
-  getReportData() {
+  getReportData(reloadGrid = true) {
     if (this.getDataUrl) {
       this.quickFilter = [];
       this.currentFilter = undefined;
@@ -300,7 +300,9 @@ export class SystemIssueComponent
         this.clickedIssues.push(this.selectedSystemIssue.id);
       } else this.listChanged = false;
 
-      this.reloadGrid();
+      if (reloadGrid)
+        this.reloadGrid();
+
       this.gridFilter.removeFilterGridOnly();
     }
   }
@@ -438,23 +440,26 @@ export class SystemIssueComponent
         environment.BaseUrl + this.selectedSystemIssue.deleteApiUrl;
 
       this.systemIssueService.groupDelete(deleteUrl, rowsId).subscribe(
-        (res) => {
-          this.showMessage(
-            this.getText("Messages.OperationSuccessful"),
-            MessageType.Info
-          );
-          this.afterGroupDelete(res, rowsId);
+        (res:any) => {
+          this.deleteMsg = this.getText("Messages.OperationSuccessful");
           if (
             this.rowData.data.length == this.selectedRows.length &&
             this.pageIndex > 1
           )
-            this.pageIndex =
-              (this.pageIndex - 1) * this.pageSize - this.pageSize;
+            this.pageIndex = (this.pageIndex - 1) * this.pageSize - this.pageSize;
 
+          if (this.groupOperation || res.length) {
+            this.getReportData(false);
+            this.afterGroupDelete(res, rowsId);
+          } else {
+            this.showMessage(
+              this.getText("Messages.OperationSuccessful"),
+              MessageType.Info
+            );
+            this.getReportData();
+          }
           this.selectedRows = [];
           this.groupOperation = false;
-
-          this.getReportData();
           this.getIssueCount(this.selectedSystemIssue);
         },
         (error) => {
