@@ -24,6 +24,7 @@ import { UserService } from '@sppc/admin/service';
 import { Router } from '@angular/router';
 import { OperationId } from '@sppc/shared/enum/operationId';
 import { ShareDataService } from '@sppc/shared/services/share-data.service';
+import { lastValueFrom } from 'rxjs';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -144,8 +145,10 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
 
   
 
-  rolesHandler() {
+  async rolesHandler() {
     var branchId = this.selectedRows[0];
+
+    let selectedRoles = await lastValueFrom(this.branchService.getBranchRoles(branchId));
 
     this.dialogRef = this.dialogService.open({
       title: this.getText('Branch.RolesTitle'),
@@ -155,6 +158,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
     this.dialogModel = this.dialogRef.content.instance;
     this.dialogModel.branchId = branchId;
     this.dialogModel.errorMessages = undefined;
+    this.dialogModel.branchRoles = selectedRoles;
 
     this.dialogRef.content.instance.saveBranchRoles.subscribe((res) => {
       this.saveBranchRolesHandler(res);
