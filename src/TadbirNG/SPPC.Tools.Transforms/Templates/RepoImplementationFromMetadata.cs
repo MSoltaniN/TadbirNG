@@ -833,8 +833,7 @@ foreach(var property in entity.Properties
             
             #line default
             #line hidden
-            this.Write(" entity)\r\n        {\r\n            throw new NotImplementedException();\r\n        }\r" +
-                    "\n");
+            this.Write(" entity)\r\n        {\r\n            return String.Empty;\r\n        }\r\n");
             
             #line 190 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
  if(entityInfo.IsFiscalEntity)

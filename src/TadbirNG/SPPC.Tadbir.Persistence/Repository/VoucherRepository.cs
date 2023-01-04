@@ -850,7 +850,7 @@ namespace SPPC.Tadbir.Persistence
                 var items = await query.ToListAsync();
                 prevCount = items
                     .Select(v => Localize(Mapper.Map<VoucherViewModel>(v)))
-                    .ApplyQuickFilter(options)
+                    .ApplyQuickFilter(options, false)
                     .Apply(options, false)
                     .Count();
             }
@@ -868,7 +868,7 @@ namespace SPPC.Tadbir.Persistence
                 var items = await query.ToListAsync();
                 nextCount = items
                     .Select(v => Localize(Mapper.Map<VoucherViewModel>(v)))
-                    .ApplyQuickFilter(options)
+                    .ApplyQuickFilter(options, false)
                     .Apply(options, false)
                     .Count();
             }
@@ -938,6 +938,7 @@ namespace SPPC.Tadbir.Persistence
                 ApproverName = _report.ValueOrDefault(row, "ApproverName"),
                 IsConfirmed = confirmedById > 0,
                 IsApproved = approvedById > 0,
+                BranchId = _report.ValueOrDefault<int>(row, "BranchID"),
                 BranchName = _report.ValueOrDefault(row, "BranchName"),
                 IssuerName = _report.ValueOrDefault(row, "IssuerName"),
                 OriginName = _report.ValueOrDefault(row, "OriginName"),
