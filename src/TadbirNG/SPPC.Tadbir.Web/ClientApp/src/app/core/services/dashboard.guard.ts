@@ -20,11 +20,17 @@ export class DashboardGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    this.navigateToHome();
+
+    if (next.routeConfig.path == 'widgets') {
+      this.hasManageWidgetsAccess();
+    } else {
+      this.hasManageDashboardAccess();
+    }
+      
     return true;
   }
 
-  navigateToHome() {
+  hasManageDashboardAccess() {
     if (!this.enviroment.isAccess('Dashboard',DashboardPermissions.ManageDashboard)) {
       this.router.navigate(["/tadbir/home"]);
       return false;
@@ -41,6 +47,15 @@ export class DashboardGuard implements CanActivate {
               return false;
             }
           })
+    }
+  }
+
+  hasManageWidgetsAccess() {
+    if (!this.enviroment.isAccess('Dashboard',DashboardPermissions.ManageWidgets)) {
+      this.router.navigate(["/tadbir/home"]);
+      return false;
+    } else {
+      return true;
     }
   }
 
