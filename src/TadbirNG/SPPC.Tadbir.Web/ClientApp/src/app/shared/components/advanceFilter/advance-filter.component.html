@@ -138,6 +138,7 @@
           />
           <sppc-datepicker
             *ngIf="this.selectScriptType === 'Date'"
+            [justDate]="true"
             [(ngModel)]="selectedValue"
           ></sppc-datepicker>
         </div>

@@ -72,6 +72,12 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
   @Input() date: any;
   @Input() isDisplayDate: boolean = true;
   @Input() displayDate: any;
+  // دریافت تاریخ بدون ساعت
+  @Input() set justDate(value:boolean) {
+    if (value) {
+      this.inputDateFormat = 'yyyy/MM/dd';
+    }
+  }
 
   @Input() minDate: any;
   @Input() maxDate: any;
