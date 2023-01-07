@@ -50,6 +50,7 @@ import { ChartService } from "@sppc/shared/services/chart.service";
 import { take } from "rxjs/operators";
 import { MessageType } from "@sppc/shared/enum/metadata";
 import * as echarts from "echarts";
+import { DashboardPermissions } from "@sppc/shared/security";
 
 interface DashboardConfig extends GridsterConfig {
   draggable: Draggable;
@@ -153,6 +154,7 @@ export class DashboardComponent
 
   grossChartData;
   netChartData;
+  manageWidgets = DashboardPermissions.ManageWidgets;
 
   subscription: Subscription;
 

@@ -9,7 +9,8 @@
       class="buttons"
       [ngClass]="isDashboardEditMode ? 'col-lg-7 col-md-6' : 'col-md-12'"
     >
-      <a href="#/tadbir/dashboard" (click)="onManageWidgetsClick()">
+      <a *ngIf="isAccess('Dashboard',this.manageWidgets)"
+       href="#/tadbir/dashboard" (click)="onManageWidgetsClick()">
         <i class="fa fa-cubes"></i>{{ "Dashboard.ManageWidgets" | translate }}
       </a>
       <a
