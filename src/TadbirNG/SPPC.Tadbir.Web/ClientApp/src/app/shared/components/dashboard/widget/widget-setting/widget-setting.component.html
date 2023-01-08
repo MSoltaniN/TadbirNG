@@ -1,99 +1,89 @@
 <div class="setting-container">
-  <p-tabView 
-      >
-        <p-tabPanel>
-          <ng-template pTemplate="header">           
-            <span class="tab-title">{{"Dashboard.GeneralSettings" | translate }}</span>
-          </ng-template>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label class="control-label">{{ 'Dashboard.WidgetTitle' | translate }}</label>
-              <input type="text" class="k-textbox input-text" [(ngModel)]="chartTitle" /> 
+  <p-tabView>
+    <p-tabPanel class="tab-body">
+      <ng-template pTemplate="header">
+        <span class="tab-title">{{
+          "Dashboard.GeneralSettings" | translate
+        }}</span>
+      </ng-template>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label class="control-label">{{
+            "Dashboard.WidgetTitle" | translate
+          }}</label>
+          <input
+            type="text"
+            class="k-textbox input-text"
+            [(ngModel)]="chartTitle"
+          />
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel class="tab-body">
+      <ng-template pTemplate="header">
+        <span class="tab-title">{{
+          "Dashboard.SeriesSettings" | translate
+        }}</span>
+      </ng-template>
+      <ul class="series-header">
+        <li class="col-md-12">
+          <div class="form-group">
+            <div class="col-md-8">
+              <label class="control-label serie-title">{{
+                "Dashboard.ChartType" | translate
+              }}</label>
+            </div>
+            <div class="col-md-4">
+              <label class="control-label serie-title">{{
+                "Dashboard.SerieName" | translate
+              }}</label>
             </div>
           </div>
-        </p-tabPanel>
-        <p-tabPanel>
-          <ng-template pTemplate="header">           
-            <span class="tab-title">{{"Dashboard.SeriesSettings" | translate }}</span>
-          </ng-template>            
-            <ul class="series-header">
-              <li class="col-md-12">
-                <div class="form-group">                  
-                  <div class="col-md-8">
-                    <label class="control-label serie-title">{{
-                      "Dashboard.ChartType" | translate
-                    }}</label>
-                  </div>
-                  <!-- <div class="col-md-4">
-                    <label class="control-label serie-title">{{
-                      "Dashboard.ChartColor" | translate
-                    }}</label>
-                  </div> -->
-                  <div class="col-md-4">
-                    <label class="control-label serie-title">{{
-                      "Dashboard.SerieName" | translate
-                    }}</label>
-                  </div>
-                </div>
-              </li>
-            </ul>        
-            <hr>
-            <ul class="series-body" *ngIf="clonedSetting && clonedSetting.series">
-              <li *ngFor="let serie of clonedSetting.series; let i = index" class="col-md-12">
-                <div class="form-group">                  
-                  <div class="col-md-9">                      
-                    <kendo-dropdownlist
-                    class="ddl-acc"
-                    (valueChange)="onChangeChartTypes($event, i)"
-                      [data]="chartTypes"
-                      textField="text"
-                      valueField="value"
-                      [valuePrimitive]="true"
-                      [value]="serie.type"                       
-                    >
-                    </kendo-dropdownlist>
-                  </div>
-                  <!-- <div class="col-md-3">  
-                    <ng-container *ngIf="serie.type == 4" >
-                      <div *ngIf="serie.backgroundColor.length > 0">
-                        <input *ngFor="let color of serie.backgroundColor; index as i;"
-                         class="color-item" [id]="i" [(colorPicker)]="pieColors[i]" [style.background]="pieColors[i]"/>
-                      </div>
-                      
-                    </ng-container>  
-                    <ng-container *ngIf="serie.type == 1 || serie.type == 2 || serie.type == 3">    
-                     
-                    <input class="color-box" [(colorPicker)]="serie.backgroundColor" [style.background]="serie.backgroundColor"/>
-                    </ng-container>  
-                    
-                  </div> -->
-                  <div  class="col-md-3">                  
-                    <input type="text" class="k-textbox series-text" [(ngModel)]="clonedSetting.series[i].name" /> 
-                  </div>
-                  <!-- <div [style.backgroundColor]="serie.backgroundColor" class="circle col-md-1"></div> -->
-                </div>
-              </li>
-            </ul>
-            
-          
-        </p-tabPanel>
-        <p-tabPanel>
-          <ng-template pTemplate="header">           
-            <span class="tab-title">{{"Dashboard.ParamSettings" | translate }}</span>
-          </ng-template>
+        </li>
+      </ul>
+      <hr />
+      <ul class="series-body" *ngIf="clonedSetting && clonedSetting.series">
+        <li
+          *ngFor="let serie of clonedSetting.series; let i = index"
+          class="col-md-12"
+        >
           <div class="form-group">
-            
+            <div class="col-md-9">
+              <kendo-dropdownlist
+                class="ddl-acc"
+                (valueChange)="onChangeChartTypes($event, i)"
+                [data]="chartTypes"
+                textField="text"
+                valueField="value"
+                [valuePrimitive]="true"
+                [value]="serie.type"
+              >
+              </kendo-dropdownlist>
+            </div>
+            <div class="col-md-3">
+              <input
+                type="text"
+                class="k-textbox series-text"
+                [(ngModel)]="clonedSetting.series[i].name"
+              />
+            </div>
           </div>
-        </p-tabPanel>
+        </li>
+      </ul>
+    </p-tabPanel>
+    <p-tabPanel class="tab-body">
+      <ng-template pTemplate="header">
+        <span class="tab-title">{{
+          "Dashboard.ParamSettings" | translate
+        }}</span>
+      </ng-template>
+      <div class="form-group"></div>
+    </p-tabPanel>
   </p-tabView>
-  
 </div>
 
 <kendo-dialog-actions>
-  <button
-    class="k-button k-primary"   
-    (click)="onSave($event)"
-  >
+  <button class="k-button k-primary" (click)="onSave($event)">
     {{ "Buttons.Ok" | translate }}
   </button>
   <button class="k-button" (click)="onCancel($event)">
@@ -101,6 +91,4 @@
   </button>
 </kendo-dialog-actions>
 
-<ng-template #colors>
-
-</ng-template>
+<ng-template #colors> </ng-template>

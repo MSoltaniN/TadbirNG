@@ -85,6 +85,20 @@ hr
     padding-right: 0;
 }
 
+/deep/ body.tRtl .tab-body
+{
+    direction: rtl;
+    font-size: 14px;
+    font-family: 'SPPC';
+}
+
+/deep/ body.tLtr .tab-body
+{
+    direction: ltr;
+    font-size: 14px;
+    font-family: 'SPPC';
+}
+
 .color-item 
 {
     width: 20px;
