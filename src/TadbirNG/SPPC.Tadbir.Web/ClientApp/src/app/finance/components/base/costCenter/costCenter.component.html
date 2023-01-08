@@ -23,15 +23,10 @@
             [ngClass]="{ 'k-rtl': this.CurrentLanguage === 'fa' }"
             style="margin-top: 15px"
           >
-            <label for="search" class="searchbox">
-              <span class="k-input-icon k-icon k-i-search"></span>
-              <input type="text" id="search" class="k-textbox k-input"
-                    #searchInNodes placeholder="Search"
-                    (keyup)="filterTreeNodes(searchInNodes.value)"
-              >
-            </label>
             <kendo-treeview
               [nodes]="firstTreeNode"
+              [filterable]="true"
+              (filterChange)="filterTreeNodes($event)"
               textField="name"
               kendoTreeViewExpandable
               kendoTreeViewSelectable
@@ -129,6 +124,10 @@
               pagerOf="{{ 'Paging.Of' | translate }}"
               pagerItems="{{ 'Paging.Record' | translate }}"
               pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}"
+              pagerNextPage="{{ 'Paging.NextPage' | translate }}"
+              pagerPreviousPage="{{ 'Paging.PreviousPage' | translate }}"
+              pagerFirstPage="{{ 'Paging.FirstPage' | translate }}"
+              pagerLastPage="{{ 'Paging.LastPage' | translate }}"
             >
             </kendo-grid-messages>
 

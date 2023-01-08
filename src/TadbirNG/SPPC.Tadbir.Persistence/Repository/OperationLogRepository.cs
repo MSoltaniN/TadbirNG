@@ -424,6 +424,11 @@ namespace SPPC.Tadbir.Persistence
 
         private void SetSystemValues(List<OperationLogViewModel> logs)
         {
+            if (!logs.Any())
+            {
+                return;
+            }
+
             var ids = logs
                 .Select(log => log.UserId)
                 .Distinct();

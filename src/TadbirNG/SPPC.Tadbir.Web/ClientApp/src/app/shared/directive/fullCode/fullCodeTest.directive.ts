@@ -29,6 +29,6 @@ export class FullCodeTestDirective implements AfterViewInit {
     let event: Event = document.createEvent("Event");
     event.initEvent('input', true, true);
     Object.defineProperty(event, 'target', { value: this.fullCodeElement, enumerable: true });
-    this.renderer.selectRootElement(this.fullCodeElement).dispatchEvent();
+    this.renderer.selectRootElement(this.fullCodeElement).dispatchEvent(event);
   }
 }

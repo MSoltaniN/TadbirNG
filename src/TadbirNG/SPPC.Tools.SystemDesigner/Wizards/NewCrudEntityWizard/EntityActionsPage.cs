@@ -36,7 +36,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.NewCrudEntityWizard
             var action = txtName.Text;
             if (!String.IsNullOrWhiteSpace(action) && !lstActions.Items.Contains(action))
             {
-                Actions.CustomActions.Add(txtName.Text);
+                Actions.CustomActions.Add(action);
                 UpdateActionsList();
                 txtName.Text = String.Empty;
             }

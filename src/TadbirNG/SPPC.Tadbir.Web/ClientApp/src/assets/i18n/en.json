@@ -1151,7 +1151,11 @@
   "Paging": {
     "Record": "Record",
     "Of": "Of",
-    "ItemsPerPage": "Items Per Page"
+    "ItemsPerPage": "Items Per Page",
+    "NextPage": "Next Page",
+    "PreviousPage": "Previous Page",
+    "FirstPage": "Go to the First page",
+    "LastPage": "Go to the Last Page"
   },
   "Grid": {
     "noRecords": "row not found!!!!!!!!!!"
@@ -1249,8 +1253,7 @@
       "FullCodeIsTooLong": "Full code can have a maximum of 512 characters.",
       "NameIsRequired": "Name is required.",
       "NameIsTooLong": "Name can have a maximum of 512 characters.",
-      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
-      "NoError": ""
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters."
     },
     "CustomerTaxInfo": {
       "CustomerFirstNameIsTooLong": "Customer first name can have a maximum of 64 characters.",
@@ -1313,14 +1316,12 @@
       "FullCodeIsTooLong": "Full code can have a maximum of 256 characters.",
       "NameIsRequired": "Name is required.",
       "NameIsTooLong": "Name can have a maximum of 256 characters.",
-      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
-      "NoError": ""
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters."
     },
     "Currency": {
       "NameIsRequired": "Name is required.",
       "NameIsTooLong": "Name can have a maximum of 64 characters.",
-      "TaxCodeIsRequired": "Tax Currency is required.",
-      "NoError": ""
+      "TaxCodeIsRequired": "Tax Currency is required."
     },
     "DetailAccount": {
       "CodeIsRequired": "Code is required.",
@@ -1329,8 +1330,7 @@
       "FullCodeIsTooLong": "Full code can have a maximum of 512 characters.",
       "NameIsRequired": "Name is required.",
       "NameIsTooLong": "Name can have a maximum of 256 characters.",
-      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
-      "NoError": ""
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters."
     },
     "FiscalPeriod": {
       "NameIsRequired": "Name is required.",
@@ -1340,12 +1340,12 @@
       "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
       "ReferenceIsTooLong": "Reference can have a maximum of 64 characters.",
       "AssociationIsTooLong": "Association can have a maximum of 64 characters.",
-      "TypeIsRequired": "Type is required.",
-      "NoError": ""
+      "TypeIsRequired": "Type is required."
+      
     },
     "FullAccount": {
       "AccountIdIsRequired": "Account is required.",
-      "NoError": ""
+      "AvailableItemsRequired": "Please select all available items."
     },
     "Project": {
       "CodeIsRequired": "Code is required.",
@@ -1354,23 +1354,20 @@
       "FullCodeIsTooLong": "Full code can have a maximum of 256 characters.",
       "NameIsRequired": "Name is required.",
       "NameIsTooLong": "Name can have a maximum of 256 characters.",
-      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
-      "NoError": ""
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters."
     },
     "VoucherLine": {
       "CurrencyIdIsRequired": "Currency is required.",
       "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
       "DebitIsRequired": "Debit is required.",
-      "CreditIsRequired": "Credit is required.",
-      "NoError": ""
+      "CreditIsRequired": "Credit is required."
     },
     "Voucher": {
       "NoIsRequired": "Number is required.",
       "NoIsTooLong": "Number can have a maximum of 64 characters.",
       "DateIsRequired": "Date is required.",
       "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
-      "DailyNoIsRequired": "Daily number is required.",
-      "NoError": ""
+      "DailyNoIsRequired": "Daily number is required."
     },
     "Login": {
       "UserNameIsRequired": "User name is required.",
@@ -1378,40 +1375,31 @@
       "PasswordIsRequired": "Password is required.",
       "PasswordIsTooLong": "Password can have a maximum of 32 characters.",
       "CompanyIsRequired": "Company is required.",
-      "BranchIsRequired": "Branch is required.",
-      "FiscalPeriodIsRequired": "Fiscal period is required.",
       "PleaseSelectFiscalPeriod": "Branch is selected please select a fiscal period",
-      "PleaseSelectBranch": "Fiscal period is selected please select a branch",
-      "NoError": "",
-      "ServerUserNameIsRequired": "Server user name is required.",
-      "ServerPasswordIsRequired": "Server password is required."
+      "PleaseSelectBranch": "Fiscal period is selected please select a branch"
     },
     "PermissionGroup": {
       "NameIsRequired": "Name is required.",
       "NameIsTooLong": "Name can have a maximum of 64 characters.",
       "EntityNameIsTooLong": "Entity name can have a maximum of 64 characters.",
-      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
-      "NoError": ""
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters."
     },
     "Permission": {
       "NameIsRequired": "Name is required.",
       "NameIsTooLong": "Name can have a maximum of 128 characters.",
-      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
-      "NoError": ""
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters."
     },
     "Role": {
       "NameIsRequired": "Name is required.",
       "NameIsTooLong": "Name can have a maximum of 64 characters.",
-      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
-      "NoError": ""
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters."
     },
     "UserProfile": {
       "OldPasswordIsRequired": "Old password is required.",
       "NewPasswordIsRequired": "New password is required.",
       "NewPasswordLengthRange": "New password must have between 6 and 20 characters.",
       "RepeatPasswordIsRequired": "Repeat password is required.",
-      "RepeatPasswordAndNewPasswordDoNotMatch": "Repeat password and New password do not match.",
-      "NoError": ""
+      "RepeatPasswordAndNewPasswordDoNotMatch": "Repeat password and New password do not match."
     },
     "User": {
       "PersonFirstNameIsRequired": "First name is required.",
@@ -1421,20 +1409,17 @@
       "UserNameIsRequired": "User name is required.",
       "UserNameIsTooLong": "User name can have a maximum of 64 characters.",
       "PasswordIsRequired": "Password is required.",
-      "PasswordLengthRange": "Password must have between 4 and 32 characters.",
-      "NoError": ""
+      "PasswordLengthRange": "Password must have between 4 and 32 characters."
     },
     "Branch": {
       "NameIsRequired": "Name is required.",
       "NameIsTooLong": "Name can have a maximum of 128 characters.",
-      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
-      "NoError": ""
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters."
     },
     "Company": {
       "NameIsRequired": "Name is required.",
       "NameIsTooLong": "Name can have a maximum of 128 characters.",
-      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
-      "NoError": ""
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters."
     },
     "CompanyDb": {
       "NameIsRequired": "Name is required.",
@@ -1448,8 +1433,7 @@
       "UserNameIsTooLong": "Database username can have a maximum of 32 characters.",
       "PasswordIsTooLong": "Database password can have a maximum of 32 characters.",
       "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
-      "DbNamePatternNotValid": "Only Latin letters and characters '_' and '-' are allowed.",
-      "NoError": ""
+      "DbNamePatternNotValid": "Only Latin letters and characters '_' and '-' are allowed."
     },
     "AccountGroup": {
       "NameIsRequired": "Name is required.",
@@ -1460,11 +1444,12 @@
     },
     "Widget": {
       "NameIsRequired": "Name is required.",
-      "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "NameIsTooLong": "The name can have a maximum of 64 characters.",
       "FunctionIsRequired": "Selecting the Function is mandatory.",
       "TypeIsRequired": "Selecting the widget type is mandatory.",
       "DescriptionIsRequired": "Description is required.",
-      "DescriptionIsTooLong": "شرح می تواند حداکثر 256 حرف داشته باشد."
+      "DescriptionIsTooLong": "The description can have a maximum of 256 characters.",
+      "AccountIdIsRequired": "Account selection is required for this function."
     }
   }
 }

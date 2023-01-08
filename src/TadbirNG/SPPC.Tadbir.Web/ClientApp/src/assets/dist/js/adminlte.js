@@ -707,7 +707,7 @@ throw new Error('AdminLTE requires jQuery')
 
   var Default = {
     collapseScreenSize   : 767,
-    expandOnHover        : false,
+    expandOnHover        : true,
     expandTransitionDelay: 200
   }
 
@@ -773,10 +773,12 @@ throw new Error('AdminLTE requires jQuery')
     }
     
     if (!isOpen) {
-      $('body').removeClass('siderbar-closed');
+      $('body').removeClass('sidebar-closed');
       this.open();
     } else {
-      $('body').addClass('siderbar-closed');
+      $('body').addClass('sidebar-closed');
+      $('body').removeClass('sidebar-open');
+
       this.close()
     }
   }

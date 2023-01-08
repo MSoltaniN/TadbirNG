@@ -17,6 +17,11 @@ export class AddWidgetComponent implements OnInit {
   selectedId;
   widgets: Widget[];
   selectedKeys: any[];
+  viewId: number;
+
+  @Output() cancel: EventEmitter<any> = new EventEmitter();
+  @Output() save: EventEmitter<any> = new EventEmitter();
+
   public get CurrentLanguage(): string {
     var lang: string = "fa";
 
@@ -30,14 +35,12 @@ export class AddWidgetComponent implements OnInit {
     return lang;
   }
 
-  @Output() cancel: EventEmitter<any> = new EventEmitter();
-  @Output() save: EventEmitter<any> = new EventEmitter();
-
   ngOnInit() {
     this.dashboardService.getWidgetList().subscribe((widgetList: Widget[]) => {
       this.widgets = widgetList;
     });
     this.selectionToggleClass = this.selectionToggleClass.bind(this);
+    this.viewId = 68; // !!! Hard-coded Value !!! TODO: Fix undeclared variable in html file, line 20
   }
 
   widgetIsUsed(widgetId) {

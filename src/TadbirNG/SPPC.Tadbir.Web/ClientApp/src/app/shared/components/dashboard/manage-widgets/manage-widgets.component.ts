@@ -306,7 +306,6 @@ export class ManageWidgetsComponent
           .delete(String.Format(this.modelUrl, this.deleteModelId))
           .subscribe(
             async (response) => {
-
               if (response != null) {
                 this.deleteConfirm = false;
                 this.confirmDeleteUsedWidget = true;
@@ -341,6 +340,7 @@ export class ManageWidgetsComponent
         .subscribe(
           async (res) => {
             this.afterDelete();
+            this.chartService.refreshDashboard();
             this.grid.loading = false;
           },
           (error) => {

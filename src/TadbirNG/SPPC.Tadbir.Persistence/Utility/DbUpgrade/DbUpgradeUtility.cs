@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using SPPC.Framework.Common;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Model.Config;
 
 namespace SPPC.Tadbir.Persistence.DbUpgrade
@@ -104,8 +105,9 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
         private static string LoadUpdateScript(string connection, string scriptFolder)
         {
             string updateScript = String.Empty;
+            var dbConfig = SysParameterUtility.AllParameters.Db;
             var sqlBuilder = new SqlConnectionStringBuilder(connection);
-            var scriptFileName = sqlBuilder.InitialCatalog == DbUpgradeConstants.SysDbName
+            var scriptFileName = sqlBuilder.InitialCatalog == dbConfig.SysDbName
                 ? DbUpgradeConstants.SysDbUpgradeScript
                 : DbUpgradeConstants.DbUpgradeScript;
             var scriptPath = Path.Combine(scriptFolder, scriptFileName);
@@ -119,6 +121,7 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
 
         private static string BuildConnectionString(CompanyDb company)
         {
+            var dbConfig = SysParameterUtility.AllParameters.Db;
             var builder = new SqlConnectionStringBuilder
             {
                 DataSource = company.Server,
@@ -133,8 +136,8 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
             }
             else
             {
-                builder.UserID = DbUpgradeConstants.SysLoginName;
-                builder.Password = DbUpgradeConstants.SysLoginPassword;
+                builder.UserID = dbConfig.LoginName;
+                builder.Password = dbConfig.Password;
             }
 
             return builder.ConnectionString;
@@ -185,14 +188,15 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
         private Version GetDatabaseVersion(string connection)
         {
             Verify.ArgumentNotNullOrEmptyString(connection, nameof(connection));
+            var dbVersion = new Version("1.0.0.0");
             _dbConsole.ConnectionString = connection;
             var result = _dbConsole.ExecuteQuery(DbUpgradeQuery.FetchDbVersion);
             if (result.Rows.Count > 0)
             {
-                return new Version(result.Rows[0][0].ToString());
+                dbVersion = new Version(result.Rows[0][0].ToString());
             }
 
-            return new Version(result.ToString());
+            return dbVersion;
         }
 
         private readonly ISqlConsole _dbConsole;

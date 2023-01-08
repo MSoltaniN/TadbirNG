@@ -5,7 +5,6 @@ import { SettingService } from '@sppc/config/service';
 import { SettingsApi } from '@sppc/config/service/api';
 import { EnviromentComponent } from '@sppc/shared/class';
 import { DashboardPermissions } from '@sppc/shared/security';
-import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -16,23 +15,23 @@ export class DashboardGuard implements CanActivate {
 
   constructor(private router: Router,
      private settingService: SettingService,
-     private enviroment: EnviromentComponent,
-     private toastr: ToastrService) { }
+     private enviroment: EnviromentComponent) { }
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    this.navigateToHome();
+
+    if (next.routeConfig.path == 'widgets') {
+      this.hasManageWidgetsAccess();
+    } else {
+      this.hasManageDashboardAccess();
+    }
+      
     return true;
   }
 
-  navigateToHome() {
+  hasManageDashboardAccess() {
     if (!this.enviroment.isAccess('Dashboard',DashboardPermissions.ManageDashboard)) {
-      // if (this.settingService.CurrentLanguage == 'fa') {
-      //   this.toastr.warning('Access Denied!');
-      // } else {
-      //   this.toastr.warning('دسترسی غیرمجاز!');
-      // }
       this.router.navigate(["/tadbir/home"]);
       return false;
     } else {
@@ -48,6 +47,15 @@ export class DashboardGuard implements CanActivate {
               return false;
             }
           })
+    }
+  }
+
+  hasManageWidgetsAccess() {
+    if (!this.enviroment.isAccess('Dashboard',DashboardPermissions.ManageWidgets)) {
+      this.router.navigate(["/tadbir/home"]);
+      return false;
+    } else {
+      return true;
     }
   }
 

@@ -28,28 +28,9 @@ namespace SPPC.Tools.Transforms.Templates
         /// </summary>
         public virtual string TransformText()
         {
+            this.Write("SET ANSI_NULLS ON\r\nGO\r\n\r\nSET QUOTED_IDENTIFIER ON\r\nGO\r\n\r\n");
             
-            #line 6 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
-
-string dbName = "ApplicationDb";
-if (_entities.Length > 0)
-{
-    dbName = _entities[0].Repository.Database;
-}
-
-            
-            #line default
-            #line hidden
-            this.Write("USE [");
-            
-            #line 13 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(dbName));
-            
-            #line default
-            #line hidden
-            this.Write("]\r\nGO\r\n\r\nSET ANSI_NULLS ON\r\nGO\r\n\r\nSET QUOTED_IDENTIFIER ON\r\nGO\r\n\r\n");
-            
-            #line 22 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 12 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
 
 foreach (var entity in _entities)
 {
@@ -62,41 +43,41 @@ foreach (var entity in _entities)
             #line hidden
             this.Write("/****** Object: Table ");
             
-            #line 29 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 19 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(tableName));
             
             #line default
             #line hidden
             this.Write(" Script Date: ");
             
-            #line 29 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 19 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(DateTime.Now.ToString()));
             
             #line default
             #line hidden
             this.Write(" ******/\r\nCREATE TABLE ");
             
-            #line 30 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 20 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(tableName));
             
             #line default
             #line hidden
             this.Write(" (\r\n    ");
             
-            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 21 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadFieldName(idProperty.Storage.Name)));
             
             #line default
             #line hidden
             
-            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 21 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadTypeName("INT")));
             
             #line default
             #line hidden
             this.Write("IDENTITY (1, 1) NOT NULL,\r\n");
             
-            #line 32 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 22 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
  foreach (var relation in entity.Relations.Where(rel => rel.HasKey))
    {
       string fieldName = String.Format("{0}ID", relation.EndpointName); 
@@ -105,20 +86,20 @@ foreach (var entity in _entities)
             #line hidden
             this.Write("    ");
             
-            #line 35 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 25 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadFieldName(fieldName)));
             
             #line default
             #line hidden
             
-            #line 35 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 25 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadTypeName("INT")));
             
             #line default
             #line hidden
             this.Write("NOT NULL,\r\n");
             
-            #line 36 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 26 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
  }
 
    var nonIdProps = entity.Properties.Where(prop => prop.Name != entity.Identifier).ToList();
@@ -135,41 +116,41 @@ foreach (var entity in _entities)
             #line hidden
             this.Write("    ");
             
-            #line 47 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 37 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadFieldName(property.Storage.Name)));
             
             #line default
             #line hidden
             
-            #line 47 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 37 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadTypeName(property.Storage.Type.ToUpper())));
             
             #line default
             #line hidden
             this.Write("CONSTRAINT [DF_");
             
-            #line 47 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 37 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Area));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 47 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 37 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("_rowguid] DEFAULT (newid()) ROWGUIDCOL ");
             
-            #line 47 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 37 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(nullable));
             
             #line default
             #line hidden
             this.Write(",\r\n");
             
-            #line 48 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 38 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
          }
            else if (property.Name == "ModifiedDate")
            {
@@ -178,41 +159,41 @@ foreach (var entity in _entities)
             #line hidden
             this.Write("    ");
             
-            #line 51 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 41 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadFieldName(property.Storage.Name)));
             
             #line default
             #line hidden
             
-            #line 51 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 41 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadTypeName(property.Storage.Type.ToUpper())));
             
             #line default
             #line hidden
             this.Write("CONSTRAINT [DF_");
             
-            #line 51 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 41 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Area));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 51 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 41 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("_ModifiedDate] DEFAULT (getdate()) ");
             
-            #line 51 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 41 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(nullable));
             
             #line default
             #line hidden
             this.Write(",\r\n");
             
-            #line 52 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 42 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
          }
            else
            {
@@ -221,26 +202,26 @@ foreach (var entity in _entities)
             #line hidden
             this.Write("    ");
             
-            #line 55 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 45 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadFieldName(property.Storage.Name)));
             
             #line default
             #line hidden
             
-            #line 55 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 45 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadTypeName(property.Storage.Type.ToUpper())));
             
             #line default
             #line hidden
             
-            #line 55 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 45 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(nullable));
             
             #line default
             #line hidden
             this.Write(",\r\n");
             
-            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 46 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
          }
        }
        else
@@ -252,41 +233,41 @@ foreach (var entity in _entities)
             #line hidden
             this.Write("    ");
             
-            #line 62 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 52 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadFieldName(property.Storage.Name)));
             
             #line default
             #line hidden
             
-            #line 62 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 52 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadTypeName(property.Storage.Type.ToUpper())));
             
             #line default
             #line hidden
             this.Write("CONSTRAINT [DF_");
             
-            #line 62 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 52 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Area));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 62 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 52 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("_rowguid] DEFAULT (newid()) ROWGUIDCOL ");
             
-            #line 62 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 52 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(nullable));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 63 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 53 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
          }
            else if (property.Name == "ModifiedDate")
            {
@@ -295,41 +276,41 @@ foreach (var entity in _entities)
             #line hidden
             this.Write("    ");
             
-            #line 66 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadFieldName(property.Storage.Name)));
             
             #line default
             #line hidden
             
-            #line 66 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadTypeName(property.Storage.Type.ToUpper())));
             
             #line default
             #line hidden
             this.Write("CONSTRAINT [DF_");
             
-            #line 66 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Area));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 66 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("_ModifiedDate] DEFAULT (getdate()) ");
             
-            #line 66 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 56 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(nullable));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 67 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 57 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
          }
            else
            {
@@ -338,26 +319,26 @@ foreach (var entity in _entities)
             #line hidden
             this.Write("    ");
             
-            #line 70 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 60 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadFieldName(property.Storage.Name)));
             
             #line default
             #line hidden
             
-            #line 70 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 60 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(PadTypeName(property.Storage.Type.ToUpper())));
             
             #line default
             #line hidden
             
-            #line 70 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 60 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(nullable));
             
             #line default
             #line hidden
             this.Write("\r\n");
             
-            #line 71 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 61 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
          }
        }
    }
@@ -370,28 +351,28 @@ foreach (var entity in _entities)
             #line hidden
             this.Write("    , CONSTRAINT [PK_");
             
-            #line 78 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 68 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Area));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 78 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 68 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("] PRIMARY KEY CLUSTERED ([");
             
-            #line 78 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 68 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(idProperty.Storage.Name));
             
             #line default
             #line hidden
             this.Write("] ASC)\r\n");
             
-            #line 79 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 69 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
  }
    foreach (var relation in entity.Relations.Where(rel => rel.HasKey))
    {
@@ -400,63 +381,63 @@ foreach (var entity in _entities)
             #line hidden
             this.Write("    , CONSTRAINT [FK_");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Area));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GetRelationArea(entity, relation)));
             
             #line default
             #line hidden
             this.Write("_");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.EndpointName));
             
             #line default
             #line hidden
             this.Write("] FOREIGN KEY ([");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.EndpointName));
             
             #line default
             #line hidden
             this.Write("ID]) REFERENCES [");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Area));
             
             #line default
             #line hidden
             this.Write("].[");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.EntityName));
             
             #line default
             #line hidden
             this.Write("]([");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 72 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(relation.EntityName));
             
             #line default
             #line hidden
             this.Write("ID])\r\n");
             
-            #line 83 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 73 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
  }
 
             
@@ -464,7 +445,7 @@ foreach (var entity in _entities)
             #line hidden
             this.Write(")\r\nGO\r\n\r\n");
             
-            #line 88 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
+            #line 78 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\SqlCreateTableFromMetadata.tt"
 
 }
 

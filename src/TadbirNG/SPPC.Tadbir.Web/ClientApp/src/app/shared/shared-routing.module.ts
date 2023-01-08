@@ -24,7 +24,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent, canActivate:[DashboardGuard]},
-      { path: 'widgets', component: ManageWidgetsComponent},
+      { path: 'widgets', component: ManageWidgetsComponent, canActivate:[DashboardGuard]},
       { path: 'home', component: HomeComponent },
       { path: 'reports', component: ReportManagementComponent },
     ]

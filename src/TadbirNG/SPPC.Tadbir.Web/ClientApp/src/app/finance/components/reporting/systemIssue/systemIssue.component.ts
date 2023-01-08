@@ -26,7 +26,10 @@ import {
   FilterExpressionOperator,
   String,
 } from "@sppc/shared/class";
-import { ReportViewerComponent, ViewIdentifierComponent } from "@sppc/shared/components";
+import {
+  ReportViewerComponent,
+  ViewIdentifierComponent,
+} from "@sppc/shared/components";
 import { QuickReportSettingComponent } from "@sppc/shared/components/reportManagement/QuickReport-Setting.component";
 import { ReportManagementComponent } from "@sppc/shared/components/reportManagement/reportManagement.component";
 import { GridFilterComponent } from "@sppc/shared/directive/grid/component/grid-filter.component";
@@ -64,11 +67,15 @@ export class SystemIssueComponent
   implements OnInit
 {
   // Report
-  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
-  @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportViewerComponent, {static: true}) viewer: ReportViewerComponent;
-  @ViewChild(ReportManagementComponent, {static: true}) reportManager: ReportManagementComponent;
-  @ViewChild(QuickReportSettingComponent, {static: true}) reportSetting: QuickReportSettingComponent;
+  @ViewChild(GridComponent, { static: true }) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent, { static: true })
+  viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent, { static: true })
+  viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent, { static: true })
+  reportManager: ReportManagementComponent;
+  @ViewChild(QuickReportSettingComponent, { static: true })
+  reportSetting: QuickReportSettingComponent;
 
   clickedRowItem: any = undefined;
   fromDate: Date;
@@ -165,6 +172,7 @@ export class SystemIssueComponent
     this.pageIndex = 0;
     this.selectedSystemIssue = event.dataItem;
     this.isEnabledBranchScope = true;
+    console.log(event);
 
     if (this.selectedSystemIssue.viewId && this.selectedSystemIssue.apiUrl) {
       var issue = this.systemIssuesList.find(
@@ -258,7 +266,7 @@ export class SystemIssueComponent
     this.getReportData();
   }
 
-  getReportData() {
+  getReportData(reloadGrid = true) {
     if (this.getDataUrl) {
       this.quickFilter = [];
       this.currentFilter = undefined;
@@ -278,7 +286,11 @@ export class SystemIssueComponent
       }
 
       this.getDataUrl =
-        this.getDataUrl + "?from=" + this.fromDate + "&to=" + this.toDate;
+        this.getDataUrl.split("?")[0] +
+        "?from=" +
+        this.fromDate +
+        "&to=" +
+        this.toDate;
 
       if (
         this.checkedIssues.findIndex((i) => i == this.selectedSystemIssue.id) ==
@@ -288,7 +300,9 @@ export class SystemIssueComponent
         this.clickedIssues.push(this.selectedSystemIssue.id);
       } else this.listChanged = false;
 
-      this.reloadGrid();
+      if (reloadGrid)
+        this.reloadGrid();
+
       this.gridFilter.removeFilterGridOnly();
     }
   }
@@ -426,22 +440,26 @@ export class SystemIssueComponent
         environment.BaseUrl + this.selectedSystemIssue.deleteApiUrl;
 
       this.systemIssueService.groupDelete(deleteUrl, rowsId).subscribe(
-        (res) => {
-          this.showMessage(
-            this.getText("Messages.OperationSuccessful"),
-            MessageType.Info
-          );
-
+        (res:any) => {
+          this.deleteMsg = this.getText("Messages.OperationSuccessful");
           if (
             this.rowData.data.length == this.selectedRows.length &&
             this.pageIndex > 1
           )
-            this.pageIndex =
-              (this.pageIndex - 1) * this.pageSize - this.pageSize;
+            this.pageIndex = (this.pageIndex - 1) * this.pageSize - this.pageSize;
 
+          if (this.groupOperation || res.length) {
+            this.getReportData(false);
+            this.afterGroupDelete(res, rowsId);
+          } else {
+            this.showMessage(
+              this.getText("Messages.OperationSuccessful"),
+              MessageType.Info
+            );
+            this.getReportData();
+          }
           this.selectedRows = [];
           this.groupOperation = false;
-          this.getReportData();
           this.getIssueCount(this.selectedSystemIssue);
         },
         (error) => {

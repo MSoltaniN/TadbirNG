@@ -185,15 +185,6 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
           this.bStorageService.getSession("unSaveFilter" + this.viewId)
         )
       );
-      //unsavedFilters.forEach((gf) => {
-      //  if (gf.id == -1) {
-      //    firstItem.filters = gf.filters;
-      //    this.groupFilters.push(firstItem);
-      //  }
-      //  else {
-      //    this.groupFilters.push(gf);
-      //  }
-      //});
 
       this.groupFilters = unsavedFilters;
       if (unsavedFilters.length > 1) init = true;
@@ -544,11 +535,6 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
                 fil[0].isNew = false;
               } else this.groupFilters.push(res);
 
-              //var unsaveIndex = unsavedFilters.findIndex(f => f.name == gf.name);
-              //if (unsaveIndex >= 0) {
-              //  unsavedFilters.splice(unsaveIndex, 1);
-              //  this.bStorageService.setSession('unSaveFilter' + this.viewId, JSON.stringify(unsavedFilters));
-              //}
             });
         else
           this.advanceFilterService
@@ -556,7 +542,6 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
             .subscribe();
       }
 
-      //}
     });
 
     this.bStorageService.removeSessionStorage("unSaveFilter" + this.viewId);
@@ -830,7 +815,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   }
 
   toJalaliDate(value:any) {
-    let format: string = "YYYY/MM/DD HH:mm";
+    let format: string = "YYYY/MM/DD";
     moment.locale('en');
     let MomentDate = moment(value).locale('fa').format(format);    
     return MomentDate;
@@ -902,8 +887,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
 
       filters.forEach((item) => {
         counter++;
-        console.log(item);
-        
+
         if (item.braces) {
           for (var i = item.braces.length; i >= 0; i--) {
             var br = item.braces[i];

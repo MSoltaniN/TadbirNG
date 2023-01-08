@@ -201,7 +201,8 @@ export class AccountGroupsComponent
   };
 
   /** فرزندان یک نود را واکشی میکند*/
-  public fetchChildren = (dataItem: any) => {
+  public fetchChildren = (dataItem: any,forceRefresh?:number,newItem?:any) => {
+    
     if (dataItem.id == -1) {
       return of(
         this.treeNodes.filter((f) => f.parentId == null && f.code == null)
@@ -226,13 +227,23 @@ export class AccountGroupsComponent
         var allLedgerNodes = this.treeNodes.filter(
           (f) => f.parentId == null && f.code && f.groupId == dataItem.id
         );
-        if (allLedgerNodes.length > 0) {
+        if (allLedgerNodes.length > 0 && !forceRefresh) {
           return of(allLedgerNodes);
         } else {
           var ledgerNodes = this.accountGroupService.getModels(
             String.Format(AccountApi.LedgerAccountsByGroupId, dataItem.id)
           );
           ledgerNodes.subscribe((res) => {
+            if (forceRefresh) {
+              this.treeNodes = this.treeNodes.filter(node => node.id != newItem.id);
+              if (!this.expandedKeys.includes(`0_${forceRefresh}`)) {
+                this.expandedKeys.push(`0_${forceRefresh}`)
+              }
+              if (!dataItem.childCount) {
+                dataItem.childCount = 1;
+              }
+            }
+
             this.treeNodes = [...this.treeNodes, ...res];
           });
           return ledgerNodes;
@@ -1067,6 +1078,9 @@ export class AccountGroupsComponent
         item.code = model.code;
         item.fullCode = model.fullCode;
         item.name = model.name;
+        item.groupId = model.groupId;
+        let index = this.treeNodes.findIndex(d => d.id == model.groupId)
+        this.fetchChildren(this.treeNodes[index],index,model)
       } else {
         //add
         if (
@@ -1075,6 +1089,7 @@ export class AccountGroupsComponent
             this.treeNodes.filter((f) => f.parentId == model.parentId).length >
               0)
         ) {
+
           this.treeNodes.push({
             id: model.id,
             name: model.name,
@@ -1145,11 +1160,11 @@ export class AccountGroupsComponent
       this.deleteModelId = 0;
     }
 
-    var items = this.expandedKeys;
+    var items = [...this.expandedKeys];
     this.expandedKeys = [];
     setTimeout(() => {
       this.expandedKeys = items;
-    });
+    },0);
   }
 
   refreshGroupTreeNodes(model?: any) {
@@ -1199,11 +1214,11 @@ export class AccountGroupsComponent
       this.selectedRows = [];
     }
 
-    var items = this.expandedKeys;
+    var items = [...this.expandedKeys];
     this.expandedKeys = [];
     setTimeout(() => {
       this.expandedKeys = items;
-    });
+    },0);
   }
 
   public onDataStateChange(event): void {
@@ -1258,5 +1273,24 @@ export class AccountGroupsComponent
     this.enableViewListChanged(this.viewId);
     this.operationId = OperationId.Filter;
     this.reloadGrid();
+  }
+
+  public isExpanded = (dataItem: any, index: string) => {
+    return this.expandedKeys.indexOf(index) > -1;
+  };
+  /**
+   * A `collapse` event handler that will remove the node hierarchical index
+   * from the collection, collapsing its children.
+   */
+   public handleCollapse(node) {
+    this.expandedKeys = this.expandedKeys.filter((k) => k !== node.index);
+  }
+
+  /**
+   * An `expand` event handler that will add the node hierarchical index
+   * to the collection, expanding the its children.
+   */
+  public handleExpand(node) {
+    this.expandedKeys = this.expandedKeys.concat(node.index);
   }
 }

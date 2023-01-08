@@ -164,18 +164,4 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
 
   isCollapsed: boolean = true;
 
-  @HostListener('mouseenter') onMouseEnter() {
-    let body = document.querySelector('body');
-    if (body.classList.contains('siderbar-closed')) {
-      body.classList.remove('sidebar-collapse');
-    }
-  }
-
-  @HostListener('mouseleave') 
-  onMouseLeave() {
-    let body = document.querySelector('body');
-    if (body.classList.contains('siderbar-closed')) {
-      body.classList.add('sidebar-collapse');
-    }
-  }
 }

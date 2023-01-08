@@ -58,6 +58,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.btnGenerate.TabIndex = 12;
             this.btnGenerate.Text = "Generate Scripts";
             this.btnGenerate.UseVisualStyleBackColor = true;
+            this.btnGenerate.Click += new System.EventHandler(this.Generate_Click);
             // 
             // btnDelete
             // 
@@ -68,6 +69,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.btnDelete.TabIndex = 11;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.Delete_Click);
             // 
             // btnEdit
             // 
@@ -78,6 +80,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.btnEdit.TabIndex = 10;
             this.btnEdit.Text = "Edit...";
             this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.Edit_Click);
             // 
             // btnNew
             // 
@@ -88,6 +91,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.btnNew.TabIndex = 9;
             this.btnNew.Text = "New...";
             this.btnNew.UseVisualStyleBackColor = true;
+            this.btnNew.Click += new System.EventHandler(this.New_Click);
             // 
             // label1
             // 
@@ -105,17 +109,19 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.grdPermissions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.grdPermissions.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.grdPermissions.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grdPermissions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grdPermissions.Location = new System.Drawing.Point(12, 54);
             this.grdPermissions.MultiSelect = false;
             this.grdPermissions.Name = "grdPermissions";
             this.grdPermissions.ReadOnly = true;
+            this.grdPermissions.RowHeadersVisible = false;
             this.grdPermissions.RowHeadersWidth = 51;
             this.grdPermissions.RowTemplate.Height = 29;
             this.grdPermissions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdPermissions.Size = new System.Drawing.Size(758, 390);
             this.grdPermissions.TabIndex = 7;
+            this.grdPermissions.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.Permissions_ColumnAdded);
             // 
             // PermissionBrowserForm
             // 

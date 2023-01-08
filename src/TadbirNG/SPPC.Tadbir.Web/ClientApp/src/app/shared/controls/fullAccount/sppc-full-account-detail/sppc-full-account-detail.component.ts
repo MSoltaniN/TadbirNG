@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { DialogRef } from "@progress/kendo-angular-dialog";
+import { TranslateService } from "@ngx-translate/core";
 import { AccountRelationsType } from "@sppc/finance/enum";
 import { AccountItemBrief, FullAccount } from "@sppc/finance/models";
 import { FullAccountInfo, FullAccountService } from "@sppc/finance/service";
 import { AccountRelationApi } from "@sppc/finance/service/api";
 import { String } from "@sppc/shared/class";
+import { lastValueFrom } from "rxjs";
 
 @Component({
   selector: "sppc-full-account-detail",
@@ -16,6 +17,7 @@ export class SppcFullAccountDetailComponent implements OnInit {
   isNew: boolean;
   @Input() accountItem: any;
   @Input() selectedItem: any;
+  @Input() strictMode:boolean = false;
 
   focusedItem: number;
 
@@ -52,9 +54,15 @@ export class SppcFullAccountDetailComponent implements OnInit {
   detailAccountTitle: string;
   costCenterTitle: string;
   projectTitle: string;
+  errorMessages: string;
   //accountFullCode: string;
 
   @Input() fullAccount: FullAccountInfo;
+  @Input() set accTitleFilterValue(value:string) {
+    if (value) {
+      this.accountTitle = value;
+    }
+  }
 
   @Output() setFocus: EventEmitter<any> = new EventEmitter();
 
@@ -63,7 +71,8 @@ export class SppcFullAccountDetailComponent implements OnInit {
 
   //#endregion
 
-  constructor(private fullAccountService: FullAccountService) {}
+  constructor(private fullAccountService: FullAccountService,
+    private translate:TranslateService) {}
 
   ngOnInit() {
     if (this.accountItem == undefined) {
@@ -411,6 +420,21 @@ export class SppcFullAccountDetailComponent implements OnInit {
 
     let fullAccountData: FullAccount = new FullAccountInfo();
 
+    if ( this.strictMode && (
+         (this.costCentersRows.length > 0 && !this.costCenterSelectedId.length) ||
+         (this.detailAccountsRows.length > 0 && !this.detailAccountSelectedId.length) ||
+         (this.projectsRows.length > 0 && !this.projectSelectedId.length)
+        )
+    ) {
+      lastValueFrom(
+        this.translate.get("AllValidations.FullAccount.AvailableItemsRequired")
+      ).then(res => {
+        this.errorMessages = res;
+        this.scrollTo('alert-danger')
+      });
+      return
+    }
+
     if (this.accountSelectedId.length > 0) {
       var account = this.accountsRows.find(
         (f) => f.id == this.accountSelectedId[0]
@@ -671,5 +695,15 @@ export class SppcFullAccountDetailComponent implements OnInit {
 
   escPress(e: any) {
     this.close.emit();
+  }
+
+  scrollTo(className:string) {
+    // to Auto Scroll to selected element
+    setTimeout(() => {
+      let item = document.querySelector(`.${className}`);
+      if (item){
+        item.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+      }
+    },100);
   }
 }

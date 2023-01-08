@@ -33,5 +33,7 @@ namespace SPPC.Tools.Model
         public static string TadbirRelease => Path.Combine("..", "..", "..", "..", "TadbirNG Release");
 
         public static string ToolsFolder => Path.Combine("..", "..", "..", "misc", "tools");
+
+        public static string PermissionsPath => Path.Combine(SolutionRoot, "SPPC.Tadbir.Interfaces", "Security", "Enums.cs");
     }
 }

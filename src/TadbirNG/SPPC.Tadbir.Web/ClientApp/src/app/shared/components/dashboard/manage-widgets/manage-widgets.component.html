@@ -35,7 +35,7 @@
       (edit)="editHandler($event)"
       (remove)="removeHandler($event)"
       [loading]="false"
-      [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+      [selectable]="{ checkboxOnly: true, mode: 'single' }"
       [(selectedKeys)]="selectedRows"
       [kendoGridSelectBy]="selectionKey"
       (filterChange)="filterChange($event)"
@@ -62,6 +62,10 @@
         pagerOf="{{ 'Paging.Of' | translate }}"
         pagerItems="{{ 'Paging.Record' | translate }}"
         pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}"
+                    pagerNextPage="{{ 'Paging.NextPage' | translate }}"
+                    pagerPreviousPage="{{ 'Paging.PreviousPage' | translate }}"
+                    pagerFirstPage="{{ 'Paging.FirstPage' | translate }}"
+                    pagerLastPage="{{ 'Paging.LastPage' | translate }}"
       >
       </kendo-grid-messages>
   
