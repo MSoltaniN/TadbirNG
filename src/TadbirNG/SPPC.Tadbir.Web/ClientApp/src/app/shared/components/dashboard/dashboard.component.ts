@@ -692,6 +692,8 @@ export class DashboardComponent
       maxCols: 100,
       minRows: 50,
       maxRows: 100,
+      fixedRowHeight:100,
+      fixedColWidth:100,
       keepFixedHeightInMobile: false,
       keepFixedWidthInMobile: false,
       scrollSensitivity: 10,
@@ -718,7 +720,7 @@ export class DashboardComponent
       displayGrid: DisplayGrid.None,
       disableWindowResize: false,
       disableWarnings: false,
-      scrollToNewItems: false,
+      scrollToNewItems: true,
     };
 
     this.dashboardService

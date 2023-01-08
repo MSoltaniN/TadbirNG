@@ -133,7 +133,8 @@ a i {
 
 ::ng-deep gridster
 {
-  min-height: calc(100vh - 50px);
+  min-height: 1200px;
+  overflow-y: scroll;
 }
 
 ::ng-deep .ui-tabview-nav
@@ -148,7 +149,7 @@ a i {
 }
 
 ::ng-deep li.ui-state-active a span.tab-title
-{ 
+{
   border-bottom-style: solid;
   font-weight: bolder;
   font-size: medium;
