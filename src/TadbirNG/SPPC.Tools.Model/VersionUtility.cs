@@ -16,10 +16,10 @@ namespace SPPC.Tools.Model
         /// نسخه سرویس وب را از فایل مربوطه خوانده و برمی گرداند
         /// </summary>
         /// <returns>نسخه سرویس وب</returns>
-        public static string GetApiVersion()
+        public static string GetApiVersion(int count = 3)
         {
-            string apiVersion = GetVersionFromFile(_apiVersionPath);
-            return apiVersion;
+            var apiVersion = new Version(GetVersionFromFile(_apiVersionPath));
+            return apiVersion.ToString(count);
         }
 
         /// <summary>

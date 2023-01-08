@@ -37,7 +37,7 @@ namespace SPPC.CodeChallenge.Persistence
         /// <returns>مدرسه مشخص شده با شناسه عددی</returns>
         public async Task<SchoolViewModel> GetSchoolAsync(int schoolId)
         {
-            // Use EF Core to read a single schools by id from database. Map to view model using _mapper field.
+            // Use EF Core to read a single school by id from database. Map to view model using _mapper field.
             throw new NotImplementedException();
         }
 
