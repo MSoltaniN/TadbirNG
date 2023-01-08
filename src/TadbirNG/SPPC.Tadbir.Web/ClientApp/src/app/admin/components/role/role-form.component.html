@@ -39,6 +39,7 @@
         <div class="panel-heading">{{ 'Role.Permissions' | translate }}</div>
         <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}" >
             <kendo-treeview [nodes]="treeData" textField="name"
+                            [loadOnDemand]="false"
                             kendoTreeViewExpandable
                             kendoTreeViewCheckable
                             kendoTreeViewFlatDataBinding

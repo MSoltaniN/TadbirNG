@@ -37,11 +37,15 @@
   margin: 0 -10px;
 }
 
-/deep/.dialog-style-wizard > .k-overlay {
+.btn {
+  margin-inline-start: 3px;
+}
+
+::ng-deep.dialog-style-wizard > .k-overlay {
   opacity: 0 !important;
 }
 
 
-/deep/.dialog-wizard .k-content {
+::ng-deep.dialog-wizard .k-content {
   height: 400px;
 }

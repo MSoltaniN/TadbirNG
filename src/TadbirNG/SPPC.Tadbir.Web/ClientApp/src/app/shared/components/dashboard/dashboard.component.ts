@@ -8,7 +8,7 @@ import {
   Renderer2,
   ViewChild,
 } from "@angular/core";
-import { DOCUMENT } from "@angular/platform-browser";
+import { DOCUMENT } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { SettingService } from "@sppc/config/service";
@@ -29,6 +29,7 @@ import {
   CompactType,
   DisplayGrid,
   Draggable,
+  GridsterComponent,
   GridsterConfig,
   GridsterItem,
   GridType,
@@ -48,6 +49,8 @@ import { WidgetSetting } from "@sppc/shared/models/widgetSetting";
 import { ChartService } from "@sppc/shared/services/chart.service";
 import { take } from "rxjs/operators";
 import { MessageType } from "@sppc/shared/enum/metadata";
+import * as echarts from "echarts";
+import { DashboardPermissions } from "@sppc/shared/security";
 
 interface DashboardConfig extends GridsterConfig {
   draggable: Draggable;
@@ -58,6 +61,7 @@ interface DashboardConfig extends GridsterConfig {
 class WidgetTabSubject {
   widgets: Subject<GridsterItem[]>;
   tabId: number;
+  hasData: boolean;
 }
 
 class TabWidgetInfo implements TabWidget {
@@ -113,13 +117,14 @@ export class DashboardComponent
   public bankBalance: any;
   public liquidRatio: any;
   public unbalancedVoucherCount: any;
+  private editInlineTabName: number = 0;
 
   options: DashboardConfig;
 
   dashboard: Array<GridsterItem> = [];
   dashboardSubject = new BehaviorSubject<Array<GridsterItem>>(this.dashboard);
   widgetList$ = this.dashboardSubject.asObservable();
-
+  tabTitle: string;
   tabSubjects: Array<WidgetTabSubject> = [];
 
   isDashboardEditMode: boolean;
@@ -139,13 +144,17 @@ export class DashboardComponent
     )[0];
   }
 
+  widgetStatus: { [id: string]: any } = {};
   widgetData: { [id: string]: any } = {};
   widgetOptions: { [id: string]: DashboardConfig } = {};
   widgetSettings: { [id: string]: WidgetSetting } = {};
   widgets: { [id: string]: GridsterItem[] } = {};
 
+  @ViewChild(GridsterComponent) gridSter: GridsterComponent;
+
   grossChartData;
   netChartData;
+  manageWidgets = DashboardPermissions.ManageWidgets;
 
   subscription: Subscription;
 
@@ -221,10 +230,10 @@ export class DashboardComponent
       this.showNavbar = true;
     }
 
-    Chart.defaults.global.defaultFontFamily = "'SPPC'";
+    Chart.defaults.font.family = "'SPPC'";
 
     this.subscription = this.chartService.widgetToRefresh$.subscribe(() => {
-      this.fillDashboardSubjects(true);
+      this.refreshDashboard();
     });
 
     if (this.currentContext.fpId > 0 && this.currentContext.branchId > 0) {
@@ -359,7 +368,6 @@ export class DashboardComponent
   }
 
   onSettingChanged(option) {
-    debugger;
     const id = option.widgetId + "-" + option.tabId;
     this.widgetSettings[id].series = option.setting.series;
     this.widgetSettings[id].title = option.setting.title;
@@ -369,6 +377,17 @@ export class DashboardComponent
       this.widgetData[id]
     );
     this.widgetData[id] = data;
+
+    const element: any = document.getElementById(
+      option.setting.chartId.toString()
+    );
+    let echartsObj = echarts.getInstanceByDom(element);
+    const height = echartsObj.getHeight();
+    const width = echartsObj.getWidth();
+    echartsObj.resize({ width: width + 1, height: height + 1 });
+    setTimeout(() => {
+      echartsObj.resize({ width: width - 1, height: height - 1 });
+    }, 10);
   }
 
   getOptions(typeId, widgetId, tabId) {
@@ -435,29 +454,31 @@ export class DashboardComponent
 
     const promise = new Promise((resolve) => {
       this.currentDashboard.tabs.forEach((tab) => {
-        this.getWidgets(tab.id).pipe(take(1)).subscribe((changedWidgets) => {
-          if (changedWidgets) {
-            changedWidgets.forEach((item, index) => {
-              if (tab.widgets.length > 0) {
-                const setting = JSON.parse(tab.widgets[index].settings);
-                const widgetSetting =
-                  this.widgetSettings[item.id + "-" + tab.id];
-                setting.width = item.cols;
-                setting.height = item.rows;
-                setting.x = item.x;
-                setting.y = item.y;
-                debugger;
-                if (widgetSetting.series.length > 0)
-                  setting.series = widgetSetting.series;
-                if (widgetSetting.title) setting.title = widgetSetting.title;
+        this.getWidgets(tab.id)
+          .pipe(take(1))
+          .subscribe((changedWidgets) => {
+            if (changedWidgets) {
+              changedWidgets.forEach((item, index) => {
+                if (tab.widgets.length > 0) {
+                  const setting = JSON.parse(tab.widgets[index].settings);
+                  const widgetSetting =
+                    this.widgetSettings[item.id + "-" + tab.id];
+                  setting.width = item.cols;
+                  setting.height = item.rows;
+                  setting.x = item.x;
+                  setting.y = item.y;
 
-                tab.dashboardId = dashboardId;
-                tab.widgets[index].settings = JSON.stringify(setting);
-                widgetsToUpdate.push(tab.widgets[index]);
-              }
-            });
-          }
-        });
+                  if (widgetSetting.series.length > 0)
+                    setting.series = widgetSetting.series;
+                  if (widgetSetting.title) setting.title = widgetSetting.title;
+
+                  tab.dashboardId = dashboardId;
+                  tab.widgets[index].settings = JSON.stringify(setting);
+                  widgetsToUpdate.push(tab.widgets[index]);
+                }
+              });
+            }
+          });
         //TODO:change method
       });
 
@@ -468,6 +489,10 @@ export class DashboardComponent
       this.dashboardService
         .saveDashboardWidgets(widgetsToUpdate)
         .pipe(take(2))
+        .subscribe(() => {});
+
+      this.dashboardService
+        .updateDashboardTab(this.currentDashboard.tabs)
         .subscribe(() => {});
     });
   }
@@ -515,6 +540,16 @@ export class DashboardComponent
     // }
 
     // this.dashboardSubject.next(this.dashboard.filter((w) => w.selected));
+  }
+
+  refreshDashboard() {
+    this.dashboardService
+      .getCurrentDashboard()
+      .pipe(take(2))
+      .subscribe((dashboard: Dashboard) => {
+        this.currentDashboard = dashboard;
+        this.fillDashboardSubjects(true);
+      });
   }
 
   onTabChange($event) {
@@ -589,12 +624,15 @@ export class DashboardComponent
       tab.dashboardId = this.currentDashboard.id;
 
       //TODO:posts record to DashboardTab table
-      this.dashboardService.addDashboardTab(tab).pipe(take(2)).subscribe((res: any) => {
-        tab.id = res.id;
-        this.currentDashboard.tabs.push(tab);
-        this.fillDashboardSubjects();
-        this.dialogRef.close();
-      });
+      this.dashboardService
+        .addDashboardTab(tab)
+        .pipe(take(2))
+        .subscribe((res: any) => {
+          tab.id = res.id;
+          this.currentDashboard.tabs.push(tab);
+          this.fillDashboardSubjects();
+          this.dialogRef.close();
+        });
     });
 
     const closeForm = this.dialogRef.content.instance.cancel.subscribe(
@@ -629,9 +667,30 @@ export class DashboardComponent
       });
   }
 
+  tabTitleDblClick(tabId: number, title: string) {
+    this.editInlineTabName = tabId;
+    this.tabTitle = title;
+  }
+
+  onTitleEnterKey(tabId: number) {
+    this.editInlineTabName = 0;
+    this.saveTabTitle(tabId, this.tabTitle);
+  }
+
+  onBlurTabName(tabId: number) {
+    this.editInlineTabName = 0;
+    this.saveTabTitle(tabId, this.tabTitle);
+  }
+
+  saveTabTitle(tabId: number, title: string) {
+    this.currentDashboard.tabs.find((t) => t.id === tabId).title = title;
+  }
+
+  updateTabName() {}
+
   initDashboard() {
     this.options = {
-      gridType: GridType.Fit,
+      gridType: GridType.ScrollVertical,
       compactType: CompactType.None,
       margin: 10,
       outerMargin: true,
@@ -641,20 +700,12 @@ export class DashboardComponent
       outerMarginLeft: 5,
       useTransformPositioning: true,
       mobileBreakpoint: 200,
-      minCols: 50,
-      maxCols: 200,
-      minRows: 40,
-      maxRows: 200,
-      maxItemCols: 100,
-      minItemCols: 1,
-      maxItemRows: 100,
-      minItemRows: 1,
-      maxItemArea: 500,
-      minItemArea: 1,
-      defaultItemCols: 1,
-      defaultItemRows: 1,
-      fixedColWidth: 100,
-      fixedRowHeight: 100,
+      minCols: 35,
+      maxCols: 100,
+      minRows: 50,
+      maxRows: 100,
+      fixedRowHeight:100,
+      fixedColWidth:100,
       keepFixedHeightInMobile: false,
       keepFixedWidthInMobile: false,
       scrollSensitivity: 10,
@@ -681,7 +732,7 @@ export class DashboardComponent
       displayGrid: DisplayGrid.None,
       disableWindowResize: false,
       disableWarnings: false,
-      scrollToNewItems: false,
+      scrollToNewItems: true,
     };
 
     this.dashboardService
@@ -777,69 +828,75 @@ export class DashboardComponent
     widgetTitle,
     settingSeries: any[]
   ) {
-    return this.dashboardService.getWidgetData(widgetId).pipe(take(2)).subscribe((res) => {
-      let init = false;
-      const series = [];
-      const id = widgetId + "-" + tabId;
-      if (this.widgetSettings[id].series.length == 0) {
-        init = true;
-      }
+    const id = widgetId + "-" + tabId;
+    this.widgetStatus[id] = "progress";
+    return this.dashboardService
+      .getWidgetData(widgetId)
+      .pipe(take(2))
+      .subscribe((res) => {
+        this.widgetStatus[id] = "done";
+        let init = false;
+        const series = [];
+        //const id = widgetId + "-" + tabId;
+        if (this.widgetSettings[id].series.length == 0) {
+          init = true;
+        }
 
-      if (res.datasets) {
-        res.datasets.forEach((item, index) => {
-          if (init) {
-            item.name = item.label;
-            if (settingSeries.length > 0 && settingSeries[index])
-              widgetType = settingSeries[index].type;
+        if (res.datasets) {
+          res.datasets.forEach((item, index) => {
+            if (init) {
+              item.name = item.label;
+              if (settingSeries.length > 0 && settingSeries[index])
+                widgetType = settingSeries[index].type;
 
-            item.type = this.chartService.getChartTypeName(widgetType);
-          }
+              item.type = this.chartService.getChartTypeName(widgetType);
+            }
 
+            const seriesItem: SerieItem = {
+              name: item.label,
+              type: widgetType.toString(),
+            };
+
+            if (widgetType == 1 || widgetType == 2 || widgetType == 3) {
+              seriesItem.backgroundColor = new WidgetSetting().Colors[index];
+              seriesItem.borderWidth = "1";
+            }
+
+            if (widgetType == 4) {
+              seriesItem.backgroundColor = new WidgetSetting().Colors;
+            }
+
+            series.push(seriesItem);
+          });
+        }
+
+        if (widgetType == 10 || widgetType == 11 || widgetType == 12) {
           const seriesItem: SerieItem = {
-            name: item.label,
+            name: widgetTitle,
             type: widgetType.toString(),
           };
-
-          if (widgetType == 1 || widgetType == 2 || widgetType == 3) {
-            seriesItem.backgroundColor = new WidgetSetting().Colors[index];
-            seriesItem.borderWidth = "1";
-          }
-
-          if (widgetType == 4) {
-            seriesItem.backgroundColor = new WidgetSetting().Colors;
-          }
-
-          series.push(seriesItem);
-        });
-      }
-
-      if (widgetType == 10 || widgetType == 11 || widgetType == 12) {
-        const seriesItem: SerieItem = {
-          name: widgetTitle,
-          type: widgetType.toString(),
-        };
-        this.widgetSettings[id].series = [seriesItem];
-      }
-      //gauge
-      if (widgetType != 10) {
-        if (!init) {
-          if (this.widgetSettings[id]) {
-            res = this.chartService.applyChartSetting(
-              this.widgetSettings[id],
-              res
-            );
-          }
-        } else {
+          this.widgetSettings[id].series = [seriesItem];
+        }
+        //gauge
+        if (widgetType != 10) {
+          // if (!init) {
+          //   if (this.widgetSettings[id]) {
+          //     res = this.chartService.applyChartSetting(
+          //       this.widgetSettings[id],
+          //       res
+          //     );
+          //   }
+          // } else {
           this.widgetSettings[id].series = series;
           res = this.chartService.applyChartSetting(
             this.widgetSettings[id],
             res
           );
+          //}
         }
-      }
 
-      this.widgetData[widgetId + "-" + tabId] = res;
-    });
+        this.widgetData[widgetId + "-" + tabId] = res;
+      });
   }
 
   widgetHasData(widgetId, tabId) {
@@ -990,17 +1047,15 @@ export class DashboardComponent
 
   getData(widgetId, tabId) {
     const data = this.widgetData[widgetId + "-" + tabId];
-    if (data) {
-      //const setting = this.widgetSettings[widgetId+ '-' + tabId];
-      //const newData = this.chartService.applyChartSetting(setting,data);
-      //return newData;
-    }
     return data;
   }
 
   fillDashboardSubjects(forceRefresh: boolean = false) {
     let widgets = [];
     if (this.currentDashboard) {
+      if (forceRefresh) {
+        this.tabSubjects = [];
+      }
       this.currentDashboard.tabs.forEach((tab) => {
         widgets = this.getWidgetList(tab.id, forceRefresh);
 

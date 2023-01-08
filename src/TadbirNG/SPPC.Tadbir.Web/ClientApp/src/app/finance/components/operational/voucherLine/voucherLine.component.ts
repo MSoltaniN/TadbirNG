@@ -23,7 +23,7 @@ import {
 } from "@progress/kendo-angular-grid";
 import { CompositeFilterDescriptor } from "@progress/kendo-data-query";
 import { SettingService } from "@sppc/config/service";
-import { DocumentStatusValue } from "@sppc/finance/enum";
+import { DocumentStatusValue, VoucherOperations } from "@sppc/finance/enum";
 import { Voucher, VoucherLine } from "@sppc/finance/models";
 import {
   VoucherLineInfo,
@@ -51,7 +51,7 @@ import {
   ReportingService,
 } from "@sppc/shared/services";
 import { ToastrService } from "ngx-toastr";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { VoucherLineFormComponent } from "./voucherLine-form.component";
 
 @Component({
@@ -59,7 +59,7 @@ import { VoucherLineFormComponent } from "./voucherLine-form.component";
   templateUrl: "./voucherLine.component.html",
   styles: [
     `
-      /deep/ .panel-primary {
+      ::ng-deep .panel-primary {
         border-color: #989898;
       }
       .voucher-balance {
@@ -89,7 +89,7 @@ import { VoucherLineFormComponent } from "./voucherLine-form.component";
         width: 450px;
         display: block;
       }
-      /deep/.k-footer-template {
+      ::ng-deep.k-footer-template {
         background-color: #b3b3b3;
       }
 
@@ -117,10 +117,10 @@ export class VoucherLineComponent
   implements OnInit
 {
   //#region Fields
-  @ViewChild(GridComponent) grid: GridComponent;
-  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
-  @ViewChild(ReportManagementComponent)
+  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent, {static: true}) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent, {static: true})
   reportManager: ReportManagementComponent;
 
   public rowData: GridDataResult;
@@ -257,6 +257,14 @@ export class VoucherLineComponent
     }
 
     this.reloadGrid();
+
+    this.voucherService.changeVoucher$.asObservable().subscribe(res => {
+      setTimeout(() => {
+        if (res == 'changed'){
+          this.reloadGrid();
+        }
+      }, 0);
+    })
   }
 
   /**

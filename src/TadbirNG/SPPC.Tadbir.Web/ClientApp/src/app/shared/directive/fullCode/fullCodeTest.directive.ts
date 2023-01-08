@@ -1,5 +1,5 @@
 
-import { Directive, ElementRef, HostListener, Input,  AfterViewInit, Renderer } from "@angular/core";
+import { Directive, ElementRef, HostListener, Input,  AfterViewInit, Renderer2 } from "@angular/core";
 
 
 
@@ -19,7 +19,7 @@ export class FullCodeTestDirective implements AfterViewInit {
     this.fullCodeElement = document.getElementById(this.sppcFullCodeTest) as any;
   }
 
-  constructor(public el: ElementRef, private renderer: Renderer) { }
+  constructor(public el: ElementRef, private renderer: Renderer2) { }
 
   @HostListener('input') onEvent() {
     let code = this.el.nativeElement.value;
@@ -29,6 +29,6 @@ export class FullCodeTestDirective implements AfterViewInit {
     let event: Event = document.createEvent("Event");
     event.initEvent('input', true, true);
     Object.defineProperty(event, 'target', { value: this.fullCodeElement, enumerable: true });
-    this.renderer.invokeElementMethod(this.fullCodeElement, 'dispatchEvent', [event]);
+    this.renderer.selectRootElement(this.fullCodeElement).dispatchEvent(event);
   }
 }

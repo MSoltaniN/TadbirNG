@@ -1,5 +1,10 @@
-.demo-chart {
-    height: 400px;
+.demo-chart {   
     width: 100%;
-    min-height: 400px;
+    min-height: 400px;   
+  }
+
+  .pad-top
+  {
+    position: relative;
+    top: 35px;
   }

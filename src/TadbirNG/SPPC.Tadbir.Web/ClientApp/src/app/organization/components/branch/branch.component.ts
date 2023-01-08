@@ -1,6 +1,6 @@
 import { Component, OnInit, Renderer2, ChangeDetectorRef, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { DialogService } from '@progress/kendo-angular-dialog';
@@ -24,6 +24,7 @@ import { UserService } from '@sppc/admin/service';
 import { Router } from '@angular/router';
 import { OperationId } from '@sppc/shared/enum/operationId';
 import { ShareDataService } from '@sppc/shared/services/share-data.service';
+import { lastValueFrom } from 'rxjs';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -43,11 +44,11 @@ export function getLayoutModule(layout: Layout) {
 
 export class BranchComponent extends AutoGridExplorerComponent<Branch> implements OnInit {
 
-  @ViewChild(GridComponent) grid: GridComponent;
-  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
-  @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
-  @ViewChild(QuickReportSettingComponent) reportSetting: QuickReportSettingComponent;
+  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent, {static: true}) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent, {static: true}) reportManager: ReportManagementComponent;
+  @ViewChild(QuickReportSettingComponent, {static: true}) reportSetting: QuickReportSettingComponent;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
@@ -142,10 +143,10 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
     }));  
   }
 
-  
-
-  rolesHandler() {
+  async rolesHandler() {
     var branchId = this.selectedRows[0];
+
+    let selectedRoles = await lastValueFrom(this.branchService.getBranchRoles(branchId));
 
     this.dialogRef = this.dialogService.open({
       title: this.getText('Branch.RolesTitle'),
@@ -155,6 +156,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
     this.dialogModel = this.dialogRef.content.instance;
     this.dialogModel.branchId = branchId;
     this.dialogModel.errorMessages = undefined;
+    this.dialogModel.branchRoles = selectedRoles;
 
     this.dialogRef.content.instance.saveBranchRoles.subscribe((res) => {
       this.saveBranchRolesHandler(res);
@@ -223,13 +225,6 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
 
           var context = this.authenticationService.parseJwt(this.Ticket);
 
-          //currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
-          //currentUser.fiscalPeriodName = contextInfo.fiscalPeriodName;
-          //currentUser.branchName = contextInfo.branchName;
-          //currentUser.companyName = contextInfo.companyName;
-          //currentUser.ticket = newTicket;
-          //currentUser.roles = contextInfo.roles;
-
           currentUser.permissions = context.TadbirContext.Permissions;
           currentUser.fiscalPeriodName = context.TadbirContext.FiscalPeriodName;
           currentUser.branchName = context.TadbirContext.BranchName;
@@ -257,5 +252,3 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
     });
   }
 }
-
-

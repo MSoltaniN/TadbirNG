@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from "@angular/core";
 import { WidgetSetting } from "@sppc/shared/models/widgetSetting";
 
 @Component({
@@ -46,6 +53,8 @@ export class WidgetSettingComponent implements OnInit {
     // if (this.setting.series.findIndex((s) => s.type == "4") >= 0) {
     //   this.setting.series[0].backgroundColor = this.pieColors;
     // }
+
+    debugger;
     this.clonedSetting.title = this.chartTitle;
     this.save.emit(this.clonedSetting);
   }

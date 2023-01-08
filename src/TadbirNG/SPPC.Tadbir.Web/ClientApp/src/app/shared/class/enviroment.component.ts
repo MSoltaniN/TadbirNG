@@ -1,8 +1,9 @@
-import { Inject } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { ContextInfo } from "@sppc/core";
 import { PermissionBrief } from "@sppc/core/models/permissionBrief";
 import { BrowserStorageService } from "@sppc/shared/services/browserStorage.service";
 
+@Injectable({ providedIn: 'root' })
 export class EnviromentComponent {
   constructor(
     @Inject(BrowserStorageService) public bStorageService: BrowserStorageService

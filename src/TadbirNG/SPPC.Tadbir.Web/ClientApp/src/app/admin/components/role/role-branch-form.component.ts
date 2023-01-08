@@ -5,6 +5,7 @@ import { Layout } from '@sppc/shared/enum/metadata';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { DetailComponent } from '@sppc/shared/class';
 import { RelatedItems } from '@sppc/shared/models';
+import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
 
 
 
@@ -17,7 +18,8 @@ export function getLayoutModule(layout: Layout) {
   selector: 'role-branch-form-component',
   styles: [`
        .user-dialog {width: 100% !important; height:100% !important}
-       /deep/ .user-dialog .k-dialog{ height:100% !important; min-width: unset !important; }
+       ::ng-deep .k-treeview .k-i-collapse, ::ng-deep .k-treeview .k-i-expand {margin-left: -5px !important}
+       ::ng-deep .user-dialog .k-dialog{ height:100% !important; min-width: unset !important; }
 `
   ],
   templateUrl: './role-branch-form.component.html',
@@ -61,7 +63,13 @@ export class RoleBranchFormComponent extends DetailComponent {
   @Output() saveRoleBranches: EventEmitter<RelatedItems> = new EventEmitter();
   ////create properties
 
+  checkById(item: TreeItem) {
+    return item.dataItem.id;
+  }
 
+  handleCheckingRows(item: TreeItemLookup) {
+
+  }
 
   //////Events
   public onSave(e: any): void {

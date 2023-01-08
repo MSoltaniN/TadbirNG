@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeItemLookup, TreeItem } from '@progress/kendo-angular-treeview';
@@ -180,7 +180,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
   public handleMainComponentChecking(itemLookup: TreeItemLookup): void {
     var itemId = itemLookup.item.dataItem.id;
     this.mainComponentModel = itemLookup.item.dataItem;
-    if (this.mainComponentCheckedKeys.find(f => f == itemId) == itemId) {
+    if (this.mainComponentSelectedItem == itemId) { // !this.mainComponentCheckedKeys.find(f => f == itemId) == itemId
       this.mainComponentCheckedKeys = [];
       this.relatedComponentCheckedKeys = [];
       this.relatedComponentCategories = undefined;

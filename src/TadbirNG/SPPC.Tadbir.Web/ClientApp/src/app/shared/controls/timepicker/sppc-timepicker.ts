@@ -17,10 +17,10 @@ import { DatePipe } from '@angular/common'
   styles: [`
 
 
-    /deep/ dp-date-picker.dp-material .dp-picker-input { width:100% !important; } 
+    ::ng-deep dp-date-picker.dp-material .dp-picker-input { width:100% !important; } 
     dp-date-picker{width:100%; direction:ltr;} 
-    /deep/ dp-day-calendar{position: fixed;}
-    /deep/ sppc-timepicker input{
+    ::ng-deep dp-day-calendar{position: fixed;}
+    ::ng-deep sppc-timepicker input{
     border-color: rgba(0, 0, 0, 0.15);
     height: calc(1.42857em + (4px * 2) + (1px * 2)) !important;
     /* border-style: solid; */

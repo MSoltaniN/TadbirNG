@@ -41,7 +41,7 @@ export class TabComponent {
   @Input() IsQuickReport: boolean;
   @Input() QuickReportInfo: QuickReportConfigInfo;
 
-  @ViewChild(ReportViewerComponent) reportViewer: ReportViewerComponent;  
+  @ViewChild(ReportViewerComponent, {static: true}) reportViewer: ReportViewerComponent;  
     
 
   public callViewer()

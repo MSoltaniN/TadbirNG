@@ -51,7 +51,7 @@
                         (pageChange)="collectionGridpageChange($event)"
                         [height]="200"
                         [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-                        [selectedKeys]="selectedRowsKey"
+                        [(selectedKeys)]="selectedRowsKey"
                         [kendoGridSelectBy]="'accountId'"
                         sppc-auto-generated-grid-reorder sppc-auto-generated-grid-resize
                         >
@@ -99,7 +99,7 @@
                         (pageChange)="pageChange($event)"
                         (sortChange)="sortChange($event)"
                         [selectable]="{ checkboxOnly: true, mode: multiSelect.str }"
-                        [selectedKeys]="selectableRowsKey"
+                        [(selectedKeys)]="selectableRowsKey"
                         [kendoGridSelectBy]="'id'"
                         (filterChange)="filterChange($event)"
                         (excelExport)="onExcelExport($event)"
@@ -169,7 +169,7 @@
             [minWidth]="250"
             [width]="450"
           >
-            <p>
+            <p >
               {{ "AccountCollection.DeleteTaxConfirmMsg" | translate }}
             </p>
             <kendo-dialog-actions>

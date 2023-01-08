@@ -40,6 +40,19 @@ export class BranchRolesFormComponent extends DetailComponent implements OnInit 
 
   @Input() public branchId: number;
   @Input() public errorMessage: string = '';
+  @Input() public set branchRoles(selectedRoles: RelatedItems) {
+    this.branchRolesData = selectedRoles;
+    this.selectedRows = [];
+    if (selectedRoles != undefined) {
+      this.gridData = selectedRoles.relatedItems;
+
+      for (let roleItem of this.gridData) {
+        if (roleItem.isSelected) {
+          this.selectedRows.push(roleItem.id)
+        }
+      }
+    }
+  }
 
 
   @Output() cancelBranchRoles: EventEmitter<any> = new EventEmitter();
@@ -53,24 +66,8 @@ export class BranchRolesFormComponent extends DetailComponent implements OnInit 
   }
 
   ngOnInit() {
-    this.getBranchRoles();
+
   }
-
-  getBranchRoles() {
-    this.branchService.getBranchRoles(this.branchId).subscribe(res => {
-      this.branchRolesData = res;
-
-      this.gridData = this.branchRolesData.relatedItems;
-
-      for (let roleItem of this.gridData) {
-        if (roleItem.isSelected) {
-          this.selectedRows.push(roleItem.id)
-        }
-      }
-
-    });
-  }
-
 
   public onSave(e: any): void {
     e.preventDefault();

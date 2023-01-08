@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Voucher } from "@sppc/finance/models";
 import { BaseService, Filter, FilterExpression } from "@sppc/shared/class";
 import { BrowserStorageService } from "@sppc/shared/services";
+import { BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
 import { VoucherMessageResource } from "../enum";
 import { InventoryBalance } from "../models/inventoryBalance";
@@ -56,6 +57,9 @@ export class VoucherService extends BaseService {
   ) {
     super(http, bStorageService);
   }
+
+  // use to empty voucheLine in New voucher Form
+  changeVoucher$ = new BehaviorSubject<any>('');
 
   public changeVouchersStatus(apiUrl: string, models: number[]) {
     let body = JSON.stringify({ paraph: "", items: models });

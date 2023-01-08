@@ -28,7 +28,7 @@ export class SppcCheckAccess implements OnInit {
 
     var permissionId: number = 0;
 
-    var entityType = (<any>this.parentComponet)._view.component.entityType
+    var entityType = this.parentComponet['_hostLView'][8].entityType
 
     var allPermission = permissions.split(',');
     for (var pr in allPermission) {

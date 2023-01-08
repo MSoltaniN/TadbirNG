@@ -1,7 +1,7 @@
 
 import {exhaustMap, finalize, take} from 'rxjs/operators';
 import { BaseComponent } from "./base.component";
-import { Injectable, Renderer2, Optional, Inject, Host, Input, HostListener, OnInit, OnDestroy, ElementRef, EventEmitter } from "@angular/core";
+import { Injectable, Renderer2, Optional, Inject, Host, Input, HostListener, OnInit, OnDestroy, ElementRef, EventEmitter, Directive } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormControl, ValidatorFn, Validators, AsyncValidatorFn } from "@angular/forms";
@@ -18,9 +18,8 @@ import { of, Subject } from 'rxjs';
 
 
 @Injectable()
+@Directive()
 export class DetailComponent extends BaseComponent implements OnDestroy {
-
-  
 
   //shortcuts: ShortcutCommand[] = [new ShortcutCommand(1, 0, null, null, "Ctrl+Shift+Y", "addNew")];
 

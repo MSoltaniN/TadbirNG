@@ -81,23 +81,23 @@ export function getLayoutModule(layout: Layout) {
       input[type="text"] {
         width: 100%;
       }
-      /deep/.section-option kendo-dropdownlist {
+      ::ng-deep.section-option kendo-dropdownlist {
         width: 100%;
       }
-      /deep/ .k-switch-on .k-switch-handle {
+      ::ng-deep .k-switch-on .k-switch-handle {
         left: -8px !important;
       }
-      /deep/ .k-switch-off .k-switch-handle {
+      ::ng-deep .k-switch-off .k-switch-handle {
         left: -4px !important;
       }
-      /deep/ .k-switch[dir="rtl"] .k-switch-label-on {
+      ::ng-deep .k-switch[dir="rtl"] .k-switch-label-on {
         right: -22px;
       }
-      /deep/ .k-switch[dir="rtl"] .k-switch-label-off {
+      ::ng-deep .k-switch[dir="rtl"] .k-switch-label-off {
         left: 0;
       }
-      /deep/ .k-switch-label-on,
-      /deep/ .k-switch-label-off {
+      ::ng-deep .k-switch-label-on,
+      ::ng-deep .k-switch-label-off {
         overflow: initial;
       }
       .journal-type {
@@ -106,28 +106,28 @@ export function getLayoutModule(layout: Layout) {
       .journal-type label {
         margin-top: 10px;
       }
-      /deep/.k-footer-template {
+      ::ng-deep.k-footer-template {
         background-color: #b3b3b3;
         color: #000;
       }
       .btn-compute-default {
         margin-top: 25px;
         border: 2px solid #337ab7;
-        color: #337ab7;
+        color: #f0f0f0;
         padding: 5px 25px;
       }
       .btn-compute {
-        color: #337ab7;
+        color: #f0f0f0;
         transition: All 0.3s 0.1s ease-out;
       }
       .btn-compute-selectable {
         color: #fff;
         background-image: linear-gradient(#c1e3ff, #337ab7);
       }
-      /deep/ sppc-profitlost .k-grid tr.k-alt {
+      ::ng-deep sppc-profitlost .k-grid tr.k-alt {
         background-color: rgb(248, 251, 253) !important;
       }
-      /deep/ sppc-profitlost .k-grid[dir="rtl"] td,
+      ::ng-deep sppc-profitlost .k-grid[dir="rtl"] td,
       .k-rtl .k-grid td {
         border-width: 0 0px 0 0 !important;
         border: 0 !important;
@@ -246,12 +246,12 @@ export class ProfitLostComponent
     hideVerticalLine: true,
   };
 
-  @ViewChild(GridComponent) grid: GridComponent;
-  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
-  @ViewChild(ReportManagementComponent)
+  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent, {static: true}) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent, {static: true})
   reportManager: ReportManagementComponent;
-  @ViewChild(QuickReportSettingComponent)
+  @ViewChild(QuickReportSettingComponent, {static: true})
   reportSetting: QuickReportSettingComponent;
 
   constructor(

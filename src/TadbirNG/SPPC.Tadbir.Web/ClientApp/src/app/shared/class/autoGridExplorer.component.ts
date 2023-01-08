@@ -55,13 +55,13 @@ export class AutoGridExplorerComponent<T>
 
   treeScrollTop: number;
 
-  @ViewChild("treemenu") public treeContextMenu: ContextMenuComponent;
+  @ViewChild("treemenu", {static: true}) public treeContextMenu: ContextMenuComponent;
   public contextmenuItems: any[] = [
     { text: "Buttons.New", icon: "file-add", mode: "New" },
     { text: "Buttons.Edit", icon: "edit", mode: "Edit" },
     { text: "Buttons.Delete", icon: "delete", mode: "Remove" },
   ];
-  @ViewChild("treemenulimited")
+  @ViewChild("treemenulimited", {static: true})
   public treeContextMenuLimited: ContextMenuComponent;
   public contextmenuLimitedItems: any[] = [
     { text: "Buttons.New", icon: "file-add", mode: "New" },
@@ -383,6 +383,7 @@ export class AutoGridExplorerComponent<T>
    * @param model
    */
   refreshTreeNodes(model?: any) {
+
     if (model) {
       var item = this.treeNodes.filter((f) => f.id == model.id);
       if (item.length > 0) {
@@ -396,6 +397,7 @@ export class AutoGridExplorerComponent<T>
             this.treeNodes.filter((f) => f.parentId == model.parentId).length >
               0)
         ) {
+
           this.treeNodes.push({
             id: model.id,
             name: model.name,
@@ -409,8 +411,13 @@ export class AutoGridExplorerComponent<T>
         }
         var parentItem = this.treeNodes.filter((f) => f.id == model.parentId);
         if (parentItem.length > 0) {
-          parentItem[0].childCount++;
+          if (parentItem[0].childCount) {
+            parentItem[0].childCount++;
+          } else {
+            parentItem[0].childCount = 1;
+          }
         }
+        
       }
 
       var items = this.expandedKeys;

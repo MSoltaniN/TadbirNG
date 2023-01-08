@@ -4,9 +4,15 @@
   "newProjectRoot": "projects",
   "projects": {
     "SPPC.Tadbir.Web": {
+      "projectType": "application",
+      "schematics": {
+		  "@schematics/angular:component": {
+        "styleext": "css"
+		  }
+	  },
       "root": "",
       "sourceRoot": "src",
-      "projectType": "application",
+      "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -14,48 +20,59 @@
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "tsConfig": "src/tsconfig.app.json",
-            "progress": true,
             "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.app.json",
+			"progress": true,
             "assets": ["src/assets"],
             "styles": [
               "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/resources/css/stimulsoft/stimulsoft.viewer.office2013.whiteblue.css",
               "src/assets/resources/css/stimulsoft/stimulsoft.designer.office2013.whiteblue.css",
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css"
-            ]
+            ]            
           },
           "configurations": {
             "production": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": false,
+              "buildOptimizer": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
               ]
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "SPPC.Tadbir.Web:build"
-          },
           "configurations": {
             "production": {
               "browserTarget": "SPPC.Tadbir.Web:build:production"
+            },
+            "development": {
+              "browserTarget": "SPPC.Tadbir.Web:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -67,9 +84,9 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/test.ts",
-            "karmaConfig": "./karma.conf.js",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
             "scripts": ["../node_modules/chart.js/dist/chart.js"],
             "styles": [
               "src/styles.css",
@@ -77,49 +94,12 @@
             ],
             "assets": ["src/assets"]
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
-          }
         }
       }
-    },
-    "SPPC.Tadbir.Web-e2e": {
-      "root": "e2e",
-      "sourceRoot": "e2e",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "SPPC.Tadbir.Web:serve"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**"]
-          }
-        }
-      }
-    }
-  },
-  "defaultProject": "SPPC.Tadbir.Web",
-  "schematics": {
-    "@schematics/angular:component": {
-      "prefix": "app",
-      "styleext": "css"
-    },
-    "@schematics/angular:directive": {
-      "prefix": "app"
     }
   },
   "cli": {
-    "analytics": "29d489a2-2a22-4057-94b8-af131c98c5f1"
+    "analytics": "09d2ac97-c2e2-4bb0-b861-093cc1dbdd7e",
+	"cache": { "enabled": false }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, ElementRef, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -11,12 +11,9 @@ import { AccountRelationsType } from '@sppc/finance/enum';
 import { String, DetailComponent, FilterExpression, FilterExpressionBuilder, Filter } from '@sppc/shared/class';
 import { KeyCode } from '@sppc/shared/enum';
 
-
-
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
 }
-
 
 @Component({
   selector: 'accountRelations-form-component',
@@ -30,7 +27,7 @@ export function getLayoutModule(layout: Layout) {
 
 })
 
-export class AccountRelationsFormComponent extends DetailComponent {
+export class AccountRelationsFormComponent extends DetailComponent implements OnInit {
 
   public mainComponentModel: AccountItemBriefInfo;
   public mainComponentSelected: number = 0;
@@ -44,6 +41,11 @@ export class AccountRelationsFormComponent extends DetailComponent {
   public searchValue: string;
   public apiUrl: string;
   public resultMessage: boolean;
+  /*
+  / این دو متغیر برای عملکرد صحیح کزینه انتخاب همه در انگولار 14 ایجاد شد
+  **/
+  public selectAllKeys: number[] = [];
+  public selectAllResultKeys: number[] = [];
 
   //create properties
   @Input() public active: boolean = false;
@@ -75,6 +77,11 @@ export class AccountRelationsFormComponent extends DetailComponent {
   //Events
   public onSave(e: any): void {
     e.preventDefault();
+
+    let selectAllIndex = this.relatedComponentCheckedKeys.findIndex(id => id == -1);
+    if (selectAllIndex > -1) {
+      this.relatedComponentCheckedKeys.splice(selectAllIndex,1);
+    }
 
     var relationModel = new AccountItemRelationsInfo();
     relationModel.id = this.mainComponentModel.id;
@@ -113,6 +120,10 @@ export class AccountRelationsFormComponent extends DetailComponent {
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService,public elem:ElementRef) {
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.AccountRelations, undefined,elem);
+  }
+  ngOnInit(): void {
+    this.isCheckedKeys = this.isCheckedKeys.bind(this);
+    this.isCheckedResultKeys = this.isCheckedResultKeys.bind(this);
   }
 
   getApiUrl() {
@@ -165,16 +176,21 @@ export class AccountRelationsFormComponent extends DetailComponent {
 
   public handleCheckedChange(itemLookup: TreeItemLookup): void {
     var item = itemLookup.item.dataItem;
-    if (this.relatedComponentCheckedKeys.find(f => f == item.id)) {
-      var index = this.resultCategories.findIndex(f => f.id == item.id);
+
+    if (!this.relatedComponentCheckedKeys.find(f => f == item.id)) {
+      let index = this.resultCategories.findIndex(f => f.id == item.id);
       if (index > -1) {
         this.resultCategories.splice(index, 1);
       }
     }
-    else {
+    else if (item.id != -1) {
       this.resultCategories.push(item);
       this.resultCheckedKeys.push(item.id);
-    } 
+    }
+
+    if (item.id == -1) {
+      this.selectAll();
+    }
   }
 
   selectAll() {
@@ -182,49 +198,58 @@ export class AccountRelationsFormComponent extends DetailComponent {
     let resultIsFull;
 
     if (this.relatedComponentCategories.length > 0) {
-      selectedAllItems = this.relatedComponentCategories.length <= this.relatedComponentCheckedKeys.length;
-      resultIsFull = this.relatedComponentCategories.length == this.resultCategories.length;
-      let cleared = false;
+      selectedAllItems = this.relatedComponentCategories.length == this.relatedComponentCheckedKeys.length;
+      resultIsFull = this.relatedComponentCategories.length-1 == this.resultCategories.length;
 
       this.relatedComponentCategories.forEach(item => {
-
-        if ((this.relatedComponentCheckedKeys.find(f => f == item.id) && selectedAllItems) || cleared) {
-          var index = this.relatedComponentCheckedKeys.findIndex(f => f == item.id);
-          if (index > -1) {
-            this.relatedComponentCheckedKeys.splice(0, this.relatedComponentCheckedKeys.length);
-          }
-          cleared = true;
-        } else {
-          if (this.relatedComponentCheckedKeys.filter(i => i.id == item.id).length == 0) {
-            this.relatedComponentCheckedKeys.push(item.id);
-          }
-          if (this.resultCategories.filter(i => i.id == item.id).length == 0) {
+          if (selectedAllItems && this.resultCategories.filter(i => i.id == item.id).length == 0 && item.id != -1) {
             this.resultCategories.push(item);
             this.resultCheckedKeys.push(item.id);
+          } else {
+
+            let index = this.resultCategories.findIndex(f => f.id == item.id);
+            if (index > -1 && resultIsFull) {
+              this.resultCategories.splice(index, 1);
+            }
           }
-        }
-
-        var index = this.resultCategories.findIndex(f => f.id == item.id);
-        if (index > -1 && resultIsFull) {
-          this.resultCategories.splice(index, 1);
-        }
-
       });
     }
   }
 
   public handleResultCheckedChange(itemLookup: TreeItemLookup): void {
-    var item = itemLookup.item.dataItem;
+    let item = itemLookup.item.dataItem;
+
     if (this.relatedComponentCheckedKeys.find(f => f == item.id)) {
-      var index = this.relatedComponentCheckedKeys.findIndex(f => f == item.id);
+      let index = this.relatedComponentCheckedKeys.findIndex(f => f == item.id);
       if (index > -1) {
         this.relatedComponentCheckedKeys.splice(index, 1);
       }
     }
 
-    var index = this.resultCategories.findIndex(f => f.id == item.id);
+    let index = this.resultCategories.findIndex(f => f.id == item.id);
     if (index > -1) {
       this.resultCategories.splice(index, 1);
+    }
+
+    let selectAllIndex = this.relatedComponentCheckedKeys.findIndex(f => f == -1);
+    if (selectAllIndex > -1) {
+      this.relatedComponentCheckedKeys.splice(selectAllIndex, 1);
+    }
+  }
+
+  isCheckedKeys(e:any) {
+    if (this.relatedComponentCheckedKeys.find(f => f == e.id)) {
+      return 'checked'
+    } else {
+      return 'none'
+    }
+  }
+
+  isCheckedResultKeys(e:any) {
+    if (this.resultCategories.find(f => f.id == e.id)) {
+      return 'checked'
+    } else {
+      return 'none'
     }
   }
 
@@ -252,11 +277,23 @@ export class AccountRelationsFormComponent extends DetailComponent {
 
     //this.sppcLoading.show();
     this.getApiUrl();
-    this.accountRelationsService.getRelatedComponentModel(this.apiUrl, filterExp).subscribe(res => {
+    this.accountRelationsService.getRelatedComponentModel(this.apiUrl, filterExp)
+    .subscribe((res) => {
       this.relatedComponentCategories = res;
-      if (this.relatedComponentCategories.length == 0)
+      
+      if (this.relatedComponentCategories.length == 0) {
         this.resultMessage = true;
-      ////this.sppcLoading.hide();
+      } else {
+        this.relatedComponentCategories.map(item => item.parentId = -1);
+        let selectAllExp = "AccountRelations.SelectAll";
+        this.relatedComponentCategories.push({
+          id: -1,
+          parentId: null,
+          name: selectAllExp
+        });
+        console.log(this.relatedComponentCategories);
+      }
+      
     })
   }
 

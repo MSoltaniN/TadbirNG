@@ -9,7 +9,9 @@ import { BrowserStorageService, DashboardService } from "@sppc/shared/services";
   styleUrls: ["./add-widget.component.css"],
 })
 export class AddWidgetComponent implements OnInit {
-  constructor(private dashboardService: DashboardService,public bStorageService: BrowserStorageService) {}
+  constructor(private dashboardService: DashboardService,
+              public bStorageService: BrowserStorageService,
+              ) {}
   @Input() selectedWidgets: Widget[];
 
   selectedId;

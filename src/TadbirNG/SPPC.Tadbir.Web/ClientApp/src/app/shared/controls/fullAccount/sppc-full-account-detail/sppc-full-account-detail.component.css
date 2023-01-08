@@ -65,12 +65,16 @@
     margin-right: 0;
   }
   
-    .search-box button {
-      padding: 4px 5px
-    }
-  
-    .dialog-item input[type=text] {
-      width: calc(100% - 65px);
-      margin: 5px 0;
-    }
+  .search-box button {
+    padding: 4px 5px
+  }
+
+  .dialog-item input[type=text] {
+    width: calc(100% - 65px);
+    margin: 5px 0;
+  }
+
+  kendo-dialog-actions.k-dialog-buttongroup.k-actions.k-actions-stretched {
+    border-color: #ddd;
+  }
   

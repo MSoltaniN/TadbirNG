@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { DialogService } from "@progress/kendo-angular-dialog";
 import { WidgetSetting } from "@sppc/shared/models/widgetSetting";
@@ -25,7 +32,8 @@ export class WidgetHeaderComponent implements OnInit {
 
   constructor(
     private dialogService: DialogService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private el: ElementRef
   ) {}
 
   onClose() {
@@ -45,6 +53,9 @@ export class WidgetHeaderComponent implements OnInit {
 
     this.dialogRef.content.instance.save.subscribe((res) => {
       this.title = res.title;
+      console.log(this.el.nativeElement.parentNode);
+      res.chartId =
+        this.el.nativeElement.parentNode.querySelector(".demo-chart").id;
       this.settingChange.emit(res);
       this.dialogRef.close();
     });

@@ -70,7 +70,7 @@ import { LookupApi } from "@sppc/shared/services/api";
 import { ShareDataService } from "@sppc/shared/services/share-data.service";
 import * as moment from "jalali-moment";
 import { ToastrService } from "ngx-toastr";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { VoucherEditorComponent } from "../../operational/voucher/voucher-editor.component";
 
 export function getLayoutModule(layout: Layout) {
@@ -114,23 +114,23 @@ const matches = (el, selector) =>
       input[type="text"] {
         width: 100%;
       }
-      /deep/.section-option kendo-dropdownlist {
+      ::ng-deep.section-option kendo-dropdownlist {
         width: 100%;
       }
-      /deep/ .k-switch-on .k-switch-handle {
+      ::ng-deep .k-switch-on .k-switch-handle {
         left: -8px !important;
       }
-      /deep/ .k-switch-off .k-switch-handle {
+      ::ng-deep .k-switch-off .k-switch-handle {
         left: -4px !important;
       }
-      /deep/ .k-switch[dir="rtl"] .k-switch-label-on {
+      ::ng-deep .k-switch[dir="rtl"] .k-switch-label-on {
         right: -22px;
       }
-      /deep/ .k-switch[dir="rtl"] .k-switch-label-off {
+      ::ng-deep .k-switch[dir="rtl"] .k-switch-label-off {
         left: 0;
       }
-      /deep/ .k-switch-label-on,
-      /deep/ .k-switch-label-off {
+      ::ng-deep .k-switch-label-on,
+      ::ng-deep .k-switch-label-off {
         overflow: initial;
       }
       .journal-type {
@@ -139,7 +139,7 @@ const matches = (el, selector) =>
       .journal-type label {
         margin-top: 10px;
       }
-      /deep/.k-footer-template {
+      ::ng-deep.k-footer-template {
         background-color: #b3b3b3;
         color: #000;
       }
@@ -289,14 +289,14 @@ export class AccountBookComponent
   private editedRowIndex: number;
   private docClickSubscription: any;
 
-  @ViewChild(GridComponent) grid: GridComponent;
-  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
-  @ViewChild(ReportManagementComponent)
+  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent, {static: true}) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent, {static: true})
   reportManager: ReportManagementComponent;
-  @ViewChild(QuickReportSettingComponent)
+  @ViewChild(QuickReportSettingComponent, {static: true})
   reportSetting: QuickReportSettingComponent;
-  @ViewChild(SppcDateRangeSelector) dateRange: SppcDateRangeSelector;
+  @ViewChild(SppcDateRangeSelector, {static: true}) dateRange: SppcDateRangeSelector;
 
   constructor(
     public toastrService: ToastrService,

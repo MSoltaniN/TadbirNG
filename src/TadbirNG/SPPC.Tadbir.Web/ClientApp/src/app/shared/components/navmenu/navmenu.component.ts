@@ -30,11 +30,11 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
 
   menuList: Array<Command> = new Array<Command>();
   public icons: { [id: string]: string; } = {};
-  @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
+  @ViewChild(ReportManagementComponent, {static: true}) reportManager: ReportManagementComponent;
   paths: number[] = [];
   currentRoute: string;
   versionTitle: string;
-  @ViewChild('li') menuItems: Array<ElementRef>;
+  @ViewChild('li', {static: true}) menuItems: Array<ElementRef>;
 
   scopeService: ShareDataService;
 
@@ -164,18 +164,4 @@ export class NavMenuComponent extends DefaultComponent implements OnInit, AfterV
 
   isCollapsed: boolean = true;
 
-  @HostListener('mouseenter') onMouseEnter() {
-    let body = document.querySelector('body');
-    if (body.classList.contains('siderbar-closed')) {
-      body.classList.remove('sidebar-collapse');
-    }
-  }
-
-  @HostListener('mouseleave') 
-  onMouseLeave() {
-    let body = document.querySelector('body');
-    if (body.classList.contains('siderbar-closed')) {
-      body.classList.add('sidebar-collapse');
-    }
-  }
 }

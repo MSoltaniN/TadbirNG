@@ -63,8 +63,8 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
   @Output() valueChange = new EventEmitter();
 
-  @ViewChild("fromDate") public fromDatePicker: SppcDatepicker;
-  @ViewChild("toDate") public toDatePicker: SppcDatepicker;
+  @ViewChild("fromDate", {static: true}) public fromDatePicker: SppcDatepicker;
+  @ViewChild("toDate", {static: true}) public toDatePicker: SppcDatepicker;
 
   constructor(
     public settingService: SettingService,

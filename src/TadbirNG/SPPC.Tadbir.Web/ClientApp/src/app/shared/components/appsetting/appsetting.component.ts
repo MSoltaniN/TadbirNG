@@ -1,7 +1,6 @@
+import { DOCUMENT } from '@angular/common';
 import { Component, OnInit, Inject } from '@angular/core';
 import { BrowserStorageService } from '@sppc/shared/services';
-import { DOCUMENT } from '@angular/platform-browser';
-
 
 @Component({
   selector: 'app-appsetting',

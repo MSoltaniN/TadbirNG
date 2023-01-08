@@ -23,7 +23,7 @@ interface Item {
 @Component({
   selector: 'costCenter-form-component',
   styles: [`
-        input[type=text],textarea { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}
+        input[type=text],textarea { width: 100%; } ::ng-deep .k-dialog-buttongroup {border-color: #f1f1f1;}
 `],
   templateUrl: './costCenter-form.component.html',
   providers: [{

@@ -29,7 +29,7 @@ import { KeyCode } from '@sppc/shared/enum';
 
 export class SppcNumericInput implements OnInit, ControlValueAccessor, Validator {
 
-  @ViewChild('numinput') numInput: ElementRef;
+  @ViewChild('numinput', {static: true}) numInput: ElementRef;
   
   @Input('autoFocus') autoFocus = false;
   @Input() cssClass: string = "";

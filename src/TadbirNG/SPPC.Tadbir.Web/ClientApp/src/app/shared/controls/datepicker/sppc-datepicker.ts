@@ -21,10 +21,11 @@ import { BrowserStorageService } from '@sppc/shared/services';
     (focusout)="onDateFocusOut()">
   </dp-date-picker>`,
   styles: [`
-    /deep/ dp-date-picker.dp-material .dp-picker-input { width:100% !important; } 
-    dp-date-picker{width:100%; direction:ltr;} 
-    /deep/ dp-day-calendar{position: fixed;}
-    /deep/ sppc-datepicker input{
+    ::ng-deep dp-date-picker.dp-material .dp-picker-input,::ng-deep dp-date-picker > div { width:100% !important; } 
+    ::ng-deep dp-date-picker > div:nth-child(2) {position: absolute}
+    dp-date-picker{width:100%; direction:ltr; padding:0} 
+    ::ng-deep dp-day-calendar{position: fixed;}
+    ::ng-deep sppc-datepicker input{
     border-color: rgba(0, 0, 0, 0.15);
     height: calc(1.42857em + (4px * 2) + (1px * 2)) !important;
     /* border-style: solid; */
@@ -71,6 +72,12 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
   @Input() date: any;
   @Input() isDisplayDate: boolean = true;
   @Input() displayDate: any;
+  // دریافت تاریخ بدون ساعت
+  @Input() set justDate(value:boolean) {
+    if (value) {
+      this.inputDateFormat = 'yyyy/MM/dd';
+    }
+  }
 
   @Input() minDate: any;
   @Input() maxDate: any;
@@ -358,7 +365,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
       if (typeof this.dateObject === "object") {
         this.parseError = false;
         setTimeout(() => {
-          this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
+          this.propagateChange(this.datepipe.transform(<any>this.dateObject, this.inputDateFormat));
         }, 1);
       }
       else {
@@ -502,7 +509,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
           this.dateObject = this.dateLocale == 'fa' ? moment(dateArray.join(this.spliterChar), 'jYYYY/jM/jD') : moment(dateArray.join(this.spliterChar).toString()).locale('en');
 
           setTimeout(() => {
-            this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
+            this.propagateChange(this.datepipe.transform(<any>this.dateObject, this.inputDateFormat));
           }, 1);
         }
 

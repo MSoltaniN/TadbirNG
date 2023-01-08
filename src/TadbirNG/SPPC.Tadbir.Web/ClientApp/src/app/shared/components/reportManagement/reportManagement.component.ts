@@ -100,8 +100,8 @@ export class ReportManagementComponent
 
   @ViewChild(ReportParametersComponent)
   public reportParameter: ReportParametersComponent;
-  @ViewChild(TreeViewComponent) public treeView: TreeViewComponent;
-  @ViewChild(TabsComponent) public tabsComponent: TabsComponent;
+  @ViewChild(TreeViewComponent, {static: true}) public treeView: TreeViewComponent;
+  @ViewChild(TabsComponent) public tabsComponent!: TabsComponent;
 
   treeData: any[];
   active: boolean = false;

@@ -32,7 +32,7 @@
                     [scrollable]="'scrollable'"                    
                     [loading]="false"
                     [selectable]="{ checkboxOnly: false, mode: 'single' }"
-                  [selectedKeys]="selectedRows"
+                  [(selectedKeys)]="selectedRows"
                   kendoGridSelectBy="id"
                   (selectedKeysChange)="onSelectedKeysChange()">
 

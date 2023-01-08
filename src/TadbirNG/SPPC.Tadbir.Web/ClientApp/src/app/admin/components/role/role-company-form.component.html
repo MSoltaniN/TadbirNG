@@ -16,7 +16,7 @@
 
       <kendo-grid id="gridRoleCompaniesFormData" [data]="gridData"
                   [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-                  [selectedKeys]="selectedRows"
+                  [(selectedKeys)]="selectedRows"
                   [kendoGridSelectBy]="selectionKey">
         <ng-template kendoGridNoRecordsTemplate>
           {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}

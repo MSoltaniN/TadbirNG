@@ -13,9 +13,9 @@ import { ViewName } from '@sppc/shared/security';
 @Component({
   selector: 'operationLogs-detail-component',
   styles: [`
-         /deep/ #log-detail > .k-dialog { width: 800px; }
+         ::ng-deep #log-detail > .k-dialog { width: 800px; }
 @media screen and (max-width:800px) {
-    /deep/ #log-detail > .k-dialog { width: 90%; min-width:250px; }
+    ::ng-deep #log-detail > .k-dialog { width: 90%; min-width:250px; }
 }
 `],
   templateUrl: './operationLogs-detail.component.html'

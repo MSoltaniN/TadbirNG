@@ -150,12 +150,12 @@ export class ItemBalanceComponent
   public formGroup: FormGroup;
   breadCrumbList: Array<any> = [];
 
-  @ViewChild(GridComponent) grid: GridComponent;
-  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
-  @ViewChild(ReportManagementComponent)
+  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent, {static: true}) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent, {static: true})
   reportManager: ReportManagementComponent;
-  @ViewChild(QuickReportSettingComponent)
+  @ViewChild(QuickReportSettingComponent, {static: true})
   reportSetting: QuickReportSettingComponent;
 
   fromDate: Date;

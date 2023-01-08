@@ -5812,7 +5812,16 @@ kendo-sortable,
     border-color: inherit;
     text-overflow: clip;
     cursor: default;
+    display: block !important;
+}
+
+.k-grid-toolbar .col-md-12,.k-grid-toolbar .row {
     display: block;
+}
+
+auto-generated-grid-setting,selectform-grid-setting,grid-filter {
+    float: left;
+    margin: 0;
 }
 
     .k-grid-toolbar .k-button {
@@ -7090,7 +7099,6 @@ th.k-sorted {
 }
 
 .k-toolbar .k-button {
-    border-color: transparent;
     color: inherit;
     background: none;
     background-clip: padding-box;
@@ -8366,8 +8374,8 @@ th.k-sorted {
 
 .k-rtl .k-treeview .k-i-expand,
 .k-rtl .k-treeview .k-i-collapse {
-    margin-left: 0;
-    margin-right: -16px;
+    margin-left: -6px;
+    margin-right: 0;
 }
 
 .k-rtl .k-treeview .k-checkbox-wrapper {

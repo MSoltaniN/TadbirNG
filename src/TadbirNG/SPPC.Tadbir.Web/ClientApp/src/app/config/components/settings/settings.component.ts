@@ -23,7 +23,7 @@ import {
   MetaDataService,
 } from "@sppc/shared/services";
 import { ToastrService } from "ngx-toastr";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { SettingsFormComponent } from "./settings-form.component";
 
 export function getLayoutModule(layout: Layout) {
@@ -43,7 +43,7 @@ export function getLayoutModule(layout: Layout) {
   ],
 })
 export class SettingsComponent extends DefaultComponent implements OnInit {
-  @ViewChild(forwardRef(() => SettingsFormComponent))
+  @ViewChild(forwardRef(() => SettingsFormComponent), {static: true})
   private settingForm: SettingsFormComponent;
 
   //public errorMessage = String.Empty;

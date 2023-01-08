@@ -32,9 +32,9 @@ interface Item {
 @Component({
   selector: 'account-form-component',
   styles: [`
-  /deep/ .acc-form .k-switch {margin-left: 20px;margin-right: 20px; width:8rem}
-input[type=text],.ddl-acc,textarea { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}
-/deep/ .dialog-body .k-tabstrip > .k-content { padding:15px; }
+  ::ng-deep .acc-form .k-switch {margin-left: 20px;margin-right: 20px; width:8rem}
+input[type=text],.ddl-acc,textarea { width: 100%; } ::ng-deep .k-dialog-buttongroup {border-color: #f1f1f1;}
+::ng-deep .dialog-body .k-tabstrip > .k-content { padding:15px; }
 .dialog-body{ width: 800px } .dialog-body hr{ border-top: dashed 1px #eee; }
 @media screen and (max-width:800px) {
   .dialog-body{
@@ -42,14 +42,14 @@ input[type=text],.ddl-acc,textarea { width: 100%; } /deep/ .k-dialog-buttongroup
     min-width: 250px;
   }
 }
-/deep/ .k-tabstrip-top > .k-tabstrip-items { border-color: #f4f4f4; }
-/deep/ .k-tabstrip-top > .k-tabstrip-items .k-item.k-state-active { border-bottom-color: white; }
+::ng-deep .k-tabstrip-top > .k-tabstrip-items { border-color: #f4f4f4; }
+::ng-deep .k-tabstrip-top > .k-tabstrip-items .k-item.k-state-active { border-bottom-color: white; }
 
-/* /deep/ .k-switch-on .k-switch-handle { left: 48px !important; } */
-/deep/ .k-switch-off[dir="rtl"] .k-switch-handle{left: calc(100% - 3.25em) !important}
-/deep/ .k-switch-off .k-switch-handle { left: -2px !important; }
-/deep/ .k-switch[dir="rtl"] .k-switch-label-off { left: 0; }
-/deep/ .k-switch-label-on,/deep/ .k-switch-label-off { overflow: initial; }
+/* ::ng-deep .k-switch-on .k-switch-handle { left: 48px !important; } */
+::ng-deep .k-switch-off[dir="rtl"] .k-switch-handle{left: calc(100% - 3.25em) !important}
+::ng-deep .k-switch-off .k-switch-handle { left: -2px !important; }
+::ng-deep .k-switch[dir="rtl"] .k-switch-label-off { left: 0; }
+::ng-deep .k-switch-label-on,::ng-deep .k-switch-label-off { overflow: initial; }
 .acc-form { min-height: 386px; }
 input[type="file"] {
     display: none;
@@ -108,7 +108,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   groupId: number;
 
   progress: number = 0;
-  @ViewChild('myInput') myInputVariable: ElementRef;
+  @ViewChild('myInput', {static: true}) myInputVariable: ElementRef;
 
   @Input() public parent: Account;
   @Input() public model: AccountFullData;
@@ -171,7 +171,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     accountId: new FormControl(),
     bankName: new FormControl('', [Validators.required, Validators.maxLength(128)]),
     accountType: new FormControl('', Validators.required),
-    bankBranchName: new FormControl('', [Validators.required, Validators.maxLength(64)]),
+    bankBranchName: new FormControl('', [Validators.required, Validators.maxLength(128)]),
     branchIndex: new FormControl('', [Validators.required, Validators.maxLength(64)]),
     accountNumber: new FormControl('', [Validators.required, Validators.maxLength(32), Validators.pattern("^[0-9-.]+$")]),
     cardNumber: new FormControl('', [Validators.maxLength(32), Validators.pattern("^[0-9-]+$")]),
@@ -241,22 +241,22 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     else {
       this.accountForm.patchValue({
         name: this.accountModel.name,
-        groupId: this.accountModel.groupId,
+        groupId: <any>this.accountModel.groupId,
         code: this.accountModel.code,
         fullCode: this.accountModel.fullCode,
         description: this.accountModel.description,
-        branchScope: this.accountModel.branchScope,
+        branchScope: <any>this.accountModel.branchScope,
       })
 
       this.featuresForm.patchValue({
-        currencyId: this.accountModel.currencyId,
+        currencyId: <any>this.accountModel.currencyId,
         turnoverMode: this.accountModel.turnoverMode,
-        isActive: this.accountModel.isActive,
-        isCurrencyAdjustable: this.accountModel.isCurrencyAdjustable,
+        isActive: <any>this.accountModel.isActive,
+        isCurrencyAdjustable: <any>this.accountModel.isCurrencyAdjustable,
       })
 
       if (this.customerTaxModel) {
-        this.customerTaxForm.reset(this.customerTaxModel);
+        this.customerTaxForm.reset(<any>this.customerTaxModel);
 
         this.customerTaxForm.patchValue({
           personType: this.customerTaxModel.id > 0 ? this.customerTaxModel.personType.toString() : "1",
@@ -268,7 +268,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
       if (this.accountOwnerModel) {
 
-        this.ownerForm.reset(this.accountOwnerModel)
+        this.ownerForm.reset(<any>this.accountOwnerModel)
 
         this.ownerForm.patchValue({
           accountType: this.accountOwnerModel.id > 0 ? this.accountOwnerModel.accountType.toString() : "0"
@@ -424,15 +424,15 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     var featureValue = this.featuresForm.value;
 
     this.accountModel.name = accountValue.name;
-    this.accountModel.groupId = accountValue.groupId;
+    this.accountModel.groupId = <any>accountValue.groupId;
     this.accountModel.code = accountValue.code;
     this.accountModel.fullCode = accountValue.fullCode;
     this.accountModel.description = accountValue.description;
-    this.accountModel.branchScope = accountValue.branchScope;
-    this.accountModel.currencyId = featureValue.currencyId;
+    this.accountModel.branchScope = <any>accountValue.branchScope;
+    this.accountModel.currencyId = <any>featureValue.currencyId;
     this.accountModel.turnoverMode = featureValue.turnoverMode;
-    this.accountModel.isActive = featureValue.isActive;
-    this.accountModel.isCurrencyAdjustable = featureValue.isCurrencyAdjustable;
+    this.accountModel.isActive = <any>featureValue.isActive;
+    this.accountModel.isCurrencyAdjustable = <any>featureValue.isCurrencyAdjustable;
 
     if (this.accountModel.id <= 0) {
       this.accountModel.branchId = this.BranchId;
@@ -456,7 +456,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       customerTaxInfo.id = this.customerTaxModel.id;
       customerTaxInfo.accountId = this.accountModel.id;
 
-      resultModel.customerTaxInfo = customerTaxInfo;
+      resultModel.customerTaxInfo = <any>customerTaxInfo;
     }
 
     if (!this.isNew && this.accountOwnerModel && this.ownerForm.valid) {
@@ -464,7 +464,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       accountOwner.id = this.accountOwnerModel.id;
       accountOwner.accountId = this.accountModel.id;
 
-      resultModel.accountOwner = accountOwner;
+      resultModel.accountOwner = <any>accountOwner;
     }
 
     this.save.emit(resultModel);

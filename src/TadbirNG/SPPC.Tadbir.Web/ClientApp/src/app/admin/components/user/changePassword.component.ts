@@ -41,7 +41,7 @@ export class ChangePasswordComponent extends DetailComponent {
     e.preventDefault();
     //this.sppcLoading.show();
 
-    this.model = this.editForm1.value;
+    this.model = <UserProfile>this.editForm1.value;
     this.model.userName = this.user_Name;
 
     this.userService.changePassword(this.model).subscribe(res => {

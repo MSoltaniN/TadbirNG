@@ -10,7 +10,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-import { SystemIssue } from "./systemIssue";
+// import { SystemIssue } from "./systemIssue";
 
 export interface SystemIssue {
     parentId?: number;

@@ -180,7 +180,7 @@ a.circle {
   transition: 1s all;
 }
 
-/deep/ body.tLtr .ver-info {
+::ng-deep body.tLtr .ver-info {
   z-index: 810;
   position: fixed;
   left: 50px;
@@ -189,7 +189,7 @@ a.circle {
   float: right;
 }
 
-/deep/ body.tRtl .ver-info {
+::ng-deep body.tRtl .ver-info {
   z-index: 810;
   position: absolute;
   right: 0;

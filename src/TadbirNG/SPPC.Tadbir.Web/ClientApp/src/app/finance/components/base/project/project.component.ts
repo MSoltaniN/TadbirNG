@@ -15,6 +15,7 @@ import { SettingService } from '@sppc/config/service';
 import { ProjectFormComponent } from './project-form.component';
 import { ViewName, ProjectPermissions } from '@sppc/shared/security';
 import { OperationId } from '@sppc/shared/enum/operationId';
+import { GridComponent } from '@progress/kendo-angular-grid';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -34,9 +35,10 @@ export function getLayoutModule(layout: Layout) {
 
 export class ProjectComponent extends AutoGridExplorerComponent<Project> implements OnInit{
 
-  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
-  @ViewChild(QuickReportSettingComponent) reportSetting: QuickReportSettingComponent;
+  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportManagementComponent, {static: true}) reportManager: ReportManagementComponent;
+  @ViewChild(QuickReportSettingComponent, {static: true}) reportSetting: QuickReportSettingComponent;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,

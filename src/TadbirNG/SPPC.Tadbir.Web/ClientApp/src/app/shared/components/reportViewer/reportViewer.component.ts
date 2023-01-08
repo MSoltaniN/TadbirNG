@@ -8,7 +8,7 @@ import { ViewName } from '@sppc/shared/security';
 import { BrowserStorageService, MetaDataService, ParameterInfo, ReportingService } from '@sppc/shared/services';
 import * as moment from 'jalali-moment';
 import { ToastrService } from 'ngx-toastr';
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { ReportsQueries } from '../reportManagement/reports.queries';
 

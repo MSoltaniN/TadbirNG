@@ -43,12 +43,12 @@
     margin-top: 0 !important;
 }
 
-::ng-deep  #accountRelationForm > .k-dialog {
+::ng-deep #accountRelationForm > .k-dialog {
     width: 800px;
 }
 
 @media screen and (max-width:800px) {
-    ::ng-deep  #accountRelationForm > .k-dialog {
+    ::ng-deep #accountRelationForm > .k-dialog {
         width: 90%;
         min-width:250px;
     }
@@ -61,12 +61,17 @@
     display: block;
 }
 
-ngdeep #main-section.relation-form .k-dropdown {
+::ng-deep#main-section.relation-form .k-dropdown {
     width: 150px;
 }
 
-.my-k-label {
-    display: flex;
-    gap: 10px;
-    line-height: normal;
+kendo-dropdownlist {
+    width: auto !important;
+    min-width: 150px !important;
+    margin: 0 5px !important;
 }
+
+::ng-deep #main-section.relation-form .k-dropdown {
+    width: 150px;
+}
+

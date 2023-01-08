@@ -2,6 +2,14 @@
   direction: rtl;
 }
 
+.rtl {
+  direction: rtl;
+}
+
+.ltr {
+  direction: ltr;
+}
+
 .guage {
   display: flex;
   align-items: center;
@@ -9,6 +17,24 @@
 
 .breadcrumb {
   background-color: transparent;
+}
+
+.grid-ster
+{
+  font-family: 'SPPC';
+}
+
+.no-data
+{
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 30%;
+}
+
+.input-tab-name
+{
+  width:100px;
 }
 
 ::ng-deep body.tRtl .title {
@@ -83,8 +109,6 @@ a i {
   padding-left: 3px;
 }
 
-
-
 ::ng-deep body.tRtl .settings .confirm-msg {
   text-align: right;
   float: right;
@@ -109,7 +133,8 @@ a i {
 
 ::ng-deep gridster
 {
-  min-height: calc(100vh - 50px);
+  min-height: 1200px;
+  overflow-y: scroll;
 }
 
 ::ng-deep .ui-tabview-nav
@@ -124,11 +149,31 @@ a i {
 }
 
 ::ng-deep li.ui-state-active a span.tab-title
-{ 
+{
   border-bottom-style: solid;
   font-weight: bolder;
   font-size: medium;
   color: rgb(0, 96, 206);
+}
+
+::ng-deep .p-tabview .p-tabview-nav li {
+  font-size: 14px;
+  font-family: 'SPPC';
+}
+
+::ng-deep .w-tab-icon {
+  color: brown;
+  margin-inline-end: 5px;
+  transition: all 0.3s;
+}
+
+::ng-deep .w-tab-icon:hover {
+  color: red;
+  transition: all 0.3s;
+}
+
+::ng-deep .p-tabview-panels{
+  direction: ltr;
 }
 
 ::ng-deep .k-window-content {

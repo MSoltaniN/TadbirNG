@@ -9,7 +9,8 @@
       class="buttons"
       [ngClass]="isDashboardEditMode ? 'col-lg-7 col-md-6' : 'col-md-12'"
     >
-      <a href="#/tadbir/dashboard" (click)="onManageWidgetsClick()">
+      <a *ngIf="isAccess('Dashboard',this.manageWidgets)"
+       href="#/tadbir/dashboard" (click)="onManageWidgetsClick()">
         <i class="fa fa-cubes"></i>{{ "Dashboard.ManageWidgets" | translate }}
       </a>
       <a
@@ -60,6 +61,7 @@
       <p-tabView
         #tabContainer
         (onChange)="onTabChange($event)"
+        [class]="this.CurrentLanguage == 'fa' ? 'rtl' : 'ltr'"
         *ngIf="currentDashboard"
         [(activeIndex)]="currentDashboardTabIndex"
       >
@@ -73,14 +75,41 @@
           "
         >
           <ng-template pTemplate="header">
-            <span (click)="removeTab(tab.id)" *ngIf="isDashboardEditMode">
+            <span
+              (click)="removeTab(tab.id)"
+              *ngIf="isDashboardEditMode"
+              class="w-tab-icon"
+            >
               <i class="fa fa-trash remove-tab"></i>
             </span>
-            <span class="tab-title">{{ tab.title }}</span>
+
+            <input
+              class="input-tab-name"
+              *ngIf="
+                isDashboardEditMode && editInlineTabName === tab.id;
+                else title
+              "
+              type="text"
+              [(ngModel)]="tabTitle"
+              (blur)="onBlurTabName(tab.title)"
+              (keyup.enter)="onTitleEnterKey(tab.id)"
+              value="{{ tab.title }}"
+            />
+            <ng-template #title
+              ><span
+                class="tab-title"
+                (dblclick)="tabTitleDblClick(tab.id, tab.title)"
+                >{{ tab.title }}</span
+              ></ng-template
+            >
           </ng-template>
           <ng-container *ngIf="getWidgets(tab.id) | async as widgets">
             <gridster [options]="widgetOptions[tab.id]">
-              <gridster-item [item]="item" *ngFor="let item of widgets">
+              <gridster-item
+                class="grid-ster"
+                [item]="item"
+                *ngFor="let item of widgets"
+              >
                 <ng-container
                   *ngIf="
                     item.typeId == 2 ||
@@ -103,7 +132,30 @@
                   >
                     <widget-container>
                       <div class="box-body" body>
+                        <div
+                          *ngIf="
+                            widgetStatus[item.id + '-' + tab.id] ===
+                              'progress' && !getData(item.id, tab.id)
+                          "
+                          class="no-data"
+                        >
+                          <span>{{
+                            "Dashboard.WidgetInProgress" | translate
+                          }}</span>
+                        </div>
+                        <div
+                          *ngIf="
+                            widgetStatus[item.id + '-' + tab.id] === 'done' &&
+                            !getData(item.id, tab.id)
+                          "
+                          class="no-data"
+                        >
+                          <span>{{
+                            "Dashboard.WidgetNoData" | translate
+                          }}</span>
+                        </div>
                         <chart-widget
+                          *ngIf="getData(item.id, tab.id)"
                           [data]="getData(item.id, tab.id)"
                           [type]="getChartType(item.typeId, item.id, tab.id)"
                           [initOptions]="

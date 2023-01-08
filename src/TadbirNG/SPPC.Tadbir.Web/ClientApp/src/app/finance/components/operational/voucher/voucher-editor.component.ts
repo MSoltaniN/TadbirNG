@@ -45,7 +45,7 @@ import {
   MetaDataService,
 } from "@sppc/shared/services";
 import { ToastrService } from "ngx-toastr";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -71,7 +71,7 @@ export function getLayoutModule(layout: Layout) {
         margin: 0 10px;
       }
 
-      /deep/.dialog-padding .k-window-content {
+      ::ng-deep.dialog-padding .k-window-content {
         padding: 15px !important;
       }
 
@@ -155,9 +155,9 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
   currentVoucherNo: number;
 
-  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
-  @ViewChild(ReportManagementComponent)
+  @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent, {static: true}) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent, {static: true})
   reportManager: ReportManagementComponent;
 
   /**
@@ -506,7 +506,6 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       .getModelsByFilters(apiUrl, this.filter, this.quickFilter)
       .subscribe(
         (res) => {
-          res.originName = '';
           this.initVoucherForm(res);
           this.errorMessage = undefined;
           this.isLastVoucher = !res.hasNext;
@@ -564,6 +563,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     this.subjectMode = this.voucherModel.subjectType;
 
     this.currentVoucherNo = this.voucherModel.no;
+
+    this.voucherService.changeVoucher$.next('changed');
   }
 
   voucherTypeListChange(value) {

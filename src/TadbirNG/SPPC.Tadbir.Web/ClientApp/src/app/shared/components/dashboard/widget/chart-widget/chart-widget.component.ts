@@ -1,12 +1,9 @@
-import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 import {
   AfterContentInit,
+  ChangeDetectorRef,
   Component,
-  EventEmitter,
   Input,
   OnInit,
-  Output,
-  ViewChild,
 } from "@angular/core";
 import { WidgetSetting } from "@sppc/shared/models/widgetSetting";
 import { ChartService } from "@sppc/shared/services/chart.service";
@@ -67,8 +64,6 @@ export class ChartWidgetComponent implements OnInit, AfterContentInit {
   }
 
   changeSettings(settings: WidgetSetting) {
-    debugger;
-
     const singleType = settings.series.every(
       (val, i, arr) => val.type === arr[0].type
     );
@@ -90,10 +85,6 @@ export class ChartWidgetComponent implements OnInit, AfterContentInit {
     // setTimeout(() => {
     //   this.options = Object.assign({}, newOptions);
     //   echartsObj.setOption(newOptions, true, true);
-    // }, 10);
-
-    // setTimeout(() => {
-    //   this.chart.reinit();
     // }, 10);
   }
 }

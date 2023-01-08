@@ -45,5 +45,6 @@ export const SecureEntity = {
     SystemIssue: 'SystemIssue',
     BalanceByAccount: 'BalanceByAccount',
     ProfitLoss: 'ProfitLoss',
-    BalanceSheet: 'BalanceSheet'
+    BalanceSheet: 'BalanceSheet',
+    Dashboard: 'Dashboard'
 }

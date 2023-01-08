@@ -43,12 +43,12 @@
 }
 
 
-/deep/ .fullAccountForm > .k-dialog {
+::ng-deep .fullAccountForm > .k-dialog {
   width: 800px;
 }
 
 @media screen and (max-width:800px) {
-  /deep/ .fullAccountForm > .k-dialog {
+  ::ng-deep .fullAccountForm > .k-dialog {
     width: 90%;
     min-width: 250px;
   }

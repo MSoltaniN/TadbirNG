@@ -4,9 +4,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { DialogRef, DialogService } from "@progress/kendo-angular-dialog";
 import { RTL } from "@progress/kendo-angular-l10n";
 import { UserService } from "@sppc/admin/service";
-import { UserProfileConfig } from "@sppc/config/models/userProfileConfig";
 import { SettingService } from "@sppc/config/service";
-import { SettingsApi } from "@sppc/config/service/api";
 import {
   AuthenticationService,
   CompanyLoginInfo,
@@ -246,27 +244,14 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
     if (this.companyId == "") {
       this.showMessage(
-        this.getText("AllValidations.Login.BranchIsRequired"),
+        this.getText("AllValidations.Login.CompanyIsRequired"),
         MessageType.Info,
         "",
         MessagePosition.TopCenter
       );
-      //this.showMessage(this.getText("AllValidations.Login.FiscalPeriodIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
-      //this.showMessage(this.getText("AllValidations.Login.CompanyIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
-
       isValidate = false;
       return isValidate;
     }
-
-    //if (this.branchId == '') {
-    //  this.showMessage(this.getText("AllValidations.Login.BranchIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
-    //  isValidate = false;
-    //}
-
-    //if (this.fiscalPeriodId == '') {
-    //  this.showMessage(this.getText("AllValidations.Login.FiscalPeriodIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
-    //  isValidate = false;
-    //}
 
     return isValidate;
   }

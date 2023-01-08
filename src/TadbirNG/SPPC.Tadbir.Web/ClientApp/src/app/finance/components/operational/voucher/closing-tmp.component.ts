@@ -18,7 +18,7 @@ export function getLayoutModule(layout: Layout) {
   selector: 'closing-tmp-voucher',
   styles: [
     `
-    input[type=text],textarea { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}
+    input[type=text],textarea { width: 100%; } ::ng-deep .k-dialog-buttongroup {border-color: #f1f1f1;}
     `
   ],
   templateUrl: './closing-tmp.component.html',
@@ -38,7 +38,7 @@ export class ClosingTmpComponent extends DetailComponent implements OnInit {
   creditDebitMode: string = "1";
   creditDebit: number;
 
-  @ViewChild('amount') txtAmount: SppcNumericInput;
+  @ViewChild('amount', {static: true}) txtAmount: SppcNumericInput;
 
   @Output() dataChanged: EventEmitter<any> = new EventEmitter();
 

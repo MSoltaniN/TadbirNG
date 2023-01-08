@@ -17,7 +17,7 @@ export function getLayoutModule(layout: Layout) {
 @Component({
   selector: 'auto-generated-grid-setting',
   templateUrl: './auto-generated-grid-setting.component.html',
-  styles: [`/deep/ .setting-dialog .k-dialog { max-height: 85%; }`],
+  styles: [`::ng-deep .setting-dialog .k-dialog { max-height: 85%; }`],
   providers: [{
     provide: RTL,
     useFactory: getLayoutModule,

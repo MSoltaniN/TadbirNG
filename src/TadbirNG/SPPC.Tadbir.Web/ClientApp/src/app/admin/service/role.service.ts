@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Response } from "@angular/http";
+
 import { Permission } from "@sppc/core";
 import { Branch } from "@sppc/organization/models";
 import { BaseService } from "@sppc/shared/class";
@@ -8,7 +8,7 @@ import { String } from "@sppc/shared/class/source";
 import { RelatedItem, RelatedItems } from "@sppc/shared/models";
 import { BrowserStorageService } from "@sppc/shared/services";
 import { map } from "rxjs/operators";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 import { Role, RoleDetails, RoleFull, UserBrief } from "../models";
 import { RoleApi } from "./api";
 

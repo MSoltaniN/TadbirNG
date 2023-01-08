@@ -1,1 +1,9 @@
-<div [id]="id" echarts [options]="options" class="demo-chart"></div>
+<div
+  [id]="id"
+  echarts
+  [class.pad-top]="
+    type === 'bar' || type === 'horizontalBar' || type === 'line'
+  "
+  [options]="options"
+  class="demo-chart"
+></div>

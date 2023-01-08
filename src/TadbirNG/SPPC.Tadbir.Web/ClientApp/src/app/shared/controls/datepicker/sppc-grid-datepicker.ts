@@ -20,14 +20,14 @@ import { SppcGridFilter } from '..';
     theme="dp-material">
   </dp-date-picker>`,
     styles: [`
-    /deep/ dp-date-picker.dp-material .dp-picker-input { width:100% !important; } 
+    ::ng-deep dp-date-picker.dp-material .dp-picker-input { width:100% !important; } 
     dp-date-picker{width:100%; direction:ltr;} 
-    /deep/ dp-day-calendar{position: fixed;}
-/deep/ dp-time-select{ display:none;}
-/deep/ dp-day-time-calendar { position: fixed; } /deep/ dp-day-time-calendar > dp-day-calendar{position:initial}
-/deep/ dp-day-time-calendar >  dp-time-select { display:block;}
-/deep/ sppc-grid-datepicker{ width:100% }
-/deep/ sppc-grid-datepicker input{ border-color: rgba(0, 0, 0, 0.08); }
+    ::ng-deep dp-day-calendar{position: fixed;}
+::ng-deep dp-time-select{ display:none;}
+::ng-deep dp-day-time-calendar { position: fixed; } ::ng-deep dp-day-time-calendar > dp-day-calendar{position:initial}
+::ng-deep dp-day-time-calendar >  dp-time-select { display:block;}
+::ng-deep sppc-grid-datepicker{ width:100% }
+::ng-deep sppc-grid-datepicker input{ border-color: rgba(0, 0, 0, 0.08); }
        `],
     providers: [
         {

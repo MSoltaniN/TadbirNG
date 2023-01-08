@@ -119,7 +119,7 @@ export class FilterDatePickerDirective implements OnInit {
       mainElement.addEventListener("click", this.clearFilterClick.bind(this));
 
     let property = <Property>(
-      this._viewContainerRef["_data"].componentView.parent.component
+      this._viewContainerRef['_hostLView'][8]
         .metaDataItem
     );
 

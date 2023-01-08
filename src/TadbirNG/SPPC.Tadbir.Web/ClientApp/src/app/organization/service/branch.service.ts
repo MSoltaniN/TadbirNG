@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Response } from "@angular/http";
+
 import { Branch } from "@sppc/organization/models";
 import { BranchApi } from "@sppc/organization/service/api";
 import { BaseService, String } from "@sppc/shared/class";

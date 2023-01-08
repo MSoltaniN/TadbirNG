@@ -20,7 +20,7 @@ import { LayoutModule } from "@progress/kendo-angular-layout";
 import { ContextMenuModule } from "@progress/kendo-angular-menu";
 import { PopupModule } from "@progress/kendo-angular-popup";
 import { TreeViewModule } from "@progress/kendo-angular-treeview";
-import { DpDatePickerModule } from "ng2-jalali-date-picker";
+import { DpDatePickerModule } from "@aligorji/ng2-jalali-date-picker";
 
 import { SharedRoutingModule } from "@sppc/shared/shared-routing.module";
 
@@ -148,6 +148,7 @@ import { ChartService } from "./services/chart.service";
 import { ColorPickerModule } from "ngx-color-picker";
 import { NgxEchartsModule } from "ngx-echarts";
 import * as echarts from 'echarts';
+import { WidgetRolesFormComponent } from './components/dashboard/manage-widgets/widget-roles-form/widget-roles-form.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -283,6 +284,8 @@ export function loadEcharts(): any {
     ManageWidgetsFormComponent,
 
     WidgetAccountsComponent,
+
+    WidgetRolesFormComponent,
   ],
 
   entryComponents: [
@@ -299,6 +302,7 @@ export function loadEcharts(): any {
     TabWidgetComponent,
     SppcFullAccountDetailComponent,
     ManageWidgetsFormComponent,
+    WidgetRolesFormComponent
   ],
 
   exports: [
@@ -382,7 +386,7 @@ export function loadEcharts(): any {
   ],
 })
 export class SharedModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<SharedModule> {
     // Forcing the whole app to use the returned providers from the AppModule only.
     return {
       ngModule: SharedModule,

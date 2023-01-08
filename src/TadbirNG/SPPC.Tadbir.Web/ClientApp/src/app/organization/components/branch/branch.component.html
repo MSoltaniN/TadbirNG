@@ -26,6 +26,8 @@
           >
             <kendo-treeview
               [nodes]="firstTreeNode"
+              [filterable]="true"
+              (filterChange)="filterTreeNodes($event)"
               textField="name"
               kendoTreeViewExpandable
               kendoTreeViewSelectable
@@ -94,7 +96,7 @@
             (remove)="removeHandler()"
             [loading]="false"
             [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-            [selectedKeys]="selectedRows"
+            [(selectedKeys)]="selectedRows"
             [kendoGridSelectBy]="selectionKey"
             (filterChange)="filterChange($event)"
             (selectedKeysChange)="onSelectedKeysChange($event)"
@@ -122,6 +124,10 @@
               pagerOf="{{ 'Paging.Of' | translate }}"
               pagerItems="{{ 'Paging.Record' | translate }}"
               pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}"
+                    pagerNextPage="{{ 'Paging.NextPage' | translate }}"
+                    pagerPreviousPage="{{ 'Paging.PreviousPage' | translate }}"
+                    pagerFirstPage="{{ 'Paging.FirstPage' | translate }}"
+                    pagerLastPage="{{ 'Paging.LastPage' | translate }}"
             >
             </kendo-grid-messages>
 
@@ -230,7 +236,7 @@
 
             <kendo-grid-checkbox-column
               showSelectAll="true"
-              [width]="45"
+              [width]="50"
               [headerClass]="{ 'chb-column-explore': true }"
               [class]="{ 'chb-column-explore': true }"
               [resizable]="false"
@@ -337,7 +343,7 @@
             [minWidth]="250"
             [width]="450"
           >
-            <p>
+            <p >
               {{ deleteConfirmMsg }}
             </p>
             <kendo-dialog-actions>

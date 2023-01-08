@@ -30,7 +30,7 @@ import {
   MetaDataService,
 } from "@sppc/shared/services";
 import { ToastrService } from "ngx-toastr";
-import "rxjs/Rx";
+// import "rxjs/Rx";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -56,11 +56,11 @@ export class UserComponent
   isActive: boolean;
 
   // Report
-  @ViewChild(GridComponent) grid: GridComponent;
-  @ViewChild(ViewIdentifierComponent) viewIdentity: ViewIdentifierComponent;
-  @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
-  @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
-  @ViewChild(QuickReportSettingComponent) reportSetting: QuickReportSettingComponent;
+  @ViewChild(GridComponent, {static: true}) grid: GridComponent;
+  @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
+  @ViewChild(ReportViewerComponent, {static: true}) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent, {static: true}) reportManager: ReportManagementComponent;
+  @ViewChild(QuickReportSettingComponent, {static: true}) reportSetting: QuickReportSettingComponent;
 
   //editDataItem?: User = undefined;
   userRolesData: RelatedItemsInfo;
@@ -147,6 +147,7 @@ export class UserComponent
     this.saveHandler(model, this.isNew, this.userService, serviceUrl)
       .then((success: ResultOption) => {
         this.isActive = false;
+        this.highLightNewRow(model.userName)
       })
       .catch((error: ResultOption) => {
         // error handler is called

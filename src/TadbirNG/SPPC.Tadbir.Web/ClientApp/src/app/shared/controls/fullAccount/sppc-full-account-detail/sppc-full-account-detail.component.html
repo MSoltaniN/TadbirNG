@@ -1,6 +1,12 @@
 <div style="padding:15px;" (keydown.esc)="escPress($event)">
   <div class="row">
     <div class="col-xs-12 dialog-item">
+      <div *ngIf="errorMessages">
+        <div class="alert alert-danger">
+          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+          {{ errorMessages }}
+        </div>
+      </div>
       <span class="glyphicon glyphicon-ok" *ngIf="selectedItem == accountItem.Account"></span>
       <span>{{ 'FullAccount.Account' | translate }}</span>
 

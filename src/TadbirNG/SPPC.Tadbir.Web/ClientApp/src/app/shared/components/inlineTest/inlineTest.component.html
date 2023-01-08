@@ -25,7 +25,7 @@
               (cellClick)="cellClickHandler($event)"
               (add)="addHandler($event)"
               [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-              [selectedKeys]="selectedRows"
+              [(selectedKeys)]="selectedRows"
               [kendoGridSelectBy]="selectionKey"
               (filterChange)="filterChange($event)"
               (selectedKeysChange)="onSelectedKeysChange($event)"

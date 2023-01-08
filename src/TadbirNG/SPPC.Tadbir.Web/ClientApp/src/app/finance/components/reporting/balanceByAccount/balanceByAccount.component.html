@@ -63,7 +63,7 @@
     (remove)="removeHandler($event)"
     [loading]="false"
     [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-    [selectedKeys]="selectedRows"
+    [(selectedKeys)]="selectedRows"
     [kendoGridSelectBy]="selectionKey"
     (filterChange)="filterChange($event)"
     (selectedKeysChange)="onSelectedKeysChange($event)"
@@ -91,6 +91,10 @@
       pagerOf="{{ 'Paging.Of' | translate }}"
       pagerItems="{{ 'Paging.Record' | translate }}"
       pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}"
+                    pagerNextPage="{{ 'Paging.NextPage' | translate }}"
+                    pagerPreviousPage="{{ 'Paging.PreviousPage' | translate }}"
+                    pagerFirstPage="{{ 'Paging.FirstPage' | translate }}"
+                    pagerLastPage="{{ 'Paging.LastPage' | translate }}"
     >
     </kendo-grid-messages>
 
@@ -108,25 +112,23 @@
 
     <ng-template kendoGridToolbarTemplate>
       <div class="content-header no-padding no-margin">
-        <div>
-          <section class="content-header" style="padding-top: 0">
-            <h4 class="pull-right">
-              {{ "BalanceByAccount.Level" | translate }}
-              {{
-                displayTypeName
-                  ? displayTypeName
-                  : ("BalanceByAccount.Ledger" | translate)
-              }}
-            </h4>
-            <ol class="breadcrumb pull-left" style="top: 0">
-              <li *ngFor="let item of breadCrumbList">
-                <a href="javascript:;" (click)="selectBreadCrumb(item)">{{
-                  item.displayType.title
-                }}</a>
-              </li>
-            </ol>
-          </section>
-        </div>
+        <section class="content-header" style="padding-top: 0">
+          <h4 class="pull-right">
+            {{ "BalanceByAccount.Level" | translate }}
+            {{
+              displayTypeName
+                ? displayTypeName
+                : ("BalanceByAccount.Ledger" | translate)
+            }}
+          </h4>
+          <ol class="breadcrumb pull-left" style="top: 0">
+            <li *ngFor="let item of breadCrumbList">
+              <a href="javascript:;" (click)="selectBreadCrumb(item)">{{
+                item.displayType.title
+              }}</a>
+            </li>
+          </ol>
+        </section>
       </div>
       <div class="col-md-12 no-padding no-margin">
         <div class="report-type sppc-float">
@@ -714,7 +716,7 @@
             <span for="closing-voucher">{{
               "Balance.Closing" | translate
             }}</span>
-
+            <br><br>
             <input
               type="checkbox"
               id="temp-voucher"
@@ -725,11 +727,11 @@
             <span for="temp-voucher">{{
               "Balance.CloseAccounts" | translate
             }}</span>
-
-            <label class="control-label">{{
-              "Journal.BranchSeparation" | translate
-            }}</label>
-            <kendo-switch
+            <br><br>
+            <span class="control-label">{{
+              ("Journal.BranchSeparation" | translate) + ":"
+            }}</span>
+            <kendo-switch class="mx-20"
               [onLabel]="'AccountBook.OnLabel' | translate"
               [offLabel]="'AccountBook.OffLabel' | translate"
               [(ngModel)]="selectedBranchSeparation"
