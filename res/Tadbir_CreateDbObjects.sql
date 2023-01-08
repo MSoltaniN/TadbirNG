@@ -893,14 +893,7 @@ INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (1, N'Chart_Colu
 INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (2, N'Chart_BarChart')
 INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (3, N'Chart_LineGraph')
 INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (4, N'Chart_PieChart')
-INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (5, N'Chart_AreaGraph')
-INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (6, N'Chart_ScatterPlot')
-INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (7, N'Chart_BubbleChart')
-INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (8, N'Chart_StackedColumnChart')
-INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (9, N'Chart_StackedBarChart')
 INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (10, N'Gauge_Circular')
-INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (11, N'Gauge_Digital')
-INSERT [Reporting].[WidgetType] ([WidgetTypeID], [Name]) VALUES (12, N'Gauge_Linear')
 SET IDENTITY_INSERT [Reporting].[WidgetType] OFF
 
 SET IDENTITY_INSERT [Reporting].[FunctionParameter] ON

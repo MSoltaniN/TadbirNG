@@ -50,6 +50,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.btnNewSibling = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnGenerate = new System.Windows.Forms.Button();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.grpProperties.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,10 +67,13 @@ namespace SPPC.Tools.SystemDesigner.Forms
             // 
             this.tvMenus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.tvMenus.HideSelection = false;
             this.tvMenus.Location = new System.Drawing.Point(12, 56);
             this.tvMenus.Name = "tvMenus";
             this.tvMenus.Size = new System.Drawing.Size(382, 485);
             this.tvMenus.TabIndex = 1;
+            this.tvMenus.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.Menus_BeforeSelect);
+            this.tvMenus.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.Menus_AfterSelect);
             // 
             // btnNewChild
             // 
@@ -135,6 +139,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.cmbPermissionGroup.Name = "cmbPermissionGroup";
             this.cmbPermissionGroup.Size = new System.Drawing.Size(379, 28);
             this.cmbPermissionGroup.TabIndex = 11;
+            this.cmbPermissionGroup.SelectedIndexChanged += new System.EventHandler(this.PermissionGroup_SelectedIndexChanged);
             // 
             // label6
             // 
@@ -260,12 +265,23 @@ namespace SPPC.Tools.SystemDesigner.Forms
             // btnGenerate
             // 
             this.btnGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGenerate.Location = new System.Drawing.Point(414, 556);
+            this.btnGenerate.Location = new System.Drawing.Point(551, 556);
             this.btnGenerate.Name = "btnGenerate";
-            this.btnGenerate.Size = new System.Drawing.Size(176, 35);
+            this.btnGenerate.Size = new System.Drawing.Size(131, 35);
             this.btnGenerate.TabIndex = 8;
             this.btnGenerate.Text = "Generate Scripts";
             this.btnGenerate.UseVisualStyleBackColor = true;
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefresh.Location = new System.Drawing.Point(414, 556);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(131, 35);
+            this.btnRefresh.TabIndex = 9;
+            this.btnRefresh.Text = "Refresh Tree";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.Refresh_Click);
             // 
             // MenuBrowserForm
             // 
@@ -273,6 +289,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(832, 603);
+            this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnGenerate);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnNewSibling);
@@ -317,5 +334,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
         private System.Windows.Forms.Button btnNewSibling;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnGenerate;
+        private System.Windows.Forms.Button btnRefresh;
     }
 }
