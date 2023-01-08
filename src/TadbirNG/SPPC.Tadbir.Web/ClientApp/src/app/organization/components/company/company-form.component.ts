@@ -9,13 +9,9 @@ import { DetailComponent } from '@sppc/shared/class';
 import { ViewName } from '@sppc/shared/security';
 import { FormControl, Validators } from '@angular/forms';
 
-
-
-
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
 }
-
 
 @Component({
   selector: 'company-form-component',
@@ -77,5 +73,41 @@ export class CompanyFormComponent extends DetailComponent implements OnInit {
     this.closeForm();
   }
 
+  dbNameValue: string;
+  toEnglishChars(e:KeyboardEvent) {
+    let char = e.code.toString().split('Key');
 
+    if (char.length > 1 && !(e.code == 'KeyA' && e.ctrlKey == true)) {
+
+      if (char[1].toLowerCase() == e.key.toLowerCase()) {
+
+        this.editForm.patchValue({
+          dbName: this.dbNameValue+e.key
+        });
+
+      } else {
+
+        if (e.shiftKey) {
+          this.editForm.patchValue({
+            dbName: this.dbNameValue+char[1]
+          });
+        } else {
+
+          this.editForm.patchValue({
+            dbName: this.dbNameValue+char[1].toLowerCase()
+          });
+        }
+      }
+    }
+
+    // to Allow the shortcut select all in input text
+    if (e.code == 'KeyA' && e.ctrlKey == true) {
+      (<any>e.target).select();
+      // return;
+    } else {
+      this.dbNameValue = this.editForm.value.dbName? this.editForm.value.dbName: '';
+    }
+
+  }
+   
 }
