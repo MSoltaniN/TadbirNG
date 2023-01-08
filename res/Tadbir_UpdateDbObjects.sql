@@ -346,3 +346,28 @@ SET IDENTITY_INSERT [Config].[Setting] ON
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (11, 'UserProfileSettings', 3, 1, 'UserProfileConfig', N'{}', N'{}', 'UserProfileSettingsDescription', 0)
 SET IDENTITY_INSERT [Config].[Setting] OFF
+
+-- 1.2.1468
+DELETE FROM [Auth].[RoleWidget]
+WHERE [WidgetID] IN(
+    SELECT [WidgetID]
+    FROM [Reporting].[Widget]
+    WHERE [TypeID] NOT IN(1, 2, 3, 4, 10))
+
+DELETE FROM [Reporting].[TabWidget]
+WHERE [WidgetID] IN(
+    SELECT [WidgetID]
+    FROM [Reporting].[Widget]
+    WHERE [TypeID] NOT IN(1, 2, 3, 4, 10))
+
+DELETE FROM [Reporting].[WidgetAccount]
+WHERE [WidgetID] IN(
+    SELECT [WidgetID]
+    FROM [Reporting].[Widget]
+    WHERE [TypeID] NOT IN(1, 2, 3, 4, 10))
+
+DELETE FROM [Reporting].[Widget]
+WHERE [TypeID] NOT IN(1, 2, 3, 4, 10)
+
+DELETE FROM [Reporting].[WidgetType]
+WHERE [WidgetTypeID] NOT IN(1, 2, 3, 4, 10)

@@ -23,10 +23,10 @@ namespace SPPC.Tools.SystemDesigner.Forms
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            Cursor = Cursors.WaitCursor;
+            ActiveForm.Cursor = Cursors.WaitCursor;
             _allGroups = GetAllPermissionGroups();
             ReloadGroups();
-            Cursor = Cursors.Default;
+            ActiveForm.Cursor = Cursors.Default;
         }
 
         private void Permissions_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
