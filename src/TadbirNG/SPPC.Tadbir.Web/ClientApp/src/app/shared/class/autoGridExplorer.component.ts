@@ -613,6 +613,12 @@ export class AutoGridExplorerComponent<T>
   }
 
   private search(items: any[], term: string): any[] {
+    items.map(i => {
+      i.name = i.name.toString().replace('ي', 'ی');
+      i.name = i.name.toString().replace('ك', 'ک');
+      return i;
+    })
+
     return items.reduce((acc, item) => {
       if (this.contains(item.name, term)) {
         acc.push(item);
