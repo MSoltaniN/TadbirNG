@@ -147,8 +147,8 @@ export class ManageWidgetsComponent
   }
 
   async setOwnerList() {
-    let me = await this.translate.get("Widget.MyWidgets").toPromise();
-    let all = await this.translate.get("Widget.AllWidgets").toPromise();
+    let me = await lastValueFrom(this.translate.get("Widget.MyWidgets"));
+    let all = await lastValueFrom(this.translate.get("Widget.AllWidgets"));
 
     this.widgetOwner = [
       { id: 1, title: me },
