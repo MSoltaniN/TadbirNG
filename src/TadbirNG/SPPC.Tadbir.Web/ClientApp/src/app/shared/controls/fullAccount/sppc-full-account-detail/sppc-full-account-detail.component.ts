@@ -420,7 +420,7 @@ export class SppcFullAccountDetailComponent implements OnInit {
 
     let fullAccountData: FullAccount = new FullAccountInfo();
 
-    if ( this.strictMode && (
+    if ( this.strictMode && ( !this.accountSelectedId.length ||
          (this.costCentersRows.length > 0 && !this.costCenterSelectedId.length) ||
          (this.detailAccountsRows.length > 0 && !this.detailAccountSelectedId.length) ||
          (this.projectsRows.length > 0 && !this.projectSelectedId.length)

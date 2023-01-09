@@ -76,6 +76,8 @@ export class SppcFullAccountComponent
   //accountFullCode: string;
 
   fullAccount: FullAccountInfo;
+  @Output() isInputFocused:EventEmitter<boolean> = new EventEmitter(false);
+  isOpenedDialog = false;
 
   private dialogRef: DialogRef;
   private dialogModel: any;
@@ -111,32 +113,32 @@ export class SppcFullAccountComponent
 
     this.fullAccount = this.controlContainer.value;
 
-    // if (this.fullAccount.account.id > 0) {
-    //   this.isNew = false;
-    //   this.accountSelectedId.push(this.fullAccount.account.id);
-    //   this.accountTitle = this.fullAccount.account.name;
+    if (this.fullAccount.account.id > 0) {
+      this.isNew = false;
+      this.accountSelectedId.push(this.fullAccount.account.id);
+      this.accountTitle = this.fullAccount.account.name;
 
-    // } else this.isNew = true;
+    } else this.isNew = true;
 
-    // if (!this.isNew) {
-    //   if (this.fullAccount.detailAccount.id > 0) {
-    //     this.detailAccountSelectedId.push(this.fullAccount.detailAccount.id);
-    //     this.detailAccountTitle = this.fullAccount.detailAccount.name;
+    if (!this.isNew) {
+      if (this.fullAccount.detailAccount.id > 0) {
+        this.detailAccountSelectedId.push(this.fullAccount.detailAccount.id);
+        this.detailAccountTitle = this.fullAccount.detailAccount.name;
 
-    //   }
+      }
 
-    //   if (this.fullAccount.costCenter.id > 0) {
-    //     this.costCenterSelectedId.push(this.fullAccount.costCenter.id);
-    //     this.costCenterTitle = this.fullAccount.costCenter.name;
+      if (this.fullAccount.costCenter.id > 0) {
+        this.costCenterSelectedId.push(this.fullAccount.costCenter.id);
+        this.costCenterTitle = this.fullAccount.costCenter.name;
 
-    //   }
+      }
 
-    //   if (this.fullAccount.project.id > 0) {
-    //     this.projectSelectedId.push(this.fullAccount.project.id);
-    //     this.projectTitle = this.fullAccount.project.name;
+      if (this.fullAccount.project.id > 0) {
+        this.projectSelectedId.push(this.fullAccount.project.id);
+        this.projectTitle = this.fullAccount.project.name;
 
-    //   }
-    // }
+      }
+    }
   }
 
   //#region Select item
@@ -525,14 +527,22 @@ export class SppcFullAccountComponent
   }
   //#endregion
 
-  onFocus(item: number) {
-    this.focusedItem = item;
+  onFocus(item?: number) {
+    if (item != undefined)
+      this.focusedItem = item;
+    this.isInputFocused.emit(true);
+  }
+
+  onBlur() {
+    if (!this.isOpenedDialog)
+      this.isInputFocused.emit(false);
   }
 
   openDialog(template: TemplateRef<any>, item: number) {
+    this.isOpenedDialog = true;
     this.selectedItem = item;
     this.onReset();
-
+    
     this.dialogRef = this.dialogService.open({
       title: this.getText("FullAccount.Title"),
       content: template,
@@ -543,6 +553,8 @@ export class SppcFullAccountComponent
     );
 
     this.dialogRef.result.subscribe((result) => {
+      this.isOpenedDialog = false;
+      this.onBlur();
       if (result instanceof DialogCloseResult) {
         this.closeDialog();
         this.setFocus.emit();

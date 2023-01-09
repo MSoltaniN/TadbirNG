@@ -11,7 +11,9 @@
       <span>{{ 'FullAccount.Account' | translate }}</span>
 
       <div class="row search-box">
-        <input sppcAutoFocus type="text" class="k-textbox" [(ngModel)]="accFilterValue" (keydown.enter)="handleFilter(accountItem.Account)" />
+        <input sppcAutoFocus type="text" class="k-textbox" [(ngModel)]="accFilterValue"
+         (keydown.enter)="handleFilter(accountItem.Account)"
+         (change)="handleFilter(accountItem.Account)" />
         <button class="k-button k-primary" (click)="handleFilter(accountItem.Account)">
           <span class="k-i-filter k-icon"></span>
         </button>
@@ -44,7 +46,9 @@
       <span>{{ 'FullAccount.DetailAccount' | translate }}</span>
 
       <div class="row search-box">
-        <input type="text" class="k-textbox" [(ngModel)]="dAccFilterValue" (keydown.enter)="handleFilter(accountItem.DetailAccount)" />
+        <input type="text" class="k-textbox" [(ngModel)]="dAccFilterValue"
+         (keydown.enter)="handleFilter(accountItem.DetailAccount)"
+         (change)="handleFilter(accountItem.DetailAccount)" />
         <button class="k-button k-primary" (click)="handleFilter(accountItem.DetailAccount)">
           <span class="k-i-filter k-icon"></span>
         </button>
@@ -77,7 +81,9 @@
       <span>{{ 'FullAccount.CostCenter' | translate }}</span>
 
       <div class="row search-box">
-        <input type="text" class="k-textbox" [(ngModel)]="cCenterFilterValue" (keydown.enter)="handleFilter(accountItem.CostCenter)" />
+        <input type="text" class="k-textbox" [(ngModel)]="cCenterFilterValue"
+         (keydown.enter)="handleFilter(accountItem.CostCenter)"
+         (change)="handleFilter(accountItem.CostCenter)" />
         <button class="k-button k-primary" (click)="handleFilter(accountItem.CostCenter)">
           <span class="k-i-filter k-icon"></span>
         </button>
@@ -110,7 +116,9 @@
       <span>{{ 'FullAccount.Project' | translate }}</span>
 
       <div class="row search-box">
-        <input type="text" class="k-textbox" [(ngModel)]="pFilterValue" (keydown.enter)="handleFilter(accountItem.Project)" />
+        <input type="text" class="k-textbox" [(ngModel)]="pFilterValue"
+         (keydown.enter)="handleFilter(accountItem.Project)"
+         (change)="handleFilter(accountItem.Project)" />
         <button class="k-button k-primary" (click)="handleFilter(accountItem.Project)">
           <span class="k-i-filter k-icon"></span>
         </button>

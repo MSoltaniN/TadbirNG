@@ -17,7 +17,7 @@
           <div class="form-group">
             <label for="fullAccount" class="control-label" style="position:absolute;">{{ 'VoucherLine.Account' | translate }}</label>
 
-            <sppc-fullAccount formGroupName="fullAccount"
+            <sppc-fullAccount formGroupName="fullAccount" (isInputFocused)="fullAccountFocuse($event)"
                               (setFocus)="focusHandler($event)">
             </sppc-fullAccount>
           </div>

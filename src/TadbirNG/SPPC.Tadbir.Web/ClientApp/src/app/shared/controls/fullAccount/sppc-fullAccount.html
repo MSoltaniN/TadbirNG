@@ -1,41 +1,87 @@
 <ng-container [formGroup]="controlContainer.control">
   <div class="fullAccount">
     <!--<input type="text" [(ngModel)]="accountFullCode" placeholder="- - - -" readonly [ngModelOptions]="{standalone: true}" />-->
-    <label class="control-label" style="text-align: center; direction: ltr; display:block">
-      {{ fullAccount?.account.fullCode }} -
-      {{ fullAccount?.detailAccount.fullCode }} -
-      {{ fullAccount?.costCenter.fullCode }} -
-      {{ fullAccount?.project.fullCode }}
+    <label
+      class="control-label"
+      style="text-align: center; direction: ltr; display: block"
+    >
+      {{ fullAccount?.account.fullCode }} - {{
+      fullAccount?.detailAccount.fullCode }} - {{
+      fullAccount?.costCenter.fullCode }} - {{ fullAccount?.project.fullCode }}
     </label>
-    <span [ngClass]="{ 'rtl-icon': CurrentLanguage == 'fa'}" class="glyphicon glyphicon-search" (click)="openDialog(itemListRef, accountItem.Account)"></span>
+    <span
+      [ngClass]="{ 'rtl-icon': CurrentLanguage == 'fa'}"
+      class="glyphicon glyphicon-search"
+      (click)="openDialog(itemListRef, accountItem.Account)"
+    ></span>
     <div class="fullAccount-item">
       <div formGroupName="account" class="sppc-float">
-        <input type="text" class="k-textbox" [(ngModel)]="accountTitle" [ngModelOptions]="{standalone: true}" (keydown.enter)="openDialog(itemListRef, accountItem.Account)" (focus)="onFocus(accountItem.Account)"/>
+        <input
+          type="text"
+          class="k-textbox"
+          [(ngModel)]="accountTitle"
+          [ngModelOptions]="{standalone: true}"
+          (keydown.enter)="openDialog(itemListRef, accountItem.Account)"
+          (focus)="onFocus(accountItem.Account)"
+          (blur)="onBlur()"
+        />
         <input type="hidden" formControlName="id" />
       </div>
       <div formGroupName="detailAccount" class="sppc-float">
-        <input type="text" class="k-textbox" [(ngModel)]="detailAccountTitle" [ngModelOptions]="{standalone: true}" (keydown.enter)="openDialog(itemListRef, accountItem.DetailAccount)" />
+        <input
+          type="text"
+          class="k-textbox"
+          [(ngModel)]="detailAccountTitle"
+          [ngModelOptions]="{standalone: true}"
+          (keydown.enter)="openDialog(itemListRef, accountItem.DetailAccount)"
+          (focus)="onFocus()"
+          (blur)="onBlur()"
+        />
         <input type="hidden" formControlName="id" />
       </div>
       <div formGroupName="costCenter" class="sppc-float">
-        <input type="text" class="k-textbox" [(ngModel)]="costCenterTitle" [ngModelOptions]="{standalone: true}" (keydown.enter)="openDialog(itemListRef, accountItem.CostCenter)" />
+        <input
+          type="text"
+          class="k-textbox"
+          [(ngModel)]="costCenterTitle"
+          [ngModelOptions]="{standalone: true}"
+          (keydown.enter)="openDialog(itemListRef, accountItem.CostCenter)"
+          (focus)="onFocus()"
+          (blur)="onBlur()"
+        />
         <input type="hidden" formControlName="id" />
       </div>
       <div formGroupName="project" class="sppc-float">
-        <input type="text" class="k-textbox" [(ngModel)]="projectTitle" [ngModelOptions]="{standalone: true}" (keydown.enter)="openDialog(itemListRef, accountItem.Project)" />
+        <input
+          type="text"
+          class="k-textbox"
+          [(ngModel)]="projectTitle"
+          [ngModelOptions]="{standalone: true}"
+          (keydown.enter)="openDialog(itemListRef, accountItem.Project)"
+          (focus)="onFocus()"
+          (blur)="onBlur()"
+        />
         <input type="hidden" formControlName="id" />
       </div>
     </div>
   </div>
 
-  <div class="k-tooltip k-tooltip-validation" [hidden]="controlContainer.control.valid || controlContainer.control.pristine">
+  <div
+    class="k-tooltip k-tooltip-validation"
+    [hidden]="controlContainer.control.valid || controlContainer.control.pristine"
+  >
     {{ 'AllValidations.FullAccount.AccountIdIsRequired' | translate }}
   </div>
-
 </ng-container>
 
 <ng-template #itemListRef>
-  <sppc-full-account-detail (save)="onSave($event);" [strictMode]="true" [accTitleFilterValue]="accountTitle" [accountItem]="accountItem" [selectedItem]="selectedItem" [fullAccount]="fullAccount" (close)="closeDialog();"></sppc-full-account-detail>
+  <sppc-full-account-detail
+    (save)="onSave($event);"
+    [strictMode]="true"
+    [accTitleFilterValue]="accountTitle"
+    [accountItem]="accountItem"
+    [selectedItem]="selectedItem"
+    [fullAccount]="fullAccount"
+    (close)="closeDialog();"
+  ></sppc-full-account-detail>
 </ng-template>
-
-

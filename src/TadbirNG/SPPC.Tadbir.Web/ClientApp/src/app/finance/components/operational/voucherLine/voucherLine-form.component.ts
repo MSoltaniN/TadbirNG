@@ -70,6 +70,7 @@ export class VoucherLineFormComponent
   currencyRate: number | undefined;
   decimalCount: number = 0;
   errorMsg: string;
+  isFullAccountInputFocused = false;
 
   @Input() public isNew: boolean = false;
 
@@ -302,7 +303,8 @@ export class VoucherLineFormComponent
 
   @HostListener('document:keydown.enter')
   onEnterKey() {
-    this.onSave(true);
+    if (!this.isFullAccountInputFocused)
+      this.onSave(true);
   }
 
   @HostListener('document:keydown.control.Alt.s')
@@ -409,5 +411,9 @@ export class VoucherLineFormComponent
           });
       }
     });
+  }
+
+  fullAccountFocuse(value:boolean) {
+    this.isFullAccountInputFocused = value;
   }
 }
