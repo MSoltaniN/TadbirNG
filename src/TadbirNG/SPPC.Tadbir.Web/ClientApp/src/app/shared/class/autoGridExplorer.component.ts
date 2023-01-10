@@ -614,8 +614,8 @@ export class AutoGridExplorerComponent<T>
 
   private search(items: any[], term: string): any[] {
     items.map(i => {
-      i.name = i.name.toString().replace('ي', 'ی');
-      i.name = i.name.toString().replace('ك', 'ک');
+      i.name = i.name.toString().replaceAll('ي', 'ی');
+      i.name = i.name.toString().replaceAll('ك', 'ک');
       return i;
     })
 

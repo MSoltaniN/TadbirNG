@@ -91,6 +91,10 @@ export function getLayoutModule(layout: Layout) {
         float: left;
       }
 
+      .k-button-md.k-icon-button {
+        padding: 2px 4px !important;
+      }
+
       @media (min-width: 768px) {
         .col-sm-5ths {
           width: 20%;
