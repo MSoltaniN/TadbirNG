@@ -103,6 +103,11 @@ namespace SPPC.Tools.Model
             }
         }
 
+        public static string CreateLoginAndLicenseScript
+        {
+            get { return _createLoginAndLicenseScript; }
+        }
+
         public static string CreateLicenseDbScript
         {
             get { return _createLicenseDbScript; }
@@ -111,6 +116,21 @@ namespace SPPC.Tools.Model
         public static string InsertDevLicenseScript
         {
             get { return _insertDevLicenseScript; }
+        }
+
+        public static string QueryExistingKeyScript
+        {
+            get { return _queryExistingKeyScript; }
+        }
+
+        public static string QueryExistingDatabase
+        {
+            get { return _queryExistingDatabase; }
+        }
+
+        public static string QueryLicenseActivation
+        {
+            get { return _queryLicenseActivation; }
         }
 
         public static string CreateSampleInitScript
@@ -133,101 +153,135 @@ namespace SPPC.Tools.Model
         }
 
         private readonly EnvSetupWizardModel _model;
+        private static readonly string _createLoginAndLicenseScript = @"
+IF NOT EXISTS(
+SELECT [sid]
+FROM [sys].[syslogins]
+WHERE [name] = 'NgTadbirUser')
+BEGIN
+  CREATE LOGIN [NgTadbirUser]
+  WITH PASSWORD = 'Demo1234',
+  DEFAULT_DATABASE = master,
+  CHECK_POLICY = OFF,
+  CHECK_EXPIRATION = OFF;
+
+  ALTER SERVER ROLE securityadmin ADD MEMBER NgTadbirUser;
+
+  ALTER SERVER ROLE dbcreator ADD MEMBER NgTadbirUser;
+
+  ALTER SERVER ROLE sysadmin ADD MEMBER NgTadbirUser;
+END
+
+IF NOT EXISTS(
+SELECT [database_id]
+FROM [sys].[databases]
+WHERE [name] = 'NGLicense')
+BEGIN
+  CREATE DATABASE [NGLicense]
+
+  ALTER DATABASE [NGLicense] SET COMPATIBILITY_LEVEL = 130
+
+  ALTER DATABASE SCOPED CONFIGURATION SET IDENTITY_CACHE=OFF
+
+  ALTER AUTHORIZATION ON DATABASE::NGLicense TO NgTadbirUser;
+END";
         private static readonly string _createLicenseDbScript = @"
-USE master;
-GO
-
-CREATE LOGIN [NgTadbirUser]
-WITH PASSWORD = 'Demo1234',
-DEFAULT_DATABASE = master,
-CHECK_POLICY = OFF,
-CHECK_EXPIRATION = OFF;
-GO
-
-ALTER SERVER ROLE securityadmin ADD MEMBER NgTadbirUser;
-GO
-
-ALTER SERVER ROLE dbcreator ADD MEMBER NgTadbirUser;
-GO
-
-ALTER SERVER ROLE sysadmin ADD MEMBER NgTadbirUser;
-GO
-
-CREATE DATABASE [NGLicense]
-GO
-
-ALTER DATABASE [NGLicense] SET COMPATIBILITY_LEVEL = 130
-GO
-
-ALTER DATABASE SCOPED CONFIGURATION SET IDENTITY_CACHE=OFF
-GO
-
-ALTER AUTHORIZATION ON DATABASE::NGLicense TO NgTadbirUser;
-GO
-
 USE [NGLicense]
-GO
+
+IF NOT EXISTS(
+SELECT [name]
+FROM [sys].[tables]
+WHERE [name] = 'Customer')
+BEGIN
 
 SET ANSI_NULLS ON
-GO
 
 SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE TABLE [dbo].[Customer](
-	[CustomerID]       INT           IDENTITY(1,1) NOT NULL,
-	[CustomerKey]      CHAR(36)      NULL,
-	[CompanyName]      NVARCHAR(64)  NOT NULL,
-	[Industry]         NVARCHAR(64)  NOT NULL,
-	[EmployeeCount]    NVARCHAR(64)  NOT NULL,
-	[MainAddress]      NVARCHAR(512) NOT NULL,
-	[ContactFirstName] NVARCHAR(64)  NOT NULL,
-	[ContactLastName]  NVARCHAR(64)  NOT NULL,
-	[WorkPhone]        NVARCHAR(16)  NULL,
-	[WorkFax]          NVARCHAR(16)  NOT NULL,
-	[CellPhone]        NVARCHAR(16)  NOT NULL,
-    [RowGuid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Customer_RowGuid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Customer_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED ([CustomerID] ASC)
+[CustomerID]       INT           IDENTITY(1,1) NOT NULL,
+[CustomerKey]      CHAR(36)      NULL,
+[CompanyName]      NVARCHAR(64)  NOT NULL,
+[Industry]         NVARCHAR(64)  NOT NULL,
+[EmployeeCount]    NVARCHAR(64)  NOT NULL,
+[MainAddress]      NVARCHAR(512) NOT NULL,
+[ContactFirstName] NVARCHAR(64)  NOT NULL,
+[ContactLastName]  NVARCHAR(64)  NOT NULL,
+[WorkPhone]        NVARCHAR(16)  NULL,
+[WorkFax]          NVARCHAR(16)  NOT NULL,
+[CellPhone]        NVARCHAR(16)  NOT NULL,
+[RowGuid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Customer_RowGuid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+[ModifiedDate]     DATETIME         CONSTRAINT [DF_Customer_ModifiedDate] DEFAULT (getdate()) NOT NULL
+, CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED ([CustomerID] ASC)
 ) ON [PRIMARY]
-GO
 
 CREATE TABLE [dbo].[License](
-	[LicenseID]     INT          IDENTITY(1,1) NOT NULL,
-	[CustomerID]    INT          NOT NULL,
-	[CustomerKey]   CHAR(36)     NULL,
-	[LicenseKey]    CHAR(36)     NOT NULL,
-	[HardwareKey]   VARCHAR(256) NULL,
-	[ClientKey]     VARCHAR(512) NULL,
-	[Secret]        VARCHAR(32)  NULL,
-	[UserCount]     INT          NOT NULL,
-	[Edition]       VARCHAR(32)  NOT NULL,
-	[StartDate]     DATETIME     NOT NULL,
-	[EndDate]       DATETIME     NOT NULL,
-	[ActiveModules] INT          NOT NULL,
-	[IsActivated]   BIT          CONSTRAINT [DF_License_IsActivated] DEFAULT (0) NOT NULL,
-	[OfflineLimit]  INT          CONSTRAINT [DF_License_OfflineLimit] DEFAULT (0) NOT NULL,
-    [RowGuid]       UNIQUEIDENTIFIER CONSTRAINT [DF_License_RowGuid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]  DATETIME         CONSTRAINT [DF_License_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_License] PRIMARY KEY CLUSTERED ([LicenseID] ASC)
-    , CONSTRAINT [FK_License_Customer] FOREIGN KEY ([CustomerID]) REFERENCES [Customer]([CustomerID])
+[LicenseID]     INT          IDENTITY(1,1) NOT NULL,
+[CustomerID]    INT          NOT NULL,
+[CustomerKey]   CHAR(36)     NULL,
+[LicenseKey]    CHAR(36)     NOT NULL,
+[HardwareKey]   VARCHAR(256) NULL,
+[ClientKey]     VARCHAR(512) NULL,
+[Secret]        VARCHAR(32)  NULL,
+[UserCount]     INT          NOT NULL,
+[Edition]       VARCHAR(32)  NOT NULL,
+[StartDate]     DATETIME     NOT NULL,
+[EndDate]       DATETIME     NOT NULL,
+[ActiveModules] INT          NOT NULL,
+[IsActivated]   BIT          CONSTRAINT [DF_License_IsActivated] DEFAULT (0) NOT NULL,
+[OfflineLimit]  INT          CONSTRAINT [DF_License_OfflineLimit] DEFAULT (0) NOT NULL,
+[RowGuid]       UNIQUEIDENTIFIER CONSTRAINT [DF_License_RowGuid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+[ModifiedDate]  DATETIME         CONSTRAINT [DF_License_ModifiedDate] DEFAULT (getdate()) NOT NULL
+, CONSTRAINT [PK_License] PRIMARY KEY CLUSTERED ([LicenseID] ASC)
+, CONSTRAINT [FK_License_Customer] FOREIGN KEY ([CustomerID]) REFERENCES [Customer]([CustomerID])
 ) ON [PRIMARY]
-GO
-";
+
+SET ANSI_NULLS OFF
+
+SET QUOTED_IDENTIFIER OFF
+
+END";
         private static readonly string _insertDevLicenseScript = @"
 USE [NGLicense]
 GO
 
+IF NOT EXISTS(
+SELECT [CustomerID]
+FROM [dbo].[Customer]
+WHERE [CustomerID] = 1)
+BEGIN
 SET IDENTITY_INSERT [dbo].[Customer] ON
 INSERT [dbo].[Customer] ([CustomerID], [CustomerKey], [CompanyName], [Industry], [EmployeeCount], [MainAddress], [ContactFirstName], [ContactLastName], [WorkPhone], [WorkFax], [CellPhone])
     VALUES (1, N'{0}', N'تیم توسعه تدبیر وب', N'تولید نرم افزار', N'ده تا بیست نفر', N'(نامشخص)', N'{1}', N'{2}', N'02112345678', N'02112345678', N'1234567890')
 SET IDENTITY_INSERT [dbo].[Customer] OFF
+END
 
+IF NOT EXISTS(
+SELECT [LicenseID]
+FROM [dbo].[License]
+WHERE [LicenseID] = 1)
+BEGIN
 SET IDENTITY_INSERT [dbo].[License] ON
 INSERT [dbo].[License] ([LicenseID], [CustomerID], [CustomerKey], [LicenseKey], [UserCount], [Edition], [StartDate], [EndDate], [ActiveModules], [IsActivated])
-    VALUES (1, 1, N'{0}', N'{3}', 5, N'Enterprise', '2021-11-01', '2022-11-01', 1023, 0)
+    VALUES (1, 1, N'{0}', N'{3}', 10, N'Enterprise', '{4}', '{5}', 1023, 0)
 SET IDENTITY_INSERT [dbo].[License] OFF
-";
+END";
+        private static readonly string _queryExistingKeyScript = @"
+USE [NGLicense]
+
+SELECT [LicenseKey], [CustomerKey]
+FROM [dbo].[License]
+WHERE [LicenseID] = 1";
+        private static readonly string _queryExistingDatabase = @"
+SELECT [database_id]
+FROM [sys].[databases]
+WHERE [name] = '{0}'";
+        private static readonly string _queryLicenseActivation = @"
+USE [NGLicense]
+
+SELECT [IsActivated]
+FROM [dbo].[License]
+WHERE [LicenseID] = 1";
         private static readonly string _createSampleInitScript = @"
 CREATE DATABASE NGTadbir
 GO
