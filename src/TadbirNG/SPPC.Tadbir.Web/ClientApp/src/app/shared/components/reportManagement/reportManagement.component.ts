@@ -192,8 +192,8 @@ export class ReportManagementComponent
     this.initViewer();
     this.disEnAllButtons(true);
 
-    //if (this.loc.path().toLowerCase() == '/reports')
-    //  this.showDialog();
+    if (this.loc.path().toLowerCase() == '/reports')
+     this.showDialog();
   }
 
   onNodeClick(e: any) {
