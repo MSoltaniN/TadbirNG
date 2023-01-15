@@ -169,6 +169,10 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
    */
   noVoucher = [false,false];
   isNewVoucher = false;
+  /**
+   * برای هنگامی که با دکمه های 'سند یعدی' و "قبلی" بین اسناد جابه جا میشویم
+   */
+  pressedOperatorButton = false;
 
   constructor(
     private voucherService: VoucherService,
@@ -568,7 +572,10 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
 
     this.currentVoucherNo = this.voucherModel.no;
 
-    this.voucherService.changeVoucher$.next('changed');
+    if (this.pressedOperatorButton) {
+      this.voucherService.changeVoucher$.next('changed');
+    }
+    this.pressedOperatorButton = false;
   }
 
   voucherTypeListChange(value) {
@@ -749,6 +756,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   voucherOperation(item: VoucherOperations) {
+    this.pressedOperatorButton = true;
+
     var model1 = new VoucherInfo();
     var model2 = new VoucherInfo();
 

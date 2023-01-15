@@ -125,6 +125,7 @@
       media="(min-width: 450px)"
       *ngFor="let item of gridColumns"
       sppc-auto-grid-column="{{ item.settings }}"
+      [sppc-auto-grid-column-hidden]="isColumnValuesNull(item)"
     >
       <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
         <sppc-auto-grid-filter
