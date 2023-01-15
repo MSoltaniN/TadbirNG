@@ -121,7 +121,7 @@ namespace SPPC.Tadbir.Persistence
             var voucherByNo = Repository.ApplyRowFilter(await repository.GetFirstByCriteriaAsync(
                 v => v.FiscalPeriodId == UserContext.FiscalPeriodId
                     && v.No == voucherNo
-                    && v.SubjectType == (short)subject), ViewId.Voucher);
+                    && v.SubjectType == (short)subject, v => v.Lines), ViewId.Voucher);
             if (voucherByNo != null)
             {
                 byNo = Mapper.Map<VoucherViewModel>(voucherByNo);

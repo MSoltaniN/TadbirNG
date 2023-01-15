@@ -5,17 +5,18 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using SPPC.Framework.Cryptography;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Licensing;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Service;
 using SPPC.Framework.Utility;
 using SPPC.Licensing.Model;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Utility.Model;
 using SPPC.Tadbir.Utility.Templates;
 using SPPC.Tools.Model;
-using SPPC.Tools.Transforms;
 using SPPC.Tools.Transforms.Templates;
 using LicenseConstants = SPPC.Licensing.Model.LicenseConstants;
 
@@ -180,6 +181,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             worker.ReportProgress(0);
             try
             {
+                sql.ExecuteNonQuery(EnvSetupParameters.CreateLoginAndLicenseScript);
                 sql.ExecuteNonQuery(EnvSetupParameters.CreateLicenseDbScript);
                 _outputBuilder.AppendLine("(OK)");
                 worker.ReportProgress(10);
@@ -204,9 +206,12 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             worker.ReportProgress(0);
             try
             {
+                var now = DateTime.Now;
+                var start = now.ToShortDateString();
+                var end = now.AddYears(1).ToShortDateString();
                 sql.ExecuteNonQuery(String.Format(EnvSetupParameters.InsertDevLicenseScript,
                     _instance.CustomerKey, WizardModel.LicenseeFirstName, WizardModel.LicenseeLastName,
-                    _instance.LicenseKey));
+                    _instance.LicenseKey, start, end));
                 CreateApiServiceLicense();
                 CreateApiServiceEdition();
                 _outputBuilder.AppendLine("(OK)");
@@ -258,17 +263,21 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             worker.ReportProgress(0);
             try
             {
-                var builder = new StringBuilder();
-                builder.AppendLine(File.ReadAllText(_params.SystemDbScript));
-                builder.AppendLine();
-                builder.AppendFormat(File.ReadAllText(_params.SystemDataDbScript), WizardModel.DbServerName);
-                sql.ExecuteNonQuery(builder.ToString());
-                builder.Clear();
-                builder.AppendLine(File.ReadAllText(_params.SystemDbTriggers));
-                sql.ExecuteNonQuery(builder.ToString());
-                builder.Clear();
-                builder.AppendLine(File.ReadAllText(_params.SystemDbJobs));
-                sql.ExecuteNonQuery(builder.ToString());
+                if (!IsDatabaseCreated(SysParameterUtility.AllParameters.Db.SysDbName))
+                {
+                    var builder = new StringBuilder();
+                    builder.AppendLine(File.ReadAllText(_params.SystemDbScript));
+                    builder.AppendLine();
+                    builder.AppendFormat(File.ReadAllText(_params.SystemDataDbScript), WizardModel.DbServerName);
+                    sql.ExecuteNonQuery(builder.ToString());
+                    builder.Clear();
+                    builder.AppendLine(File.ReadAllText(_params.SystemDbTriggers));
+                    sql.ExecuteNonQuery(builder.ToString());
+                    builder.Clear();
+                    builder.AppendLine(File.ReadAllText(_params.SystemDbJobs));
+                    sql.ExecuteNonQuery(builder.ToString());
+                }
+
                 _outputBuilder.AppendLine("(OK)");
                 worker.ReportProgress(25);
             }
@@ -292,13 +301,17 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             worker.ReportProgress(0);
             try
             {
-                var builder = new StringBuilder();
-                builder.AppendLine(EnvSetupParameters.CreateSampleInitScript);
-                builder.AppendLine();
-                builder.AppendLine(File.ReadAllText(_params.SampleDbScript));
-                builder.AppendLine();
-                builder.AppendLine(File.ReadAllText(_params.SampleDataDbScript));
-                sql.ExecuteNonQuery(builder.ToString());
+                if (!IsDatabaseCreated(SysParameterUtility.AllParameters.Db.FirstDbName))
+                {
+                    var builder = new StringBuilder();
+                    builder.AppendLine(EnvSetupParameters.CreateSampleInitScript);
+                    builder.AppendLine();
+                    builder.AppendLine(File.ReadAllText(_params.SampleDbScript));
+                    builder.AppendLine();
+                    builder.AppendLine(File.ReadAllText(_params.SampleDataDbScript));
+                    sql.ExecuteNonQuery(builder.ToString());
+                }
+
                 _outputBuilder.AppendLine("(OK)");
                 worker.ReportProgress(25);
             }
@@ -321,8 +334,12 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             worker.ReportProgress(0);
             try
             {
-                _apiClient.AddHeader(LicenseConstants.InstanceHeaderName, WizardModel.InstanceKey);
-                _apiClient.Update("Null Data", LicenseApi.ActivateLicense);
+                if (!IsDevLicenseActivated())
+                {
+                    _apiClient.AddHeader(LicenseConstants.InstanceHeaderName, WizardModel.InstanceKey);
+                    _apiClient.Update("Null Data", LicenseApi.ActivateLicense);
+                }
+
                 _outputBuilder.AppendLine("(OK)");
                 worker.ReportProgress(23);
             }
@@ -352,8 +369,36 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
 
         private string GetInstanceKey()
         {
+            var sql = new SqlServerConsole() { ConnectionString = _params.Connection };
+            var query = EnvSetupParameters.QueryExistingKeyScript;
+            var result = sql.ExecuteQuery(query);
+            var instance = _instance;
+            if (result.Rows.Count == 1)
+            {
+                instance = new InstanceModel()
+                {
+                    CustomerKey = result.Rows[0].ValueOrDefault("CustomerKey"),
+                    LicenseKey = result.Rows[0].ValueOrDefault("LicenseKey")
+                };
+            }
+
             var crypto = new CryptoService(new CertificateManager());
-            return crypto.Encrypt(JsonHelper.From(_instance, false));
+            return crypto.Encrypt(JsonHelper.From(instance, false));
+        }
+
+        private bool IsDatabaseCreated(string dbName)
+        {
+            var sql = new SqlServerConsole() { ConnectionString = _params.Connection };
+            var result = sql.ExecuteQuery(String.Format(EnvSetupParameters.QueryExistingDatabase, dbName));
+            return result.Rows.Count > 0;
+        }
+
+        private bool IsDevLicenseActivated()
+        {
+            var sql = new SqlServerConsole() { ConnectionString = _params.Connection };
+            var result = sql.ExecuteQuery(EnvSetupParameters.QueryLicenseActivation);
+            bool isActivated = result.Rows[0].ValueOrDefault<bool>("IsActivated");
+            return isActivated;
         }
 
         private bool EnsureLocalServerIsUp()
