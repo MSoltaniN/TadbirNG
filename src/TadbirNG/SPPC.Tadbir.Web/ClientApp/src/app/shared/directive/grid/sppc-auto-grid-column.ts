@@ -22,10 +22,10 @@ export class SppcAutoGridColumn extends EnviromentComponent {
   columnsWidth: number;
 
   @Input('sppc-auto-grid-column') value: string;
+  @Input('sppc-auto-grid-column-hidden') hidden: boolean;
 
   ngOnInit() {
   }
-
 
   ngOnChanges() {
     
@@ -38,7 +38,7 @@ export class SppcAutoGridColumn extends EnviromentComponent {
     this.hostColumn.sortable = true;
     this.hostColumn.width = screenSetting.width;
     this.hostColumn.title = screenSetting.title;
-    
+    this.hostColumn.hidden = this.hidden;
 
     var fieldName = setting.name.split('.');
     for (var i = 0; i < fieldName.length; i++) {
