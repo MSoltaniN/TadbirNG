@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows.Forms;
 using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
+using SPPC.Tools.Model;
 
 namespace SPPC.Tools.SystemDesigner.Forms
 {
@@ -14,36 +16,99 @@ namespace SPPC.Tools.SystemDesigner.Forms
             InitializeComponent();
         }
 
+        private enum OperationMode
+        {
+            Simple = 0,
+            PGP = 1,
+            UrlEncoded = 2
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            cmbOpMode.SelectedIndex = 0;
+            _certificate = PkcsHelper.LoadToolsCertificate();
+        }
+
         private void ShowValue_Click(object sender, EventArgs e)
         {
-            // TEST CODE -- START
-            if (!String.IsNullOrEmpty(txtTicket.Text))
+            if (String.IsNullOrEmpty(txtTicket.Text))
             {
-                ////var certificate = new X509Certificate2(CertPath, CertPass);
-                txtValue.Text = _crypto.Decrypt(txtTicket.Text);
+                return;
             }
-            // TEST CODE -- END
-            ////var bytes = Transform.FromBase64String(txtTicket.Text);
-            ////var json = Encoding.UTF8.GetString(bytes);
-            ////txtValue.Text = json;
+
+            var mode = (OperationMode)cmbOpMode.SelectedIndex;
+            switch (mode)
+            {
+                case OperationMode.Simple:
+                    txtValue.Text = SimpleDecrypt(txtTicket.Text);
+                    break;
+                case OperationMode.PGP:
+                    txtValue.Text = StrongDecrypt(txtTicket.Text);
+                    break;
+                case OperationMode.UrlEncoded:
+                    txtValue.Text = UrlEncodedDecrypt(txtTicket.Text);
+                    break;
+            }
         }
 
         private void ShowTicket_Click(object sender, EventArgs e)
         {
-            // TEST CODE -- START
-            if (!String.IsNullOrEmpty(txtValue.Text))
+            if (String.IsNullOrEmpty(txtValue.Text))
             {
-                ////var certificate = new X509Certificate2(CertPath, CertPass);
-                txtTicket.Text = _crypto.Encrypt(txtValue.Text);
+                return;
             }
-            // TEST CODE -- END
-            ////var json = txtValue.Text;
-            ////var bytes = Encoding.UTF8.GetBytes(json);
-            ////txtTicket.Text = Transform.ToBase64String(bytes);
+
+            var mode = (OperationMode)cmbOpMode.SelectedIndex;
+            switch (mode)
+            {
+                case OperationMode.Simple:
+                    txtTicket.Text = SimpleEncrypt(txtValue.Text);
+                    break;
+                case OperationMode.PGP:
+                    txtTicket.Text = StrongEncrypt(txtValue.Text);
+                    break;
+                case OperationMode.UrlEncoded:
+                    txtTicket.Text = UrlEncodedEncrypt(txtValue.Text);
+                    break;
+            }
         }
 
-        private const string CertPath = @"..\..\..\src\TadbirNG\SPPC.Licensing.Local.Web\wwwroot\tadbir.pfx";
-        private const string CertPass = "LIdZkifmVG/Uu5Xo6pDk0A==";
+        private static string UrlEncodedEncrypt(string data)
+        {
+            return Transform.ToBase64String(
+                Encoding.UTF8.GetBytes(
+                    WebUtility.UrlEncode(data)));
+        }
+
+        private static string UrlEncodedDecrypt(string cipher)
+        {
+            return WebUtility.UrlDecode(
+                Encoding.UTF8.GetString(
+                    Transform.FromBase64String(cipher)));
+        }
+
+        private string SimpleEncrypt(string data)
+        {
+            return _crypto.Encrypt(data);
+        }
+
+        private string SimpleDecrypt(string cipher)
+        {
+            return _crypto.Decrypt(cipher);
+        }
+
+        private string StrongEncrypt(string data)
+        {
+            return _crypto.Encrypt(data, _certificate);
+        }
+
+        private string StrongDecrypt(string cipher)
+        {
+            return _crypto.Decrypt(cipher, _certificate);
+        }
+
         private readonly ICryptoService _crypto = new CryptoService(new CertificateManager());
+        private X509Certificate2 _certificate;
     }
 }

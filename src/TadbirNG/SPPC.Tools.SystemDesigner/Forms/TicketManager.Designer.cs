@@ -35,6 +35,8 @@
             this.btnShowValue = new System.Windows.Forms.Button();
             this.btnShowTicket = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmbOpMode = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -54,7 +56,7 @@
             this.txtTicket.Multiline = true;
             this.txtTicket.Name = "txtTicket";
             this.txtTicket.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtTicket.Size = new System.Drawing.Size(575, 227);
+            this.txtTicket.Size = new System.Drawing.Size(706, 227);
             this.txtTicket.TabIndex = 1;
             // 
             // label2
@@ -74,7 +76,7 @@
             this.txtValue.Multiline = true;
             this.txtValue.Name = "txtValue";
             this.txtValue.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtValue.Size = new System.Drawing.Size(575, 227);
+            this.txtValue.Size = new System.Drawing.Size(706, 227);
             this.txtValue.TabIndex = 3;
             // 
             // btnShowValue
@@ -102,7 +104,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(492, 580);
+            this.btnCancel.Location = new System.Drawing.Point(622, 580);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(100, 42);
@@ -110,12 +112,36 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(252, 591);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(126, 20);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Operation Mode :";
+            // 
+            // cmbOpMode
+            // 
+            this.cmbOpMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbOpMode.FormattingEnabled = true;
+            this.cmbOpMode.Items.AddRange(new object[] {
+            "Simple",
+            "PGP",
+            "UrlEncode"});
+            this.cmbOpMode.Location = new System.Drawing.Point(384, 588);
+            this.cmbOpMode.Name = "cmbOpMode";
+            this.cmbOpMode.Size = new System.Drawing.Size(151, 28);
+            this.cmbOpMode.TabIndex = 8;
+            // 
             // TicketManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(611, 631);
+            this.ClientSize = new System.Drawing.Size(735, 631);
+            this.Controls.Add(this.cmbOpMode);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnShowTicket);
             this.Controls.Add(this.btnShowValue);
@@ -145,5 +171,7 @@
         private System.Windows.Forms.Button btnShowValue;
         private System.Windows.Forms.Button btnShowTicket;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cmbOpMode;
     }
 }

@@ -18,7 +18,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Pkcs\bin-data" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Pkcs\bin-data" />
   </ItemGroup>
 
   <ItemGroup>
