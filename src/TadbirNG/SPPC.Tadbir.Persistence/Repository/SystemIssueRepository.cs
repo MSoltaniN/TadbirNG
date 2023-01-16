@@ -309,7 +309,7 @@ namespace SPPC.Tadbir.Persistence
                 vouchers = await GetUnbalancedVouchersAsync(from, to);
                 summary.ItemCount = vouchers
                     .Select(v => Mapper.Map<VoucherViewModel>(v))
-                    .Apply(gridOptions, false)
+                    .ApplyQuickFilter(gridOptions, false)
                     .Count();
             }
             else if (issue.TitleKey == AppStrings.VouchersWithNoArticle)
@@ -317,14 +317,14 @@ namespace SPPC.Tadbir.Persistence
                 vouchers = await GetNoArticleVouchersAsync(from, to);
                 summary.ItemCount = vouchers
                     .Select(v => Mapper.Map<VoucherViewModel>(v))
-                    .Apply(gridOptions, false)
+                    .ApplyQuickFilter(gridOptions, false)
                     .Count();
             }
             else if (issue.TitleKey == AppStrings.MissingVoucherNumbers)
             {
                 var items = await GetMissingVoucherNumbersAsync(from, to);
                 summary.ItemCount = items
-                    .Apply(gridOptions, false)
+                    .ApplyQuickFilter(gridOptions, false)
                     .Count();
             }
             else if (issue.TitleKey == AppStrings.ArticlesWithMissingAccount)
@@ -332,7 +332,7 @@ namespace SPPC.Tadbir.Persistence
                 lines = await GetMissingAccountArticlesAsync(from, to);
                 summary.ItemCount = lines
                     .Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl))
-                    .Apply(gridOptions, false)
+                    .ApplyQuickFilter(gridOptions, false)
                     .Count();
             }
             else if (issue.TitleKey == AppStrings.ArticlesHavingZeroAmount)
@@ -340,7 +340,7 @@ namespace SPPC.Tadbir.Persistence
                 lines = await GetZeroAmountArticlesAsync(from, to);
                 summary.ItemCount = lines
                     .Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl))
-                    .Apply(gridOptions, false)
+                    .ApplyQuickFilter(gridOptions, false)
                     .Count();
             }
             else if (issue.TitleKey == AppStrings.ArticlesWithInvalidAccountItems)
@@ -348,7 +348,7 @@ namespace SPPC.Tadbir.Persistence
                 lines = await GetInvalidAccountArticlesAsync(from, to);
                 summary.ItemCount = lines
                     .Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl))
-                    .Apply(gridOptions, false)
+                    .ApplyQuickFilter(gridOptions, false)
                     .Count();
             }
             else if (issue.TitleKey == AppStrings.AccountsWithInvalidBalance)
@@ -356,7 +356,7 @@ namespace SPPC.Tadbir.Persistence
                 lines = await GetInvalidBalanceArticlesAsync(to);
                 summary.ItemCount = lines
                     .Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl))
-                    .Apply(gridOptions, false)
+                    .ApplyQuickFilter(gridOptions, false)
                     .Count();
             }
             else if (issue.TitleKey == AppStrings.AccountsWithInvalidPeriodTurnover)
@@ -364,7 +364,7 @@ namespace SPPC.Tadbir.Persistence
                 lines = await GetInvalidTurnoverArticlesAsync(from, to);
                 summary.ItemCount = lines
                     .Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl))
-                    .Apply(gridOptions, false)
+                    .ApplyQuickFilter(gridOptions, false)
                     .Count();
             }
 
