@@ -82,8 +82,7 @@
     <ng-template kendoGridToolbarTemplate>
       <button
         kendoGridAddCommand
-        SppcPermissionCheck="Create"
-        (sppcClick)="addNew()"
+        (click)="addNew()"
         [icon]="'file-add'"
         type="button"
         title="{{ 'Company.New' | translate }}"
