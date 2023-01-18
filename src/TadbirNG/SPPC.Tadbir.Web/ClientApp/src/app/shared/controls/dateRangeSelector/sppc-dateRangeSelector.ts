@@ -76,10 +76,17 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
 
   ngOnInit() {
     (async () => {
-      this.displayFromDate = await this.settingService.getDateConfigAsync(
-        "start"
-      );
-      this.displayToDate = await this.settingService.getDateConfigAsync("end");
+      if (!(this.displayFromDate && this.displayToDate)) {
+        this.displayFromDate = await this.settingService.getDateConfigAsync(
+          "start"
+        );
+        this.displayToDate = await this.settingService.getDateConfigAsync("end");
+      } else {
+        this.myForm.patchValue({
+          fromDate: this.displayFromDate,
+          toDate: this.displayToDate,
+        });
+      }
     })().then(() => {
       var dateRangeConfig = this.bStorageService.getDateRangeConfig(
         this.CompanyId.toString()
@@ -119,7 +126,7 @@ export class SppcDateRangeSelector extends BaseComponent implements OnInit {
         .subscribe((val) => {
           this.fpStartDate = this.FiscalPeriodStartDate;
           this.fpEndDate = this.FiscalPeriodEndDate;
-
+          
           if (val.fromDate && val.toDate) {
             if (this.compareDate(val.fromDate, val.toDate) != 1) {
               if (
