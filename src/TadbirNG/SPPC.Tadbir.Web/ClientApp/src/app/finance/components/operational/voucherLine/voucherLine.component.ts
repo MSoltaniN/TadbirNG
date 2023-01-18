@@ -262,6 +262,7 @@ export class VoucherLineComponent
       setTimeout(() => {
         if (res == 'changed'){
           this.reloadGrid();
+          this.voucherService.changeVoucher$.next('')
         }
       }, 0);
     })
