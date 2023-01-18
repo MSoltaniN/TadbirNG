@@ -184,11 +184,10 @@ export enum BranchPermissions {
 export enum CompanyPermissions {
     None = 0,
     View = 1,
-    Create = 16,
     Filter = 2,
     Print = 4,
     Export = 8,
-    All = 31
+    All = 15
 }
 
 export enum UserPermissions {

@@ -163,8 +163,14 @@ export class CompanyComponent
   }
 
   addNew() {
-    this.editDataItem = new CompanyDbInfo();
-    this.openEditorDialog(true);
+    if (this.isAccess(this.entityName,16)) {
+      this.editDataItem = new CompanyDbInfo();
+      this.openEditorDialog(true);
+    } else {
+      this.translate.get("App.AccessDenied").subscribe((msg: string) => {
+        this.toastrService.warning(msg);
+      });
+    }
   }
 
   onAdvanceFilterOk() {
