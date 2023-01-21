@@ -14,7 +14,7 @@
     <kendo-filter-gt-operator></kendo-filter-gt-operator>
     <kendo-filter-gte-operator></kendo-filter-gte-operator>
 </kendo-grid-numeric-filter-cell>
-<kendo-grid-string-filter-cell *ngIf="isDate && allowFiltering" FilterDatePickerDirective="day" [column]="column" [filter]="filter" operator="equal">
+<kendo-grid-string-filter-cell (keyup)="keyupHandler($event)" *ngIf="isDate && allowFiltering" FilterDatePickerDirective="day" [column]="column" [filter]="filter" operator="equal">
     <kendo-filter-eq-operator></kendo-filter-eq-operator>
     <kendo-filter-neq-operator></kendo-filter-neq-operator>
     <kendo-filter-lt-operator></kendo-filter-lt-operator>
