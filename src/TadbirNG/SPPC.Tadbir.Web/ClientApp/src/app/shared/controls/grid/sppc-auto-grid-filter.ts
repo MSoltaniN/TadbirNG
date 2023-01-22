@@ -1,13 +1,15 @@
 
-import { Component, Input, Host } from '@angular/core';
+import { Component, Input, Host, OnChanges } from '@angular/core';
 import { CompositeFilterDescriptor } from "@progress/kendo-data-query";  //npm shrinkwrap
-import { ColumnComponent } from '@progress/kendo-angular-grid';
+import { BaseFilterCellComponent, ColumnComponent, FilterService } from '@progress/kendo-angular-grid';
+import * as moment from 'jalali-moment';
+import { BrowserStorageService } from '@sppc/shared/services';
 
 @Component({
   selector: 'sppc-auto-grid-filter',
   templateUrl: './sppc-grid-filter.html'
 })
-export class SppcAutoGridFilter {
+export class SppcAutoGridFilter extends BaseFilterCellComponent {
 
   @Input() public column: string;
   @Input() public filter: CompositeFilterDescriptor;
@@ -40,8 +42,14 @@ export class SppcAutoGridFilter {
 
   }
 
-  constructor(@Host() private hostColumn: ColumnComponent) {
-    
+  get currentLang() {
+    return this.bgStroge.getLanguage();
+  }
+
+  constructor(@Host() private hostColumn: ColumnComponent,
+    filterService:FilterService,
+    private bgStroge:BrowserStorageService) {
+    super(filterService)
   }
 
   ngOnInit() {
@@ -49,7 +57,54 @@ export class SppcAutoGridFilter {
       this.allowFiltering = this.metaDataItem.allowFiltering;
   }
 
- 
+  dateValue;
+  keyupHandler($e:KeyboardEvent) {
+    if (this.currentLang == 'fa') {
+      let value = (<any>$e.target).value as string;
+  
+      if (value.length == 10 && value.split('/').length == 3) {
+        let currentFilter = this.filter.filters.find((f:any) => f.field == 'date');
+        let miladi = +value.split('/')[0] < 1600? this.toMiladiDate(value) :value;
+  
+        if (+value.split('/')[0] < 1600) {
+          this.dateValue = value;
+        }
+  
+        this.filter = this.removeFilter((<any>currentFilter).field);
+        const filters = [];
+        filters.push({
+          field: (<any>currentFilter).field,
+          operator: (<any>currentFilter).operator,
+          value: miladi
+        });
+        const root: CompositeFilterDescriptor = this.filter || {
+          logic: "and",
+          filters: []
+        };
+        if (filters.length) {
+          root.filters.push(...filters);
+        }
+  
+        this.filterService.filter(root);
+  
+        // for displaing typed the string date typed by client
+        if ($e.key == 'Enter' && this.dateValue) {
+          setTimeout(() => {
+            (<any>$e.target).value = this.dateValue;
+            console.log($e.key,(<any>$e.target).value);
+          }, 100);
+        }
+      }
+    }
+  }
+
+  toMiladiDate(value:string) {
+    let format: string = "YYYY/MM/DD";
+    moment.locale('fa');
+    let MomentDate = moment(value).locale('en').format(format);    
+    return MomentDate;
+  }
+
   ngAfterViewInit() {   
 
     var self = this.hostColumn;

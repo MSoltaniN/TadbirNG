@@ -1,68 +1,104 @@
-import { Component, OnInit, Input, forwardRef, OnDestroy, Optional, Host, SkipSelf, ElementRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator, ControlContainer, AbstractControl } from '@angular/forms'
-import { DatePipe } from '@angular/common'
+import {
+  Component,
+  OnInit,
+  Input,
+  forwardRef,
+  OnDestroy,
+  Optional,
+  Host,
+  SkipSelf,
+  ElementRef,
+} from "@angular/core";
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  NG_VALIDATORS,
+  FormControl,
+  Validator,
+  ControlContainer,
+  AbstractControl,
+} from "@angular/forms";
+import { DatePipe } from "@angular/common";
 
-import * as moment from 'jalali-moment';
-import { KeyCode } from '@sppc/shared/enum';
-import { CalendarType } from '@sppc/shared/enum/metadata';
-import { BrowserStorageService } from '@sppc/shared/services';
+import * as moment from "jalali-moment";
+import { KeyCode } from "@sppc/shared/enum";
+import { CalendarType } from "@sppc/shared/enum/metadata";
+import { BrowserStorageService } from "@sppc/shared/services";
 
 @Component({
-  selector: 'sppc-datepicker',
+  selector: "sppc-datepicker",
   template: `<dp-date-picker
     class="k-textbox"
     [(ngModel)]="dateObject"
     (keyup)="onChangeDateKey($event.keyCode)"
-    (onChange)="onDateChange()" 
+    (onChange)="onDateChange()"
     (onGoToCurrent)="onGoToCurrentDate()"
-    [config]='dateConfig'
+    [config]="dateConfig"
     theme="dp-material"
     [disabled]="isReadOnly"
-    (focusout)="onDateFocusOut()">
+    (focusout)="onDateFocusOut()"
+  >
   </dp-date-picker>`,
-  styles: [`
-    ::ng-deep dp-date-picker.dp-material .dp-picker-input,::ng-deep dp-date-picker > div { width:100% !important; } 
-    ::ng-deep dp-date-picker > div:nth-child(2) {position: absolute}
-    dp-date-picker{width:100%; direction:ltr; padding:0} 
-    ::ng-deep dp-day-calendar{position: fixed;}
-    ::ng-deep sppc-datepicker input{
-    border-color: rgba(0, 0, 0, 0.15);
-    height: calc(1.42857em + (4px * 2) + (1px * 2)) !important;
-    /* border-style: solid; */
-    border-radius: 2px;
-    padding: 4px 8px;
-    width: 12.4em;
+  styles: [
+    `
+      ::ng-deep dp-date-picker.dp-material .dp-picker-input,
+      ::ng-deep dp-date-picker > div {
+        width: 100% !important;
+      }
+      ::ng-deep dp-date-picker > div:nth-child(2) {
+        position: absolute;
+      }
+      dp-date-picker {
+        width: 100%;
+        direction: ltr;
+        padding: 0;
+      }
+      ::ng-deep dp-day-calendar {
+        position: fixed;
+      }
+      ::ng-deep sppc-datepicker input {
+        border-color: rgba(0, 0, 0, 0.15);
+        height: calc(1.42857em + (4px * 2) + (1px * 2)) !important;
+        /* border-style: solid; */
+        border-radius: 2px;
+        padding: 4px 8px;
+        width: 12.4em;
 
-    box-sizing: border-box;
-    border-width: 1px;
-    border-style: solid;
-    outline: 0;
-    font: inherit;
-    font-size: 14px;
-    line-height: 1.42857em;
-    display: inline-flex;
-    vertical-align: middle;
-    position: relative;
-    -webkit-appearance: none;}
-       `],
+        box-sizing: border-box;
+        border-width: 1px;
+        border-style: solid;
+        outline: 0;
+        font: inherit;
+        font-size: 14px;
+        line-height: 1.42857em;
+        display: inline-flex;
+        vertical-align: middle;
+        position: relative;
+        -webkit-appearance: none;
+      }
+    `,
+  ],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => SppcDatepicker),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => SppcDatepicker),
       multi: true,
-    }
-  ]
+    },
+  ],
 })
-export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, Validator {
+export class SppcDatepicker
+  implements OnInit, OnDestroy, ControlValueAccessor, Validator
+{
   public dateConfig: any;
-  public dateLocale: string = 'fa';
+  public dateLocale: string = "fa";
   private parseError: boolean = false;
-  public inputDateFormat: string = 'yyyy/MM/dd hh:mm';
+  // "yyyy/MM/dd hh:mm" for date and time
+  @Input() inputDateFormat: string = "yyyy/MM/dd";
   public dateFormat: string = "YYYY/MM/DD";
   public spliterChar: string = "/";
 
@@ -73,9 +109,9 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
   @Input() isDisplayDate: boolean = true;
   @Input() displayDate: any;
   // دریافت تاریخ بدون ساعت
-  @Input() set justDate(value:boolean) {
+  @Input() set justDate(value: boolean) {
     if (value) {
-      this.inputDateFormat = 'yyyy/MM/dd';
+      this.inputDateFormat = "yyyy/MM/dd";
     }
   }
 
@@ -85,18 +121,23 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
   public dateObject: moment.Moment | null;
   editDateValue: any;
   i: number = 0;
-  _isReadOnly: boolean = false;  
+  _isReadOnly: boolean = false;
 
-  propagateChange: any = () => { };
+  propagateChange: any = () => {};
 
   @Input() formControlName: string;
   @Input() displayType: string; //Jalali | Gregorian
 
   private control: AbstractControl | null;
-  elm:ElementRef;
-  constructor(elm:ElementRef,private datepipe: DatePipe, @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer, private bStorageService: BrowserStorageService) {    
+  elm: ElementRef;
+  constructor(
+    elm: ElementRef,
+    private datepipe: DatePipe,
+    @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer,
+    private bStorageService: BrowserStorageService
+  ) {
     this.elm = elm;
-  }  
+  }
 
   ngOnInit() {
     if (this.controlContainer) {
@@ -118,13 +159,19 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     var startDiffDays = 0;
 
     if (this.minDate) {
-      this.minDate = this.datepipe.transform(this.minDate, this.inputDateFormat);
-      this.startDate = new Date(this.minDate.split(' ')[0]);
+      this.minDate = this.datepipe.transform(
+        this.minDate,
+        this.inputDateFormat
+      );
+      this.startDate = new Date(this.minDate.split(" ")[0]);
     }
 
     if (this.maxDate) {
-      this.maxDate = this.datepipe.transform(this.maxDate, this.inputDateFormat);
-      this.endDate = new Date(this.maxDate.split(' ')[0]);
+      this.maxDate = this.datepipe.transform(
+        this.maxDate,
+        this.inputDateFormat
+      );
+      this.endDate = new Date(this.maxDate.split(" ")[0]);
     }
 
     this.dateObject = moment();
@@ -151,38 +198,33 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
       }
     }
 
-    
-    var lang : string;
+    var lang: string;
 
     if (this.displayType) {
-      if (this.displayType == CalendarType.Jalali)
-        lang = "fa";
+      if (this.displayType == CalendarType.Jalali) lang = "fa";
 
-      if (this.displayType == CalendarType.Gregorian)
-        lang = "en";
-    }
-    else {
+      if (this.displayType == CalendarType.Gregorian) lang = "en";
+    } else {
       let config: any;
       var calConfig = this.bStorageService.getSystemConfig();
       if (calConfig) {
         config = JSON.parse(calConfig);
-        if (config.defaultCalendar == 0)
-          lang = "fa";
+        if (config.defaultCalendar == 0) lang = "fa";
 
-        if (config.defaultCalendar == 1)
-          lang = "en";
+        if (config.defaultCalendar == 1) lang = "en";
       }
     }
 
-
     if (lang) {
       this.dateLocale = lang;
-      if (lang == "en")
-        this.dateFormat = "MM/DD/YYYY";
+      if (lang == "en") this.dateFormat = "MM/DD/YYYY";
     }
 
     if (this.displayDate) {
-      this.displayDate = this.datepipe.transform(this.displayDate, this.inputDateFormat);
+      this.displayDate = this.datepipe.transform(
+        this.displayDate,
+        this.inputDateFormat
+      );
       this.dateObject = moment(this.displayDate);
     }
 
@@ -197,9 +239,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     //    this.onDateFocusOut();
     //}
 
-    
     this.initDateConfig();
-
   }
 
   initDateConfig() {
@@ -210,7 +250,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
       min: this.minDate,
       max: this.maxDate,
       showGoToCurrent: true,
-      showMultipleYearsNavigation: true
+      showMultipleYearsNavigation: true,
     };
   }
 
@@ -219,16 +259,15 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
   }
 
   @Input()
-  set isReadOnly(value: boolean) {        
+  set isReadOnly(value: boolean) {
     this._isReadOnly = value;
   }
 
   ngOnDestroy() {
-    moment.locale('en');
+    moment.locale("en");
   }
 
   LimitationDate(toDate: any, operationIncrese?: boolean) {
-
     var endDiff;
     var startDiff;
     var endDiffDays = 0;
@@ -237,7 +276,6 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     this.dateObject = moment(toDate);
     var strDate = this.datepipe.transform(toDate, this.inputDateFormat);
     if (strDate != null) {
-
       var date = new Date(strDate);
 
       if (this.endDate != null) {
@@ -251,16 +289,16 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
       }
 
       if (operationIncrese && this.endDate != null && endDiffDays > 1) {
-
         this.dateObject = moment(this.endDate);
+      } else if (
+        !operationIncrese &&
+        this.startDate != null &&
+        startDiffDays > 1
+      ) {
+        this.dateObject = moment(this.startDate);
       }
-      else
-        if (!operationIncrese && this.startDate != null && startDiffDays > 1) {
-          this.dateObject = moment(this.startDate);
-        }
 
       if (operationIncrese == null) {
-
         if (this.endDate != null && endDiffDays > 1) {
           this.dateObject = moment(this.endDate);
         }
@@ -269,18 +307,24 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
           this.dateObject = moment(this.startDate);
         }
 
-        if (this.startDate != null && this.endDate != null && endDiffDays < 1 && startDiffDays < 1) {
+        if (
+          this.startDate != null &&
+          this.endDate != null &&
+          endDiffDays < 1 &&
+          startDiffDays < 1
+        ) {
           this.dateObject = moment();
         }
       }
     }
   }
 
-  hideCalendar(hide=true) {
-    let calendar:HTMLCollection = this.elm.nativeElement.getElementsByClassName('dp-popup');
-    if (calendar.length>0) {
+  hideCalendar(hide = true) {
+    let calendar: HTMLCollection =
+      this.elm.nativeElement.getElementsByClassName("dp-popup");
+    if (calendar.length > 0) {
       (<HTMLElement>calendar[0]).hidden = hide;
-    }    
+    }
   }
 
   onChangeDateKey(event: any) {
@@ -296,51 +340,62 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
         break;
       }
       case KeyCode.Page_Up: {
-        var newDate = this.dateObject != null ? this.dateObject.add(1, 'months') : moment();
+        var newDate =
+          this.dateObject != null ? this.dateObject.add(1, "months") : moment();
         this.LimitationDate(newDate, true);
         break;
       }
       case KeyCode.Page_Down: {
-        var newDate = this.dateObject != null ? this.dateObject.add(-1, 'months') : moment();
+        var newDate =
+          this.dateObject != null
+            ? this.dateObject.add(-1, "months")
+            : moment();
         this.LimitationDate(newDate, false);
         break;
       }
       case KeyCode.Down_Arrow: {
-        var newDate = this.dateObject != null ? this.dateObject.add(-1, 'days') : moment();
+        var newDate =
+          this.dateObject != null ? this.dateObject.add(-1, "days") : moment();
         this.LimitationDate(newDate, false);
         break;
       }
       case KeyCode.Up_Arrow: {
-        var newDate = this.dateObject != null ? this.dateObject.add(1, 'days') : moment();
+        var newDate =
+          this.dateObject != null ? this.dateObject.add(1, "days") : moment();
         this.LimitationDate(newDate, true);
         break;
       }
       default: {
-        if ((event >= 48 && event <= 57) || (event >= 96 && event <= 105) || (event == 191) || (event == 111) || (event == 8)) {
+        if (
+          (event >= 48 && event <= 57) ||
+          (event >= 96 && event <= 105) ||
+          event == 191 ||
+          event == 111 ||
+          event == 8
+        ) {
           allowKey = true;
-        }
-        else {
+        } else {
           allowKey = false;
         }
         break;
       }
     }
 
-    if (typeof this.dateObject != 'object') {
-      this.hideCalendar(false)
+    if (typeof this.dateObject != "object") {
+      this.hideCalendar(false);
     }
 
     this.onDateFocusOut(true);
 
     return allowKey;
-
   }
 
   onDateChange() {
+    debugger;
     this.i++;
-    if (typeof this.dateObject == 'object') {
+    if (typeof this.dateObject == "object") {
       this.hideCalendar();
-    }    
+    }
     if (!this.isDisplayDate && this.i <= 2) {
       this.dateObject = null;
 
@@ -348,36 +403,37 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
         this.dateObject = this.editDateValue;
       }
     }
-    this.parseError = typeof this.dateObject === "object" && this.dateObject != null ? false : true;
+    this.parseError =
+      typeof this.dateObject === "object" && this.dateObject != null
+        ? false
+        : true;
     if (this.dateObject == undefined) {
       setTimeout(() => {
         this.propagateChange("");
       }, 1);
-    }
-    else {
+    } else {
       this.onDateFocusOut();
     }
   }
 
-  onDateFocusOut(keyPress=false) {
+  onDateFocusOut(keyPress = false) {
     this.parseError = false;
     if (this.dateObject != null) {
       if (typeof this.dateObject === "object") {
         this.parseError = false;
         setTimeout(() => {
-          this.propagateChange(this.datepipe.transform(<any>this.dateObject, this.inputDateFormat));
+          this.propagateChange(
+            this.datepipe.transform(<any>this.dateObject, this.inputDateFormat)
+          );
         }, 1);
-      }
-      else {
+      } else {
         //this.parseError = false;
         let strDate: string = this.dateObject;
         let dateArray: any;
 
         if (strDate === undefined) {
           this.parseError = true;
-        }
-        else {
-
+        } else {
           let yearDate: number = 0;
           let monthDate: number = 0;
           let dayDate: number = 0;
@@ -386,7 +442,6 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
           dateArray = strDate.split(this.spliterChar);
           if (dateArray.length == 3) {
             for (var i = 0; i < formatArray.length; i++) {
-
               switch (formatArray[i]) {
                 case "YYYY": {
                   yearDate = +dateArray[i];
@@ -417,11 +472,9 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
                   break;
                 }
               }
-
             }
 
             for (var i = 0; i < formatArray.length; i++) {
-
               switch (formatArray[i]) {
                 case "YYYY": {
                   if (dateArray[i].length < 4) {
@@ -439,12 +492,10 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
                   var month = +dateArray[i];
                   if (month == 0 || month > 12) {
                     this.parseError = true;
-                  }
-                  else {
+                  } else {
                     if (month < 10) {
                       dateArray[i] = "0" + month.toString();
-                    }
-                    else {
+                    } else {
                       dateArray[i] = month.toString();
                     }
                   }
@@ -455,22 +506,24 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
                   var month = +dateArray[i];
                   if (month == 0 || month > 12) {
                     this.parseError = true;
-                  }
-                  else {
+                  } else {
                     dateArray[i] = month.toString();
                   }
                   break;
                 }
                 case "DD": {
                   var day = +dateArray[i];
-                  if (day == 0 || day > 31 || (monthDate > 6 && day > 30) || dateArray[i].length < 2) {
+                  if (
+                    day == 0 ||
+                    day > 31 ||
+                    (monthDate > 6 && day > 30) ||
+                    dateArray[i].length < 2
+                  ) {
                     this.parseError = true;
-                  }
-                  else {
+                  } else {
                     if (day < 10 && !keyPress) {
                       dateArray[i] = "0" + day.toString();
-                    }
-                    else {
+                    } else {
                       dateArray[i] = day.toString();
                     }
                   }
@@ -480,8 +533,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
                   var day = +dateArray[i];
                   if (day == 0 || day > 31 || (monthDate > 6 && day > 30)) {
                     this.parseError = true;
-                  }
-                  else {
+                  } else {
                     dateArray[i] = day.toString();
                   }
                   break;
@@ -491,31 +543,35 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
                   break;
                 }
               }
-
             }
-          }
-          else {
+          } else {
             this.parseError = true;
           }
         }
-
 
         if (this.parseError) {
           setTimeout(() => {
             this.propagateChange("");
           }, 1);
-        }
-        else {
-          this.dateObject = this.dateLocale == 'fa' ? moment(dateArray.join(this.spliterChar), 'jYYYY/jM/jD') : moment(dateArray.join(this.spliterChar).toString()).locale('en');
+        } else {
+          this.dateObject =
+            this.dateLocale == "fa"
+              ? moment(dateArray.join(this.spliterChar), "jYYYY/jM/jD")
+              : moment(dateArray.join(this.spliterChar).toString()).locale(
+                  "en"
+                );
 
           setTimeout(() => {
-            this.propagateChange(this.datepipe.transform(<any>this.dateObject, this.inputDateFormat));
+            this.propagateChange(
+              this.datepipe.transform(
+                <any>this.dateObject,
+                this.inputDateFormat
+              )
+            );
           }, 1);
         }
-
       }
-    }
-    else {
+    } else {
       //this.parseError = true;
     }
   }
@@ -525,6 +581,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
   }
 
   writeValue(value: any): void {
+    debugger;
     if (value) {
       this.date = this.datepipe.transform(value, this.inputDateFormat);
       this.editDateValue = moment(this.date);
@@ -543,12 +600,12 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
   }
 
   public validate(control: FormControl) {
-    return (!this.parseError) ? null : {
-      jsonParseError: {
-        valid: false,
-      },
-    };
+    return !this.parseError
+      ? null
+      : {
+          jsonParseError: {
+            valid: false,
+          },
+        };
   }
-
-
 }

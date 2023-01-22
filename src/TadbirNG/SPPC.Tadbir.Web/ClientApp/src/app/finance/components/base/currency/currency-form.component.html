@@ -138,11 +138,11 @@
             }}</label>
 
             <kendo-switch
-              SppcPermissionCheck="ChangeStatus"
               formControlName="isActive"
               class="sppc-switch"
               [onLabel]="'User.Active' | translate"
               [offLabel]="'User.Inactive' | translate"
+              [disabled]="!this.isAccess('Currency',128)"
             >
             </kendo-switch>
           </div>

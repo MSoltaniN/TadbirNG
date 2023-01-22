@@ -20,14 +20,13 @@ import { EnviromentComponent } from "@sppc/shared/class";
   providers: [Permissions],
 })
 export class SppcPermissionCheckDirective
-  implements OnInit, OnDestroy, AfterContentChecked
+  implements OnInit, OnDestroy
 {
   @Input("SppcPermissionCheck") permissionKey: string;
   @Input("EntityName") entityName: string;
 
   private permissions: string;
   private enum: string;
-  private formValue: any = {};
 
   @Output() sppcClick = new EventEmitter();
   private clicks = new Subject();
@@ -47,17 +46,6 @@ export class SppcPermissionCheckDirective
       .subscribe((e) => this.sppcClick.emit(e));
   }
 
-  ngAfterContentChecked(): void {
-    if (this.permissions == "ChangeStatus") {
-      if (
-        !this.formValue.hasOwnProperty("isActive") ||
-        this.formValue.isActive == null
-      ) {
-        this.formValue = this.parentComponet["_hostLView"][8].editForm.value;
-      }
-    }
-  }
-
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
@@ -75,11 +63,6 @@ export class SppcPermissionCheckDirective
     event.preventDefault();
     event.stopPropagation();
 
-    if (this.permissions == "ChangeStatus" && !this.haveAccess()) {
-      (<any>this.parentComponet)._view.component.editForm.patchValue({
-        isActive: this.formValue.isActive,
-      });
-    }
     if (this.haveAccess()) this.clicks.next(event);
     else
       this.translate.get("App.AccessDenied").subscribe((msg: string) => {
