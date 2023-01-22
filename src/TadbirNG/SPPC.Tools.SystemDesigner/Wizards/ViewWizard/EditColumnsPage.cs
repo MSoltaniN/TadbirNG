@@ -32,7 +32,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
 
         private void InitColumns(bool isDefault)
         {
-            if(isDefault)
+            if (isDefault)
             {
                 if (!String.IsNullOrEmpty(ViewName))
                 {

@@ -20,9 +20,18 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// </summary>
         public IList<CommandViewModel> Children { get; protected set; }
 
+        /// <summary>
+        /// وضعیت اطلاعات این دستور در دیتابیس
+        /// </summary>
+        public RecordState State { get; set; }
+
+        /// <summary>
+        /// اطلاعات آبجکت جاری را به صورت رشته متنی برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات آبجکت جاری به صورت رشته متنی</returns>
         public override string ToString()
         {
-            return $"{Title} (ChildrenCount : {Children.Count})";
+            return $"{Title} (Children : {Children.Count}, {State})";
         }
     }
 }

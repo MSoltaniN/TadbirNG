@@ -45,7 +45,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.label3 = new System.Windows.Forms.Label();
             this.txtTitleKey = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnSave = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnNewSibling = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -80,10 +79,11 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.btnNewChild.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnNewChild.Location = new System.Drawing.Point(12, 556);
             this.btnNewChild.Name = "btnNewChild";
-            this.btnNewChild.Size = new System.Drawing.Size(98, 35);
+            this.btnNewChild.Size = new System.Drawing.Size(115, 35);
             this.btnNewChild.TabIndex = 2;
             this.btnNewChild.Text = "New Child";
             this.btnNewChild.UseVisualStyleBackColor = true;
+            this.btnNewChild.Click += new System.EventHandler(this.NewChild_Click);
             // 
             // grpProperties
             // 
@@ -222,35 +222,27 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.label2.TabIndex = 2;
             this.label2.Text = "Title Key :";
             // 
-            // btnSave
-            // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSave.Location = new System.Drawing.Point(228, 556);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(77, 35);
-            this.btnSave.TabIndex = 4;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            // 
             // btnDelete
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDelete.Location = new System.Drawing.Point(311, 556);
+            this.btnDelete.Location = new System.Drawing.Point(254, 556);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(83, 35);
+            this.btnDelete.Size = new System.Drawing.Size(115, 35);
             this.btnDelete.TabIndex = 5;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.Delete_Click);
             // 
             // btnNewSibling
             // 
             this.btnNewSibling.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnNewSibling.Location = new System.Drawing.Point(116, 556);
+            this.btnNewSibling.Location = new System.Drawing.Point(133, 556);
             this.btnNewSibling.Name = "btnNewSibling";
-            this.btnNewSibling.Size = new System.Drawing.Size(106, 35);
+            this.btnNewSibling.Size = new System.Drawing.Size(115, 35);
             this.btnNewSibling.TabIndex = 6;
             this.btnNewSibling.Text = "New Sibling";
             this.btnNewSibling.UseVisualStyleBackColor = true;
+            this.btnNewSibling.Click += new System.EventHandler(this.NewSibling_Click);
             // 
             // btnCancel
             // 
@@ -271,6 +263,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.btnGenerate.TabIndex = 8;
             this.btnGenerate.Text = "Generate Scripts";
             this.btnGenerate.UseVisualStyleBackColor = true;
+            this.btnGenerate.Click += new System.EventHandler(this.Generate_Click);
             // 
             // btnRefresh
             // 
@@ -294,7 +287,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnNewSibling);
             this.Controls.Add(this.btnDelete);
-            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.grpProperties);
             this.Controls.Add(this.btnNewChild);
             this.Controls.Add(this.tvMenus);
@@ -329,7 +321,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtTitleKey;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnNewSibling;
         private System.Windows.Forms.Button btnCancel;

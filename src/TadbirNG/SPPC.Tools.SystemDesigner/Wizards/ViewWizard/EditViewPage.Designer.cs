@@ -49,6 +49,7 @@
             this.tvViewModels.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvViewModels.HideSelection = false;
             this.tvViewModels.Indent = 15;
             this.tvViewModels.Location = new System.Drawing.Point(16, 60);
             this.tvViewModels.Name = "tvViewModels";

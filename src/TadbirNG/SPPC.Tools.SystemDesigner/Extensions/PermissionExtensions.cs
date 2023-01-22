@@ -1,6 +1,6 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.Extensions
 {
@@ -19,7 +19,7 @@ namespace SPPC.Tools.Extensions
                 "INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])");
             scriptBuilder.AppendLine(
                 $"    VALUES ({permission.Id}, {permission.GroupId}, N'{permission.Name}', {permission.Flag}, " +
-                $"{GetNullableValue(permission.Description)})");
+                $"{ScriptUtility.GetNullableValue(permission.Description)})");
 
             if (withIdentityOff)
             {
@@ -27,13 +27,6 @@ namespace SPPC.Tools.Extensions
             }
 
             return scriptBuilder.ToString();
-        }
-
-        private static string GetNullableValue(string nullable)
-        {
-            return String.IsNullOrEmpty(nullable)
-                ? "NULL"
-                : String.Format("N'{0}'", nullable);
         }
     }
 }
