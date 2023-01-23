@@ -98,8 +98,8 @@ export class SppcDatepicker
   public dateLocale: string = "fa";
   private parseError: boolean = false;
   // "yyyy/MM/dd hh:mm" for date and time
-  @Input() inputDateFormat: string = "yyyy/MM/dd";
-  public dateFormat: string = "YYYY/MM/DD";
+  @Input() inputDateFormat: string = "yyyy/MM/d";
+  public dateFormat: string = "YYYY/MM/D";
   public spliterChar: string = "/";
 
   startDate: Date | null;
