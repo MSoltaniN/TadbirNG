@@ -9,6 +9,7 @@ using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Extensions;
 using SPPC.Tools.Extensions;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Forms
 {
@@ -94,8 +95,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             }
 
             var builder = new StringBuilder();
-            builder.AppendLine();
-            builder.AppendLine($"-- {VersionUtility.GetApiVersion()}");
+            ScriptUtility.AddVersionMarker(builder);
             builder.AppendLine(Model.ToScript());
 
             if (Model.Permissions.Count == 1)
@@ -115,9 +115,10 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 builder.Append(Model.Permissions.Last().ToScript(false, true));
             }
 
-            var path = Path.Combine(PathConfig.ResourceRoot, "TadbirSys_UpdateDbObjects.sql");
+            var path = Path.Combine(PathConfig.ResourceRoot, ScriptUtility.SysUpdateScriptName);
             File.AppendAllText(path, builder.ToString());
             MessageBox.Show("The script was successfully generated.");
+            DialogResult = DialogResult.OK;
             Close();
         }
 
@@ -140,13 +141,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 Flag = (int)Math.Pow(2, index)
             };
             return Permission;
-        }
-
-        private static string GetNullableValue(string nullable)
-        {
-            return String.IsNullOrEmpty(nullable)
-                ? "NULL"
-                : String.Format("N'{0}'", nullable);
         }
 
         private void SetupBindings()
