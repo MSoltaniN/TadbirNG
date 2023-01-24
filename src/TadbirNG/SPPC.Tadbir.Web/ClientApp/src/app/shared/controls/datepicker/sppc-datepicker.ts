@@ -391,7 +391,6 @@ export class SppcDatepicker
   }
 
   onDateChange() {
-    debugger;
     this.i++;
     if (typeof this.dateObject == "object") {
       this.hideCalendar();
@@ -581,7 +580,6 @@ export class SppcDatepicker
   }
 
   writeValue(value: any): void {
-    debugger;
     if (value) {
       this.date = this.datepipe.transform(value, this.inputDateFormat);
       this.editDateValue = moment(this.date);

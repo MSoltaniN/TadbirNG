@@ -239,7 +239,7 @@ export class CurrencyBookComponent
     },
   ];
 
-  @ViewChild(GridFilterComponent, {static: true}) gridFilterComponent: GridFilterComponent;
+  @ViewChild(GridFilterComponent) gridFilterComponent: GridFilterComponent;
 
   @Persist() selectedCurrencyValue: string = "0";
   oldCurrencySelected: string;
@@ -368,6 +368,8 @@ export class CurrencyBookComponent
   }
 
   dateValueChange(event: any) {
+    console.log(event);
+    
     this.fromDate = event.fromDate;
     this.toDate = event.toDate;
     this.isDefaultBtn = false;
