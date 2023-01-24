@@ -368,8 +368,6 @@ export class CurrencyBookComponent
   }
 
   dateValueChange(event: any) {
-    console.log(event);
-    
     this.fromDate = event.fromDate;
     this.toDate = event.toDate;
     this.isDefaultBtn = false;
