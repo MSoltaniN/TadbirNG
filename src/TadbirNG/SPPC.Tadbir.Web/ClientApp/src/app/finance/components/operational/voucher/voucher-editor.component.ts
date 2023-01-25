@@ -171,7 +171,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   reportManager: ReportManagementComponent;
 
   /**
-   * برای باز شدن مودال تعیین تکلیف هنگامی که هیچ سندی جوجود ندارد
+   * برای باز شدن مودال تعیین تکلیف هنگامی که هیچ سندی وجود ندارد
    */
   noVoucher = [false,false];
   isNewVoucher = false;
@@ -547,19 +547,22 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   noVoucherHandler(status:boolean,byNo) {
+    let type = this.activeRoute.snapshot.queryParamMap.get("type");
     if (status == false) {
       if (byNo) {
         this.router.navigate(["/tadbir/home"], {
           queryParams: {
             returnUrl: "finance/vouchers/by-no",
             mode: "by-no",
+            type: type
           },
         });
       } else {
         this.router.navigate(["/finance/voucher"]);
       }
     } else {
-      this.router.navigate(['/finance/vouchers/new'])
+      // if (this.subjectMode == 1 || type == "draft")
+      this.router.navigate([`/finance/vouchers/new/${type?type:''}`])
     }
   }
 
