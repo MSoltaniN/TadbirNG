@@ -111,7 +111,7 @@ export class SppcDatepicker
   // دریافت تاریخ بدون ساعت
   @Input() set justDate(value: boolean) {
     if (value) {
-      this.inputDateFormat = "yyyy/MM/dd";
+      this.inputDateFormat = "yyyy/MM/d";
     }
   }
 
@@ -391,6 +391,7 @@ export class SppcDatepicker
   }
 
   onDateChange() {
+
     this.i++;
     if (typeof this.dateObject == "object") {
       this.hideCalendar();
@@ -584,8 +585,10 @@ export class SppcDatepicker
       this.date = this.datepipe.transform(value, this.inputDateFormat);
       this.editDateValue = moment(this.date);
       if (this.isDisplayDate) {
-        this.dateObject = moment(this.date);
-      }
+        setTimeout(() => {
+          this.dateObject = moment(this.date);
+        }, 0);
+      }      
     }
   }
 
