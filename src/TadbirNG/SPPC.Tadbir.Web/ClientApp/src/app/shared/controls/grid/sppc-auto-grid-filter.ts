@@ -46,6 +46,8 @@ export class SppcAutoGridFilter extends BaseFilterCellComponent {
     return this.bgStroge.getLanguage();
   }
 
+  filterValue;
+
   constructor(@Host() private hostColumn: ColumnComponent,
     filterService:FilterService,
     private bgStroge:BrowserStorageService) {
@@ -57,7 +59,6 @@ export class SppcAutoGridFilter extends BaseFilterCellComponent {
       this.allowFiltering = this.metaDataItem.allowFiltering;
   }
 
-  dateValue;
   keyupHandler($e:KeyboardEvent) {
     if (this.currentLang == 'fa') {
       let value = (<any>$e.target).value as string;
@@ -67,7 +68,7 @@ export class SppcAutoGridFilter extends BaseFilterCellComponent {
         let miladi = +value.split('/')[0] < 1600? this.toMiladiDate(value) :value;
   
         if (+value.split('/')[0] < 1600) {
-          this.dateValue = value;
+          this.filterValue = value;
         }
   
         this.filter = this.removeFilter((<any>currentFilter).field);
@@ -88,13 +89,38 @@ export class SppcAutoGridFilter extends BaseFilterCellComponent {
         this.filterService.filter(root);
   
         // for displaing typed the string date typed by client
-        if ($e.key == 'Enter' && this.dateValue) {
+        if ($e.key == 'Enter' && this.filterValue) {
           setTimeout(() => {
-            (<any>$e.target).value = this.dateValue;
+            (<any>$e.target).value = this.filterValue;
             console.log($e.key,(<any>$e.target).value);
           }, 100);
         }
       }
+    }
+  }
+
+  toTrim($e:KeyboardEvent) {
+    let value = (<any>$e.target).value as string;
+    let currentFilter = this.filter.filters.find((f:any) => f.field == 'name' );
+    if (($e.key == ' ' || $e.key == 'Enter') && currentFilter) {
+      
+      this.filterValue = value;
+      this.filter = this.removeFilter((<any>currentFilter)?.field);
+      const filters = [];
+      filters.push({
+        field: (<any>currentFilter).field,
+        operator: (<any>currentFilter).operator,
+        value: value.trim()
+      });
+      const root: CompositeFilterDescriptor = this.filter || {
+        logic: "and",
+        filters: []
+      };
+      if (filters.length) {
+        root.filters.push(...filters);
+      }
+  
+      this.filterService.filter(root);
     }
   }
 
