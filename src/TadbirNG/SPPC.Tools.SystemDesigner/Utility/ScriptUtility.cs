@@ -8,6 +8,10 @@ namespace SPPC.Tools.Utility
 {
     public class ScriptUtility
     {
+        public const string CreateScriptName = "Tadbir_CreateDbObjects.sql";
+
+        public const string UpdateScriptName = "Tadbir_UpdateDbObjects.sql";
+
         public const string SysCreateScriptName = "TadbirSys_CreateDbObjects.sql";
 
         public const string SysUpdateScriptName = "TadbirSys_UpdateDbObjects.sql";
@@ -24,18 +28,14 @@ namespace SPPC.Tools.Utility
             }
         }
 
+        public static void ReplaceScript(string newScript)
+        {
+            OverwriteScriptBlock(CreateScriptName, newScript);
+        }
+
         public static void ReplaceSysScript(string newScript)
         {
-            var lines = newScript.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
-            var path = Path.Combine(PathConfig.ResourceRoot, SysCreateScriptName);
-            var allScript = File.ReadAllText(path, Encoding.UTF8);
-            var prologue = allScript[0..allScript.IndexOf(lines.First())];
-            var lastLine = lines.Last();
-            int epilogueStart = allScript.IndexOf(lastLine) + lastLine.Length + Environment.NewLine.Length;
-            var epilogue = allScript[epilogueStart..];
-
-            allScript = $"{prologue}{newScript}{epilogue}";
-            File.WriteAllText(path, allScript, Encoding.UTF8);
+            OverwriteScriptBlock(SysCreateScriptName, newScript);
         }
 
         public static string GetNullableValue(string nullable, bool isUnicode = true)
@@ -52,6 +52,20 @@ namespace SPPC.Tools.Utility
             return nullable.HasValue
                 ? $"{nullable.Value}"
                 : "NULL";
+        }
+
+        private static void OverwriteScriptBlock(string scriptFile, string newScript)
+        {
+            var lines = newScript.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+            var path = Path.Combine(PathConfig.ResourceRoot, scriptFile);
+            var allScript = File.ReadAllText(path, Encoding.UTF8);
+            var prologue = allScript[0..allScript.IndexOf(lines.First())];
+            var lastLine = lines.Last();
+            int epilogueStart = allScript.IndexOf(lastLine) + lastLine.Length + Environment.NewLine.Length;
+            var epilogue = allScript[epilogueStart..];
+
+            allScript = $"{prologue}{newScript}{epilogue}";
+            File.WriteAllText(path, allScript, Encoding.UTF8);
         }
     }
 }
