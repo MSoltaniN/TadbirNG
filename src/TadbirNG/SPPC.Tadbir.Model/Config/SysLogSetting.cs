@@ -7,16 +7,16 @@ namespace SPPC.Tadbir.Model.Config
         /// <summary>
         /// شناسه دیتابیسی فرم عملیاتی مورد استفاده
         /// </summary>
-        public int? SourceId { get; set; }
+        public virtual int? SourceId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی موجودیت مورد استفاده در عملیات
         /// </summary>
-        public int? EntityTypeId { get; set; }
+        public virtual int? EntityTypeId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی عملیات انجام شده
         /// </summary>
-        public int OperationId { get; set; }
+        public virtual int OperationId { get; set; }
     }
 }

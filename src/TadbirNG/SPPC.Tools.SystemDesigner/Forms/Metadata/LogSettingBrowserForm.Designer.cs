@@ -28,184 +28,173 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.lbxSourceEntity = new System.Windows.Forms.ListBox();
+            this.components = new System.ComponentModel.Container();
+            this.chkSystemSettings = new System.Windows.Forms.CheckBox();
+            this.tvLogMetadata = new System.Windows.Forms.TreeView();
+            this.btnNew = new System.Windows.Forms.Button();
+            this.menuNewOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.menuNewSubsystem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuNewEntityType = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuNewOperationSource = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuNewOperation = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuNewLogSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.grpProperties = new System.Windows.Forms.GroupBox();
-            this.lbxOperations = new System.Windows.Forms.CheckedListBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.cmbSourceType = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cmbSubsystem = new System.Windows.Forms.ComboBox();
+            this.txtDescription = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.txtName = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnGenerate = new System.Windows.Forms.Button();
-            this.btnUpdateDb = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
+            this.menuNewOptions.SuspendLayout();
             this.grpProperties.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
+            // chkSystemSettings
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 26);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(118, 17);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Sources/Entities :";
+            this.chkSystemSettings.AutoSize = true;
+            this.chkSystemSettings.Location = new System.Drawing.Point(21, 26);
+            this.chkSystemSettings.Name = "chkSystemSettings";
+            this.chkSystemSettings.Size = new System.Drawing.Size(164, 24);
+            this.chkSystemSettings.TabIndex = 0;
+            this.chkSystemSettings.Text = "System Log Settings";
+            this.chkSystemSettings.UseVisualStyleBackColor = true;
+            this.chkSystemSettings.CheckedChanged += new System.EventHandler(this.SystemSettings_CheckedChanged);
             // 
-            // lbxSourceEntity
+            // tvLogMetadata
             // 
-            this.lbxSourceEntity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.lbxSourceEntity.FormattingEnabled = true;
-            this.lbxSourceEntity.ItemHeight = 16;
-            this.lbxSourceEntity.Location = new System.Drawing.Point(16, 46);
-            this.lbxSourceEntity.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.lbxSourceEntity.Name = "lbxSourceEntity";
-            this.lbxSourceEntity.Size = new System.Drawing.Size(211, 324);
-            this.lbxSourceEntity.TabIndex = 1;
-            this.lbxSourceEntity.SelectedIndexChanged += new System.EventHandler(this.SourceEntity_SelectedIndexChanged);
+            this.tvLogMetadata.CheckBoxes = true;
+            this.tvLogMetadata.HideSelection = false;
+            this.tvLogMetadata.Location = new System.Drawing.Point(21, 56);
+            this.tvLogMetadata.Name = "tvLogMetadata";
+            this.tvLogMetadata.Size = new System.Drawing.Size(452, 529);
+            this.tvLogMetadata.TabIndex = 1;
+            this.tvLogMetadata.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.LogMetadata_BeforeSelect);
+            this.tvLogMetadata.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.LogMetadata_AfterSelect);
+            // 
+            // btnNew
+            // 
+            this.btnNew.Location = new System.Drawing.Point(21, 604);
+            this.btnNew.Name = "btnNew";
+            this.btnNew.Size = new System.Drawing.Size(218, 36);
+            this.btnNew.TabIndex = 2;
+            this.btnNew.Text = "New";
+            this.btnNew.UseVisualStyleBackColor = true;
+            // 
+            // menuNewOptions
+            // 
+            this.menuNewOptions.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuNewOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuNewSubsystem,
+            this.menuNewEntityType,
+            this.menuNewOperationSource,
+            this.menuNewOperation,
+            this.menuNewLogSettings});
+            this.menuNewOptions.Name = "menuNewOptions";
+            this.menuNewOptions.Size = new System.Drawing.Size(195, 124);
+            // 
+            // menuNewSubsystem
+            // 
+            this.menuNewSubsystem.Name = "menuNewSubsystem";
+            this.menuNewSubsystem.Size = new System.Drawing.Size(194, 24);
+            this.menuNewSubsystem.Text = "Subsystem";
+            // 
+            // menuNewEntityType
+            // 
+            this.menuNewEntityType.Name = "menuNewEntityType";
+            this.menuNewEntityType.Size = new System.Drawing.Size(194, 24);
+            this.menuNewEntityType.Text = "Entity Type";
+            // 
+            // menuNewOperationSource
+            // 
+            this.menuNewOperationSource.Name = "menuNewOperationSource";
+            this.menuNewOperationSource.Size = new System.Drawing.Size(194, 24);
+            this.menuNewOperationSource.Text = "Operation Source";
+            // 
+            // menuNewOperation
+            // 
+            this.menuNewOperation.Name = "menuNewOperation";
+            this.menuNewOperation.Size = new System.Drawing.Size(194, 24);
+            this.menuNewOperation.Text = "Operation";
+            // 
+            // menuNewLogSettings
+            // 
+            this.menuNewLogSettings.Name = "menuNewLogSettings";
+            this.menuNewLogSettings.Size = new System.Drawing.Size(194, 24);
+            this.menuNewLogSettings.Text = "Log Settings";
             // 
             // grpProperties
             // 
-            this.grpProperties.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpProperties.Controls.Add(this.lbxOperations);
-            this.grpProperties.Controls.Add(this.label4);
-            this.grpProperties.Controls.Add(this.cmbSourceType);
-            this.grpProperties.Controls.Add(this.label3);
-            this.grpProperties.Controls.Add(this.cmbSubsystem);
+            this.grpProperties.Controls.Add(this.txtDescription);
             this.grpProperties.Controls.Add(this.label2);
-            this.grpProperties.Location = new System.Drawing.Point(244, 38);
-            this.grpProperties.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grpProperties.Controls.Add(this.txtName);
+            this.grpProperties.Controls.Add(this.label1);
+            this.grpProperties.Location = new System.Drawing.Point(489, 47);
             this.grpProperties.Name = "grpProperties";
-            this.grpProperties.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.grpProperties.Size = new System.Drawing.Size(421, 332);
-            this.grpProperties.TabIndex = 2;
+            this.grpProperties.Size = new System.Drawing.Size(386, 538);
+            this.grpProperties.TabIndex = 4;
             this.grpProperties.TabStop = false;
             this.grpProperties.Text = "Properties";
             // 
-            // lbxOperations
+            // txtDescription
             // 
-            this.lbxOperations.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbxOperations.CheckOnClick = true;
-            this.lbxOperations.FormattingEnabled = true;
-            this.lbxOperations.Location = new System.Drawing.Point(195, 59);
-            this.lbxOperations.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.lbxOperations.Name = "lbxOperations";
-            this.lbxOperations.Size = new System.Drawing.Size(211, 242);
-            this.lbxOperations.TabIndex = 5;
-            this.lbxOperations.SelectedIndexChanged += new System.EventHandler(this.Operations_SelectedIndexChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(191, 39);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(139, 17);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Enabled operations :";
-            // 
-            // cmbSourceType
-            // 
-            this.cmbSourceType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSourceType.FormattingEnabled = true;
-            this.cmbSourceType.Location = new System.Drawing.Point(8, 122);
-            this.cmbSourceType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.cmbSourceType.Name = "cmbSourceType";
-            this.cmbSourceType.Size = new System.Drawing.Size(160, 24);
-            this.cmbSourceType.TabIndex = 3;
-            this.cmbSourceType.SelectedIndexChanged += new System.EventHandler(this.SourceType_SelectedIndexChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 102);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(92, 17);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Source type :";
-            // 
-            // cmbSubsystem
-            // 
-            this.cmbSubsystem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSubsystem.FormattingEnabled = true;
-            this.cmbSubsystem.Location = new System.Drawing.Point(8, 59);
-            this.cmbSubsystem.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.cmbSubsystem.Name = "cmbSubsystem";
-            this.cmbSubsystem.Size = new System.Drawing.Size(160, 24);
-            this.cmbSubsystem.TabIndex = 1;
-            this.cmbSubsystem.SelectedIndexChanged += new System.EventHandler(this.Subsystem_SelectedIndexChanged);
+            this.txtDescription.Location = new System.Drawing.Point(16, 216);
+            this.txtDescription.Multiline = true;
+            this.txtDescription.Name = "txtDescription";
+            this.txtDescription.Size = new System.Drawing.Size(364, 304);
+            this.txtDescription.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 39);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(16, 187);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(85, 17);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Subsystem :";
+            this.label2.Size = new System.Drawing.Size(92, 20);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Description :";
+            // 
+            // txtName
+            // 
+            this.txtName.Location = new System.Drawing.Point(16, 140);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(364, 27);
+            this.txtName.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(16, 111);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(56, 20);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Name :";
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnGenerate.Location = new System.Drawing.Point(16, 394);
-            this.btnGenerate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnGenerate.Location = new System.Drawing.Point(327, 605);
             this.btnGenerate.Name = "btnGenerate";
-            this.btnGenerate.Size = new System.Drawing.Size(129, 33);
-            this.btnGenerate.TabIndex = 3;
-            this.btnGenerate.Text = "Generate Script";
+            this.btnGenerate.Size = new System.Drawing.Size(146, 36);
+            this.btnGenerate.TabIndex = 5;
+            this.btnGenerate.Text = "Generate Scripts";
             this.btnGenerate.UseVisualStyleBackColor = true;
             this.btnGenerate.Click += new System.EventHandler(this.Generate_Click);
             // 
-            // btnUpdateDb
+            // LogSettingBrowserForm
             // 
-            this.btnUpdateDb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnUpdateDb.Location = new System.Drawing.Point(153, 394);
-            this.btnUpdateDb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.btnUpdateDb.Name = "btnUpdateDb";
-            this.btnUpdateDb.Size = new System.Drawing.Size(141, 33);
-            this.btnUpdateDb.TabIndex = 4;
-            this.btnUpdateDb.Text = "Update Database";
-            this.btnUpdateDb.UseVisualStyleBackColor = true;
-            this.btnUpdateDb.Click += new System.EventHandler(this.UpdateDb_Click);
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(565, 394);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(100, 33);
-            this.btnCancel.TabIndex = 5;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            // 
-            // LogCatalogueForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(677, 436);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnUpdateDb);
+            this.ClientSize = new System.Drawing.Size(887, 653);
             this.Controls.Add(this.btnGenerate);
             this.Controls.Add(this.grpProperties);
-            this.Controls.Add(this.lbxSourceEntity);
-            this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Controls.Add(this.btnNew);
+            this.Controls.Add(this.tvLogMetadata);
+            this.Controls.Add(this.chkSystemSettings);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "LogCatalogueForm";
+            this.Name = "LogSettingBrowserForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Log Catalog";
+            this.menuNewOptions.ResumeLayout(false);
             this.grpProperties.ResumeLayout(false);
             this.grpProperties.PerformLayout();
             this.ResumeLayout(false);
@@ -215,17 +204,20 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ListBox lbxSourceEntity;
+        private System.Windows.Forms.CheckBox chkSystemSettings;
+        private System.Windows.Forms.TreeView tvLogMetadata;
+        private System.Windows.Forms.Button btnNew;
+        private System.Windows.Forms.ContextMenuStrip menuNewOptions;
+        private System.Windows.Forms.ToolStripMenuItem menuNewSubsystem;
+        private System.Windows.Forms.ToolStripMenuItem menuNewEntityType;
+        private System.Windows.Forms.ToolStripMenuItem menuNewOperationSource;
+        private System.Windows.Forms.ToolStripMenuItem menuNewOperation;
+        private System.Windows.Forms.ToolStripMenuItem menuNewLogSettings;
         private System.Windows.Forms.GroupBox grpProperties;
-        private System.Windows.Forms.Button btnGenerate;
-        private System.Windows.Forms.Button btnUpdateDb;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.CheckedListBox lbxOperations;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox cmbSourceType;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox cmbSubsystem;
+        private System.Windows.Forms.TextBox txtDescription;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnGenerate;
     }
 }
