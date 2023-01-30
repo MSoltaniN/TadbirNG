@@ -419,7 +419,7 @@ export class AutoGridExplorerComponent<T>
         }
         
       }
-
+      this.scrollToSelectedItem(model);
       var items = this.expandedKeys;
       this.expandedKeys = [];
       setTimeout(() => {
