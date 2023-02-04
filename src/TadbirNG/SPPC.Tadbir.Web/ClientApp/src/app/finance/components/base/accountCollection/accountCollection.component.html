@@ -53,7 +53,6 @@
                         [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
                         [(selectedKeys)]="selectedRowsKey"
                         [kendoGridSelectBy]="'accountId'"
-                        sppc-auto-generated-grid-reorder sppc-auto-generated-grid-resize
                         >
               <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
                                    pagerOf="{{ 'Paging.Of' | translate }}"
@@ -90,6 +89,7 @@
                         [sortable]="{ allowUnsort: true, mode: 'multiple' }"
                         [sort]="sort"
                         [pageSize]="pageSize"
+                        [loading]="grid.loading"
                         [skip]="skip"
                         [filter]="state.filter"
                         [pageable]="true"

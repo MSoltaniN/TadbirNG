@@ -562,7 +562,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       }
     } else {
       // if (this.subjectMode == 1 || type == "draft")
-      this.router.navigate([`/finance/vouchers/new/${type?type:''}`])
+      this.router.navigate([`/finance/vouchers/new/${this.subjectMode == 1 || type == "draft"? "draft":''}`])
     }
   }
 
