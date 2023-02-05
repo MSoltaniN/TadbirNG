@@ -85,7 +85,13 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
 
   getStartDate(): Date {
     if (this.CurrentLanguage == "fa") {
-      return new Date(new Date().getFullYear(), 2, 21, 0, 0, 0);
+      let cDate = new Date();
+      // برای بازه زمانی 10 دی تا 29 اسفند
+      if (cDate.getMonth() <= 2 && cDate.getDay() <= 20) {
+        return new Date(new Date().getFullYear() - 1, 2, 21, 0, 0, 0);
+      } else {
+        return new Date(new Date().getFullYear(), 2, 21, 0, 0, 0);
+      }
     }
     else {
       return new Date(new Date().getFullYear(), 0, 1, 0, 0, 0);
@@ -94,7 +100,13 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
 
   getEndDate(): Date {
     if (this.CurrentLanguage == "fa") {
-      return new Date(new Date().getFullYear() + 1, 2, 20, 0, 0, 0);
+      let cDate = new Date();
+      // برای بازه زمانی 10 دی تا 29 اسفند
+      if (cDate.getMonth() <= 2 && cDate.getDay() <= 20) {
+        return new Date(new Date().getFullYear(), 2, 20, 0, 0, 0);
+      } else {
+        return new Date(new Date().getFullYear() + 1, 2, 20, 0, 0, 0);
+      }
     }
     else {
       return new Date(new Date().getFullYear(), 11, 31, 0, 0, 0);

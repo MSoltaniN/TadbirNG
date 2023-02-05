@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using SPPC.Framework.Helpers;
+using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.ViewModel.Config;
+using SPPC.Tadbir.ViewModel.Metadata;
+using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
 using SPPC.Tools.Utility;
 
@@ -17,231 +20,476 @@ namespace SPPC.Tools.SystemDesigner.Forms
         public LogSettingBrowserForm()
         {
             InitializeComponent();
-            _connection = DbConnections.CompanyConnection;
-            _sysConnection = DbConnections.SystemConnection;
-            _dal = new SqlDataLayer(_connection);
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            ActiveForm.Cursor = Cursors.WaitCursor;
-            LoadLookups();
-            LoadSourceEntities();
-            ActiveForm.Cursor = Cursors.Default;
+            LoadCurrentSettings();
         }
 
-        private void SourceEntity_SelectedIndexChanged(object sender, EventArgs e)
+        private void SystemSettings_CheckedChanged(object sender, EventArgs e)
         {
-            foreach (int index in Enumerable.Range(0, lbxOperations.Items.Count))
+            if (chkSystemSettings.Checked)
             {
-                lbxOperations.SetItemChecked(index, false);
+                LoadCurrentSysSettings();
             }
-
-            if (lbxSourceEntity.SelectedIndex != -1)
+            else
             {
-                var selected = lbxSourceEntity.SelectedItem as LogSettingModel;
-                cmbSubsystem.SelectedValue = selected.SubsystemId.ToString();
-                cmbSourceType.SelectedValue = selected.SourceTypeId.ToString();
-                var allOps = lbxOperations.Items
-                    .Cast<KeyValue>()
-                    .Select(item => Int32.Parse(item.Key))
-                    .ToList();
-                foreach (var id in selected.Operations)
-                {
-                    int index = allOps.IndexOf(id);
-                    lbxOperations.SetItemChecked(index, true);
-                }
+                LoadCurrentSettings();
+            }
+        }
+
+        private void LogMetadata_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            var selected = tvLogMetadata.SelectedNode;
+            LoadProperty(selected, "Name", txtName);
+            LoadProperty(selected, "Description", txtDescription);
+            if (e.Node.Text == "Entities")
+            {
+                btnNew.Enabled = true;
+                btnNew.Text = "Add Entity";
+            }
+            else if (e.Node.Text == "Sources")
+            {
+                btnNew.Enabled = true;
+                btnNew.Text = "Add Source";
+            }
+            else if (e.Node.Tag is EntityTypeViewModel
+                || e.Node.Tag is OperationSourceViewModel)
+            {
+                btnNew.Enabled = true;
+                btnNew.Text = "Manage Log Settings";
+            }
+            else if (e.Node.Tag is SubsystemViewModel)
+            {
+                btnNew.Enabled = true;
+                btnNew.Text = "Add Subsystem";
+            }
+            else
+            {
+                btnNew.Text = "Add";
+                btnNew.Enabled = false;
+            }
+        }
+
+        private void LogMetadata_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+        {
+            var selected = tvLogMetadata.SelectedNode;
+            if (selected != null)
+            {
+                SaveProperty(selected, "Name", txtName);
+                SaveProperty(selected, "Description", txtDescription);
             }
         }
 
         private void Generate_Click(object sender, EventArgs e)
         {
-            int id = 1;
-            var script = new StringBuilder();
-            script.AppendLine("SET IDENTITY_INSERT [Config].[LogSetting] ON");
-            var all = lbxSourceEntity.DataSource as List<LogSettingModel>;
-            foreach (var item in all)
+            if (chkSystemSettings.Checked)
             {
-                foreach (int operationId in item.Operations.OrderBy(opId => opId))
-                {
-                    script.AppendFormat(@"INSERT INTO [Config].[LogSetting] (LogSettingID, SubsystemID, SourceTypeID, SourceID, EntityTypeID, OperationID, IsEnabled)
-    VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6})",
-                    id++, item.SubsystemId, item.SourceTypeId, item.SourceId.HasValue ? item.SourceId.Value.ToString() : "NULL",
-                    item.EntityTypeId.HasValue ? item.EntityTypeId.Value.ToString() : "NULL", operationId, 1);
-                    script.AppendLine();
-                }
+                GenerateSysScripts();
+            }
+            else
+            {
+                GenerateScripts();
             }
 
-            script.AppendLine("SET IDENTITY_INSERT [Config].[LogSetting] OFF");
-            File.WriteAllText("script.sql", script.ToString());
-            MessageBox.Show("SQL script successfully generated.");
+            MessageBox.Show(this, "Script was successfully generated.",
+                "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void UpdateDb_Click(object sender, EventArgs e)
+        private static void SaveProperty(TreeNode node, string propertyName, TextBox propertySource)
         {
-            MessageBox.Show("This operation is not currently available.");
-        }
-
-        private void Subsystem_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cmbSubsystem.SelectedIndex != -1 && lbxSourceEntity.SelectedIndex != -1)
+            var tag = node.Tag;
+            if (tag != null)
             {
-                var setting = lbxSourceEntity.SelectedItem as LogSettingModel;
-                setting.SubsystemId = Int32.Parse(cmbSubsystem.SelectedValue.ToString());
-            }
-        }
-
-        private void SourceType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cmbSourceType.SelectedIndex != -1 && lbxSourceEntity.SelectedIndex != -1)
-            {
-                var setting = lbxSourceEntity.SelectedItem as LogSettingModel;
-                setting.SourceTypeId = Int32.Parse(cmbSourceType.SelectedValue.ToString());
-            }
-        }
-
-        private void Operations_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lbxOperations.SelectedIndex != -1 && lbxSourceEntity.SelectedIndex != -1)
-            {
-                var op = lbxOperations.SelectedItem as KeyValue;
-                int opId = Int32.Parse(op.Key.ToString());
-                var setting = lbxSourceEntity.SelectedItem as LogSettingModel;
-                bool isChecked = lbxOperations.GetItemChecked(lbxOperations.SelectedIndex);
-                if (!isChecked && setting.Operations.Contains(opId))
+                bool hasProperty = Reflector
+                    .GetPropertyNames(tag)
+                    .FirstOrDefault(name => name == propertyName) != null;
+                if (hasProperty)
                 {
-                    setting.Operations.Remove(opId);
-                }
-
-                if (isChecked && !setting.Operations.Contains(opId))
-                {
-                    setting.Operations.Add(opId);
+                    Reflector.SetProperty(tag, propertyName, propertySource.Text);
+                    //node.Text = propertySource.Text;
                 }
             }
         }
 
-        private static void MergeSettings(List<LogSettingModel> all, List<LogSettingModel> existing)
+        private static void LoadProperty(TreeNode node, string propertyName, TextBox propertyTarget)
         {
-            var entities = existing
-                .Where(log => log.EntityTypeId != null)
-                .GroupBy(log => log.EntityTypeId);
-            foreach (var group in entities)
+            var tag = node.Tag;
+            if (tag != null)
             {
-                var first = group.First();
-                var entityLog = all
-                    .Where(log => log.EntityTypeId == group.Key)
-                    .First();
-                entityLog.SubsystemId = first.SubsystemId;
-                entityLog.SourceTypeId = first.SourceTypeId;
-                entityLog.Operations.AddRange(group.Select(log => log.OperationId));
-            }
-
-            var sources = existing
-                .Where(log => log.SourceId != null)
-                .GroupBy(log => log.SourceId);
-            foreach (var group in sources)
-            {
-                var first = group.First();
-                var entityLog = all
-                    .Where(log => log.SourceId == group.Key)
-                    .First();
-                entityLog.SubsystemId = first.SubsystemId;
-                entityLog.SourceTypeId = first.SourceTypeId;
-                entityLog.Operations.AddRange(group.Select(log => log.OperationId));
+                bool hasProperty = Reflector
+                    .GetPropertyNames(tag)
+                    .FirstOrDefault(name => name == propertyName) != null;
+                if (hasProperty)
+                {
+                    propertyTarget.Text = (string)Reflector.GetProperty(tag, propertyName);
+                }
             }
         }
 
-        private static int IdFromRowItem(object item)
+        private static void AddLogSettings(DataTable logSettings, IEnumerable<TreeNode> nodes)
         {
-            return Int32.Parse(item.ToString());
+            var settingItems = new List<LogSettingViewModel>();
+            foreach (var node in nodes)
+            {
+                if (node.Tag is EntityTypeViewModel entity)
+                {
+                    var entityRows = logSettings.Select($"EntityTypeID = {entity.Id}");
+                    settingItems.AddRange(entityRows
+                        .Select(row => SettingItemFromRow(row)));
+                }
+                else if (node.Tag is OperationSourceViewModel source)
+                {
+                    var sourceRows = logSettings.Select($"SourceID = {source.Id}");
+                    settingItems.AddRange(sourceRows
+                        .Select(row => SettingItemFromRow(row)));
+                }
+
+                node.Nodes.AddRange(settingItems
+                    .Select(item => new TreeNode(item.OperationName)
+                    {
+                        Tag = item,
+                        Checked = true
+                    })
+                    .ToArray());
+                settingItems.Clear();
+            }
         }
 
-        private static int? NullableIdFromRowItem(object item)
+        private static LogSettingViewModel SettingItemFromRow(DataRow row)
         {
-            return (item != DBNull.Value)
-                ? Int32.Parse(item.ToString())
-                : (int?)null;
+            int entityId = row.ValueOrDefault<int>("EntityTypeID");
+            int sourceId = row.ValueOrDefault<int>("SourceID");
+            return new LogSettingViewModel()
+            {
+                Id = Math.Max(row.ValueOrDefault<int>("LogSettingID"),
+                    row.ValueOrDefault<int>("SysLogSettingID")),
+                EntityTypeId = entityId > 0 ? entityId : null,
+                SourceId = sourceId > 0 ? sourceId : null,
+                OperationId = row.ValueOrDefault<int>("OperationID"),
+                OperationName = row.ValueOrDefault("OperationName"),
+                IsEnabled = row.ValueOrDefault<bool>("IsEnabled")
+            };
         }
 
-        private List<LogSettingModel> LoadCurrentSetting()
+        #region Manage LogSettings
+
+        private void LoadCurrentSettings()
         {
-            string command =
-                @"SELECT * FROM [Config].[LogSetting]";
-            var result = _dal.Query(command);
-            return result.Rows
+            this.GetActiveForm().Cursor = Cursors.WaitCursor;
+            tvLogMetadata.Nodes.Clear();
+            var dal = new SqlDataLayer(DbConnections.CompanyConnection);
+            var logSettings = dal.Query(ToolsQuery.LogSettings);
+            AddSubsystems(logSettings);
+            AddSourceTypes(logSettings);
+            AddEntitiesAndSources(logSettings);
+            AddLogSettings(logSettings, GetAllSourceEntityItems());
+            this.GetActiveForm().Cursor = Cursors.Default;
+        }
+
+        private void AddSubsystems(DataTable logSettings)
+        {
+            var subsystems = new List<SubsystemViewModel>();
+            var groups = logSettings.Rows
                 .Cast<DataRow>()
-                .Select(row => new LogSettingModel()
+                .GroupBy(row => row.ValueOrDefault<int>("SubsystemID"));
+            subsystems.AddRange(groups
+                .Select(grp => new SubsystemViewModel()
                 {
-                    Id = IdFromRowItem(row[0]),
-                    SubsystemId = IdFromRowItem(row[1]),
-                    SourceTypeId = IdFromRowItem(row[2]),
-                    SourceId = NullableIdFromRowItem(row[3]),
-                    EntityTypeId = NullableIdFromRowItem(row[4]),
-                    OperationId = IdFromRowItem(row[5]),
-                    IsEnabled = Boolean.Parse(row[6].ToString())
-                })
-                .ToList();
-        }
-
-        private void LoadLookups()
-        {
-            var list = GetMetadataLookup("Subsystem");
-            cmbSubsystem.DisplayMember = "Value";
-            cmbSubsystem.ValueMember = "Key";
-            cmbSubsystem.DataSource = list;
-
-            list = GetMetadataLookup("OperationSourceType");
-            cmbSourceType.DisplayMember = "Value";
-            cmbSourceType.ValueMember = "Key";
-            cmbSourceType.DataSource = list;
-
-            list = GetMetadataLookup("Operation");
-            lbxOperations.DisplayMember = "Value";
-            lbxOperations.ValueMember = "Key";
-            lbxOperations.DataSource = list;
-        }
-
-        private void LoadSourceEntities()
-        {
-            var settingItems = new List<LogSettingModel>();
-            settingItems.AddRange(GetMetadataLookup("EntityType")
-                .Select(row => new LogSettingModel()
-                {
-                    SubsystemId = 1,
-                    SourceTypeId = 1,
-                    EntityTypeId = Int32.Parse(row.Key),
-                    Name = row.Value
+                    Id = grp.Key,
+                    Name = grp.First().ValueOrDefault("SubsystemName")
                 }));
-            settingItems.AddRange(GetMetadataLookup("OperationSource")
-                .Select(row => new LogSettingModel()
+            Array.ForEach(subsystems
+                .OrderBy(sub => sub.Name)
+                .ToArray(), subsystem =>
                 {
-                    SubsystemId = 1,
-                    SourceTypeId = 1,
-                    SourceId = Int32.Parse(row.Key),
-                    Name = row.Value
-                }));
-            var existing = LoadCurrentSetting();
-            MergeSettings(settingItems, existing);
-            settingItems = settingItems
-                .OrderBy(item => item.Name)
-                .ToList();
-            lbxSourceEntity.DisplayMember = "Name";
-            lbxSourceEntity.DataSource = settingItems;
+                    var node = new TreeNode(subsystem.Name) { Tag = subsystem };
+                    tvLogMetadata.Nodes.Add(node);
+                });
         }
 
-        private List<KeyValue> GetMetadataLookup(string table)
+        private void AddSourceTypes(DataTable logSettings)
         {
-            string command = String.Format("SELECT {0}ID,Name FROM [Metadata].[{0}]", table);
-            var result = _dal.Query(command);
-            return result.Rows
-                .Cast<DataRow>()
-                .Select(row => new KeyValue(row[0].ToString(), row[1].ToString()))
-                .ToList();
+            var sourceTypes = new List<OperationSourceTypeViewModel>();
+            foreach (TreeNode node in tvLogMetadata.Nodes)
+            {
+                var subsystem = node.Tag as SubsystemViewModel;
+                var rows = logSettings.Select($"SubsystemID = {subsystem.Id}");
+                var groups = rows
+                    .GroupBy(row => row.ValueOrDefault<int>("SourceTypeID"));
+                sourceTypes.AddRange(groups
+                    .Select(grp => new OperationSourceTypeViewModel()
+                    {
+                        Id = grp.Key,
+                        Name = grp.First().ValueOrDefault("SourceTypeName")
+                    }));
+                Array.ForEach(sourceTypes.ToArray(), sourceType =>
+                {
+                    var typeNode = new TreeNode(sourceType.Name) { Tag = sourceType };
+                    node.Nodes.Add(typeNode);
+                });
+                sourceTypes.Clear();
+            }
         }
 
-        private readonly string _connection;
-        private readonly string _sysConnection;
-        private readonly SqlDataLayer _dal;
+        private void AddEntitiesAndSources(DataTable logSettings)
+        {
+            foreach (TreeNode subsystemNode in tvLogMetadata.Nodes)
+            {
+                var subsystem = subsystemNode.Tag as SubsystemViewModel;
+                foreach (TreeNode sourceTypeNode in subsystemNode.Nodes)
+                {
+                    var sourceType = sourceTypeNode.Tag as OperationSourceTypeViewModel;
+                    var entitiesNode = new TreeNode("Entities");
+                    sourceTypeNode.Nodes.Add(entitiesNode);
+                    AddEntities(logSettings, subsystem, sourceType, entitiesNode);
+
+                    var sourcesNode = new TreeNode("Sources");
+                    sourceTypeNode.Nodes.Add(sourcesNode);
+                    AddSources(logSettings, subsystem, sourceType, sourcesNode);
+                }
+            }
+        }
+
+        private static void AddEntities(
+            DataTable logSettings, SubsystemViewModel subsystem, OperationSourceTypeViewModel sourceType,
+            TreeNode entitiesNode)
+        {
+            var entities = new List<EntityTypeViewModel>();
+            var entityRows = logSettings.Select(
+                $"SubsystemID = {subsystem.Id} AND SourceTypeID = {sourceType.Id}");
+            var entityGroups = entityRows
+                .GroupBy(row => row.ValueOrDefault<int>("EntityTypeID"));
+            entities.AddRange(entityGroups
+                .Select(grp => new EntityTypeViewModel()
+                {
+                    Id = grp.Key,
+                    Name = grp.First().ValueOrDefault("EntityName"),
+                    Description = grp.First().ValueOrDefault("EntityDescription")
+                }));
+            Array.ForEach(entities
+                .Where(ent => !String.IsNullOrEmpty(ent.Name))
+                .OrderBy(ent => ent.Name)
+                .ToArray(), entity =>
+                {
+                    var node = new TreeNode(entity.Name) { Tag = entity };
+                    entitiesNode.Nodes.Add(node);
+                });
+        }
+
+        private static void AddSources(
+            DataTable logSettings, SubsystemViewModel subsystem, OperationSourceTypeViewModel sourceType,
+            TreeNode sourcesNode)
+        {
+            var sources = new List<OperationSourceViewModel>();
+            var sourceRows = logSettings.Select(
+                $"SubsystemID = {subsystem.Id} AND SourceTypeID = {sourceType.Id}");
+            var sourceGroups = sourceRows
+                .GroupBy(row => row.ValueOrDefault<int>("SourceID"));
+            sources.AddRange(sourceGroups
+                .Select(grp => new OperationSourceViewModel()
+                {
+                    Id = grp.Key,
+                    Name = grp.First().ValueOrDefault("SourceName"),
+                    Description = grp.First().ValueOrDefault("SourceDescription")
+                }));
+            Array.ForEach(sources
+                .Where(src => !String.IsNullOrEmpty(src.Name))
+                .OrderBy(src => src.Name)
+                .ToArray(), source =>
+                {
+                    var node = new TreeNode(source.Name) { Tag = source };
+                    sourcesNode.Nodes.Add(node);
+                });
+        }
+
+        private IEnumerable<TreeNode> GetAllSourceEntityItems()
+        {
+            var allItems = new List<TreeNode>();
+            Array.ForEach(tvLogMetadata.Nodes
+                .Cast<TreeNode>()
+                .ToArray(), subsystem =>
+                {
+                    Array.ForEach(subsystem.Nodes
+                        .Cast<TreeNode>()
+                        .ToArray(), sourceType =>
+                        {
+                            allItems.AddRange(sourceType.FirstNode.Nodes.Cast<TreeNode>());
+                            allItems.AddRange(sourceType.LastNode.Nodes.Cast<TreeNode>());
+                        });
+                });
+            return allItems;
+        }
+
+        private IEnumerable<LogSettingViewModel> GetAllSettings()
+        {
+            var allSettings = new List<LogSettingViewModel>();
+            var allItems = GetAllSourceEntityItems();
+            foreach (var item in allItems)
+            {
+                var subsystem = item.Parent.Parent.Parent.Tag as SubsystemViewModel;
+                var sourceType = item.Parent.Parent.Tag as OperationSourceTypeViewModel;
+                if (item.Tag is EntityTypeViewModel entity)
+                {
+                    var entitySettings = item.Nodes
+                        .Cast<TreeNode>()
+                        .Select(node => node.Tag as LogSettingViewModel)
+                        .ToArray();
+                    Array.ForEach(entitySettings, setting =>
+                    {
+                        setting.SubsystemId = subsystem.Id;
+                        setting.SourceTypeId = sourceType.Id;
+                    });
+                    allSettings.AddRange(entitySettings);
+                }
+                else if (item.Tag is OperationSourceViewModel source)
+                {
+                    var sourceSettings = item.Nodes
+                        .Cast<TreeNode>()
+                        .Select(node => node.Tag as LogSettingViewModel)
+                        .ToArray();
+                    Array.ForEach(sourceSettings, setting =>
+                    {
+                        setting.SubsystemId = subsystem.Id;
+                        setting.SourceTypeId = sourceType.Id;
+                    });
+                    allSettings.AddRange(sourceSettings);
+                }
+            }
+
+            return allSettings;
+        }
+
+        private void GenerateScripts()
+        {
+            var orderedSettings = GetAllSettings()
+                .OrderBy(setting => setting.Id);
+            var scriptBuilder = new StringBuilder();
+            scriptBuilder.Append(orderedSettings.First().ToScript(true, false));
+
+            foreach (var setting in orderedSettings
+                .Skip(1)
+                .Take(orderedSettings.Count() - 2))
+            {
+                scriptBuilder.Append(setting.ToScript(false, false));
+            }
+
+            scriptBuilder.Append(orderedSettings.Last().ToScript(false, true));
+            ScriptUtility.ReplaceScript(scriptBuilder.ToString());
+        }
+
+        #endregion
+
+        #region Manage SysLogSettings
+
+        private void LoadCurrentSysSettings()
+        {
+            this.GetActiveForm().Cursor = Cursors.WaitCursor;
+            tvLogMetadata.Nodes.Clear();
+            var dal = new SqlDataLayer(DbConnections.SystemConnection);
+            var logSettings = dal.Query(ToolsQuery.SysLogSettings);
+            AddSysEntitiesAndSources(logSettings);
+            AddLogSettings(logSettings, GetAllSysSourceEntityItems());
+            this.GetActiveForm().Cursor = Cursors.Default;
+        }
+
+        private void AddSysEntitiesAndSources(DataTable logSettings)
+        {
+            var entitiesNode = new TreeNode("Entities");
+            tvLogMetadata.Nodes.Add(entitiesNode);
+            AddSysEntities(logSettings, entitiesNode);
+
+            var sourcesNode = new TreeNode("Sources");
+            tvLogMetadata.Nodes.Add(sourcesNode);
+            AddSysSources(logSettings, sourcesNode);
+        }
+
+        private static void AddSysEntities(DataTable logSettings, TreeNode entitiesNode)
+        {
+            var entities = new List<EntityTypeViewModel>();
+            var entityRows = logSettings.Select("EntityTypeID IS NOT NULL");
+            var entityGroups = entityRows
+                .GroupBy(row => row.ValueOrDefault<int>("EntityTypeID"));
+            entities.AddRange(entityGroups
+                .Select(grp => new EntityTypeViewModel()
+                {
+                    Id = grp.Key,
+                    Name = grp.First().ValueOrDefault("EntityName"),
+                    Description = grp.First().ValueOrDefault("EntityDescription")
+                }));
+            Array.ForEach(entities
+                .Where(ent => !String.IsNullOrEmpty(ent.Name))
+                .OrderBy(ent => ent.Name)
+                .ToArray(), entity =>
+                {
+                    var node = new TreeNode(entity.Name) { Tag = entity };
+                    entitiesNode.Nodes.Add(node);
+                });
+        }
+
+        private static void AddSysSources(DataTable logSettings, TreeNode sourcesNode)
+        {
+            var sources = new List<OperationSourceViewModel>();
+            var sourceRows = logSettings.Select("SourceID IS NOT NULL");
+            var sourceGroups = sourceRows
+                .GroupBy(row => row.ValueOrDefault<int>("SourceID"));
+            sources.AddRange(sourceGroups
+                .Select(grp => new OperationSourceViewModel()
+                {
+                    Id = grp.Key,
+                    Name = grp.First().ValueOrDefault("SourceName"),
+                    Description = grp.First().ValueOrDefault("SourceDescription")
+                }));
+            Array.ForEach(sources
+                .Where(src => !String.IsNullOrEmpty(src.Name))
+                .OrderBy(src => src.Name)
+                .ToArray(), source =>
+                {
+                    var node = new TreeNode(source.Name) { Tag = source };
+                    sourcesNode.Nodes.Add(node);
+                });
+        }
+
+        private IEnumerable<TreeNode> GetAllSysSourceEntityItems()
+        {
+            var allItems = new List<TreeNode>();
+            allItems.AddRange(tvLogMetadata.Nodes[0].Nodes.Cast<TreeNode>());
+            allItems.AddRange(tvLogMetadata.Nodes[1].Nodes.Cast<TreeNode>());
+            return allItems;
+        }
+
+        private IEnumerable<LogSettingViewModel> GetAllSysSettings()
+        {
+            var allSettings = new List<LogSettingViewModel>();
+            Array.ForEach(GetAllSysSourceEntityItems().ToArray(), node =>
+            {
+                allSettings.AddRange(node.Nodes
+                    .Cast<TreeNode>()
+                    .Select(node => node.Tag as LogSettingViewModel));
+            });
+            return allSettings;
+        }
+
+        private void GenerateSysScripts()
+        {
+            var orderedSettings = GetAllSysSettings()
+                .OrderBy(setting => setting.Id);
+            var scriptBuilder = new StringBuilder();
+            scriptBuilder.Append(orderedSettings.First().ToSysScript(true, false));
+
+            foreach (var setting in orderedSettings
+                .Skip(1)
+                .Take(orderedSettings.Count() - 2))
+            {
+                scriptBuilder.Append(setting.ToSysScript(false, false));
+            }
+
+            scriptBuilder.Append(orderedSettings.Last().ToSysScript(false, true));
+            ScriptUtility.ReplaceSysScript(scriptBuilder.ToString());
+        }
+
+        #endregion
     }
 }

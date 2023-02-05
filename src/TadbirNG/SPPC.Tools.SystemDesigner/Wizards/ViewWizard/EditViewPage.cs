@@ -31,15 +31,16 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
 
         private void ViewModels_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            var lastViewName= View.Name;
+            var lastViewName = View.Name;
             if (e.Node.Nodes.Count == 0)
             {
                 txtName.Text = e.Node.Name;
-                View.Name = e.Node.Name;
+                //View.Name = e.Node.Name;
                 View.IsHierarchy = false;
                 View.IsCartableIntegrated = false;
             }
-            if(lastViewName != View.Name)
+
+            if (lastViewName != View.Name)
             {
                 Columns.Clear();
             }
@@ -60,10 +61,13 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
                 var schema = root.Nodes.Add(schemaName, schemaName);
                 foreach (var vmType in grp)
                 {
-                    string typeName = (vmType.Name.IndexOf("ViewModel") != -1)
+                    string typeName = vmType.Name.EndsWith("ViewModel")
                         ? vmType.Name.Replace("ViewModel", String.Empty)
-                        : vmType.Name;
-                    schema.Nodes.Add(typeName, typeName);
+                        : String.Empty;
+                    if (!String.IsNullOrEmpty(typeName))
+                    {
+                        schema.Nodes.Add(typeName, typeName);
+                    }
                 }
             }
 

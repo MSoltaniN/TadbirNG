@@ -98,8 +98,8 @@ export class SppcDatepicker
   public dateLocale: string = "fa";
   private parseError: boolean = false;
   // "yyyy/MM/dd hh:mm" for date and time
-  @Input() inputDateFormat: string = "yyyy/MM/dd";
-  public dateFormat: string = "YYYY/MM/DD";
+  @Input() inputDateFormat: string = "yyyy/MM/d";
+  public dateFormat: string = "YYYY/MM/D";
   public spliterChar: string = "/";
 
   startDate: Date | null;
@@ -111,7 +111,7 @@ export class SppcDatepicker
   // دریافت تاریخ بدون ساعت
   @Input() set justDate(value: boolean) {
     if (value) {
-      this.inputDateFormat = "yyyy/MM/dd";
+      this.inputDateFormat = "yyyy/MM/d";
     }
   }
 
@@ -391,7 +391,7 @@ export class SppcDatepicker
   }
 
   onDateChange() {
-    debugger;
+
     this.i++;
     if (typeof this.dateObject == "object") {
       this.hideCalendar();
@@ -581,13 +581,14 @@ export class SppcDatepicker
   }
 
   writeValue(value: any): void {
-    debugger;
     if (value) {
       this.date = this.datepipe.transform(value, this.inputDateFormat);
       this.editDateValue = moment(this.date);
       if (this.isDisplayDate) {
-        this.dateObject = moment(this.date);
-      }
+        setTimeout(() => {
+          this.dateObject = moment(this.date);
+        }, 0);
+      }      
     }
   }
 

@@ -207,8 +207,8 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             try
             {
                 var now = DateTime.Now;
-                var start = now.ToShortDateString();
-                var end = now.AddYears(1).ToShortDateString();
+                var start = now.ToShortDateString(false);
+                var end = now.AddYears(1).ToShortDateString(false);
                 sql.ExecuteNonQuery(String.Format(EnvSetupParameters.InsertDevLicenseScript,
                     _instance.CustomerKey, WizardModel.LicenseeFirstName, WizardModel.LicenseeLastName,
                     _instance.LicenseKey, start, end));

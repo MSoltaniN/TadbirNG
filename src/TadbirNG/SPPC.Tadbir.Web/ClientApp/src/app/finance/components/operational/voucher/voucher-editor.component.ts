@@ -56,6 +56,9 @@ export function getLayoutModule(layout: Layout) {
   templateUrl: "./voucher-editor.component.html",
   styles: [
     `
+      ::ng-deep .content-header {
+        margin-bottom: 10px;
+      }
       .voucher-form-content {
         margin-top: 5px;
         border: solid 1px #3c8dbc;
@@ -149,6 +152,9 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   isLastVoucher: boolean = false;
   voucherOperationsItem: any;
   deleteConfirmMsg: string;
+  /**
+   * subjectMode == 1 -> پیش نویس || subjectMode == 0 -> سند عادی
+   */
   subjectMode: number;
   subjectModeTitle: string;
   draftTitle: string;
@@ -165,7 +171,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   reportManager: ReportManagementComponent;
 
   /**
-   * برای باز شدن مودال تعیین تکلیف هنگامی که هیچ سندی جوجود ندارد
+   * برای باز شدن مودال تعیین تکلیف هنگامی که هیچ سندی وجود ندارد
    */
   noVoucher = [false,false];
   isNewVoucher = false;
@@ -541,19 +547,22 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   noVoucherHandler(status:boolean,byNo) {
+    let type = this.activeRoute.snapshot.queryParamMap.get("type");
     if (status == false) {
       if (byNo) {
         this.router.navigate(["/tadbir/home"], {
           queryParams: {
             returnUrl: "finance/vouchers/by-no",
             mode: "by-no",
+            type: type
           },
         });
       } else {
         this.router.navigate(["/finance/voucher"]);
       }
     } else {
-      this.router.navigate(['/finance/vouchers/new'])
+      // if (this.subjectMode == 1 || type == "draft")
+      this.router.navigate([`/finance/vouchers/new/${this.subjectMode == 1 || type == "draft"? "draft":''}`])
     }
   }
 
@@ -716,9 +725,15 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   searchVoucher() {
-    this.router.navigate(["/tadbir/home"], {
-      queryParams: { returnUrl: "finance/vouchers/by-no", mode: "by-no" },
-    });
+    if (this.subjectMode == 1) {
+      this.router.navigate(["/tadbir/home"], {
+        queryParams: { returnUrl: "finance/vouchers/by-no", mode: "by-no",type: "draft" },
+      });
+    } else {
+      this.router.navigate(["/tadbir/home"], {
+        queryParams: { returnUrl: "finance/vouchers/by-no", mode: "by-no" },
+      });
+    }
   }
 
   checkHandler() {

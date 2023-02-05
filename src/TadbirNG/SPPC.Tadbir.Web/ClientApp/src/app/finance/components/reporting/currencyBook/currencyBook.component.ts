@@ -239,7 +239,7 @@ export class CurrencyBookComponent
     },
   ];
 
-  @ViewChild(GridFilterComponent, {static: true}) gridFilterComponent: GridFilterComponent;
+  @ViewChild(GridFilterComponent) gridFilterComponent: GridFilterComponent;
 
   @Persist() selectedCurrencyValue: string = "0";
   oldCurrencySelected: string;

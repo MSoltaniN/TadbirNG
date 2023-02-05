@@ -303,8 +303,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.filters[this.currentEditIndex].columnName = this.selectedColumn.name;
       this.filters[this.currentEditIndex].operator = this.selectedOperator.key;
       this.filters[this.currentEditIndex].value = this.selectedValue;
-      this.filters[this.currentEditIndex].logicOperator =
-        this.selectedLogicalOperator;
+      this.filters[this.currentEditIndex].logicOperator = this.selectedLogicalOperator;
 
       var selectedCol = this.columnsList.filter(
         (p) => p.name === this.selectedColumn.name
@@ -315,6 +314,11 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       var selectedlogOp = this.logicalOperatorList.filter(
         (p) => p.key === this.selectedLogicalOperator
       )[0];
+
+      let displayValue =  this.CurrentLanguage == 'fa' &&
+       this.selectedColumn.name == 'Date' &&
+       +this.selectedValue.split('/')[0] > 1600?
+          this.toJalaliDate(this.selectedValue) : this.selectedValue;
 
       this.filters[this.currentEditIndex].operatorTitle = this.getText(
         selectedOp.value
@@ -328,7 +332,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
         " " +
         this.filters[this.currentEditIndex].operatorTitle +
         " " +
-        this.selectedValue +
+        displayValue +
         " " +
         this.filters[this.currentEditIndex].logicalOperatorTitle;
 
@@ -912,8 +916,10 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
           }
         }
         
-        let value = item.columnName.includes('Date') && this.CurrentLanguage == 'fa'?
-                    this.toJalaliDate(item.value) : item.value;
+        let value = item.columnName.includes('Date') &&
+         this.CurrentLanguage == 'fa' &&
+         +item.value.split('/')[0] > 1600?
+            this.toJalaliDate(item.value) : item.value;
 
         this.totalFilterExpression +=
           " " +

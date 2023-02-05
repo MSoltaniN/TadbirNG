@@ -3,8 +3,8 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using SPPC.Framework.Persistence;
+using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
-using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
 {
@@ -22,16 +22,19 @@ namespace SPPC.Tools.SystemDesigner.Wizards.ViewWizard
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            ActiveForm.Cursor = Cursors.WaitCursor;
+            this.GetActiveForm().Cursor = Cursors.WaitCursor;
             LoadViews();
             LoadFirstPage();
-            ActiveForm.Cursor = Cursors.Default;
+            this.GetActiveForm().Cursor = Cursors.Default;
         }
 
         private void LoadViews()
         {
             var dal = new SqlDataLayer(_sysConnection);
-            WizardModel.ViewItems = dal.Query("SELECT ViewID, Name FROM [Metadata].[View]");
+            WizardModel.ViewItems = dal.Query(@"
+SELECT ViewID, Name
+FROM [Metadata].[View]
+ORDER BY Name");
         }
 
         private void Back_Click(object sender, EventArgs e)

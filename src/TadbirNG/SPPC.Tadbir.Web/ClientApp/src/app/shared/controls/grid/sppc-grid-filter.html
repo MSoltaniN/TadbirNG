@@ -1,4 +1,4 @@
-<kendo-grid-string-filter-cell *ngIf="isString && allowFiltering" [column]="column" [filter]="filter">
+<kendo-grid-string-filter-cell (keyup)="toTrim($event)" *ngIf="isString && allowFiltering" [column]="column" [filter]="filter">
     <kendo-filter-eq-operator></kendo-filter-eq-operator>
     <kendo-filter-neq-operator></kendo-filter-neq-operator>
     <kendo-filter-contains-operator></kendo-filter-contains-operator>

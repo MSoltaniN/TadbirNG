@@ -10,6 +10,7 @@ using SPPC.Framework.Persistence;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Forms
 {
@@ -23,10 +24,10 @@ namespace SPPC.Tools.SystemDesigner.Forms
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            ActiveForm.Cursor = Cursors.WaitCursor;
+            this.GetActiveForm().Cursor = Cursors.WaitCursor;
             _allGroups = GetAllPermissionGroups();
             ReloadGroups();
-            ActiveForm.Cursor = Cursors.Default;
+            this.GetActiveForm().Cursor = Cursors.Default;
         }
 
         private void Permissions_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
@@ -98,7 +99,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 }
 
                 scriptBuilder.Append(GeneratePermissionScripts(allPermissions));
-                InsertGeneratedScript(scriptBuilder.ToString());
+                ScriptUtility.ReplaceSysScript(scriptBuilder.ToString());
                 MessageBox.Show("The script was successfully generated.");
             }
         }
@@ -163,20 +164,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
 
             scriptBuilder.Append(permissions.Last().ToScript(false, true));
             return scriptBuilder.ToString();
-        }
-
-        private static void InsertGeneratedScript(string script)
-        {
-            var lines = script.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
-            var path = Path.Combine(PathConfig.ResourceRoot, "TadbirSys_CreateDbObjects.sql");
-            var allScript = File.ReadAllText(path, Encoding.UTF8);
-            var prologue = allScript.Substring(0, allScript.IndexOf(lines.First()));
-            var lastLine = lines.Last();
-            int epilogueStart = allScript.IndexOf(lastLine) + lastLine.Length + Environment.NewLine.Length;
-            var epilogue = allScript.Substring(epilogueStart);
-
-            allScript = $"{prologue}{script}{epilogue}";
-            File.WriteAllText(path, allScript, Encoding.UTF8);
         }
 
         private void ReloadGroups()
