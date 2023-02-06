@@ -204,7 +204,7 @@ export class VoucherComponent
     } else {
       this.getDataUrl = "";
       this.showMessage(
-        this.getText("Voucher.NormalVoucherAccessDenied"),
+        this.getText("App.AccessDenied"),
         MessageType.Warning
       );
     }

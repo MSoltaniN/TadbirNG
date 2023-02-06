@@ -58,7 +58,7 @@
     ></kendo-grid-excel>
     <ng-template kendoGridNoRecordsTemplate>
       {{
-        showloadingMessage
+        this.grid.loading
           ? ("App.Loading" | translate)
           : ("App.RecordNotFound" | translate)
       }}
