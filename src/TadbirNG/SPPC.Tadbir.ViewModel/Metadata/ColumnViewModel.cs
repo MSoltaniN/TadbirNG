@@ -5,6 +5,11 @@ namespace SPPC.Tadbir.ViewModel.Metadata
     public partial class ColumnViewModel
     {
         /// <summary>
+        /// شناسه دیتابیسی نمای لیستی مرتبط با این ستون
+        /// </summary>
+        public int ViewId { get; set; }
+
+        /// <summary>
         /// اطلاعات آبجکت مورد نظر را به صورت متنی برمی گرداند
         /// </summary>
         /// <returns>اطلاعات آبجکت مورد نظر به صورت متنی</returns>

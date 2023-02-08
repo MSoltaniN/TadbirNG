@@ -4,7 +4,6 @@ using SPPC.Tools.SystemDesigner.Commands;
 using SPPC.Tools.SystemDesigner.Forms;
 using SPPC.Tools.Model;
 using SPPC.Tools.SystemDesigner.Wizards.NewCrudEntityWizard;
-using SPPC.Tools.SystemDesigner.Wizards.ViewWizard;
 using SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard;
 using SPPC.Tools.SystemDesigner.Designers;
 using SPPC.Tools.MetaDesigner;
@@ -28,8 +27,8 @@ namespace SPPC.Tools.SystemDesigner
 
         private void MetadataListViews_Click(object sender, EventArgs e)
         {
-            var wizard = new ViewWizardForm();
-            wizard.ShowDialog();
+            var form = new ViewColumnsBrowserForm();
+            form.ShowDialog();
         }
 
         private void MetadataPermissions_Click(object sender, EventArgs e)

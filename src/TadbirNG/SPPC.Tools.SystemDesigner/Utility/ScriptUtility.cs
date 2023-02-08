@@ -54,6 +54,11 @@ namespace SPPC.Tools.Utility
                 : "NULL";
         }
 
+        public static int GetDbBoolean(bool value)
+        {
+            return value ? 1 : 0;
+        }
+
         private static void OverwriteScriptBlock(string scriptFile, string newScript)
         {
             var lines = newScript.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
