@@ -182,6 +182,10 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
    */
   pressedOperatorButton = false;
 
+  get viewAccess() {
+    return this.activeRoute.snapshot.data['viewAccess'];
+  }
+
   constructor(
     private voucherService: VoucherService,
     public toastrService: ToastrService,
@@ -307,13 +311,15 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
                   true
                 );
             } else {
-              this.openingVoucherQuery();
+              if (this.viewAccess)
+                this.openingVoucherQuery();
             }
 
             break;
           }
           case "closing-voucher": {
-            this.getVoucher(VoucherApi.ClosingVoucher);
+            if (this.viewAccess)
+              this.getVoucher(VoucherApi.ClosingVoucher);
             break;
           }
           case "close-temp-accounts": {
@@ -331,10 +337,12 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
                     true
                   );
               } else {
-                this.checkClosingTmp();
+                if (this.viewAccess) 
+                  this.checkClosingTmp();
               }
             } else {
-              this.closingTmpOnInventoryMode1();
+              if (this.viewAccess) 
+                this.closingTmpOnInventoryMode1();
             }
 
             break;
@@ -475,28 +483,6 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
     else this.getVoucher(VoucherApi.NewDraftVoucher);
   }
 
-  checkViewAccess(type:string = ''):boolean {
-    let access = true;
-    let entityType;
-    let permission;
-    if (type == 'opening-voucher') {
-      entityType = SecureEntity.SpecialVoucher;
-      permission = SpecialVoucherPermissions.IssueOpeningVoucher;
-    } else {
-      entityType = this.subjectMode == 1? Entities.DraftVouchers: Entities.Vouchers;
-      permission = this.subjectMode == 1? DraftVoucherPermissions.View : VoucherPermissions.View;
-    }
-    if (!this.isAccess(entityType, permission)) {
-      access = false;
-      this.showMessage(
-        this.getText("App.AccessDenied"),
-        MessageType.Warning
-      );
-    }
-
-    return access;
-  }
-
   getNewVoucher() {
     if (this.voucherItem || this.isOpenFromList)
       if (this.subjectMode == 0) this.getVoucher(VoucherApi.NewVoucher);
@@ -541,7 +527,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   getVoucher(apiUrl: string, byNo: boolean = false) {
-    if (this.checkViewAccess()) {
+    if (this.viewAccess) {
       this.voucherService
         .getModelsByFilters(apiUrl, this.filter, this.quickFilter)
         .subscribe(

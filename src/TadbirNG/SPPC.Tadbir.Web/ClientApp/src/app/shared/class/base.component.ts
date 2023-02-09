@@ -4,8 +4,9 @@ import { BrowserStorageService } from '@sppc/shared/services/browserStorage.serv
 import { MessageType, MessagePosition } from '@sppc/shared/enum/metadata';
 import { MessageBoxService } from '@sppc/shared/services/message.service';
 import { ServiceLocator } from '@sppc/service.locator';
+import { Injectable } from '@angular/core';
 
-
+@Injectable({ providedIn: 'root' })
 export class BaseComponent extends EnviromentComponent {
 
   /** this message show after update command */
