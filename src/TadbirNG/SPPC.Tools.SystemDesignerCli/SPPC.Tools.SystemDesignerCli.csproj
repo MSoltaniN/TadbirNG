@@ -40,4 +40,8 @@
     <ProjectReference Include="..\SPPC.Tools.Transforms\SPPC.Tools.Transforms.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="DotNetZip" Version="1.16.0" />
+  </ItemGroup>
+
 </Project>

@@ -4,6 +4,8 @@ namespace SPPC.Tools.Model
 {
     public static class PathConfig
     {
+        public static string GitRepoRoot => Path.Combine("..", "..", "..");
+
         public static string ResourceRoot => Path.Combine("..", "..", "..", "res");
 
         public static string SolutionRoot => Path.Combine("..", "..", "..", "src", "TadbirNG");

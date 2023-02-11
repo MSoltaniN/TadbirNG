@@ -60,8 +60,8 @@ namespace SPPC.Tadbir.Persistence
             {
 <# if(entityInfo.IsFiscalEntity)
    { #>
-                var query = Repository.GetAllQuery<#= entity.Name #>(ViewName.<#= entity.Name #>);
-                var <#= plural.CamelCase() #> = await query
+                var query = Repository.GetAllQuery<<#= entity.Name #>>(ViewId.<#= entity.Name #>);
+                <#= plural.CamelCase() #> = await query
                     .Select(item => Mapper.Map<<#= entity.Name #>ViewModel>(item))
                     .ToListAsync();
 <# }

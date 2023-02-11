@@ -117,7 +117,8 @@ namespace SPPC.Tools.SystemDesigner.Forms
 
             var path = Path.Combine(PathConfig.ResourceRoot, ScriptUtility.SysUpdateScriptName);
             File.AppendAllText(path, builder.ToString());
-            MessageBox.Show("The script was successfully generated.");
+            MessageBox.Show(this, "The script was successfully generated.", "Success",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
             DialogResult = DialogResult.OK;
             Close();
         }
@@ -276,6 +277,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             int permissionId = _maxPermissionId + 1;
             foreach (var permission in Model.Permissions)
             {
+                permission.GroupId = Model.Id;
                 permission.Id = permissionId++;
             }
 

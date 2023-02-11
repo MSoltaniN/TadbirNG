@@ -85,7 +85,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns>اطلاعات نمایشی ذخیره شده برای <#= _model.EntityPersianName #></returns>
         // POST: api/<#= plural.ToLower() #>
         [HttpPost]
-        [Route(<#= _model.EntityName #>Api.<#= _model.IsFiscalEntity ? "Environment" : String.Empty #><#= plural #>Url)]
+        [Route(<#= _model.EntityName #>Api.<#= plural #>Url)]
         [AuthorizeRequest(SecureEntity.<#= _model.EntityName #>, (int)<#= _model.EntityName #>Permissions.Create)]
         public async Task<IActionResult> PostNew<#= _model.EntityName #>Async([FromBody] <#= _model.EntityName #>ViewModel <#= _model.EntityName.ToLower() #>)
         {

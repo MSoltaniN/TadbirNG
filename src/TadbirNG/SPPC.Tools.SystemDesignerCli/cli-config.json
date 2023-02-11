@@ -78,6 +78,13 @@
       "handlerType": "SPPC.Tools.SystemDesignerCli.RefreshDatabasesCommand, ngdes"
     },
     {
+      "name": "pack",
+      "parameters": [
+      ],
+      "description": "Packages latest source changes using project structure.",
+      "handlerType": "SPPC.Tools.SystemDesignerCli.PackageGitChangesCommand, ngdes"
+    },
+    {
       "name": "csmodel",
       "parameters": [
         {

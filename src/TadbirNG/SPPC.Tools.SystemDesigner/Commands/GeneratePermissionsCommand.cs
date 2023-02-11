@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using SPPC.Framework.Persistence;
 using SPPC.Tools.Model;
 using SPPC.Tools.Transforms.Templates;
 
@@ -24,6 +25,7 @@ namespace SPPC.Tools.SystemDesigner.Commands
             if (_implementsRepo)
             {
                 RegisterEntityType();
+                RegisterEntityView();
             }
         }
 
@@ -80,6 +82,30 @@ namespace SPPC.Tools.SystemDesigner.Commands
         {0} = {1}";
                 contents = contents.Insert(
                     match.Index + match.Length, String.Format(template, _entity.Entity.Name, lastId + 1));
+                File.WriteAllText(sourcePath, contents, Encoding.UTF8);
+            }
+        }
+
+        private void RegisterEntityView()
+        {
+            var regex = new Regex(@"        public const int (\w+) = (\d+);");
+            var sourcePath = Path.Combine(PathConfig.SolutionRoot, "SPPC.Tadbir.Common", "Domain", "Metadata", "ViewId.cs");
+            var contents = File.ReadAllText(sourcePath, Encoding.UTF8);
+            var match = regex
+                .Matches(contents)
+                .LastOrDefault();
+            if (match != null)
+            {
+                var dal = new SqlDataLayer(DbConnections.SystemConnection);
+                int lastId = (int)dal.QueryScalar("SELECT MAX(ViewID) FROM [Metadata].[View]");
+                var template = @"
+
+        /// <summary>
+        /// نمای اطلاعاتی {0}
+        /// </summary>
+        public const int {1} = {2};";
+                contents = contents.Insert(
+                    match.Index + match.Length, String.Format(template, _entity.PluralName, _entity.Entity.Name, lastId + 1));
                 File.WriteAllText(sourcePath, contents, Encoding.UTF8);
             }
         }
