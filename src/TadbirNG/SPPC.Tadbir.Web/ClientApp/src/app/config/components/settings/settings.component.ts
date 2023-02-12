@@ -17,6 +17,7 @@ import { SettingsApi } from "@sppc/config/service/api";
 import { DefaultComponent } from "@sppc/shared/class";
 import { SettingKey } from "@sppc/shared/enum";
 import { Entities, Layout, MessageType } from "@sppc/shared/enum/metadata";
+import { SettingPermissions } from "@sppc/shared/security";
 import {
   BrowserStorageService,
   ErrorHandlingService,
@@ -76,7 +77,14 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getSettings();
+    if (!this.isAccess(Entities.Setting, SettingPermissions.ViewSettings)) {
+      this.showMessage(
+        this.getText("App.AccessDenied"),
+        MessageType.Warning
+      );
+    } else {
+      this.getSettings();
+    }
   }
 
   getSettings() {

@@ -14,6 +14,7 @@ import { SettingService } from "@sppc/config/service";
 import { DefaultComponent, String } from "@sppc/shared/class";
 import { PermissionType } from "@sppc/shared/enum";
 import { Entities, Layout, MessageType } from "@sppc/shared/enum/metadata";
+import { RowAccessPermissions } from "@sppc/shared/security";
 import {
   BrowserStorageService,
   ErrorHandlingService,
@@ -109,6 +110,12 @@ export class ViewRowPermissionComponent
   exceptSelectedReferences: string[];
 
   public ngOnInit(): void {
+    if (!this.isAccess(Entities.RowAccess, RowAccessPermissions.ViewRowAccess)) {
+      this.showMessage(
+        this.getText("App.AccessDenied"),
+        MessageType.Warning
+      );
+    }
     this.fillReferences();
   }
 

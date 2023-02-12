@@ -287,6 +287,12 @@ export class ProfitLostComponent
   }
 
   ngOnInit(): void {
+    if (!this.isAccess(Entities.ProfitLost, ProfitLossPermissions.View)) {
+      this.showMessage(
+        this.getText("App.AccessDenied"),
+        MessageType.Warning
+      );
+    }
     this.entityName = Entities.ProfitLost;
     this.viewId = ViewName[this.entityTypeName];
     this.showloadingMessage = false;
