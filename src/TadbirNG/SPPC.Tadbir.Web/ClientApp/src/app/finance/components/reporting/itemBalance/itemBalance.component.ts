@@ -963,6 +963,12 @@ export class ItemBalanceComponent
 
   @SavePersist()
   getReportData(accountId?: any, clearbreadCrumb: boolean = true) {
+    if (!this.isAccess(Entities.ItemBalance, ItemBalancePermissions.View)) {
+      this.showMessage(
+        this.getText("App.AccessDenied"),
+        MessageType.Warning
+      );
+    }
     var displayTypeLevel = this.displayType.filter(
       (f) => f.id === this.displayTypeSelected
     )[0].level;
@@ -1285,6 +1291,12 @@ export class ItemBalanceComponent
   }
 
   ngOnInit() {
+    if (!this.isAccess(Entities.ItemBalance, ItemBalancePermissions.View)) {
+      this.showMessage(
+        this.getText("App.AccessDenied"),
+        MessageType.Warning
+      );
+    }
     this.entityName = Entities.DetailAccountBalance6Column;
     this.viewId = ViewName[this.entityTypeName];
 

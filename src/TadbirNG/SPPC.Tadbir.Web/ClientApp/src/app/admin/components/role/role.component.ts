@@ -29,7 +29,7 @@ import { ReportManagementComponent } from "@sppc/shared/components/reportManagem
 import { Entities, Layout, MessageType } from "@sppc/shared/enum/metadata";
 import { OperationId } from "@sppc/shared/enum/operationId";
 import { RelatedItems } from "@sppc/shared/models";
-import { ViewName } from "@sppc/shared/security";
+import { RolePermissions, ViewName } from "@sppc/shared/security";
 import {
   BrowserStorageService,
   GridService,
@@ -122,6 +122,12 @@ export class RoleComponent
   }
 
   ngOnInit() {
+    if (!this.isAccess(Entities.Role, RolePermissions.View)) {
+      this.showMessage(
+        this.getText("App.AccessDenied"),
+        MessageType.Warning
+      );
+    }
     this.entityName = Entities.Role;
     this.viewId = ViewName[this.entityTypeName];
 

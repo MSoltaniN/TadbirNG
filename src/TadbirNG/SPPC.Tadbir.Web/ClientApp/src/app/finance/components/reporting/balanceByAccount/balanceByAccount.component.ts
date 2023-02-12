@@ -257,6 +257,12 @@ export class BalanceByAccountComponent
   }
 
   ngOnInit() {
+    if (!this.isAccess(Entities.BalanceByAccount, BalanceByAccountPermissions.View)) {
+      this.showMessage(
+        this.getText("App.AccessDenied"),
+        MessageType.Warning
+      );
+    }
     this.entityName = Entities.BalanceByAccount;
     this.viewId = ViewName[this.entityTypeName];
     this.fillByDefaultValues();

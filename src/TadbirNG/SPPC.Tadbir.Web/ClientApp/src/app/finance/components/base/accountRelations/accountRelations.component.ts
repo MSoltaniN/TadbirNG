@@ -80,6 +80,9 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
   public ngOnInit(): void {
     this.viewAccess = this.isAccess(SecureEntity.AccountRelations, AccountRelationPermissions.ViewRelationships);
+    if (!this.viewAccess) {
+      this.showMessage(this.getText("App.AccessDenied"), MessageType.Warning);
+    }
   }
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,

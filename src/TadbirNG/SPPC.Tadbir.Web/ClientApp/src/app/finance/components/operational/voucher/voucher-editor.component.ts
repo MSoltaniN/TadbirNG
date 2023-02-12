@@ -35,6 +35,7 @@ import { Entities, Layout, MessageType } from "@sppc/shared/enum/metadata";
 import { Item } from "@sppc/shared/models";
 import {
   DraftVoucherPermissions,
+  SecureEntity,
   ViewName,
   VoucherPermissions,
 } from "@sppc/shared/security";
@@ -45,6 +46,7 @@ import {
   MetaDataService,
 } from "@sppc/shared/services";
 import { ToastrService } from "ngx-toastr";
+import { SpecialVoucherPermissions } from "@sppc/shared/security";
 // import "rxjs/Rx";
 
 export function getLayoutModule(layout: Layout) {
@@ -180,6 +182,10 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
    */
   pressedOperatorButton = false;
 
+  get viewAccess() {
+    return this.activeRoute.snapshot.data['viewAccess'];
+  }
+
   constructor(
     private voucherService: VoucherService,
     public toastrService: ToastrService,
@@ -242,8 +248,10 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
           }
           case "last": {
             this.isLastVoucher = true;
-            if (this.subjectMode == 0) this.getVoucher(VoucherApi.LastVoucher);
-            else this.getVoucher(VoucherApi.LastDraftVoucher);
+            if (this.subjectMode == 0)
+              this.getVoucher(VoucherApi.LastVoucher);
+            else 
+              this.getVoucher(VoucherApi.LastDraftVoucher);
 
             break;
           }
@@ -303,13 +311,15 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
                   true
                 );
             } else {
-              this.openingVoucherQuery();
+              if (this.viewAccess)
+                this.openingVoucherQuery();
             }
 
             break;
           }
           case "closing-voucher": {
-            this.getVoucher(VoucherApi.ClosingVoucher);
+            if (this.viewAccess)
+              this.getVoucher(VoucherApi.ClosingVoucher);
             break;
           }
           case "close-temp-accounts": {
@@ -327,10 +337,12 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
                     true
                   );
               } else {
-                this.checkClosingTmp();
+                if (this.viewAccess) 
+                  this.checkClosingTmp();
               }
             } else {
-              this.closingTmpOnInventoryMode1();
+              if (this.viewAccess) 
+                this.closingTmpOnInventoryMode1();
             }
 
             break;
@@ -384,7 +396,6 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
           );
           this.router.navigate(["/finance/voucher"]);
         }
-
         if (err.value) {
           this.showMessage(err.value, MessageType.Warning);
           this.router.navigate(["/finance/voucher"]);
@@ -516,34 +527,36 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   getVoucher(apiUrl: string, byNo: boolean = false) {
-    this.voucherService
-      .getModelsByFilters(apiUrl, this.filter, this.quickFilter)
-      .subscribe(
-        (res) => {
-          this.initVoucherForm(res);
-          this.errorMessage = undefined;
-          this.isLastVoucher = !res.hasNext;
-          this.isFirstVoucher = !res.hasPrevious;
-        },
-        (err) => {
-          if (err == null || err.statusCode == 404) {
-            this.showMessage(
-              this.getText("Voucher.VoucherNotFound"),
-              MessageType.Warning
-            );
-            this.noVoucher = [true,byNo];
+    if (this.viewAccess) {
+      this.voucherService
+        .getModelsByFilters(apiUrl, this.filter, this.quickFilter)
+        .subscribe(
+          (res) => {
+            this.initVoucherForm(res);
+            this.errorMessage = undefined;
+            this.isLastVoucher = !res.hasNext;
+            this.isFirstVoucher = !res.hasPrevious;
+          },
+          (err) => {
+            if (err == null || err.statusCode == 404) {
+              this.showMessage(
+                this.getText("Voucher.VoucherNotFound"),
+                MessageType.Warning
+              );
+              this.noVoucher = [true,byNo];
+            }
+  
+            if (err.statusCode == 400) {
+              this.cancel.emit();
+              this.showMessage(
+                this.errorHandlingService.handleError(err),
+                MessageType.Warning
+              );
+              this.router.navigate(["/finance/voucher"]);
+            }
           }
-
-          if (err.statusCode == 400) {
-            this.cancel.emit();
-            this.showMessage(
-              this.errorHandlingService.handleError(err),
-              MessageType.Warning
-            );
-            this.router.navigate(["/finance/voucher"]);
-          }
-        }
-      );
+        );
+    }
   }
 
   noVoucherHandler(status:boolean,byNo) {

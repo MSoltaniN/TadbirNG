@@ -261,6 +261,12 @@ export class BalanceSheetComponent
   }
 
   ngOnInit(): void {
+    if (!this.isAccess(Entities.BalanceSheet, BalanceSheetPermissions.View)) {
+      this.showMessage(
+        this.getText("App.AccessDenied"),
+        MessageType.Warning
+      );
+    }
     this.entityName = Entities.BalanceSheet;
     this.viewId = ViewName[this.entityTypeName];
     this.showloadingMessage = false;

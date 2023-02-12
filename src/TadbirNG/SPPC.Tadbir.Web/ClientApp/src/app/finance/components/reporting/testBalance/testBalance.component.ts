@@ -749,199 +749,207 @@ export class TestBalanceComponent
 
   @SavePersist()
   getReportData(accountId?: any, clearbreadCrumb: boolean = true) {
-    var displayTypeLevel = this.displayType.filter(
-      (f) => f.id === this.displayTypeSelected
-    )[0].level;
-    var isDetail = this.displayType.filter(
-      (f) => f.id === this.displayTypeSelected
-    )[0].isDetail;
-
-    if (isDetail && !this.selectedModel) {
+    if (!this.isAccess(Entities.TestBalance, TestBalancePermissions.View)) {
       this.showMessage(
-        this.getText("Balance.PleaseSelectAccount"),
+        this.getText("App.AccessDenied"),
         MessageType.Warning
       );
-      return;
-    }
+    } else {
 
-    if (this.voucherStatusSelected == "0") {
-      this.showMessage(
-        this.getText("Balance.AllDocsSelectHint"),
-        MessageType.Info
-      );
-    }
-
-    this.changeParam(clearbreadCrumb);
-
-    this.defaultFilter = [];
-    this.quickFilter = [];
-
-    switch (this.voucherStatusSelected) {
-      case "2": {
-        this.quickFilter.push(
-          new Filter(
-            "VoucherStatusId",
-            this.voucherStatusSelected,
-            " >= {0}",
-            "System.Int32"
-          )
+      var displayTypeLevel = this.displayType.filter(
+        (f) => f.id === this.displayTypeSelected
+      )[0].level;
+      var isDetail = this.displayType.filter(
+        (f) => f.id === this.displayTypeSelected
+      )[0].isDetail;
+  
+      if (isDetail && !this.selectedModel) {
+        this.showMessage(
+          this.getText("Balance.PleaseSelectAccount"),
+          MessageType.Warning
         );
-        break;
+        return;
       }
-      case "3": {
+  
+      if (this.voucherStatusSelected == "0") {
+        this.showMessage(
+          this.getText("Balance.AllDocsSelectHint"),
+          MessageType.Info
+        );
+      }
+  
+      this.changeParam(clearbreadCrumb);
+  
+      this.defaultFilter = [];
+      this.quickFilter = [];
+  
+      switch (this.voucherStatusSelected) {
+        case "2": {
+          this.quickFilter.push(
+            new Filter(
+              "VoucherStatusId",
+              this.voucherStatusSelected,
+              " >= {0}",
+              "System.Int32"
+            )
+          );
+          break;
+        }
+        case "3": {
+          this.quickFilter.push(
+            new Filter(
+              "VoucherStatusId",
+              this.voucherStatusSelected,
+              " == {0}",
+              "System.Int32"
+            )
+          );
+          break;
+        }
+        case "4": {
+          this.quickFilter.push(
+            new Filter("VoucherConfirmedById", "", " != null", "")
+          );
+          break;
+        }
+        case "5": {
+          this.quickFilter.push(
+            new Filter("VoucherApprovedById", "", " != null", "")
+          );
+          break;
+        }
+        default:
+      }
+  
+      if (this.selectedReferences && this.selectedReferences.length > 0) {
+        var referencesFilter: FilterExpression = null;
+        var lastItem =
+          this.selectedReferences[this.selectedReferences.length - 1];
+        var i = 1;
+        this.selectedReferences.forEach((item) => {
+          var refFilter = new Filter(
+            "VoucherReference",
+            item,
+            " == {0}",
+            "System.String"
+          );
+          refFilter.id = i.toString();
+          referencesFilter = this.addFilterExpressionWithBrace(
+            referencesFilter,
+            refFilter,
+            item === lastItem,
+            this.selectedReferences.length > 1
+          );
+        });
+  
+        this.customQuickFilter = referencesFilter;
+        this.useCustomQuickFilterExpression = true;
+      } else {
+        this.customQuickFilter = undefined;
+        this.useCustomQuickFilterExpression = false;
+      }
+  
+      if (this.branchScopeSelected == "1") {
         this.quickFilter.push(
           new Filter(
-            "VoucherStatusId",
-            this.voucherStatusSelected,
+            "BranchId",
+            this.BranchId.toString(),
             " == {0}",
             "System.Int32"
           )
         );
-        break;
       }
-      case "4": {
-        this.quickFilter.push(
-          new Filter("VoucherConfirmedById", "", " != null", "")
-        );
-        break;
+  
+      if (!accountId) {
+        switch (this.formatSelected) {
+          case BalanceFormatType.Balance2Column:
+            this.entityName = Entities.TestBalance2Column;
+            this.getDataUrl = TestBalanceApi.TwoColumnLevelBalance;
+            break;
+          case BalanceFormatType.Balance4Column:
+            this.entityName = Entities.TestBalance4Column;
+            this.getDataUrl = TestBalanceApi.FourColumnLevelBalance;
+            break;
+          case BalanceFormatType.Balance6Column:
+            this.entityName = Entities.TestBalance6Column;
+            this.getDataUrl = TestBalanceApi.SixColumnLevelBalance;
+            break;
+          case BalanceFormatType.Balance8Column:
+            this.entityName = Entities.TestBalance8Column;
+            this.getDataUrl = TestBalanceApi.EightColumnLevelBalance;
+        }
+  
+        this.getDataUrl = String.Format(this.getDataUrl, displayTypeLevel);
+  
+        if (this.testBalanceType == BalanceType.ByDate)
+          this.getDataUrl += "?from=" + this.fromDate + "&to=" + this.toDate;
+  
+        if (this.testBalanceType == BalanceType.ByVoucher)
+          this.getDataUrl +=
+            "?from=" + this.fromVoucher + "&to=" + this.toVoucher;
+  
+        this.getDataUrl += "&byBranch=" + this.selectedBranchSeparation;
+  
+        var options =
+          (this.useClosingTempVoucher
+            ? BalanceOptions.UseClosingTempVoucher
+            : 0) |
+          (this.useClosingVoucher ? BalanceOptions.UseClosingVoucher : 0) |
+          (this.showZeroBalanceItems ? BalanceOptions.ShowZeroBalanceItems : 0) |
+          (this.startTurnoverAsInitBalance
+            ? BalanceOptions.StartTurnoverAsInitBalance
+            : 0) |
+          (this.openingAsFirstVoucher ? BalanceOptions.OpeningAsFirstVoucher : 0);
+  
+        this.getDataUrl += "&options=" + options;
+  
+        this.reloadGrid();
+      } else {
+        switch (this.formatSelected) {
+          case BalanceFormatType.Balance2Column:
+            this.entityName = Entities.TestBalance2Column;
+            this.getDataUrl = TestBalanceApi.TwoColumnChildItemsBalance;
+            break;
+          case BalanceFormatType.Balance4Column:
+            this.entityName = Entities.TestBalance4Column;
+            this.getDataUrl = TestBalanceApi.FourColumnChildItemsBalance;
+            break;
+          case BalanceFormatType.Balance6Column:
+            this.entityName = Entities.TestBalance6Column;
+            this.getDataUrl = TestBalanceApi.SixColumnChildItemsBalance;
+            break;
+          case BalanceFormatType.Balance8Column:
+            this.entityName = Entities.TestBalance8Column;
+            this.getDataUrl = TestBalanceApi.EightColumnChildItemsBalance;
+            break;
+        }
+  
+        this.getDataUrl = String.Format(this.getDataUrl, accountId);
+  
+        if (this.testBalanceType == BalanceType.ByDate)
+          this.getDataUrl += "?from=" + this.fromDate + "&to=" + this.toDate;
+  
+        if (this.testBalanceType == BalanceType.ByVoucher)
+          this.getDataUrl +=
+            "?from=" + this.fromVoucher + "&to=" + this.toVoucher;
+  
+        this.getDataUrl += "&byBranch=" + this.selectedBranchSeparation;
+  
+        var options =
+          (this.useClosingTempVoucher
+            ? BalanceOptions.UseClosingTempVoucher
+            : 0) |
+          (this.useClosingVoucher ? BalanceOptions.UseClosingVoucher : 0) |
+          (this.showZeroBalanceItems ? BalanceOptions.ShowZeroBalanceItems : 0) |
+          (this.startTurnoverAsInitBalance
+            ? BalanceOptions.StartTurnoverAsInitBalance
+            : 0) |
+          (this.openingAsFirstVoucher ? BalanceOptions.OpeningAsFirstVoucher : 0);
+  
+        this.getDataUrl += "&options=" + options;
+  
+        this.reloadGrid();
       }
-      case "5": {
-        this.quickFilter.push(
-          new Filter("VoucherApprovedById", "", " != null", "")
-        );
-        break;
-      }
-      default:
-    }
-
-    if (this.selectedReferences && this.selectedReferences.length > 0) {
-      var referencesFilter: FilterExpression = null;
-      var lastItem =
-        this.selectedReferences[this.selectedReferences.length - 1];
-      var i = 1;
-      this.selectedReferences.forEach((item) => {
-        var refFilter = new Filter(
-          "VoucherReference",
-          item,
-          " == {0}",
-          "System.String"
-        );
-        refFilter.id = i.toString();
-        referencesFilter = this.addFilterExpressionWithBrace(
-          referencesFilter,
-          refFilter,
-          item === lastItem,
-          this.selectedReferences.length > 1
-        );
-      });
-
-      this.customQuickFilter = referencesFilter;
-      this.useCustomQuickFilterExpression = true;
-    } else {
-      this.customQuickFilter = undefined;
-      this.useCustomQuickFilterExpression = false;
-    }
-
-    if (this.branchScopeSelected == "1") {
-      this.quickFilter.push(
-        new Filter(
-          "BranchId",
-          this.BranchId.toString(),
-          " == {0}",
-          "System.Int32"
-        )
-      );
-    }
-
-    if (!accountId) {
-      switch (this.formatSelected) {
-        case BalanceFormatType.Balance2Column:
-          this.entityName = Entities.TestBalance2Column;
-          this.getDataUrl = TestBalanceApi.TwoColumnLevelBalance;
-          break;
-        case BalanceFormatType.Balance4Column:
-          this.entityName = Entities.TestBalance4Column;
-          this.getDataUrl = TestBalanceApi.FourColumnLevelBalance;
-          break;
-        case BalanceFormatType.Balance6Column:
-          this.entityName = Entities.TestBalance6Column;
-          this.getDataUrl = TestBalanceApi.SixColumnLevelBalance;
-          break;
-        case BalanceFormatType.Balance8Column:
-          this.entityName = Entities.TestBalance8Column;
-          this.getDataUrl = TestBalanceApi.EightColumnLevelBalance;
-      }
-
-      this.getDataUrl = String.Format(this.getDataUrl, displayTypeLevel);
-
-      if (this.testBalanceType == BalanceType.ByDate)
-        this.getDataUrl += "?from=" + this.fromDate + "&to=" + this.toDate;
-
-      if (this.testBalanceType == BalanceType.ByVoucher)
-        this.getDataUrl +=
-          "?from=" + this.fromVoucher + "&to=" + this.toVoucher;
-
-      this.getDataUrl += "&byBranch=" + this.selectedBranchSeparation;
-
-      var options =
-        (this.useClosingTempVoucher
-          ? BalanceOptions.UseClosingTempVoucher
-          : 0) |
-        (this.useClosingVoucher ? BalanceOptions.UseClosingVoucher : 0) |
-        (this.showZeroBalanceItems ? BalanceOptions.ShowZeroBalanceItems : 0) |
-        (this.startTurnoverAsInitBalance
-          ? BalanceOptions.StartTurnoverAsInitBalance
-          : 0) |
-        (this.openingAsFirstVoucher ? BalanceOptions.OpeningAsFirstVoucher : 0);
-
-      this.getDataUrl += "&options=" + options;
-
-      this.reloadGrid();
-    } else {
-      switch (this.formatSelected) {
-        case BalanceFormatType.Balance2Column:
-          this.entityName = Entities.TestBalance2Column;
-          this.getDataUrl = TestBalanceApi.TwoColumnChildItemsBalance;
-          break;
-        case BalanceFormatType.Balance4Column:
-          this.entityName = Entities.TestBalance4Column;
-          this.getDataUrl = TestBalanceApi.FourColumnChildItemsBalance;
-          break;
-        case BalanceFormatType.Balance6Column:
-          this.entityName = Entities.TestBalance6Column;
-          this.getDataUrl = TestBalanceApi.SixColumnChildItemsBalance;
-          break;
-        case BalanceFormatType.Balance8Column:
-          this.entityName = Entities.TestBalance8Column;
-          this.getDataUrl = TestBalanceApi.EightColumnChildItemsBalance;
-          break;
-      }
-
-      this.getDataUrl = String.Format(this.getDataUrl, accountId);
-
-      if (this.testBalanceType == BalanceType.ByDate)
-        this.getDataUrl += "?from=" + this.fromDate + "&to=" + this.toDate;
-
-      if (this.testBalanceType == BalanceType.ByVoucher)
-        this.getDataUrl +=
-          "?from=" + this.fromVoucher + "&to=" + this.toVoucher;
-
-      this.getDataUrl += "&byBranch=" + this.selectedBranchSeparation;
-
-      var options =
-        (this.useClosingTempVoucher
-          ? BalanceOptions.UseClosingTempVoucher
-          : 0) |
-        (this.useClosingVoucher ? BalanceOptions.UseClosingVoucher : 0) |
-        (this.showZeroBalanceItems ? BalanceOptions.ShowZeroBalanceItems : 0) |
-        (this.startTurnoverAsInitBalance
-          ? BalanceOptions.StartTurnoverAsInitBalance
-          : 0) |
-        (this.openingAsFirstVoucher ? BalanceOptions.OpeningAsFirstVoucher : 0);
-
-      this.getDataUrl += "&options=" + options;
-
-      this.reloadGrid();
     }
   }
 
@@ -1106,6 +1114,12 @@ export class TestBalanceComponent
   }
 
   ngOnInit() {
+    if (!this.isAccess(Entities.TestBalance, TestBalancePermissions.View)) {
+      this.showMessage(
+        this.getText("App.AccessDenied"),
+        MessageType.Warning
+      );
+    }
     this.entityName = Entities.TestBalance6Column;
     this.viewId = ViewName[this.entityTypeName];
     //this.loadStates();

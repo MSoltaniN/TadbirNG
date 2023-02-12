@@ -35,7 +35,7 @@ import { ReportManagementComponent } from "@sppc/shared/components/reportManagem
 import { GridFilterComponent } from "@sppc/shared/directive/grid/component/grid-filter.component";
 import { Entities, Layout, MessageType } from "@sppc/shared/enum/metadata";
 import { Item } from "@sppc/shared/models";
-import { ViewName, VoucherPermissions } from "@sppc/shared/security";
+import { SystemIssuePermissions, ViewName, VoucherPermissions } from "@sppc/shared/security";
 import {
   BrowserStorageService,
   ErrorHandlingService,
@@ -136,6 +136,12 @@ export class SystemIssueComponent
   }
 
   ngOnInit(): void {
+    if (!this.isAccess(Entities.SystemIssue, SystemIssuePermissions.View)) {
+      this.showMessage(
+        this.getText("App.AccessDenied"),
+        MessageType.Warning
+      );
+    }
     this.getSystemIssuesList();
     this.clickedIssues = [];
   }

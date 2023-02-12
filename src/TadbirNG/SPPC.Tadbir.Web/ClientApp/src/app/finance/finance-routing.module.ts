@@ -21,6 +21,7 @@ import { ItemBalanceComponent } from './components/reporting/itemBalance/itemBal
 import { BalanceByAccountComponent } from '@sppc/finance/components/reporting/balanceByAccount/balanceByAccount.component';
 import { ProfitLostComponent } from './components/reporting/profitLoss/profitLost.component';
 import { BalanceSheetComponent } from './components/reporting/balanceSheet/balanceSheet.component';
+import { VoucherViewAccessGuard } from '@sppc/core/services/voucher-view-access.guard';
 
 
 const routes: Routes = [
@@ -35,8 +36,8 @@ const routes: Routes = [
     { path: 'profit-loss', component: ProfitLostComponent },
     { path: 'voucher', component: VoucherComponent },
     { path: 'voucher/:mode', component: VoucherComponent },
-    { path: 'vouchers/:mode', component: VoucherEditorComponent },
-    { path: 'vouchers/:mode/:type', component: VoucherEditorComponent },
+    { path: 'vouchers/:mode', component: VoucherEditorComponent, resolve:{viewAccess: VoucherViewAccessGuard} },
+    { path: 'vouchers/:mode/:type', component: VoucherEditorComponent, resolve:{viewAccess: VoucherViewAccessGuard}},
     { path: 'account-book', component: AccountBookComponent },
     { path: 'journal', component: JournalComponent },
     { path: 'currency-rate/:id', component: currencyRateComponent },
