@@ -44,6 +44,7 @@
             this.txtName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnGenerate = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.menuNewOptions.SuspendLayout();
             this.grpProperties.SuspendLayout();
             this.SuspendLayout();
@@ -61,7 +62,6 @@
             // 
             // tvLogMetadata
             // 
-            this.tvLogMetadata.CheckBoxes = true;
             this.tvLogMetadata.HideSelection = false;
             this.tvLogMetadata.Location = new System.Drawing.Point(21, 56);
             this.tvLogMetadata.Name = "tvLogMetadata";
@@ -78,6 +78,7 @@
             this.btnNew.TabIndex = 2;
             this.btnNew.Text = "New";
             this.btnNew.UseVisualStyleBackColor = true;
+            this.btnNew.Click += new System.EventHandler(this.New_Click);
             // 
             // menuNewOptions
             // 
@@ -177,11 +178,23 @@
             this.btnGenerate.UseVisualStyleBackColor = true;
             this.btnGenerate.Click += new System.EventHandler(this.Generate_Click);
             // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(772, 605);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(103, 36);
+            this.btnCancel.TabIndex = 6;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.Cancel_Click);
+            // 
             // LogSettingBrowserForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(887, 653);
+            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnGenerate);
             this.Controls.Add(this.grpProperties);
             this.Controls.Add(this.btnNew);
@@ -219,5 +232,6 @@
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnGenerate;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

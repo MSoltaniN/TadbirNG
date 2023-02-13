@@ -16,6 +16,11 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public int? ViewId { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی کاربر ایجادکننده گزارش
+        /// </summary>
+        public int CreatedById { get; set; }
+
+        /// <summary>
         /// یک دیکشنری از متن های چند زبانه مورد نیاز در گزارش
         /// </summary>
         public Dictionary<string, string> ResourceMap { get; private set; }

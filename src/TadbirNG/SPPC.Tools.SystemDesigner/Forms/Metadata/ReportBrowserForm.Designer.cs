@@ -137,7 +137,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Browse Reports";
-            this.Load += new System.EventHandler(this.ManageReportsForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.grdReports)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
