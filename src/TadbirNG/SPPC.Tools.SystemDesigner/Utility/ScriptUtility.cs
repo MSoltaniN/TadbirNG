@@ -19,14 +19,14 @@ namespace SPPC.Tools.Utility
 
         public static void AddVersionMarker(StringBuilder builder)
         {
-            var marker = $"-- {VersionUtility.GetApiVersion()}";
+            var path = Path.Combine(PathConfig.ResourceRoot, UpdateScriptName);
+            AddVersionMarker(path, builder);
+        }
+
+        public static void AddSysVersionMarker(StringBuilder builder)
+        {
             var path = Path.Combine(PathConfig.ResourceRoot, SysUpdateScriptName);
-            var allScript = File.ReadAllText(path, Encoding.UTF8);
-            builder.AppendLine();
-            if (!allScript.Contains(marker))
-            {
-                builder.AppendLine(marker);
-            }
+            AddVersionMarker(path, builder);
         }
 
         public static void ReplaceScript(string newScript)
@@ -58,6 +58,17 @@ namespace SPPC.Tools.Utility
         public static int GetDbBoolean(bool value)
         {
             return value ? 1 : 0;
+        }
+
+        private static void AddVersionMarker(string path, StringBuilder builder)
+        {
+            var marker = $"-- {VersionUtility.GetApiVersion()}";
+            var allScript = File.ReadAllText(path, Encoding.UTF8);
+            builder.AppendLine();
+            if (!allScript.Contains(marker))
+            {
+                builder.AppendLine(marker);
+            }
         }
 
         private static void OverwriteScriptBlock(string scriptFile, string newScript)

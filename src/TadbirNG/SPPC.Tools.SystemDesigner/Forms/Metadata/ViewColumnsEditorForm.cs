@@ -25,8 +25,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
 
         public ViewViewModel View { get; set; }
 
-        public List<ColumnViewModel> Columns { get; set; }
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -154,7 +152,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             SaveViewProperties();
             SetIdValues();
             var scriptBuilder = new StringBuilder();
-            ScriptUtility.AddVersionMarker(scriptBuilder);
+            ScriptUtility.AddSysVersionMarker(scriptBuilder);
             scriptBuilder.AppendLine(View.ToScript());
             scriptBuilder.Append(View.Columns
                 .First()
@@ -369,6 +367,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             }
 
             View.Name = txtName.Text;
+            View.EntityName = txtName.Text;
             View.FetchUrl = txtFetchUrl.Text;
             View.SearchUrl = txtSearchUrl.Text;
             View.Entitytype = cmbEntityType.SelectedIndex > 0
@@ -376,6 +375,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 : null;
             View.IsHierarchy = chkIsHierarchy.Checked;
             View.IsCartableIntegrated = chkEnableCartable.Checked;
+            RemoveUncheckedColumns();
             return true;
         }
 
@@ -439,6 +439,17 @@ namespace SPPC.Tools.SystemDesigner.Forms
             chkAllowFiltering.Checked = columns[_currentIndex].AllowFiltering;
             txtGroupName.Text = columns[_currentIndex].GroupName;
             txtExpression.Text = columns[_currentIndex].Expression;
+        }
+
+        private void RemoveUncheckedColumns()
+        {
+            var columns = new ColumnViewModel[View.Columns.Count];
+            View.Columns.CopyTo(columns);
+            View.Columns.Clear();
+            foreach (int index in lbxColumns.CheckedIndices)
+            {
+                View.Columns.Add(columns[index]);
+            }
         }
 
         private void SetIdValues()

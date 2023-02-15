@@ -659,7 +659,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
         private static void GenerateSysUpdateScripts(IEnumerable<LogSettingViewModel> allSettings)
         {
             var scriptBuilder = new StringBuilder();
-            ScriptUtility.AddVersionMarker(scriptBuilder);
+            ScriptUtility.AddSysVersionMarker(scriptBuilder);
             var addedSettings = allSettings
                 .Where(setting => setting.State == RecordState.Added)
                 .OrderBy(setting => setting.Id);

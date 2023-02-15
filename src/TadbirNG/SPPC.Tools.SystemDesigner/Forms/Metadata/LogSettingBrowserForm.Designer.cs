@@ -200,13 +200,14 @@
             this.Controls.Add(this.btnNew);
             this.Controls.Add(this.tvLogMetadata);
             this.Controls.Add(this.chkSystemSettings);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LogSettingBrowserForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Log Catalog";
+            this.Text = "Browse Log Settings";
             this.menuNewOptions.ResumeLayout(false);
             this.grpProperties.ResumeLayout(false);
             this.grpProperties.PerformLayout();

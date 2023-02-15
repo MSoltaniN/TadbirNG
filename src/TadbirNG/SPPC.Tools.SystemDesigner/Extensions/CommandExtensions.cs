@@ -40,7 +40,8 @@ $@"UPDATE [Metadata].[Command]
 SET [PermissionID] = {ScriptUtility.GetNullableValue(command.PermissionId)}, [TitleKey] = N'{command.Title}', " +
 $@"[RouteUrl] = {ScriptUtility.GetNullableValue(command.RouteUrl)}, " +
 $@"[IconName] = {ScriptUtility.GetNullableValue(command.IconName, false)}, " +
-$@"[HotKey] = {ScriptUtility.GetNullableValue(command.HotKey, false)}";
+$@"[HotKey] = {ScriptUtility.GetNullableValue(command.HotKey, false)}
+WHERE [CommandID] = {command.Id}";
         }
     }
 }

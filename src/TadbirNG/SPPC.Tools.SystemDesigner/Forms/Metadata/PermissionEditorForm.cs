@@ -95,7 +95,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             }
 
             var builder = new StringBuilder();
-            ScriptUtility.AddVersionMarker(builder);
+            ScriptUtility.AddSysVersionMarker(builder);
             builder.AppendLine(Model.ToScript());
 
             if (Model.Permissions.Count == 1)
