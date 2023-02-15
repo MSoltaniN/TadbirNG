@@ -140,7 +140,7 @@ export function getLayoutModule(layout: Layout) {
         padding: 5px 25px;
       }
       .btn-compute {
-        color: #337ab7;
+        color: #fff;
         transition: All 0.3s 0.1s ease-out;
       }
       .btn-compute-selectable {
