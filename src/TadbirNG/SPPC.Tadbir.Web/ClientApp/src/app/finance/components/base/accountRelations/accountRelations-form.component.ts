@@ -291,7 +291,6 @@ export class AccountRelationsFormComponent extends DetailComponent implements On
           parentId: null,
           name: selectAllExp
         });
-        console.log(this.relatedComponentCategories);
       }
       
     })

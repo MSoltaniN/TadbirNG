@@ -203,6 +203,7 @@ export class VoucherLineComponent
   documentStatusValue: any;
   documentStatusNotChecked: any;
 
+  refreshForm = false;
   //#endregion
 
   constructor(
@@ -306,6 +307,7 @@ export class VoucherLineComponent
             : String.Format(VoucherApi.DraftVoucherArticle, model.id);
         }
 
+        this.refreshForm = true;
         this.saveHandler(model, isNew, this.voucherLineService, serviceUrl)
           .then((success: ResultOption) => {
             resolve(true);
@@ -413,48 +415,6 @@ export class VoucherLineComponent
   }
 
   //#endregion
-
-  //#region Methods
-  deleteModels() {
-    //    this.transactionLineService.deleteTransactions(this.selectedRows).subscribe(res => {
-    //        this.showMessage(this.deleteMsg, MessageType.Info);
-    //        this.selectedRows = [];
-    //        this.reloadGrid();
-    //    }, (error => {
-    //        this.showMessage(error, MessageType.Warning);
-    //    }));
-  }
-
-  deleteModelOld(confirm: boolean) {
-    if (confirm) {
-      this.grid.loading = true;
-      this.voucherLineService
-        .delete(String.Format(VoucherApi.VoucherArticle, this.deleteModelId))
-        .subscribe(
-          (response) => {
-            this.deleteModelId = 0;
-            this.showMessage(this.deleteMsg, MessageType.Info);
-            if (this.rowData.data.length == 1 && this.pageIndex > 1)
-              this.pageIndex =
-                (this.pageIndex - 1) * this.pageSize - this.pageSize;
-
-            this.reloadGrid();
-          },
-          (error) => {
-            this.grid.loading = false;
-            //var message = error.message ? error.message : error;
-            if (error)
-              this.showMessage(
-                this.errorHandlingService.handleError(error),
-                MessageType.Warning
-              );
-          }
-        );
-    }
-
-    //hide confirm dialog
-    this.deleteConfirm = false;
-  }
 
   deleteModel(confirm: boolean) {
     if (confirm) {
@@ -611,33 +571,48 @@ export class VoucherLineComponent
           total: totalCount,
         };
 
+        if (this.refreshForm) {
+          let debits = res.body.filter(i => i.debit).reduce((a,b) => a + parseInt(b.debit),0);
+          let credits = res.body.filter(i => i.credit).reduce((a,b) => a + parseInt(b.credit),0);
+
+          this.debitSum = debits;
+          this.creditSum = credits;
+  
+          this.balance = this.debitSum - this.creditSum;
+          this.balancedMode = this.balance == 0 ? true : false;
+
+          this.refreshForm = false;
+        }
+
         this.showloadingMessage = !(resData.length == 0);
         this.totalRecords = totalCount;
         this.selectedRows = [];
         this.selectedModel = undefined;
       });
 
-    if (this.voucherInfo) {
-      this.debitSum = this.voucherInfo.debitSum;
-      this.creditSum = this.voucherInfo.creditSum;
-
-      this.balance = this.debitSum - this.creditSum;
-      this.balancedMode = this.balance == 0 ? true : false;
-      this.grid.loading = false;
-    } else {
-      this.voucherLineService
-        .getVoucherInfo(this.voucherId)
-        .subscribe((res) => {
-          this.voucherModel = res;
-
-          this.debitSum = res.debitSum;
-          this.creditSum = res.creditSum;
-
-          this.balance = this.debitSum - this.creditSum;
-          this.balancedMode = this.balance == 0 ? true : false;
-
-          this.grid.loading = false;
-        });
+    if (!this.refreshForm) {
+      if (this.voucherInfo) {
+        this.debitSum = this.voucherInfo.debitSum;
+        this.creditSum = this.voucherInfo.creditSum;
+  
+        this.balance = this.debitSum - this.creditSum;
+        this.balancedMode = this.balance == 0 ? true : false;
+        this.grid.loading = false;
+      } else {
+        this.voucherLineService
+          .getVoucherInfo(this.voucherId)
+          .subscribe((res) => {
+            this.voucherModel = res;
+  
+            this.debitSum = res.debitSum;
+            this.creditSum = res.creditSum;
+  
+            this.balance = this.debitSum - this.creditSum;
+            this.balancedMode = this.balance == 0 ? true : false;
+  
+            this.grid.loading = false;
+          });
+      }
     }
   }
 
