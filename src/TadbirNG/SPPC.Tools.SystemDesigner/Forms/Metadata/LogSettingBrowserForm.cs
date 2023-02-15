@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tools.Extensions;
@@ -43,6 +45,8 @@ namespace SPPC.Tools.SystemDesigner.Forms
         private void LogMetadata_AfterSelect(object sender, TreeViewEventArgs e)
         {
             var selected = tvLogMetadata.SelectedNode;
+            txtName.Text = null;
+            txtDescription.Text = null;
             LoadProperty(selected, "Name", txtName);
             LoadProperty(selected, "Description", txtDescription);
             if (e.Node.Text == "Entities")
@@ -80,6 +84,32 @@ namespace SPPC.Tools.SystemDesigner.Forms
             {
                 SaveProperty(selected, "Name", txtName);
                 SaveProperty(selected, "Description", txtDescription);
+                if (selected.Tag != null && !String.IsNullOrEmpty(txtName.Text))
+                {
+                    selected.Text = txtName.Text;
+                }
+            }
+        }
+
+        private void New_Click(object sender, EventArgs e)
+        {
+            var selected = tvLogMetadata.SelectedNode;
+            if (selected != null)
+            {
+                string nodeText = selected.Text;
+                if (nodeText == "Entities")
+                {
+                    AddNewEntity(selected);
+                }
+                else if (nodeText == "Sources")
+                {
+                    AddNewSource(selected);
+                }
+                else if (selected.Tag is EntityTypeViewModel
+                    || selected.Tag is OperationSourceViewModel)
+                {
+                    UpdateLogSettings(selected);
+                }
             }
         }
 
@@ -98,6 +128,11 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        private void Cancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
         private static void SaveProperty(TreeNode node, string propertyName, TextBox propertySource)
         {
             var tag = node.Tag;
@@ -109,7 +144,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 if (hasProperty)
                 {
                     Reflector.SetProperty(tag, propertyName, propertySource.Text);
-                    //node.Text = propertySource.Text;
                 }
             }
         }
@@ -174,6 +208,89 @@ namespace SPPC.Tools.SystemDesigner.Forms
             };
         }
 
+        private void SetLastIdValues(DataTable logSettings)
+        {
+            _nextSettingId = logSettings.Rows
+                .Cast<DataRow>()
+                .Max(row => row.ValueOrDefault<int>("LogSettingID")) + 1;
+            _nextEntityId = logSettings.Rows
+                .Cast<DataRow>()
+                .Max(row => row.ValueOrDefault<int>("EntityTypeID")) + 1;
+            _nextSourceId = logSettings.Rows
+                .Cast<DataRow>()
+                .Max(row => row.ValueOrDefault<int>("SourceID")) + 1;
+        }
+
+        private void AddNewEntity(TreeNode parent)
+        {
+            string entityName = $"Entity{parent.Nodes.Count}";
+            var entity = new EntityTypeViewModel()
+            {
+                Id = _nextEntityId++,
+                Name = entityName,
+                State = RecordState.Added
+            };
+            var newNode = new TreeNode(entityName) { Tag = entity };
+            parent.Nodes.Add(newNode);
+            tvLogMetadata.SelectedNode = newNode;
+            txtName.Focus();
+            txtName.SelectAll();
+        }
+
+        private void AddNewSource(TreeNode parent)
+        {
+            string sourceName = $"Source{parent.Nodes.Count}";
+            var source = new OperationSourceViewModel()
+            {
+                Id = _nextSourceId++,
+                Name = sourceName,
+                State = RecordState.Added
+            };
+            var newNode = new TreeNode(sourceName) { Tag = source };
+            parent.Nodes.Add(newNode);
+            tvLogMetadata.SelectedNode = newNode;
+            txtName.Focus();
+            txtName.SelectAll();
+        }
+
+        private void UpdateLogSettings(TreeNode parent)
+        {
+            var selector = new LogSelectOperationsForm();
+            selector.SelectedItems.AddRange(parent.Nodes
+                .Cast<TreeNode>()
+                .Select(node => node.Tag as LogSettingViewModel));
+            if (selector.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
+
+            this.GetActiveForm().Cursor = Cursors.WaitCursor;
+            var subsystem = parent?.Parent?.Parent?.Tag as SubsystemViewModel;
+            var sourceType = parent?.Parent?.Tag as OperationSourceTypeViewModel;
+            var entity = parent?.Tag as EntityTypeViewModel;
+            var source = parent?.Tag as OperationSourceViewModel;
+            foreach (var setting in selector.SelectedItems)
+            {
+                setting.Id = _nextSettingId++;
+                if (chkSystemSettings.Checked)
+                {
+                    setting.SubsystemId = subsystem.Id;
+                    setting.SourceTypeId = sourceType.Id;
+                }
+
+                setting.EntityTypeId = entity?.Id;
+                setting.SourceId = source?.Id;
+                setting.State = RecordState.Added;
+            }
+
+            parent.Nodes.Clear();
+            parent.Nodes.AddRange(selector.SelectedItems
+                .Select(item => new TreeNode(item.OperationName) { Tag = item })
+                .ToArray());
+            tvLogMetadata.SelectedNode = parent.Nodes[0];
+            this.GetActiveForm().Cursor = Cursors.Default;
+        }
+
         #region Manage LogSettings
 
         private void LoadCurrentSettings()
@@ -182,6 +299,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             tvLogMetadata.Nodes.Clear();
             var dal = new SqlDataLayer(DbConnections.CompanyConnection);
             var logSettings = dal.Query(ToolsQuery.LogSettings);
+            SetLastIdValues(logSettings);
             AddSubsystems(logSettings);
             AddSourceTypes(logSettings);
             AddEntitiesAndSources(logSettings);
@@ -364,20 +482,71 @@ namespace SPPC.Tools.SystemDesigner.Forms
 
         private void GenerateScripts()
         {
+            var all = GetAllSourceEntityItems();
+            var entities = all
+                .Where(node => node.Tag is EntityTypeViewModel)
+                .Select(node => node.Tag as EntityTypeViewModel)
+                .OrderBy(entity => entity.Id);
+            var sources = all
+                .Where(node => node.Tag is OperationSourceViewModel)
+                .Select(node => node.Tag as OperationSourceViewModel)
+                .OrderBy(source => source.Id);
+
             var orderedSettings = GetAllSettings()
                 .OrderBy(setting => setting.Id);
-            var scriptBuilder = new StringBuilder();
-            scriptBuilder.Append(orderedSettings.First().ToScript(true, false));
+            GenerateCreateScripts(orderedSettings, entities, sources);
+            GenerateUpdateScripts(orderedSettings, entities, sources);
+        }
 
-            foreach (var setting in orderedSettings
-                .Skip(1)
-                .Take(orderedSettings.Count() - 2))
+        private static void GenerateCreateScripts(IEnumerable<LogSettingViewModel> allSettings,
+            IEnumerable<EntityTypeViewModel> allEntities, IEnumerable<OperationSourceViewModel> allSources)
+        {
+            var generated = ScriptUtility.GetInsertScripts(allEntities, EntityTypeExtensions.ToScript);
+            ScriptUtility.ReplaceScript(generated);
+
+            generated = ScriptUtility.GetInsertScripts(allSources, OperationSourceExtensions.ToScript);
+            ScriptUtility.ReplaceScript(generated);
+
+            generated = ScriptUtility.GetInsertScripts(allSettings, LogSettingExtensions.ToScript);
+            ScriptUtility.ReplaceScript(generated);
+        }
+
+        private static void GenerateUpdateScripts(IEnumerable<LogSettingViewModel> allSettings,
+            IEnumerable<EntityTypeViewModel> allEntities, IEnumerable<OperationSourceViewModel> allSources)
+        {
+            var scriptBuilder = new StringBuilder();
+            ScriptUtility.AddVersionMarker(scriptBuilder);
+            var addedEntities = allEntities
+                .Where(entity => entity.State == RecordState.Added)
+                .OrderBy(entity => entity.Id);
+            var addedSources = allSources
+                .Where(source => source.State == RecordState.Added)
+                .OrderBy(source => source.Id);
+            var addedSettings = allSettings
+                .Where(setting => setting.State == RecordState.Added)
+                .OrderBy(setting => setting.Id);
+            foreach (var entityGroup in addedSettings
+                .Where(setting => setting.EntityTypeId != null)
+                .GroupBy(setting => setting.EntityTypeId))
             {
-                scriptBuilder.Append(setting.ToScript(false, false));
+                scriptBuilder.AppendLine(entityGroup.First().ToDeleteScript());
             }
 
-            scriptBuilder.Append(orderedSettings.Last().ToScript(false, true));
-            ScriptUtility.ReplaceScript(scriptBuilder.ToString());
+            foreach (var sourceGroup in addedSettings
+                .Where(setting => setting.SourceId != null)
+                .GroupBy(setting => setting.SourceId))
+            {
+                scriptBuilder.AppendLine(sourceGroup.First().ToDeleteScript());
+            }
+
+            var generated = ScriptUtility.GetInsertScripts(addedEntities, EntityTypeExtensions.ToScript);
+            scriptBuilder.Append(generated);
+            generated = ScriptUtility.GetInsertScripts(addedSources, OperationSourceExtensions.ToScript);
+            scriptBuilder.Append(generated);
+            generated = ScriptUtility.GetInsertScripts(addedSettings, LogSettingExtensions.ToScript);
+            scriptBuilder.Append(generated);
+            var path = Path.Combine(PathConfig.ResourceRoot, ScriptUtility.UpdateScriptName);
+            File.AppendAllText(path, scriptBuilder.ToString());
         }
 
         #endregion
@@ -390,6 +559,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             tvLogMetadata.Nodes.Clear();
             var dal = new SqlDataLayer(DbConnections.SystemConnection);
             var logSettings = dal.Query(ToolsQuery.SysLogSettings);
+            SetLastIdValues(logSettings);
             AddSysEntitiesAndSources(logSettings);
             AddLogSettings(logSettings, GetAllSysSourceEntityItems());
             this.GetActiveForm().Cursor = Cursors.Default;
@@ -476,20 +646,63 @@ namespace SPPC.Tools.SystemDesigner.Forms
         {
             var orderedSettings = GetAllSysSettings()
                 .OrderBy(setting => setting.Id);
-            var scriptBuilder = new StringBuilder();
-            scriptBuilder.Append(orderedSettings.First().ToSysScript(true, false));
+            GenerateSysCreateScripts(orderedSettings);
+            GenerateSysUpdateScripts(orderedSettings);
+        }
 
-            foreach (var setting in orderedSettings
+        private static void GenerateSysCreateScripts(IEnumerable<LogSettingViewModel> allSettings)
+        {
+            var generated = GetSysInsertScripts(allSettings);
+            ScriptUtility.ReplaceSysScript(generated);
+        }
+
+        private static void GenerateSysUpdateScripts(IEnumerable<LogSettingViewModel> allSettings)
+        {
+            var scriptBuilder = new StringBuilder();
+            ScriptUtility.AddVersionMarker(scriptBuilder);
+            var addedSettings = allSettings
+                .Where(setting => setting.State == RecordState.Added)
+                .OrderBy(setting => setting.Id);
+            foreach (var entityGroup in addedSettings
+                .Where(setting => setting.EntityTypeId != null)
+                .GroupBy(setting => setting.EntityTypeId))
+            {
+                scriptBuilder.AppendLine(entityGroup.First().ToSysDeleteScript());
+            }
+
+            foreach (var sourceGroup in addedSettings
+                .Where(setting => setting.SourceId != null)
+                .GroupBy(setting => setting.SourceId))
+            {
+                scriptBuilder.AppendLine(sourceGroup.First().ToSysDeleteScript());
+            }
+
+            var generated = GetSysInsertScripts(addedSettings);
+            scriptBuilder.Append(generated);
+            var path = Path.Combine(PathConfig.ResourceRoot, ScriptUtility.SysUpdateScriptName);
+            File.AppendAllText(path, scriptBuilder.ToString());
+        }
+
+        private static string GetSysInsertScripts(IEnumerable<LogSettingViewModel> newSettings)
+        {
+            var scriptBuilder = new StringBuilder();
+            scriptBuilder.Append(newSettings.First().ToSysScript(true, false));
+
+            foreach (var setting in newSettings
                 .Skip(1)
-                .Take(orderedSettings.Count() - 2))
+                .Take(newSettings.Count() - 2))
             {
                 scriptBuilder.Append(setting.ToSysScript(false, false));
             }
 
-            scriptBuilder.Append(orderedSettings.Last().ToSysScript(false, true));
-            ScriptUtility.ReplaceSysScript(scriptBuilder.ToString());
+            scriptBuilder.Append(newSettings.Last().ToSysScript(false, true));
+            return scriptBuilder.ToString();
         }
 
         #endregion
+
+        private int _nextSettingId;
+        private int _nextEntityId;
+        private int _nextSourceId;
     }
 }

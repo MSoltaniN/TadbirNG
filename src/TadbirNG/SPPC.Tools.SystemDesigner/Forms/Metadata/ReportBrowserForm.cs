@@ -5,7 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.ViewModel.Reporting;
+using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
 
 namespace SPPC.Tools.SystemDesigner.Designers
@@ -17,12 +20,12 @@ namespace SPPC.Tools.SystemDesigner.Designers
             InitializeComponent();
             _sysConnection = DbConnections.SystemConnection;
             _dal = new SqlDataLayer(_sysConnection);
-            LoadDataTables();
         }
 
-        private void ManageReportsForm_Load(object sender, EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
-            LoadGridView();
+            base.OnLoad(e);
+            LoadReports();
         }
 
         private void Add_Click(object sender, EventArgs e)
@@ -31,7 +34,6 @@ namespace SPPC.Tools.SystemDesigner.Designers
             {
                 SysConnection = _sysConnection
             };
-            form.SetupControls();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 DataRow dr;
@@ -228,8 +230,34 @@ namespace SPPC.Tools.SystemDesigner.Designers
             Close();
         }
 
-        private void LoadExistingReports()
+        private static ReportViewModel ReportFromRow(DataRow row)
         {
+            return new ReportViewModel()
+            {
+                Id = row.ValueOrDefault<int>("ReportID"),
+                ParentId = row.ValueOrDefault<int>("ParentID"),
+                CreatedById = row.ValueOrDefault<int>("CreatedByID"),
+                ViewId = row.ValueOrDefault<int>("ViewID"),
+                SubsystemId = row.ValueOrDefault<int>("SubsystemID"),
+                Code = row.ValueOrDefault("Code"),
+                ServiceUrl = row.ValueOrDefault("ServiceUrl"),
+                IsGroup = row.ValueOrDefault<bool>("IsGroup"),
+                IsSystem = row.ValueOrDefault<bool>("IsSystem"),
+                IsDefault = row.ValueOrDefault<bool>("IsDefault"),
+                IsDynamic = row.ValueOrDefault<bool>("IsDynamic")
+            };
+        }
+
+        private void LoadReports()
+        {
+            this.GetActiveForm().Cursor = Cursors.WaitCursor;
+            var result = _dal.Query("SELECT * FROM [Reporting].[Report]");
+            _allReports.Clear();
+            _allReports.AddRange(result.Rows
+                .Cast<DataRow>()
+                .Select(row => ReportFromRow(row)));
+            grdReports.DataSource = _allReports;
+            this.GetActiveForm().Cursor = Cursors.Default;
         }
 
         private void LoadGridView()
@@ -287,6 +315,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
             return value;
         }
 
+        private readonly List<ReportViewModel> _allReports = new();
         private readonly DataLayerBase _dal;
         private readonly string _sysConnection;
         private readonly DataTable _reportTable = new("ReportTable");

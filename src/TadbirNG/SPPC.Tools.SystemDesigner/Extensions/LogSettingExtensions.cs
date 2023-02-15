@@ -60,5 +60,31 @@ namespace SPPC.Tools.Extensions
 
             return scriptBuilder.ToString();
         }
+
+        public static string ToDeleteScript(this LogSettingViewModel setting)
+        {
+            return setting.EntityTypeId.HasValue
+                ?
+$@"DELETE FROM [Config].[LogSetting]
+WHERE EntityTypeID = {setting.EntityTypeId}
+"
+                :
+$@"DELETE FROM [Config].[LogSetting]
+WHERE SourceID = {setting.SourceId}
+";
+        }
+
+        public static string ToSysDeleteScript(this LogSettingViewModel setting)
+        {
+            return setting.EntityTypeId.HasValue
+                ? $@"
+DELETE FROM [Config].[SysLogSetting]
+WHERE EntityTypeID = {setting.EntityTypeId}
+"
+                : $@"
+DELETE FROM [Config].[SysLogSetting]
+WHERE SourceID = {setting.SourceId}
+";
+        }
     }
 }

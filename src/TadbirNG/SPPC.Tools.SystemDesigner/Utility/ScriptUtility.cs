@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -72,5 +73,38 @@ namespace SPPC.Tools.Utility
             allScript = $"{prologue}{newScript}{epilogue}";
             File.WriteAllText(path, allScript, Encoding.UTF8);
         }
+
+        public static string GetInsertScripts<TModel>(
+            IEnumerable<TModel> scriptables, ToScriptDelegate<TModel> toScript)
+            where TModel : class, new()
+        {
+            if (!scriptables.Any())
+            {
+                return String.Empty;
+            }
+
+            var scriptBuilder = new StringBuilder();
+            if (scriptables.Count() == 1)
+            {
+                scriptBuilder.AppendLine(toScript(scriptables.First()));
+            }
+            else
+            {
+                scriptBuilder.Append(toScript(scriptables.First(), true, false));
+                foreach (var setting in scriptables
+                    .Skip(1)
+                    .Take(scriptables.Count() - 2))
+                {
+                    scriptBuilder.Append(toScript(setting, false, false));
+                }
+
+                scriptBuilder.Append(toScript(scriptables.Last(), false, true));
+            }
+
+            return scriptBuilder.ToString();
+        }
+
+        public delegate string ToScriptDelegate<TModel>(
+            TModel model, bool withIdentityOn = true, bool withIdentityOff = true);
     }
 }

@@ -33,5 +33,10 @@ namespace SPPC.Tadbir.ViewModel.Config
         /// نام محلی شده برای عملیات
         /// </summary>
         public string OperationName { get; set; }
+
+        /// <summary>
+        /// وضعیت این تنظیم لاگ در جدول دیتابیسی مربوطه - مورد استفاده در ابزار پروژه
+        /// </summary>
+        public RecordState State { get; set; }
     }
 }
