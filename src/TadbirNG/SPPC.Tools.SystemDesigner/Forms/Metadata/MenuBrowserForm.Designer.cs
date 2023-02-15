@@ -291,6 +291,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.Controls.Add(this.btnNewChild);
             this.Controls.Add(this.tvMenus);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MinimizeBox = false;
             this.Name = "MenuBrowserForm";
             this.ShowInTaskbar = false;

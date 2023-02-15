@@ -7,9 +7,11 @@ using System.Text;
 using System.Windows.Forms;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Designers
 {
@@ -25,204 +27,63 @@ namespace SPPC.Tools.SystemDesigner.Designers
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            this.GetActiveForm().Cursor = Cursors.WaitCursor;
             LoadReports();
+            LoadLocalReports();
+            LoadParameters();
+            SetNextIdValues();
+            this.GetActiveForm().Cursor = Cursors.Default;
+        }
+
+        private void Reports_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
+        {
+            var hiddenColumns = new List<string> { "ResourceMap", "State" };
+            var orderedColumns = new List<string>
+            {
+                "Id", "ParentId", "ViewId", "CreatedById", "Code", "ServiceUrl",
+                "IsGroup", "IsSystem", "IsDefault", "IsDynamic", "SubsystemId"
+            };
+            e.Column.Visible = !hiddenColumns.Contains(e.Column.Name);
+            var allColumns = e.Column.DataGridView.Columns;
+            if (allColumns.Count == orderedColumns.Count)
+            {
+                foreach (DataGridViewColumn column in allColumns)
+                {
+                    int index = orderedColumns.IndexOf(column.Name);
+                    if (index != -1)
+                    {
+                        column.DisplayIndex = index;
+                    }
+                }
+            }
         }
 
         private void Add_Click(object sender, EventArgs e)
         {
-            var form = new ReportEditorForm()
+            var editor = new ReportEditorForm();
+            if (editor.ShowDialog(this) == DialogResult.OK)
             {
-                SysConnection = _sysConnection
-            };
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                DataRow dr;
-                dr = _reportTable.NewRow();
-                dr["ParentID"   ] = form.cmbParent.SelectedValue;
-                dr["ViewID"     ] = form.cmbListViews.SelectedValue;
-                dr["SubsystemID"] = form.cmbSubsystem.SelectedIndex + 1;
-                dr["ServiceUrl" ] = form.txtServiceUrl.Text;
-                dr["IsGroup"    ] = form.chkIsGroup.Checked;
-                dr["IsSystem"   ] = form.chkSystemReport.Checked;
-                dr["IsDefault"  ] = form.chkSetAsDefault.Checked;
-                dr["IsDynamic"  ] = form.chkQuickReport.Checked;
-                dr["EnCaption"  ] = form.txtEnglish.Text;
-                dr["FaCaption"  ] = form.txtPersian.Text;
-                dr["EnTemplatePath"] = form.txtTemplateEn.Text;
-                dr["FaTemplatePath"] = form.txtTemplateFa.Text;
-                _reportTable.Rows.Add(dr);
-                _paramDictionary.Add(Convert.ToInt32(dr["ReportId"]), form.Parameters);
-                LoadGridView();    
+                SetIdValues(editor);
+                _allReports.Add(editor.Report);
+                _allLocalReports.AddRange(editor.LocalReports);
+                _allParameters.AddRange(editor.Parameters);
             }
         }
 
         private void Edit_Click(object sender, EventArgs e)
         {
-            if (grdReports.SelectedRows.Count > 0)
-            {
-                int reportId = Convert.ToInt32(grdReports.SelectedRows[0].Cells["ReportID"].Value.ToString());
-                DataRow dr = _reportTable.Select(string.Format("ReportID={0}", reportId)).FirstOrDefault();
-                if (dr != null)
-                {
-                    var designer = new ReportEditorForm()
-                    {
-                        SysConnection = _sysConnection
-                    };
-                    designer.SetupControls();
-                    designer.cmbParent.SelectedValue = Convert.ToInt32(dr["ParentID"]);
-                    designer.cmbListViews.SelectedValue = Convert.ToInt32(dr["ViewID"]);
-                    designer.cmbSubsystem.SelectedIndex= Convert.ToInt32( dr["SubsystemID"]) -1;
-                    designer.txtServiceUrl.Text        = dr["ServiceUrl"].ToString();
-                    designer.chkIsGroup.Checked        = Convert.ToBoolean(dr["IsGroup"]);
-                    designer.chkSystemReport.Checked   = Convert.ToBoolean(dr["IsSystem"]);
-                    designer.chkSetAsDefault.Checked   = Convert.ToBoolean(dr["IsDefault"]);
-                    designer.chkQuickReport.Checked    = Convert.ToBoolean(dr["IsDynamic"]);
-                    designer.txtEnglish.Text           = dr["EnCaption"].ToString();
-                    designer.txtPersian.Text           = dr["FaCaption"].ToString();
-                    designer.txtTemplateEn.Text        = dr["EnTemplatePath"].ToString();
-                    designer.txtTemplateFa.Text        = dr["FaTemplatePath"].ToString();
-                    designer.Parameters                = _paramDictionary[Convert.ToInt32(dr["ReportId"])];
-                    designer.RefreshGrid();
-                    if (designer.ShowDialog() == DialogResult.OK)
-                    {
-                        dr["ParentID"       ] = designer.cmbParent.SelectedValue;
-                        dr["ViewID"         ] = designer.cmbListViews.SelectedValue;
-                        dr["SubsystemID"    ] = designer.cmbSubsystem.SelectedIndex + 1;
-                        dr["ServiceUrl"     ] = designer.txtServiceUrl.Text;
-                        dr["IsGroup"        ] = designer.chkIsGroup.Checked;
-                        dr["IsSystem"       ] = designer.chkSystemReport.Checked;
-                        dr["IsDefault"      ] = designer.chkSetAsDefault.Checked;
-                        dr["IsDynamic"      ] = designer.chkQuickReport.Checked;
-                        dr["EnCaption"      ] = designer.txtEnglish.Text;
-                        dr["FaCaption"      ] = designer.txtPersian.Text;
-                        dr["EnTemplatePath" ] = designer.txtTemplateEn.Text;
-                        dr["FaTemplatePath" ] = designer.txtTemplateFa.Text;
-                        _paramDictionary[Convert.ToInt32(dr["ReportId"])] = designer.Parameters;
-                        LoadGridView();
-                    }
-                }
-            }
         }
 
         private void Delete_Click(object sender, EventArgs e)
         {
-            if (grdReports.SelectedRows.Count > 0)
-            {
-                int reportId = Convert.ToInt32(grdReports.SelectedRows[0].Cells["ReportID"].Value.ToString());
-                DataRow dr = _reportTable.Select(string.Format("ReportID={0}", reportId)).FirstOrDefault();
-                dr.Delete();
-                _paramDictionary.Remove(Convert.ToInt32(dr["ReportId"]));
-                LoadGridView();
-            }
         }
 
         private void Generate_Click(object sender, EventArgs e)
         {
-            if (_reportTable.Rows.Count > 0)
-            {
-                var dal = new SqlDataLayer(_sysConnection);
-                int maxReportId = Convert.ToInt32(dal.QueryScalar("SELECT MAX([ReportID]) FROM [Reporting].[Report]"));
-                int maxLocalReport = Convert.ToInt32(dal.QueryScalar("SELECT MAX([LocalReportID]) FROM [Reporting].[LocalReport]"));
-                int maxParamId = Convert.ToInt32(dal.QueryScalar("SELECT MAX([ParamID]) FROM [Reporting].[Parameter]"));
-                var builder = new StringBuilder();
-                var solutionVersion = GetSolutionVersion();
-
-                builder.AppendLine();
-                builder.AppendFormat("-- {0}", solutionVersion);
-                builder.AppendLine();
-
-                builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Report] ON");
-                int reportId = maxReportId + 1;
-                foreach (DataRow row in _reportTable.Rows)
-                {
-                    builder.AppendLine("INSERT INTO [Reporting].[Report] " +
-                         "([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])");
-                    builder.AppendFormat("    VALUES ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10})"
-                        , reportId++
-                        , Convert.ToInt32(row["ParentID"])
-                        , 1
-                        , Convert.ToInt32(row["ViewID"])
-                        , Convert.ToInt32(row["SubsystemID"])
-                        , "''"
-                        , GetNullableValue(row["ServiceUrl"].ToString())
-                        , Convert.ToBoolean(row["IsGroup"]) == true ? 1 : 0
-                        , Convert.ToBoolean(row["IsSystem"]) == true ? 1 : 0
-                        , Convert.ToBoolean(row["IsDefault"]) == true ? 1 : 0
-                        , Convert.ToBoolean(row["IsDynamic"]) == true ? 1 : 0);
-                    builder.AppendLine();
-                }
-
-                builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Report] OFF");
-                builder.AppendLine();
-
-                builder.AppendLine("SET IDENTITY_INSERT [Reporting].[LocalReport] ON");
-                int localReportId = maxLocalReport + 1;
-                reportId = maxReportId + 1;
-                foreach (DataRow row in _reportTable.Rows)
-                {
-                    builder.AppendLine("INSERT INTO [Reporting].[LocalReport] " +
-                        "([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])");
-                    builder.AppendFormat("    VALUES ({0}, {1}, {2}, '{3}', {4})"
-                        , localReportId++
-                        , 1
-                        , reportId
-                        , row["EnCaption"].ToString()
-                        , GetTemplateValue(row, "EnTemplatePath"));
-                    builder.AppendLine();
-                    builder.AppendLine("INSERT INTO [Reporting].[LocalReport] " +
-                        "([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])");
-                    builder.AppendFormat("    VALUES ({0}, {1}, {2}, N'{3}', {4})"
-                        , localReportId++
-                        , 2
-                        , reportId++
-                        , row["FaCaption"].ToString()
-                        , GetTemplateValue(row, "EnTemplatePath"));
-                    builder.AppendLine();
-                }
-
-                builder.AppendLine("SET IDENTITY_INSERT [Reporting].[LocalReport] OFF");
-                builder.AppendLine();
-
-                if (_paramDictionary.Keys.Count > 0)
-                {
-                    builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Parameter] ON");
-                    int paramId = maxParamId + 1;
-                    var sortedKeys = _paramDictionary.Keys.OrderBy(key => key);
-                    foreach (int key in sortedKeys)
-                    {
-                        var parameters = _paramDictionary[key];
-                        foreach (DataRow row in parameters.Rows)
-                        {
-                            builder.AppendLine("INSERT INTO [Reporting].[Parameter] " +
-                             "([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DescriptionKey])");
-                            builder.AppendFormat("    VALUES ({0}, {1}, '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}')"
-                                , paramId++
-                                , maxReportId + key
-                                , row["Name"].ToString()
-                                , row["FieldName"].ToString()
-                                , row["Operator"].ToString()
-                                , row["DataType"].ToString()
-                                , row["ControlType"].ToString()
-                                , row["CaptionKey"].ToString()
-                                , row["CaptionKey"].ToString());
-                            builder.AppendLine();
-                        }
-                    }
-
-                    builder.AppendLine("SET IDENTITY_INSERT [Reporting].[Parameter] OFF");
-                    builder.AppendLine();
-                }
-
-                File.AppendAllText(_TadbirSysUpdateScript, builder.ToString());
-                MessageBox.Show("The script was generated.");
-                DialogResult = DialogResult.OK;
-                Close();
-            }
-            else
-            {
-                MessageBox.Show("There is nothing to generate.");
-                return;
-            }
+            GenerateCreateScripts();
+            GenerateUpdateScripts();
+            MessageBox.Show(this, "Scripts were successfully generated.", "Success",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void Cancel_Click(object sender, EventArgs e)
@@ -232,12 +93,16 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private static ReportViewModel ReportFromRow(DataRow row)
         {
+            int nullable = row.ValueOrDefault<int>("ParentID");
+            int? parentId = nullable > 0 ? nullable : null;
+            nullable = row.ValueOrDefault<int>("ViewID");
+            int? viewId = nullable > 0 ? nullable : null;
             return new ReportViewModel()
             {
                 Id = row.ValueOrDefault<int>("ReportID"),
-                ParentId = row.ValueOrDefault<int>("ParentID"),
+                ParentId = parentId,
                 CreatedById = row.ValueOrDefault<int>("CreatedByID"),
-                ViewId = row.ValueOrDefault<int>("ViewID"),
+                ViewId = viewId,
                 SubsystemId = row.ValueOrDefault<int>("SubsystemID"),
                 Code = row.ValueOrDefault("Code"),
                 ServiceUrl = row.ValueOrDefault("ServiceUrl"),
@@ -248,78 +113,130 @@ namespace SPPC.Tools.SystemDesigner.Designers
             };
         }
 
+        private static LocalReportViewModel LocalReportFromRow(DataRow row)
+        {
+            return new LocalReportViewModel()
+            {
+                Id = row.ValueOrDefault<int>("LocalReportID"),
+                LocaleId = row.ValueOrDefault<int>("LocaleId"),
+                ReportId = row.ValueOrDefault<int>("ReportID"),
+                Caption = row.ValueOrDefault("Caption"),
+                Template = row.ValueOrDefault("Template")
+            };
+        }
+
+        private static ParameterViewModel ParameterFromRow(DataRow row)
+        {
+            // TODO: Extract parameter data from row later...
+            return new ParameterViewModel()
+            {
+            };
+        }
+
         private void LoadReports()
         {
-            this.GetActiveForm().Cursor = Cursors.WaitCursor;
             var result = _dal.Query("SELECT * FROM [Reporting].[Report]");
-            _allReports.Clear();
             _allReports.AddRange(result.Rows
                 .Cast<DataRow>()
                 .Select(row => ReportFromRow(row)));
             grdReports.DataSource = _allReports;
-            this.GetActiveForm().Cursor = Cursors.Default;
         }
 
-        private void LoadGridView()
+        private void LoadLocalReports()
         {
-            grdReports.DataSource = _reportTable;
+            var result = _dal.Query("SELECT * FROM [Reporting].[LocalReport]");
+            _allLocalReports.AddRange(result.Rows
+                .Cast<DataRow>()
+                .Select(row => LocalReportFromRow(row)));
         }
 
-        private void LoadDataTables()
+        private void LoadParameters()
         {
-            DataColumn workCol = _reportTable.Columns.Add("ReportID", typeof(int));
-            workCol.AllowDBNull = false;
-            workCol.Unique = true;
-            workCol.AutoIncrement = true;
-            workCol.AutoIncrementSeed = 1;
-            _reportTable.Columns.Add("ParentID"     , typeof(int));
-            _reportTable.Columns.Add("ViewID"       , typeof(int));
-            _reportTable.Columns.Add("SubsystemID"  , typeof(int));
-            _reportTable.Columns.Add("ServiceUrl"   , typeof(string));
-            _reportTable.Columns.Add("IsGroup"      , typeof(bool));
-            _reportTable.Columns.Add("IsSystem"     , typeof(bool));
-            _reportTable.Columns.Add("IsDefault"    , typeof(bool));
-            _reportTable.Columns.Add("IsDynamic"    , typeof(bool));
-            _reportTable.Columns.Add("EnCaption"    , typeof(string));
-            _reportTable.Columns.Add("FaCaption"    , typeof(string));
-            _reportTable.Columns.Add("EnTemplatePath", typeof(string));
-            _reportTable.Columns.Add("FaTemplatePath", typeof(string));
-
-            DataColumn[] PrimaryKeyColumns = new DataColumn[1];
-            PrimaryKeyColumns[0] = _reportTable.Columns["ReportID"];
-            _reportTable.PrimaryKey = PrimaryKeyColumns;
+            var result = _dal.Query("SELECT * FROM [Reporting].[Parameter]");
+            _allParameters.AddRange(result.Rows
+                .Cast<DataRow>()
+                .Select(row => ParameterFromRow(row)));
         }
 
-        private string GetNullableValue(string nullable)
+        private void SetNextIdValues()
         {
-            return String.IsNullOrEmpty(nullable)
-                ? "NULL"
-                : String.Format("N'{0}'", nullable);
+            _nextReportId = _allReports.Max(rpt => rpt.Id) + 1;
+            _nextLocalReportId =
+                (int)_dal.QueryScalar("SELECT MAX([LocalReportID]) FROM [Reporting].[LocalReport]") + 1;
+            _nextParameterId =
+                (int)_dal.QueryScalar("SELECT MAX([ParamID]) FROM [Reporting].[Parameter]") + 1;
         }
 
-        private Version GetSolutionVersion()
+        private void SetIdValues(ReportEditorForm editor)
         {
-            var assemblyVersion = GetType().Assembly.GetName().Version;
-            return new Version(assemblyVersion.Major, assemblyVersion.Minor, assemblyVersion.Build);
-        }
-
-        private string GetTemplateValue(DataRow row, string fieldName)
-        {
-            string value = "NULL";
-            string fieldValue = row[fieldName].ToString();
-            if (!String.IsNullOrEmpty(fieldValue) && File.Exists(fieldValue))
+            int viewId = 0;
+            var value = _dal.QueryScalar(@$"
+SELECT [ViewID]
+FROM [Metadata].[View]
+WHERE [EntityName] = '{editor.SelectedViewModel}'");
+            if (value == null)
             {
-                value = String.Format("'{0}'", File.ReadAllText(fieldValue));
+                viewId = (int)_dal.QueryScalar("SELECT MAX([ViewID]) FROM [Metadata].[View]") + 1;
             }
 
-            return value;
+            editor.Report.Id = _nextReportId;
+            editor.Report.ViewId = viewId;
+            Array.ForEach(editor.LocalReports.ToArray(), report =>
+            {
+                report.ReportId = _nextReportId;
+                report.Id = _nextLocalReportId++;
+            });
+            Array.ForEach(editor.Parameters.ToArray(), param =>
+            {
+                param.ReportId = _nextReportId;
+                param.Id = _nextParameterId++;
+            });
+            _nextReportId++;
+        }
+
+        private void GenerateCreateScripts()
+        {
+            var orderedReports = _allReports.OrderBy(rpt => rpt.Id);
+            var generated = ScriptUtility.GetInsertScripts(orderedReports, ReportExtensions.ToScript);
+            ScriptUtility.ReplaceSysScript(generated);
+
+            var orderedLocals = _allLocalReports.OrderBy(local => local.Id);
+            generated = ScriptUtility.GetInsertScripts(_allLocalReports, LocalReportExtensions.ToScript);
+            ScriptUtility.ReplaceSysScript(generated);
+
+            // TODO: Add scripting support to ParameterViewModel, then uncomment the following lines...
+            ////var orderedParameters = _allParameters.OrderBy(param => param.Id);
+            ////generated = ScriptUtility.GetInsertScripts(_allParameters, ParameterExtensions.ToScript);
+            ////ScriptUtility.ReplaceSysScript(generated);
+        }
+
+        private void GenerateUpdateScripts()
+        {
+            var addedReports = _allReports.Where(rpt => rpt.State == RecordState.Added);
+            var addedLocals = _allLocalReports.Where(local => local.State == RecordState.Added);
+            var scriptBuilder = new StringBuilder();
+            ScriptUtility.AddSysVersionMarker(scriptBuilder);
+            scriptBuilder.Append(
+                ScriptUtility.GetInsertScripts(addedReports, ReportExtensions.ToScript));
+            scriptBuilder.Append(
+                ScriptUtility.GetInsertScripts(addedLocals, LocalReportExtensions.ToScript));
+
+            // TODO: Add scripting support to ParameterViewModel, then uncomment the following lines...
+            ////var addedParameters = _allParameters.Where(param => param.State == RecordState.Added);
+            ////scriptBuilder.AppendLine(
+            ////    ScriptUtility.GetInsertScripts(addedParameters, ParameterExtensions.ToScript));
+
+            var path = Path.Combine(PathConfig.ResourceRoot, ScriptUtility.SysUpdateScriptName);
+            File.AppendAllText(path, scriptBuilder.ToString(), Encoding.UTF8);
         }
 
         private readonly List<ReportViewModel> _allReports = new();
+        private readonly List<LocalReportViewModel> _allLocalReports = new();
+        private readonly List<ParameterViewModel> _allParameters = new();
         private readonly DataLayerBase _dal;
         private readonly string _sysConnection;
-        private readonly DataTable _reportTable = new("ReportTable");
-        private readonly Dictionary<int, DataTable> _paramDictionary = new();
-        private const string _TadbirSysUpdateScript = @"..\..\..\res\TadbirSys_UpdateDbObjects.sql";
+        private int _nextReportId;
+        private int _nextLocalReportId;
+        private int _nextParameterId;
     }
 }

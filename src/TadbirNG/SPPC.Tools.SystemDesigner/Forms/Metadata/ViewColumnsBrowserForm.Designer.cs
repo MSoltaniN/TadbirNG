@@ -247,6 +247,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnExit;
             this.ClientSize = new System.Drawing.Size(934, 639);
             this.Controls.Add(this.tabControl1);
             this.Name = "ViewColumnsBrowserForm";

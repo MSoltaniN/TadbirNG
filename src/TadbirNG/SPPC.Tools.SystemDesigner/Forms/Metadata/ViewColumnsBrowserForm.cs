@@ -84,7 +84,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
 
         private void Exit_Click(object sender, EventArgs e)
         {
-
+            Close();
         }
 
         private void InitColumns()

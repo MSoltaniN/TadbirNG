@@ -99,7 +99,8 @@ namespace SPPC.Tools.SystemDesigner.Forms
 
                 scriptBuilder.Append(GeneratePermissionScripts(allPermissions));
                 ScriptUtility.ReplaceSysScript(scriptBuilder.ToString());
-                MessageBox.Show("The script was successfully generated.");
+                MessageBox.Show(this, "Scripts were successfully generated.", "Success",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

@@ -34,6 +34,8 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.grpProperties = new System.Windows.Forms.GroupBox();
+            this.txtEntityName = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.cmbEntityType = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -78,8 +80,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.btnMoveUp = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.lbxColumns = new System.Windows.Forms.CheckedListBox();
-            this.txtEntityName = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
             this.tabViewColumns.SuspendLayout();
             this.tabViewEditor.SuspendLayout();
             this.grpProperties.SuspendLayout();
@@ -156,6 +156,24 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.grpProperties.TabIndex = 9;
             this.grpProperties.TabStop = false;
             this.grpProperties.Text = "View Properties";
+            // 
+            // txtEntityName
+            // 
+            this.txtEntityName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txtEntityName.Location = new System.Drawing.Point(14, 222);
+            this.txtEntityName.Name = "txtEntityName";
+            this.txtEntityName.Size = new System.Drawing.Size(341, 27);
+            this.txtEntityName.TabIndex = 25;
+            // 
+            // label17
+            // 
+            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(10, 199);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(97, 20);
+            this.label17.TabIndex = 26;
+            this.label17.Text = "Entity Name :";
             // 
             // cmbEntityType
             // 
@@ -664,30 +682,13 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.lbxColumns.TabIndex = 23;
             this.lbxColumns.SelectedIndexChanged += new System.EventHandler(this.Columns_SelectedIndexChanged);
             // 
-            // txtEntityName
-            // 
-            this.txtEntityName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtEntityName.Location = new System.Drawing.Point(14, 222);
-            this.txtEntityName.Name = "txtEntityName";
-            this.txtEntityName.Size = new System.Drawing.Size(341, 27);
-            this.txtEntityName.TabIndex = 25;
-            // 
-            // label17
-            // 
-            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(10, 199);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(97, 20);
-            this.label17.TabIndex = 26;
-            this.label17.Text = "Entity Name :";
-            // 
             // ViewColumnsEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(810, 666);
             this.Controls.Add(this.tabViewColumns);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ViewColumnsEditorForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

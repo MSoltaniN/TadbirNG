@@ -322,6 +322,7 @@
             this.Controls.Add(this.btnGenarateScript);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.pnlPage);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "PermissionEditorForm";

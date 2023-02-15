@@ -47,16 +47,19 @@ namespace SPPC.Tools.SystemDesigner.Forms
             {
                 var command = node.Tag as CommandViewModel;
                 node.Text = txtTitleKey.Text;
-                command.Title = txtTitleKey.Text;
-                command.RouteUrl = txtRouteUrl.Text;
-                command.IconName = txtIconName.Text;
-                command.HotKey = txtHotKey.Text;
-                command.PermissionId = cmbPermission.SelectedValue != null && (int)cmbPermission.SelectedValue > 0
-                    ? (int)cmbPermission.SelectedValue
-                    : null;
-                if (command.State == RecordState.Unmodified)
+                if (IsCommandModified(command))
                 {
-                    command.State = RecordState.Edited;
+                    command.Title = txtTitleKey.Text;
+                    command.RouteUrl = txtRouteUrl.Text;
+                    command.IconName = txtIconName.Text;
+                    command.HotKey = txtHotKey.Text;
+                    command.PermissionId = cmbPermission.SelectedValue != null && (int)cmbPermission.SelectedValue > 0
+                        ? (int)cmbPermission.SelectedValue
+                        : null;
+                    if (command.State == RecordState.Unmodified)
+                    {
+                        command.State = RecordState.Edited;
+                    }
                 }
             }
         }
@@ -139,7 +142,10 @@ namespace SPPC.Tools.SystemDesigner.Forms
         {
             this.GetActiveForm().Cursor = Cursors.WaitCursor;
             var orderedMenus = GetOrderedCommands();
-            GenerateCreateScript(orderedMenus);
+
+            // NOTE: Modifying create script is temporarily disabled, because a current bug
+            // causes Profile commands to be deleted
+            ////GenerateCreateScript(orderedMenus);
             GenerateUpdateScript(orderedMenus);
             this.GetActiveForm().Cursor = Cursors.Default;
             MessageBox.Show(this, "The script was successfully generated.", "Success",
@@ -182,7 +188,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
         private static void GenerateUpdateScript(IEnumerable<CommandViewModel> commands)
         {
             var scriptBuilder = new StringBuilder();
-            ScriptUtility.AddVersionMarker(scriptBuilder);
+            ScriptUtility.AddSysVersionMarker(scriptBuilder);
             var deletedIds = commands
                 .Where(cmd => cmd.State == RecordState.Deleted)
                 .Select(cmd => cmd.Id);
@@ -237,6 +243,18 @@ WHERE [CommandID] IN({String.Join(", ", deletedIds.ToArray())})");
             }
 
             return scriptBuilder.ToString();
+        }
+
+        private bool IsCommandModified(CommandViewModel command)
+        {
+            int? currentPermissionId = cmbPermission.SelectedValue != null && (int)cmbPermission.SelectedValue > 0
+                ? (int)cmbPermission.SelectedValue
+                : null;
+            return command.Title != txtTitleKey.Text
+                || command.IconName != txtIconName.Text
+                || command.RouteUrl != txtRouteUrl.Text
+                || command.HotKey != txtHotKey.Text
+                || command.PermissionId != currentPermissionId;
         }
 
         private IEnumerable<CommandViewModel> GetOrderedCommands()

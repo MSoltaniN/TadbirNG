@@ -1,8 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.ViewModel;
+using SPPC.Tadbir.ViewModel.Metadata;
+using SPPC.Tadbir.ViewModel.Reporting;
+using SPPC.Tools.Extensions;
+using SPPC.Tools.Model;
 
 namespace SPPC.Tools.SystemDesigner.Designers
 {
@@ -11,60 +19,51 @@ namespace SPPC.Tools.SystemDesigner.Designers
         public ReportEditorForm()
         {
             InitializeComponent();
-            Parameters = new DataTable("ParameterTable");
+            _sysConnection = DbConnections.SystemConnection;
+            Report = new ReportViewModel()
+            {
+                CreatedById = AppConstants.AdminUserId,
+                Code = String.Empty,
+                State = RecordState.Added,
+                IsDefault = true,
+                IsDynamic = true,
+                IsSystem = true
+            };
+            LocalReports = new List<LocalReportViewModel>();
+            Parameters = new List<ParameterViewModel>();
         }
 
-        public string SysConnection { get; set; }
+        public string SelectedViewModel { get; set; }
 
-        public DataTable Parameters { get; set; }
+        public ReportViewModel Report { get; set; }
 
-        public void SetupControls()
+        public List<LocalReportViewModel> LocalReports { get; }
+
+        public List<ParameterViewModel> Parameters { get; }
+
+        protected override void OnLoad(EventArgs e)
         {
-            LoadListViews();
-            LoadSubSystems();
-            LoadParents();
-            LoadParameters();
+            base.OnLoad(e);
+            SetupBindings();
+            SetupControls();
+            LoadViewModels();
         }
 
-        #region General tab
-
-        private void LoadListViews()
-        {
-            var dal = new SqlDataLayer(SysConnection);
-            cmbListViews.ValueMember = "ViewID";
-            cmbListViews.DisplayMember = "Name";
-            cmbListViews.DataSource = dal.Query(
-                @"SELECT [ViewID], [Name] FROM [Metadata].[View] ORDER BY [Name]");
-        }
-
-        private void LoadSubSystems()
-        {
-            cmbSubsystem.SelectedIndex = 0;
-        }
-
-        private void LoadParents()
-        {
-            var dal = new SqlDataLayer(SysConnection);
-            cmbParent.ValueMember = "ReportID";
-            cmbParent.DisplayMember = "Code";
-            cmbParent.DataSource = dal.Query(@"SELECT [ReportID],[Code] FROM [Reporting].[Report] 
-                                                      WHERE [IsGroup] = 1 ORDER BY [ReportID]");
-        }
-       
         private void Select_Click(object sender, EventArgs e)
         {
-
         }
 
         private void Browse_Click(object sender, EventArgs e)
         {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.InitialDirectory = @"C:\";
-            fileDialog.RestoreDirectory = true;
-            fileDialog.Title = "Browse Template File";
-            fileDialog.DefaultExt = "mrt";
-            fileDialog.Filter = "mrt files (*.mrt)|*.mrt|All files (*.*)|*.*";
-            if( fileDialog.ShowDialog() == DialogResult.OK)
+            var fileDialog = new OpenFileDialog
+            {
+                InitialDirectory = PathConfig.GitRepoRoot,
+                RestoreDirectory = true,
+                Title = "Browse Template File",
+                DefaultExt = "mrt",
+                Filter = "mrt files (*.mrt)|*.mrt|All files (*.*)|*.*"
+            };
+            if ( fileDialog.ShowDialog() == DialogResult.OK)
             {
                 txtTemplateEn.Text = fileDialog.FileName;
             }
@@ -72,12 +71,14 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private void BrowseFa_Click(object sender, EventArgs e)
         {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.InitialDirectory = @"C:\";
-            fileDialog.RestoreDirectory = true;
-            fileDialog.Title = "Browse Template File";
-            fileDialog.DefaultExt = "mrt";
-            fileDialog.Filter = "mrt files (*.mrt)|*.mrt|All files (*.*)|*.*";
+            var fileDialog = new OpenFileDialog
+            {
+                InitialDirectory = PathConfig.GitRepoRoot,
+                RestoreDirectory = true,
+                Title = "Browse Template File",
+                DefaultExt = "mrt",
+                Filter = "mrt files (*.mrt)|*.mrt|All files (*.*)|*.*"
+            };
             if (fileDialog.ShowDialog() == DialogResult.OK)
             {
                 txtTemplateFa.Text = fileDialog.FileName;
@@ -86,177 +87,23 @@ namespace SPPC.Tools.SystemDesigner.Designers
 
         private void QuickReport_CheckedChanged(object sender, EventArgs e)
         {
-           if( chkQuickReport.Checked == true )
-            {
-                txtTemplateEn.Enabled = false;
-                btnBrowseEn.Enabled = false;
-                txtTemplateFa.Enabled = false;
-                btnBrowseFa.Enabled = false;
-            }
-           else
-            {
-                txtTemplateEn.Enabled = true;
-                btnBrowseEn.Enabled = true;
-                txtTemplateFa.Enabled = true;
-                btnBrowseFa.Enabled = true;
-            }
-        }
-
-        #endregion
-
-        #region Parameter tab
-
-        private void LoadParameters()
-        {
-            MakeDataTableParameter();
-            RefreshGrid();
+            txtTemplateEn.Enabled = !chkIsDynamic.Checked;
+            btnBrowseEn.Enabled = !chkIsDynamic.Checked;
+            txtTemplateFa.Enabled = !chkIsDynamic.Checked;
+            btnBrowseFa.Enabled = !chkIsDynamic.Checked;
         }
 
         private void Add_Click(object sender, EventArgs e)
         {
-            var paramForm = new ParameterEditorForm();
-            paramForm.SetupConrols();
-
-            if (paramForm.ShowDialog() == DialogResult.OK )
-            {
-                DataRow dr;
-                dr = Parameters.NewRow();
-                dr["Name"] = paramForm.txtName.Text;
-                dr["FieldName"] = paramForm.txtFieldName.Text;
-                dr["CaptionKey"] = paramForm.txtCaptionKey.Text;
-                dr["Operator"] = paramForm.cmbOperator.SelectedItem.ToString();
-                dr["DataType"] = paramForm.cmbDataType.SelectedItem.ToString();
-                dr["ControlType"] = paramForm.cmbControlType.SelectedItem.ToString();
-                Parameters.Rows.Add(dr);
-                RefreshGrid();
-            }
         }
 
         private void Edit_Click(object sender, EventArgs e)
         {
-            int paramId=1;
-            if (grdParameters.SelectedRows.Count > 0)
-            {
-                paramId = Convert.ToInt32(grdParameters.SelectedRows[0].Cells["ParamId"].Value.ToString());
-                DataRow dr = Parameters.Select(string.Format("ParamId={0}", paramId)).FirstOrDefault();
-                if (dr != null)
-                {
-                    var paramForm = new ParameterEditorForm();
-                    paramForm.SetupConrols();
-                    paramForm.txtName.Text = dr["Name"].ToString();
-                    paramForm.txtFieldName.Text = dr["FieldName"].ToString();
-                    paramForm.txtCaptionKey.Text = dr["CaptionKey"].ToString();
-                    paramForm.cmbOperator.SelectedItem = dr["Operator"].ToString();
-                    paramForm.cmbDataType.SelectedItem = dr["DataType"].ToString();
-                    paramForm.cmbControlType.SelectedItem = dr["ControlType"].ToString();
-
-                    if (paramForm.ShowDialog() == DialogResult.OK)
-                    {
-                        dr["Name"] = paramForm.txtName.Text;
-                        dr["FieldName"] = paramForm.txtFieldName.Text;
-                        dr["CaptionKey"] = paramForm.txtCaptionKey.Text;
-                        dr["Operator"] = paramForm.cmbOperator.SelectedItem.ToString();
-                        dr["DataType"] = paramForm.cmbDataType.SelectedItem.ToString();
-                        dr["ControlType"] = paramForm.cmbControlType.SelectedItem.ToString();
-                        RefreshGrid();
-                    }
-                }
-            }
         }
 
         private void Delete_Click(object sender, EventArgs e)
         {
-            if (grdParameters.SelectedRows.Count > 0)
-            {
-                int paramId = Convert.ToInt32(grdParameters.SelectedRows[0].Cells["ParamId"].Value.ToString());
-                DataRow dr = Parameters.Select(string.Format("ParamId={0}", paramId)).FirstOrDefault();
-                dr.Delete();
-                RefreshGrid();
-            }
         }
-
-        private void MakeDataTableParameter()
-        {
-            if (Parameters.Columns.Count > 0)
-            {
-                return;
-            }
-
-            Parameters.Columns.Add(new DataColumn
-            {
-                DataType = System.Type.GetType("System.Int32"),
-                ColumnName = "ParamId",
-                AutoIncrement = true,
-                AutoIncrementSeed = 1,
-                ReadOnly = true,
-                Unique = true
-            });
-            Parameters.Columns.Add(new DataColumn
-            {
-                DataType = System.Type.GetType("System.String"),
-                ColumnName = "Name",
-                AutoIncrement = false,
-                Caption = "Name",
-                ReadOnly = false,
-                Unique = false
-            });
-            Parameters.Columns.Add(new DataColumn
-            {
-                DataType = System.Type.GetType("System.String"),
-                ColumnName = "FieldName",
-                AutoIncrement = false,
-                Caption = "FieldName",
-                ReadOnly = false,
-                Unique = false
-            });
-            Parameters.Columns.Add(new DataColumn
-            {
-                DataType = System.Type.GetType("System.String"),
-                ColumnName = "CaptionKey",
-                AutoIncrement = false,
-                Caption = "CaptionKey",
-                ReadOnly = false,
-                Unique = false
-            });
-            Parameters.Columns.Add(new DataColumn
-            {
-                DataType = System.Type.GetType("System.String"),
-                ColumnName = "Operator",
-                AutoIncrement = false,
-                Caption = "Operator",
-                ReadOnly = false,
-                Unique = false
-            });
-            Parameters.Columns.Add(new DataColumn
-            {
-                DataType = System.Type.GetType("System.String"),
-                ColumnName = "DataType",
-                AutoIncrement = false,
-                Caption = "DataType",
-                ReadOnly = false,
-                Unique = false
-            });
-            Parameters.Columns.Add(new DataColumn
-            {
-                DataType = System.Type.GetType("System.String"),
-                ColumnName = "ControlType",
-                AutoIncrement = false,
-                Caption = "ControlType",
-                ReadOnly = false,
-                Unique = false
-            });
-
-            var PrimaryKeyColumns = new DataColumn[1];
-            PrimaryKeyColumns[0] = Parameters.Columns["id"];
-            Parameters.PrimaryKey = PrimaryKeyColumns;
-        }
-
-        public void RefreshGrid()
-        {
-            grdParameters.DataSource = Parameters;
-        }
-
-        #endregion
 
         private void Save_Click(object sender, EventArgs e)
         {
@@ -265,33 +112,136 @@ namespace SPPC.Tools.SystemDesigner.Designers
                 return;
             }
 
+            SelectedViewModel = tvViewModels.SelectedNode.Text;
+            Report.SubsystemId = cmbSubsystem.SelectedIndex + 1;
+            Report.ParentId = cmbParent.SelectedIndex >= 0
+                ? (int)cmbParent.SelectedValue
+                : null;
             DialogResult = DialogResult.OK;
             Close();
         }
 
+        private void Cancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void SetupBindings()
+        {
+            chkIsGroup.DataBindings.Add("Checked", Report, "IsGroup");
+            chkIsDefault.DataBindings.Add("Checked", Report, "IsDefault");
+            chkIsDynamic.DataBindings.Add("Checked", Report, "IsDynamic");
+            chkIsSystem.DataBindings.Add("Checked", Report, "IsSystem");
+            txtServiceUrl.DataBindings.Add("Text", Report, "ServiceUrl");
+            var enReport = new LocalReportViewModel()
+            {
+                LocaleId = 1,
+                State = RecordState.Added
+            };
+            var faReport = new LocalReportViewModel()
+            {
+                LocaleId = 2,
+                State = RecordState.Added
+            };
+            txtEnglish.DataBindings.Add("Text", enReport, "Caption");
+            txtPersian.DataBindings.Add("Text", faReport, "Caption");
+            LocalReports.Add(enReport);
+            LocalReports.Add(faReport);
+        }
+
+        private void LoadViewModels()
+        {
+            this.GetActiveForm().Cursor = Cursors.WaitCursor;
+            var assembly = typeof(ColumnViewModel).Assembly;
+            var all = assembly
+                .GetTypes()
+                .GroupBy(type => type.Namespace.Replace(_defaultAssembly, String.Empty));
+            var root = tvViewModels.Nodes.Add("View Models", "View Models");
+            foreach (var grp in all)
+            {
+                string schemaName = String.IsNullOrEmpty(grp.Key)
+                    ? "(no schema)"
+                    : grp.Key.TrimStart('.');
+                var schema = root.Nodes.Add(schemaName, schemaName);
+                foreach (var vmType in grp)
+                {
+                    string typeName = vmType.Name.EndsWith("ViewModel")
+                        ? vmType.Name.Replace("ViewModel", String.Empty)
+                        : String.Empty;
+                    if (!String.IsNullOrEmpty(typeName))
+                    {
+                        schema.Nodes.Add(typeName, typeName);
+                    }
+                }
+            }
+
+            this.GetActiveForm().Cursor = Cursors.Default;
+        }
+
+        private void LoadParents()
+        {
+            this.GetActiveForm().Cursor = Cursors.WaitCursor;
+            var dal = new SqlDataLayer(_sysConnection);
+            var result = dal.Query(@"
+SELECT [ReportID],[Code]
+FROM [Reporting].[Report]
+WHERE [IsGroup] = 1
+ORDER BY [ReportID]");
+            cmbParent.ValueMember = "Id";
+            cmbParent.DisplayMember = "Code";
+            cmbParent.DataSource = result.Rows
+                .Cast<DataRow>()
+                .Select(row => new ReportViewModel()
+                {
+                    Id = row.ValueOrDefault<int>("ReportID"),
+                    Code = row.ValueOrDefault("Code")
+                })
+                .ToList();
+            this.GetActiveForm().Cursor = Cursors.Default;
+        }
+
+        private void SetupControls()
+        {
+            LoadParents();
+            grdParameters.DataSource = Parameters;
+            cmbSubsystem.SelectedIndex = Report.SubsystemId > 0
+                ? Report.SubsystemId - 1
+                : -1;
+            cmbSubsystem.SelectedValue = Report.ParentId;
+        }
+
         private new bool Validate()
         {
-            if (txtEnglish.Text == "")
+            if (tvViewModels.SelectedNode.Nodes.Count > 0)
             {
-                MessageBox.Show("Please fill English Caption.");
+                MessageBox.Show(this, "Please select a view model.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return false;
             }
-            if (txtPersian.Text == "")
+
+            if (chkIsDynamic.Checked)
             {
-                MessageBox.Show("Please fill Persian Caption.");
+                return true;
+            }
+
+            if (String.IsNullOrWhiteSpace(txtEnglish.Text))
+            {
+                MessageBox.Show(this, "Please fill English Caption.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return false;
             }
-            ////if ((txtTemplateEn.Text == "" || txtTemplateFa.Text == "" ) && chkQuickReport.Checked == false )
-            ////{
-            ////    MessageBox.Show("Please fill template file path.");
-            ////    return false;
-            ////}
+
+            if (String.IsNullOrWhiteSpace(txtPersian.Text))
+            {
+                MessageBox.Show(this, "Please fill Persian Caption.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return false;
+            }
+
             return true;
         }
 
-        private void Cancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private const string _defaultAssembly = "SPPC.Tadbir.ViewModel";
+        private readonly string _sysConnection;
     }
 }

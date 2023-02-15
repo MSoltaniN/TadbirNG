@@ -51,18 +51,23 @@
             // 
             this.grdReports.AllowUserToAddRows = false;
             this.grdReports.AllowUserToDeleteRows = false;
+            this.grdReports.AllowUserToResizeRows = false;
             this.grdReports.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grdReports.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grdReports.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grdReports.Location = new System.Drawing.Point(15, 58);
+            this.grdReports.MultiSelect = false;
             this.grdReports.Name = "grdReports";
             this.grdReports.ReadOnly = true;
-            this.grdReports.RowHeadersWidth = 51;
+            this.grdReports.RowHeadersVisible = false;
+            this.grdReports.RowHeadersWidth = 50;
             this.grdReports.RowTemplate.Height = 24;
             this.grdReports.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdReports.Size = new System.Drawing.Size(749, 505);
             this.grdReports.TabIndex = 1;
+            this.grdReports.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.Reports_ColumnAdded);
             // 
             // btnAdd
             // 
@@ -99,7 +104,7 @@
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGenerate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnGenerate.Location = new System.Drawing.Point(292, 585);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(154, 35);
