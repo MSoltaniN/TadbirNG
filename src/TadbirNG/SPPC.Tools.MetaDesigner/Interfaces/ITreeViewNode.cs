@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SPPC.Tools.MetaDesigner.Common
 {
@@ -16,6 +15,7 @@ namespace SPPC.Tools.MetaDesigner.Common
         void SetNode(string name, string text, object data);
         void SetParent(ITreeViewNode parent);
         void AddChild(ITreeViewNode child);
+        void InsertChild(int index, ITreeViewNode child);
         void RemoveChild(ITreeViewNode child);
         void Expand();
         void Select();

@@ -93,6 +93,17 @@ namespace SPPC.Tools.Model
         }
 
         /// <summary>
+        /// Inserts a new child subtree to this Tree object.
+        /// </summary>
+        /// <param name="child">The child tree node to insert.</param>
+        public void InsertChild(int index, Tree child)
+        {
+            Verify.ArgumentNotNull(child, "child");
+            child.Parent = this;
+            _children.Insert(index, child);
+        }
+
+        /// <summary>
         /// Removes a child subtree from this Tree object.
         /// </summary>
         /// <param name="child">The child tree node to remove.</param>
