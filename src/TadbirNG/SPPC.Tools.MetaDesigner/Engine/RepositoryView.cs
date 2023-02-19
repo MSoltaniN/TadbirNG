@@ -56,13 +56,44 @@ namespace SPPC.Tools.MetaDesigner.Engine
         public event EventHandler<TreeNodeEventArgs> NodeAdded;
         public event EventHandler<TreeNodeEventArgs> NodeRemoved;
 
+        private static bool IsCollection(Tree tree)
+        {
+            var metadata = tree.Metadata as ObjectMetadata;
+            return !String.IsNullOrEmpty(metadata.ItemType);
+        }
+
+        private static ITreeViewNode GetRootNode(Tree root)
+        {
+            Verify.ArgumentNotNull(root, "root");
+            var metadata = root.Metadata as ObjectMetadata;
+            var rootNode = new TreeViewNode();
+            rootNode.SetNode(metadata.Name, metadata.Name, root.Data);
+            return rootNode;
+        }
+
+        private static void AddSortedChild(ITreeViewNode parent, ITreeViewNode child)
+        {
+            var rowGuid = parent.Nodes.FirstOrDefault(node => node.Name == "RowGuid");
+            if (rowGuid != null)
+            {
+                int index = parent.Nodes
+                    .ToList()
+                    .IndexOf(rowGuid);
+                parent.InsertChild(index, child);
+            }
+            else
+            {
+                parent.AddChild(child);
+            }
+        }
+
         private void Repository_ItemAdded(object sender, CollectionChangedEventArgs e)
         {
             var collectionNode = FindNode(e.Collection, _rootNode);
             if (collectionNode != null)
             {
                 var nodeToAdd = Visualize(e.Item);
-                collectionNode.AddChild(nodeToAdd);
+                AddSortedChild(collectionNode, nodeToAdd);
                 nodeToAdd.Select();
                 RaiseNodeAddedEvent(nodeToAdd);
             }
@@ -105,12 +136,6 @@ namespace SPPC.Tools.MetaDesigner.Engine
             return rootNode;
         }
 
-        private bool IsCollection(Tree tree)
-        {
-            var metadata = tree.Metadata as ObjectMetadata;
-            return (!String.IsNullOrEmpty(metadata.ItemType));
-        }
-
         private ITreeViewNode TransformCollection(Tree collection)
         {
             var collectionNode = GetRootNode(collection);
@@ -122,15 +147,6 @@ namespace SPPC.Tools.MetaDesigner.Engine
             }
 
             return collectionNode;
-        }
-
-        private ITreeViewNode GetRootNode(Tree root)
-        {
-            Verify.ArgumentNotNull(root, "root");
-            var metadata = root.Metadata as ObjectMetadata;
-            var rootNode = new TreeViewNode();
-            rootNode.SetNode(metadata.Name, metadata.Name, root.Data);
-            return rootNode;
         }
 
         private ITreeViewNode FindNode(object tag, ITreeViewNode root)
