@@ -52,10 +52,8 @@ namespace SPPC.Tadbir.Web.Api
             quickReport = SetPageSetting(quickReport, qr);
             quickReport = CreateReportFooterBand(quickReport, quickReportTemplate);
             quickReport = CreateReportHeaderBand(quickReport, quickReportTemplate);
-
-            bool createParameterHeader = qr.Parameters != null && qr.Parameters.Count > 0;
-
-            quickReport = CreatePageHeaderBand(quickReport, quickReportTemplate, createParameterHeader);
+            
+            quickReport = CreatePageHeaderBand(quickReport, quickReportTemplate);
             quickReport = CreatePageFooterBand(quickReport, quickReportTemplate);
             if (qr.Parameters != null)
             {
@@ -260,7 +258,7 @@ namespace SPPC.Tadbir.Web.Api
             return report;
         }
 
-        private static StiReport CreatePageHeaderBand(StiReport report, StiReport reportTemplate, bool createParameterHeader)
+        private static StiReport CreatePageHeaderBand(StiReport report, StiReport reportTemplate)
         {
             var pageHeader = new StiPageHeaderBand();
 
@@ -274,16 +272,14 @@ namespace SPPC.Tadbir.Web.Api
 
             report.Pages[0].Components.Add(pageHeader);
 
-            if (createParameterHeader)
-            {
-                StiPageHeaderBand headerParameter = (StiPageHeaderBand)pageHeader.Clone(true);
-                headerParameter.Name = "hdrParams";
-                headerParameter.Linked = true;
-                headerParameter.Height = 0.9;
-                headerParameter.CanGrow = true;
-                headerParameter.Components.Clear();
-                report.Pages[0].Components.Add(headerParameter);
-            }
+            StiPageHeaderBand headerParameter = (StiPageHeaderBand)pageHeader.Clone(true);
+            headerParameter.Name = "hdrParams";
+            headerParameter.Linked = true;
+            headerParameter.Height = 0.9;
+            headerParameter.CanGrow = true;
+            headerParameter.CanShrink = true;
+            headerParameter.Components.Clear();
+            report.Pages[0].Components.Add(headerParameter);
 
             return report;
         }
