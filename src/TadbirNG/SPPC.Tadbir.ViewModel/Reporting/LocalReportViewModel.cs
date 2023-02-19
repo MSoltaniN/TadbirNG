@@ -14,5 +14,10 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// شناسه دیتابیسی زبان مورد استفاده در گزارش محلی شده
         /// </summary>
         public int LocaleId { get; set; }
+
+        /// <summary>
+        /// وضعیت این گزارش محلی شده در جدول دیتابیسی مربوطه - مورد استفاده در ابزار پروژه
+        /// </summary>
+        public RecordState State { get; set; }
     }
 }

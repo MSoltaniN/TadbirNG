@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SPPC.Tadbir.ViewModel.Reporting
 {
@@ -24,5 +23,10 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// یک دیکشنری از متن های چند زبانه مورد نیاز در گزارش
         /// </summary>
         public Dictionary<string, string> ResourceMap { get; private set; }
+
+        /// <summary>
+        /// وضعیت این گزارش چاپی در جدول دیتابیسی مربوطه - مورد استفاده در ابزار پروژه
+        /// </summary>
+        public RecordState State { get; set; }
     }
 }
