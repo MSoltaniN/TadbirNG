@@ -321,11 +321,20 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
       //this.sppcLoading.show();
       this.accountRelationsService.getRelatedComponentModel(this.relatedComponentApiUrl).subscribe(res => {
         this.relatedComponentCategories = res;
-        //for (let item of res) {
-        //  if (item.isSelected) {
-        //    this.relatedComponentCheckedKeys.push(item.id)
-        //  }
-        //}
+        if (res.length) {
+          this.relatedComponentCategories.map(item => item.parentId = -1);
+          this.relatedComponentCategories.push({
+            id:-1,
+            childCount:0,
+            code:null,
+            fullCode:null,
+            groupId:null,
+            isSelected:true,
+            level:0,
+            name: "AccountRelations.SelectAll",
+            parentId:null,
+          })
+        }
         this.deleteKey = [];
         if (this.relatedComponentCategories.length == 0)
           this.noRelatedResultMessage = true;
@@ -355,6 +364,10 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
   DeleteRelation() {
     var model = new AccountItemRelationsInfo();
     model.id = this.mainComponentSelectedItem;
+    let indexOfSelectAll = this.relatedComponentCheckedKeys.findIndex(id => id == -1);
+    if (indexOfSelectAll>-1) {
+      this.relatedComponentCheckedKeys.splice(indexOfSelectAll,1);
+    }
     model.relatedItemIds = this.relatedComponentCheckedKeys;
 
 
