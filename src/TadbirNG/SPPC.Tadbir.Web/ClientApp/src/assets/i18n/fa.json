@@ -446,7 +446,9 @@
     "OnLabel": "بله",
     "OffLabel": "خیر",
     "ModelNotValid": "{0} معتبر نمیباشد",
-    "Report": "گزارش"
+    "Report": "گزارش",
+    "CollapseDetail":"بستن جزئیات",
+    "ExpandDetail":"بازکردن جزئیات"
   },
   "AccountBookSingle": {
     "RowNo": "ردیف",

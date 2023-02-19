@@ -396,7 +396,9 @@
     "OnLabel": "Yes",
     "OffLabel": "No",
     "ModelNotValid": "The {0} is not valid",
-    "Report": "Report"
+    "Report": "Report",
+    "CollapseDetail":"Collapse Detail",
+    "ExpandDetail":"Expand Detail"
   },
   "AccountBookSingle": {
     "RowNo": "Row No",
