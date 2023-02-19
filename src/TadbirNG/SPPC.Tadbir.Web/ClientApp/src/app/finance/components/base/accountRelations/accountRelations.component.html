@@ -112,16 +112,18 @@
 
             <kendo-treeview [nodes]="relatedComponentCategories"
                             [textField]="['name']"
-                            kendoTreeViewExpandable
-                            [kendoTreeViewCheckable]="{ mode: 'multiple', checkChildren: false , checkParents: false }"
+                            kendoTreeViewFlatDataBinding
+                            [kendoTreeViewCheckable]="{ mode: 'multiple', checkChildren: true , checkParents: true }"
                             [checkBy]="checkById"
+                            idField="id"
+                            parentIdField="parentId"
                             [(checkedKeys)]="relatedComponentCheckedKeys"
                             [hasChildren]="hasChildren"
                             [children]="fetchRelatedComponentChildren"
                             (checkedChange)="handleRelatedComponentChecking($event)"
                             [(expandedKeys)]="relatedComponentExpandedKeys">
               <ng-template kendoTreeViewNodeTemplate let-dataItem>
-                {{dataItem.name}} - ({{dataItem.fullCode}})
+                {{ dataItem.id == -1? (dataItem.name | translate): dataItem.name+' - '+(dataItem.fullCode) }}
               </ng-template>
             </kendo-treeview>
             <!--(childrenLoaded)="childrenLoadedHandler($event)"-->
