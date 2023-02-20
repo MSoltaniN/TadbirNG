@@ -129,6 +129,7 @@
                     [headerTitle]="item.title"
                     [setting]="widgetSettings[item.id + '-' + tab.id]"
                     (settingChanged)="onSettingChanged($event)"
+                    (refreshWidget)="onRefreshWidget(tab,item)"
                   >
                     <widget-container>
                       <div class="box-body" body>

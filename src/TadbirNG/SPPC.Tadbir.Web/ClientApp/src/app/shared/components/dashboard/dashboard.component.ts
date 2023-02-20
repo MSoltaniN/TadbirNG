@@ -367,6 +367,22 @@ export class DashboardComponent
     this.subscription.unsubscribe();
   }
 
+  spinRefreshIcon(selector:string,toSpin:boolean) {
+    let refreshIcon = document.querySelector(selector);
+    if (toSpin){
+      if (!refreshIcon.classList.contains('toSpin')) {
+        refreshIcon.classList.add('toSpin');
+      }
+    } else {
+      refreshIcon.classList.remove('toSpin');
+    }
+  }
+
+  onRefreshWidget(tab,widget) {
+    this.spinRefreshIcon(`#refresh-${widget.id}`,true);
+    this.getWidgetData(widget.typeId,widget.id,tab.id,widget.title,widget.series);
+  }
+
   onSettingChanged(option) {
     const id = option.widgetId + "-" + option.tabId;
     this.widgetSettings[id].series = option.setting.series;
@@ -513,33 +529,6 @@ export class DashboardComponent
       this.UserId.toString(),
       this.CompanyId.toString()
     );
-
-    // if (!this.dashboard) {
-    //   this.dashboard = [
-    //     {
-    //       cols: 20,
-    //       rows: 20,
-    //       y: 0,
-    //       x: 0,
-    //       id: 1,
-    //       selected: false,
-    //       name: "GrossSales",
-    //       title: "فروش نا خالص",
-    //     },
-    //     {
-    //       cols: 20,
-    //       rows: 20,
-    //       y: 0,
-    //       x: 0,
-    //       id: 2,
-    //       selected: false,
-    //       name: "NetSales",
-    //       title: "فروش خالص",
-    //     },
-    //   ];
-    // }
-
-    // this.dashboardSubject.next(this.dashboard.filter((w) => w.selected));
   }
 
   refreshDashboard() {
@@ -832,8 +821,9 @@ export class DashboardComponent
     this.widgetStatus[id] = "progress";
     return this.dashboardService
       .getWidgetData(widgetId)
-      .pipe(take(2))
+      .pipe(take(1))
       .subscribe((res) => {
+        this.spinRefreshIcon(`#refresh-${widgetId}`,false);
         this.widgetStatus[id] = "done";
         let init = false;
         const series = [];

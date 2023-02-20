@@ -26,6 +26,7 @@ export class WidgetComponent implements OnInit, OnChanges {
   @Output() settingClick: EventEmitter<any> = new EventEmitter();
   @Output() settingChanged: EventEmitter<any> = new EventEmitter();
   @Output() closeWidget: EventEmitter<any> = new EventEmitter();
+  @Output() refreshWidget: EventEmitter<any> = new EventEmitter();
 
   @Input() setting: WidgetSetting;
 
@@ -36,6 +37,10 @@ export class WidgetComponent implements OnInit, OnChanges {
 
   onCloseWidget() {
     this.closeWidget.emit(this.widgetId);
+  }
+
+  onRefreshWidget() {
+    this.refreshWidget.emit();
   }
 
   onSettingChange(changedSetting: WidgetSetting) {
