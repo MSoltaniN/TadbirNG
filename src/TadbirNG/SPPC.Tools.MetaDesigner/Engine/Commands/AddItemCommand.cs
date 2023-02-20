@@ -19,8 +19,7 @@ namespace SPPC.Tools.MetaDesigner.Engine
             base.Execute();
             var wrapper = Parameters["wrapper"] as IRepositoryModel;
             var collection = Parameters["collection"] as IEnumerable;
-            var editor = Parameters["editor"] as Form;
-            if (editor != null)
+            if (Parameters["editor"] is Form editor)
             {
                 var inputCollector = new FormInputCollector() { InputForm = editor };
                 inputCollector.GetInput();

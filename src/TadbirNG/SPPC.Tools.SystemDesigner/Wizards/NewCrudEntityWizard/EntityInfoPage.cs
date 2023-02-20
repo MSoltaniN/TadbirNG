@@ -25,7 +25,9 @@ namespace SPPC.Tools.SystemDesigner.Wizards.NewCrudEntityWizard
             SetupBindings();
             var repository = LoadXmlMetadataRepository(
                 ConfigurationManager.AppSettings["XmlRepoPath"]);
-            cmbEntity.DataSource = repository.Entities.ToList();
+            cmbEntity.DataSource = repository.Entities
+                .OrderBy(entity => entity.Name)
+                .ToList();
         }
 
         private void Entity_SelectedIndexChanged(object sender, EventArgs e)

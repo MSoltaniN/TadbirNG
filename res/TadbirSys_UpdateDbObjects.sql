@@ -232,3 +232,10 @@ SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
 UPDATE [Metadata].[Column]
 SET [IsNullable] = 1
 WHERE [ViewID] = 2 AND [Name] IN('OriginName', 'TypeName')
+
+
+-- 1.2.1480
+UPDATE [Reporting].[LocalReport] SET [Caption] = N'Widgets list' WHERE ReportID = 91 AND LocaleID = 1
+UPDATE [Reporting].[LocalReport] SET [Caption] = N'لیست ویجت ها' WHERE ReportID = 91 AND LocaleID = 2
+UPDATE [Reporting].[LocalReport] SET [Caption] = N'Widgets list' WHERE ReportID = 92 AND LocaleID = 1
+UPDATE [Reporting].[LocalReport] SET [Caption] = N'لیست ویجت ها' WHERE ReportID = 92 AND LocaleID = 2

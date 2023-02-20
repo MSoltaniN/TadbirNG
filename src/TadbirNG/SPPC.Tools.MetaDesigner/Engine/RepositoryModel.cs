@@ -23,9 +23,9 @@ namespace SPPC.Tools.MetaDesigner.Engine
             if (collectionTree != null)
             {
                 var collection = collectionTree.Data as IList;
-                collection.Add(item);
+                AddSortedItem(collection, item);
                 var treeBuilder = new ObjectTreeBuilder();
-                collectionTree.AddChild(treeBuilder.BuildTree(item));
+                AddSortedChild(collectionTree, treeBuilder.BuildTree(item));
                 RaiseItemAddedEvent(item, collection);
             }
         }
@@ -45,6 +45,45 @@ namespace SPPC.Tools.MetaDesigner.Engine
 
         public event EventHandler<CollectionChangedEventArgs> ItemAdded;
         public event EventHandler<CollectionChangedEventArgs> ItemRemoved;
+
+        private static void AddSortedItem(IList collection, object item)
+        {
+            if (item is Property property)
+            {
+                var rowGuid = collection
+                    .Cast<Property>()
+                    .SingleOrDefault(prop => prop.Name == "RowGuid");
+                if (rowGuid != null)
+                {
+                    int index = collection.IndexOf(rowGuid);
+                    collection.Insert(index, property);
+                }
+            }
+            else
+            {
+                collection.Add(item);
+            }
+        }
+
+        private static void AddSortedChild(Tree parent, Tree child)
+        {
+            if (child.Data is Property property)
+            {
+                var rowGuid = parent.Children.FirstOrDefault(
+                    ch => ch.Data is Property && (ch.Data as Property).Name == "RowGuid");
+                if (rowGuid != null)
+                {
+                    int index = parent.Children
+                        .ToList()
+                        .IndexOf(rowGuid);
+                    parent.InsertChild(index, child);
+                }
+            }
+            else
+            {
+                parent.AddChild(child);
+            }
+        }
 
         private void RaiseItemAddedEvent(object item, IEnumerable collection)
         {

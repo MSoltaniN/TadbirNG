@@ -59,12 +59,21 @@ namespace SPPC.Tools.MetaDesigner.Engine
 
         public void AddChild(ITreeViewNode child)
         {
-            var childNode = child.Node as TreeNode;
-            if (childNode != null)
+            if (child.Node is TreeNode childNode)
             {
                 _node.Nodes.Add(childNode);
                 child.SetParent(this);
                 _nodes.Add(child);
+            }
+        }
+
+        public void InsertChild(int index, ITreeViewNode child)
+        {
+            if (child.Node is TreeNode childNode)
+            {
+                _node.Nodes.Insert(index, childNode);
+                child.SetParent(this);
+                _nodes.Insert(index, child);
             }
         }
 
@@ -89,6 +98,6 @@ namespace SPPC.Tools.MetaDesigner.Engine
         }
 
         private TreeNode _node;
-        private List<ITreeViewNode> _nodes = new List<ITreeViewNode>();
+        private readonly List<ITreeViewNode> _nodes = new();
     }
 }
