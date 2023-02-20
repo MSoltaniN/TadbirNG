@@ -692,7 +692,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.Name = "ViewColumnsEditorForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "ViewColumnsEditorForm";
+            this.Text = "Add View with Columns";
             this.tabViewColumns.ResumeLayout(false);
             this.tabViewEditor.ResumeLayout(false);
             this.tabViewEditor.PerformLayout();
