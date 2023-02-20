@@ -51,6 +51,7 @@ import { take } from "rxjs/operators";
 import { MessageType } from "@sppc/shared/enum/metadata";
 import * as echarts from "echarts";
 import { DashboardPermissions } from "@sppc/shared/security";
+import { WidgetService } from "./services/widget.service";
 
 interface DashboardConfig extends GridsterConfig {
   draggable: Draggable;
@@ -201,7 +202,8 @@ export class DashboardComponent
     public dashboardService: DashboardService,
     private dialogService: DialogService,
     private chRef: ChangeDetectorRef,
-    private chartService: ChartService
+    private chartService: ChartService,
+    private widgetService:WidgetService
   ) {
     super(
       toastrService,
@@ -232,7 +234,7 @@ export class DashboardComponent
 
     Chart.defaults.font.family = "'SPPC'";
 
-    this.subscription = this.chartService.widgetToRefresh$.subscribe(() => {
+    this.subscription = this.chartService.widgetToRefresh$.subscribe((r) => {
       this.refreshDashboard();
     });
 
@@ -370,17 +372,25 @@ export class DashboardComponent
   spinRefreshIcon(selector:string,toSpin:boolean) {
     let refreshIcon = document.querySelector(selector);
     if (toSpin){
-      if (!refreshIcon.classList.contains('toSpin')) {
+      if (refreshIcon && !refreshIcon.classList.contains('toSpin')) {
         refreshIcon.classList.add('toSpin');
       }
     } else {
-      refreshIcon.classList.remove('toSpin');
+      if (refreshIcon && refreshIcon.classList.contains('toSpin'))
+        refreshIcon.classList.remove('toSpin');
     }
+  }
+
+  onRefreshDashboardClick() {
+    this.spinRefreshIcon(`#refreshDashboard`,true);
+    this.refreshDashboard()
   }
 
   onRefreshWidget(tab,widget) {
     this.spinRefreshIcon(`#refresh-${widget.id}`,true);
-    this.getWidgetData(widget.typeId,widget.id,tab.id,widget.title,widget.series);
+    this.widgetService.getWidgets(widget.id).subscribe((res:Widget) =>{
+      this.getWidgetData(res.typeId,widget.id,tab.id,res.title,widget.series);
+    });
   }
 
   onSettingChanged(option) {
@@ -821,9 +831,9 @@ export class DashboardComponent
     this.widgetStatus[id] = "progress";
     return this.dashboardService
       .getWidgetData(widgetId)
-      .pipe(take(1))
+      .pipe(take(2))
       .subscribe((res) => {
-        this.spinRefreshIcon(`#refresh-${widgetId}`,false);
+        this.spinRefreshIcon(`.toSpin`,false);
         this.widgetStatus[id] = "done";
         let init = false;
         const series = [];

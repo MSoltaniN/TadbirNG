@@ -65,7 +65,8 @@
     "ManageWidgets": "مدیریت ویجت ها",
     "WidgetTitle":"عنوان ویجت",
     "WidgetNoData":"!دیتا موجود نیست",
-    "WidgetInProgress":"در حال بارگذاری دیتا ..."
+    "WidgetInProgress":"در حال بارگذاری دیتا ...",
+    "RefreshDashboard":"تازه‌سازی داشبورد"
   },
   "Exception": {
     "ErrorCode": "کد خطا",

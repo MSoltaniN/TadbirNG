@@ -46,7 +46,7 @@ export class WidgetService extends BaseService {
   }
 
   getWidgets(id) {
-    let url = DashboardApi.Widget;
+    let url = String.Format(DashboardApi.Widget,id);
     let options = { headers: this.httpHeaders }
     return this.http.get(url, options);
   }

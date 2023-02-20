@@ -60,7 +60,8 @@
     "ManageWidgets": "Manage widgets",
     "WidgetTitle":"Widget title",
     "WidgetNoData":"Data is not available!",
-    "WidgetInProgress":"Loading data ..."
+    "WidgetInProgress":"Loading data ...",
+    "RefreshDashboard":"Refresh Dashboard"
   },
   "Exception": {
     "ErrorCode": "Error Code",

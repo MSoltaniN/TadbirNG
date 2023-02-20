@@ -210,7 +210,7 @@ export class ManageWidgetsComponent
 
       this.saveHandler(model, isNew, this.widgetService, serviceUrl)
         .then((success: ResultOption) => {
-          this.chartService.refreshDashboard();
+          // this.chartService.refreshDashboard();
         })
         .catch((error: ResultOption) => {});
     });
