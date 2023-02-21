@@ -178,7 +178,6 @@ export class SystemIssueComponent
     this.pageIndex = 0;
     this.selectedSystemIssue = event.dataItem;
     this.isEnabledBranchScope = true;
-    console.log(event);
 
     if (this.selectedSystemIssue.viewId && this.selectedSystemIssue.apiUrl) {
       var issue = this.systemIssuesList.find(
@@ -213,7 +212,7 @@ export class SystemIssueComponent
     else {
       if (!event || !event.target) return;
       const node = <Element>event.target;
-      const hdnId = <any>node.closest(".k-item").querySelector(".hdn-id");
+      const hdnId = <HTMLInputElement>document.querySelector(".hdn-id");
       const value = hdnId.value;
 
       issueId = parseInt(value);
@@ -387,7 +386,7 @@ export class SystemIssueComponent
   getQuickFilter(applyBranchScope: boolean): FilterExpression {
     this.quickFilter = [];
     if (this.selectedBranchScope == "1" && applyBranchScope) {
-      this.defaultFilter.push(
+      this.quickFilter.push(
         new Filter(
           "BranchId",
           this.BranchId.toString(),

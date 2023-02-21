@@ -29,6 +29,7 @@ export class WidgetHeaderComponent implements OnInit {
 
   @Output() closeClick: EventEmitter<number> = new EventEmitter();
   @Output() settingChange: EventEmitter<any> = new EventEmitter();
+  @Output() refreshWidget: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private dialogService: DialogService,
@@ -38,6 +39,10 @@ export class WidgetHeaderComponent implements OnInit {
 
   onClose() {
     this.closeClick.emit();
+  }
+
+  onRefreshClick() {
+    this.refreshWidget.emit();
   }
 
   onSettingClick() {

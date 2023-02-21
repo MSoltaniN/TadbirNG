@@ -28,7 +28,7 @@
             </ng-template>
           </kendo-dropdownlist>
 
-          <input type="text" class="k-textbox" [disabled]="!isEnableMainComponentSearchBtn" [(ngModel)]="searchValue" (keydown.enter)="onMainComponentSearch()" />
+          <input type="text" class="k-textbox MainComponentSearchbox" [disabled]="!isEnableMainComponentSearchBtn" [(ngModel)]="searchValue" (keydown.enter)="onMainComponentSearch()" />
 
           <button class="k-button k-primary btn-search"
                   [disabled]="!isEnableMainComponentSearchBtn"
@@ -85,7 +85,7 @@
             </ng-template>
           </kendo-dropdownlist>
 
-          <input type="text" class="k-textbox" [disabled]="!isEnableRelatedComponentSearchBtn" [(ngModel)]="relatedSearchValue" (keydown.enter)="onRelatedComponentSearch()" />
+          <input type="text" class="k-textbox RelatedComponentSearchbox" [disabled]="!isEnableRelatedComponentSearchBtn" [(ngModel)]="relatedSearchValue" (keydown.enter)="onRelatedComponentSearch()" />
 
           <button class="k-button k-primary btn-search"
                   [disabled]="!isEnableRelatedComponentSearchBtn"

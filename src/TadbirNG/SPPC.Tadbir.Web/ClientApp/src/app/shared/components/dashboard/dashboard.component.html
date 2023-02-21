@@ -9,6 +9,10 @@
       class="buttons"
       [ngClass]="isDashboardEditMode ? 'col-lg-7 col-md-6' : 'col-md-12'"
     >
+      <a class="icon-button cursor-pointer" (click)="onRefreshDashboardClick()">
+        <i class="fa fa-refresh" id="refreshDashboard"></i>
+        {{ "Dashboard.RefreshDashboard" | translate }}
+      </a>
       <a *ngIf="isAccess('Dashboard',this.manageWidgets)"
        href="#/tadbir/dashboard" (click)="onManageWidgetsClick()">
         <i class="fa fa-cubes"></i>{{ "Dashboard.ManageWidgets" | translate }}
@@ -129,6 +133,7 @@
                     [headerTitle]="item.title"
                     [setting]="widgetSettings[item.id + '-' + tab.id]"
                     (settingChanged)="onSettingChanged($event)"
+                    (refreshWidget)="onRefreshWidget(tab,item)"
                   >
                     <widget-container>
                       <div class="box-body" body>

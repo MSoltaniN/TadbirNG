@@ -97,6 +97,17 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     ];
   }
 
+  focusOnSearchBox(ClassName) {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();      
+    }
+    let elm = <HTMLInputElement>document.querySelector(`.${ClassName}`)
+    setTimeout(() => {
+      elm.focus();
+      elm.select();
+    }, 50);
+  }
+
   /**
    * هنگامیکه کمبوباکس مولفه اصلی تغییر میکند اجرا میشود
    * @param item
@@ -112,7 +123,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     this.relatedComponentDropdownSelected = 0;
     this.noRelatedResultMessage = false;
     this.deleteKey = [];
-    this.searchValue = '';
+    this.focusOnSearchBox('MainComponentSearchbox');
 
     if (item > 0) {
       this.isDisableRelatedComponnet = false;
@@ -163,7 +174,8 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
   public handleRelatedComponentDropDownChange(item: any) {
     this.relatedComponentCheckedKeys = [];
     this.deleteKey = [];
-    this.relatedSearchValue = '';
+    this.focusOnSearchBox('RelatedComponentSearchbox');
+
     if (item > 0) {
       this.relatedComponentDropdownSelected = item;
       this.isEnableRelatedComponentSearchBtn = true;

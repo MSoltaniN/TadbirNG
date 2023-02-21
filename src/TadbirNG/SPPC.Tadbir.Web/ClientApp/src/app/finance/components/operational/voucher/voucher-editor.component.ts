@@ -47,6 +47,7 @@ import {
 } from "@sppc/shared/services";
 import { ToastrService } from "ngx-toastr";
 import { SpecialVoucherPermissions } from "@sppc/shared/security";
+import { VoucherViewAccessGuard } from "@sppc/core/services/voucher-view-access.guard";
 // import "rxjs/Rx";
 
 export function getLayoutModule(layout: Layout) {
@@ -182,8 +183,13 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
    */
   pressedOperatorButton = false;
 
-  get viewAccess() {
-    return this.activeRoute.snapshot.data['viewAccess'];
+  viewAccess = this.activeRoute.snapshot.data['viewAccess']
+  get hasViewAccess() {
+    let routeParams = this.activeRoute.snapshot.paramMap
+    if (routeParams.get('type')||routeParams.get('mode'))
+      return this.viewAccess;
+    else
+      return true
   }
 
   constructor(
@@ -311,14 +317,14 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
                   true
                 );
             } else {
-              if (this.viewAccess)
+              if (this.hasViewAccess)
                 this.openingVoucherQuery();
             }
 
             break;
           }
           case "closing-voucher": {
-            if (this.viewAccess)
+            if (this.hasViewAccess)
               this.getVoucher(VoucherApi.ClosingVoucher);
             break;
           }
@@ -337,11 +343,11 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
                     true
                   );
               } else {
-                if (this.viewAccess) 
+                if (this.hasViewAccess) 
                   this.checkClosingTmp();
               }
             } else {
-              if (this.viewAccess) 
+              if (this.hasViewAccess) 
                 this.closingTmpOnInventoryMode1();
             }
 
@@ -355,7 +361,6 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
         }
       });
     }
-
   }
 
   //report methods
@@ -527,7 +532,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
   }
 
   getVoucher(apiUrl: string, byNo: boolean = false) {
-    if (this.viewAccess) {
+
+    if (this.hasViewAccess) {
       this.voucherService
         .getModelsByFilters(apiUrl, this.filter, this.quickFilter)
         .subscribe(

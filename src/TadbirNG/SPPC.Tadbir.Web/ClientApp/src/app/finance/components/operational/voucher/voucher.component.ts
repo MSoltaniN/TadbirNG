@@ -370,9 +370,8 @@ export class VoucherComponent
         subjectType == "1"
           ? this.getText("Voucher.DraftVoucherDetail")
           : this.getText("Voucher.VoucherDetail"),
-      content: VoucherEditorComponent,
+      content: VoucherEditorComponent
     });
-
     this.dialogModel = this.dialogRef.content.instance;
     this.dialogModel.voucherItem = this.editDataItem;
     this.dialogModel.isOpenFromList = true;
