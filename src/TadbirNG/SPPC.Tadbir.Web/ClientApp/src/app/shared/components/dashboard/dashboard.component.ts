@@ -851,7 +851,7 @@ export class DashboardComponent
 
               item.type = this.chartService.getChartTypeName(widgetType);
             }
-
+            
             const seriesItem: SerieItem = {
               name: item.label,
               type: widgetType.toString(),
@@ -999,7 +999,7 @@ export class DashboardComponent
           y: setting.y,
           x: setting.x,
           id: widget.widgetId,
-          title: setting.title ? setting.title : widget.widgetTitle,
+          title: widget.widgetTitle ? widget.widgetTitle: setting.title,
           typeId: widget.widgetTypeId,
           series: setting.series,
         });
