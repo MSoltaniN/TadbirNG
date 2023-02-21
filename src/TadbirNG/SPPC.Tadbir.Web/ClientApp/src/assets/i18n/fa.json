@@ -1165,7 +1165,9 @@
     "FiscalPeriod": "دوره مالی",
     "RecordNotFound": "این نقش هیچ دسترسی ندارد",
     "RoleDetail": "جزئیات نقش",
-    "Companies": "شرکت"
+    "Companies": "شرکت",
+    "ViewAccess": "مشاهده",
+    "ManageDashboardAccess": "مدیریت داشبورد"
   },
   "RoleUsers": {
     "Name": "نام و نام خانوادگی",

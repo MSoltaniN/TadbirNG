@@ -41,11 +41,14 @@
             <kendo-treeview [nodes]="treeData" textField="name"
                             [loadOnDemand]="false"
                             kendoTreeViewExpandable
-                            kendoTreeViewCheckable
+                            [kendoTreeViewCheckable]="{checkDisabledChildren: true}"
                             kendoTreeViewFlatDataBinding
                             idField="id"
                             parentIdField="parentId"
-                            [(checkedKeys)]="checkedKeys">
+                            [(checkedKeys)]="checkedKeys"
+                            (checkedChange)="onCheckChange($event)"
+                            kendoTreeViewDisable="id"
+                            [(disabledKeys)]="disabledKeys">
             </kendo-treeview>
         </div>
 
