@@ -371,3 +371,14 @@ WHERE [TypeID] NOT IN(1, 2, 3, 4, 10)
 
 DELETE FROM [Reporting].[WidgetType]
 WHERE [WidgetTypeID] NOT IN(1, 2, 3, 4, 10)
+
+-- 1.2.1482
+CREATE SCHEMA [CashFlow]
+GO
+
+CREATE SCHEMA [Check]
+GO
+
+SET IDENTITY_INSERT [Metadata].[Subsystem] ON
+INSERT INTO [Metadata].[Subsystem] ([SubsystemID], [Name]) VALUES (2, N'Treasury')
+SET IDENTITY_INSERT [Metadata].[Subsystem] OFF

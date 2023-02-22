@@ -28,6 +28,11 @@ GO
 CREATE SCHEMA [Reporting]
 GO
 
+CREATE SCHEMA [CashFlow]
+GO
+
+CREATE SCHEMA [Check]
+GO
 
 CREATE TABLE [Core].[Version] (
     [VersionID]      INT              NOT NULL,
@@ -1135,6 +1140,7 @@ SET IDENTITY_INSERT [Metadata].[OperationSourceList] OFF
 
 SET IDENTITY_INSERT [Metadata].[Subsystem] ON
 INSERT INTO [Metadata].[Subsystem] ([SubsystemID], [Name]) VALUES (1, N'Accounting')
+INSERT INTO [Metadata].[Subsystem] ([SubsystemID], [Name]) VALUES (2, N'Treasury')
 SET IDENTITY_INSERT [Metadata].[Subsystem] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSourceType] ON
