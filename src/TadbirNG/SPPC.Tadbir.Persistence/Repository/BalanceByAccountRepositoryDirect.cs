@@ -63,7 +63,8 @@ namespace SPPC.Tadbir.Persistence
                 balanaceByItem.ViewMetadata = await Metadata.GetBalanceByAccountMetadataAsync(parameters);
             }
 
-            await OnSourceActionAsync(parameters.GridOptions, SourceListId.None);
+            var sourceList = GetSourceList(parameters);
+            await OnSourceActionAsync(parameters.GridOptions, sourceList);
             return balanaceByItem;
         }
 
@@ -75,6 +76,36 @@ namespace SPPC.Tadbir.Persistence
         private IConfigRepository Config { get; }
 
         private IMetadataRepository Metadata { get; }
+
+        private static SourceListId GetSourceList(BalanceByAccountParameters parameters)
+        {
+            var sourceList = SourceListId.None;
+            switch (parameters.ViewId)
+            {
+                case ViewId.Account:
+                    sourceList = parameters.AccountId.HasValue
+                        ? SourceListId.BalanceByOneAccount
+                        : SourceListId.BalanceByAllAccounts;
+                    break;
+                case ViewId.DetailAccount:
+                    sourceList = parameters.DetailAccountId.HasValue
+                        ? SourceListId.BalanceByOneDetailAccount
+                        : SourceListId.BalanceByAllDetailAccounts;
+                    break;
+                case ViewId.CostCenter:
+                    sourceList = parameters.CostCenterId.HasValue
+                        ? SourceListId.BalanceByOneCostCenter
+                        : SourceListId.BalanceByAllCostCenters;
+                    break;
+                case ViewId.Project:
+                    sourceList = parameters.ProjectId.HasValue
+                        ? SourceListId.BalanceByOneProject
+                        : SourceListId.BalanceByAllProjects;
+                    break;
+            }
+
+            return sourceList;
+        }
 
         private static bool IsZeroItem(BalanceByAccountItemViewModel item)
         {

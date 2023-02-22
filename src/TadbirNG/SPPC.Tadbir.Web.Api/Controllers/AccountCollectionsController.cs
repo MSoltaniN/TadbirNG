@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
@@ -65,7 +66,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.View)]
         public async Task<IActionResult> GetAccountCollectionAccountAsync(int collectionId)
         {
-            var accounts = await _repository.GetCollectionAccountsAsync(collectionId);
+            var gridOptions = GridOptions ?? new GridOptions();
+            var accounts = await _repository.GetCollectionAccountsAsync(collectionId, gridOptions);
             SetRowNumbers(accounts);
             return Json(accounts);
         }
