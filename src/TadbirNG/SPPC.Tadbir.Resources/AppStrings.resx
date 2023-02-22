@@ -3720,4 +3720,10 @@
   <data name="Treasury" xml:space="preserve">
     <value>خزانه‌داری</value>
   </data>
+  <data name="CashRegister" xml:space="preserve">
+    <value>صندوق</value>
+  </data>
+  <data name="CashRegisters" xml:space="preserve">
+    <value>صندوق ها</value>
+  </data>
 </root>

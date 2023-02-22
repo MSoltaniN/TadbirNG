@@ -100,5 +100,10 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی گزارش سود و زیان مقایسه ای با یک ستون مبلغ
         /// </summary>
         public const int ComparativeProfitLossSimple = 66;
+
+        /// <summary>
+        /// نمای اطلاعاتی صندوق ها
+        /// </summary>
+        public const int CashRegister = 70;
     }
 }
