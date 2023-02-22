@@ -480,6 +480,18 @@ namespace SPPC.Tools.SystemDesigner.Forms
             return allSettings;
         }
 
+        private IEnumerable<LogSettingViewModel> GetOrganizedSettings()
+        {
+            var allSettings = GetAllSettings()
+                .OrderBy(log => log.SourceId)
+                .ThenBy(log => log.EntityTypeId)
+                .ThenBy(log => log.OperationId)
+                .ToArray();
+            int nextId = 1;
+            Array.ForEach(allSettings, setting => setting.Id = nextId++);
+            return allSettings;
+        }
+
         private void GenerateScripts()
         {
             var all = GetAllSourceEntityItems();
@@ -492,8 +504,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 .Select(node => node.Tag as OperationSourceViewModel)
                 .OrderBy(source => source.Id);
 
-            var orderedSettings = GetAllSettings()
-                .OrderBy(setting => setting.Id);
+            var orderedSettings = GetOrganizedSettings();
             GenerateCreateScripts(orderedSettings, entities, sources);
             GenerateUpdateScripts(orderedSettings, entities, sources);
         }

@@ -18,6 +18,7 @@ namespace SPPC.Tadbir.Persistence
         ProfitLoss = 10,
         AccountRelations = 11,
         BalanceSheet = 12,
-        SystemIssue = 13
+        SystemIssue = 13,
+        SystemSettings = 14
     }
 }

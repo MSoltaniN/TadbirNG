@@ -317,3 +317,12 @@ INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, R
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
     VALUES (55, 52, NULL, N'CheckReports', NULL, N'folder-close', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
+
+-- 1.2.1483
+DELETE FROM [Metadata].[OperationSource]
+WHERE OperationSourceID = 10
+
+SET IDENTITY_INSERT [Metadata].[OperationSource] ON
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID], [Name])
+    VALUES (14, N'SystemSettings')
+SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
