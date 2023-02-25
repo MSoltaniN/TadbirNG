@@ -17,7 +17,6 @@ namespace SPPC.Tadbir.Persistence
         OperationLog = 11,
         Project = 12,
         Setting = 15,
-        TaxCurrency = 16,
         Voucher = 17,
         DraftVoucher = 18,
         DashboardTab = 19,

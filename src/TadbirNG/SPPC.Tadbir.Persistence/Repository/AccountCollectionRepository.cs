@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Persistence;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -48,12 +48,18 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، حساب های انتخاب شده برای یک مجموعه حساب را خوانده و برمی گرداند
         /// </summary>
         /// <param name="collectionId">شناسه یکتای مجموعه حساب</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های انتخاب شده در یک مجموعه حساب</returns>
-        public async Task<IList<AccountCollectionAccountViewModel>> GetCollectionAccountsAsync(int collectionId)
+        public async Task<IList<AccountCollectionAccountViewModel>> GetCollectionAccountsAsync(
+            int collectionId, GridOptions gridOptions)
         {
             Verify.EnumValueIsDefined(typeof(AccountCollectionId), nameof(collectionId), collectionId);
             var accounts = await GetInheritedAccountsAsync(collectionId, UserContext.BranchId);
-            await LogCollectionOperationAsync(OperationId.View, collectionId);
+            if (gridOptions.ListChanged)
+            {
+                await LogCollectionOperationAsync(OperationId.View, collectionId);
+            }
+
             return accounts;
         }
 

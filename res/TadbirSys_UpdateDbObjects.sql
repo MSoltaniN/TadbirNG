@@ -239,3 +239,90 @@ UPDATE [Reporting].[LocalReport] SET [Caption] = N'Widgets list' WHERE ReportID 
 UPDATE [Reporting].[LocalReport] SET [Caption] = N'لیست ویجت ها' WHERE ReportID = 91 AND LocaleID = 2
 UPDATE [Reporting].[LocalReport] SET [Caption] = N'Widgets list' WHERE ReportID = 92 AND LocaleID = 1
 UPDATE [Reporting].[LocalReport] SET [Caption] = N'لیست ویجت ها' WHERE ReportID = 92 AND LocaleID = 2
+
+-- 1.2.1482
+CREATE TABLE [Metadata].[Subsystem] (
+    [SubsystemID]    INT              IDENTITY (1, 1) NOT NULL,
+    [Name]           NVARCHAR(64)     NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Subsystem_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_Subsystem_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_Subsystem] PRIMARY KEY CLUSTERED ([SubsystemID] ASC)
+)
+GO
+
+SET IDENTITY_INSERT [Metadata].[Subsystem] ON
+INSERT INTO [Metadata].[Subsystem] ([SubsystemID], [Name]) VALUES (1, N'Administration')
+INSERT INTO [Metadata].[Subsystem] ([SubsystemID], [Name]) VALUES (2, N'Accounting')
+INSERT INTO [Metadata].[Subsystem] ([SubsystemID], [Name]) VALUES (3, N'Treasury')
+SET IDENTITY_INSERT [Metadata].[Subsystem] OFF
+
+ALTER TABLE [Reporting].[Report]
+ADD CONSTRAINT [FK_Reporting_Report_Metadata_Subsystem] FOREIGN KEY ([SubsystemID]) REFERENCES [Metadata].[Subsystem]([SubsystemID])
+
+SET IDENTITY_INSERT [Reporting].[Report] ON
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (93, NULL, 1, NULL, 3, 'Treasury', NULL, 1, 1, 0, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (94, 93, 1, NULL, 3, 'Treasury-Base', NULL, 1, 1, 0, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (95, 93, 1, NULL, 3, 'Treasury-Operation', NULL, 1, 1, 0, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (96, 93, 1, NULL, 3, 'Treasury-Report', NULL, 1, 1, 0, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (97, 94, 1, NULL, 3, 'Treasury-Base-QReport', NULL, 1, 1, 0, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (98, 95, 1, NULL, 3, 'Treasury-Operation-QReport', NULL, 1, 1, 0, 0)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic])
+    VALUES (99, 96, 1, NULL, 3, 'Treasury-Report-QReport', NULL, 1, 1, 0, 0)
+SET IDENTITY_INSERT [Reporting].[Report] OFF
+
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (277, 1, 93, 'Treasury', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (278, 2, 93, N'خزانه‌داری', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (279, 1, 94, 'Base Data', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (280, 2, 94, N'اطلاعات پایه', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (281, 1, 95, 'Operational Data', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (282, 2, 95, N'اطلاعات عملیاتی', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (283, 1, 96, 'Reports', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (284, 2, 96, N'گزارشات', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (285, 1, 97, 'Quick Report', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (286, 2, 97, N'گزارش فوری', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (287, 1, 98, 'Quick Report', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (288, 2, 98, N'گزارش فوری', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (289, 1, 99, 'Quick Report', NULL)
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption], [Template])
+    VALUES (290, 2, 99, N'گزارش فوری', NULL)
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
+
+SET IDENTITY_INSERT [Metadata].[Command] ON
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
+    VALUES (52, NULL, NULL, N'Treasury', NULL, N'folder-close', NULL)
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
+    VALUES (53, 52, NULL, N'BaseData', NULL, N'folder-close', NULL)
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
+    VALUES (54, 52, NULL, N'CheckOperations', NULL, N'folder-close', NULL)
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
+    VALUES (55, 52, NULL, N'CheckReports', NULL, N'folder-close', NULL)
+SET IDENTITY_INSERT [Metadata].[Command] OFF
+
+-- 1.2.1483
+DELETE FROM [Metadata].[OperationSource]
+WHERE OperationSourceID = 10
+
+SET IDENTITY_INSERT [Metadata].[OperationSource] ON
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID], [Name])
+    VALUES (14, N'SystemSettings')
+SET IDENTITY_INSERT [Metadata].[OperationSource] OFF

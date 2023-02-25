@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -19,8 +20,10 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، حساب های انتخاب شده برای یک مجموعه حساب را خوانده و برمی گرداند
         /// </summary>
         /// <param name="collectionId">شناسه یکتای مجموعه حساب</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های انتخاب شده در یک مجموعه حساب</returns>
-        Task<IList<AccountCollectionAccountViewModel>> GetCollectionAccountsAsync(int collectionId);
+        Task<IList<AccountCollectionAccountViewModel>> GetCollectionAccountsAsync(
+            int collectionId, GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، حساب های یک مجموعه حساب را اضافه میکند

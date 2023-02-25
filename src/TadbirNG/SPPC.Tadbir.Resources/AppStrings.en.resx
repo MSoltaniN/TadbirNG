@@ -3720,4 +3720,13 @@
   <data name="WidgetAccess" xml:space="preserve">
     <value>Widget access</value>
   </data>
+  <data name="CheckOperations" xml:space="preserve">
+    <value>Check Operations</value>
+  </data>
+  <data name="CheckReports" xml:space="preserve">
+    <value>Check Reports</value>
+  </data>
+  <data name="Treasury" xml:space="preserve">
+    <value>Treasury</value>
+  </data>
 </root>

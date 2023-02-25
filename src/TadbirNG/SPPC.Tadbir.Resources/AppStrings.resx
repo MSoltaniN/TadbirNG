@@ -3711,4 +3711,13 @@
   <data name="WidgetAccess" xml:space="preserve">
     <value>دسترسی به ویجت</value>
   </data>
+  <data name="CheckOperations" xml:space="preserve">
+    <value>عملیات چک</value>
+  </data>
+  <data name="CheckReports" xml:space="preserve">
+    <value>گزارش‌های چک</value>
+  </data>
+  <data name="Treasury" xml:space="preserve">
+    <value>خزانه‌داری</value>
+  </data>
 </root>
