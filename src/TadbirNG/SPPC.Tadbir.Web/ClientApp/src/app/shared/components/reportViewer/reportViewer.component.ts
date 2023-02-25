@@ -1,8 +1,10 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { SettingService } from '@sppc/config/service';
 import { DefaultComponent } from '@sppc/shared/class';
 import { CalendarType, Entities } from '@sppc/shared/enum/metadata';
+import { OperationId } from '@sppc/shared/enum/operationId';
 import { QuickReportColumnConfig, QuickReportConfigInfo, Report } from '@sppc/shared/models';
 import { ViewName } from '@sppc/shared/security';
 import { BrowserStorageService, MetaDataService, ParameterInfo, ReportingService } from '@sppc/shared/services';
@@ -34,7 +36,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   @Input() public showViewer: boolean = false;
   @Input() public Id: string;
   @Input() public Code: string;
-
+  @Input() public url: string;
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
@@ -194,9 +196,22 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   }
 
   addViewerEvents() {
+    let url = this.url;
+    let headers = this.reporingService.httpHeaders;
+    let http = this.reporingService.http;
     // Assign the onPrintReport event function
     this.viewer.onPrintReport = function () {
       console.log('onPrintReport');
+      // for Print Log.
+      let postItem = {listChanged:true,operation:OperationId.Print}
+      let postBody = JSON.stringify(postItem);
+      let base64Body = btoa(encodeURIComponent(postBody));
+      if (headers)
+        headers = headers.append("X-Tadbir-GridOptions", base64Body);
+      if (url)
+        http.get(url, { headers: headers, observe: "response" }).subscribe(res => {
+            console.log("PrintLog.")
+          })
     }
 
     // Assign the onReportExport event function

@@ -740,7 +740,8 @@ export class ReportManagementComponent
             this.currentPrintInfo.code,
             this,
             this.qReport,
-            this.currentQuickReportViewInfo
+            this.currentQuickReportViewInfo,
+            serviceUrl
           );
         });
     } else {
@@ -784,7 +785,8 @@ export class ReportManagementComponent
             this.currentPrintInfo.code,
             this,
             this.qReport,
-            this.currentQuickReportViewInfo
+            this.currentQuickReportViewInfo,
+            serviceUrl
           );
         });
     }
@@ -899,7 +901,10 @@ export class ReportManagementComponent
       true,
       this.currentReportId,
       this.currentReportId,
-      designer
+      designer,
+      undefined,
+      undefined,
+      ''
     );
 
     if (!tabIsOpen) return;
