@@ -38,7 +38,7 @@ export function getLayoutModule(layout: Layout) {
 
 })
 
-export class RoleFormComponent extends DetailComponent implements OnDestroy {
+export class RoleFormComponent extends DetailComponent {
 
   public treeData: TreeNodeInfo[] = new Array<TreeNodeInfo>();
 
@@ -50,7 +50,6 @@ export class RoleFormComponent extends DetailComponent implements OnDestroy {
   //@Input() public errorMessage: string = '';
 
   @Input() public set model(role: Role) {
-
     this.editForm.reset(role);
     this.active = role !== undefined || this.isNew;
   }
@@ -151,8 +150,6 @@ export class RoleFormComponent extends DetailComponent implements OnDestroy {
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<RoleFullInfo> = new EventEmitter();
   //create properties
-
-
 
   ////Events
   public onSave(e: any): void {
@@ -329,7 +326,6 @@ export class RoleFormComponent extends DetailComponent implements OnDestroy {
   ////Events
 
   selectionKey(context: RowArgs) {
-
     return context.index.toString();
   }
 
@@ -338,12 +334,6 @@ export class RoleFormComponent extends DetailComponent implements OnDestroy {
     public renderer: Renderer2, public metadata: MetaDataService,public elem:ElementRef) {
 
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.Role, ViewName.Role,elem);
-  }
-
-  override ngOnDestroy(): void {
-    this.disabledKeys = [];
-    this.disabledViewAccessKeys = [];
-    console.log('role-form Detroyed!');
   }
 
 }

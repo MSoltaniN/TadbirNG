@@ -45,13 +45,7 @@ export function getLayoutModule(layout: Layout) {
 @Component({
   selector: "role",
   templateUrl: "./role.component.html",
-  styles: [
-    `
-      .k-button {
-        margin: 3px 0;
-      }
-    `,
-  ],
+  styles: [``],
   providers: [
     {
       provide: RTL,
