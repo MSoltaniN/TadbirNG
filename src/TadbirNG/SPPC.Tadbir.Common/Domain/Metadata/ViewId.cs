@@ -100,5 +100,10 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی گزارش سود و زیان مقایسه ای با یک ستون مبلغ
         /// </summary>
         public const int ComparativeProfitLossSimple = 66;
+
+        /// <summary>
+        /// نمای اطلاعاتی دسته چک ها
+        /// </summary>
+        public const int CheckBook = 69;
     }
 }

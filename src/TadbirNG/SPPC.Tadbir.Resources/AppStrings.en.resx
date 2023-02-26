@@ -3729,4 +3729,16 @@
   <data name="Treasury" xml:space="preserve">
     <value>Treasury</value>
   </data>
+  <data name="ChekBook" xml:space="preserve">
+    <value>ChekBook</value>
+  </data>
+  <data name="ChekBooks" xml:space="preserve">
+    <value>ChekBooks</value>
+  </data>
+  <data name="CheckBook" xml:space="preserve">
+    <value>CheckBook</value>
+  </data>
+  <data name="CheckBooks" xml:space="preserve">
+    <value>CheckBooks</value>
+  </data>
 </root>

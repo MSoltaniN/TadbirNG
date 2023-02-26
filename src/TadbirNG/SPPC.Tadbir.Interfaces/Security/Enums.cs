@@ -1685,4 +1685,108 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         All = 0x3
     }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به یک دسته چک را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum CheckBookPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به اطلاعات دسته چک ها
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست دسته چک ها یا جزییات یک دسته چک
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی فیلتر دسته چک ها موجود
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
+        /// دسترسی چاپ دسته چک ها موجود
+        /// </summary>
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات دسته چک ها موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک دسته چک جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک دسته چک موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک دسته چک موجود
+        /// </summary>
+        Delete = 0x40,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت دسته چک ها
+        /// </summary>
+        All = 0x7f
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به یک برگه چک را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum CheckBookPagePermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به اطلاعات برگه های چک
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست برگه های چک یا جزییات یک برگه چک
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی فیلتر برگه های چک موجود
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
+        /// دسترسی چاپ برگه های چک موجود
+        /// </summary>
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات برگه های چک موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک برگه چک جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک برگه چک موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک برگه چک موجود
+        /// </summary>
+        Delete = 0x40,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت برگه های چک
+        /// </summary>
+        All = 0x7f
+    }
 }

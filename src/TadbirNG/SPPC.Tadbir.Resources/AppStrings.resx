@@ -3720,4 +3720,16 @@
   <data name="Treasury" xml:space="preserve">
     <value>خزانه‌داری</value>
   </data>
+  <data name="ChekBook" xml:space="preserve">
+    <value>دسته چک</value>
+  </data>
+  <data name="ChekBooks" xml:space="preserve">
+    <value>دسته چک ها</value>
+  </data>
+  <data name="CheckBook" xml:space="preserve">
+    <value>دسته چک</value>
+  </data>
+  <data name="CheckBooks" xml:space="preserve">
+    <value>دسته چک ها</value>
+  </data>
 </root>

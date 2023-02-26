@@ -14,6 +14,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Mapper.ModelHelpers;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Check;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
@@ -22,6 +23,7 @@ using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.Check;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
@@ -81,6 +83,13 @@ namespace SPPC.Tadbir.Mapper
             MapCoreTypes(mapperConfig);
             MapMetadataTypes(mapperConfig);
             MapReportingTypes(mapperConfig);
+            MapCheckTypes(mapperConfig);
+        }
+
+        private static void MapCheckTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<CheckBook, CheckBookViewModel>();
+            mapperConfig.CreateMap<CheckBookViewModel, CheckBook>();
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)

@@ -326,3 +326,26 @@ SET IDENTITY_INSERT [Metadata].[OperationSource] ON
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID], [Name])
     VALUES (14, N'SystemSettings')
 SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
+
+-- 1.2.1484
+SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName], [Description])
+    VALUES (37, N'ManageEntities,CheckBooks', N'CheckBook', NULL)
+SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
+
+SET IDENTITY_INSERT [Auth].[Permission] ON
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (212, 37, N'View', 1, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (213, 37, N'Filter', 2, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (214, 37, N'Print', 4, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (215, 37, N'Export', 8, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (216, 37, N'Create', 16, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (217, 37, N'Edit', 32, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (218, 37, N'Delete', 64, NULL)
+SET IDENTITY_INSERT [Auth].[Permission] OFF

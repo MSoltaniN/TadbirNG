@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Check;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Core;
@@ -95,6 +96,8 @@ namespace SPPC.Tadbir.Persistence
             WidgetTypeMap.BuildMapping(modelBuilder.Entity<WidgetType>());
             FunctionParameterMap.BuildMapping(modelBuilder.Entity<FunctionParameter>());
             WidgetAccountMap.BuildMapping(modelBuilder.Entity<WidgetAccount>());
+            CheckBookMap.BuildMapping(modelBuilder.Entity<CheckBook>());
+            CheckBookPageMap.BuildMapping(modelBuilder.Entity<CheckBookPage>());
         }
 
         /// <summary>
