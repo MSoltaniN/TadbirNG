@@ -141,9 +141,19 @@ export class TabsComponent implements AfterContentInit {
     }
   }
 
-  openTab(title: string, template, data, isCloseable = false,
-    isViewer: boolean = false, isDesigner: boolean = false, id: string,code:string, manager: any, isQuickReport: boolean = false,
-    quickReportViewInfo: QuickReportConfigInfo= null): boolean {
+  openTab(title: string,
+    template,
+    data,
+    isCloseable = false,
+    isViewer: boolean = false,
+    isDesigner: boolean = false,
+    id: string,
+    code:string,
+    manager: any,
+    isQuickReport: boolean = false,
+    quickReportViewInfo: QuickReportConfigInfo= null,
+    url:string): boolean
+  {
 
     var prefix : string;
     if(isViewer)
@@ -194,6 +204,7 @@ export class TabsComponent implements AfterContentInit {
     instance.Code = code;
     instance.reportViewer.Id = prefix + id;
     instance.QuickReportInfo = quickReportViewInfo;
+    instance.url = url;
     // remember the dynamic component for rendering the
     // tab navigation headers
     this.dynamicTabs.push(componentRef.instance as TabComponent);

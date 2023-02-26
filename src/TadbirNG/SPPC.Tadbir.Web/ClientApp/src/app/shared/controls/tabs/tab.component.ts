@@ -21,7 +21,7 @@ import { ReportViewerComponent } from '@sppc/shared/components';
   ],
   template: `
     <div [hidden]="!active" class="pane">
-      <report-viewer #viewer [Id]="Id" [Code]="Code">                                                                
+      <report-viewer #viewer [Id]="Id" [Code]="Code" [url]="url">                                                                
       </report-viewer>
       <div [id]="Id" *ngIf='isDesigner'></div>
     </div>
@@ -40,6 +40,8 @@ export class TabComponent {
   @Input() Manager: any;
   @Input() IsQuickReport: boolean;
   @Input() QuickReportInfo: QuickReportConfigInfo;
+  @Input() url: any;
+
 
   @ViewChild(ReportViewerComponent, {static: true}) reportViewer: ReportViewerComponent;  
     
