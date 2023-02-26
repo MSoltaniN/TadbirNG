@@ -789,3 +789,26 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
     VALUES (200, 1, 3, 13, NULL, 58, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
+-- 1.2.1485
+ALTER TABLE [Config].[LogSetting]
+DROP CONSTRAINT [FK_Config_LogSetting_Metadata_Subsystem]
+
+UPDATE [Config].[LogSetting]
+SET [SubsystemID] = 3
+WHERE [SubsystemID] = 2
+
+UPDATE [Config].[LogSetting]
+SET [SubsystemID] = 2
+WHERE [SubsystemID] = 1
+
+DELETE FROM [Metadata].[Subsystem]
+
+SET IDENTITY_INSERT [Metadata].[Subsystem] ON
+INSERT INTO [Metadata].[Subsystem] ([SubsystemID], [Name]) VALUES (2, N'Accounting')
+INSERT INTO [Metadata].[Subsystem] ([SubsystemID], [Name]) VALUES (3, N'Treasury')
+SET IDENTITY_INSERT [Metadata].[Subsystem] OFF
+
+ALTER TABLE [Config].[LogSetting]
+ADD CONSTRAINT [FK_Config_LogSetting_Metadata_Subsystem] FOREIGN KEY ([SubsystemID]) REFERENCES [Metadata].[Subsystem]([SubsystemID])
+
+
