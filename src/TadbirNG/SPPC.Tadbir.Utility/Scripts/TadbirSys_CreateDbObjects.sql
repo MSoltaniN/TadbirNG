@@ -581,7 +581,7 @@ SET IDENTITY_INSERT [Metadata].[Operation] OFF
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (7, N'AppLogin')
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (8, N'AppEnvironment')
-INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (10, N'SystemSettings')
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID],[Name]) VALUES (14, N'SystemSettings')
 SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
 
 SET IDENTITY_INSERT [Config].[SysLogSetting] ON
