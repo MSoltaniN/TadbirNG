@@ -21,7 +21,7 @@ import { ReportViewerComponent } from '@sppc/shared/components';
   ],
   template: `
     <div [hidden]="!active" class="pane">
-      <report-viewer #viewer [Id]="Id" [Code]="Code" [url]="url">                                                                
+      <report-viewer #viewer [Id]="Id" [Code]="Code" [url]="url" [title]="title">                                                                
       </report-viewer>
       <div [id]="Id" *ngIf='isDesigner'></div>
     </div>
