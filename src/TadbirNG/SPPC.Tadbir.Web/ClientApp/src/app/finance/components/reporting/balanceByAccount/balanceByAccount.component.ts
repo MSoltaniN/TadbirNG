@@ -972,6 +972,8 @@ export class BalanceByAccountComponent
       options.Parameter = this.param;
 
       this.parameters = this.param;
+      this.listChanged = true;
+      this.operationId = OperationId.View;
 
       this.reloadGrid(options);
 
@@ -1388,6 +1390,7 @@ export class BalanceByAccountComponent
 
     this.enableViewListChanged(this.typeViewId);
     this.operationId = OperationId.Filter;
+    this.listChanged = true;
     this.getReportData();
   }
 
