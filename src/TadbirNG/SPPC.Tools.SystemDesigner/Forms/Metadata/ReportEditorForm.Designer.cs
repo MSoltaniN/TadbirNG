@@ -80,18 +80,20 @@
             this.tabNewReport.Controls.Add(this.tabReport);
             this.tabNewReport.Controls.Add(this.tabParameters);
             this.tabNewReport.Location = new System.Drawing.Point(0, 0);
+            this.tabNewReport.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabNewReport.Name = "tabNewReport";
             this.tabNewReport.SelectedIndex = 0;
-            this.tabNewReport.Size = new System.Drawing.Size(649, 622);
+            this.tabNewReport.Size = new System.Drawing.Size(568, 466);
             this.tabNewReport.TabIndex = 0;
             // 
             // tabView
             // 
             this.tabView.Controls.Add(this.label10);
             this.tabView.Controls.Add(this.tvViewModels);
-            this.tabView.Location = new System.Drawing.Point(4, 29);
+            this.tabView.Location = new System.Drawing.Point(4, 24);
+            this.tabView.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabView.Name = "tabView";
-            this.tabView.Size = new System.Drawing.Size(641, 589);
+            this.tabView.Size = new System.Drawing.Size(560, 438);
             this.tabView.TabIndex = 2;
             this.tabView.Text = "View";
             this.tabView.UseVisualStyleBackColor = true;
@@ -99,9 +101,9 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(8, 13);
+            this.label10.Location = new System.Drawing.Point(7, 10);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(121, 20);
+            this.label10.Size = new System.Drawing.Size(96, 15);
             this.label10.TabIndex = 10;
             this.label10.Text = "All view models :";
             // 
@@ -112,18 +114,20 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tvViewModels.HideSelection = false;
             this.tvViewModels.Indent = 15;
-            this.tvViewModels.Location = new System.Drawing.Point(8, 42);
+            this.tvViewModels.Location = new System.Drawing.Point(7, 32);
+            this.tvViewModels.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tvViewModels.Name = "tvViewModels";
-            this.tvViewModels.Size = new System.Drawing.Size(625, 528);
+            this.tvViewModels.Size = new System.Drawing.Size(547, 397);
             this.tvViewModels.TabIndex = 9;
             // 
             // tabReport
             // 
             this.tabReport.Controls.Add(this.grpReportInfo);
-            this.tabReport.Location = new System.Drawing.Point(4, 29);
+            this.tabReport.Location = new System.Drawing.Point(4, 24);
+            this.tabReport.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabReport.Name = "tabReport";
-            this.tabReport.Padding = new System.Windows.Forms.Padding(3);
-            this.tabReport.Size = new System.Drawing.Size(641, 589);
+            this.tabReport.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabReport.Size = new System.Drawing.Size(560, 438);
             this.tabReport.TabIndex = 0;
             this.tabReport.Text = "Report";
             this.tabReport.UseVisualStyleBackColor = true;
@@ -153,9 +157,11 @@
             this.grpReportInfo.Controls.Add(this.label3);
             this.grpReportInfo.Controls.Add(this.cmbSubsystem);
             this.grpReportInfo.Controls.Add(this.label2);
-            this.grpReportInfo.Location = new System.Drawing.Point(8, 19);
+            this.grpReportInfo.Location = new System.Drawing.Point(7, 14);
+            this.grpReportInfo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.grpReportInfo.Name = "grpReportInfo";
-            this.grpReportInfo.Size = new System.Drawing.Size(627, 564);
+            this.grpReportInfo.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.grpReportInfo.Size = new System.Drawing.Size(549, 423);
             this.grpReportInfo.TabIndex = 2;
             this.grpReportInfo.TabStop = false;
             this.grpReportInfo.Text = "Report Properties";
@@ -164,9 +170,10 @@
             // 
             this.btnBrowseFa.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBrowseFa.Enabled = false;
-            this.btnBrowseFa.Location = new System.Drawing.Point(538, 517);
+            this.btnBrowseFa.Location = new System.Drawing.Point(471, 388);
+            this.btnBrowseFa.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnBrowseFa.Name = "btnBrowseFa";
-            this.btnBrowseFa.Size = new System.Drawing.Size(75, 34);
+            this.btnBrowseFa.Size = new System.Drawing.Size(66, 26);
             this.btnBrowseFa.TabIndex = 20;
             this.btnBrowseFa.Text = "Browse...";
             this.btnBrowseFa.UseVisualStyleBackColor = true;
@@ -177,26 +184,28 @@
             this.txtTemplateFa.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTemplateFa.Enabled = false;
-            this.txtTemplateFa.Location = new System.Drawing.Point(6, 522);
+            this.txtTemplateFa.Location = new System.Drawing.Point(5, 392);
+            this.txtTemplateFa.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtTemplateFa.Name = "txtTemplateFa";
-            this.txtTemplateFa.Size = new System.Drawing.Size(527, 27);
+            this.txtTemplateFa.Size = new System.Drawing.Size(462, 23);
             this.txtTemplateFa.TabIndex = 19;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(2, 492);
+            this.label9.Location = new System.Drawing.Point(2, 369);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(160, 20);
+            this.label9.Size = new System.Drawing.Size(128, 15);
             this.label9.TabIndex = 18;
             this.label9.Text = "Persian template path :";
             // 
             // chkIsGroup
             // 
             this.chkIsGroup.AutoSize = true;
-            this.chkIsGroup.Location = new System.Drawing.Point(185, 380);
+            this.chkIsGroup.Location = new System.Drawing.Point(162, 285);
+            this.chkIsGroup.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkIsGroup.Name = "chkIsGroup";
-            this.chkIsGroup.Size = new System.Drawing.Size(121, 24);
+            this.chkIsGroup.Size = new System.Drawing.Size(97, 19);
             this.chkIsGroup.TabIndex = 14;
             this.chkIsGroup.Text = "Report Group";
             this.chkIsGroup.UseVisualStyleBackColor = true;
@@ -205,9 +214,10 @@
             // 
             this.btnBrowseEn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBrowseEn.Enabled = false;
-            this.btnBrowseEn.Location = new System.Drawing.Point(538, 443);
+            this.btnBrowseEn.Location = new System.Drawing.Point(471, 332);
+            this.btnBrowseEn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnBrowseEn.Name = "btnBrowseEn";
-            this.btnBrowseEn.Size = new System.Drawing.Size(75, 34);
+            this.btnBrowseEn.Size = new System.Drawing.Size(66, 26);
             this.btnBrowseEn.TabIndex = 17;
             this.btnBrowseEn.Text = "Browse...";
             this.btnBrowseEn.UseVisualStyleBackColor = true;
@@ -218,59 +228,63 @@
             this.txtTemplateEn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTemplateEn.Enabled = false;
-            this.txtTemplateEn.Location = new System.Drawing.Point(6, 446);
+            this.txtTemplateEn.Location = new System.Drawing.Point(5, 334);
+            this.txtTemplateEn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtTemplateEn.Name = "txtTemplateEn";
-            this.txtTemplateEn.Size = new System.Drawing.Size(527, 27);
+            this.txtTemplateEn.Size = new System.Drawing.Size(462, 23);
             this.txtTemplateEn.TabIndex = 16;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(2, 417);
+            this.label8.Location = new System.Drawing.Point(2, 313);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(161, 20);
+            this.label8.Size = new System.Drawing.Size(128, 15);
             this.label8.TabIndex = 15;
             this.label8.Text = "English template path :";
             // 
             // txtPersian
             // 
-            this.txtPersian.Location = new System.Drawing.Point(324, 155);
+            this.txtPersian.Location = new System.Drawing.Point(284, 116);
+            this.txtPersian.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtPersian.Name = "txtPersian";
             this.txtPersian.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.txtPersian.Size = new System.Drawing.Size(289, 27);
+            this.txtPersian.Size = new System.Drawing.Size(253, 23);
             this.txtPersian.TabIndex = 3;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(321, 129);
+            this.label6.Location = new System.Drawing.Point(281, 97);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(118, 20);
+            this.label6.Size = new System.Drawing.Size(96, 15);
             this.label6.TabIndex = 2;
             this.label6.Text = "Persian Caption :";
             // 
             // txtEnglish
             // 
-            this.txtEnglish.Location = new System.Drawing.Point(6, 155);
+            this.txtEnglish.Location = new System.Drawing.Point(5, 116);
+            this.txtEnglish.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtEnglish.Name = "txtEnglish";
-            this.txtEnglish.Size = new System.Drawing.Size(299, 27);
+            this.txtEnglish.Size = new System.Drawing.Size(262, 23);
             this.txtEnglish.TabIndex = 1;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(2, 129);
+            this.label5.Location = new System.Drawing.Point(2, 97);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(119, 20);
+            this.label5.Size = new System.Drawing.Size(96, 15);
             this.label5.TabIndex = 0;
             this.label5.Text = "English Caption :";
             // 
             // chkIsDynamic
             // 
             this.chkIsDynamic.AutoSize = true;
-            this.chkIsDynamic.Location = new System.Drawing.Point(6, 380);
+            this.chkIsDynamic.Location = new System.Drawing.Point(5, 285);
+            this.chkIsDynamic.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkIsDynamic.Name = "chkIsDynamic";
-            this.chkIsDynamic.Size = new System.Drawing.Size(117, 24);
+            this.chkIsDynamic.Size = new System.Drawing.Size(95, 19);
             this.chkIsDynamic.TabIndex = 13;
             this.chkIsDynamic.Text = "Quick Report";
             this.chkIsDynamic.UseVisualStyleBackColor = true;
@@ -279,9 +293,10 @@
             // chkIsDefault
             // 
             this.chkIsDefault.AutoSize = true;
-            this.chkIsDefault.Location = new System.Drawing.Point(185, 346);
+            this.chkIsDefault.Location = new System.Drawing.Point(162, 260);
+            this.chkIsDefault.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkIsDefault.Name = "chkIsDefault";
-            this.chkIsDefault.Size = new System.Drawing.Size(125, 24);
+            this.chkIsDefault.Size = new System.Drawing.Size(99, 19);
             this.chkIsDefault.TabIndex = 12;
             this.chkIsDefault.Text = "Set As Default";
             this.chkIsDefault.UseVisualStyleBackColor = true;
@@ -289,9 +304,10 @@
             // chkIsSystem
             // 
             this.chkIsSystem.AutoSize = true;
-            this.chkIsSystem.Location = new System.Drawing.Point(6, 346);
+            this.chkIsSystem.Location = new System.Drawing.Point(5, 260);
+            this.chkIsSystem.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkIsSystem.Name = "chkIsSystem";
-            this.chkIsSystem.Size = new System.Drawing.Size(127, 24);
+            this.chkIsSystem.Size = new System.Drawing.Size(102, 19);
             this.chkIsSystem.TabIndex = 11;
             this.chkIsSystem.Text = "System Report";
             this.chkIsSystem.UseVisualStyleBackColor = true;
@@ -299,9 +315,10 @@
             // btnSelect
             // 
             this.btnSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSelect.Location = new System.Drawing.Point(538, 297);
+            this.btnSelect.Location = new System.Drawing.Point(471, 223);
+            this.btnSelect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSelect.Name = "btnSelect";
-            this.btnSelect.Size = new System.Drawing.Size(75, 34);
+            this.btnSelect.Size = new System.Drawing.Size(66, 26);
             this.btnSelect.TabIndex = 10;
             this.btnSelect.Text = "Select...";
             this.btnSelect.UseVisualStyleBackColor = true;
@@ -311,17 +328,18 @@
             // 
             this.txtServiceUrl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtServiceUrl.Location = new System.Drawing.Point(6, 300);
+            this.txtServiceUrl.Location = new System.Drawing.Point(5, 225);
+            this.txtServiceUrl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtServiceUrl.Name = "txtServiceUrl";
-            this.txtServiceUrl.Size = new System.Drawing.Size(527, 27);
+            this.txtServiceUrl.Size = new System.Drawing.Size(462, 23);
             this.txtServiceUrl.TabIndex = 9;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(2, 275);
+            this.label4.Location = new System.Drawing.Point(2, 206);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(86, 20);
+            this.label4.Size = new System.Drawing.Size(68, 15);
             this.label4.TabIndex = 8;
             this.label4.Text = "Service Url :";
             // 
@@ -329,17 +347,18 @@
             // 
             this.cmbParent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbParent.FormattingEnabled = true;
-            this.cmbParent.Location = new System.Drawing.Point(324, 226);
+            this.cmbParent.Location = new System.Drawing.Point(284, 170);
+            this.cmbParent.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cmbParent.Name = "cmbParent";
-            this.cmbParent.Size = new System.Drawing.Size(289, 28);
+            this.cmbParent.Size = new System.Drawing.Size(253, 23);
             this.cmbParent.TabIndex = 7;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(321, 202);
+            this.label3.Location = new System.Drawing.Point(281, 152);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(57, 20);
+            this.label3.Size = new System.Drawing.Size(47, 15);
             this.label3.TabIndex = 6;
             this.label3.Text = "Parent :";
             // 
@@ -349,18 +368,20 @@
             this.cmbSubsystem.FormattingEnabled = true;
             this.cmbSubsystem.Items.AddRange(new object[] {
             "Administration",
-            "Accounting"});
-            this.cmbSubsystem.Location = new System.Drawing.Point(6, 226);
+            "Accounting",
+            "Treasury"});
+            this.cmbSubsystem.Location = new System.Drawing.Point(5, 170);
+            this.cmbSubsystem.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cmbSubsystem.Name = "cmbSubsystem";
-            this.cmbSubsystem.Size = new System.Drawing.Size(299, 28);
+            this.cmbSubsystem.Size = new System.Drawing.Size(262, 23);
             this.cmbSubsystem.TabIndex = 5;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(2, 202);
+            this.label2.Location = new System.Drawing.Point(2, 152);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(86, 20);
+            this.label2.Size = new System.Drawing.Size(70, 15);
             this.label2.TabIndex = 4;
             this.label2.Text = "Subsystem :";
             // 
@@ -371,19 +392,21 @@
             this.tabParameters.Controls.Add(this.btnAdd);
             this.tabParameters.Controls.Add(this.grdParameters);
             this.tabParameters.Controls.Add(this.label7);
-            this.tabParameters.Location = new System.Drawing.Point(4, 29);
+            this.tabParameters.Location = new System.Drawing.Point(4, 24);
+            this.tabParameters.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabParameters.Name = "tabParameters";
-            this.tabParameters.Padding = new System.Windows.Forms.Padding(3);
-            this.tabParameters.Size = new System.Drawing.Size(641, 589);
+            this.tabParameters.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabParameters.Size = new System.Drawing.Size(560, 438);
             this.tabParameters.TabIndex = 1;
             this.tabParameters.Text = "Parameters";
             this.tabParameters.UseVisualStyleBackColor = true;
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(173, 537);
+            this.btnDelete.Location = new System.Drawing.Point(151, 403);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 37);
+            this.btnDelete.Size = new System.Drawing.Size(66, 28);
             this.btnDelete.TabIndex = 4;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -391,9 +414,10 @@
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(92, 537);
+            this.btnEdit.Location = new System.Drawing.Point(80, 403);
+            this.btnEdit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(75, 37);
+            this.btnEdit.Size = new System.Drawing.Size(66, 28);
             this.btnEdit.TabIndex = 3;
             this.btnEdit.Text = "Edit";
             this.btnEdit.UseVisualStyleBackColor = true;
@@ -401,9 +425,10 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(11, 537);
+            this.btnAdd.Location = new System.Drawing.Point(10, 403);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(75, 37);
+            this.btnAdd.Size = new System.Drawing.Size(66, 28);
             this.btnAdd.TabIndex = 2;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
@@ -416,30 +441,32 @@
             this.grdParameters.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.grdParameters.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.grdParameters.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grdParameters.Location = new System.Drawing.Point(11, 50);
+            this.grdParameters.Location = new System.Drawing.Point(10, 38);
+            this.grdParameters.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.grdParameters.Name = "grdParameters";
             this.grdParameters.ReadOnly = true;
             this.grdParameters.RowHeadersWidth = 51;
             this.grdParameters.RowTemplate.Height = 24;
             this.grdParameters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grdParameters.Size = new System.Drawing.Size(624, 476);
+            this.grdParameters.Size = new System.Drawing.Size(546, 357);
             this.grdParameters.TabIndex = 1;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(8, 23);
+            this.label7.Location = new System.Drawing.Point(7, 17);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(143, 20);
+            this.label7.Size = new System.Drawing.Size(115, 15);
             this.label7.TabIndex = 0;
             this.label7.Text = "Current parameters :";
             // 
             // btnSave
             // 
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSave.Location = new System.Drawing.Point(12, 642);
+            this.btnSave.Location = new System.Drawing.Point(10, 482);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(103, 35);
+            this.btnSave.Size = new System.Drawing.Size(90, 26);
             this.btnSave.TabIndex = 18;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
@@ -449,9 +476,10 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(549, 642);
+            this.btnCancel.Location = new System.Drawing.Point(480, 482);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(91, 35);
+            this.btnCancel.Size = new System.Drawing.Size(80, 26);
             this.btnCancel.TabIndex = 19;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -460,13 +488,14 @@
             // ReportEditorForm
             // 
             this.AcceptButton = this.btnSave;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(651, 685);
+            this.ClientSize = new System.Drawing.Size(570, 514);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.tabNewReport);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MinimizeBox = false;
             this.Name = "ReportEditorForm";
             this.ShowInTaskbar = false;

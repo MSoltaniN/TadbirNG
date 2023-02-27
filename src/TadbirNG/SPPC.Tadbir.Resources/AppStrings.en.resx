@@ -3741,4 +3741,25 @@
   <data name="CheckBooks" xml:space="preserve">
     <value>CheckBooks</value>
   </data>
+  <data name="BankName" xml:space="preserve">
+    <value>Bank Name</value>
+  </data>
+  <data name="CheckBookName" xml:space="preserve">
+    <value>Check Book Name</value>
+  </data>
+  <data name="CheckBookNo" xml:space="preserve">
+    <value>Check Book No</value>
+  </data>
+  <data name="EndNo" xml:space="preserve">
+    <value>End No</value>
+  </data>
+  <data name="IssueDate" xml:space="preserve">
+    <value>Issue Date</value>
+  </data>
+  <data name="SartNo" xml:space="preserve">
+    <value>Sart No</value>
+  </data>
+  <data name="SerialNo" xml:space="preserve">
+    <value>Serial No</value>
+  </data>
 </root>

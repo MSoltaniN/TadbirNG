@@ -3732,4 +3732,25 @@
   <data name="CheckBooks" xml:space="preserve">
     <value>دسته چک ها</value>
   </data>
+  <data name="BankName" xml:space="preserve">
+    <value>نام بانک</value>
+  </data>
+  <data name="CheckBookName" xml:space="preserve">
+    <value>نام دسته چک</value>
+  </data>
+  <data name="CheckBookNo" xml:space="preserve">
+    <value>شماره دسته چک</value>
+  </data>
+  <data name="EndNo" xml:space="preserve">
+    <value>شماره آخرین برگ</value>
+  </data>
+  <data name="IssueDate" xml:space="preserve">
+    <value>تاریخ صدور</value>
+  </data>
+  <data name="SartNo" xml:space="preserve">
+    <value>شماره اولین برگ</value>
+  </data>
+  <data name="SerialNo" xml:space="preserve">
+    <value>شماره سری برگه</value>
+  </data>
 </root>
