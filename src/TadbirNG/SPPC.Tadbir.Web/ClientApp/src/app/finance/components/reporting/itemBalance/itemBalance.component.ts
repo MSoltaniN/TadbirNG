@@ -204,7 +204,7 @@ export class ItemBalanceComponent
   showFilterByRef: boolean = false;
   @Persist() formatSelected: string = BalanceFormatType.Balance6Column;
 
-  @Persist() displayTypeSelected: number = undefined;
+  @Persist() displayTypeSelected: number;
 
   @Persist() branchScopeSelected: string = BranchScopeType.CurrentBranch;
 
@@ -1326,6 +1326,9 @@ export class ItemBalanceComponent
     }
     this.changeEntityTitle();
     this.fillReferences();
+
+    if (this.selectedModel)
+      this.disableAccountLookup = false;
   }
   //#endregion
 
