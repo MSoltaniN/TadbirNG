@@ -288,11 +288,11 @@ export class TestBalanceComponent
 
   showFilterByRef: boolean = false;
 
-  @Persist() formatSelected: string = BalanceFormatType.Balance6Column;
+  @Persist() formatSelected: string;
 
   @Persist() displayTypeSelected: number;
-  @Persist() branchScopeSelected: string = BranchScopeType.CurrentBranch;
-  @Persist() voucherStatusSelected: string = VoucherStatusType.Committed;
+  @Persist() branchScopeSelected: string;
+  @Persist() voucherStatusSelected: string;
   @Persist() selectedBranchSeparation: boolean = false;
 
   gridColumnsRow: any[] = [];
@@ -387,6 +387,16 @@ export class TestBalanceComponent
 
     if (this.displayTypeSelected == undefined)
       this.displayTypeSelected = 0;
+
+    if (this.branchScopeSelected == undefined)
+      this.branchScopeSelected = BranchScopeType.CurrentBranch;
+
+    if (this.voucherStatusSelected == undefined)
+      this.voucherStatusSelected = VoucherStatusType.Committed;
+
+    if (this.formatSelected == undefined)
+      this.formatSelected = BalanceFormatType.Balance6Column;
+
     if (this.selectedModel)
       this.disableAccountLookup = false;
   }

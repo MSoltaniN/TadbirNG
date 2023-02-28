@@ -144,11 +144,11 @@ export class BalanceByAccountComponent
   reportType: string = "1";
   reportBy: Array<Item> = [];
 
-  @Persist() selectedReportBy: string = ViewName.Account.toString();
+  @Persist() selectedReportBy: string;
 
-  @Persist() selectedVoucherStatus: string = VoucherStatusType.Committed;
+  @Persist() selectedVoucherStatus: string;
 
-  @Persist() selectedBranchScope: string = BranchScopeType.CurrentBranch;
+  @Persist() selectedBranchScope: string;
 
   isApplyBranchSeparation: boolean = false;
   @Persist() selectedBranchSeparation: boolean = false;
@@ -333,6 +333,15 @@ export class BalanceByAccountComponent
     }
 
     this.cdref.detectChanges();
+
+    if (this.selectedReportBy == undefined)
+      this.selectedReportBy = ViewName.Account.toString();
+
+    if (this.selectedVoucherStatus == undefined)
+      this.selectedVoucherStatus = VoucherStatusType.Committed;
+
+    if (this.selectedBranchScope == undefined)
+      this.selectedBranchScope = BranchScopeType.CurrentBranch;
   }
 
   fillByDefaultValues() {

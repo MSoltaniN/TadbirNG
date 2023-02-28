@@ -100,11 +100,11 @@ export function getLayoutModule(layout: Layout) {
       .btn-compute-default {
         margin-top: 25px;
         border: 2px solid #337ab7;
-        color: #337ab7;
+        color: #FFF;
         padding: 5px 25px;
       }
       .btn-compute {
-        color: #337ab7;
+        color: #fff;
         transition: All 0.3s 0.1s ease-out;
       }
       .btn-compute-selectable {
@@ -158,9 +158,9 @@ export class BalanceSheetComponent
   @Persist() selectedCostCenterModel: any;
   @Persist() selectedProjectModel: any;
 
-  @Persist() branchScopeSelected: string = BranchScopeType.CurrentBranch;
+  @Persist() branchScopeSelected: string;
 
-  @Persist() voucherStatusSelected: string = VoucherStatusType.Committed;
+  @Persist() voucherStatusSelected: string;
 
   filterByRef: string;
   param: any;
@@ -274,6 +274,12 @@ export class BalanceSheetComponent
     this.toDate = this.FiscalPeriodEndDate;
 
     this.fillReferences();
+
+    if (this.branchScopeSelected == undefined)
+      this.branchScopeSelected = BranchScopeType.CurrentBranch;
+
+    if (this.voucherStatusSelected == undefined)
+      this.voucherStatusSelected = VoucherStatusType.Committed;
   }
 
   fillReferences() {

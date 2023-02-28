@@ -238,25 +238,22 @@ export class AccountBookComponent
     },
   ];
 
-  selectedBookType: number = 0;
+  @Persist() selectedBookType: number;
 
-  @Persist() displayTypeSelected: string = BookDisplayType.ByRow;
+  @Persist() displayTypeSelected: string;
 
-  @Persist<string>() branchScopeSelected: string =
-    BranchScopeType.CurrentBranch;
+  @Persist<string>() branchScopeSelected: string;
 
-  @Persist<string>() voucherStatusSelected: string =
-    VoucherStatusType.Committed;
+  @Persist<string>() voucherStatusSelected: string;
 
-  @Persist() articleTypeSelected: string =
-    ArticleTypesResourceKey.AllVoucherLines;
+  @Persist() articleTypeSelected: string;
 
   @Persist() selectedBranchSeparation: boolean = false;
 
   gridColumnsRow: any[] = [];
   ddlEntites: Array<Item> = [];
 
-  @Persist() selectedEntityId: string = "1";
+  @Persist() selectedEntityId: string;
 
   fromDate: Date;
   toDate: Date;
@@ -392,6 +389,24 @@ export class AccountBookComponent
 
     this.changeBranchSeparation();
     this.cdref.detectChanges();
+
+    if (this.displayTypeSelected == undefined)
+      this.displayTypeSelected = BookDisplayType.ByRow;
+
+    if (this.branchScopeSelected == undefined)
+      this.branchScopeSelected = BranchScopeType.CurrentBranch;
+
+    if (this.voucherStatusSelected == undefined)
+      this.voucherStatusSelected = VoucherStatusType.Committed;
+
+    if (this.articleTypeSelected == undefined)
+      this.articleTypeSelected = ArticleTypesResourceKey.AllVoucherLines;
+    
+    if (this.selectedEntityId == undefined)
+      this.selectedEntityId = "1";
+
+    if (this.selectedBookType == undefined)
+      this.selectedBookType = 0;
   }
 
   public ngOnDestroy(): void {
