@@ -1198,7 +1198,7 @@ export class BalanceByAccountComponent
 
     if (accountLevelList != undefined && selectedAccountLevel != undefined) {
       var relatedDisplayType = accountLevelList.filter(
-        (d) => d.key === selectedAccountLevel
+        (d) => d.key === selectedAccountLevel?.level
       )[0];
 
       data = {
@@ -1208,10 +1208,10 @@ export class BalanceByAccountComponent
 
       if (
         this.breadCrumbList.findIndex(
-          (b) => b.displayType.key === relatedDisplayType.key
+          (b) => b?.displayType.key === relatedDisplayType.key
         ) == -1
       ) {
-        this.displayTypeName = relatedDisplayType.title;
+        this.displayTypeName = relatedDisplayType?.title;
         if (this.breadCrumbList.length == 0) {
           this.breadCrumbList = new Array<any>();
           this.breadCrumbList.push(data);
