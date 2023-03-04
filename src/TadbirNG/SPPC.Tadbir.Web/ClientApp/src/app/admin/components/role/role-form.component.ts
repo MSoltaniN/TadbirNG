@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2, ElementRef, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { RowArgs } from '@progress/kendo-angular-grid';
 import { TranslateService } from '@ngx-translate/core';
@@ -145,6 +145,7 @@ export class RoleFormComponent extends DetailComponent {
         this.checkedKeys.push('0');
       }
     }
+
   }
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -173,9 +174,8 @@ export class RoleFormComponent extends DetailComponent {
         }
       }
 
-
       for (let key in this.permissonDictionary) {
-        //permissionItem.isEnabled = false;    
+        //permissionItem.isEnabled = false;
         var parentKey: string = '';
         if (key.split('_').length == 3) parentKey = key.split('_')[0] + '_' + key.split('_')[1];
 
@@ -199,6 +199,8 @@ export class RoleFormComponent extends DetailComponent {
       this.save.emit(viewModel);
       this.active = true;
       this.selectedRows = [];
+      this.disabledKeys = [];
+      this.disabledViewAccessKeys = [];
     }
   }
 
@@ -264,13 +266,6 @@ export class RoleFormComponent extends DetailComponent {
       }
 
     } else {
-      
-      if (event.item.dataItem.name == this.translate.instant('Role.ViewAccess') ||
-          event.item.dataItem.parentId == -1 ||
-          event.item.dataItem.name == this.translate.instant('Role.ManageDashboardAccess') ||
-          event.item.dataItem.id == -1
-      ) {
-        
         let teammateItems;
 
         if (event.item.dataItem.parentId == -1) {
@@ -302,26 +297,33 @@ export class RoleFormComponent extends DetailComponent {
                 let indx = this.checkedKeys.findIndex(i => i == child.item.index);
                 if (indx > -1)
                   this.checkedKeys.splice(indx, 1);
-  
+                
                 this.disabledKeys.push(child.item.dataItem.id);
               }
             });
           })
-        } else {
+        } else if (event.item.dataItem.name == this.translate.instant('Role.ViewAccess') ||
+                   event.item.dataItem.name == this.translate.instant('Role.ManageDashboardAccess')
+        ) {
           teammateItems = Object.values(this.permissonDictionary).filter((item:any) => item.groupId == event.item.dataItem.parentId)
-
+          event.parent.children.forEach((item) => {
+            this.permissonDictionary[item.index].isEnabled = false;
+            let index = this.checkedKeys.findIndex(i => i == item.index);
+            if (index > -1) {
+              this.checkedKeys.splice(index,1)
+            }
+          })
           teammateItems.forEach(item => {
             let newId = parseInt(item.id.toString() + item.groupId.toString() + '00');
-            if (item.flag != 1) {
+            if (item.flag != 1 && !this.disabledKeys.find(i => i==newId)) {
               this.disabledKeys.push(newId);
             }
           });
+
         }
 
-      }
-
     }
-    
+
   }
   ////Events
 
