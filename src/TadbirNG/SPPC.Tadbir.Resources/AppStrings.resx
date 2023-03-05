@@ -3720,12 +3720,6 @@
   <data name="Treasury" xml:space="preserve">
     <value>خزانه‌داری</value>
   </data>
-  <data name="ChekBook" xml:space="preserve">
-    <value>دسته چک</value>
-  </data>
-  <data name="ChekBooks" xml:space="preserve">
-    <value>دسته چک ها</value>
-  </data>
   <data name="CheckBook" xml:space="preserve">
     <value>دسته چک</value>
   </data>
@@ -3752,5 +3746,11 @@
   </data>
   <data name="SerialNo" xml:space="preserve">
     <value>شماره سری برگه</value>
+  </data>
+  <data name="EndNoCheck" xml:space="preserve">
+    <value>تا شماره</value>
+  </data>
+  <data name="StartNo" xml:space="preserve">
+    <value>شروع از شماره</value>
   </data>
 </root>

@@ -3729,12 +3729,6 @@
   <data name="Treasury" xml:space="preserve">
     <value>Treasury</value>
   </data>
-  <data name="ChekBook" xml:space="preserve">
-    <value>ChekBook</value>
-  </data>
-  <data name="ChekBooks" xml:space="preserve">
-    <value>ChekBooks</value>
-  </data>
   <data name="CheckBook" xml:space="preserve">
     <value>CheckBook</value>
   </data>
@@ -3761,5 +3755,11 @@
   </data>
   <data name="SerialNo" xml:space="preserve">
     <value>Serial No</value>
+  </data>
+  <data name="EndNoCheck" xml:space="preserve">
+    <value>End No</value>
+  </data>
+  <data name="StartNo" xml:space="preserve">
+    <value>Start From</value>
   </data>
 </root>

@@ -90,6 +90,8 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<CheckBook, CheckBookViewModel>();
             mapperConfig.CreateMap<CheckBookViewModel, CheckBook>();
+            mapperConfig.CreateMap<CheckBookPage, CheckBookPageViewModel>();
+            mapperConfig.CreateMap<CheckBookPageViewModel, CheckBookPage>();
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)

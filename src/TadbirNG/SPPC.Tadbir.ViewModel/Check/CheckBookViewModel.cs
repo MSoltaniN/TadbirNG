@@ -11,11 +11,11 @@ namespace SPPC.Tadbir.ViewModel.Check
         /// <summary>
         /// شناسه یکتای شعبه سازمانی که دسته چک در آن تعریف می شود
         /// </summary>
-        int BranchId { get; set; }
+      public  int BranchId { get; set; }
 
         /// <summary>
         ///نام شعبه ای که دسته چک در آن تعریف شده است
         /// </summary>
-        int BranchName { get; set; }
+      public  string BranchName { get; set; }
     }
 }

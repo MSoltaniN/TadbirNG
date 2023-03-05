@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -7,8 +8,14 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Check;
+using SPPC.Tadbir.Model.Corporate;
+using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Reporting;
+using SPPC.Tadbir.Persistence.Utility;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Check;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -29,42 +36,40 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات کلیه دسته چک ها را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از دسته چک ها تعریف شده</returns>
-        public async Task<PagedList<CheckBookViewModel>> GetCheckBooksAsync(GridOptions gridOptions = null)
-        {
-            var options = gridOptions ?? new GridOptions();
-            var checkBooks = new List<CheckBookViewModel>();
-            if (options.Operation != (int)OperationId.Print)
-            {
-                //var query = Repository.GetAllQuery<CheckBook>(ViewId.CheckBook);
-                //checkBooks = await query
-                //    .Select(item => Mapper.Map<CheckBookViewModel>(item))
-                //    .ToListAsync();
-            }
-
-            await ReadAsync(options);
-            return new PagedList<CheckBookViewModel>(checkBooks, options);
-        }
-
-        /// <summary>
         /// به روش آسنکرون، دسته چک با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="checkBookId">شناسه عددی یکی از دسته چک ها موجود</param>
         /// <returns>دسته چک مشخص شده با شناسه عددی</returns>
         public async Task<CheckBookViewModel> GetCheckBookAsync(int checkBookId)
         {
-            CheckBookViewModel item = null;
+            CheckBookViewModel checkbook = null;
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
-            var checkBook = await repository.GetByIDAsync(checkBookId);
-            if (checkBook != null)
+            var existing = await repository.GetByIDAsync(checkBookId);
+            if (existing != null)
             {
-                item = Mapper.Map<CheckBookViewModel>(checkBook);
+                checkbook = Mapper.Map<CheckBookViewModel>(existing);
             }
 
-            return item;
+            return checkbook;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، دسته چک با شماره مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="checkBookNo">شماره یکی از دسته چک های موجود</param>
+        /// <returns>دسته چک مشخص شده با شماره</returns>
+        public async Task<CheckBookViewModel> GetCheckBookByNoAsync(int checkBookNo)
+        {
+            var byNo = default(CheckBookViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
+            var checkBookByNo = Repository.ApplyRowFilter(await repository.GetFirstByCriteriaAsync(
+                v => v.No == checkBookNo), ViewId.CheckBook);
+            if (checkBookByNo != null)
+            {
+                byNo = Mapper.Map<CheckBookViewModel>(checkBookByNo);
+            }
+
+            return byNo;
         }
 
         /// <summary>
@@ -139,18 +144,43 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="checkBook">سطر اطلاعاتی موجود</param>
         protected override void UpdateExisting(CheckBookViewModel checkBookViewModel, CheckBook checkBook)
         {
-            checkBook.CheckBookID = checkBookViewModel.CheckBookID;
             checkBook.CheckBookNo = checkBookViewModel.CheckBookNo;
             checkBook.Name = checkBookViewModel.Name;
             checkBook.IssueDate = checkBookViewModel.IssueDate;
-            checkBook.SartNo = checkBookViewModel.SartNo;
+            checkBook.StartNo = checkBookViewModel.StartNo;
             checkBook.EndNo = checkBookViewModel.EndNo;
             checkBook.BankName = checkBookViewModel.BankName;
-            checkBook.AccountID = checkBookViewModel.AccountID;
-            checkBook.DetailAccountID = checkBookViewModel.DetailAccountID;
-            checkBook.CostCenterID = checkBookViewModel.CostCenterID;
-            checkBook.ProjectID = checkBookViewModel.ProjectID;
             checkBook.IsArchived = checkBookViewModel.IsArchived;
+        }
+
+        #region CheckBook Page
+        /// <summary>
+        /// به روش آسنکرون، برگه های یک دسته چک مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="checkBookId">شناسه یکی از دسته چک های موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>برگه های دسته چک مشخص شده با شناسه عددی</returns>
+        public async Task<PagedList<CheckBookPageViewModel>> GetPagesAsync(int checkBookId, GridOptions gridOptions = null)
+        {
+            var query = GetCheckBookPagesQuery(checkBookId);
+            query = Repository.ApplyRowFilter(ref query, ViewId.CheckBook);
+            var pages = await query
+                .Select(page => Mapper.Map<CheckBookPageViewModel>(page))
+                .ToListAsync();
+            return new PagedList<CheckBookPageViewModel>(pages, gridOptions);
+        }
+        #endregion
+        
+        private IQueryable<CheckBookPage> GetCheckBookPagesQuery(int checkBookId)
+        {
+            ///Need To Change
+            var repository = UnitOfWork.GetRepository<CheckBookPage>();
+            //var pagesQuery = 
+                //    repository
+                //.GetEntityQuery()
+                //.Where(page => page.checkBook. == checkBookId)
+                //.OrderBy(page => page.CheckBookPageID);
+            return null;
         }
 
         /// <summary>
@@ -160,14 +190,21 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
         protected override string GetState(CheckBook entity)
         {
-            return String.Empty;
+            return (entity != null)
+                ? String.Format(
+                    "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7} , {8} : {9}",
+                    AppStrings.CheckBookNo, entity.CheckBookNo, AppStrings.CheckBookName, entity.Name,
+                    AppStrings.IssueDate, entity.IssueDate, AppStrings.StartNo, entity.StartNo,
+                    AppStrings.EndNoCheck, entity.EndNo)
+                : null;
         }
 
         private ISecureRepository Repository
         {
             get { return _system.Repository; }
         }
-
+        private const string DefaultSorting = "c.IssueDate, c.No";
         private readonly ISystemRepository _system;
+        private readonly IReportDirectUtility _report;
     }
 }
