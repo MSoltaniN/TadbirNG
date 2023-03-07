@@ -14,8 +14,6 @@ import { IEntity } from "@sppc/shared/models";
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-
-
 export interface Role extends IEntity{
     permissions: string[];
     id: number;
@@ -24,16 +22,11 @@ export interface Role extends IEntity{
     description?: string;  
 }
 
-
-
-
-
 export interface RoleFullViewModel extends IEntity{
     id: number;
     role: Role;
     permissions: Array<Permission>;
 }
-
 
 export interface UserBriefViewModel extends IEntity{
     id: number;
@@ -43,7 +36,6 @@ export interface UserBriefViewModel extends IEntity{
     isEnabled: boolean;
     hasRole: boolean;
 }
-
 
 export interface RoleUsersViewModel extends IEntity{
     id: number;
