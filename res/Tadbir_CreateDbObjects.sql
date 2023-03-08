@@ -880,6 +880,31 @@ CREATE TABLE [Metadata].[City] (
 )
 GO
 
+CREATE TABLE [CashFlow].[CashRegister] (
+    [CashRegisterID]   INT              IDENTITY (1, 1) NOT NULL,
+    [BranchID]         INT              NOT NULL,
+    [FiscalPeriodID]   INT              NOT NULL,
+    [BranchScope]      SMALLINT         NOT NULL,
+    [Name]             NVARCHAR(256)    NOT NULL,
+    [Description]      NVARCHAR(256)    NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_CashRegister_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_CashFlow_CashRegister_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_CashFlow_CashRegister] PRIMARY KEY CLUSTERED ([CashRegisterID] ASC)
+    , CONSTRAINT [FK_CashFlow_CashRegister_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_CashFlow_CashRegister_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+)
+GO
+
+CREATE TABLE [CashFlow].[UserCashRegister] (
+    [UserCashRegisterID]   INT              IDENTITY (1, 1) NOT NULL,
+    [CashRegisterID]       INT              NOT NULL,
+    [UserID]               INT              NULL,
+    [rowguid]              UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_UserCashRegister_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]         DATETIME         CONSTRAINT [DF_CashFlow_UserCashRegister_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_CashFlow_UserCashRegister] PRIMARY KEY CLUSTERED ([UserCashRegisterID] ASC)
+    , CONSTRAINT [FK_CashFlow_UserCashRegister_CashFlow_CashRegister] FOREIGN KEY ([CashRegisterID]) REFERENCES [CashFlow].[CashRegister]([CashRegisterID])
+)
+GO
 -- Insert system records...
 SET IDENTITY_INSERT [Reporting].[WidgetFunction] ON 
 INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (1, N'Function_DebitTurnover')
@@ -1018,8 +1043,6 @@ INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (19, N'DashboardTab', NULL)
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (20, N'Widget', NULL)
-INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
-    VALUES (21, N'CheckBook', NULL)
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (22, N'CashRegister', NULL)
 SET IDENTITY_INSERT [Metadata].[EntityType] OFF
@@ -1738,32 +1761,6 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
     VALUES (199, 2, 3, 13, NULL, 54, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (200, 2, 3, 13, NULL, 58, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (201, 3, 2, NULL, 21, 1, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (202, 3, 2, NULL, 21, 2, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (203, 3, 2, NULL, 21, 3, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (204, 3, 2, NULL, 21, 4, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (205, 3, 2, NULL, 21, 5, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (206, 3, 2, NULL, 21, 6, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (207, 3, 2, NULL, 21, 59, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (208, 3, 2, NULL, 21, 60, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (209, 3, 2, NULL, 21, 61, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (210, 3, 2, NULL, 21, 62, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (211, 3, 2, NULL, 21, 63, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (212, 3, 2, NULL, 21, 64, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (213, 3, 2, NULL, 21, 65, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (214, 3, 2, NULL, 22, 1, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])

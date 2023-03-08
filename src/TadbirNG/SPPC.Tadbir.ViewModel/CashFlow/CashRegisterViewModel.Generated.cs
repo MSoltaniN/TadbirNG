@@ -45,8 +45,6 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// <summary>
         /// سطح دسترسی شعبه
         /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        [Range(0, 32767, ErrorMessage = ValidationMessages.NumberHasValueRange)]
         public short BranchScope { get; set; }
 
         /// <summary>

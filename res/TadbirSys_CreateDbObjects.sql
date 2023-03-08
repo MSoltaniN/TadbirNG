@@ -2957,8 +2957,6 @@ INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
     VALUES (99, 96, 1, NULL, 3, N'Treasury-Report-QReport', NULL, 1, 1, 0, 0, NULL)
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
-    VALUES (100, 96, 1, 69, 3, N'', N'CheckBook', 0, 1, 1, 1, NULL)
-INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
     VALUES (101, 97, 1, 70, 3, N'', N'cashregisters', 0, 1, 1, 1, NULL)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
@@ -3519,10 +3517,6 @@ INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], 
     VALUES (289, 1, 99, N'Quick Report')
 INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
     VALUES (290, 2, 99, N'گزارش فوری')
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
-    VALUES (291, 1, 100, N'Check Book')
-INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
-    VALUES (292, 2, 100, N'دسته چک')
 INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
     VALUES (293, 1, 101, N'Cash Register List')
 INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])

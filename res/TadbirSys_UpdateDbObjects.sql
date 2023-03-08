@@ -483,7 +483,6 @@ INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Typ
     VALUES (710, 70, 'BranchScope', NULL, NULL, 'System.Int16', 'smallint', 'number', 0, 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
-
 SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName], [Description])
     VALUES (38, N'ManageEntities,CashRegisters', N'CashRegister', NULL)

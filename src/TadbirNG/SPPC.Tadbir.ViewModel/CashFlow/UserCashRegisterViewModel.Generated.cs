@@ -34,9 +34,8 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         public int Id { get; set; }
 
         /// <summary>
-        /// شناسه دیتابیسی کاربری که صندوق به او تخصیص یافته
+        /// شناسه دیتابیسی کاربری که به صندوق تخصیص یافته است
         /// </summary>
-        [Range(0, 2147483647, ErrorMessage = ValidationMessages.NumberHasValueRange)]
-        public int UserID { get; set; }
+        public int UserId { get; set; }
     }
 }

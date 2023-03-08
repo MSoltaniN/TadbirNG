@@ -29,12 +29,12 @@ namespace SPPC.Tadbir.Model.CashFlow
         }
 
         /// <summary>
-        /// شناسه دیتابیسی کاربری که صندوق به او تخصیص یافته
+        /// شناسه دیتابیسی کاربر تخصیص یافته به صندوق
         /// </summary>
-        public virtual int UserID { get; set; }
+        public virtual int UserId { get; set; }
 
         /// <summary>
-        /// صندوقی که به کاربر اختصاص یافته است
+        /// صندوقی که کاربر به آن تخصیص داده شده
         /// </summary>
         public virtual CashRegister CashRegister { get; set; }
     }

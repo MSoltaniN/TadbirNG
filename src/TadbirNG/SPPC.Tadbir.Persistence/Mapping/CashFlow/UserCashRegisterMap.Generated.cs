@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("UserCashRegisterID");
-            builder.Property(e => e.UserID);
+            builder.Property(e => e.UserId);
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");

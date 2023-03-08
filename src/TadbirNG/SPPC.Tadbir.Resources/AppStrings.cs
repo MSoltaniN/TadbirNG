@@ -615,6 +615,11 @@ namespace SPPC.Tadbir.Resources
         public const string CantDeleteAssignedBranch = "CantDeleteAssignedBranch";
 
         /// <summary>
+        /// Default text : صندوق '{0}' به یک یا چند کاربر تخصیص داده شده و قابل حذف نیست.
+        /// </summary>
+        public const string CantDeleteAssignedCashRegister = "CantDeleteAssignedCashRegister";
+
+        /// <summary>
         /// Default text : نقش {0} به یک یا چند کاربر  تخصیص داده شده و قابل حذف نیست.
         /// </summary>
         public const string CantDeleteAssignedRole = "CantDeleteAssignedRole";

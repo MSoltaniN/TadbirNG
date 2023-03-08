@@ -83,6 +83,7 @@ namespace SPPC.Tadbir.Mapper
             MapCoreTypes(mapperConfig);
             MapMetadataTypes(mapperConfig);
             MapReportingTypes(mapperConfig);
+            MapCashFlowTypes(mapperConfig);
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)
@@ -600,7 +601,9 @@ namespace SPPC.Tadbir.Mapper
         private static void MapCashFlowTypes(IMapperConfigurationExpression mapperConfig)
         {
             mapperConfig.CreateMap<CashRegister, CashRegisterViewModel>();
+            mapperConfig.CreateMap<CashRegisterViewModel, CashRegister>();
             mapperConfig.CreateMap<UserCashRegister, UserCashRegisterViewModel>();
+            mapperConfig.CreateMap<UserCashRegisterViewModel, UserCashRegister>();
         }
 
         private static TConfig MapConfigType<TConfig>(Setting setting)

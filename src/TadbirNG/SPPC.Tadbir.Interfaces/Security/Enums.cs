@@ -1732,6 +1732,11 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         Delete = 0x40,
 
+        /// <summary>
+        /// دسترسی حذف یک صندوق موجود
+        /// </summary>
+        AssignCashRegisterUser = 0x80,
+
         ///// <summary>
         ///// دسترسی کامل به عملیات تعریف شده برای مدیریت صندوق ها
         ///// </summary>
