@@ -16,7 +16,7 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// زیرسیستم حسابداری
         /// </summary>
-        Accounting = 1,
+        Accounting = 2,
 
         /// <summary>
         /// زیرسیستم خزانه‌داری

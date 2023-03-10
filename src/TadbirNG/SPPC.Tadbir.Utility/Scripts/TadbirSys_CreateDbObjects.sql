@@ -2957,7 +2957,7 @@ INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
     VALUES (99, 96, 1, NULL, 3, N'Treasury-Report-QReport', NULL, 1, 1, 0, 0, NULL)
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
-    VALUES (101, 97, 1, 70, 3, N'', N'cashregisters', 0, 1, 1, 1, NULL)
+    VALUES (101, 97, 1, 70, 3, N'', N'cash-registers', 0, 1, 1, 1, NULL)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON
@@ -3916,7 +3916,7 @@ INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, R
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
     VALUES (55, 52, NULL, N'CheckReports', NULL, N'folder-close', NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (59, 52, 225, N'CashRegisters', N'/treasury/cash-register', 'list', NULL)
+    VALUES (57, 53, 225, N'CashRegisters', N'/treasury/cash-register', 'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
 SET IDENTITY_INSERT [Reporting].[SystemIssue] ON 

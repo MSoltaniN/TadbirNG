@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -137,7 +136,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="cashRegisterId">شناسه عددی یکی از صندوق های موجود</param>
         /// <returns>مجموعه ای از کاربران تخصیص داده شده به صندوق</returns>
-        public async Task<RelatedItemsViewModel> GetUserCashRegistersAsync(int cashRegisterId)
+        public async Task<RelatedItemsViewModel> GetCashRegisterUsersAsync(int cashRegisterId)
         {
             RelatedItemsViewModel userCashRegisters = null;
             var repository = UnitOfWork.GetAsyncRepository<CashRegister>();
@@ -155,7 +154,7 @@ namespace SPPC.Tadbir.Persistence
                 IEnumerable<int> validRoleIds = null;
                 if (cashRegister.BranchScope != (short)BranchScope.AllBranches)
                 {
-                    validRoleIds = GetValidRolIds(cashRegister.BranchId, cashRegister.BranchScope);
+                    validRoleIds = GetValidRoleIds(cashRegister.BranchId, cashRegister.BranchScope);
                 }
                 UnitOfWork.UseSystemContext();
                 var userRepository = UnitOfWork.GetAsyncRepository<User>();
@@ -171,7 +170,7 @@ namespace SPPC.Tadbir.Persistence
                 IEnumerable<RelatedItemViewModel> unSelectedUsers = null;
                 if (cashRegister.BranchScope != (short)BranchScope.AllBranches)
                 {
-                    var validUserIds = GetUserIdsByRolIds(validRoleIds);
+                    var validUserIds = GetUserIdsByRoleIds(validRoleIds);
                     foreach(var user in selectedUsers)
                     {
                         if(!validUserIds.Contains(user.Id))
@@ -216,13 +215,13 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، کاربران را به صندوق تخصیص می دهد
         /// </summary>
         /// <param name="userCashRegisters">اطلاعات نمایشی کاربران</param>
-        public async Task SaveUserCashRegistersAsync(RelatedItemsViewModel userCashRegisters)
+        public async Task SaveCashRegisterUsersAsync(RelatedItemsViewModel userCashRegisters)
         {
             Verify.ArgumentNotNull(userCashRegisters, nameof(userCashRegisters));
             var repository = UnitOfWork.GetAsyncRepository<UserCashRegister>();
             var exsiting = await repository
                 .GetByCriteriaAsync(ucs => ucs.CashRegisterId == userCashRegisters.Id);
-            if (AreUsresModified(exsiting, userCashRegisters))
+            if (AreUsersModified(exsiting, userCashRegisters))
             {
                 if (exsiting.Count > 0)
                 {
@@ -265,6 +264,7 @@ namespace SPPC.Tadbir.Persistence
                    .GetEntityQuery()
                    .AnyAsync(ucr => ucr.CashRegisterId == cashRegisterId);
         }
+
         internal override int? EntityType
         {
             get { return (int?)EntityTypeId.CashRegister; }
@@ -300,7 +300,7 @@ namespace SPPC.Tadbir.Persistence
                 && left.All(value => right.Contains(value));
         }
 
-        private static bool AreUsresModified(IList<UserCashRegister> existing, RelatedItemsViewModel userItems)
+        private static bool AreUsersModified(IList<UserCashRegister> existing, RelatedItemsViewModel userItems)
         {
             var exsitigUserIds = existing
                 .Select(ucr => ucr.UserId)
@@ -358,7 +358,7 @@ namespace SPPC.Tadbir.Persistence
             return description;
         }
 
-        private IEnumerable<int> GetValidRolIds(int branchId, int branchScope)
+        private IEnumerable<int> GetValidRoleIds(int branchId, int branchScope)
         {
             IEnumerable<int> validRoleIds = null;
             if (branchScope == (short)BranchScope.CurrentBranchAndChildren)
@@ -385,7 +385,7 @@ namespace SPPC.Tadbir.Persistence
             return validRoleIds;
         }
 
-        private IEnumerable<int> GetUserIdsByRolIds(IEnumerable<int> validRoleIds)
+        private IEnumerable<int> GetUserIdsByRoleIds(IEnumerable<int> validRoleIds)
         {
             var repository = UnitOfWork.GetAsyncRepository<UserRole>();
             var validUserIds = repository
@@ -395,6 +395,7 @@ namespace SPPC.Tadbir.Persistence
                     .ToArray();
             return validUserIds;
         }
+
         private ISecureRepository Repository
         {
             get { return _system.Repository; }

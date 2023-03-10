@@ -31,11 +31,11 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for all users assigned to the cash register item specified by unique identifier
         /// </summary>
-        public const string UserCashRegisters = "cash-registers/{0}/users";
+        public const string CashRegisterUsers = "cash-registers/{0}/users";
 
         /// <summary>
         /// API server route URL for all Users assigned to the cash register item specified by unique identifier
         /// </summary>
-        public const string UserCashRegistersUrl = "cash-registers/{cashregisterId:min(1)}/users";
+        public const string CashRegisterUsersUrl = "cash-registers/{cashRegisterId:min(1)}/users";
     }
 }

@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.ViewModel
         public bool IsSelected { get; set; }
 
         /// <summary>
-        /// مشخص می کند که سطر اطلاعاتی همچنان یک مقدار معتبر یا خیر
+        /// مشخص می کند که سطر اطلاعاتی همچنان یک مقدار معتبر است یا خیر
         /// </summary>
         public bool IsValid { get; set; }
     }

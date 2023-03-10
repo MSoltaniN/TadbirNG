@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Microsoft.Identity.Client;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
@@ -47,7 +46,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات صفحه بندی شده صندوق ها را خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات صفحه بندی شده صندوق ها</returns>
-        // GET: api/cashregisters
+        // GET: api/cash-registers
         [HttpGet]
         [Route(CashRegisterApi.CashRegistersUrl)]
         [AuthorizeRequest(SecureEntity.CashRegister, (int)CashRegisterPermissions.View)]
@@ -60,9 +59,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، اطلاعات نمایشی صندوق مشخص شده با شناسه دیتابیسی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="cashregisterId">شناسه دیتابیسی صندوق مورد نظر</param>
+        /// <param name="cashRegisterId">شناسه دیتابیسی صندوق مورد نظر</param>
         /// <returns>اطلاعات نمایشی صندوق مورد نظر</returns>
-        // GET: api/cashregisters/{cashregisterId:min(1)}
+        // GET: api/cash-registers/{cashRegisterId:min(1)}
         [HttpGet]
         [Route(CashRegisterApi.CashRegisterUrl)]
         [AuthorizeRequest(SecureEntity.CashRegister, (int)CashRegisterPermissions.View)]
@@ -77,7 +76,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="cashRegister">اطلاعات نمایشی صندوق جدید</param>
         /// <returns>اطلاعات نمایشی ذخیره شده برای صندوق</returns>
-        // POST: api/cashregisters
+        // POST: api/cash-registers
         [HttpPost]
         [Route(CashRegisterApi.CashRegistersUrl)]
         [AuthorizeRequest(SecureEntity.CashRegister, (int)CashRegisterPermissions.Create)]
@@ -99,11 +98,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="cashRegisterId">شناسه دیتابیسی صندوق اصلاح شده</param>
         /// <param name="cashRegister">اطلاعات نمایشی اصلاح شده برای صندوق</param>
         /// <returns>اطلاعات نمایشی ذخیره شده برای صندوق</returns>
-        // PUT: api/cashregisters/{cashregisterId:min(1)}
+        // PUT: api/cash-registers/{cashRegisterId:min(1)}
         [HttpPut]
         [Route(CashRegisterApi.CashRegisterUrl)]
         [AuthorizeRequest(SecureEntity.CashRegister, (int)CashRegisterPermissions.Edit)]
-        public async Task<IActionResult> PutModifiedCashRegisterAsync(int cashRegisterId, [FromBody] CashRegisterViewModel cashRegister)
+        public async Task<IActionResult> PutModifiedCashRegisterAsync(
+            int cashRegisterId, [FromBody] CashRegisterViewModel cashRegister)
         {
             var result = await ValidationResultAsync(cashRegister, cashRegisterId);
             if (result is BadRequestObjectResult)
@@ -119,7 +119,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات صندوق مشخص شده با شناسه دیتابیسی را پس از اعتبارسنجی از دیتابیس حذف می کند
         /// </summary>
         /// <param name="cashRegisterId">شناسه دیتابیسی صندوق مورد نظر برای حذف</param>
-        // DELETE: api/cashregisters/{cashregisterId:min(1)}
+        // DELETE: api/cash-registers/{cashRegisterId:min(1)}
         [HttpDelete]
         [Route(CashRegisterApi.CashRegisterUrl)]
         [AuthorizeRequest(SecureEntity.CashRegister, (int)CashRegisterPermissions.Delete)]
@@ -141,7 +141,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
         /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // PUT: api/cashregisters
+        // PUT: api/cash-registers
         [HttpPut]
         [Route(CashRegisterApi.CashRegistersUrl)]
         [AuthorizeRequest(SecureEntity.CashRegister, (int)CashRegisterPermissions.Delete)]
@@ -156,13 +156,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="cashRegisterId">شناسه دیتابیسی صندوق مورد نظر</param>
         /// <returns>اطلاعات خلاصه از کاربران اختصاص داده شده به صندوق</returns>
-        // GET: api/cashregisters/{cashregisterId:min(1)}/users
+        // GET: api/cash-registers/{cashRegisterId:min(1)}/users
         [HttpGet]
-        [Route(CashRegisterApi.UserCashRegistersUrl)]
+        [Route(CashRegisterApi.CashRegisterUsersUrl)]
         [AuthorizeRequest(SecureEntity.CashRegister, (int)CashRegisterPermissions.View)]
         public async Task<IActionResult> GetUserCashRegistersAsync(int cashRegisterId)
         {
-            var users = await _repository.GetUserCashRegistersAsync(cashRegisterId);
+            var users = await _repository.GetCashRegisterUsersAsync(cashRegisterId);
             Localize(users);
             return JsonReadResult(users);
         }
@@ -174,9 +174,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="userCashRegisters">اطلاعات جدید کاربران اختصاص داده شده به صندوق</param>
         /// <returns>در صورت بروز خطا، کد وضعیت 400 به همراه پیغام خطا و در غیر این صورت
         /// کد وضعیتی 200 را برمی گرداند</returns>
-        // PUT: api/cashregisters/{cashregisterId:min(1)}/users
+        // PUT: api/cash-registers/{cashRegisterId:min(1)}/users
         [HttpPut]
-        [Route(CashRegisterApi.UserCashRegistersUrl)]
+        [Route(CashRegisterApi.CashRegisterUsersUrl)]
         [AuthorizeRequest(SecureEntity.CashRegister, (int)CashRegisterPermissions.AssignCashRegisterUser)]
         public async Task<IActionResult> PutModifiedUserCashRegistersAsync(
             int cashRegisterId, [FromBody] RelatedItemsViewModel userCashRegisters)
@@ -187,7 +187,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SaveUserCashRegistersAsync(userCashRegisters);
+            await _repository.SaveCashRegisterUsersAsync(userCashRegisters);
             return Ok();
         }
 
@@ -239,8 +239,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 }
             }
 
-            bool duplicate = await _repository.IsDuplicateCashRegisterName(cashRegister);
-            if (duplicate)
+            bool isDuplicate = await _repository.IsDuplicateCashRegisterName(cashRegister);
+            if (isDuplicate)
             {
                 return BadRequestResult(_strings.Format(
                     AppStrings.DuplicateNameValue, AppStrings.CashRegister, cashRegister.Name));
@@ -253,6 +253,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             Array.ForEach(users.RelatedItems.ToArray(), item => item.Name = _strings[item.Name]);
         }
+
         private readonly ICashRegisterRepository _repository;
     }
 }

@@ -459,8 +459,7 @@ INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], 
 SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
 
 
--- 1.2.1485
-
+-- 1.2.1487
 SET IDENTITY_INSERT [Metadata].[View] ON
 INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [EntityType], [FetchUrl], [SearchUrl], [IsHierarchy], [IsCartableIntegrated])
     VALUES (70, 'CashRegister', N'CashRegister', N'Base', NULL, NULL, 0, 0)
@@ -509,7 +508,7 @@ SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 SET IDENTITY_INSERT [Reporting].[Report] ON
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
-    VALUES (101, 97, 1, 70, 3, N'', N'cashregisters', 0, 1, 1, 1, NULL)
+    VALUES (101, 97, 1, 70, 3, N'', N'cash-registers', 0, 1, 1, 1, NULL)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON
@@ -521,6 +520,6 @@ SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
 
 SET IDENTITY_INSERT [Metadata].[Command] ON
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (59, 52, 225, N'CashRegisters', N'/treasury/cash-register', 'list', NULL)
+    VALUES (57, 53, 225, N'CashRegisters', N'/treasury/cash-register', 'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
