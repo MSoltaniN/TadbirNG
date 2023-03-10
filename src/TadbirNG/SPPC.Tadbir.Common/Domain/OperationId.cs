@@ -301,6 +301,11 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// کد عملیاتی پیش نمایش چاپ
         /// </summary>
-        PrintPreview = 58
+        PrintPreview = 58,
+
+        /// <summary>
+        /// تخصیص کاربر به صندوق اسناد
+        /// </summary>
+        AssignCashRegisterUser = 66,
     }
 }

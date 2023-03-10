@@ -3720,4 +3720,13 @@
   <data name="Treasury" xml:space="preserve">
     <value>خزانه‌داری</value>
   </data>
+  <data name="CashRegister" xml:space="preserve">
+    <value>صندوق</value>
+  </data>
+  <data name="CashRegisters" xml:space="preserve">
+    <value>صندوق ها</value>
+  </data>
+  <data name="CantDeleteAssignedCashRegister" xml:space="preserve">
+    <value>صندوق '{0}' به یک یا چند کاربر تخصیص داده شده و قابل حذف نیست.</value>
+  </data>
 </root>

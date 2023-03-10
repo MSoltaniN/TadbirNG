@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Core;
@@ -42,6 +43,7 @@ namespace SPPC.Tadbir.Persistence
             AccountOwnerMap.BuildMapping(modelBuilder.Entity<AccountOwner>());
             AccountHolderMap.BuildMapping(modelBuilder.Entity<AccountHolder>());
             BranchMap.BuildMapping(modelBuilder.Entity<Branch>());
+            CashRegisterMap.BuildMapping(modelBuilder.Entity<CashRegister>());
             CityMap.BuildMapping(modelBuilder.Entity<City>());
             CommandMap.BuildMapping(modelBuilder.Entity<Command>());
             CostCenterMap.BuildMapping(modelBuilder.Entity<CostCenter>());
@@ -81,6 +83,7 @@ namespace SPPC.Tadbir.Persistence
             SubsystemMap.BuildMapping(modelBuilder.Entity<Subsystem>());
             TabWidgetMap.BuildMapping(modelBuilder.Entity<TabWidget>());
             TaxCurrencyMap.BuildMapping(modelBuilder.Entity<TaxCurrency>());
+            UserCashRegisterMap.BuildMapping(modelBuilder.Entity<UserCashRegister>());
             UsedParameterMap.BuildMapping(modelBuilder.Entity<UsedParameter>());
             UserMap.BuildMapping(modelBuilder.Entity<User>());
             UserRoleMap.BuildMapping(modelBuilder.Entity<UserRole>());
