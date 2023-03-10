@@ -178,6 +178,27 @@ namespace SPPC.Tools.SystemDesigner.Designers
             this.GetActiveForm().Cursor = Cursors.Default;
         }
 
+        private void LoadSubsystems()
+        {
+            this.GetActiveForm().Cursor = Cursors.WaitCursor;
+            var dal = new SqlDataLayer(_sysConnection);
+            var result = dal.Query(@"
+SELECT [SubsystemID], [Name]
+FROM [Metadata].[Subsystem]
+ORDER BY [Name]");
+            cmbSubsystem.ValueMember = "Id";
+            cmbSubsystem.DisplayMember = "Name";
+            cmbSubsystem.DataSource = result.Rows
+                .Cast<DataRow>()
+                .Select(row => new SubsystemViewModel()
+                {
+                    Id = row.ValueOrDefault<int>("SubsystemID"),
+                    Name = row.ValueOrDefault("Name")
+                })
+                .ToList();
+            this.GetActiveForm().Cursor = Cursors.Default;
+        }
+
         private void LoadParents()
         {
             this.GetActiveForm().Cursor = Cursors.WaitCursor;
@@ -202,12 +223,20 @@ ORDER BY [ReportID]");
 
         private void SetupControls()
         {
+            LoadSubsystems();
             LoadParents();
             grdParameters.DataSource = Parameters;
             cmbSubsystem.SelectedIndex = Report.SubsystemId > 0
                 ? Report.SubsystemId - 1
                 : -1;
-            cmbSubsystem.SelectedValue = Report.ParentId;
+            if (Report.ParentId.HasValue)
+            {
+                cmbParent.SelectedValue = Report.ParentId.Value;
+            }
+            else
+            {
+                cmbParent.SelectedIndex = -1;
+            }
         }
 
         private new bool Validate()

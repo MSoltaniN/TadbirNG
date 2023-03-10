@@ -208,7 +208,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             };
         }
 
-        private void SetLastIdValues(DataTable logSettings)
+        private void SetNextIdValues(DataTable logSettings)
         {
             _nextSettingId = logSettings.Rows
                 .Cast<DataRow>()
@@ -299,11 +299,14 @@ namespace SPPC.Tools.SystemDesigner.Forms
             tvLogMetadata.Nodes.Clear();
             var dal = new SqlDataLayer(DbConnections.CompanyConnection);
             var logSettings = dal.Query(ToolsQuery.LogSettings);
-            SetLastIdValues(logSettings);
+            _nextOperationId = (int)dal.QueryScalar(
+                "SELECT MAX([OperationID]) + 1 FROM [Metadata].[Operation]");
+            SetNextIdValues(logSettings);
             AddSubsystems(logSettings);
             AddSourceTypes(logSettings);
             AddEntitiesAndSources(logSettings);
             AddLogSettings(logSettings, GetAllSourceEntityItems());
+            AddNewSubsystemsTree();
             this.GetActiveForm().Cursor = Cursors.Default;
         }
 
@@ -441,6 +444,49 @@ namespace SPPC.Tools.SystemDesigner.Forms
             return allItems;
         }
 
+        private IEnumerable<OperationViewModel> GetAllOperations(
+            IEnumerable<TreeNode> entities, IEnumerable<TreeNode> sources)
+        {
+            var connection = chkSystemSettings.Checked
+                ? DbConnections.SystemConnection
+                : DbConnections.CompanyConnection;
+            var dal = new SqlDataLayer(connection);
+            var result = dal.Query("SELECT [OperationID], [Name] FROM [Metadata].[Operation]");
+            var operations = result.Rows
+                .Cast<DataRow>()
+                .Select(row => new OperationViewModel()
+                {
+                    Id = row.ValueOrDefault<int>("OperationID"),
+                    Name = row.ValueOrDefault("Name"),
+                    Description = row.ValueOrDefault("Description")
+                })
+                .ToList();
+            operations.AddRange(GetNewOperations(entities));
+            operations.AddRange(GetNewOperations(sources));
+            return operations;
+        }
+
+        private IEnumerable<OperationViewModel> GetNewOperations(IEnumerable<TreeNode> nodes)
+        {
+            var newOperations = new List<OperationViewModel>();
+            foreach (var node in nodes)
+            {
+                newOperations.AddRange(node.Nodes
+                    .Cast<TreeNode>()
+                    .Select(node => node.Tag as LogSettingViewModel)
+                    .Where(log => log.State == RecordState.Added
+                        && log.OperationId == 0)
+                    .Select(log => new OperationViewModel()
+                    {
+                        Id = _nextOperationId++,
+                        Name = log.OperationName,
+                        State = log.State
+                    }));
+            }
+
+            return newOperations;
+        }
+
         private IEnumerable<LogSettingViewModel> GetAllSettings()
         {
             var allSettings = new List<LogSettingViewModel>();
@@ -487,9 +533,48 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 .ThenBy(log => log.EntityTypeId)
                 .ThenBy(log => log.OperationId)
                 .ToArray();
+            var organized = new LogSettingViewModel[allSettings.Length];
+            allSettings.CopyTo(organized, 0);
             int nextId = 1;
-            Array.ForEach(allSettings, setting => setting.Id = nextId++);
-            return allSettings;
+            Array.ForEach(organized, setting => setting.Id = nextId++);
+            return organized;
+        }
+
+        private void AddNewSubsystemsTree()
+        {
+            var dal = new SqlDataLayer(DbConnections.CompanyConnection);
+            var result = dal.Query(ToolsQuery.NewSubsystems);
+            var newSubsystems = result.Rows
+                .Cast<DataRow>()
+                .Select(row => new SubsystemViewModel()
+                {
+                    Id = row.ValueOrDefault<int>("SubsystemID"),
+                    Name = row.ValueOrDefault("Name")
+                })
+                .OrderBy(sub => sub.Name)
+                .ToList();
+            result = dal.Query("SELECT [OperationSourceTypeID], [Name] FROM [Metadata].[OperationSourceType]");
+            var sourceTypes = result.Rows
+                .Cast<DataRow>()
+                .Select(row => new OperationSourceTypeViewModel()
+                {
+                    Id = row.ValueOrDefault<int>("OperationSourceTypeID"),
+                    Name = row.ValueOrDefault("Name")
+                })
+                .ToList();
+            foreach (var subsystem in newSubsystems)
+            {
+                var subsystemNode = new TreeNode(subsystem.Name) { Tag = subsystem };
+                foreach (var sourceType in sourceTypes)
+                {
+                    var typeNode = new TreeNode(sourceType.Name) { Tag = sourceType };
+                    typeNode.Nodes.Add("Entities");
+                    typeNode.Nodes.Add("Sources");
+                    subsystemNode.Nodes.Add(typeNode);
+                }
+
+                tvLogMetadata.Nodes.Add(subsystemNode);
+            }
         }
 
         private void GenerateScripts()
@@ -503,14 +588,17 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 .Where(node => node.Tag is OperationSourceViewModel)
                 .Select(node => node.Tag as OperationSourceViewModel)
                 .OrderBy(source => source.Id);
+            var operations = GetAllOperations(
+                all.Where(node => node.Tag is EntityTypeViewModel),
+                all.Where(node => node.Tag is OperationSourceViewModel));
 
-            var orderedSettings = GetOrganizedSettings();
-            GenerateCreateScripts(orderedSettings, entities, sources);
-            GenerateUpdateScripts(orderedSettings, entities, sources);
+            GenerateCreateScripts(GetOrganizedSettings(), entities, sources, operations);
+            GenerateUpdateScripts(GetAllSettings(), entities, sources, operations);
         }
 
         private static void GenerateCreateScripts(IEnumerable<LogSettingViewModel> allSettings,
-            IEnumerable<EntityTypeViewModel> allEntities, IEnumerable<OperationSourceViewModel> allSources)
+            IEnumerable<EntityTypeViewModel> allEntities, IEnumerable<OperationSourceViewModel> allSources,
+            IEnumerable<OperationViewModel> allOperations)
         {
             var generated = ScriptUtility.GetInsertScripts(allEntities, EntityTypeExtensions.ToScript);
             ScriptUtility.ReplaceScript(generated);
@@ -518,12 +606,16 @@ namespace SPPC.Tools.SystemDesigner.Forms
             generated = ScriptUtility.GetInsertScripts(allSources, OperationSourceExtensions.ToScript);
             ScriptUtility.ReplaceScript(generated);
 
+            generated = ScriptUtility.GetInsertScripts(allOperations, OperationExtensions.ToScript);
+            ScriptUtility.ReplaceScript(generated);
+
             generated = ScriptUtility.GetInsertScripts(allSettings, LogSettingExtensions.ToScript);
             ScriptUtility.ReplaceScript(generated);
         }
 
         private static void GenerateUpdateScripts(IEnumerable<LogSettingViewModel> allSettings,
-            IEnumerable<EntityTypeViewModel> allEntities, IEnumerable<OperationSourceViewModel> allSources)
+            IEnumerable<EntityTypeViewModel> allEntities, IEnumerable<OperationSourceViewModel> allSources,
+            IEnumerable<OperationViewModel> allOperations)
         {
             var scriptBuilder = new StringBuilder();
             ScriptUtility.AddVersionMarker(scriptBuilder);
@@ -533,6 +625,9 @@ namespace SPPC.Tools.SystemDesigner.Forms
             var addedSources = allSources
                 .Where(source => source.State == RecordState.Added)
                 .OrderBy(source => source.Id);
+            var addedOperations = allOperations
+                .Where(op => op.State == RecordState.Added)
+                .OrderBy(op => op.Id);
             var addedSettings = allSettings
                 .Where(setting => setting.State == RecordState.Added)
                 .OrderBy(setting => setting.Id);
@@ -551,9 +646,11 @@ namespace SPPC.Tools.SystemDesigner.Forms
             }
 
             var generated = ScriptUtility.GetInsertScripts(addedEntities, EntityTypeExtensions.ToScript);
-            scriptBuilder.Append(generated);
+            scriptBuilder.AppendLine(generated);
             generated = ScriptUtility.GetInsertScripts(addedSources, OperationSourceExtensions.ToScript);
-            scriptBuilder.Append(generated);
+            scriptBuilder.AppendLine(generated);
+            generated = ScriptUtility.GetInsertScripts(addedOperations, OperationExtensions.ToScript);
+            scriptBuilder.AppendLine(generated);
             generated = ScriptUtility.GetInsertScripts(addedSettings, LogSettingExtensions.ToScript);
             scriptBuilder.Append(generated);
             var path = Path.Combine(PathConfig.ResourceRoot, ScriptUtility.UpdateScriptName);
@@ -570,7 +667,8 @@ namespace SPPC.Tools.SystemDesigner.Forms
             tvLogMetadata.Nodes.Clear();
             var dal = new SqlDataLayer(DbConnections.SystemConnection);
             var logSettings = dal.Query(ToolsQuery.SysLogSettings);
-            SetLastIdValues(logSettings);
+            _nextOperationId = (int)dal.QueryScalar("SELECT MAX([OperationID]) FROM [Metadata].[Operation]");
+            SetNextIdValues(logSettings);
             AddSysEntitiesAndSources(logSettings);
             AddLogSettings(logSettings, GetAllSysSourceEntityItems());
             this.GetActiveForm().Cursor = Cursors.Default;
@@ -715,5 +813,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
         private int _nextSettingId;
         private int _nextEntityId;
         private int _nextSourceId;
+        private int _nextOperationId;
     }
 }

@@ -28,16 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.chkSystemSettings = new System.Windows.Forms.CheckBox();
             this.tvLogMetadata = new System.Windows.Forms.TreeView();
             this.btnNew = new System.Windows.Forms.Button();
-            this.menuNewOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.menuNewSubsystem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuNewEntityType = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuNewOperationSource = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuNewOperation = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuNewLogSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.grpProperties = new System.Windows.Forms.GroupBox();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -45,7 +38,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.menuNewOptions.SuspendLayout();
             this.grpProperties.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,48 +71,6 @@
             this.btnNew.Text = "New";
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.New_Click);
-            // 
-            // menuNewOptions
-            // 
-            this.menuNewOptions.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuNewOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuNewSubsystem,
-            this.menuNewEntityType,
-            this.menuNewOperationSource,
-            this.menuNewOperation,
-            this.menuNewLogSettings});
-            this.menuNewOptions.Name = "menuNewOptions";
-            this.menuNewOptions.Size = new System.Drawing.Size(195, 124);
-            // 
-            // menuNewSubsystem
-            // 
-            this.menuNewSubsystem.Name = "menuNewSubsystem";
-            this.menuNewSubsystem.Size = new System.Drawing.Size(194, 24);
-            this.menuNewSubsystem.Text = "Subsystem";
-            // 
-            // menuNewEntityType
-            // 
-            this.menuNewEntityType.Name = "menuNewEntityType";
-            this.menuNewEntityType.Size = new System.Drawing.Size(194, 24);
-            this.menuNewEntityType.Text = "Entity Type";
-            // 
-            // menuNewOperationSource
-            // 
-            this.menuNewOperationSource.Name = "menuNewOperationSource";
-            this.menuNewOperationSource.Size = new System.Drawing.Size(194, 24);
-            this.menuNewOperationSource.Text = "Operation Source";
-            // 
-            // menuNewOperation
-            // 
-            this.menuNewOperation.Name = "menuNewOperation";
-            this.menuNewOperation.Size = new System.Drawing.Size(194, 24);
-            this.menuNewOperation.Text = "Operation";
-            // 
-            // menuNewLogSettings
-            // 
-            this.menuNewLogSettings.Name = "menuNewLogSettings";
-            this.menuNewLogSettings.Size = new System.Drawing.Size(194, 24);
-            this.menuNewLogSettings.Text = "Log Settings";
             // 
             // grpProperties
             // 
@@ -208,7 +158,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Browse Log Settings";
-            this.menuNewOptions.ResumeLayout(false);
             this.grpProperties.ResumeLayout(false);
             this.grpProperties.PerformLayout();
             this.ResumeLayout(false);
@@ -221,12 +170,6 @@
         private System.Windows.Forms.CheckBox chkSystemSettings;
         private System.Windows.Forms.TreeView tvLogMetadata;
         private System.Windows.Forms.Button btnNew;
-        private System.Windows.Forms.ContextMenuStrip menuNewOptions;
-        private System.Windows.Forms.ToolStripMenuItem menuNewSubsystem;
-        private System.Windows.Forms.ToolStripMenuItem menuNewEntityType;
-        private System.Windows.Forms.ToolStripMenuItem menuNewOperationSource;
-        private System.Windows.Forms.ToolStripMenuItem menuNewOperation;
-        private System.Windows.Forms.ToolStripMenuItem menuNewLogSettings;
         private System.Windows.Forms.GroupBox grpProperties;
         private System.Windows.Forms.TextBox txtDescription;
         private System.Windows.Forms.Label label2;
