@@ -202,13 +202,13 @@ export class ItemBalanceComponent
 
   @Persist() disableAccountLookup: boolean = true;
   showFilterByRef: boolean = false;
-  @Persist() formatSelected: string = BalanceFormatType.Balance6Column;
+  @Persist() formatSelected: string;
 
-  @Persist() displayTypeSelected: number = undefined;
+  @Persist() displayTypeSelected: number;
 
-  @Persist() branchScopeSelected: string = BranchScopeType.CurrentBranch;
+  @Persist() branchScopeSelected: string;
 
-  @Persist() voucherStatusSelected: string = VoucherStatusType.Committed;
+  @Persist() voucherStatusSelected: string;
 
   @Persist() selectedBranchSeparation: boolean = false;
 
@@ -219,7 +219,7 @@ export class ItemBalanceComponent
   ReportType: Array<any> = [];
   ddlEntites: Array<Item> = [];
 
-  @Persist() selectedEntityId: Item = undefined;
+  @Persist() selectedEntityId: Item;
 
   addOpeningVoucherToInitBalance: boolean;
 
@@ -1326,6 +1326,18 @@ export class ItemBalanceComponent
     }
     this.changeEntityTitle();
     this.fillReferences();
+
+    if (this.selectedModel)
+      this.disableAccountLookup = false;
+
+    if (this.formatSelected == undefined)
+      this.formatSelected = BalanceFormatType.Balance6Column;
+
+    if (this.branchScopeSelected == undefined)
+      this.branchScopeSelected = BranchScopeType.CurrentBranch;
+
+    if (this.voucherStatusSelected == undefined)
+      this.voucherStatusSelected = VoucherStatusType.Committed;
   }
   //#endregion
 

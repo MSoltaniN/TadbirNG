@@ -144,11 +144,11 @@ export class BalanceByAccountComponent
   reportType: string = "1";
   reportBy: Array<Item> = [];
 
-  @Persist() selectedReportBy: string = ViewName.Account.toString();
+  @Persist() selectedReportBy: string;
 
-  @Persist() selectedVoucherStatus: string = VoucherStatusType.Committed;
+  @Persist() selectedVoucherStatus: string;
 
-  @Persist() selectedBranchScope: string = BranchScopeType.CurrentBranch;
+  @Persist() selectedBranchScope: string;
 
   isApplyBranchSeparation: boolean = false;
   @Persist() selectedBranchSeparation: boolean = false;
@@ -333,6 +333,15 @@ export class BalanceByAccountComponent
     }
 
     this.cdref.detectChanges();
+
+    if (this.selectedReportBy == undefined)
+      this.selectedReportBy = ViewName.Account.toString();
+
+    if (this.selectedVoucherStatus == undefined)
+      this.selectedVoucherStatus = VoucherStatusType.Committed;
+
+    if (this.selectedBranchScope == undefined)
+      this.selectedBranchScope = BranchScopeType.CurrentBranch;
   }
 
   fillByDefaultValues() {
@@ -972,6 +981,8 @@ export class BalanceByAccountComponent
       options.Parameter = this.param;
 
       this.parameters = this.param;
+      this.listChanged = true;
+      this.operationId = OperationId.View;
 
       this.reloadGrid(options);
 
@@ -1196,7 +1207,7 @@ export class BalanceByAccountComponent
 
     if (accountLevelList != undefined && selectedAccountLevel != undefined) {
       var relatedDisplayType = accountLevelList.filter(
-        (d) => d.key === selectedAccountLevel
+        (d) => d.key === selectedAccountLevel?.level
       )[0];
 
       data = {
@@ -1206,10 +1217,10 @@ export class BalanceByAccountComponent
 
       if (
         this.breadCrumbList.findIndex(
-          (b) => b.displayType.key === relatedDisplayType.key
+          (b) => b?.displayType.key === relatedDisplayType.key
         ) == -1
       ) {
-        this.displayTypeName = relatedDisplayType.title;
+        this.displayTypeName = relatedDisplayType?.title;
         if (this.breadCrumbList.length == 0) {
           this.breadCrumbList = new Array<any>();
           this.breadCrumbList.push(data);
@@ -1388,6 +1399,7 @@ export class BalanceByAccountComponent
 
     this.enableViewListChanged(this.typeViewId);
     this.operationId = OperationId.Filter;
+    this.listChanged = true;
     this.getReportData();
   }
 

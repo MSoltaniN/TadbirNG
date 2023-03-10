@@ -241,20 +241,19 @@ export class CurrencyBookComponent
 
   @ViewChild(GridFilterComponent) gridFilterComponent: GridFilterComponent;
 
-  @Persist() selectedCurrencyValue: string = "0";
+  @Persist() selectedCurrencyValue: string;
   oldCurrencySelected: string;
 
   currenciesRows: Array<Item> = [];
   filteredCurrencies: Array<Item>;
 
-  @Persist() displayTypeSelected: string = BookDisplayType.ByRow;
+  @Persist() displayTypeSelected: string;
 
-  @Persist() branchScopeSelected: string = BranchScopeType.CurrentBranch;
+  @Persist() branchScopeSelected: string;
 
-  @Persist() voucherStatusSelected: string = VoucherStatusType.Committed;
+  @Persist() voucherStatusSelected: string;
 
-  @Persist() articleTypeSelected: string =
-    ArticleTypesResourceKey.AllVoucherLines;
+  @Persist() articleTypeSelected: string;
 
   @Persist() selectedBranchSeparation: boolean = false;
 
@@ -359,6 +358,21 @@ export class CurrencyBookComponent
 
     this.cdref.detectChanges();
     this.changeBranchSeparation();
+
+    if (this.selectedCurrencyValue == undefined)
+      this.selectedCurrencyValue = "0";
+
+    if (this.selectedCurrencyValue == undefined)
+      this.displayTypeSelected = BookDisplayType.ByRow;
+
+    if (this.selectedCurrencyValue == undefined)
+      this.branchScopeSelected = BranchScopeType.CurrentBranch;
+
+    if (this.selectedCurrencyValue == undefined)
+      this.voucherStatusSelected = VoucherStatusType.Committed;
+
+    if (this.selectedCurrencyValue == undefined)
+      this.articleTypeSelected = ArticleTypesResourceKey.AllVoucherLines;
   }
 
   public ngOnDestroy(): void {

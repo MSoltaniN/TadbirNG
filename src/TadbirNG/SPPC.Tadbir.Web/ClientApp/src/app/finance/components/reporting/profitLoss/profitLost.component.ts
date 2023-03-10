@@ -182,9 +182,9 @@ export class ProfitLostComponent
   param: any;
   paramChanged: boolean;
 
-  @Persist() branchScopeSelected: string = BranchScopeType.CurrentBranch;
+  @Persist() branchScopeSelected: string;
 
-  @Persist() voucherStatusSelected: string = VoucherStatusType.Committed;
+  @Persist() voucherStatusSelected: string;
 
   @Persist() comparativeItemSelected: string;
   @Persist() comparativeItems: Array<any>;
@@ -300,6 +300,12 @@ export class ProfitLostComponent
     this.isDefaultBtn = true;
     this.customListChanged = true;
     this.fillReferences();
+
+    if (this.branchScopeSelected == undefined)
+      this.branchScopeSelected = BranchScopeType.CurrentBranch;
+
+    if (this.voucherStatusSelected == undefined)
+      this.voucherStatusSelected = VoucherStatusType.Committed;
   }
 
   dateValueChange(event: any) {

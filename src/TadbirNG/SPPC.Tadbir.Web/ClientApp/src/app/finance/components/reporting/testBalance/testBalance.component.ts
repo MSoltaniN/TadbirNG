@@ -288,11 +288,11 @@ export class TestBalanceComponent
 
   showFilterByRef: boolean = false;
 
-  @Persist() formatSelected: string = BalanceFormatType.Balance6Column;
+  @Persist() formatSelected: string;
 
-  @Persist() displayTypeSelected: number = 0;
-  @Persist() branchScopeSelected: string = BranchScopeType.CurrentBranch;
-  @Persist() voucherStatusSelected: string = VoucherStatusType.Committed;
+  @Persist() displayTypeSelected: number;
+  @Persist() branchScopeSelected: string;
+  @Persist() voucherStatusSelected: string;
   @Persist() selectedBranchSeparation: boolean = false;
 
   gridColumnsRow: any[] = [];
@@ -344,6 +344,62 @@ export class TestBalanceComponent
     );
   }
   //#endregion
+
+  ngOnInit() {
+    if (!this.isAccess(Entities.TestBalance, TestBalancePermissions.View)) {
+      this.showMessage(
+        this.getText("App.AccessDenied"),
+        MessageType.Warning
+      );
+    }
+    this.entityName = Entities.TestBalance6Column;
+    this.viewId = ViewName[this.entityTypeName];
+    //this.loadStates();
+
+    this.translate.get("Entity.Account").subscribe((res) => {
+      this.baseModelTitle = res;
+      this.selectedModelTitle = this.baseModelTitle;
+    });
+
+    this.getFirstAndLastVoucherNo();
+    this.fillDisplayTypes();
+    this.showloadingMessage = false;
+
+    this.settingService
+      .getSettingById(SettingKey.FinanceReportConfig)
+      .subscribe((res: any) => {
+        if (res) {
+          this.openingAsFirstVoucher = res.values.openingAsFirstVoucher;
+          this.startTurnoverAsInitBalance =
+            res.values.startTurnoverAsInitBalance;
+        }
+      });
+
+    if (this.isAccess(Entities.TestBalance, TestBalancePermissions.ByBranch)) {
+      this.isApplyBranchSeparation = true;
+      this.prepareColumns();
+    }
+
+    this.fillReferences();
+    this.changeFormatType();
+
+    this.initValue();
+
+    if (this.displayTypeSelected == undefined)
+      this.displayTypeSelected = 0;
+
+    if (this.branchScopeSelected == undefined)
+      this.branchScopeSelected = BranchScopeType.CurrentBranch;
+
+    if (this.voucherStatusSelected == undefined)
+      this.voucherStatusSelected = VoucherStatusType.Committed;
+
+    if (this.formatSelected == undefined)
+      this.formatSelected = BalanceFormatType.Balance6Column;
+
+    if (this.selectedModel)
+      this.disableAccountLookup = false;
+  }
 
   //#region Methods
   fillDisplayTypes() {
@@ -1113,46 +1169,6 @@ export class TestBalanceComponent
     this.isDefaultBtn = false;
   }
 
-  ngOnInit() {
-    if (!this.isAccess(Entities.TestBalance, TestBalancePermissions.View)) {
-      this.showMessage(
-        this.getText("App.AccessDenied"),
-        MessageType.Warning
-      );
-    }
-    this.entityName = Entities.TestBalance6Column;
-    this.viewId = ViewName[this.entityTypeName];
-    //this.loadStates();
-
-    this.translate.get("Entity.Account").subscribe((res) => {
-      this.baseModelTitle = res;
-      this.selectedModelTitle = this.baseModelTitle;
-    });
-
-    this.getFirstAndLastVoucherNo();
-    this.fillDisplayTypes();
-    this.showloadingMessage = false;
-
-    this.settingService
-      .getSettingById(SettingKey.FinanceReportConfig)
-      .subscribe((res: any) => {
-        if (res) {
-          this.openingAsFirstVoucher = res.values.openingAsFirstVoucher;
-          this.startTurnoverAsInitBalance =
-            res.values.startTurnoverAsInitBalance;
-        }
-      });
-
-    if (this.isAccess(Entities.TestBalance, TestBalancePermissions.ByBranch)) {
-      this.isApplyBranchSeparation = true;
-      this.prepareColumns();
-    }
-
-    this.fillReferences();
-    this.changeFormatType();
-
-    this.initValue();
-  }
   //#endregion
 
   //#region Reporting

@@ -37,6 +37,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   @Input() public Id: string;
   @Input() public Code: string;
   @Input() public url: string;
+  @Input() public title: string;
 
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
@@ -196,18 +197,20 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   }
 
   addViewerEvents() {
+    let title = this.title;
     let url = this.url;
     let headers = this.reporingService.httpHeaders;
     let http = this.reporingService.http;
     // Assign the onPrintReport event function
     this.viewer.onPrintReport = function () {
       console.log('onPrintReport');
+      this.report.reportName = title;
       // for Print Log.
       let postItem = {listChanged:true,operation:OperationId.Print}
       let postBody = JSON.stringify(postItem);
       let base64Body = btoa(encodeURIComponent(postBody));
       if (headers)
-        headers = headers.append("X-Tadbir-GridOptions", base64Body);
+        headers = headers.set("X-Tadbir-GridOptions", base64Body);
       if (url)
         http.get(url, { headers: headers, observe: "response" }).subscribe(res => {
             console.log("PrintLog.")

@@ -314,9 +314,9 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       var selectedlogOp = this.logicalOperatorList.filter(
         (p) => p.key === this.selectedLogicalOperator
       )[0];
-
+      
       let displayValue =  this.CurrentLanguage == 'fa' &&
-       this.selectedColumn.name == 'Date' &&
+       this.selectedColumn.scriptType == 'Date' &&
        +this.selectedValue.split('/')[0] > 1600?
           this.toJalaliDate(this.selectedValue) : this.selectedValue;
 
