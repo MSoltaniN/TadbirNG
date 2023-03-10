@@ -3916,7 +3916,7 @@ INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, R
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
     VALUES (55, 52, NULL, N'CheckReports', NULL, N'folder-close', NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (57, 53, 225, N'CashRegisters', N'/treasury/cash-register', 'list', NULL)
+    VALUES (59, 53, 225, N'CashRegisters', N'/treasury/cash-register', 'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
 SET IDENTITY_INSERT [Reporting].[SystemIssue] ON 
