@@ -227,4 +227,25 @@ namespace SPPC.Tadbir.Domain
         /// </summary>
         Quarterly = 4
     }
+
+    /// <summary>
+    /// داده شمارشی برای وضعیت برگه دسته چک
+    /// </summary>
+    public enum CheckBookPageState:Int16
+    {
+        /// <summary>
+        /// برگه چک سفید
+        /// </summary>
+        Blank = 1,
+
+        /// <summary>
+        ///برگه چک استفاده شده
+        /// </summary>
+        Used = 2,
+
+        /// <summary>
+        /// برگه چک ابطال شده
+        /// </summary>
+        Cancelled = 3
+    }
 }

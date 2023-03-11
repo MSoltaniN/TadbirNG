@@ -301,6 +301,46 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// کد عملیاتی پیش نمایش چاپ
         /// </summary>
-        PrintPreview = 58
+        PrintPreview = 58,
+
+        /// <summary>
+        /// جابجایی بین دسته چک ها
+        /// </summary>
+        NavigateEntitiesCheckBooks=59,
+
+        /// <summary>
+        /// ایجاد برگه های دسته چک
+        /// </summary>
+        CreatePages = 60,
+
+        /// <summary>
+        /// حذف برگه های دسته چک
+        /// </summary>
+        DeletePages = 61,
+
+        /// <summary>
+        /// ابطال برگه دسته چک
+        /// </summary>
+        CancelPage = 62,
+
+        /// <summary>
+        /// برگشت از ابطال برگه دسته چک
+        /// </summary>
+        UndoCancelPage = 63,
+
+        /// <summary>
+        /// ایجاد ارتباط با چک
+        /// </summary>
+        ConnectToCheck = 64,
+
+        /// <summary>
+        /// قطع ارتباط با چک
+        /// </summary>
+        DisconnectFromCheck = 65,
+
+        /// <summary>
+        /// تخصیص کاربر به صندوق
+        /// </summary>
+        AssignCashRegisterUser = 66,
     }
 }

@@ -3762,4 +3762,52 @@
   <data name="StartNo" xml:space="preserve">
     <value>Start From</value>
   </data>
+  <data name="CheckBookPagesExist" xml:space="preserve">
+    <value>Checkbook pages have already been created</value>
+  </data>
+  <data name="CheckBookParntInfoNotExist" xml:space="preserve">
+    <value>First, the general information of the checkbook must be defined.</value>
+  </data>
+  <data name="InabilityEditCheckbook" xml:space="preserve">
+    <value>The sheets of this checkbook have been created, you cannot edit them</value>
+  </data>
+  <data name="HasConnectedToCheck" xml:space="preserve">
+    <value>At least one sheet of checkbook sheets is used.</value>
+  </data>
+  <data name="CancelPage" xml:space="preserve">
+    <value>Cancellation of the check sheet</value>
+  </data>
+  <data name="CancelPageLog" xml:space="preserve">
+    <value>Cancellation of check number {0}</value>
+  </data>
+  <data name="CheckBookByName" xml:space="preserve">
+    <value>Check Book By Name</value>
+  </data>
+  <data name="ConnectToCheck" xml:space="preserve">
+    <value>Create a connection with a check</value>
+  </data>
+  <data name="CreatePages" xml:space="preserve">
+    <value>Create checkbook sheets</value>
+  </data>
+  <data name="DeletePages" xml:space="preserve">
+    <value>Remove checkbook sheets</value>
+  </data>
+  <data name="DisconnectFromCheck" xml:space="preserve">
+    <value>Disconnected from the check</value>
+  </data>
+  <data name="LastCheckBook" xml:space="preserve">
+    <value>Last Check Book</value>
+  </data>
+  <data name="NavigateEntitiesCheckBooks" xml:space="preserve">
+    <value>Move between checkbooks</value>
+  </data>
+  <data name="NewCheckBook" xml:space="preserve">
+    <value>New Check Book</value>
+  </data>
+  <data name="UndoCancelPage" xml:space="preserve">
+    <value>Return from canceling the check sheet</value>
+  </data>
+  <data name="UndoCancelPageLog" xml:space="preserve">
+    <value>Return from canceling check number {0}</value>
+  </data>
 </root>

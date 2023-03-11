@@ -33,6 +33,7 @@ namespace SPPC.Tadbir.Model.Check
             BankName = String.Empty;
             IssueDate = DateTime.Now;
             ModifiedDate = DateTime.Now;
+            Date = DateTime.Now;
         }
 
         /// <summary>

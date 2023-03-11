@@ -3753,4 +3753,52 @@
   <data name="StartNo" xml:space="preserve">
     <value>شروع از شماره</value>
   </data>
+  <data name="CheckBookPagesExist" xml:space="preserve">
+    <value>برگه های دسته چک قبلا ایجاد شده است.</value>
+  </data>
+  <data name="CheckBookParntInfoNotExist" xml:space="preserve">
+    <value>ابتدا باید اطلاعات کلی دسته چک تعریف شود.</value>
+  </data>
+  <data name="InabilityEditCheckbook" xml:space="preserve">
+    <value>برگه های این دسته چک ایجاد شده اند شما قابلیت ویرایش آن را ندارید</value>
+  </data>
+  <data name="HasConnectedToCheck" xml:space="preserve">
+    <value>حداقل یک برگ از برگه های دسته چک استفاده شده است.</value>
+  </data>
+  <data name="CancelPage" xml:space="preserve">
+    <value>ابطال برگه چک</value>
+  </data>
+  <data name="CancelPageLog" xml:space="preserve">
+    <value>ابطال چک شماره {0}</value>
+  </data>
+  <data name="CheckBookByName" xml:space="preserve">
+    <value>دسته چک به شماره ...</value>
+  </data>
+  <data name="ConnectToCheck" xml:space="preserve">
+    <value>ایجاد ارتباط با چک</value>
+  </data>
+  <data name="CreatePages" xml:space="preserve">
+    <value>ایجاد برگه های دسته چک</value>
+  </data>
+  <data name="DeletePages" xml:space="preserve">
+    <value>حذف برگه های دسته چک</value>
+  </data>
+  <data name="DisconnectFromCheck" xml:space="preserve">
+    <value>قطع ارتباط با چک</value>
+  </data>
+  <data name="LastCheckBook" xml:space="preserve">
+    <value>آخرین دسته چک</value>
+  </data>
+  <data name="NavigateEntitiesCheckBooks" xml:space="preserve">
+    <value>جابجایی بین دسته چک ها</value>
+  </data>
+  <data name="NewCheckBook" xml:space="preserve">
+    <value>دسته چک جدید</value>
+  </data>
+  <data name="UndoCancelPage" xml:space="preserve">
+    <value>برگشت از ابطال برگه چک</value>
+  </data>
+  <data name="UndoCancelPageLog" xml:space="preserve">
+    <value>برگشت از ابطال چک شماره {0}</value>
+  </data>
 </root>

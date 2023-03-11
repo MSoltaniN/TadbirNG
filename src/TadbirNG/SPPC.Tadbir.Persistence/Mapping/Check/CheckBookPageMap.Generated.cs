@@ -40,7 +40,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasDefaultValueSql("(getdate())");
 
             builder.HasOne(e => e.CheckBook)
-                .WithMany()
+                .WithMany(e=>e.CheckBookPages)
                 .HasForeignKey(e => e.CheckBookId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Check_CheckBookPage_Check_CheckBook");

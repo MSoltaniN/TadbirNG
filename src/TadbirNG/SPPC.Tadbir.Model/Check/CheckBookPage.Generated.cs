@@ -10,6 +10,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
+using SPPC.Tadbir.Domain;
 using System;
 using System.Collections.Generic;
 
@@ -42,7 +43,7 @@ namespace SPPC.Tadbir.Model.Check
         /// <summary>
         /// وضعیت برگه
         /// </summary>
-        public virtual short? Status { get; set; }
+        public virtual CheckBookPageState? Status { get; set; }
 
         /// <summary>
         /// شناسه چک مرتبط با برگه

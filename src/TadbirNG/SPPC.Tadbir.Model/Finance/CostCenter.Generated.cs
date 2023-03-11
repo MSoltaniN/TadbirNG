@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model.Check;
 using SPPC.Tadbir.Model.Corporate;
 
 namespace SPPC.Tadbir.Model.Finance
@@ -43,5 +44,10 @@ namespace SPPC.Tadbir.Model.Finance
         /// مجموعه ای از سرفصل های حسابداری مرتبط با این مرکز هزینه
         /// </summary>
         public IList<AccountCostCenter> AccountCostCenters { get; protected set; }
+
+        /// <summary>
+        /// مجموعه ای از دسته چک های مرتبط با این مرکز هزینه
+        /// </summary>
+        public virtual IList<CheckBook> CheckBooks { get; protected set; }
     }
 }

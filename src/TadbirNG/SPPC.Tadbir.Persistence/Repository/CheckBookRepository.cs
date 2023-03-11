@@ -16,6 +16,8 @@ using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Check;
 using SPPC.Tadbir.ViewModel.Finance;
+using static System.Net.Mime.MediaTypeNames;
+using static AutoMapper.Internal.ExpressionFactory;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -49,7 +51,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 checkbook = Mapper.Map<CheckBookViewModel>(existing);
             }
-
+            await ReadAsync(new GridOptions(), GetState(existing));
             return checkbook;
         }
 
@@ -58,17 +60,17 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="checkBookNo">شماره یکی از دسته چک های موجود</param>
         /// <returns>دسته چک مشخص شده با شماره</returns>
-        public async Task<CheckBookViewModel> GetCheckBookByNoAsync(int checkBookNo)
+        public async Task<CheckBookViewModel> GetCheckBookByNoAsync(string checkBookNo)
         {
             var byNo = default(CheckBookViewModel);
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
-            var checkBookByNo = Repository.ApplyRowFilter(await repository.GetFirstByCriteriaAsync(
-                v => v.No == checkBookNo), ViewId.CheckBook);
+            var checkBookByNo = await repository.GetFirstByCriteriaAsync(
+                c => c.CheckBookNo == checkBookNo);
             if (checkBookByNo != null)
             {
                 byNo = Mapper.Map<CheckBookViewModel>(checkBookByNo);
             }
-
+            await ReadAsync(new GridOptions(), GetState(checkBookByNo));
             return byNo;
         }
 
@@ -82,6 +84,7 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(checkBook, nameof(checkBook));
             CheckBook checkBookModel;
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
+            var repositoryPage = UnitOfWork.GetAsyncRepository<CheckBookPage>();
             if (checkBook.Id == 0)
             {
                 checkBookModel = Mapper.Map<CheckBook>(checkBook);
@@ -113,24 +116,6 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، دسته چک ها مشخص شده با شناسه عددی را حذف می کند
-        /// </summary>
-        /// <param name="checkBookIds">مجموعه ای از شناسه های عددی دسته چک ها مورد نظر برای حذف</param>
-        public async Task DeleteCheckBooksAsync(IList<int> checkBookIds)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
-            foreach (int checkBookId in checkBookIds)
-            {
-                var checkBook = await repository.GetByIDAsync(checkBookId);
-                if (checkBook != null)
-                {
-                    await DeleteNoLogAsync(repository, checkBook);
-                }
-            }
-
-            await OnEntityGroupDeleted(checkBookIds);
-        }
 
         internal override int? EntityType
         {
@@ -153,36 +138,32 @@ namespace SPPC.Tadbir.Persistence
             checkBook.IsArchived = checkBookViewModel.IsArchived;
         }
 
-        #region CheckBook Page
         /// <summary>
-        /// به روش آسنکرون، برگه های یک دسته چک مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، مشخص می کند که آیا دسته چک دارای زیرمجموعه هست یا نه
         /// </summary>
         /// <param name="checkBookId">شناسه یکی از دسته چک های موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>برگه های دسته چک مشخص شده با شناسه عددی</returns>
-        public async Task<PagedList<CheckBookPageViewModel>> GetPagesAsync(int checkBookId, GridOptions gridOptions = null)
+        /// <returns>در حالتی که دسته چک دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> HasChildrenAsync(int checkBookId)
         {
-            var query = GetCheckBookPagesQuery(checkBookId);
-            query = Repository.ApplyRowFilter(ref query, ViewId.CheckBook);
-            var pages = await query
-                .Select(page => Mapper.Map<CheckBookPageViewModel>(page))
-                .ToListAsync();
-            return new PagedList<CheckBookPageViewModel>(pages, gridOptions);
-        }
-        #endregion
-        
-        private IQueryable<CheckBookPage> GetCheckBookPagesQuery(int checkBookId)
-        {
-            ///Need To Change
-            var repository = UnitOfWork.GetRepository<CheckBookPage>();
-            //var pagesQuery = 
-                //    repository
-                //.GetEntityQuery()
-                //.Where(page => page.checkBook. == checkBookId)
-                //.OrderBy(page => page.CheckBookPageID);
-            return null;
+            var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
+            int count = await repository.GetCountByCriteriaAsync(ch => ch.CheckBookId == checkBookId);
+            return count > 0;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا قسمت والد دسته چک وجود دارد یا نه
+        /// </summary>
+        /// <param name="checkBookId">شناسه دسته چک موجود</param>
+        /// <returns>در حالتی که دسته چک وجود داشته باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> HasParentAsync(int checkBookId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
+            int count = await repository.GetCountByCriteriaAsync(ch => ch.Id == checkBookId);
+            return count > 0;
+        }
+        
         /// <summary>
         /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
         /// </summary>
@@ -199,6 +180,36 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا نام دسته چک مورد نظر تکراری است یا نه
+        /// </summary>
+        /// <param name="checkBook">دسته چکی که تکراری بودن نام آن باید بررسی شود</param>
+        /// <returns>مقدار بولی درست در صورت تکراری بودن نام، در غیر این صورت مقدار بولی نادرست</returns>
+        public async Task<bool> IsDuplicateCheckBookNameAsync(CheckBookViewModel checkBook)
+        {
+            Verify.ArgumentNotNull(checkBook, nameof(checkBook));
+            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
+            int count = await repository
+                .GetCountByCriteriaAsync(c => c.Id != checkBook.Id
+                                                && c.Name == checkBook.Name
+                                                && c.BranchId == checkBook.BranchId);
+            return count > 0;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا حداقل یک برگ از دسته چک با چک ارتباط دارد یا نه
+        /// </summary>
+        /// <param name="checkBookId">شناسه دسته چک موجود</param>
+        /// <returns>در حالتی که حداقل یک برگ از دسته چک ارتباط داشته باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> HasConnectedToCheckAsync(int checkBookId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
+            int count = await repository
+                .GetCountByCriteriaAsync(c => c.CheckBookId == checkBookId
+                                              && c.CheckId!=null);
+            return count > 0;
+        }
         private ISecureRepository Repository
         {
             get { return _system.Repository; }

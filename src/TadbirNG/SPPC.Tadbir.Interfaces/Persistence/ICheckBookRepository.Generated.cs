@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="checkBookNo">شماره یکی از دسته چک های موجود</param>
         /// <returns>دسته چک مشخص شده با شماره</returns>
-        Task<CheckBookViewModel> GetCheckBookByNoAsync(int checkBookNo);
+        Task<CheckBookViewModel> GetCheckBookByNoAsync(string checkBookNo);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک دسته چک را ایجاد یا اصلاح می کند
@@ -40,15 +40,36 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="checkbookId">شناسه عددی دسته چک مورد نظر برای حذف</param>
         Task DeleteCheckBookAsync(int checkbookId);
 
-        #region CheckBookPage
         /// <summary>
-        /// به روش آسنکرون، برگه های های یک دسته چک مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، مشخص می کند که آیا دسته چک دارای زیرمجموعه هست یا نه
         /// </summary>
         /// <param name="checkBookId">شناسه یکی از دسته چک های موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>برگه های چک مشخص شده با شناسه عددی</returns>
-        Task<PagedList<CheckBookPageViewModel>> GetPagesAsync(int checkBookId, GridOptions gridOptions = null);
+        /// <returns>در حالتی که دسته چک دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        Task<bool> HasChildrenAsync(int checkBookId);
 
-        #endregion
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا قسمت والد دسته چک وجود دارد یا نه
+        /// </summary>
+        /// <param name="checkBookId">شناسه دسته چک موجود</param>
+        /// <returns>در حالتی که دسته چک وجود داشته باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        Task<bool> HasParentAsync(int checkBookId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا نام دسته چک مورد نظر تکراری است یا نه
+        /// </summary>
+        /// <param name="checkBook">دسته چکی که تکراری بودن نام آن باید بررسی شود</param>
+        /// <returns>مقدار بولی درست در صورت تکراری بودن نام، در غیر این صورت مقدار بولی نادرست</returns>
+        Task<bool> IsDuplicateCheckBookNameAsync(CheckBookViewModel checkBook);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا حداقل یک برگ از دسته چک با چک ارتباط دارد یا نه
+        /// </summary>
+        /// <param name="checkBookId">شناسه دسته چک موجود</param>
+        /// <returns>در حالتی که حداقل یک برگ از دسته چک ارتباط داشته باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        Task<bool> HasConnectedToCheckAsync(int checkBookId);
+
     }
 }

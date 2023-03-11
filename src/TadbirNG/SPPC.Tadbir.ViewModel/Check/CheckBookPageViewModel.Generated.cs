@@ -13,6 +13,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Check
 {
@@ -44,7 +45,7 @@ namespace SPPC.Tadbir.ViewModel.Check
         /// <summary>
         /// وضعیت برگه
         /// </summary>
-        public short Status { get; set; }
+        public CheckBookPageState? Status { get; set; }
 
         /// <summary>
         /// شناسه چک مرتبط با برگه

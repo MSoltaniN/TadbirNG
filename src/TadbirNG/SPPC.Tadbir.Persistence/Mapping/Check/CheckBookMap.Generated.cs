@@ -48,6 +48,11 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
+            builder.Ignore(checkBook => checkBook.No);
+            builder.Ignore(checkBook => checkBook.FiscalPeriodId);
+            builder.Ignore(checkBook => checkBook.FiscalPeriod);
+            builder.Ignore(checkBook => checkBook.Reference);
+            builder.Ignore(checkBook => checkBook.Date);
 
             builder.HasOne(e => e.Branch)
                 .WithMany()
@@ -55,22 +60,22 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Check_CheckBook_Corporate_Branch");
             builder.HasOne(e => e.Account)
-                .WithMany()
+                .WithMany(e => e.CheckBooks)
                 .HasForeignKey(e => e.AccountId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Check_CheckBook_Finance_Account");
             builder.HasOne(e => e.DetailAccount)
-                .WithMany()
-                .HasForeignKey(e => e.DetailId)
+                .WithMany(e=>e.CheckBooks)
+                .HasForeignKey(e => e.DetailAccountId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Check_CheckBook_Finance_DetailAccount");
             builder.HasOne(e => e.CostCenter)
-                .WithMany()
+                .WithMany(e=>e.CheckBooks)
                 .HasForeignKey(e => e.CostCenterId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Check_CheckBook_Finance_CostCenter");
             builder.HasOne(e => e.Project)
-                .WithMany()
+                .WithMany(e=>e.CheckBooks)
                 .HasForeignKey(e => e.ProjectId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Check_CheckBook_Finance_Project");

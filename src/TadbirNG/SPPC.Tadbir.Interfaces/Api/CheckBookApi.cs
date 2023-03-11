@@ -31,12 +31,12 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for a single check Book specified by number
         /// </summary>
-        public const string CheckBookByNo = "check-books/by-no/{0}";
+        public const string CheckBookByNo = "check-book/by-no/{0}";
 
         /// <summary>
         /// API server route URL for a single check Book specified by number
         /// </summary>
-        public const string CheckBookByNoUrl = "check-books/by-no/{checkbookNo:min(1)}";
+        public const string CheckBookByNoUrl = "check-book/by-no/{checkbookNo:min(1)}";
 
         /// <summary>
         /// API client URL for all Pages in a single Check Book specified by identifier
@@ -49,13 +49,24 @@ namespace SPPC.Tadbir.Api
         public const string CheckBookPagesUrl = "check-book/{checkbookId:min(1)}/pages";
 
         /// <summary>
-        /// API client URL for a single check Book page specified by identifier
+        /// API server route URL for Cancel single pages check Book specified by identifier
         /// </summary>
-        public const string CheckBookPage = "pages/pages/{0}";
+        public const string CheckBookPageCancelPage = "check-book-cancel-page/{0}/page";
 
         /// <summary>
-        /// API server route URL for a single check Book page specified by identifier
+        /// API server route URL for Cancel single pages check Book specified by identifier
         /// </summary>
-        public const string CheckBookPageUrl = "pages/pages/{checkbookPageId:min(1)}";
+        public const string CheckBookPageCancelPageUrl = "check-book-cancel-page/{checkbookpageId:min(1)}/page";
+
+        /// <summary>
+        /// API server route URL for Undo Cancel single pages check Book specified by identifier
+        /// </summary>
+        public const string CheckBookPageUndoCancelPage = "check-book-undo-cancel-page/{0}/page";
+
+        /// <summary>
+        /// API server route URL for Undo Cancel single pages check Book specified by identifier
+        /// </summary>
+        public const string CheckBookPageUndoCancelPageUrl = "check-book-undo-cancel-page/{checkbookpageId:min(1)}/page";
+
     }
 }

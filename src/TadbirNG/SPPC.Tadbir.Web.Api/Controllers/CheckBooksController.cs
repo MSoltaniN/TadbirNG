@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model.Check;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
@@ -13,6 +15,7 @@ using SPPC.Tadbir.ViewModel.Check;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Filters;
+using Stimulsoft.System.Windows.Forms;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -27,12 +30,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="repository">امکان ذخیره و بازیابی اطلاعات دسته چک ها در دیتابیس را فراهم می کند</param>
         /// <param name="strings">امکان خواندن متن های چندزبانه را فراهم می کند</param>
+        /// <param name="pageRepository">.امکان ذخیره و بازیابی اطلاعات برگه های چک در دیتابیس فراهم می کند</param>
         /// <param name="tokenManager">امکان کار با توکن امنیتی برنامه را فراهم می کند</param>
         public CheckBooksController(ICheckBookRepository repository, IStringLocalizer<AppStrings> strings,
+            ICheckBookPageRepository pageRepository,
             ITokenManager tokenManager)
             : base(strings, tokenManager)
         {
             _repository = repository;
+            _pageRepository = pageRepository;
         }
 
         /// <summary>
@@ -68,9 +74,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpGet]
         [Route(CheckBookApi.CheckBookByNoUrl)]
         [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.View)]
-        public async Task<IActionResult> GetCheckBookByNoAsync(int checkBookNo)
+        public async Task<IActionResult> GetCheckBookByNoAsync(string checkBookNo)
         {
-            var checkBookByNo = await _repository.GetCheckBookAsync(checkBookNo);
+            var checkBookByNo = await _repository.GetCheckBookByNoAsync(checkBookNo);
             Localize(checkBookByNo);
             return JsonReadResult(checkBookByNo);
         }
@@ -90,6 +96,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (result is BadRequestObjectResult)
             {
                 return result;
+            }
+            if (await _repository.IsDuplicateCheckBookNameAsync(checkbook))
+            {
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.CheckBookName));
             }
 
             var outputItem = await _repository.SaveCheckBookAsync(checkbook);
@@ -113,7 +123,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 return result;
             }
-
+            if (await _repository.HasChildrenAsync(checkbookId))
+            {
+                string msg = _strings[AppStrings.InabilityEditCheckbook];
+                return BadRequestResult(msg);
+            }
+            if (await _repository.IsDuplicateCheckBookNameAsync(checkbook))
+            {
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.CheckBookName));
+            }
             var outputItem = await _repository.SaveCheckBookAsync(checkbook);
             return OkReadResult(outputItem);
         }
@@ -168,11 +186,88 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.View)]
         public async Task<IActionResult> GetPagesAsync(int checkBookId)
         {
-            var pages = await _repository.GetPagesAsync(checkBookId, GridOptions);
-            SetItemCount(pages.TotalCount);
+            var pages = await _pageRepository.GetPagesAsync(checkBookId, GridOptions);
             return Json(pages.Items);
         }
-        
+
+        /// <summary>
+        ///  به روش آسنکرون، اطلاعات نمایشی برگه های یک دسته چک جدید را پس از اعتبارسنجی در دیتابیس ذخیره می کند
+        /// </summary>
+        /// <param name="checkBookId">شناسه دیتابیسی دسته چک مورد نظر</param>
+        /// <returns>فهرست صفحه بندی شده برگه های دسته چک</returns>
+        // GET: api/check-book/{checkBookId:min(1)}/pages
+        [HttpPost]
+        [Route(CheckBookApi.CheckBookPagesUrl)]
+        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.CreatePages)]
+        public async Task<IActionResult> CreatePagesAsync(int checkBookId)
+        {
+            if (!await _repository.HasParentAsync(checkBookId))
+            {
+                string result = _strings[AppStrings.CheckBookParntInfoNotExist];
+                return BadRequestResult(result);
+            }
+            if (await _repository.HasChildrenAsync(checkBookId))
+            {
+                string result = _strings[AppStrings.CheckBookPagesExist];
+                return BadRequestResult(result);
+            }
+            var pages = await _pageRepository.CreatePagesAsync(checkBookId);
+            return Json(pages.Items);
+        }
+
+        /// <summary>
+        ///  به روش آسنکرون، برگه های دسته چک مشخص شده با شناسه دسته چک را پس از اعتبارسنجی از دیتابیس حذف می کند
+        /// </summary>
+        /// <param name="checkBookId">شناسه دیتابیسی دسته چک مورد نظر</param>
+        /// <returns>فهرست صفحه بندی شده برگه های دسته چک</returns>
+        // GET: api/check-book/{checkBookId:min(1)}/pages
+        [HttpDelete]
+        [Route(CheckBookApi.CheckBookPagesUrl)]
+        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.DeletePages)]
+        public async Task<IActionResult> DeletePagesAsync(int checkBookId)
+        {
+            string message = await ValidateDeleteAsync(checkBookId);
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequestResult(message);
+            }
+
+            if (await _repository.HasConnectedToCheckAsync(checkBookId))
+            {
+                string msg = _strings[AppStrings.HasConnectedToCheck];
+                return BadRequestResult(msg);
+            }
+            await _pageRepository.DeleteCheckBookPagesAsync(checkBookId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        /// <summary>
+        ///  به روش آسنکرون، برگه دسته چک مشخص شده با شناسه دیتابیسی را ابطال می کند
+        /// </summary>
+        /// <param name="checkBookPageId">شناسه عددی یکی از برگه های چک موجود</param>
+        /// <returns>مشخصات برگه چک ابطال شده</returns>
+        [HttpPut]
+        [Route(CheckBookApi.CheckBookPageCancelPageUrl)]
+        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.CancelPage)]
+        public async Task<IActionResult> CancelPageAsync(int checkBookPageId)
+        {
+            var outputItem = await _pageRepository.ChangeStateCheckAsync(checkBookPageId,CheckBookPageState.Cancelled);
+            return OkReadResult(outputItem);
+        }
+
+        /// <summary>
+        ///  به روش آسنکرون، برگه دسته چک مشخص شده با شناسه دیتابیسی را برگشت از ابطال می کند
+        /// </summary>
+        /// <param name="checkBookPageId">شناسه عددی یکی از برگه های چک موجود</param>
+        /// <returns>مشخصات برگه چک برگشت شده از ابطال </returns>
+        [HttpPut]
+        [Route(CheckBookApi.CheckBookPageUndoCancelPageUrl)]
+        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.UndoCancelPage)]
+        public async Task<IActionResult> UndoCancelPageAsync(int checkBookPageId)
+        {
+            var outputItem = await _pageRepository.ChangeStateCheckAsync(checkBookPageId, CheckBookPageState.Blank);
+            return OkReadResult(outputItem);
+        }
         #endregion
 
         private void Localize(CheckBookViewModel checkBook)
@@ -187,5 +282,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         
 
         private readonly ICheckBookRepository _repository;
+        private readonly ICheckBookPageRepository _pageRepository;
     }
 }
