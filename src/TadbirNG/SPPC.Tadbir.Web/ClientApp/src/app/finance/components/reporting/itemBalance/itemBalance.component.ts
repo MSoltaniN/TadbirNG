@@ -1334,10 +1334,10 @@ export class ItemBalanceComponent
       this.formatSelected = BalanceFormatType.Balance6Column;
 
     if (this.branchScopeSelected == undefined)
-      this.branchScopeSelected == BranchScopeType.CurrentBranch;
+      this.branchScopeSelected = BranchScopeType.CurrentBranch;
 
     if (this.voucherStatusSelected == undefined)
-      this.voucherStatusSelected == VoucherStatusType.Committed;
+      this.voucherStatusSelected = VoucherStatusType.Committed;
   }
   //#endregion
 

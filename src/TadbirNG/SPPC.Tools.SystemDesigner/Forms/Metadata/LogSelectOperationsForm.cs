@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
@@ -32,6 +33,34 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.GetActiveForm().Cursor = Cursors.Default;
         }
 
+        private void AddOperation_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(txtName.Text))
+            {
+                MessageBox.Show(this, "Operation name cannot be empty or whitespace.", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            var operation = new LogSettingViewModel()
+            {
+                OperationName = txtName.Text,
+                IsEnabled = true,
+                State = RecordState.Added
+            };
+            var allOperations = lstOperations.DataSource as List<LogSettingViewModel>;
+            SaveOperations();
+            allOperations.Add(operation);
+            SelectedItems.Add(operation);
+            lstOperations.DataSource = null;
+            lstOperations.DataSource = allOperations
+                .OrderBy(item => item.OperationName)
+                .ToList();
+            lstOperations.DisplayMember = "OperationName";
+            HighlightSelectedItems();
+            txtName.Text = String.Empty;
+        }
+
         private void Select_Click(object sender, EventArgs e)
         {
             if (lstOperations.SelectedIndices.Count == 0)
@@ -41,11 +70,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 return;
             }
 
-            SelectedItems.Clear();
-            SelectedItems.AddRange(lstOperations.SelectedIndices
-                .Cast<int>()
-                .Select(index => lstOperations.Items[index] as LogSettingViewModel)
-                .OrderBy(setting => setting.OperationId));
+            SaveOperations();
             DialogResult = DialogResult.OK;
             Close();
         }
@@ -76,6 +101,15 @@ ORDER BY [Name]");
                     IsEnabled = true
                 })
                 .ToList();
+        }
+
+        private void SaveOperations()
+        {
+            SelectedItems.Clear();
+            SelectedItems.AddRange(lstOperations.SelectedIndices
+                .Cast<int>()
+                .Select(index => lstOperations.Items[index] as LogSettingViewModel)
+                .OrderBy(setting => setting.OperationId));
         }
 
         private void HighlightSelectedItems()

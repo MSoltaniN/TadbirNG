@@ -33,6 +33,9 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.lstOperations = new System.Windows.Forms.ListBox();
             this.btnSelect = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtName = new System.Windows.Forms.TextBox();
+            this.btnAddOperation = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -51,28 +54,54 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.lstOperations.Location = new System.Drawing.Point(12, 40);
             this.lstOperations.Name = "lstOperations";
             this.lstOperations.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstOperations.Size = new System.Drawing.Size(473, 484);
+            this.lstOperations.Size = new System.Drawing.Size(473, 444);
             this.lstOperations.TabIndex = 1;
             // 
             // btnSelect
             // 
             this.btnSelect.Location = new System.Drawing.Point(13, 542);
             this.btnSelect.Name = "btnSelect";
-            this.btnSelect.Size = new System.Drawing.Size(94, 33);
-            this.btnSelect.TabIndex = 2;
+            this.btnSelect.Size = new System.Drawing.Size(117, 33);
+            this.btnSelect.TabIndex = 5;
             this.btnSelect.Text = "Select";
             this.btnSelect.UseVisualStyleBackColor = true;
             this.btnSelect.Click += new System.EventHandler(this.Select_Click);
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(113, 542);
+            this.btnCancel.Location = new System.Drawing.Point(136, 542);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(94, 33);
-            this.btnCancel.TabIndex = 3;
+            this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.Cancel_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 497);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(117, 20);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "New Operation :";
+            // 
+            // txtName
+            // 
+            this.txtName.Location = new System.Drawing.Point(136, 494);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(256, 27);
+            this.txtName.TabIndex = 3;
+            // 
+            // btnAddOperation
+            // 
+            this.btnAddOperation.Location = new System.Drawing.Point(398, 491);
+            this.btnAddOperation.Name = "btnAddOperation";
+            this.btnAddOperation.Size = new System.Drawing.Size(87, 33);
+            this.btnAddOperation.TabIndex = 4;
+            this.btnAddOperation.Text = "Add";
+            this.btnAddOperation.UseVisualStyleBackColor = true;
+            this.btnAddOperation.Click += new System.EventHandler(this.AddOperation_Click);
             // 
             // LogSelectOperationsForm
             // 
@@ -81,6 +110,9 @@ namespace SPPC.Tools.SystemDesigner.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(497, 584);
+            this.Controls.Add(this.btnAddOperation);
+            this.Controls.Add(this.txtName);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSelect);
             this.Controls.Add(this.lstOperations);
@@ -103,5 +135,8 @@ namespace SPPC.Tools.SystemDesigner.Forms
         private System.Windows.Forms.ListBox lstOperations;
         private System.Windows.Forms.Button btnSelect;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.Button btnAddOperation;
     }
 }

@@ -16,6 +16,13 @@ FROM Config.LogSetting [ls]
     INNER JOIN Metadata.OperationSourceType [ost] ON ls.SourceTypeID = ost.OperationSourceTypeID
     INNER JOIN Metadata.Subsystem [ss] ON ls.SubsystemID = ss.SubsystemID";
 
+        public const string NewSubsystems = @"
+SELECT [SubsystemID], [Name]
+FROM [Metadata].[Subsystem]
+WHERE [SubsystemID] NOT IN(
+    SELECT DISTINCT [SubsystemID]
+    FROM [Config].[LogSetting])";
+
         public const string SysLogSettings = @"
 SELECT sls.SysLogSettingID, sls.EntityTypeID, et.Name AS EntityName, et.Description AS EntityDescription,
     sls.SourceID, os.Name AS SourceName, os.Description AS SourceDescription,

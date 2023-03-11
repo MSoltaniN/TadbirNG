@@ -190,5 +190,10 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت داشبورد
         /// </summary>
         public const string Dashboard = "Dashboard";
+
+        /// <summary>
+        /// نام موجودیت صندوق
+        /// </summary>
+        public const string CashRegister = "CashRegister";
     }
 }

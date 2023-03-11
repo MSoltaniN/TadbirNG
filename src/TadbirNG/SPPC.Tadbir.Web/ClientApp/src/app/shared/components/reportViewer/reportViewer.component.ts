@@ -210,7 +210,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       let postBody = JSON.stringify(postItem);
       let base64Body = btoa(encodeURIComponent(postBody));
       if (headers)
-        headers = headers.append("X-Tadbir-GridOptions", base64Body);
+        headers = headers.set("X-Tadbir-GridOptions", base64Body);
       if (url)
         http.get(url, { headers: headers, observe: "response" }).subscribe(res => {
             console.log("PrintLog.")

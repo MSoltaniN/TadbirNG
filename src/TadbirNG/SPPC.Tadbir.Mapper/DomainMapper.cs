@@ -14,6 +14,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Mapper.ModelHelpers;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
@@ -22,6 +23,7 @@ using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.CashFlow;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
@@ -81,6 +83,7 @@ namespace SPPC.Tadbir.Mapper
             MapCoreTypes(mapperConfig);
             MapMetadataTypes(mapperConfig);
             MapReportingTypes(mapperConfig);
+            MapCashFlowTypes(mapperConfig);
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)
@@ -593,6 +596,14 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.WidgetAccounts, opts => opts.Ignore())
                 .ForMember(dest => dest.WidgetParameters, opts => opts.Ignore());
             mapperConfig.CreateMap<TabWidgetViewModel, TabWidget>();
+        }
+
+        private static void MapCashFlowTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<CashRegister, CashRegisterViewModel>();
+            mapperConfig.CreateMap<CashRegisterViewModel, CashRegister>();
+            mapperConfig.CreateMap<UserCashRegister, UserCashRegisterViewModel>();
+            mapperConfig.CreateMap<UserCashRegisterViewModel, UserCashRegister>();
         }
 
         private static TConfig MapConfigType<TConfig>(Setting setting)

@@ -347,9 +347,6 @@
             // 
             this.cmbSubsystem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSubsystem.FormattingEnabled = true;
-            this.cmbSubsystem.Items.AddRange(new object[] {
-            "Administration",
-            "Accounting"});
             this.cmbSubsystem.Location = new System.Drawing.Point(6, 226);
             this.cmbSubsystem.Name = "cmbSubsystem";
             this.cmbSubsystem.Size = new System.Drawing.Size(299, 28);

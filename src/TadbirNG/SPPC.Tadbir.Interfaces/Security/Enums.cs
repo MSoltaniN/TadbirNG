@@ -1685,4 +1685,61 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         All = 0x3
     }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به یک صندوق را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum CashRegisterPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به اطلاعات صندوق ها
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست صندوق ها یا جزییات یک صندوق
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی فیلتر صندوق های موجود
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
+        /// دسترسی چاپ صندوق های موجود
+        /// </summary>
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات صندوق های موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک صندوق جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک صندوق موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک صندوق موجود
+        /// </summary>
+        Delete = 0x40,
+
+        /// <summary>
+        /// دسترسی تخصیص کاربر به یک صندوق موجود
+        /// </summary>
+        AssignCashRegisterUser = 0x80,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت صندوق ها
+        /// </summary>
+        All = 0xff
+    }
 }
