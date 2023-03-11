@@ -29,6 +29,7 @@ import { ServiceLocator } from "./service.locator";
 
 import { ToastrModule } from "ngx-toastr";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { TreasuryModule } from "./treasury/treasury.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -39,6 +40,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     AdminModule,
     ConfigModule,
     OrganizationModule,
+    TreasuryModule,
     AppRoutingModule,
     BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
     FormsModule,

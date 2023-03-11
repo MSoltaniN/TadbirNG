@@ -2,20 +2,26 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TreasuryRoutingModule } from './treasury-routing.module';
-import { BaseDataComponent } from './components/base-data/base-data.component';
 import { CheckOperationsComponent } from './components/check-operations/check-operations.component';
 import { CheckReportsComponent } from './components/check-reports/check-reports.component';
+import { ManageCashRegistersComponent } from './components/manage-cash-registers/manage-cash-registers.component';
+import { SharedModule } from '@sppc/shared/shared.module';
+import { manageCashRegistersForm } from './components/manage-cash-registers/manage-cash-registers-form.component';
 
 
 @NgModule({
-  declarations: [
-    BaseDataComponent,
-    CheckOperationsComponent,
-    CheckReportsComponent
-  ],
   imports: [
     CommonModule,
-    TreasuryRoutingModule
-  ]
+    TreasuryRoutingModule,
+    SharedModule
+  ],
+  declarations: [
+    CheckOperationsComponent,
+    CheckReportsComponent,
+    ManageCashRegistersComponent,
+    manageCashRegistersForm
+  ],
+  entryComponents:[],
+  exports: [TreasuryRoutingModule]
 })
 export class TreasuryModule { }
