@@ -7,8 +7,7 @@ import { CheckBookReportComponent } from './components/checkBook-report/checkBoo
 import { SharedModule } from '@sppc/shared/shared.module';
 import { CashRegistersComponent } from './components/cash-registers/cash-registers.component';
 import { CashRegistersFormComponent } from './components/cash-registers/cash-registers-form.component';
-import { CashRegisterRoleFormComponent } from './components/cash-registers/cash-register-role-form/cash-register-role-form.component';
-
+import { CashRegisterRolesFormComponent } from './components/cash-registers/cash-register-roles-form.component';
 
 @NgModule({
   imports: [
@@ -21,9 +20,9 @@ import { CashRegisterRoleFormComponent } from './components/cash-registers/cash-
     CheckBookReportComponent,
     CashRegistersComponent,
     CashRegistersFormComponent,
-    CashRegisterRoleFormComponent
+    CashRegisterRolesFormComponent
   ],
-  entryComponents:[CashRegistersFormComponent],
+  entryComponents:[CashRegistersFormComponent,CashRegisterRolesFormComponent],
   exports: [TreasuryRoutingModule]
 })
 export class TreasuryModule { }

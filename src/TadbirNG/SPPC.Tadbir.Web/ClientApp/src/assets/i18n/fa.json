@@ -1286,7 +1286,8 @@
   },
   "CashRegisters": {
     "CashRegister": "صندوق",
-    "New": "صندوق جدید"
+    "New": "صندوق جدید",
+    "RolesTitle": "نقش های دارای دسترسی به صندوق اسناد"
   },
   "Paging": {
     "Record": "رکورد",

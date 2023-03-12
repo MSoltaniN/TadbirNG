@@ -1254,7 +1254,8 @@
   },
   "CashRegisters": {
     "CashRegister": "Cash Register",
-    "New": "new Cash Register"
+    "New": "new Cash Register",
+    "RolesTitle": "Roles who can access the cash register"
   },
   "AllValidations": {
     "Account": {

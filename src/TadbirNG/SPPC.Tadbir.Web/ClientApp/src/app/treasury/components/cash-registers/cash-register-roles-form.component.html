@@ -1,0 +1,30 @@
+
+<div style="padding:15px;" class="sppc-dialog-xs" (keydown.esc)="escPress()">
+
+    <div *ngIf="errorMessages">
+      <div *ngFor="let err of errorMessages" class="alert alert-danger">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        {{ err }}
+      </div>
+    </div>
+  
+    <kendo-grid [data]="gridData"
+                [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+                [(selectedKeys)]="selectedRows"
+                [kendoGridSelectBy]="selectionKey">
+      <ng-template kendoGridNoRecordsTemplate>
+        {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+      </ng-template>
+  
+      <kendo-grid-checkbox-column showSelectAll="true" width="40"></kendo-grid-checkbox-column>
+  
+      <kendo-grid-column sppc-grid-column="CashRegister.name">
+      </kendo-grid-column>
+  
+    </kendo-grid>
+  </div>
+  
+  <kendo-dialog-actions>
+    <button class="k-button k-primary prevent-duplicate" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+    <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+  </kendo-dialog-actions>  

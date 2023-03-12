@@ -11,11 +11,9 @@ import { RelatedItems } from '@sppc/shared/models';
 import { ViewName } from '@sppc/shared/security';
 
 
-
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
 }
-
 
 @Component({
   selector: 'branch-roles-form-component',
