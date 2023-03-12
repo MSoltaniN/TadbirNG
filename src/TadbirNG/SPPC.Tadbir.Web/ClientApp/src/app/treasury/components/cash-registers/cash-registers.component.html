@@ -82,14 +82,16 @@
     <ng-template kendoGridToolbarTemplate>
       <button
         kendoGridAddCommand
-        (click)="addNew()"
+        SppcPermissionCheck="Create"
+        (sppcClick)="addNew()"
         [icon]="'file-add'"
         type="button"
-        title="{{ 'Company.New' | translate }}"
+        title="{{ 'CashRegisters.New' | translate }}"
       ></button>
 
       <button
-        (click)="editHandler()"
+        SppcPermissionCheck="Edit"
+        (sppcClick)="editHandler()"
         class="k-button k-button-icon"
         [disabled]="selectedRows.length != 1"
         title="{{ 'Buttons.Edit' | translate }}"
@@ -97,7 +99,8 @@
         <span class="k-icon k-i-pencil"></span>
       </button>
       <button
-        (click)="removeHandler()"
+        SppcPermissionCheck="Delete"
+        (sppcClick)="removeHandler()"
         class="k-button k-button-icon"
         [disabled]="selectedRows.length == 0"
         title="{{ 'Buttons.Delete' | translate }}"

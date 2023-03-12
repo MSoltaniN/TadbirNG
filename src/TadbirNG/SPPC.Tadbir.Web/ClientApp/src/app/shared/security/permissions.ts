@@ -405,6 +405,19 @@ export enum BalanceSheetPermissions {
     All = 31
 }
 
+export enum CashRegisterPermissions {
+  None = 0,
+  View = 1,
+  Filter = 2,
+  Print = 4,
+  Export = 8,
+  Create = 16,
+  Edit = 32,
+  Delete = 64,
+  AssignRoles = 128,
+  All = 255
+}
+
 @Injectable()
 export class Permissions {
   getPermission(enumeration: string, premissionName: string): number {
@@ -518,6 +531,9 @@ export class Permissions {
         break;
       case "dashboardpermissions":
         id = <any>SpecialVoucherPermissions[<any>premissionName];
+        break;
+      case "cashregisterpermissions":
+        id = <any>CashRegisterPermissions[<any>premissionName];
         break;
     }
 

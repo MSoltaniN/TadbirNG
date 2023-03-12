@@ -9,15 +9,6 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { CompanyApi } from "./api";
 
-//export class CompanyInfo implements Company {
-//  parentId?: number | undefined;
-//  childCount: number = 0;
-//  id: number = 0;
-//  name: string;
-//  description?: string | undefined;
-
-//}
-
 export class CompanyDbInfo implements CompanyDb {
   id: number = 0;
   name: string;

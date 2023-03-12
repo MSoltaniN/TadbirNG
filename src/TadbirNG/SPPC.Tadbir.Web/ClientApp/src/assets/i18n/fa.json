@@ -230,7 +230,8 @@
     "BalanceByAccount": "مانده به تفکیک حساب",
     "ProfitLoss": "سود و زیان",
     "BalanceSheet": "ترازنامه",
-    "Widget": "ویجت"
+    "Widget": "ویجت",
+    "CashRegisters": "صندوق اسناد"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",
@@ -1282,6 +1283,10 @@
   "Fiscal": {
     "FiscalPeriod": "دوره مالی",
     "NotFoundData": "دوره مالی وجود ندارد"
+  },
+  "CashRegisters": {
+    "CashRegister": "صندوق",
+    "New": "صندوق جدید"
   },
   "Paging": {
     "Record": "رکورد",

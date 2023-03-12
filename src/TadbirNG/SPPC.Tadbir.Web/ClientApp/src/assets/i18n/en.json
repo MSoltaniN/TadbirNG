@@ -204,7 +204,8 @@
     "CurrencyBook": "Currency Book",
     "SystemIssue": "System Control",
     "BalanceByAccount": "Balance By Account",
-    "Widget": "Widget"
+    "Widget": "Widget",
+    "CashRegisters": "Cash Registers"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": " Number Of Vouchers Selected :",
@@ -1250,6 +1251,10 @@
     "WidgetOwner": "Widget Group",
     "Delete": "Delete Widget",
     "RolesTitle": "Roles who can access the widget"
+  },
+  "CashRegisters": {
+    "CashRegister": "Cash Register",
+    "New": "new Cash Register"
   },
   "AllValidations": {
     "Account": {

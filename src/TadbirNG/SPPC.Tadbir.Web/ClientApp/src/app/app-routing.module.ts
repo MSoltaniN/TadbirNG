@@ -29,6 +29,12 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () => import("./config/config.module").then(m => m.ConfigModule),
   },
+  {
+    path: "treasury",
+    component: LayoutComponent,
+    canActivate: [AuthGuard],
+    loadChildren: () => import("./treasury/treasury.module").then(m => m.TreasuryModule),
+  },
   { path: "**", component: NotFoundComponent },
 ];
 

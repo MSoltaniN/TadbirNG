@@ -4,21 +4,23 @@ import { ToastrService } from 'ngx-toastr';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { Layout, Entities } from '@sppc/shared/enum/metadata';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
-import { CompanyDb } from '@sppc/organization/models';
 import { DetailComponent } from '@sppc/shared/class';
 import { ViewName } from '@sppc/shared/security';
-import { FormControl, Validators } from '@angular/forms';
+import { CashRegisters } from '@sppc/treasury/models/cashRegisters';
+import { BranchScopeType } from '@sppc/finance/enum/shared';
+import { BranchScopeResource } from '@sppc/finance/enum';
+import { Item } from '@sppc/shared/models';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
 }
 
 @Component({
-  selector: 'manage-cash-registers-form',
+  selector: 'cash-registers-form',
   styles: [`
         input[type=text],textarea { width: 100%; }
     `],
-  templateUrl: './manage-cash-registers-form.component.html',
+  templateUrl: './cash-registers-form.component.html',
   providers: [{
     provide: RTL,
     useFactory: getLayoutModule,
@@ -27,16 +29,18 @@ export function getLayoutModule(layout: Layout) {
 
 })
 
-export class manageCashRegistersForm extends DetailComponent implements OnInit {
+export class CashRegistersFormComponent extends DetailComponent implements OnInit {
 
-  @Input() public model: CompanyDb;
+  @Input() public model: CashRegisters;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
 
   @Input() public isWizard: boolean = false;
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
-  @Output() save: EventEmitter<CompanyDb> = new EventEmitter();
+  @Output() save: EventEmitter<CashRegisters> = new EventEmitter();
+
+  selectedBranchScope = 0;
 
   constructor(public toastrService: ToastrService,
      public translate: TranslateService,
@@ -45,15 +49,21 @@ export class manageCashRegistersForm extends DetailComponent implements OnInit {
      public metadata: MetaDataService,
      public elem:ElementRef)
   {
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.Company, ViewName.Company,elem);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.CashRegister, ViewName.CashRegister,elem);
   }
 
   ngOnInit(): void {
     this.editForm.reset();
 
     setTimeout(() => {
+      if (this.model.id == 0) {
+        this.model.branchId = this.BranchId;
+        this.model.branchScope = this.selectedBranchScope;
+        this.model.fiscalPeriodId = this.FiscalPeriodId;
+      } else {
+        this.selectedBranchScope = this.model.branchScope;
+      }
       this.editForm.reset(this.model);
-      this.editForm.get('dbName').setValidators([Validators.required, Validators.maxLength(128), Validators.pattern("^[a-zA-Z-_]+$")]);
     })
   }
 

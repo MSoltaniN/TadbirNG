@@ -123,9 +123,9 @@ export const Entities = {
   Vouchers: 'Vouchers',
   BalanceSheet:'BalanceSheet',
   Dashboard: "Dashboard",
-  BaseData: "BaseData",
-  CheckOperations: "CheckOperations",
-  CheckReports: "CheckReports"
+  CheckBook: "CheckBook",
+  CashRegister: "CashRegister",
+  CheckBookReport: "CheckBookReport"
 }
 
 export const CustomForm =

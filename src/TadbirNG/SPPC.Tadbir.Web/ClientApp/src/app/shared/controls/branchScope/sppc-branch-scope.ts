@@ -10,15 +10,21 @@ interface Item {
 @Component({
   selector: 'sppc-branch-scope',
   template: `
-               <kendo-dropdownlist class="ddl-branch-scope" [data]="scopeData" [valuePrimitive]="true" [disabled]="!isNew && !isEnableInEditMode"
-                                   [textField]="'value'" [(ngModel)]="scopeSelected" [value]="scopeSelected" [valueField]="'key'"
-                                   (valueChange)="onPermissionChange($event)">        
-                            <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                {{ dataItem?.value | translate }}
-                            </ng-template>
-                            <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                {{ dataItem?.value | translate }}
-                            </ng-template>
+               <kendo-dropdownlist class="ddl-branch-scope"
+                 [data]="scopeData" [valuePrimitive]="true"
+                 [disabled]="!isNew && !isEnableInEditMode"
+                 [textField]="'value'"
+                 [(ngModel)]="scopeSelected"
+                 [value]="scopeSelected"
+                 [valueField]="'key'"
+                 (valueChange)="onPermissionChange($event)"
+                 >        
+                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                        {{ dataItem?.value | translate }}
+                    </ng-template>
+                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                        {{ dataItem?.value | translate }}
+                    </ng-template>
                </kendo-dropdownlist>
 `,
   styles: [`::ng-deep .ddl-branch-scope { width:100% }`],

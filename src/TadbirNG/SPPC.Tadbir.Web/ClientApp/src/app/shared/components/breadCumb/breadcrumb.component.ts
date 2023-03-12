@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, ViewContainerRef, HostListener, Host, OnDestroy } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { TranslateService } from "@ngx-translate/core";
-import { ShortcutCommand } from "@sppc/shared/models/shortcutCommand";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -150,6 +149,9 @@ export class BreadCumbComponent implements OnInit,OnDestroy {
         break;
       case "dashboard":
         this.getText("Entity.Widget");
+        break;
+      case "cashregister":
+        this.getText("Entity.CashRegisters");
         break;
     }
   }
