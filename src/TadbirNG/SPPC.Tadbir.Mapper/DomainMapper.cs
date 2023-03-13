@@ -600,7 +600,8 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapCashFlowTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<CashRegister, CashRegisterViewModel>();
+            mapperConfig.CreateMap<CashRegister, CashRegisterViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
             mapperConfig.CreateMap<CashRegisterViewModel, CashRegister>();
             mapperConfig.CreateMap<UserCashRegister, UserCashRegisterViewModel>();
             mapperConfig.CreateMap<UserCashRegisterViewModel, UserCashRegister>();
