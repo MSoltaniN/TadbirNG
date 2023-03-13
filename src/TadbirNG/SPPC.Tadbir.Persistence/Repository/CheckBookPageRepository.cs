@@ -1,19 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model.Check;
+using SPPC.Tadbir.Resources;
+using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.ViewModel.Check;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
-using Microsoft.VisualBasic;
-using SPPC.Framework.Common;
-using SPPC.Framework.Presentation;
-using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Model.Check;
-using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.Resources;
-using SPPC.Tadbir.Utility;
-using SPPC.Tadbir.ViewModel.Check;
-using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -27,11 +23,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
-        public CheckBookPageRepository(IRepositoryContext context, ISystemRepository system,
-            IStringLocalizer<AppStrings> strings)
+        public CheckBookPageRepository(IRepositoryContext context, ISystemRepository system)
             : base(context, system.Logger)
         {
-            _strings=strings;
             _system = system;
         }
 
@@ -40,30 +34,26 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="checkBookPageId">شناسه عددی یکی از برگه های چک موجود</param>
         /// <param name="status">وضعیت برگه چک</param>
+        /// <param name="descriptionLog">توضیحات جهت ذخیره لاگ</param>
         /// <returns>اطلاعات نمایشی برگه چک ایجاد یا اصلاح شده</returns>
-        public async Task<CheckBookPageViewModel> ChangeStateCheckAsync(int checkBookPageId, CheckBookPageState status)
+        public async Task<CheckBookPageViewModel> ChangeStateCheckAsync(int checkBookPageId, CheckBookPageState status,string descriptionLog)
         {
+            var operationId = status == CheckBookPageState.Cancelled
+                ? OperationId.CancelPage
+                : OperationId.UndoCancelPage;
+
             var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
             var checkBookPage = await repository.GetByIDAsync(checkBookPageId);
             if (checkBookPage != null)
             {
-                var item = Mapper.Map<CheckBookPageViewModel>(checkBookPage);
-                item.Status = status;
-                await UpdateAsync(repository, checkBookPage, item);
+                 checkBookPage.Status = status;
+                 repository.Update(checkBookPage);
+                 await UnitOfWork.CommitAsync();
+                 OnEntityAction(operationId);
+                 Log.Description = String.Format(descriptionLog, checkBookPage.SerialNo);
+                 await TrySaveLogAsync();
             }
-            var option = new GridOptions();
-            String description = "";
-            if (status == CheckBookPageState.Cancelled)
-            {
-                description= _strings.Format(AppStrings.CancelPageLog, checkBookPage?.SerialNo);
-                option.Operation = (int)OperationId.CancelPage;
-            }
-            else
-            {
-                description = _strings.Format(AppStrings.UndoCancelPageLog, checkBookPage?.SerialNo);
-                option.Operation = (int)OperationId.UndoCancelPage;
-            }
-            await ReadAsync(option, description);
+            
             return Mapper.Map<CheckBookPageViewModel>(checkBookPage);
             
         }
@@ -85,16 +75,19 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteCheckBookPagesAsync(int checkBookId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
-            var checkBookPageIds = (await repository.GetByCriteriaAsync(c => c.CheckBookId == checkBookId))
+            var checkBookPageIds = (await repository
+                .GetByCriteriaAsync(c => c.CheckBookId == checkBookId))
                 .Select(c => c.Id).ToList();
             foreach (int checkBookPageId in checkBookPageIds)
             {
                 var checkBookPage = await repository.GetByIDAsync(checkBookPageId);
                 if (checkBookPage != null)
                 {
-                    await DeleteAsync(repository, checkBookPage);
+                    await DeleteNoLogAsync(repository, checkBookPage);
                 }
             }
+
+            await OnEntityGroupDeleted(checkBookPageIds,OperationId.DeletePages);
         }
 
         internal override int? EntityType
@@ -132,8 +125,9 @@ namespace SPPC.Tadbir.Persistence
             CheckBook checkBookModel = await repository.GetByIDAsync(checkBookId);
             var repositoryPage = UnitOfWork.GetAsyncRepository<CheckBookPage>();
             var seriesAndSerialCheck = ExtractSeriesAndSerialCheck(checkBookModel.StartNo);
-            Int32 startPage = Int32.Parse(seriesAndSerialCheck.Serial);
-            Int32 endPage = Int32.Parse(ExtractSeriesAndSerialCheck(checkBookModel.EndNo).Serial);
+            int startPage = Int32.Parse(seriesAndSerialCheck.Serial);
+            int endPage = Int32.Parse(ExtractSeriesAndSerialCheck(checkBookModel.EndNo).Serial);
+            List<int> checkBookPageIds = new();
             for (int i = startPage; i <= endPage; i++)
             {
                 var checkBookPage = new CheckBookPage
@@ -142,9 +136,13 @@ namespace SPPC.Tadbir.Persistence
                     SerialNo = seriesAndSerialCheck.Series + i,
                     Status = CheckBookPageState.Blank
                 };
-                await InsertAsync(repositoryPage, checkBookPage);
+
+                repositoryPage.Insert(checkBookPage);
+                await UnitOfWork.CommitAsync();
+                checkBookPageIds.Add(checkBookPage.Id);
             }
 
+            await OnEntityGroupInserted(checkBookPageIds, OperationId.CreatePages);
             var query = GetCheckBookPagesQuery(checkBookId);
             var pages = await query
                 .Select(page => Mapper.Map<CheckBookPageViewModel>(page))
@@ -175,7 +173,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns></returns>
         public (string Series,string Serial) ExtractSeriesAndSerialCheck(string inputString)
         {
-            Int32 separateIndex = 0;
+            int separateIndex = 0;
             for (int index = inputString.Length - 1; index > 0; index--)
             {
                 separateIndex = index;
@@ -184,8 +182,9 @@ namespace SPPC.Tadbir.Persistence
                     break;
                 }
             }
-           String serial = inputString.Substring(separateIndex + 1);
-           String series = inputString.Substring(0, separateIndex + 1);
+
+           string serial = inputString.Substring(separateIndex + 1);
+           string series = inputString.Substring(0, separateIndex + 1);
             return (series, serial);
         }
         private IQueryable<CheckBookPage> GetCheckBookPagesQuery(int checkBookId)
@@ -198,6 +197,5 @@ namespace SPPC.Tadbir.Persistence
             return pagesQuery;
         }
         private readonly ISystemRepository _system;
-        protected IStringLocalizer<AppStrings> _strings;
     }
 }

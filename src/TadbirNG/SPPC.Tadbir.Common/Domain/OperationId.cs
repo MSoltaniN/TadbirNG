@@ -342,5 +342,10 @@ namespace SPPC.Tadbir.Domain
         /// تخصیص کاربر به صندوق
         /// </summary>
         AssignCashRegisterUser = 66,
+
+        /// <summary>
+        /// کد عملیاتی درج گروهی موجودیت اصلی
+        /// </summary>
+        GroupInsert = 67,
     }
 }

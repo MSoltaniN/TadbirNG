@@ -231,7 +231,7 @@ namespace SPPC.Tadbir.Domain
     /// <summary>
     /// داده شمارشی برای وضعیت برگه دسته چک
     /// </summary>
-    public enum CheckBookPageState:Int16
+    public enum CheckBookPageState:short
     {
         /// <summary>
         /// برگه چک سفید

@@ -3801,4 +3801,7 @@
   <data name="UndoCancelPageLog" xml:space="preserve">
     <value>برگشت از ابطال چک شماره {0}</value>
   </data>
+  <data name="InsertedItemCount" xml:space="preserve">
+    <value>تعداد اقلام ایجاد شده:</value>
+  </data>
 </root>

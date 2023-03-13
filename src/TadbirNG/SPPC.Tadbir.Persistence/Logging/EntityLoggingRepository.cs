@@ -130,6 +130,15 @@ namespace SPPC.Tadbir.Persistence
             await UnitOfWork.CommitAsync();
         }
 
+        internal virtual async Task OnEntityGroupInserted(
+            IEnumerable<int> insertedIds, OperationId operation = OperationId.GroupInsert)
+        {
+            OnEntityAction(operation);
+            Log.Description = Context.Localize(String.Format(
+                "{0} : {1}", AppStrings.InsertedItemCount, insertedIds.Count()));
+            await TrySaveLogAsync();
+        }
+
         internal virtual int? EntityType
         {
             get { return null; }

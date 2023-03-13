@@ -3810,4 +3810,7 @@
   <data name="UndoCancelPageLog" xml:space="preserve">
     <value>Return from canceling check number {0}</value>
   </data>
+  <data name="InsertedItemCount" xml:space="preserve">
+    <value>Number of items created:</value>
+  </data>
 </root>

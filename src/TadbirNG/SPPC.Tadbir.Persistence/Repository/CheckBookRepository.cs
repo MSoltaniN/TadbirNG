@@ -1,23 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Check;
-using SPPC.Tadbir.Model.Corporate;
-using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
-using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Check;
-using SPPC.Tadbir.ViewModel.Finance;
-using static System.Net.Mime.MediaTypeNames;
-using static AutoMapper.Internal.ExpressionFactory;
+using System;
+using System.Threading.Tasks;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -51,10 +39,11 @@ namespace SPPC.Tadbir.Persistence
             {
                 checkbook = Mapper.Map<CheckBookViewModel>(existing);
             }
+
             await ReadAsync(new GridOptions(), GetState(existing));
             return checkbook;
         }
-
+        
         /// <summary>
         /// به روش آسنکرون، دسته چک با شماره مشخص شده را خوانده و برمی گرداند
         /// </summary>
@@ -70,6 +59,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 byNo = Mapper.Map<CheckBookViewModel>(checkBookByNo);
             }
+
             await ReadAsync(new GridOptions(), GetState(checkBookByNo));
             return byNo;
         }
@@ -84,7 +74,6 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(checkBook, nameof(checkBook));
             CheckBook checkBookModel;
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
-            var repositoryPage = UnitOfWork.GetAsyncRepository<CheckBookPage>();
             if (checkBook.Id == 0)
             {
                 checkBookModel = Mapper.Map<CheckBook>(checkBook);
@@ -115,7 +104,6 @@ namespace SPPC.Tadbir.Persistence
                 await DeleteAsync(repository, checkBook);
             }
         }
-
 
         internal override int? EntityType
         {
@@ -206,16 +194,10 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
             int count = await repository
-                .GetCountByCriteriaAsync(c => c.CheckBookId == checkBookId
+                .GetCountByCriteriaAsync(c => c.CheckBookId == checkBookId 
                                               && c.CheckId!=null);
             return count > 0;
         }
-        private ISecureRepository Repository
-        {
-            get { return _system.Repository; }
-        }
-        private const string DefaultSorting = "c.IssueDate, c.No";
         private readonly ISystemRepository _system;
-        private readonly IReportDirectUtility _report;
     }
 }

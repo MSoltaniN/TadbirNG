@@ -1,21 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Model.Check;
-using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Check;
-using SPPC.Tadbir.ViewModel.Core;
-using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Filters;
-using Stimulsoft.System.Windows.Forms;
+using System;
+using System.Threading.Tasks;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -97,9 +91,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 return result;
             }
+
             if (await _repository.IsDuplicateCheckBookNameAsync(checkbook))
             {
-                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.CheckBookName));
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue,
+                    AppStrings.CheckBookName));
             }
 
             var outputItem = await _repository.SaveCheckBookAsync(checkbook);
@@ -116,22 +112,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPut]
         [Route(CheckBookApi.CheckBookUrl)]
         [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Edit)]
-        public async Task<IActionResult> PutModifiedCheckBookAsync(int checkbookId, [FromBody] CheckBookViewModel checkbook)
+        public async Task<IActionResult> PutModifiedCheckBookAsync(int checkbookId,
+            [FromBody] CheckBookViewModel checkbook)
         {
             var result = BasicValidationResult(checkbook, checkbookId);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
+
             if (await _repository.HasChildrenAsync(checkbookId))
             {
                 string msg = _strings[AppStrings.InabilityEditCheckbook];
                 return BadRequestResult(msg);
             }
+
             if (await _repository.IsDuplicateCheckBookNameAsync(checkbook))
             {
-                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.CheckBookName));
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue,
+                    AppStrings.CheckBookName));
             }
+
             var outputItem = await _repository.SaveCheckBookAsync(checkbook);
             return OkReadResult(outputItem);
         }
@@ -165,16 +166,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         protected override async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
-            var checkbook = await _repository.GetCheckBookAsync(item);
-            if (checkbook == null)
+            var isExistCheckbook = await _repository.HasParentAsync(item);
+            if (!isExistCheckbook)
             {
-                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.CheckBook, item.ToString());
+                message = _strings.Format(AppStrings.ItemByIdNotFound,
+                    AppStrings.CheckBook, item.ToString());
             }
 
             return message;
         }
 
         #region CheckBook Pages
+
         /// <summary>
         /// به روش آسنکرون، کلیه برگه های چک ثبت شده را برمی گرداند
         /// </summary>
@@ -206,11 +209,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 string result = _strings[AppStrings.CheckBookParntInfoNotExist];
                 return BadRequestResult(result);
             }
+
             if (await _repository.HasChildrenAsync(checkBookId))
             {
                 string result = _strings[AppStrings.CheckBookPagesExist];
                 return BadRequestResult(result);
             }
+
             var pages = await _pageRepository.CreatePagesAsync(checkBookId);
             return Json(pages.Items);
         }
@@ -237,6 +242,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 string msg = _strings[AppStrings.HasConnectedToCheck];
                 return BadRequestResult(msg);
             }
+
             await _pageRepository.DeleteCheckBookPagesAsync(checkBookId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
@@ -251,7 +257,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.CancelPage)]
         public async Task<IActionResult> CancelPageAsync(int checkBookPageId)
         {
-            var outputItem = await _pageRepository.ChangeStateCheckAsync(checkBookPageId,CheckBookPageState.Cancelled);
+            string description = _strings.Format(AppStrings.CancelPageLog);
+            var outputItem = await _pageRepository.ChangeStateCheckAsync(checkBookPageId,
+                CheckBookPageState.Cancelled, description);
             return OkReadResult(outputItem);
         }
 
@@ -265,7 +273,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.UndoCancelPage)]
         public async Task<IActionResult> UndoCancelPageAsync(int checkBookPageId)
         {
-            var outputItem = await _pageRepository.ChangeStateCheckAsync(checkBookPageId, CheckBookPageState.Blank);
+            string description = _strings.Format(AppStrings.UndoCancelPageLog);
+            var outputItem = await _pageRepository.ChangeStateCheckAsync(checkBookPageId,
+                CheckBookPageState.Blank, description);
             return OkReadResult(outputItem);
         }
         #endregion
@@ -278,8 +288,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 checkBook.Name = _strings[checkBook.Name ?? String.Empty];
             }
         }
-
-        
 
         private readonly ICheckBookRepository _repository;
         private readonly ICheckBookPageRepository _pageRepository;
