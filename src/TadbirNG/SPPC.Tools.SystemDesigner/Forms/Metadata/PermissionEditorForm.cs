@@ -115,7 +115,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 builder.Append(Model.Permissions.Last().ToScript(false, true));
             }
 
-            var path = Path.Combine(PathConfig.ResourceRoot, ScriptUtility.SysUpdateScriptName);
+            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptUtility.SysUpdateScriptName);
             File.AppendAllText(path, builder.ToString());
             MessageBox.Show(this, "The script was successfully generated.", "Success",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);

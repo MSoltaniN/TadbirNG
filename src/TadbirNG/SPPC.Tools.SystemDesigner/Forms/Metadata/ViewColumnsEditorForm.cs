@@ -167,7 +167,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             scriptBuilder.AppendLine(View.Columns
                 .Last()
                 .ToScript(false, true));
-            var path = Path.Combine(PathConfig.ResourceRoot, ScriptUtility.SysUpdateScriptName);
+            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptUtility.SysUpdateScriptName);
             File.AppendAllText(path, scriptBuilder.ToString(), Encoding.UTF8);
             MessageBox.Show(this, "Scripts were successfully generated.", "Success",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);

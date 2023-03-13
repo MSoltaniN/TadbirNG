@@ -8,6 +8,8 @@ namespace SPPC.Tools.Model
 
         public static string ResourceRoot => Path.Combine("..", "..", "..", "res");
 
+        public static string ApiScriptRoot => Path.Combine(WebApiRoot, "wwwroot", "static", "Script");
+
         public static string SolutionRoot => Path.Combine("..", "..", "..", "src", "TadbirNG");
 
         public static string LocalServerRoot => Path.Combine(SolutionRoot, "SPPC.Licensing.Local.Web");
