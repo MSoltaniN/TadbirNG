@@ -18,23 +18,15 @@ namespace SPPC.Tadbir.Web.Api
             InitPaths(webHost.WebRootPath);
         }
 
-        private void InitPaths(string webRootPath)
-        {
-            IranStates = Path.Combine(webRootPath, "static", "ir-states.json");
-            IranCities = Path.Combine(webRootPath, "static", "ir-cities.json");
-            Currencies = Path.Combine(webRootPath, "static", "currencies.json");
-            TaxCurrencies = Path.Combine(webRootPath, "static", "tax-currencies.json");
-            Accounts = Path.Combine(webRootPath, "static", "DefaultAccounts.json");
-            AccountScript = Path.Combine(webRootPath, "static", "CollectionAccounts.sql");
-            CompanyScript = Path.Combine(webRootPath, "static", "Tadbir_CreateDbObjects.sql");
-#if DEBUG
-            License = Path.Combine(webRootPath, "license.Development.json");
-            Edition = "SPPC.Tadbir.Web.Api.wwwroot.edition.Development.json";
-#else
-            License = Path.Combine(webRootPath, "license");
-            Edition = "SPPC.Tadbir.Web.Api.wwwroot.edition";
-#endif
-        }
+        /// <summary>
+        /// مسیر کامل پوشه اصلی داده ها
+        /// </summary>
+        public string DataRoot { get; private set; }
+
+        /// <summary>
+        /// مسیر کامل پوشه اصلی دستورات دیتابیسی
+        /// </summary>
+        public string ScriptRoot { get; private set; }
 
         /// <summary>
         /// مسیر فایل داده ای استان های ایران
@@ -80,5 +72,25 @@ namespace SPPC.Tadbir.Web.Api
         /// مسیر فایل محدودیت های ویرایش برنامه
         /// </summary>
         public string Edition { get; private set; }
+
+        private void InitPaths(string webRootPath)
+        {
+            DataRoot = Path.Combine(webRootPath, "static", "Data");
+            ScriptRoot = Path.Combine(webRootPath, "static", "Script");
+            IranStates = Path.Combine(DataRoot, "ir-states.json");
+            IranCities = Path.Combine(DataRoot, "ir-cities.json");
+            Currencies = Path.Combine(DataRoot, "currencies.json");
+            TaxCurrencies = Path.Combine(DataRoot, "tax-currencies.json");
+            Accounts = Path.Combine(DataRoot, "DefaultAccounts.json");
+            AccountScript = Path.Combine(ScriptRoot, "CollectionAccounts.sql");
+            CompanyScript = Path.Combine(ScriptRoot, "Tadbir_CreateDbObjects.sql");
+#if DEBUG
+            License = Path.Combine(webRootPath, "license.Development.json");
+            Edition = "SPPC.Tadbir.Web.Api.wwwroot.edition.Development.json";
+#else
+            License = Path.Combine(webRootPath, "license");
+            Edition = "SPPC.Tadbir.Web.Api.wwwroot.edition";
+#endif
+        }
     }
 }
