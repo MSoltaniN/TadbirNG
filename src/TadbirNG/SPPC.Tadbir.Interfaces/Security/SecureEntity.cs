@@ -195,10 +195,5 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت دسته چک
         /// </summary>
         public const string CheckBook = "CheckBook";
-
-        /// <summary>
-        /// نام موجودیت برگه چک
-        /// </summary>
-        public const string CheckBookPage = "CheckBookPage";
     }
 }

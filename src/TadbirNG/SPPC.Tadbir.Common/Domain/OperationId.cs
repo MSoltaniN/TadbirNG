@@ -304,11 +304,6 @@ namespace SPPC.Tadbir.Domain
         PrintPreview = 58,
 
         /// <summary>
-        /// جابجایی بین دسته چک ها
-        /// </summary>
-        NavigateEntitiesCheckBooks=59,
-
-        /// <summary>
         /// ایجاد برگه های دسته چک
         /// </summary>
         CreatePages = 60,
@@ -342,10 +337,5 @@ namespace SPPC.Tadbir.Domain
         /// تخصیص کاربر به صندوق
         /// </summary>
         AssignCashRegisterUser = 66,
-
-        /// <summary>
-        /// کد عملیاتی درج گروهی موجودیت اصلی
-        /// </summary>
-        GroupInsert = 67,
     }
 }

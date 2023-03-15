@@ -4,69 +4,69 @@ using System.Collections.Generic;
 namespace SPPC.Tadbir.Api
 {
     /// <summary>
-    /// Defines API server routes and API client operation URLs for working with checkbooks.
+    /// Defines API server routes and API client operation URLs for working with check books
     /// </summary>
     public sealed class CheckBookApi
     {
         /// <summary>
-        /// API client URL for all check Book items
+        /// API client URL for all check book items
         /// </summary>
         public const string CheckBooks = "check-books";
 
         /// <summary>
-        /// API server route URL for all check Book items
+        /// API server route URL for all check book items
         /// </summary>
         public const string CheckBooksUrl = "check-books";
 
         /// <summary>
-        /// API client URL for a check Book item specified by unique identifier
+        /// API client URL for a check book item specified by unique identifier
         /// </summary>
         public const string CheckBook = "check-books/{0}";
 
         /// <summary>
-        /// API server route URL for a check Book item specified by unique identifier
+        /// API server route URL for a check book item specified by unique identifier
         /// </summary>
-        public const string CheckBookUrl = "check-books/{checkbookId:min(1)}";
+        public const string CheckBookUrl = "check-books/{checkBookId:min(1)}";
 
         /// <summary>
-        /// API client URL for a single check Book specified by number
+        /// API client URL for a single check book specified by number
         /// </summary>
-        public const string CheckBookByNo = "check-book/by-no/{0}";
+        public const string CheckBookByNo = "check-books/by-no/{0}";
 
         /// <summary>
-        /// API server route URL for a single check Book specified by number
+        /// API server route URL for a single check book specified by number
         /// </summary>
-        public const string CheckBookByNoUrl = "check-book/by-no/{checkbookNo:min(1)}";
+        public const string CheckBookByNoUrl = "check-books/by-no/{checkBookNo:min(1)}";
 
         /// <summary>
-        /// API client URL for all Pages in a single Check Book specified by identifier
+        /// API client URL for all pages in a single check book specified by identifier
         /// </summary>
-        public const string CheckBookPages = "check-book/{0}/pages";
+        public const string CheckBookPages = "check-books/{0}/pages";
 
         /// <summary>
-        /// API server route URL for all pages in a single check Book specified by identifier
+        /// API server route URL for all pages in a single check book specified by identifier
         /// </summary>
-        public const string CheckBookPagesUrl = "check-book/{checkbookId:min(1)}/pages";
+        public const string CheckBookPagesUrl = "check-books/{checkBookId:min(1)}/pages";
 
         /// <summary>
-        /// API server route URL for Cancel single pages check Book specified by identifier
+        /// API server route URL for cancelling a single page specified by identifier
         /// </summary>
-        public const string CheckBookPageCancelPage = "check-book-cancel-page/{0}/page";
+        public const string CancelPage = "check-books/pages/{0}/cancel";
 
         /// <summary>
-        /// API server route URL for Cancel single pages check Book specified by identifier
+        /// API server route URL for cancelling a single page specified by identifier
         /// </summary>
-        public const string CheckBookPageCancelPageUrl = "check-book-cancel-page/{checkbookpageId:min(1)}/page";
+        public const string CancelPageUrl = "check-books/pages/{pageId:min(1)}/cancel";
 
         /// <summary>
-        /// API server route URL for Undo Cancel single pages check Book specified by identifier
+        /// API server route URL for undoing a cancelled page specified by identifier
         /// </summary>
-        public const string CheckBookPageUndoCancelPage = "check-book-undo-cancel-page/{0}/page";
+        public const string UndoCancelPage = "check-books/pages/{0}/cancel/undo";
 
         /// <summary>
-        /// API server route URL for Undo Cancel single pages check Book specified by identifier
+        /// API server route URL for undoing a cancelled page specified by identifier
         /// </summary>
-        public const string CheckBookPageUndoCancelPageUrl = "check-book-undo-cancel-page/{checkbookpageId:min(1)}/page";
+        public const string UndoCancelPageUrl = "check-books/pages/{pageId:min(1)}/cancel/undo";
 
     }
 }

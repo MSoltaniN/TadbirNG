@@ -1,11 +1,10 @@
+using System;
+using System.Threading.Tasks;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Check;
-using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Check;
-using System;
-using System.Threading.Tasks;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -22,7 +21,6 @@ namespace SPPC.Tadbir.Persistence
         public CheckBookRepository(IRepositoryContext context, ISystemRepository system)
             : base(context, system.Logger)
         {
-            _system = system;
         }
 
         /// <summary>
@@ -105,6 +103,65 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا دسته چک دارای برگه هست یا نه
+        /// </summary>
+        /// <param name="checkBookId">شناسه یکی از دسته چک های موجود</param>
+        /// <returns>در حالتی که دسته چک دارای برگه باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> HasPagesAsync(int checkBookId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
+            int count = await repository.GetCountByCriteriaAsync(ch => ch.CheckBookId == checkBookId);
+            return count > 0;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که دسته چک وجود دارد یا نه
+        /// </summary>
+        /// <param name="checkBookId">شناسه دسته چک موجود</param>
+        /// <returns>در حالتی که دسته چک وجود داشته باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> ExistsCheckBookAsync(int checkBookId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
+            int count = await repository.GetCountByCriteriaAsync(ch => ch.Id == checkBookId);
+            return count > 0;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا نام دسته چک مورد نظر تکراری است یا نه
+        /// </summary>
+        /// <param name="checkBook">دسته چکی که تکراری بودن نام آن باید بررسی شود</param>
+        /// <returns>مقدار بولی درست در صورت تکراری بودن نام، در غیر این صورت مقدار بولی نادرست</returns>
+        public async Task<bool> IsDuplicateCheckBookNameAsync(CheckBookViewModel checkBook)
+        {
+            Verify.ArgumentNotNull(checkBook, nameof(checkBook));
+            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
+            int count = await repository
+                .GetCountByCriteriaAsync(
+                    c => c.Id != checkBook.Id
+                    && c.Name == checkBook.Name
+                    && c.BranchId == checkBook.BranchId);
+            return count > 0;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا حداقل یک برگ از دسته چک با چک ارتباط دارد یا نه
+        /// </summary>
+        /// <param name="checkBookId">شناسه دسته چک موجود</param>
+        /// <returns>در حالتی که حداقل یک برگ از دسته چک ارتباط داشته باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsConnectedToCheckAsync(int checkBookId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
+            int count = await repository
+                .GetCountByCriteriaAsync(
+                    c => c.CheckBookId == checkBookId 
+                    && c.CheckId != null);
+            return count > 0;
+        }
+
         internal override int? EntityType
         {
             get { return (int?)EntityTypeId.CheckBook; }
@@ -127,32 +184,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا دسته چک دارای زیرمجموعه هست یا نه
-        /// </summary>
-        /// <param name="checkBookId">شناسه یکی از دسته چک های موجود</param>
-        /// <returns>در حالتی که دسته چک دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
-        public async Task<bool> HasChildrenAsync(int checkBookId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
-            int count = await repository.GetCountByCriteriaAsync(ch => ch.CheckBookId == checkBookId);
-            return count > 0;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا قسمت والد دسته چک وجود دارد یا نه
-        /// </summary>
-        /// <param name="checkBookId">شناسه دسته چک موجود</param>
-        /// <returns>در حالتی که دسته چک وجود داشته باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
-        public async Task<bool> HasParentAsync(int checkBookId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
-            int count = await repository.GetCountByCriteriaAsync(ch => ch.Id == checkBookId);
-            return count > 0;
-        }
-        
-        /// <summary>
         /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
         /// </summary>
         /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
@@ -167,37 +198,5 @@ namespace SPPC.Tadbir.Persistence
                     AppStrings.EndNoCheck, entity.EndNo)
                 : null;
         }
-
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا نام دسته چک مورد نظر تکراری است یا نه
-        /// </summary>
-        /// <param name="checkBook">دسته چکی که تکراری بودن نام آن باید بررسی شود</param>
-        /// <returns>مقدار بولی درست در صورت تکراری بودن نام، در غیر این صورت مقدار بولی نادرست</returns>
-        public async Task<bool> IsDuplicateCheckBookNameAsync(CheckBookViewModel checkBook)
-        {
-            Verify.ArgumentNotNull(checkBook, nameof(checkBook));
-            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
-            int count = await repository
-                .GetCountByCriteriaAsync(c => c.Id != checkBook.Id
-                                                && c.Name == checkBook.Name
-                                                && c.BranchId == checkBook.BranchId);
-            return count > 0;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا حداقل یک برگ از دسته چک با چک ارتباط دارد یا نه
-        /// </summary>
-        /// <param name="checkBookId">شناسه دسته چک موجود</param>
-        /// <returns>در حالتی که حداقل یک برگ از دسته چک ارتباط داشته باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
-        public async Task<bool> HasConnectedToCheckAsync(int checkBookId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
-            int count = await repository
-                .GetCountByCriteriaAsync(c => c.CheckBookId == checkBookId 
-                                              && c.CheckId!=null);
-            return count > 0;
-        }
-        private readonly ISystemRepository _system;
     }
 }

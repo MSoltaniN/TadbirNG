@@ -347,7 +347,7 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Des
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
     VALUES (217, 37, N'Delete', 32, NULL)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
-    VALUES (218, 37, N'NavigateEntitiesCheckBooks', 64, NULL)
+    VALUES (218, 37, N'Navigate', 64, NULL)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
     VALUES (219, 37, N'CreatePages', 128, NULL)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
@@ -364,11 +364,11 @@ SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 SET IDENTITY_INSERT [Metadata].[Command] ON
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (56, 54, 215, N'NewCheckBook', N'/Check/NewCheckBook', NULL, NULL)
+    VALUES (56, 54, 215, N'NewCheckBook', N'/treasury/check-books/new', NULL, NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (57, 54, 212, N'LastCheckBook', N'/Check/LastCheckBook', NULL, NULL)
+    VALUES (57, 54, 218, N'LastCheckBook', N'/treasury/check-books/last', NULL, NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (58, 54, 212, N'CheckBookByName', N'/Check/CheckBookByName', NULL, NULL)
+    VALUES (58, 54, 212, N'CheckBookByName', N'/treasury/check-books/by-name', NULL, NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
 
@@ -397,7 +397,7 @@ SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 SET IDENTITY_INSERT [Reporting].[Report] ON
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
-    VALUES (100, 96, 1, 69, 3, N'', N'CheckBook', 0, 1, 1, 1, NULL)
+    VALUES (100, 96, 1, 69, 3, N'', N'check-books', 0, 1, 1, 1, NULL)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON

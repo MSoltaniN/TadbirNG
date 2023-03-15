@@ -1730,7 +1730,7 @@ namespace SPPC.Tadbir.Security
         /// <summary>
         /// دسترسی خاص
         /// </summary>
-        NavigateEntitiesCheckBooks = 0x40,
+        Navigate = 0x40,
 
         /// <summary>
         /// دسترسی خاص

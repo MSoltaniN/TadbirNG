@@ -814,7 +814,7 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (206, 3, 2, NULL, 21, 6, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (207, 3, 2, NULL, 21, 59, 1)
+    VALUES (207, 3, 2, NULL, 21, 58, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (208, 3, 2, NULL, 21, 60, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
@@ -17,10 +16,10 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="checkBookPageId">شناسه عددی یکی از برگه های چک موجود</param>
         /// <param name="status">وضعیت برگه چک</param>
-        /// <param name="descriptionLog">توضیحات جهت ذخیره لاگ</param>
+        /// <param name="logDescription">توضیحات جهت ذخیره لاگ</param>
         /// <returns>اطلاعات نمایشی برگه چک ایجاد یا اصلاح شده</returns>
-        Task<CheckBookPageViewModel> ChangeStateCheckAsync(int checkBookPageId,
-            CheckBookPageState status,string descriptionLog);
+        Task<CheckBookPageViewModel> ChangeCheckStateAsync(int checkBookPageId,
+            CheckBookPageState status,string logDescription);
 
         /// <summary>
         /// به روش آسنکرون، برگه های چک مشخص شده با شناسه دسته چک را حذف می کند
