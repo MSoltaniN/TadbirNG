@@ -21,8 +21,9 @@ CREATE TABLE <#= tableName #> (
     <#= PadFieldName(idProperty.Storage.Name) #><#= PadTypeName("INT") #>IDENTITY (1, 1) NOT NULL,
 <# foreach (var relation in entity.Relations.Where(rel => rel.HasKey))
    {
-      string fieldName = String.Format("{0}ID", relation.EndpointName); #>
-    <#= PadFieldName(fieldName) #><#= PadTypeName("INT") #>NOT NULL,
+       string fieldName = String.Format("{0}ID", relation.EndpointName);
+       var nullable = relation.IsRequired ? "NOT NULL" : "NULL"; #>
+    <#= PadFieldName(fieldName) #><#= PadTypeName("INT") #><#= nullable #>,
 <# }
 
 if (entity.Type == "BaseEntity")

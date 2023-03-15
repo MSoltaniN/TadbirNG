@@ -38,21 +38,8 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
         {
             Verify.ArgumentNotNullOrEmptyString(connection, nameof(connection));
             Verify.ArgumentNotNullOrEmptyString(scriptPath, nameof(scriptPath));
-            var versions = new List<Version>();
-            var dbVersion = GetDatabaseVersion(connection);
-            var script = LoadUpdateScript(connection, scriptPath);
-            var regex = new Regex(DbUpgradeConstants.ScriptBlockRegex);
-            foreach (Match match in regex.Matches(script))
-            {
-                versions.Add(new Version(
-                    Int32.Parse(match.Groups[1].Value),
-                    Int32.Parse(match.Groups[2].Value),
-                    Int32.Parse(match.Groups[3].Value)));
-            }
-
-            var latestVersion = versions
-                .OrderByDescending(ver => ver)
-                .FirstOrDefault();
+            var dbVersion = GetDbVersion(connection);
+            var latestVersion = GetLatestDbVersion(connection, scriptPath);
             return latestVersion > dbVersion;
         }
 
@@ -66,7 +53,7 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
         {
             Verify.ArgumentNotNullOrEmptyString(connection, nameof(connection));
             Verify.ArgumentNotNullOrEmptyString(scriptPath, nameof(scriptPath));
-            var version = GetDatabaseVersion(connection);
+            var version = GetDbVersion(connection);
             var updateScript = LoadUpdateScript(connection, scriptPath);
             var blocks = GetScriptBlocks(version, updateScript);
             if (blocks.Count > 0)
@@ -75,6 +62,31 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
             }
 
             return blocks.Count;
+        }
+
+        /// <summary>
+        /// با توجه به دستورات موجود برای به روزرسانی دیتابیس مشخص شده در رشته اتصال، آخرین نسخه دیتابیس را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="connection">رشته اتصال به دیتابیس مورد نظر برای ارتقاء</param>
+        /// <param name="scriptPath">مسیر کامل پوشه ای که فایل اسکریپت به روزرسانی در آن قرار دارد</param>
+        /// <returns>آخرین نسخه دیتابیس مورد نظر با توجه به فایل دستورات به روزرسانی</returns>
+        public Version GetLatestDbVersion(string connection, string scriptPath)
+        {
+            var versions = new List<Version>();
+            var script = LoadUpdateScript(connection, scriptPath);
+            var regex = new Regex(DbUpgradeConstants.ScriptBlockRegex);
+            foreach (Match match in regex.Matches(script))
+            {
+                versions.Add(new Version(
+                    Int32.Parse(match.Groups[1].Value),
+                    Int32.Parse(match.Groups[2].Value),
+                    Int32.Parse(match.Groups[3].Value)));
+            }
+
+            return versions
+                .OrderByDescending(ver => ver)
+                .FirstOrDefault();
         }
 
         /// <summary>
@@ -185,7 +197,7 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
             return sorted.Count();
         }
 
-        private Version GetDatabaseVersion(string connection)
+        private Version GetDbVersion(string connection)
         {
             Verify.ArgumentNotNullOrEmptyString(connection, nameof(connection));
             var dbVersion = new Version("1.0.0.0");
