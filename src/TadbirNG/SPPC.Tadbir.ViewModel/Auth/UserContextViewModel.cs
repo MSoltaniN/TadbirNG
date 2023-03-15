@@ -40,7 +40,6 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// <summary>
         /// اطلاعات مورد نیاز برای اتصال به دیتابیس شرکت جاری
         /// </summary>
-        /// <remarks>NOTE: This connection string MUST be encrypted in later stages.</remarks>
         public string Connection { get; set; }
 
         /// <summary>

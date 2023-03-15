@@ -12,9 +12,11 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Persistence.DbUpgrade;
 using SPPC.Tadbir.Persistence.Repository;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Service;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -158,6 +160,7 @@ namespace SPPC.Tadbir.Web.Api
 
         private void AddServiceTypes()
         {
+            _services.AddTransient<ISystemTools, SystemTools>();
             _services.AddTransient<ICryptoService, CryptoService>();
             _services.AddTransient<ITokenManager, JwtTokenManager>();
             _services.AddTransient<ISecurityContextManager, ServiceContextManager>();
@@ -191,6 +194,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IAccountItemUtilityFactory, AccountItemUtilityFactory>();
             _services.AddTransient<IApiPathProvider, ApiResourcePaths>();
             _services.AddTransient<ICommandFilter, CommandFilter>();
+            _services.AddTransient<IDbUpgrade, DbUpgradeUtility>();
         }
 
         private readonly IServiceCollection _services;

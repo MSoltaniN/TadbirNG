@@ -8,6 +8,16 @@ namespace SPPC.Tadbir.Common
     public interface IApiPathProvider
     {
         /// <summary>
+        /// مسیر کامل پوشه اصلی داده ها
+        /// </summary>
+        string DataRoot { get; }
+
+        /// <summary>
+        /// مسیر کامل پوشه اصلی دستورات دیتابیسی
+        /// </summary>
+        string ScriptRoot { get; }
+
+        /// <summary>
         /// مسیر فایل داده ای استان های ایران
         /// </summary>
         string IranStates { get; }

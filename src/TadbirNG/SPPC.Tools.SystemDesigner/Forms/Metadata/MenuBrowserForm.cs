@@ -217,7 +217,7 @@ WHERE [CommandID] IN({String.Join(", ", deletedIds.ToArray())})");
                 .Count(ch => ch == '\r');
             if (lineCount > 2)
             {
-                var path = Path.Combine(PathConfig.ResourceRoot, ScriptUtility.SysUpdateScriptName);
+                var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptUtility.SysUpdateScriptName);
                 File.AppendAllText(path, scriptBuilder.ToString(), Encoding.UTF8);
             }
         }
