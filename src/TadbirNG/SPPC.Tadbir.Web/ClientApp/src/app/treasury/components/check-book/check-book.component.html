@@ -1,1 +1,106 @@
-<p>check-operations works!</p>
+<!-- <app-bread-cumb [entityTypeName]="entityTypeName"></app-bread-cumb> -->
+
+<!-- <view-identifier [ViewID]="viewId"></view-identifier>
+<report-management
+  [ViewIdentity]="viewIdentity"
+  [Grid]="grid"
+  [Sort]="sort"
+  [Filter]="reportFilter"
+  [RowData]="rowData"
+></report-management>
+<report-setting></report-setting> -->
+
+<div class="panel-body" style="padding-top: 0">
+    <div *ngIf="errorMessages">
+        <div *ngFor="let err of errorMessages" class="alert alert-danger">
+          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+          {{ err }}
+        </div>
+      </div>
+    
+      <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
+        <div class="form-group">
+          <label for="name" class="control-label">{{ 'CheckBook.Name' | translate }}</label>
+    
+          <input sppcAutoFocus type="text" class="k-textbox" formControlName="name" />
+    
+          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
+            <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
+            <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
+          </div>
+        </div>
+  
+        <div class="form-group">
+          <label for="name" class="control-label">{{ 'CheckBook.BankName' | translate }}</label>
+    
+          <input type="text" class="k-textbox" formControlName="bankName" />
+    
+          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.bankName.valid || editForm.controls.bankName.pristine">
+            <span *ngIf="editForm.controls.bankName.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
+            <span *ngIf="editForm.controls.bankName.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
+          </div>
+        </div>
+  
+        <div class="form-group">
+          <label for="name" class="control-label">{{ 'CheckBook.StartNumber' | translate }}</label>
+    
+          <input type="text" class="k-textbox" formControlName="startNo" />
+    
+          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.startNo.valid || editForm.controls.startNo.pristine">
+            <span *ngIf="editForm.controls.startNo.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
+            <span *ngIf="editForm.controls.startNo.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
+          </div>
+        </div>
+  
+        <div class="form-group">'
+          <label for="widgetOwner" class="control-label">{{ 'CheckBook.PagesCount' | translate }}</label>
+          <kendo-dropdownlist [data]="pagesCount" class="mx-1"
+                              [textField]="'name'"
+                              [valueField]="'id'"
+                              [valuePrimitive]="true"
+                              [value]="selectedPagesCount"
+                              (valueChange)="onChangePagesCountDropDown($event)"
+                              [(ngModel)]="selectedPagesCount">
+          </kendo-dropdownlist>
+          <input type="number"
+           class="k-textbox"
+           [(ngModel)]="selectedPagesCount"
+           (onkeyup)="onChangePagesCountInput($event)"
+           min="1" max="1000"
+          />
+        </div>
+    
+        <div class="form-group">
+          <label for="description" class="control-label">{{ 'Company.Description' | translate }}</label>
+    
+          <textarea class="k-textarea" formControlName="description"></textarea>
+    
+          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+            {{ 'AllValidations.CompanyDb.DescriptionIsTooLong' | translate }}
+          </div>
+        </div>
+      </form>
+</div>
+<div class="panel-body">
+    <check-book-pages></check-book-pages>
+</div>
+
+<!-- <kendo-dialog
+  title="{{ 'Company.Delete' | translate }}"
+  *ngIf="deleteConfirm"
+  (close)="deleteModel(false)"
+  [minWidth]="250"
+  [width]="450"
+>
+  <p >
+    {{ deleteConfirmMsg }}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="deleteModel(true)" primary="true">
+      {{ "Buttons.Yes" | translate }}
+    </button>
+    <button class="k-button" (click)="deleteModel(false)">
+      {{ "Buttons.No" | translate }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog> -->

@@ -1257,6 +1257,19 @@
     "New": "new Cash Register",
     "RolesTitle": "Roles who can access the cash register"
   },
+  "CheckBook": {
+    "CheckBook": "Check Book",
+    "Name": "Name",
+    "BankName": "Bank Name",
+    "StartNumber": "Start Number",
+    "PagesCount": "Pages Count",
+    "Other": "Other",
+    "Archive": "Archive",
+    "BankAccount": "Banck account",
+    "CancelCheck": "Cancel check",
+    "UndoCancelCheck": "Undo cancel check",
+    "New": "Undo check book"
+  },
   "AllValidations": {
     "Account": {
       "CodeIsRequired": "Code is required.",

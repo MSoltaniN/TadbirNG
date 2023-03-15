@@ -1289,6 +1289,19 @@
     "New": "صندوق جدید",
     "RolesTitle": "نقش های دارای دسترسی به صندوق اسناد"
   },
+  "CheckBook": {
+    "CheckBook": "دسته چک",
+    "Name": "نام",
+    "BankName": "نام بانک",
+    "StartNumber": "شماره شروع",
+    "PagesCount": "تعداد برگ",
+    "Other": "سایر",
+    "Archive": "بایگانی",
+    "BankAccount": "حساب بانک",
+    "CancelCheck": "ابطال چک",
+    "UndoCancelCheck": "Undo cancel check",
+    "New": "دسته چک جدید"
+  },
   "Paging": {
     "Record": "رکورد",
     "Of": "از",
