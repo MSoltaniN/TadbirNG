@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SPPC.Tadbir.Model.Check;
+using System;
 using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Model.Finance
@@ -31,9 +32,15 @@ namespace SPPC.Tadbir.Model.Finance
         public AccountOwner AccountOwner { get; set; }
 
         /// <summary>
+        /// مجموعه ای از دسته چک های مرتبط با این حساب
+        /// </summary>
+        public virtual IList<CheckBook> CheckBooks { get; protected set; }
+
+        /// <summary>
         /// اطلاعات موجودیت را به صورت متنی ساخته و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات موجودیت به صورت متنی</returns>
+        /// 
         public override string ToString()
         {
             return String.Format("{0} ({1})", Name, FullCode);

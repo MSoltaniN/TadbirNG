@@ -1099,6 +1099,7 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (55, N'ExportRa
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (56, N'FilterRates')
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (58, N'PrintPreview')
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (66, N'AssignCashRegisterUser')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (67, N'UndoArchive')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON
@@ -1124,6 +1125,8 @@ INSERT INTO [Metadata].[OperationSource] ([OperationSourceID], [Name], [Descript
     VALUES (12, N'BalanceSheet', NULL)
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID], [Name], [Description])
     VALUES (13, N'SystemIssue', NULL)
+INSERT INTO [Metadata].[OperationSource] ([OperationSourceID], [Name], [Description])
+    VALUES (14, N'CheckBook', NULL)
 SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSourceList] ON
@@ -1782,4 +1785,20 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
     VALUES (222, 3, 1, NULL, 22, 58, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (223, 3, 1, NULL, 22, 66, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (224, 3, 3, 14, NULL, 1, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (225, 3, 3, 14, NULL, 1, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (226, 3, 3, 14, NULL, 5, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (227, 3, 3, 14, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (228, 3, 3, 14, NULL, 6, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (229, 3, 3, 14, NULL, 54, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (230, 3, 3, 14, NULL, 8, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (231, 3, 3, 14, NULL, 67, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF

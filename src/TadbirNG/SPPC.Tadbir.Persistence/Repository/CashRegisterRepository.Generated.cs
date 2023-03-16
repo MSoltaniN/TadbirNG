@@ -180,8 +180,8 @@ namespace SPPC.Tadbir.Persistence
                     }
                     unSelectedUsers = userRepository
                         .GetEntityQuery()
+                        .Include(u => u.Person)
                         .Where(u => !assignedUserIds.Contains(u.Id) &&
-                            !selectedUserIds.Contains(u.Id) &&
                              validUserIds.Contains(u.Id))
                         .Select(u => Mapper.Map<RelatedItemViewModel>(u))
                         .ToArray();
@@ -191,8 +191,7 @@ namespace SPPC.Tadbir.Persistence
                     unSelectedUsers = await userRepository
                         .GetEntityQuery()
                         .Include(u => u.Person)
-                        .Where(u => !selectedUserIds.Contains(u.Id) &&
-                            !assignedUserIds.Contains(u.Id))
+                        .Where(u => !assignedUserIds.Contains(u.Id))
                         .Select(u => Mapper.Map<RelatedItemViewModel>(u))
                         .ToArrayAsync();
                 }
@@ -318,7 +317,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(item => item.Id)
                 .ToArray();
             var RemovedUsers = existing
-                .Where(ucr => !currentUserIds.Contains(ucr.Id))
+                .Where(ucr => !currentUserIds.Contains(ucr.UserId))
                 .ToArray();
             foreach (var user in RemovedUsers)
             {

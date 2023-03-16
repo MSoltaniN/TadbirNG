@@ -105,5 +105,10 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی صندوق ها
         /// </summary>
         public const int CashRegister = 70;
+
+        /// <summary>
+        /// نمای اطلاعاتی دفتر دسته های چک
+        /// </summary>
+        public const int CheckBookReport = 71;
     }
 }

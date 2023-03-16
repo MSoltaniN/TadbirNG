@@ -15,6 +15,7 @@ using SPPC.Tadbir.Mapper.ModelHelpers;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.CashFlow;
+using SPPC.Tadbir.Model.Check;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
@@ -24,6 +25,7 @@ using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.CashFlow;
+using SPPC.Tadbir.ViewModel.Check;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
@@ -84,6 +86,20 @@ namespace SPPC.Tadbir.Mapper
             MapMetadataTypes(mapperConfig);
             MapReportingTypes(mapperConfig);
             MapCashFlowTypes(mapperConfig);
+            MapCheckTypes(mapperConfig);
+        }
+        private static void MapCheckTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<CheckBook, CheckBookViewModel>();
+            mapperConfig.CreateMap<CheckBookViewModel, CheckBook>();
+            mapperConfig.CreateMap<CheckBookPage, CheckBookPageViewModel>();
+            mapperConfig.CreateMap<CheckBookPageViewModel, CheckBookPage>();
+            mapperConfig.CreateMap<CheckBook, CheckBookReportViewModel>()
+                .ForMember(dest => dest.AccountCode, opts => opts.MapFrom(src => src.Account.Code))
+                .ForMember(dest => dest.AccountName, opts => opts.MapFrom(src => src.Account.Name))
+                .ForMember(dest => dest.DetailAccountName, opts => opts.MapFrom(src => src.DetailAccount.Name))
+                .ForMember(dest => dest.CostCenterName, opts => opts.MapFrom(src => src.CostCenter.Name))
+                .ForMember(dest => dest.ProjectName, opts => opts.MapFrom(src => src.Project.Name));
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)
@@ -600,7 +616,8 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapCashFlowTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<CashRegister, CashRegisterViewModel>();
+            mapperConfig.CreateMap<CashRegister, CashRegisterViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
             mapperConfig.CreateMap<CashRegisterViewModel, CashRegister>();
             mapperConfig.CreateMap<UserCashRegister, UserCashRegisterViewModel>();
             mapperConfig.CreateMap<UserCashRegisterViewModel, UserCashRegister>();
