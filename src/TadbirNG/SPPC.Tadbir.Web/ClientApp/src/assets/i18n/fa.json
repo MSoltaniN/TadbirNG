@@ -231,7 +231,7 @@
     "ProfitLoss": "سود و زیان",
     "BalanceSheet": "ترازنامه",
     "Widget": "ویجت",
-    "CashRegisters": "صندوق اسناد"
+    "CashRegister": "صندوق اسناد"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",
@@ -1287,7 +1287,8 @@
   "CashRegisters": {
     "CashRegister": "صندوق",
     "New": "صندوق جدید",
-    "RolesTitle": "نقش های دارای دسترسی به صندوق اسناد"
+    "RolesTitle": "نقش های دارای دسترسی به صندوق اسناد",
+    "Delete":"حذف صندوق"
   },
   "Paging": {
     "Record": "رکورد",
