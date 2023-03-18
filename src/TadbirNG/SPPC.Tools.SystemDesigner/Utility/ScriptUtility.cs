@@ -19,13 +19,13 @@ namespace SPPC.Tools.Utility
 
         public static void AddVersionMarker(StringBuilder builder)
         {
-            var path = Path.Combine(PathConfig.ResourceRoot, UpdateScriptName);
+            var path = Path.Combine(PathConfig.ApiScriptRoot, UpdateScriptName);
             AddVersionMarker(path, builder);
         }
 
         public static void AddSysVersionMarker(StringBuilder builder)
         {
-            var path = Path.Combine(PathConfig.ResourceRoot, SysUpdateScriptName);
+            var path = Path.Combine(PathConfig.ApiScriptRoot, SysUpdateScriptName);
             AddVersionMarker(path, builder);
         }
 

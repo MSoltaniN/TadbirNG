@@ -390,3 +390,10 @@ SET IDENTITY_INSERT [Metadata].[Command] ON
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (59, 53, 225, N'CashRegisters', N'/treasury/cash-register', 'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
+
+-- 1.2.1488
+Update [Metadata].[Column] set [IsNullable]=1 where ColumnID=706
+Update [Reporting].[LocalReport] set [Caption]=N'فهرست صندوق‌های اسناد' where [LocalReportID]=294
+
+
+

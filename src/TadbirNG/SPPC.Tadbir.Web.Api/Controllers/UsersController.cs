@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 using SPPC.Framework.Cryptography;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Configuration;
@@ -13,6 +12,7 @@ using SPPC.Tadbir.Licensing;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -29,22 +29,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         ///
         /// </summary>
         /// <param name="repository"></param>
-        /// <param name="crypto"></param>
-        /// <param name="commandFilter"></param>
-        /// <param name="tokenManager"></param>
-        /// <param name="strings"></param>
+        /// <param name="tools"></param>
         public UsersController(
             IUserRepository repository,
-            ICryptoService crypto,
-            ICommandFilter commandFilter,
-            ITokenManager tokenManager,
-            IStringLocalizer<AppStrings> strings)
-            : base(strings, tokenManager)
+            ISystemTools tools)
+            : base(tools.Strings, tools.TokenManager)
         {
             _repository = repository;
-            _crypto = crypto;
-            _commandFilter = commandFilter;
-            _tokenManager = tokenManager;
+            _crypto = tools.Crypto;
+            _commandFilter = tools.CommandFilter;
+            _tokenManager = tools.TokenManager;
+            _systemTools = tools;
         }
 
         /// <summary>
@@ -370,6 +365,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var userContext = SecurityContext.User;
             await _repository.UpdateUserCompanyLoginAsync(companyLogin, userContext);
+            UpgradeDatabases(userContext.Connection);
             userContext.Connection = _crypto.Encrypt(userContext.Connection);
             userContext.Language = GetPrimaryRequestLanguage();
             Response.Headers[AppConstants.ContextHeaderName] = GetEncodedTicket(userContext);
@@ -484,9 +480,26 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             Array.ForEach(roles.RelatedItems.ToArray(), item => item.Name = _strings[item.Name]);
         }
 
+        private void UpgradeDatabases(string companyConnection)
+        {
+            var dbUpgrade = _systemTools.DbUpgrade;
+            var scriptFolder = _systemTools.PathProvider.ScriptRoot;
+            var sysConnection = _systemTools.Configuration.GetSection("ConnectionStrings")["TadbirSysApi"];
+            if (dbUpgrade.NeedsUpgrade(sysConnection, scriptFolder))
+            {
+                dbUpgrade.UpgradeDatabase(sysConnection, scriptFolder);
+            }
+
+            if (dbUpgrade.NeedsUpgrade(companyConnection, scriptFolder))
+            {
+                dbUpgrade.UpgradeDatabase(companyConnection, scriptFolder);
+            }
+        }
+
         private readonly IUserRepository _repository;
         private readonly ICryptoService _crypto;
         private readonly ICommandFilter _commandFilter;
         private readonly ITokenManager _tokenManager;
+        private readonly ISystemTools _systemTools;
     }
 }

@@ -19,7 +19,7 @@ namespace SPPC.Tools.SystemDesignerCli
             Console.WriteLine($"Copying all files modified today to {tempPath}...");
             var newSources = new List<string>();
             var rootFolder = PathConfig.SolutionRoot;
-            var filters = new string[] { "*.cs", "*.resx", "*.tt", "*.json" };
+            var filters = new string[] { "*.cs", "*.resx", "*.tt", "*.json", "*.sql" };
             Array.ForEach(filters, filter => newSources.AddRange(GetModifiedFiles(rootFolder, filter)));
 
             rootFolder = PathConfig.ResourceRoot;

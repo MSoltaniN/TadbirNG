@@ -226,7 +226,7 @@ WHERE [EntityName] = '{editor.SelectedViewModel}'");
             ////scriptBuilder.AppendLine(
             ////    ScriptUtility.GetInsertScripts(addedParameters, ParameterExtensions.ToScript));
 
-            var path = Path.Combine(PathConfig.ResourceRoot, ScriptUtility.SysUpdateScriptName);
+            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptUtility.SysUpdateScriptName);
             File.AppendAllText(path, scriptBuilder.ToString(), Encoding.UTF8);
         }
 

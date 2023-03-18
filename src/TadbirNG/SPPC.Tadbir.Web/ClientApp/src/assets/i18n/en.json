@@ -205,7 +205,7 @@
     "SystemIssue": "System Control",
     "BalanceByAccount": "Balance By Account",
     "Widget": "Widget",
-    "CashRegisters": "Cash Registers"
+    "CashRegister": "Cash Register"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": " Number Of Vouchers Selected :",
@@ -1253,9 +1253,10 @@
     "RolesTitle": "Roles who can access the widget"
   },
   "CashRegisters": {
-    "CashRegister": "Cash Register",
+    "CashRegisters": "Cash Registers",
     "New": "new Cash Register",
-    "RolesTitle": "Roles who can access the cash register"
+    "RolesTitle": "Roles who can access the cash register",
+    "Delete": "Delete cash register"
   },
   "AllValidations": {
     "Account": {

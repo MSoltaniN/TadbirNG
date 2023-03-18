@@ -653,7 +653,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             scriptBuilder.AppendLine(generated);
             generated = ScriptUtility.GetInsertScripts(addedSettings, LogSettingExtensions.ToScript);
             scriptBuilder.Append(generated);
-            var path = Path.Combine(PathConfig.ResourceRoot, ScriptUtility.UpdateScriptName);
+            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptUtility.UpdateScriptName);
             File.AppendAllText(path, scriptBuilder.ToString());
         }
 
@@ -788,7 +788,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
 
             var generated = GetSysInsertScripts(addedSettings);
             scriptBuilder.Append(generated);
-            var path = Path.Combine(PathConfig.ResourceRoot, ScriptUtility.SysUpdateScriptName);
+            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptUtility.SysUpdateScriptName);
             File.AppendAllText(path, scriptBuilder.ToString());
         }
 

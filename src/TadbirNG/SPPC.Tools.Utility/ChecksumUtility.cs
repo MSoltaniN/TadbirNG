@@ -127,7 +127,6 @@ namespace SPPC.Tools.Utility
             var files = new List<string> { Path.Combine(root, "Dockerfile") };
             files.AddRange(new DirectoryInfo(root)
                 .GetFiles("*.sql", SearchOption.TopDirectoryOnly)
-                .Where(scriptFile => !scriptFile.Name.Contains("Update"))
                 .Select(scriptFile => scriptFile.FullName));
             return files;
         }
