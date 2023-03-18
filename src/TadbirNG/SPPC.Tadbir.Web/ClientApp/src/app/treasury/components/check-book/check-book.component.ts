@@ -60,7 +60,7 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
     {key: 25, value: 25},
     {key: 50, value: 50},
     {key: 100, value: 100},
-    {key: "other", value: 0}
+    {key: "other", value: -1}
   ];
   selectedPagesCount: number;
 
@@ -87,6 +87,12 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
   }
 
   addNew() {
+    if (!this.editForm.valid)
+      return;
+    
+      this.editForm.patchValue({
+        branchId: this.BranchId,
+      })
     
   }
 
@@ -134,5 +140,6 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
 
   onChangePagesCountInput(e) {
     console.log(e);
+    this.setEndNo();
   }
 }
