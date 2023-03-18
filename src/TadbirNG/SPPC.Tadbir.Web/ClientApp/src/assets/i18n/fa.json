@@ -231,7 +231,7 @@
     "ProfitLoss": "سود و زیان",
     "BalanceSheet": "ترازنامه",
     "Widget": "ویجت",
-    "CashRegister": "صندوق اسناد"
+    "CashRegister": "صندوق"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",
@@ -1285,7 +1285,7 @@
     "NotFoundData": "دوره مالی وجود ندارد"
   },
   "CashRegisters": {
-    "CashRegister": "صندوق",
+    "CashRegisters": "صندوق اسناد",
     "New": "صندوق جدید",
     "RolesTitle": "نقش های دارای دسترسی به صندوق اسناد",
     "Delete":"حذف صندوق"
