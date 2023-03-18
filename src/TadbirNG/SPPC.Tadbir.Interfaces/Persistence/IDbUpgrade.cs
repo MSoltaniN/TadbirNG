@@ -26,6 +26,15 @@ namespace SPPC.Tadbir.Persistence
         int UpgradeDatabase(string connection, string scriptPath);
 
         /// <summary>
+        /// با توجه به دستورات موجود برای به روزرسانی دیتابیس مشخص شده در رشته اتصال، آخرین نسخه دیتابیس را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="connection">رشته اتصال به دیتابیس مورد نظر برای ارتقاء</param>
+        /// <param name="scriptPath">مسیر کامل پوشه ای که فایل اسکریپت به روزرسانی در آن قرار دارد</param>
+        /// <returns>آخرین نسخه دیتابیس مورد نظر با توجه به فایل دستورات به روزرسانی</returns>
+        Version GetLatestDbVersion(string connection, string scriptPath);
+
+        /// <summary>
         /// رشته های اتصال به دیتابیس را برای کلیه شرکت های فعال در برنامه تدبیر خوانده و برمی گرداند
         /// </summary>
         /// <param name="sysConnection">رشته اتصال به دیتابیس سیستمی تدبیر</param>
