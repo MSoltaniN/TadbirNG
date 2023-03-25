@@ -392,8 +392,127 @@ INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [Titl
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
 -- 1.2.1488
-Update [Metadata].[Column] set [IsNullable]=1 where ColumnID=706
-Update [Reporting].[LocalReport] set [Caption]=N'فهرست صندوق‌های اسناد' where [LocalReportID]=294
+UPDATE [Metadata].[Column]
+SET [IsNullable] = 1
+WHERE ColumnID = 706
 
+UPDATE [Reporting].[LocalReport]
+SET [Caption] = N'فهرست صندوق‌های اسناد'
+WHERE [LocalReportID] = 294
 
+-- 1.2.1493
+CREATE TABLE [Metadata].[OperationSourceType] (
+    [OperationSourceTypeID]   INT              IDENTITY (1, 1) NOT NULL,
+    [Name]                    NVARCHAR(64)     NOT NULL,
+    [rowguid]                 UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_OperationSourceType_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]            DATETIME         CONSTRAINT [DF_Metadata_OperationSourceType_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_OperationSourceType] PRIMARY KEY CLUSTERED ([OperationSourceTypeID] ASC)
+)
+GO
 
+SET IDENTITY_INSERT [Metadata].[OperationSourceType] ON
+INSERT INTO [Metadata].[OperationSourceType] ([OperationSourceTypeID], [Name]) VALUES (1, N'BaseData')
+INSERT INTO [Metadata].[OperationSourceType] ([OperationSourceTypeID], [Name]) VALUES (2, N'OperationalForms')
+INSERT INTO [Metadata].[OperationSourceType] ([OperationSourceTypeID], [Name]) VALUES (3, N'Reports')
+SET IDENTITY_INSERT [Metadata].[OperationSourceType] OFF
+
+ALTER TABLE [Auth].[Permission]
+DROP CONSTRAINT [FK_Auth_Permission_Auth_PermissionGroup]
+
+DELETE FROM [Auth].[PermissionGroup]
+
+ALTER TABLE [Auth].[PermissionGroup]
+ADD [SubsystemID] INT NOT NULL
+
+ALTER TABLE [Auth].[PermissionGroup]
+ADD CONSTRAINT [FK_Auth_PermissionGroup_Metadata_Subsystem] FOREIGN KEY ([SubsystemID]) REFERENCES [Metadata].[Subsystem]([SubsystemID])
+
+ALTER TABLE [Auth].[PermissionGroup]
+ADD [SourceTypeID] INT NOT NULL
+
+ALTER TABLE [Auth].[PermissionGroup]
+ADD CONSTRAINT [FK_Auth_PermissionGroup_Metadata_SourceType] FOREIGN KEY ([SourceTypeID]) REFERENCES [Metadata].[OperationSourceType]([OperationSourceTypeID])
+
+SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (1, 2, 1, N'ManageEntities,Accounts', N'Account', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (2, 2, 1, N'ManageEntities,DetailAccounts', N'DetailAccount', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (3, 2, 1, N'ManageEntities,CostCenters', N'CostCenter', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (4, 2, 1, N'ManageEntities,Projects', N'Project', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (5, 2, 1, N'ManageEntities,FiscalPeriods', N'FiscalPeriod', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (6, 2, 1, N'ManageEntities,Currencies', N'Currency', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (7, 2, 2, N'Vouchers', N'Voucher', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (8, 2, 2, N'ManageEntities,Vouchers', N'Vouchers', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (9, 1, 1, N'ManageEntities,Branches', N'Branch', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (10, 1, 1, N'ManageEntities,Companies', N'Company', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (11, 1, 1, N'ManageEntities,Users', N'User', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (12, 1, 1, N'ManageEntities,Roles', N'Role', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (13, 2, 1, N'ManageEntities,AccountGroups', N'AccountGroup', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (14, 2, 1, N'ManageEntities,AccountCollections', N'AccountCollection', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (15, 1, 3, N'ManageEntities,OperationLogs', N'OperationLog', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (16, 1, 3, N'ManageEntities,SysOperationLogs', N'SysOperationLog', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (17, 1, 3, N'ManageEntities,Reports', N'Report', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (18, 1, 3, N'ManageEntities,UserReports', N'UserReport', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (19, 2, 1, N'AccountRelations', N'AccountRelations', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (20, 1, 1, N'Settings', N'Setting', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (21, 1, 1, N'LogSetting', N'LogSetting', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (22, 1, 1, N'RowAccessSettings', N'RowAccess', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (23, 2, 1, N'CurrencyRate', N'CurrencyRate', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (24, 2, 3, N'JournalReport', N'Journal', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (25, 2, 3, N'AccountBookReport', N'AccountBook', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (26, 2, 3, N'TestBalanceReport', N'TestBalance', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (27, 2, 3, N'CurrencyBookReport', N'CurrencyBook', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (28, 2, 3, N'ItemBalanceReport', N'ItemBalance', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (29, 2, 3, N'BalanceByAccountReport', N'BalanceByAccount', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (30, 1, 3, N'SystemIssueReport', N'SystemIssue', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (31, 2, 3, N'ProfitLossReport', N'ProfitLoss', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (32, 2, 2, N'DraftVouchers', N'DraftVoucher', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (33, 2, 2, N'ManageEntities,DraftVouchers', N'DraftVouchers', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (34, 2, 3, N'BalanceSheetReport', N'BalanceSheet', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (35, 2, 2, N'SpecialVoucherOps', N'SpecialVoucher', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (36, 2, 3, N'Dashboard', N'Dashboard', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (38, 3, 1, N'ManageEntities,CashRegisters', N'CashRegister', NULL)
+SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
+
+ALTER TABLE [Auth].[Permission]
+ADD CONSTRAINT [FK_Auth_Permission_Auth_PermissionGroup] FOREIGN KEY ([GroupID]) REFERENCES [Auth].[PermissionGroup] ([PermissionGroupID])
+GO
+
+UPDATE [Core].[Version]
+SET [Number] = '1.2.1493'

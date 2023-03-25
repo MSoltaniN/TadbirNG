@@ -16,9 +16,10 @@ namespace SPPC.Tools.Extensions
             }
 
             scriptBuilder.AppendLine(
-                "INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName], [Description])");
+                "INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], " +
+                "[Name], [EntityName], [Description])");
             scriptBuilder.AppendLine(
-                $"    VALUES ({group.Id}, N'{group.Name}', N'{group.EntityName}', " +
+                $"    VALUES ({group.Id}, 2, 1, N'{group.Name}', N'{group.EntityName}', " +
                 $"{ScriptUtility.GetNullableValue(group.Description)})");
 
             if (withIdentityOff)
