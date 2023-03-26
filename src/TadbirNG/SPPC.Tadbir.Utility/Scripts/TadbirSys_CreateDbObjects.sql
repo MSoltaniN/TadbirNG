@@ -2318,7 +2318,7 @@ INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName],
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName], [Description])
     VALUES (38, N'ManageEntities,CashRegisters', N'CashRegister', NULL)
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName], [Description])
-    VALUES (39, N'ManageEntities,CheckBookReports', N'CheckBookReport', NULL)
+    VALUES (39, N'CheckBookReport', N'CheckBookReport', NULL)
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON
@@ -3004,7 +3004,7 @@ INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
     VALUES (101, 97, 1, 70, 3, N'', N'cashregisters', 0, 1, 1, 1, NULL)
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
-    VALUES (102, 99, 1, 71, 3, N'', N'check-books-report', 0, 1, 1, 1, NULL)
+    VALUES (102, 99, 1, 71, 3, N'', N'check-book-report', 0, 1, 1, 1, NULL)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON
@@ -3972,6 +3972,8 @@ INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, R
     VALUES (55, 52, NULL, N'CheckReports', NULL, N'folder-close', NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (59, 53, 225, N'CashRegisters', N'/treasury/cash-register', 'list', NULL)
+INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
+    VALUES (60, 55, 233, N'CheckBookReport', N'/treasury/check-report/check-book-report', NULL, NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
 SET IDENTITY_INSERT [Reporting].[SystemIssue] ON 

@@ -307,5 +307,10 @@ namespace SPPC.Tadbir.Domain
         /// تخصیص کاربر به صندوق اسناد
         /// </summary>
         AssignCashRegisterUser = 66,
+
+        /// <summary>
+        /// برگشت از بایگانی
+        /// </summary>
+        UndoArchiv = 67,
     }
 }

@@ -3735,7 +3735,7 @@
   <data name="CheckBooksReport" xml:space="preserve">
     <value>دفتر دسته های چک</value>
   </data>
- <data name="CheckBook" xml:space="preserve">
+  <data name="CheckBook" xml:space="preserve">
     <value>دسته چک</value>
   </data>
   <data name="CheckBooks" xml:space="preserve">
@@ -3818,5 +3818,17 @@
   </data>
   <data name="InsertedItemCount" xml:space="preserve">
     <value>تعداد اقلام ایجاد شده:</value>
+  </data>
+  <data name="ArchivedItemCount" xml:space="preserve">
+    <value>تعداد اقلام بایگانی شده</value>
+  </data>
+  <data name="UndoArchivedItemCount" xml:space="preserve">
+    <value>تعداد اقلام خارج شده از بایگانی</value>
+  </data>
+  <data name="NoNeedArchive" xml:space="preserve">
+    <value>{0} {1} قبلا بایگانی شده است.</value>
+  </data>
+  <data name="NoNeedUndoArchive" xml:space="preserve">
+    <value>{0} {1} بایگانی نشده و نیاز به لغو بایگانی ندارد.</value>
   </data>
 </root>

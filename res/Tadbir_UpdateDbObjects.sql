@@ -877,7 +877,7 @@ SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID], [Name], [Description])
-    VALUES (14, N'CheckBook', NULL)
+    VALUES (15, N'CheckBook', NULL)
 SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
 
 SET IDENTITY_INSERT [Metadata].[Operation] ON
@@ -886,19 +886,19 @@ SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Config].[LogSetting] ON
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (224, 3, 3, 14, NULL, 1, 1)
+    VALUES (224, 3, 3, 15, NULL, 1, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (225, 3, 3, 14, NULL, 1, 1)
+    VALUES (225, 3, 3, 15, NULL, 1, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (226, 3, 3, 14, NULL, 5, 1)
+    VALUES (226, 3, 3, 15, NULL, 5, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (227, 3, 3, 14, NULL, 58, 1)
+    VALUES (227, 3, 3, 15, NULL, 58, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (228, 3, 3, 14, NULL, 6, 1)
+    VALUES (228, 3, 3, 15, NULL, 6, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (229, 3, 3, 14, NULL, 54, 1)
+    VALUES (229, 3, 3, 15, NULL, 54, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (230, 3, 3, 14, NULL, 8, 1)
+    VALUES (230, 3, 3, 15, NULL, 8, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (231, 3, 3, 14, NULL, 67, 1)SET IDENTITY_INSERT [Config].[LogSetting] OFF
+    VALUES (231, 3, 3, 15, NULL, 67, 1)SET IDENTITY_INSERT [Config].[LogSetting] OFF
 SET IDENTITY_INSERT [Config].[LogSetting] OFF

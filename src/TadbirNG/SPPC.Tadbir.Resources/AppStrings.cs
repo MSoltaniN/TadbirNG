@@ -330,6 +330,11 @@ namespace SPPC.Tadbir.Resources
         public const string Archive = "Archive";
 
         /// <summary>
+        /// Default text : تعداد اقلام بایگانی شده
+        /// </summary>
+        public const string ArchivedItemCount = "ArchivedItemCount";
+
+        /// <summary>
         /// Default text : آرتیکل های دارای مبلغ صفر
         /// </summary>
         public const string ArticlesHavingZeroAmount = "ArticlesHavingZeroAmount";
@@ -4900,6 +4905,16 @@ namespace SPPC.Tadbir.Resources
         public const string None = "None";
 
         /// <summary>
+        /// Default text : {0} {1} قبلا بایگانی شده است.
+        /// </summary>
+        public const string NoNeedArchive = "NoNeedArchive";
+
+        /// <summary>
+        /// Default text : {0} {1} بایگانی نشده و نیاز به لغو بایگانی ندارد.
+        /// </summary>
+        public const string NoNeedUndoArchive = "NoNeedUndoArchive";
+
+        /// <summary>
         /// Default text : استفاده از حساب دارای زیرمجموعه در بردار حساب غیرمجاز است.
         /// </summary>
         public const string NonLeafAccountInFullAccount = "NonLeafAccountInFullAccount";
@@ -5928,6 +5943,11 @@ namespace SPPC.Tadbir.Resources
         /// Default text : برگشت از تصویب
         /// </summary>
         public const string UndoApprove = "UndoApprove";
+
+        /// <summary>
+        /// Default text : تعداد اقلام خارج شده از بایگانی
+        /// </summary>
+        public const string UndoArchivedItemCount = "UndoArchivedItemCount";
 
         /// <summary>
         /// Default text : برگشت از ابطال برگه چک

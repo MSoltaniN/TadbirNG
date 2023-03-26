@@ -17,5 +17,20 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از دسته های چک تعریف شده</returns>
         Task<PagedList<CheckBookReportViewModel>> GetCheckBooksReportAsync(GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، وضعیت بایگانی دسته چک های مشخص شده با شناسه عددی را تغییر می دهد
+        /// </summary>
+        /// <param name="checkBookIds">مجموعه ای از شناسه های عددی دسته چک های مورد نظر 
+        /// برای تغییر وضعیت بایگانی</param>
+        /// <param name="archiveValue">مقدار مورد نظر برای تغییر وضعیت بایگانی دسته چک ها</param>
+        Task EditArchiveCheckBooksAsync(IList<int> checkBookIds, bool archiveValue);
+
+        /// <summary>
+        /// به روش آسنکرون، دسته چک با شناسه عددی مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="checkBookId">شناسه عددی یکی از دسته چک های موجود</param>
+        /// <returns>دسته چک مشخص شده با شناسه عددی</returns>
+        Task<CheckBookViewModel> GetCheckBookAsync(int checkBookId);
     }
 }

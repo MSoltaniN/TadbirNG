@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Check;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Check;
 
@@ -15,7 +15,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت دفتر دسته های چک را پیاده سازی می کند
     /// </summary>
-    public class CheckBookReportRepository : EntityLoggingRepository<CheckBook, CheckBookReportViewModel>, ICheckBookReportRepository
+    public class CheckBookReportRepository : LoggingRepositoryBase, ICheckBookReportRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -54,19 +54,60 @@ namespace SPPC.Tadbir.Persistence
             return new PagedList<CheckBookReportViewModel>(checkBooks, options);
         }
 
-        internal override int? EntityType
+        /// <summary>
+        /// به روش آسنکرون، وضعیت بایگانی دسته چک های مشخص شده با شناسه عددی را تغییر می دهد
+        /// </summary>
+        /// <param name="checkBookIds">مجموعه ای از شناسه های عددی دسته چک های مورد نظر 
+        /// برای تغییر وضعیت بایگانی</param>
+        /// <param name="archiveValue">مقدار مورد نظر برای تغییر وضعیت بایگانی دسته چک ها</param>
+        public async Task EditArchiveCheckBooksAsync(IList<int> checkBookIds, bool archiveValue)
         {
-            get { return (int?)EntityTypeId.CheckBookReport; }
+            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
+            foreach (int checkBookId in checkBookIds)
+            {
+                var checkBook = await repository.GetByIDAsync(checkBookId);
+                if(checkBook != null)
+                {
+                    checkBook.IsArchived = archiveValue;
+                    repository.Update(checkBook);
+                }
+            }
+
+            await UnitOfWork.CommitAsync();
+            if(archiveValue == true)
+            {
+                string description = Context.Localize(String.Format(
+                    "{0} : {1}", AppStrings.ArchivedItemCount, checkBookIds.Count));
+                await OnSourceActionAsync(OperationId.Archive, description);
+            }
+            else
+            {
+                string description = Context.Localize(String.Format(
+                   "{0} : {1}", AppStrings.UndoArchivedItemCount, checkBookIds.Count));
+                await OnSourceActionAsync(OperationId.UndoArchiv, description);
+            }
         }
 
         /// <summary>
-        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
+        /// به روش آسنکرون، دسته چک با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
-        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
-        protected override string GetState(CheckBook entity)
+        /// <param name="checkBookId">شناسه عددی یکی از دسته چک های موجود</param>
+        /// <returns>دسته چک مشخص شده با شناسه عددی</returns>
+        public async Task<CheckBookViewModel> GetCheckBookAsync(int checkBookId)
         {
-            return String.Empty;
+            CheckBookViewModel item = null;
+            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
+            var checkBook = await repository.GetByIDAsync(checkBookId);
+            if (checkBook != null)
+            {
+                item = Mapper.Map<CheckBookViewModel>(checkBook);
+            }
+
+            return item;
+        }
+        internal override OperationSourceId OperationSource
+        {
+            get { return OperationSourceId.CheckBook; }
         }
     }
 }

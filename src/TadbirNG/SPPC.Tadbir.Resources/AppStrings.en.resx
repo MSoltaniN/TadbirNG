@@ -3743,7 +3743,7 @@
   </data>
   <data name="CheckBooksReport" xml:space="preserve">
     <value>Check Books Report</value>
- </data>
+  </data>
   <data name="CheckBook" xml:space="preserve">
     <value>CheckBook</value>
   </data>
@@ -3827,5 +3827,17 @@
   </data>
   <data name="InsertedItemCount" xml:space="preserve">
     <value>Number of items created:</value>
+  </data>
+  <data name="ArchivedItemCount" xml:space="preserve">
+    <value>Archived Item Count</value>
+  </data>
+  <data name="UndoArchivedItemCount" xml:space="preserve">
+    <value>Undo archived item count</value>
+  </data>
+  <data name="NoNeedArchive" xml:space="preserve">
+    <value>{0} {1} already been archived.</value>
+  </data>
+  <data name="NoNeedUndoArchive" xml:space="preserve">
+    <value>{0} {1} not archive and no need to undo archive.</value>
   </data>
 </root>

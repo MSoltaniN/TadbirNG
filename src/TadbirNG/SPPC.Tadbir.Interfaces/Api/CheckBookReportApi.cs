@@ -17,5 +17,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all check book report items
         /// </summary>
         public const string CheckBooksReportUrl = "check-books-report";
+
+        /// <summary>
+        /// API server route URL for archive check book
+        /// </summary>
+        public const string ArchiveCheckBooksURL = "check-books/archive";
+
+        /// <summary>
+        /// API server route URL for undo archive check book
+        /// </summary>
+        public const string UndoArchiveCheckBooksURL = "check-books/undo-archive";
     }
 }
