@@ -1287,7 +1287,7 @@
   "CashRegisters": {
     "CashRegisters": "صندوق اسناد",
     "New": "صندوق جدید",
-    "RolesTitle": "نقش های دارای دسترسی به صندوق اسناد",
+    "RolesTitle": "کاربران تخصیص یافته به صندوق",
     "Delete":"حذف صندوق"
   },
   "Paging": {
