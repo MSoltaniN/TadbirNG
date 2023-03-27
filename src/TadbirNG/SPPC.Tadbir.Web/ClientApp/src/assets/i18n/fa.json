@@ -1300,7 +1300,8 @@
     "BankAccount": "حساب بانک",
     "CancelCheck": "ابطال چک",
     "UndoCancelCheck": "Undo cancel check",
-    "New": "دسته چک جدید"
+    "New": "دسته چک جدید",
+    "isArchived": "بایگانی"
   },
   "Paging": {
     "Record": "رکورد",

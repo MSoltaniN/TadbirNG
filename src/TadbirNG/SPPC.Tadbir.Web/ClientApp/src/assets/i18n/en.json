@@ -1268,7 +1268,8 @@
     "BankAccount": "Banck account",
     "CancelCheck": "Cancel check",
     "UndoCancelCheck": "Undo cancel check",
-    "New": "Undo check book"
+    "New": "Undo check book",
+    "isArchived": "Archive"
   },
   "AllValidations": {
     "Account": {

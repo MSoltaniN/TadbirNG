@@ -1,0 +1,104 @@
+input[type="text"],
+textarea,
+.ddl-type {
+  width: 100%;
+}
+.col-xs-5ths,
+.col-sm-5ths,
+.col-md-5ths,
+.col-lg-5ths,
+.col-sm-4-5ths {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.col-xs-5ths {
+  width: 20%;
+  float: left;
+}
+
+.col-md-3ths {
+  width: 30%;
+  float: left;
+}
+
+.k-button-md.k-icon-button {
+  padding: 2px 4px !important;
+}
+
+@media (min-width: 768px) {
+  .col-sm-5ths {
+    width: 20%;
+    float: left;
+  }
+  .col-sm-4-5ths {
+    width: 80%;
+    float: left;
+  }
+}
+
+@media (min-width: 992px) {
+  .col-md-5ths {
+    width: 20%;
+    float: left;
+  }
+}
+
+@media (min-width: 1200px) {
+  .col-lg-5ths {
+    width: 20%;
+    float: left;
+  }
+}
+@media (max-width: 768px) {
+  .col-md-3ths {
+    width: 100%;
+  }
+}
+.myForm {
+  display: flex;
+  flex-wrap: wrap;
+}
+.form-container {
+  border: solid 1px #3c8dbc;
+  margin: 15px 0 0;
+  padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+}
+.create-pages-btn {
+  background: #3c8dbc;
+  color: #fff;
+  cursor: pointer;
+  margin: 0 15px;
+}
+
+.action-box {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+}
+.disabled{
+  color: #999;
+}
+
+.section-account .acc-code-rtl {
+  left: 16px;
+}
+.section-account .acc-code-ltr {
+  right: 16px;
+}
+.section-account button {
+  margin: 5px 2px 0;
+}
+.section-account .acc-name {
+  width: calc(100% - 34px);
+  margin-top: 5px;
+}
+.section-account .acc-code {
+  width: calc(100% - 131px);
+  position: absolute;
+  top: -5px;
+}
