@@ -1,11 +1,13 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Check;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Check;
-using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -22,6 +24,7 @@ namespace SPPC.Tadbir.Persistence
         public CheckBookRepository(IRepositoryContext context, ISystemRepository system)
             : base(context, system.Logger)
         {
+            _system=system;
         }
 
         /// <summary>
@@ -102,6 +105,105 @@ namespace SPPC.Tadbir.Persistence
             {
                 await DeleteAsync(repository, checkBook);
             }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اولین دسته چک را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>اولین دسته چک</returns>
+        public async Task<CheckBookViewModel> GetFirstCheckBookAsync(GridOptions gridOptions = null)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
+            var checkBooks = await repository.GetAllAsync();
+            var options = gridOptions ?? new GridOptions();
+            var firstCheckBook = checkBooks
+                .Apply(options, false)
+                .OrderBy(c => c.IssueDate)
+                .FirstOrDefault();
+            var firstCheckBookModel = Mapper.Map<CheckBookViewModel>(firstCheckBook);
+            if (firstCheckBook != null)
+            {
+                await SetCheckBookNavigationAsync(firstCheckBookModel, options);
+            }
+
+            return firstCheckBookModel;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات دسته چک قبلی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="issueDate">تاریخ صدور دسته چک در برنامه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>دسته چک قبلی</returns>
+        public async Task<CheckBookViewModel> GetPreviousCheckBookAsync(
+            DateTime issueDate, GridOptions gridOptions = null)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
+            var checkBooks = await repository.GetAllAsync();
+            var options = gridOptions ?? new GridOptions();
+            var previousCheckBook = checkBooks
+                .Apply(options, false)
+                .OrderByDescending(c => c.IssueDate)
+                .SkipWhile(c => c.IssueDate != issueDate)
+                .Skip(1)
+                .FirstOrDefault();
+            var previousCheckBookModel = Mapper.Map<CheckBookViewModel>(previousCheckBook);
+            if (previousCheckBook != null)
+            {
+                await SetCheckBookNavigationAsync(previousCheckBookModel, options);
+            }
+
+            return previousCheckBookModel;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات دسته چک بعدی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="issueDate">تاریخ صدور دسته چک در برنامه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>دسته چک بعدی</returns>
+        public async Task<CheckBookViewModel> GetNextCheckBookAsync(DateTime issueDate, GridOptions gridOptions = null)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
+            var checkBooks = await repository.GetAllAsync();
+            var options = gridOptions ?? new GridOptions();
+            var nextCheckBook = checkBooks
+                .Apply(options, false)
+                .OrderBy(c  => c.IssueDate)
+                .SkipWhile(c => c.IssueDate != issueDate)
+                .Skip(1)
+                .FirstOrDefault();
+            var nextCheckBookModel = Mapper.Map<CheckBookViewModel>(nextCheckBook);
+            if (nextCheckBook != null)
+            {
+                await SetCheckBookNavigationAsync(nextCheckBookModel, options);
+            }
+
+            return nextCheckBookModel;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین دسته چک را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>آخرین دسته چک</returns>
+        public async Task<CheckBookViewModel> GetLastCheckBookAsync(GridOptions gridOptions = null)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
+            var checkBooks = await repository.GetAllAsync();
+            var options = gridOptions ?? new GridOptions();
+            var lastCheckBook =checkBooks
+                .Apply(options, false)
+                .OrderByDescending(c => c.IssueDate)
+                .FirstOrDefault();
+            var lastCheckBookModel = Mapper.Map<CheckBookViewModel>(lastCheckBook);
+            if (lastCheckBook != null)
+            {
+                await SetCheckBookNavigationAsync(lastCheckBookModel, options);
+            }
+
+            return lastCheckBookModel; 
         }
 
         /// <summary>
@@ -199,5 +301,68 @@ namespace SPPC.Tadbir.Persistence
                     AppStrings.EndNoCheck, entity.EndNo)
                 : null;
         }
+
+        private async Task SetCheckBookNavigationAsync(CheckBookViewModel checkBook, GridOptions gridOptions = null)
+        {
+            int nextCount, prevCount;
+            var options = gridOptions ?? new GridOptions();
+            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
+            var query = repository.GetEntityQuery()
+                .Where(c => c.BranchId == checkBook.BranchId 
+                            && c.IssueDate < checkBook.IssueDate);
+            if (!options.IsEmpty)
+            {
+                var items = await query.ToListAsync();
+                prevCount = items
+                    .Select(v => Localize(Mapper.Map<CheckBookViewModel>(v)))
+                    .ApplyQuickFilter(options, false)
+                    .Apply(options, false)
+                    .Count();
+            }
+            else
+            {
+                prevCount = await query.CountAsync();
+            }
+
+            query = repository.GetEntityQuery()
+                .Where(c => c.BranchId == checkBook.BranchId
+                            && c.IssueDate > checkBook.IssueDate);
+            if (!options.IsEmpty)
+            {
+                var items = await query.ToListAsync();
+                nextCount = items
+                    .Select(v => Localize(Mapper.Map<CheckBookViewModel>(v)))
+                    .ApplyQuickFilter(options, false)
+                    .Apply(options, false)
+                    .Count();
+            }
+            else
+            {
+                nextCount = await query.CountAsync();
+            }
+
+            checkBook.HasPrevious = prevCount > 0;
+            checkBook.HasNext = nextCount > 0;
+        }
+
+        private CheckBookViewModel Localize(CheckBookViewModel checkBook)
+        {
+            if (checkBook != null)
+            {
+                checkBook.BankName = Context.Localize(checkBook.BankName);
+                checkBook.BranchName = Context.Localize(checkBook.BranchName);
+                checkBook.Name = Context.Localize(checkBook.Name);
+                checkBook.StartNo = Context.Localize(checkBook.StartNo);
+            }
+
+            return checkBook;
+        }
+
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
+        private readonly ISystemRepository _system;
     }
 }

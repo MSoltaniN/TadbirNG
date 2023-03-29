@@ -262,6 +262,68 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return OkReadResult(outputItem);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اولین دسته چک قابل دسترسی را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی اولین دسته چک قابل دسترسی</returns>
+        // GET: api/check-books/first
+        [HttpGet]
+        [Route(CheckBookApi.FirstCheckBookUrl)]
+        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Navigate)]
+        public async Task<IActionResult> GetFirstCheckBookAsync()
+        {
+            var first = await _repository.GetFirstCheckBookAsync(GridOptions); 
+            Localize(first);
+            return JsonReadResult(first);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات دسته چک پیش از تاریخ صدور مشخص شده را برمی گرداند
+        /// </summary>
+        /// <param name="issueDate">تاریخ صدور دسته چک فعلی</param>
+        /// <returns>اطلاعات نمایشی دسته چک قابل دسترسی قبلی</returns>
+        // GET: api/check-books/{issueDate:DateTime}/previous
+        [HttpGet]
+        [Route(CheckBookApi.PreviousCheckBookUrl)]
+        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Navigate)]
+        public async Task<IActionResult> GetPreviousCheckBookAsync(DateTime issueDate)
+        {
+            var previous = await _repository.GetPreviousCheckBookAsync(issueDate, GridOptions);
+            Localize(previous);
+            return JsonReadResult(previous);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات دسته چک بعد از تاریخ صدور مشخص شده را برمی گرداند
+        /// </summary>
+        /// <param name="issueDate">تاریخ صدور دسته چک فعلی</param>
+        /// <returns>اطلاعات نمایشی دسته چک قابل دسترسی بعدی</returns>
+        // GET: api/check-books/{issueDate:DateTime}/next
+        [HttpGet]
+        [Route(CheckBookApi.NextCheckBookUrl)]
+        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Navigate)]
+        public async Task<IActionResult> GetNextCheckBookAsync(DateTime issueDate)
+        {
+            var next = await _repository.GetNextCheckBookAsync(issueDate, GridOptions);
+            Localize(next);
+            return JsonReadResult(next);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات آخرین دسته چک قابل دسترسی را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی آخرین دسته چک قابل دسترسی</returns>
+        // GET: api/check-books/last
+        [HttpGet]
+        [Route(CheckBookApi.LastCheckBookUrl)]
+        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Navigate)]
+        public async Task<IActionResult> GetLastCheckBookAsync()
+        {
+            var last = await _repository.GetLastCheckBookAsync(GridOptions);
+            Localize(last);
+            return JsonReadResult(last);
+        }
+
         #endregion
 
         /// <summary>
@@ -282,7 +344,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             return message;
         }
-
+        
         private void Localize(CheckBookViewModel checkBook)
         {
             if (checkBook != null)

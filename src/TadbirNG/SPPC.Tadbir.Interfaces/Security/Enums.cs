@@ -1728,37 +1728,37 @@ namespace SPPC.Tadbir.Security
         Delete = 0x20,
 
         /// <summary>
-        /// دسترسی خاص
+        /// دسترسی حرکت روی دسته چک ها
         /// </summary>
         Navigate = 0x40,
 
         /// <summary>
-        /// دسترسی خاص
+        /// دسترسی ایجاد برگه های چک
         /// </summary>
         CreatePages = 0x80,
 
         /// <summary>
-        /// دسترسی خاص
+        /// دسترسی حذف یک برگه های چک
         /// </summary>
         DeletePages = 0x100,
 
         /// <summary>
-        /// دسترسی خاص
+        /// دسترسی ابطال یک برگه چک
         /// </summary>
         CancelPage = 0x200,
 
         /// <summary>
-        /// دسترسی خاص
+        /// دسترسی برگشت از ابطال یک برگه چک
         /// </summary>
         UndoCancelPage = 0x400,
 
         /// <summary>
-        /// دسترسی خاص
+        /// دسترسی ایجاد ارتباط با چک
         /// </summary>
         ConnectToCheck = 0x800,
 
         /// <summary>
-        /// دسترسی خاص
+        /// دسترسی قطع ارتباط با چک
         /// </summary>
         DisconnectFromCheck = 0x1000,
 

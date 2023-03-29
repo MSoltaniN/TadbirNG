@@ -1,5 +1,9 @@
+using System;
 using System.Threading.Tasks;
+using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Check;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -34,6 +38,36 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="checkBookId">شناسه عددی دسته چک مورد نظر برای حذف</param>
         Task DeleteCheckBookAsync(int checkBookId);
+
+        /// <summary>
+        /// به روش آسنکرون، اولین دسته چک را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>اولین دسته چک</returns>
+        Task<CheckBookViewModel> GetFirstCheckBookAsync(GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات دسته چک قبلی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="issueDate">تاریخ صدور دسته چک در برنامه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>دسته چک قبلی</returns>
+        Task<CheckBookViewModel> GetPreviousCheckBookAsync(DateTime issueDate, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات دسته چک بعدی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="issueDate">تاریخ صدور دسته چک در برنامه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>دسته چک بعدی</returns>
+        Task<CheckBookViewModel> GetNextCheckBookAsync(DateTime issueDate, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین دسته چک را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>آخرین دسته چک</returns>
+        Task<CheckBookViewModel> GetLastCheckBookAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا دسته چک دارای زیرمجموعه هست یا نه

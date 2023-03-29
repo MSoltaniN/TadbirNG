@@ -37,5 +37,15 @@ namespace SPPC.Tadbir.ViewModel.Check
         /// شناسه دیتابیسی مولفه پروژه از بردار حساب مورد استفاده در این دسته چک
         /// </summary>
         public virtual int? ProjectId { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که دسته چک بعد از این دسته چک وجود دارد یا نه
+        /// </summary>
+        public bool HasNext { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که دسته چک قبل از این دسته چک وجود دارد یا نه
+        /// </summary>
+        public bool HasPrevious { get; set; }
     }
 }
