@@ -3738,4 +3738,7 @@
   <data name="CantDeleteAssignedCashRegister" xml:space="preserve">
     <value>The cash register '{0}' is assigned to one or more users and cannot be deleted.</value>
   </data>
+  <data name="AssignCashRegisterUser" xml:space="preserve">
+    <value>Assign user to cash register</value>
+  </data>
 </root>
