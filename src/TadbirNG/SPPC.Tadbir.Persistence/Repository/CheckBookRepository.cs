@@ -5,6 +5,7 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Check;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Check;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
