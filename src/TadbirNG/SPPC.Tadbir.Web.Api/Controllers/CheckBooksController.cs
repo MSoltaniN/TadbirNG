@@ -27,8 +27,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="pageRepository">.امکان ذخیره و بازیابی اطلاعات برگه های چک در دیتابیس فراهم می کند</param>
         /// <param name="tokenManager">امکان کار با توکن امنیتی برنامه را فراهم می کند</param>
         public CheckBooksController(ICheckBookRepository repository, IStringLocalizer<AppStrings> strings,
-            ICheckBookPageRepository pageRepository,
-            ITokenManager tokenManager)
+            ICheckBookPageRepository pageRepository, ITokenManager tokenManager)
             : base(strings, tokenManager)
         {
             _repository = repository;
@@ -48,14 +47,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="checkBookId">شناسه دیتابیسی دسته چک مورد نظر</param>
         /// <returns>اطلاعات نمایشی دسته چک مورد نظر</returns>
-        // GET: api/check-books/{checkbookId:min(1)}
+        // GET: api/check-books/{checkBookId:min(1)}
         [HttpGet]
         [Route(CheckBookApi.CheckBookUrl)]
         [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.View)]
         public async Task<IActionResult> GetCheckBookAsync(int checkBookId)
         {
             var checkbook = await _repository.GetCheckBookAsync(checkBookId);
-            Localize(checkbook);
             return JsonReadResult(checkbook);
         }
 
@@ -64,15 +62,72 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="checkBookNo">شماره دسته چک مورد نظر</param>
         /// <returns>اطلاعات نمایشی دسته چک مورد نظر</returns>
-        // GET: api/check-Books/by-no/{checkBookNo:min(1)}
+        // GET: api/check-books/by-no/{checkBookNo}
         [HttpGet]
         [Route(CheckBookApi.CheckBookByNoUrl)]
         [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.View)]
         public async Task<IActionResult> GetCheckBookByNoAsync(string checkBookNo)
         {
             var checkBookByNo = await _repository.GetCheckBookByNoAsync(checkBookNo);
-            Localize(checkBookByNo);
             return JsonReadResult(checkBookByNo);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اولین دسته چک قابل دسترسی را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی اولین دسته چک قابل دسترسی</returns>
+        // GET: api/check-books/first
+        [HttpGet]
+        [Route(CheckBookApi.FirstCheckBookUrl)]
+        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Navigate)]
+        public async Task<IActionResult> GetFirstCheckBookAsync()
+        {
+            var first = await _repository.GetFirstCheckBookAsync(GridOptions);
+            return JsonReadResult(first);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات دسته چک پیش از تاریخ صدور مشخص شده را برمی گرداند
+        /// </summary>
+        /// <param name="issueDate">تاریخ صدور دسته چک فعلی</param>
+        /// <returns>اطلاعات نمایشی دسته چک قابل دسترسی قبلی</returns>
+        // GET: api/check-books/{issueDate:DateTime}/previous
+        [HttpGet]
+        [Route(CheckBookApi.PreviousCheckBookUrl)]
+        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Navigate)]
+        public async Task<IActionResult> GetPreviousCheckBookAsync(DateTime issueDate)
+        {
+            var previous = await _repository.GetPreviousCheckBookAsync(issueDate, GridOptions);
+            return JsonReadResult(previous);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات دسته چک بعد از تاریخ صدور مشخص شده را برمی گرداند
+        /// </summary>
+        /// <param name="issueDate">تاریخ صدور دسته چک فعلی</param>
+        /// <returns>اطلاعات نمایشی دسته چک قابل دسترسی بعدی</returns>
+        // GET: api/check-books/{issueDate:DateTime}/next
+        [HttpGet]
+        [Route(CheckBookApi.NextCheckBookUrl)]
+        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Navigate)]
+        public async Task<IActionResult> GetNextCheckBookAsync(DateTime issueDate)
+        {
+            var next = await _repository.GetNextCheckBookAsync(issueDate, GridOptions);
+            return JsonReadResult(next);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات آخرین دسته چک قابل دسترسی را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی آخرین دسته چک قابل دسترسی</returns>
+        // GET: api/check-books/last
+        [HttpGet]
+        [Route(CheckBookApi.LastCheckBookUrl)]
+        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Navigate)]
+        public async Task<IActionResult> GetLastCheckBookAsync()
+        {
+            var last = await _repository.GetLastCheckBookAsync(GridOptions);
+            return JsonReadResult(last);
         }
 
         /// <summary>
@@ -86,16 +141,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Create)]
         public async Task<IActionResult> PostNewCheckBookAsync([FromBody] CheckBookViewModel checkBook)
         {
-            var result = BasicValidationResult(checkBook);
+            var result = await ValidationResultAsync(checkBook);
             if (result is BadRequestObjectResult)
             {
                 return result;
-            }
-
-            if (await _repository.IsDuplicateCheckBookNameAsync(checkBook))
-            {
-                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue,
-                    AppStrings.CheckBookName));
             }
 
             var outputItem = await _repository.SaveCheckBookAsync(checkBook);
@@ -106,34 +155,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک دسته چک موجود را پس از اعتبارسنجی در دیتابیس ذخیره می کند
         /// </summary>
         /// <param name="checkBookId">شناسه دیتابیسی دسته چک اصلاح شده</param>
-        /// <param name="checkbook">اطلاعات نمایشی اصلاح شده برای دسته چک</param>
+        /// <param name="checkBook">اطلاعات نمایشی اصلاح شده برای دسته چک</param>
         /// <returns>اطلاعات نمایشی ذخیره شده برای دسته چک</returns>
-        // PUT: api/check-books/{checkbookId:min(1)}
+        // PUT: api/check-books/{checkBookId:min(1)}
         [HttpPut]
         [Route(CheckBookApi.CheckBookUrl)]
         [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Edit)]
         public async Task<IActionResult> PutModifiedCheckBookAsync(int checkBookId,
-            [FromBody] CheckBookViewModel checkbook)
+            [FromBody] CheckBookViewModel checkBook)
         {
-            var result = BasicValidationResult(checkbook, checkBookId);
+            var result = await ValidationResultAsync(checkBook, checkBookId);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            if (await _repository.HasPagesAsync(checkBookId))
-            {
-                string msg = _strings[AppStrings.InabilityEditCheckbook];
-                return BadRequestResult(msg);
-            }
-
-            if (await _repository.IsDuplicateCheckBookNameAsync(checkbook))
-            {
-                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue,
-                    AppStrings.CheckBookName));
-            }
-
-            var outputItem = await _repository.SaveCheckBookAsync(checkbook);
+            var outputItem = await _repository.SaveCheckBookAsync(checkBook);
             return OkReadResult(outputItem);
         }
 
@@ -141,7 +178,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات دسته چک مشخص شده با شناسه دیتابیسی را پس از اعتبارسنجی از دیتابیس حذف می کند
         /// </summary>
         /// <param name="checkBookId">شناسه دیتابیسی دسته چک مورد نظر برای حذف</param>
-        // DELETE: api/check-books/{checkbookId:min(1)}
+        // DELETE: api/check-books/{checkBookId:min(1)}
         [HttpDelete]
         [Route(CheckBookApi.CheckBookUrl)]
         [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Delete)]
@@ -224,7 +261,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(msg);
             }
 
-            await _pageRepository.DeleteCheckBookPagesAsync(checkBookId);
+            await _pageRepository.DeletePagesAsync(checkBookId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
@@ -262,68 +299,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return OkReadResult(outputItem);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات اولین دسته چک قابل دسترسی را برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات نمایشی اولین دسته چک قابل دسترسی</returns>
-        // GET: api/check-books/first
-        [HttpGet]
-        [Route(CheckBookApi.FirstCheckBookUrl)]
-        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Navigate)]
-        public async Task<IActionResult> GetFirstCheckBookAsync()
-        {
-            var first = await _repository.GetFirstCheckBookAsync(GridOptions); 
-            Localize(first);
-            return JsonReadResult(first);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دسته چک پیش از تاریخ صدور مشخص شده را برمی گرداند
-        /// </summary>
-        /// <param name="issueDate">تاریخ صدور دسته چک فعلی</param>
-        /// <returns>اطلاعات نمایشی دسته چک قابل دسترسی قبلی</returns>
-        // GET: api/check-books/{issueDate:DateTime}/previous
-        [HttpGet]
-        [Route(CheckBookApi.PreviousCheckBookUrl)]
-        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Navigate)]
-        public async Task<IActionResult> GetPreviousCheckBookAsync(DateTime issueDate)
-        {
-            var previous = await _repository.GetPreviousCheckBookAsync(issueDate, GridOptions);
-            Localize(previous);
-            return JsonReadResult(previous);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دسته چک بعد از تاریخ صدور مشخص شده را برمی گرداند
-        /// </summary>
-        /// <param name="issueDate">تاریخ صدور دسته چک فعلی</param>
-        /// <returns>اطلاعات نمایشی دسته چک قابل دسترسی بعدی</returns>
-        // GET: api/check-books/{issueDate:DateTime}/next
-        [HttpGet]
-        [Route(CheckBookApi.NextCheckBookUrl)]
-        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Navigate)]
-        public async Task<IActionResult> GetNextCheckBookAsync(DateTime issueDate)
-        {
-            var next = await _repository.GetNextCheckBookAsync(issueDate, GridOptions);
-            Localize(next);
-            return JsonReadResult(next);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات آخرین دسته چک قابل دسترسی را برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات نمایشی آخرین دسته چک قابل دسترسی</returns>
-        // GET: api/check-books/last
-        [HttpGet]
-        [Route(CheckBookApi.LastCheckBookUrl)]
-        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Navigate)]
-        public async Task<IActionResult> GetLastCheckBookAsync()
-        {
-            var last = await _repository.GetLastCheckBookAsync(GridOptions);
-            Localize(last);
-            return JsonReadResult(last);
-        }
-
         #endregion
 
         /// <summary>
@@ -335,8 +310,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         protected override async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
-            var isExistCheckbook = await _repository.ExistsCheckBookAsync(item);
-            if (!isExistCheckbook)
+            var existsCheckbook = await _repository.ExistsCheckBookAsync(item);
+            if (!existsCheckbook)
             {
                 message = _strings.Format(AppStrings.ItemByIdNotFound,
                     AppStrings.CheckBook, item.ToString());
@@ -344,14 +319,28 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             return message;
         }
-        
-        private void Localize(CheckBookViewModel checkBook)
+
+        private async Task<IActionResult> ValidationResultAsync(CheckBookViewModel checkBook, int checkBookId = 0)
         {
-            if (checkBook != null)
+            var result = BasicValidationResult(checkBook, checkBookId);
+            if (result is BadRequestObjectResult)
             {
-                checkBook.BankName = _strings[checkBook.BankName ?? String.Empty];
-                checkBook.Name = _strings[checkBook.Name ?? String.Empty];
+                return result;
             }
+
+            if (checkBookId > 0 && await _repository.HasPagesAsync(checkBookId))
+            {
+                string message = _strings[AppStrings.InabilityEditCheckbook];
+                return BadRequestResult(message);
+            }
+
+            if (await _repository.IsDuplicateCheckBookNameAsync(checkBook))
+            {
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue,
+                    AppStrings.CheckBookName));
+            }
+
+            return Ok();
         }
 
         private readonly ICheckBookRepository _repository;

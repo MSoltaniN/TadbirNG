@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Check;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Check;
@@ -24,13 +25,13 @@ namespace SPPC.Tadbir.Persistence
         public CheckBookRepository(IRepositoryContext context, ISystemRepository system)
             : base(context, system.Logger)
         {
-            _system=system;
+            _system = system;
         }
 
         /// <summary>
         /// به روش آسنکرون، دسته چک با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="checkBookId">شناسه عددی یکی از دسته چک ها موجود</param>
+        /// <param name="checkBookId">شناسه عددی یکی از دسته چک های موجود</param>
         /// <returns>دسته چک مشخص شده با شناسه عددی</returns>
         public async Task<CheckBookViewModel> GetCheckBookAsync(int checkBookId)
         {
@@ -114,20 +115,19 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اولین دسته چک</returns>
         public async Task<CheckBookViewModel> GetFirstCheckBookAsync(GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
-            var checkBooks = await repository.GetAllAsync();
+            var checkBooks = await Repository.GetAllOperationAsync<CheckBook>(ViewId.CheckBook);
             var options = gridOptions ?? new GridOptions();
             var firstCheckBook = checkBooks
-                .Apply(options, false)
                 .OrderBy(c => c.IssueDate)
+                .Select(cb => Mapper.Map<CheckBookViewModel>(cb))
+                .Apply(options, false)
                 .FirstOrDefault();
-            var firstCheckBookModel = Mapper.Map<CheckBookViewModel>(firstCheckBook);
             if (firstCheckBook != null)
             {
-                await SetCheckBookNavigationAsync(firstCheckBookModel, options);
+                await SetCheckBookNavigationAsync(firstCheckBook, options);
             }
 
-            return firstCheckBookModel;
+            return firstCheckBook;
         }
 
         /// <summary>
@@ -139,22 +139,20 @@ namespace SPPC.Tadbir.Persistence
         public async Task<CheckBookViewModel> GetPreviousCheckBookAsync(
             DateTime issueDate, GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
-            var checkBooks = await repository.GetAllAsync();
+            var checkBooks = await Repository.GetAllOperationAsync<CheckBook>(ViewId.CheckBook);
             var options = gridOptions ?? new GridOptions();
             var previousCheckBook = checkBooks
-                .Apply(options, false)
                 .OrderByDescending(c => c.IssueDate)
-                .SkipWhile(c => c.IssueDate != issueDate)
-                .Skip(1)
+                .Select(cb => Mapper.Map<CheckBookViewModel>(cb))
+                .Apply(options, false)
+                .Where(cb => cb.IssueDate < issueDate)
                 .FirstOrDefault();
-            var previousCheckBookModel = Mapper.Map<CheckBookViewModel>(previousCheckBook);
             if (previousCheckBook != null)
             {
-                await SetCheckBookNavigationAsync(previousCheckBookModel, options);
+                await SetCheckBookNavigationAsync(previousCheckBook, options);
             }
 
-            return previousCheckBookModel;
+            return previousCheckBook;
         }
 
         /// <summary>
@@ -165,22 +163,20 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>دسته چک بعدی</returns>
         public async Task<CheckBookViewModel> GetNextCheckBookAsync(DateTime issueDate, GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
-            var checkBooks = await repository.GetAllAsync();
+            var checkBooks = await Repository.GetAllOperationAsync<CheckBook>(ViewId.CheckBook);
             var options = gridOptions ?? new GridOptions();
             var nextCheckBook = checkBooks
+                .OrderBy(c => c.IssueDate)
+                .Select(cb => Mapper.Map<CheckBookViewModel>(cb))
                 .Apply(options, false)
-                .OrderBy(c  => c.IssueDate)
-                .SkipWhile(c => c.IssueDate != issueDate)
-                .Skip(1)
+                .Where(cb => cb.IssueDate > issueDate)
                 .FirstOrDefault();
-            var nextCheckBookModel = Mapper.Map<CheckBookViewModel>(nextCheckBook);
             if (nextCheckBook != null)
             {
-                await SetCheckBookNavigationAsync(nextCheckBookModel, options);
+                await SetCheckBookNavigationAsync(nextCheckBook, options);
             }
 
-            return nextCheckBookModel;
+            return nextCheckBook;
         }
 
         /// <summary>
@@ -191,19 +187,19 @@ namespace SPPC.Tadbir.Persistence
         public async Task<CheckBookViewModel> GetLastCheckBookAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
-            var checkBooks = await repository.GetAllAsync();
+            var checkBooks = await Repository.GetAllOperationAsync<CheckBook>(ViewId.CheckBook);
             var options = gridOptions ?? new GridOptions();
-            var lastCheckBook =checkBooks
-                .Apply(options, false)
+            var lastCheckBook = checkBooks
                 .OrderByDescending(c => c.IssueDate)
+                .Select(cb => Mapper.Map<CheckBookViewModel>(cb))
+                .Apply(options, false)
                 .FirstOrDefault();
-            var lastCheckBookModel = Mapper.Map<CheckBookViewModel>(lastCheckBook);
             if (lastCheckBook != null)
             {
-                await SetCheckBookNavigationAsync(lastCheckBookModel, options);
+                await SetCheckBookNavigationAsync(lastCheckBook, options);
             }
 
-            return lastCheckBookModel; 
+            return lastCheckBook; 
         }
 
         /// <summary>
@@ -284,6 +280,10 @@ namespace SPPC.Tadbir.Persistence
             checkBook.EndNo = checkBookViewModel.EndNo;
             checkBook.BankName = checkBookViewModel.BankName;
             checkBook.IsArchived = checkBookViewModel.IsArchived;
+            checkBook.AccountId = checkBookViewModel.AccountId;
+            checkBook.DetailAccountId = checkBookViewModel.DetailAccountId;
+            checkBook.CostCenterId = checkBookViewModel.CostCenterId;
+            checkBook.ProjectId = checkBookViewModel.ProjectId;
         }
 
         /// <summary>
@@ -295,10 +295,10 @@ namespace SPPC.Tadbir.Persistence
         {
             return (entity != null)
                 ? String.Format(
-                    "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7} , {8} : {9}",
+                    "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7} , {8} : {9} , {10} : {11}",
                     AppStrings.CheckBookNo, entity.CheckBookNo, AppStrings.CheckBookName, entity.Name,
                     AppStrings.IssueDate, entity.IssueDate, AppStrings.StartNo, entity.StartNo,
-                    AppStrings.EndNoCheck, entity.EndNo)
+                    AppStrings.EndNo, entity.EndNo, AppStrings.BankName, entity.BankName)
                 : null;
         }
 
@@ -306,15 +306,15 @@ namespace SPPC.Tadbir.Persistence
         {
             int nextCount, prevCount;
             var options = gridOptions ?? new GridOptions();
-            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
-            var query = repository.GetEntityQuery()
-                .Where(c => c.BranchId == checkBook.BranchId 
-                            && c.IssueDate < checkBook.IssueDate);
+            var query = Repository
+                .GetAllOperationQuery<CheckBook>(ViewId.CheckBook)
+                .Where(cb => cb.IssueDate <= checkBook.IssueDate
+                    && cb.Id != checkBook.Id);
             if (!options.IsEmpty)
             {
                 var items = await query.ToListAsync();
                 prevCount = items
-                    .Select(v => Localize(Mapper.Map<CheckBookViewModel>(v)))
+                    .Select(cb => Mapper.Map<CheckBookViewModel>(cb))
                     .ApplyQuickFilter(options, false)
                     .Apply(options, false)
                     .Count();
@@ -324,14 +324,15 @@ namespace SPPC.Tadbir.Persistence
                 prevCount = await query.CountAsync();
             }
 
-            query = repository.GetEntityQuery()
-                .Where(c => c.BranchId == checkBook.BranchId
-                            && c.IssueDate > checkBook.IssueDate);
+            query = Repository
+                .GetAllOperationQuery<CheckBook>(ViewId.CheckBook)
+                .Where(cb => cb.IssueDate >= checkBook.IssueDate
+                    && cb.Id != checkBook.Id);
             if (!options.IsEmpty)
             {
                 var items = await query.ToListAsync();
                 nextCount = items
-                    .Select(v => Localize(Mapper.Map<CheckBookViewModel>(v)))
+                    .Select(cb => Mapper.Map<CheckBookViewModel>(cb))
                     .ApplyQuickFilter(options, false)
                     .Apply(options, false)
                     .Count();
@@ -343,19 +344,6 @@ namespace SPPC.Tadbir.Persistence
 
             checkBook.HasPrevious = prevCount > 0;
             checkBook.HasNext = nextCount > 0;
-        }
-
-        private CheckBookViewModel Localize(CheckBookViewModel checkBook)
-        {
-            if (checkBook != null)
-            {
-                checkBook.BankName = Context.Localize(checkBook.BankName);
-                checkBook.BranchName = Context.Localize(checkBook.BranchName);
-                checkBook.Name = Context.Localize(checkBook.Name);
-                checkBook.StartNo = Context.Localize(checkBook.StartNo);
-            }
-
-            return checkBook;
         }
 
         private ISecureRepository Repository

@@ -19,13 +19,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="logDescription">توضیحات جهت ذخیره لاگ</param>
         /// <returns>اطلاعات نمایشی برگه چک ایجاد یا اصلاح شده</returns>
         Task<CheckBookPageViewModel> ChangeCheckStateAsync(int checkBookPageId,
-            CheckBookPageState status,string logDescription);
+            CheckBookPageState status, string logDescription);
 
         /// <summary>
         /// به روش آسنکرون، برگه های چک مشخص شده با شناسه دسته چک را حذف می کند
         /// </summary>
         /// <param name="checkBookId">شناسه دسته چک جهت حذف برگه های چک</param>
-        Task DeleteCheckBookPagesAsync(int checkBookId);
+        Task DeletePagesAsync(int checkBookId);
 
         /// <summary>
         ///  به روش آسنکرون، اطلاعات نمایشی برگه های یک دسته چک جدید را پس از اعتبارسنجی در دیتابیس ذخیره می کند
@@ -35,7 +35,7 @@ namespace SPPC.Tadbir.Persistence
         Task<PagedList<CheckBookPageViewModel>> CreatePagesAsync(int checkBookId);
 
         /// <summary>
-        /// به روش آسنکرون، برگه های های یک دسته چک مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، برگه های یک دسته چک مشخص شده با شناسه عددی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="checkBookId">شناسه یکی از دسته چک های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>

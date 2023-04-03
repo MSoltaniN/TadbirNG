@@ -1703,12 +1703,12 @@ namespace SPPC.Tadbir.Security
         View = 0x1,
 
         /// <summary>
-        /// دسترسی فیلتر دسته چک ها موجود
+        /// دسترسی فیلتر دسته چک های موجود
         /// </summary>
         Filter = 0x2,
 
         /// <summary>
-        /// دسترسی چاپ دسته چک ها موجود
+        /// دسترسی چاپ دسته چک های موجود
         /// </summary>
         Print = 0x4,
 
@@ -1738,7 +1738,7 @@ namespace SPPC.Tadbir.Security
         CreatePages = 0x80,
 
         /// <summary>
-        /// دسترسی حذف یک برگه های چک
+        /// دسترسی حذف برگه های چک
         /// </summary>
         DeletePages = 0x100,
 

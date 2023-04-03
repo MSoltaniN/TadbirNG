@@ -81,6 +81,6 @@ namespace SPPC.Tadbir.ViewModel.Check
         /// <summary>
         /// وضعیت بایگانی
         /// </summary>
-        public bool IsArchived { get; set; }
+        public bool? IsArchived { get; set; }
     }
 }

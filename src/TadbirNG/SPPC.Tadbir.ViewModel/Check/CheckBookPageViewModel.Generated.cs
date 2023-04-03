@@ -50,6 +50,6 @@ namespace SPPC.Tadbir.ViewModel.Check
         /// <summary>
         /// شناسه چک مرتبط با برگه
         /// </summary>
-        public int CheckId { get; set; }
+        public int? CheckId { get; set; }
     }
 }

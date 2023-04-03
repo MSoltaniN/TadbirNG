@@ -1,9 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Check;
-using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -15,7 +13,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، دسته چک با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="checkBookId">شناسه عددی یکی از دسته چک ها موجود</param>
+        /// <param name="checkBookId">شناسه عددی یکی از دسته چک های موجود</param>
         /// <returns>دسته چک مشخص شده با شناسه عددی</returns>
         Task<CheckBookViewModel> GetCheckBookAsync(int checkBookId);
 
@@ -70,15 +68,15 @@ namespace SPPC.Tadbir.Persistence
         Task<CheckBookViewModel> GetLastCheckBookAsync(GridOptions gridOptions = null);
 
         /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا دسته چک دارای زیرمجموعه هست یا نه
+        /// به روش آسنکرون، مشخص می کند که آیا دسته چک دارای برگه هست یا نه
         /// </summary>
         /// <param name="checkBookId">شناسه یکی از دسته چک های موجود</param>
-        /// <returns>در حالتی که دسته چک دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
+        /// <returns>در حالتی که دسته چک دارای برگه باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
         Task<bool> HasPagesAsync(int checkBookId);
 
         /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا قسمت والد دسته چک وجود دارد یا نه
+        /// به روش آسنکرون، مشخص می کند که آیا دسته چک وجود دارد یا نه
         /// </summary>
         /// <param name="checkBookId">شناسه دسته چک موجود</param>
         /// <returns>در حالتی که دسته چک وجود داشته باشد مقدار "درست" و در غیر این صورت
@@ -99,6 +97,5 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در حالتی که حداقل یک برگ از دسته چک ارتباط داشته باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
         Task<bool> IsConnectedToCheckAsync(int checkBookId);
-
     }
 }

@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for a single check book specified by number
         /// </summary>
-        public const string CheckBookByNoUrl = "check-books/by-no/{checkBookNo:min(1)}";
+        public const string CheckBookByNoUrl = "check-books/by-no/{checkBookNo}";
 
         /// <summary>
         /// API client URL for all pages in a single check book specified by identifier
@@ -107,6 +107,5 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for the last check book in current environment
         /// </summary>
         public const string LastCheckBookUrl = "check-books/last";
-
     }
 }

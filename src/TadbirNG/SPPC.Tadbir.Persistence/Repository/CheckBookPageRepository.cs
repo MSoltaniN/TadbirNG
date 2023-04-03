@@ -25,7 +25,6 @@ namespace SPPC.Tadbir.Persistence
         public CheckBookPageRepository(IRepositoryContext context, ISystemRepository system)
             : base(context, system.Logger)
         {
-            _system = system;
         }
 
         /// <summary>
@@ -61,7 +60,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، برگه های چک مشخص شده با شناسه دسته چک را حذف می کند
         /// </summary>
         /// <param name="checkBookId">شناسه دسته چک جهت حذف برگه های چک</param>
-        public async Task DeleteCheckBookPagesAsync(int checkBookId)
+        public async Task DeletePagesAsync(int checkBookId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
             var checkBookPageIds = await repository
@@ -127,7 +126,6 @@ namespace SPPC.Tadbir.Persistence
             int checkBookId, GridOptions gridOptions = null)
         {
             var query = GetCheckBookPagesQuery(checkBookId);
-            query = Repository.ApplyRowFilter(ref query, ViewId.CheckBook);
             var pages = await query
                 .Select(page => Mapper.Map<CheckBookPageViewModel>(page))
                 .ToListAsync();
@@ -163,11 +161,6 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
-        private ISecureRepository Repository
-        {
-            get { return _system.Repository; }
-        }
-
         private static (string Series, string Serial) ExtractSeriesAndSerialCheck(string inputString)
         {
             int separateIndex = 0;
@@ -190,11 +183,9 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetRepository<CheckBookPage>();
             var pagesQuery = repository
                 .GetEntityQuery()
-                .Where(checkBookPage => checkBookPage.CheckBook.Id == checkBookId)
+                .Where(checkBookPage => checkBookPage.CheckBookId == checkBookId)
                 .OrderBy(checkBookPage => checkBookPage.Id);
             return pagesQuery;
         }
-
-        private readonly ISystemRepository _system;
     }
 }

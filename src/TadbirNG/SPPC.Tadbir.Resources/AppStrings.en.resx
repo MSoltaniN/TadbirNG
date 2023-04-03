@@ -3756,17 +3756,14 @@
   <data name="SerialNo" xml:space="preserve">
     <value>Serial No</value>
   </data>
-  <data name="EndNoCheck" xml:space="preserve">
-    <value>End No</value>
-  </data>
   <data name="StartNo" xml:space="preserve">
-    <value>Start From</value>
+    <value>Start No</value>
   </data>
   <data name="CheckBookPagesExist" xml:space="preserve">
-    <value>Checkbook pages have already been created</value>
+    <value>Check book pages have already been created.</value>
   </data>
-  <data name="CheckBookParntInfoNotExist" xml:space="preserve">
-    <value>First, the general information of the checkbook must be defined.</value>
+  <data name="CheckBookDoesNotExist" xml:space="preserve">
+    <value>First, the general information of the check book must be defined.</value>
   </data>
   <data name="InabilityEditCheckbook" xml:space="preserve">
     <value>The sheets of this checkbook have been created, you cannot edit them</value>

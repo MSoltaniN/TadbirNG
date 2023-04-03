@@ -10,7 +10,6 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPPC.Tadbir.Model.Check;
@@ -49,8 +48,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
             builder.Ignore(checkBook => checkBook.No);
-            builder.Ignore(checkBook => checkBook.FiscalPeriodId);
-            builder.Ignore(checkBook => checkBook.FiscalPeriod);
+            //builder.Ignore(checkBook => checkBook.FiscalPeriodId);
+            //builder.Ignore(checkBook => checkBook.FiscalPeriod);
             builder.Ignore(checkBook => checkBook.Reference);
             builder.Ignore(checkBook => checkBook.Date);
 
@@ -60,22 +59,22 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Check_CheckBook_Corporate_Branch");
             builder.HasOne(e => e.Account)
-                .WithMany(e => e.CheckBooks)
+                .WithMany()
                 .HasForeignKey(e => e.AccountId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Check_CheckBook_Finance_Account");
             builder.HasOne(e => e.DetailAccount)
-                .WithMany(e=>e.CheckBooks)
+                .WithMany()
                 .HasForeignKey(e => e.DetailAccountId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Check_CheckBook_Finance_DetailAccount");
             builder.HasOne(e => e.CostCenter)
-                .WithMany(e=>e.CheckBooks)
+                .WithMany()
                 .HasForeignKey(e => e.CostCenterId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Check_CheckBook_Finance_CostCenter");
             builder.HasOne(e => e.Project)
-                .WithMany(e=>e.CheckBooks)
+                .WithMany()
                 .HasForeignKey(e => e.ProjectId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Check_CheckBook_Finance_Project");

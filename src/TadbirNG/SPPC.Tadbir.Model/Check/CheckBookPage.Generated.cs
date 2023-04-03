@@ -12,12 +12,11 @@
 
 using SPPC.Tadbir.Domain;
 using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Model.Check
 {
     /// <summary>
-    /// اطلاعات برگه های چک یک دسته چک را نگهداری می کند
+    /// اطلاعات یکی از برگه های چک در یک دسته چک را نگهداری می کند
     /// </summary>
     public partial class CheckBookPage : CoreEntity
     {
@@ -29,11 +28,6 @@ namespace SPPC.Tadbir.Model.Check
             SerialNo = String.Empty;
             ModifiedDate = DateTime.Now;
         }
-
-        /// <summary>
-        /// شناسه دسته چک
-        /// </summary>
-        public virtual int CheckBookId { get; set; }
 
         /// <summary>
         /// شماره سری برگه

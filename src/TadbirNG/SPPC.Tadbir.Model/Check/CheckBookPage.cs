@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace SPPC.Tadbir.ViewModel.Check
+namespace SPPC.Tadbir.Model.Check
 {
-    public partial class CheckBookPageViewModel
+    public partial class CheckBookPage
     {
         /// <summary>
         ///  شناسه یکتای دسته چک که برگه چک در آن تعریف می شود
         /// </summary>
-        public int CheckBookId { get; set; }
+        public virtual int CheckBookId { get; set; }
     }
 }

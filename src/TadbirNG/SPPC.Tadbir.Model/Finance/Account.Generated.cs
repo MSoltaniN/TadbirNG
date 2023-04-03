@@ -13,7 +13,6 @@
 using System;
 using System.Collections.Generic;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Model.Check;
 
 namespace SPPC.Tadbir.Model.Finance
 {
@@ -73,11 +72,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// مجموعه ای از پروژه های مرتبط با این حساب
         /// </summary>
         public virtual IList<AccountProject> AccountProjects { get; protected set; }
-
-        /// <summary>
-        /// مجموعه ای از دسته چک های مرتبط با این حساب
-        /// </summary>
-        public virtual IList<CheckBook> CheckBooks { get; protected set; }
 
         /// <summary>
         /// گروه حساب مرتبط با حساب کل
