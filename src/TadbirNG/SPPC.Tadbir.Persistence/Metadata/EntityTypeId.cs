@@ -21,6 +21,6 @@ namespace SPPC.Tadbir.Persistence
         DraftVoucher = 18,
         DashboardTab = 19,
         Widget = 20,
-        CashRegister = 22
+        CheckBook = 21
     }
 }

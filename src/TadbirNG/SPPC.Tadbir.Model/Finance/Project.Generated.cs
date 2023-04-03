@@ -13,7 +13,6 @@
 using System;
 using System.Collections.Generic;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Model.Corporate;
 
 namespace SPPC.Tadbir.Model.Finance
 {

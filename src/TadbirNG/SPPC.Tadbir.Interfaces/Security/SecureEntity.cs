@@ -192,6 +192,11 @@ namespace SPPC.Tadbir.Security
         public const string Dashboard = "Dashboard";
 
         /// <summary>
+        /// نام موجودیت دسته چک
+        /// </summary>
+        public const string CheckBook = "CheckBook";
+
+        /// <summary>
         /// نام موجودیت صندوق
         /// </summary>
         public const string CashRegister = "CashRegister";
