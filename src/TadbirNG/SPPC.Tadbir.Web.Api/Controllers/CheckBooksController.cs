@@ -224,7 +224,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (!await _repository.ExistsCheckBookAsync(checkBookId))
             {
-                string result = _strings[AppStrings.CheckBookParntInfoNotExist];
+                string result = _strings[AppStrings.CheckBookDoesNotExist];
                 return BadRequestResult(result);
             }
 

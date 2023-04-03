@@ -4268,6 +4268,121 @@
         <Relation multiplicity="ManyToOne" endpointName="Role" entityName="Role" hasKey="False" isRequired="True" joinTable="" description="نقش اقدام کننده روی کار" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
+    <Entity description="اطلاعات یک دسته چک را نگهداری می کند" name="CheckBook" area="Check" identifier="Id" type="OperationalEntity" clrType="SPPC.Tools.Model.Entity, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" isRequired="True" joinTable="" description="شعبه ای که دسته چک در آن تعریف شده است" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Account" entityName="Account" hasKey="True" isRequired="False" joinTable="Account" description="مولفه سرفصل حسابداری از بردار حساب مورد استفاده در این دسته چک" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="DetailAccount" entityName="DetailAccount" hasKey="True" isRequired="False" joinTable="" description="مولفه تفصیلی شناور از بردار حساب مورد استفاده در این دسته چک" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="CostCenter" entityName="CostCenter" hasKey="True" isRequired="False" joinTable="" description="مولفه مرکز هزینه از بردار حساب مورد استفاده در این دسته چک" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Project" entityName="Project" hasKey="True" isRequired="False" joinTable="" description="مولفه پروژه از بردار حساب مورد استفاده در این دسته چک" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CheckBookID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="CheckBookNo" type="String" isValidated="True" description="شماره دسته چک" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCheckBookNo" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="CheckBookNo" type="nvarchar(32)" nullable="False" />
+          <ColumnView name="CheckBookNo" visible="True" width="120" />
+          <ValidationRule name="CheckBookNo_Validation" required="True" minimum="" maximum="32" format="" type="Length" />
+        </Property>
+        <Property name="Name" type="String" isValidated="True" description="نام دسته چک" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Name" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="Name" visible="True" width="120" />
+          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="IssueDate" type="DateTime" isValidated="True" description="تاریخ صدور" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpIssueDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="IssueDate" type="datetime" nullable="False" />
+          <ColumnView name="IssueDate" visible="True" width="120" />
+          <ValidationRule name="IssueDate_Validation" required="True" minimum="" maximum="" format="yyyy-MM-dd" type="Value" />
+        </Property>
+        <Property name="StartNo" type="String" isValidated="True" description="شماره اولین برگ" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtStartNo" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="StartNo" type="nvarchar(32)" nullable="False" />
+          <ColumnView name="StartNo" visible="True" width="120" />
+          <ValidationRule name="StartNo_Validation" required="True" minimum="" maximum="32" format="" type="Length" />
+        </Property>
+        <Property name="EndNo" type="String" isValidated="True" description="شماره آخرین برگ" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtEndNo" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="EndNo" type="nvarchar(32)" nullable="False" />
+          <ColumnView name="EndNo" visible="True" width="120" />
+          <ValidationRule name="EndNo_Validation" required="True" minimum="" maximum="32" format="" type="Length" />
+        </Property>
+        <Property name="BankName" type="String" isValidated="True" description="نام بانک" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtBankName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="BankName" type="nvarchar(32)" nullable="True" />
+          <ColumnView name="BankName" visible="True" width="120" />
+          <ValidationRule name="BankName_Validation" required="False" minimum="" maximum="32" format="" type="Length" />
+        </Property>
+        <Property name="IsArchived" type="Boolean" isValidated="True" description="وضعیت بایگانی" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="chkIsArchived" format="" type="CheckBox" bindingMember="Checked" />
+          <PropertyStorage name="IsArchived" type="bit" nullable="True" />
+          <ColumnView name="IsArchived" visible="True" width="120" />
+          <ValidationRule name="IsArchived_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="RowGuid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="ModifiedDate" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="13/10/9378" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+    </Entity>
+    <Entity description="اطلاعات برگه های چک یک دسته چک را نگهداری می کند" name="CheckBookPage" area="Check" identifier="Id" type="CoreEntity" clrType="SPPC.Tools.Model.Entity, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="CheckBook" entityName="CheckBook" hasKey="True" isRequired="True" joinTable="" description="دسته چک ای که برگه ها متعلق به آن هست" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CheckBookPageID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="SerialNo" type="String" isValidated="True" description="شماره سری برگه" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtSerialNo" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="SerialNo" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="SerialNo" visible="True" width="120" />
+          <ValidationRule name="SerialNo_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="Status" type="Int16" isValidated="True" description="وضعیت برگه" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnStatus" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="Status" type="smallint" nullable="True" />
+          <ColumnView name="Status" visible="True" width="120" />
+          <ValidationRule name="Status_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="CheckId" type="Int32" isValidated="True" description="شناسه چک مرتبط با برگه" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnCheckId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CheckId" type="int" nullable="True" />
+          <ColumnView name="CheckId" visible="True" width="120" />
+          <ValidationRule name="CheckId_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="RowGuid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1493.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="ModifiedDate" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="13/10/9378" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+    </Entity>
+
   </Entities>
   <Storage name="Framework.xml" connection="..\..\..\res" media="XmlFile" />
 </Repository>
