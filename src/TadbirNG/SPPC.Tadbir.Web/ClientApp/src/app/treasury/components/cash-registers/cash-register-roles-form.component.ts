@@ -50,8 +50,8 @@ export class CashRegisterRolesFormComponent extends DetailComponent implements O
     }
   }
 
-  @Output() cancelcashRegisterRoles: EventEmitter<any> = new EventEmitter();
-  @Output() savecashRegisterRoles: EventEmitter<RelatedItems> = new EventEmitter();
+  @Output() cancelCashRegisterRoles: EventEmitter<any> = new EventEmitter();
+  @Output() saveCashRegisterRoles: EventEmitter<RelatedItems> = new EventEmitter();
   ////create properties
 
   constructor(public toastrService: ToastrService,
@@ -65,7 +65,8 @@ export class CashRegisterRolesFormComponent extends DetailComponent implements O
   }
 
   ngOnInit() {
-
+    console.log(this.cashRegisterRolesData);
+    
   }
 
   public onSave(e: any): void {
@@ -76,7 +77,8 @@ export class CashRegisterRolesFormComponent extends DetailComponent implements O
       let roleIndex = this.cashRegisterRolesData.relatedItems.findIndex(f => f.id == roleSelected);
       this.cashRegisterRolesData.relatedItems[roleIndex].isSelected = true;
     }
-    this.savecashRegisterRoles.emit(this.cashRegisterRolesData);
+    // return
+    this.saveCashRegisterRoles.emit(this.cashRegisterRolesData);
   }
 
   public onCancel(e: any): void {
@@ -86,7 +88,7 @@ export class CashRegisterRolesFormComponent extends DetailComponent implements O
 
   private closeForm(): void {
     this.selectedRows = [];
-    this.cancelcashRegisterRoles.emit();
+    this.cancelCashRegisterRoles.emit();
   }
 
   escPress() {

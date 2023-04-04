@@ -3729,6 +3729,87 @@
   <data name="Treasury" xml:space="preserve">
     <value>Treasury</value>
   </data>
+  <data name="CheckBook" xml:space="preserve">
+    <value>CheckBook</value>
+  </data>
+  <data name="CheckBooks" xml:space="preserve">
+    <value>CheckBooks</value>
+  </data>
+  <data name="BankName" xml:space="preserve">
+    <value>Bank Name</value>
+  </data>
+  <data name="CheckBookName" xml:space="preserve">
+    <value>Check Book Name</value>
+  </data>
+  <data name="CheckBookNo" xml:space="preserve">
+    <value>Check Book No</value>
+  </data>
+  <data name="EndNo" xml:space="preserve">
+    <value>End No</value>
+  </data>
+  <data name="IssueDate" xml:space="preserve">
+    <value>Issue Date</value>
+  </data>
+  <data name="SartNo" xml:space="preserve">
+    <value>Sart No</value>
+  </data>
+  <data name="SerialNo" xml:space="preserve">
+    <value>Serial No</value>
+  </data>
+  <data name="StartNo" xml:space="preserve">
+    <value>Start No</value>
+  </data>
+  <data name="CheckBookPagesExist" xml:space="preserve">
+    <value>Check book pages have already been created.</value>
+  </data>
+  <data name="CheckBookDoesNotExist" xml:space="preserve">
+    <value>First, the general information of the check book must be defined.</value>
+  </data>
+  <data name="InabilityEditCheckbook" xml:space="preserve">
+    <value>The sheets of this checkbook have been created, you cannot edit them</value>
+  </data>
+  <data name="HasConnectedToCheck" xml:space="preserve">
+    <value>At least one sheet of checkbook sheets is used.</value>
+  </data>
+  <data name="CancelPage" xml:space="preserve">
+    <value>Cancellation of the check sheet</value>
+  </data>
+  <data name="CancelPageLog" xml:space="preserve">
+    <value>Cancellation of check number {0}</value>
+  </data>
+  <data name="CheckBookByName" xml:space="preserve">
+    <value>Check Book By Name</value>
+  </data>
+  <data name="ConnectToCheck" xml:space="preserve">
+    <value>Create a connection with a check</value>
+  </data>
+  <data name="CreatePages" xml:space="preserve">
+    <value>Create checkbook sheets</value>
+  </data>
+  <data name="DeletePages" xml:space="preserve">
+    <value>Remove checkbook sheets</value>
+  </data>
+  <data name="DisconnectFromCheck" xml:space="preserve">
+    <value>Disconnected from the check</value>
+  </data>
+  <data name="LastCheckBook" xml:space="preserve">
+    <value>Last Check Book</value>
+  </data>
+  <data name="NavigateEntitiesCheckBooks" xml:space="preserve">
+    <value>Move between checkbooks</value>
+  </data>
+  <data name="NewCheckBook" xml:space="preserve">
+    <value>New Check Book</value>
+  </data>
+  <data name="UndoCancelPage" xml:space="preserve">
+    <value>Return from canceling the check sheet</value>
+  </data>
+  <data name="UndoCancelPageLog" xml:space="preserve">
+    <value>Return from canceling check number {0}</value>
+  </data>
+  <data name="InsertedItemCount" xml:space="preserve">
+    <value>Number of items created:</value>
+  </data>
   <data name="CashRegister" xml:space="preserve">
     <value>Cash Register</value>
   </data>
@@ -3737,5 +3818,8 @@
   </data>
   <data name="CantDeleteAssignedCashRegister" xml:space="preserve">
     <value>The cash register '{0}' is assigned to one or more users and cannot be deleted.</value>
+  </data>
+  <data name="AssignCashRegisterUser" xml:space="preserve">
+    <value>Assign user to cash register</value>
   </data>
 </root>

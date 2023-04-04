@@ -301,6 +301,8 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
             let rowNo = (<Array<any>>dataSet.tables.list[0].columns.list).filter(col => col.columnName == 'rowNo');
             let code = (<Array<any>>dataSet.tables.list[0].columns.list).filter(col => col.columnName == 'code');
             let fullCode = (<Array<any>>dataSet.tables.list[0].columns.list).filter(col => col.columnName == "fullCode");
+            let allStringCols = (<Array<any>>dataSet.tables.list[0].columns.list).filter(col => col.dataType.name == "String");
+            this.enNumsToFa(allStringCols);
             this.enNumsToFa(rowNo);
             this.enNumsToFa(code);
             this.enNumsToFa(fullCode);

@@ -99,7 +99,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
             var query = repository
                 .GetEntityQuery(relatedProperties)
-                .Where(entity => entity.FiscalPeriodId == UserContext.FiscalPeriodId);
+                .Where(entity => entity.FiscalPeriodId == UserContext.FiscalPeriodId
+                    || entity.FiscalPeriodId == 0);
             if (viewId != ViewId.Voucher)
             {
                 query = ApplyOperationBranchFilter(query);

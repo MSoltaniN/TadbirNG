@@ -150,6 +150,15 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
+        internal virtual async Task OnEntityGroupInserted(
+            IEnumerable<int> insertedIds, OperationId operation)
+        {
+            OnEntityAction(operation);
+            Log.Description = Context.Localize(String.Format(
+                "{0} : {1}", AppStrings.InsertedItemCount, insertedIds.Count()));
+            await TrySaveLogAsync();
+        }
+
         internal virtual async Task OnEntityGroupDeleted(
             IEnumerable<int> deletedIds, OperationId operation = OperationId.GroupDelete)
         {

@@ -1742,4 +1742,86 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         All = 0xff
     }
+    
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به یک دسته چک را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum CheckBookPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به اطلاعات دسته چک ها
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست دسته چک ها یا جزییات یک دسته چک
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی فیلتر دسته چک های موجود
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
+        /// دسترسی چاپ دسته چک های موجود
+        /// </summary>
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ایجاد یک دسته چک جدید
+        /// </summary>
+        Create = 0x8,
+
+        /// <summary>
+        /// دسترسی ویرایش یک دسته چک موجود
+        /// </summary>
+        Edit = 0x10,
+
+        /// <summary>
+        /// دسترسی حذف یک دسته چک موجود
+        /// </summary>
+        Delete = 0x20,
+
+        /// <summary>
+        /// دسترسی حرکت روی دسته چک ها
+        /// </summary>
+        Navigate = 0x40,
+
+        /// <summary>
+        /// دسترسی ایجاد برگه های چک
+        /// </summary>
+        CreatePages = 0x80,
+
+        /// <summary>
+        /// دسترسی حذف برگه های چک
+        /// </summary>
+        DeletePages = 0x100,
+
+        /// <summary>
+        /// دسترسی ابطال یک برگه چک
+        /// </summary>
+        CancelPage = 0x200,
+
+        /// <summary>
+        /// دسترسی برگشت از ابطال یک برگه چک
+        /// </summary>
+        UndoCancelPage = 0x400,
+
+        /// <summary>
+        /// دسترسی ایجاد ارتباط با چک
+        /// </summary>
+        ConnectToCheck = 0x800,
+
+        /// <summary>
+        /// دسترسی قطع ارتباط با چک
+        /// </summary>
+        DisconnectFromCheck = 0x1000,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت دسته چک ها
+        /// </summary>
+        All = 0x1fff
+    }
 }

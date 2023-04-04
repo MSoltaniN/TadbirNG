@@ -664,6 +664,45 @@ CREATE TABLE [Finance].[InactiveCurrency] (
 )
 GO
 
+CREATE TABLE [Check].[CheckBook] (
+    [CheckBookID]     INT              IDENTITY (1, 1) NOT NULL,
+    [BranchID]        INT              NOT NULL,
+    [AccountID]       INT              NULL,
+    [DetailAccountID] INT              NULL,
+    [CostCenterID]    INT              NULL,
+    [ProjectID]       INT              NULL,
+    [FiscalPeriodID]  INT              CONSTRAINT [DF_Check_CheckBook_FiscalPeriodID] DEFAULT (0) NULL,
+    [CheckBookNo]     NVARCHAR(32)     NOT NULL,
+    [Name]            NVARCHAR(64)     NOT NULL,
+    [IssueDate]       DATETIME         NOT NULL,
+    [StartNo]         NVARCHAR(32)     NOT NULL,
+    [EndNo]           NVARCHAR(32)     NOT NULL,
+    [BankName]        NVARCHAR(32)     NULL,
+    [IsArchived]      BIT              NULL,
+    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Check_CheckBook_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Check_CheckBook_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Check_CheckBook] PRIMARY KEY CLUSTERED ([CheckBookID] ASC)
+    , CONSTRAINT [FK_Check_CheckBook_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_Check_CheckBook_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
+    , CONSTRAINT [FK_Check_CheckBook_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailAccountID])
+    , CONSTRAINT [FK_Check_CheckBook_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_Check_CheckBook_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project]([ProjectID])
+)
+GO
+
+CREATE TABLE [Check].[CheckBookPage] (
+    [CheckBookPageID]   INT              IDENTITY (1, 1) NOT NULL,
+    [CheckBookID]       INT              NOT NULL,
+    [SerialNo]          NVARCHAR(64)     NOT NULL,
+    [Status]            SMALLINT         NULL,
+    [CheckId]           INT              NULL,
+    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Check_CheckBookPage_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Check_CheckBookPage_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Check_CheckBookPage] PRIMARY KEY CLUSTERED ([CheckBookPageID] ASC)
+    , CONSTRAINT [FK_Check_CheckBookPage_Check_CheckBook] FOREIGN KEY ([CheckBookID]) REFERENCES [Check].[CheckBook]([CheckBookID])
+)
+GO
+
 CREATE TABLE [Reporting].[Dashboard] (
     [DashboardID]      INT              IDENTITY (1, 1) NOT NULL,
     [UserID]           INT              NOT NULL,
@@ -1045,6 +1084,8 @@ INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (20, N'Widget', NULL)
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
+    VALUES (21, N'CheckBook', NULL)
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (22, N'CashRegister', NULL)
 SET IDENTITY_INSERT [Metadata].[EntityType] OFF
 
@@ -1098,6 +1139,12 @@ INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (54, N'Export')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (55, N'ExportRates')
 INSERT INTO [Metadata].[Operation] ([OperationID],[Name]) VALUES (56, N'FilterRates')
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (58, N'PrintPreview')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (60, N'CreatePages')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (61, N'DeletePages')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (62, N'CancelPage')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (63, N'UndoCancelPage')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (64, N'ConnectToCheck')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (65, N'DisconnectFromCheck')
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (66, N'AssignCashRegisterUser')
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
@@ -1762,6 +1809,32 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
     VALUES (199, 2, 3, 13, NULL, 54, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (200, 2, 3, 13, NULL, 58, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (201, 3, 2, NULL, 21, 1, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (202, 3, 2, NULL, 21, 2, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (203, 3, 2, NULL, 21, 3, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (204, 3, 2, NULL, 21, 4, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (205, 3, 2, NULL, 21, 5, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (206, 3, 2, NULL, 21, 6, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (207, 3, 2, NULL, 21, 58, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (208, 3, 2, NULL, 21, 60, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (209, 3, 2, NULL, 21, 61, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (210, 3, 2, NULL, 21, 62, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (211, 3, 2, NULL, 21, 63, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (212, 3, 2, NULL, 21, 64, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (213, 3, 2, NULL, 21, 65, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (214, 3, 1, NULL, 22, 1, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
