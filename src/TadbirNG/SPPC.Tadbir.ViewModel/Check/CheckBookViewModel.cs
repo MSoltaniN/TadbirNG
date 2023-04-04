@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SPPC.Tadbir.ViewModel.Check
 {
@@ -21,12 +17,12 @@ namespace SPPC.Tadbir.ViewModel.Check
         /// <summary>
         /// شناسه دیتابیسی مولفه سرفصل حسابداری از بردار حساب مورد استفاده در این دسته چک
         /// </summary>
-        public virtual int? AccountId { get; set; }
+        public virtual int AccountId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی مولفه تفصیلی شناور از بردار حساب مورد استفاده در این دسته چک 
         /// </summary>
-        public virtual int? DetailId { get; set; }
+        public virtual int? DetailAccountId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی مولفه مرکز هزینه از بردار حساب مورد استفاده در این دسته چک
@@ -37,5 +33,15 @@ namespace SPPC.Tadbir.ViewModel.Check
         /// شناسه دیتابیسی مولفه پروژه از بردار حساب مورد استفاده در این دسته چک
         /// </summary>
         public virtual int? ProjectId { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که دسته چک بعد از این دسته چک وجود دارد یا نه
+        /// </summary>
+        public bool HasNext { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که دسته چک قبل از این دسته چک وجود دارد یا نه
+        /// </summary>
+        public bool HasPrevious { get; set; }
     }
 }

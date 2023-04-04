@@ -25,8 +25,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("CheckBookPageID");
-            builder.Property(e => e.CheckBookId)
-                .IsRequired();
             builder.Property(e => e.SerialNo)
                 .IsRequired()
                 .HasMaxLength(64);
@@ -40,7 +38,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasDefaultValueSql("(getdate())");
 
             builder.HasOne(e => e.CheckBook)
-                .WithMany(e=>e.CheckBookPages)
+                .WithMany(e => e.Pages)
                 .HasForeignKey(e => e.CheckBookId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Check_CheckBookPage_Check_CheckBook");

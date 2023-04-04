@@ -873,8 +873,7 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
     VALUES (223, 3, 1, NULL, 22, 66, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
--- 1.2.1488
-
+-- 1.2.1496
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID], [Name], [Description])
     VALUES (15, N'CheckBook', NULL)

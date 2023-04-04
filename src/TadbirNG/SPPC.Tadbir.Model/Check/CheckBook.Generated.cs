@@ -74,7 +74,7 @@ namespace SPPC.Tadbir.Model.Check
         /// <summary>
         /// برگه های دسته چک متعلق به این دسته چک
         /// </summary>
-        public virtual IList<CheckBookPage> CheckBookPages { get; protected set; }
+        public virtual IList<CheckBookPage> Pages { get; protected set; }
 
         /// <summary>
         /// مولفه سرفصل حسابداری از بردار حساب مورد استفاده در این دسته چک

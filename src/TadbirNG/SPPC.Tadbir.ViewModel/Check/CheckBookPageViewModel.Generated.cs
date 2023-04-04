@@ -45,11 +45,11 @@ namespace SPPC.Tadbir.ViewModel.Check
         /// <summary>
         /// وضعیت برگه
         /// </summary>
-        //public CheckBookPageState? Status { get; set; }
+        public CheckBookPageState? Status { get; set; }
 
         /// <summary>
         /// شناسه چک مرتبط با برگه
         /// </summary>
-        public int CheckId { get; set; }
+        public int? CheckId { get; set; }
     }
 }

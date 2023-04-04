@@ -391,7 +391,7 @@ INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [Titl
     VALUES (59, 53, 225, N'CashRegisters', N'/treasury/cash-register', 'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
--- 1.2.1488
+-- 1.2.1496
 SET IDENTITY_INSERT [Metadata].[View] ON
 INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [EntityType], [FetchUrl], [SearchUrl], [IsHierarchy], [IsCartableIntegrated])
     VALUES (71, 'CheckBookReport', N'CheckBookReport', NULL, NULL, NULL, 0, 0)
@@ -428,8 +428,8 @@ SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 
 SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
-INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName], [Description])
-    VALUES (39, N'CheckBookReport', N'CheckBookReport', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (39, 3, 3, N'CheckBookReport', N'CheckBookReport', NULL)
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON

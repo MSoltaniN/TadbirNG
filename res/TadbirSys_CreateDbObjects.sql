@@ -2317,8 +2317,8 @@ INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName],
     VALUES (36, N'Dashboard', N'Dashboard', NULL)
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName], [Description])
     VALUES (38, N'ManageEntities,CashRegisters', N'CashRegister', NULL)
-INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName], [Description])
-    VALUES (39, N'CheckBookReport', N'CheckBookReport', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (39, 3, 3, N'CheckBookReport', N'CheckBookReport', NULL)
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON

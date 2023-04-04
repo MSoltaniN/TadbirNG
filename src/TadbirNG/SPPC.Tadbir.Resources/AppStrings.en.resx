@@ -3840,4 +3840,7 @@
   <data name="NoNeedUndoArchive" xml:space="preserve">
     <value>{0} {1} not archive and no need to undo archive.</value>
   </data>
+  <data name="UndoArchive" xml:space="preserve">
+    <value>Undo archive</value>
+  </data>
 </root>

@@ -5945,6 +5945,11 @@ namespace SPPC.Tadbir.Resources
         public const string UndoApprove = "UndoApprove";
 
         /// <summary>
+        /// Default text : برگشت از بایگانی
+        /// </summary>
+        public const string UndoArchive = "UndoArchive";
+
+        /// <summary>
         /// Default text : تعداد اقلام خارج شده از بایگانی
         /// </summary>
         public const string UndoArchivedItemCount = "UndoArchivedItemCount";

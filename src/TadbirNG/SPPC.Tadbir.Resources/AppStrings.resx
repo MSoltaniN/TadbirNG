@@ -3831,4 +3831,7 @@
   <data name="NoNeedUndoArchive" xml:space="preserve">
     <value>{0} {1} بایگانی نشده و نیاز به لغو بایگانی ندارد.</value>
   </data>
+  <data name="UndoArchive" xml:space="preserve">
+    <value>برگشت از بایگانی</value>
+  </data>
 </root>
