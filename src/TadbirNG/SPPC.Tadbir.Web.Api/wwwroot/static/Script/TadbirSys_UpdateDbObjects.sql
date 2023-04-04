@@ -538,8 +538,8 @@ INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Typ
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
-INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName], [Description])
-    VALUES (37, N'ManageEntities,CheckBooks', N'CheckBook', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (37, 3, 2, N'ManageEntities,CheckBooks', N'CheckBook', NULL)
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON

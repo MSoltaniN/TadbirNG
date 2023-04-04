@@ -2321,8 +2321,8 @@ INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [Sourc
     VALUES (35, 2, 2, N'SpecialVoucherOps', N'SpecialVoucher', NULL)
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
     VALUES (36, 2, 3, N'Dashboard', N'Dashboard', NULL)
-INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName], [Description])
-    VALUES (37, N'ManageEntities,CheckBooks', N'CheckBook', NULL)
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (37, 3, 2, N'ManageEntities,CheckBooks', N'CheckBook', NULL)
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
     VALUES (38, 3, 1, N'ManageEntities,CashRegisters', N'CashRegister', NULL)
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF

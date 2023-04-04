@@ -85,7 +85,17 @@ namespace SPPC.Tadbir.Mapper
             MapCoreTypes(mapperConfig);
             MapMetadataTypes(mapperConfig);
             MapReportingTypes(mapperConfig);
+            MapCashFlowTypes(mapperConfig);
             MapCheckTypes(mapperConfig);
+        }
+
+        private static void MapCashFlowTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<CashRegister, CashRegisterViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
+            mapperConfig.CreateMap<CashRegisterViewModel, CashRegister>();
+            mapperConfig.CreateMap<UserCashRegister, UserCashRegisterViewModel>();
+            mapperConfig.CreateMap<UserCashRegisterViewModel, UserCashRegister>();
         }
 
         private static void MapCheckTypes(IMapperConfigurationExpression mapperConfig)
@@ -94,7 +104,6 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<CheckBookViewModel, CheckBook>();
             mapperConfig.CreateMap<CheckBookPage, CheckBookPageViewModel>();
             mapperConfig.CreateMap<CheckBookPageViewModel, CheckBookPage>();
-            MapCashFlowTypes(mapperConfig);
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)
@@ -607,15 +616,6 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.WidgetAccounts, opts => opts.Ignore())
                 .ForMember(dest => dest.WidgetParameters, opts => opts.Ignore());
             mapperConfig.CreateMap<TabWidgetViewModel, TabWidget>();
-        }
-
-        private static void MapCashFlowTypes(IMapperConfigurationExpression mapperConfig)
-        {
-            mapperConfig.CreateMap<CashRegister, CashRegisterViewModel>()
-                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
-            mapperConfig.CreateMap<CashRegisterViewModel, CashRegister>();
-            mapperConfig.CreateMap<UserCashRegister, UserCashRegisterViewModel>();
-            mapperConfig.CreateMap<UserCashRegisterViewModel, UserCashRegister>();
         }
 
         private static TConfig MapConfigType<TConfig>(Setting setting)

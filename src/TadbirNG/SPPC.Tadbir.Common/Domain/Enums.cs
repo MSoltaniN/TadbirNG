@@ -234,6 +234,11 @@ namespace SPPC.Tadbir.Domain
     public enum CheckBookPageState:short
     {
         /// <summary>
+        /// وضعیت نامشخص برای برگه چک
+        /// </summary>
+        None = 0,
+
+        /// <summary>
         /// برگه چک سفید
         /// </summary>
         Blank = 1,
