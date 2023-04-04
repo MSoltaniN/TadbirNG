@@ -100,6 +100,8 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
         this.editMode = false;
       }
       this.editForm.reset(this.model);
+      console.log(this.editForm);
+      
     })
   }
 
@@ -240,7 +242,15 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
     }
   }
 
-  onSave(e){}
+  onSave(e){
+    if (!this.editForm.valid)
+     return;
+
+    this.editForm.patchValue({
+      checkBookID: 0
+    });
+    let value = this.editForm.value;
+  }
 
   // Events
   onChangePagesCountDropDown(e) {
@@ -257,4 +267,10 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
     console.log(e);
     this.setEndNo();
   }
+
+  removeHandler(){}
+
+  checkOperation(a){}
+
+  showReport(){}
 }

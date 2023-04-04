@@ -13,3 +13,11 @@ export interface CheckBook {
     costCenterId: number,
     projectId: number
 }
+export interface CheckBookPage {
+    id: number,
+    checkBookID: number,
+    checkBookPageID: number,
+    checkID: number,
+    serialNo: string,
+    status: boolean
+}
