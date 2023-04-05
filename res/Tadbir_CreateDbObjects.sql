@@ -667,7 +667,7 @@ GO
 CREATE TABLE [Check].[CheckBook] (
     [CheckBookID]     INT              IDENTITY (1, 1) NOT NULL,
     [BranchID]        INT              NOT NULL,
-    [AccountID]       INT              NULL,
+    [AccountID]       INT              NOT NULL,
     [DetailAccountID] INT              NULL,
     [CostCenterID]    INT              NULL,
     [ProjectID]       INT              NULL,

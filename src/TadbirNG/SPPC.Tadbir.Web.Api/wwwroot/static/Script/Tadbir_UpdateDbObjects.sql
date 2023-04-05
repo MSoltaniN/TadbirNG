@@ -958,3 +958,7 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (213, 3, 2, NULL, 21, 65, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.2.1496
+ALTER TABLE [Check].[CheckBook]
+ALTER COLUMN [AccountID] INT NOT NULL
