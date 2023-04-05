@@ -1824,4 +1824,52 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         All = 0x1fff
     }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به گزارش دفتر دسته چک را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum CheckBookReportPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به اطلاعات گزارش دفتر دسته چک
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده گزارش دفتر دسته چک
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی فیلتر گزارش دفتر دسته چک
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
+        /// دسترسی چاپ گزارش دفتر دسته چک
+        /// </summary>
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات گزارش دفتر دسته چک
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی بایگانی دسته های چک موجود
+        /// </summary>
+        Archive = 0x10,
+
+        /// <summary>
+        /// دسترسی برگشت از بایگانی دسته های چک موجود
+        /// </summary>
+        UndoArchive = 0x20,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای گزارش دفتر دسته چک
+        /// </summary>
+        All = 0x3f
+    }
+
 }

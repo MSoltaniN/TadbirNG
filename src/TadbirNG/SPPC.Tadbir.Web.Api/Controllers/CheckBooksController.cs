@@ -224,7 +224,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (!await _repository.ExistsCheckBookAsync(checkBookId))
             {
-                string result = _strings[AppStrings.CheckBookDoesNotExist];
+                string result = _strings.Format(AppStrings.ItemByIdNotFound,
+                    AppStrings.CheckBook, checkBookId.ToString());
                 return BadRequestResult(result);
             }
 
@@ -330,7 +331,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (checkBookId > 0 && await _repository.HasPagesAsync(checkBookId))
             {
-                string message = _strings[AppStrings.InabilityEditCheckbook];
+                string message = _strings[AppStrings.CantEditCheckbook];
                 return BadRequestResult(message);
             }
 

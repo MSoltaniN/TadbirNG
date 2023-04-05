@@ -205,18 +205,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (cashRegister == null)
             {
                 message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.CashRegister, item.ToString());
+                return GetGroupActionResult(message, cashRegister);
             }
-            else if (cashRegister.BranchId != SecurityContext.User.BranchId)
+
+            var result = BranchValidationResult(cashRegister);
+            if (result is BadRequestObjectResult errorResult)
             {
-                message = _strings.Format(AppStrings.OtherBranchEditNotAllowed);
+                return GetGroupActionResult(errorResult.Value.ToString(), cashRegister);
             }
-            else
+
+            bool assignedUsers = await _repository.HasAssignedUsersToCashRegAsync(item);
+            if (assignedUsers)
             {
-                bool assignedUsers = await _repository.HasAssignedUsersToCashRegAsync(item);
-                if (assignedUsers)
-                {
-                    message = _strings.Format(AppStrings.CantDeleteAssignedCashRegister, cashRegister.Name);
-                }
+                message = _strings.Format(AppStrings.CantDeleteAssignedCashRegister, cashRegister.Name);
             }
 
             return GetGroupActionResult(message, cashRegister);

@@ -19,6 +19,7 @@ namespace SPPC.Tadbir.Persistence
         AccountRelations = 11,
         BalanceSheet = 12,
         SystemIssue = 13,
-        SystemSettings = 14
+        SystemSettings = 14,
+        CheckBook = 15
     }
 }

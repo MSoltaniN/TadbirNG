@@ -200,5 +200,10 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت صندوق
         /// </summary>
         public const string CashRegister = "CashRegister";
+
+        /// <summary>
+        /// نام موجودیت دفتر دسته چک
+        /// </summary>
+        public const string CheckBookReport = "CheckBookReport";
     }
 }

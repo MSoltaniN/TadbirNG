@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -87,6 +86,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             return Ok();
         }
+
 
         /// <summary>
         /// قواعد اعتبارسنجی ساختارهای درختی را روی آبجکت داده شده بررسی می کند
