@@ -208,10 +208,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return GetGroupActionResult(message, cashRegister);
             }
 
-            message = BranchValidation(cashRegister);
-            if (message != "")
+            var result = BranchValidationResult(cashRegister);
+            if (result is BadRequestObjectResult errorResult)
             {
-                return GetGroupActionResult(message, cashRegister);
+                return GetGroupActionResult(errorResult.Value.ToString(), cashRegister);
             }
 
             bool assignedUsers = await _repository.HasAssignedUsersToCashRegAsync(item);

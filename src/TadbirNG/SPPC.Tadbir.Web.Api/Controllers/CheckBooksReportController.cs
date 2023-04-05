@@ -44,7 +44,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات صفحه بندی شده دفتر دسته های چک را خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات صفحه بندی شده دفتر دسته های چک</returns>
-        // GET: api/check-books-report
+        // GET: api/check-book-report
         [HttpGet]
         [Route(CheckBookReportApi.CheckBooksReportUrl)]
         [AuthorizeRequest(SecureEntity.CheckBookReport, (int)CheckBookReportPermissions.View)]
@@ -60,9 +60,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات بایگانی گروهی</param>
         /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // Put: api/check-books/archive
+        // PUT: api/check-books/archive
         [HttpPut]
-        [Route(CheckBookReportApi.ArchiveCheckBooksURL)]
+        [Route(CheckBookReportApi.ArchiveCheckBooksUrl)]
         [AuthorizeRequest(SecureEntity.CheckBookReport, (int)CheckBookReportPermissions.Archive)]
         public async Task<IActionResult> PutExsitingCheckBooksAsArchivedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
@@ -76,9 +76,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات لغو بایگانی گروهی</param>
         /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // Put: api/check-books/undo-archive
+        // PUT: api/check-books/archive/undo
         [HttpPut]
-        [Route(CheckBookReportApi.UndoArchiveCheckBooksURL)]
+        [Route(CheckBookReportApi.UndoArchiveCheckBooksUrl)]
         [AuthorizeRequest(SecureEntity.CheckBookReport, (int)CheckBookReportPermissions.UndoArchive)]
         public async Task<IActionResult> PutExsitingCheckBooksAsUndoArchivedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
@@ -86,7 +86,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return await GroupArchiveResultAsync(actionDetail, false);
         }
 
-        private async Task<GroupActionResultViewModel> ValidateArchiveResultAsync(int item, bool archiveValue)
+        private async Task<GroupActionResultViewModel> ValidateArchiveResultAsync(int item, bool isArchived)
         {
             string message = String.Empty;
             var checkBook = await _repository.GetCheckBookAsync(item); ;
@@ -94,23 +94,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.CheckBook, item.ToString());
             }
-            else if(checkBook.IsArchived == archiveValue)
+            else if (checkBook.IsArchived == isArchived)
             {
-                if(archiveValue==true)
-                {
-                    message = _strings.Format(AppStrings.NoNeedArchive, AppStrings.CheckBook, checkBook.Name);
-                }
-                else
-                {
-                    message = _strings.Format(AppStrings.NoNeedUndoArchive, AppStrings.CheckBook, checkBook.Name);
-                }
+                message = isArchived
+                    ? _strings.Format(AppStrings.AlreadyArchived, AppStrings.CheckBook, checkBook.Name)
+                    : _strings.Format(AppStrings.NotYetArchived, AppStrings.CheckBook, checkBook.Name);
             }
 
             return GetGroupActionResult(message, checkBook);
         }
 
         private async Task<IActionResult> GroupArchiveResultAsync(
-            ActionDetailViewModel actionDetail, bool archiveValue)
+            ActionDetailViewModel actionDetail, bool isArchived)
         {
             if(actionDetail == null)
             {
@@ -119,10 +114,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var validated = new List<int>();
             var notValidated = new List<GroupActionResultViewModel>();
-            foreach(int item in actionDetail.Items)
+            foreach (int item in actionDetail.Items)
             {
-                var result = await ValidateArchiveResultAsync(item, archiveValue);
-                if(result == null)
+                var result = await ValidateArchiveResultAsync(item, isArchived);
+                if (result == null)
                 {
                     validated.Add(item);
                 }
@@ -132,13 +127,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 }
             }
 
-            if(validated.Count > 0)
+            if (validated.Count > 0)
             {
-                await _repository.EditArchiveCheckBooksAsync(validated, archiveValue);
+                await _repository.UpdateArchiveStatusAsync(validated, isArchived);
             }
 
             return Ok(notValidated);
         }
+
         private readonly ICheckBookReportRepository _repository;
     }
 }

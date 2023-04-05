@@ -14,8 +14,8 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Mapper.ModelHelpers;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
-using SPPC.Tadbir.Model.Check;
 using SPPC.Tadbir.Model.CashFlow;
+using SPPC.Tadbir.Model.Check;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
@@ -24,8 +24,8 @@ using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
-using SPPC.Tadbir.ViewModel.Check;
 using SPPC.Tadbir.ViewModel.CashFlow;
+using SPPC.Tadbir.ViewModel.Check;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
@@ -95,12 +95,7 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<CheckBookViewModel, CheckBook>();
             mapperConfig.CreateMap<CheckBookPage, CheckBookPageViewModel>();
             mapperConfig.CreateMap<CheckBookPageViewModel, CheckBookPage>();
-            mapperConfig.CreateMap<CheckBook, CheckBookReportViewModel>()
-                .ForMember(dest => dest.AccountCode, opts => opts.MapFrom(src => src.Account.Code))
-                .ForMember(dest => dest.AccountName, opts => opts.MapFrom(src => src.Account.Name))
-                .ForMember(dest => dest.DetailAccountName, opts => opts.MapFrom(src => src.DetailAccount.Name))
-                .ForMember(dest => dest.CostCenterName, opts => opts.MapFrom(src => src.CostCenter.Name))
-                .ForMember(dest => dest.ProjectName, opts => opts.MapFrom(src => src.Project.Name));
+            mapperConfig.CreateMap<CheckBook, CheckBookReportViewModel>();
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)

@@ -3834,11 +3834,11 @@
   <data name="UndoArchivedItemCount" xml:space="preserve">
     <value>Undo archived item count</value>
   </data>
-  <data name="NoNeedArchive" xml:space="preserve">
-    <value>{0} {1} already been archived.</value>
+  <data name="AlreadyArchived" xml:space="preserve">
+    <value>{0} {1} is already archived.</value>
   </data>
-  <data name="NoNeedUndoArchive" xml:space="preserve">
-    <value>{0} {1} not archive and no need to undo archive.</value>
+  <data name="NotYetArchived" xml:space="preserve">
+    <value>{0} {1} is not yet archived and undo archive does not apply to it.</value>
   </data>
   <data name="UndoArchive" xml:space="preserve">
     <value>Undo archive</value>

@@ -304,13 +304,43 @@ namespace SPPC.Tadbir.Domain
         PrintPreview = 58,
 
         /// <summary>
-        /// تخصیص کاربر به صندوق اسناد
+        /// ایجاد برگه های دسته چک
+        /// </summary>
+        CreatePages = 60,
+
+        /// <summary>
+        /// حذف برگه های دسته چک
+        /// </summary>
+        DeletePages = 61,
+
+        /// <summary>
+        /// ابطال برگه دسته چک
+        /// </summary>
+        CancelPage = 62,
+
+        /// <summary>
+        /// برگشت از ابطال برگه دسته چک
+        /// </summary>
+        UndoCancelPage = 63,
+
+        /// <summary>
+        /// ایجاد ارتباط با چک
+        /// </summary>
+        ConnectToCheck = 64,
+
+        /// <summary>
+        /// قطع ارتباط با چک
+        /// </summary>
+        DisconnectFromCheck = 65,
+
+        /// <summary>
+        /// کد عملیاتی تخصیص کاربر به صندوق اسناد
         /// </summary>
         AssignCashRegisterUser = 66,
 
         /// <summary>
-        /// برگشت از بایگانی
+        /// کد عملیاتی برگشت از بایگانی
         /// </summary>
-        UndoArchiv = 67,
+        UndoArchive = 67,
     }
 }

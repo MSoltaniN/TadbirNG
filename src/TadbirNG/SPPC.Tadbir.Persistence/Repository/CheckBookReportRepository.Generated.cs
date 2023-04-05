@@ -25,10 +25,11 @@ namespace SPPC.Tadbir.Persistence
         public CheckBookReportRepository(IRepositoryContext context, ISystemRepository system)
             : base(context, system.Logger)
         {
+            Repository = system.Repository;
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات کلیه دفتر دسته های چک را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات گزارش دفتر دسته چک را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از دسته های چک تعریف شده</returns>
@@ -38,15 +39,10 @@ namespace SPPC.Tadbir.Persistence
             var checkBooks = new List<CheckBookReportViewModel>();
             if (options.Operation != (int)OperationId.Print)
             {
-                var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
-                checkBooks = await repository
-                    .GetEntityQuery()
-                    .Include(cb => cb.Account)
-                    .Include(cb => cb.DetailAccount)
-                    .Include(cb => cb.CostCenter)
-                    .Include(cb => cb.Project)
-                    .Where(cb => cb.BranchId == UserContext.BranchId)
-                    .Select(item => Mapper.Map<CheckBookReportViewModel>(item))
+                checkBooks = await Repository
+                    .GetAllOperationQuery<CheckBook>(ViewId.CheckBook,
+                        cb => cb.Account, cb => cb.DetailAccount, cb => cb.CostCenter, cb => cb.Project)
+                    .Select(cb => Mapper.Map<CheckBookReportViewModel>(cb))
                     .ToListAsync();
             }
 
@@ -59,8 +55,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="checkBookIds">مجموعه ای از شناسه های عددی دسته چک های مورد نظر 
         /// برای تغییر وضعیت بایگانی</param>
-        /// <param name="archiveValue">مقدار مورد نظر برای تغییر وضعیت بایگانی دسته چک ها</param>
-        public async Task EditArchiveCheckBooksAsync(IList<int> checkBookIds, bool archiveValue)
+        /// <param name="isArchived">مقدار مورد نظر برای تغییر وضعیت بایگانی دسته چک ها</param>
+        public async Task UpdateArchiveStatusAsync(IList<int> checkBookIds, bool isArchived)
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
             foreach (int checkBookId in checkBookIds)
@@ -68,13 +64,13 @@ namespace SPPC.Tadbir.Persistence
                 var checkBook = await repository.GetByIDAsync(checkBookId);
                 if(checkBook != null)
                 {
-                    checkBook.IsArchived = archiveValue;
+                    checkBook.IsArchived = isArchived;
                     repository.Update(checkBook);
                 }
             }
 
             await UnitOfWork.CommitAsync();
-            if(archiveValue == true)
+            if(isArchived == true)
             {
                 string description = Context.Localize(String.Format(
                     "{0} : {1}", AppStrings.ArchivedItemCount, checkBookIds.Count));
@@ -84,7 +80,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 string description = Context.Localize(String.Format(
                    "{0} : {1}", AppStrings.UndoArchivedItemCount, checkBookIds.Count));
-                await OnSourceActionAsync(OperationId.UndoArchiv, description);
+                await OnSourceActionAsync(OperationId.UndoArchive, description);
             }
         }
 
@@ -105,9 +101,12 @@ namespace SPPC.Tadbir.Persistence
 
             return item;
         }
+
         internal override OperationSourceId OperationSource
         {
             get { return OperationSourceId.CheckBook; }
         }
+
+        private ISecureRepository Repository { get; }
     }
 }

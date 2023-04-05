@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -78,8 +77,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         protected IActionResult BranchValidationResult<TFiscalView>(TFiscalView item)
             where TFiscalView : class, IFiscalEntityView
         {
-            var result = BranchValidation(item);
-            if (result != "")
+            Verify.ArgumentNotNull(item, nameof(item));
+            var currentContext = SecurityContext.User;
+            if (item.BranchId != currentContext.BranchId)
             {
                 return BadRequestResult(_strings.Format(AppStrings.OtherBranchEditNotAllowed));
             }
@@ -87,27 +87,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        /// <summary>
-        /// قواعد اعتبارسنجی دسترسی شعبه را روی آبجکت داده شده بررسی می کند
-        /// و نتیجه اعتبارسنجی را برمی گرداند
-        /// </summary>
-        /// <typeparam name="TFiscalView">نوع مدل نمایشی مالی مدیریت شده توسط سرویس</typeparam>
-        /// <param name="item">آبجکت داده شده برای اعتبارسنجی</param>
-        /// <returns>در صورت نبود خطای اعتبارسنجی مقدار خالی و در غیر این صورت
-        /// متن خطا را برای درخواست نامعتبر برمی گرداند</returns>
-        protected string BranchValidation<TFiscalView>(TFiscalView item)
-            where TFiscalView : class, IFiscalEntityView
-        {
-            Verify.ArgumentNotNull(item, nameof(item));
-            string result = "";
-            var currentContext = SecurityContext.User;
-            if (item.BranchId != currentContext.BranchId)
-            {
-                result = _strings.Format(AppStrings.OtherBranchEditNotAllowed);
-            }
-
-            return result;
-        }
 
         /// <summary>
         /// قواعد اعتبارسنجی ساختارهای درختی را روی آبجکت داده شده بررسی می کند

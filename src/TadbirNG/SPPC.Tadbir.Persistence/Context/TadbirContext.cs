@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Tadbir.Model.Auth;
-using SPPC.Tadbir.Model.Check;
 using SPPC.Tadbir.Model.CashFlow;
+using SPPC.Tadbir.Model.Check;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Core;
@@ -45,6 +45,8 @@ namespace SPPC.Tadbir.Persistence
             AccountHolderMap.BuildMapping(modelBuilder.Entity<AccountHolder>());
             BranchMap.BuildMapping(modelBuilder.Entity<Branch>());
             CashRegisterMap.BuildMapping(modelBuilder.Entity<CashRegister>());
+            CheckBookMap.BuildMapping(modelBuilder.Entity<CheckBook>());
+            CheckBookPageMap.BuildMapping(modelBuilder.Entity<CheckBookPage>());
             CityMap.BuildMapping(modelBuilder.Entity<City>());
             CommandMap.BuildMapping(modelBuilder.Entity<Command>());
             CostCenterMap.BuildMapping(modelBuilder.Entity<CostCenter>());
@@ -60,6 +62,7 @@ namespace SPPC.Tadbir.Persistence
             EntityTypeMap.BuildMapping(modelBuilder.Entity<EntityType>());
             FilterMap.BuildMapping(modelBuilder.Entity<Filter>());
             FiscalPeriodMap.BuildMapping(modelBuilder.Entity<FiscalPeriod>());
+            FunctionParameterMap.BuildMapping(modelBuilder.Entity<FunctionParameter>());
             InactiveAccountMap.BuildMapping(modelBuilder.Entity<InactiveAccount>());
             InactiveCurrencyMap.BuildMapping(modelBuilder.Entity<InactiveCurrency>());
             LabelSettingMap.BuildMapping(modelBuilder.Entity<LabelSetting>());
@@ -84,8 +87,8 @@ namespace SPPC.Tadbir.Persistence
             SubsystemMap.BuildMapping(modelBuilder.Entity<Subsystem>());
             TabWidgetMap.BuildMapping(modelBuilder.Entity<TabWidget>());
             TaxCurrencyMap.BuildMapping(modelBuilder.Entity<TaxCurrency>());
-            UserCashRegisterMap.BuildMapping(modelBuilder.Entity<UserCashRegister>());
             UsedParameterMap.BuildMapping(modelBuilder.Entity<UsedParameter>());
+            UserCashRegisterMap.BuildMapping(modelBuilder.Entity<UserCashRegister>());
             UserMap.BuildMapping(modelBuilder.Entity<User>());
             UserRoleMap.BuildMapping(modelBuilder.Entity<UserRole>());
             UserSettingMap.BuildMapping(modelBuilder.Entity<UserSetting>());
@@ -94,13 +97,10 @@ namespace SPPC.Tadbir.Persistence
             VoucherMap.BuildMapping(modelBuilder.Entity<Voucher>());
             VoucherLineMap.BuildMapping(modelBuilder.Entity<VoucherLine>());
             VoucherOriginMap.BuildMapping(modelBuilder.Entity<VoucherOrigin>());
-            WidgetMap.BuildMapping(modelBuilder.Entity<Widget>());
-            WidgetFunctionMap.BuildMapping(modelBuilder.Entity<WidgetFunction>());
-            WidgetTypeMap.BuildMapping(modelBuilder.Entity<WidgetType>());
-            FunctionParameterMap.BuildMapping(modelBuilder.Entity<FunctionParameter>());
             WidgetAccountMap.BuildMapping(modelBuilder.Entity<WidgetAccount>());
-            CheckBookMap.BuildMapping(modelBuilder.Entity<CheckBook>());
-            CheckBookPageMap.BuildMapping(modelBuilder.Entity<CheckBookPage>());
+            WidgetFunctionMap.BuildMapping(modelBuilder.Entity<WidgetFunction>());
+            WidgetMap.BuildMapping(modelBuilder.Entity<Widget>());
+            WidgetTypeMap.BuildMapping(modelBuilder.Entity<WidgetType>());
         }
 
         /// <summary>

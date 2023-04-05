@@ -12,7 +12,7 @@ namespace SPPC.Tadbir.Persistence
     public interface ICheckBookReportRepository
     {
         /// <summary>
-        /// به روش آسنکرون، اطلاعات کلیه دفتر دسته های چک را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات گزارش دفتر دسته چک را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از دسته های چک تعریف شده</returns>
@@ -23,8 +23,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="checkBookIds">مجموعه ای از شناسه های عددی دسته چک های مورد نظر 
         /// برای تغییر وضعیت بایگانی</param>
-        /// <param name="archiveValue">مقدار مورد نظر برای تغییر وضعیت بایگانی دسته چک ها</param>
-        Task EditArchiveCheckBooksAsync(IList<int> checkBookIds, bool archiveValue);
+        /// <param name="isArchived">مقدار مورد نظر برای تغییر وضعیت بایگانی دسته چک ها</param>
+        Task UpdateArchiveStatusAsync(IList<int> checkBookIds, bool isArchived);
 
         /// <summary>
         /// به روش آسنکرون، دسته چک با شناسه عددی مشخص شده را خوانده و برمی گرداند

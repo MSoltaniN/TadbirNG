@@ -3825,10 +3825,10 @@
   <data name="UndoArchivedItemCount" xml:space="preserve">
     <value>تعداد اقلام خارج شده از بایگانی</value>
   </data>
-  <data name="NoNeedArchive" xml:space="preserve">
+  <data name="AlreadyArchived" xml:space="preserve">
     <value>{0} {1} قبلا بایگانی شده است.</value>
   </data>
-  <data name="NoNeedUndoArchive" xml:space="preserve">
+  <data name="NotYetArchived" xml:space="preserve">
     <value>{0} {1} بایگانی نشده و نیاز به لغو بایگانی ندارد.</value>
   </data>
   <data name="UndoArchive" xml:space="preserve">

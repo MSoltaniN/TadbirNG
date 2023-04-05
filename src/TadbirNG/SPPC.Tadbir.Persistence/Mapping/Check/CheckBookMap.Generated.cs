@@ -41,6 +41,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.BankName)
                 .HasMaxLength(32);
             builder.Property(e => e.IsArchived);
+            builder.Property(e => e.FiscalPeriodId);
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
@@ -48,8 +49,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
             builder.Ignore(checkBook => checkBook.No);
-            //builder.Ignore(checkBook => checkBook.FiscalPeriodId);
-            //builder.Ignore(checkBook => checkBook.FiscalPeriod);
             builder.Ignore(checkBook => checkBook.Reference);
             builder.Ignore(checkBook => checkBook.Date);
 
