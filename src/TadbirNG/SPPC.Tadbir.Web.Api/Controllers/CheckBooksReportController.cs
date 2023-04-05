@@ -62,7 +62,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // PUT: api/check-books/archive
         [HttpPut]
-        [Route(CheckBookReportApi.ArchiveCheckBooksUrl)]
+        [Route(CheckBookApi.ArchiveCheckBooksUrl)]
         [AuthorizeRequest(SecureEntity.CheckBookReport, (int)CheckBookReportPermissions.Archive)]
         public async Task<IActionResult> PutExsitingCheckBooksAsArchivedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
@@ -78,7 +78,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // PUT: api/check-books/archive/undo
         [HttpPut]
-        [Route(CheckBookReportApi.UndoArchiveCheckBooksUrl)]
+        [Route(CheckBookApi.UndoArchiveCheckBooksUrl)]
         [AuthorizeRequest(SecureEntity.CheckBookReport, (int)CheckBookReportPermissions.UndoArchive)]
         public async Task<IActionResult> PutExsitingCheckBooksAsUndoArchivedAsync(
             [FromBody] ActionDetailViewModel actionDetail)

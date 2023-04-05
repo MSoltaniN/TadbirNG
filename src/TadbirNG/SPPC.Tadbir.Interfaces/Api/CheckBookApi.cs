@@ -69,6 +69,26 @@ namespace SPPC.Tadbir.Api
         public const string UndoCancelPageUrl = "check-books/pages/{pageId:min(1)}/cancel/undo";
 
         /// <summary>
+        /// API client URL for archiving a check book
+        /// </summary>
+        public const string ArchiveCheckBooks = "check-books/archive";
+
+        /// <summary>
+        /// API server route URL for archiving a check book
+        /// </summary>
+        public const string ArchiveCheckBooksUrl = "check-books/archive";
+
+        /// <summary>
+        /// API server route URL for undoing archive operation on a check book
+        /// </summary>
+        public const string UndoArchiveCheckBooks = "check-books/archive/undo";
+
+        /// <summary>
+        /// API server route URL for undoing archive operation on a check book
+        /// </summary>
+        public const string UndoArchiveCheckBooksUrl = "check-books/archive/undo";
+
+        /// <summary>
         /// API client URL for the first check book in current environment
         /// </summary>
         public const string FirstCheckBook = "check-books/first";
