@@ -557,7 +557,7 @@ export class SppcFullAccountComponent
       this.onBlur();
       if (result instanceof DialogCloseResult) {
         this.closeDialog();
-        this.setFocus.emit();
+        this.setFocus.emit(result);
       }
     });
   }

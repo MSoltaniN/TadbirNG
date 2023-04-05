@@ -1,23 +1,23 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogRef, DialogService } from '@progress/kendo-angular-dialog';
 import { GridComponent } from '@progress/kendo-angular-grid';
 import { RTL } from '@progress/kendo-angular-l10n';
-import { FullAccount } from '@sppc/finance/models';
-import { DetailComponent } from '@sppc/shared/class';
+import { DetailComponent, String } from '@sppc/shared/class';
 import { ReportViewerComponent, ViewIdentifierComponent } from '@sppc/shared/components';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
 import { SelectFormComponent } from '@sppc/shared/controls';
-import { Entities, Layout } from '@sppc/shared/enum/metadata';
+import { Entities, Layout, MessageType } from '@sppc/shared/enum/metadata';
 import { ViewName } from '@sppc/shared/security';
-import { BrowserStorageService, GridService, MetaDataService } from '@sppc/shared/services';
+import { BrowserStorageService, ErrorHandlingService, GridService, MetaDataService, SessionKeys } from '@sppc/shared/services';
 import { ShareDataService } from '@sppc/shared/services/share-data.service';
 import { CheckBook } from '@sppc/treasury/models/checkBook';
 import { CheckBooksApi } from '@sppc/treasury/service/api/checkBooksApi';
 import { CheckBookInfo, CheckBookService } from '@sppc/treasury/service/check-book.service';
 import { ToastrService } from 'ngx-toastr';
+import { lastValueFrom } from 'rxjs';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -52,9 +52,14 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
   @Output() save: EventEmitter<CheckBook> = new EventEmitter();
 
   editMode = false;
+  set setEditMode(value:boolean){
+    this.editForm.get('name')[!value ? 'enable' : 'disable']();
+    this.editForm.get('bankName')[!value ? 'enable' : 'disable']();
+    this.editForm.get('startNo')[!value ? 'enable' : 'disable']();
+    this.editMode = value;
+  };
   otherSizeOfPages = false;
   checkBookList: CheckBook[] = [];
-  fullAccount: FullAccount;
   selectedCheckBook;
   pagesCount = [
     {key: 10, value: 10},
@@ -64,6 +69,7 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
     {key: -1, value: "other"}
   ];
   selectedPagesCount: number;
+  checkBookPages;
 
   constructor(public toastrService: ToastrService,
      public translate: TranslateService,
@@ -72,37 +78,56 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
      public metadata: MetaDataService,
      public elem:ElementRef,
      public dialogService: DialogService,
-     private sharedDataService: ShareDataService)
+     private sharedDataService: ShareDataService,
+     private checkBookService: CheckBookService,
+     public errorHandlingService: ErrorHandlingService)
   {
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.CheckBook, ViewName.CheckBook,elem);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.CheckBook, ViewName.CheckBookReport,elem);
   }
-  editForm1;
+  editForm1:FormGroup;
 
   ngOnInit(): void {
     this.isNew = true;
-    this.editForm1 = new FormGroup({
-      id: new FormControl(),
-      name: new FormControl(),
-      bankName: new FormControl(),
-      startNo: new FormControl(),
-      pagesCoun: new FormControl(),
-      description: new FormControl(),
-      branchId: new FormControl(),
-      endNo: new FormControl(),
-      isArchived: new FormControl(),
-      fullAccount: new FormControl()
-    });
+    this.initFullAccountFromGroup();
     setTimeout(() => {
       if (this.model.id == 0) {
         this.model.branchId = this.BranchId;
-        this.editMode = true;
+        this.model.issueDate = new Date();
+        this.model.checkBookNo = 0;
+        this.setEditMode = false;
       } else {
-        this.editMode = false;
+        this.setEditMode = true;
       }
       this.editForm.reset(this.model);
-      console.log(this.editForm);
-      
+      console.log(this.editForm,this.editMode);
     })
+  }
+
+  initFullAccountFromGroup() {
+    this.editForm1 = new FormGroup({
+      fullAccount: new FormGroup({
+        account: new FormGroup({
+          id: new FormControl("", Validators.required),
+          name: new FormControl(),
+          fullCode: new FormControl(),
+        }),
+        detailAccount: new FormGroup({
+          id: new FormControl(),
+          name: new FormControl(),
+          fullCode: new FormControl(),
+        }),
+        costCenter: new FormGroup({
+          id: new FormControl(),
+          name: new FormControl(),
+          fullCode: new FormControl(),
+        }),
+        project: new FormGroup({
+          id: new FormControl(),
+          name: new FormControl(),
+          fullCode: new FormControl(),
+        }),
+      }),
+    });
   }
 
   addNew() {
@@ -246,11 +271,48 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
     if (!this.editForm.valid)
      return;
 
-    this.editForm.patchValue({
-      checkBookID: 0
-    });
     let value = this.editForm.value;
+    this.checkBookService.insert(CheckBooksApi.CheckBooks,value).subscribe(
+      async (res) => {
+        console.log(res);
+
+        this.editForm.reset(res);
+        this.model = res as CheckBook;
+        this.errorMessages = undefined;
+        this.showMessage(this.updateMsg, MessageType.Succes);
+        this.setEditMode = true;
+
+        this.checkBookPages = await lastValueFrom(this.checkBookService.insertPages(this.model.id));
+        console.log(this.checkBookPages);
+        
+      },
+      (error) => {
+        if (e) {
+          if (error)
+            this.errorMessages =
+              this.errorHandlingService.handleError(error);
+        } else
+          this.showMessage(
+            this.errorHandlingService.handleError(error),
+            MessageType.Warning
+          );
+      }
+    )
+    
   }
+
+  pagesForm1;
+  pagesForm() {
+    this.pagesForm1 = new FormGroup({
+      id: new FormControl(),
+      checkBookID: new FormControl("", Validators.required),
+      checkBookPageID: new FormControl("", Validators.required),
+      checkID: new FormControl("", Validators.required),
+      serialNo: new FormControl("", Validators.required),
+      status: new FormControl("", Validators.required)
+    })
+  }
+
 
   // Events
   onChangePagesCountDropDown(e) {
@@ -264,8 +326,19 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
   }
 
   onChangePagesCountInput(e) {
-    console.log(e);
     this.setEndNo();
+  }
+
+  onFullAccountInpusFocuse(e) {}
+
+  onSelectFullAccount(e) {
+    let fullAccount = this.editForm1.value.fullAccount;
+    this.editForm.patchValue({
+      accountId: fullAccount.account.id? fullAccount.account.id: null,
+      detailAccountId: fullAccount.detailAccount.id? fullAccount.detailAccount.id: null,
+      costCenterId: fullAccount.costCenter.id? fullAccount.costCenter.id: null,
+      projectId: fullAccount.project.id? fullAccount.project.id: null
+    })
   }
 
   removeHandler(){}

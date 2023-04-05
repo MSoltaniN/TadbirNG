@@ -11,7 +11,7 @@ export class CheckBookInfo implements CheckBook {
   id: number = 0;
   checkBookNo: number;
   name: string;
-  issueDate: string;
+  issueDate: Date;
   startNo: string;
   endNo: string;
   bankName: string;
@@ -47,6 +47,23 @@ export class CheckBookService extends BaseService {
     var options = { headers: headers};
 
     return this.http.get(url,options)
+    .pipe(map((response) => <any>(<Response>response)));
+  }
+
+  insertPages(id:number,listChanged:boolean = false) {
+    var postItem = {
+      listChanged: listChanged,
+      operation: OperationId.View,
+    };
+    var headers = this.httpHeaders;
+    var postBody = JSON.stringify(postItem);
+    var base64Body = btoa(encodeURIComponent(postBody));
+    if (headers)
+      headers = headers.append("X-Tadbir-GridOptions", base64Body);
+    var url = String.Format(CheckBooksApi.CheckBookPages, id);
+    var options = { headers: headers};
+
+    return this.http.post(url,options)
     .pipe(map((response) => <any>(<Response>response)));
   }
 }

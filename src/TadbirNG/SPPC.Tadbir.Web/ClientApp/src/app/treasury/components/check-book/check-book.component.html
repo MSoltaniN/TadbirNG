@@ -69,33 +69,33 @@
         <div class="form-group col-sm-5ths col-xs-12 item">
           <label for="name" class="control-label">{{ 'CheckBook.Name' | translate }}</label>
     
-          <input sppcAutoFocus type="text" class="k-textbox" formControlName="name" />
+          <input sppcAutoFocus type="text" class="k-textbox" formControlName="name" [disabled]="editMode"/>
     
-          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.name.valid || editForm1.controls.name.pristine">
-            <span *ngIf="editForm1.controls.name.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
-            <span *ngIf="editForm1.controls.name.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
+          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
+            <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
+            <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
           </div>
         </div>
   
         <div class="form-group col-sm-5ths col-xs-12 item">
           <label for="name" class="control-label">{{ 'CheckBook.BankName' | translate }}</label>
     
-          <input type="text" class="k-textbox" formControlName="bankName" />
+          <input type="text" class="k-textbox" formControlName="bankName" [disabled]="editMode"/>
     
-          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.bankName.valid || editForm1.controls.bankName.pristine">
-            <span *ngIf="editForm1.controls.bankName.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
-            <span *ngIf="editForm1.controls.bankName.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
+          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.bankName.valid || editForm.controls.bankName.pristine">
+            <span *ngIf="editForm.controls.bankName.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
+            <span *ngIf="editForm.controls.bankName.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
           </div>
         </div>
   
         <div class="form-group col-sm-5ths col-xs-12 item">
           <label for="name" class="control-label">{{ 'CheckBook.StartNumber' | translate }}</label>
     
-          <input type="text" class="k-textbox" formControlName="startNo" />
+          <input type="text" class="k-textbox" formControlName="startNo" [disabled]="editMode"/>
     
-          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.startNo.valid || editForm1.controls.startNo.pristine">
-            <span *ngIf="editForm1.controls.startNo.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
-            <span *ngIf="editForm1.controls.startNo.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
+          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.startNo.valid || editForm.controls.startNo.pristine">
+            <span *ngIf="editForm.controls.startNo.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
+            <span *ngIf="editForm.controls.startNo.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
           </div>
         </div>
   
@@ -105,7 +105,7 @@
             <input type="number"
               class="k-textbox"
               [disabled]="!otherSizeOfPages"
-              [(ngModel)]="selectedPagesCount"
+              [(ngModel)]="selectedPagesCount || editMode"
               [ngModelOptions]="{standalone: true}"
               (onkeyup)="onChangePagesCountInput($event)"
               min="1" max="1000"
@@ -113,77 +113,48 @@
             />
           </div>
           <div class="col-md-6 col-xs-6" style="padding: 0;">
-            <kendo-dropdownlist [data]="pagesCount" class="mx-1"
-                                [textField]="'value'"
-                                [valueField]="'key'"
-                                [valuePrimitive]="true"
-                                [value]="selectedPagesCount"
-                                (valueChange)="onChangePagesCountDropDown($event)"
-                                [(ngModel)]="selectedPagesCount"
-                                [ngModelOptions]="{standalone: true}">
-            </kendo-dropdownlist>
+            <fieldset [disabled]="editMode" [ngClass]="{'disabled': editMode}">
+              <kendo-dropdownlist [data]="pagesCount" class="mx-1"
+                                  [textField]="'value'"
+                                  [valueField]="'key'"
+                                  [valuePrimitive]="true"
+                                  [value]="selectedPagesCount"
+                                  (valueChange)="onChangePagesCountDropDown($event)"
+                                  [(ngModel)]="selectedPagesCount"
+                                  [ngModelOptions]="{standalone: true}"
+                                  [disabled]="editMode">
+              </kendo-dropdownlist>
+            </fieldset>
           </div>
         </div>
 
         <div class="col-sm-5ths col-xs-12 item">
           <p>&nbsp;</p>
           <div class="form-group">
-            <input type="checkbox" class="k-checkbox" id="isArchived" formControlName="isArchived" [attr.disabled]="isNew" />
+            <input type="checkbox" class="k-checkbox" id="isArchived" formControlName="isArchived" [attr.disabled]="isNew"/>
             <label for="isArchived" [ngClass]="{'disabled': isNew}">{{ 'CheckBook.isArchived' | translate }}</label>
           </div>
         </div>
 
-        <div class="col-xs-12 col-sm-3 form-group sppc-float section-account">
-          <span for="account">{{ "Entity.Account" | translate }}</span>
-  
-          <input
-            type="text"
-            class="k-textbox acc-code"
-            [ngModel]="selectedAccount?.fullCode"
-            [ngModelOptions]="{standalone: true}"
-            title="{{ selectedAccount?.fullCode }}"
-            [ngClass]="{
-              'acc-code-rtl': this.CurrentLanguage === 'fa',
-              'acc-code-ltr': this.CurrentLanguage != 'fa'
-            }"
-            readonly
-          />
-          <input
-            type="text"
-            class="k-textbox acc-name sppc-float"
-            [ngModel]="selectedAccount?.name"
-            [ngModelOptions]="{standalone: true}"
-            title="{{ selectedAccount?.name }}"
-            readonly
-          />
-  
-          <button
-            kendoButton
-            class="sppc-float"
-            [icon]="'search'"
-            SppcPermissionCheck="View"
-            EntityName="Account"
-            (sppcClick)="openSelectForm('account')"
-            type="button"
-          ></button>
-        </div>
-        <!-- <div class="col-sm-4-5ths col-xs-12 item">
-          <div class="form-group">
-            <label for="description" class="control-label">{{ 'Company.Description' | translate }}</label>
-            <input type="text" class="k-textbox" formControlName="description">
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.description.valid || editForm1.controls.description.pristine">
-              {{ 'AllValidations.CompanyDb.DescriptionIsTooLong' | translate }}
+        <div class="col-xs-12 col-sm-7 sppc-float">
+          <fieldset [disabled]="editMode" [ngClass]="{'disabled': editMode}">
+            <div class="form-group" [formGroup]="editForm1">
+              <label for="fullAccount" class="control-label" style="position:absolute;">{{ 'VoucherLine.Account' | translate }}</label>
+    
+              <sppc-fullAccount formGroupName="fullAccount" (isInputFocused)="onFullAccountInpusFocuse($event)"
+                                (setFocus)="onSelectFullAccount($event)">
+              </sppc-fullAccount>
             </div>
-          </div>
-        </div> -->
+          </fieldset>
+        </div>
       </form>
       <div class="action-box">
-        <button class="create-pages-btn k-button" (click)="addNew()">ایجادبرگه ها</button>
+        <button class="create-pages-btn k-button" [disabled]="editMode" (click)="onSave($event)">ایجادبرگه ها</button>
       </div>
     </div>
   </div>
   <div>
-      <check-book-pages></check-book-pages>
+      <check-book-pages [pages]="checkBookPages" [checkBookId]="this.model.id"></check-book-pages>
   </div>
 
 <!-- <kendo-dialog

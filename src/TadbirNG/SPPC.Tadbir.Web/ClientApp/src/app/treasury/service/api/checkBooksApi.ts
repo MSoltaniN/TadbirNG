@@ -15,28 +15,58 @@ export class CheckBooksApi
 
     /**
      * API server route URL for a check book pages item specified by unique identifier
-     * and to CreatePages
      * /check-book/{checkBookId:min(1)}
      */
-    public static CheckBookPages = environment.BaseUrl + "/check-book/{0}/pages";
+    public static CheckBookPages = environment.BaseUrl + "/check-books/{0}/pages";
 
     /**
-     * API client URL for search check book item specified by unique No
+     * API client URL for search check book item specified by number
      */
-    public static CheckBookByNo = environment.BaseUrl + "/check-book/by-no/{0}";
+    public static CheckBookByNo = environment.BaseUrl + "/check-books/by-no/{0}";
 
     /**
-     * API client URL for Undo Cancel Page of check book
+     * API server route URL for undoing a cancelled page specified by identifier
      */
-    public static UndoCancelPage = environment.BaseUrl + "/check-book-Undo-cancel-page/{0}/page";
+    public static UndoCancelPage = environment.BaseUrl + "/check-books/pages/{0}/cancel/undo";
 
     /**
-     * API client URL for Cancel Page of check book
+     * API server route URL for cancelling a single page specified by identifier
      */
-    public static CancelPage = environment.BaseUrl + "/check-book-cancel-page/{0}/page";
+    public static CancelPage = environment.BaseUrl + "check-books/pages/{0}/cancel";
 
     /**
      * API client URL for delete Pages of check book
      */
     public static DeletePages = environment.BaseUrl + "/check-book/{0}/pages";
+
+    /**
+    * API client URL for the first check book in current environment
+    */
+    public static FirstCheckBook = "check-books/first";
+
+    /**
+    * API client URL for previous check book in current environment
+    */
+    public static PreviousCheckBook = "check-books/{0}/previous";
+
+    /**
+    * API server route URL for previous check book in current environment
+    */
+    public static PreviousCheckBookUrl = "check-books/{issueDate:DateTime}/previous";
+
+    /**
+    * API client URL for next check book in current environment
+    */
+    public static NextCheckBook = "check-books/{0}/next";
+
+    /**
+    * API server route URL for next check book in current environment
+    */
+    public static NextCheckBookUrl = "check-books/{issueDate:DateTime}/next";
+
+    /**
+    * API client URL for the last check book in current environment
+    */
+    public static LastCheckBook = "check-books/last";
+
 }

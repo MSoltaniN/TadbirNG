@@ -2,7 +2,7 @@ export interface CheckBook {
     id: number,
     checkBookNo: number,
     name: string,
-    issueDate: string,
+    issueDate: Date,
     startNo: string,
     endNo: string,
     bankName: string,
