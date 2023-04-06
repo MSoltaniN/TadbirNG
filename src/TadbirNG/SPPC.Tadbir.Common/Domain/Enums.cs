@@ -251,6 +251,6 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// برگه چک ابطال شده
         /// </summary>
-        Cancelled = 3
+        Canceled = 3
     }
 }

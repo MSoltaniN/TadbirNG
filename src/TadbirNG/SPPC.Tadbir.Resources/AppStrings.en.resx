@@ -3834,4 +3834,13 @@
   <data name="UndoArchive" xml:space="preserve">
     <value>Undo archive</value>
   </data>
+  <data name="Blank" xml:space="preserve">
+    <value>Blank</value>
+  </data>
+  <data name="Canceled" xml:space="preserve">
+    <value>Canceled</value>
+  </data>
+  <data name="Used" xml:space="preserve">
+    <value>Used</value>
+  </data>
 </root>

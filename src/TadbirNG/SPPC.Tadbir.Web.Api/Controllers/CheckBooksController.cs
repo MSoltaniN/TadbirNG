@@ -279,7 +279,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             string description = _strings.Format(AppStrings.CancelPageLog);
             var outputItem = await _pageRepository.ChangeCheckStateAsync(pageId,
-                CheckBookPageState.Cancelled, description);
+                CheckBookPageState.Canceled, description);
             return OkReadResult(outputItem);
         }
 

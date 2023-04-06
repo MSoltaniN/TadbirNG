@@ -1,4 +1,4 @@
-﻿using System;
+﻿using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.ViewModel.Check
 {
@@ -15,24 +15,9 @@ namespace SPPC.Tadbir.ViewModel.Check
         public string BranchName { get; set; }
 
         /// <summary>
-        /// شناسه دیتابیسی مولفه سرفصل حسابداری از بردار حساب مورد استفاده در این دسته چک
+        /// بردار حساب مورد استفاده در این دسته چک
         /// </summary>
-        public virtual int AccountId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی مولفه تفصیلی شناور از بردار حساب مورد استفاده در این دسته چک 
-        /// </summary>
-        public virtual int? DetailAccountId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی مولفه مرکز هزینه از بردار حساب مورد استفاده در این دسته چک
-        /// </summary>
-        public virtual int? CostCenterId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی مولفه پروژه از بردار حساب مورد استفاده در این دسته چک
-        /// </summary>
-        public virtual int? ProjectId { get; set; }
+        public FullAccountViewModel FullAccount { get; set; }
 
         /// <summary>
         /// مشخص می کند که دسته چک بعد از این دسته چک وجود دارد یا نه
@@ -43,5 +28,10 @@ namespace SPPC.Tadbir.ViewModel.Check
         /// مشخص می کند که دسته چک قبل از این دسته چک وجود دارد یا نه
         /// </summary>
         public bool HasPrevious { get; set; }
+
+        /// <summary>
+        /// تعداد برگه های دسته چک
+        /// </summary>
+        public int PageCount { get; set; }
     }
 }

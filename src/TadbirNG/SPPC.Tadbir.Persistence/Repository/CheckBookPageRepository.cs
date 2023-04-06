@@ -41,7 +41,7 @@ namespace SPPC.Tadbir.Persistence
             var checkBookPage = await repository.GetByIDAsync(checkBookPageId);
             if (checkBookPage != null)
             {
-                var operationId = status == CheckBookPageState.Cancelled
+                var operationId = status == CheckBookPageState.Canceled
                     ? OperationId.CancelPage
                     : OperationId.UndoCancelPage;
                 checkBookPage.Status = status;
@@ -88,18 +88,16 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PagedList<CheckBookPageViewModel>> CreatePagesAsync(int checkBookId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
-            CheckBook checkBookModel = await repository.GetByIDAsync(checkBookId);
+            CheckBook checkBook = await repository.GetByIDAsync(checkBookId);
+            var pages = new CheckBookPages(checkBook.StartNo, checkBook.EndNo);
             var pageRepository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
-            var seriesAndSerialCheck = ExtractSeriesAndSerialCheck(checkBookModel.StartNo);
-            int startPage = Int32.Parse(seriesAndSerialCheck.Serial);
-            int endPage = Int32.Parse(ExtractSeriesAndSerialCheck(checkBookModel.EndNo).Serial);
             var checkBookPageIds = new List<int>();
-            for (int i = startPage; i <= endPage; i++)
+            foreach (var serialNo in pages.Serials)
             {
                 var checkBookPage = new CheckBookPage
                 {
                     CheckBookId = checkBookId,
-                    SerialNo = seriesAndSerialCheck.Series + i,
+                    SerialNo = serialNo,
                     Status = CheckBookPageState.Blank
                 };
 
@@ -109,11 +107,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await OnEntityGroupInserted(checkBookPageIds, OperationId.CreatePages);
-            var query = GetCheckBookPagesQuery(checkBookId);
-            var pages = await query
-                .Select(page => Mapper.Map<CheckBookPageViewModel>(page))
-                .ToListAsync();
-            return new PagedList<CheckBookPageViewModel>(pages);
+            return await GetPagesAsync(checkBookId);
         }
 
         /// <summary>
@@ -128,7 +122,8 @@ namespace SPPC.Tadbir.Persistence
             var query = GetCheckBookPagesQuery(checkBookId);
             var pages = await query
                 .Select(page => Mapper.Map<CheckBookPageViewModel>(page))
-                .ToListAsync();
+                .ToArrayAsync();
+            Array.ForEach(pages, page => page.StatusName = Context.Localize(GetStatusName(page.Status)));
             return new PagedList<CheckBookPageViewModel>(pages, gridOptions);
         }
 
@@ -161,21 +156,26 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
-        private static (string Series, string Serial) ExtractSeriesAndSerialCheck(string inputString)
+        private static string GetStatusName(CheckBookPageState? status)
         {
-            int separateIndex = 0;
-            for (int index = inputString.Length - 1; index > 0; index--)
+            string statusName;
+            switch (status.Value)
             {
-                separateIndex = index;
-                if (!Char.IsDigit(inputString[index]))
-                {
+                case CheckBookPageState.Blank:
+                    statusName = AppStrings.Blank;
                     break;
-                }
+                case CheckBookPageState.Used:
+                    statusName = AppStrings.Used;
+                    break;
+                case CheckBookPageState.Canceled:
+                    statusName = AppStrings.Canceled;
+                    break;
+                default:
+                    statusName = String.Empty;
+                    break;
             }
 
-           string serial = inputString.Substring(separateIndex + 1);
-           string series = inputString.Substring(0, separateIndex + 1);
-            return (series, serial);
+            return statusName;
         }
 
         private IQueryable<CheckBookPage> GetCheckBookPagesQuery(int checkBookId)

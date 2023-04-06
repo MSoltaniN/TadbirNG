@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SPPC.Tadbir.ViewModel.Check
 {
     /// <summary>
     /// اطلاعات گزارش دسته چک را نگهداری می کند
     /// </summary>
-    public class CheckBookReportViewModel:CheckBookViewModel
+    public class CheckBookReportViewModel : CheckBookViewModel
     {
         /// <summary>
         /// بانک - کد حساب
         /// </summary>
-        public string AccountCode { get; set; }
+        public string AccountFullCode { get; set; }
 
         /// <summary>
         /// بانک - نام حساب

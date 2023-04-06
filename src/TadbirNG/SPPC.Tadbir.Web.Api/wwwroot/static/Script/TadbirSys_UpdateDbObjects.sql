@@ -702,3 +702,16 @@ SET IDENTITY_INSERT [Metadata].[Command] ON
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (60, 55, 233, N'CheckBookReport', N'/treasury/check-book-report', NULL, NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
+
+-- 1.2.1498
+UPDATE [Metadata].[Column]
+SET [Name] = 'StatusName', [StorageType] = 'nvarchar', [DotNetType] = 'System.String', [ScriptType] = 'string', [Length] = 32
+WHERE [ViewID] = 69 AND [Name] = 'Status'
+
+UPDATE [Metadata].[Column]
+SET [Visibility] = N'AlwaysHidden', [DisplayIndex] = -1
+WHERE [ViewID] = 69 AND [Name] = 'CheckID'
+
+UPDATE [Metadata].[Column]
+SET [IsNullable] = 1
+WHERE [ViewID] = 71 AND [Name] = 'EndNo'

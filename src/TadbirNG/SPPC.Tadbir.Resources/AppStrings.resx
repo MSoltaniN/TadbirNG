@@ -3825,4 +3825,13 @@
   <data name="UndoArchive" xml:space="preserve">
     <value>برگشت از بایگانی</value>
   </data>
+  <data name="Blank" xml:space="preserve">
+    <value>سفید</value>
+  </data>
+  <data name="Canceled" xml:space="preserve">
+    <value>باطل شده</value>
+  </data>
+  <data name="Used" xml:space="preserve">
+    <value>استفاده شده</value>
+  </data>
 </root>
