@@ -74,8 +74,12 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<Permission>();
             var all = await repository
-                .GetEntityQuery(perm => perm.Group)
-                .Where(perm => perm.GroupId != 21)  // See comment in IsPublicPermission for more info
+                .GetEntityQuery()
+                .Include(perm => perm.Group)
+                    .ThenInclude(grp => grp.Subsystem)
+                .Include(perm => perm.Group)
+                    .ThenInclude(grp => grp.SourceType)
+                .Where(perm => perm.GroupId != LogSettingsGroupId)
                 .Select(perm => Mapper.Map<PermissionViewModel>(perm))
                 .ToArrayAsync();
             var role = new RoleFullViewModel();
@@ -656,10 +660,9 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار بولی "نادرست" را برمی گرداند</returns>
         public bool IsPublicPermission(PermissionViewModel permission)
         {
-            // 21 is the GroupID for LogSetting permissions
             // NOTE: Hardcoding this value is bad practice, but defining a single-value enum type
             // for permission groups is currently overkill.
-            return permission.GroupId != 21;
+            return permission.GroupId != LogSettingsGroupId;
         }
 
         /// <inheritdoc/>
@@ -1103,5 +1106,7 @@ namespace SPPC.Tadbir.Persistence
 
             return description;
         }
+
+        private const int LogSettingsGroupId = 21;
     }
 }

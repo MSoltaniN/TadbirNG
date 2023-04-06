@@ -3751,22 +3751,16 @@
     <value>شماره دسته چک</value>
   </data>
   <data name="EndNo" xml:space="preserve">
-    <value>شماره آخرین برگ</value>
+    <value>تا شماره</value>
   </data>
   <data name="IssueDate" xml:space="preserve">
     <value>تاریخ صدور</value>
   </data>
-  <data name="SartNo" xml:space="preserve">
-    <value>شماره اولین برگ</value>
-  </data>
   <data name="SerialNo" xml:space="preserve">
     <value>شماره سری برگه</value>
   </data>
-  <data name="EndNoCheck" xml:space="preserve">
-    <value>تا شماره</value>
-  </data>
   <data name="StartNo" xml:space="preserve">
-    <value>شروع از شماره</value>
+    <value>از شماره</value>
   </data>
   <data name="CheckBookPagesExist" xml:space="preserve">
     <value>برگه های دسته چک قبلا ایجاد شده است.</value>
