@@ -50,11 +50,11 @@ namespace SPPC.Tadbir.Persistence
 
         private void InitSerials(string firstPage, int pageCount)
         {
-            _serials = new List<string>(Count);
+            _serials = new List<string>(pageCount);
             GetSeriesAndSerialNo(firstPage, out string series, out string serial);
             int paddingCount = GetZeroPaddingCount(serial);
             int serialNo = Convert.ToInt32(serial);
-            for (int index = 0; index < Count; index++)
+            for (int index = 0; index < pageCount; index++)
             {
                 _serials.Add($"{series}{new string('0', paddingCount)}{serialNo + index}");
             }
@@ -101,6 +101,7 @@ namespace SPPC.Tadbir.Persistence
             return number.ToString().Length - GetDigitCount(numberValue);
         }
 
+        // Warning: This method DOES NOT support negative numbers.
         private static int GetDigitCount(int number)
         {
             int fixedNumber = Math.Max(number, 1);
