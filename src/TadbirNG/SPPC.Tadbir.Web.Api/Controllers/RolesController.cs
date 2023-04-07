@@ -544,6 +544,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 perm.Name = GetLocalName(perm.Name);
                 perm.GroupName = GetLocalName(perm.GroupName);
+                perm.GroupSubsystemName = _strings[perm.GroupSubsystemName ?? String.Empty];
+                perm.GroupSourceTypeName = _strings[perm.GroupSourceTypeName ?? String.Empty];
             });
         }
 

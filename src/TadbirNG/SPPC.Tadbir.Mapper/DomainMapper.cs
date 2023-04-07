@@ -100,10 +100,20 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapCheckTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<CheckBook, CheckBookViewModel>();
-            mapperConfig.CreateMap<CheckBookViewModel, CheckBook>();
+            mapperConfig.CreateMap<CheckBook, CheckBookViewModel>()
+                .ForMember(dest => dest.BankName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(
+                    dest => dest.FullAccount,
+                    opts => opts.MapFrom(
+                        src => BuildFullAccount(src.Account, src.DetailAccount, src.CostCenter, src.Project)));
+            mapperConfig.CreateMap<CheckBookViewModel, CheckBook>()
+                .AfterMap((viewModel, model) => model.AccountId = viewModel.FullAccount.Account.Id)
+                .AfterMap((viewModel, model) => model.DetailAccountId = GetNullableId(viewModel.FullAccount.DetailAccount))
+                .AfterMap((viewModel, model) => model.CostCenterId = GetNullableId(viewModel.FullAccount.CostCenter))
+                .AfterMap((viewModel, model) => model.ProjectId = GetNullableId(viewModel.FullAccount.Project));
             mapperConfig.CreateMap<CheckBookPage, CheckBookPageViewModel>();
             mapperConfig.CreateMap<CheckBookPageViewModel, CheckBookPage>();
+            mapperConfig.CreateMap<CheckBook, CheckBookReportViewModel>();
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)

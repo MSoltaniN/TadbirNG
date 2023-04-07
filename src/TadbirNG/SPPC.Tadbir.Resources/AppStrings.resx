@@ -3720,6 +3720,21 @@
   <data name="Treasury" xml:space="preserve">
     <value>خزانه‌داری</value>
   </data>
+  <data name="CashRegister" xml:space="preserve">
+    <value>صندوق</value>
+  </data>
+  <data name="CashRegisters" xml:space="preserve">
+    <value>صندوق ها</value>
+  </data>
+  <data name="CantDeleteAssignedCashRegister" xml:space="preserve">
+    <value>صندوق '{0}' به یک یا چند کاربر تخصیص داده شده و قابل حذف نیست.</value>
+  </data>
+  <data name="CheckBookReport" xml:space="preserve">
+    <value>دفتر دسته چک</value>
+  </data>
+  <data name="CheckBooksReport" xml:space="preserve">
+    <value>دفتر دسته های چک</value>
+  </data>
   <data name="CheckBook" xml:space="preserve">
     <value>دسته چک</value>
   </data>
@@ -3741,9 +3756,6 @@
   <data name="IssueDate" xml:space="preserve">
     <value>تاریخ صدور</value>
   </data>
-  <data name="SartNo" xml:space="preserve">
-    <value>شماره اولین برگ</value>
-  </data>
   <data name="SerialNo" xml:space="preserve">
     <value>شماره سری برگه</value>
   </data>
@@ -3753,11 +3765,8 @@
   <data name="CheckBookPagesExist" xml:space="preserve">
     <value>برگه های دسته چک قبلا ایجاد شده است.</value>
   </data>
-  <data name="CheckBookDoesNotExist" xml:space="preserve">
-    <value>ابتدا باید اطلاعات کلی دسته چک تعریف شود.</value>
-  </data>
-  <data name="InabilityEditCheckbook" xml:space="preserve">
-    <value>برگه های این دسته چک ایجاد شده اند شما قابلیت ویرایش آن را ندارید</value>
+  <data name="CantEditCheckbook" xml:space="preserve">
+    <value>برگه های این دسته چک ایجاد شده اند و ویرایش آن امکان پذیر نیست.</value>
   </data>
   <data name="HasConnectedToCheck" xml:space="preserve">
     <value>حداقل یک برگ از برگه های دسته چک استفاده شده است.</value>
@@ -3801,16 +3810,28 @@
   <data name="InsertedItemCount" xml:space="preserve">
     <value>تعداد اقلام ایجاد شده:</value>
   </data>
-  <data name="CashRegister" xml:space="preserve">
-    <value>صندوق</value>
+  <data name="ArchivedItemCount" xml:space="preserve">
+    <value>تعداد اقلام بایگانی شده</value>
   </data>
-  <data name="CashRegisters" xml:space="preserve">
-    <value>صندوق ها</value>
+  <data name="UndoArchivedItemCount" xml:space="preserve">
+    <value>تعداد اقلام خارج شده از بایگانی</value>
   </data>
-  <data name="CantDeleteAssignedCashRegister" xml:space="preserve">
-    <value>صندوق '{0}' به یک یا چند کاربر تخصیص داده شده و قابل حذف نیست.</value>
+  <data name="AlreadyArchived" xml:space="preserve">
+    <value>{0} {1} قبلا بایگانی شده است.</value>
   </data>
-  <data name="AssignCashRegisterUser" xml:space="preserve">
-    <value>تخصیص کاربر به صندوق اسناد</value>
+  <data name="NotYetArchived" xml:space="preserve">
+    <value>{0} {1} بایگانی نشده و نیاز به لغو بایگانی ندارد.</value>
+  </data>
+  <data name="UndoArchive" xml:space="preserve">
+    <value>برگشت از بایگانی</value>
+  </data>
+  <data name="Blank" xml:space="preserve">
+    <value>سفید</value>
+  </data>
+  <data name="Canceled" xml:space="preserve">
+    <value>باطل شده</value>
+  </data>
+  <data name="Used" xml:space="preserve">
+    <value>استفاده شده</value>
   </data>
 </root>

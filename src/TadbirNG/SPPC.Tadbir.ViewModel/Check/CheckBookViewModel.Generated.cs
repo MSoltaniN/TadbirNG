@@ -68,7 +68,6 @@ namespace SPPC.Tadbir.ViewModel.Check
         /// <summary>
         /// شماره آخرین برگ
         /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(32, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string EndNo { get; set; }
 
