@@ -1,13 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BaseService, String } from '@sppc/shared/class';
-import { OperationId } from '@sppc/shared/enum/operationId';
-import { BrowserStorageService } from '@sppc/shared/services';
-import { map } from 'rxjs';
-import { CheckBook } from '../models/checkBook';
-import { CheckBooksApi } from './api/checkBooksApi';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { BaseService, String } from "@sppc/shared/class";
+import { OperationId } from "@sppc/shared/enum/operationId";
+import { BrowserStorageService } from "@sppc/shared/services";
+import { map } from "rxjs";
+import { CheckBook } from "../models/checkBook";
+import { CheckBooksApi } from "./api/checkBooksApi";
 
-export class CheckBookInfo implements CheckBook {
+export class CheckBookInfo {
   id: number = 0;
   checkBookNo: number;
   name: string;
@@ -18,12 +18,14 @@ export class CheckBookInfo implements CheckBook {
   isArchived: boolean = false;
   branchId: number;
   accountId: number;
-  detailId: number;
+  detailAccountId: null;
   costCenterId: number;
   projectId: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
 }
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class CheckBookService extends BaseService {
   constructor(
@@ -33,7 +35,7 @@ export class CheckBookService extends BaseService {
     super(http, bStorageService);
   }
 
-  getPages(id:number,listChanged:boolean = false) {
+  getPages(id: number, listChanged: boolean = false) {
     var postItem = {
       listChanged: listChanged,
       operation: OperationId.View,
@@ -41,16 +43,16 @@ export class CheckBookService extends BaseService {
     var headers = this.httpHeaders;
     var postBody = JSON.stringify(postItem);
     var base64Body = btoa(encodeURIComponent(postBody));
-    if (headers)
-      headers = headers.append("X-Tadbir-GridOptions", base64Body);
+    if (headers) headers = headers.append("X-Tadbir-GridOptions", base64Body);
     var url = String.Format(CheckBooksApi.CheckBookPages, id);
-    var options = { headers: headers};
+    var options = { headers: headers };
 
-    return this.http.get(url,options)
-    .pipe(map((response) => <any>(<Response>response)));
+    return this.http
+      .get(url, options)
+      .pipe(map((response) => <any>(<Response>response)));
   }
 
-  insertPages(id:number,listChanged:boolean = false) {
+  insertPages(id: number, listChanged: boolean = false) {
     var postItem = {
       listChanged: listChanged,
       operation: OperationId.View,
@@ -58,12 +60,12 @@ export class CheckBookService extends BaseService {
     var headers = this.httpHeaders;
     var postBody = JSON.stringify(postItem);
     var base64Body = btoa(encodeURIComponent(postBody));
-    if (headers)
-      headers = headers.append("X-Tadbir-GridOptions", base64Body);
+    if (headers) headers = headers.append("X-Tadbir-GridOptions", base64Body);
     var url = String.Format(CheckBooksApi.CheckBookPages, id);
-    var options = { headers: headers};
+    var options = { headers: headers };
 
-    return this.http.post(url,options)
-    .pipe(map((response) => <any>(<Response>response)));
+    return this.http
+      .post(url, options)
+      .pipe(map((response) => <any>(<Response>response)));
   }
 }

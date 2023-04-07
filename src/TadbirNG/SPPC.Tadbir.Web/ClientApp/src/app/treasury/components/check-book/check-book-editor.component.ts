@@ -1,10 +1,11 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogRef, DialogService } from '@progress/kendo-angular-dialog';
 import { GridComponent } from '@progress/kendo-angular-grid';
 import { RTL } from '@progress/kendo-angular-l10n';
-import { DetailComponent, String } from '@sppc/shared/class';
+import { DetailComponent, FilterExpression, String } from '@sppc/shared/class';
 import { ReportViewerComponent, ViewIdentifierComponent } from '@sppc/shared/components';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
@@ -12,12 +13,12 @@ import { SelectFormComponent } from '@sppc/shared/controls';
 import { Entities, Layout, MessageType } from '@sppc/shared/enum/metadata';
 import { ViewName } from '@sppc/shared/security';
 import { BrowserStorageService, ErrorHandlingService, GridService, MetaDataService, SessionKeys } from '@sppc/shared/services';
-import { ShareDataService } from '@sppc/shared/services/share-data.service';
+import { checkBookOperations } from '@sppc/treasury/models/chechBookOperations';
 import { CheckBook } from '@sppc/treasury/models/checkBook';
 import { CheckBooksApi } from '@sppc/treasury/service/api/checkBooksApi';
 import { CheckBookInfo, CheckBookService } from '@sppc/treasury/service/check-book.service';
 import { ToastrService } from 'ngx-toastr';
-import { lastValueFrom } from 'rxjs';
+import { exhaustMap, lastValueFrom, take } from 'rxjs';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -25,9 +26,9 @@ export function getLayoutModule(layout: Layout) {
 }
 
 @Component({
-  selector: 'check-book',
-  templateUrl: './check-book.component.html',
-  styleUrls: ['./check-book.component.css'],
+  selector: 'check-book-editor',
+  templateUrl: './check-book-editor.component.html',
+  styleUrls: ['./check-book-editor.component.css'],
   providers: [
     {
       provide: RTL,
@@ -36,7 +37,7 @@ export function getLayoutModule(layout: Layout) {
     },
   ],
 })
-export class CheckBookComponent extends DetailComponent implements OnInit {
+export class CheckBookEditorComponent extends DetailComponent implements OnInit {
 
   @ViewChild(GridComponent, {static: true}) grid: GridComponent;
   @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
@@ -44,9 +45,11 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
   @ViewChild(ReportManagementComponent, {static: true}) reportManager: ReportManagementComponent;
   @ViewChild(QuickReportSettingComponent, {static: true}) reportSetting: QuickReportSettingComponent;
 
-  @Input() public model: CheckBook = new CheckBookInfo();
+  @Input() public model: CheckBookInfo;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
+  @Input() filter: FilterExpression;
+  @Input() quickFilter: FilterExpression;
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<CheckBook> = new EventEmitter();
@@ -70,6 +73,19 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
   ];
   selectedPagesCount: number;
   checkBookPages;
+  isFirstCheckBook = false;
+  isLastCheckBook = false;
+  checkBookOperationsItem = checkBookOperations;
+  fullAccountForm:FormGroup;
+
+  get urlMode() {
+    let mode = this.route.snapshot.paramMap.get('mode');
+    return mode?.toLowerCase();
+  }
+
+  //
+  dialogRef: DialogRef;
+  dialogModel: any;
 
   constructor(public toastrService: ToastrService,
      public translate: TranslateService,
@@ -78,33 +94,93 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
      public metadata: MetaDataService,
      public elem:ElementRef,
      public dialogService: DialogService,
-     private sharedDataService: ShareDataService,
+     private route: ActivatedRoute,
      private checkBookService: CheckBookService,
-     public errorHandlingService: ErrorHandlingService)
+     public errorHandlingService: ErrorHandlingService,
+     private router: Router)
   {
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.CheckBook, ViewName.CheckBookReport,elem);
+    super(toastrService, translate,
+       bStorageService, renderer,
+       metadata, Entities.CheckBook,
+       ViewName.CheckBookReport,elem);
   }
-  editForm1:FormGroup;
 
   ngOnInit(): void {
     this.isNew = true;
+    this.model = new CheckBookInfo();
+    this.initCheckBookForm();
     this.initFullAccountFromGroup();
-    setTimeout(() => {
-      if (this.model.id == 0) {
-        this.model.branchId = this.BranchId;
-        this.model.issueDate = new Date();
-        this.model.checkBookNo = 0;
-        this.setEditMode = false;
-      } else {
-        this.setEditMode = true;
-      }
-      this.editForm.reset(this.model);
-      console.log(this.editForm,this.editMode);
-    })
+    let url;
+    console.log(this.urlMode);
+    
+    switch (this.urlMode) {
+      case 'new':
+        // this.model = new CheckBookInfo();
+        this.isLastCheckBook = true;
+        this.initCheckBookForm();
+        break;
+
+      case 'next':
+        if (!this.isLastCheckBook) {
+          url = String.Format(CheckBooksApi.NextCheckBook,this.model.issueDate);
+          this.getCheckBook(url);
+        }
+        break;
+
+      case 'previous':
+        if (this.model.id) {
+          url = String.Format(CheckBooksApi.PreviousCheckBook,this.model.issueDate);
+        } else {
+          url = CheckBooksApi.LastCheckBook;
+        }
+        this.getCheckBook(url);
+        break;
+
+      case 'by-no':
+        this.getCheckBook(CheckBooksApi.CheckBookByNo)
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  initCheckBookForm() {
+    if (this.model.id == 0) {
+      this.model.branchId = this.BranchId;
+      this.model.issueDate = new Date();
+      this.model.checkBookNo = 0;
+      this.setEditMode = false;
+      this.isLastCheckBook = true;
+      this.isFirstCheckBook = false;
+    } else {
+      this.fullAccountForm.patchValue({
+        fullAccount: {
+          account: {
+            id: this.model.accountId
+          },
+          detailAccount: {
+            id: this.model.detailAccountId
+          },
+          costCenter: {
+            id: this.model.costCenterId
+          },
+          project: {
+            id: this.model.projectId
+          },
+        },
+      });
+
+      this.setEditMode = true;
+      this.isLastCheckBook = !this.model.hasNext;
+      this.isFirstCheckBook = !this.model.hasPrevious;
+    }
+
+    this.editForm.reset(this.model);
   }
 
   initFullAccountFromGroup() {
-    this.editForm1 = new FormGroup({
+    this.fullAccountForm = new FormGroup({
       fullAccount: new FormGroup({
         account: new FormGroup({
           id: new FormControl("", Validators.required),
@@ -131,115 +207,114 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
   }
 
   addNew() {
-    if (!this.editForm.valid)
-      return;
-  
-      this.editForm.patchValue({
-        branchId: this.BranchId,
+    this.model = new CheckBookInfo();
+    this.editForm.reset(this.model);
+    this.checkBookPages = undefined;
+    this.router.navigate(['/treasury/check-books/new']);
+  }
+
+  removeHandler() {
+    if (this.model.id) {
+      let deletePagesURL = String.Format(CheckBooksApi.CheckBookPages,this.model.id);
+      let deleteCheckBookURL = String.Format(CheckBooksApi.CheckBook,this.model.id);
+      this.checkBookService.delete(deletePagesURL)
+      .pipe(
+        exhaustMap(() => this.checkBookService.delete(deleteCheckBookURL))
+      )
+      .subscribe( res =>{
+        this.model = new CheckBookInfo();
+        this.editForm.reset(this.model);
+
+        this.showMessage(this.deleteMsg,MessageType.Info);
+      }, err =>{
+        console.log(err);
+        
+        this.showMessage('test',MessageType.Error);
       })
-  }
-
-  selectedAccount;
-  onChangeCheckboxFullAccount(event: any, mode: string) {
-    if (!event) {
-      switch (mode) {
-        case "account": {
-          this.selectedAccount = undefined;
-          break;
-        }
-        // case "detailAccount": {
-        //   this.selectedDetailAccount = undefined;
-        //   break;
-        // }
-        // case "costCenter": {
-        //   this.selectedCostCenter = undefined;
-        //   break;
-        // }
-        // case "project": {
-        //   this.selectedProject = undefined;
-        //   break;
-        // }
-        default:
-      }
     }
   }
 
-  dialogRef: DialogRef;
-  dialogModel: any;
-  openSelectForm(mode: string) {
-    var viewId = 0;
+  checkOperation(mode){
+    let url;
     switch (mode) {
-      case "account": {
-        viewId = ViewName.Account;
+      case checkBookOperations.New:
+        this.addNew();
         break;
-      }
-      case "detailAccount": {
-        viewId = ViewName.DetailAccount;
+
+      case checkBookOperations.Next:
+        this.goNext();
         break;
-      }
-      case "costCenter": {
-        viewId = ViewName.CostCenter;
+
+      case checkBookOperations.Previous:
+        this.goPrevious();
         break;
-      }
-      case "project": {
-        viewId = ViewName.Project;
-        break;
-      }
+
       default:
+        break;
     }
+  }
 
-    this.dialogRef = this.dialogService.open({
-      content: SelectFormComponent,
-    });
-
-    this.sharedDataService.selectFormTitle.subscribe((title: string) => {
-      this.dialogRef.dialog.instance.title = title;
-    });
-
-    this.dialogModel = this.dialogRef.content.instance;
-
-    this.dialogModel.viewID = viewId;
-    this.dialogModel.isDisableEntities = true;
-
-    this.dialogRef.content.instance.cancel.subscribe((res) => {
-      this.dialogRef.close();
-    });
-
-    this.dialogRef.content.instance.result.subscribe((res) => {
-      this.changeParam();      
-      switch (mode) {
-        case "account": {
-          this.selectedAccount = res.dataItem;
-          break;
+  /**
+   * برای واکشی دسته چک
+   * @param getUrl آدرس واکشی دیتا
+   */
+  getCheckBook(getUrl:string) {
+    this.checkBookService.getModelsByFilters(getUrl,this.filter,this.quickFilter)
+    .pipe(
+      // take(2)
+    )
+    .subscribe(res => {
+        console.log(res);
+        this.model = res;
+        this.initCheckBookForm()
+      }, (err) => {
+        if (err == null || err.statusCode == 404) {
+          this.showMessage(
+            this.getText("Voucher.VoucherNotFound"),
+            MessageType.Warning
+          );
         }
-        // case "detailAccount": {
-        //   this.selectedDetailAccount = res.dataItem;
-        //   break;
-        // }
-        // case "costCenter": {
-        //   this.selectedCostCenter = res.dataItem;
-        //   break;
-        // }
-        // case "project": {
-        //   this.selectedProject = res.dataItem;
-        //   break;
-        // }
-        default:
+
+        if (err.statusCode == 400) {
+          this.cancel.emit();
+          this.showMessage(
+            this.errorHandlingService.handleError(err),
+            MessageType.Warning
+          );
+          this.router.navigate(["/treasury/check-books"]);
+        }
       }
-      console.log(res,this.selectedAccount,mode);
-
-      this.dialogRef.close();
-    });
+    )
   }
 
-  changeParam(){}
+  goPrevious() {
+    let url;
+    if (this.urlMode != 'previous') {
+      this.router.navigate(['/treasury/check-books/previous']);
+    } else {
+      if (this.model.id) {
+        url = String.Format(CheckBooksApi.PreviousCheckBook,this.model.issueDate);
+      } else {
+        url = CheckBooksApi.LastCheckBook;
+      }
+      this.getCheckBook(url);
 
-  getCheckBooks() {
-
+    }
   }
 
-  getCheckBookPages(id) {
+  goNext() {
+    let url;
+    if (this.urlMode != 'next') {
+      this.router.navigate(['/treasury/check-books/next']);
+    } else {
+      if (!this.isLastCheckBook) {
+        url = String.Format(CheckBooksApi.NextCheckBook,this.model.issueDate);
+        this.getCheckBook(url);
+      }
+    }
   }
+
+  getCheckBookPages(id) {}
 
   cancelHandler() {
     this.errorMessages = undefined;
@@ -274,17 +349,13 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
     let value = this.editForm.value;
     this.checkBookService.insert(CheckBooksApi.CheckBooks,value).subscribe(
       async (res) => {
-        console.log(res);
-
-        this.editForm.reset(res);
-        this.model = res as CheckBook;
+        this.model = res as CheckBookInfo;
+        this.initCheckBookForm();
         this.errorMessages = undefined;
         this.showMessage(this.updateMsg, MessageType.Succes);
         this.setEditMode = true;
 
         this.checkBookPages = await lastValueFrom(this.checkBookService.insertPages(this.model.id));
-        console.log(this.checkBookPages);
-        
       },
       (error) => {
         if (e) {
@@ -322,7 +393,6 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
       this.otherSizeOfPages = false;
       this.setEndNo();
     }
-    console.log(e,this.selectedPagesCount);
   }
 
   onChangePagesCountInput(e) {
@@ -332,7 +402,7 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
   onFullAccountInpusFocuse(e) {}
 
   onSelectFullAccount(e) {
-    let fullAccount = this.editForm1.value.fullAccount;
+    let fullAccount = this.fullAccountForm.value.fullAccount;
     this.editForm.patchValue({
       accountId: fullAccount.account.id? fullAccount.account.id: null,
       detailAccountId: fullAccount.detailAccount.id? fullAccount.detailAccount.id: null,
@@ -340,10 +410,6 @@ export class CheckBookComponent extends DetailComponent implements OnInit {
       projectId: fullAccount.project.id? fullAccount.project.id: null
     })
   }
-
-  removeHandler(){}
-
-  checkOperation(a){}
 
   showReport(){}
 }

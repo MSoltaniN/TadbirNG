@@ -9,7 +9,7 @@ export interface CheckBook {
     isArchived: boolean,
     branchId: number,
     accountId: number,
-    detailId: number,
+    detailAccountId: number,
     costCenterId: number,
     projectId: number
 }

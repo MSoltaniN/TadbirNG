@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TreasuryRoutingModule } from './treasury-routing.module';
-import { CheckBookComponent } from './components/check-book/check-book.component';
+import { CheckBookEditorComponent } from './components/check-book/check-book-editor.component';
 import { CheckBookReportComponent } from './components/checkBook-report/checkBook-report.component';
 import { SharedModule } from '@sppc/shared/shared.module';
 import { CashRegistersComponent } from './components/cash-registers/cash-registers.component';
@@ -18,7 +18,7 @@ import { CheckBookFormComponent } from './components/check-book/check-book-form/
     SharedModule
   ],
   declarations: [
-    CheckBookComponent,
+    CheckBookEditorComponent,
     CheckBookReportComponent,
     CashRegistersComponent,
     CashRegistersFormComponent,

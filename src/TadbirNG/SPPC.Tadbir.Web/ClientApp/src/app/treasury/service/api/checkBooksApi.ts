@@ -42,31 +42,31 @@ export class CheckBooksApi
     /**
     * API client URL for the first check book in current environment
     */
-    public static FirstCheckBook = "check-books/first";
+    public static FirstCheckBook = environment.BaseUrl + "/check-books/first";
 
     /**
     * API client URL for previous check book in current environment
     */
-    public static PreviousCheckBook = "check-books/{0}/previous";
+    public static PreviousCheckBook = environment.BaseUrl + "/check-books/{0}/previous";
 
     /**
     * API server route URL for previous check book in current environment
     */
-    public static PreviousCheckBookUrl = "check-books/{issueDate:DateTime}/previous";
+    public static PreviousCheckBookUrl = environment.BaseUrl + "/check-books/{issueDate:DateTime}/previous";
 
     /**
     * API client URL for next check book in current environment
     */
-    public static NextCheckBook = "check-books/{0}/next";
+    public static NextCheckBook = environment.BaseUrl + "/check-books/{0}/next";
 
     /**
     * API server route URL for next check book in current environment
     */
-    public static NextCheckBookUrl = "check-books/{issueDate:DateTime}/next";
+    public static NextCheckBookUrl = environment.BaseUrl + "/check-books/{issueDate:DateTime}/next";
 
     /**
     * API client URL for the last check book in current environment
     */
-    public static LastCheckBook = "check-books/last";
+    public static LastCheckBook = environment.BaseUrl + "/check-books/last";
 
 }

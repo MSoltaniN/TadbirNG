@@ -21,16 +21,15 @@
     <div class="row">
       <div class="col-xs-12 sppc-float" style="margin-top: 5px">
         <button
-            class="k-button sh-new-voucher"
-            title="{{ 'Voucher.NewVoucher' | translate }}"
-            SppcPermissionCheck="Create"
-            (sppcClick)="checkOperation('New')"
-          >
-            <span class="k-icon k-i-file-add"></span>
-          </button>
+          class="k-button sh-new-voucher"
+          title="{{ 'Voucher.NewVoucher' | translate }}"
+          SppcPermissionCheck="Create"
+          (sppcClick)="checkOperation(checkBookOperationsItem.New)"
+        >
+          <span class="k-icon k-i-file-add"></span>
+        </button>
         <button
           SppcPermissionCheck="Delete"
-
           (sppcClick)="removeHandler()"
           class="k-button sh-remove-voucher"
           title="{{ 'Buttons.Delete' | translate }}"
@@ -41,15 +40,54 @@
         <button
           class="k-button"
           title="{{ 'Voucher.SearchVoucher' | translate }}"
-          (click)="checkOperation('Search')"
+          (click)="checkOperation(checkBookOperationsItem.Search)"
         >
           <span class="k-icon k-i-search"></span>
         </button>
 
         <button
+          class="k-button not-change"
+          title="{{ 'Voucher.FirstVoucher' | translate }}"
+          [attr.disabled]="isFirstCheckBook ? true : null"
+          SppcPermissionCheck="Navigate"
+          (sppcClick)="checkOperation(checkBookOperationsItem.First)"
+        >
+          <span class="k-icon k-i-arrow-end-right"></span>
+        </button>
+
+        <button
+          class="k-button not-change"
+          [attr.disabled]="isFirstCheckBook ? true : null"
+          title="{{ 'Voucher.PreviousVoucher' | translate }}"
+          SppcPermissionCheck="Navigate"
+          (sppcClick)="checkOperation(checkBookOperationsItem.Previous)"
+        >
+          <span class="k-icon k-i-arrow-double-60-right"></span>
+        </button>
+
+        <button
+          class="k-button not-change"
+          [attr.disabled]="isLastCheckBook ? true : null"
+          title="{{ 'Voucher.NextVoucher' | translate }}"
+          SppcPermissionCheck="Navigate"
+          (sppcClick)="checkOperation(checkBookOperationsItem.Next)"
+        >
+          <span class="k-icon k-i-arrow-double-60-left"></span>
+        </button>
+
+        <button
+          class="k-button not-change"
+          title="{{ 'Voucher.LastVoucher' | translate }}"
+          [attr.disabled]="isLastCheckBook ? true : null"
+          SppcPermissionCheck="Navigate"
+          (sppcClick)="checkOperation(checkBookOperationsItem.Last)"
+        >
+          <span class="k-icon k-i-arrow-end-left"></span>
+        </button>
+
+        <button
           kendoButton
           SppcPermissionCheck="Print"
-          
           (sppcClick)="showReport()"
           class="hidden-xs rm print sh-print"
           type="button"
@@ -138,7 +176,7 @@
 
         <div class="col-xs-12 col-sm-7 sppc-float">
           <fieldset [disabled]="editMode" [ngClass]="{'disabled': editMode}">
-            <div class="form-group" [formGroup]="editForm1">
+            <div class="form-group" [formGroup]="fullAccountForm">
               <label for="fullAccount" class="control-label" style="position:absolute;">{{ 'VoucherLine.Account' | translate }}</label>
     
               <sppc-fullAccount formGroupName="fullAccount" (isInputFocused)="onFullAccountInpusFocuse($event)"
