@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Common;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tools.Extensions;
@@ -217,7 +218,7 @@ WHERE [CommandID] IN({String.Join(", ", deletedIds.ToArray())})");
                 .Count(ch => ch == '\r');
             if (lineCount > 2)
             {
-                var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptUtility.SysUpdateScriptName);
+                var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptConstants.SysDbUpdateScript);
                 File.AppendAllText(path, scriptBuilder.ToString(), Encoding.UTF8);
             }
         }

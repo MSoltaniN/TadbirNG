@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Common;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Metadata;
@@ -653,7 +654,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             scriptBuilder.AppendLine(generated);
             generated = ScriptUtility.GetInsertScripts(addedSettings, LogSettingExtensions.ToScript);
             scriptBuilder.Append(generated);
-            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptUtility.UpdateScriptName);
+            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptConstants.DbUpdateScript);
             File.AppendAllText(path, scriptBuilder.ToString());
         }
 
@@ -788,7 +789,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
 
             var generated = GetSysInsertScripts(addedSettings);
             scriptBuilder.Append(generated);
-            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptUtility.SysUpdateScriptName);
+            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptConstants.SysDbUpdateScript);
             File.AppendAllText(path, scriptBuilder.ToString());
         }
 

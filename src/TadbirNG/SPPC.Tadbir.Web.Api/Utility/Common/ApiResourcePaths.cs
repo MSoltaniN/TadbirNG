@@ -83,7 +83,7 @@ namespace SPPC.Tadbir.Web.Api
             TaxCurrencies = Path.Combine(DataRoot, "tax-currencies.json");
             Accounts = Path.Combine(DataRoot, "DefaultAccounts.json");
             AccountScript = Path.Combine(ScriptRoot, "CollectionAccounts.sql");
-            CompanyScript = Path.Combine(ScriptRoot, "Tadbir_CreateDbObjects.sql");
+            CompanyScript = Path.Combine(ScriptRoot, ScriptConstants.DbCreateScript);
 #if DEBUG
             License = Path.Combine(webRootPath, "license.Development.json");
             Edition = "SPPC.Tadbir.Web.Api.wwwroot.edition.Development.json";

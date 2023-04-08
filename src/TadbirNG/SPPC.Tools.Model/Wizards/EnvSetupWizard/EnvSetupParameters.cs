@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using SPPC.Tadbir.Common;
 
 namespace SPPC.Tools.Model
 {
@@ -59,7 +60,7 @@ namespace SPPC.Tools.Model
         {
             get
             {
-                return Path.Combine(_model.RootFolder, "res", "TadbirSys_CreateDbObjects.sql");
+                return Path.Combine(_model.RootFolder, "res", ScriptConstants.SysDbCreateScript);
             }
         }
 
@@ -91,7 +92,7 @@ namespace SPPC.Tools.Model
         {
             get
             {
-                return Path.Combine(_model.RootFolder, "res", "Tadbir_CreateDbObjects.sql");
+                return Path.Combine(_model.RootFolder, "res", ScriptConstants.DbCreateScript);
             }
         }
 

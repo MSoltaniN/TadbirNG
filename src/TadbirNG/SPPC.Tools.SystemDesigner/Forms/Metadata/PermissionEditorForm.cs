@@ -4,11 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using SPPC.Tools.Model;
-using SPPC.Tadbir.ViewModel.Auth;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Common;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tools.Extensions;
+using SPPC.Tools.Model;
 using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Forms
@@ -115,7 +116,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 builder.Append(Model.Permissions.Last().ToScript(false, true));
             }
 
-            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptUtility.SysUpdateScriptName);
+            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptConstants.SysDbUpdateScript);
             File.AppendAllText(path, builder.ToString());
             MessageBox.Show(this, "The script was successfully generated.", "Success",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);

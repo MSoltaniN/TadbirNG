@@ -29,17 +29,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         ///
         /// </summary>
         /// <param name="repository"></param>
-        /// <param name="tools"></param>
-        public UsersController(
-            IUserRepository repository,
-            ISystemTools tools)
-            : base(tools.Strings, tools.TokenManager)
+        /// <param name="system"></param>
+        public UsersController(IUserRepository repository, ISystemTools system)
+            : base(system.Strings, system.TokenManager)
         {
             _repository = repository;
-            _crypto = tools.Crypto;
-            _commandFilter = tools.CommandFilter;
-            _tokenManager = tools.TokenManager;
-            _systemTools = tools;
+            _crypto = system.Crypto;
+            _commandFilter = system.CommandFilter;
+            _tokenManager = system.TokenManager;
+            _systemTools = system;
         }
 
         /// <summary>

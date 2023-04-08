@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.IO;
@@ -8,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using SPPC.Framework.Common;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Common;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
@@ -167,7 +167,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
             scriptBuilder.AppendLine(View.Columns
                 .Last()
                 .ToScript(false, true));
-            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptUtility.SysUpdateScriptName);
+            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptConstants.SysDbUpdateScript);
             File.AppendAllText(path, scriptBuilder.ToString(), Encoding.UTF8);
             MessageBox.Show(this, "Scripts were successfully generated.", "Success",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
