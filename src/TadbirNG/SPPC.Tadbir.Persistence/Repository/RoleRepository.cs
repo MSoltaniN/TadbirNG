@@ -73,21 +73,16 @@ namespace SPPC.Tadbir.Persistence
         public async Task<RoleFullViewModel> GetNewRoleAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<Permission>();
-            var all = await repository
-                .GetEntityQuery()
-                .Include(perm => perm.Group)
-                    .ThenInclude(grp => grp.Subsystem)
-                .Include(perm => perm.Group)
-                    .ThenInclude(grp => grp.SourceType)
-                .Where(perm => perm.GroupId != LogSettingsGroupId)
+            var all = await GetPublicPermissionsQuery()
                 .Select(perm => Mapper.Map<PermissionViewModel>(perm))
                 .ToArrayAsync();
             var role = new RoleFullViewModel();
-            Array.ForEach(all, perm =>
-            {
-                perm.IsEnabled = false;
-                role.Permissions.Add(perm);
-            });
+            Array.ForEach(all,
+                perm =>
+                {
+                    perm.IsEnabled = false;
+                    role.Permissions.Add(perm);
+                });
             return role;
         }
 
@@ -100,37 +95,32 @@ namespace SPPC.Tadbir.Persistence
         public async Task<RoleFullViewModel> GetRoleAsync(int roleId)
         {
             RoleFullViewModel role = null;
-            var repository = UnitOfWork.GetAsyncRepository<Role>();
-            var existing = await repository
-                .GetEntityQuery()
-                .Include(r => r.RolePermissions)
-                    .ThenInclude(rp => rp.Permission)
-                        .ThenInclude(p => p.Group)
-                .Where(r => r.Id == roleId)
-                .SingleOrDefaultAsync();
+            var existing = await GetRoleBriefAsync(roleId);
             if (existing != null)
             {
-                var enabledPermissions = existing.RolePermissions
-                    .Select(rp => rp.Permission)
-                    .Select(perm => Mapper.Map<PermissionViewModel>(perm));
-                var permissionRepository = UnitOfWork.GetAsyncRepository<Permission>();
-                var disabledPermissions = await permissionRepository
-                    .GetAllAsync(perm => perm.Group);
-                var disabledView = disabledPermissions
+                var rolePermissionRepository = UnitOfWork.GetAsyncRepository<RolePermission>();
+                var enabledPermissionIds = await GetPermissionIdsAsync(roleId);
+                var enabledPermissions = await GetPublicPermissionsQuery()
+                    .Where(perm => enabledPermissionIds.Contains(perm.Id))
                     .Select(perm => Mapper.Map<PermissionViewModel>(perm))
-                    .Where(perm => IsPublicPermission(perm))
-                    .Except(enabledPermissions, new EntityEqualityComparer<PermissionViewModel>())
-                    .ToArray();
-                Array.ForEach(disabledView, perm => perm.IsEnabled = false);
+                    .ToArrayAsync();
+                Array.ForEach(enabledPermissions, perm => perm.IsEnabled = true);
+                var disabledPermissions = await GetPublicPermissionsQuery()
+                    .Where(perm => !enabledPermissionIds.Contains(perm.Id))
+                    .Select(perm => Mapper.Map<PermissionViewModel>(perm))
+                    .ToArrayAsync();
+                Array.ForEach(disabledPermissions, perm => perm.IsEnabled = false);
 
                 role = new RoleFullViewModel()
                 {
                     Id = roleId,
-                    Role = Mapper.Map<RoleViewModel>(existing)
+                    Role = existing
                 };
                 Array.ForEach(enabledPermissions
-                    .Concat(disabledView)
-                    .OrderBy(perm => perm.GroupId)
+                    .Concat(disabledPermissions)
+                    .OrderBy(perm => perm.GroupSubsystemId)
+                    .ThenBy(perm => perm.GroupSourceTypeId)
+                    .ThenBy(perm => perm.GroupId)
                     .ThenBy(perm => perm.Flag)
                     .ToArray(), perm => role.Permissions.Add(perm));
             }
@@ -147,29 +137,28 @@ namespace SPPC.Tadbir.Persistence
         public async Task<RoleDetailsViewModel> GetRoleDetailsAsync(int roleId)
         {
             RoleDetailsViewModel role = null;
-            var repository = UnitOfWork.GetAsyncRepository<Role>();
-            var existing = await repository
-                .GetEntityQuery()
-                .Include(r => r.RolePermissions)
-                    .ThenInclude(rp => rp.Permission)
-                        .ThenInclude(p => p.Group)
-                .Include(r => r.UserRoles)
-                    .ThenInclude(ur => ur.User)
-                        .ThenInclude(usr => usr.Person)
-                .Where(r => r.Id == roleId)
-                .SingleOrDefaultAsync();
+            var existing = await GetRoleBriefAsync(roleId);
             if (existing != null)
             {
+                var permissionIds = await GetPermissionIdsAsync(roleId);
+                var permissions = await GetPublicPermissionsQuery()
+                    .Where(perm => permissionIds.Contains(perm.Id))
+                    .Select(perm => Mapper.Map<PermissionViewModel>(perm))
+                    .ToArrayAsync();
+                var userRoleRepository = UnitOfWork.GetAsyncRepository<UserRole>();
+                var users = await userRoleRepository
+                    .GetEntityQuery()
+                    .Include(ur => ur.User)
+                        .ThenInclude(usr => usr.Person)
+                    .Where(ur => ur.RoleId == roleId)
+                    .Select(ur => Mapper.Map<UserBriefViewModel>(ur.User))
+                    .ToArrayAsync();
                 role = new RoleDetailsViewModel()
                 {
-                    Role = Mapper.Map<RoleViewModel>(existing)
+                    Role = existing
                 };
-                Array.ForEach(
-                    existing.RolePermissions.Select(rp => rp.Permission).ToArray(),
-                    perm => role.Permissions.Add(Mapper.Map<PermissionViewModel>(perm)));
-                Array.ForEach(
-                    existing.UserRoles.Select(ur => ur.User).ToArray(),
-                    usr => role.Users.Add(Mapper.Map<UserBriefViewModel>(usr)));
+                Array.ForEach(permissions, perm => role.Permissions.Add(perm));
+                Array.ForEach(users, user => role.Users.Add(user));
             }
 
             return role;
@@ -990,6 +979,34 @@ namespace SPPC.Tadbir.Persistence
                 RoleId = role.Id,
                 PermissionId = perm.Id
             };
+        }
+
+        private IQueryable<Permission> GetPublicPermissionsQuery()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Permission>();
+            var query = repository
+                .GetEntityQuery()
+                .Include(perm => perm.Group)
+                    .ThenInclude(grp => grp.Subsystem)
+                .Include(perm => perm.Group)
+                    .ThenInclude(grp => grp.SourceType)
+                .Where(perm => perm.GroupId != LogSettingsGroupId)
+                .OrderBy(perm => perm.Group.SubsystemId)
+                .ThenBy(perm => perm.Group.SourceTypeId)
+                .ThenBy(perm => perm.GroupId)
+                .ThenBy(perm => perm.Flag);
+            return query;
+        }
+
+        private async Task<List<int>> GetPermissionIdsAsync(int roleId)
+        {
+            var rolePermissionRepository = UnitOfWork.GetAsyncRepository<RolePermission>();
+            var permissionIds = await rolePermissionRepository
+                .GetEntityQuery()
+                .Where(rp => rp.RoleId == roleId)
+                .Select(rp => rp.PermissionId)
+                .ToListAsync();
+            return permissionIds;
         }
 
         private void AddNewPermissions(Role existing, RoleFullViewModel role)

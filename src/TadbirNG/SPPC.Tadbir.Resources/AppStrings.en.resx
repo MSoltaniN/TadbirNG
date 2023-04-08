@@ -3804,9 +3804,6 @@
   <data name="LastCheckBook" xml:space="preserve">
     <value>Last Check Book</value>
   </data>
-  <data name="NavigateEntitiesCheckBooks" xml:space="preserve">
-    <value>Move between checkbooks</value>
-  </data>
   <data name="NewCheckBook" xml:space="preserve">
     <value>New Check Book</value>
   </data>
@@ -3842,5 +3839,8 @@
   </data>
   <data name="Used" xml:space="preserve">
     <value>Used</value>
+  </data>
+  <data name="PageCount" xml:space="preserve">
+    <value>Page Count</value>
   </data>
 </root>
