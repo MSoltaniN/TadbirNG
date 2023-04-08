@@ -140,7 +140,7 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
                 DataSource = company.Server,
                 InitialCatalog = company.DbName,
                 IntegratedSecurity = false,
-                MultipleActiveResultSets = true
+                MultipleActiveResultSets = false
             };
             if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
             {
