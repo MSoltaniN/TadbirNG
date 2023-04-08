@@ -17,6 +17,9 @@ export class SppcFullAccountDetailComponent implements OnInit {
   isNew: boolean;
   @Input() accountItem: any;
   @Input() selectedItem: any;
+  /**
+   * برای تعیین اجبرای بودن یا نبودن انتخاب همه موارد بردار حساب درصورت موجود بودنشان
+   */
   @Input() strictMode:boolean = false;
 
   focusedItem: number;

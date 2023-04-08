@@ -6,6 +6,7 @@ import {
   Output,
   EventEmitter,
   ElementRef,
+  Input
 } from "@angular/core";
 import { ControlContainer } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
@@ -16,7 +17,7 @@ import {
   DialogCloseResult,
 } from "@progress/kendo-angular-dialog";
 import { MetaDataService, BrowserStorageService } from "@sppc/shared/services";
-import { AccountItemBrief, FullAccount } from "@sppc/finance/models";
+import { AccountItemBrief } from "@sppc/finance/models";
 import { FullAccountInfo, FullAccountService } from "@sppc/finance/service";
 import { AccountRelationApi } from "@sppc/finance/service/api";
 import { AccountRelationsType } from "@sppc/finance/enum";
@@ -80,9 +81,20 @@ export class SppcFullAccountComponent
   isOpenedDialog = false;
 
   private dialogRef: DialogRef;
-  private dialogModel: any;
 
   @Output() setFocus: EventEmitter<any> = new EventEmitter();
+  /**
+   * برای تعیین اجبرای بودن یا نبودن انتخاب همه موارد بردار حساب درصورت موجود بودنشان
+   */
+  @Input() strictMode:boolean = true;
+  @Input() set inputFullAccount(data) {
+    if (data != undefined) {
+      this.fullAccount = data;
+      this.initForm();
+    } else {
+      this.resetForm();
+    }
+  };
   //#endregion
 
   constructor(
@@ -113,7 +125,11 @@ export class SppcFullAccountComponent
 
     this.fullAccount = this.controlContainer.value;
 
-    if (this.fullAccount.account.id > 0) {
+    this.initForm();
+  }
+
+  initForm() {
+    if (this.fullAccount?.account.id > 0) {
       this.isNew = false;
       this.accountSelectedId.push(this.fullAccount.account.id);
       this.accountTitle = this.fullAccount.account.name;
@@ -124,23 +140,33 @@ export class SppcFullAccountComponent
       if (this.fullAccount.detailAccount.id > 0) {
         this.detailAccountSelectedId.push(this.fullAccount.detailAccount.id);
         this.detailAccountTitle = this.fullAccount.detailAccount.name;
-
       }
 
       if (this.fullAccount.costCenter.id > 0) {
         this.costCenterSelectedId.push(this.fullAccount.costCenter.id);
         this.costCenterTitle = this.fullAccount.costCenter.name;
-
       }
 
       if (this.fullAccount.project.id > 0) {
         this.projectSelectedId.push(this.fullAccount.project.id);
         this.projectTitle = this.fullAccount.project.name;
-
       }
     }
   }
 
+  resetForm() {
+    this.accountSelectedId = [];
+    this.accountTitle = '';
+
+    this.detailAccountSelectedId= [];
+    this.detailAccountTitle = '';
+
+    this.costCenterSelectedId = [];
+    this.costCenterTitle = '';
+
+    this.projectSelectedId = [];
+    this.projectTitle = '';
+  }
   //#region Select item
   /**
    * وقتی یک حساب انتخاب میشود با توجه به اینکه از کدام مولفه بردار حساب شروع شده است لیست سایر مولفه ها را از سرویس میگیرد
