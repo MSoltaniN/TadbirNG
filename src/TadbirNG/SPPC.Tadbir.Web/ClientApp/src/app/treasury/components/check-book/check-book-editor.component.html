@@ -1,7 +1,7 @@
-<!-- <app-bread-cumb [entityTypeName]="entityTypeName"></app-bread-cumb> -->
+<app-bread-cumb [entityTypeName]="entityTypeName"></app-bread-cumb>
 
-<!-- <view-identifier [ViewID]="viewId"></view-identifier>
-<report-management
+<view-identifier [ViewID]="viewId"></view-identifier>
+<!--<report-management
   [ViewIdentity]="viewIdentity"
   [Grid]="grid"
   [Sort]="sort"
@@ -23,12 +23,14 @@
         <button
           class="k-button sh-new-voucher"
           title="{{ 'Voucher.NewVoucher' | translate }}"
+          [EntityName]="entityTypeName"
           SppcPermissionCheck="Create"
           (sppcClick)="checkOperation(checkBookOperationsItem.New)"
         >
           <span class="k-icon k-i-file-add"></span>
         </button>
         <button
+          [EntityName]="entityTypeName"
           SppcPermissionCheck="Delete"
           (sppcClick)="removeHandler()"
           class="k-button sh-remove-voucher"
@@ -49,6 +51,7 @@
           class="k-button not-change"
           title="{{ 'Voucher.FirstVoucher' | translate }}"
           [attr.disabled]="isFirstCheckBook ? true : null"
+          [EntityName]="entityTypeName"
           SppcPermissionCheck="Navigate"
           (sppcClick)="checkOperation(checkBookOperationsItem.First)"
         >
@@ -59,6 +62,7 @@
           class="k-button not-change"
           [attr.disabled]="isFirstCheckBook ? true : null"
           title="{{ 'Voucher.PreviousVoucher' | translate }}"
+          [EntityName]="entityTypeName"
           SppcPermissionCheck="Navigate"
           (sppcClick)="checkOperation(checkBookOperationsItem.Previous)"
         >
@@ -69,6 +73,7 @@
           class="k-button not-change"
           [attr.disabled]="isLastCheckBook ? true : null"
           title="{{ 'Voucher.NextVoucher' | translate }}"
+          [EntityName]="entityTypeName"
           SppcPermissionCheck="Navigate"
           (sppcClick)="checkOperation(checkBookOperationsItem.Next)"
         >
@@ -79,6 +84,7 @@
           class="k-button not-change"
           title="{{ 'Voucher.LastVoucher' | translate }}"
           [attr.disabled]="isLastCheckBook ? true : null"
+          [EntityName]="entityTypeName"
           SppcPermissionCheck="Navigate"
           (sppcClick)="checkOperation(checkBookOperationsItem.Last)"
         >
@@ -87,6 +93,7 @@
 
         <button
           kendoButton
+          [EntityName]="entityTypeName"
           SppcPermissionCheck="Print"
           (sppcClick)="showReport()"
           class="hidden-xs rm print sh-print"
@@ -179,12 +186,27 @@
             <div class="form-group" [formGroup]="fullAccountForm">
               <label for="fullAccount" class="control-label" style="position:absolute;">{{ 'VoucherLine.Account' | translate }}</label>
     
-              <sppc-fullAccount formGroupName="fullAccount" (isInputFocused)="onFullAccountInpusFocuse($event)"
-                                (setFocus)="onSelectFullAccount($event)">
+              <sppc-fullAccount formGroupName="fullAccount"
+               (isInputFocused)="onFullAccountInpusFocuse($event)"
+               (setFocus)="onSelectFullAccount($event)"
+               [inputFullAccount]="this.model.fullAccount"
+               [strictMode]="false">
               </sppc-fullAccount>
             </div>
           </fieldset>
         </div>
+
+        <div class="form-group col-sm-5ths col-xs-12 item">
+          <label for="name" class="control-label">{{ 'CheckBook.EndNumber' | translate }}</label>
+    
+          <input type="text" class="k-textbox" formControlName="endNo" [disabled]="editMode" readonly/>
+    
+          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.startNo.valid || editForm.controls.startNo.pristine">
+            <span *ngIf="editForm.controls.startNo.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
+            <span *ngIf="editForm.controls.startNo.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
+          </div>
+        </div>
+
       </form>
       <div class="action-box">
         <button class="create-pages-btn k-button" [disabled]="editMode" (click)="onSave($event)">ایجادبرگه ها</button>
@@ -194,9 +216,31 @@
   <div>
       <check-book-pages [pages]="checkBookPages" [checkBookId]="this.model.id"></check-book-pages>
   </div>
+<!-- فرم جستوجو -->
+<kendo-dialog
+  title="{{ 'CheckBook.SearchCheckBook' | translate }}"
+  *ngIf="searchConfirm"
+  (close)="searchByNo(false)"
+  [minWidth]="250"
+  [width]="450"
+>
+  <div class="form-group" (keydown.enter)="passVoucherId()">
+    <label class="control-label">{{'CheckBook.CheckBookNo' | translate}}</label>
+    <input type="text" class="k-textbox" [(ngModel)]="checkBookNo" [OnlyNumber] sppcAutoFocus/>
+  </div>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="searchByNo(true)" primary="true">
+      {{ "Buttons.Ok" | translate }}
+    </button>
+    <button class="k-button" (click)="searchByNo(false)">
+      {{ "Buttons.Cancel" | translate }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
 
-<!-- <kendo-dialog
-  title="{{ 'Company.Delete' | translate }}"
+<!-- فرم تایید حذف -->
+<kendo-dialog
+  title="{{ 'CheckBook.Delete' | translate }}"
   *ngIf="deleteConfirm"
   (close)="deleteModel(false)"
   [minWidth]="250"
@@ -213,4 +257,4 @@
       {{ "Buttons.No" | translate }}
     </button>
   </kendo-dialog-actions>
-</kendo-dialog> -->
+</kendo-dialog>

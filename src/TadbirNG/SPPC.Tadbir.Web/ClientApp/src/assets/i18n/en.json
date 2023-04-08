@@ -205,7 +205,8 @@
     "SystemIssue": "System Control",
     "BalanceByAccount": "Balance By Account",
     "Widget": "Widget",
-    "CashRegister": "Cash Register"
+    "CashRegister": "Cash Register",
+    "CheckBook": "Check Books"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": " Number Of Vouchers Selected :",
@@ -1263,6 +1264,7 @@
     "Name": "Name",
     "BankName": "Bank Name",
     "StartNumber": "Start Number",
+    "EndNumber": "End Number",
     "PagesCount": "Pages Count",
     "Other": "Other",
     "Archive": "Archive",
@@ -1270,7 +1272,10 @@
     "CancelCheck": "Cancel check",
     "UndoCancelCheck": "Undo cancel check",
     "New": "Undo check book",
-    "isArchived": "Archive"
+    "isArchived": "Archive",
+    "Delete": "Delete check book",
+    "CheckBookNo": "check Book Number",
+    "SearchCheckBook": "Search Check Book"
   },
   "AllValidations": {
     "Account": {

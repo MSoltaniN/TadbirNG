@@ -88,8 +88,8 @@ export class SppcFullAccountComponent
    */
   @Input() strictMode:boolean = true;
   @Input() set inputFullAccount(data) {
+    this.fullAccount = data;
     if (data != undefined) {
-      this.fullAccount = data;
       this.initForm();
     } else {
       this.resetForm();

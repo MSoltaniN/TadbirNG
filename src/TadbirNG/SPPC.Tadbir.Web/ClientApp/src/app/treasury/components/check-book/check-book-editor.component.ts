@@ -51,14 +51,12 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   @Input() filter: FilterExpression;
   @Input() quickFilter: FilterExpression;
 
-  @Output() cancel: EventEmitter<any> = new EventEmitter();
-  @Output() save: EventEmitter<CheckBook> = new EventEmitter();
-
   editMode = false;
   set setEditMode(value:boolean){
     this.editForm.get('name')[!value ? 'enable' : 'disable']();
     this.editForm.get('bankName')[!value ? 'enable' : 'disable']();
     this.editForm.get('startNo')[!value ? 'enable' : 'disable']();
+    this.editForm.get('endNo')[!value ? 'enable' : 'disable']();
     this.editMode = value;
   };
   otherSizeOfPages = false;
@@ -77,10 +75,18 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   isLastCheckBook = false;
   checkBookOperationsItem = checkBookOperations;
   fullAccountForm:FormGroup;
+  deleteConfirm = false;
+  searchConfirm = false;
+  checkBookNo:number;
 
   get urlMode() {
     let mode = this.route.snapshot.paramMap.get('mode');
-    return mode?.toLowerCase();
+    return mode?mode.toLowerCase():'';
+  }
+
+  get returnUrl() {
+    let rurl = this.route.snapshot.queryParamMap.get('returnUrl');
+    return rurl?rurl.toLowerCase():'';
   }
 
   //
@@ -104,45 +110,59 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
        metadata, Entities.CheckBook,
        ViewName.CheckBookReport,elem);
   }
+  viewId;
+  entityTypeName;
 
   ngOnInit(): void {
+    this.entityTypeName = Entities.CheckBook;
+    this.viewId = ViewName[this.entityTypeName];
+
     this.isNew = true;
     this.model = new CheckBookInfo();
-    this.initCheckBookForm();
     this.initFullAccountFromGroup();
+    this.initCheckBookForm();
     let url;
     console.log(this.urlMode);
-    
-    switch (this.urlMode) {
-      case 'new':
-        // this.model = new CheckBookInfo();
-        this.isLastCheckBook = true;
-        this.initCheckBookForm();
-        break;
-
-      case 'next':
-        if (!this.isLastCheckBook) {
-          url = String.Format(CheckBooksApi.NextCheckBook,this.model.issueDate);
+    this.route.paramMap.subscribe(param => {
+      switch (param.get('mode')) {
+        case 'new':
+          // this.model = new CheckBookInfo();
+          this.isLastCheckBook = true;
+          this.initCheckBookForm();
+          break;
+  
+        case 'next':
+          if (!this.isFirstCheckBook) {
+            url = String.Format(CheckBooksApi.NextCheckBook,this.model.issueDate);
+            this.getCheckBook(url);
+          }
+          break;
+  
+        case 'previous':
+          if (this.model.id) {
+            url = String.Format(CheckBooksApi.PreviousCheckBook,this.model.issueDate);
+          } else {
+            url = CheckBooksApi.LastCheckBook;
+          }
           this.getCheckBook(url);
-        }
-        break;
-
-      case 'previous':
-        if (this.model.id) {
-          url = String.Format(CheckBooksApi.PreviousCheckBook,this.model.issueDate);
-        } else {
-          url = CheckBooksApi.LastCheckBook;
-        }
-        this.getCheckBook(url);
-        break;
-
-      case 'by-no':
-        this.getCheckBook(CheckBooksApi.CheckBookByNo)
-        break;
-    
-      default:
-        break;
-    }
+          break;
+  
+        case 'first':
+          this.goFirst();
+          break;
+  
+        case 'last':
+          this.goLast();
+          break;
+  
+        case 'by-no':
+          this.searchConfirm = true;
+          break;
+      
+        default:
+          break;
+      }
+    })
   }
 
   initCheckBookForm() {
@@ -150,32 +170,27 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
       this.model.branchId = this.BranchId;
       this.model.issueDate = new Date();
       this.model.checkBookNo = 0;
+      this.selectedPagesCount = undefined;
+      this.fullAccountForm.reset();
+
+      this.searchConfirm = false;
       this.setEditMode = false;
       this.isLastCheckBook = true;
       this.isFirstCheckBook = false;
     } else {
       this.fullAccountForm.patchValue({
-        fullAccount: {
-          account: {
-            id: this.model.accountId
-          },
-          detailAccount: {
-            id: this.model.detailAccountId
-          },
-          costCenter: {
-            id: this.model.costCenterId
-          },
-          project: {
-            id: this.model.projectId
-          },
-        },
+        fullAccount: this.model.fullAccount
       });
 
+      this.selectedPagesCount = this.model.pageCount;
+
       this.setEditMode = true;
+      this.searchConfirm = false;
       this.isLastCheckBook = !this.model.hasNext;
       this.isFirstCheckBook = !this.model.hasPrevious;
     }
-
+    console.log(this.editForm,this.fullAccountForm);
+    
     this.editForm.reset(this.model);
   }
 
@@ -208,29 +223,39 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
 
   addNew() {
     this.model = new CheckBookInfo();
-    this.editForm.reset(this.model);
+    this.initCheckBookForm();
     this.checkBookPages = undefined;
     this.router.navigate(['/treasury/check-books/new']);
   }
 
   removeHandler() {
-    if (this.model.id) {
-      let deletePagesURL = String.Format(CheckBooksApi.CheckBookPages,this.model.id);
-      let deleteCheckBookURL = String.Format(CheckBooksApi.CheckBook,this.model.id);
-      this.checkBookService.delete(deletePagesURL)
-      .pipe(
-        exhaustMap(() => this.checkBookService.delete(deleteCheckBookURL))
-      )
-      .subscribe( res =>{
-        this.model = new CheckBookInfo();
-        this.editForm.reset(this.model);
+    this.deleteConfirm = true;
+    this.prepareDeleteConfirm(this.getText("Messages.SelectedItems"));
+  }
 
-        this.showMessage(this.deleteMsg,MessageType.Info);
-      }, err =>{
-        console.log(err);
-        
-        this.showMessage('test',MessageType.Error);
-      })
+  deleteModel(confirm:boolean) {
+    if (confirm) {
+      if (this.model.id) {
+        let deletePagesURL = String.Format(CheckBooksApi.CheckBookPages,this.model.id);
+        let deleteCheckBookURL = String.Format(CheckBooksApi.CheckBook,this.model.id);
+        this.checkBookService.delete(deletePagesURL)
+        .pipe(
+          exhaustMap(() => this.checkBookService.delete(deleteCheckBookURL))
+        )
+        .subscribe( res =>{
+          // this.model = new CheckBookInfo();
+          // this.editForm.reset(this.model);
+          // this.initCheckBookForm();
+          this.router.navigate(['/treasury/check-books/new'])
+          this.deleteConfirm = false;
+  
+          this.showMessage(this.deleteMsg,MessageType.Info);
+        }, err =>{
+          this.showMessage(this.errorHandlingService.handleError(err),MessageType.Error);
+        })
+      }
+    } else {
+      this.deleteConfirm = false
     }
   }
 
@@ -249,6 +274,18 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
         this.goPrevious();
         break;
 
+      case checkBookOperations.Last:
+        this.goLast();
+        break;
+
+      case checkBookOperations.First:
+        this.goFirst();
+        break;
+
+      case checkBookOperations.Search:
+        this.goSearch();
+        break;
+
       default:
         break;
     }
@@ -261,22 +298,26 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   getCheckBook(getUrl:string) {
     this.checkBookService.getModelsByFilters(getUrl,this.filter,this.quickFilter)
     .pipe(
-      // take(2)
+      take(2)
     )
     .subscribe(res => {
         console.log(res);
+        if (this.urlMode == 'by-no') {
+          this.searchConfirm = false;
+        }
         this.model = res;
         this.initCheckBookForm()
       }, (err) => {
+        console.log(err);
         if (err == null || err.statusCode == 404) {
+          this.isFirstCheckBook = true;
           this.showMessage(
             this.getText("Voucher.VoucherNotFound"),
             MessageType.Warning
           );
         }
 
-        if (err.statusCode == 400) {
-          this.cancel.emit();
+        if (err != null && err.statusCode == 400) {
           this.showMessage(
             this.errorHandlingService.handleError(err),
             MessageType.Warning
@@ -298,7 +339,6 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
         url = CheckBooksApi.LastCheckBook;
       }
       this.getCheckBook(url);
-
     }
   }
 
@@ -311,6 +351,57 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
         url = String.Format(CheckBooksApi.NextCheckBook,this.model.issueDate);
         this.getCheckBook(url);
       }
+    }
+  }
+
+  goFirst() {
+    let url;
+    if (this.urlMode != 'first') {
+      this.router.navigate(['/treasury/check-books/first']);
+    } else {
+      url = CheckBooksApi.FirstCheckBook;
+      this.getCheckBook(url);
+    }
+  }
+
+  goLast() {
+    let url;
+    if (this.urlMode != 'last') {
+      this.router.navigate(['/treasury/check-books/last']);
+    } else {
+      url = CheckBooksApi.LastCheckBook;
+      this.getCheckBook(url);
+    }
+  }
+
+  goSearch() {
+    let url;
+    if (this.urlMode != 'by-no') {
+      setTimeout(() => {
+        this.searchConfirm = true;
+      }, 0);
+      this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
+        returnUrl: "/treasury/check-books/"+this.urlMode
+      }});
+    }
+  }
+
+  searchByNo(searchConfirm = false) {
+    let url;
+    if (searchConfirm) {
+      if (this.checkBookNo) {
+        this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
+          returnUrl: "/treasury/check-books/"+this.urlMode,
+          no: this.checkBookNo
+        }});
+        url = String.Format(CheckBooksApi.CheckBookByNo,this.checkBookNo);
+        this.getCheckBook(url);
+      } else {
+        return;
+      }
+    } else {
+      this.searchConfirm = false;
+      this.router.navigate([this.returnUrl]);
     }
   }
 
@@ -347,13 +438,18 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
      return;
 
     let value = this.editForm.value;
+    value.pageCount = this.selectedPagesCount;
+    value.fullAccount = this.fullAccountForm.value.fullAccount;
     this.checkBookService.insert(CheckBooksApi.CheckBooks,value).subscribe(
       async (res) => {
         this.model = res as CheckBookInfo;
+        if (this.editMode)
+          this.showMessage(this.updateMsg, MessageType.Succes);
+        else
+          this.showMessage(this.insertMsg, MessageType.Succes);
+
         this.initCheckBookForm();
         this.errorMessages = undefined;
-        this.showMessage(this.updateMsg, MessageType.Succes);
-        this.setEditMode = true;
 
         this.checkBookPages = await lastValueFrom(this.checkBookService.insertPages(this.model.id));
       },
@@ -384,19 +480,18 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     })
   }
 
-
   // Events
   onChangePagesCountDropDown(e) {
     if (e == -1) {
       this.otherSizeOfPages = true;
     } else {
       this.otherSizeOfPages = false;
-      this.setEndNo();
+      // this.setEndNo();
     }
   }
 
   onChangePagesCountInput(e) {
-    this.setEndNo();
+    // this.setEndNo();
   }
 
   onFullAccountInpusFocuse(e) {}
@@ -412,4 +507,16 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   }
 
   showReport(){}
+
+  /**
+   * prepare confim message for delete operation
+   * @param text is a part of message that use for delete confirm message
+   */
+  public prepareDeleteConfirm(text: string) {
+    this.translate
+      .get("Messages.VoucherDeleteConfirm")
+      .subscribe((msg: string) => {
+        this.deleteConfirmMsg = String.Format(msg, text);
+      });
+  }
 }

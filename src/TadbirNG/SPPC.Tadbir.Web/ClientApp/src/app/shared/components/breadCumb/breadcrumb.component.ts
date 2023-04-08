@@ -153,6 +153,9 @@ export class BreadCumbComponent implements OnInit,OnDestroy {
       case "cashregister":
         this.getText("CashRegisters.CashRegisters");
         break;
+      case "checkbook":
+        this.getText("Entity.CheckBook");
+        break;
     }
   }
 

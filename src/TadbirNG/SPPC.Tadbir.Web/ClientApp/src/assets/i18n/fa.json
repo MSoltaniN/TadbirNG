@@ -231,7 +231,8 @@
     "ProfitLoss": "سود و زیان",
     "BalanceSheet": "ترازنامه",
     "Widget": "ویجت",
-    "CashRegister": "صندوق"
+    "CashRegister": "صندوق",
+    "CheckBook": "دسته چک"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",
@@ -1295,6 +1296,7 @@
     "Name": "نام",
     "BankName": "نام بانک",
     "StartNumber": "شماره شروع",
+    "EndNumber": "شماره پایان",
     "PagesCount": "تعداد برگ",
     "Other": "سایر",
     "Archive": "بایگانی",
@@ -1302,7 +1304,10 @@
     "CancelCheck": "ابطال چک",
     "UndoCancelCheck": "Undo cancel check",
     "New": "دسته چک جدید",
-    "isArchived": "بایگانی"
+    "isArchived": "بایگانی",
+    "Delete": "حذف دسته جک",
+    "CheckBookNo": "شماره دسته چک",
+    "SearchCheckBook": "جستجوی دسته چک"
   },
   "Paging": {
     "Record": "رکورد",

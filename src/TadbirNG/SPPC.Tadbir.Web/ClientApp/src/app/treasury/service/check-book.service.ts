@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { FullAccount } from "@sppc/finance/models";
 import { BaseService, String } from "@sppc/shared/class";
 import { OperationId } from "@sppc/shared/enum/operationId";
 import { BrowserStorageService } from "@sppc/shared/services";
@@ -21,6 +22,8 @@ export class CheckBookInfo {
   detailAccountId: null;
   costCenterId: number;
   projectId: number;
+  fullAccount: FullAccount;
+  pageCount: number;
   hasNext: boolean;
   hasPrevious: boolean;
 }
@@ -52,7 +55,7 @@ export class CheckBookService extends BaseService {
       .pipe(map((response) => <any>(<Response>response)));
   }
 
-  insertPages(id: number, listChanged: boolean = false) {
+  insertPages(id: number, listChanged: boolean = true) {
     var postItem = {
       listChanged: listChanged,
       operation: OperationId.View,
