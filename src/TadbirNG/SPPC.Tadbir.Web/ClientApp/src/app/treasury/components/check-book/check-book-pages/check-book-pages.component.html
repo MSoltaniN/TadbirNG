@@ -25,7 +25,7 @@
                       tLtr: this.currentlang === 'en'
                     }"
                     [data]="rowData"
-                    [height]="250"
+                    [height]="450"
                     [sortable]="{ allowUnsort: true, mode: 'multiple' }"
                     [sort]="sort"
                     [pageSize]="pageSize"
@@ -33,11 +33,10 @@
                     [pageable]="true"
                     [resizable]="true"
                     [scrollable]="'scrollable'"
-                    (pageChange)="onPageChange($event)"
+                    (pageChange)="pageChange($event)"
                     (sortChange)="sortChange($event)"
-                    (edit)="editHandler($event)"
                     (remove)="removeHandler()"
-                    [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+                    [selectable]="{ checkboxOnly: true, mode: 'single' }"
                     [(selectedKeys)]="selectedRows"
                     [kendoGridSelectBy]="getSelectedRow"
                     sppc-auto-generated-grid-reorder
@@ -61,29 +60,48 @@
   
                     <ng-template kendoGridToolbarTemplate>
                       <button
-                        kendoGridAddCommand
-                        (click)="openDialog(itemListRef,accountItem.Account)"
-                        [icon]="'file-add'"
                         type="button"
-                        title="{{ 'Buttons.Add' | translate }}"
-                        [disabled]="!accountRequired"
-                      ></button>
+                        [disabled]="!hasPage"
+                        class="k-button"
+                        SppcPermissionCheck="Delete"
+                        [EntityName]="entityTypeName"
+                        (sppcClick)="removeHandler()"
+                      >
+                        <span class="k-icon k-i-trash"></span>
+                        {{ "CheckBook.DeletePages" | translate }}
+                      </button>
                 
                       <button
-                        (click)="editHandler()"
-                        class="k-button k-button-icon"
-                        [disabled]="selectedRows.length != 1"
-                        title="{{ 'Buttons.Edit' | translate }}"
+                        (click)="cancelCheck()"
+                        class="k-button"
+                        [disabled]="checkStatus == 1 || selectedRows.length==0"
+                        title="{{ 'CheckBook.CancelCheck' | translate }}"
                       >
-                        <span class="k-icon k-i-pencil"></span>
+                        <span class="k-icon k-i-cancel"></span>
                       </button>
                       <button
-                        (click)="removeHandler()"
-                        class="k-button k-button-icon"
-                        [disabled]="selectedRows.length == 0"
-                        title="{{ 'Buttons.Delete' | translate }}"
+                        (click)="undoCancelCheck()"
+                        class="k-button"
+                        [disabled]="checkStatus == 3"
+                        title="{{ 'CheckBook.UndoCancelCheck' | translate }}"
                       >
-                        <span class="k-icon k-i-delete"></span>
+                        <span class="k-icon k-i-arrow-rotate-ccw"></span>
+                      </button>
+                      <button
+                        (click)="showDialog(true,pageOperationsItem.Connect)"
+                        class="k-button"
+                        [disabled]="!isConnected"
+                        title="{{ 'CheckBook.CreateConnection' | translate }}"
+                      >
+                        <span class="k-icon k-i-link"></span>
+                      </button>
+                      <button
+                        (click)="showDialog(true,pageOperationsItem.UndoConnect)"
+                        class="k-button"
+                        [disabled]="!isConnected"
+                        title="{{ 'CheckBook.UndoConnect' | translate }}"
+                      >
+                        <span class="k-icon k-i-unlink"></span>
                       </button>
                     </ng-template>
   
@@ -197,7 +215,44 @@
       </div>
     </div>
   </div>
-  
-  <ng-template #itemListRef>
-    <!-- <sppc-full-account-detail (save)="onSave($event);" [accountItem]="accountItem" [selectedItem]="selectedItem" [fullAccount]="fullAccount" (close)="closeDialog();"></sppc-full-account-detail> -->
-  </ng-template>
+
+<!-- فرم تایید عملگرها -->
+<kendo-dialog
+  title="{{ 'CheckBook.DeletePages' | translate }}"
+  *ngIf="confirmDialog"
+  (close)="showDialog(false)"
+  [minWidth]="250"
+  [width]="450"
+>
+  <p >
+    {{ confirmMsg }}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="pageOperations(selectedOperation)" primary="true">
+      {{ "Buttons.Yes" | translate }}
+    </button>
+    <button class="k-button" (click)="showDialog(false)">
+      {{ "Buttons.No" | translate }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+<!-- فرم تایید حذف -->
+<kendo-dialog
+  title="{{ 'CheckBook.Delete' | translate }}"
+  *ngIf="deleteConfirm"
+  (close)="deleteModel(false)"
+  [minWidth]="250"
+  [width]="450"
+>
+  <p >
+    {{ deleteConfirmMsg }}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="deleteModel(true)" primary="true">
+      {{ "Buttons.Yes" | translate }}
+    </button>
+    <button class="k-button" (click)="deleteModel(false)">
+      {{ "Buttons.No" | translate }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>

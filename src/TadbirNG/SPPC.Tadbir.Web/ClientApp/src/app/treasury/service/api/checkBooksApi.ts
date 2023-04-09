@@ -21,6 +21,7 @@ export class CheckBooksApi
 
     /**
      * API client URL for search check book item specified by number
+     * {checkBookNo}
      */
     public static CheckBookByNo = environment.BaseUrl + "/check-books/by-no/{0}";
 
@@ -32,12 +33,7 @@ export class CheckBooksApi
     /**
      * API server route URL for cancelling a single page specified by identifier
      */
-    public static CancelPage = environment.BaseUrl + "check-books/pages/{0}/cancel";
-
-    /**
-     * API client URL for delete Pages of check book
-     */
-    public static DeletePages = environment.BaseUrl + "/check-book/{0}/pages";
+    public static CancelPage = environment.BaseUrl + "/check-books/pages/{0}/cancel";
 
     /**
     * API client URL for the first check book in current environment

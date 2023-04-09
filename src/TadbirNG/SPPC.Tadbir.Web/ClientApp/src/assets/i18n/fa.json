@@ -102,7 +102,11 @@
     "OpenSessions": "جلسات کاربری باز",
     "SelectItemFromMainComponent": "ابتدا یک مورد را از جدول مولفه اصلی انتخاب کنید.",
     "ClickOnCearteRelation": "سپس روی دکمه 'ایجاد ارتباط' کلیک نمایید.",
-    "FirstRemoveWidgets": "پیش از حذف برگه از داشبورد، ابتدا باید ویجت های اضافه شده به برگه را حذف کنید"
+    "FirstRemoveWidgets": "پیش از حذف برگه از داشبورد، ابتدا باید ویجت های اضافه شده به برگه را حذف کنید",
+    "CheckBookPagesCancelConfirm": "آیا برای ابطال این چک به شماره {0} اطمینان دارید؟",
+    "CancelCheckIsSuccess": "ابطال چک با موفقیت انجام شد.",
+    "UndoCancelCheckIsSuccess": "با موفقیت انجام شد."
+
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
@@ -1292,7 +1296,14 @@
     "Delete":"حذف صندوق"
   },
   "CheckBook": {
+    "New": "دسته چک جدید",
+    "Save":"ذخیره",
+    "FirstCheckBook": "اولین دسته چک",
+    "LastCheckBook": "آخرین دسته چک",
+    "NextCheckBook": "دسته چک بعدی",
+    "PreviousCheckBook": "دسته چک قبلی",
     "CheckBook": "دسته چک",
+    "CheckBookPages": "برگه های دسته چک",
     "Name": "نام",
     "BankName": "نام بانک",
     "StartNumber": "شماره شروع",
@@ -1302,12 +1313,15 @@
     "Archive": "بایگانی",
     "BankAccount": "حساب بانک",
     "CancelCheck": "ابطال چک",
-    "UndoCancelCheck": "Undo cancel check",
-    "New": "دسته چک جدید",
+    "UndoCancelCheck": "برگشت از ابطال",
+    "CreateConnection": "ایجاد ارتباط",
+    "UndoConnect": "حذف ارتباط",
     "isArchived": "بایگانی",
     "Delete": "حذف دسته جک",
     "CheckBookNo": "شماره دسته چک",
-    "SearchCheckBook": "جستجوی دسته چک"
+    "SearchCheckBook": "جستجوی دسته چک",
+    "CheckBookNotFound": "دسته چک یافت نشد.",
+    "DeletePages": "حذف برگه ها"
   },
   "Paging": {
     "Record": "رکورد",
@@ -1610,6 +1624,10 @@
       "DescriptionIsRequired": "وارد کردن توضیحات اجباری است.",
       "DescriptionIsTooLong": "شرح می تواند حداکثر 256 حرف داشته باشد.",
       "AccountIdIsRequired": "انتخاب حساب برای این تابع اجباری است."
+    },
+    "CheckBook": {
+      "StartNoRequired": "وارد کردن شناره شروع اجباری است.",
+      "NoIsRequired": "وارد کردن شماره دسته چک اجباری است."
     }
   }
 }

@@ -97,7 +97,11 @@
     "OpenSessions": "Open user sessions",
     "SelectItemFromMainComponent": "First, select an item from the main component table.",
     "ClickOnCearteRelation": "Then click on the 'Create Relation' button.",
-    "FirstRemoveWidgets": "Before removing the tab from the dashboard, you must first remove the widgets added to the tab."
+    "FirstRemoveWidgets": "Before removing the tab from the dashboard, you must first remove the widgets added to the tab.",
+    "CheckBookDeleteConfirm": "are you sure to delete CheckBook?",
+    "CheckBookPagesCancelConfirm": "are you sure to Cancel this check with number {0}?",
+    "CancelCheckIsSuccess": "The check was canceled successfully.",
+    "UndoCancelCheckIsSuccess": "The check was undo cancelled successfully."
   },
   "Report": {
     "ReportViewer": "View of",
@@ -1260,7 +1264,14 @@
     "Delete": "Delete cash register"
   },
   "CheckBook": {
+    "New": "New check book",
+    "Save":"Save",
+    "FirstCheckBook": "first check book",
+    "LastCheckBook": "last check book",
+    "NextCheckBook": "next check book",
+    "PreviousCheckBook": "previous check book",
     "CheckBook": "Check Book",
+    "CheckBookPages": "check book pages",
     "Name": "Name",
     "BankName": "Bank Name",
     "StartNumber": "Start Number",
@@ -1271,11 +1282,14 @@
     "BankAccount": "Banck account",
     "CancelCheck": "Cancel check",
     "UndoCancelCheck": "Undo cancel check",
-    "New": "Undo check book",
+    "CreateConnection": "Create connection",
+    "UndoConnect": "Delete connection",
     "isArchived": "Archive",
     "Delete": "Delete check book",
     "CheckBookNo": "check Book Number",
-    "SearchCheckBook": "Search Check Book"
+    "SearchCheckBook": "Search Check Book",
+    "CheckBookNotFound": "Check book not found",
+    "DeletePages": "Delete pages"
   },
   "AllValidations": {
     "Account": {
@@ -1482,6 +1496,10 @@
       "DescriptionIsRequired": "Description is required.",
       "DescriptionIsTooLong": "The description can have a maximum of 256 characters.",
       "AccountIdIsRequired": "Account selection is required for this function."
+    },
+    "CheckBook": {
+      "StartNoRequired": "Start number is required.",
+      "NoIsRequired": "Check bokk number is required."
     }
   }
 }

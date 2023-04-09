@@ -53,6 +53,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
 
   editMode = false;
   set setEditMode(value:boolean){
+    this.editForm.get('checkBookNo')[!value ? 'enable' : 'disable']();
     this.editForm.get('name')[!value ? 'enable' : 'disable']();
     this.editForm.get('bankName')[!value ? 'enable' : 'disable']();
     this.editForm.get('startNo')[!value ? 'enable' : 'disable']();
@@ -75,7 +76,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   isLastCheckBook = false;
   checkBookOperationsItem = checkBookOperations;
   fullAccountForm:FormGroup;
-  deleteConfirm = false;
+  deleteConfirmBox = false;
   searchConfirm = false;
   checkBookNo:number;
 
@@ -169,7 +170,6 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     if (this.model.id == 0) {
       this.model.branchId = this.BranchId;
       this.model.issueDate = new Date();
-      this.model.checkBookNo = 0;
       this.selectedPagesCount = undefined;
       this.fullAccountForm.reset();
 
@@ -229,8 +229,8 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   }
 
   removeHandler() {
-    this.deleteConfirm = true;
-    this.prepareDeleteConfirm(this.getText("Messages.SelectedItems"));
+    this.deleteConfirmBox = true;
+    this.prepareDeleteConfirm(this.getText("Entity.CheckBook"));
   }
 
   deleteModel(confirm:boolean) {
@@ -247,7 +247,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
           // this.editForm.reset(this.model);
           // this.initCheckBookForm();
           this.router.navigate(['/treasury/check-books/new'])
-          this.deleteConfirm = false;
+          this.deleteConfirmBox = false;
   
           this.showMessage(this.deleteMsg,MessageType.Info);
         }, err =>{
@@ -255,8 +255,12 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
         })
       }
     } else {
-      this.deleteConfirm = false
+      this.deleteConfirmBox = false
     }
+  }
+
+  nullPages() {
+    this.setEditMode = false;
   }
 
   checkOperation(mode){
@@ -312,7 +316,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
         if (err == null || err.statusCode == 404) {
           this.isFirstCheckBook = true;
           this.showMessage(
-            this.getText("Voucher.VoucherNotFound"),
+            this.getText("CheckBook.CheckBookNotFound"),
             MessageType.Warning
           );
         }
@@ -405,42 +409,25 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     }
   }
 
-  getCheckBookPages(id) {}
-
   cancelHandler() {
     this.errorMessages = undefined;
   }
 
-  setEndNo() {
-    let startNoOrigin = this.editForm.value.startNo;
-    if (startNoOrigin) {
-      let serial = <string>startNoOrigin.replace(/\d/g,'_');
-      let startNo:any = <string>startNoOrigin.replace(/\D+/g, '_');
-      let endNumber = 0;
-      startNo = startNo.split('_');
-      for (let i = 0; i < this.selectedPagesCount; i++) {
-        endNumber = +startNo[startNo.length - 1] + i;
-      }
-      startNo[startNo.length - 1] = endNumber.toString();
-  
-      let endNo = startNo.join('');
-      endNo.split('').forEach(d => {
-        serial = serial.replace('_',d);
-      })
-      this.editForm.patchValue({
-        endNo: serial
-      })
-    }
-  }
-
   onSave(e){
-    if (!this.editForm.valid)
-     return;
+    console.log(this.editForm);
+    
+    // if (!this.editForm.valid)
+    //  return;
 
     let value = this.editForm.value;
     value.pageCount = this.selectedPagesCount;
     value.fullAccount = this.fullAccountForm.value.fullAccount;
-    this.checkBookService.insert(CheckBooksApi.CheckBooks,value).subscribe(
+
+    let request = this.editMode?
+      this.checkBookService.edit(CheckBooksApi.CheckBooks,value):
+      this.checkBookService.insert(CheckBooksApi.CheckBooks,value);
+
+    request.subscribe(
       async (res) => {
         this.model = res as CheckBookInfo;
         if (this.editMode)
@@ -484,6 +471,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   onChangePagesCountDropDown(e) {
     if (e == -1) {
       this.otherSizeOfPages = true;
+      this.selectedPagesCount = 1;
     } else {
       this.otherSizeOfPages = false;
       // this.setEndNo();
@@ -512,9 +500,9 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
    * prepare confim message for delete operation
    * @param text is a part of message that use for delete confirm message
    */
-  public prepareDeleteConfirm(text: string) {
+  public prepareDeleteConfirm(text?: string) {
     this.translate
-      .get("Messages.VoucherDeleteConfirm")
+      .get("Messages.DeleteConfirm")
       .subscribe((msg: string) => {
         this.deleteConfirmMsg = String.Format(msg, text);
       });

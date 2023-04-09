@@ -71,4 +71,19 @@ export class CheckBookService extends BaseService {
       .post(url, options)
       .pipe(map((response) => <any>(<Response>response)));
   }
+
+  updateCheck(apiUrl:string, listChanged: boolean = true) {
+    var postItem = {
+      listChanged: listChanged
+    };
+    var headers = this.httpHeaders;
+    var postBody = JSON.stringify(postItem);
+    var base64Body = btoa(encodeURIComponent(postBody));
+    if (headers) headers = headers.append("X-Tadbir-GridOptions", base64Body);
+    var options = { headers: headers };
+
+    return this.http
+      .put(apiUrl, options)
+      .pipe(map((response) => <any>(<Response>response)));
+  }
 }
