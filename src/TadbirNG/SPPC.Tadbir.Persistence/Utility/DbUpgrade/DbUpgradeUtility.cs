@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using SPPC.Framework.Common;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Common;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Model.Config;
 
@@ -75,7 +76,7 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
         {
             var versions = new List<Version>();
             var script = LoadUpdateScript(connection, scriptPath);
-            var regex = new Regex(DbUpgradeConstants.ScriptBlockRegex);
+            var regex = new Regex(ScriptConstants.ScriptBlockRegex);
             foreach (Match match in regex.Matches(script))
             {
                 versions.Add(new Version(
@@ -120,8 +121,8 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
             var dbConfig = SysParameterUtility.AllParameters.Db;
             var sqlBuilder = new SqlConnectionStringBuilder(connection);
             var scriptFileName = sqlBuilder.InitialCatalog == dbConfig.SysDbName
-                ? DbUpgradeConstants.SysDbUpgradeScript
-                : DbUpgradeConstants.DbUpgradeScript;
+                ? ScriptConstants.SysDbUpdateScript
+                : ScriptConstants.DbUpdateScript;
             var scriptPath = Path.Combine(scriptFolder, scriptFileName);
             if (File.Exists(scriptPath))
             {
@@ -139,7 +140,7 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
                 DataSource = company.Server,
                 InitialCatalog = company.DbName,
                 IntegratedSecurity = false,
-                MultipleActiveResultSets = true
+                MultipleActiveResultSets = false
             };
             if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
             {
@@ -158,7 +159,7 @@ namespace SPPC.Tadbir.Persistence.DbUpgrade
         private static Dictionary<Version, string> GetScriptBlocks(Version version, string script)
         {
             var blocks = new Dictionary<Version, string>();
-            var regex = new Regex(DbUpgradeConstants.ScriptBlockRegex);
+            var regex = new Regex(ScriptConstants.ScriptBlockRegex);
             foreach (Match match in regex.Matches(script))
             {
                 var ver = new Version(

@@ -54,7 +54,7 @@ namespace SPPC.Tools.SystemDesignerCli
         private static void RefereshRuntimeDbScripts()
         {
             if (File.GetLastWriteTime(_mainDbScriptPath) >
-                     File.GetLastWriteTime(_runtimeDbScriptPath))
+                File.GetLastWriteTime(_runtimeDbScriptPath))
             {
                 File.Copy(_mainDbScriptPath, _runtimeDbScriptPath, true);
             }

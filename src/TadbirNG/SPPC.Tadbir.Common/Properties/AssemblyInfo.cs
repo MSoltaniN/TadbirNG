@@ -17,5 +17,3 @@ using SPPC.Tadbir.Configuration;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("b2c50bb5-cd95-4456-85c1-3f29ea6d119a")]
-
-[assembly: DbVersion(System = DbVersionValues.SystemDbVersion, Company = DbVersionValues.CompanyDbVersion)]

@@ -3,40 +3,33 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using SPPC.Tadbir.Common;
 using SPPC.Tools.Model;
 
 namespace SPPC.Tools.Utility
 {
     public class ScriptUtility
     {
-        public const string CreateScriptName = "Tadbir_CreateDbObjects.sql";
-
-        public const string UpdateScriptName = "Tadbir_UpdateDbObjects.sql";
-
-        public const string SysCreateScriptName = "TadbirSys_CreateDbObjects.sql";
-
-        public const string SysUpdateScriptName = "TadbirSys_UpdateDbObjects.sql";
-
         public static void AddVersionMarker(StringBuilder builder)
         {
-            var path = Path.Combine(PathConfig.ApiScriptRoot, UpdateScriptName);
+            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptConstants.DbUpdateScript);
             AddVersionMarker(path, builder);
         }
 
         public static void AddSysVersionMarker(StringBuilder builder)
         {
-            var path = Path.Combine(PathConfig.ApiScriptRoot, SysUpdateScriptName);
+            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptConstants.SysDbUpdateScript);
             AddVersionMarker(path, builder);
         }
 
         public static void ReplaceScript(string newScript)
         {
-            OverwriteScriptBlock(CreateScriptName, newScript);
+            OverwriteScriptBlock(ScriptConstants.DbCreateScript, newScript);
         }
 
         public static void ReplaceSysScript(string newScript)
         {
-            OverwriteScriptBlock(SysCreateScriptName, newScript);
+            OverwriteScriptBlock(ScriptConstants.SysDbCreateScript, newScript);
         }
 
         public static string GetNullableValue(string nullable, bool isUnicode = true)

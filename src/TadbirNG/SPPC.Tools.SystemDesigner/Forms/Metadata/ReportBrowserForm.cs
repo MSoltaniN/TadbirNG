@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Common;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tools.Extensions;
@@ -226,7 +227,7 @@ WHERE [EntityName] = '{editor.SelectedViewModel}'");
             ////scriptBuilder.AppendLine(
             ////    ScriptUtility.GetInsertScripts(addedParameters, ParameterExtensions.ToScript));
 
-            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptUtility.SysUpdateScriptName);
+            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptConstants.SysDbUpdateScript);
             File.AppendAllText(path, scriptBuilder.ToString(), Encoding.UTF8);
         }
 

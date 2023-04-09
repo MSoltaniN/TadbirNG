@@ -43,6 +43,11 @@ namespace SPPC.Tadbir.Service
         IStringLocalizer<AppStrings> Strings { get; }
 
         /// <summary>
+        /// امکان خواندن آخرین نسخه را برای دیتابیس های برنامه فراهم می کند
+        /// </summary>
+        IDbVersionProvider DbVersions { get; }
+
+        /// <summary>
         /// امکان فیلتر کردن منوهای برنامه را فراهم می کند
         /// </summary>
         ICommandFilter CommandFilter { get; }

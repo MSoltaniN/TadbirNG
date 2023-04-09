@@ -15,13 +15,13 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Common;
-using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Resources;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Config;
@@ -40,14 +40,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        /// <param name="appConfig">امکان خواندن تنظیمات کلی برنامه را فراهم می کند</param>
-        /// <param name="pathProvider">مسیرهای فایل های کاربردی مورد نیاز در سرویس وب را فراهم می کند</param>
+        /// <param name="system">امکانات سیستمی پرکاربرد را به طور متمرکز در اختیار کلاس ها قرار می دهد</param>
         public CompanyRepository(IRepositoryContext context, IOperationLogRepository log,
-            IConfiguration appConfig, IApiPathProvider pathProvider)
+            ISystemTools system)
             : base(context, log)
         {
-            _appConfig = appConfig;
-            _pathProvider = pathProvider;
+            _appConfig = system.Configuration;
+            _pathProvider = system.PathProvider;
+            _dbVersions = system.DbVersions;
             UnitOfWork.UseSystemContext();
         }
 
@@ -353,7 +353,7 @@ namespace SPPC.Tadbir.Persistence
             sqlBuilder.Append(GetCompanyScript(scriptPath));
             sqlBuilder.AppendLine();
             sqlBuilder.AppendLine(
-                $"INSERT INTO [Core].[Version] ([VersionID], [Number]) VALUES (1, '{DbVersions.CompanyDbVersion}')");
+                $"INSERT INTO [Core].[Version] ([VersionID], [Number]) VALUES (1, '{_dbVersions.CompanyDbVersion}')");
             DbConsole.ExecuteNonQuery(sqlBuilder.ToString());
         }
 
@@ -532,5 +532,6 @@ namespace SPPC.Tadbir.Persistence
 
         private readonly IConfiguration _appConfig;
         private readonly IApiPathProvider _pathProvider;
+        private readonly IDbVersionProvider _dbVersions;
     }
 }

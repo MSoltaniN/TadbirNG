@@ -165,6 +165,6 @@ namespace SPPC.Tools.SystemDesigner.Utility
         }
 
         private static readonly DataLayerBase _dal = new SqlDataLayer(_connection);
-        private const string _connection = "Server=.;Database=NGTadbirSys;Trusted_Connection=True;MultipleActiveResultSets=true";
+        private const string _connection = "Server=.;Database=NGTadbirSys;Trusted_Connection=True;MultipleActiveResultSets=False";
     }
 }

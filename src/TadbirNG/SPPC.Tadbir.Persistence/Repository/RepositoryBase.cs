@@ -223,12 +223,12 @@ namespace SPPC.Tadbir.Persistence
             builder.AppendFormat("Server={0};Database={1};Connect Timeout=600;", csBuilder.DataSource, company.DbName);
             if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
             {
-                builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
+                builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=False",
                     company.UserName, company.Password);
             }
             else
             {
-                builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
+                builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=False",
                     csBuilder.UserID, csBuilder.Password);
             }
 

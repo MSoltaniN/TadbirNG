@@ -1186,7 +1186,7 @@
     <value>دفتر حساب</value>
   </data>
   <data name="NavigateEntities" xml:space="preserve">
-    <value>جابجایی روی {0}</value>
+    <value>جابجایی بین {0}</value>
   </data>
   <data name="FromNo" xml:space="preserve">
     <value>از سند</value>
@@ -3795,9 +3795,6 @@
   <data name="LastCheckBook" xml:space="preserve">
     <value>آخرین دسته چک</value>
   </data>
-  <data name="NavigateEntitiesCheckBooks" xml:space="preserve">
-    <value>جابجایی بین دسته چک ها</value>
-  </data>
   <data name="NewCheckBook" xml:space="preserve">
     <value>دسته چک جدید</value>
   </data>
@@ -3833,5 +3830,8 @@
   </data>
   <data name="Used" xml:space="preserve">
     <value>استفاده شده</value>
+  </data>
+  <data name="PageCount" xml:space="preserve">
+    <value>تعداد برگه</value>
   </data>
 </root>
