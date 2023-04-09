@@ -123,7 +123,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     this.initFullAccountFromGroup();
     this.initCheckBookForm();
     let url;
-    console.log(this.urlMode);
+
     this.route.paramMap.subscribe(param => {
       switch (param.get('mode')) {
         case 'new':
@@ -189,8 +189,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
       this.isLastCheckBook = !this.model.hasNext;
       this.isFirstCheckBook = !this.model.hasPrevious;
     }
-    console.log(this.editForm,this.fullAccountForm);
-    
+
     this.editForm.reset(this.model);
   }
 
@@ -305,14 +304,12 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
       take(2)
     )
     .subscribe(res => {
-        console.log(res);
         if (this.urlMode == 'by-no') {
           this.searchConfirm = false;
         }
         this.model = res;
         this.initCheckBookForm()
       }, (err) => {
-        console.log(err);
         if (err == null || err.statusCode == 404) {
           this.isFirstCheckBook = true;
           this.showMessage(

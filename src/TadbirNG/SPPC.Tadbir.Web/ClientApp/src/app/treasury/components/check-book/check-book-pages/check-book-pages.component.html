@@ -72,17 +72,17 @@
                       </button>
                 
                       <button
-                        (click)="cancelCheck()"
+                        (click)="cancelCheck(true)"
                         class="k-button"
-                        [disabled]="checkStatus == 1 || selectedRows.length==0"
+                        [disabled]="checkStatus != 1"
                         title="{{ 'CheckBook.CancelCheck' | translate }}"
                       >
                         <span class="k-icon k-i-cancel"></span>
                       </button>
                       <button
-                        (click)="undoCancelCheck()"
+                        (click)="cancelCheck(false)"
                         class="k-button"
-                        [disabled]="checkStatus == 3"
+                        [disabled]="checkStatus != 3"
                         title="{{ 'CheckBook.UndoCancelCheck' | translate }}"
                       >
                         <span class="k-icon k-i-arrow-rotate-ccw"></span>

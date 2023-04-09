@@ -78,7 +78,7 @@
     "IncorrectFileFormat": "The file format is incorrect",
     "UploadSuccessful": "Upload Successful",
     "VoucherNumberByStatus": "<a class='tostrlink' href='{2}'>The system has {0} {1} vouchers</a>",
-    "OperationSuccessful": "Operation successful",
+    "OperationSuccessful": "Operation successful.",
     "VoucherDeleteConfirm": "are you sure to delete voucher?",
     "DeleteOperationSuccessful": "delete operation successful",
     "GlobalErrorMessage": "An error occurred while performing the operation",
@@ -99,9 +99,7 @@
     "ClickOnCearteRelation": "Then click on the 'Create Relation' button.",
     "FirstRemoveWidgets": "Before removing the tab from the dashboard, you must first remove the widgets added to the tab.",
     "CheckBookDeleteConfirm": "are you sure to delete CheckBook?",
-    "CheckBookPagesCancelConfirm": "are you sure to Cancel this check with number {0}?",
-    "CancelCheckIsSuccess": "The check was canceled successfully.",
-    "UndoCancelCheckIsSuccess": "The check was undo cancelled successfully."
+    "CheckBookPagesCancelConfirm": "are you sure to Cancel this check with number {0}?"
   },
   "Report": {
     "ReportViewer": "View of",

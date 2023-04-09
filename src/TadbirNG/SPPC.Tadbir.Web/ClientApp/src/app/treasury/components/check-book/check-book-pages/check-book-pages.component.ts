@@ -120,10 +120,10 @@ export class CheckBookPagesComponent
   }
 
   public get checkStatus(): boolean {
-    let status = this.rowData?.data.find(
+    let check = this.rowData?.data.find(
       (item) => item.id == this.selectedRows[0]
-    ).status;
-    return status;
+    );
+    return check?.status;
   }
 
   ngOnInit() {
@@ -168,7 +168,7 @@ export class CheckBookPagesComponent
   pageOperations(item: number) {
     switch (item) {
       case PageOperations.Cancel:
-        this.cancelCheck();
+        this.cancelCheck(true);
         break;
 
       case PageOperations.UndoCancel:
@@ -192,14 +192,19 @@ export class CheckBookPagesComponent
     }
   }
 
-  cancelCheck() {
+  cancelCheck(status:boolean) {
+    let url;
+    if (status)
+      url = String.Format(CheckBooksApi.CancelPage, this.selectedRows[0]);
+    else
+      url = String.Format(CheckBooksApi.UndoCancelPage, this.selectedRows[0]);
+
     this.grid.loading = true;
-    let url = String.Format(CheckBooksApi.CancelPage, this.selectedRows[0]);
     this.checkBookService.updateCheck(url).subscribe({
       next: (res) => {
         this.grid.loading = false;
         this.showMessage(
-          this.getText("Messages.CancelCheckIsSuccess"),
+          this.getText("Messages.OperationSuccessful"),
           MessageType.Succes
         );
         this.reloadGrid();
@@ -212,41 +217,6 @@ export class CheckBookPagesComponent
             MessageType.Warning
           );
       },
-    });
-  }
-
-  undoCancelCheck() {
-    this.grid.loading = true;
-    let url = String.Format(CheckBooksApi.UndoCancelPage, this.selectedRows[0]);
-    this.checkBookService.updateCheck(url).subscribe({
-      next: (res) => {
-        this.grid.loading = false;
-        this.showMessage(
-          this.getText("Messages.UndoCancelCheckIsSuccess"),
-          MessageType.Succes
-        );
-        this.reloadGrid();
-      },
-      error: (error) => {
-        this.grid.loading = false;
-        if (error)
-          this.showMessage(
-            this.errorHandlingService.handleError(error),
-            MessageType.Warning
-          );
-      },
-    });
-  }
-
-  pagesForm1;
-  pagesForm() {
-    this.pagesForm1 = new FormGroup({
-      id: new FormControl(),
-      checkBookID: new FormControl("", Validators.required),
-      checkBookPageID: new FormControl("", Validators.required),
-      checkID: new FormControl("", Validators.required),
-      serialNo: new FormControl("", Validators.required),
-      status: new FormControl("", Validators.required),
     });
   }
 
@@ -273,6 +243,7 @@ export class CheckBookPagesComponent
           },
           error: (error) => {
             this.grid.loading = false;
+            this.deleteConfirm = false;
             if (error)
               this.showMessage(
                 this.errorHandlingService.handleError(error),
