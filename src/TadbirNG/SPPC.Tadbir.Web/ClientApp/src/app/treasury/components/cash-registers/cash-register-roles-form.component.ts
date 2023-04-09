@@ -41,6 +41,7 @@ export class CashRegisterRolesFormComponent extends DetailComponent implements O
     this.selectedRows = [];
     if (selectedRoles != undefined) {
       this.gridData = selectedRoles.relatedItems;
+      this.showloadingMessage = selectedRoles.relatedItems.length? true: false;
 
       for (let roleItem of this.gridData) {
         if (roleItem.isSelected) {
@@ -64,21 +65,23 @@ export class CashRegisterRolesFormComponent extends DetailComponent implements O
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.CashRegister, ViewName.CashRegister,elem);
   }
 
-  ngOnInit() {
-    console.log(this.cashRegisterRolesData);
-    
-  }
+  ngOnInit() { }
 
   public onSave(e: any): void {
     e.preventDefault();
+    let data:RelatedItems = {
+      id: this.cashRegisterRolesData.id,
+      relatedItems: []
+    };
     this.cashRegisterRolesData.relatedItems.forEach(f => f.isSelected = false);
 
     for (let roleSelected of this.selectedRows) {
       let roleIndex = this.cashRegisterRolesData.relatedItems.findIndex(f => f.id == roleSelected);
       this.cashRegisterRolesData.relatedItems[roleIndex].isSelected = true;
+      data.relatedItems.push(this.cashRegisterRolesData.relatedItems[roleIndex])
     }
     // return
-    this.saveCashRegisterRoles.emit(this.cashRegisterRolesData);
+    this.saveCashRegisterRoles.emit(data);
   }
 
   public onCancel(e: any): void {
