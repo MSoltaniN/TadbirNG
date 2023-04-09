@@ -3834,4 +3834,7 @@
   <data name="PageCount" xml:space="preserve">
     <value>تعداد برگه</value>
   </data>
+  <data name="AssignCashRegisterUser" xml:space="preserve">
+    <value>تخصیص کاربر به صندوق اسناد</value>
+  </data>
 </root>
