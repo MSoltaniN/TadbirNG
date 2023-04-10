@@ -175,6 +175,7 @@
               [(ngModel)]="selectedPagesCount || editMode"
               [ngModelOptions]="{standalone: true}"
               (onkeyup)="onChangePagesCountInput($event)"
+              (onchange)="onChangePagesCountInput($event)"
               min="1" max="1000"
               style="max-width: 100%;"
             />
@@ -182,14 +183,14 @@
           <div class="col-md-6 col-xs-6" style="padding: 0;">
             <fieldset [disabled]="editMode" [ngClass]="{'disabled': editMode}">
               <kendo-dropdownlist [data]="pagesCount" class="mx-1"
-                                  [textField]="'value'"
-                                  [valueField]="'key'"
-                                  [valuePrimitive]="true"
-                                  [value]="selectedPagesCount"
-                                  (valueChange)="onChangePagesCountDropDown($event)"
-                                  [(ngModel)]="selectedPagesCount"
-                                  [ngModelOptions]="{standalone: true}"
-                                  [disabled]="editMode">
+                [textField]="'value'"
+                [valueField]="'key'"
+                [valuePrimitive]="true"
+                [value]="selectedPagesCount"
+                (valueChange)="onChangePagesCountDropDown($event)"
+                [(ngModel)]="selectedPagesCount"
+                [ngModelOptions]="{standalone: true}"
+                [disabled]="editMode">
               </kendo-dropdownlist>
             </fieldset>
           </div>
