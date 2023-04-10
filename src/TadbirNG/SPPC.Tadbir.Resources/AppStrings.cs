@@ -385,6 +385,11 @@ namespace SPPC.Tadbir.Resources
         public const string AssetsSum = "AssetsSum";
 
         /// <summary>
+        /// Default text : تخصیص کاربر به صندوق اسناد
+        /// </summary>
+        public const string AssignCashRegisterUser = "AssignCashRegisterUser";
+
+        /// <summary>
         /// Default text : نقش های تخصیص یافته
         /// </summary>
         public const string AssignedRoles = "AssignedRoles";

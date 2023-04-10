@@ -3843,4 +3843,7 @@
   <data name="PageCount" xml:space="preserve">
     <value>Page Count</value>
   </data>
+  <data name="AssignCashRegisterUser" xml:space="preserve">
+    <value>Assign user to cash register</value>
+  </data>
 </root>
