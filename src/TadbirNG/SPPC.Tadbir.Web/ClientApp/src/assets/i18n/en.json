@@ -1257,7 +1257,8 @@
   },
   "CashRegisters": {
     "CashRegisters": "Cash Registers",
-    "New": "new Cash Register",
+    "New": "New cash register",
+    "Edit": "Edit cash register",
     "RolesTitle": "Users assigned to the cash register",
     "Delete": "Delete cash register"
   },

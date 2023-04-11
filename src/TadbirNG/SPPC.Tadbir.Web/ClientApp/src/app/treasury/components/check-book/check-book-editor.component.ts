@@ -416,9 +416,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   }
 
   goSearch() {
-    setTimeout(() => {
-      this.searchConfirm = true;
-    }, 0);
+    this.searchConfirm = true;
     if (this.urlMode != 'by-no') {
       this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
         returnUrl: "/treasury/check-books/"+this.urlMode
