@@ -86,7 +86,7 @@
                         type="button"
                         [disabled]="!hasPage"
                         class="k-button"
-                        SppcPermissionCheck="Delete"
+                        SppcPermissionCheck="DeletePages|Delete"
                         [EntityName]="entityTypeName"
                         (sppcClick)="removeHandler()"
                       >
@@ -95,7 +95,9 @@
                       </button>
                 
                       <button
-                        (click)="cancelCheck(true)"
+                        SppcPermissionCheck="CancelPage|Edit"
+                        [EntityName]="entityTypeName"
+                        (sppcClick)="cancelCheck(true)"
                         class="k-button"
                         [disabled]="checkStatus != 1"
                         title="{{ 'CheckBook.CancelCheck' | translate }}"
@@ -103,7 +105,9 @@
                         <span class="k-icon k-i-cancel"></span>
                       </button>
                       <button
-                        (click)="cancelCheck(false)"
+                        SppcPermissionCheck="UndoCancelPage|Edit"
+                        [EntityName]="entityTypeName"
+                        (sppcClick)="cancelCheck(false)"
                         class="k-button"
                         [disabled]="checkStatus != 3"
                         title="{{ 'CheckBook.UndoCancelCheck' | translate }}"
@@ -111,7 +115,9 @@
                         <span class="k-icon k-i-arrow-rotate-ccw"></span>
                       </button>
                       <button
-                        (click)="showDialog(true,pageOperationsItem.Connect)"
+                        SppcPermissionCheck="ConnectToCheck|Edit"
+                        [EntityName]="entityTypeName"
+                        (sppcClick)="showDialog(true,pageOperationsItem.Connect)"
                         class="k-button"
                         [disabled]="!isConnected"
                         title="{{ 'CheckBook.CreateConnection' | translate }}"
@@ -119,7 +125,9 @@
                         <span class="k-icon k-i-link"></span>
                       </button>
                       <button
-                        (click)="showDialog(true,pageOperationsItem.UndoConnect)"
+                        SppcPermissionCheck="DisconnectFromCheck|Edit"
+                        [EntityName]="entityTypeName"
+                        (sppcClick)="showDialog(true,pageOperationsItem.UndoConnect)"
                         class="k-button"
                         [disabled]="!isConnected"
                         title="{{ 'CheckBook.UndoConnect' | translate }}"

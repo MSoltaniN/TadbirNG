@@ -67,7 +67,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     {key: 25, value: 25},
     {key: 50, value: 50},
     {key: 100, value: 100},
-    {key: -1, value: this.getText("CheckBook.Other")}
+    {key: -1, value: "CheckBook.Other"}
   ];
   selectedPagesCount: number;
   checkBookPages = [];

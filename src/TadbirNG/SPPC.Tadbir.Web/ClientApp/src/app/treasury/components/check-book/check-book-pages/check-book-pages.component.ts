@@ -161,9 +161,6 @@ export class CheckBookPagesComponent
       CheckBooksApi.CheckBookPages,
       this.checkBookId
     );
-    console.log(changes);
-    this.filterChange
-    
     this.showloadingMessage = false;
     if (changes.checkBookId && this.checkBookId && !changes.pages) {
       this.reloadGrid();
@@ -172,8 +169,6 @@ export class CheckBookPagesComponent
 
   public onDataBind(res: any): void {    
     this.checkBookPages = res;
-    console.log(this.currentFilter,this.grid.filter,this.grid.filter.filters.length);
-    
     if (!res.length && !this.grid.filter.filters.length) {
       this.nullPages.emit(true);
     } else {

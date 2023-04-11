@@ -191,6 +191,9 @@
                 [(ngModel)]="selectedPagesCount"
                 [ngModelOptions]="{standalone: true}"
                 [disabled]="editMode">
+                <ng-template kendoDropDownListItemTemplate let-dataItem>
+                  {{ dataItem?.value | translate }}
+                </ng-template>
               </kendo-dropdownlist>
             </fieldset>
           </div>
