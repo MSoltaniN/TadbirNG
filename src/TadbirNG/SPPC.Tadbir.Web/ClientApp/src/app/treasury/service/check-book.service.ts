@@ -5,7 +5,7 @@ import { BaseService, String } from "@sppc/shared/class";
 import { OperationId } from "@sppc/shared/enum/operationId";
 import { BrowserStorageService } from "@sppc/shared/services";
 import { map } from "rxjs";
-import { CheckBook } from "../models/checkBook";
+import { CheckBook, CheckBookPage } from "../models/checkBook";
 import { CheckBooksApi } from "./api/checkBooksApi";
 
 export class CheckBookInfo {
@@ -18,10 +18,6 @@ export class CheckBookInfo {
   bankName: string;
   isArchived: boolean = false;
   branchId: number;
-  accountId: number;
-  detailAccountId: null;
-  costCenterId: number;
-  projectId: number;
   fullAccount: FullAccount;
   pageCount: number;
   hasNext: boolean;

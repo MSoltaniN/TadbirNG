@@ -1,3 +1,5 @@
+import { FullAccount } from "@sppc/finance/models"
+
 export interface CheckBook {
     id: number,
     checkBookNo: number,
@@ -7,10 +9,7 @@ export interface CheckBook {
     endNo: string,
     bankName: string,
     isArchived: boolean,
-    branchId: number,
-    accountId: number,
-    detailAccountId: number,
-    costCenterId: number,
+    fullAccount: FullAccount;
     projectId: number
 }
 export interface CheckBookPage {

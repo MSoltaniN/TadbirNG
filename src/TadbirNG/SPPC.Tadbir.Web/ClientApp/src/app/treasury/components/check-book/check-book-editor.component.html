@@ -75,7 +75,7 @@
         </button>
 
         <button
-          class="k-button not-change"
+          class="k-button not-change "
           title="{{ 'CheckBook.LastCheckBook' | translate }}"
           [attr.disabled]="isLastCheckBook ? true : null"
           [EntityName]="entityTypeName"
@@ -86,8 +86,8 @@
         </button>
 
         <button
-          class="k-button"
-          [disabled]="editForm.status == 'INVALID'"
+          class="k-button prevent-duplicate"
+          [disabled]="editForm.status == 'INVALID' || editMode"
           SppcPermissionCheck="Edit"
           [EntityName]="entityTypeName"
           (sppcClick)="onSave($event)"
@@ -126,7 +126,7 @@
         <div class="form-group col-sm-5ths col-xs-12 item">
           <label for="name" class="control-label">{{ 'CheckBook.CheckBookNo' | translate }}</label>
     
-          <input sppcAutoFocus type="text" class="k-textbox" formControlName="checkBookNo" [disabled]="editMode"/>
+          <input type="text" class="k-textbox" formControlName="checkBookNo" [OnlyNumber] [disabled]="editMode"/>
     
           <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.checkBookNo.valid || editForm.controls.checkBookNo.pristine">
             <span *ngIf="editForm.controls.checkBookNo.errors?.required">{{ 'AllValidations.CheckBook.NoIsRequired' | translate }}</span>
@@ -137,7 +137,7 @@
         <div class="form-group col-sm-5ths col-xs-12 item">
           <label for="name" class="control-label">{{ 'CheckBook.Name' | translate }}</label>
     
-          <input type="text" class="k-textbox" formControlName="name" [disabled]="editMode"/>
+          <input sppcAutoFocus type="text" class="k-textbox" formControlName="name" [disabled]="editMode"/>
     
           <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
             <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
@@ -231,15 +231,12 @@
         </div>
 
       </form>
-      <div class="action-box">
-        <button class="create-pages-btn k-button" [disabled]="editMode" (click)="onSave($event)">ایجادبرگه ها</button>
-      </div>
     </div>
   </div>
   <div>
       <check-book-pages [pages]="checkBookPages"
        [checkBookId]="this.model.id"
-       (nullPages)="nullPages();"></check-book-pages>
+       (nullPages)="nullPages($event);"></check-book-pages>
   </div>
 <!-- فرم جستوجو -->
 <kendo-dialog

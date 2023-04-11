@@ -9,16 +9,15 @@ import { DetailComponent, FilterExpression, String } from '@sppc/shared/class';
 import { ReportViewerComponent, ViewIdentifierComponent } from '@sppc/shared/components';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
-import { SelectFormComponent } from '@sppc/shared/controls';
 import { Entities, Layout, MessageType } from '@sppc/shared/enum/metadata';
 import { ViewName } from '@sppc/shared/security';
 import { BrowserStorageService, ErrorHandlingService, MetaDataService } from '@sppc/shared/services';
 import { checkBookOperations } from '@sppc/treasury/models/chechBookOperations';
-import { CheckBook } from '@sppc/treasury/models/checkBook';
+import { CheckBook, CheckBookPage } from '@sppc/treasury/models/checkBook';
 import { CheckBooksApi } from '@sppc/treasury/service/api/checkBooksApi';
 import { CheckBookInfo, CheckBookService } from '@sppc/treasury/service/check-book.service';
 import { ToastrService } from 'ngx-toastr';
-import { exhaustMap, lastValueFrom, take } from 'rxjs';
+import { concatMap, exhaustMap, lastValueFrom, map, take } from 'rxjs';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -68,7 +67,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     {key: 25, value: 25},
     {key: 50, value: 50},
     {key: 100, value: 100},
-    {key: -1, value: "other"}
+    {key: -1, value: this.getText("CheckBook.Other")}
   ];
   selectedPagesCount: number;
   checkBookPages = [];
@@ -79,6 +78,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   deleteConfirmBox = false;
   searchConfirm = false;
   checkBookNo:number;
+  lastModel: CheckBookInfo;
 
   get urlMode() {
     let mode = this.route.snapshot.paramMap.get('mode');
@@ -132,9 +132,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     this.route.paramMap.subscribe(param => {
       switch (param.get('mode')) {
         case 'new':
-          // this.model = new CheckBookInfo();
-          this.isLastCheckBook = true;
-          this.initCheckBookForm();
+          this.addNew();
           break;
   
         case 'next':
@@ -185,12 +183,17 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
       this.isLastCheckBook = true;
       this.isFirstCheckBook = false;
     } else {
-      this.fullAccountForm.patchValue({
-        fullAccount: this.model.fullAccount
-      });
+      if (this.model.fullAccount.account.id) {
+        this.fullAccountForm.patchValue({
+          fullAccount: this.model.fullAccount
+        });
+      } else {
+        this.model.fullAccount = this.fullAccountForm.value.fullAccount;
+      }
 
       this.selectedPagesCount = this.model.pageCount;
 
+      this.isNew = false;
       this.setEditMode = true;
       this.searchConfirm = false;
       this.isLastCheckBook = !this.model.hasNext;
@@ -228,10 +231,16 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   }
 
   addNew() {
-    this.model = new CheckBookInfo();
-    this.initCheckBookForm();
-    this.checkBookPages = undefined;
-    this.router.navigate(['/treasury/check-books/new']);
+    if (this.urlMode != 'new'){
+      this.router.navigate(['/treasury/check-books/new']);
+    } else {
+      this.model = new CheckBookInfo();
+      this.initCheckBookForm();
+      this.checkBookPages = [];
+      this.isNew = true;
+      this.errorMessages = undefined;
+      this.getCheckBook(CheckBooksApi.LastCheckBook,true)
+    }
   }
 
   removeHandler() {
@@ -248,25 +257,21 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
         .pipe(
           exhaustMap(() => this.checkBookService.delete(deleteCheckBookURL))
         )
-        .subscribe( res =>{
-          // this.model = new CheckBookInfo();
-          // this.editForm.reset(this.model);
-          // this.initCheckBookForm();
-          this.router.navigate(['/treasury/check-books/new'])
-          this.deleteConfirmBox = false;
-  
-          this.showMessage(this.deleteMsg,MessageType.Info);
-        }, err =>{
-          this.showMessage(this.errorHandlingService.handleError(err),MessageType.Error);
+        .subscribe({
+          next: res =>{
+            this.router.navigate(['/treasury/check-books/new']);
+            this.deleteConfirmBox = false;
+    
+            this.showMessage(this.deleteMsg,MessageType.Info);
+          },
+          error: err =>{
+            this.showMessage(this.errorHandlingService.handleError(err),MessageType.Error);
+          }
         })
       }
     } else {
       this.deleteConfirmBox = false
     }
-  }
-
-  nullPages() {
-    this.setEditMode = false;
   }
 
   checkOperation(mode){
@@ -305,18 +310,29 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
    * برای واکشی دسته چک
    * @param getUrl آدرس واکشی دیتا
    */
-  getCheckBook(getUrl:string) {
+  getCheckBook(getUrl:string,isNew=false) {
     this.checkBookService.getModelsByFilters(getUrl,this.filter,this.quickFilter)
     .pipe(
       take(2)
     )
-    .subscribe(res => {
+    .subscribe({
+      next: res => {
         if (this.urlMode == 'by-no') {
           this.searchConfirm = false;
         }
-        this.model = res;
-        this.initCheckBookForm()
-      }, (err) => {
+        if (!isNew) {
+          this.model = res;
+          this.initCheckBookForm()
+        } else {
+          this.lastModel = res;
+          this.editForm.patchValue({
+            checkBookNo: +(this.lastModel.checkBookNo)+1
+          });
+          this.isLastCheckBook = !this.lastModel.hasNext;
+          this.isFirstCheckBook = !this.lastModel.hasPrevious;
+        }
+      },
+      error: (err) => {
         if (err == null || err.statusCode == 404) {
           this.isFirstCheckBook = true;
           this.showMessage(
@@ -333,7 +349,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
           this.router.navigate(["/treasury/check-books"]);
         }
       }
-    )
+    })
   }
 
   goPrevious() {
@@ -400,11 +416,10 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   }
 
   goSearch() {
-    let url;
+    setTimeout(() => {
+      this.searchConfirm = true;
+    }, 0);
     if (this.urlMode != 'by-no') {
-      setTimeout(() => {
-        this.searchConfirm = true;
-      }, 0);
       this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
         returnUrl: "/treasury/check-books/"+this.urlMode
       }});
@@ -448,18 +463,33 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
       this.checkBookService.edit(String.Format(CheckBooksApi.CheckBook,this.model.id),value):
       this.checkBookService.insert(CheckBooksApi.CheckBooks,value);
 
-    request.subscribe({
+    request
+    .pipe(
+      concatMap(checkBook => {
+        return this.checkBookService.insertPages(checkBook.id)
+        .pipe(
+          map((pages:CheckBookPage[]) => {
+            return {checkBook: checkBook, pages: pages}
+          })
+        );
+      })
+    )
+    .subscribe({
       next: async (res) => {
-        this.model = res as CheckBookInfo;
-        if (this.editMode)
+        if (this.model.id>0)
           this.showMessage(this.updateMsg, MessageType.Succes);
-        else
+        else {
+          res.checkBook.hasPrevious = this.lastModel.hasPrevious;
+          res.checkBook.hasNext = this.lastModel.hasNext;
           this.showMessage(this.insertMsg, MessageType.Succes);
-
-        this.initCheckBookForm();
+        }
+        
+        this.model = res.checkBook as CheckBookInfo;
+        this.initCheckBookForm()
+        this.setEditMode = true;
         this.errorMessages = undefined;
 
-        this.checkBookPages = await lastValueFrom(this.checkBookService.insertPages(this.model.id));
+        this.checkBookPages = res.pages;
       },
       error: (error) => {
         if (e) {
@@ -507,6 +537,10 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
 
   showReport(){}
 
+  nullPages(isNull:boolean) {
+    this.setEditMode = !isNull;
+    console.log(this.editMode,this.editForm.get('checkBookNo'));
+  }
   /**
    * prepare confim message for delete operation
    * @param text is a part of message that use for delete confirm message

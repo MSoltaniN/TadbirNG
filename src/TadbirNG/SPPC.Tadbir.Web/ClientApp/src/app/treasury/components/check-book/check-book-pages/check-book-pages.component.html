@@ -73,7 +73,7 @@
                       <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
                       <kendo-pager-info></kendo-pager-info>
                       <kendo-pager-numeric-buttons
-                        [buttonCount]="5"
+                        [buttonCount]="pageSize"
                       ></kendo-pager-numeric-buttons>
                       <kendo-pager-next-buttons></kendo-pager-next-buttons>
                       <kendo-pager-page-sizes
@@ -138,6 +138,16 @@
                         [showClearFilter]="this.grid.filter.filters.length"
                       ></grid-filter>
                     </ng-template>
+
+                    <kendo-grid-checkbox-column
+                      showSelectAll="false"
+                      [width]="50"
+                      [headerClass]="{ 'chb-column': true }"
+                      [class]="{ 'chb-column': true }"
+                      [resizable]="false"
+                      [reorderable]="false"
+                    >
+                    </kendo-grid-checkbox-column>
 
                     <kendo-grid-column media="(max-width: 450px)" title="">
                       <ng-template kendoGridCellTemplate let-dataItem>
