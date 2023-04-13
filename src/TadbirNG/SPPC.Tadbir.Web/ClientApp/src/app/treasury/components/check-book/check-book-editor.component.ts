@@ -9,6 +9,7 @@ import { DetailComponent, FilterExpression, String } from '@sppc/shared/class';
 import { ReportViewerComponent, ViewIdentifierComponent } from '@sppc/shared/components';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
+import { NumberValidators } from '@sppc/shared/directive/Validator/Sppc-nationalCodeValidator';
 import { Entities, Layout, MessageType } from '@sppc/shared/enum/metadata';
 import { ViewName } from '@sppc/shared/security';
 import { BrowserStorageService, ErrorHandlingService, MetaDataService } from '@sppc/shared/services';
@@ -70,6 +71,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     {key: -1, value: "CheckBook.Other"}
   ];
   selectedPagesCount: number;
+  pageCountValidator: string;
   checkBookPages = [];
   isFirstCheckBook = false;
   isLastCheckBook = false;
@@ -167,7 +169,11 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
         default:
           break;
       }
-    })
+    });
+
+    setTimeout(() => {
+      this.editForm.get('pageCount').setValidators(NumberValidators.minMax({max: 1000,min:1}));
+    }, 0);
   }
 
   initCheckBookForm() {
@@ -520,12 +526,16 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   }
 
   onChangePagesCountInput(e) {
+    if (this.selectedPagesCount > 1000) {
+      this.editForm.get('pageCount').setValidators(NumberValidators.minMax({max: 1000,min:1}));
+      this.selectedPagesCount = 1000;
+    } else if(this.selectedPagesCount < 1) {
+      this.editForm.get('pageCount').setValidators(NumberValidators.minMax({max: 1000,min:1}));
+      this.selectedPagesCount = 1;
+    }
     this.editForm.patchValue({
       pageCount: this.selectedPagesCount
     });
-    
-    console.log(this.editForm);
-    
   }
 
   onFullAccountInpusFocuse(e) {}

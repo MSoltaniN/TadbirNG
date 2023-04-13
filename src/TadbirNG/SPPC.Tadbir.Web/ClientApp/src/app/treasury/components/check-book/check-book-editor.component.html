@@ -122,11 +122,11 @@
           {{ err }}
         </div>
       </div>
-      <form novalidate class="myForm" [formGroup]="editForm" (keydown.enter)="onSave($event)">
+      <form novalidate class="myForm" [formGroup]="editForm">
         <div class="form-group col-sm-5ths col-xs-12 item">
           <label for="name" class="control-label">{{ 'CheckBook.CheckBookNo' | translate }}</label>
     
-          <input type="text" class="k-textbox" formControlName="checkBookNo" [OnlyNumber] [disabled]="editMode"/>
+          <input sppcAutoFocus type="text" class="k-textbox" formControlName="checkBookNo" [OnlyNumber] [disabled]="editMode"/>
     
           <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.checkBookNo.valid || editForm.controls.checkBookNo.pristine">
             <span *ngIf="editForm.controls.checkBookNo.errors?.required">{{ 'AllValidations.CheckBook.NoIsRequired' | translate }}</span>
@@ -137,7 +137,7 @@
         <div class="form-group col-sm-5ths col-xs-12 item">
           <label for="name" class="control-label">{{ 'CheckBook.Name' | translate }}</label>
     
-          <input sppcAutoFocus type="text" class="k-textbox" formControlName="name" [disabled]="editMode"/>
+          <input type="text" class="k-textbox" formControlName="name" [disabled]="editMode"/>
     
           <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
             <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
@@ -171,11 +171,12 @@
           <div class="col-md-6 col-xs-6" style="padding: 0;">
             <input type="number"
               class="k-textbox"
-              [disabled]="!otherSizeOfPages"
-              [(ngModel)]="selectedPagesCount || editMode"
+              [disabled]="!otherSizeOfPages  || editMode"
+              [(ngModel)]="selectedPagesCount"
               [ngModelOptions]="{standalone: true}"
-              (onkeyup)="onChangePagesCountInput($event)"
-              (onchange)="onChangePagesCountInput($event)"
+              (keyup)="onChangePagesCountInput($event)"
+              (change)="onChangePagesCountInput($event)"
+              
               min="1" max="1000"
               style="max-width: 100%;"
             />
@@ -190,7 +191,11 @@
                 (valueChange)="onChangePagesCountDropDown($event)"
                 [(ngModel)]="selectedPagesCount"
                 [ngModelOptions]="{standalone: true}"
-                [disabled]="editMode">
+                [disabled]="editMode"
+              >
+                <ng-template kendoDropDownListValueTemplate let-dataItem>
+                  {{ dataItem?.value | translate }}
+                </ng-template>
                 <ng-template kendoDropDownListItemTemplate let-dataItem>
                   {{ dataItem?.value | translate }}
                 </ng-template>
