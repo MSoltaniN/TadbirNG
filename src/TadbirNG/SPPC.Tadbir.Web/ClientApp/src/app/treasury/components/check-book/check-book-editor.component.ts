@@ -335,10 +335,11 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
       error: (err) => {
         if (err == null || err.statusCode == 404) {
           this.isFirstCheckBook = true;
-          this.showMessage(
-            this.getText("CheckBook.CheckBookNotFound"),
-            MessageType.Warning
-          );
+          if (!isNew)
+            this.showMessage(
+              this.getText("CheckBook.CheckBookNotFound"),
+              MessageType.Warning
+            );
         }
 
         if (err != null && err.statusCode == 400) {
@@ -522,6 +523,9 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     this.editForm.patchValue({
       pageCount: this.selectedPagesCount
     });
+    
+    console.log(this.editForm);
+    
   }
 
   onFullAccountInpusFocuse(e) {}
@@ -530,14 +534,13 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     let fullAccount = this.fullAccountForm.value.fullAccount;
     this.editForm.patchValue({
       fullAccount: fullAccount
-    })
+    });
   }
 
   showReport(){}
 
   nullPages(isNull:boolean) {
     this.setEditMode = !isNull;
-    console.log(this.editMode,this.editForm.get('checkBookNo'));
   }
   /**
    * prepare confim message for delete operation

@@ -1315,7 +1315,7 @@
     "CreateConnection": "ایجاد ارتباط",
     "UndoConnect": "حذف ارتباط",
     "isArchived": "بایگانی",
-    "Delete": "حذف دسته جک",
+    "Delete": "حذف دسته چک",
     "CheckBookNo": "شماره دسته چک",
     "SearchCheckBook": "جستجوی دسته چک",
     "CheckBookNotFound": "دسته چک یافت نشد.",
@@ -1624,7 +1624,7 @@
       "AccountIdIsRequired": "انتخاب حساب برای این تابع اجباری است."
     },
     "CheckBook": {
-      "StartNoRequired": "وارد کردن شناره شروع اجباری است.",
+      "StartNoRequired": "وارد کردن شماره شروع اجباری است.",
       "NoIsRequired": "وارد کردن شماره دسته چک اجباری است."
     }
   }
