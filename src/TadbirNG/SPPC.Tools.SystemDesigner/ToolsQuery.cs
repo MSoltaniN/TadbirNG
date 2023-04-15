@@ -31,5 +31,9 @@ FROM Config.SysLogSetting [sls]
     LEFT OUTER JOIN Metadata.EntityType [et] ON et.EntityTypeID = sls.EntityTypeID
     LEFT OUTER JOIN Metadata.OperationSource [os] ON sls.SourceID = os.OperationSourceID
     INNER JOIN Metadata.Operation [op] ON sls.OperationID = op.OperationID";
+
+        public const string AddDbVersion = @"
+INSERT INTO [Core].[Version] ([VersionID], [Number])
+VALUES (1, '{0}')";
     }
 }
