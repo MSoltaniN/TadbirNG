@@ -120,6 +120,7 @@ export class CheckBookPagesComponent
   confirmDialog: boolean = false;
   pageOperationsItem = PageOperations;
   selectedOperation;
+  permissionEntityName = "CheckBook";
   
   public get hasPage(): boolean{
     let is = this.rowData?.data.length? true: false;
@@ -141,7 +142,7 @@ export class CheckBookPagesComponent
   }
 
   ngOnInit() {
-    this.entityName = Entities.CheckBook;
+    this.entityName = Entities.CheckBookPage;
     this.viewId = ViewName[this.entityTypeName];
 
     this.getDataUrl = String.Format(

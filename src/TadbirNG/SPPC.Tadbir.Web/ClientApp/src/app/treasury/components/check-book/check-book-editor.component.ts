@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -50,7 +50,15 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   @Input() public errorMessage: string = '';
   @Input() filter: FilterExpression;
   @Input() quickFilter: FilterExpression;
+  @Input() dialogMode = false;
+  @Input() set checkBookItem(value:CheckBookInfo) {
+    this.model = value;
+    this.dialogMode = true;
+    this.initFullAccountFromGroup();
+    this.initCheckBookForm();
+  }
 
+  @Output() cancel: EventEmitter<any> = new EventEmitter()
   editMode = false;
   set setEditMode(value:boolean){
     this.editForm.get('checkBookNo')[!value ? 'enable' : 'disable']();
@@ -80,7 +88,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   deleteConfirmBox = false;
   searchConfirm = false;
   checkBookNo:number;
-  lastModel: CheckBookInfo;
+  lastModel: CheckBookInfo = new CheckBookInfo();;
 
   get urlMode() {
     let mode = this.route.snapshot.paramMap.get('mode');
@@ -116,7 +124,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     super(toastrService, translate,
        bStorageService, renderer,
        metadata, Entities.CheckBook,
-       ViewName.CheckBookReport,elem);
+       ViewName.CheckBook,elem);
   }
   viewId;
   entityTypeName;
@@ -129,9 +137,11 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   ngOnInit(): void {
     this.entityName = Entities.CheckBook;
     this.viewId = ViewName[this.entityTypeName];
-
     this.isNew = true;
-    this.model = new CheckBookInfo();
+
+    if (this.urlMode) {
+      this.model = new CheckBookInfo();
+    }
     this.initFullAccountFromGroup();
     this.initCheckBookForm();
     let url;
@@ -209,8 +219,11 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
       this.isLastCheckBook = !this.model.hasNext;
       this.isFirstCheckBook = !this.model.hasPrevious;
     }
+    this.errorMessages = [];
 
-    this.editForm.reset(this.model);
+    setTimeout(() => {
+      this.editForm.reset(this.model);
+    }, 0);
   }
 
   initFullAccountFromGroup() {
@@ -242,7 +255,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
 
   addNew() {
     this.breadCrumbTitle = 'NewCheckBook';
-    if (this.urlMode != 'new'){
+    if (this.urlMode != 'new' && !this.dialogMode){
       this.router.navigate(['/treasury/check-books/new']);
     } else {
       this.model = new CheckBookInfo();
@@ -367,7 +380,8 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   goPrevious() {
     this.breadCrumbTitle = "CheckBook";
     let url;
-    if (this.urlMode != 'previous') {
+
+    if (this.urlMode != 'previous' && !this.dialogMode) {
       this.router.navigate(['/treasury/check-books/previous']);
     } else {
       if (this.model.id) {
@@ -377,18 +391,19 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
       }
       this.getCheckBook(url);
       let issueDate = this.model.id > 0? this.model.issueDate: '';
-      this.router.navigate(['/treasury/check-books/previous'],{
-        queryParams: {
-          date: issueDate
-        }
-      });
+      if (!this.dialogMode)
+        this.router.navigate(['/treasury/check-books/previous'],{
+          queryParams: {
+            date: issueDate
+          }
+        });
     }
   }
 
   goNext() {
     this.breadCrumbTitle = "CheckBook";
     let url;
-    if (this.urlMode != 'next') {
+    if (this.urlMode != 'next' && !this.dialogMode) {
       let issueDate = this.model.id > 0? this.model.issueDate: '';
       this.router.navigate(['/treasury/check-books/next'],{
         queryParams: {
@@ -400,11 +415,12 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
         url = String.Format(CheckBooksApi.NextCheckBook,this.model.issueDate);
         this.getCheckBook(url);
         let issueDate = this.model.id > 0? this.model.issueDate: '';
-        this.router.navigate(['/treasury/check-books/next'],{
-          queryParams: {
-            date: issueDate
-          }
-        });
+        if (!this.dialogMode)
+          this.router.navigate(['/treasury/check-books/next'],{
+            queryParams: {
+              date: issueDate
+            }
+          });
       }
     }
   }
@@ -412,7 +428,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   goFirst() {
     this.breadCrumbTitle = 'CheckBook';
     let url;
-    if (this.urlMode != 'first') {
+    if (this.urlMode != 'first' && !this.dialogMode) {
       this.router.navigate(['/treasury/check-books/first']);
     } else {
       url = CheckBooksApi.FirstCheckBook;
@@ -423,7 +439,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   goLast() {
     this.breadCrumbTitle = 'LastCheckBook';
     let url;
-    if (this.urlMode != 'last') {
+    if (this.urlMode != 'last' && !this.dialogMode) {
       this.router.navigate(['/treasury/check-books/last']);
     } else {
       url = CheckBooksApi.LastCheckBook;
@@ -434,7 +450,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   goSearch() {
     this.breadCrumbTitle = "CheckBook";
     this.searchConfirm = true;
-    if (this.urlMode != 'by-no') {
+    if (this.urlMode != 'by-no' && !this.dialogMode) {
       this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
         returnUrl: "/treasury/check-books/"+this.urlMode
       }});
@@ -445,7 +461,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     this.breadCrumbTitle = "CheckBook";
     let url;
     if (searchConfirm) {
-      if (this.checkBookNo) {
+      if (this.checkBookNo && !this.dialogMode) {
         this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
           returnUrl: "/treasury/check-books/"+this.urlMode,
           no: this.checkBookNo
@@ -495,8 +511,8 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
         if (this.model.id>0)
           this.showMessage(this.updateMsg, MessageType.Succes);
         else {
-          res.checkBook.hasPrevious = this.lastModel.hasPrevious;
-          res.checkBook.hasNext = this.lastModel.hasNext;
+          // res.checkBook.hasPrevious = this.lastModel.hasPrevious;
+          // res.checkBook.hasNext = this.lastModel.hasNext;
           this.showMessage(this.insertMsg, MessageType.Succes);
         }
         

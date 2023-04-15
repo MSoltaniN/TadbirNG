@@ -417,6 +417,7 @@ export enum CashRegisterPermissions {
   AssignRoles = 128,
   All = 255
 }
+
 export enum CheckBookPermissions {
   None = 0,
   View = 1,
@@ -433,6 +434,17 @@ export enum CheckBookPermissions {
   ConnectToCheck = 2048,
   DisconnectFromCheck = 4096,
   All = 8191
+}
+
+export enum CheckBookReportPermissions {
+  None = 0,
+  View = 1,
+  Filter = 2,
+  Print = 4,
+  Export = 8,
+  Archive = 16,
+  UndoArchive = 32,
+  All = 63
 }
 
 @Injectable()
@@ -554,6 +566,9 @@ export class Permissions {
         break;
       case "checkbookpermissions":
         id = <any>CheckBookPermissions[<any>premissionName];
+        break;
+      case "checkbookreportpermissions":
+        id = <any>CheckBookReportPermissions[<any>premissionName];
         break;
     }
 
