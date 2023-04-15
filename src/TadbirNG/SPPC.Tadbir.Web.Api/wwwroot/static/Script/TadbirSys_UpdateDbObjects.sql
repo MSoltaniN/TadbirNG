@@ -766,6 +766,10 @@ ADD [Index] INT NULL
 GO
 
 UPDATE [Metadata].[Command]
+SET [Index] = 0
+WHERE [TitleKey] = N'Profile'
+
+UPDATE [Metadata].[Command]
 SET [Index] = 1
 WHERE [TitleKey] = N'Accounting'
 

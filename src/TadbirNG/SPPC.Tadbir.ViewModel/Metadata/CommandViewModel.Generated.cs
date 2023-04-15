@@ -57,6 +57,6 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// <summary>
         /// شماره ترتیبی اختیاری برای سازماندهی بهتر منوها که از یک شروع می شود - فعلاً مورد استفاده برای اولین سطح منوها
         /// </summary>
-        public int Index { get; set; }
+        public int? Index { get; set; }
     }
 }
