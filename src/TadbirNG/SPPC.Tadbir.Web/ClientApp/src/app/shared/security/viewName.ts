@@ -71,7 +71,8 @@ export enum ViewName {
   ComparativeProfitLoss = 65,
   BalanceSheet = 67,
   Dashboard = 68,
-  CheckBook = 69,
+  CheckBookPage = 69,
   CashRegister = 70,
-  CheckBookReport = 71
+  CheckBook = 71,
+  CheckBookReport = 72
 }

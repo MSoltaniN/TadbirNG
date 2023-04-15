@@ -9,8 +9,11 @@ export interface CheckBook {
     endNo: string,
     bankName: string,
     isArchived: boolean,
+    branchId: number;
     fullAccount: FullAccount;
-    projectId: number
+    pageCount: number;
+    hasNext: boolean;
+    hasPrevious: boolean;
 }
 export interface CheckBookPage {
     id: number,
