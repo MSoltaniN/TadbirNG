@@ -35,6 +35,7 @@ import { PageOperations } from "@sppc/treasury/models/chechBookOperations";
 import { CheckBooksApi } from "@sppc/treasury/service/api/checkBooksApi";
 import { CheckBookService } from "@sppc/treasury/service/check-book.service";
 import { ToastrService } from "ngx-toastr";
+import { lastValueFrom } from "rxjs";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -248,8 +249,10 @@ export class CheckBookPagesComponent
       this.checkBookService
         .delete(String.Format(CheckBooksApi.CheckBookPages, this.checkBookId))
         .subscribe({
-          next: (res) => {
-            this.showMessage(this.deleteMsg, MessageType.Info);
+          next: async (res) => {
+            let deleteMsg = await lastValueFrom(this.translate.get("CheckBook.DeletedMsg"));
+            let PagesMsg = await lastValueFrom(this.translate.get("CheckBook.CheckBookPages"));
+            this.showMessage(String.Format(deleteMsg,PagesMsg), MessageType.Info);
             this.selectedRows = [];
             // this.groupOperation = false;
             this.deleteConfirm = false;

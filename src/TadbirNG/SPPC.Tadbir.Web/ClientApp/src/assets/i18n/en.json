@@ -1288,7 +1288,9 @@
     "CheckBookNo": "check Book Number",
     "SearchCheckBook": "Search Check Book",
     "CheckBookNotFound": "Check book not found",
-    "DeletePages": "Delete pages"
+    "DeletePages": "Delete pages",
+    "DeleteCheckBookPages": "Delete check book pages",
+    "DeletedMsg": "{0} deleted successfully"
   },
   "AllValidations": {
     "Account": {

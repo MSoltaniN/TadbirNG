@@ -166,7 +166,7 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
   /**
    * this method localize CRUD messages 
    */
-  private localizeMsg() {
+  localizeMsg() {
     // read message format for crud operations      
     var entityType = '';
     this.translate.get("Entity." + this.entityType).subscribe((msg: string) => {

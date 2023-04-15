@@ -120,9 +120,14 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   }
   viewId;
   entityTypeName;
+  public set entityName(name: string) {
+    this.entityTypeName = name;
+    this.localizeMsg();
+  }
+  breadCrumbTitle;
 
   ngOnInit(): void {
-    this.entityTypeName = Entities.CheckBook;
+    this.entityName = Entities.CheckBook;
     this.viewId = ViewName[this.entityTypeName];
 
     this.isNew = true;
@@ -138,6 +143,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
           break;
   
         case 'next':
+          this.breadCrumbTitle = 'CheckBook';
           if (!this.isFirstCheckBook) {
             url = String.Format(CheckBooksApi.NextCheckBook,this.model.issueDate);
             this.getCheckBook(url);
@@ -145,6 +151,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
           break;
   
         case 'previous':
+          this.breadCrumbTitle = 'CheckBook';
           if (this.dateQueryParam || this.model.id) {
             url = String.Format(CheckBooksApi.PreviousCheckBook,
               this.dateQueryParam?this.dateQueryParam:this.model.issueDate);
@@ -171,9 +178,6 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
       }
     });
 
-    setTimeout(() => {
-      this.editForm.get('pageCount').setValidators(NumberValidators.minMax({max: 1000,min:1}));
-    }, 0);
   }
 
   initCheckBookForm() {
@@ -237,6 +241,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   }
 
   addNew() {
+    this.breadCrumbTitle = 'NewCheckBook';
     if (this.urlMode != 'new'){
       this.router.navigate(['/treasury/check-books/new']);
     } else {
@@ -265,7 +270,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
         )
         .subscribe({
           next: res =>{
-            this.router.navigate(['/treasury/check-books/new']);
+            this.addNew();
             this.deleteConfirmBox = false;
     
             this.showMessage(this.deleteMsg,MessageType.Info);
@@ -360,6 +365,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   }
 
   goPrevious() {
+    this.breadCrumbTitle = "CheckBook";
     let url;
     if (this.urlMode != 'previous') {
       this.router.navigate(['/treasury/check-books/previous']);
@@ -380,6 +386,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   }
 
   goNext() {
+    this.breadCrumbTitle = "CheckBook";
     let url;
     if (this.urlMode != 'next') {
       let issueDate = this.model.id > 0? this.model.issueDate: '';
@@ -403,6 +410,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   }
 
   goFirst() {
+    this.breadCrumbTitle = 'CheckBook';
     let url;
     if (this.urlMode != 'first') {
       this.router.navigate(['/treasury/check-books/first']);
@@ -413,6 +421,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   }
 
   goLast() {
+    this.breadCrumbTitle = 'LastCheckBook';
     let url;
     if (this.urlMode != 'last') {
       this.router.navigate(['/treasury/check-books/last']);
@@ -423,6 +432,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   }
 
   goSearch() {
+    this.breadCrumbTitle = "CheckBook";
     this.searchConfirm = true;
     if (this.urlMode != 'by-no') {
       this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
@@ -432,6 +442,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   }
 
   searchByNo(searchConfirm = false) {
+    this.breadCrumbTitle = "CheckBook";
     let url;
     if (searchConfirm) {
       if (this.checkBookNo) {

@@ -1319,7 +1319,9 @@
     "CheckBookNo": "شماره دسته چک",
     "SearchCheckBook": "جستجوی دسته چک",
     "CheckBookNotFound": "دسته چک یافت نشد.",
-    "DeletePages": "حذف برگه ها"
+    "DeletePages": "حذف برگه ها",
+    "DeleteCheckBookPages": "حذف برگه های دسته چک",
+    "DeletedMsg": "{0} با موفقیت حذف شدند."
   },
   "Paging": {
     "Record": "رکورد",
