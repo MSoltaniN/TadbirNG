@@ -53,5 +53,10 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// کلید ترکیبی میان بُر برای فراخوانی دستور از طریق صفحه کلید
         /// </summary>
         public string HotKey { get; set; }
+
+        /// <summary>
+        /// شماره ترتیبی اختیاری برای سازماندهی بهتر منوها که از یک شروع می شود - فعلاً مورد استفاده برای اولین سطح منوها
+        /// </summary>
+        public int Index { get; set; }
     }
 }

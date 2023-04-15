@@ -399,6 +399,7 @@ CREATE TABLE [Metadata].[Command] (
     [RouteUrl]       NVARCHAR(256)    NULL,
     [IconName]       VARCHAR(64)      NULL,
     [HotKey]         VARCHAR(32)      NULL,
+	[Index]          INT              NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Command_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_Command_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Metadata_Command] PRIMARY KEY CLUSTERED ([CommandID] ASC)
@@ -3974,8 +3975,8 @@ SET IDENTITY_INSERT [Reporting].[Parameter] OFF
 GO
 
 SET IDENTITY_INSERT [Metadata].[Command] ON
-INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (1, NULL, NULL, N'Accounting', NULL, 'folder-close', NULL)
+INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey], [Index])
+    VALUES (1, NULL, NULL, N'Accounting', NULL, 'folder-close', NULL, 1)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (2, 1, NULL, N'BaseData', NULL, 'folder-close', NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
@@ -4018,16 +4019,16 @@ INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [Titl
     VALUES (21, 20, 141, N'JournalLedger', N'/finance/journal', 'list', NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (22, 20, 147, N'AccountBook', N'/finance/account-book', 'list', NULL)
-INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (23, NULL, NULL, N'Organization', NULL, 'folder-close', NULL)
+INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey], [Index])
+    VALUES (23, NULL, NULL, N'Organization', NULL, 'folder-close', NULL, 3)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (24, 23, 78, N'Companies', N'/organization/companies', 'list', NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (25, 23, 70, N'Branches', N'/organization/branches', 'list', NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (26, 23, 29, N'FiscalPeriods', N'/organization/fiscalperiod', 'list', 'Ctrl+Shift+F')
-INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (27, NULL, NULL, N'Administration', NULL, 'folder-close', NULL)
+INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey], [Index])
+    VALUES (27, NULL, NULL, N'Administration', NULL, 'folder-close', NULL, 4)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (28, 27, 82, N'Users', N'/admin/users', 'user', 'Ctrl+Shift+U')
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
@@ -4046,8 +4047,8 @@ INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [Titl
     VALUES (35, 33, NULL, N'LogOut', N'/logout', 'log-out', 'Ctrl+Shift+X')
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (36, 33, NULL, N'ChangeCompany', N'/login', 'tasks', NULL)
-INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (37, NULL, NULL, N'Tools', NULL, 'folder-close', NULL)
+INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey], [Index])
+    VALUES (37, NULL, NULL, N'Tools', NULL, 'folder-close', NULL, 5)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (38, 37, 120, N'ReportManagement', N'/tadbir/reports', 'list', 'Ctrl+R')
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
@@ -4076,8 +4077,8 @@ INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [Titl
     VALUES (50, 39, 201, N'BalanceSheet', N'/finance/bal-sheet', 'list', NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (51, 37, 210, N'ManageDashboard', N'/tadbir/dashboard', 'list', NULL)
-INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
-    VALUES (52, NULL, NULL, N'Treasury', NULL, N'folder-close', NULL)
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey, [Index])
+    VALUES (52, NULL, NULL, N'Treasury', NULL, N'folder-close', NULL, 2)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
     VALUES (53, 52, NULL, N'BaseData', NULL, N'folder-close', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey)
