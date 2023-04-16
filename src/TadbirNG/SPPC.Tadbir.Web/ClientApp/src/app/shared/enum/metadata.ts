@@ -123,8 +123,9 @@ export const Entities = {
   Vouchers: 'Vouchers',
   BalanceSheet:'BalanceSheet',
   Dashboard: "Dashboard",
-  CheckBook: "CheckBook",
+  CheckBookPage: "CheckBookPage",
   CashRegister: "CashRegister",
+  CheckBook: "CheckBook",
   CheckBookReport: "CheckBookReport"
 }
 

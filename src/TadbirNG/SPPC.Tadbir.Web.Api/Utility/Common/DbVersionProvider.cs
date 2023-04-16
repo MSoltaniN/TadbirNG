@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using SPPC.Tadbir.Common;
+﻿using SPPC.Tadbir.Common;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -14,9 +11,11 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="paths">مسیرهای فایل های کاربردی مورد نیاز در سرویس وب را فراهم می کند</param>
-        public DbVersionProvider(IApiPathProvider paths)
+        /// <param name="versionExtractor">امکان استخراج آخرین نسخه دیتابیس های مختلف برنامه را فراهم می کند</param>
+        public DbVersionProvider(IApiPathProvider paths, IDbVersionExtractor versionExtractor)
         {
             _paths = paths;
+            _extractor = versionExtractor;
         }
 
         /// <summary>
@@ -24,7 +23,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         public string SystemDbVersion
         {
-            get { return GetSystemDbVersion(); }
+            get { return _extractor.GetSystemDbVersion(_paths.ScriptRoot); }
         }
 
         /// <summary>
@@ -32,37 +31,10 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         public string CompanyDbVersion
         {
-            get { return GetCompanyDbVersion(); }
-        }
-
-        private static string GetLatestDbVersion(string path)
-        {
-            var latestVersion = "1.0.0";
-            var script = File.ReadAllText(path);
-            var regex = new Regex(ScriptConstants.ScriptBlockRegex);
-            var match = regex
-                .Matches(script)
-                .LastOrDefault();
-            if (match != null)
-            {
-                latestVersion = $"{match.Groups[1].Value}.{match.Groups[2].Value}.{match.Groups[3].Value}";
-            }
-
-            return latestVersion;
-        }
-
-        private string GetSystemDbVersion()
-        {
-            var scriptPath = Path.Combine(_paths.ScriptRoot, ScriptConstants.SysDbUpdateScript);
-            return GetLatestDbVersion(scriptPath);
-        }
-
-        private string GetCompanyDbVersion()
-        {
-            var scriptPath = Path.Combine(_paths.ScriptRoot, ScriptConstants.SysDbUpdateScript);
-            return GetLatestDbVersion(scriptPath);
+            get { return _extractor.GetCompanyDbVersion(_paths.ScriptRoot); }
         }
 
         private readonly IApiPathProvider _paths;
+        private readonly IDbVersionExtractor _extractor;
     }
 }

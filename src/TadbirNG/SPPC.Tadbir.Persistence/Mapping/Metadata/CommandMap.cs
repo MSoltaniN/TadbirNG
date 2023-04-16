@@ -22,6 +22,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasMaxLength(64);
             builder.Property(e => e.HotKey)
                 .HasMaxLength(32);
+            builder.Property(e => e.Index);
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");

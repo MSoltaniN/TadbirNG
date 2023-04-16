@@ -14,6 +14,7 @@ using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -80,20 +81,21 @@ namespace SPPC.Tadbir.Persistence
             if (UserContext.FiscalPeriodId > 0 && UserContext.BranchId > 0)
             {
                 topCommands = await repository
-                .GetEntityQuery()
-                .Include(cmd => cmd.Children)
-                    .ThenInclude(cmd => cmd.Children)
+                    .GetEntityQuery()
+                    .Include(cmd => cmd.Children)
                         .ThenInclude(cmd => cmd.Children)
-                .Where(cmd => cmd.Parent == null && cmd.TitleKey != "Profile")
-                .ToListAsync();
+                            .ThenInclude(cmd => cmd.Children)
+                    .Where(cmd => cmd.Parent == null && cmd.TitleKey != AppStrings.Profile)
+                    .OrderBy(cmd => cmd.Index)
+                    .ToListAsync();
             }
             else
             {
                 topCommands = await repository
-                .GetEntityQuery()
-                .Include(cmd => cmd.Children)
-                .Where(cmd => cmd.Parent == null && cmd.TitleKey == "Organization")
-                .ToListAsync();
+                    .GetEntityQuery()
+                    .Include(cmd => cmd.Children)
+                    .Where(cmd => cmd.Parent == null && cmd.TitleKey == AppStrings.Organization)
+                    .ToListAsync();
             }
 
             return topCommands

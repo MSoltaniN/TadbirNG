@@ -759,3 +759,41 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [
 INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (748, 71, 'PageCount', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 0, 0, 1, 1, N'Hidden', 16, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
+
+-- 1.2.1502
+ALTER TABLE [Metadata].[Command]
+ADD [Index] INT NULL
+GO
+
+UPDATE [Metadata].[Command]
+SET [Index] = 0
+WHERE [TitleKey] = N'Profile'
+
+UPDATE [Metadata].[Command]
+SET [Index] = 1
+WHERE [TitleKey] = N'Accounting'
+
+UPDATE [Metadata].[Command]
+SET [Index] = 2
+WHERE [TitleKey] = N'Treasury'
+
+UPDATE [Metadata].[Command]
+SET [Index] = 3
+WHERE [TitleKey] = N'Organization'
+
+UPDATE [Metadata].[Command]
+SET [Index] = 4
+WHERE [TitleKey] = N'Administration'
+
+UPDATE [Metadata].[Command]
+SET [Index] = 5
+WHERE [TitleKey] = N'Tools'
+
+-- 1.2.1503
+Update [Metadata].[Column] 
+Set [Name]= N'IsArchivedName', [DotNetType]= N'System.String', [StorageType]= N'nvarchar'
+	, [ScriptType]= N'string', [IsNullable]= 1, [AllowFiltering]= 1, [Visibility]= NULL
+Where ColumnID=737
+
+
+

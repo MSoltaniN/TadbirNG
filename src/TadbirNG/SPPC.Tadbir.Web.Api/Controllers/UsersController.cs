@@ -109,10 +109,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var commands = await _repository.GetUserCommandsAsync(SecurityContext.User.Id);
             _commandFilter.FilterCommands(commands, EditionLimit.RowPermissionAccess);
-            Array.ForEach(commands.ToArray(), cmd =>
+            Array.ForEach(commands.ToArray(), parent =>
             {
-                cmd.Title = _strings[cmd.Title];
-                Array.ForEach(cmd.Children.ToArray(), child =>
+                parent.Title = _strings[parent.Title];
+                Array.ForEach(parent.Children.ToArray(), child =>
                 {
                     child.Title = _strings[child.Title];
                     Array.ForEach(child.Children.ToArray(), grandChild =>

@@ -3846,4 +3846,7 @@
   <data name="AssignCashRegisterUser" xml:space="preserve">
     <value>Assign user to cash register</value>
   </data>
+  <data name="IsArchivedName" xml:space="preserve">
+    <value>IsArchived</value>
+  </data>
 </root>

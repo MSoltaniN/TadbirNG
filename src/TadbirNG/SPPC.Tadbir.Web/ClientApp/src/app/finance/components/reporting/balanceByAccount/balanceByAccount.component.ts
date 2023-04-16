@@ -1214,22 +1214,25 @@ export class BalanceByAccountComponent
         displayType: relatedDisplayType,
         account: acc ? acc : undefined,
       };
-
-      if (
-        this.breadCrumbList.findIndex(
-          (b) => b?.displayType.key === relatedDisplayType.key
-        ) == -1
-      ) {
-        this.displayTypeName = relatedDisplayType?.title;
-        if (this.breadCrumbList.length == 0) {
-          this.breadCrumbList = new Array<any>();
-          this.breadCrumbList.push(data);
-          return true;
-        } else {
-          this.breadCrumbList.push(data);
-          return true;
+      if(relatedDisplayType)
+      {
+        if (
+          this.breadCrumbList.findIndex(
+            (b) => b?.displayType.key === relatedDisplayType.key
+          ) == -1
+        ) {
+          this.displayTypeName = relatedDisplayType?.title;
+          if (this.breadCrumbList.length == 0) {
+            this.breadCrumbList = new Array<any>();
+            this.breadCrumbList.push(data);
+            return true;
+          } else {
+            this.breadCrumbList.push(data);
+            return true;
+          }
         }
       }
+      
     }
 
     return false;

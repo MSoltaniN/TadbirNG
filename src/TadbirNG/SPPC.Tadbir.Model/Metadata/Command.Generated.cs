@@ -50,6 +50,11 @@ namespace SPPC.Tadbir.Model.Metadata
         public virtual string HotKey { get; set; }
 
         /// <summary>
+        /// شماره ترتیبی اختیاری برای سازماندهی بهتر منوها که از یک شروع می شود - فعلاً مورد استفاده برای اولین سطح منوها
+        /// </summary>
+        public virtual int? Index { get; set; }
+
+        /// <summary>
         /// دستور والد این دستور در ساختار درختی دستورات
         /// </summary>
         public virtual Command Parent { get; set; }

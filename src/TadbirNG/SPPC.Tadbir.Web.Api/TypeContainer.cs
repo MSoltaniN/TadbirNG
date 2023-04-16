@@ -198,6 +198,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IApiPathProvider, ApiResourcePaths>();
             _services.AddTransient<ICommandFilter, CommandFilter>();
             _services.AddTransient<IDbUpgrade, DbUpgradeUtility>();
+            _services.AddTransient<IDbVersionExtractor, DbVersionExtractor>();
             _services.AddTransient<IDbVersionProvider, DbVersionProvider>();
         }
 

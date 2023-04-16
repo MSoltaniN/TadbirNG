@@ -14,6 +14,7 @@ using SPPC.Framework.Utility;
 using SPPC.Licensing.Model;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Utility.Model;
 using SPPC.Tadbir.Utility.Templates;
 using SPPC.Tools.Model;
@@ -35,6 +36,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                 LicenseKey = Guid.NewGuid().ToString()
             };
             _apiClient = new ServiceClient() { ServiceRoot = EnvSetupParameters.LocalServerUrl };
+            _dbVersion = new DbVersionExtractor();
         }
 
         public EnvSetupWizardModel WizardModel { get; set; }
@@ -265,8 +267,12 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             {
                 if (!IsDatabaseCreated(SysParameterUtility.AllParameters.Db.SysDbName))
                 {
+                    string versionQuery = String.Format(
+                        ToolsQuery.AddDbVersion, _dbVersion.GetSystemDbVersion(PathConfig.ApiScriptRoot));
                     var builder = new StringBuilder();
                     builder.AppendLine(File.ReadAllText(_params.SystemDbScript));
+                    builder.AppendLine();
+                    builder.AppendLine(versionQuery);
                     builder.AppendLine();
                     builder.AppendFormat(File.ReadAllText(_params.SystemDataDbScript), WizardModel.DbServerName);
                     sql.ExecuteNonQuery(builder.ToString());
@@ -303,10 +309,14 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             {
                 if (!IsDatabaseCreated(SysParameterUtility.AllParameters.Db.FirstDbName))
                 {
+                    string versionQuery = String.Format(
+                        ToolsQuery.AddDbVersion, _dbVersion.GetCompanyDbVersion(PathConfig.ApiScriptRoot));
                     var builder = new StringBuilder();
                     builder.AppendLine(EnvSetupParameters.CreateSampleInitScript);
                     builder.AppendLine();
                     builder.AppendLine(File.ReadAllText(_params.SampleDbScript));
+                    builder.AppendLine();
+                    builder.AppendLine(versionQuery);
                     builder.AppendLine();
                     builder.AppendLine(File.ReadAllText(_params.SampleDataDbScript));
                     sql.ExecuteNonQuery(builder.ToString());
@@ -460,6 +470,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
         private readonly InstanceModel _instance;
         private readonly StringBuilder _outputBuilder;
         private readonly IApiClient _apiClient;
+        private readonly IDbVersionExtractor _dbVersion;
         private EnvSetupParameters _params;
     }
 }

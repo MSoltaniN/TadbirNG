@@ -32,6 +32,7 @@ using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Reporting;
+using SPPC.Tadbir.Resources;
 
 namespace SPPC.Tadbir.Mapper
 {
@@ -113,7 +114,11 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.ProjectId = GetNullableId(viewModel.FullAccount.Project));
             mapperConfig.CreateMap<CheckBookPage, CheckBookPageViewModel>();
             mapperConfig.CreateMap<CheckBookPageViewModel, CheckBookPage>();
-            mapperConfig.CreateMap<CheckBook, CheckBookReportViewModel>();
+            mapperConfig.CreateMap<CheckBook, CheckBookReportViewModel>()
+                .ForMember(dest => dest.IsArchivedName, opts => opts.MapFrom(src =>
+                    src.IsArchived.HasValue && src.IsArchived.Value
+                        ? AppStrings.BooleanYes
+                        : AppStrings.BooleanNo));
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)

@@ -208,7 +208,8 @@
     "BalanceByAccount": "Balance By Account",
     "Widget": "Widget",
     "CashRegister": "Cash Register",
-    "CheckBook": "Check Books"
+    "CheckBook": "Check Books",
+    "CheckBookReport": "Check Book Report"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": " Number Of Vouchers Selected :",
@@ -1278,6 +1279,7 @@
     "PagesCount": "Pages Count",
     "Other": "Other",
     "Archive": "Archive",
+    "UndoArchive":"Undo archive",
     "BankAccount": "Banck account",
     "CancelCheck": "Cancel check",
     "UndoCancelCheck": "Undo cancel check",
