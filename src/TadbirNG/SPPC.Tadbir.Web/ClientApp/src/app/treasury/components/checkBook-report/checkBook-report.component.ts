@@ -119,27 +119,26 @@ export class CheckBookReportComponent
 
   ArchiveHandler(toArchive:boolean) {
     this.grid.loading = true;
-    let url;
-    let item:CheckBook = this.rowData?.data.find(i => i.id == this.selectedRows[0]);
-    item.isArchived = toArchive;
-    url = String.Format(CheckBooksApi.CheckBook,item.id);
-    console.log(item);
-    
+    let url = toArchive? CheckBooksApi.ArchiveCheckBooks: CheckBooksApi.UndoArchiveCheckBooks;
+    let items:number[] = [];
+    this.selectedRows.forEach(id => items.push(id));
+    let body = JSON.stringify({ paraph: "", items: items });
 
-    this.checkBookService.updateCheck(url,item).pipe(
+    this.checkBookService.updateCheck(url,body).pipe(
       take(2)
     ).subscribe({
-      next: res => {
-        this.selectedRows = [];
+      next: (res) => {
         this.grid.loading = false;
+        console.log('test');
+        
+        this.selectedRows = [];
         this.showMessage(
           this.getText("Messages.OperationSuccessful"),
           MessageType.Succes
         );
         this.reloadGrid();
       },
-      error: error => {
-        this.grid.loading = false;
+      error: (error) => {
         if (error)
           this.showMessage(
             this.errorHandlingService.handleError(error),
