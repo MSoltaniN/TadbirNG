@@ -163,7 +163,7 @@ export class BaseService<T = void | any> extends EnviromentComponent {
     var postItem = {
       paging: gridPaging,
       filter: filter,
-      quickFilter: quickFilter,
+      quickFilter: quickFilter?quickFilter:{},
       sortColumns: sort,
       listChanged: listChangedValue,
       operation: operationId,
@@ -211,7 +211,7 @@ export class BaseService<T = void | any> extends EnviromentComponent {
     var postItem = {
       paging: gridPaging,
       filter: filter,
-      quickFilter: quickFilter,
+      quickFilter: quickFilter?quickFilter:{},
       sortColumns: sort,
       listChanged: listChangedValue,
       operation: operationId,
