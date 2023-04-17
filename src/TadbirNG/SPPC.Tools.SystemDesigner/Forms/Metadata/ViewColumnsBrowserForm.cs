@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
+using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Forms
 {
@@ -79,7 +81,34 @@ namespace SPPC.Tools.SystemDesigner.Forms
 
         private void Generate_Click(object sender, EventArgs e)
         {
+            var scriptBuilder = new StringBuilder();
+            var allViews = grdViews.DataSource as List<ViewViewModel>;
+            if (allViews.Any())
+            {
+                allViews = allViews
+                    .OrderBy(view => view.Id)
+                    .ToList();
+                scriptBuilder.AppendLine(
+                    ScriptUtility.GetInsertScripts(allViews, ViewExtensions.ToScript));
 
+                var allColumns = new List<ColumnViewModel>();
+                allColumns.AddRange(_allColumns.Rows
+                    .Cast<DataRow>()
+                    .Select(row => ColumnFromRow(row)));
+                foreach (var view in allViews.Where(view => view.Columns.Any()))
+                {
+                    allColumns.AddRange(view.Columns);
+                }
+
+                allColumns = allColumns
+                    .OrderBy(column => column.Id)
+                    .ToList();
+                scriptBuilder.AppendLine(
+                    ScriptUtility.GetInsertScripts(allColumns, ColumnExtensions.ToScript));
+                ScriptUtility.ReplaceSysScript(scriptBuilder.ToString());
+                MessageBox.Show(this, "Scripts were successfully generated.", "Success",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void Exit_Click(object sender, EventArgs e)
