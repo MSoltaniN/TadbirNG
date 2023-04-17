@@ -208,6 +208,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetPagesAsync(int checkBookId)
         {
             var pages = await _pageRepository.GetPagesAsync(checkBookId, GridOptions);
+            SetRowNumbers(pages.Items);
             return Json(pages.Items);
         }
 
@@ -236,6 +237,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var pages = await _pageRepository.CreatePagesAsync(checkBookId);
+            SetRowNumbers(pages.Items);
             return Json(pages.Items);
         }
 
