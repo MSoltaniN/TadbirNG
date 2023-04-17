@@ -45,7 +45,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   @ViewChild(ReportManagementComponent, {static: true}) reportManager: ReportManagementComponent;
   @ViewChild(QuickReportSettingComponent, {static: true}) reportSetting: QuickReportSettingComponent;
 
-  @Input() public model: CheckBookInfo;
+  @Input() public model: CheckBookInfo = new CheckBookInfo();
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
   @Input() filter: FilterExpression;
@@ -105,6 +105,11 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     return date?date:'';
   }
 
+  get noQueryParam() {
+    let no = this.route.snapshot.queryParamMap.get('no');
+    return no?no:'';
+  }
+
   //
   dialogRef: DialogRef;
   dialogModel: any;
@@ -125,7 +130,9 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
        bStorageService, renderer,
        metadata, Entities.CheckBook,
        ViewName.CheckBook,elem);
+       this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
+
   viewId;
   entityTypeName;
   public set entityName(name: string) {
@@ -154,8 +161,10 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   
         case 'next':
           this.breadCrumbTitle = 'CheckBook';
+
           if (!this.isFirstCheckBook) {
-            url = String.Format(CheckBooksApi.NextCheckBook,this.model.issueDate);
+            url = String.Format(CheckBooksApi.NextCheckBook,
+              this.dateQueryParam?this.dateQueryParam:this.model.issueDate.toISOString());
             this.getCheckBook(url);
           }
           break;
@@ -164,7 +173,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
           this.breadCrumbTitle = 'CheckBook';
           if (this.dateQueryParam || this.model.id) {
             url = String.Format(CheckBooksApi.PreviousCheckBook,
-              this.dateQueryParam?this.dateQueryParam:this.model.issueDate);
+              this.dateQueryParam?this.dateQueryParam:this.model.issueDate.toISOString());
           } else {
             url = CheckBooksApi.LastCheckBook;
           }
@@ -180,7 +189,12 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
           break;
   
         case 'by-no':
-          this.searchConfirm = true;
+          if (!this.noQueryParam)
+            this.searchConfirm = true;
+          else {
+            let url = String.Format(CheckBooksApi.CheckBookByNo,this.noQueryParam);
+            this.getCheckBook(url);
+          }
           break;
       
         default:
@@ -287,6 +301,41 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
             this.deleteConfirmBox = false;
     
             this.showMessage(this.deleteMsg,MessageType.Info);
+            lastValueFrom(this.checkBookService.
+              getModelsByFilters(String.Format(CheckBooksApi.NextCheckBook,this.model.issueDate),
+                this.filter,
+                this.quickFilter
+                )
+              ).then((next:CheckBook) => {
+                setTimeout(() => {
+                  this.checkBookItem = next;
+                }, 0);
+                this.router.routeReuseStrategy.store(null,null)
+                this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
+                  no: next.checkBookNo
+                }});
+              }).catch(err => {
+                //if next checkbook not exists try for previous checkbook;
+                lastValueFrom(this.checkBookService.
+                  getModelsByFilters(String.Format(CheckBooksApi.PreviousCheckBook,this.model.issueDate),
+                  this.filter,
+                  this.quickFilter
+                  )
+                ).then((previous:CheckBook) => {
+                  setTimeout(() => {
+                    this.checkBookItem = previous;
+                  }, 0);
+                this.router.routeReuseStrategy.store(null,null)
+
+                    this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
+                      no: previous.checkBookNo
+                    }});
+                  }).catch( err2 => {
+                    //if previous check-book not exists show check-book list
+                    this.cancel.emit();
+                    this.router.navigate(["/treasury/check-books/"]);
+                  })
+              })
           },
           error: err =>{
             this.showMessage(this.errorHandlingService.handleError(err),MessageType.Error);
@@ -382,7 +431,12 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     let url;
 
     if (this.urlMode != 'previous' && !this.dialogMode) {
-      this.router.navigate(['/treasury/check-books/previous']);
+      let issueDate = this.model.id > 0? this.model.issueDate: '';
+      this.router.navigate(['/treasury/check-books/previous'],{
+        queryParams: {
+          date: issueDate
+        }
+      });
     } else {
       if (this.model.id) {
         url = String.Format(CheckBooksApi.PreviousCheckBook,this.model.issueDate);

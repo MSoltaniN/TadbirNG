@@ -65,4 +65,14 @@ export class CheckBooksApi
     */
     public static LastCheckBook = environment.BaseUrl + "/check-books/last";
 
+    /**
+    * API client URL for archiving a check book
+    */
+    public static ArchiveCheckBooks = environment.BaseUrl + "/check-books/archive";
+
+    /**
+    * API server route URL for undoing archive operation on a check book
+    */
+    public static UndoArchiveCheckBooks = environment.BaseUrl + "/check-books/archive/undo";
+
 }

@@ -169,8 +169,9 @@ export class CheckBookPagesComponent
     }
   }
 
-  public onDataBind(res: any): void {    
+  public onDataBind(res: any): void {
     this.checkBookPages = res;
+
     if (!res.length && !this.grid.filter.filters.length) {
       this.nullPages.emit(true);
     } else {
@@ -315,16 +316,16 @@ export class CheckBookPagesComponent
     }
   }
 
-  /**
-   * to paginate pages manualy
-   * @param event [PageChangeEvent]
-   */
-  public pageChange(event: PageChangeEvent): void {
-    this.skip = event.skip;
-    this.pageSize = event.take;
-    this.selectedRows = []
-    this.paginateData();
-  }
+  // /**
+  //  * to paginate pages manualy
+  //  * @param event [PageChangeEvent]
+  //  */
+  // public manualPageChange(event: PageChangeEvent): void {
+  //   this.skip = event.skip;
+  //   this.pageSize = event.take;
+  //   this.selectedRows = []
+  //   this.paginateData();
+  // }
 
   private paginateData(): void {
     this.rowData = {

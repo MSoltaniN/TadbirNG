@@ -113,8 +113,7 @@
         SppcPermissionCheck="Archive"
         (sppcClick)="ArchiveHandler(true)"
         class="k-button"
-        *ngIf="false"
-        [disabled]="isArchived || selectedRows.length != 1 || true"
+        [disabled]="isArchived || selectedRows.length != 1"
         title="{{ 'CheckBook.Archive' | translate }}"
       >
         <span class="k-icon k-i-download"></span>
@@ -122,9 +121,8 @@
       <button
         SppcPermissionCheck="UndoArchive"
         (sppcClick)="ArchiveHandler(false)"
-        *ngIf="fasl"
         class="k-button"
-        [disabled]="!isArchived || selectedRows.length != 1 || true"
+        [disabled]="!isArchived || selectedRows.length != 1"
         title="{{ 'CheckBook.UndoArchive' | translate }}"
       >
         <span class="k-icon k-i-arrow-rotate-ccw"></span>
@@ -243,7 +241,7 @@
 </div>
 
 <kendo-dialog
-  title="{{ 'CashRegisters.Delete' | translate }}"
+  title="{{ 'CheckBook.Delete' | translate }}"
   *ngIf="deleteConfirm"
   (close)="deleteModel(false)"
   [minWidth]="250"

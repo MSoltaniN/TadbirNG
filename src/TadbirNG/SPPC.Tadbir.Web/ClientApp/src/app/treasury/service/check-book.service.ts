@@ -68,7 +68,7 @@ export class CheckBookService extends BaseService {
       .pipe(map((response) => <any>(<Response>response)));
   }
 
-  updateCheck(apiUrl:string,data:CheckBook=null,listChanged: boolean = true) {
+  updateCheck(apiUrl:string,data?:any,listChanged: boolean = true) {
     var postItem = {
       listChanged: listChanged
     };

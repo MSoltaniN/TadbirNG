@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Metadata;
 
 namespace SPPC.Tadbir.ViewModel.Check
 {
@@ -31,5 +32,10 @@ namespace SPPC.Tadbir.ViewModel.Check
         /// بانک - نام پروژه
         /// </summary>
         public string ProjectName { get; set; }
+
+        /// <summary>
+        /// عنوان وضعیت بایگانی
+        /// </summary>
+        public string IsArchivedName { get; set; }
     }
 }

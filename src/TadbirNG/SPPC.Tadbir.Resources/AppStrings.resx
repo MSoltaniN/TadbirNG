@@ -3837,4 +3837,7 @@
   <data name="AssignCashRegisterUser" xml:space="preserve">
     <value>تخصیص کاربر به صندوق اسناد</value>
   </data>
+  <data name="IsArchivedName" xml:space="preserve">
+    <value>بایگانی شده</value>
+  </data>
 </root>
