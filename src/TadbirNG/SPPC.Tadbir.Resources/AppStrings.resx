@@ -3840,4 +3840,10 @@
   <data name="IsArchivedName" xml:space="preserve">
     <value>بایگانی شده</value>
   </data>
+  <data name="AssignEntityToResource" xml:space="preserve">
+    <value>تخصیص دسترسی {0} {1} به {2}: {3}</value>
+  </data>
+  <data name="UnassignEntityToResource" xml:space="preserve">
+    <value>سلب دسترسی {0} {1} از {2}: {3}</value>
+  </data>
 </root>

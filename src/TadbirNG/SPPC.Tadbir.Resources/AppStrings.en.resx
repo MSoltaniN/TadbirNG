@@ -3849,4 +3849,10 @@
   <data name="IsArchivedName" xml:space="preserve">
     <value>IsArchived</value>
   </data>
+  <data name="AssignEntityToResource" xml:space="preserve">
+    <value>Assgin {0} {1} access to {2}: {3}</value>
+  </data>
+  <data name="UnassignEntityToResource" xml:space="preserve">
+    <value>Unassgin {0} {1} access from {2}: {3}</value>
+  </data>
 </root>
