@@ -128,9 +128,6 @@ export class CheckBookReportComponent
       take(2)
     ).subscribe({
       next: (res) => {
-        this.grid.loading = false;
-        console.log('test');
-        
         this.selectedRows = [];
         this.showMessage(
           this.getText("Messages.OperationSuccessful"),
@@ -144,6 +141,9 @@ export class CheckBookReportComponent
             this.errorHandlingService.handleError(error),
             MessageType.Warning
           );
+      },
+      complete: () => {
+        this.grid.loading = false;
       }
     })
   }
