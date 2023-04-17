@@ -44,6 +44,9 @@ namespace SPPC.Tadbir.Persistence
                         cb => cb.Account, cb => cb.DetailAccount, cb => cb.CostCenter, cb => cb.Project)
                     .Select(cb => Mapper.Map<CheckBookReportViewModel>(cb))
                     .ToListAsync();
+
+                Array.ForEach(checkBooks.ToArray(), cb => cb.IsArchivedName =
+                    Context.Localize(cb.IsArchivedName));
             }
 
             await ReadAsync(options);
