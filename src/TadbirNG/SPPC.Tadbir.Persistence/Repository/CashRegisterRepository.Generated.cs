@@ -220,19 +220,19 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(userCashRegisters, nameof(userCashRegisters));
             var repository = UnitOfWork.GetAsyncRepository<UserCashRegister>();
-            var exsiting = await repository
-                .GetByCriteriaAsync(ucs => ucs.CashRegisterId == userCashRegisters.Id);
-            if (AreUsersModified(exsiting, userCashRegisters))
+            var existing = await repository
+                .GetByCriteriaAsync(ucr => ucr.CashRegisterId == userCashRegisters.Id);
+            if (AreUsersModified(existing, userCashRegisters))
             {
-                if (exsiting.Count > 0)
+                if (existing.Count > 0)
                 {
-                    RemoveUnassinedUsers(repository, exsiting, userCashRegisters);
+                    RemoveUnassinedUsers(repository, existing, userCashRegisters);
                 }
 
-                AddNewUsers(repository, exsiting, userCashRegisters);
+                AddNewUsers(repository, existing, userCashRegisters);
                 await UnitOfWork.CommitAsync();
                 OnEntityAction(OperationId.AssignCashRegisterUser);
-                Log.Description = await GetUserCashRegisterDescriptionAsync(userCashRegisters.Id, exsiting, userCashRegisters);
+                Log.Description = await GetUserCashRegisterDescriptionAsync(userCashRegisters.Id, existing, userCashRegisters);
                 await TrySaveLogAsync();
             }
         }
@@ -344,7 +344,8 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private async Task<string> GetUserCashRegisterDescriptionAsync(int cashRegisterId, IList<UserCashRegister> existing, RelatedItemsViewModel userItems)
+        private async Task<string> GetUserCashRegisterDescriptionAsync(
+            int cashRegisterId, IList<UserCashRegister> existing, RelatedItemsViewModel userItems)
         {
             StringBuilder description = new StringBuilder();
             var repository = UnitOfWork.GetAsyncRepository<CashRegister>();
@@ -386,16 +387,17 @@ namespace SPPC.Tadbir.Persistence
             return description.ToString();
         }
 
-        private async Task<string> GetUsersLocalizeDescription(IList<int> userIds, string template, string cashRegisterName)
+        private async Task<string> GetUsersLocalizeDescription(
+            IList<int> userIds, string template, string cashRegisterName)
         {
             UnitOfWork.UseSystemContext();
             var userRepository = UnitOfWork.GetAsyncRepository<User>();
             var users = await userRepository
-                        .GetEntityQuery()
-                        .Where(user => userIds.Contains(user.Id))
-                        .Include(user => user.Person)
-                        .Select(user => Mapper.Map<RelatedItemViewModel>(user))
-                        .ToArrayAsync();
+                .GetEntityQuery()
+                .Where(user => userIds.Contains(user.Id))
+                .Include(user => user.Person)
+                .Select(user => Mapper.Map<RelatedItemViewModel>(user))
+                .ToArrayAsync();
 
 
             Array.ForEach(users, u => u.Name = $"'{u.Name}'");
@@ -412,7 +414,7 @@ namespace SPPC.Tadbir.Persistence
                 entity = Context.Localize(AppStrings.User).ToLower();
             }
 
-            return string.Format(template, resource, cashRegisterName, entity, userNames);
+            return String.Format(template, resource, cashRegisterName, entity, userNames);
         }
 
         private IEnumerable<int> GetValidRoleIds(int branchId, int branchScope)
