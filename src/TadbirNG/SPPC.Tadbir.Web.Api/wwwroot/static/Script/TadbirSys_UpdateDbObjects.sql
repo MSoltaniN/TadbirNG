@@ -791,9 +791,9 @@ WHERE [TitleKey] = N'Tools'
 
 -- 1.2.1503
 Update [Metadata].[Column] 
-Set [Name]= N'IsArchivedName', [DotNetType]= N'System.String', [StorageType]= N'nvarchar'
-	, [ScriptType]= N'string', [IsNullable]= 1, [AllowFiltering]= 1, [Visibility]= NULL
-Where ColumnID=737
+Set [Name] = N'IsArchivedName', [DotNetType] = N'System.String', [StorageType] = N'nvarchar',
+    [ScriptType] = N'string', [IsNullable] = 1
+Where ColumnID = 737
 
 
 

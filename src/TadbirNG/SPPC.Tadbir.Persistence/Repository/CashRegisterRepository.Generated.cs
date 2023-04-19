@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -9,6 +10,7 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.CashFlow;
+using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel;
@@ -218,19 +220,19 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(userCashRegisters, nameof(userCashRegisters));
             var repository = UnitOfWork.GetAsyncRepository<UserCashRegister>();
-            var exsiting = await repository
-                .GetByCriteriaAsync(ucs => ucs.CashRegisterId == userCashRegisters.Id);
-            if (AreUsersModified(exsiting, userCashRegisters))
+            var existing = await repository
+                .GetByCriteriaAsync(ucr => ucr.CashRegisterId == userCashRegisters.Id);
+            if (AreUsersModified(existing, userCashRegisters))
             {
-                if (exsiting.Count > 0)
+                if (existing.Count > 0)
                 {
-                    RemoveUnassinedUsers(repository, exsiting, userCashRegisters);
+                    RemoveUnassinedUsers(repository, existing, userCashRegisters);
                 }
 
-                AddNewUsers(repository, exsiting, userCashRegisters);
+                AddNewUsers(repository, existing, userCashRegisters);
                 await UnitOfWork.CommitAsync();
                 OnEntityAction(OperationId.AssignCashRegisterUser);
-                Log.Description = await GetUserCashRegisterDescriptionAsync(userCashRegisters.Id);
+                Log.Description = await GetUserCashRegisterDescriptionAsync(userCashRegisters.Id, existing, userCashRegisters);
                 await TrySaveLogAsync();
             }
         }
@@ -342,19 +344,77 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private async Task<string> GetUserCashRegisterDescriptionAsync(int cashRegisterId)
+        private async Task<string> GetUserCashRegisterDescriptionAsync(
+            int cashRegisterId, IList<UserCashRegister> existing, RelatedItemsViewModel userItems)
         {
-            string description = string.Empty;
+            StringBuilder description = new StringBuilder();
             var repository = UnitOfWork.GetAsyncRepository<CashRegister>();
             var cashRegister = await repository.GetByIDAsync(cashRegisterId);
             if (cashRegister != null)
             {
-                string template = Context.Localize(AppStrings.AssignedUsers);
-                string entity = Context.Localize(AppStrings.CashRegister).ToLower();
-                description = string.Format(template, entity, cashRegister.Name);
+                var currentUserIds = userItems.RelatedItems
+                    .Select(item => item.Id)
+                    .ToArray();
+                var RemovedUserIds = existing
+                    .Where(ucr => !currentUserIds.Contains(ucr.UserId))
+                    .Select(item => item.UserId)
+                    .ToArray();
+
+                var existingUserIds = existing.Select(ucr => ucr.UserId);
+                var newUserIds = userItems.RelatedItems
+                    .Where(item => !existingUserIds.Contains(item.Id))
+                    .Select(item => item.Id)
+                    .ToArray();
+
+                if (newUserIds.Length > 0)
+                {
+                    string template = Context.Localize(AppStrings.AssignEntityToResource);
+                    description.Append(await GetUsersLocalizeDescription(newUserIds, template, cashRegister.Name));
+                }
+
+                if (RemovedUserIds.Length > 0)
+                {
+                    if (description.Length > 0)
+                    {
+                        description.Append(" - ");
+                    }
+
+                    string template = Context.Localize(AppStrings.UnassignEntityToResource);
+                    description.Append(await GetUsersLocalizeDescription(RemovedUserIds, template, cashRegister.Name));
+                }
             }
 
-            return description;
+            return description.ToString();
+        }
+
+        private async Task<string> GetUsersLocalizeDescription(
+            IList<int> userIds, string template, string cashRegisterName)
+        {
+            UnitOfWork.UseSystemContext();
+            var userRepository = UnitOfWork.GetAsyncRepository<User>();
+            var users = await userRepository
+                .GetEntityQuery()
+                .Where(user => userIds.Contains(user.Id))
+                .Include(user => user.Person)
+                .Select(user => Mapper.Map<RelatedItemViewModel>(user))
+                .ToArrayAsync();
+
+
+            Array.ForEach(users, u => u.Name = $"'{u.Name}'");
+            string userNames = String.Join(", ", users.Select(u => u.Name));
+            string resource = Context.Localize(AppStrings.CashRegister).ToLower();
+
+            string entity = string.Empty;
+            if (users.Count() > 1)
+            {
+                entity = Context.Localize(AppStrings.Users).ToLower();
+            }
+            else
+            {
+                entity = Context.Localize(AppStrings.User).ToLower();
+            }
+
+            return String.Format(template, resource, cashRegisterName, entity, userNames);
         }
 
         private IEnumerable<int> GetValidRoleIds(int branchId, int branchScope)

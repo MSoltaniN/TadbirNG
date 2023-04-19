@@ -163,7 +163,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetUserCashRegistersAsync(int cashRegisterId)
         {
             var users = await _repository.GetCashRegisterUsersAsync(cashRegisterId);
-            Localize(users);
             return JsonReadResult(users);
         }
 
@@ -248,11 +247,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
-        }
-
-        private void Localize(RelatedItemsViewModel users)
-        {
-            Array.ForEach(users.RelatedItems.ToArray(), item => item.Name = _strings[item.Name]);
         }
 
         private readonly ICashRegisterRepository _repository;

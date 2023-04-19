@@ -89,7 +89,8 @@ namespace SPPC.Tools.SystemDesigner.Forms
             var allGroups = grdPermissions.DataSource as List<PermissionGroupViewModel>;
             if (allGroups.Any())
             {
-                scriptBuilder.AppendLine(GeneratePermissionGroupScripts(allGroups));
+                scriptBuilder.AppendLine(
+                    ScriptUtility.GetInsertScripts(allGroups, PermissionGroupExtensions.ToScript));
 
                 var allPermissions = new List<PermissionViewModel>();
                 foreach (var group in allGroups)
@@ -97,7 +98,8 @@ namespace SPPC.Tools.SystemDesigner.Forms
                     allPermissions.AddRange(group.Permissions);
                 }
 
-                scriptBuilder.Append(GeneratePermissionScripts(allPermissions));
+                scriptBuilder.AppendLine(
+                    ScriptUtility.GetInsertScripts(allPermissions, PermissionExtensions.ToScript));
                 ScriptUtility.ReplaceSysScript(scriptBuilder.ToString());
                 MessageBox.Show(this, "Scripts were successfully generated.", "Success",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -134,36 +136,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
             }
 
             return allGroups;
-        }
-
-        private static string GeneratePermissionGroupScripts(IEnumerable<PermissionGroupViewModel> groups)
-        {
-            var scriptBuilder = new StringBuilder();
-            scriptBuilder.Append(groups.First().ToScript(true, false));
-            foreach (var group in groups
-                .Skip(1)
-                .Take(groups.Count() - 2))
-            {
-                scriptBuilder.Append(group.ToScript(false, false));
-            }
-
-            scriptBuilder.Append(groups.Last().ToScript(false, true));
-            return scriptBuilder.ToString();
-        }
-
-        private static string GeneratePermissionScripts(IEnumerable<PermissionViewModel> permissions)
-        {
-            var scriptBuilder = new StringBuilder();
-            scriptBuilder.Append(permissions.First().ToScript(true, false));
-            foreach (var group in permissions
-                .Skip(1)
-                .Take(permissions.Count() - 2))
-            {
-                scriptBuilder.Append(group.ToScript(false, false));
-            }
-
-            scriptBuilder.Append(permissions.Last().ToScript(false, true));
-            return scriptBuilder.ToString();
         }
 
         private void ReloadGroups()

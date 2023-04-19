@@ -758,18 +758,7 @@ INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [EntityType], [Fe
     VALUES (72, 'CheckBookReport', N'CheckBookReport', NULL, NULL, NULL, 0, 0)
 SET IDENTITY_INSERT [Metadata].[View] OFF
 
-UPDATE [Metadata].[View]
-SET [FetchUrl] = NULL
-WHERE [FetchUrl] = ''
-GO
-
-UPDATE [Metadata].[View]
-SET [EntityType] = NULL
-WHERE [EntityType] = ''
-GO
-
 SET IDENTITY_INSERT [Metadata].[Column] ON
-
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (1, 1, 'Id', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
@@ -2265,6 +2254,16 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [
 INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (748, 71, 'PageCount', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 0, 0, 1, 1, N'Hidden', 16, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
+
+UPDATE [Metadata].[View]
+SET [FetchUrl] = NULL
+WHERE [FetchUrl] = ''
+GO
+
+UPDATE [Metadata].[View]
+SET [EntityType] = NULL
+WHERE [EntityType] = ''
+GO
 
 UPDATE [Metadata].[Column]
 SET [Type] = 'Default'
