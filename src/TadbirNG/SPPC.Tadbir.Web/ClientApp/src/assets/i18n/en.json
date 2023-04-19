@@ -1260,8 +1260,10 @@
     "CashRegisters": "Cash Registers",
     "New": "New cash register",
     "Edit": "Edit cash register",
-    "RolesTitle": "Users assigned to the cash register",
-    "Delete": "Delete cash register"
+    "Delete": "Delete cash register",
+    "UsersAssigned": "Users assigned to the Cash Register",
+    "UsersCanBeAssigned": "Users can be assigned to the Cash Register",
+    "AssignUserToCashRegister": "Assign User to Cash Register"
   },
   "CheckBook": {
     "New": "New check book",

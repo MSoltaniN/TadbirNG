@@ -1291,8 +1291,10 @@
     "CashRegisters": "صندوق اسناد",
     "New": "صندوق جدید",
     "Edit": "اصلاح صندوق اسناد",
-    "RolesTitle": "کاربران تخصیص یافته به صندوق",
-    "Delete":"حذف صندوق"
+    "Delete":"حذف صندوق",
+    "UsersAssigned": "کاربران تخصیص یافته به صندوق",
+    "UsersCanBeAssigned": "کاربران قابل تخصیص به صندوق",
+    "AssignUserToCashRegister": "تخصیص کاربر به صندوق"
   },
   "CheckBook": {
     "New": "دسته چک جدید",

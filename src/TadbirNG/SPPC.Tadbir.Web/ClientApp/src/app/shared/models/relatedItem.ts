@@ -16,6 +16,7 @@ import { IEntity } from "./IEntity";
 export interface RelatedItem extends IEntity{
     id: number;
     parentId?: number;
+    isValid?: boolean;
     name: string;
     isSelected: boolean;
 }

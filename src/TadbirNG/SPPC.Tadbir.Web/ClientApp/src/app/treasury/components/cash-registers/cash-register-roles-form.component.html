@@ -1,5 +1,5 @@
 
-<div style="padding:15px;" class="sppc-dialog-xs" (keydown.esc)="escPress()">
+<div style="padding:15px;" class="sppc-dialog-xs main-box" (keydown.esc)="escPress()">
 
     <div *ngIf="errorMessages">
       <div *ngFor="let err of errorMessages" class="alert alert-danger">
@@ -8,20 +8,70 @@
       </div>
     </div>
   
-    <kendo-grid [data]="gridData"
-                [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-                [(selectedKeys)]="selectedRows"
-                [kendoGridSelectBy]="selectionKey">
-      <ng-template kendoGridNoRecordsTemplate>
-        {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
-      </ng-template>
-  
-      <kendo-grid-checkbox-column showSelectAll="true" width="40"></kendo-grid-checkbox-column>
-  
-      <kendo-grid-column sppc-grid-column="Role.Name">
-      </kendo-grid-column>
-  
-    </kendo-grid>
+    <div class="canToAddDiv">
+      <h5>{{ "CashRegisters.UsersCanBeAssigned" | translate }}</h5>
+      <kendo-grid [data]="usersCanBeAssign"
+        [height]="400"
+        [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+        [(selectedKeys)]="selectedCanBeAssignRows"
+        (selectedKeysChange)="onSelectedCanBeAssignKeysChange($event)"
+        [kendoGridSelectBy]="selectionKey"
+      >
+        <ng-template kendoGridNoRecordsTemplate>
+          {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+        </ng-template>
+    
+        <kendo-grid-checkbox-column showSelectAll="true" width="50">
+          <ng-template kendoGridHeaderTemplate>
+            <input type="checkbox"
+             class="k-checkbox"
+             (change)="onSelectAll('assign',$event)"
+            />
+          </ng-template>
+        </kendo-grid-checkbox-column>
+    
+        <kendo-grid-column sppc-grid-column="Role.Name">
+        </kendo-grid-column>
+    
+      </kendo-grid>
+    </div>
+    <div class="addedDiv">
+      <h5>{{ "CashRegisters.UsersAssigned" | translate }}</h5>
+      <kendo-grid #resultGrid
+        id="resultGrid"
+        [data]="assignedUsers"
+        [height]="400"
+        [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+        [(selectedKeys)]="selectedResultRows"
+        (selectedKeysChange)="onSelectedAssignedKeysChange($event)"
+        [kendoGridSelectBy]="selectionKey"
+      >
+        <ng-template kendoGridNoRecordsTemplate>
+          {{showloadingMessage2  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+        </ng-template>
+    
+        <kendo-grid-checkbox-column showSelectAll="true" width="50">
+          <ng-template kendoGridHeaderTemplate>
+            <input type="checkbox"
+             class="k-checkbox"
+             (change)="onSelectAll('assigned',$event)"
+             [checked]="true"
+            />
+          </ng-template>
+          <ng-template kendoGridCellTemplate let-idx="rowIndex" let-dataItem>
+            <input type="checkbox"
+             class="k-checkbox"
+             (change)="onSelectedAssignedKeysChange([dataItem.id,idx])"
+             checked
+            />
+          </ng-template>
+        </kendo-grid-checkbox-column>
+    
+        <kendo-grid-column sppc-grid-column="Role.Name">
+        </kendo-grid-column>
+    
+      </kendo-grid>
+    </div>
   </div>
   
   <kendo-dialog-actions>
