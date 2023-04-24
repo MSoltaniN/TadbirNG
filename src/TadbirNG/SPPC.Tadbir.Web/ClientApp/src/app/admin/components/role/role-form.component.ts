@@ -8,7 +8,7 @@ import { Layout, Entities } from '@sppc/shared/enum/metadata';
 import { DetailComponent } from '@sppc/shared/class';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { Permission } from '@sppc/core';
-import { Role, RoleFullViewModel } from '@sppc/admin/models';
+import { Role, RoleFullViewModel, RoleItem } from '@sppc/admin/models';
 import { RoleFullInfo } from '@sppc/admin/service';
 import { TreeNodeInfo } from '@sppc/shared/models';
 import { ViewName } from '@sppc/shared/security';
@@ -61,37 +61,63 @@ export class RoleFormComponent extends DetailComponent {
   disabledViewAccessKeys = [];
   disabledKeys = [];
 
-  @Input() public set permissionModel(permission: any) {
+  @Input() public set permissionModel(permission: RoleItem[]) {
 
+    let parent0Index = -1;
+    let parent1Index = -1;
     var level0Index: number = -1;
     var level1Index: number = 0;
     var selectAll: boolean = true;
-
-
+    
     if (permission != undefined) {
+      let groupSourceTypeId = []
+      let groupSubsystemId;
       var groupId = 0;
 
       this.checkedKeys = [];
       this.treeData = new Array<TreeNodeInfo>();
 
-      if (this.CurrentLanguage == "fa")
-        this.treeData.push(new TreeNodeInfo(-1, undefined, "حسابداری"));
-      else
-        this.treeData.push(new TreeNodeInfo(-1, undefined, "Accounting"));
+      // if (this.CurrentLanguage == "fa")
+      //   this.treeData.push(new TreeNodeInfo(-1, undefined, "حسابداری"));
+      // else
+      //   this.treeData.push(new TreeNodeInfo(-1, undefined, "Accounting"));
 
       var checkedParent: string = '';
       var indexId: number = 0;
+      let groupIndex;
 
+      console.log(permission);
+      
       for (let permissionItem of permission) {
 
+        parent0Index = permissionItem.groupSourceTypeId-1;
 
-        if (groupId != permissionItem.groupId) {
-          this.treeData.push(new TreeNodeInfo(permissionItem.groupId, -1, permissionItem.groupName))
+        if (!groupSourceTypeId.includes(permissionItem.groupSourceTypeId)) {
+          this.treeData.push(new TreeNodeInfo(permissionItem.groupSourceTypeId-100, undefined, permissionItem.groupSourceTypeName));
+          groupSourceTypeId.push(permissionItem.groupSourceTypeId);
+        }
+
+        parent1Index = permissionItem.groupSubsystemId-1;
+        if (groupSubsystemId !=
+           permissionItem.groupSourceTypeId.toString() + permissionItem.groupSubsystemId.toString()
+        ) {
+          groupSubsystemId = permissionItem.groupSourceTypeId.toString() + permissionItem.groupSubsystemId.toString();
+          this.treeData.push(new TreeNodeInfo((+groupSubsystemId)-100, permissionItem.groupSourceTypeId-100, permissionItem.groupSubsystemName));
+          checkedParent = parent0Index.toString() + '_' + parent1Index.toString();
+
+          this.checkedKeys.push(checkedParent);
+        }
+
+        if (groupId != permissionItem.groupId &&
+          groupSubsystemId == permissionItem.groupSourceTypeId.toString() +
+          permissionItem.groupSubsystemId.toString())
+        {
+          this.treeData.push(new TreeNodeInfo(permissionItem.groupId, (+groupSubsystemId)-100, permissionItem.groupName));
 
           level0Index++;
           level1Index = -1;
 
-          checkedParent = '0_' + level0Index.toString();
+          checkedParent = parent0Index.toString() + '_' + parent1Index.toString() + '_' + level0Index.toString();
 
           this.checkedKeys.push(checkedParent);
 
@@ -127,17 +153,25 @@ export class RoleFormComponent extends DetailComponent {
         }
 
         if (permissionItem.isEnabled) {
-          this.checkedKeys.push('0_' + level0Index.toString() + '_' + level1Index.toString());
+          this.checkedKeys.push(parent0Index.toString() + '_' +
+           parent0Index.toString() + '_' +
+           level0Index.toString() + '_' +
+           level1Index.toString()
+          );
         }
         else {
-          if (indexId >= 0 && this.checkedKeys[indexId].split('_').length == 2) {
+          if (indexId >= 0 && this.checkedKeys[indexId].split('_').length == 3) {
             this.checkedKeys.splice(indexId, 1);
             indexId = -1;
             selectAll = false;
           }
         }
 
-        this.permissonDictionary['0_' + level0Index.toString() + '_' + level1Index.toString()] = permissionItem;
+        this.permissonDictionary[parent0Index.toString() + '_' +
+          parent0Index.toString() + '_' +
+          level0Index.toString() + '_' +
+          level1Index.toString()
+        ] = permissionItem;
 
       }
 
@@ -145,7 +179,8 @@ export class RoleFormComponent extends DetailComponent {
         this.checkedKeys.push('0');
       }
     }
-
+    console.log(this.permissonDictionary,this.checkedKeys);
+    
   }
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -224,105 +259,107 @@ export class RoleFormComponent extends DetailComponent {
   }
 
   onCheckChange(event:TreeItemLookup) {
-    if (
-     this.checkedKeys.find(index => index == event.item.index) &&
-     (event.item.dataItem.name == this.translate.instant('Role.ViewAccess') ||
-     event.item.dataItem.parentId == -1 ||
-     event.item.dataItem.name == this.translate.instant('Role.ManageDashboardAccess') ||
-     event.item.dataItem.id == -1)
-    ) {
+    // if (
+    //  this.checkedKeys.find(index => index == event.item.index) &&
+    //  (event.item.dataItem.name == this.translate.instant('Role.ViewAccess') ||
+    //  event.item.dataItem.parentId == -1 ||
+    //  event.item.dataItem.name == this.translate.instant('Role.ManageDashboardAccess') ||
+    //  event.item.dataItem.id == -1)
+    // ) {
 
-      let teammateItems;
-      if (event.item.dataItem.parentId == -1) {
+    //   let teammateItems;
+    //   if (event.item.dataItem.parentId == -1) {
 
-        teammateItems = event.children;
+    //     teammateItems = event.children;
         
-        teammateItems.forEach(child => {
-          let index = this.disabledKeys.findIndex(id => id == child.item.dataItem.id);
-          if (index > -1) 
-            this.disabledKeys.splice(index,1);
-        });
+    //     teammateItems.forEach(child => {
+    //       let index = this.disabledKeys.findIndex(id => id == child.item.dataItem.id);
+    //       if (index > -1) 
+    //         this.disabledKeys.splice(index,1);
+    //     });
 
-      } else if(event.item.dataItem.id == -1) {
-        let parents = event.children;
-        parents.forEach(parent => {
-          teammateItems = parent.children;
-          teammateItems.forEach(child => {
-            let index = this.disabledKeys.findIndex(id => id == child.item.dataItem.id);
-            if (index > -1) 
-              this.disabledKeys.splice(index,1);
-          });
-        });
+    //   } else if(event.item.dataItem.id == -1) {
+    //     let parents = event.children;
+    //     parents.forEach(parent => {
+    //       teammateItems = parent.children;
+    //       teammateItems.forEach(child => {
+    //         let index = this.disabledKeys.findIndex(id => id == child.item.dataItem.id);
+    //         if (index > -1) 
+    //           this.disabledKeys.splice(index,1);
+    //       });
+    //     });
 
-      } else {
+    //   } else {
 
-        teammateItems = Object.values(this.permissonDictionary).filter((item:any) => item.groupId == event.item.dataItem.parentId);
-        teammateItems.forEach(item => {
-          let newId = parseInt(item.id.toString() + item.groupId.toString() + '00');
-          let index = this.disabledKeys.findIndex(id => id == newId);
-          if (index > -1)
-            this.disabledKeys.splice(index,1);
-        });
-      }
+    //     teammateItems = Object.values(this.permissonDictionary).filter((item:any) => item.groupId == event.item.dataItem.parentId);
+    //     teammateItems.forEach(item => {
+    //       let newId = parseInt(item.id.toString() + item.groupId.toString() + '00');
+    //       let index = this.disabledKeys.findIndex(id => id == newId);
+    //       if (index > -1)
+    //         this.disabledKeys.splice(index,1);
+    //     });
+    //   }
 
-    } else {
-        let teammateItems;
+    // } else {
+    //     let teammateItems;
 
-        if (event.item.dataItem.parentId == -1) {
-          // deSelect parent item
-          teammateItems = event.children;
-          teammateItems.forEach(child => {
+    //     if (event.item.dataItem.parentId == -1) {
+    //       // deSelect parent item
+    //       teammateItems = event.children;
+    //       teammateItems.forEach(child => {
 
-            if (child.item.dataItem.name != this.translate.instant('Role.ViewAccess') &&
-                child.item.dataItem.name != this.translate.instant('Role.ManageDashboardAccess')
-            ) {
-              let indx = this.checkedKeys.findIndex(i => i == child.item.index);
-              if (indx > -1)
-                this.checkedKeys.splice(indx, 1);
+    //         if (child.item.dataItem.name != this.translate.instant('Role.ViewAccess') &&
+    //             child.item.dataItem.name != this.translate.instant('Role.ManageDashboardAccess')
+    //         ) {
+    //           let indx = this.checkedKeys.findIndex(i => i == child.item.index);
+    //           if (indx > -1)
+    //             this.checkedKeys.splice(indx, 1);
 
-              this.disabledKeys.push(child.item.dataItem.id);
-            }
-          });
+    //           this.disabledKeys.push(child.item.dataItem.id);
+    //         }
+    //       });
           
-        } else if(event.item.dataItem.id == -1) {
-          // deSelect All items
-          let parents = event.children;
-          parents.forEach(parent => {
-            teammateItems = parent.children;
-            teammateItems.forEach(child => {
+    //     } else if(event.item.dataItem.id == -1) {
+    //       // deSelect All items
+    //       let parents = event.children;
+    //       parents.forEach(parent => {
+    //         teammateItems = parent.children;
+    //         teammateItems.forEach(child => {
 
-              if (child.item.dataItem.name != this.translate.instant('Role.ViewAccess') &&
-                  child.item.dataItem.name != this.translate.instant('Role.ManageDashboardAccess')
-              ) {
-                let indx = this.checkedKeys.findIndex(i => i == child.item.index);
-                if (indx > -1)
-                  this.checkedKeys.splice(indx, 1);
+    //           if (child.item.dataItem.name != this.translate.instant('Role.ViewAccess') &&
+    //               child.item.dataItem.name != this.translate.instant('Role.ManageDashboardAccess')
+    //           ) {
+    //             let indx = this.checkedKeys.findIndex(i => i == child.item.index);
+    //             if (indx > -1)
+    //               this.checkedKeys.splice(indx, 1);
                 
-                this.disabledKeys.push(child.item.dataItem.id);
-              }
-            });
-          })
-        } else if (event.item.dataItem.name == this.translate.instant('Role.ViewAccess') ||
-                   event.item.dataItem.name == this.translate.instant('Role.ManageDashboardAccess')
-        ) {
-          teammateItems = Object.values(this.permissonDictionary).filter((item:any) => item.groupId == event.item.dataItem.parentId)
-          event.parent.children.forEach((item) => {
-            this.permissonDictionary[item.index].isEnabled = false;
-            let index = this.checkedKeys.findIndex(i => i == item.index);
-            if (index > -1) {
-              this.checkedKeys.splice(index,1)
-            }
-          })
-          teammateItems.forEach(item => {
-            let newId = parseInt(item.id.toString() + item.groupId.toString() + '00');
-            if (item.flag != 1 && !this.disabledKeys.find(i => i==newId)) {
-              this.disabledKeys.push(newId);
-            }
-          });
+    //             this.disabledKeys.push(child.item.dataItem.id);
+    //           }
+    //         });
+    //       })
+    //     } else if (event.item.dataItem.name == this.translate.instant('Role.ViewAccess') ||
+    //                event.item.dataItem.name == this.translate.instant('Role.ManageDashboardAccess')
+    //     ) {
+    //       teammateItems = Object.values(this.permissonDictionary).filter((item:any) => item.groupId == event.item.dataItem.parentId)
+    //       event.parent.children.forEach((item) => {
+    //         this.permissonDictionary[item.index].isEnabled = false;
+    //         let index = this.checkedKeys.findIndex(i => i == item.index);
+    //         if (index > -1) {
+    //           this.checkedKeys.splice(index,1)
+    //         }
+    //       })
+    //       teammateItems.forEach(item => {
+    //         let newId = parseInt(item.id.toString() + item.groupId.toString() + '00');
+    //         if (item.flag != 1 && !this.disabledKeys.find(i => i==newId)) {
+    //           this.disabledKeys.push(newId);
+    //         }
+    //       });
 
-        }
+    //     }
 
-    }
+    // }
+    console.log(event);
+    
 
   }
   ////Events

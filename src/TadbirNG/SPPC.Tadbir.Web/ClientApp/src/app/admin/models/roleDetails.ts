@@ -9,17 +9,29 @@ import { Branch } from "@sppc/organization/models";
 //     Runtime Version: 1.1.282
 //     Template Version: 1.0
 //     Generation Date: 05/09/2018 01:43:51 ب.ظ
-//  
+//
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
+export interface RoleDetails extends IEntity {
+  role: Role;
+  permissions: Array<Permission>;
+  branches: Array<Branch>;
+  users: Array<UserBrief>;
+}
 
-
-export interface RoleDetails extends IEntity{
-    role: Role;
-    permissions: Array<Permission>;
-    branches: Array<Branch>;
-    users: Array<UserBrief>;
+export interface RoleItem extends IEntity {
+  id: number;
+  isEnabled: boolean;
+  name: string;
+  flag: number;
+  groupId: number;
+  groupName: string;
+  groupSourceTypeId: number;
+  groupSourceTypeName: string;
+  groupSubsystemId: number;
+  groupSubsystemName: string;
+  description?: string;
 }
