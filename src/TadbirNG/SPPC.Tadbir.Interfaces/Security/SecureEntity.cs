@@ -205,5 +205,10 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت دفتر دسته چک
         /// </summary>
         public const string CheckBookReport = "CheckBookReport";
+
+        /// <summary>
+        /// نام موجودیت منبع و مصرف
+        /// </summary>
+        public const string SourceApp = "SourceApp";
     }
 }

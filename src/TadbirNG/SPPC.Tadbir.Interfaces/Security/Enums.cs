@@ -1872,4 +1872,56 @@ namespace SPPC.Tadbir.Security
         All = 0x3f
     }
 
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به یک منبع و مصرف را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum SourceAppPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به اطلاعات منابع و مصارف
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست منابع و مصارف یا جزییات یک منبع و مصرف
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی فیلتر منابع و مصارف موجود
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
+        /// دسترسی چاپ منابع و مصارف موجود
+        /// </summary>
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات منابع و مصارف موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک منبع و مصرف جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک منبع و مصرف موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک منبع و مصرف موجود
+        /// </summary>
+        Delete = 0x40,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت منابع و مصارف
+        /// </summary>
+        All = 0x7f
+    }
 }

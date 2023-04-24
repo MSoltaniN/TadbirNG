@@ -3840,4 +3840,10 @@
   <data name="IsArchivedName" xml:space="preserve">
     <value>بایگانی شده</value>
   </data>
+  <data name="SourceApp" xml:space="preserve">
+    <value>منبع و مصرف</value>
+  </data>
+  <data name="SourceApps" xml:space="preserve">
+    <value>منابع و مصارف</value>
+  </data>
 </root>

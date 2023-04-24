@@ -3849,4 +3849,10 @@
   <data name="IsArchivedName" xml:space="preserve">
     <value>IsArchived</value>
   </data>
+  <data name="SourceApp" xml:space="preserve">
+    <value>SourceApp</value>
+  </data>
+  <data name="SourceApps" xml:space="preserve">
+    <value>SourceApps</value>
+  </data>
 </root>

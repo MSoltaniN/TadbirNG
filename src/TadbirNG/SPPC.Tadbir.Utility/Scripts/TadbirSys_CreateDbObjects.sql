@@ -3120,6 +3120,8 @@ INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID
     VALUES (101, 97, 1, 70, 3, N'', N'cash-registers', 0, 1, 1, 1, NULL)
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
     VALUES (102, 99, 1, 72, 3, N'', N'check-book-report', 0, 1, 1, 1, NULL)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
+    VALUES (103, 97, 1, 73, 3, N'', N'SourceApps', 0, 1, 1, 1, NULL)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON
@@ -3691,6 +3693,10 @@ INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], 
     VALUES (295, 1, 102, N'Check Book Report')
 INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
     VALUES (296, 2, 102, N'دفتر دسته‌چک')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (297, 1, 103, N'Source and Application List')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (298, 2, 103, N'فهرست منابع و مصارف')
 SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
 
 SET IDENTITY_INSERT [Reporting].[Parameter] ON 
