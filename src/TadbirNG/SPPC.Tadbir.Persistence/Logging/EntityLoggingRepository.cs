@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
+using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Resources;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Persistence
@@ -130,6 +135,93 @@ namespace SPPC.Tadbir.Persistence
             await UnitOfWork.CommitAsync();
         }
 
+        /// <summary>
+        /// به روش آسنکرون، سطر اطلاعاتی لاگ عملیاتی را برای تخصیص آیتم ها به منابع 
+        /// درج می کند
+        /// </summary>
+        /// <param name="newItemIds">آیتم های جدید انتخابی</param>
+        /// <param name="removeItemIds">آیتم های از قدیمی حذف شده</param>
+        /// <param name="resourceId">شناسه منبع تخصیص یافته</param>
+        /// <param name="operationId">کد عملیاتی تخصیص منبع</param>
+        protected async Task InsertAssignEntitiesToResourceLogAsync(int[] newItemIds,
+            int[] removeItemIds, int resourceId, OperationId operationId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<TEntity>();
+            TEntity resource = await repository.GetByIDAsync(resourceId);
+            if (resource != null)
+            {
+                string resourceName = Reflector.GetProperty(resource, "Name").ToString();
+                OnEntityAction(operationId);
+                Log.Description = await GetAssignEntitiesToResourceDescriptionAsync(newItemIds, removeItemIds, resourceName, operationId);
+                await TrySaveLogAsync();
+            }
+        }
+        private async Task<string> GetAssignEntitiesToResourceDescriptionAsync(int[] newItemIds,
+            int[] removeItemIds, string resourceName, OperationId operationId)
+        {
+            StringBuilder description = new StringBuilder();
+            if (newItemIds.Length > 0)
+            {
+                string template = Context.Localize(AppStrings.AssignEntityToResource);
+                description.Append(await GetAssignItemsLocalizeDescription(newItemIds, template, resourceName, operationId));
+            }
+
+            if (removeItemIds.Length > 0)
+            {
+                if (description.Length > 0)
+                {
+                    description.Append(" - ");
+                }
+
+                string template = Context.Localize(AppStrings.UnassignEntityToResource);
+                description.Append(await GetAssignItemsLocalizeDescription(removeItemIds, template, resourceName, operationId));
+            }
+
+            return description.ToString();
+        }
+
+        private async Task<string> GetAssignItemsLocalizeDescription(int[] itemIds,
+            string template, string resourceName, OperationId operationId)
+        {
+            string entityName = string.Empty;
+            string itemNames=string.Empty;
+            UnitOfWork.UseSystemContext();
+            switch (operationId)
+            {
+                case OperationId.AssignCashRegisterUser:
+                    {
+                        var userRepository = UnitOfWork.GetAsyncRepository<User>();
+                        var items = await userRepository
+                            .GetEntityQuery()
+                            .Where(u => itemIds.Contains(u.Id))
+                            .Include(u => u.Person)
+                            .Select(u => Mapper.Map<RelatedItemViewModel>(u))
+                            .ToArrayAsync();
+                        itemNames = String.Join(", ", items.Select(i => $"'{i.Name}'"));
+                        entityName = Context.Localize(items.Length > 1 ? AppStrings.Users
+                        : AppStrings.User).ToLower();
+                    }
+                    break;
+                case OperationId.RoleAccess:
+                    {
+                        var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
+                        var items = await roleRepository
+                            .GetEntityQuery()
+                            .Where(r => itemIds.Contains(r.Id))
+                            .Select(r => Mapper.Map<RelatedItemViewModel>(r))
+                            .ToArrayAsync();
+                        itemNames = String.Join(", ", items.Select(i => $"'{Context.Localize(i.Name)}'"));
+                        entityName = Context.Localize(items.Length > 1 ? AppStrings.Roles
+                        : AppStrings.Role).ToLower();
+                    }
+                    break; 
+                default:
+                    break;
+            }
+
+            string resource = Context.Localize(typeof(TEntity).Name).ToLower();
+            return String.Format(template, resource, resourceName, entityName, itemNames);
+        }
         internal virtual int? EntityType
         {
             get { return null; }
