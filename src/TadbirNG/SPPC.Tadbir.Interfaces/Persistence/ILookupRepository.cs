@@ -135,6 +135,12 @@ namespace SPPC.Tadbir.Persistence
         IList<KeyValue> GetAccountTurnoverModes();
 
         /// <summary>
+        /// به روش آسنکرون، مولفه های بردار حساب را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه مولفه های بردار حساب</returns>
+        Task<IEnumerable<ViewSummaryViewModel>> GetFullAccountPartsLookupAsync();
+
+        /// <summary>
         /// به روش آسنکرون، سطوح قابل استفاده برای دفتر حساب را از تنظیمات درختی خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
