@@ -144,7 +144,6 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   ngOnInit(): void {
     this.entityName = Entities.CheckBook;
     this.viewId = ViewName[this.entityTypeName];
-    this.isNew = true;
 
     if (this.urlMode) {
       this.model = new CheckBookInfo();
@@ -198,6 +197,8 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
           break;
       
         default:
+          if(this.isNew)
+            this.addNew();
           break;
       }
     });

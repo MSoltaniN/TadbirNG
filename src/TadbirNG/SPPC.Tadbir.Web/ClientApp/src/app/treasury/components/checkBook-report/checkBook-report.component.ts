@@ -184,6 +184,7 @@ export class CheckBookReportComponent
     this.dialogModel.checkBookItem = this.editDataItem;
     this.dialogModel.isOpenFromList = true;
     this.dialogModel.dialogMode = true;
+    this.dialogModel.isNew = isNew;
     this.editDataItem = undefined;
 
     if (this.reportFilter) {
