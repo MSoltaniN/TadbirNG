@@ -32,5 +32,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="checkBookId">شناسه عددی یکی از دسته چک های موجود</param>
         /// <returns>دسته چک مشخص شده با شناسه عددی</returns>
         Task<CheckBookViewModel> GetCheckBookAsync(int checkBookId);
+
+        /// <summary>
+        /// به روش آسنکرون، وجود برگه سفید در دسته چک را بررسی می کند
+        /// </summary>
+        /// <param name="checkBookId">شناسه عددی یکی از دسته چک های موجود</param>
+        /// <returns>در صورت وجود برگه سفید در دسته چک مقدار درست و
+        /// در غیر اینصورت مقدار نادرست</returns>
+        Task<bool> HasCheckBookBlankPageAsync(int checkBookId);
     }
 }

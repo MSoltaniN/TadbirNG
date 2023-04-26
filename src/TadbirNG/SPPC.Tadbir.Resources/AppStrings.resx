@@ -3846,4 +3846,7 @@
   <data name="UnassignEntityToResource" xml:space="preserve">
     <value>سلب دسترسی {0} {1} از {2}: {3}</value>
   </data>
+  <data name="CantArchiveCheckBookWithBlankPage" xml:space="preserve">
+    <value>دسته چک {0} را با وجود برگه سفید نمی توان بایگانی کرد.</value>
+  </data>
 </root>

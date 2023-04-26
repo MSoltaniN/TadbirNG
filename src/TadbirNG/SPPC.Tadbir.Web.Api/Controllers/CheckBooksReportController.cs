@@ -89,25 +89,28 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<GroupActionResultViewModel> ValidateArchiveResultAsync(int item, bool isArchived)
         {
             string message = String.Empty;
-            var checkBook = await _repository.GetCheckBookAsync(item); ;
+            var checkBook = await _repository.GetCheckBookAsync(item);
             if (checkBook == null)
             {
                 message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.CheckBook, item.ToString());
             }
             else if (checkBook.IsArchived == isArchived)
-            {
+            {   
                 message = isArchived
                     ? _strings.Format(AppStrings.AlreadyArchived, AppStrings.CheckBook, checkBook.Name)
                     : _strings.Format(AppStrings.NotYetArchived, AppStrings.CheckBook, checkBook.Name);
             }
-
+            else if (isArchived is true && await _repository.HasCheckBookBlankPageAsync(checkBook.Id))
+            {
+                message = _strings.Format(AppStrings.CantArchiveCheckBookWithBlankPage, checkBook.Name);
+            }
             return GetGroupActionResult(message, checkBook);
         }
 
         private async Task<IActionResult> GroupArchiveResultAsync(
             ActionDetailViewModel actionDetail, bool isArchived)
         {
-            if(actionDetail == null)
+            if (actionDetail == null)
             {
                 return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }

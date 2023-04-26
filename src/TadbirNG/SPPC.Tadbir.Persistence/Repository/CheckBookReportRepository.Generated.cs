@@ -65,7 +65,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (int checkBookId in checkBookIds)
             {
                 var checkBook = await repository.GetByIDAsync(checkBookId);
-                if(checkBook != null)
+                if (checkBook != null)
                 {
                     checkBook.IsArchived = isArchived;
                     repository.Update(checkBook);
@@ -73,7 +73,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await UnitOfWork.CommitAsync();
-            if(isArchived == true)
+            if (isArchived == true)
             {
                 string description = Context.Localize(String.Format(
                     "{0} : {1}", AppStrings.ArchivedItemCount, checkBookIds.Count));
@@ -103,6 +103,21 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return item;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، وجود برگه سفید در دسته چک را بررسی می کند
+        /// </summary>
+        /// <param name="checkBookId">شناسه عددی یکی از دسته چک های موجود</param>
+        /// <returns>در صورت وجود برگه سفید در دسته چک مقدار درست و
+        /// در غیر اینصورت مقدار نادرست</returns>
+        public async Task<bool> HasCheckBookBlankPageAsync(int checkBookId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
+            return await repository
+                .GetEntityQuery()
+                .Where(cbp => cbp.CheckBookId == checkBookId && cbp.Status == CheckBookPageState.Blank)
+                .AnyAsync();
         }
 
         internal override OperationSourceId OperationSource
