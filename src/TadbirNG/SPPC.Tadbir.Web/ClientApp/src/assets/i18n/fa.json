@@ -251,6 +251,7 @@
     "Title": "فرم انتخاب",
     "EntityTitle": "انتخاب {0} بر اساس {1}",
     "SubjectOfTheSearch": "موضوع مورد جستجو",
+    "SearchTerm": "عبارت مورد جستجو",
     "StartsWith": "از ابتدا",
     "Contains": "از میان",
     "EndsWith": "از انتها",

@@ -275,6 +275,7 @@
     "Title": "Select Form",
     "EntityTitle": "Select {0} by {1}",
     "SubjectOfTheSearch": "Subject Of The Search",
+    "SearchTerm": "Search term",
     "StartsWith": "From Start",
     "Contains": "Contains",
     "EndsWith": "From End",

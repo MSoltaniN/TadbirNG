@@ -79,15 +79,17 @@
         </div>
       </div>
 
-      <div class="col-xs-12 col-sm-5 sppc-float">
-        <label class="control-label"></label>
-        <div class="form-group search-box">
-          <input
-            class="k-textbox sppc-width-100"
-            [(ngModel)]="searchValue"
-            (keydown.enter)="reloadGrid()"
-          />
-          <span class="k-icon k-i-search" (click)="reloadGrid()"></span>
+      <div class="col-xs-12 col-sm-5 search-block sppc-float">
+        <div class="form-group">
+          <label class="control-label">{{ "SelectForm.SearchTerm" | translate }}</label>
+          <div class="search-box">
+            <input
+              class="k-textbox sppc-width-100"
+              [(ngModel)]="searchValue"
+              (keydown.enter)="reloadGrid()"
+            />
+            <span class="k-icon k-i-search" (click)="reloadGrid()"></span>
+          </div>
         </div>
       </div>
 
