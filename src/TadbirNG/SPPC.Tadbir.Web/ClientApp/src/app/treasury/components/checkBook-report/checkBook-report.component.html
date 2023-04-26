@@ -113,7 +113,7 @@
         SppcPermissionCheck="Archive"
         (sppcClick)="ArchiveHandler(true)"
         class="k-button"
-        [disabled]="isArchived || selectedRows.length != 1"
+        [disabled]="isArchived === true || isArchived == 'both' || selectedRows.length == 0"
         title="{{ 'CheckBook.Archive' | translate }}"
       >
         <span class="k-icon k-i-download"></span>
@@ -122,7 +122,7 @@
         SppcPermissionCheck="UndoArchive"
         (sppcClick)="ArchiveHandler(false)"
         class="k-button"
-        [disabled]="!isArchived || selectedRows.length != 1"
+        [disabled]="!isArchived || isArchived == 'both' || selectedRows.length == 0"
         title="{{ 'CheckBook.UndoArchive' | translate }}"
       >
         <span class="k-icon k-i-arrow-rotate-ccw"></span>
