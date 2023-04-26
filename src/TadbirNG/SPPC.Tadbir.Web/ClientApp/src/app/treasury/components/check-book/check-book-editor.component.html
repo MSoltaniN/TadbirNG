@@ -27,6 +27,7 @@
           [EntityName]="entityTypeName"
           SppcPermissionCheck="Delete"
           (sppcClick)="removeHandler()"
+          [disabled]="isNew ? true : null"
           class="k-button sh-remove-voucher"
           title="{{ 'CheckBook.Delete' | translate }}"
         >

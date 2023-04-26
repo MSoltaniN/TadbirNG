@@ -212,6 +212,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
       this.selectedPagesCount = undefined;
       this.fullAccountForm.reset();
 
+      this.isNew = true;
       this.searchConfirm = false;
       this.setEditMode = false;
       this.isLastCheckBook = true;
