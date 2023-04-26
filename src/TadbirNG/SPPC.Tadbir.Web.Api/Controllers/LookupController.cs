@@ -211,7 +211,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         ///
         /// </summary>
         /// <returns></returns>
-        // GET: api/lookup/accgroup/categories
+        // GET: api/lookup/acc-group/categories
         [HttpGet]
         [Route(LookupApi.AccountGroupCategoriesUrl)]
         public IActionResult GetAccountGroupCategoriesLookup()
@@ -225,7 +225,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         ///
         /// </summary>
         /// <returns></returns>
-        // GET: api/lookup/accgroups
+        // GET: api/lookup/acc-groups
         [HttpGet]
         [Route(LookupApi.AccountGroupsUrl)]
         public async Task<IActionResult> GetAccountGroupsLookupAsync()
@@ -266,7 +266,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         ///
         /// </summary>
         /// <returns></returns>
-        // GET: api/lookup/accturnovermodes
+        // GET: api/lookup/acc-turnover-modes
         [HttpGet]
         [Route(LookupApi.AccountTurnoversUrl)]
         public IActionResult GetAccountTurnoverModesLookup()
@@ -274,6 +274,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var turnoverLookup = _repository.GetAccountTurnoverModes();
             var localizedTurnoversLookup = Localize(turnoverLookup);
             return Json(localizedTurnoversLookup);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/lookup/acc-parts
+        [HttpGet]
+        [Route(LookupApi.FullAccountPartsUrl)]
+        public async Task<IActionResult> GetFullAccountPartsLookupAsync()
+        {
+            var partsLookup = await _repository.GetFullAccountPartsLookupAsync();
+            Array.ForEach(partsLookup.ToArray(), lookup => lookup.Name = _strings[lookup.Name]);
+            return Json(partsLookup);
         }
 
         /// <summary>

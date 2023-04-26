@@ -44,7 +44,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، کلیه اطلاعات گروه های حساب تعریف شده را برمی گرداند
         /// </summary>
         /// <returns>لیست صفحه بندی شده گروه های حساب</returns>
-        // GET: api/accgroups
+        // GET: api/acc-groups
         [HttpGet]
         [Route(AccountGroupApi.AccountGroupsUrl)]
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
@@ -59,7 +59,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="groupId">شناسه دیتابیسی گروه حساب مورد نظر</param>
         /// <returns>اطلاعات نمایشی گروه حساب</returns>
-        // GET: api/accgroups/{groupId:min(1)}
+        // GET: api/acc-groups/{groupId:min(1)}
         [HttpGet]
         [Route(AccountGroupApi.AccountGroupUrl)]
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
@@ -74,7 +74,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="groupId">شناسه دیتابیسی گروه حساب مورد نظر</param>
         /// <returns>فهرست صفحه بندی شده حساب های کل زیرمجموعه</returns>
-        // GET: api/accgroups/{groupId:min(1)}/accounts
+        // GET: api/acc-groups/{groupId:min(1)}/accounts
         [HttpGet]
         [Route(AccountGroupApi.GroupLedgerAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
@@ -88,7 +88,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات خلاصه گروه های حساب تعریف شده را برمی گرداند
         /// </summary>
         /// <returns>فهرست گروه های حساب تعریف شده</returns>
-        // GET: api/accgroups/brief
+        // GET: api/acc-groups/brief
         [HttpGet]
         [Route(AccountGroupApi.AccountGroupBriefUrl)]
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
@@ -103,7 +103,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="accountGroup">اطلاعات کامل گروه حساب جدید</param>
         /// <returns>اطلاعات گروه حساب بعد از ایجاد در دیتابیس</returns>
-        // POST: api/accgroups
+        // POST: api/acc-groups
         [HttpPost]
         [Route(AccountGroupApi.AccountGroupsUrl)]
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.Create)]
@@ -126,7 +126,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="groupId">شناسه دیتابیسی گروه حساب مورد نظر برای اصلاح</param>
         /// <param name="accountGroup">اطلاعات اصلاح شده گروه حساب</param>
         /// <returns>اطلاعات گروه حساب بعد از اصلاح در دیتابیس</returns>
-        // PUT: api/accgroups/{groupId:min(1)}
+        // PUT: api/acc-groups/{groupId:min(1)}
         [HttpPut]
         [Route(AccountGroupApi.AccountGroupUrl)]
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.Edit)]
@@ -149,7 +149,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="groupId">شناسه دیتابیسی گروه حساب مورد نظر برای حذف</param>
         /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // DELETE: api/accgroups/{groupId:min(1)}
+        // DELETE: api/acc-groups/{groupId:min(1)}
         [HttpDelete]
         [Route(AccountGroupApi.AccountGroupUrl)]
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.Delete)]
@@ -171,7 +171,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
         /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // PUT: api/accgroups
+        // PUT: api/acc-groups
         [HttpPut]
         [Route(AccountGroupApi.AccountGroupsUrl)]
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.Delete)]

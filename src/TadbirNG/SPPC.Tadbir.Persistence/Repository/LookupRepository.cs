@@ -424,6 +424,19 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مولفه های بردار حساب را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه مولفه های بردار حساب</returns>
+        public async Task<IEnumerable<ViewSummaryViewModel>> GetFullAccountPartsLookupAsync()
+        {
+            var partViewIds = new int[]
+            {
+                ViewId.Account, ViewId.DetailAccount, ViewId.CostCenter, ViewId.Project
+            };
+            return await GetViewsByCriteriaAsync<ViewSummaryViewModel>(view => partViewIds.Contains(view.Id));
+        }
+
+        /// <summary>
         /// به روش آسنکرون، سطوح قابل استفاده برای دفتر حساب را از تنظیمات درختی خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
@@ -552,16 +565,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه موجودیت های پایه تعریف شده</returns>
         public async Task<IList<ViewSummaryViewModel>> GetBaseEntityViewsAsync(GridOptions gridOptions = null)
         {
-            UnitOfWork.UseSystemContext();
-            var repository = UnitOfWork.GetAsyncRepository<View>();
-            var views = await repository
-                .GetByCriteriaAsync(view => view.EntityType == "Base");
-            var lookup = views
-                .Select(view => Mapper.Map<ViewSummaryViewModel>(view))
-                .Apply(gridOptions)
-                .ToList();
-            UnitOfWork.UseCompanyContext();
-            return lookup;
+            return await GetViewsByCriteriaAsync<ViewSummaryViewModel>(
+                view => view.EntityType == "Base", gridOptions);
         }
 
         /// <summary>
@@ -587,7 +592,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه موجودیت های تعریف شده</returns>
         public async Task<IList<KeyValue>> GetEntityViewsAsync(GridOptions gridOptions = null)
         {
-            return await GetViewsByCriteriaAsync(view => !String.IsNullOrEmpty(view.FetchUrl), gridOptions);
+            return await GetViewsByCriteriaAsync<KeyValue>(
+                view => !String.IsNullOrEmpty(view.FetchUrl), gridOptions);
         }
 
         /// <summary>
@@ -596,7 +602,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه موجودیت های درختی</returns>
         public async Task<IList<KeyValue>> GetTreeViewsAsync(GridOptions gridOptions = null)
         {
-            return await GetViewsByCriteriaAsync(view => view.IsHierarchy, gridOptions);
+            return await GetViewsByCriteriaAsync<KeyValue>(view => view.IsHierarchy, gridOptions);
         }
 
         /// <summary>
@@ -724,15 +730,16 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private async Task<IList<KeyValue>> GetViewsByCriteriaAsync(
+        private async Task<IList<TModel>> GetViewsByCriteriaAsync<TModel>(
             Expression<Func<View, bool>> criteria, GridOptions gridOptions = null)
+            where TModel : class, new()
         {
             UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<View>();
             var views = await repository
                 .GetByCriteriaAsync(criteria);
             var lookup = views
-                .Select(view => Mapper.Map<KeyValue>(view))
+                .Select(view => Mapper.Map<TModel>(view))
                 .Apply(gridOptions)
                 .ToList();
             UnitOfWork.UseCompanyContext();

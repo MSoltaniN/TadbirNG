@@ -14,18 +14,18 @@ import { environment } from "@sppc/env/environment";
 
 export class AccountGroupApi {
 
-    // accgroups
-    public static AccountGroups = environment.BaseUrl + "/accgroups";
+    // acc-groups
+    public static AccountGroups = environment.BaseUrl + "/acc-groups";
 
-    // accgroups/{groupId:min(1)}
-    public static AccountGroup = environment.BaseUrl + "/accgroups/{0}";
+    // acc-groups/{groupId:min(1)}
+    public static AccountGroup = environment.BaseUrl + "/acc-groups/{0}";
 
-    // accgroups/metadata
-    public static AccountGroupMetadata = environment.BaseUrl + "/accgroups/metadata";
+    // acc-groups/metadata
+    public static AccountGroupMetadata = environment.BaseUrl + "/acc-groups/metadata";
 
-    // accgroups/{groupId:min(1)}/accounts
-    public static GroupLedgerAccounts = environment.BaseUrl + "/accgroups/{0}/accounts";
+    // acc-groups/{groupId:min(1)}/accounts
+    public static GroupLedgerAccounts = environment.BaseUrl + "/acc-groups/{0}/accounts";
 
-    // accgroups/brief
-    public static AccountGroupBrief = environment.BaseUrl + "/accgroups/brief";
+    // acc-groups/brief
+    public static AccountGroupBrief = environment.BaseUrl + "/acc-groups/brief";
 }

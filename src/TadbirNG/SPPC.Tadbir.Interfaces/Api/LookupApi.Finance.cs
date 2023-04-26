@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Api
 {
@@ -122,32 +121,42 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for lookup collection of all categories used in account groups
         /// </summary>
-        public const string AccountGroupCategories = "lookup/accgroup/categories";
+        public const string AccountGroupCategories = "lookup/acc-group/categories";
 
         /// <summary>
         /// API server route URL for lookup collection of all categories used in account groups
         /// </summary>
-        public const string AccountGroupCategoriesUrl = "lookup/accgroup/categories";
+        public const string AccountGroupCategoriesUrl = "lookup/acc-group/categories";
 
         /// <summary>
         /// API client URL for lookup collection of all account groups
         /// </summary>
-        public const string AccountGroups = "lookup/accgroups";
+        public const string AccountGroups = "lookup/acc-groups";
 
         /// <summary>
         /// API server route URL for lookup collection of all account groups
         /// </summary>
-        public const string AccountGroupsUrl = "lookup/accgroups";
+        public const string AccountGroupsUrl = "lookup/acc-groups";
 
         /// <summary>
         /// API client URL for lookup collection of all account turnover modes
         /// </summary>
-        public const string AccountTurnovers = "lookup/accturnovermodes";
+        public const string AccountTurnovers = "lookup/acc-turnover-modes";
 
         /// <summary>
         /// API server route URL for lookup collection of all account turnover modes
         /// </summary>
-        public const string AccountTurnoversUrl = "lookup/accturnovermodes";
+        public const string AccountTurnoversUrl = "lookup/acc-turnover-modes";
+
+        /// <summary>
+        /// API client URL for lookup collection of all parts in a full account
+        /// </summary>
+        public const string FullAccountParts = "lookup/acc-parts";
+
+        /// <summary>
+        /// API server route URL for lookup collection of all parts in a full account
+        /// </summary>
+        public const string FullAccountPartsUrl = "lookup/acc-parts";
 
         /// <summary>
         /// API client URL for lookup collection of voucher system types

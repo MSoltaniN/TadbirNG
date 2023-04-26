@@ -71,14 +71,17 @@ export class LookupApi {
     // lookup/currencies/info
     public static CurrenciesInfo = environment.BaseUrl + "/lookup/currencies/info";
 
-    // lookup/accgroup/categories
-    public static AccountGroupCategories = environment.BaseUrl + "/lookup/accgroup/categories";
+    // lookup/acc-group/categories
+    public static AccountGroupCategories = environment.BaseUrl + "/lookup/acc-group/categories";
 
-    // lookup/accgroups
-    public static AccountGroups = environment.BaseUrl + "/lookup/accgroups";
+    // lookup/acc-groups
+    public static AccountGroups = environment.BaseUrl + "/lookup/acc-groups";
 
-    // lookup/accturnovermodes
-    public static AccountTurnovers = environment.BaseUrl + "/lookup/accturnovermodes";
+    // lookup/acc-turnover-modes
+    public static AccountTurnovers = environment.BaseUrl + "/lookup/acc-turnover-modes";
+
+    // lookup/acc-parts
+    public static FullAccountParts = environment.BaseUrl + "/lookup/acc-parts";
 
     // lookup/types/voucher
     public static VoucherSysTypes = environment.BaseUrl + "/lookup/types/voucher";
