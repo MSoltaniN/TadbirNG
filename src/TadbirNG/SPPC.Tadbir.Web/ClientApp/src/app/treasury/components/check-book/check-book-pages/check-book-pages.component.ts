@@ -186,21 +186,37 @@ export class CheckBookPagesComponent
   pageOperations(item: number) {
     switch (item) {
       case PageOperations.Cancel:
-        this.cancelCheck(true);
-        break;
-
-      case PageOperations.UndoCancel:
         this.confirmDialog = true;
+        this.selectedOperation = item;
         this.prepareConfirmMsg(
           "Messages.CheckBookPagesCancelConfirm",
           this.selectedRows[0]
         );
         break;
 
-      case PageOperations.Cancel:
+      case PageOperations.UndoCancel:
         this.confirmDialog = true;
+        this.selectedOperation = item;
         this.prepareConfirmMsg(
-          "Messages.CheckBookPagesCancelConfirm",
+          "Messages.CheckBookPagesUndoCancelConfirm",
+          this.selectedRows[0]
+        );
+        break;
+
+      case PageOperations.Connect:
+        this.confirmDialog = true;
+        this.selectedOperation = item;
+        this.prepareConfirmMsg(
+          "Messages.CheckBookPagesConnectConfirm",
+          this.selectedRows[0]
+        );
+        break;
+
+      case PageOperations.Disconnect:
+        this.confirmDialog = true;
+        this.selectedOperation = item;
+        this.prepareConfirmMsg(
+          "Messages.CheckBookPagesDisconnectConfirm",
           this.selectedRows[0]
         );
         break;
@@ -235,8 +251,13 @@ export class CheckBookPagesComponent
             MessageType.Warning
           );
       },
+      complete: () => {
+        this.confirmDialog = false;
+      }
     });
   }
+
+  connectCheck(status:boolean) {}
 
   removeHandler(e) {
     this.deleteConfirm = true;
@@ -278,33 +299,24 @@ export class CheckBookPagesComponent
 
   onSave(event) {}
 
-  showDialog(show: boolean, item?: number) {
+  showDialog(show: boolean) {
     if (show) {
-      this.confirmDialog = true;
-      this.selectedOperation = item;
-      switch (item) {
+      // this.confirmDialog = true;
+      switch (this.selectedOperation) {
         case PageOperations.Cancel:
-          let serialNo = this.rowData?.data.find(
-            (i) => i.id == this.selectedRows[0]
-          ).serialNo;
-          this.prepareConfirmMsg(
-            "Messages.CheckBookPagesCancelConfirm",
-            serialNo
-          );
+          this.cancelCheck(true);
           break;
 
         case PageOperations.UndoCancel:
-          this.prepareConfirmMsg(
-            "Messages.CheckBookPagesCancelConfirm",
-            this.selectedRows[0]
-          );
+          this.cancelCheck(false);
           break;
 
-        case PageOperations.Cancel:
-          this.prepareConfirmMsg(
-            "Messages.CheckBookPagesCancelConfirm",
-            this.selectedRows[0]
-          );
+        case PageOperations.Connect:
+          this.connectCheck(true);
+          break;
+
+        case PageOperations.Disconnect:
+          this.connectCheck(false);
           break;
 
         default:

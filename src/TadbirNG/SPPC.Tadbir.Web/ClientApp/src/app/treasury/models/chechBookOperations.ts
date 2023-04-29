@@ -10,5 +10,5 @@ export enum PageOperations {
   Cancel = 1,
   UndoCancel = 2,
   Connect = 3,
-  UndoConnect = 4,
+  Disconnect = 4,
 }
