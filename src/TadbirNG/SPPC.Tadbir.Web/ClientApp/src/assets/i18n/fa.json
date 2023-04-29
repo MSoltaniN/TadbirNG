@@ -103,7 +103,8 @@
     "SelectItemFromMainComponent": "ابتدا یک مورد را از جدول مولفه اصلی انتخاب کنید.",
     "ClickOnCearteRelation": "سپس روی دکمه 'ایجاد ارتباط' کلیک نمایید.",
     "FirstRemoveWidgets": "پیش از حذف برگه از داشبورد، ابتدا باید ویجت های اضافه شده به برگه را حذف کنید",
-    "CheckBookPagesCancelConfirm": "آیا برای ابطال این چک به شماره {0} اطمینان دارید؟"
+    "CheckBookPagesCancelConfirm": "آیا برای ابطال چک به شماره {0} اطمینان دارید؟",
+    "CheckBookPagesUndoCancelConfirm": "آیا برای برگشت از ابطال چک به شماره {0} اطمینان دارید؟"
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",

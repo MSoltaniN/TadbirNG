@@ -99,7 +99,8 @@
     "ClickOnCearteRelation": "Then click on the 'Create Relation' button.",
     "FirstRemoveWidgets": "Before removing the tab from the dashboard, you must first remove the widgets added to the tab.",
     "CheckBookDeleteConfirm": "are you sure to delete CheckBook?",
-    "CheckBookPagesCancelConfirm": "are you sure to Cancel this check with number {0}?"
+    "CheckBookPagesCancelConfirm": "are you sure to Cancel this check with number {0}?",
+    "CheckBookPagesUndoCancelConfirm": "are you sure to Undo Cancel this check with number {0}?"
   },
   "Report": {
     "ReportViewer": "View of",
