@@ -3849,4 +3849,10 @@
   <data name="CantArchiveCheckBookWithBlankPage" xml:space="preserve">
     <value>دسته چک {0} را با وجود برگه سفید نمی توان بایگانی کرد.</value>
   </data>
+  <data name="UserValue" xml:space="preserve">
+    <value>مقدار کاربری</value>
+  </data>
+  <data name="UserValues" xml:space="preserve">
+    <value>مقادیر کاربری</value>
+  </data>
 </root>

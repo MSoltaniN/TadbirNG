@@ -530,6 +530,13 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<LogSetting, LogSettingItemViewModel>();
             mapperConfig.CreateMap<SysLogSetting, LogSettingViewModel>();
             mapperConfig.CreateMap<SysLogSetting, LogSettingItemViewModel>();
+
+            mapperConfig.CreateMap<UserValueCategory, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+            mapperConfig.CreateMap<UserValueCategoryViewModel, UserValueCategory>();
+            mapperConfig.CreateMap<UserValue, UserValueViewModel>();
+            mapperConfig.CreateMap<UserValueViewModel, UserValue>();
         }
 
         private static void MapMetadataTypes(IMapperConfigurationExpression mapperConfig)

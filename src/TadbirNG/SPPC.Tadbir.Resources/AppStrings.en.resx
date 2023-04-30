@@ -3858,4 +3858,10 @@
   <data name="CantArchiveCheckBookWithBlankPage" xml:space="preserve">
     <value>Cannot archiving checkbook {0} despite blank page.</value>
   </data>
+  <data name="UserValue" xml:space="preserve">
+    <value>UserValue</value>
+  </data>
+  <data name="UserValues" xml:space="preserve">
+    <value>UserValues</value>
+  </data>
 </root>
