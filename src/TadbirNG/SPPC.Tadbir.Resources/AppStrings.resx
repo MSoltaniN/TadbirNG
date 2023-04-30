@@ -3841,10 +3841,10 @@
     <value>بایگانی شده</value>
   </data>
   <data name="AssignEntityToResource" xml:space="preserve">
-    <value>تخصیص دسترسی {0} {1} به {2}: {3}</value>
+    <value>تخصیص دسترسی {0} - {1} - به {2} - {3}</value>
   </data>
   <data name="UnassignEntityToResource" xml:space="preserve">
-    <value>سلب دسترسی {0} {1} از {2}: {3}</value>
+    <value>سلب دسترسی {0} - {1} - از {2} - {3}</value>
   </data>
   <data name="CantArchiveCheckBookWithBlankPage" xml:space="preserve">
     <value>دسته چک {0} را با وجود برگه سفید نمی توان بایگانی کرد.</value>

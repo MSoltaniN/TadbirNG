@@ -3850,10 +3850,10 @@
     <value>Is Archived</value>
   </data>
   <data name="AssignEntityToResource" xml:space="preserve">
-    <value>Assign {0} {1} access to {2}: {3}</value>
+    <value>Assign {0} - {1} - access to {2} - {3}</value>
   </data>
   <data name="UnassignEntityToResource" xml:space="preserve">
-    <value>Unassign {0} {1} access from {2}: {3}</value>
+    <value>Unassign {0} - {1} - access from {2} - {3}</value>
   </data>
   <data name="CantArchiveCheckBookWithBlankPage" xml:space="preserve">
     <value>Cannot archiving checkbook {0} despite blank page.</value>

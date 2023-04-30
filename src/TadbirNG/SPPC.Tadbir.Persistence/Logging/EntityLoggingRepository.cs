@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -143,7 +144,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="removeItemIds">آیتم های از قدیمی حذف شده</param>
         /// <param name="resourceId">شناسه منبع تخصیص یافته</param>
         /// <param name="operationId">کد عملیاتی تخصیص منبع</param>
-        protected async Task InsertAssignEntitiesToResourceLogAsync(int[] newItemIds,
+        protected async Task InsertAssignedItemsLogAsync(int[] newItemIds,
             int[] removeItemIds, int resourceId, OperationId operationId)
         {
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
@@ -152,18 +153,31 @@ namespace SPPC.Tadbir.Persistence
             {
                 string resourceName = Reflector.GetProperty(resource, "Name").ToString();
                 OnEntityAction(operationId);
-                Log.Description = await GetAssignEntitiesToResourceDescriptionAsync(newItemIds, removeItemIds, resourceName, operationId);
+                Log.Description = await GetAssignedItemsDescriptionAsync(newItemIds, removeItemIds,
+                    resourceName, operationId);
                 await TrySaveLogAsync();
             }
         }
-        private async Task<string> GetAssignEntitiesToResourceDescriptionAsync(int[] newItemIds,
+
+        /// <summary>
+        /// به روش آسنکرون، لیست رشته ای از عناوین آیتم های ورودی را بر اساس کد عملیاتی برمی گرداند 
+        /// </summary>
+        /// <param name="itemIds">لیستی از شناسه آیتم های مورد نظر</param>
+        /// <param name="operationId">کد عملیاتی مورد نظر</param>
+        /// <returns>لیست رشته ای از عناوین آیتم ها</returns>
+        protected virtual async Task<string[]> GetItemNamesAsync(int[] itemIds, OperationId operationId)
+        {
+            return await Task.Run(() => Array.Empty<string>());
+        }
+
+        private async Task<string> GetAssignedItemsDescriptionAsync(int[] newItemIds,
             int[] removeItemIds, string resourceName, OperationId operationId)
         {
             StringBuilder description = new StringBuilder();
             if (newItemIds.Length > 0)
             {
-                string template = Context.Localize(AppStrings.AssignEntityToResource);
-                description.Append(await GetAssignItemsLocalizeDescription(newItemIds, template, resourceName, operationId));
+                description.Append(await LocalizeAssignedItemsDescriptionAsync(newItemIds,
+                    AppStrings.AssignEntityToResource, resourceName, operationId));
             }
 
             if (removeItemIds.Length > 0)
@@ -173,55 +187,80 @@ namespace SPPC.Tadbir.Persistence
                     description.Append(" - ");
                 }
 
-                string template = Context.Localize(AppStrings.UnassignEntityToResource);
-                description.Append(await GetAssignItemsLocalizeDescription(removeItemIds, template, resourceName, operationId));
+                description.Append(await LocalizeAssignedItemsDescriptionAsync(removeItemIds,
+                    AppStrings.UnassignEntityToResource, resourceName, operationId));
             }
 
             return description.ToString();
         }
 
-        private async Task<string> GetAssignItemsLocalizeDescription(int[] itemIds,
+        private async Task<string> LocalizeAssignedItemsDescriptionAsync(int[] itemIds,
             string template, string resourceName, OperationId operationId)
         {
-            string entityName = string.Empty;
-            string itemNames=string.Empty;
-            UnitOfWork.UseSystemContext();
+            string itemNamesStr = String.Empty;
+            string localizeTemp = Context.Localize(template);
+            var itemNames = await GetItemNamesAsync(itemIds, operationId);
+            if (operationId == OperationId.RoleAccess || operationId == OperationId.AssignRole)
+            {
+                itemNamesStr = String.Join(", ", itemNames.Select(i => $"'{Context.Localize(i)}'"));
+            }
+            else
+            {
+                itemNamesStr = String.Join(", ", itemNames.Select(i => $"'{i}'"));
+            }
+            var itemsTitle = GetItemsTitle(itemNames.Length, operationId);
+
+            List<OperationId> accessedOprations = new() { OperationId.AssignRole, OperationId.BranchAccess,
+                OperationId.CompanyAccess, OperationId.FiscalPeriodAccess };
+            if (accessedOprations.Contains(operationId))
+            {
+                var assignedTitle = Context.Localize(typeof(TEntity).Name).ToLower();
+                return String.Format(localizeTemp, itemsTitle, itemNamesStr, assignedTitle, resourceName);
+            }
+            else
+            {
+                var accessedTitle = Context.Localize(typeof(TEntity).Name).ToLower();
+                return String.Format(localizeTemp, accessedTitle, resourceName, itemsTitle, itemNamesStr);
+            }
+        }
+
+        private string GetItemsTitle(int itemsLength, OperationId operationId)
+        {
+            string itemsTitle = String.Empty;
             switch (operationId)
             {
                 case OperationId.AssignCashRegisterUser:
-                    {
-                        var userRepository = UnitOfWork.GetAsyncRepository<User>();
-                        var items = await userRepository
-                            .GetEntityQuery()
-                            .Where(u => itemIds.Contains(u.Id))
-                            .Include(u => u.Person)
-                            .Select(u => Mapper.Map<RelatedItemViewModel>(u))
-                            .ToArrayAsync();
-                        itemNames = String.Join(", ", items.Select(i => $"'{i.Name}'"));
-                        entityName = Context.Localize(items.Length > 1 ? AppStrings.Users
+                case OperationId.AssignUser:
+                    itemsTitle = Context.Localize(itemsLength > 1
+                        ? AppStrings.Users
                         : AppStrings.User).ToLower();
-                    }
                     break;
                 case OperationId.RoleAccess:
-                    {
-                        var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
-                        var items = await roleRepository
-                            .GetEntityQuery()
-                            .Where(r => itemIds.Contains(r.Id))
-                            .Select(r => Mapper.Map<RelatedItemViewModel>(r))
-                            .ToArrayAsync();
-                        itemNames = String.Join(", ", items.Select(i => $"'{Context.Localize(i.Name)}'"));
-                        entityName = Context.Localize(items.Length > 1 ? AppStrings.Roles
+                case OperationId.AssignRole:
+                    itemsTitle = Context.Localize(itemsLength > 1
+                        ? AppStrings.Roles
                         : AppStrings.Role).ToLower();
-                    }
-                    break; 
-                default:
+                    break;
+                case OperationId.BranchAccess:
+                    itemsTitle = Context.Localize(itemsLength > 1
+                        ? AppStrings.Branches
+                        : AppStrings.Branch).ToLower();
+                    break;
+                case OperationId.CompanyAccess:
+                    itemsTitle = Context.Localize(itemsLength > 1
+                        ? AppStrings.Companies
+                        : AppStrings.Company).ToLower();
+                    break;
+                case OperationId.FiscalPeriodAccess:
+                    itemsTitle = Context.Localize(itemsLength > 1
+                        ? AppStrings.FiscalPeriods
+                        : AppStrings.FiscalPeriod).ToLower();
                     break;
             }
 
-            string resource = Context.Localize(typeof(TEntity).Name).ToLower();
-            return String.Format(template, resource, resourceName, entityName, itemNames);
+            return itemsTitle;
         }
+
         internal virtual int? EntityType
         {
             get { return null; }
