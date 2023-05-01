@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.SqlServer.Management.Assessment.Expressions;
 using SPPC.Framework.Common;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Persistence;
@@ -144,14 +146,31 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="removeItemIds">آیتم های از قدیمی حذف شده</param>
         /// <param name="resourceId">شناسه منبع تخصیص یافته</param>
         /// <param name="operationId">کد عملیاتی تخصیص منبع</param>
-        protected async Task InsertAssignedItemsLogAsync(int[] newItemIds,
-            int[] removeItemIds, int resourceId, OperationId operationId)
+        /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
+        protected async Task InsertAssignedItemsLogAsync(int[] newItemIds, int[] removeItemIds,
+            int resourceId, OperationId operationId, params Expression<Func<TEntity, object>>[] relatedProperties)
         {
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
-            TEntity resource = await repository.GetByIDAsync(resourceId);
+            object resource = null;
+            if (relatedProperties.Length == 0)
+            {
+                resource = await repository.GetByIDAsync(resourceId);
+            }
+            else
+            {
+                resource = await repository
+                    .GetEntityQuery(relatedProperties)
+                    .Where(e => e.Id == resourceId)
+                    .Select(e => Mapper.Map<RelatedItemViewModel>(e))
+                    .SingleOrDefaultAsync();
+            }
             if (resource != null)
             {
                 string resourceName = Reflector.GetProperty(resource, "Name").ToString();
+                if (typeof(TEntity) == typeof(Role))
+                {
+                    resourceName = Context.Localize(resourceName);
+                }
                 OnEntityAction(operationId);
                 Log.Description = await GetAssignedItemsDescriptionAsync(newItemIds, removeItemIds,
                     resourceName, operationId);

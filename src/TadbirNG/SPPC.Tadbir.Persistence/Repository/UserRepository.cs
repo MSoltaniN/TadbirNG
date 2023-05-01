@@ -311,7 +311,7 @@ namespace SPPC.Tadbir.Persistence
                 if (removedRoleIds.Length > 0 || newRoleIds.Length > 0)
                 {
                     await InsertAssignedItemsLogAsync(newRoleIds, removedRoleIds,
-                        userRoles.Id, OperationId.AssignRole);
+                        userRoles.Id, OperationId.AssignRole, u => u.Person);
                 }
             }
         }
@@ -484,6 +484,27 @@ namespace SPPC.Tadbir.Persistence
                     AppStrings.UserName, entity.UserName, AppStrings.PersonFirstName, entity.Person.FirstName,
                     AppStrings.PersonLastName, entity.Person.LastName)
                 : null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، لیست رشته ای از عناوین آیتم های ورودی را بر اساس کد عملیاتی برمی گرداند 
+        /// </summary>
+        /// <param name="itemIds">لیستی از شناسه آیتم های مورد نظر</param>
+        /// <param name="operationId">کد عملیاتی مورد نظر</param>
+        /// <returns>لیست رشته ای از عناوین آیتم ها</returns>
+        protected override async Task<string[]> GetItemNamesAsync(int[] itemIds, OperationId operationId)
+        {
+            if (operationId == OperationId.AssignRole)
+            {
+                UnitOfWork.UseSystemContext();
+                var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
+                return await roleRepository
+                    .GetEntityQuery()
+                    .Where(r => itemIds.Contains(r.Id))
+                    .Select(r => r.Name)
+                    .ToArrayAsync();
+            }
+            return Array.Empty<string>();
         }
 
         private IMetadataRepository Metadata
