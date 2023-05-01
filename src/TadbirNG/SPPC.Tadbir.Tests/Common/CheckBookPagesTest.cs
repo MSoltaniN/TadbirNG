@@ -10,8 +10,8 @@ namespace SPPC.Tadbir.Common
         public void CountCtor_GivenValidFirstPage_SetsCorrectSerials()
         {
             // Arrange & Act
-            var pages = new CheckBookPages("ABC1001", 4);
-            var expectedSerials = new string[] { "ABC1001", "ABC1002", "ABC1003", "ABC1004" };
+            var pages = new CheckBookPages("1001","1234567891234561", 4);
+            var expectedSerials = new string[] { "1001", "1002", "1003", "1004" };
 
             // Assert
             CollectionAssert.AreEqual(expectedSerials, pages.Serials);
@@ -21,8 +21,8 @@ namespace SPPC.Tadbir.Common
         public void CountCtor_GivenValidFirstPageWithZeros_SetsCorrectSerials()
         {
             // Arrange & Act
-            var pages = new CheckBookPages("ABC001001", 4);
-            var expectedSerials = new string[] { "ABC001001", "ABC001002", "ABC001003", "ABC001004" };
+            var pages = new CheckBookPages("001001", "1234567891234561", 4);
+            var expectedSerials = new string[] { "001001", "001002", "001003", "001004" };
 
             // Assert
             CollectionAssert.AreEqual(expectedSerials, pages.Serials);
@@ -32,8 +32,8 @@ namespace SPPC.Tadbir.Common
         public void LastPageCtor_GivenValidPages_SetsCorrectSerialsAndCount()
         {
             // Arrange & Act
-            var pages = new CheckBookPages("ABC1001", "ABC1004");
-            var expectedSerials = new string[] { "ABC1001", "ABC1002", "ABC1003", "ABC1004" };
+            var pages = new CheckBookPages("1001", "1004", "1234567891234561");
+            var expectedSerials = new string[] { "1001", "1002", "1003", "1004" };
 
             // Assert
             CollectionAssert.AreEqual(expectedSerials, pages.Serials);
@@ -44,8 +44,8 @@ namespace SPPC.Tadbir.Common
         public void LastPageCtor_GivenValidPagesWithZeros_SetsCorrectSerialsAndCount()
         {
             // Arrange & Act
-            var pages = new CheckBookPages("ABC001001", "ABC001004");
-            var expectedSerials = new string[] { "ABC001001", "ABC001002", "ABC001003", "ABC001004" };
+            var pages = new CheckBookPages("001001", "001004", "1234567891234561");
+            var expectedSerials = new string[] { "001001", "001002", "001003", "001004" };
 
             // Assert
             CollectionAssert.AreEqual(expectedSerials, pages.Serials);

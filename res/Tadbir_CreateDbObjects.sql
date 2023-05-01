@@ -671,14 +671,19 @@ CREATE TABLE [Check].[CheckBook] (
     [DetailAccountID] INT              NULL,
     [CostCenterID]    INT              NULL,
     [ProjectID]       INT              NULL,
+    [CreatedByID]     INT              NOT NULL,
+    [ModifiedByID]    INT              NOT NULL,
     [FiscalPeriodID]  INT              CONSTRAINT [DF_Check_CheckBook_FiscalPeriodID] DEFAULT (0) NULL,
-    [CheckBookNo]     NVARCHAR(32)     NOT NULL,
+    [CheckBookNo]     NVARCHAR(32)     NULL,
     [Name]            NVARCHAR(64)     NOT NULL,
     [IssueDate]       DATETIME         NOT NULL,
     [StartNo]         NVARCHAR(32)     NOT NULL,
     [EndNo]           NVARCHAR(32)     NOT NULL,
     [BankName]        NVARCHAR(32)     NULL,
     [IsArchived]      BIT              NULL,
+    [SeriesNo]        NVARCHAR(32)     NOT NULL,
+    [SayyadStartNo]   NVARCHAR(16)     NOT NULL,
+    [CreatedDate]     DATETIME         NOT NULL,
     [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Check_CheckBook_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]    DATETIME         CONSTRAINT [DF_Check_CheckBook_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Check_CheckBook] PRIMARY KEY CLUSTERED ([CheckBookID] ASC)
@@ -696,6 +701,7 @@ CREATE TABLE [Check].[CheckBookPage] (
     [SerialNo]          NVARCHAR(64)     NOT NULL,
     [Status]            SMALLINT         NULL,
     [CheckId]           INT              NULL,
+    [SayyadNo]          NVARCHAR(16)     NOT NULL,
     [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Check_CheckBookPage_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]      DATETIME         CONSTRAINT [DF_Check_CheckBookPage_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Check_CheckBookPage] PRIMARY KEY CLUSTERED ([CheckBookPageID] ASC)

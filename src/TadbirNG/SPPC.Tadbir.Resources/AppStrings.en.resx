@@ -3858,4 +3858,7 @@
   <data name="CantArchiveCheckBookWithBlankPage" xml:space="preserve">
     <value>Cannot archiving checkbook {0} despite blank page.</value>
   </data>
+  <data name="IsExistPageCancelled" xml:space="preserve">
+    <value>At least one sheet of the check book has been voided.</value>
+  </data>
 </root>

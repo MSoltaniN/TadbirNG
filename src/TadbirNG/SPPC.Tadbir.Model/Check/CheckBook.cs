@@ -23,5 +23,15 @@ namespace SPPC.Tadbir.Model.Check
         /// شناسه دیتابیسی مولفه پروژه از بردار حساب مورد استفاده در این دسته چک
         /// </summary>
         public virtual int? ProjectId { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی کاربر ایجادکننده این دسته چک
+        /// </summary>
+        public virtual int CreatedById { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی کاربری که آخرین تغییرات را روی دسته چک داده است
+        /// </summary>
+        public virtual int ModifiedById { get; set; }
     }
 }

@@ -46,6 +46,20 @@ namespace SPPC.Tadbir.ViewModel.Check
         public string CheckBookNo { get; set; }
 
         /// <summary>
+        /// شماره سری دسته چک
+        /// </summary>
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(32, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public string SeriesNo { get; set; }
+
+        /// <summary>
+        /// شماره صیاد شروع
+        /// </summary>
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(16, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public string SayyadStartNo { get; set; }
+
+        /// <summary>
         /// نام دسته چک
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

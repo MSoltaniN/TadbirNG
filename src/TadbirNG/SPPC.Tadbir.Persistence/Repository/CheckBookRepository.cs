@@ -41,7 +41,7 @@ namespace SPPC.Tadbir.Persistence
             if (existing != null)
             {
                 checkbook = Mapper.Map<CheckBookViewModel>(existing);
-                var pages = new CheckBookPages(checkbook.StartNo, checkbook.EndNo);
+                var pages = new CheckBookPages(checkbook.StartNo, checkbook.EndNo,checkbook.SayyadStartNo);
                 checkbook.PageCount = pages.Count;
             }
 
@@ -64,7 +64,7 @@ namespace SPPC.Tadbir.Persistence
             if (checkBookByNo != null)
             {
                 byNo = Mapper.Map<CheckBookViewModel>(checkBookByNo);
-                var pages = new CheckBookPages(byNo.StartNo, byNo.EndNo);
+                var pages = new CheckBookPages(byNo.StartNo, byNo.EndNo, byNo.SayyadStartNo);
                 byNo.PageCount = pages.Count;
             }
 
@@ -81,12 +81,15 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(checkBook, nameof(checkBook));
             CheckBook checkBookModel;
-            var pages = new CheckBookPages(checkBook.StartNo, checkBook.PageCount);
+            var pages = new CheckBookPages(checkBook.StartNo, checkBook.SayyadStartNo, checkBook.PageCount);
             checkBook.EndNo = pages.Serials.Last();
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
             if (checkBook.Id == 0)
             {
                 checkBookModel = Mapper.Map<CheckBook>(checkBook);
+                checkBookModel.CreatedById = UserContext.Id;
+                checkBookModel.ModifiedById = UserContext.Id;
+                checkBookModel.CreatedDate = DateTime.Now;
                 await InsertAsync(repository, checkBookModel);
             }
             else
@@ -99,7 +102,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             var saved = Mapper.Map<CheckBookViewModel>(checkBookModel);
-            pages = new CheckBookPages(saved.StartNo, saved.EndNo);
+            pages = new CheckBookPages(saved.StartNo, saved.EndNo, checkBook.SayyadStartNo);
             saved.PageCount = pages.Count;
             return saved;
         }
@@ -279,6 +282,22 @@ namespace SPPC.Tadbir.Persistence
             return count > 0;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا حداقل یک برگ از دسته ابطال شده است یا نه
+        /// </summary>
+        /// <param name="checkBookId">شناسه دسته چک موجود</param>
+        /// <returns>در حالتی که حداقل یک برگ از دسته چک ابطال شد باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsExistPageCancelled(int checkBookId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
+            int count = await repository
+                .GetCountByCriteriaAsync(
+                    c => c.CheckBookId == checkBookId
+                         && c.Status == CheckBookPageState.Canceled);
+            return count > 0;
+        }
+
         internal override int? EntityType
         {
             get { return (int?)EntityTypeId.CheckBook; }
@@ -298,6 +317,9 @@ namespace SPPC.Tadbir.Persistence
             checkBook.EndNo = checkBookView.EndNo;
             checkBook.BankName = checkBookView.BankName;
             checkBook.IsArchived = checkBookView.IsArchived;
+            checkBook.SayyadStartNo = checkBookView.SayyadStartNo;
+            checkBook.SeriesNo = checkBookView.SeriesNo;
+            checkBook.ModifiedById = UserContext.Id;
             checkBook.AccountId = checkBookView.FullAccount.Account.Id;
             checkBook.DetailAccountId = checkBookView.FullAccount.DetailAccount.Id > 0
                 ? checkBookView.FullAccount.DetailAccount.Id
@@ -340,7 +362,7 @@ namespace SPPC.Tadbir.Persistence
         {
             int nextCount, prevCount;
             var options = gridOptions ?? new GridOptions();
-            var pages = new CheckBookPages(checkBook.StartNo, checkBook.EndNo);
+            var pages = new CheckBookPages(checkBook.StartNo, checkBook.EndNo, checkBook.SayyadStartNo);
             checkBook.PageCount = pages.Count;
             var query = Repository
                 .GetAllOperationQuery<CheckBook>(ViewId.CheckBook)

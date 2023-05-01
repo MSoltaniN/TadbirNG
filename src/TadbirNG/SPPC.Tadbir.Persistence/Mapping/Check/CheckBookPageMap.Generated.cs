@@ -28,6 +28,9 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.SerialNo)
                 .IsRequired()
                 .HasMaxLength(64);
+            builder.Property(e => e.SayyadNo)
+                .IsRequired()
+                .HasMaxLength(16);
             builder.Property(e => e.Status);
             builder.Property(e => e.CheckId);
             builder.Property(e => e.RowGuid)

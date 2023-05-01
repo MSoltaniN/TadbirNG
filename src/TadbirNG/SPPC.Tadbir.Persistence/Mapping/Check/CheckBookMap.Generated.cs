@@ -25,8 +25,13 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.Id)
                 .HasColumnName("CheckBookID");
             builder.Property(e => e.CheckBookNo)
+                .HasMaxLength(32);
+            builder.Property(e => e.SeriesNo)
                 .IsRequired()
                 .HasMaxLength(32);
+            builder.Property(e => e.SayyadStartNo)
+                .IsRequired()
+                .HasMaxLength(16);
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(64);
@@ -40,6 +45,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasMaxLength(32);
             builder.Property(e => e.BankName)
                 .HasMaxLength(32);
+            builder.Property(e => e.CreatedById)
+                .IsRequired();
+            builder.Property(e => e.ModifiedById)
+                .IsRequired();
+            builder.Property(e => e.CreatedDate)
+                .IsRequired();
             builder.Property(e => e.IsArchived);
             builder.Property(e => e.FiscalPeriodId);
             builder.Property(e => e.RowGuid)

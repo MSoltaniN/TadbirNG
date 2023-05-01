@@ -9,9 +9,8 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-
-using SPPC.Tadbir.Domain;
 using System;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.Model.Check
 {
@@ -33,6 +32,11 @@ namespace SPPC.Tadbir.Model.Check
         /// شماره سری برگه
         /// </summary>
         public virtual string SerialNo { get; set; }
+
+        /// <summary>
+        /// شماره صیاد برگه
+        /// </summary>
+        public string SayyadNo { get; set; }
 
         /// <summary>
         /// وضعیت برگه

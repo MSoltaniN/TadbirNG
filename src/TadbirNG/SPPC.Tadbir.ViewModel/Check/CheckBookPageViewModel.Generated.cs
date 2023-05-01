@@ -43,6 +43,13 @@ namespace SPPC.Tadbir.ViewModel.Check
         public string SerialNo { get; set; }
 
         /// <summary>
+        /// شماره صیاد برگه
+        /// </summary>
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(16, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public string SayyadNo { get; set; }
+
+        /// <summary>
         /// وضعیت برگه
         /// </summary>
         public CheckBookPageState? Status { get; set; }

@@ -89,15 +89,16 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
             CheckBook checkBook = await repository.GetByIDAsync(checkBookId);
-            var pages = new CheckBookPages(checkBook.StartNo, checkBook.EndNo);
+            var pages = new CheckBookPages(checkBook.StartNo, checkBook.EndNo , checkBook.SayyadStartNo);
             var pageRepository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
             var checkBookPageIds = new List<int>();
-            foreach (var serialNo in pages.Serials)
+            for (int i = 0; i < pages.Serials.Count(); i++)
             {
                 var checkBookPage = new CheckBookPage
                 {
                     CheckBookId = checkBookId,
-                    SerialNo = serialNo,
+                    SerialNo = checkBook.SeriesNo + pages.Serials.ElementAt(i),
+                    SayyadNo = pages.SayyadNumbers.ElementAt(i),
                     Status = CheckBookPageState.Blank
                 };
 

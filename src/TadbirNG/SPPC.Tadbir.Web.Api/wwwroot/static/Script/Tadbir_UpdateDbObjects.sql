@@ -989,3 +989,18 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (230, 3, 3, 15, NULL, 67, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.2.1509
+ALTER TABLE [Check].[CheckBook]
+ALTER COLUMN [CheckBookNo] NVARCHAR(32) NULL
+Go
+ALTER TABLE [Check].[CheckBook]
+ADD [CreatedByID] INT CONSTRAINT [DF_Check_CheckBook_CreatedByID] DEFAULT (1) NOT NULL,
+	[ModifiedByID] INT CONSTRAINT [DF_Check_CheckBook_ModifiedByID] DEFAULT (1) NOT NULL,
+	[SeriesNo] NVARCHAR(32) CONSTRAINT [DF_Check_CheckBook_SeriesNo] DEFAULT 'A' NOT NULL,
+	[SayyadStartNo] NVARCHAR(16) CONSTRAINT [DF_Check_CheckBook_SayyadStartNo] DEFAULT '1' NOT NULL,
+	[CreatedDate] DateTime CONSTRAINT [DF_Check_CheckBook_CreatedDate] DEFAULT (getdate()) NOT NULL
+	Go
+
+ALTER TABLE [Check].[CheckBookPage]
+ADD [SayyadNo] NVARCHAR(16) CONSTRAINT [DF_Check_CheckBookPage_SeriesNo] DEFAULT ('1') NOT NULL

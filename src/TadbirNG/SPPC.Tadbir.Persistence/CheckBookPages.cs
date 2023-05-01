@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using SPPC.Framework.Common;
 
 namespace SPPC.Tadbir.Persistence
@@ -13,26 +12,28 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="firstPage">شماره سریال اولین برگه از دسته چک</param>
+        /// <param name="firstPageSerial">شماره سریال اولین برگه از دسته چک</param>
+        /// <param name="sayyadStartNo">شماره شروع صیاد</param>
         /// <param name="pageCount">تعداد برگه های مورد نیاز برای دسته چک</param>
-        public CheckBookPages(string firstPage, int pageCount)
+        public CheckBookPages(string firstPageSerial, string sayyadStartNo, int pageCount)
         {
-            Verify.ArgumentNotNullOrWhitespace(firstPage, nameof(firstPage));
+            Verify.ArgumentNotNullOrWhitespace(firstPageSerial, nameof(firstPageSerial));
             Count = pageCount;
-            InitSerials(firstPage, pageCount);
+            InitSerials(firstPageSerial, sayyadStartNo, pageCount);
         }
 
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="firstPage">شماره سریال اولین برگه از دسته چک</param>
-        /// <param name="lastPage">شماره سریال آخرین برگه از دسته چک</param>
-        public CheckBookPages(string firstPage, string lastPage)
+        /// <param name="firstPageSerial">شماره سریال اولین برگه از دسته چک</param>
+        /// <param name="lastPageSerial">شماره سریال آخرین برگه از دسته چک</param>
+        /// <param name="sayyadStartNo">شماره شروع صیاد</param>
+        public CheckBookPages(string firstPageSerial, string lastPageSerial, string sayyadStartNo)
         {
-            Verify.ArgumentNotNullOrWhitespace(firstPage, nameof(firstPage));
-            Verify.ArgumentNotNullOrWhitespace(lastPage, nameof(lastPage));
-            Count = GetPageCount(firstPage, lastPage);
-            InitSerials(firstPage, Count);
+            Verify.ArgumentNotNullOrWhitespace(firstPageSerial, nameof(firstPageSerial));
+            Verify.ArgumentNotNullOrWhitespace(lastPageSerial, nameof(lastPageSerial));
+            Count = GetPageCount(firstPageSerial, lastPageSerial);
+            InitSerials(firstPageSerial, sayyadStartNo, Count);
         }
 
         /// <summary>
@@ -48,48 +49,44 @@ namespace SPPC.Tadbir.Persistence
             get { return _serials; }
         }
 
-        private void InitSerials(string firstPage, int pageCount)
+        /// <summary>
+        /// مجموعه شماره سریال های تولیدشده برای برگه های دسته چک 
+        /// </summary>
+        public IEnumerable<string> SayyadNumbers
+        {
+            get { return _sayyadNumbers; }
+        }
+        private void InitSerials(string firstPageSerial, string sayyadStartNo, int pageCount)
         {
             _serials = new List<string>(pageCount);
-            GetSeriesAndSerialNo(firstPage, out string series, out string serial);
-            int paddingCount = GetZeroPaddingCount(serial);
-            int serialNo = Convert.ToInt32(serial);
+            _sayyadNumbers = new List<string>(pageCount);
+            int paddingCount = GetZeroPaddingCount(firstPageSerial);
+            int serialNo = Convert.ToInt32(firstPageSerial);
+            long sayyadNo = Convert.ToInt64(sayyadStartNo);
             for (int index = 0; index < pageCount; index++)
             {
-                _serials.Add($"{series}{new string('0', paddingCount)}{serialNo + index}");
+                _serials.Add($"{new string('0', paddingCount)}{serialNo + index}");
+                _sayyadNumbers.Add($"{sayyadNo + index}");
             }
         }
 
-        private static int GetPageCount(string firstPage, string lastPage)
+        private static int GetPageCount(string firstPageSerial, string lastPageSerial)
         {
             int startNo = 0;
             int endNo = 0;
-            GetSeriesAndSerialNo(firstPage, out _, out string startSerial);
-            GetSeriesAndSerialNo(lastPage, out _, out string endSerial);
-            if (!String.IsNullOrEmpty(startSerial))
+            if (!String.IsNullOrEmpty(firstPageSerial))
             {
-                startNo = Convert.ToInt32(startSerial);
+                startNo = Convert.ToInt32(firstPageSerial);
             }
 
-            if (!String.IsNullOrEmpty(endSerial))
+            if (!String.IsNullOrEmpty(lastPageSerial))
             {
-                endNo = Convert.ToInt32(endSerial);
+                endNo = Convert.ToInt32(lastPageSerial);
             }
 
             return endNo - startNo + 1;
         }
-
-        private static void GetSeriesAndSerialNo(string pageNo, out string series, out string serialNo)
-        {
-            series = new string(pageNo
-                .TakeWhile(ch => !Char.IsDigit(ch))
-                .ToArray());
-            serialNo = new string(pageNo
-                .SkipWhile(ch => !Char.IsDigit(ch))
-                .TakeWhile(ch => Char.IsDigit(ch))
-                .ToArray());
-        }
-
+        
         private static int GetZeroPaddingCount(string number)
         {
             if (!Int32.TryParse(number, out int numberValue))
@@ -109,5 +106,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private List<string> _serials;
+        private List<string> _sayyadNumbers;
     }
 }
