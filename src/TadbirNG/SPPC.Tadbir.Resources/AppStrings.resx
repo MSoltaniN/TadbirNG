@@ -3846,4 +3846,13 @@
   <data name="SourceApps" xml:space="preserve">
     <value>منابع و مصارف</value>
   </data>
+  <data name="Application" xml:space="preserve">
+    <value>مصرف</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>منبع</value>
+  </data>
+  <data name="ManageSourceApps" xml:space="preserve">
+    <value>مدیریت منابع و مصارف</value>
+  </data>
 </root>

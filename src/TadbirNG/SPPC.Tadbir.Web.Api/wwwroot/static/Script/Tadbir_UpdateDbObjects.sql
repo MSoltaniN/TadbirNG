@@ -999,9 +999,6 @@ INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (23, N'SourceApp', NULL)
 SET IDENTITY_INSERT [Metadata].[EntityType] OFF
 
-
-
-
 SET IDENTITY_INSERT [Config].[LogSetting] ON
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (231, 3, 1, NULL, 23, 1, 1)

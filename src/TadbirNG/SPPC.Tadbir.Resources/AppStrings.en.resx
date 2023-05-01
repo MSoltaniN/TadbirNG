@@ -3850,9 +3850,18 @@
     <value>IsArchived</value>
   </data>
   <data name="SourceApp" xml:space="preserve">
-    <value>SourceApp</value>
+    <value>Source and Application</value>
   </data>
   <data name="SourceApps" xml:space="preserve">
-    <value>SourceApps</value>
+    <value>Sources and Applications</value>
+  </data>
+  <data name="Application" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="ManageSourceApps" xml:space="preserve">
+    <value>Manage Sources and Applications</value>
   </data>
 </root>

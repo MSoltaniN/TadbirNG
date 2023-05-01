@@ -69,23 +69,21 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، منبع یا مصرف را با مقادیر پیشنهادی را برمی گرداند
+        /// به روش آسنکرون، منبع یا مصرف با مقادیر پیشنهادی را برمی گرداند
         /// </summary>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <returns>منبع یا مصرف با مقادیر پیشنهادی</returns>
         public async Task<SourceAppViewModel> GetNewSourceAppAsync()
         {
             int lastNo = await GetLastSourceAppNoAsync();
-            var newVoucher = new SourceAppViewModel()
+            var newSourceApp = new SourceAppViewModel()
             {
-               
                 Code = (lastNo + 1).ToString(),
                 BranchId = UserContext.BranchId,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
-                Type = (short)VoucherType.NormalVoucher
+                Type = (short)SourceAppType.Source
             };
 
-            return newVoucher;
+            return newSourceApp;
         }
 
         /// <summary>
@@ -157,12 +155,10 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(sourceApp, nameof(sourceApp));
             var repository = UnitOfWork.GetAsyncRepository<SourceApp>();
-            int count = await repository
-                .GetCountByCriteriaAsync(
-                    c => c.Id != sourceApp.Id
-                         && c.Name == sourceApp.Name
-                         && c.BranchId == sourceApp.BranchId
-                         && c.FiscalPeriodId == sourceApp.FiscalPeriodId);
+            int count = await repository.GetCountByCriteriaAsync(
+                sa => sa.Id != sourceApp.Id
+                    && sa.Name == sourceApp.Name
+                    && sa.BranchId == sourceApp.BranchId);
             return count > 0;
         }
 
@@ -175,12 +171,10 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(sourceApp, nameof(sourceApp));
             var repository = UnitOfWork.GetAsyncRepository<SourceApp>();
-            int count = await repository
-                .GetCountByCriteriaAsync(
-                    c => c.Id != sourceApp.Id
-                         && c.Code == sourceApp.Code
-                         && c.BranchId == sourceApp.BranchId
-                         && c.FiscalPeriodId == sourceApp.FiscalPeriodId);
+            int count = await repository.GetCountByCriteriaAsync(
+                c => c.Id != sourceApp.Id
+                    && c.Code == sourceApp.Code
+                    && c.BranchId == sourceApp.BranchId);
             return count > 0;
         }
         
@@ -201,8 +195,6 @@ namespace SPPC.Tadbir.Persistence
             sourceApp.Name = sourceAppViewModel.Name;
             sourceApp.Description = sourceAppViewModel.Description;
             sourceApp.Type = sourceAppViewModel.Type;
-            sourceApp.BranchId=sourceAppViewModel.BranchId;
-            sourceApp.FiscalPeriodId=sourceAppViewModel.FiscalPeriodId;
         }
 
         /// <summary>
@@ -212,11 +204,15 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
         protected override string GetState(SourceApp entity)
         {
-            return entity==null
+            var type = entity.Type == (short)SourceAppType.Source
+                ? AppStrings.Source
+                : AppStrings.Application;
+            return entity == null
                 ? String.Empty
-                :$"{AppStrings.Name} : {entity.Name}, "+
-                 $"{AppStrings.Code} : {entity.Code}, " +
-                 $"{AppStrings.Description} : {entity.Description}";
+                : $"{AppStrings.Type} : {type} , " +
+                  $"{AppStrings.Name} : {entity.Name} , " +
+                  $"{AppStrings.Code} : {entity.Code} , " +
+                  $"{AppStrings.Description} : {entity.Description}";
         }
 
         /// <summary>
@@ -227,8 +223,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<SourceApp>();
             var lastByNo = await repository
                 .GetEntityQuery()
-                .Where(sourceApp => sourceApp.FiscalPeriodId == UserContext.FiscalPeriodId
-                                    && sourceApp.BranchId == UserContext.BranchId)
+                .Where(sourceApp => sourceApp.BranchId == UserContext.BranchId)
                 .OrderByDescending(sourceApp => sourceApp.Code)
                 .FirstOrDefaultAsync();
             return (lastByNo != null) ? Int32.Parse(lastByNo.Code) : 0;

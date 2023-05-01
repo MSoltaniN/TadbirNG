@@ -26,9 +26,9 @@ namespace SPPC.Tadbir.Persistence
         Task<SourceAppViewModel> GetSourceAppAsync(int sourceAppId);
 
         /// <summary>
-        /// به روش آسنکرون، منبع یا مصرف را با مقادیر پیشنهادی را برمی گرداند
+        /// به روش آسنکرون، منبع یا مصرف با مقادیر پیشنهادی را برمی گرداند
         /// </summary>
-        /// <returns></returns>
+        /// <returns>منبع یا مصرف با مقادیر پیشنهادی</returns>
         Task<SourceAppViewModel> GetNewSourceAppAsync();
 
         /// <summary>

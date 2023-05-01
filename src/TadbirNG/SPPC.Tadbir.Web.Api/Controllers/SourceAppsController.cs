@@ -70,17 +70,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، سند مالی جدیدی با مقادیر پیشنهادی در دیتابیس ایجاد کرده و برمی گرداند
+        /// به روش آسنکرون، منبع جدیدی با مقادیر پیشنهادی در دیتابیس ایجاد کرده و برمی گرداند
         /// </summary>
-        /// <returns>اطلاعات نمایشی سند مالی جدید با مقادیر پیشنهادی</returns>
+        /// <returns>اطلاعات نمایشی منبع جدید با مقادیر پیشنهادی</returns>
         // GET: api/source-apps/new
         [HttpGet]
         [Route(SourceAppApi.NewSourceAppUrl)]
         [AuthorizeRequest(SecureEntity.SourceApp, (int)SourceAppPermissions.Create)]
         public async Task<IActionResult> GetNewSourceAppAsync()
         {
-            var newVoucher = await _repository.GetNewSourceAppAsync();
-            return Json(newVoucher);
+            var newSourceApp = await _repository.GetNewSourceAppAsync();
+            return Json(newSourceApp);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="sourceApp">اطلاعات نمایشی منبع و مصرف جدید</param>
         /// <returns>اطلاعات نمایشی ذخیره شده برای منبع و مصرف</returns>
-        // POST: api/source-Apps
+        // POST: api/source-apps
         [HttpPost]
         [Route(SourceAppApi.SourceAppsUrl)]
         [AuthorizeRequest(SecureEntity.SourceApp, (int)SourceAppPermissions.Create)]
@@ -190,14 +190,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateNameAsync(sourceApp))
             {
-                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue,
-                    AppStrings.Name));
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.Name));
             }
 
             if (await _repository.IsDuplicateCodeAsync(sourceApp))
             {
-                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue,
-                    AppStrings.Code));
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.Code));
             }
 
             return Ok();
