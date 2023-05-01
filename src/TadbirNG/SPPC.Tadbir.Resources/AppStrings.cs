@@ -405,7 +405,7 @@ namespace SPPC.Tadbir.Resources
         public const string AssignedUsers = "AssignedUsers";
 
         /// <summary>
-        /// Default text : تخصیص دسترسی {0} {1} به {2}: {3}
+        /// Default text : تخصیص دسترسی {0} - {1} - به {2} - {3}
         /// </summary>
         public const string AssignEntityToResource = "AssignEntityToResource";
 
@@ -5965,7 +5965,7 @@ namespace SPPC.Tadbir.Resources
         public const string TypeName = "TypeName";
 
         /// <summary>
-        /// Default text : سلب دسترسی {0} {1} از {2}: {3}
+        /// Default text : سلب دسترسی {0} - {1} - از {2} - {3}
         /// </summary>
         public const string UnassignEntityToResource = "UnassignEntityToResource";
 
