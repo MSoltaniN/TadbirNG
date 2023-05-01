@@ -2991,6 +2991,62 @@
         <Relation multiplicity="ManyToOne" endpointName="Permission" entityName="Permission" hasKey="True" isRequired="True" joinTable="" description="دسترسی امنیتی مورد نیاز برای اجرای عملیات مرتبط با این کلید میانبر" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1508.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
+    <Entity name="SourceApp" area="CashFlow" identifier="Id" type="BaseEntity" description="اطلاعات یک منبع یا مصرف را نگهداری می کند." clrType="SPPC.Tools.Model.Entity, SPPC.Tools.Model, Version=1.2.1504.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1504.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="SourceAppID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="BranchScope" type="Int16" isValidated="True" description="سطح دسترسی شعبه" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1504.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnBranchScope" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="BranchScope" type="smallint" nullable="False" />
+          <ColumnView name="BranchScope" visible="True" width="120" />
+          <ValidationRule name="BranchScope_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="Code" type="String" isValidated="True" description="کد منبع یا مصرف" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1504.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCode" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Code" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="Code" visible="True" width="120" />
+          <ValidationRule name="Code_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="Name" type="String" isValidated="True" description="نام منبع یا مصرف" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1504.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Name" type="nvarchar(256)" nullable="False" />
+          <ColumnView name="Name" visible="True" width="120" />
+          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="Description" type="String" isValidated="True" description="شرح منبع یا مصرف" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1504.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
+          <ColumnView name="Description" visible="True" width="120" />
+          <ValidationRule name="Description_Validation" required="False" minimum="" maximum="512" format="" type="Length" />
+        </Property>
+        <Property name="Type" type="Int16" isValidated="True" description="نوع (منابع: صفر ، مصارف: یک) " clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1504.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnType" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="Type" type="smallint" nullable="False" />
+          <ColumnView name="Type" visible="True" width="120" />
+          <ValidationRule name="Type_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1504.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="RowGuid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1504.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="ModifiedDate" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" isRequired="True" joinTable="" description="شعبه ای که منبع یا مصرف در آن تعریف شده است" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1504.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" isRequired="True" joinTable="" description="دوره مالی که منبع یا مصرف در آن تعریف شده است" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1504.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
     <Entity name="Subsystem" area="Metadata" identifier="Id" type="CoreEntity" description="اطلاعات فراداده ای را برای یکی از زیرسیستم های برنامه نگهداری می کند" clrType="SPPC.Tools.Model.Entity, SPPC.Tools.Model, Version=1.2.1508.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property isValidated="False" description="" name="Id" type="Int32" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1508.0, Culture=neutral, PublicKeyToken=null">

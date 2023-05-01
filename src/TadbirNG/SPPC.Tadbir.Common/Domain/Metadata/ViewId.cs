@@ -120,5 +120,10 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی گزارش دفتر دسته چک
         /// </summary>
         public const int CheckBookReport = 72;
+
+        /// <summary>
+        /// نمای اطلاعاتی منابع و مصارف
+        /// </summary>
+        public const int SourceApp = 73;
     }
 }

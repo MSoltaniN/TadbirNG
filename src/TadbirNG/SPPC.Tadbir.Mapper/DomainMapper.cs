@@ -97,6 +97,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<CashRegisterViewModel, CashRegister>();
             mapperConfig.CreateMap<UserCashRegister, UserCashRegisterViewModel>();
             mapperConfig.CreateMap<UserCashRegisterViewModel, UserCashRegister>();
+            mapperConfig.CreateMap<SourceApp, SourceAppViewModel>();
+            mapperConfig.CreateMap<SourceAppViewModel, SourceApp>();
         }
 
         private static void MapCheckTypes(IMapperConfigurationExpression mapperConfig)

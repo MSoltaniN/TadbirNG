@@ -160,6 +160,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<ICheckBookPageRepository, CheckBookPageRepository>();
             _services.AddTransient<ICashRegisterRepository, CashRegisterRepository>();
             _services.AddTransient<ICheckBookReportRepository, CheckBookReportRepository>();
+            _services.AddTransient<ISourceAppRepository, SourceAppRepository>();
         }
 
         private void AddServiceTypes()
