@@ -227,43 +227,45 @@
 
     <kendo-grid-command-column media="(min-width: 450px)" [width]="330">
       <ng-template kendoGridCellTemplate let-role>
-        <button kendoButton (click)="detailHandler(role.id)" [primary]="true">
-          {{ "Role.Detail" | translate }}
-        </button>
-        <button
-          kendoButton
-          SppcPermissionCheck="AssignUsers"
-          (sppcClick)="userHandler(role.id, role.name)"
-          [primary]="true"
-        >
-          {{ "Role.Users" | translate }}
-        </button>
-        <button
-          kendoButton
-          *ngIf="role.id > 1"
-          SppcPermissionCheck="AssignBranches"
-          (sppcClick)="branchHandler(role.id, role.name)"
-          [primary]="true"
-        >
-          {{ "Role.Branches" | translate }}
-        </button>
-        <button
-          kendoButton
-          *ngIf="role.id > 1"
-          SppcPermissionCheck="AssignFiscalPeriods"
-          (sppcClick)="fiscalPeriodHandler(role.id, role.name)"
-          [primary]="true"
-        >
-          {{ "Role.FiscalPeriod" | translate }}
-        </button>
-        <button
-          kendoButton
-          *ngIf="IsAdmin && role.id > 1"
-          (click)="companiesHandler(role.id, role.name)"
-          [primary]="true"
-        >
-          {{ "Role.Companies" | translate }}
-        </button>
+        <div style="display: flex;flex-direction: row;">
+          <button kendoButton (click)="detailHandler(role.id)" [primary]="true">
+            {{ "Role.Detail" | translate }}
+          </button>
+          <button
+            kendoButton
+            SppcPermissionCheck="AssignUsers"
+            (sppcClick)="userHandler(role.id, role.name)"
+            [primary]="true"
+          >
+            {{ "Role.Users" | translate }}
+          </button>
+          <button
+            kendoButton
+            *ngIf="role.id > 1"
+            SppcPermissionCheck="AssignBranches"
+            (sppcClick)="branchHandler(role.id, role.name)"
+            [primary]="true"
+          >
+            {{ "Role.Branches" | translate }}
+          </button>
+          <button
+            kendoButton
+            *ngIf="role.id > 1"
+            SppcPermissionCheck="AssignFiscalPeriods"
+            (sppcClick)="fiscalPeriodHandler(role.id, role.name)"
+            [primary]="true"
+          >
+            {{ "Role.FiscalPeriod" | translate }}
+          </button>
+          <button
+            kendoButton
+            *ngIf="IsAdmin && role.id > 1"
+            (click)="companiesHandler(role.id, role.name)"
+            [primary]="true"
+          >
+            {{ "Role.Companies" | translate }}
+          </button>
+        </div>
       </ng-template>
     </kendo-grid-command-column>
   </kendo-grid>
