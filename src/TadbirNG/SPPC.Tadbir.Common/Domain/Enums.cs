@@ -253,4 +253,20 @@ namespace SPPC.Tadbir.Domain
         /// </summary>
         Canceled = 3
     }
+
+    /// <summary>
+    /// انواع منابع یا مصارف را تعریف می کند
+    /// </summary>
+    public enum SourceAppType
+    {
+        /// <summary>
+        /// نوع منبع
+        /// </summary>
+        Source = 0,
+
+        /// <summary>
+        /// نوع مصرف
+        /// </summary>
+        Application = 1,
+    }
 }

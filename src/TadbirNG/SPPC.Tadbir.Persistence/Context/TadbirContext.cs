@@ -101,6 +101,7 @@ namespace SPPC.Tadbir.Persistence
             WidgetFunctionMap.BuildMapping(modelBuilder.Entity<WidgetFunction>());
             WidgetMap.BuildMapping(modelBuilder.Entity<Widget>());
             WidgetTypeMap.BuildMapping(modelBuilder.Entity<WidgetType>());
+            SourceAppMap.BuildMapping(modelBuilder.Entity<SourceApp>());
         }
 
         /// <summary>

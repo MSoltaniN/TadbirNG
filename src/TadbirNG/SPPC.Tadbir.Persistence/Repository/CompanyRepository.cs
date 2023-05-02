@@ -221,16 +221,19 @@ namespace SPPC.Tadbir.Persistence
             var existing = await repository.GetByCriteriaAsync(rc => rc.CompanyId == companyRoles.Id);
             if (AreRolesModified(existing, companyRoles))
             {
+                int[] removedRoleIds = Array.Empty<int>();
                 if (existing.Count > 0)
                 {
-                    RemoveUnassignedRoles(repository, existing, companyRoles);
+                    removedRoleIds = RemoveUnassignedRoles(repository, existing, companyRoles);
                 }
 
-                AddNewRoles(repository, existing, companyRoles);
+                var newRoleIds = AddNewRoles(repository, existing, companyRoles);
                 await UnitOfWork.CommitAsync();
-                OnEntityAction(OperationId.RoleAccess);
-                Log.Description = await GetCompanyRoleDescriptionAsync(companyRoles.Id);
-                await TrySaveLogAsync();
+                if (removedRoleIds.Length > 0 || newRoleIds.Length > 0)
+                {
+                    await InsertAssignedItemsLogAsync(newRoleIds, removedRoleIds,
+                        companyRoles.Id, OperationId.RoleAccess);
+                }
             }
         }
 
@@ -268,6 +271,27 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، لیست رشته ای از عناوین آیتم های ورودی را بر اساس کد عملیاتی برمی گرداند 
+        /// </summary>
+        /// <param name="itemIds">لیستی از شناسه آیتم های مورد نظر</param>
+        /// <param name="operationId">کد عملیاتی مورد نظر</param>
+        /// <returns>لیست رشته ای از عناوین آیتم ها</returns>
+        protected override async Task<string[]> GetItemNamesAsync(int[] itemIds, OperationId operationId)
+        {
+            if (operationId == OperationId.RoleAccess)
+            {
+                UnitOfWork.UseSystemContext();
+                var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
+                return await roleRepository
+                    .GetEntityQuery()
+                    .Where(r => itemIds.Contains(r.Id))
+                    .Select(r => r.Name)
+                    .ToArrayAsync();
+            }
+            return Array.Empty<string>();
+        }
+
         private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
         {
             return left.Count() == right.Count()
@@ -286,7 +310,7 @@ namespace SPPC.Tadbir.Persistence
             return !AreEqual(existingItems, enabledItems);
         }
 
-        private static void RemoveUnassignedRoles(
+        private static int[] RemoveUnassignedRoles(
             IRepository<RoleCompany> repository, IList<RoleCompany> existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = roleItems.RelatedItems
@@ -303,9 +327,10 @@ namespace SPPC.Tadbir.Persistence
                     .Single();
                 repository.Delete(removed);
             }
+            return removedItems;
         }
 
-        private static void AddNewRoles(
+        private static int[] AddNewRoles(
             IRepository<RoleCompany> repository, IList<RoleCompany> existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = existing.Select(rc => rc.RoleId);
@@ -321,6 +346,10 @@ namespace SPPC.Tadbir.Persistence
                 };
                 repository.Insert(roleCompany);
             }
+
+            return newItems
+                .Select(item => item.Id)
+                .ToArray();
         }
 
         // NOTE: This method compensates for Docker's inability to retain current database context between

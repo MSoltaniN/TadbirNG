@@ -92,6 +92,7 @@
     <None Remove="ClientApp\src\app\shared\class\inlineGrid.component.js" />
     <None Remove="ClientApp\src\app\shared\class\inlineGrid.component.js.map" />
     <None Remove="ClientApp\src\app\shared\class\inlineGrid.component.ts" />
+    <None Remove="ClientApp\src\app\treasury\service\api\sourceAppApi.ts" />
   </ItemGroup>
 
   <ItemGroup>

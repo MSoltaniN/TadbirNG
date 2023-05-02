@@ -22,6 +22,7 @@ namespace SPPC.Tadbir.Persistence
         DashboardTab = 19,
         Widget = 20,
         CheckBook = 21,
-        CashRegister = 22
+        CashRegister = 22,
+        SourceApp = 23
     }
 }
