@@ -32,6 +32,7 @@ import {
   MetaDataService,
 } from "@sppc/shared/services";
 import { PageOperations } from "@sppc/treasury/models/chechBookOperations";
+import { CheckBookPage } from "@sppc/treasury/models/checkBook";
 import { CheckBooksApi } from "@sppc/treasury/service/api/checkBooksApi";
 import { CheckBookService } from "@sppc/treasury/service/check-book.service";
 import { ToastrService } from "ngx-toastr";
@@ -118,6 +119,7 @@ export class CheckBookPagesComponent
   editMode = false;
   confirmMsg: string;
   confirmDialog: boolean = false;
+  confirmDialogTitle: string;
   pageOperationsItem = PageOperations;
   selectedOperation;
   permissionEntityName = "CheckBook";
@@ -183,41 +185,46 @@ export class CheckBookPagesComponent
     return item.dataItem.id;
   }
 
-  pageOperations(item: number) {
-    switch (item) {
+  pageOperations(operation: number) {
+    let item:CheckBookPage = this.rowData?.data.find(i => i.id == this.selectedRows[0])
+    switch (operation) {
       case PageOperations.Cancel:
         this.confirmDialog = true;
-        this.selectedOperation = item;
+        this.selectedOperation = operation;
+        this.confirmDialogTitle = "CancelCheck";
         this.prepareConfirmMsg(
           "Messages.CheckBookPagesCancelConfirm",
-          this.selectedRows[0]
+          item.serialNo
         );
         break;
 
       case PageOperations.UndoCancel:
         this.confirmDialog = true;
-        this.selectedOperation = item;
+        this.selectedOperation = operation;
+        this.confirmDialogTitle = "UndoCancelCheck";
         this.prepareConfirmMsg(
           "Messages.CheckBookPagesUndoCancelConfirm",
-          this.selectedRows[0]
+          item.serialNo
         );
         break;
 
       case PageOperations.Connect:
         this.confirmDialog = true;
-        this.selectedOperation = item;
+        this.selectedOperation = operation;
+        this.confirmDialogTitle = "ConnectCheck";
         this.prepareConfirmMsg(
           "Messages.CheckBookPagesConnectConfirm",
-          this.selectedRows[0]
+          item.serialNo
         );
         break;
 
       case PageOperations.Disconnect:
         this.confirmDialog = true;
-        this.selectedOperation = item;
+        this.selectedOperation = operation;
+        this.confirmDialogTitle = "DisconnectCheck";
         this.prepareConfirmMsg(
           "Messages.CheckBookPagesDisconnectConfirm",
-          this.selectedRows[0]
+          item.serialNo
         );
         break;
 
@@ -349,9 +356,11 @@ export class CheckBookPagesComponent
    * prepare confim message for delete operation
    * @param text is a part of message that use for delete confirm message
    */
-  public prepareConfirmMsg(text1: string, text2?: string | number) {
+  public async prepareConfirmMsg(text1: string, text2?: string | number) {
     this.translate.get(text1).subscribe((msg: string) => {
       this.confirmMsg = String.Format(msg, text2);
     });
+    
+    this.confirmDialogTitle = await lastValueFrom(this.translate.get(`CheckBook.${this.confirmDialogTitle}`));
   }
 }
