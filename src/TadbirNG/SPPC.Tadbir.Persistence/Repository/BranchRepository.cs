@@ -148,6 +148,7 @@ namespace SPPC.Tadbir.Persistence
 
                 var newRoleIds = AddNewRoles(repository, existing, branchRoles);
                 await UnitOfWork.CommitAsync();
+
                 if (removedRoleIds.Length > 0 || newRoleIds.Length > 0)
                 {
                     await InsertAssignedItemsLogAsync(newRoleIds, removedRoleIds,
@@ -335,6 +336,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(r => r.Name)
                     .ToArrayAsync();
             }
+
             return Array.Empty<string>();
         }
 

@@ -229,6 +229,7 @@ namespace SPPC.Tadbir.Persistence
 
                 var newRoleIds = AddNewRoles(repository, existing, companyRoles);
                 await UnitOfWork.CommitAsync();
+
                 if (removedRoleIds.Length > 0 || newRoleIds.Length > 0)
                 {
                     await InsertAssignedItemsLogAsync(newRoleIds, removedRoleIds,
@@ -327,6 +328,7 @@ namespace SPPC.Tadbir.Persistence
                     .Single();
                 repository.Delete(removed);
             }
+
             return removedItems;
         }
 
@@ -450,21 +452,6 @@ namespace SPPC.Tadbir.Persistence
                 $"SELECT name FROM sys.sql_logins WHERE LOWER(name) = '{userName?.ToLower()}'");
             var table = DbConsole.ExecuteQuery(userScript);
             return table.Rows.Count > 0;
-        }
-
-        private async Task<string> GetCompanyRoleDescriptionAsync(int companyId)
-        {
-            string description = String.Empty;
-            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var company = await repository.GetByIDAsync(companyId);
-            if (company != null)
-            {
-                string template = Context.Localize(AppStrings.RolesWithAccessToResource);
-                string entity = Context.Localize(AppStrings.Company).ToLower();
-                description = String.Format(template, entity, company.Name);
-            }
-
-            return description;
         }
 
         private async Task<Expression<Func<CompanyDb, bool>>> GetSecurityFilterAsync()

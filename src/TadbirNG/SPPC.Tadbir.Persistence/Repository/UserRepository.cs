@@ -296,11 +296,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveUserRolesAsync(RelatedItemsViewModel userRoles)
         {
             Verify.ArgumentNotNull(userRoles, nameof(userRoles));
-            int[] removedRoleIds = Array.Empty<int>();
             var repository = UnitOfWork.GetAsyncRepository<UserRole>();
             var existing = await repository.GetByCriteriaAsync(rc => rc.UserId == userRoles.Id);
             if (AreRolesModified(existing, userRoles))
             {
+                int[] removedRoleIds = Array.Empty<int>();
                 if (existing.Count > 0)
                 {
                     removedRoleIds = RemoveUnassignedRoles(repository, existing, userRoles);
@@ -308,6 +308,7 @@ namespace SPPC.Tadbir.Persistence
 
                 var newRoleIds = AddNewRoles(repository, existing, userRoles);
                 await UnitOfWork.CommitAsync();
+
                 if (removedRoleIds.Length > 0 || newRoleIds.Length > 0)
                 {
                     await InsertAssignedItemsLogAsync(newRoleIds, removedRoleIds,
@@ -504,6 +505,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(r => r.Name)
                     .ToArrayAsync();
             }
+
             return Array.Empty<string>();
         }
 

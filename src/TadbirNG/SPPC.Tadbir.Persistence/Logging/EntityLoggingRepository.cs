@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.SqlServer.Management.Assessment.Expressions;
 using SPPC.Framework.Common;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Persistence;
@@ -14,7 +12,6 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
-using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel;
@@ -136,148 +133,6 @@ namespace SPPC.Tadbir.Persistence
             DisconnectEntity(entity);
             repository.Delete(entity);
             await UnitOfWork.CommitAsync();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، سطر اطلاعاتی لاگ عملیاتی را برای تخصیص آیتم ها به منابع 
-        /// درج می کند
-        /// </summary>
-        /// <param name="newItemIds">آیتم های جدید انتخابی</param>
-        /// <param name="removeItemIds">آیتم های از قدیمی حذف شده</param>
-        /// <param name="resourceId">شناسه منبع تخصیص یافته</param>
-        /// <param name="operationId">کد عملیاتی تخصیص منبع</param>
-        /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
-        protected async Task InsertAssignedItemsLogAsync(int[] newItemIds, int[] removeItemIds,
-            int resourceId, OperationId operationId, params Expression<Func<TEntity, object>>[] relatedProperties)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<TEntity>();
-            object resource = null;
-            if (relatedProperties.Length == 0)
-            {
-                resource = await repository.GetByIDAsync(resourceId);
-            }
-            else
-            {
-                resource = await repository
-                    .GetEntityQuery(relatedProperties)
-                    .Where(e => e.Id == resourceId)
-                    .Select(e => Mapper.Map<RelatedItemViewModel>(e))
-                    .SingleOrDefaultAsync();
-            }
-            if (resource != null)
-            {
-                string resourceName = Reflector.GetProperty(resource, "Name").ToString();
-                if (typeof(TEntity) == typeof(Role))
-                {
-                    resourceName = Context.Localize(resourceName);
-                }
-                OnEntityAction(operationId);
-                Log.Description = await GetAssignedItemsDescriptionAsync(newItemIds, removeItemIds,
-                    resourceName, operationId);
-                await TrySaveLogAsync();
-            }
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، لیست رشته ای از عناوین آیتم های ورودی را بر اساس کد عملیاتی برمی گرداند 
-        /// </summary>
-        /// <param name="itemIds">لیستی از شناسه آیتم های مورد نظر</param>
-        /// <param name="operationId">کد عملیاتی مورد نظر</param>
-        /// <returns>لیست رشته ای از عناوین آیتم ها</returns>
-        protected virtual async Task<string[]> GetItemNamesAsync(int[] itemIds, OperationId operationId)
-        {
-            return await Task.Run(() => Array.Empty<string>());
-        }
-
-        private async Task<string> GetAssignedItemsDescriptionAsync(int[] newItemIds,
-            int[] removeItemIds, string resourceName, OperationId operationId)
-        {
-            StringBuilder description = new StringBuilder();
-            if (newItemIds.Length > 0)
-            {
-                description.Append(await LocalizeAssignedItemsDescriptionAsync(newItemIds,
-                    AppStrings.AssignEntityToResource, resourceName, operationId));
-            }
-
-            if (removeItemIds.Length > 0)
-            {
-                if (description.Length > 0)
-                {
-                    description.Append(" - ");
-                }
-
-                description.Append(await LocalizeAssignedItemsDescriptionAsync(removeItemIds,
-                    AppStrings.UnassignEntityToResource, resourceName, operationId));
-            }
-
-            return description.ToString();
-        }
-
-        private async Task<string> LocalizeAssignedItemsDescriptionAsync(int[] itemIds,
-            string template, string resourceName, OperationId operationId)
-        {
-            string itemNamesStr = String.Empty;
-            string localizeTemp = Context.Localize(template);
-            var itemNames = await GetItemNamesAsync(itemIds, operationId);
-            if (operationId == OperationId.RoleAccess || operationId == OperationId.AssignRole)
-            {
-                itemNamesStr = String.Join(", ", itemNames.Select(i => $"'{Context.Localize(i)}'"));
-            }
-            else
-            {
-                itemNamesStr = String.Join(", ", itemNames.Select(i => $"'{i}'"));
-            }
-            var itemsTitle = GetItemsTitle(itemNames.Length, operationId);
-
-            List<OperationId> accessedOprations = new() { OperationId.AssignRole, OperationId.BranchAccess,
-                OperationId.CompanyAccess, OperationId.FiscalPeriodAccess };
-            if (accessedOprations.Contains(operationId))
-            {
-                var assignedTitle = Context.Localize(typeof(TEntity).Name).ToLower();
-                return String.Format(localizeTemp, itemsTitle, itemNamesStr, assignedTitle, resourceName);
-            }
-            else
-            {
-                var accessedTitle = Context.Localize(typeof(TEntity).Name).ToLower();
-                return String.Format(localizeTemp, accessedTitle, resourceName, itemsTitle, itemNamesStr);
-            }
-        }
-
-        private string GetItemsTitle(int itemsLength, OperationId operationId)
-        {
-            string itemsTitle = String.Empty;
-            switch (operationId)
-            {
-                case OperationId.AssignCashRegisterUser:
-                case OperationId.AssignUser:
-                    itemsTitle = Context.Localize(itemsLength > 1
-                        ? AppStrings.Users
-                        : AppStrings.User).ToLower();
-                    break;
-                case OperationId.RoleAccess:
-                case OperationId.AssignRole:
-                    itemsTitle = Context.Localize(itemsLength > 1
-                        ? AppStrings.Roles
-                        : AppStrings.Role).ToLower();
-                    break;
-                case OperationId.BranchAccess:
-                    itemsTitle = Context.Localize(itemsLength > 1
-                        ? AppStrings.Branches
-                        : AppStrings.Branch).ToLower();
-                    break;
-                case OperationId.CompanyAccess:
-                    itemsTitle = Context.Localize(itemsLength > 1
-                        ? AppStrings.Companies
-                        : AppStrings.Company).ToLower();
-                    break;
-                case OperationId.FiscalPeriodAccess:
-                    itemsTitle = Context.Localize(itemsLength > 1
-                        ? AppStrings.FiscalPeriods
-                        : AppStrings.FiscalPeriod).ToLower();
-                    break;
-            }
-
-            return itemsTitle;
         }
 
         internal virtual int? EntityType
@@ -504,6 +359,148 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return operation;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سطر اطلاعاتی لاگ عملیاتی را برای تخصیص آیتم ها به منابع 
+        /// درج می کند
+        /// </summary>
+        /// <param name="newItemIds">آیتم های جدید انتخابی</param>
+        /// <param name="removedItemIds">آیتم های قدیمی از انتخاب در آمده</param>
+        /// <param name="resourceId">شناسه منبع تخصیص یافته</param>
+        /// <param name="operationId">کد عملیاتی تخصیص منبع</param>
+        /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
+        protected async Task InsertAssignedItemsLogAsync(int[] newItemIds, int[] removedItemIds,
+            int resourceId, OperationId operationId, params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<TEntity>();
+            object resource = null;
+            if (relatedProperties.Length == 0)
+            {
+                resource = await repository.GetByIDAsync(resourceId);
+            }
+            else
+            {
+                resource = await repository
+                    .GetEntityQuery(relatedProperties)
+                    .Where(e => e.Id == resourceId)
+                    .Select(e => Mapper.Map<RelatedItemViewModel>(e))
+                    .SingleOrDefaultAsync();
+            }
+            if (resource != null)
+            {
+                string resourceName = Reflector.GetProperty(resource, "Name").ToString();
+                if (typeof(TEntity) == typeof(Role))
+                {
+                    resourceName = Context.Localize(resourceName);
+                }
+                OnEntityAction(operationId);
+                Log.Description = await GetAssignedItemsDescriptionAsync(newItemIds, removedItemIds,
+                    resourceName, operationId);
+                await TrySaveLogAsync();
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، لیست رشته ای از عناوین آیتم های ورودی را بر اساس کد عملیاتی برمی گرداند 
+        /// </summary>
+        /// <param name="itemIds">لیستی از شناسه آیتم های مورد نظر</param>
+        /// <param name="operationId">کد عملیاتی مورد نظر</param>
+        /// <returns>لیست رشته ای از عناوین آیتم ها</returns>
+        protected virtual async Task<string[]> GetItemNamesAsync(int[] itemIds, OperationId operationId)
+        {
+            return await Task.Run(() => Array.Empty<string>());
+        }
+
+        private async Task<string> GetAssignedItemsDescriptionAsync(int[] newItemIds,
+            int[] removedItemIds, string resourceName, OperationId operationId)
+        {
+            StringBuilder description = new StringBuilder();
+            if (newItemIds.Length > 0)
+            {
+                description.Append(await LocalizeAssignedItemsDescriptionAsync(newItemIds,
+                    AppStrings.AssignEntityToResource, resourceName, operationId));
+            }
+
+            if (removedItemIds.Length > 0)
+            {
+                if (description.Length > 0)
+                {
+                    description.Append(" - ");
+                }
+
+                description.Append(await LocalizeAssignedItemsDescriptionAsync(removedItemIds,
+                    AppStrings.UnassignEntityToResource, resourceName, operationId));
+            }
+
+            return description.ToString();
+        }
+
+        private async Task<string> LocalizeAssignedItemsDescriptionAsync(int[] itemIds,
+            string template, string resourceName, OperationId operationId)
+        {
+            string itemNamesStr = String.Empty;
+            string localizeTemp = Context.Localize(template);
+            var itemNames = await GetItemNamesAsync(itemIds, operationId);
+            if (operationId == OperationId.RoleAccess || operationId == OperationId.AssignRole)
+            {
+                itemNamesStr = String.Join(", ", itemNames.Select(i => $"'{Context.Localize(i)}'"));
+            }
+            else
+            {
+                itemNamesStr = String.Join(", ", itemNames.Select(i => $"'{i}'"));
+            }
+            var itemsTitle = GetItemsTitle(itemNames.Length, operationId);
+
+            List<OperationId> accessedOprations = new() { OperationId.AssignRole, OperationId.BranchAccess,
+                OperationId.CompanyAccess, OperationId.FiscalPeriodAccess };
+            if (accessedOprations.Contains(operationId))
+            {
+                var assignedTitle = Context.Localize(typeof(TEntity).Name).ToLower();
+                return String.Format(localizeTemp, itemsTitle, itemNamesStr, assignedTitle, resourceName);
+            }
+            else
+            {
+                var accessedTitle = Context.Localize(typeof(TEntity).Name).ToLower();
+                return String.Format(localizeTemp, accessedTitle, resourceName, itemsTitle, itemNamesStr);
+            }
+        }
+
+        private string GetItemsTitle(int itemsLength, OperationId operationId)
+        {
+            string itemsTitle = String.Empty;
+            switch (operationId)
+            {
+                case OperationId.AssignCashRegisterUser:
+                case OperationId.AssignUser:
+                    itemsTitle = Context.Localize(itemsLength > 1
+                        ? AppStrings.Users
+                        : AppStrings.User).ToLower();
+                    break;
+                case OperationId.RoleAccess:
+                case OperationId.AssignRole:
+                    itemsTitle = Context.Localize(itemsLength > 1
+                        ? AppStrings.Roles
+                        : AppStrings.Role).ToLower();
+                    break;
+                case OperationId.BranchAccess:
+                    itemsTitle = Context.Localize(itemsLength > 1
+                        ? AppStrings.Branches
+                        : AppStrings.Branch).ToLower();
+                    break;
+                case OperationId.CompanyAccess:
+                    itemsTitle = Context.Localize(itemsLength > 1
+                        ? AppStrings.Companies
+                        : AppStrings.Company).ToLower();
+                    break;
+                case OperationId.FiscalPeriodAccess:
+                    itemsTitle = Context.Localize(itemsLength > 1
+                        ? AppStrings.FiscalPeriods
+                        : AppStrings.FiscalPeriod).ToLower();
+                    break;
+            }
+
+            return itemsTitle;
         }
 
         private void DeleteWithCascade(Type parentType, int parentId, Type type, IEnumerable<int> ids)

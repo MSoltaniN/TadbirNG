@@ -173,9 +173,9 @@ namespace SPPC.Tadbir.Persistence
                 if (cashRegister.BranchScope != (short)BranchScope.AllBranches)
                 {
                     var validUserIds = GetUserIdsByRoleIds(validRoleIds);
-                    foreach(var user in selectedUsers)
+                    foreach (var user in selectedUsers)
                     {
-                        if(!validUserIds.Contains(user.Id))
+                        if (!validUserIds.Contains(user.Id))
                         {
                             user.IsValid = false;
                         }
@@ -219,12 +219,12 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveCashRegisterUsersAsync(RelatedItemsViewModel userCashRegisters)
         {
             Verify.ArgumentNotNull(userCashRegisters, nameof(userCashRegisters));
-            int[] removedUserIds = Array.Empty<int>();
             var repository = UnitOfWork.GetAsyncRepository<UserCashRegister>();
             var existing = await repository
                 .GetByCriteriaAsync(ucr => ucr.CashRegisterId == userCashRegisters.Id);
             if (AreUsersModified(existing, userCashRegisters))
             {
+                int[] removedUserIds = Array.Empty<int>();
                 if (existing.Count > 0)
                 {
                     removedUserIds = RemoveUnassinedUsers(repository, existing, userCashRegisters);
@@ -232,6 +232,7 @@ namespace SPPC.Tadbir.Persistence
 
                 var newUserIds = AddNewUsers(repository, existing, userCashRegisters);
                 await UnitOfWork.CommitAsync();
+
                 if (removedUserIds.Length > 0 || newUserIds.Length > 0)
                 {
                     await InsertAssignedItemsLogAsync(newUserIds, removedUserIds,
@@ -311,12 +312,12 @@ namespace SPPC.Tadbir.Persistence
                 UnitOfWork.UseSystemContext();
                 var userRepository = UnitOfWork.GetAsyncRepository<User>();
                 return await userRepository
-                    .GetEntityQuery()
+                    .GetEntityQuery(u => u.Person)
                     .Where(u => itemIds.Contains(u.Id))
-                    .Include(u => u.Person)
                     .Select(u => Mapper.Map<RelatedItemViewModel>(u).Name)
                     .ToArrayAsync();
             }
+
             return Array.Empty<string>();
         }
 
@@ -352,7 +353,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return RemovedUsers
-                .Select(u=>u.UserId)
+                .Select(u => u.UserId)
                 .ToArray();
         }
 
@@ -371,7 +372,7 @@ namespace SPPC.Tadbir.Persistence
                 };
                 repository.Insert(userCashRegister);
             }
-            
+
             return newUserItems
                 .Select(item => item.Id)
                 .ToArray();

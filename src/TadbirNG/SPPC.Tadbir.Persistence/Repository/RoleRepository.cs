@@ -9,7 +9,6 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
-using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
@@ -379,6 +378,7 @@ namespace SPPC.Tadbir.Persistence
 
                 var newCompanyIds = AddNewCompanies(repository, existing, roleCompanies);
                 await UnitOfWork.CommitAsync();
+
                 if (newCompanyIds.Length > 0 || removedCompanyIds.Length > 0)
                 {
                     await InsertAssignedItemsLogAsync(newCompanyIds, removedCompanyIds,
@@ -445,6 +445,7 @@ namespace SPPC.Tadbir.Persistence
 
                 var newBranchIds = AddNewBranches(repository, existing, roleBranches);
                 await UnitOfWork.CommitAsync();
+
                 if (removedBranchIds.Length > 0 || newBranchIds.Length > 0)
                 {
                     UnitOfWork.UseSystemContext();
@@ -577,7 +578,7 @@ namespace SPPC.Tadbir.Persistence
 
                 var newFPeriodIds = AddNewFiscalPeriods(repository, existing, rolePeriods);
                 await UnitOfWork.CommitAsync();
-                OnEntityAction(OperationId.FiscalPeriodAccess);
+
                 if (removedFPeriodIds.Length > 0 || newFPeriodIds.Length > 0)
                 {
                     UnitOfWork.UseSystemContext();
@@ -740,13 +741,12 @@ namespace SPPC.Tadbir.Persistence
                 UnitOfWork.UseSystemContext();
                 var userRepository = UnitOfWork.GetAsyncRepository<User>();
                 return await userRepository
-                    .GetEntityQuery()
+                    .GetEntityQuery(u => u.Person)
                     .Where(u => itemIds.Contains(u.Id))
-                    .Include(u => u.Person)
                     .Select(u => Mapper.Map<RelatedItemViewModel>(u).Name)
                     .ToArrayAsync();
             }
-            if (operationId == OperationId.BranchAccess)
+            else if (operationId == OperationId.BranchAccess)
             {
                 UnitOfWork.UseCompanyContext();
                 var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
@@ -756,7 +756,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(b => b.Name)
                     .ToArrayAsync();
             }
-            if (operationId == OperationId.CompanyAccess)
+            else if (operationId == OperationId.CompanyAccess)
             {
                 var companyRepository = UnitOfWork.GetAsyncRepository<CompanyDb>();
                 return await companyRepository
@@ -765,7 +765,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(c => c.Name)
                     .ToArrayAsync();
             }
-            if (operationId == OperationId.FiscalPeriodAccess)
+            else if (operationId == OperationId.FiscalPeriodAccess)
             {
                 UnitOfWork.UseCompanyContext();
                 var fiscalPeriodRepository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
@@ -1138,20 +1138,6 @@ namespace SPPC.Tadbir.Persistence
                     }
                 }
             }
-        }
-
-        private async Task<string> GetRoleAccessDescriptionAsync(int roleId, string entityKey)
-        {
-            string description = String.Empty;
-            var repository = UnitOfWork.GetAsyncRepository<Role>();
-            var role = await repository.GetByIDAsync(roleId);
-            if (role != null)
-            {
-                string template = Context.Localize(AppStrings.RoleAccessToResource);
-                description = Context.Localize(String.Format(template, role.Name, entityKey));
-            }
-
-            return description;
         }
 
         private async Task LogRowPermissionOperationAsync(
