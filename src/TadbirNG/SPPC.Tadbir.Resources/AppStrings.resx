@@ -3840,16 +3840,37 @@
   <data name="IsArchivedName" xml:space="preserve">
     <value>بایگانی شده</value>
   </data>
+  <data name="SourceApp" xml:space="preserve">
+    <value>منبع و مصرف</value>
+  </data>
+  <data name="SourceApps" xml:space="preserve">
+    <value>منابع و مصارف</value>
+  </data>
+  <data name="Application" xml:space="preserve">
+    <value>مصرف</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>منبع</value>
+  </data>
+  <data name="ManageSourceApps" xml:space="preserve">
+    <value>مدیریت منابع و مصارف</value>
+  </data>
   <data name="AssignEntityToResource" xml:space="preserve">
-    <value>تخصیص دسترسی {0} {1} به {2}: {3}</value>
+    <value>تخصیص دسترسی {0} - {1} - به {2} - {3}</value>
   </data>
   <data name="UnassignEntityToResource" xml:space="preserve">
-    <value>سلب دسترسی {0} {1} از {2}: {3}</value>
+    <value>سلب دسترسی {0} - {1} - از {2} - {3}</value>
   </data>
   <data name="CantArchiveCheckBookWithBlankPage" xml:space="preserve">
     <value>دسته چک {0} را با وجود برگه سفید نمی توان بایگانی کرد.</value>
   </data>
   <data name="IsExistPageCancelled" xml:space="preserve">
     <value>حداقل یک برگ از برگه های دسته چک باطل شده است.</value>
+  </data>
+  <data name="UserValue" xml:space="preserve">
+    <value>مقدار کاربری</value>
+  </data>
+  <data name="UserValues" xml:space="preserve">
+    <value>مقادیر کاربری</value>
   </data>
 </root>

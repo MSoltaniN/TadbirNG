@@ -97,7 +97,7 @@
                       <button
                         SppcPermissionCheck="CancelPage|Edit"
                         [EntityName]="permissionEntityName"
-                        (sppcClick)="cancelCheck(true)"
+                        (sppcClick)="pageOperations(pageOperationsItem.Cancel)"
                         class="k-button"
                         [disabled]="checkStatus != 1"
                         title="{{ 'CheckBook.CancelCheck' | translate }}"
@@ -107,7 +107,7 @@
                       <button
                         SppcPermissionCheck="UndoCancelPage|Edit"
                         [EntityName]="permissionEntityName"
-                        (sppcClick)="cancelCheck(false)"
+                        (sppcClick)="pageOperations(pageOperationsItem.UndoCancel)"
                         class="k-button"
                         [disabled]="checkStatus != 3"
                         title="{{ 'CheckBook.UndoCancelCheck' | translate }}"
@@ -247,7 +247,7 @@
 
 <!-- فرم تایید عملگرها -->
 <kendo-dialog
-  title="{{ 'CheckBook.DeletePages' | translate }}"
+  title="{{ confirmDialogTitle }}"
   *ngIf="confirmDialog"
   (close)="showDialog(false)"
   [minWidth]="250"
@@ -257,7 +257,7 @@
     {{ confirmMsg }}
   </p>
   <kendo-dialog-actions>
-    <button class="k-button" (click)="pageOperations(selectedOperation)" primary="true">
+    <button class="k-button" (click)="showDialog(true)" primary="true">
       {{ "Buttons.Yes" | translate }}
     </button>
     <button class="k-button" (click)="showDialog(false)">

@@ -3850,13 +3850,34 @@
     <value>Is Archived</value>
   </data>
   <data name="AssignEntityToResource" xml:space="preserve">
-    <value>Assign {0} {1} access to {2}: {3}</value>
+    <value>Assign {0} - {1} - access to {2} - {3}</value>
   </data>
   <data name="UnassignEntityToResource" xml:space="preserve">
-    <value>Unassign {0} {1} access from {2}: {3}</value>
+    <value>Unassign {0} - {1} - access from {2} - {3}</value>
   </data>
   <data name="CantArchiveCheckBookWithBlankPage" xml:space="preserve">
     <value>Cannot archiving checkbook {0} despite blank page.</value>
+  </data>
+  <data name="UserValue" xml:space="preserve">
+    <value>UserValue</value>
+  </data>
+  <data name="UserValues" xml:space="preserve">
+    <value>UserValues</value>
+  </data>
+  <data name="SourceApp" xml:space="preserve">
+    <value>Source and Application</value>
+  </data>
+  <data name="SourceApps" xml:space="preserve">
+    <value>Sources and Applications</value>
+  </data>
+  <data name="Application" xml:space="preserve">
+    <value>Application</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="ManageSourceApps" xml:space="preserve">
+    <value>Manage Sources and Applications</value>
   </data>
   <data name="IsExistPageCancelled" xml:space="preserve">
     <value>At least one sheet of the check book has been voided.</value>

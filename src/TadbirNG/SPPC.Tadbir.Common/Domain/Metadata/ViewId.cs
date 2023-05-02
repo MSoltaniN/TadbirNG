@@ -102,9 +102,9 @@ namespace SPPC.Tadbir.Domain
         public const int ComparativeProfitLossSimple = 66;
 
         /// <summary>
-        /// نمای اطلاعاتی دسته چک
+        /// نمای اطلاعاتی برگه چک
         /// </summary>
-        public const int CheckBook = 69;
+        public const int CheckBookPage = 69;
 
         /// <summary>
         /// نمای اطلاعاتی صندوق ها
@@ -112,8 +112,18 @@ namespace SPPC.Tadbir.Domain
         public const int CashRegister = 70;
 
         /// <summary>
+        /// نمای اطلاعاتی دسته چک
+        /// </summary>
+        public const int CheckBook = 71;
+
+        /// <summary>
         /// نمای اطلاعاتی گزارش دفتر دسته چک
         /// </summary>
-        public const int CheckBookReport = 71;
+        public const int CheckBookReport = 72;
+
+        /// <summary>
+        /// نمای اطلاعاتی منابع و مصارف
+        /// </summary>
+        public const int SourceApp = 73;
     }
 }

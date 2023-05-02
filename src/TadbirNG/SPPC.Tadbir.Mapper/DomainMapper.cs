@@ -97,6 +97,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<CashRegisterViewModel, CashRegister>();
             mapperConfig.CreateMap<UserCashRegister, UserCashRegisterViewModel>();
             mapperConfig.CreateMap<UserCashRegisterViewModel, UserCashRegister>();
+            mapperConfig.CreateMap<SourceApp, SourceAppViewModel>();
+            mapperConfig.CreateMap<SourceAppViewModel, SourceApp>();
         }
 
         private static void MapCheckTypes(IMapperConfigurationExpression mapperConfig)
@@ -530,6 +532,13 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<LogSetting, LogSettingItemViewModel>();
             mapperConfig.CreateMap<SysLogSetting, LogSettingViewModel>();
             mapperConfig.CreateMap<SysLogSetting, LogSettingItemViewModel>();
+
+            mapperConfig.CreateMap<UserValueCategory, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+            mapperConfig.CreateMap<UserValueCategoryViewModel, UserValueCategory>();
+            mapperConfig.CreateMap<UserValue, UserValueViewModel>();
+            mapperConfig.CreateMap<UserValueViewModel, UserValue>();
         }
 
         private static void MapMetadataTypes(IMapperConfigurationExpression mapperConfig)

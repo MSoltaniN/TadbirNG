@@ -24,11 +24,11 @@ namespace SPPC.Tools.SystemDesignerCli
             string dirName = Path.GetDirectoryName(_resFilePath);
             string className = Path.GetFileNameWithoutExtension(_resFilePath);
             string path = String.Format(@"{0}\{1}.cs", dirName, className);
-            if (!NotExistsOrOutOfDate(path))
-            {
-                Console.WriteLine("ResX key class '{0}' is up-to-date. Nothing was generated.", className);
-                return;
-            }
+            //if (!NotExistsOrOutOfDate(path))
+            //{
+            //    Console.WriteLine("ResX key class '{0}' is up-to-date. Nothing was generated.", className);
+            //    return;
+            //}
 
             Console.WriteLine("Generating ResX key class '{0}' in '{1}' ...", className, dirName);
             var template = new ResXKeyClass(_resFilePath, _csNamespace);

@@ -296,20 +296,23 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveUserRolesAsync(RelatedItemsViewModel userRoles)
         {
             Verify.ArgumentNotNull(userRoles, nameof(userRoles));
+            int[] removedRoleIds = Array.Empty<int>();
             var repository = UnitOfWork.GetAsyncRepository<UserRole>();
             var existing = await repository.GetByCriteriaAsync(rc => rc.UserId == userRoles.Id);
             if (AreRolesModified(existing, userRoles))
             {
                 if (existing.Count > 0)
                 {
-                    RemoveUnassignedRoles(repository, existing, userRoles);
+                    removedRoleIds = RemoveUnassignedRoles(repository, existing, userRoles);
                 }
 
-                AddNewRoles(repository, existing, userRoles);
+                var newRoleIds = AddNewRoles(repository, existing, userRoles);
                 await UnitOfWork.CommitAsync();
-                OnEntityAction(OperationId.AssignRole);
-                Log.Description = await GetUserRoleDescriptionAsync(userRoles.Id);
-                await TrySaveLogAsync();
+                if (removedRoleIds.Length > 0 || newRoleIds.Length > 0)
+                {
+                    await InsertAssignedItemsLogAsync(newRoleIds, removedRoleIds,
+                        userRoles.Id, OperationId.AssignRole, u => u.Person);
+                }
             }
         }
 
@@ -483,6 +486,27 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، لیست رشته ای از عناوین آیتم های ورودی را بر اساس کد عملیاتی برمی گرداند 
+        /// </summary>
+        /// <param name="itemIds">لیستی از شناسه آیتم های مورد نظر</param>
+        /// <param name="operationId">کد عملیاتی مورد نظر</param>
+        /// <returns>لیست رشته ای از عناوین آیتم ها</returns>
+        protected override async Task<string[]> GetItemNamesAsync(int[] itemIds, OperationId operationId)
+        {
+            if (operationId == OperationId.AssignRole)
+            {
+                UnitOfWork.UseSystemContext();
+                var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
+                return await roleRepository
+                    .GetEntityQuery()
+                    .Where(r => itemIds.Contains(r.Id))
+                    .Select(r => r.Name)
+                    .ToArrayAsync();
+            }
+            return Array.Empty<string>();
+        }
+
         private IMetadataRepository Metadata
         {
             get { return _system.Metadata; }
@@ -500,7 +524,7 @@ namespace SPPC.Tadbir.Persistence
             return !AreEqual(existingItems, enabledItems);
         }
 
-        private static void RemoveUnassignedRoles(
+        private static int[] RemoveUnassignedRoles(
             IRepository<UserRole> repository, IList<UserRole> existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = roleItems.RelatedItems
@@ -517,6 +541,8 @@ namespace SPPC.Tadbir.Persistence
                     .Single();
                 repository.Delete(removed);
             }
+
+            return removedItems;
         }
 
         private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
@@ -634,7 +660,7 @@ namespace SPPC.Tadbir.Persistence
             return func;
         }
 
-        private static void AddNewRoles(
+        private static int[] AddNewRoles(
             IRepository<UserRole> repository, IList<UserRole> existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = existing.Select(rc => rc.RoleId);
@@ -650,6 +676,10 @@ namespace SPPC.Tadbir.Persistence
                 };
                 repository.Insert(userRole);
             }
+
+            return newItems
+                .Select(item => item.Id)
+                .ToArray();
         }
 
         private static User CloneUser(User user)
@@ -757,20 +787,6 @@ namespace SPPC.Tadbir.Persistence
                 int? userId = user?.Id;
                 await OnSystemLoginAsync(userId, description);
             }
-        }
-
-        private async Task<string> GetUserRoleDescriptionAsync(int userId)
-        {
-            string description = String.Empty;
-            var repository = UnitOfWork.GetAsyncRepository<User>();
-            var user = await repository.GetByIDAsync(userId);
-            if (user != null)
-            {
-                string template = Context.Localize(AppStrings.RolesAssignedToUser);
-                description = String.Format(template, user.UserName);
-            }
-
-            return description;
         }
 
         private readonly ISystemRepository _system;
