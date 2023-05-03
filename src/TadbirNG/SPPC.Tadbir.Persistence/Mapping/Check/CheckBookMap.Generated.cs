@@ -24,8 +24,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("CheckBookID");
-            builder.Property(e => e.CheckBookNo)
-                .HasMaxLength(32);
+            builder.Property(e => e.CheckBookNo);
             builder.Property(e => e.SeriesNo)
                 .IsRequired()
                 .HasMaxLength(32);

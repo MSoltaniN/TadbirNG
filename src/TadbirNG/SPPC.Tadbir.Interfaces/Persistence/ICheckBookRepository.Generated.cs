@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="checkBookNo">شماره یکی از دسته چک های موجود</param>
         /// <returns>دسته چک مشخص شده با شماره</returns>
-        Task<CheckBookViewModel> GetCheckBookByNoAsync(string checkBookNo);
+        Task<CheckBookViewModel> GetCheckBookByNoAsync(int checkBookNo);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک دسته چک را ایجاد یا اصلاح می کند
@@ -99,11 +99,11 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsConnectedToCheckAsync(int checkBookId);
 
         /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا حداقل یک برگ از دسته ابطال شده است یا نه
+        /// به روش آسنکرون، مشخص می کند که آیا حداقل یک برگ از دسته چک ابطال شده است یا نه
         /// </summary>
         /// <param name="checkBookId">شناسه دسته چک موجود</param>
-        /// <returns>در حالتی که حداقل یک برگ از دسته چک ابطال شد باشد مقدار "درست" و در غیر این صورت
+        /// <returns>در حالتی که حداقل یک برگ از دسته چک ابطال شده باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
-        Task<bool> IsExistPageCancelled(int checkBookId);
+        Task<bool> ExistsCancelledPage(int checkBookId);
     }
 }

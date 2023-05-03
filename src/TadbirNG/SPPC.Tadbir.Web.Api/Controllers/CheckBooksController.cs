@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Model.Check;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -63,11 +62,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="checkBookNo">شماره دسته چک مورد نظر</param>
         /// <returns>اطلاعات نمایشی دسته چک مورد نظر</returns>
-        // GET: api/check-books/by-no/{checkBookNo}
+        // GET: api/check-books/by-no/{checkBookNo:min(1)}
         [HttpGet]
         [Route(CheckBookApi.CheckBookByNoUrl)]
         [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.View)]
-        public async Task<IActionResult> GetCheckBookByNoAsync(string checkBookNo)
+        public async Task<IActionResult> GetCheckBookByNoAsync(int checkBookNo)
         {
             var checkBookByNo = await _repository.GetCheckBookByNoAsync(checkBookNo);
             return JsonReadResult(checkBookByNo);
@@ -318,7 +317,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 message = _strings[AppStrings.HasConnectedToCheck];
             }
 
-            if (await _repository.IsExistPageCancelled(item))
+            if (await _repository.ExistsCancelledPage(item))
             {
                 message = _strings[AppStrings.IsExistPageCancelled];
             }

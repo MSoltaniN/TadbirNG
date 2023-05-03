@@ -12,7 +12,6 @@
 
 using System;
 using System.Collections.Generic;
-using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
 
 namespace SPPC.Tadbir.Model.Check
@@ -27,7 +26,6 @@ namespace SPPC.Tadbir.Model.Check
         /// </summary>
         public CheckBook()
         {
-            CheckBookNo = String.Empty;
             SeriesNo = String.Empty;
             SayyadStartNo = String.Empty;
             Name = String.Empty;
@@ -42,17 +40,17 @@ namespace SPPC.Tadbir.Model.Check
         /// <summary>
         /// شماره دسته چک
         /// </summary>
-        public virtual string CheckBookNo { get; set; }
+        public virtual int CheckBookNo { get; set; }
 
         /// <summary>
         /// شماره سری دسته چک
         /// </summary>
-        public string SeriesNo { get; set; }
+        public virtual string SeriesNo { get; set; }
 
         /// <summary>
         /// شماره صیاد شروع
         /// </summary>
-        public string SayyadStartNo { get; set; }
+        public virtual string SayyadStartNo { get; set; }
 
         /// <summary>
         /// نام دسته چک
@@ -115,13 +113,13 @@ namespace SPPC.Tadbir.Model.Check
         public virtual DateTime CreatedDate { get; set; }
 
         /// <summary>
-        /// شناسه دیتابیسی کاربر ایجاد کننده دسته چک
+        /// شناسه دیتابیسی کاربر ایجادکننده این دسته چک
         /// </summary>
-        public virtual User CreatedBy { get; set; }
+        public virtual int CreatedById { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی کاربری که آخرین تغییرات را روی دسته چک داده است
         /// </summary>
-        public virtual User ModifiedBy { get; set; }
+        public virtual int ModifiedById { get; set; }
     }
 }

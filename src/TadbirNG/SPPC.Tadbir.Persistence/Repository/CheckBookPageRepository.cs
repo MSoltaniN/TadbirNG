@@ -15,7 +15,8 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت برگه های چک را پیاده سازی می کند
     /// </summary>
-    public class CheckBookPageRepository : EntityLoggingRepository<CheckBookPage, CheckBookPageViewModel>, ICheckBookPageRepository
+    public class CheckBookPageRepository :
+        EntityLoggingRepository<CheckBookPage, CheckBookPageViewModel>, ICheckBookPageRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -89,7 +90,8 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
             CheckBook checkBook = await repository.GetByIDAsync(checkBookId);
-            var pages = new CheckBookPages(checkBook.StartNo, checkBook.EndNo , checkBook.SayyadStartNo);
+            var pages = new CheckBookPages(
+                checkBook.StartNo, checkBook.EndNo, checkBook.SeriesNo, checkBook.SayyadStartNo);
             var pageRepository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
             var checkBookPageIds = new List<int>();
             for (int i = 0; i < pages.Serials.Count(); i++)
@@ -97,8 +99,8 @@ namespace SPPC.Tadbir.Persistence
                 var checkBookPage = new CheckBookPage
                 {
                     CheckBookId = checkBookId,
-                    SerialNo = checkBook.SeriesNo + pages.Serials.ElementAt(i),
-                    SayyadNo = pages.SayyadNumbers.ElementAt(i),
+                    SerialNo = pages.Serials.ElementAt(i),
+                    SayyadNo = pages.SayyadSerials.ElementAt(i),
                     Status = CheckBookPageState.Blank
                 };
 

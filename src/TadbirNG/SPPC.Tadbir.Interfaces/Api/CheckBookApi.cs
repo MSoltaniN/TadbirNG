@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for a single check book specified by number
         /// </summary>
-        public const string CheckBookByNoUrl = "check-books/by-no/{checkBookNo}";
+        public const string CheckBookByNoUrl = "check-books/by-no/{checkBookNo:min(1)}";
 
         /// <summary>
         /// API client URL for all pages in a single check book specified by identifier
