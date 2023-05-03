@@ -3879,7 +3879,7 @@
   <data name="ManageSourceApps" xml:space="preserve">
     <value>Manage Sources and Applications</value>
   </data>
-  <data name="IsExistPageCancelled" xml:space="preserve">
-    <value>At least one sheet of the check book has been voided.</value>
+  <data name="ExistsCanceledPage" xml:space="preserve">
+    <value>At least one sheet of the check book has been canceled.</value>
   </data>
 </root>

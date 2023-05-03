@@ -319,7 +319,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.ExistsCancelledPage(item))
             {
-                message = _strings[AppStrings.IsExistPageCancelled];
+                message = _strings[AppStrings.ExistsCanceledPage];
             }
 
             return message;

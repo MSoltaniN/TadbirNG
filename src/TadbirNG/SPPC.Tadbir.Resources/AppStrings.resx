@@ -3864,7 +3864,7 @@
   <data name="CantArchiveCheckBookWithBlankPage" xml:space="preserve">
     <value>دسته چک {0} را با وجود برگه سفید نمی توان بایگانی کرد.</value>
   </data>
-  <data name="IsExistPageCancelled" xml:space="preserve">
+  <data name="ExistsCanceledPage" xml:space="preserve">
     <value>حداقل یک برگ از برگه های دسته چک باطل شده است.</value>
   </data>
   <data name="UserValue" xml:space="preserve">
