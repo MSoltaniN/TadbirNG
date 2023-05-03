@@ -746,7 +746,8 @@ namespace SPPC.Tadbir.Persistence
                     .Select(u => Mapper.Map<RelatedItemViewModel>(u).Name)
                     .ToArrayAsync();
             }
-            else if (operationId == OperationId.BranchAccess)
+
+            if (operationId == OperationId.BranchAccess)
             {
                 UnitOfWork.UseCompanyContext();
                 var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
@@ -756,7 +757,8 @@ namespace SPPC.Tadbir.Persistence
                     .Select(b => b.Name)
                     .ToArrayAsync();
             }
-            else if (operationId == OperationId.CompanyAccess)
+            
+            if (operationId == OperationId.CompanyAccess)
             {
                 var companyRepository = UnitOfWork.GetAsyncRepository<CompanyDb>();
                 return await companyRepository
@@ -765,7 +767,8 @@ namespace SPPC.Tadbir.Persistence
                     .Select(c => c.Name)
                     .ToArrayAsync();
             }
-            else if (operationId == OperationId.FiscalPeriodAccess)
+            
+            if (operationId == OperationId.FiscalPeriodAccess)
             {
                 UnitOfWork.UseCompanyContext();
                 var fiscalPeriodRepository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();

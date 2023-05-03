@@ -290,6 +290,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(r => r.Name)
                     .ToArrayAsync();
             }
+
             return Array.Empty<string>();
         }
 

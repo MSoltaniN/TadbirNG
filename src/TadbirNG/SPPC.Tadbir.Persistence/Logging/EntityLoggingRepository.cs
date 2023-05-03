@@ -450,6 +450,9 @@ namespace SPPC.Tadbir.Persistence
             {
                 itemNamesStr = String.Join(", ", itemNames.Select(i => $"'{i}'"));
             }
+
+            itemNamesStr = $": {itemNamesStr}";
+            resourceName = $"'{resourceName}'";
             var itemsTitle = GetItemsTitle(itemNames.Length, operationId);
 
             List<OperationId> accessedOprations = new() { OperationId.AssignRole, OperationId.BranchAccess,
