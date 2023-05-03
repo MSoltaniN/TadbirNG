@@ -535,7 +535,7 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<UserValueCategory, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.NameKey));
             mapperConfig.CreateMap<UserValueCategoryViewModel, UserValueCategory>();
             mapperConfig.CreateMap<UserValue, UserValueViewModel>();
             mapperConfig.CreateMap<UserValueViewModel, UserValue>();

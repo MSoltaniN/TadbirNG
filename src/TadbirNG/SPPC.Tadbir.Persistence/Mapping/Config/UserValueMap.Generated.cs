@@ -35,9 +35,9 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasDefaultValueSql("(getdate())");
 
             builder.HasOne(e => e.Category)
-                .WithMany()
+                .WithMany(e => e.Values)
                 .HasForeignKey(e => e.CategoryId)
-                .OnDelete(DeleteBehavior.Cascade)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Config_UserValue_Config_Category");
         }
     }

@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.ViewModel.Config
         /// </summary>
         public UserValueCategoryViewModel()
         {
-            Name = String.Empty;
+            NameKey = String.Empty;
         }
 
         /// <summary>
@@ -35,10 +35,10 @@ namespace SPPC.Tadbir.ViewModel.Config
         public int Id { get; set; }
 
         /// <summary>
-        /// نام مورد نظر برای دسته بندی مقادیر کاربری
+        /// کلید چندزبانه نام مورد نظر برای دسته بندی مقادیر کاربری
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string Name { get; set; }
+        public string NameKey { get; set; }
     }
 }

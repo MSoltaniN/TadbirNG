@@ -25,14 +25,14 @@ namespace SPPC.Tadbir.Model.Config
         /// </summary>
         public UserValueCategory()
         {
-            Name = String.Empty;
+            NameKey = String.Empty;
             ModifiedDate = DateTime.Now;
         }
 
         /// <summary>
-        /// نام مورد نظر برای دسته بندی مقادیر کاربری
+        /// کلید چندزبانه نام مورد نظر برای دسته بندی مقادیر کاربری
         /// </summary>
-        public virtual string Name { get; set; }
+        public virtual string NameKey { get; set; }
 
         /// <summary>
         /// مقادیر کاربری تعریف شده در این دسته بندی

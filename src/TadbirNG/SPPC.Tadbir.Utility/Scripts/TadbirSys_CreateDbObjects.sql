@@ -149,26 +149,6 @@ CREATE TABLE [Metadata].[Locale] (
 )
 GO
 
-CREATE TABLE [Config].[UserValueCategory] (
-    [CategoryID]   INT              IDENTITY (1, 1) NOT NULL,
-    [Name]         NVARCHAR(64)     NOT NULL,
-    [rowguid]      UNIQUEIDENTIFIER CONSTRAINT [DF_Config_UserValueCategory_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate] DATETIME         CONSTRAINT [DF_Config_UserValueCategory_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Config_UserValueCategory] PRIMARY KEY CLUSTERED ([CategoryID] ASC)
-)
-GO
-
-CREATE TABLE [Config].[UserValue] (
-    [ValueID]      INT              IDENTITY (1, 1) NOT NULL,
-    [CategoryID]   INT              NOT NULL,
-    [Value]        NVARCHAR(512)    NOT NULL,
-    [rowguid]      UNIQUEIDENTIFIER CONSTRAINT [DF_Config_UserValue_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate] DATETIME         CONSTRAINT [DF_Config_UserValue_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Config_UserValue] PRIMARY KEY CLUSTERED ([ValueID] ASC)
-    , CONSTRAINT [FK_Config_UserValue_Config_Category] FOREIGN KEY ([CategoryID]) REFERENCES [Config].[UserValueCategory]([CategoryID])
-)
-GO
-
 CREATE TABLE [Config].[SysLogSetting] (
     [SysLogSettingID]   INT              IDENTITY (1, 1) NOT NULL,
     [SourceID]          INT              NULL,

@@ -27,13 +27,6 @@ namespace SPPC.Tadbir.Persistence
         Task<PagedList<UserValueViewModel>> GetUserValuesAsync(int categoryId, GridOptions gridOptions = null);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات یک دسته بندی را ایجاد می کند
-        /// </summary>
-        /// <param name="category">دسته بندی مورد نظر برای ایجاد</param>
-        /// <returns>اطلاعات نمایشی دسته بندی ایجادشده</returns>
-        Task<UserValueCategoryViewModel> SaveCategoryAsync(UserValueCategoryViewModel category);
-
-        /// <summary>
         /// به روش آسنکرون، مقدار کاربری داده شده را ایجاد می کند
         /// </summary>
         /// <param name="userValue">مقدار کاربری مورد نظر برای ایجاد</param>

@@ -92,6 +92,8 @@ namespace SPPC.Tadbir.Persistence
             UserMap.BuildMapping(modelBuilder.Entity<User>());
             UserRoleMap.BuildMapping(modelBuilder.Entity<UserRole>());
             UserSettingMap.BuildMapping(modelBuilder.Entity<UserSetting>());
+            UserValueCategoryMap.BuildMapping(modelBuilder.Entity<UserValueCategory>());
+            UserValueMap.BuildMapping(modelBuilder.Entity<UserValue>());
             ViewRowPermissionMap.BuildMapping(modelBuilder.Entity<ViewRowPermission>());
             ViewSettingMap.BuildMapping(modelBuilder.Entity<ViewSetting>());
             VoucherMap.BuildMapping(modelBuilder.Entity<Voucher>());

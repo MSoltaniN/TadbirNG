@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +50,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCategoriesAsync()
         {
             var categories = await _repository.GetCategoriesAsync();
+            Array.ForEach(categories.ToArray(), category => category.Value = _strings[category.Value]);
             return Json(categories);
         }
 
@@ -63,26 +66,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var gridOptions = GridOptions ?? new GridOptions();
             var userValues = await _repository.GetUserValuesAsync(categoryId, gridOptions);
             return JsonListResult(userValues);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی یک دسته بندی جدید را پس از اعتبارسنجی در دیتابیس ذخیره می کند
-        /// </summary>
-        /// <param name="category">اطلاعات نمایشی دسته بندی جدید</param>
-        /// <returns>اطلاعات نمایشی ذخیره شده برای دسته بندی</returns>
-        // POST: api/user-values/categories
-        [HttpPost]
-        [Route(UserValueApi.CategoriesUrl)]
-        public async Task<IActionResult> PostNewCategoryAsync([FromBody] UserValueCategoryViewModel category)
-        {
-            var result = BasicValidationResult(category);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            var outputCategory = await _repository.SaveCategoryAsync(category);
-            return StatusCode(StatusCodes.Status201Created, outputCategory);
         }
 
         /// <summary>

@@ -23,7 +23,6 @@ namespace SPPC.Tadbir.Persistence
         public UserValueRepository(IRepositoryContext context)
             : base(context)
         {
-            UnitOfWork.UseSystemContext();
         }
 
         /// <summary>
@@ -56,27 +55,6 @@ namespace SPPC.Tadbir.Persistence
                 .Select(val => Mapper.Map<UserValueViewModel>(val))
                 .ToListAsync();
             return new PagedList<UserValueViewModel>(values, options);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات یک دسته بندی را ایجاد می کند
-        /// </summary>
-        /// <param name="category">دسته بندی مورد نظر برای ایجاد</param>
-        /// <returns>اطلاعات نمایشی دسته بندی ایجادشده</returns>
-        public async Task<UserValueCategoryViewModel> SaveCategoryAsync(UserValueCategoryViewModel category)
-        {
-            Verify.ArgumentNotNull(category, nameof(category));
-            var newCategoryView = category;
-            if (category.Id == 0)
-            {
-                var repository = UnitOfWork.GetAsyncRepository<UserValueCategory>();
-                var newCategory = Mapper.Map<UserValueCategory>(category);
-                repository.Insert(newCategory);
-                await UnitOfWork.CommitAsync();
-                newCategoryView = Mapper.Map<UserValueCategoryViewModel>(newCategory);
-            }
-
-            return newCategoryView;
         }
 
         /// <summary>

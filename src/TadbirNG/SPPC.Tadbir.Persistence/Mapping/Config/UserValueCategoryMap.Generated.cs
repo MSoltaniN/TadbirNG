@@ -24,7 +24,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("CategoryID");
-            builder.Property(e => e.Name)
+            builder.Property(e => e.NameKey)
                 .IsRequired()
                 .HasMaxLength(64);
             builder.Property(e => e.RowGuid)

@@ -902,3 +902,10 @@ SET IDENTITY_INSERT [Metadata].[Command] ON
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (61, 53, 239, N'ManageSourceApps', '/treasury/source-apps', 'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
+
+-- 1.2.1512
+DROP TABLE [Config].[UserValue]
+GO
+
+DROP TABLE [Config].[UserValueCategory]
+GO
