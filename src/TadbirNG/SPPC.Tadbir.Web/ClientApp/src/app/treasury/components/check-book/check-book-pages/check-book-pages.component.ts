@@ -32,6 +32,7 @@ import {
   MetaDataService,
 } from "@sppc/shared/services";
 import { PageOperations } from "@sppc/treasury/models/chechBookOperations";
+import { CheckBookPage } from "@sppc/treasury/models/checkBook";
 import { CheckBooksApi } from "@sppc/treasury/service/api/checkBooksApi";
 import { CheckBookService } from "@sppc/treasury/service/check-book.service";
 import { ToastrService } from "ngx-toastr";
@@ -118,6 +119,7 @@ export class CheckBookPagesComponent
   editMode = false;
   confirmMsg: string;
   confirmDialog: boolean = false;
+  confirmDialogTitle: string;
   pageOperationsItem = PageOperations;
   selectedOperation;
   permissionEntityName = "CheckBook";
@@ -183,25 +185,46 @@ export class CheckBookPagesComponent
     return item.dataItem.id;
   }
 
-  pageOperations(item: number) {
-    switch (item) {
+  pageOperations(operation: number) {
+    let item:CheckBookPage = this.rowData?.data.find(i => i.id == this.selectedRows[0])
+    switch (operation) {
       case PageOperations.Cancel:
-        this.cancelCheck(true);
+        this.confirmDialog = true;
+        this.selectedOperation = operation;
+        this.confirmDialogTitle = "CancelCheck";
+        this.prepareConfirmMsg(
+          "Messages.CheckBookPagesCancelConfirm",
+          item.serialNo
+        );
         break;
 
       case PageOperations.UndoCancel:
         this.confirmDialog = true;
+        this.selectedOperation = operation;
+        this.confirmDialogTitle = "UndoCancelCheck";
         this.prepareConfirmMsg(
-          "Messages.CheckBookPagesCancelConfirm",
-          this.selectedRows[0]
+          "Messages.CheckBookPagesUndoCancelConfirm",
+          item.serialNo
         );
         break;
 
-      case PageOperations.Cancel:
+      case PageOperations.Connect:
         this.confirmDialog = true;
+        this.selectedOperation = operation;
+        this.confirmDialogTitle = "ConnectCheck";
         this.prepareConfirmMsg(
-          "Messages.CheckBookPagesCancelConfirm",
-          this.selectedRows[0]
+          "Messages.CheckBookPagesConnectConfirm",
+          item.serialNo
+        );
+        break;
+
+      case PageOperations.Disconnect:
+        this.confirmDialog = true;
+        this.selectedOperation = operation;
+        this.confirmDialogTitle = "DisconnectCheck";
+        this.prepareConfirmMsg(
+          "Messages.CheckBookPagesDisconnectConfirm",
+          item.serialNo
         );
         break;
 
@@ -235,8 +258,13 @@ export class CheckBookPagesComponent
             MessageType.Warning
           );
       },
+      complete: () => {
+        this.confirmDialog = false;
+      }
     });
   }
+
+  connectCheck(status:boolean) {}
 
   removeHandler(e) {
     this.deleteConfirm = true;
@@ -278,33 +306,24 @@ export class CheckBookPagesComponent
 
   onSave(event) {}
 
-  showDialog(show: boolean, item?: number) {
+  showDialog(show: boolean) {
     if (show) {
-      this.confirmDialog = true;
-      this.selectedOperation = item;
-      switch (item) {
+      // this.confirmDialog = true;
+      switch (this.selectedOperation) {
         case PageOperations.Cancel:
-          let serialNo = this.rowData?.data.find(
-            (i) => i.id == this.selectedRows[0]
-          ).serialNo;
-          this.prepareConfirmMsg(
-            "Messages.CheckBookPagesCancelConfirm",
-            serialNo
-          );
+          this.cancelCheck(true);
           break;
 
         case PageOperations.UndoCancel:
-          this.prepareConfirmMsg(
-            "Messages.CheckBookPagesCancelConfirm",
-            this.selectedRows[0]
-          );
+          this.cancelCheck(false);
           break;
 
-        case PageOperations.Cancel:
-          this.prepareConfirmMsg(
-            "Messages.CheckBookPagesCancelConfirm",
-            this.selectedRows[0]
-          );
+        case PageOperations.Connect:
+          this.connectCheck(true);
+          break;
+
+        case PageOperations.Disconnect:
+          this.connectCheck(false);
           break;
 
         default:
@@ -337,9 +356,11 @@ export class CheckBookPagesComponent
    * prepare confim message for delete operation
    * @param text is a part of message that use for delete confirm message
    */
-  public prepareConfirmMsg(text1: string, text2?: string | number) {
+  public async prepareConfirmMsg(text1: string, text2?: string | number) {
     this.translate.get(text1).subscribe((msg: string) => {
       this.confirmMsg = String.Format(msg, text2);
     });
+    
+    this.confirmDialogTitle = await lastValueFrom(this.translate.get(`CheckBook.${this.confirmDialogTitle}`));
   }
 }

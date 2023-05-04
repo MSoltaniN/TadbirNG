@@ -26,12 +26,12 @@ export class CheckBooksApi
     public static CheckBookByNo = environment.BaseUrl + "/check-books/by-no/{0}";
 
     /**
-     * API server route URL for undoing a cancelled page specified by identifier
+     * API client URL for undoing a cancelled page specified by identifier
      */
     public static UndoCancelPage = environment.BaseUrl + "/check-books/pages/{0}/cancel/undo";
 
     /**
-     * API server route URL for cancelling a single page specified by identifier
+     * API client URL for cancelling a single page specified by identifier
      */
     public static CancelPage = environment.BaseUrl + "/check-books/pages/{0}/cancel";
 
@@ -46,19 +46,9 @@ export class CheckBooksApi
     public static PreviousCheckBook = environment.BaseUrl + "/check-books/{0}/previous";
 
     /**
-    * API server route URL for previous check book in current environment
-    */
-    public static PreviousCheckBookUrl = environment.BaseUrl + "/check-books/{issueDate:DateTime}/previous";
-
-    /**
     * API client URL for next check book in current environment
     */
     public static NextCheckBook = environment.BaseUrl + "/check-books/{0}/next";
-
-    /**
-    * API server route URL for next check book in current environment
-    */
-    public static NextCheckBookUrl = environment.BaseUrl + "/check-books/{issueDate:DateTime}/next";
 
     /**
     * API client URL for the last check book in current environment
@@ -71,7 +61,7 @@ export class CheckBooksApi
     public static ArchiveCheckBooks = environment.BaseUrl + "/check-books/archive";
 
     /**
-    * API server route URL for undoing archive operation on a check book
+    * API client URL for undoing archive operation on a check book
     */
     public static UndoArchiveCheckBooks = environment.BaseUrl + "/check-books/archive/undo";
 

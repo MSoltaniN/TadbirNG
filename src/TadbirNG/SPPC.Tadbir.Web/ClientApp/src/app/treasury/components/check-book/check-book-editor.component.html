@@ -27,6 +27,7 @@
           [EntityName]="entityTypeName"
           SppcPermissionCheck="Delete"
           (sppcClick)="removeHandler()"
+          [disabled]="isNew ? true : null"
           class="k-button sh-remove-voucher"
           title="{{ 'CheckBook.Delete' | translate }}"
         >
@@ -126,7 +127,7 @@
         <div class="form-group col-sm-5ths col-xs-12 item">
           <label for="name" class="control-label">{{ 'CheckBook.CheckBookNo' | translate }}</label>
     
-          <input sppcAutoFocus type="text" class="k-textbox" formControlName="checkBookNo" [OnlyNumber] [disabled]="editMode"/>
+          <input [sppcAutoFocus]="urlMode!='by-no'?100:false" type="text" class="k-textbox" formControlName="checkBookNo" [OnlyNumber] [disabled]="editMode"/>
     
           <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.checkBookNo.valid || editForm.controls.checkBookNo.pristine">
             <span *ngIf="editForm.controls.checkBookNo.errors?.required">{{ 'AllValidations.CheckBook.NoIsRequired' | translate }}</span>

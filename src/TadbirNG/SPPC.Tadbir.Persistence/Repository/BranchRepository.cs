@@ -140,16 +140,20 @@ namespace SPPC.Tadbir.Persistence
             var existing = await repository.GetByCriteriaAsync(rb => rb.BranchId == branchRoles.Id);
             if (AreRolesModified(existing, branchRoles))
             {
+                int[] removedRoleIds = Array.Empty<int>();
                 if (existing.Count > 0)
                 {
-                    RemoveUnassignedRoles(repository, existing, branchRoles);
+                    removedRoleIds = RemoveUnassignedRoles(repository, existing, branchRoles);
                 }
 
-                AddNewRoles(repository, existing, branchRoles);
+                var newRoleIds = AddNewRoles(repository, existing, branchRoles);
                 await UnitOfWork.CommitAsync();
-                OnEntityAction(OperationId.RoleAccess);
-                Log.Description = await GetBranchRoleDescriptionAsync(branchRoles.Id);
-                await TrySaveLogAsync();
+
+                if (removedRoleIds.Length > 0 || newRoleIds.Length > 0)
+                {
+                    await InsertAssignedItemsLogAsync(newRoleIds, removedRoleIds,
+                        branchRoles.Id, OperationId.RoleAccess);
+                }
             }
         }
 
@@ -314,6 +318,28 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، لیست رشته ای از عناوین آیتم های ورودی را بر اساس کد عملیاتی برمی گرداند 
+        /// </summary>
+        /// <param name="itemIds">لیستی از شناسه آیتم های مورد نظر</param>
+        /// <param name="operationId">کد عملیاتی مورد نظر</param>
+        /// <returns>لیست رشته ای از عناوین آیتم ها</returns>
+        protected override async Task<string[]> GetItemNamesAsync(int[] itemIds, OperationId operationId)
+        {
+            if (operationId == OperationId.RoleAccess)
+            {
+                UnitOfWork.UseSystemContext();
+                var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
+                return await roleRepository
+                    .GetEntityQuery()
+                    .Where(r => itemIds.Contains(r.Id))
+                    .Select(r => r.Name)
+                    .ToArrayAsync();
+            }
+
+            return Array.Empty<string>();
+        }
+
         private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
         {
             return left.Count() == right.Count()
@@ -332,7 +358,7 @@ namespace SPPC.Tadbir.Persistence
             return !AreEqual(existingItems, enabledItems);
         }
 
-        private static void RemoveUnassignedRoles(
+        private static int[] RemoveUnassignedRoles(
             IRepository<RoleBranch> repository, IList<RoleBranch> existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = roleItems.RelatedItems
@@ -349,9 +375,11 @@ namespace SPPC.Tadbir.Persistence
                     .Single();
                 repository.Delete(removed);
             }
+
+            return removedItems;
         }
 
-        private void AddNewRoles(
+        private int[] AddNewRoles(
             IRepository<RoleBranch> repository, IList<RoleBranch> existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = existing.Select(rb => rb.RoleId);
@@ -367,21 +395,10 @@ namespace SPPC.Tadbir.Persistence
                 };
                 repository.Insert(roleBranch);
             }
-        }
 
-        private async Task<string> GetBranchRoleDescriptionAsync(int branchId)
-        {
-            var description = String.Empty;
-            var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            var branch = await repository.GetByIDAsync(branchId);
-            if (branch != null)
-            {
-                string template = Context.Localize(AppStrings.RolesWithAccessToResource);
-                string entity = Context.Localize(AppStrings.Branch).ToLower();
-                description = String.Format(template, entity, branch.Name);
-            }
-
-            return description;
+            return newItems
+                .Select(item => item.Id)
+                .ToArray();
         }
 
         private async Task<Expression<Func<Branch, bool>>> GetSecurityFilterAsync()

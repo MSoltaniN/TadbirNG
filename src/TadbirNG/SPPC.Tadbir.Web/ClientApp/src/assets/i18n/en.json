@@ -99,7 +99,8 @@
     "ClickOnCearteRelation": "Then click on the 'Create Relation' button.",
     "FirstRemoveWidgets": "Before removing the tab from the dashboard, you must first remove the widgets added to the tab.",
     "CheckBookDeleteConfirm": "are you sure to delete CheckBook?",
-    "CheckBookPagesCancelConfirm": "are you sure to Cancel this check with number {0}?"
+    "CheckBookPagesCancelConfirm": "are you sure to Cancel this check with number {0}?",
+    "CheckBookPagesUndoCancelConfirm": "are you sure to Undo Cancel this check with number {0}?"
   },
   "Report": {
     "ReportViewer": "View of",
@@ -275,6 +276,7 @@
     "Title": "Select Form",
     "EntityTitle": "Select {0} by {1}",
     "SubjectOfTheSearch": "Subject Of The Search",
+    "SearchTerm": "Search term",
     "StartsWith": "From Start",
     "Contains": "Contains",
     "EndsWith": "From End",
@@ -1285,8 +1287,8 @@
     "BankAccount": "Banck account",
     "CancelCheck": "Cancel check",
     "UndoCancelCheck": "Undo cancel check",
-    "CreateConnection": "Create connection",
-    "UndoConnect": "Delete connection",
+    "ConnectCheck": "Create connection",
+    "DisconnectCheck": "Delete connection",
     "isArchived": "Archive",
     "Delete": "Delete check book",
     "CheckBookNo": "check Book Number",

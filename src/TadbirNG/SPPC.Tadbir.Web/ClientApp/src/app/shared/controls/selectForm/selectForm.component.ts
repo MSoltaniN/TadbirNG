@@ -54,8 +54,10 @@ export function getLayoutModule(layout: Layout) {
   styles: [
     `
       .search-box {
-        margin-top: 5px;
         position: relative;
+      }
+      .search-block lable{
+        align-self: start;
       }
       .tRtl .search-box span {
         position: absolute;

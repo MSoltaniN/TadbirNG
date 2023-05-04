@@ -62,11 +62,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="checkBookNo">شماره دسته چک مورد نظر</param>
         /// <returns>اطلاعات نمایشی دسته چک مورد نظر</returns>
-        // GET: api/check-books/by-no/{checkBookNo}
+        // GET: api/check-books/by-no/{checkBookNo:min(1)}
         [HttpGet]
         [Route(CheckBookApi.CheckBookByNoUrl)]
         [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.View)]
-        public async Task<IActionResult> GetCheckBookByNoAsync(string checkBookNo)
+        public async Task<IActionResult> GetCheckBookByNoAsync(int checkBookNo)
         {
             var checkBookByNo = await _repository.GetCheckBookByNoAsync(checkBookNo);
             return JsonReadResult(checkBookByNo);
@@ -208,8 +208,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetPagesAsync(int checkBookId)
         {
             var pages = await _pageRepository.GetPagesAsync(checkBookId, GridOptions);
-            SetRowNumbers(pages.Items);
-            return Json(pages.Items);
+            return JsonListResult(pages);
         }
 
         /// <summary>
@@ -237,8 +236,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var pages = await _pageRepository.CreatePagesAsync(checkBookId);
-            SetRowNumbers(pages.Items);
-            return Json(pages.Items);
+            return JsonListResult(pages);
         }
 
         /// <summary>
@@ -256,12 +254,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequestResult(message);
-            }
-
-            if (await _repository.IsConnectedToCheckAsync(checkBookId))
-            {
-                string msg = _strings[AppStrings.HasConnectedToCheck];
-                return BadRequestResult(msg);
             }
 
             await _pageRepository.DeletePagesAsync(checkBookId);
@@ -318,6 +310,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 message = _strings.Format(AppStrings.ItemByIdNotFound,
                     AppStrings.CheckBook, item.ToString());
+            }
+
+            if (await _repository.IsConnectedToCheckAsync(item))
+            {
+                message = _strings[AppStrings.HasConnectedToCheck];
+            }
+
+            if (await _repository.ExistsCancelledPage(item))
+            {
+                message = _strings[AppStrings.ExistsCanceledPage];
             }
 
             return message;

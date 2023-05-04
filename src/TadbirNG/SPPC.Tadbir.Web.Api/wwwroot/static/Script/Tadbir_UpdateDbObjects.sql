@@ -989,3 +989,76 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (230, 3, 3, 15, NULL, 67, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.2.1509
+ALTER TABLE [Check].[CheckBook]
+DROP COLUMN [CheckBookNo]
+GO
+
+ALTER TABLE [Check].[CheckBook]
+ADD [CheckBookNo] INT NULL,
+    [CreatedByID] INT CONSTRAINT [DF_Check_CheckBook_CreatedByID] DEFAULT (1) NOT NULL,
+	[ModifiedByID] INT CONSTRAINT [DF_Check_CheckBook_ModifiedByID] DEFAULT (1) NOT NULL,
+	[SeriesNo] NVARCHAR(32) CONSTRAINT [DF_Check_CheckBook_SeriesNo] DEFAULT 'A' NOT NULL,
+	[SayyadStartNo] NVARCHAR(16) CONSTRAINT [DF_Check_CheckBook_SayyadStartNo] DEFAULT '1' NOT NULL,
+	[CreatedDate] DATETIME CONSTRAINT [DF_Check_CheckBook_CreatedDate] DEFAULT (getdate()) NOT NULL
+GO
+
+ALTER TABLE [Check].[CheckBookPage]
+ADD [SayyadNo] NVARCHAR(16) CONSTRAINT [DF_Check_CheckBookPage_SeriesNo] DEFAULT ('1') NOT NULL
+
+-- 1.2.1510
+DELETE FROM [Config].[LogSetting]
+WHERE EntityTypeID = 23
+
+SET IDENTITY_INSERT [Metadata].[EntityType] ON
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
+    VALUES (23, N'SourceApp', NULL)
+SET IDENTITY_INSERT [Metadata].[EntityType] OFF
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (231, 3, 1, NULL, 23, 1, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (232, 3, 1, NULL, 23, 2, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (233, 3, 1, NULL, 23, 3, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (234, 3, 1, NULL, 23, 4, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (235, 3, 1, NULL, 23, 5, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (236, 3, 1, NULL, 23, 6, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (237, 3, 1, NULL, 23, 21, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (238, 3, 1, NULL, 23, 54, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (239, 3, 1, NULL, 23, 58, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.2.1512
+CREATE TABLE [Config].[UserValueCategory] (
+    [CategoryID]   INT              IDENTITY (1, 1) NOT NULL,
+    [NameKey]      NVARCHAR(64)     NOT NULL,
+    [rowguid]      UNIQUEIDENTIFIER CONSTRAINT [DF_Config_UserValueCategory_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate] DATETIME         CONSTRAINT [DF_Config_UserValueCategory_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Config_UserValueCategory] PRIMARY KEY CLUSTERED ([CategoryID] ASC)
+)
+GO
+
+CREATE TABLE [Config].[UserValue] (
+    [ValueID]      INT              IDENTITY (1, 1) NOT NULL,
+    [CategoryID]   INT              NOT NULL,
+    [Value]        NVARCHAR(512)    NOT NULL,
+    [rowguid]      UNIQUEIDENTIFIER CONSTRAINT [DF_Config_UserValue_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate] DATETIME         CONSTRAINT [DF_Config_UserValue_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Config_UserValue] PRIMARY KEY CLUSTERED ([ValueID] ASC)
+    , CONSTRAINT [FK_Config_UserValue_Config_Category] FOREIGN KEY ([CategoryID]) REFERENCES [Config].[UserValueCategory]([CategoryID])
+)
+GO
+
+SET IDENTITY_INSERT [Config].[UserValueCategory] ON
+INSERT INTO [Config].[UserValueCategory] ([CategoryID], [NameKey])
+    VALUES (1, 'BankName')
+SET IDENTITY_INSERT [Config].[UserValueCategory] OFF

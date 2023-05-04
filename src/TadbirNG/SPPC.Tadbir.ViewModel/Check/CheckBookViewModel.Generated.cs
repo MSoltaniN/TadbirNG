@@ -26,7 +26,6 @@ namespace SPPC.Tadbir.ViewModel.Check
         /// </summary>
         public CheckBookViewModel()
         {
-            CheckBookNo = String.Empty;
             Name = String.Empty;
             StartNo = String.Empty;
             EndNo = String.Empty;
@@ -42,8 +41,21 @@ namespace SPPC.Tadbir.ViewModel.Check
         /// شماره دسته چک
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        public int CheckBookNo { get; set; }
+
+        /// <summary>
+        /// شماره سری دسته چک
+        /// </summary>
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(32, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string CheckBookNo { get; set; }
+        public string SeriesNo { get; set; }
+
+        /// <summary>
+        /// شماره صیاد شروع
+        /// </summary>
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(16, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public string SayyadStartNo { get; set; }
 
         /// <summary>
         /// نام دسته چک

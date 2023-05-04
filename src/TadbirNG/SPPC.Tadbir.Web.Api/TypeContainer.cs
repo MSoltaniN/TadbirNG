@@ -147,6 +147,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<ISystemConfigRepository, SystemConfigRepository>();
             _services.AddTransient<ISystemIssueRepository, SystemIssueRepository>();
             _services.AddTransient<IFilterRepository, FilterRepository>();
+            _services.AddTransient<IUserValueRepository, UserValueRepository>();
             _services.AddTransient<IBalanceByAccountRepository, BalanceByAccountRepositoryDirect>();
             _services.AddTransient<ILogConfigRepository, LogConfigRepository>();
             _services.AddTransient<ICustomerTaxInfoRepository, CustomerTaxInfoRepository>();
@@ -159,6 +160,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<ICheckBookPageRepository, CheckBookPageRepository>();
             _services.AddTransient<ICashRegisterRepository, CashRegisterRepository>();
             _services.AddTransient<ICheckBookReportRepository, CheckBookReportRepository>();
+            _services.AddTransient<ISourceAppRepository, SourceAppRepository>();
         }
 
         private void AddServiceTypes()

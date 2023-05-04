@@ -79,7 +79,7 @@ export class SppcBranchScope implements OnInit, ControlValueAccessor, Validator 
   }
 
   onPermissionChange(e: any) {
-    if (this.scopeSelected && this.scopeSelected >= 0) {
+    if (this.scopeSelected != undefined && this.scopeSelected >= 0) {
       this.parseError = false;
       this.propagateChange(this.scopeSelected);
     }

@@ -80,10 +80,20 @@ export class CheckBookReportComponent
 
   clickedRowItem: CheckBook;
   get isArchived() {
-    let check = this.rowData?.data.find(
-      (item) => item.id == this.selectedRows[0]
+    let checks = this.rowData?.data.filter(
+      (item) => this.selectedRows.includes(item.id)
     );
-    return check?.isArchived;
+    let archived = checks.filter(
+      (item) => item.isArchived == true
+    );
+
+    if (checks.length == archived.length) {
+      return true;
+    } else if(archived.length > 0) {
+      return 'both'
+    } else{
+      return false;
+    }
   }
 
   ngOnInit(): void {
@@ -184,6 +194,7 @@ export class CheckBookReportComponent
     this.dialogModel.checkBookItem = this.editDataItem;
     this.dialogModel.isOpenFromList = true;
     this.dialogModel.dialogMode = true;
+    this.dialogModel.isNew = isNew;
     this.editDataItem = undefined;
 
     if (this.reportFilter) {

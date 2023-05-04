@@ -14,25 +14,33 @@ namespace SPPC.Tadbir.Persistence
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="firstPage">شماره سریال اولین برگه از دسته چک</param>
+        /// <param name="checkSeriesNo">شماره سری دسته چک</param>
+        /// <param name="sayyadStartNo">شماره صیاد شروع دسته چک که معادل شماره صیاد اولین برگه است</param>
         /// <param name="pageCount">تعداد برگه های مورد نیاز برای دسته چک</param>
-        public CheckBookPages(string firstPage, int pageCount)
+        public CheckBookPages(string firstPage, string checkSeriesNo, string sayyadStartNo, int pageCount)
         {
             Verify.ArgumentNotNullOrWhitespace(firstPage, nameof(firstPage));
+            Verify.ArgumentNotNullOrWhitespace(checkSeriesNo, nameof(checkSeriesNo));
+            Verify.ArgumentNotNullOrWhitespace(sayyadStartNo, nameof(sayyadStartNo));
             Count = pageCount;
-            InitSerials(firstPage, pageCount);
+            InitSerials(firstPage, checkSeriesNo, sayyadStartNo, pageCount);
         }
 
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="firstPage">شماره سریال اولین برگه از دسته چک</param>
+        /// <param name="checkSeriesNo">شماره سری دسته چک</param>
+        /// <param name="sayyadStartNo">شماره صیاد شروع دسته چک که معادل شماره صیاد اولین برگه است</param>
         /// <param name="lastPage">شماره سریال آخرین برگه از دسته چک</param>
-        public CheckBookPages(string firstPage, string lastPage)
+        public CheckBookPages(string firstPage, string lastPage, string checkSeriesNo, string sayyadStartNo)
         {
             Verify.ArgumentNotNullOrWhitespace(firstPage, nameof(firstPage));
             Verify.ArgumentNotNullOrWhitespace(lastPage, nameof(lastPage));
+            Verify.ArgumentNotNullOrWhitespace(checkSeriesNo, nameof(checkSeriesNo));
+            Verify.ArgumentNotNullOrWhitespace(sayyadStartNo, nameof(sayyadStartNo));
             Count = GetPageCount(firstPage, lastPage);
-            InitSerials(firstPage, Count);
+            InitSerials(firstPage, checkSeriesNo, sayyadStartNo, Count);
         }
 
         /// <summary>
@@ -48,15 +56,26 @@ namespace SPPC.Tadbir.Persistence
             get { return _serials; }
         }
 
-        private void InitSerials(string firstPage, int pageCount)
+        /// <summary>
+        /// مجموعه شماره صیادهای تولیدشده برای برگه های دسته چک 
+        /// </summary>
+        public IEnumerable<string> SayyadSerials
+        {
+            get { return _sayyadSerials; }
+        }
+
+        private void InitSerials(string firstPage, string checkSeriesNo, string sayyadStartNo, int pageCount)
         {
             _serials = new List<string>(pageCount);
+            _sayyadSerials = new List<string>(pageCount);
             GetSeriesAndSerialNo(firstPage, out string series, out string serial);
             int paddingCount = GetZeroPaddingCount(serial);
             int serialNo = Convert.ToInt32(serial);
+            long sayyadNo = Convert.ToInt64(sayyadStartNo);
             for (int index = 0; index < pageCount; index++)
             {
-                _serials.Add($"{series}{new string('0', paddingCount)}{serialNo + index}");
+                _serials.Add($"{checkSeriesNo}/{series}{new string('0', paddingCount)}{serialNo + index}");
+                _sayyadSerials.Add($"{sayyadNo + index}");
             }
         }
 
@@ -81,12 +100,15 @@ namespace SPPC.Tadbir.Persistence
 
         private static void GetSeriesAndSerialNo(string pageNo, out string series, out string serialNo)
         {
-            series = new string(pageNo
-                .TakeWhile(ch => !Char.IsDigit(ch))
-                .ToArray());
-            serialNo = new string(pageNo
-                .SkipWhile(ch => !Char.IsDigit(ch))
+            var reversePageNo = new string(pageNo.Reverse().ToArray());
+            serialNo = new string(reversePageNo
                 .TakeWhile(ch => Char.IsDigit(ch))
+                .Reverse()
+                .ToArray());
+            series = new string(reversePageNo
+                .Skip(serialNo.Length)
+                .Take(reversePageNo.Length - serialNo.Length)
+                .Reverse()
                 .ToArray());
         }
 
@@ -98,16 +120,10 @@ namespace SPPC.Tadbir.Persistence
                     "Input string must represent a number.", nameof(number));
             }
 
-            return number.ToString().Length - GetDigitCount(numberValue);
-        }
-
-        // Warning: This method DOES NOT support negative numbers.
-        private static int GetDigitCount(int number)
-        {
-            int fixedNumber = Math.Max(number, 1);
-            return (int)Math.Floor(Math.Log10(fixedNumber)) + 1;
+            return number.ToString().Length - numberValue.ToString().Length;
         }
 
         private List<string> _serials;
+        private List<string> _sayyadSerials;
     }
 }

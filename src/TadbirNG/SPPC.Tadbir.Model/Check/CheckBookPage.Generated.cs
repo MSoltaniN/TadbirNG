@@ -10,8 +10,8 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-using SPPC.Tadbir.Domain;
 using System;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.Model.Check
 {
@@ -26,6 +26,7 @@ namespace SPPC.Tadbir.Model.Check
         public CheckBookPage()
         {
             SerialNo = String.Empty;
+            SayyadNo = String.Empty;
             ModifiedDate = DateTime.Now;
         }
 
@@ -33,6 +34,11 @@ namespace SPPC.Tadbir.Model.Check
         /// شماره سری برگه
         /// </summary>
         public virtual string SerialNo { get; set; }
+
+        /// <summary>
+        /// شماره صیاد برگه
+        /// </summary>
+        public virtual string SayyadNo { get; set; }
 
         /// <summary>
         /// وضعیت برگه
@@ -45,7 +51,7 @@ namespace SPPC.Tadbir.Model.Check
         public virtual int? CheckId { get; set; }
 
         /// <summary>
-        /// دسته چک ای که برگه ها متعلق به آن هست
+        /// دسته چکی که برگه چک در آن تعریف می شود
         /// </summary>
         public virtual CheckBook CheckBook { get; set; }
     }

@@ -122,16 +122,20 @@ namespace SPPC.Tadbir.Persistence
             var existing = await repository.GetByCriteriaAsync(rfp => rfp.FiscalPeriodId == periodRoles.Id);
             if (AreRolesModified(existing, periodRoles))
             {
+                int[] removedRoleIds = Array.Empty<int>();
                 if (existing.Count > 0)
                 {
-                    RemoveUnassignedRoles(repository, existing, periodRoles);
+                    removedRoleIds = RemoveUnassignedRoles(repository, existing, periodRoles);
                 }
 
-                AddNewRoles(repository, existing, periodRoles);
+                var newRoleIds = AddNewRoles(repository, existing, periodRoles);
                 await UnitOfWork.CommitAsync();
-                OnEntityAction(OperationId.RoleAccess);
-                Log.Description = await GetFiscalPeriodRoleDescriptionAsync(periodRoles.Id);
-                await TrySaveLogAsync();
+
+                if (removedRoleIds.Length > 0 || newRoleIds.Length > 0)
+                {
+                    await InsertAssignedItemsLogAsync(newRoleIds, removedRoleIds,
+                        periodRoles.Id, OperationId.RoleAccess);
+                }
             }
         }
 
@@ -367,6 +371,28 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، لیست رشته ای از عناوین آیتم های ورودی را بر اساس کد عملیاتی برمی گرداند 
+        /// </summary>
+        /// <param name="itemIds">لیستی از شناسه آیتم های مورد نظر</param>
+        /// <param name="operationId">کد عملیاتی مورد نظر</param>
+        /// <returns>لیست رشته ای از عناوین آیتم ها</returns>
+        protected override async Task<string[]> GetItemNamesAsync(int[] itemIds, OperationId operationId)
+        {
+            if(operationId==OperationId.RoleAccess) 
+            {
+                UnitOfWork.UseSystemContext();
+                var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
+                return await roleRepository
+                    .GetEntityQuery()
+                    .Where(r => itemIds.Contains(r.Id))
+                    .Select(r => r.Name)
+                    .ToArrayAsync();
+            }
+
+            return Array.Empty<string>();
+        }
+
         private IConfigRepository Config { get; }
 
         private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
@@ -388,7 +414,7 @@ namespace SPPC.Tadbir.Persistence
             return !AreEqual(existingItems, enabledItems);
         }
 
-        private static void RemoveUnassignedRoles(
+        private static int[] RemoveUnassignedRoles(
             IRepository<RoleFiscalPeriod> repository, IList<RoleFiscalPeriod> existing,
             RelatedItemsViewModel roleItems)
         {
@@ -406,9 +432,11 @@ namespace SPPC.Tadbir.Persistence
                     .Single();
                 repository.Delete(removed);
             }
+
+            return removedItems;
         }
 
-        private static void AddNewRoles(
+        private static int[] AddNewRoles(
             IRepository<RoleFiscalPeriod> repository, IList<RoleFiscalPeriod> existing,
             RelatedItemsViewModel roleItems)
         {
@@ -425,6 +453,10 @@ namespace SPPC.Tadbir.Persistence
                 };
                 repository.Insert(roleFiscalPeriod);
             }
+
+            return newItems
+                .Select(item => item.Id)
+                .ToArray();
         }
 
         private async Task<string> GetFiscalPeriodRoleDescriptionAsync(int fiscalPeriodId)
