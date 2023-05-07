@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -8,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
-using SPPC.Framework.Licensing;
 using SPPC.Framework.Presentation;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Common;

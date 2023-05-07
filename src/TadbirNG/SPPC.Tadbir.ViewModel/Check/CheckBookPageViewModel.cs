@@ -8,5 +8,10 @@ namespace SPPC.Tadbir.ViewModel.Check
         ///  شناسه یکتای دسته چک که برگه چک در آن تعریف می شود
         /// </summary>
         public int CheckBookId { get; set; }
+
+        /// <summary>
+        /// عنوان محلی شده برای وضعیت برگه
+        /// </summary>
+        public string StatusName { get; set; }
     }
 }

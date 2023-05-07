@@ -61,8 +61,7 @@ namespace SPPC.Tadbir.Persistence
             var checkBookByNo = await Repository
                 .GetAllOperationQuery<CheckBook>(ViewId.CheckBook,
                     cb => cb.Account, cb => cb.DetailAccount, cb => cb.CostCenter, cb => cb.Project)
-                .Where(cb => cb.CheckBookNo == checkBookNo
-                    && cb.BranchId == UserContext.BranchId)
+                .Where(cb => cb.CheckBookNo == checkBookNo)
                 .FirstOrDefaultAsync();
             if (checkBookByNo != null)
             {

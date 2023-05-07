@@ -57,7 +57,7 @@ namespace SPPC.Tadbir.Model
 
             // Subsystem-specific model types are expected to have full type name like below :
             // SPPC.Tadbir.Model.[Schema].[Table]
-            if (idItems.Count() != 5)
+            if (idItems.Length != 5)
             {
                 return null;
             }

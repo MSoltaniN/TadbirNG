@@ -55,11 +55,6 @@ namespace SPPC.Tadbir.ViewModel.Check
         public CheckBookPageState? Status { get; set; }
 
         /// <summary>
-        /// عنوان محلی شده برای وضعیت برگه
-        /// </summary>
-        public string StatusName { get; set; }
-
-        /// <summary>
         /// شناسه چک مرتبط با برگه
         /// </summary>
         public int? CheckId { get; set; }
