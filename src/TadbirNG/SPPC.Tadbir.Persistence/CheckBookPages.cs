@@ -39,9 +39,15 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNullOrWhitespace(lastPage, nameof(lastPage));
             Verify.ArgumentNotNullOrWhitespace(checkSeriesNo, nameof(checkSeriesNo));
             Verify.ArgumentNotNullOrWhitespace(sayyadStartNo, nameof(sayyadStartNo));
+            LastPage = lastPage;
             Count = GetPageCount(firstPage, lastPage);
             InitSerials(firstPage, checkSeriesNo, sayyadStartNo, Count);
         }
+
+        /// <summary>
+        /// شماره آخرین برگه در دسته چک مورد نظر
+        /// </summary>
+        public string LastPage { get; private set; }
 
         /// <summary>
         /// تعداد برگه های تعیین شده یا به دست آمده برای دسته چک
@@ -72,6 +78,7 @@ namespace SPPC.Tadbir.Persistence
             int paddingCount = GetZeroPaddingCount(serial);
             int serialNo = Convert.ToInt32(serial);
             long sayyadNo = Convert.ToInt64(sayyadStartNo);
+            LastPage = $"{series}{new string('0', paddingCount)}{serialNo + pageCount - 1}";
             for (int index = 0; index < pageCount; index++)
             {
                 _serials.Add($"{checkSeriesNo}/{series}{new string('0', paddingCount)}{serialNo + index}");

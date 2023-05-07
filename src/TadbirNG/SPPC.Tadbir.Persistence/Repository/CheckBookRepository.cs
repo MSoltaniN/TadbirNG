@@ -58,18 +58,20 @@ namespace SPPC.Tadbir.Persistence
         public async Task<CheckBookViewModel> GetCheckBookByNoAsync(int checkBookNo)
         {
             var byNo = default(CheckBookViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
-            var checkBookByNo = await repository.GetFirstByCriteriaAsync(
-                cb => cb.CheckBookNo == checkBookNo,
-                cb => cb.Account, cb => cb.DetailAccount, cb => cb.CostCenter, cb => cb.Project);
+            var checkBookByNo = await Repository
+                .GetAllOperationQuery<CheckBook>(ViewId.CheckBook,
+                    cb => cb.Account, cb => cb.DetailAccount, cb => cb.CostCenter, cb => cb.Project)
+                .Where(cb => cb.CheckBookNo == checkBookNo
+                    && cb.BranchId == UserContext.BranchId)
+                .FirstOrDefaultAsync();
             if (checkBookByNo != null)
             {
                 byNo = Mapper.Map<CheckBookViewModel>(checkBookByNo);
                 var pages = new CheckBookPages(byNo.StartNo, byNo.EndNo, byNo.SeriesNo, byNo.SayyadStartNo);
                 byNo.PageCount = pages.Count;
+                await ReadAsync(new GridOptions(), GetState(checkBookByNo));
             }
 
-            await ReadAsync(new GridOptions(), GetState(checkBookByNo));
             return byNo;
         }
 
@@ -83,8 +85,8 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(checkBook, nameof(checkBook));
             CheckBook checkBookModel;
             var pages = new CheckBookPages(
-                checkBook.StartNo, checkBook.SayyadStartNo, checkBook.SeriesNo, checkBook.PageCount);
-            checkBook.EndNo = pages.Serials.Last();
+                checkBook.StartNo, checkBook.SeriesNo, checkBook.SayyadStartNo, checkBook.PageCount);
+            checkBook.EndNo = pages.LastPage;
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
             if (checkBook.Id == 0)
             {

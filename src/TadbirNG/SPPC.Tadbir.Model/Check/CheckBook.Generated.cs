@@ -40,7 +40,7 @@ namespace SPPC.Tadbir.Model.Check
         /// <summary>
         /// شماره دسته چک
         /// </summary>
-        public virtual int CheckBookNo { get; set; }
+        public virtual int? CheckBookNo { get; set; }
 
         /// <summary>
         /// شماره سری دسته چک

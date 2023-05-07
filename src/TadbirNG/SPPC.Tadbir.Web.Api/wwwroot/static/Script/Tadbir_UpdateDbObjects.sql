@@ -1062,3 +1062,21 @@ SET IDENTITY_INSERT [Config].[UserValueCategory] ON
 INSERT INTO [Config].[UserValueCategory] ([CategoryID], [NameKey])
     VALUES (1, 'BankName')
 SET IDENTITY_INSERT [Config].[UserValueCategory] OFF
+
+-- 1.2.1513
+CREATE TABLE [CashFlow].[SourceApp] (
+    [SourceAppID]    INT              IDENTITY (1, 1) NOT NULL,
+    [BranchID]       INT              NOT NULL,
+    [FiscalPeriodID] INT              NOT NULL,
+    [BranchScope]    SMALLINT         NOT NULL,
+    [Code]           NVARCHAR(64)     NOT NULL,
+    [Name]           NVARCHAR(256)    NOT NULL,
+    [Description]    NVARCHAR(512)    NULL,
+    [Type]           SMALLINT         NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_SourceApp_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_CashFlow_SourceApp_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_CashFlow_SourceApp] PRIMARY KEY CLUSTERED ([SourceAppID] ASC)
+    , CONSTRAINT [FK_CashFlow_SourceApp_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_CashFlow_SourceApp_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+)
+GO

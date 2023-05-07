@@ -3873,4 +3873,7 @@
   <data name="UserValues" xml:space="preserve">
     <value>مقادیر کاربری</value>
   </data>
+  <data name="SayyadNo" xml:space="preserve">
+    <value>شماره صیاد</value>
+  </data>
 </root>
