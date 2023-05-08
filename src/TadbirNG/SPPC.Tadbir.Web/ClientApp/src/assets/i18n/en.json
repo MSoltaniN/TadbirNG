@@ -210,7 +210,8 @@
     "Widget": "Widget",
     "CashRegister": "Cash Register",
     "CheckBook": "Check Books",
-    "CheckBookReport": "Check Book Report"
+    "CheckBookReport": "Check Book Report",
+    "SourceApp": "Sources and Applications"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": " Number Of Vouchers Selected :",

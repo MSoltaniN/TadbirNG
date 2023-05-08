@@ -6,35 +6,32 @@ import { Layout, Entities } from '@sppc/shared/enum/metadata';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { DetailComponent } from '@sppc/shared/class';
 import { ViewName } from '@sppc/shared/security';
-import { CashRegisters } from '@sppc/treasury/models/cashRegisters';
+import { SourceApp } from '@sppc/treasury/models/soucrceApp';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
 }
 
 @Component({
-  selector: 'cash-registers-form',
-  styles: [`
-        input[type=text],textarea { width: 100%; }
-    `],
-  templateUrl: './cash-registers-form.component.html',
+  selector: 'app-sourceApp-form',
+  templateUrl: './sourceApp-form.component.html',
+  styleUrls: ['./sourceApp-form.component.css'],
   providers: [{
     provide: RTL,
     useFactory: getLayoutModule,
     deps: [Layout]
   }]
 })
+export class SourceAppFormComponent extends DetailComponent implements OnInit {
 
-export class CashRegistersFormComponent extends DetailComponent implements OnInit {
-
-  @Input() public model: CashRegisters;
+  @Input() public model: SourceApp;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
 
   @Input() public isWizard: boolean = false;
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
-  @Output() save: EventEmitter<CashRegisters> = new EventEmitter();
+  @Output() save: EventEmitter<SourceApp> = new EventEmitter();
 
   selectedBranchScope = 0;
 

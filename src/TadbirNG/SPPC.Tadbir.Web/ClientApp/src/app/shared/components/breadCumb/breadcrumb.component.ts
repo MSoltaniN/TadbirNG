@@ -165,6 +165,9 @@ export class BreadCumbComponent implements OnInit,OnDestroy {
       case "checkbookreport":
         this.getText("Entity.CheckBookReport");
         break;
+      case "sourceapp":
+        this.getText("Entity.SourceApp");
+        break;
     }
   }
 
