@@ -1290,6 +1290,9 @@
     "ConnectCheck": "Create connection",
     "DisconnectCheck": "Delete connection",
     "isArchived": "Archive",
+    "IssueDate": "Issue Date",
+    "SeriesNo": "Series No",
+    "SayyadStartNo": "Sayyad Start No",
     "Delete": "Delete check book",
     "CheckBookNo": "check Book Number",
     "SearchCheckBook": "Search Check Book",
@@ -1506,7 +1509,14 @@
     },
     "CheckBook": {
       "StartNoRequired": "Start number is required.",
-      "NoIsRequired": "Check bokk number is required."
+      "NoIsRequired": "Check book number is required.",
+      "StartNoIsRequired": "Start No number is required.",
+      "SeriesNoIsRequired": "Series No number is required.",
+      "SayyadStartNoIsRequired": "Sayyad Start No number is required.",
+      "PagesCountMax": "The number of sheets cannot be more than 1000.",
+      "PagesCountMin": "The number of sheets cannot be less than 1.",
+      "SayyadStartNoIsTooLong": "The Sayyad Start No can have a maximum of 16 characters.",
+      "SeriesNoIsTooLong": "The Series No can have a maximum of 32 characters."
     }
   }
 }

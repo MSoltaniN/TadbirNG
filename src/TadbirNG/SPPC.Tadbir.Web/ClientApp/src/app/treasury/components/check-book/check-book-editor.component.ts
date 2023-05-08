@@ -66,6 +66,9 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     this.editForm.get('bankName')[!value ? 'enable' : 'disable']();
     this.editForm.get('startNo')[!value ? 'enable' : 'disable']();
     this.editForm.get('endNo')[!value ? 'enable' : 'disable']();
+    this.editForm.get('sayyadStartNo')[!value ? 'enable' : 'disable']();
+    this.editForm.get('seriesNo')[!value ? 'enable' : 'disable']();
+    // this.editForm.get('endNo')[!value ? 'enable' : 'disable']();
     this.editMode = value;
   };
   otherSizeOfPages = false;
@@ -208,7 +211,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   initCheckBookForm() {
     if (this.model.id == 0) {
       this.model.branchId = this.BranchId;
-      this.model.issueDate = new Date();
+      // this.model.issueDate = new Date();
       this.checkBookPages = []
       this.selectedPagesCount = undefined;
       this.fullAccountForm.reset();
@@ -597,6 +600,8 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
 
   // Events
   onChangePagesCountDropDown(e) {
+    console.log(this.editForm);
+    
     if (e == -1) {
       this.otherSizeOfPages = true;
       this.selectedPagesCount = 1;
