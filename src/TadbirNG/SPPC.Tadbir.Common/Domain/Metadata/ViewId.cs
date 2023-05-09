@@ -125,5 +125,15 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی منابع و مصارف
         /// </summary>
         public const int SourceApp = 73;
+
+        /// <summary>
+        /// نمای اطلاعاتی پرداخت 
+        /// </summary>
+        public const int Pay = 74;
+
+        /// <summary>
+        /// نمای اطلاعاتی دریافت 
+        /// </summary>
+        public const int Receive = 75;
     }
 }

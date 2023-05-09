@@ -23,6 +23,8 @@ namespace SPPC.Tadbir.Persistence
         Widget = 20,
         CheckBook = 21,
         CashRegister = 22,
-        SourceApp = 23
+        SourceApp = 23,
+        Payment = 24,
+        Receive = 25
     }
 }

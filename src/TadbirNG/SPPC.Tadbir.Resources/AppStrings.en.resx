@@ -3885,4 +3885,46 @@
   <data name="SayyadNo" xml:space="preserve">
     <value>Sayyad No</value>
   </data>
+  <data name="PayReceive" xml:space="preserve">
+    <value>PayReceive</value>
+  </data>
+  <data name="LastPaymentForm" xml:space="preserve">
+    <value>Last payment form</value>
+  </data>
+  <data name="LastReceiveForm" xml:space="preserve">
+    <value>Last receive form</value>
+  </data>
+  <data name="NewPaymentForm" xml:space="preserve">
+    <value>New payment form</value>
+  </data>
+  <data name="NewReceiveForm" xml:space="preserve">
+    <value>New receive form</value>
+  </data>
+  <data name="Payment" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="PaymentFormbyNo" xml:space="preserve">
+    <value>Payment form by number...</value>
+  </data>
+  <data name="PaymentOperations" xml:space="preserve">
+    <value>Payment operations</value>
+  </data>
+  <data name="Payments" xml:space="preserve">
+    <value>Payments</value>
+  </data>
+  <data name="Receive" xml:space="preserve">
+    <value>Receive</value>
+  </data>
+  <data name="ReceiveFormbyNo" xml:space="preserve">
+    <value>Receive form by number...</value>
+  </data>
+  <data name="ReceiveOperations" xml:space="preserve">
+    <value>Receive operations</value>
+  </data>
+  <data name="Receives" xml:space="preserve">
+    <value>Receives</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Create related voucher</value>
+  </data>
 </root>

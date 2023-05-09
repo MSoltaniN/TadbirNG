@@ -3876,4 +3876,46 @@
   <data name="SayyadNo" xml:space="preserve">
     <value>شماره صیاد</value>
   </data>
+  <data name="PayReceive" xml:space="preserve">
+    <value>دریافت و پرداخت</value>
+  </data>
+  <data name="LastPaymentForm" xml:space="preserve">
+    <value>آخرین سند پرداخت</value>
+  </data>
+  <data name="LastReceiveForm" xml:space="preserve">
+    <value>آخرین سند دریافت</value>
+  </data>
+  <data name="NewPaymentForm" xml:space="preserve">
+    <value>سند پرداخت جدید</value>
+  </data>
+  <data name="NewReceiveForm" xml:space="preserve">
+    <value>سند دریافت جدید</value>
+  </data>
+  <data name="Payment" xml:space="preserve">
+    <value>پرداخت</value>
+  </data>
+  <data name="PaymentFormbyNo" xml:space="preserve">
+    <value>سند پرداخت به شماره ...</value>
+  </data>
+  <data name="PaymentOperations" xml:space="preserve">
+    <value>عملیات پرداخت</value>
+  </data>
+  <data name="Payments" xml:space="preserve">
+    <value>پرداخت ها</value>
+  </data>
+  <data name="Receive" xml:space="preserve">
+    <value>دریافت</value>
+  </data>
+  <data name="ReceiveFormbyNo" xml:space="preserve">
+    <value>سند دریافت به شماره ...</value>
+  </data>
+  <data name="ReceiveOperations" xml:space="preserve">
+    <value>عملیات دریافت</value>
+  </data>
+  <data name="Receives" xml:space="preserve">
+    <value>دریافت ها</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>ایجاد سند حسابداری مرتبط</value>
+  </data>
 </root>
