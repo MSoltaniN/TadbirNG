@@ -1302,6 +1302,15 @@
     "DeleteCheckBookPages": "Delete check book pages",
     "DeletedMsg": "{0} deleted successfully"
   },
+  "SourceApp": {
+    "New": "New SourceApp",
+    "Edit": "Edit",
+    "Code": "Code",
+    "Type": "Type ",
+    "BranchScope":"Branch Scope",
+    "Source": "Source",
+    "Application": "Application"
+  },
   "AllValidations": {
     "Account": {
       "CodeIsRequired": "Code is required.",
@@ -1518,6 +1527,12 @@
       "PagesCountMin": "The number of sheets cannot be less than 1.",
       "SayyadStartNoIsTooLong": "The Sayyad Start No can have a maximum of 16 characters.",
       "SeriesNoIsTooLong": "The Series No can have a maximum of 32 characters."
+    },
+    "SourceApp": {
+      "CodeIsRequired": "Code is required.",
+      "CodeIsTooLong": "Code can have a maximum of 64 characters.",
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "Name can have a maximum of 16 characters."
     }
   }
 }

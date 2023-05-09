@@ -6,7 +6,7 @@ import { Layout, Entities } from '@sppc/shared/enum/metadata';
 import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { DetailComponent } from '@sppc/shared/class';
 import { ViewName } from '@sppc/shared/security';
-import { SourceApp } from '@sppc/treasury/models/soucrceApp';
+import { soucrceAppType, SourceApp } from '@sppc/treasury/models/soucrceApp';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -15,7 +15,9 @@ export function getLayoutModule(layout: Layout) {
 @Component({
   selector: 'app-sourceApp-form',
   templateUrl: './sourceApp-form.component.html',
-  styleUrls: ['./sourceApp-form.component.css'],
+  styles: [`
+    input[type=text],textarea { width: 100%; }
+  `],
   providers: [{
     provide: RTL,
     useFactory: getLayoutModule,
@@ -34,6 +36,11 @@ export class SourceAppFormComponent extends DetailComponent implements OnInit {
   @Output() save: EventEmitter<SourceApp> = new EventEmitter();
 
   selectedBranchScope = 0;
+  selectedType = 0;
+  sourceAppTypes = [
+    {key: 'SourceApp.Source', value: soucrceAppType.Source},
+    {key: 'SourceApp.Application', value: soucrceAppType.App}
+  ];
 
   constructor(public toastrService: ToastrService,
      public translate: TranslateService,
@@ -42,7 +49,7 @@ export class SourceAppFormComponent extends DetailComponent implements OnInit {
      public metadata: MetaDataService,
      public elem:ElementRef)
   {
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.CashRegister, ViewName.CashRegister,elem);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.SourceApp, ViewName.SourceApp,elem);
   }
 
   ngOnInit(): void {
@@ -52,12 +59,15 @@ export class SourceAppFormComponent extends DetailComponent implements OnInit {
       if (this.model.id == 0) {
         this.model.branchId = this.BranchId;
         this.model.branchScope = this.selectedBranchScope;
+        this.model.type = this.selectedType;
         this.model.fiscalPeriodId = this.FiscalPeriodId;
       } else {
         this.selectedBranchScope = this.model.branchScope;
       }
       this.editForm.reset(this.model);
-    })
+      console.log(this.editForm);
+    });
+    
   }
 
   public onSave(e: any): void {
@@ -78,6 +88,12 @@ export class SourceAppFormComponent extends DetailComponent implements OnInit {
 
   escPress() {
     this.closeForm();
+  }
+
+  onChangeTypeDropDown(e) {
+    this.editForm.patchValue({
+      type: e
+    });
   }
 
 }

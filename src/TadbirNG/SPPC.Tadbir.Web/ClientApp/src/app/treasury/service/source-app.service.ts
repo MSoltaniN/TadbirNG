@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BaseService } from '@sppc/shared/class';
 import { BrowserStorageService } from '@sppc/shared/services';
 
-export class SourceApp {
+export class SourceAppInfo {
   id:number = 0;
   Code:string;
   Name:string;

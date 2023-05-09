@@ -6,24 +6,29 @@ export interface SourceApp extends IEntity {
     /**
     * کد منبع یا مصرف
     */
-    Code:string;
+    code:string;
 
     /**
     * نام منبع یا مصرف
     */
-    Name:string;
+    name:string;
 
     /**
     * شرح منبع یا مصرف
     */
-    Description:string;
+    description:string;
 
     /**
     * نوع (منابع: صفر ، مصارف: یک) 
     */
-    Type:number;
+    type:number;
 
     fiscalPeriodId: number,
     branchId: number,
     branchScope: number,
+}
+
+export enum soucrceAppType {
+    Source = 0,
+    App = 1
 }

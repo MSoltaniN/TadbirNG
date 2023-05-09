@@ -10,14 +10,45 @@
   
     <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
       <div class="form-group">
+        <label for="name" class="control-label">{{ 'SourceApp.Code' | translate }}</label>
+  
+        <input sppcAutoFocus type="text" class="k-textbox" formControlName="code" />
+  
+        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
+          <span *ngIf="editForm.controls.code.errors?.required">{{ 'AllValidations.SourceApp.CodeIsRequired' | translate }}</span>
+          <span *ngIf="editForm.controls.code.errors?.maxlength">{{ 'AllValidations.SourceApp.CodeIsTooLong' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="form-group">
         <label for="name" class="control-label">{{ 'Company.Name' | translate }}</label>
   
-        <input sppcAutoFocus type="text" class="k-textbox" formControlName="name" />
+        <input type="text" class="k-textbox" formControlName="name" />
   
         <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
-          <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
-          <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
+          <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.SourceApp.NameIsRequired' | translate }}</span>
+          <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.SourceApp.NameIsTooLong' | translate }}</span>
         </div>
+      </div>
+
+      <div class="form-group">
+        <label for="name" class="control-label">{{ 'SourceApp.Type' | translate }}</label>
+        <kendo-dropdownlist [data]="sourceAppTypes" class="mx-1"
+          [textField]="'key'"
+          [valueField]="'value'"
+          [valuePrimitive]="true"
+          [value]="selectedType"
+          (valueChange)="onChangeTypeDropDown($event)"
+          [(ngModel)]="selectedType"
+          [ngModelOptions]="{standalone: true}"
+        >
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem?.key | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem?.key | translate }}
+          </ng-template>
+        </kendo-dropdownlist>
       </div>
 
       <div class="form-group">
