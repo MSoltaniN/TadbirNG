@@ -1929,7 +1929,7 @@ namespace SPPC.Tadbir.Security
     /// فلگ های تعریف شده برای دسترسی های امنیتی به یک فرم پرداخت را تعریف می کند
     /// </summary>
     [Flags]
-    public enum PayPermissions
+    public enum PaymentPermissions
     {
         /// <summary>
         /// عدم دسترسی به اطلاعات فرم های پرداخت 

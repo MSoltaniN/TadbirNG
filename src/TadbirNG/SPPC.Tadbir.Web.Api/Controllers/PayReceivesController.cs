@@ -44,14 +44,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات صفحه بندی شده فرم های پرداخت را خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات صفحه بندی شده فرم های پرداخت</returns>
-        // GET: api/pays
+        // GET: api/payments
         [HttpGet]
-        [Route(PayReceiveApi.PaysUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PayPermissions.View)]
-        public async Task<IActionResult> GetPaysAsync()
+        [Route(PayReceiveApi.PaymentsUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.View)]
+        public async Task<IActionResult> GetPaymentsAsync()
         {
-            var pays = await _repository.GetPayReceivesAsync(GridOptions);
-            return JsonListResult(pays);
+            var payments = await _repository.GetPayReceivesAsync(GridOptions);
+            return JsonListResult(payments);
         }
 
         /// <summary>
@@ -73,14 +73,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت مورد نظر</param>
         /// <returns>اطلاعات نمایشی فرم پرداخت مورد نظر</returns>
-        // GET: api/pays/{payReceiveId:min(1)}
+        // GET: api/payments/{payReceiveId:min(1)}
         [HttpGet]
-        [Route(PayReceiveApi.PayUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PayPermissions.View)]
-        public async Task<IActionResult> GetPayAsync(int payReceiveId)
+        [Route(PayReceiveApi.PaymentUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.View)]
+        public async Task<IActionResult> GetPaymentAsync(int payReceiveId)
         {
-            var pay = await _repository.GetPayReceiveAsync(payReceiveId);
-            return JsonReadResult(pay);
+            var payment = await _repository.GetPayReceiveAsync(payReceiveId);
+            return JsonReadResult(payment);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر</param>
         /// <returns>اطلاعات نمایشی فرم دریافت مورد نظر</returns>
-        // GET: api/pays/{payReceiveId:min(1)}
+        // GET: api/payments/{payReceiveId:min(1)}
         [HttpGet]
         [Route(PayReceiveApi.ReceiveUrl)]
         [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivePermissions.View)]
@@ -103,11 +103,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="payReceive">اطلاعات نمایشی فرم پرداخت جدید</param>
         /// <returns>اطلاعات نمایشی ذخیره شده برای فرم پرداخت</returns>
-        // POST: api/pays
+        // POST: api/payments
         [HttpPost]
-        [Route(PayReceiveApi.PaysUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PayPermissions.Create)]
-        public async Task<IActionResult> PostNewPayAsync([FromBody] PayReceiveViewModel payReceive)
+        [Route(PayReceiveApi.PaymentsUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Create)]
+        public async Task<IActionResult> PostNewPaymentAsync([FromBody] PayReceiveViewModel payReceive)
         {
             var result = BasicValidationResult(payReceive);
             if (result is BadRequestObjectResult)
@@ -146,11 +146,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت اصلاح شده</param>
         /// <param name="payReceive">اطلاعات نمایشی اصلاح شده برای فرم پرداخت</param>
         /// <returns>اطلاعات نمایشی ذخیره شده برای فرم پرداخت</returns>
-        // PUT: api/pays/{payReceiveId:min(1)}
+        // PUT: api/payments/{payReceiveId:min(1)}
         [HttpPut]
-        [Route(PayReceiveApi.PayUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PayPermissions.Edit)]
-        public async Task<IActionResult> PutModifiedPayAsync(int payReceiveId, [FromBody] PayReceiveViewModel payReceive)
+        [Route(PayReceiveApi.PaymentUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Edit)]
+        public async Task<IActionResult> PutModifiedPaymentAsync(int payReceiveId, [FromBody] PayReceiveViewModel payReceive)
         {
             var result = BasicValidationResult(payReceive, payReceiveId);
             if (result is BadRequestObjectResult)
@@ -188,11 +188,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات فرم پرداخت مشخص شده با شناسه دیتابیسی را پس از اعتبارسنجی از دیتابیس حذف می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت مورد نظر برای حذف</param>
-        // DELETE: api/pays/{payReceiveId:min(1)}
+        // DELETE: api/payments/{payReceiveId:min(1)}
         [HttpDelete]
-        [Route(PayReceiveApi.PayUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PayPermissions.Delete)]
-        public async Task<IActionResult> DeleteExistingPayAsync(int payReceiveId)
+        [Route(PayReceiveApi.PaymentUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Delete)]
+        public async Task<IActionResult> DeleteExistingPaymentAsync(int payReceiveId)
         {
             string message = await ValidateDeleteAsync(payReceiveId);
             if (!String.IsNullOrEmpty(message))
@@ -208,7 +208,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات فرم دریافت مشخص شده با شناسه دیتابیسی را پس از اعتبارسنجی از دیتابیس حذف می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر برای حذف</param>
-        // DELETE: api/pays/{payReceiveId:min(1)}
+        // DELETE: api/payments/{payReceiveId:min(1)}
         [HttpDelete]
         [Route(PayReceiveApi.ReceiveUrl)]
         [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivePermissions.Delete)]
@@ -230,11 +230,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
         /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // PUT: api/pays
+        // PUT: api/payments
         [HttpPut]
-        [Route(PayReceiveApi.PaysUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PayPermissions.Delete)]
-        public async Task<IActionResult> PutExistingPaysAsDeletedAsync(
+        [Route(PayReceiveApi.PaymentsUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Delete)]
+        public async Task<IActionResult> PutExistingPaymentsAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
             return await GroupDeleteResultAsync(actionDetail, _repository.DeletePayReceivesAsync);

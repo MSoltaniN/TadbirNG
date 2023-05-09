@@ -9,24 +9,24 @@ namespace SPPC.Tadbir.Api
     public sealed class PayReceiveApi
     {
         /// <summary>
-        /// API client URL for all pay items
+        /// API client URL for all payment items
         /// </summary>
-        public const string Pays = "pay";
+        public const string Payments = "payment";
 
         /// <summary>
-        /// API server route URL for all pay items
+        /// API server route URL for all payment items
         /// </summary>
-        public const string PaysUrl = "pays";
+        public const string PaymentsUrl = "payments";
 
         /// <summary>
-        /// API client URL for a pay item specified by unique identifier
+        /// API client URL for a payment item specified by unique identifier
         /// </summary>
-        public const string Pay = "pays/{0}";
+        public const string Payment = "payments/{0}";
 
         /// <summary>
-        /// API server route URL for a pay item specified by unique identifier
+        /// API server route URL for a payment item specified by unique identifier
         /// </summary>
-        public const string PayUrl = "pays/{payReceiveId:min(1)}";
+        public const string PaymentUrl = "pays/{payReceiveId:min(1)}";
 
         /// <summary>
         /// API client URL for all receive items
