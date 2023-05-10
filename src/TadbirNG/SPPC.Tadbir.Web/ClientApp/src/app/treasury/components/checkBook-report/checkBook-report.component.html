@@ -82,6 +82,25 @@
     </ng-template>
 
     <ng-template kendoGridToolbarTemplate>
+      <!-- sppc-float mb-2 -->
+      <div class="filter-box">
+        <label for="byArchive" class="control-label">{{ 'CheckBookReport.FilterByArchive' | translate }}</label>
+
+        <kendo-dropdownlist [data]="archiveFilters" class="mx-1"
+          [textField]="'key'"
+          [valueField]="'value'"
+          [valuePrimitive]="true"
+          [value]="selectedArchiveFilter"
+          (valueChange)="onChangeFilterByArchiveDropDown($event)"
+          [(ngModel)]="selectedArchiveFilter">
+            <ng-template kendoDropDownListValueTemplate let-dataItem>
+              {{ dataItem?.key | translate }}
+            </ng-template>
+            <ng-template kendoDropDownListItemTemplate let-dataItem>
+              {{ dataItem?.key | translate }}
+            </ng-template>
+        </kendo-dropdownlist>
+      </div>
       <button
         kendoGridAddCommand
         SppcPermissionCheck="Create"

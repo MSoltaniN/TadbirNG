@@ -1302,6 +1302,12 @@
     "DeleteCheckBookPages": "Delete check book pages",
     "DeletedMsg": "{0} deleted successfully"
   },
+  "CheckBookReport": {
+    "FilterByArchive": "Filter by Archive",
+    "All": "All",
+    "Archived": "Archived",
+    "Active": "Active"
+  },
   "SourceApp": {
     "New": "New SourceApp",
     "Edit": "Edit",
@@ -1309,7 +1315,8 @@
     "Type": "Type ",
     "BranchScope":"Branch Scope",
     "Source": "Source",
-    "Application": "Application"
+    "Application": "Application",
+    "Delete": "Delete SourceApp"
   },
   "AllValidations": {
     "Account": {

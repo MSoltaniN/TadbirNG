@@ -1333,6 +1333,12 @@
     "DeleteCheckBookPages": "حذف برگه های دسته چک",
     "DeletedMsg": "{0} با موفقیت حذف شدند."
   },
+  "CheckBookReport": {
+    "FilterByArchive": "فیلتر براساس بایگانی",
+    "All": "همه",
+    "Archived": "بایگانی شده",
+    "Active": "فعال"
+  },
   "SourceApp": {
     "New": "منبع/مصرف جدید",
     "Edit": "ویرایش",
@@ -1340,7 +1346,8 @@
     "Type": "نوع ",
     "BranchScope":"دسترسی شعبه",
     "Source": "منابع",
-    "Application": "مصارف"
+    "Application": "مصارف",
+    "Delete": "حذف منابع و مصارف"
   },
   "Paging": {
     "Record": "رکورد",
