@@ -23,31 +23,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
-        public PayReceiveRepository(IRepositoryContext context, ISystemRepository system)
+        /// <param name="userRepository">امکان خواندن اطلاعات کاربران برنامه را فراهم می کند</param>
+        public PayReceiveRepository(IRepositoryContext context, ISystemRepository system,
+            IUserRepository userRepository)
             : base(context, system.Logger)
         {
             _system = system;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات کلیه دریافت ها و پرداخت ها را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از دریافت ها و پرداخت ها تعریف شده</returns>
-        public async Task<PagedList<PayReceiveViewModel>> GetPayReceivesAsync(GridOptions gridOptions = null)
-        {
-            var options = gridOptions ?? new GridOptions();
-            var payReceives = new List<PayReceiveViewModel>();
-            if (options.Operation != (int)OperationId.Print)
-            {
-                //var query = Repository.GetAllQuery<PayReceive>(ViewId.PayReceive);
-                //payReceives = await query
-                //    .Select(item => Mapper.Map<PayReceiveViewModel>(item))
-                //    .ToListAsync();
-            }
-
-            await ReadAsync(options);
-            return new PagedList<PayReceiveViewModel>(payReceives, options);
+            _userRepository = userRepository;
         }
 
         /// <summary>
@@ -76,11 +58,17 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PayReceiveViewModel> SavePayReceiveAsync(PayReceiveViewModel payReceive)
         {
             Verify.ArgumentNotNull(payReceive, nameof(payReceive));
+            var currPersonName = await _userRepository.GetCurrentUserDisplayNameAsync();
             PayReceive payReceiveModel;
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
             if (payReceive.Id == 0)
             {
                 payReceiveModel = Mapper.Map<PayReceive>(payReceive);
+                payReceiveModel.IssuedByID = UserContext.Id;
+                payReceiveModel.ModifiedByID = UserContext.Id;
+                payReceiveModel.IssuedByName =
+                    payReceiveModel.ModifiedByName = currPersonName;
+                payReceiveModel.CreatedDate = DateTime.Now;
                 await InsertAsync(repository, payReceiveModel);
             }
             else
@@ -88,6 +76,8 @@ namespace SPPC.Tadbir.Persistence
                 payReceiveModel = await repository.GetByIDAsync(payReceive.Id);
                 if (payReceiveModel != null)
                 {
+                    payReceiveModel.ModifiedByID = UserContext.Id;
+                    payReceiveModel.ModifiedByName = currPersonName;
                     await UpdateAsync(repository, payReceiveModel, payReceive);
                 }
             }
@@ -144,7 +134,6 @@ namespace SPPC.Tadbir.Persistence
             payReceive.ModifiedByID = payReceiveViewModel.ModifiedByID;
             payReceive.ConfirmedByID = payReceiveViewModel.ConfirmedByID;
             payReceive.ApprovedByID = payReceiveViewModel.ApprovedByID;
-            payReceive.Type = payReceiveViewModel.Type;
             //payReceive.No = payReceiveViewModel.No;
             payReceive.Reference = payReceiveViewModel.Reference;
             payReceive.Date = payReceiveViewModel.Date;
@@ -172,7 +161,7 @@ namespace SPPC.Tadbir.Persistence
             return entity != null
                 ? $"{AppStrings.Type} : {type}, {AppStrings.No} : {entity.No}, " +
                 $"{AppStrings.Reference} : {entity.Reference}, {AppStrings.Date} : {entity.Date}, " +
-                $"{AppStrings.CurrencyRate} : {entity.CurrencyRate}, {AppStrings.Description} : {entity.Description}, " 
+                $"{AppStrings.CurrencyRate} : {entity.CurrencyRate}, {AppStrings.Description} : {entity.Description}, "
                 : String.Empty;
         }
 
@@ -182,5 +171,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly ISystemRepository _system;
+        private readonly IUserRepository _userRepository;
     }
 }

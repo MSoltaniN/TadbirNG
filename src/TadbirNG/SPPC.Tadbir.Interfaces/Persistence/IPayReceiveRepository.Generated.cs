@@ -12,13 +12,6 @@ namespace SPPC.Tadbir.Persistence
     public interface IPayReceiveRepository
     {
         /// <summary>
-        /// به روش آسنکرون، اطلاعات کلیه دریافت ها و پرداخت ها را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از دریافت ها و پرداخت ها تعریف شده</returns>
-        Task<PagedList<PayReceiveViewModel>> GetPayReceivesAsync(GridOptions gridOptions = null);
-
-        /// <summary>
         /// به روش آسنکرون، دریافت و پرداخت با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="payreceiveId">شناسه عددی یکی از دریافت ها و پرداخت ها موجود</param>

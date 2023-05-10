@@ -26,6 +26,7 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// </summary>
         public PayReceiveViewModel()
         {
+            Date = DateTime.Now;
             No = String.Empty;
             Reference = String.Empty;
             Description = String.Empty;
@@ -54,12 +55,12 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// <summary>
         /// شناسه کاربر تأییدکننده
         /// </summary>
-        public int ConfirmedByID { get; set; }
+        public int? ConfirmedByID { get; set; }
 
         /// <summary>
         /// شناسه کاربر تصویب‌کننده
         /// </summary>
-        public int ApprovedByID { get; set; }
+        public int? ApprovedByID { get; set; }
 
         /// <summary>
         /// نوع فرم؛ 0 برای دریافت و 1 برای پرداخت
@@ -110,14 +111,12 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// <summary>
         /// نام کامل کاربر صادرکننده
         /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string IssuedByName { get; set; }
 
         /// <summary>
         /// نام کامل کاربر تغییردهنده
         /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string ModifiedByName { get; set; }
 

@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for a payment item specified by unique identifier
         /// </summary>
-        public const string PaymentUrl = "pays/{payReceiveId:min(1)}";
+        public const string PaymentUrl = "payments/{payReceiveId:min(1)}";
 
         /// <summary>
         /// API client URL for all receive items

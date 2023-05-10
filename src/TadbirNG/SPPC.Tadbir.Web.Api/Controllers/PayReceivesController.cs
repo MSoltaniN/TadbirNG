@@ -37,35 +37,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         protected override string EntityNameKey
         {
-            get { return AppStrings.PayReceive; }
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات صفحه بندی شده فرم های پرداخت را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات صفحه بندی شده فرم های پرداخت</returns>
-        // GET: api/payments
-        [HttpGet]
-        [Route(PayReceiveApi.PaymentsUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.View)]
-        public async Task<IActionResult> GetPaymentsAsync()
-        {
-            var payments = await _repository.GetPayReceivesAsync(GridOptions);
-            return JsonListResult(payments);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات صفحه بندی شده فرم های دریافت را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات صفحه بندی شده فرم های دریافت</returns>
-        // GET: api/receives
-        [HttpGet]
-        [Route(PayReceiveApi.ReceivesUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivePermissions.View)]
-        public async Task<IActionResult> GetReceivesAsync()
-        {
-            var receives = await _repository.GetPayReceivesAsync(GridOptions);
-            return JsonListResult(receives);
+            get { return AppStrings.Payment; }
         }
 
         /// <summary>
@@ -114,7 +86,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 return result;
             }
-
+            
             var outputItem = await _repository.SavePayReceiveAsync(payReceive);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }

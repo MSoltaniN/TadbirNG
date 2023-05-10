@@ -2219,9 +2219,9 @@
           <ColumnView name="Type" visible="True" width="120" />
           <ValidationRule name="Type_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="No" type="String" isValidated="True" description="شماره فرم دریافت/پرداخت" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="PayReceiveNo" type="String" isValidated="True" description="شماره فرم دریافت/پرداخت" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtNo" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="No" type="nvarchar(16)" nullable="False" />
+          <PropertyStorage name="PayReceiveNo" type="nvarchar(16)" nullable="False" />
           <ColumnView name="No" visible="True" width="120" />
           <ValidationRule name="No_Validation" required="True" minimum="" maximum="16" format="" type="Length" />
         </Property>
@@ -2245,7 +2245,7 @@
         </Property>
         <Property name="CurrencyRate" type="Decimal" isValidated="True" description="نرخ ارز" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtCurrencyRate" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="CurrencyRate" type="float" nullable="True" />
+          <PropertyStorage name="CurrencyRate" type="money" nullable="True" />
           <ColumnView name="CurrencyRate" visible="True" width="120" />
           <ValidationRule name="CurrencyRate_Validation" required="False" minimum="" maximum="" format="" type="Value" />
         </Property>

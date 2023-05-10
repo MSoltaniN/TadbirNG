@@ -129,7 +129,7 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// نمای اطلاعاتی پرداخت 
         /// </summary>
-        public const int Pay = 74;
+        public const int Payment = 74;
 
         /// <summary>
         /// نمای اطلاعاتی دریافت 

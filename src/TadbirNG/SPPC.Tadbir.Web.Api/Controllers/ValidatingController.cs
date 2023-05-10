@@ -239,11 +239,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return null;
         }
 
-        private IActionResult GetBasicValidationResult(object item, int itemId)
+        private IActionResult GetBasicValidationResult(object item, int itemId, string entityKey = null)
         {
+            string entityNameKey = entityKey ?? EntityNameKey;
             if (item == null)
             {
-                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, EntityNameKey));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, entityNameKey));
             }
 
             if (!ModelState.IsValid)
@@ -254,7 +255,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int id = Int32.Parse(Reflector.GetProperty(item, "Id").ToString());
             if (itemId != id)
             {
-                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, EntityNameKey));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, entityNameKey));
             }
 
             return Ok();
