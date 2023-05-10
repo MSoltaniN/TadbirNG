@@ -119,8 +119,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<CheckBook, CheckBookReportViewModel>()
                 .ForMember(dest => dest.IsArchivedName, opts => opts.MapFrom(src =>
                     src.IsArchived.HasValue && src.IsArchived.Value
-                        ? AppStrings.BooleanYes
-                        : AppStrings.BooleanNo));
+                        ? AppStrings.Archived
+                        : AppStrings.Active));
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)

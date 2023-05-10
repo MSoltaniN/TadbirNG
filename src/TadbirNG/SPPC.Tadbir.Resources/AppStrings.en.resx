@@ -3885,4 +3885,10 @@
   <data name="SayyadNo" xml:space="preserve">
     <value>Sayyad No</value>
   </data>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Archived" xml:space="preserve">
+    <value>Archived</value>
+  </data>
 </root>

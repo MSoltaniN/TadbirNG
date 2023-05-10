@@ -3876,4 +3876,10 @@
   <data name="SayyadNo" xml:space="preserve">
     <value>شماره صیاد</value>
   </data>
+  <data name="Active" xml:space="preserve">
+    <value>فعال</value>
+  </data>
+  <data name="Archived" xml:space="preserve">
+    <value>بایگانی شده</value>
+  </data>
 </root>
