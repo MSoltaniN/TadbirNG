@@ -1,6 +1,5 @@
 ﻿using System;
 using SPPC.Framework.Common;
-using SPPC.Tools.Model;
 
 namespace SPPC.Tools.MetaDesigner.Transforms
 {
@@ -21,6 +20,8 @@ namespace SPPC.Tools.MetaDesigner.Transforms
                     storageType = "uniqueidentifier";
                     break;
                 case BuiltinType.Decimal:
+                    storageType = "money";
+                    break;
                 case BuiltinType.Double:
                 case BuiltinType.Single:
                     storageType = "float";

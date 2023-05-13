@@ -56,13 +56,13 @@ namespace SPPC.Tools.MetaDesigner.Transforms
         public Property GenerateProperty(string name, BuiltinType type, int length = 0)
         {
             var property = new Property()
-                {
-                    Name = name,
-                    Type = type,
-                    Column = GetDefaultColumn(name),
-                    Storage = GetDefaultStorage(name, type, length),
-                    View = GetDefaultView(name, type)
-                };
+            {
+                Name = name,
+                Type = type,
+                Column = GetDefaultColumn(name),
+                Storage = GetDefaultStorage(name, type, length),
+                View = GetDefaultView(name, type)
+            };
             property.ValidationRule = ValidationRuleFactory.CreateDefault(property.Type);
             property.ValidationRule.Name = String.Format("{0}_Validation", property.Name);
             return property;
@@ -85,40 +85,6 @@ namespace SPPC.Tools.MetaDesigner.Transforms
             return item;
         }
 
-        private ColumnView GetDefaultColumn(string name)
-        {
-            return new ColumnView()
-            {
-                Name = name,
-                Visible = true,
-                Width = 120
-            };
-        }
-
-        private PropertyStorage GetDefaultStorage(string name, BuiltinType type, int length)
-        {
-            var mapper = new SqlStorageMapper();
-            return new PropertyStorage()
-            {
-                Name = name,
-                Type = mapper.MapPropertyType(type, length),
-                Nullable = false
-            };
-        }
-
-        private PropertyView GetDefaultView(string name, BuiltinType type)
-        {
-            var mapper = new BasicPropertyViewMapper();
-            var viewType = mapper.MapPropertyType(type);
-            return new PropertyView()
-            {
-                Name = mapper.GetDefaultName(name, viewType),
-                Type = viewType,
-                BindingMember = mapper.GetDefaultBindingMember(viewType),
-                Format = (type == BuiltinType.DateTime) ? EntityConstants.DateFormat : String.Empty
-            };
-        }
-
         private Property GetDefaultIdProperty(string entityName)
         {
             var idProperty = GenerateProperty("ID", BuiltinType.Int32);
@@ -133,6 +99,40 @@ namespace SPPC.Tools.MetaDesigner.Transforms
             };
 
             return idProperty;
+        }
+
+        private static ColumnView GetDefaultColumn(string name)
+        {
+            return new ColumnView()
+            {
+                Name = name,
+                Visible = true,
+                Width = 120
+            };
+        }
+
+        private static PropertyStorage GetDefaultStorage(string name, BuiltinType type, int length)
+        {
+            var mapper = new SqlStorageMapper();
+            return new PropertyStorage()
+            {
+                Name = name,
+                Type = mapper.MapPropertyType(type, length),
+                Nullable = false
+            };
+        }
+
+        private static PropertyView GetDefaultView(string name, BuiltinType type)
+        {
+            var mapper = new BasicPropertyViewMapper();
+            var viewType = mapper.MapPropertyType(type);
+            return new PropertyView()
+            {
+                Name = mapper.GetDefaultName(name, viewType),
+                Type = viewType,
+                BindingMember = mapper.GetDefaultBindingMember(viewType),
+                Format = (type == BuiltinType.DateTime) ? EntityConstants.DateFormat : String.Empty
+            };
         }
     }
 }

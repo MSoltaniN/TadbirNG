@@ -74,8 +74,8 @@ ORDER BY RowNum";
         internal const string ByDateByRowDetailsByBranch = @"
 SELECT *
 FROM ( SELECT ROW_NUMBER() OVER ( ORDER BY {0} ) AS RowNum, v.Date, v.No, acc.FullCode, acc.Name,
-facc.FullCode AS [DetailFullCode], facc.Name AS [DetailName], cc.FullCode AS [CostFullCode], cc.Name AS [CostName],
-prj.FullCode AS [ProjectFullCode], prj.Name AS [ProjectName], vl.Description, vl.Debit, vl.Credit, vl.Mark, br.Name AS [BranchName],
+facc.FullCode AS DetailAccountFullCode, facc.Name AS DetailAccountName, cc.FullCode AS CostCenterFullCode, cc.Name AS CostCenterName,
+prj.FullCode AS ProjectFullCode, prj.Name AS ProjectName, vl.Description, vl.Debit, vl.Credit, vl.Mark, br.Name AS [BranchName],
 vl.VoucherLineID AS [Id]
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
@@ -127,8 +127,8 @@ ORDER BY RowNum";
         internal const string ByNoByRowDetail = @"
 SELECT *
 FROM ( SELECT ROW_NUMBER() OVER ( ORDER BY {0} ) AS RowNum, v.Date, v.No, acc.FullCode, acc.Name,
-facc.FullCode AS [DetailFullCode], facc.Name AS [DetailName], cc.FullCode AS [CostFullCode], cc.Name AS [CostName],
-prj.FullCode AS [ProjectFullCode], prj.Name AS [ProjectName], vl.Description, vl.Debit, vl.Credit, vl.Mark,
+facc.FullCode AS DetailAccountFullCode, facc.Name AS DetailAccountName, cc.FullCode AS CostCenterFullCode, cc.Name AS CostCenterName,
+prj.FullCode AS ProjectFullCode, prj.Name AS ProjectName, vl.Description, vl.Debit, vl.Credit, vl.Mark,
 vl.VoucherLineID AS [Id]
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
@@ -144,8 +144,8 @@ ORDER BY RowNum";
         internal const string ByNoByRowDetailByBranch = @"
 SELECT *
 FROM ( SELECT ROW_NUMBER() OVER ( ORDER BY {0} ) AS RowNum, v.Date, v.No, acc.FullCode, acc.Name,
-facc.FullCode AS [DetailFullCode], facc.Name AS [DetailName], cc.FullCode AS [CostFullCode], cc.Name AS [CostName],
-prj.FullCode AS [ProjectFullCode], prj.Name AS [ProjectName], vl.Description, vl.Debit, vl.Credit, vl.Mark, br.Name AS [BranchName],
+facc.FullCode AS DetailAccountFullCode, facc.Name AS DetailAccountName, cc.FullCode AS CostCenterFullCode, cc.Name AS CostCenterName,
+prj.FullCode AS ProjectFullCode, prj.Name AS ProjectName, vl.Description, vl.Debit, vl.Credit, vl.Mark, br.Name AS [BranchName],
 vl.VoucherLineID AS [Id]
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID

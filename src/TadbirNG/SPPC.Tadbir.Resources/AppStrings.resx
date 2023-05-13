@@ -3882,4 +3882,7 @@
   <data name="Archived" xml:space="preserve">
     <value>بایگانی شده</value>
   </data>
+  <data name="CantDeleteMiddleFiscalPeriods" xml:space="preserve">
+    <value>به دلیل وابستگی احتمالی اطلاعات در دوره های مالی، فقط اطلاعات آخرین دوره مالی قابل حذف است.</value>
+  </data>
 </root>
