@@ -147,8 +147,11 @@ import { WidgetAccountsComponent } from "./components/dashboard/manage-widgets/w
 import { ChartService } from "./services/chart.service";
 import { ColorPickerModule } from "ngx-color-picker";
 import { NgxEchartsModule } from "ngx-echarts";
-import * as echarts from 'echarts';
-import { WidgetRolesFormComponent } from './components/dashboard/manage-widgets/widget-roles-form/widget-roles-form.component';
+import * as echarts from "echarts";
+import { WidgetRolesFormComponent } from "./components/dashboard/manage-widgets/widget-roles-form/widget-roles-form.component";
+import { UserValueFormComponent } from "./controls/userValueForm/user-value-form.component";
+import { UserValueService } from "./services/userValue.service";
+import { UserValueComponent } from "./controls/userValueForm/user-value.component";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -190,7 +193,7 @@ export function loadEcharts(): any {
     }),
     ColorPickerModule,
     NgxEchartsModule.forRoot({
-      echarts:  echarts,
+      echarts: echarts,
     }),
   ],
 
@@ -286,6 +289,8 @@ export function loadEcharts(): any {
     WidgetAccountsComponent,
 
     WidgetRolesFormComponent,
+    UserValueFormComponent,
+    UserValueComponent
   ],
 
   entryComponents: [
@@ -302,7 +307,7 @@ export function loadEcharts(): any {
     TabWidgetComponent,
     SppcFullAccountDetailComponent,
     ManageWidgetsFormComponent,
-    WidgetRolesFormComponent
+    WidgetRolesFormComponent,
   ],
 
   exports: [
@@ -411,6 +416,7 @@ export class SharedModule {
         ShareDataService,
         MessageBoxService,
         WidgetService,
+        UserValueService
       ],
     };
   }

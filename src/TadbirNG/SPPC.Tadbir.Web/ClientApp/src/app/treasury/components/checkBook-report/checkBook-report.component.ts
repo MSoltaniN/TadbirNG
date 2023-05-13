@@ -10,6 +10,7 @@ import { ReloadOption } from '@sppc/shared/class/reload-option';
 import { ReportViewerComponent, ViewIdentifierComponent } from '@sppc/shared/components';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
+import { UserValueComponent } from '@sppc/shared/controls/userValueForm/user-value.component';
 import { ReloadStatusType } from '@sppc/shared/enum';
 import { Entities, Layout, MessageType } from '@sppc/shared/enum/metadata';
 import { OperationId } from '@sppc/shared/enum/operationId';
@@ -32,12 +33,7 @@ export function getLayoutModule(layout: Layout) {
 @Component({
   selector: 'check-report',
   templateUrl: './checkBook-report.component.html',
-  styles: [`
-    .filter-box {
-      width: 100%;
-      margin: 3px 12px 10px;
-    }
-  `],
+  styleUrls: ['./checkBook-report.component.css'],
   providers: [
     {
       provide: RTL,
@@ -94,7 +90,10 @@ export class CheckBookReportComponent
     {key: ArchiveTypeKey.Active, value: ArchiveTypeKey.Active},
   ]
   selectedArchiveFilter = '';
-  
+  bankNameFilter = false;
+  userValueFilter: Filter[];
+  searchValue: string;
+
   get isArchived() {
     let checks = this.rowData?.data.filter(
       (item) => this.selectedRows.includes(item.id)
@@ -304,7 +303,75 @@ export class CheckBookReportComponent
       // this.quickFilter = [];
       this.reloadGrid();
     }
-    console.log(e,this.quickFilter);
   }
-  
+
+  openFilterDialog() {
+    this.dialogRef = this.dialogService.open({
+      title: this.getText("Buttons.New"),
+      content: UserValueComponent
+    });
+    this.dialogModel = this.dialogRef.content.instance;
+    this.dialogModel.categoryId = '1';
+    this.dialogModel.dialogMode = true;
+    this.editDataItem = undefined;
+
+    if (this.reportFilter) {
+      this.dialogModel.filter = JSON.parse(JSON.stringify(this.reportFilter));
+    }
+
+    if (this.reportQuickFilter) {
+      this.dialogModel.quickFilter = JSON.parse(
+        JSON.stringify(this.reportQuickFilter)
+      );
+    }
+
+    this.dialogRef.content.instance.result.subscribe((result) => {
+      if (result) {
+        this.selectedRows = [];
+        this.dialogModel.dialogMode = false;
+        this.onUserValueFilter(result)
+      }
+    });
+
+    this.dialogRef.content.instance.cancel.subscribe((result) => {
+      this.dialogModel.dialogMode = false;
+      this.dialogRef.close();
+    });
+  }
+
+  onUserValueFilter(data) {
+    console.log(data);
+    if (data.dataItem) {
+      this.userValueFilter = [];
+      this.userValueFilter.push(
+        new Filter("bankName",
+            data.dataItem.value,
+            "== {0}",
+            "System.String"
+          )
+      );
+      this.defaultFilter = this.userValueFilter;
+      this.searchValue = data.dataItem.value;
+      this.reloadGrid();
+      this.dialogRef.close();
+    }
+  }
+
+  // Events
+  onBankNameFilterClick(e) {
+    setTimeout(() => {
+      if (this.bankNameFilter) {
+        if (this.userValueFilter?.length) {
+          this.defaultFilter = this.userValueFilter;
+          this.reloadGrid();
+        }
+      } else {
+        if (this.defaultFilter?.length) {
+          this.defaultFilter = [];
+          this.reloadGrid();
+        }
+      }
+    }, 0);
+  }
+
 }

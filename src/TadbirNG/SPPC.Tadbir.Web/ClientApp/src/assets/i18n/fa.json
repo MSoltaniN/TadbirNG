@@ -1334,10 +1334,13 @@
     "DeletedMsg": "{0} با موفقیت حذف شدند."
   },
   "CheckBookReport": {
+    "RowNo": "ردیف",
     "FilterByArchive": "فیلتر براساس بایگانی",
     "All": "همه",
     "Archived": "بایگانی شده",
-    "Active": "فعال"
+    "Active": "فعال",
+    "SelectFormList": "انتخاب از لیست",
+    "InsertNew": "جدید"
   },
   "SourceApp": {
     "New": "منبع/مصرف جدید",

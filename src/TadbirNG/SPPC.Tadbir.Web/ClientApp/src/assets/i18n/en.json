@@ -1303,10 +1303,13 @@
     "DeletedMsg": "{0} deleted successfully"
   },
   "CheckBookReport": {
+    "RowNo": "Row No",
     "FilterByArchive": "Filter by Archive",
     "All": "All",
     "Archived": "Archived",
-    "Active": "Active"
+    "Active": "Active",
+    "SelectFormList": "Select form list",
+    "InsertNew": "Insert New"
   },
   "SourceApp": {
     "New": "New SourceApp",

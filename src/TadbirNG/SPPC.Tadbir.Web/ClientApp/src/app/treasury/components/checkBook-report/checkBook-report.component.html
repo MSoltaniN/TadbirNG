@@ -84,22 +84,46 @@
     <ng-template kendoGridToolbarTemplate>
       <!-- sppc-float mb-2 -->
       <div class="filter-box">
-        <label for="byArchive" class="control-label">{{ 'CheckBookReport.FilterByArchive' | translate }}</label>
-
-        <kendo-dropdownlist [data]="archiveFilters" class="mx-1"
-          [textField]="'key'"
-          [valueField]="'value'"
-          [valuePrimitive]="true"
-          [value]="selectedArchiveFilter"
-          (valueChange)="onChangeFilterByArchiveDropDown($event)"
-          [(ngModel)]="selectedArchiveFilter">
-            <ng-template kendoDropDownListValueTemplate let-dataItem>
-              {{ dataItem?.key | translate }}
-            </ng-template>
-            <ng-template kendoDropDownListItemTemplate let-dataItem>
-              {{ dataItem?.key | translate }}
-            </ng-template>
-        </kendo-dropdownlist>
+        <div class="form-group userValueFilters">
+          <input type="checkbox"
+           [(ngModel)]="bankNameFilter"
+           (click)="onBankNameFilterClick($event)"
+           id="bankNameFilter"
+           class="k-checkbox"
+           [checked]="onBankNameFilterClick">
+          <label for="bankNameFilter" class="control-label">{{ "CheckBook.BankName" | translate }}</label>
+          <fieldset [disabled]="!bankNameFilter" [ngClass]="{'disabled': !bankNameFilter}">
+            <div class="search-box">
+              <input
+                class="k-textbox sppc-width-100"
+                [(ngModel)]="searchValue"
+                (keydown.enter)="openFilterDialog()"
+                readonly
+              />
+              <span class="k-icon k-i-search" (click)="openFilterDialog()"></span>
+            </div>
+          </fieldset>
+        </div>
+        <div class="form-group">
+          <label for="byArchive" class="control-label" style="margin:0 5px;">
+            {{ 'CheckBookReport.FilterByArchive' | translate }}
+          </label>
+  
+          <kendo-dropdownlist [data]="archiveFilters" class="mx-1"
+            [textField]="'key'"
+            [valueField]="'value'"
+            [valuePrimitive]="true"
+            [value]="selectedArchiveFilter"
+            (valueChange)="onChangeFilterByArchiveDropDown($event)"
+            [(ngModel)]="selectedArchiveFilter">
+              <ng-template kendoDropDownListValueTemplate let-dataItem>
+                {{ dataItem?.key | translate }}
+              </ng-template>
+              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                {{ dataItem?.key | translate }}
+              </ng-template>
+          </kendo-dropdownlist>
+        </div>
       </div>
       <button
         kendoGridAddCommand
