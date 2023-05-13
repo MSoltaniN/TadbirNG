@@ -1096,7 +1096,7 @@ SET IDENTITY_INSERT [Metadata].[EntityType] ON
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (24, N'Payment', NULL)
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
-    VALUES (25, N'Receive', NULL)
+    VALUES (25, N'Receival', NULL)
 SET IDENTITY_INSERT [Metadata].[EntityType] OFF
 
 SET IDENTITY_INSERT [Config].[LogSetting] ON
@@ -1171,5 +1171,6 @@ CREATE TABLE [CashFlow].[PayReceive] (
     , CONSTRAINT [PK_CashFlow_PayReceive] PRIMARY KEY CLUSTERED ([PayReceiveID] ASC)
     , CONSTRAINT [FK_CashFlow_PayReceive_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
     , CONSTRAINT [FK_CashFlow_PayReceive_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+	, CONSTRAINT [FK_Finance_VoucherLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency]([CurrencyID])
 )
 GO

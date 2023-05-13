@@ -78,12 +78,25 @@ namespace SPPC.Tadbir.Persistence
         protected virtual async Task InsertAsync(IRepository<TEntity> repository,
             TEntity entity, OperationId operation = OperationId.Create)
         {
-            OnEntityAction(operation);
+            await InsertAsync(repository, entity, operation, null);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سطر اطلاعاتی جدید را در دیتابیس جاری برنامه و سطر لاگ عملیاتی را
+        /// در دیتابیس سیستمی ذخیره می کند
+        /// </summary>
+        /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
+        /// <param name="entity">سطر اطلاعاتی که باید ذخیره شود</param>
+        /// <param name="operation">کد عملیات انجام شده که به صورت پیش فرض ایجاد موجودیت است</param>
+        /// <param name="entityTypeId">شناسه نوع موجودیت که پیش فرض با پراپرتی انتیتی تایپ آیدی پر میشود</param> 
+        protected virtual async Task InsertAsync(IRepository<TEntity> repository,
+            TEntity entity, OperationId operation, int? entityTypeId = null)
+        {
+            OnEntityAction(operation, entityTypeId);
             Log.Description = Context.Localize(GetState(entity));
             repository.Insert(entity);
             await FinalizeActionAsync(entity);
         }
-
         /// <summary>
         /// به روش آسنکرون، سطر اطلاعاتی اصلاح شده را در دیتابیس جاری برنامه و سطر لاگ عملیاتی را
         /// در دیتابیس سیستمی ذخیره می کند
@@ -95,8 +108,23 @@ namespace SPPC.Tadbir.Persistence
         protected virtual async Task UpdateAsync(IRepository<TEntity> repository,
             TEntity entity, TEntityView entityView, OperationId operation = OperationId.Edit)
         {
+            await UpdateAsync(repository, entity, entityView, operation, null);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سطر اطلاعاتی اصلاح شده را در دیتابیس جاری برنامه و سطر لاگ عملیاتی را
+        /// در دیتابیس سیستمی ذخیره می کند
+        /// </summary>
+        /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
+        /// <param name="entity">سطر اطلاعاتی که تغییرات آن باید ذخیره شود</param>
+        /// <param name="entityView">مدل نمایشی شامل آخرین تغییرات سطر اطلاعاتی</param>
+        /// <param name="operation">کد عملیات انجام شده که به صورت پیش فرض اصلاح موجودیت است</param>
+        /// <param name="entityTypeId">شناسه نوع موجودیت که پیش فرض با پراپرتی انتیتی تایپ آیدی پر میشود</param> 
+        protected virtual async Task UpdateAsync(IRepository<TEntity> repository,
+            TEntity entity, TEntityView entityView, OperationId operation, int? entityTypeId = null)
+        {
             string oldState = GetState(entity);
-            OnEntityAction(operation);
+            OnEntityAction(operation, entityTypeId);
             UpdateExisting(entityView, entity);
             Log.Description = Context.Localize(
                 String.Format("{0} : ({1}) , {2} : ({3})",
@@ -116,7 +144,21 @@ namespace SPPC.Tadbir.Persistence
         protected virtual async Task DeleteAsync(IRepository<TEntity> repository,
             TEntity entity, OperationId operation = OperationId.Delete)
         {
-            OnEntityAction(operation);
+            await DeleteAsync(repository, entity, operation, null);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سطر اطلاعاتی قابل حذف را از دیتابیس جاری برنامه حذف و سطر لاگ عملیاتی را
+        /// در دیتابیس سیستمی ذخیره می کند
+        /// </summary>
+        /// <param name="repository">اتصال دیتابیسی به دیتابیس شرکت جاری در برنامه</param>
+        /// <param name="entity">سطر اطلاعاتی که باید حذف شود</param>
+        /// <param name="operation">کد عملیات انجام شده که به صورت پیش فرض حذف موجودیت است</param>
+        /// <param name="entityTypeId">شناسه نوع موجودیت که پیش فرض با پراپرتی انتیتی تایپ آیدی پر میشود</param> 
+        protected virtual async Task DeleteAsync(IRepository<TEntity> repository,
+            TEntity entity, OperationId operation, int? entityTypeId = null)
+        {
+            OnEntityAction(operation, entityTypeId);
             Log.Description = Context.Localize(GetState(entity));
             DisconnectEntity(entity);
             repository.Delete(entity);
@@ -140,8 +182,9 @@ namespace SPPC.Tadbir.Persistence
             get { return null; }
         }
 
-        internal virtual void OnEntityAction(OperationId operation)
+        internal virtual void OnEntityAction(OperationId operation, int? entityTypeId = null)
         {
+
             Log = new OperationLogViewModel()
             {
                 BranchId = UserContext.BranchId,
@@ -151,7 +194,7 @@ namespace SPPC.Tadbir.Persistence
                 Date = DateTime.Now.Date,
                 Time = DateTime.Now.TimeOfDay,
                 OperationId = (int)operation,
-                EntityTypeId = EntityType
+                EntityTypeId = entityTypeId ?? EntityType
             };
         }
 

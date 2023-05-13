@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
@@ -59,6 +60,10 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(payReceive, nameof(payReceive));
             var currPersonName = await _userRepository.GetCurrentUserDisplayNameAsync();
+            int entityTypeId = (int)(payReceive.Type == (int)PayReceiveType.Receival
+                ? EntityTypeId.Receival
+                : EntityTypeId.Payment);
+
             PayReceive payReceiveModel;
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
             if (payReceive.Id == 0)
@@ -69,7 +74,7 @@ namespace SPPC.Tadbir.Persistence
                 payReceiveModel.IssuedByName =
                     payReceiveModel.ModifiedByName = currPersonName;
                 payReceiveModel.CreatedDate = DateTime.Now;
-                await InsertAsync(repository, payReceiveModel);
+                await InsertAsync(repository, payReceiveModel, OperationId.Create, entityTypeId);
             }
             else
             {
@@ -78,7 +83,7 @@ namespace SPPC.Tadbir.Persistence
                 {
                     payReceiveModel.ModifiedByID = UserContext.Id;
                     payReceiveModel.ModifiedByName = currPersonName;
-                    await UpdateAsync(repository, payReceiveModel, payReceive);
+                    await UpdateAsync(repository, payReceiveModel, payReceive, OperationId.Edit, entityTypeId);
                 }
             }
 
@@ -89,33 +94,18 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، دریافت و پرداخت مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه عددی دریافت و پرداخت مورد نظر برای حذف</param>
-        public async Task DeletePayReceiveAsync(int payReceiveId)
+        /// <param name="type">نوع فرم دریافت/پرداخت</param>
+        public async Task DeletePayReceiveAsync(int payReceiveId, int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
             var payReceive = await repository.GetByIDAsync(payReceiveId);
             if (payReceive != null)
             {
-                await DeleteAsync(repository, payReceive);
+                int entityTypeId = (int)(type == (int)PayReceiveType.Receival
+                    ? EntityTypeId.Receival
+                    : EntityTypeId.Payment);
+                await DeleteAsync(repository, payReceive, OperationId.Delete, entityTypeId);
             }
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، دریافت ها و پرداخت ها مشخص شده با شناسه عددی را حذف می کند
-        /// </summary>
-        /// <param name="payReceiveIds">مجموعه ای از شناسه های عددی دریافت ها و پرداخت ها مورد نظر برای حذف</param>
-        public async Task DeletePayReceivesAsync(IList<int> payReceiveIds)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
-            foreach (int payReceiveId in payReceiveIds)
-            {
-                var payReceive = await repository.GetByIDAsync(payReceiveId);
-                if (payReceive != null)
-                {
-                    await DeleteNoLogAsync(repository, payReceive);
-                }
-            }
-
-            await OnEntityGroupDeleted(payReceiveIds);
         }
 
         internal override int? EntityType
@@ -134,7 +124,7 @@ namespace SPPC.Tadbir.Persistence
             payReceive.ModifiedByID = payReceiveViewModel.ModifiedByID;
             payReceive.ConfirmedByID = payReceiveViewModel.ConfirmedByID;
             payReceive.ApprovedByID = payReceiveViewModel.ApprovedByID;
-            //payReceive.No = payReceiveViewModel.No;
+            payReceive.PayReceiveNo = payReceiveViewModel.PayReceiveNo;
             payReceive.Reference = payReceiveViewModel.Reference;
             payReceive.Date = payReceiveViewModel.Date;
             payReceive.CurrencyID = payReceiveViewModel.CurrencyID;
@@ -154,12 +144,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
         protected override string GetState(PayReceive entity)
         {
-            var type = entity?.Type == 0
-                ? "دریافت"
-                : "پرداخت";
-
             return entity != null
-                ? $"{AppStrings.Type} : {type}, {AppStrings.No} : {entity.No}, " +
+                ? $"{AppStrings.PayReceiveNo} : {entity.PayReceiveNo}, " +
                 $"{AppStrings.Reference} : {entity.Reference}, {AppStrings.Date} : {entity.Date}, " +
                 $"{AppStrings.CurrencyRate} : {entity.CurrencyRate}, {AppStrings.Description} : {entity.Description}, "
                 : String.Empty;

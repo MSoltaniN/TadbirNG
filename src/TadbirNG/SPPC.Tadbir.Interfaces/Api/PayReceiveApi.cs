@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace SPPC.Tadbir.Api
 {
     /// <summary>
-    /// Defines API server routes and API client operation URLs for working with pays and receives.
+    /// Defines API server routes and API client operation URLs for working with pays and receivals.
     /// </summary>
     public sealed class PayReceiveApi
     {
@@ -26,27 +26,27 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for a payment item specified by unique identifier
         /// </summary>
-        public const string PaymentUrl = "payments/{payReceiveId:min(1)}";
+        public const string PaymentUrl = "payments/{payReceivalId:min(1)}";
 
         /// <summary>
-        /// API client URL for all receive items
+        /// API client URL for all receival items
         /// </summary>
-        public const string Receives = "Receives";
+        public const string Receivals = "Receivals";
 
         /// <summary>
-        /// API server route URL for all receive items
+        /// API server route URL for all receival items
         /// </summary>
-        public const string ReceivesUrl = "receives";
+        public const string ReceivalsUrl = "receivals";
 
         /// <summary>
-        /// API client URL for a receive item specified by unique identifier
+        /// API client URL for a receival item specified by unique identifier
         /// </summary>
-        public const string Receive = "receives/{0}";
+        public const string Receival = "receivals/{0}";
 
         /// <summary>
-        /// API server route URL for a receive item specified by unique identifier
+        /// API server route URL for a receival item specified by unique identifier
         /// </summary>
-        public const string ReceiveUrl = "Receives/{payReceiveId:min(1)}";
+        public const string ReceivalUrl = "Receivals/{payReceivalId:min(1)}";
 
     }
 }

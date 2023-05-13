@@ -32,7 +32,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.ApprovedByID);
             builder.Property(e => e.Type)
                 .IsRequired();
-            builder.Property(e => e.No)
+            builder.Property(e => e.PayReceiveNo)
                 .IsRequired()
                 .HasMaxLength(16);
             builder.Property(e => e.Reference)

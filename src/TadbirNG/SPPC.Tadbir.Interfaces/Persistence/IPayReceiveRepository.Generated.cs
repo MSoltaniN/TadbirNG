@@ -29,12 +29,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، دریافت و پرداخت مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="payreceiveId">شناسه عددی دریافت و پرداخت مورد نظر برای حذف</param>
-        Task DeletePayReceiveAsync(int payreceiveId);
-
-        /// <summary>
-        /// به روش آسنکرون، دریافت ها و پرداخت ها مشخص شده با شناسه عددی را حذف می کند
-        /// </summary>
-        /// <param name="payReceiveIds">مجموعه ای از شناسه های عددی دریافت ها و پرداخت ها مورد نظر برای حذف</param>
-        Task DeletePayReceivesAsync(IList<int> payReceiveIds);
+        /// <param name="type">نوع فرم دریافت/پرداخت</param>
+        Task DeletePayReceiveAsync(int payreceiveId, int type);
     }
 }

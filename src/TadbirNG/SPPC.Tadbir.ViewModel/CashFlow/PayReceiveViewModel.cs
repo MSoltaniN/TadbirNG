@@ -19,14 +19,9 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         public int BranchId { get; set; }
 
         /// <summary>
-        /// نام شعبه ای که فرم دریافت یا پرداخت در آن تعریف شده است
+        /// شناسه ارز
         /// </summary>
-        public string BranchName { get; set; }
-
-        /// <summary>
-        /// نام دوره مالی که فرم دریافت یا پرداخت در آن تعریف شده است
-        /// </summary>
-        public string FiscalPeriodName { get; set; }
+        public int CurrencyID { get; set; }
 
     }
 }

@@ -27,7 +27,7 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         public PayReceiveViewModel()
         {
             Date = DateTime.Now;
-            No = String.Empty;
+            PayReceiveNo = String.Empty;
             Reference = String.Empty;
             Description = String.Empty;
             IssuedByName = String.Empty;
@@ -73,7 +73,7 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(16, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string No { get; set; }
+        public string PayReceiveNo { get; set; }
 
         /// <summary>
         /// شماره رفرنس فرم
@@ -86,11 +86,6 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public DateTime Date { get; set; }
-
-        /// <summary>
-        /// شناسه ارز
-        /// </summary>
-        public int CurrencyID { get; set; }
 
         /// <summary>
         /// نرخ ارز

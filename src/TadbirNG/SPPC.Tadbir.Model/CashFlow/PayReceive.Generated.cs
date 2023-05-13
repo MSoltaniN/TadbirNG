@@ -10,6 +10,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
+using SPPC.Tadbir.Model.Finance;
 using System;
 using System.Collections.Generic;
 
@@ -25,7 +26,7 @@ namespace SPPC.Tadbir.Model.CashFlow
         /// </summary>
         public PayReceive()
         {
-            //No = String.Empty;
+            PayReceiveNo = String.Empty;
             Reference = String.Empty;
             Description = String.Empty;
             IssuedByName = String.Empty;
@@ -36,6 +37,11 @@ namespace SPPC.Tadbir.Model.CashFlow
             CreatedDate = DateTime.Now;
             ModifiedDate = DateTime.Now;
         }
+
+        /// <summary>
+        /// شماره فرم دریافت/پرداخت
+        /// </summary>
+        public virtual string PayReceiveNo { get; set; }
 
         /// <summary>
         /// شناسه کاربر صادر کننده
@@ -61,11 +67,6 @@ namespace SPPC.Tadbir.Model.CashFlow
         /// نوع فرم؛ 0 برای دریافت و 1 برای پرداخت
         /// </summary>
         public virtual short Type { get; set; }
-
-        /// <summary>
-        /// شناسه ارز
-        /// </summary>
-        public virtual int? CurrencyID { get; set; }
 
         /// <summary>
         /// نرخ ارز
@@ -101,5 +102,10 @@ namespace SPPC.Tadbir.Model.CashFlow
         /// نام کامل کاربر تصویب‌کننده
         /// </summary>
         public virtual string ApprovedByName { get; set; }
+
+        /// <summary>
+        /// پول یا ارز مورد استفاده در فرم دریافت/پرداخت
+        /// </summary>
+        public virtual Currency Currency { get; set; }
     }
 }

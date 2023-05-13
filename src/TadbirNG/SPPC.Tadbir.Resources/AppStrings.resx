@@ -3882,13 +3882,13 @@
   <data name="LastPaymentForm" xml:space="preserve">
     <value>آخرین سند پرداخت</value>
   </data>
-  <data name="LastReceiveForm" xml:space="preserve">
+  <data name="LastReceivalForm" xml:space="preserve">
     <value>آخرین سند دریافت</value>
   </data>
   <data name="NewPaymentForm" xml:space="preserve">
     <value>سند پرداخت جدید</value>
   </data>
-  <data name="NewReceiveForm" xml:space="preserve">
+  <data name="NewReceivalForm" xml:space="preserve">
     <value>سند دریافت جدید</value>
   </data>
   <data name="Payment" xml:space="preserve">
@@ -3903,19 +3903,22 @@
   <data name="Payments" xml:space="preserve">
     <value>پرداخت ها</value>
   </data>
-  <data name="Receive" xml:space="preserve">
+  <data name="Receival" xml:space="preserve">
     <value>دریافت</value>
   </data>
-  <data name="ReceiveFormbyNo" xml:space="preserve">
+  <data name="ReceivalFormbyNo" xml:space="preserve">
     <value>سند دریافت به شماره ...</value>
   </data>
-  <data name="ReceiveOperations" xml:space="preserve">
+  <data name="ReceivalOperations" xml:space="preserve">
     <value>عملیات دریافت</value>
   </data>
-  <data name="Receives" xml:space="preserve">
-    <value>دریافت ها</value>
+  <data name="Receivals" xml:space="preserve">
+    <value>دریافتی ها</value>
   </data>
   <data name="Register" xml:space="preserve">
-    <value>ایجاد سند حسابداری مرتبط</value>
+    <value>ثبت مالی</value>
+  </data>
+  <data name="PayReceiveNo" xml:space="preserve">
+    <value>شماره</value>
   </data>
 </root>

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -62,12 +63,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns>اطلاعات نمایشی فرم دریافت مورد نظر</returns>
         // GET: api/payments/{payReceiveId:min(1)}
         [HttpGet]
-        [Route(PayReceiveApi.ReceiveUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivePermissions.View)]
-        public async Task<IActionResult> GetReceiveAsync(int payReceiveId)
+        [Route(PayReceiveApi.ReceivalUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.View)]
+        public async Task<IActionResult> GetReceivalAsync(int payReceiveId)
         {
-            var receive = await _repository.GetPayReceiveAsync(payReceiveId);
-            return JsonReadResult(receive);
+            var receival = await _repository.GetPayReceiveAsync(payReceiveId);
+            return JsonReadResult(receival);
         }
 
         /// <summary>
@@ -96,11 +97,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="payReceive">اطلاعات نمایشی فرم دریافت جدید</param>
         /// <returns>اطلاعات نمایشی ذخیره شده برای فرم دریافت</returns>
-        // POST: api/receives
+        // POST: api/receivals
         [HttpPost]
-        [Route(PayReceiveApi.ReceivesUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivePermissions.Create)]
-        public async Task<IActionResult> PostNewReceiveAsync([FromBody] PayReceiveViewModel payReceive)
+        [Route(PayReceiveApi.ReceivalsUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Create)]
+        public async Task<IActionResult> PostNewReceivalAsync([FromBody] PayReceiveViewModel payReceive)
         {
             var result = BasicValidationResult(payReceive);
             if (result is BadRequestObjectResult)
@@ -140,11 +141,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت اصلاح شده</param>
         /// <param name="payReceive">اطلاعات نمایشی اصلاح شده برای فرم دریافت</param>
         /// <returns>اطلاعات نمایشی ذخیره شده برای فرم دریافت</returns>
-        // PUT: api/receives/{payReceiveId:min(1)}
+        // PUT: api/receivals/{payReceiveId:min(1)}
         [HttpPut]
-        [Route(PayReceiveApi.ReceiveUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivePermissions.Edit)]
-        public async Task<IActionResult> PutModifiedReceiveAsync(int payReceiveId, [FromBody] PayReceiveViewModel payReceive)
+        [Route(PayReceiveApi.ReceivalUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Edit)]
+        public async Task<IActionResult> PutModifiedReceivalAsync(int payReceiveId, [FromBody] PayReceiveViewModel payReceive)
         {
             var result = BasicValidationResult(payReceive, payReceiveId);
             if (result is BadRequestObjectResult)
@@ -172,7 +173,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(message);
             }
 
-            await _repository.DeletePayReceiveAsync(payReceiveId);
+            await _repository.DeletePayReceiveAsync(payReceiveId, (int)PayReceiveType.Payment);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
@@ -182,9 +183,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر برای حذف</param>
         // DELETE: api/payments/{payReceiveId:min(1)}
         [HttpDelete]
-        [Route(PayReceiveApi.ReceiveUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivePermissions.Delete)]
-        public async Task<IActionResult> DeleteExistingReceiveAsync(int payReceiveId)
+        [Route(PayReceiveApi.ReceivalUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Delete)]
+        public async Task<IActionResult> DeleteExistingReceivalAsync(int payReceiveId)
         {
             string message = await ValidateDeleteAsync(payReceiveId);
             if (!String.IsNullOrEmpty(message))
@@ -192,40 +193,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(message);
             }
 
-            await _repository.DeletePayReceiveAsync(payReceiveId);
+            await _repository.DeletePayReceiveAsync(payReceiveId, (int)PayReceiveType.Receival);
             return StatusCode(StatusCodes.Status204NoContent);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، فرم های پرداخت داده شده را - در صورت امکان - حذف می کند
-        /// </summary>
-        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
-        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
-        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // PUT: api/payments
-        [HttpPut]
-        [Route(PayReceiveApi.PaymentsUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Delete)]
-        public async Task<IActionResult> PutExistingPaymentsAsDeletedAsync(
-            [FromBody] ActionDetailViewModel actionDetail)
-        {
-            return await GroupDeleteResultAsync(actionDetail, _repository.DeletePayReceivesAsync);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، فرم های دریافت داده شده را - در صورت امکان - حذف می کند
-        /// </summary>
-        /// <param name="actionDetail">اطلاعات مورد نیاز برای عملیات حذف گروهی</param>
-        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
-        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // PUT: api/receives
-        [HttpPut]
-        [Route(PayReceiveApi.ReceivesUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivePermissions.Delete)]
-        public async Task<IActionResult> PutExistingReceivesAsDeletedAsync(
-            [FromBody] ActionDetailViewModel actionDetail)
-        {
-            return await GroupDeleteResultAsync(actionDetail, _repository.DeletePayReceivesAsync);
         }
 
         /// <summary>
@@ -237,8 +206,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         protected override async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
-            var payreceive = await _repository.GetPayReceiveAsync(item);
-            if (payreceive == null)
+            var payReceive = await _repository.GetPayReceiveAsync(item);
+            if (payReceive == null)
             {
                 message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.PayReceive, item.ToString());
             }

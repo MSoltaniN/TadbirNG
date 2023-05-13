@@ -2301,7 +2301,8 @@
       <Relations>
         <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" isRequired="True" joinTable="" description="دوره مالی که فرم دریافت و پرداخت در آن ثبت شده است" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" isRequired="True" joinTable="" description="شعبه ای که فرم دریافت و پرداخت در آن ثبت شده است" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null" />
-      </Relations>
+		<Relation multiplicity="ManyToOne" endpointName="Currency" entityName="Currency" hasKey="True" isRequired="False" joinTable="" description="پول یا ارز مورد استفاده در فرم دریافت/پرداخت" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null" />
+	  </Relations>
     </Entity>
     <Entity name="Permission" area="Auth" identifier="Id" type="CoreEntity" description="Represents a potential access grant for a unit of functionality in the application" clrType="SPPC.Tools.Model.Entity, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
       <Properties>

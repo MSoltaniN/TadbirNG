@@ -25,6 +25,6 @@ namespace SPPC.Tadbir.Persistence
         CashRegister = 22,
         SourceApp = 23,
         Payment = 24,
-        Receive = 25
+        Receival = 25
     }
 }
