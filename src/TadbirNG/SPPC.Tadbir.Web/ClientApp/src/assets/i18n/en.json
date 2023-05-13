@@ -1,15 +1,15 @@
 {
   "App": {
-    "Title": "Welcome to Tabir New System",
+    "Title": "Welcome to Tadbir New System",
     "SELECT": "Change language",
     "Loading": "loading ...",
-    "RecordNotFound": "Record not found!",
+    "RecordNotFound": "There are no items to display.",
     "Name": "Tadbir Accounting System",
     "SummaryName": "Tadbir",
-    "NotViewAccess": "You do not have access to view information",
+    "NotViewAccess": "You are not authorized to view information.",
     "Level": "Level",
-    "AccessDenied": "You do not have permission to access",
-    "PleaseLoadData": "Please click the calculate button before Export",
+    "AccessDenied": "You are not authorized to perform this action.",
+    "PleaseLoadData": "Please click Calculate button before exporting data.",
     "Version": "Version"
   },
   "LicenseInfo": {
@@ -69,12 +69,12 @@
     "ErrorTitle": "Error"
   },
   "Messages": {
-    "Inserted": "{0} inserted successfully",
-    "Updated": "{0} updated successfully",
-    "Deleted": "{0} deleted successfully",
+    "Inserted": "{0} was successfully inserted.",
+    "Updated": "{0} was successfully updated.",
+    "Deleted": "{0} was successfully deleted.",
     "DeleteConfirm": "are you sure you want to delete this {0} ?",
     "SelectedItems": "selected items",
-    "TreeLevelsAreTooDeep": "Tree levels deeper than {0} is not allowed.",
+    "TreeLevelsAreTooDeep": "Tree level deeper than {0} is not allowed.",
     "IncorrectFileFormat": "The file format is incorrect",
     "UploadSuccessful": "Upload Successful",
     "VoucherNumberByStatus": "<a class='tostrlink' href='{2}'>The system has {0} {1} vouchers</a>",
@@ -96,7 +96,7 @@
     "ActivationPasswordIsNotCorrect": "User name or password is incorrect.",
     "OpenSessions": "Open user sessions",
     "SelectItemFromMainComponent": "First, select an item from the main component table.",
-    "ClickOnCearteRelation": "Then click on the 'Create Relation' button.",
+    "ClickOnCearteRelation": "Then click on the 'Add Relation' button.",
     "FirstRemoveWidgets": "Before removing the tab from the dashboard, you must first remove the widgets added to the tab.",
     "CheckBookDeleteConfirm": "Are you sure you want to delete this check book?",
     "CheckBookPagesCancelConfirm": "Are you sure you want to cancel check book page having number {0}?",
@@ -312,14 +312,14 @@
     "EndsWith": "Ends with",
     "Contains": "Contains",
     "DoesNotContain": "Does Not Contain",
-    "RecordNotFound": "Filter could not be added.",
+    "RecordNotFound": "There are no items to display.",
     "InsertFilter": "Add Filter",
     "PleaseSelectField": "Please select a field.",
     "PleaseEnterValue": "Please enter a value.",
     "PleaseSelectOperator": "Please select an operator.",
     "PleaseSelectLogicOperator": "Please select a logical operator.",
-    "FilterInsertedSuccess": "The filter was successfully added.",
-    "FilterEditedSuccess": "Filter was successfully modified.",
+    "FilterInsertedSuccess": "Filter was successfully added.",
+    "FilterEditedSuccess": "Filter was successfully updated.",
     "FilterDeletedSuccess": "Filter was successfully deleted.",
     "NoDataForOperators": "Please select a field.",
     "RemoveBracesMsg": "Cannot remove selected braces from selected filters.",
@@ -1172,7 +1172,7 @@
     "LastPage": "Last Page"
   },
   "Grid": {
-    "noRecords": "No items to display"
+    "noRecords": "There are no items to display."
   },
   "Login": {
     "Ok": "OK",
