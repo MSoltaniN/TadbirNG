@@ -307,7 +307,7 @@ export class CheckBookReportComponent
 
   openFilterDialog() {
     this.dialogRef = this.dialogService.open({
-      title: this.getText("Buttons.New"),
+      title: this.getText("UserValueFilter.Title"),
       content: UserValueComponent
     });
     this.dialogModel = this.dialogRef.content.instance;

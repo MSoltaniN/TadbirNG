@@ -1303,7 +1303,6 @@
     "DeletedMsg": "{0} deleted successfully."
   },
   "CheckBookReport": {
-    "RowNo": "Row No",
     "FilterByArchive": "Filter by archive status",
     "All": "All",
     "Archived": "Archived",
@@ -1313,13 +1312,18 @@
   },
   "SourceApp": {
     "New": "New source/application",
-    "Edit": "Edit",
+    "Edit": "Edit source/application",
     "Code": "Code",
     "Type": "Type ",
     "BranchScope": "Branch Scope",
     "Source": "Source",
     "Application": "Application",
     "Delete": "Delete source/application"
+  },
+  "UserValueFilter": {
+    "Title":"فرم انتخاب شرح های تکراری",
+    "Name": "نام",
+    "RowNo": "ردیف"
   },
   "AllValidations": {
     "Account": {

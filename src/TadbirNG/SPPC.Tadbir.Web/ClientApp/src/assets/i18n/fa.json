@@ -1334,7 +1334,6 @@
     "DeletedMsg": "{0} با موفقیت حذف شد."
   },
   "CheckBookReport": {
-    "RowNo": "ردیف",
     "FilterByArchive": "فیلتر براساس وضعیت بایگانی",
     "All": "همه",
     "Archived": "بایگانی شده",
@@ -1343,14 +1342,19 @@
     "InsertNew": "جدید"
   },
   "SourceApp": {
-    "New": "منبع/مصرف جدید",
-    "Edit": "ویرایش",
+    "New": "منابع/مصارف جدید",
+    "Edit": "ویرایش منابع و مصارف",
     "Code": "کد",
     "Type": "نوع ",
     "BranchScope": "دسترسی شعبه",
     "Source": "منابع",
     "Application": "مصارف",
-    "Delete": "حذف منبع/مصرف"
+    "Delete": "حذف منابع/مصارف"
+  },
+  "UserValueFilter": {
+    "Title":"فرم انتخاب شرح های تکراری",
+    "Name": "نام",
+    "RowNo": "ردیف"
   },
   "Paging": {
     "Record": "رکورد",
