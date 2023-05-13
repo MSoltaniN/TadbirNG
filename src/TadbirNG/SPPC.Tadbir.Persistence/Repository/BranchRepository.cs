@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -379,7 +378,7 @@ namespace SPPC.Tadbir.Persistence
             return removedItems;
         }
 
-        private int[] AddNewRoles(
+        private static int[] AddNewRoles(
             IRepository<RoleBranch> repository, IList<RoleBranch> existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = existing.Select(rb => rb.RoleId);

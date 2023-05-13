@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Utility;
@@ -96,6 +95,14 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اگر دوره مالی مورد نظر در برنامه به طور مستقیم استفاده شده باشد
         /// مقدار "نادرست" و در غیر این صورت مقدار "درست" را برمی گرداند</returns>
         Task<bool> CanDeleteFiscalPeriodAsync(int fiscalPeriodId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا دوره مالی مشخص شده به همراه اطلاعاتش قابل حذف است یا نه؟
+        /// </summary>
+        /// <param name="fiscalPeriodId">شناسه دیتابیسی دوره مالی مورد نظر</param>
+        /// <returns>اگر دوره مالی مورد نظر آخرین دوره مالی باشد مقدار بولی درست و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        Task<bool> CanDeleteFiscalPeriodWithDataAsync(int fiscalPeriodId);
 
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که دوره مالی با شناسه دیتابیسی داده شده

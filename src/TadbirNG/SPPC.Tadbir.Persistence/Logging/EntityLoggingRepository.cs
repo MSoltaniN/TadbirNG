@@ -523,12 +523,9 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            string keyName = parentType == typeof(DetailAccount)
-                ? "Detail"
-                : parentType.Name;
             var idItems = ModelCatalogue.GetModelTypeItems(type);
             string command = String.Format("DELETE FROM [{0}].[{1}] WHERE {2}ID = {3}",
-                idItems[0], idItems[1], keyName, parentId);
+                idItems[0], idItems[1], parentType.Name, parentId);
             DbConsole.ExecuteNonQuery(command);
         }
 
