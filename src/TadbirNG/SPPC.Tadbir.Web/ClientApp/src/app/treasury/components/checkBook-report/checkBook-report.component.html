@@ -84,26 +84,7 @@
     <ng-template kendoGridToolbarTemplate>
       <!-- sppc-float mb-2 -->
       <div class="filter-box">
-        <div class="form-group userValueFilters">
-          <input type="checkbox"
-           [(ngModel)]="bankNameFilter"
-           (click)="onBankNameFilterClick($event)"
-           id="bankNameFilter"
-           class="k-checkbox"
-           [checked]="onBankNameFilterClick">
-          <label for="bankNameFilter" class="control-label">{{ "CheckBook.BankName" | translate }}</label>
-          <fieldset [disabled]="!bankNameFilter" [ngClass]="{'disabled': !bankNameFilter}">
-            <div class="search-box">
-              <input
-                class="k-textbox sppc-width-100"
-                [(ngModel)]="searchValue"
-                (keydown.enter)="openFilterDialog()"
-                readonly
-              />
-              <span class="k-icon k-i-search" (click)="openFilterDialog()"></span>
-            </div>
-          </fieldset>
-        </div>
+        <user-value-filter></user-value-filter>
         <div class="form-group">
           <label for="byArchive" class="control-label" style="margin:0 5px;">
             {{ 'CheckBookReport.FilterByArchive' | translate }}
