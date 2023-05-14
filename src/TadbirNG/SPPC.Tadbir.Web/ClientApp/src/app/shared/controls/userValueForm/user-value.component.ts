@@ -59,6 +59,7 @@ export class UserValueComponent extends DetailComponent implements OnInit {
     selectedItem: UserValue;
     customName: string;
     customType: string = '1';
+    searchValue: string;
 
     @Output() result: EventEmitter<any> = new EventEmitter();
     @Output() cancel: EventEmitter<any> = new EventEmitter();

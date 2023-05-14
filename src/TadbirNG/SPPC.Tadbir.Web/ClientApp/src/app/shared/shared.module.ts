@@ -390,6 +390,7 @@ export function loadEcharts(): any {
     InputDirective,
     TooltipDirective,
     AutoFocusDirective,
+    UserValueFilterComponent
   ],
 })
 export class SharedModule {

@@ -11,11 +11,12 @@
     </div>
 
     <ng-container *ngIf="mode == 'select'">
-        <user-value-form [categoryId]="categoryId"
+        <user-value-list [categoryId]="categoryId"
          (setCategoriesList)="getCategoriesList($event)"
          (selectedKey)="onSelecteKey($event)"
+         [searchValue]="searchValue"
         >
-        </user-value-form>
+        </user-value-list>
     </ng-container>
     <ng-container *ngIf="mode == 'new'">
         <ng-container *ngTemplateOutlet="insertForm"></ng-container>
@@ -37,13 +38,7 @@
 
     <ng-template #insertForm>
         <div class="insert-new-form" style="padding:15px;" (keydown.esc)="escPress()">
-            <!-- <div *ngIf="errorMessages">
-                <div *ngFor="let err of errorMessages" class="alert alert-danger">
-                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                {{ err }}
-                </div>
-            </div> -->
-             
+
             <form novalidate (keydown.enter)="onSave($event)">
                 <div class="form-group">
                     <label for="name" class="control-label">{{ 'Company.Name' | translate }}</label>
@@ -52,11 +47,6 @@
                      [(ngModel)]="customName"
                      [ngModelOptions]="{standalone: true}"
                     />
-            
-                    <!-- <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
-                        <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.SourceApp.NameIsRequired' | translate }}</span>
-                        <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.SourceApp.NameIsTooLong' | translate }}</span>
-                    </div> -->
                 </div>
             
                 <div class="form-group">

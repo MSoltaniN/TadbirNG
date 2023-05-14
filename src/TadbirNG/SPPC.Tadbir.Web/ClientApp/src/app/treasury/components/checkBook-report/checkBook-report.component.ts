@@ -189,7 +189,10 @@ export class CheckBookReportComponent
     this.selectedRows = [];
   }
 
-  rowDoubleClickHandler() {
+  rowDoubleClickHandler(e) {
+    if ((<HTMLElement>e.target).attributes.getNamedItem('role')?.nodeValue != 'gridcell') {
+      return;
+    }
     if (!this.checkEditPermission()) return;
 
     if (this.clickedRowItem) {

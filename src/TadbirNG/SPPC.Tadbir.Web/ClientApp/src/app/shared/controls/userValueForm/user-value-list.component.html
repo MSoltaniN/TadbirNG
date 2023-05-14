@@ -84,9 +84,9 @@
           <input
             class="k-textbox sppc-width-100"
             [(ngModel)]="searchValue"
-            (keydown.enter)="reloadGrid()"
+            (keydown.enter)="onSearch()"
           />
-          <span class="k-icon k-i-search" (click)="reloadGrid()"></span>
+          <span class="k-icon k-i-search" (click)="onSearch()"></span>
         </div>
       </div>
 

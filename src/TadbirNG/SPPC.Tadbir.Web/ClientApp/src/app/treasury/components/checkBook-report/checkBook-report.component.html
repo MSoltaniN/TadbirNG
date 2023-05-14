@@ -41,7 +41,7 @@
     (dataStateChange)="onDataStateChange($event)"
     (excelExport)="onExcelExport($event)"
     (cellClick)="onCellClick($event)"
-    (dblclick)="rowDoubleClickHandler()"
+    (dblclick)="rowDoubleClickHandler($event)"
     sppc-auto-generated-grid-reorder
     sppc-auto-generated-grid-resize
   >
@@ -84,7 +84,7 @@
     <ng-template kendoGridToolbarTemplate>
       <!-- sppc-float mb-2 -->
       <div class="filter-box">
-        <user-value-filter></user-value-filter>
+        <user-value-filter [parentComponent]="this"></user-value-filter>
         <div class="form-group">
           <label for="byArchive" class="control-label" style="margin:0 5px;">
             {{ 'CheckBookReport.FilterByArchive' | translate }}
