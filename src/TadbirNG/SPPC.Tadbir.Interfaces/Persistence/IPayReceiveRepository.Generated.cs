@@ -14,22 +14,30 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، دریافت و پرداخت با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="payreceiveId">شناسه عددی یکی از دریافت ها و پرداخت ها موجود</param>
+        /// <param name="payReceiveId">شناسه عددی یکی از دریافت ها و پرداخت ها موجود</param>
         /// <returns>دریافت و پرداخت مشخص شده با شناسه عددی</returns>
-        Task<PayReceiveViewModel> GetPayReceiveAsync(int payreceiveId);
+        Task<PayReceiveViewModel> GetPayReceiveAsync(int payReceiveId);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک دریافت و پرداخت را ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="payreceive">دریافت و پرداخت مورد نظر برای ایجاد یا اصلاح</param>
+        /// <param name="payReceive">دریافت و پرداخت مورد نظر برای ایجاد یا اصلاح</param>
         /// <returns>اطلاعات نمایشی دریافت و پرداخت ایجاد یا اصلاح شده</returns>
-        Task<PayReceiveViewModel> SavePayReceiveAsync(PayReceiveViewModel payreceive);
+        Task<PayReceiveViewModel> SavePayReceiveAsync(PayReceiveViewModel payReceive);
 
         /// <summary>
         /// به روش آسنکرون، دریافت و پرداخت مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
-        /// <param name="payreceiveId">شناسه عددی دریافت و پرداخت مورد نظر برای حذف</param>
+        /// <param name="payReceiveId">شناسه عددی دریافت و پرداخت مورد نظر برای حذف</param>
         /// <param name="type">نوع فرم دریافت/پرداخت</param>
-        Task DeletePayReceiveAsync(int payreceiveId, int type);
+        Task DeletePayReceiveAsync(int payReceiveId, int type);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا شماره فرم دریافت/پرداخت مورد نظر تکراری است یا نه
+        /// </summary>
+        /// <param name="payReceive">اطلاعات نمایشی فرم دریافت/پرداخت مورد نظر</param>
+        /// <returns>در صورت تکراری بودن شماره فرم دریافت/پرداخت مقدار درست و
+        /// در غیر اینصورت نادرست برمی گرداند</returns>
+        Task<bool> IsDuplicatePayReceiveNo(PayReceiveViewModel payReceive);
     }
 }

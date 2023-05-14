@@ -108,6 +108,23 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا شماره فرم دریافت/پرداخت مورد نظر تکراری است یا نه
+        /// </summary>
+        /// <param name="payReceive">اطلاعات نمایشی فرم دریافت/پرداخت مورد نظر</param>
+        /// <returns>در صورت تکراری بودن شماره فرم دریافت/پرداخت مقدار درست و
+        /// در غیر اینصورت نادرست برمی گرداند</returns>
+        public async Task<bool> IsDuplicatePayReceiveNo(PayReceiveViewModel payReceive)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
+            return await repository
+                .GetEntityQuery()
+                .AnyAsync(pr => payReceive.Id != pr.Id 
+                && payReceive.PayReceiveNo == pr.PayReceiveNo
+                && payReceive.FiscalPeriodId == pr.FiscalPeriodId
+                && payReceive.BranchId == pr.BranchId);
+        }
+
         internal override int? EntityType
         {
             get { return (int?)EntityTypeId.Payment; }
@@ -127,7 +144,7 @@ namespace SPPC.Tadbir.Persistence
             payReceive.PayReceiveNo = payReceiveViewModel.PayReceiveNo;
             payReceive.Reference = payReceiveViewModel.Reference;
             payReceive.Date = payReceiveViewModel.Date;
-            payReceive.CurrencyID = payReceiveViewModel.CurrencyID;
+            payReceive.CurrencyId = payReceiveViewModel.CurrencyId;
             payReceive.CurrencyRate = payReceiveViewModel.CurrencyRate;
             payReceive.Description = payReceiveViewModel.Description;
             payReceive.CreatedDate = payReceiveViewModel.CreatedDate;

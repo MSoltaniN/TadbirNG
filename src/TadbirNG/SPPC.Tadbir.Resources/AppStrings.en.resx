@@ -3930,4 +3930,10 @@
   <data name="PayReceiveNo" xml:space="preserve">
     <value>Number</value>
   </data>
+  <data name="PaymentNo" xml:space="preserve">
+    <value>Payment Number</value>
+  </data>
+  <data name="ReceivalNo" xml:space="preserve">
+    <value>Receival Number</value>
+  </data>
 </root>

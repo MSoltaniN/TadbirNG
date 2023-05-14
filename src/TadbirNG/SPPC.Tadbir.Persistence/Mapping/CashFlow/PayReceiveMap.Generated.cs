@@ -39,7 +39,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasMaxLength(64);
             builder.Property(e => e.Date)
                 .IsRequired();
-            builder.Property(e => e.CurrencyID);
+            builder.Property(e => e.CurrencyId);
             builder.Property(e => e.CurrencyRate);
             builder.Property(e => e.Description)
                 .HasMaxLength(1024);
@@ -60,6 +60,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
+            builder.Ignore(e => e.No);
 
             builder.HasOne(e => e.FiscalPeriod)
                 .WithMany()
@@ -71,6 +72,11 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey(e => e.BranchId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CashFlow_PayReceive_Corporate_Branch");
+            builder.HasOne(e => e.Currency)
+                .WithMany()
+                .HasForeignKey(e => e.CurrencyId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CashFlow_PayReceive_Finance_Currency");
         }
     }
 }

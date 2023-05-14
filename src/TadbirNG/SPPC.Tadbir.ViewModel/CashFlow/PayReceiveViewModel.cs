@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SPPC.Tadbir.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SPPC.Tadbir.ViewModel.CashFlow
 {
-    public partial class PayReceiveViewModel
+    public partial class PayReceiveViewModel : IFiscalEntityView
     {
         /// <summary>
         /// شناسه دیتابیسی دوره مالی که فرم دریافت یا پرداخت در آن تعریف شده است
@@ -21,7 +22,7 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// <summary>
         /// شناسه ارز
         /// </summary>
-        public int CurrencyID { get; set; }
+        public int? CurrencyId { get; set; }
 
     }
 }

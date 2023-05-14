@@ -3921,4 +3921,10 @@
   <data name="PayReceiveNo" xml:space="preserve">
     <value>شماره</value>
   </data>
+  <data name="PaymentNo" xml:space="preserve">
+    <value>شماره فرم پرداخت</value>
+  </data>
+  <data name="ReceivalNo" xml:space="preserve">
+    <value>شماره فرم دریافت</value>
+  </data>
 </root>

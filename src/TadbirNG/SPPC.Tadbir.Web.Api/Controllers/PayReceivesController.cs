@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.CashFlow;
 using SPPC.Tadbir.ViewModel.Core;
+using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -82,7 +84,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Create)]
         public async Task<IActionResult> PostNewPaymentAsync([FromBody] PayReceiveViewModel payReceive)
         {
-            var result = BasicValidationResult(payReceive);
+            var result = await PayReceiveValidationResultAsync(payReceive);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -103,7 +105,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Create)]
         public async Task<IActionResult> PostNewReceivalAsync([FromBody] PayReceiveViewModel payReceive)
         {
-            var result = BasicValidationResult(payReceive);
+            var result = await PayReceiveValidationResultAsync(payReceive);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -114,7 +116,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک یک فرم پرداخت موجود را پس از اعتبارسنجی در دیتابیس ذخیره می کند
+        /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک فرم پرداخت موجود را پس از اعتبارسنجی در دیتابیس ذخیره می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت اصلاح شده</param>
         /// <param name="payReceive">اطلاعات نمایشی اصلاح شده برای فرم پرداخت</param>
@@ -125,7 +127,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Edit)]
         public async Task<IActionResult> PutModifiedPaymentAsync(int payReceiveId, [FromBody] PayReceiveViewModel payReceive)
         {
-            var result = BasicValidationResult(payReceive, payReceiveId);
+            var result = await PayReceiveValidationResultAsync(payReceive, payReceiveId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -136,7 +138,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک یک فرم دریافت موجود را پس از اعتبارسنجی در دیتابیس ذخیره می کند
+        /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک فرم دریافت موجود را پس از اعتبارسنجی در دیتابیس ذخیره می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت اصلاح شده</param>
         /// <param name="payReceive">اطلاعات نمایشی اصلاح شده برای فرم دریافت</param>
@@ -147,7 +149,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Edit)]
         public async Task<IActionResult> PutModifiedReceivalAsync(int payReceiveId, [FromBody] PayReceiveViewModel payReceive)
         {
-            var result = BasicValidationResult(payReceive, payReceiveId);
+            var result = await PayReceiveValidationResultAsync(payReceive, payReceiveId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -213,6 +215,38 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return message;
+        }
+
+        private async Task<IActionResult> PayReceiveValidationResultAsync(PayReceiveViewModel payReceive, int payReceiveId = 0)
+        {
+            string entityNameKey = payReceive.Type == (int)PayReceiveType.Payment
+                ? AppStrings.Payment
+                : AppStrings.Receival;
+            var result = BasicValidationResult(payReceive, payReceiveId, entityNameKey);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if(await _repository.IsDuplicatePayReceiveNo(payReceive))
+            {
+                string fieldTitle = payReceive.Type == (int)PayReceiveType.Payment
+                    ? AppStrings.PaymentNo
+                    : AppStrings.ReceivalNo;
+            
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, fieldTitle));
+            }
+
+            if(payReceiveId > 0)
+            {
+                result = BranchValidationResult(payReceive);
+                if (result is BadRequestObjectResult)
+                {
+                    return result;
+                }
+            }
+
+            return Ok();
         }
 
         private readonly IPayReceiveRepository _repository;

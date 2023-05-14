@@ -11,6 +11,6 @@ namespace SPPC.Tadbir.Model.CashFlow
         /// <summary>
         /// شناسه ارز
         /// </summary>
-        public virtual int? CurrencyID { get; set; }
+        public virtual int? CurrencyId { get; set; }
     }
 }

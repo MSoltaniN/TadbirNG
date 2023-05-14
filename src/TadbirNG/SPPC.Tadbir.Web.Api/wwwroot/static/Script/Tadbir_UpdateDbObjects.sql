@@ -1171,6 +1171,6 @@ CREATE TABLE [CashFlow].[PayReceive] (
     , CONSTRAINT [PK_CashFlow_PayReceive] PRIMARY KEY CLUSTERED ([PayReceiveID] ASC)
     , CONSTRAINT [FK_CashFlow_PayReceive_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
     , CONSTRAINT [FK_CashFlow_PayReceive_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
-	, CONSTRAINT [FK_Finance_VoucherLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency]([CurrencyID])
+	, CONSTRAINT [FK_CashFlow_PayReceive_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency]([CurrencyID])
 )
 GO

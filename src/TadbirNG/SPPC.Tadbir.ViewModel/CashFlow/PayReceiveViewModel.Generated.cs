@@ -95,6 +95,7 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// <summary>
         /// شرح
         /// </summary>
+        /// </summary>
         [StringLength(1024, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Description { get; set; }
 
