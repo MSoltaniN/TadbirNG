@@ -416,8 +416,15 @@ export class AccountBookComponent
   }
 
   loadEntity() {
-    this.settingService.getAll(LookupApi.TreeViews).subscribe((res) => {
-      this.ddlEntites = res.body;
+    this.settingService.getAll(LookupApi.FullAccountParts).subscribe((res) => {
+      let items = [];
+      (<Array<any>>res.body).forEach(i => {
+        items.push({
+          key: i.id.toString(),
+          value: i.name
+        })
+      })
+      this.ddlEntites = items;
     });
   }
 
