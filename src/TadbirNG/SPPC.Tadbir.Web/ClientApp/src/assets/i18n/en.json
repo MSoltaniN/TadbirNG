@@ -1306,17 +1306,24 @@
     "FilterByArchive": "Filter by archive status",
     "All": "All",
     "Archived": "Archived",
-    "Active": "Active"
+    "Active": "Active",
+    "SelectFormList": "Select form list",
+    "InsertNew": "Insert New"
   },
   "SourceApp": {
     "New": "New source/application",
-    "Edit": "Edit",
+    "Edit": "Edit source/application",
     "Code": "Code",
     "Type": "Type ",
     "BranchScope": "Branch Scope",
     "Source": "Source",
     "Application": "Application",
     "Delete": "Delete source/application"
+  },
+  "UserValueFilter": {
+    "Title":"فرم انتخاب شرح های تکراری",
+    "Name": "نام",
+    "RowNo": "ردیف"
   },
   "AllValidations": {
     "Account": {

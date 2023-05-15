@@ -10,6 +10,7 @@ import { ReloadOption } from '@sppc/shared/class/reload-option';
 import { ReportViewerComponent, ViewIdentifierComponent } from '@sppc/shared/components';
 import { QuickReportSettingComponent } from '@sppc/shared/components/reportManagement/QuickReport-Setting.component';
 import { ReportManagementComponent } from '@sppc/shared/components/reportManagement/reportManagement.component';
+import { UserValueComponent } from '@sppc/shared/controls/userValueForm/user-value.component';
 import { ReloadStatusType } from '@sppc/shared/enum';
 import { Entities, Layout, MessageType } from '@sppc/shared/enum/metadata';
 import { OperationId } from '@sppc/shared/enum/operationId';
@@ -32,12 +33,7 @@ export function getLayoutModule(layout: Layout) {
 @Component({
   selector: 'check-report',
   templateUrl: './checkBook-report.component.html',
-  styles: [`
-    .filter-box {
-      width: 100%;
-      margin: 3px 12px 10px;
-    }
-  `],
+  styleUrls: ['./checkBook-report.component.css'],
   providers: [
     {
       provide: RTL,
@@ -94,7 +90,7 @@ export class CheckBookReportComponent
     {key: ArchiveTypeKey.Active, value: ArchiveTypeKey.Active},
   ]
   selectedArchiveFilter = '';
-  
+
   get isArchived() {
     let checks = this.rowData?.data.filter(
       (item) => this.selectedRows.includes(item.id)
@@ -193,7 +189,10 @@ export class CheckBookReportComponent
     this.selectedRows = [];
   }
 
-  rowDoubleClickHandler() {
+  rowDoubleClickHandler(e) {
+    if ((<HTMLElement>e.target).attributes.getNamedItem('role')?.nodeValue != 'gridcell') {
+      return;
+    }
     if (!this.checkEditPermission()) return;
 
     if (this.clickedRowItem) {
@@ -304,7 +303,6 @@ export class CheckBookReportComponent
       // this.quickFilter = [];
       this.reloadGrid();
     }
-    console.log(e,this.quickFilter);
   }
-  
+
 }

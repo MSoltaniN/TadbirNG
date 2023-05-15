@@ -208,7 +208,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
 
   }
 
-  initCheckBookForm() {
+  initCheckBookForm(insert=false) {
     if (this.model.id == 0) {
       this.model.branchId = this.BranchId;
       // this.model.issueDate = new Date();
@@ -235,8 +235,10 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
       this.isNew = false;
       this.setEditMode = true;
       this.searchConfirm = false;
-      this.isLastCheckBook = !this.model.hasNext;
-      this.isFirstCheckBook = !this.model.hasPrevious;
+      if (!insert) {
+        this.isLastCheckBook = !this.model.hasNext;
+        this.isFirstCheckBook = !this.model.hasPrevious;
+      }
     }
     this.errorMessages = [];
 
@@ -418,6 +420,15 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
               this.getText("CheckBook.CheckBookNotFound"),
               MessageType.Warning
             );
+
+          if (this.urlMode == 'by-no') {
+            console.log(this.returnUrl);
+            
+            if (this.returnUrl)
+              this.router.navigate([this.returnUrl]);
+            else
+              this.router.navigate(['/treasury/check-books/new']);
+          };
         }
 
         if (err != null && err.statusCode == 400) {
@@ -522,11 +533,11 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     if (searchConfirm) {
       if (this.checkBookNo && !this.dialogMode) {
         this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
-          returnUrl: "/treasury/check-books/"+this.urlMode,
-          no: this.checkBookNo
+          no: this.checkBookNo,
+          returnUrl: this.returnUrl
         }});
         url = String.Format(CheckBooksApi.CheckBookByNo,this.checkBookNo);
-        this.getCheckBook(url);
+        // this.getCheckBook(url);
       } else {
         return;
       }
@@ -547,8 +558,6 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     console.log(this.editForm);
 
     let value = this.editForm.value;
-    // value.pageCount = this.selectedPagesCount;
-    // value.fullAccount = this.fullAccountForm.value.fullAccount;
 
     let request = this.model.id>0?
       this.checkBookService.edit(String.Format(CheckBooksApi.CheckBook,this.model.id),value):
@@ -576,7 +585,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
         }
         
         this.model = res.checkBook as CheckBookInfo;
-        this.initCheckBookForm()
+        this.initCheckBookForm(true);
         this.setEditMode = true;
         this.errorMessages = undefined;
 

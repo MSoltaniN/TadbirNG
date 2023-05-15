@@ -40,7 +40,7 @@
           [value]="selectedType"
           (valueChange)="onChangeTypeDropDown($event)"
           [(ngModel)]="selectedType"
-          [ngModelOptions]="{standalone: true}"
+          formControlName="type"
         >
           <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.key | translate }}
