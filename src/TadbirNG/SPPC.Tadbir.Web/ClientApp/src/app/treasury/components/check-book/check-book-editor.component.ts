@@ -420,6 +420,15 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
               this.getText("CheckBook.CheckBookNotFound"),
               MessageType.Warning
             );
+
+          if (this.urlMode == 'by-no') {
+            console.log(this.returnUrl);
+            
+            if (this.returnUrl)
+              this.router.navigate([this.returnUrl]);
+            else
+              this.router.navigate(['/treasury/check-books/new']);
+          };
         }
 
         if (err != null && err.statusCode == 400) {
@@ -524,11 +533,11 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     if (searchConfirm) {
       if (this.checkBookNo && !this.dialogMode) {
         this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
-          returnUrl: "/treasury/check-books/"+this.urlMode,
-          no: this.checkBookNo
+          no: this.checkBookNo,
+          returnUrl: this.returnUrl
         }});
         url = String.Format(CheckBooksApi.CheckBookByNo,this.checkBookNo);
-        this.getCheckBook(url);
+        // this.getCheckBook(url);
       } else {
         return;
       }
