@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Check;
@@ -33,11 +34,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از دسته های چک تعریف شده</returns>
-        public async Task<PagedList<CheckBookReportViewModel>> GetCheckBooksReportAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<CheckBookReportViewModel>> GetCheckBooksReportAsync(GridOptions gridOptions)
         {
-            var options = gridOptions ?? new GridOptions();
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var checkBooks = new List<CheckBookReportViewModel>();
-            if (options.Operation != (int)OperationId.Print)
+            if (gridOptions.Operation != (int)OperationId.Print)
             {
                 checkBooks = await Repository
                     .GetAllOperationQuery<CheckBook>(ViewId.CheckBook,
@@ -49,8 +50,8 @@ namespace SPPC.Tadbir.Persistence
                     Context.Localize(cb.IsArchivedName));
             }
 
-            await ReadAsync(options);
-            return new PagedList<CheckBookReportViewModel>(checkBooks, options);
+            await ReadAsync(gridOptions);
+            return new PagedList<CheckBookReportViewModel>(checkBooks, gridOptions);
         }
 
         /// <summary>

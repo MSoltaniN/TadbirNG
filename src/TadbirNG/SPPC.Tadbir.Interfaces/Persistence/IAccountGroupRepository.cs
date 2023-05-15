@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Utility;
@@ -17,7 +16,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اطلاعات نمایشی گروه های حساب</returns>
-        Task<PagedList<AccountGroupViewModel>> GetAccountGroupsAsync(GridOptions gridOptions = null);
+        Task<PagedList<AccountGroupViewModel>> GetAccountGroupsAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات نمایشی گروه حساب مشخص شده را خوانده و برمی گرداند
@@ -32,7 +31,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="groupId">شناسه دیتابیسی گروه مورد نظر</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه حساب های کل زیرمجموعه</returns>
-        Task<PagedList<AccountViewModel>> GetGroupLedgerAccountsAsync(int groupId, GridOptions gridOptions = null);
+        Task<PagedList<AccountViewModel>> GetGroupLedgerAccountsAsync(int groupId, GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک گروه حساب را ایجاد یا اصلاح می کند

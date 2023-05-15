@@ -19,15 +19,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از تفصیلی های شناور تعریف شده در دوره مالی و شعبه جاری</returns>
-        Task<PagedList<DetailAccountViewModel>> GetDetailAccountsAsync(GridOptions gridOptions = null);
-
-        /// <summary>
-        /// به روش آسنکرون، کلیه تفصیلی های شناوری را که در دوره مالی و شعبه جاری تعریف شده اند،
-        /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از تفصیلی های شناور تعریف شده در دوره مالی و شعبه جاری</returns>
-        Task<IList<KeyValue>> GetDetailAccountsLookupAsync(GridOptions gridOptions = null);
+        Task<PagedList<DetailAccountViewModel>> GetDetailAccountsAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، تفصیلی شناور با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند

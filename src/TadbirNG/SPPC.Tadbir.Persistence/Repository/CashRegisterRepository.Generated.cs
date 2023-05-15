@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -10,7 +9,6 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.CashFlow;
-using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel;
@@ -39,11 +37,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از صندوق های تعریف شده</returns>
-        public async Task<PagedList<CashRegisterViewModel>> GetCashRegistersAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<CashRegisterViewModel>> GetCashRegistersAsync(GridOptions gridOptions)
         {
-            var options = gridOptions ?? new GridOptions();
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var cashRegisters = new List<CashRegisterViewModel>();
-            if (options.Operation != (int)OperationId.Print)
+            if (gridOptions.Operation != (int)OperationId.Print)
             {
                 var query = Repository.GetAllQuery<CashRegister>(ViewId.CashRegister);
                 cashRegisters = await query
@@ -51,8 +49,8 @@ namespace SPPC.Tadbir.Persistence
                     .ToListAsync();
             }
 
-            await ReadAsync(options);
-            return new PagedList<CashRegisterViewModel>(cashRegisters, options);
+            await ReadAsync(gridOptions);
+            return new PagedList<CashRegisterViewModel>(cashRegisters, gridOptions);
         }
 
         /// <summary>
