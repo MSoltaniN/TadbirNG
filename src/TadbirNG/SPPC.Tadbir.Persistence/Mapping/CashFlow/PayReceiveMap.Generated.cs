@@ -25,11 +25,11 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("PayReceiveID");
-            builder.Property(e => e.IssuedByID)
+            builder.Property(e => e.IssuedById)
                 .IsRequired();
-            builder.Property(e => e.ModifiedByID);
-            builder.Property(e => e.ConfirmedByID);
-            builder.Property(e => e.ApprovedByID);
+            builder.Property(e => e.ModifiedById);
+            builder.Property(e => e.ConfirmedById);
+            builder.Property(e => e.ApprovedById);
             builder.Property(e => e.Type)
                 .IsRequired();
             builder.Property(e => e.PayReceiveNo)

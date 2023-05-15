@@ -40,7 +40,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         protected override string EntityNameKey
         {
-            get { return AppStrings.Payment; }
+            get { return String.Empty; }
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 return result;
             }
-            
+
             var outputItem = await _repository.SavePayReceiveAsync(payReceive);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
@@ -213,37 +213,55 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.PayReceive, item.ToString());
             }
+            else
+            {
+                var result = BranchValidationResult(payReceive);
+                if (result is BadRequestObjectResult errorResult)
+                {
+                    message = errorResult.Value.ToString();
+                }
+            }
 
             return message;
         }
 
         private async Task<IActionResult> PayReceiveValidationResultAsync(PayReceiveViewModel payReceive, int payReceiveId = 0)
         {
-            string entityNameKey = payReceive.Type == (int)PayReceiveType.Payment
-                ? AppStrings.Payment
-                : AppStrings.Receival;
+            string entityNameKey = null;
+            if (payReceive != null)
+            {
+                entityNameKey = (payReceive.Type == (int)PayReceiveType.Payment
+                    ? AppStrings.Payment
+                    : AppStrings.Receival);
+            }
+
             var result = BasicValidationResult(payReceive, payReceiveId, entityNameKey);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            if(await _repository.IsDuplicatePayReceiveNo(payReceive))
-            {
-                string fieldTitle = payReceive.Type == (int)PayReceiveType.Payment
-                    ? AppStrings.PaymentNo
-                    : AppStrings.ReceivalNo;
-            
-                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, fieldTitle));
-            }
-
-            if(payReceiveId > 0)
+            if (payReceiveId > 0)
             {
                 result = BranchValidationResult(payReceive);
                 if (result is BadRequestObjectResult)
                 {
                     return result;
                 }
+
+                if (payReceive.IsConfirmed)
+                {
+                    return BadRequestResult(_strings.Format(AppStrings.CantSaveAsDraft, entityNameKey));
+                }
+            }
+
+            if (await _repository.IsDuplicatePayReceiveNo(payReceive))
+            {
+                string fieldTitle = payReceive.Type == (int)PayReceiveType.Payment
+                    ? AppStrings.PaymentNo
+                    : AppStrings.ReceivalNo;
+
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, fieldTitle));
             }
 
             return Ok();

@@ -24,5 +24,14 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// </summary>
         public int? CurrencyId { get; set; }
 
+        /// <summary>
+        /// مشخص می کند که آیا فرم دریافت/پرداخت مورد نظر تایید شده است یا نه؟
+        /// </summary>
+        public bool IsConfirmed { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که آیا فرم دریافت/پرداخت مورد نظر تصویب شده است یا نه؟
+        /// </summary>
+        public bool IsApproved { get; set; }
     }
 }

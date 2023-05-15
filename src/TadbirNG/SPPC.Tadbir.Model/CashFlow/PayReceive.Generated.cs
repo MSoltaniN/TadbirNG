@@ -46,22 +46,22 @@ namespace SPPC.Tadbir.Model.CashFlow
         /// <summary>
         /// شناسه کاربر صادر کننده
         /// </summary>
-        public virtual int IssuedByID { get; set; }
+        public virtual int IssuedById { get; set; }
 
         /// <summary>
         /// شناسه آخرین کاربر تغییر دهنده اطلاعات
         /// </summary>
-        public virtual int ModifiedByID { get; set; }
+        public virtual int ModifiedById { get; set; }
 
         /// <summary>
         /// شناسه کاربر تأییدکننده
         /// </summary>
-        public virtual int? ConfirmedByID { get; set; }
+        public virtual int? ConfirmedById { get; set; }
 
         /// <summary>
         /// شناسه کاربر تصویب‌کننده
         /// </summary>
-        public virtual int? ApprovedByID { get; set; }
+        public virtual int? ApprovedById { get; set; }
 
         /// <summary>
         /// نوع فرم؛ 0 برای دریافت و 1 برای پرداخت

@@ -69,8 +69,8 @@ namespace SPPC.Tadbir.Persistence
             if (payReceive.Id == 0)
             {
                 payReceiveModel = Mapper.Map<PayReceive>(payReceive);
-                payReceiveModel.IssuedByID = UserContext.Id;
-                payReceiveModel.ModifiedByID = UserContext.Id;
+                payReceiveModel.IssuedById = UserContext.Id;
+                payReceiveModel.ModifiedById = UserContext.Id;
                 payReceiveModel.IssuedByName =
                     payReceiveModel.ModifiedByName = currPersonName;
                 payReceiveModel.CreatedDate = DateTime.Now;
@@ -81,7 +81,7 @@ namespace SPPC.Tadbir.Persistence
                 payReceiveModel = await repository.GetByIDAsync(payReceive.Id);
                 if (payReceiveModel != null)
                 {
-                    payReceiveModel.ModifiedByID = UserContext.Id;
+                    payReceiveModel.ModifiedById = UserContext.Id;
                     payReceiveModel.ModifiedByName = currPersonName;
                     await UpdateAsync(repository, payReceiveModel, payReceive, OperationId.Edit, entityTypeId);
                 }
@@ -121,8 +121,32 @@ namespace SPPC.Tadbir.Persistence
                 .GetEntityQuery()
                 .AnyAsync(pr => payReceive.Id != pr.Id 
                 && payReceive.PayReceiveNo == pr.PayReceiveNo
+                && payReceive.Type == pr.Type
                 && payReceive.FiscalPeriodId == pr.FiscalPeriodId
                 && payReceive.BranchId == pr.BranchId);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، وضعیت تایید فرم دریافت/پرداخت مشخص شده را تغییر می دهد
+        /// </summary>
+        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="isConfirmed"> در صورت تایید فرم دریافت/پرداخت با مقدار درست 
+        /// و در غیر این صورت با مقدار نادرست پر می شود.</param>
+        public async Task SetPayReceiveConfirmationAsync(int payReceiveId, bool isConfirmed)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
+            var payReceive= await repository.GetByIDAsync(payReceiveId);
+            if (payReceive != null) 
+            {
+                payReceive.ConfirmedById = isConfirmed ? UserContext.Id : null;
+                payReceive.ConfirmedByName = isConfirmed ? GetCurrentUserFullName() : null;
+                repository.Update(payReceive);
+                int entityTypeId = (int)(payReceive.Type == (int)PayReceiveType.Receival
+                ? EntityTypeId.Receival
+                : EntityTypeId.Payment);
+                OnDocumentConfirmation(isConfirmed, entityTypeId);
+                await FinalizeActionAsync(payReceive);
+            }
         }
 
         internal override int? EntityType
@@ -137,10 +161,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceive">سطر اطلاعاتی موجود</param>
         protected override void UpdateExisting(PayReceiveViewModel payReceiveViewModel, PayReceive payReceive)
         {
-            payReceive.IssuedByID = payReceiveViewModel.IssuedByID;
-            payReceive.ModifiedByID = payReceiveViewModel.ModifiedByID;
-            payReceive.ConfirmedByID = payReceiveViewModel.ConfirmedByID;
-            payReceive.ApprovedByID = payReceiveViewModel.ApprovedByID;
+            payReceive.IssuedById = payReceiveViewModel.IssuedById;
+            payReceive.ModifiedById = payReceiveViewModel.ModifiedById;
+            payReceive.ConfirmedById = payReceiveViewModel.ConfirmedById;
+            payReceive.ApprovedById = payReceiveViewModel.ApprovedById;
             payReceive.PayReceiveNo = payReceiveViewModel.PayReceiveNo;
             payReceive.Reference = payReceiveViewModel.Reference;
             payReceive.Date = payReceiveViewModel.Date;

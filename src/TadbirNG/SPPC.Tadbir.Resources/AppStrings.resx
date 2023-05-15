@@ -3927,4 +3927,7 @@
   <data name="ReceivalNo" xml:space="preserve">
     <value>شماره فرم دریافت</value>
   </data>
+  <data name="CantSaveAsDraft" xml:space="preserve">
+    <value>این {0} ثبت قطعی یا تأیید شده و قابل تبدیل به سند پیش نویس نیست.</value>
+  </data>
 </root>

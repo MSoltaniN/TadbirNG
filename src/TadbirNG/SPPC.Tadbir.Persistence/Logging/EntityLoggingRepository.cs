@@ -305,20 +305,22 @@ namespace SPPC.Tadbir.Persistence
         /// یک رکورد لاگ عملیاتی برای عملیات تایید یا برگشت از تایید موجودیت عملیاتی ایجاد می کند
         /// </summary>
         /// <param name="isConfirmed">مشخص می کند که وضعیت تایید جدید، تایید شده است یا نه؟</param>
-        protected void OnDocumentConfirmation(bool isConfirmed)
+        /// <param name="entityTypeId">شناسه نوع موجودیت که پیش فرض با پراپرتی انتیتی تایپ آیدی پر میشود</param> 
+        protected void OnDocumentConfirmation(bool isConfirmed, int? entityTypeId = null)
         {
             OperationId operation = isConfirmed ? OperationId.Confirm : OperationId.UndoConfirm;
-            OnEntityAction(operation);
+            OnEntityAction(operation, entityTypeId);
         }
 
         /// <summary>
         /// یک رکورد لاگ عملیاتی برای عملیات تصویب یا برگشت از تصویب موجودیت عملیاتی ایجاد می کند
         /// </summary>
         /// <param name="isApproved">مشخص می کند که وضعیت تصویب جدید، تصویب شده است یا نه؟</param>
-        protected void OnDocumentApproval(bool isApproved)
+        /// <param name="entityTypeId">شناسه نوع موجودیت که پیش فرض با پراپرتی انتیتی تایپ آیدی پر میشود</param> 
+        protected void OnDocumentApproval(bool isApproved, int? entityTypeId = null)
         {
             OperationId operation = isApproved ? OperationId.Approve : OperationId.UndoApprove;
-            OnEntityAction(operation);
+            OnEntityAction(operation, entityTypeId);
         }
 
         /// <summary>

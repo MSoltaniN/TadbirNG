@@ -45,22 +45,22 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// شناسه کاربر صادر کننده
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int IssuedByID { get; set; }
+        public int IssuedById { get; set; }
 
         /// <summary>
         /// شناسه آخرین کاربر تغییر دهنده اطلاعات
         /// </summary>
-        public int ModifiedByID { get; set; }
+        public int ModifiedById { get; set; }
 
         /// <summary>
         /// شناسه کاربر تأییدکننده
         /// </summary>
-        public int? ConfirmedByID { get; set; }
+        public int? ConfirmedById { get; set; }
 
         /// <summary>
         /// شناسه کاربر تصویب‌کننده
         /// </summary>
-        public int? ApprovedByID { get; set; }
+        public int? ApprovedById { get; set; }
 
         /// <summary>
         /// نوع فرم؛ 0 برای دریافت و 1 برای پرداخت

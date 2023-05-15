@@ -39,5 +39,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در صورت تکراری بودن شماره فرم دریافت/پرداخت مقدار درست و
         /// در غیر اینصورت نادرست برمی گرداند</returns>
         Task<bool> IsDuplicatePayReceiveNo(PayReceiveViewModel payReceive);
+
+        /// <summary>
+        /// به روش آسنکرون، وضعیت تایید فرم دریافت/پرداخت مشخص شده را تغییر می دهد
+        /// </summary>
+        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="isConfirmed"> در صورت تایید فرم دریافت/پرداخت با مقدار درست 
+        /// و در غیر این صورت با مقدار نادرست پر می شود.</param>
+        Task SetPayReceiveConfirmationAsync(int payReceiveId, bool isConfirmed);
     }
 }

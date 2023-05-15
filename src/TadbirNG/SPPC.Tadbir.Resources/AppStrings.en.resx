@@ -3936,4 +3936,7 @@
   <data name="ReceivalNo" xml:space="preserve">
     <value>Receival Number</value>
   </data>
+  <data name="CantSaveAsDraft" xml:space="preserve">
+    <value>This {0} is either confirmed or finalized and cannot be saved as draft.</value>
+  </data>
 </root>
