@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از صندوق های تعریف شده</returns>
-        Task<PagedList<CashRegisterViewModel>> GetCashRegistersAsync(GridOptions gridOptions = null);
+        Task<PagedList<CashRegisterViewModel>> GetCashRegistersAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، صندوق با شناسه عددی مشخص شده را خوانده و برمی گرداند

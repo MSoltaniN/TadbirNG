@@ -163,7 +163,7 @@ export class SelectFormComponent
       this.selectedEntity = 1;
     }
 
-    var url = LookupApi.BaseEntityViews;
+    var url = LookupApi.FullAccountParts;
     if (this.allEntities) {
       url = String.Format(LookupApi.EntityView, this.viewID);
     }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -41,14 +40,15 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از شعب سازمانی تعریف شده در شرکت جاری</returns>
-        public async Task<PagedList<BranchViewModel>> GetBranchesAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<BranchViewModel>> GetBranchesAsync(GridOptions gridOptions)
         {
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var branches = new List<Branch>();
             if (gridOptions.Operation != (int)OperationId.Print)
             {
                 var repository = UnitOfWork.GetAsyncRepository<Branch>();
                 branches.AddRange(await repository.GetByCriteriaAsync(
-                        await GetSecurityFilterAsync(), br => br.Parent, br => br.Children));
+                    await GetSecurityFilterAsync(), br => br.Parent, br => br.Children));
             }
 
             await ReadAsync(gridOptions);
@@ -379,7 +379,7 @@ namespace SPPC.Tadbir.Persistence
             return removedItems;
         }
 
-        private int[] AddNewRoles(
+        private static int[] AddNewRoles(
             IRepository<RoleBranch> repository, IList<RoleBranch> existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = existing.Select(rb => rb.RoleId);

@@ -40,8 +40,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
-        public async Task<PagedList<CostCenterViewModel>> GetCostCentersAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<CostCenterViewModel>> GetCostCentersAsync(GridOptions gridOptions)
         {
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var costCenters = new List<CostCenterViewModel>();
             if (gridOptions.Operation != (int)OperationId.Print)
             {

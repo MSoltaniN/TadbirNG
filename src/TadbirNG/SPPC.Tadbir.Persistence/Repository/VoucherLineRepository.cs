@@ -277,9 +277,8 @@ namespace SPPC.Tadbir.Persistence
 
         private IQueryable<VoucherLine> GetVoucherLinesQuery(int voucherId)
         {
-            var repository = UnitOfWork.GetRepository<VoucherLine>();
-            var linesQuery = repository
-                .GetEntityQuery(
+            var linesQuery = Repository
+                .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine,
                     line => line.Voucher, line => line.Account, line => line.DetailAccount, line => line.CostCenter,
                     line => line.Project, line => line.Currency, line => line.Branch)
                 .Where(line => line.Voucher.Id == voucherId)

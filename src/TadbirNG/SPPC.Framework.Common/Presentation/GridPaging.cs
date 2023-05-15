@@ -33,6 +33,21 @@ namespace SPPC.Framework.Presentation
         }
 
         /// <summary>
+        /// نمونه کمکی برای صفحه بندی پیش فرض : صفحه اول، 10 سطر در صفحه
+        /// </summary>
+        public static GridPaging DefaultPaging
+        {
+            get
+            {
+                return new GridPaging()
+                {
+                    PageIndex = 1,
+                    PageSize = Constants.GridPageSize
+                };
+            }
+        }
+
+        /// <summary>
         /// شماره صفحه مورد نظر از نمای جدولی که از یک شروع می شود
         /// </summary>
         public int PageIndex { get; set; }

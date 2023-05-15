@@ -16,7 +16,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از دسته های چک تعریف شده</returns>
-        Task<PagedList<CheckBookReportViewModel>> GetCheckBooksReportAsync(GridOptions gridOptions = null);
+        Task<PagedList<CheckBookReportViewModel>> GetCheckBooksReportAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، وضعیت بایگانی دسته چک های مشخص شده با شناسه عددی را تغییر می دهد

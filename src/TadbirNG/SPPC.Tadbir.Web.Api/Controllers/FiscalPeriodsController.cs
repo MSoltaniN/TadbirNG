@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
@@ -53,7 +54,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
         public async Task<IActionResult> GetFiscalPeriodsAsync()
         {
-            var fiscalPeriods = await _repository.GetFiscalPeriodsAsync(GridOptions);
+            var gridOptions = GridOptions ?? new GridOptions();
+            var fiscalPeriods = await _repository.GetFiscalPeriodsAsync(gridOptions);
             return JsonListResult(fiscalPeriods);
         }
 
@@ -152,6 +154,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             string result = await BasicValidateDeleteAsync(fpId);
             if (!String.IsNullOrEmpty(result))
             {
+                return BadRequestResult(result);
+            }
+
+            if (!await _repository.CanDeleteFiscalPeriodWithDataAsync(fpId))
+            {
+                result = _strings[AppStrings.CantDeleteMiddleFiscalPeriods];
                 return BadRequestResult(result);
             }
 

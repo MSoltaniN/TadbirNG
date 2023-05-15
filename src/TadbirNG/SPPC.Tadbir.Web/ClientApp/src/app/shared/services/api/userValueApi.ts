@@ -1,6 +1,6 @@
 import { environment } from "@sppc/env/environment";
 
-export class FilterApi {
+export class UserValueApi {
 
     // user-values/categories
     public static Categories = environment.BaseUrl + "/user-values/categories";

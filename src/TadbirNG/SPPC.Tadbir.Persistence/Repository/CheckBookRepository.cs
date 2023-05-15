@@ -182,7 +182,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="issueDate">تاریخ صدور دسته چک در برنامه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>دسته چک بعدی</returns>
-        public async Task<CheckBookViewModel> GetNextCheckBookAsync(DateTime issueDate, GridOptions gridOptions = null)
+        public async Task<CheckBookViewModel> GetNextCheckBookAsync(
+            DateTime issueDate, GridOptions gridOptions = null)
         {
             var checkBooks = await Repository.GetAllOperationAsync<CheckBook>(
                 ViewId.CheckBook,

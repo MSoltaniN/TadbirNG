@@ -63,6 +63,7 @@ export class SourceAppFormComponent extends DetailComponent implements OnInit {
         this.model.fiscalPeriodId = this.FiscalPeriodId;
       } else {
         this.selectedBranchScope = this.model.branchScope;
+        this.selectedType = this.model.type;
       }
       this.editForm.reset(this.model);
       console.log(this.editForm);

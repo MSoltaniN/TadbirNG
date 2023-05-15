@@ -595,7 +595,7 @@ CREATE TABLE [Finance].[VoucherLine] (
     [FiscalPeriodID]  INT              NOT NULL,
     [BranchID]        INT              NOT NULL,
     [AccountID]       INT              NOT NULL,
-    [DetailID]        INT              NULL,
+    [DetailAccountID] INT              NULL,
     [CostCenterID]    INT              NULL,
     [ProjectID]       INT              NULL,
     [CurrencyID]      INT              NULL,
@@ -618,7 +618,7 @@ CREATE TABLE [Finance].[VoucherLine] (
     , CONSTRAINT [FK_Finance_VoucherLine_Finance_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
     , CONSTRAINT [FK_Finance_VoucherLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_VoucherLine_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_DetailAccount] FOREIGN KEY ([DetailID]) REFERENCES [Finance].[DetailAccount]([DetailAccountID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailAccountID])
     , CONSTRAINT [FK_Finance_VoucherLine_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
     , CONSTRAINT [FK_Finance_VoucherLine_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project]([ProjectID])
 )
@@ -627,12 +627,12 @@ GO
 CREATE TABLE [Finance].[AccountDetailAccount] (
     [AccountDetailAccountID] INT              IDENTITY (1, 1) NOT NULL,
     [AccountID]              INT              NOT NULL,
-    [DetailID]               INT              NOT NULL,
+    [DetailAccountID]        INT              NOT NULL,
     [rowguid]                UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_AccountDetailAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]           DATETIME         CONSTRAINT [DF_Finance_AccountDetailAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_AccountDetailAccount] PRIMARY KEY CLUSTERED ([AccountDetailAccountID] ASC)
     , CONSTRAINT [FK_Finance_AccountDetailAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
-    , CONSTRAINT [FK_Finance_AccountDetailAccount_Finance_DetailAccount] FOREIGN KEY ([DetailID]) REFERENCES [Finance].[DetailAccount] ([DetailAccountID])
+    , CONSTRAINT [FK_Finance_AccountDetailAccount_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount] ([DetailAccountID])
 )
 GO
 

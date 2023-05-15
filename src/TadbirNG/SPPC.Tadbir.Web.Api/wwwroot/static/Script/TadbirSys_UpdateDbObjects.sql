@@ -909,3 +909,20 @@ GO
 
 DROP TABLE [Config].[UserValueCategory]
 GO
+
+--1.2.1516
+update Auth.PermissionGroup
+set SubsystemID=3
+where PermissionGroupID=40
+
+update Metadata.[Column]
+set [Visibility]=N'AlwaysHidden',[DisplayIndex]=-1
+where ColumnID=742
+
+SET IDENTITY_INSERT [Metadata].[Column] ON
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (764, 73, 'TypeName', NULL, NULL, 'System.String', 'nvarchar', 'string', 64, 0, 0, 0, 1, 1, NULL, 3, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (765, 73, 'BranchScope', NULL, NULL, 'System.Int16', 'smallint', 'number', 0, 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
+SET IDENTITY_INSERT [Metadata].[Column] OFF
+

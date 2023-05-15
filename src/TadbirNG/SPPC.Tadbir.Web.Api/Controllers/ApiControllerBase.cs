@@ -206,7 +206,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var options = Request.Headers[AppConstants.GridOptionsHeaderName];
             if (String.IsNullOrEmpty(options))
             {
-                return null;
+                return GridOptions.Empty;
             }
 
             var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));

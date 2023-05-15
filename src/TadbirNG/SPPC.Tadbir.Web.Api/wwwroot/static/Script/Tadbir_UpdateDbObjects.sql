@@ -1080,3 +1080,46 @@ CREATE TABLE [CashFlow].[SourceApp] (
     , CONSTRAINT [FK_CashFlow_SourceApp_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
 )
 GO
+
+-- 1.2.1515
+ALTER TABLE [Finance].[VoucherLine]
+ADD [DetailAccountID] INT NULL
+GO
+
+UPDATE [Finance].[VoucherLine]
+SET [DetailAccountID] = [DetailID]
+
+ALTER TABLE [Finance].[VoucherLine]
+DROP CONSTRAINT [FK_Finance_VoucherLine_Finance_DetailAccount]
+GO
+
+ALTER TABLE [Finance].[VoucherLine]
+DROP COLUMN [DetailID]
+GO
+
+ALTER TABLE [Finance].[VoucherLine]
+ADD CONSTRAINT [FK_Finance_VoucherLine_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailAccountID])
+GO
+
+ALTER TABLE [Finance].[AccountDetailAccount]
+ADD [DetailAccountID] INT NULL
+GO
+
+UPDATE [Finance].[AccountDetailAccount]
+SET [DetailAccountID] = [DetailID]
+
+ALTER TABLE [Finance].[AccountDetailAccount]
+DROP CONSTRAINT [FK_Finance_AccountDetailAccount_Finance_DetailAccount]
+GO
+
+ALTER TABLE [Finance].[AccountDetailAccount]
+DROP COLUMN [DetailID]
+GO
+
+ALTER TABLE [Finance].[AccountDetailAccount]
+ALTER COLUMN [DetailAccountID] INT NOT NULL
+
+ALTER TABLE [Finance].[AccountDetailAccount]
+ADD CONSTRAINT [FK_Finance_AccountDetailAccount_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailAccountID])
+GO
+
