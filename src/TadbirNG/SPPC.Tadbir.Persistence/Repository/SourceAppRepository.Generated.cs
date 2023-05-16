@@ -46,6 +46,7 @@ namespace SPPC.Tadbir.Persistence
                     .ToListAsync();
             }
 
+            Array.ForEach(sourceApps.ToArray(), sa => Localize(sa));
             await ReadAsync(options);
             return new PagedList<SourceAppViewModel>(sourceApps, options);
         }
@@ -65,7 +66,7 @@ namespace SPPC.Tadbir.Persistence
                 item = Mapper.Map<SourceAppViewModel>(sourceApp);
             }
 
-            return item;
+            return Localize(item);
         }
 
         /// <summary>
@@ -83,7 +84,7 @@ namespace SPPC.Tadbir.Persistence
                 Type = (short)SourceAppType.Source
             };
 
-            return newSourceApp;
+            return Localize(newSourceApp);
         }
 
         /// <summary>
@@ -110,7 +111,7 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            return Mapper.Map<SourceAppViewModel>(sourceAppModel);
+            return Localize(Mapper.Map<SourceAppViewModel>(sourceAppModel));
         }
 
         /// <summary>
@@ -227,6 +228,16 @@ namespace SPPC.Tadbir.Persistence
                 .OrderByDescending(sourceApp => sourceApp.Code)
                 .FirstOrDefaultAsync();
             return (lastByNo != null) ? Int32.Parse(lastByNo.Code) : 0;
+        }
+        
+        private SourceAppViewModel Localize(SourceAppViewModel sourceApp)
+        {
+            if (sourceApp != null)
+            {
+                sourceApp.TypeName = Context.Localize(sourceApp.TypeName);
+            }
+
+            return sourceApp;
         }
 
         private ISecureRepository Repository

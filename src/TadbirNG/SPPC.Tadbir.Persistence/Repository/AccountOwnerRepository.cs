@@ -38,13 +38,11 @@ namespace SPPC.Tadbir.Persistence
             {
                 accOwner = Mapper.Map<AccountOwner>(accountOwner);
                 await InsertAsync(repository, accOwner);
-
-                var rep = UnitOfWork.GetAsyncRepository<AccountHolder>();
-
+                var holderRepository = UnitOfWork.GetAsyncRepository<AccountHolder>();
                 foreach (var item in accOwner.AccountHolders)
                 {
                     item.AccountOwnerId = accOwner.Id;
-                    rep.Insert(item);
+                    holderRepository.Insert(item);
                 }
 
                 await UnitOfWork.CommitAsync();
@@ -55,7 +53,6 @@ namespace SPPC.Tadbir.Persistence
                 if (accOwner != null)
                 {
                     await UpdateAsync(repository, accOwner, accountOwner);
-
                     await UpdateAccountHoldersAsync(accOwner.AccountHolders, accountOwner.AccountHolders);
                 }
             }
@@ -71,8 +68,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountOwner>();
             var accountOwner = await repository.GetByIDWithTrackingAsync(
-                ownerId,
-                owner => owner.AccountHolders);
+                ownerId, owner => owner.AccountHolders);
             if (accountOwner != null)
             {
                 accountOwner.AccountHolders.Clear();
@@ -98,8 +94,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private static async Task UpdateAccountHoldersAsync(
-            IAsyncRepository<AccountHolder> repository,
-            IList<AccountHolderViewModel> updatedItems)
+            IAsyncRepository<AccountHolder> repository, IList<AccountHolderViewModel> updatedItems)
         {
             foreach (var item in updatedItems)
             {
@@ -109,15 +104,13 @@ namespace SPPC.Tadbir.Persistence
                     entity.FirstName = item.FirstName;
                     entity.LastName = item.LastName;
                     entity.HasSignature = item.HasSignature;
-
                     repository.Update(entity);
                 }
             }
         }
 
         private static void RemoveAccountHolders(
-            IAsyncRepository<AccountHolder> repository,
-            IList<AccountHolder> removedItems)
+            IAsyncRepository<AccountHolder> repository, IList<AccountHolder> removedItems)
         {
             foreach (var item in removedItems)
             {
@@ -126,8 +119,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task UpdateAccountHoldersAsync(
-            IList<AccountHolder> existing,
-            IList<AccountHolderViewModel> accHolders)
+            IList<AccountHolder> existing, IList<AccountHolderViewModel> accHolders)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountHolder>();
 
@@ -136,9 +128,8 @@ namespace SPPC.Tadbir.Persistence
                 var accHolderItems = accHolders
                     .Select(item => item.Id);
                 var removedItems = existing
-                .Where(item => !accHolderItems.Contains(item.Id))
-                .ToList();
-
+                    .Where(item => !accHolderItems.Contains(item.Id))
+                    .ToList();
                 RemoveAccountHolders(repository, removedItems);
 
                 var newItems = accHolders
@@ -152,7 +143,6 @@ namespace SPPC.Tadbir.Persistence
                             .Select(rmvItem => rmvItem.Id)
                             .Contains(item.Id))
                     .ToList();
-
                 await UpdateAccountHoldersAsync(repository, updatedItems);
             }
             else
@@ -164,8 +154,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private void InsertAccountHolder(
-            IAsyncRepository<AccountHolder> repository,
-            IList<AccountHolderViewModel> newItems)
+            IAsyncRepository<AccountHolder> repository, IList<AccountHolderViewModel> newItems)
         {
             foreach (var item in newItems)
             {

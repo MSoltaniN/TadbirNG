@@ -41,8 +41,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از تفصیلی های شناور تعریف شده در دوره مالی و شعبه جاری</returns>
-        public async Task<PagedList<DetailAccountViewModel>> GetDetailAccountsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<DetailAccountViewModel>> GetDetailAccountsAsync(GridOptions gridOptions)
         {
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var detailAccounts = new List<DetailAccountViewModel>();
             if (gridOptions.Operation != (int)OperationId.Print)
             {
@@ -54,17 +55,6 @@ namespace SPPC.Tadbir.Persistence
 
             await ReadAsync(gridOptions);
             return new PagedList<DetailAccountViewModel>(detailAccounts, gridOptions);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، کلیه تفصیلی های شناوری را که در دوره مالی و شعبه جاری تعریف شده اند،
-        /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از تفصیلی های شناور تعریف شده در دوره مالی و شعبه جاری</returns>
-        public async Task<IList<KeyValue>> GetDetailAccountsLookupAsync(GridOptions gridOptions = null)
-        {
-            return await Repository.GetAllLookupAsync<DetailAccount>(ViewId.DetailAccount, gridOptions);
         }
 
         /// <summary>

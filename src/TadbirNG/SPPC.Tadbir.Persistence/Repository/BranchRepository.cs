@@ -40,14 +40,15 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از شعب سازمانی تعریف شده در شرکت جاری</returns>
-        public async Task<PagedList<BranchViewModel>> GetBranchesAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<BranchViewModel>> GetBranchesAsync(GridOptions gridOptions)
         {
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var branches = new List<Branch>();
             if (gridOptions.Operation != (int)OperationId.Print)
             {
                 var repository = UnitOfWork.GetAsyncRepository<Branch>();
                 branches.AddRange(await repository.GetByCriteriaAsync(
-                        await GetSecurityFilterAsync(), br => br.Parent, br => br.Children));
+                    await GetSecurityFilterAsync(), br => br.Parent, br => br.Children));
             }
 
             await ReadAsync(gridOptions);

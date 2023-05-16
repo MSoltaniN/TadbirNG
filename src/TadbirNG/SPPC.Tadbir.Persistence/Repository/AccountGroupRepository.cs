@@ -36,8 +36,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اطلاعات نمایشی گروه های حساب</returns>
-        public async Task<PagedList<AccountGroupViewModel>> GetAccountGroupsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<AccountGroupViewModel>> GetAccountGroupsAsync(GridOptions gridOptions)
         {
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var accGroups = new List<AccountGroupViewModel>();
             if (gridOptions.Operation != (int)OperationId.Print)
             {
@@ -78,7 +79,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه حساب های کل زیرمجموعه</returns>
         public async Task<PagedList<AccountViewModel>> GetGroupLedgerAccountsAsync(
-            int groupId, GridOptions gridOptions = null)
+            int groupId, GridOptions gridOptions)
         {
             var accounts = await Repository
                 .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)

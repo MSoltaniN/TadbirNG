@@ -42,8 +42,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<PagedList<AccountViewModel>> GetAccountsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<AccountViewModel>> GetAccountsAsync(GridOptions gridOptions)
         {
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var accounts = new List<AccountViewModel>();
             if (gridOptions.Operation != (int)OperationId.Print)
             {
@@ -67,7 +68,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های قابل انتخاب در دوره مالی و شعبه جاری برنامه</returns>
         /// <remarks>این متد حسابهای غیرفعال در دوره مالی جاری برنامه را از فهرست خروجی فیلتر می کند</remarks>
-        public async Task<PagedList<AccountViewModel>> GetAccountsLookupAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<AccountViewModel>> GetAccountsLookupAsync(GridOptions gridOptions)
         {
             var inactiveAccountIds = await GetInactiveAccountIdsAsync();
             var accounts = await Repository

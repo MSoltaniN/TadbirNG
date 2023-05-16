@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -52,8 +51,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CashRegister, (int)CashRegisterPermissions.View)]
         public async Task<IActionResult> GetCashRegistersAsync()
         {
-            var cashregisters = await _repository.GetCashRegistersAsync(GridOptions);
-            return JsonListResult(cashregisters);
+            var cashRegisters = await _repository.GetCashRegistersAsync(GridOptions);
+            return JsonListResult(cashRegisters);
         }
 
         /// <summary>
