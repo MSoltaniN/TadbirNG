@@ -68,7 +68,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     this.editForm.get('endNo')[!value ? 'enable' : 'disable']();
     this.editForm.get('sayyadStartNo')[!value ? 'enable' : 'disable']();
     this.editForm.get('seriesNo')[!value ? 'enable' : 'disable']();
-    // this.editForm.get('endNo')[!value ? 'enable' : 'disable']();
+
     this.editMode = value;
   };
   otherSizeOfPages = false;
@@ -91,7 +91,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   deleteConfirmBox = false;
   searchConfirm = false;
   checkBookNo:number;
-  lastModel: CheckBookInfo = new CheckBookInfo();;
+  lastModel: CheckBookInfo = new CheckBookInfo();
 
   get urlMode() {
     let mode = this.route.snapshot.paramMap.get('mode');
@@ -304,7 +304,6 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
         )
         .subscribe({
           next: res =>{
-            this.addNew();
             this.deleteConfirmBox = false;
     
             this.showMessage(this.deleteMsg,MessageType.Info);
@@ -317,14 +316,17 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
                 setTimeout(() => {
                   this.checkBookItem = next;
                 }, 0);
-                this.router.routeReuseStrategy.store(null,null)
-                this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
-                  no: next.checkBookNo
-                }});
+                this.router.routeReuseStrategy.store(null,null);
+
+                if (!this.dialogMode) {
+                  this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
+                    no: next.checkBookNo
+                  }});
+                }
               }).catch(err => {
                 //if next checkbook not exists try for previous checkbook;
                 lastValueFrom(this.checkBookService.
-                  getModelsByFilters(String.Format(CheckBooksApi.PreviousCheckBook,this.model.issueDate),
+                  getModelsByFilters(CheckBooksApi.LastCheckBook,
                   this.filter,
                   this.quickFilter
                   )
@@ -332,15 +334,18 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
                   setTimeout(() => {
                     this.checkBookItem = previous;
                   }, 0);
-                this.router.routeReuseStrategy.store(null,null)
+                    this.router.routeReuseStrategy.store(null,null)
 
-                    this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
-                      no: previous.checkBookNo
-                    }});
+                    if (!this.dialogMode)
+                      this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
+                        no: previous.checkBookNo
+                      }});
                   }).catch( err2 => {
                     //if previous check-book not exists show check-book list
-                    this.cancel.emit();
-                    this.router.navigate(["/treasury/check-books/"]);
+                    // this.cancel.emit();
+                    this.addNew();
+                    if (!this.dialogMode)
+                      this.router.navigate(["/treasury/check-books/"]);
                   })
               })
           },
@@ -422,8 +427,6 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
             );
 
           if (this.urlMode == 'by-no') {
-            console.log(this.returnUrl);
-            
             if (this.returnUrl)
               this.router.navigate([this.returnUrl]);
             else
@@ -555,8 +558,6 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   }
 
   onSave(e){
-    console.log(this.editForm);
-
     let value = this.editForm.value;
 
     let request = this.model.id>0?
@@ -609,8 +610,6 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
 
   // Events
   onChangePagesCountDropDown(e) {
-    console.log(this.editForm);
-    
     if (e == -1) {
       this.otherSizeOfPages = true;
       this.selectedPagesCount = 1;
@@ -630,9 +629,16 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
       this.editForm.get('pageCount').setValidators(NumberValidators.minMax({max: 1000,min:1}));
       this.selectedPagesCount = 1;
     }
-    this.editForm.patchValue({
-      pageCount: this.selectedPagesCount
-    });
+
+    let count = this.selectedPagesCount;
+    if (this.pagesCount.find(i => i.key != this.selectedPagesCount))
+      this.selectedPagesCount = -1;
+    setTimeout(() => {
+      this.selectedPagesCount = count;
+      this.editForm.patchValue({
+        pageCount: this.selectedPagesCount
+      });
+    }, 0);
   }
 
   onFullAccountInpusFocuse(e) {}

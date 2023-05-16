@@ -27,8 +27,6 @@
   [kendoGridSelectBy]="selectionKey"
   (filterChange)="filterChange($event)"
   (selectedKeysChange)="onSelectedKeysChange($event)"
-  (dataStateChange)="onDataStateChange($event)"
-  (dblclick)="rowDoubleClickHandler()"
   sppc-auto-generated-grid-reorder
   sppc-auto-generated-grid-resize
 >
@@ -113,6 +111,7 @@
   </kendo-grid-checkbox-column>
 
   <kendo-grid-column [width]="100" field="rowNo" title="{{ 'UserValueFilter.RowNo' | translate }}">
+    <ng-template kendoGridFilterCellTemplate let-filter let-column></ng-template>
   </kendo-grid-column>
   <kendo-grid-column [width]="100" field="value" title="{{ 'UserValueFilter.Name' | translate }}">
   </kendo-grid-column>
