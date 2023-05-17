@@ -3930,4 +3930,10 @@
   <data name="CantSaveAsDraft" xml:space="preserve">
     <value>این {0} ثبت قطعی یا تأیید شده و قابل تبدیل به سند پیش نویس نیست.</value>
   </data>
+  <data name="RepeatedEntityActionMessage" xml:space="preserve">
+    <value>{1} مورد نظر قبلاً {0} شده است.</value>
+  </data>
+  <data name="InvalidEntityActionMessage" xml:space="preserve">
+    <value>برای {0} {1} مورد نظر، باید ابتدا آن را {2} کنید.</value>
+  </data>
 </root>

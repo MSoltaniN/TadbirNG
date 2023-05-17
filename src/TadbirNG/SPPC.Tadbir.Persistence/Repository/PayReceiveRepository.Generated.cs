@@ -11,6 +11,7 @@ using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.CashFlow;
+using SPPC.Tadbir.ViewModel.Check;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -60,10 +61,7 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(payReceive, nameof(payReceive));
             var currPersonName = await _userRepository.GetCurrentUserDisplayNameAsync();
-            int entityTypeId = (int)(payReceive.Type == (int)PayReceiveType.Receival
-                ? EntityTypeId.Receival
-                : EntityTypeId.Payment);
-
+            int entityTypeId = GetEntityTypeId(payReceive.Type);
             PayReceive payReceiveModel;
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
             if (payReceive.Id == 0)
@@ -101,9 +99,7 @@ namespace SPPC.Tadbir.Persistence
             var payReceive = await repository.GetByIDAsync(payReceiveId);
             if (payReceive != null)
             {
-                int entityTypeId = (int)(type == (int)PayReceiveType.Receival
-                    ? EntityTypeId.Receival
-                    : EntityTypeId.Payment);
+                int entityTypeId = GetEntityTypeId(type);
                 await DeleteAsync(repository, payReceive, OperationId.Delete, entityTypeId);
             }
         }
@@ -119,7 +115,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
             return await repository
                 .GetEntityQuery()
-                .AnyAsync(pr => payReceive.Id != pr.Id 
+                .AnyAsync(pr => payReceive.Id != pr.Id
                 && payReceive.PayReceiveNo == pr.PayReceiveNo
                 && payReceive.Type == pr.Type
                 && payReceive.FiscalPeriodId == pr.FiscalPeriodId
@@ -135,18 +131,61 @@ namespace SPPC.Tadbir.Persistence
         public async Task SetPayReceiveConfirmationAsync(int payReceiveId, bool isConfirmed)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
-            var payReceive= await repository.GetByIDAsync(payReceiveId);
-            if (payReceive != null) 
+            var payReceive = await repository.GetByIDAsync(payReceiveId);
+            if (payReceive != null)
             {
                 payReceive.ConfirmedById = isConfirmed ? UserContext.Id : null;
                 payReceive.ConfirmedByName = isConfirmed ? GetCurrentUserFullName() : null;
                 repository.Update(payReceive);
-                int entityTypeId = (int)(payReceive.Type == (int)PayReceiveType.Receival
-                ? EntityTypeId.Receival
-                : EntityTypeId.Payment);
+                int entityTypeId = GetEntityTypeId(payReceive.Type);
                 OnDocumentConfirmation(isConfirmed, entityTypeId);
                 await FinalizeActionAsync(payReceive);
             }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، وضعیت تصویب فرم دریافت/پرداخت مشخص شده را تغییر می دهد
+        /// </summary>
+        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="isApproved"> در صورت تصویب فرم دریافت/پرداخت با مقدار درست 
+        /// و در غیر این صورت با مقدار نادرست پر می شود.</param>
+        public async Task SetPayReceiveApprovalAsync(int payReceiveId, bool isApproved)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
+            var payReceive = await repository.GetByIDAsync(payReceiveId);
+            if (payReceive != null)
+            {
+                payReceive.ApprovedById = isApproved ? UserContext.Id : null;
+                payReceive.ApprovedByName = isApproved ? GetCurrentUserFullName() : null;
+                repository.Update(payReceive);
+                int entityTypeId = GetEntityTypeId(payReceive.Type);
+                OnDocumentApproval(isApproved, entityTypeId);
+                await FinalizeActionAsync(payReceive);
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، فرم دریافت/پرداخت با شماره مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="payReceiveNo">شماره یکی از فرم های دریافت/پرداخت موجود</param>
+        /// <param name="type">نوع فرم دریافت/پرداخت</param>
+        /// <returns>فرم دریافت/پرداخت مشخص شده با شماره</returns>
+        public async Task<PayReceiveViewModel> GetPayReceiveNoAsync(string payReceiveNo, PayReceiveType type)
+        {
+            var byNo = default(PayReceiveViewModel);
+            var viewId = (int)(type == PayReceiveType.Payment
+                ? ViewId.Payment
+                : ViewId.Receival);
+            var payReceiveByNo = await Repository.GetAllOperationQuery<PayReceive>(viewId)
+                .Where(pr => pr.PayReceiveNo == payReceiveNo.Trim() && pr.Type == (int)type)
+                .SingleOrDefaultAsync();
+
+            if (payReceiveByNo != null)
+            {
+                byNo = Mapper.Map<PayReceiveViewModel>(payReceiveByNo);
+            }
+
+            return byNo;
         }
 
         internal override int? EntityType
@@ -190,6 +229,13 @@ namespace SPPC.Tadbir.Persistence
                 $"{AppStrings.Reference} : {entity.Reference}, {AppStrings.Date} : {entity.Date}, " +
                 $"{AppStrings.CurrencyRate} : {entity.CurrencyRate}, {AppStrings.Description} : {entity.Description}, "
                 : String.Empty;
+        }
+
+        private int GetEntityTypeId(int type)
+        {
+            return (int)(type == (int)PayReceiveType.Receival
+                   ? EntityTypeId.Receival
+                   : EntityTypeId.Payment);
         }
 
         private ISecureRepository Repository

@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.CashFlow;
+using SPPC.Tadbir.ViewModel.Check;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -47,5 +49,21 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="isConfirmed"> در صورت تایید فرم دریافت/پرداخت با مقدار درست 
         /// و در غیر این صورت با مقدار نادرست پر می شود.</param>
         Task SetPayReceiveConfirmationAsync(int payReceiveId, bool isConfirmed);
+
+        /// <summary>
+        /// به روش آسنکرون، وضعیت تصویب فرم دریافت/پرداخت مشخص شده را تغییر می دهد
+        /// </summary>
+        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="isApproved"> در صورت تصویب فرم دریافت/پرداخت با مقدار درست 
+        /// و در غیر این صورت با مقدار نادرست پر می شود.</param>
+         Task SetPayReceiveApprovalAsync(int payReceiveId, bool isApproved);
+
+        /// <summary>
+        /// به روش آسنکرون، فرم دریافت/پرداخت با شماره مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="payReceiveNo">شماره یکی از فرم های دریافت/پرداخت موجود</param>
+        /// <param name="type">نوع فرم دریافت/پرداخت</param>
+        /// <returns>فرم دریافت/پرداخت مشخص شده با شماره</returns>
+        Task<PayReceiveViewModel> GetPayReceiveNoAsync(string payReceiveNo, PayReceiveType type);
     }
 }

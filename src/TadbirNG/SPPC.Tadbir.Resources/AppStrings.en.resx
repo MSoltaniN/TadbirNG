@@ -3939,4 +3939,10 @@
   <data name="CantSaveAsDraft" xml:space="preserve">
     <value>This {0} is either confirmed or finalized and cannot be saved as draft.</value>
   </data>
+  <data name="RepeatedEntityActionMessage" xml:space="preserve">
+    <value>Action '{0}' has already been performed on this {1}.</value>
+  </data>
+  <data name="InvalidEntityActionMessage" xml:space="preserve">
+    <value>To perform '{0}' action on a {1}, first you have to {2} it.</value>
+  </data>
 </root>
