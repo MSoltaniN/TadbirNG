@@ -33,7 +33,7 @@ import { QuickReportConfigInfo } from '@sppc/shared/models';
         <span *ngIf="tab.isDesigner" class="k-icon k-i-pencil"></span>
         <span *ngIf="tab.isViewer" class="k-icon k-i-eye"></span>
         {{tab.title}} <span class="tab-close" *ngIf="tab.isCloseable" 
-        (click)="showCloseConfirm(tab)">x</span></a>
+        (click)="showCloseConfirm(tab.Id)">x</span></a>
       </li>
     </ul>
     <ng-content></ng-content>
@@ -227,8 +227,9 @@ export class TabsComponent implements AfterContentInit {
       tab.active = true;
   }
 
-  showCloseConfirm(tab: TabComponent)
+  showCloseConfirm(id: string)
   {
+    const tab = this.dynamicTabs.find(t=>t.Id === id);
     if(tab.isDesigner)
     {
       this.currentTab = tab;
