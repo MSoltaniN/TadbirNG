@@ -320,6 +320,22 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا دوره مالی مشخص شده به همراه اطلاعاتش قابل حذف است یا نه؟
+        /// </summary>
+        /// <param name="fiscalPeriodId">شناسه دیتابیسی دوره مالی مورد نظر</param>
+        /// <returns>اگر دوره مالی مورد نظر آخرین دوره مالی باشد مقدار بولی درست و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> CanDeleteFiscalPeriodWithDataAsync(int fiscalPeriodId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var lastItem = await repository
+                .GetEntityQuery()
+                .OrderByDescending(fp => fp.EndDate)
+                .FirstOrDefaultAsync();
+            return lastItem != null && lastItem.Id == fiscalPeriodId;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که دوره مالی با شناسه دیتابیسی داده شده
         /// سندی با وضعیت ثبت، ثبت قطعی، تأییدشده یا تصویب شده دارد یا نه
         /// </summary>
@@ -457,21 +473,6 @@ namespace SPPC.Tadbir.Persistence
             return newItems
                 .Select(item => item.Id)
                 .ToArray();
-        }
-
-        private async Task<string> GetFiscalPeriodRoleDescriptionAsync(int fiscalPeriodId)
-        {
-            string description = String.Empty;
-            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var fiscalPeriod = await repository.GetByIDAsync(fiscalPeriodId);
-            if (fiscalPeriod != null)
-            {
-                string template = Context.Localize(AppStrings.RolesWithAccessToResource);
-                string entity = Context.Localize(AppStrings.FiscalPeriod).ToLower();
-                description = String.Format(template, entity, fiscalPeriod.Name);
-            }
-
-            return description;
         }
 
         private async Task<Expression<Func<FiscalPeriod, bool>>> GetSecurityFilterAsync()

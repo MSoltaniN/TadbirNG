@@ -7,9 +7,6 @@ import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { DetailComponent } from '@sppc/shared/class';
 import { ViewName } from '@sppc/shared/security';
 import { CashRegisters } from '@sppc/treasury/models/cashRegisters';
-import { BranchScopeType } from '@sppc/finance/enum/shared';
-import { BranchScopeResource } from '@sppc/finance/enum';
-import { Item } from '@sppc/shared/models';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -26,7 +23,6 @@ export function getLayoutModule(layout: Layout) {
     useFactory: getLayoutModule,
     deps: [Layout]
   }]
-
 })
 
 export class CashRegistersFormComponent extends DetailComponent implements OnInit {
@@ -87,41 +83,4 @@ export class CashRegistersFormComponent extends DetailComponent implements OnIni
     this.closeForm();
   }
 
-  dbNameValue: string;
-  toEnglishChars(e:KeyboardEvent) {
-    let char = e.code.toString().split('Key');
-
-    if (char.length > 1 && !(e.code == 'KeyA' && e.ctrlKey == true)) {
-
-      if (char[1].toLowerCase() == e.key.toLowerCase()) {
-
-        this.editForm.patchValue({
-          dbName: this.dbNameValue+e.key
-        });
-
-      } else {
-
-        if (e.shiftKey) {
-          this.editForm.patchValue({
-            dbName: this.dbNameValue+char[1]
-          });
-        } else {
-
-          this.editForm.patchValue({
-            dbName: this.dbNameValue+char[1].toLowerCase()
-          });
-        }
-      }
-    }
-
-    // to Allow the shortcut select all in input text
-    if (e.code == 'KeyA' && e.ctrlKey == true) {
-      (<any>e.target).select();
-      // return;
-    } else {
-      this.dbNameValue = this.editForm.value.dbName? this.editForm.value.dbName: '';
-    }
-
-  }
-   
 }

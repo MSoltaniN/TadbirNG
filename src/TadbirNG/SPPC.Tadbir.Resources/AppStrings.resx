@@ -3873,4 +3873,16 @@
   <data name="UserValues" xml:space="preserve">
     <value>مقادیر کاربری</value>
   </data>
+  <data name="SayyadNo" xml:space="preserve">
+    <value>شماره صیادی</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>فعال</value>
+  </data>
+  <data name="Archived" xml:space="preserve">
+    <value>بایگانی شده</value>
+  </data>
+  <data name="CantDeleteMiddleFiscalPeriods" xml:space="preserve">
+    <value>به دلیل وابستگی احتمالی اطلاعات در دوره های مالی، فقط اطلاعات آخرین دوره مالی قابل حذف است.</value>
+  </data>
 </root>

@@ -337,6 +337,8 @@ export class AccountBookComponent
       this.sharedDataService.selectFormTitle.next(title);
     });
 
+    this.initPersistVariables();
+
     this.entityName = Entities.AccountBookSingle;
     this.viewId = ViewName[this.entityTypeName];
     this.tempViewId = this.viewId;
@@ -390,6 +392,9 @@ export class AccountBookComponent
     this.changeBranchSeparation();
     this.cdref.detectChanges();
 
+  }
+
+  initPersistVariables() {
     if (this.displayTypeSelected == undefined)
       this.displayTypeSelected = BookDisplayType.ByRow;
 
@@ -416,8 +421,15 @@ export class AccountBookComponent
   }
 
   loadEntity() {
-    this.settingService.getAll(LookupApi.TreeViews).subscribe((res) => {
-      this.ddlEntites = res.body;
+    this.settingService.getAll(LookupApi.FullAccountParts).subscribe((res) => {
+      let items = [];
+      (<Array<any>>res.body).forEach(i => {
+        items.push({
+          key: i.id.toString(),
+          value: i.name
+        })
+      })
+      this.ddlEntites = items;
     });
   }
 

@@ -74,5 +74,6 @@ export enum ViewName {
   CheckBookPage = 69,
   CashRegister = 70,
   CheckBook = 71,
-  CheckBookReport = 72
+  CheckBookReport = 72,
+  SourceApp = 73
 }

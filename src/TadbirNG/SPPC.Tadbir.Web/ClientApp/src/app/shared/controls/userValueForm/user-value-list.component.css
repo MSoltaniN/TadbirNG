@@ -1,0 +1,27 @@
+.search-box {
+    position: relative;
+  }
+  .search-block lable{
+    align-self: start;
+  }
+  .tRtl .search-box span {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    font-size: 22px;
+  }
+  .tLtr .search-box span {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 22px;
+  }
+  .search-box span:hover {
+    opacity: 0.5;
+  }
+
+  .toolbar {
+    display: flex;
+    gap:10px;
+    margin-top: -16px;
+  }

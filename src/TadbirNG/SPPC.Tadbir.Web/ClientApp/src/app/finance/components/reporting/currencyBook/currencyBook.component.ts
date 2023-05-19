@@ -344,6 +344,7 @@ export class CurrencyBookComponent
     this.entityName = Entities.CurrencyBook;
     this.viewId = ViewName[this.entityTypeName];
     //this.customListChanged = true;
+    this.initPersistVariables();
     this.getCurrencies();
 
     this.showloadingMessage = false;
@@ -359,26 +360,29 @@ export class CurrencyBookComponent
     this.cdref.detectChanges();
     this.changeBranchSeparation();
 
-    if (this.selectedCurrencyValue == undefined)
-      this.selectedCurrencyValue = "0";
-
-    if (this.selectedCurrencyValue == undefined)
-      this.displayTypeSelected = BookDisplayType.ByRow;
-
-    if (this.selectedCurrencyValue == undefined)
-      this.branchScopeSelected = BranchScopeType.CurrentBranch;
-
-    if (this.selectedCurrencyValue == undefined)
-      this.voucherStatusSelected = VoucherStatusType.Committed;
-
-    if (this.selectedCurrencyValue == undefined)
-      this.articleTypeSelected = ArticleTypesResourceKey.AllVoucherLines;
   }
 
   public ngOnDestroy(): void {
     this.docClickSubscription();
 
     super.ngOnDestroy();
+  }
+
+  initPersistVariables() {
+    if (this.selectedCurrencyValue == undefined)
+      this.selectedCurrencyValue = "0";
+
+    if (this.displayTypeSelected == undefined)
+      this.displayTypeSelected = BookDisplayType.ByRow;
+
+    if (this.branchScopeSelected == undefined)
+      this.branchScopeSelected = BranchScopeType.CurrentBranch;
+
+    if (this.voucherStatusSelected == undefined)
+      this.voucherStatusSelected = VoucherStatusType.Committed;
+
+    if (this.articleTypeSelected == undefined)
+      this.articleTypeSelected = ArticleTypesResourceKey.AllVoucherLines;
   }
 
   dateValueChange(event: any) {

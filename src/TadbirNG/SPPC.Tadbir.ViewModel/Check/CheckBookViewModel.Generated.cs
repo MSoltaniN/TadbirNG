@@ -40,8 +40,7 @@ namespace SPPC.Tadbir.ViewModel.Check
         /// <summary>
         /// شماره دسته چک
         /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int CheckBookNo { get; set; }
+        public int? CheckBookNo { get; set; }
 
         /// <summary>
         /// شماره سری دسته چک

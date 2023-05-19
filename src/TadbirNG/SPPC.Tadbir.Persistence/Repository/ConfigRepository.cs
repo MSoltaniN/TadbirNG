@@ -548,9 +548,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private void UpdateDefaultAccountCodeRecursive(IList<DefaultAccountViewModel> defaultAccounts,
-            ViewTreeFullConfig accountTreeConfig,
-            string accParentFullCode,
-            int? parentId = null)
+            ViewTreeFullConfig accountTreeConfig, string accParentFullCode, int? parentId = null)
         {
             foreach (var item in defaultAccounts.Where(f => f.ParentId == parentId))
             {
@@ -573,7 +571,6 @@ namespace SPPC.Tadbir.Persistence
                         else
                         {
                             diffLength = configCodeLength - accCodeLength;
-
                             string format = String.Format("D{0}", configCodeLength);
                             item.Code = Convert.ToInt64(item.Code).ToString(format);
                         }
@@ -581,7 +578,6 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 item.FullCode = string.Format("{0}{1}", accParentFullCode, item.Code);
-
                 UpdateDefaultAccountCodeRecursive(defaultAccounts, accountTreeConfig, item.FullCode, item.Id);
             }
         }

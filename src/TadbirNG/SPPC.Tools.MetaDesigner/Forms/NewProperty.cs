@@ -64,8 +64,7 @@ namespace SPPC.Tools.MetaDesigner.Forms
             string typeName = cmbType.SelectedItem.ToString().Replace("System.", String.Empty);
             var type = (BuiltinType)Enum.Parse(typeof(BuiltinType), typeName);
             var generator = new BasicMetaGenerator();
-            int length = 0;
-            Int32.TryParse(txtMaximum.Text, out length);
+            _ = Int32.TryParse(txtMaximum.Text, out int length);
             Property = generator.GenerateProperty(txtName.Text, type, length);
             Property.Storage.Nullable = !chkRequired.Checked;
             GetValidation(Property.ValidationRule);

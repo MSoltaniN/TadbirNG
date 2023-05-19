@@ -313,12 +313,9 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعهای از شناسه های دیتابیسی موجودیت وابسته</returns>
         protected int[] GetReferencedItems(int id, Type type, Type dependentType)
         {
-            string keyName = (type != typeof(DetailAccount))
-                ? type.Name
-                : "Detail";
             var idItems = ModelCatalogue.GetModelTypeItems(dependentType);
             string command = String.Format("SELECT {0}ID FROM [{1}].[{2}] WHERE {3}ID = {4}",
-                dependentType.Name, idItems[0], idItems[1], keyName, id);
+                dependentType.Name, idItems[0], idItems[1], type.Name, id);
             var result = DbConsole.ExecuteQuery(command);
             return result.Rows
                 .Cast<DataRow>()

@@ -126,7 +126,8 @@ export const Entities = {
   CheckBookPage: "CheckBookPage",
   CashRegister: "CashRegister",
   CheckBook: "CheckBook",
-  CheckBookReport: "CheckBookReport"
+  CheckBookReport: "CheckBookReport",
+  SourceApp: "SourceApp"
 }
 
 export const CustomForm =

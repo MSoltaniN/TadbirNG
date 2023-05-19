@@ -1,0 +1,198 @@
+<kendo-grid
+  [height]="400"
+  id="{{ viewId }}"
+  style="width: 100%"
+  #GridID
+  [ngClass]="{
+    tRtl: this.currentlang === 'fa',
+    tLtr: this.currentlang === 'en'
+  }"
+  [data]="rowData"
+  [sortable]="{ allowUnsort: true, mode: 'multiple' }"
+  [sort]="sort"
+  [pageSize]="pageSize"
+  [skip]="skip"
+  [filter]="state.filter"
+  [pageable]="true"
+  [resizable]="true"
+  [filterable]="true"
+  [scrollable]="'scrollable'"
+  (pageChange)="pageChange($event)"
+  (sortChange)="sortChange($event)"
+  (edit)="editHandler($event)"
+  (remove)="removeHandler($event)"
+  [loading]="false"
+  [selectable]="selectableSettings"
+  [(selectedKeys)]="selectedRows"
+  [kendoGridSelectBy]="selectionKey"
+  (filterChange)="filterChange($event)"
+  (selectedKeysChange)="onSelectedKeysChange($event)"
+  sppc-auto-generated-grid-reorder
+  sppc-auto-generated-grid-resize
+>
+  <kendo-grid-messages
+    pagerPage="{{ 'Paging.Record' | translate }}"
+    pagerOf="{{ 'Paging.Of' | translate }}"
+    pagerItems="{{ 'Paging.Record' | translate }}"
+    pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}"
+    pagerNextPage="{{ 'Paging.NextPage' | translate }}"
+    pagerPreviousPage="{{ 'Paging.PreviousPage' | translate }}"
+    pagerFirstPage="{{ 'Paging.FirstPage' | translate }}"
+    pagerLastPage="{{ 'Paging.LastPage' | translate }}"
+  >
+  </kendo-grid-messages>
+  <ng-template kendoPagerTemplate>
+    <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+    <kendo-pager-info></kendo-pager-info>
+    <kendo-pager-numeric-buttons
+      [buttonCount]="5"
+    ></kendo-pager-numeric-buttons>
+    <kendo-pager-next-buttons></kendo-pager-next-buttons>
+    <kendo-pager-page-sizes
+      [pageSizes]="pageSizeArray"
+    ></kendo-pager-page-sizes>
+  </ng-template>
+
+  <ng-template kendoGridNoRecordsTemplate>
+    {{ showloadingMessage ? "" : ("App.RecordNotFound" | translate) }}
+  </ng-template>
+  <ng-template kendoGridToolbarTemplate>
+    <div class="toolbar">
+      <div class="form-group">
+        <label class="control-label">{{
+          "SelectForm.SubjectOfTheSearch" | translate
+        }}</label>
+        <kendo-dropdownlist
+          [data]="categoriesList"
+          class="sppc-width-100"
+          [textField]="'value'"
+          [valueField]="'key'"
+          [valuePrimitive]="true"
+          [value]="categoryId"
+          [(ngModel)]="categoryId"
+          (ngModelChange)="changeCategory()"
+          [disabled]="isDisableEntities"
+        >
+        </kendo-dropdownlist>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label">{{ "SelectForm.SearchTerm" | translate }}</label>
+        <div class="search-box">
+          <input
+            class="k-textbox sppc-width-100"
+            [(ngModel)]="searchValue"
+            (keydown.enter)="onSearch()"
+          />
+          <span class="k-icon k-i-search" (click)="onSearch()"></span>
+        </div>
+      </div>
+
+      <selectForm-grid-setting
+        [entityTypeName]="entityTypeName"
+        (columnsList)="getColumns($event)"
+        (quickSearch)="getCurrentSetting($event)"
+      >
+      </selectForm-grid-setting>
+      <grid-filter style="flex: auto;"
+        *ngIf="this.grid.filterable"
+        [parentComponent]="this"
+        [showClearFilter]="this.grid.filter.filters.length"
+      ></grid-filter>
+    </div>
+
+
+  </ng-template>
+
+  <kendo-grid-checkbox-column
+    showSelectAll="true"
+    [width]="50"
+  >
+  </kendo-grid-checkbox-column>
+
+  <kendo-grid-column [width]="100" field="rowNo" title="{{ 'UserValueFilter.RowNo' | translate }}">
+    <ng-template kendoGridFilterCellTemplate let-filter let-column></ng-template>
+  </kendo-grid-column>
+  <kendo-grid-column [width]="100" field="value" title="{{ 'UserValueFilter.Name' | translate }}">
+  </kendo-grid-column>
+
+  <!-- <kendo-grid-column media="(max-width: 450px)" title="">
+    <ng-template kendoGridCellTemplate let-dataItem>
+      <dl>
+        <ng-template ngFor let-item [ngForOf]="gridColumns" let-i="index">
+          <dt>{{ getColumnTitle(item) }}:</dt>
+          <dd
+            *ngIf="item.type == 'Money' || item.type == 'Currency'"
+            class="dl-value"
+          >
+            {{
+              getRowValue(item.name, dataItem, item.scriptType)
+                | SppcNumConfig
+                | async
+            }}
+          </dd>
+          <dd
+            *ngIf="
+              item.scriptType != 'Date' &&
+              item.type != 'Money' &&
+              item.type != 'Currency'
+            "
+            class="dl-value"
+          >
+            {{ getRowValue(item.name, dataItem, item.scriptType) }}
+          </dd>
+          <dd *ngIf="item.scriptType == 'Date'" class="dl-value">
+            {{
+              getRowValue(item.name, dataItem, item.scriptType)
+                | SppcDate: item.type:item.scriptType
+            }}
+          </dd>
+        </ng-template>
+      </dl>
+    </ng-template>
+  </kendo-grid-column>
+
+  <kendo-grid-column
+    media="(min-width: 450px)"
+    *ngFor="let item of gridColumns"
+    sppc-auto-grid-column="{{ item.settings }}"
+  >
+    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+      <sppc-auto-grid-filter
+        [metaDataItem]="item"
+        [metaData]="item.scriptType"
+        [column]="column"
+        [filter]="filter"
+      ></sppc-auto-grid-filter>
+    </ng-template>
+
+    <ng-template
+      kendoGridCellTemplate
+      let-dataItem
+      *ngIf="item.scriptType == 'Date'"
+    >
+      {{
+        getRowValue(item.name, dataItem, item.scriptType)
+          | SppcDate: item.type:item.scriptType
+      }}
+    </ng-template>
+
+    <ng-template
+      kendoGridCellTemplate
+      let-dataItem
+      *ngIf="item.scriptType == 'boolean'"
+    >
+      {{ getRowValue(item.name, dataItem, item.scriptType) }}
+    </ng-template>
+
+    <ng-template
+      kendoGridCellTemplate
+      let-dataItem
+      *ngIf="item.type == 'Money' || item.type == 'Currency'"
+    >
+      {{
+        getRowValue(item.name, dataItem, item.type) | SppcNumConfig | async
+      }}
+    </ng-template>
+  </kendo-grid-column> -->
+</kendo-grid>

@@ -1,0 +1,77 @@
+
+<div style="padding:15px;" (keydown.esc)="escPress()">
+
+    <div *ngIf="errorMessages">
+      <div *ngFor="let err of errorMessages" class="alert alert-danger">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        {{ err }}
+      </div>
+    </div>
+  
+    <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
+      <div class="form-group">
+        <label for="name" class="control-label">{{ 'SourceApp.Code' | translate }}</label>
+  
+        <input sppcAutoFocus type="text" class="k-textbox" formControlName="code" />
+  
+        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
+          <span *ngIf="editForm.controls.code.errors?.required">{{ 'AllValidations.SourceApp.CodeIsRequired' | translate }}</span>
+          <span *ngIf="editForm.controls.code.errors?.maxlength">{{ 'AllValidations.SourceApp.CodeIsTooLong' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="name" class="control-label">{{ 'Company.Name' | translate }}</label>
+  
+        <input type="text" class="k-textbox" formControlName="name" />
+  
+        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
+          <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.SourceApp.NameIsRequired' | translate }}</span>
+          <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.SourceApp.NameIsTooLong' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="name" class="control-label">{{ 'SourceApp.Type' | translate }}</label>
+        <kendo-dropdownlist [data]="sourceAppTypes" class="mx-1"
+          [textField]="'key'"
+          [valueField]="'value'"
+          [valuePrimitive]="true"
+          [value]="selectedType"
+          (valueChange)="onChangeTypeDropDown($event)"
+          [(ngModel)]="selectedType"
+          formControlName="type"
+        >
+          <ng-template kendoDropDownListValueTemplate let-dataItem>
+            {{ dataItem?.key | translate }}
+          </ng-template>
+          <ng-template kendoDropDownListItemTemplate let-dataItem>
+            {{ dataItem?.key | translate }}
+          </ng-template>
+        </kendo-dropdownlist>
+      </div>
+
+      <div class="form-group">
+          <label for="branchScope" class="control-label">{{ 'Account.BranchScope' | translate }}</label>
+
+          <sppc-branch-scope formControlName="branchScope" [parentScope]="selectedBranchScope" [isNew]="isNew" [isEnableInEditMode]="true"></sppc-branch-scope>
+      </div>
+  
+      <div class="form-group">
+        <label for="description" class="control-label">{{ 'Company.Description' | translate }}</label>
+  
+        <textarea class="k-textarea" formControlName="description"></textarea>
+  
+        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+          {{ 'AllValidations.CompanyDb.DescriptionIsTooLong' | translate }}
+        </div>
+      </div>
+    </form>
+  
+  </div>
+  
+  <kendo-dialog-actions>
+    <button class="k-button k-primary prevent-duplicate" [disabled]="!editForm.valid" (click)="onSave($event)">{{ isWizard ? ('Buttons.NextStep' | translate) : ('Buttons.Ok' | translate) }}</button>
+    <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+  </kendo-dialog-actions>
+  

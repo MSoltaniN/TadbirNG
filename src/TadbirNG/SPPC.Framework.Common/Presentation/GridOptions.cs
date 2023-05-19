@@ -21,6 +21,23 @@ namespace SPPC.Framework.Presentation
         }
 
         /// <summary>
+        /// نمونه کمکی برای تنظیمات لیستی پیش فرض
+        /// </summary>
+        public static GridOptions Empty
+        {
+            get
+            {
+                return new GridOptions()
+                {
+                    Paging = GridPaging.DefaultPaging,
+                    SortColumns = new List<GridOrderBy>(),
+                    ListChanged = false,
+                    Operation = 1      // Defaults to View operation
+                };
+            }
+        }
+
+        /// <summary>
         /// گزینه های مربوط به نحوه صفحه بندی اطلاعات در نمای جدولی
         /// </summary>
         public GridPaging Paging { get; set; }
@@ -62,8 +79,9 @@ namespace SPPC.Framework.Presentation
         {
             get
             {
-                return Filter == null && QuickFilter == null
-                    && !SortColumns.Any() && Paging.PageSize == Int32.MaxValue;
+                return Filter == null
+                    && QuickFilter == null
+                    && !SortColumns.Any();
             }
         }
     }

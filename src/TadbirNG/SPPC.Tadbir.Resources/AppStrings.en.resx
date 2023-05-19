@@ -3882,4 +3882,16 @@
   <data name="ExistsCanceledPage" xml:space="preserve">
     <value>At least one sheet of the check book has been canceled.</value>
   </data>
+  <data name="SayyadNo" xml:space="preserve">
+    <value>Sayyad No</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Archived" xml:space="preserve">
+    <value>Archived</value>
+  </data>
+  <data name="CantDeleteMiddleFiscalPeriods" xml:space="preserve">
+    <value>Due to possibly shared data in fiscal periods, only last item can be deleted with data.</value>
+  </data>
 </root>

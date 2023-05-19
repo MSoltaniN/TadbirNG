@@ -1,15 +1,15 @@
 {
   "App": {
-    "Title": "به سیستم جدید تدبیر خوش آمدید!",
-    "SELECT": "Changer la langue",
+    "Title": "به سیستم جدید تدبیر خوش آمدید",
+    "SELECT": "تغییر زبان",
     "Loading": "در حال بارگذاری ...",
-    "RecordNotFound": "هیچ رکوردی یافت نشد!",
+    "RecordNotFound": "رکوردی برای نمایش وجود ندارد.",
     "Name": "سیستم جامع تدبیر",
     "SummaryName": "تدبیر",
-    "NotViewAccess": "شما دسترسی دیدن اطلاعات را ندارید",
+    "NotViewAccess": "شما دسترسی مشاهده اطلاعات را ندارید.",
     "Level": "سطح",
-    "AccessDenied": "شما اجازه دسترسی ندارید",
-    "PleaseLoadData": "لطفا قبل از تهیه خروجی دکمه محاسبه را کلیک کنید",
+    "AccessDenied": "شما به این امکان دسترسی ندارید.",
+    "PleaseLoadData": "لطفا قبل از تهیه خروجی دکمه محاسبه را کلیک کنید.",
     "Version": "نسخه"
   },
   "LicenseInfo": {
@@ -235,7 +235,8 @@
     "Widget": "ویجت",
     "CashRegister": "صندوق",
     "CheckBook": "دسته چک",
-    "CheckBookReport": "گزارش دسته چک"
+    "CheckBookReport": "گزارش دسته چک",
+    "SourceApp": "منابع و مصارف"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",
@@ -346,22 +347,22 @@
     "EndsWith": "پایان با",
     "Contains": "شامل شود",
     "DoesNotContain": "شامل نشود",
-    "RecordNotFound": "هیچ فیلتری درج نشده است!",
-    "GroupFilterNotFound": "هیچ گروه فیلتری درج نشده است!",
-    "PleaseInsertGroupFilter": "لطفا ابتدا گروه فیلتر انتخاب شود",
+    "RecordNotFound": "رکوردی برای نمایش وجود ندارد.",
+    "GroupFilterNotFound": "رکوردی برای نمایش وجود ندارد.",
+    "PleaseInsertGroupFilter": "لطفاً ابتدا گروه فیلتر را انتخاب کنید.",
     "InsertFilter": "درج فیلتر",
-    "PleaseSelectField": "یک فیلد را انتخاب کنید",
-    "PleaseEnterValue": "مقدار فیلتر را را وارد کنید",
-    "PleaseSelectOperator": "عملگر مورد نظر را انتخاب کنید",
-    "PleaseSelectLogicOperator": "عملگر منطقی را انتخاب کنید",
-    "FilterInsertedSuccess": "فیلتر با موفقیت درج شد",
-    "FilterEditedSuccess": "فیلتر با موفقیت ذخیره شد",
-    "FilterDeletedSuccess": "فیلتر با موفقیت حذف شد",
-    "NoDataForOperators": "لطفا یک فیلد را انتخاب کنید",
-    "FilterNameIsRequired": "نام برای ذخیره فیلتر اجباری می باشد",
-    "FilterNameIsDuplicated": "نام فیلتر تکراری می باشد",
-    "RemoveBracesMsg": "حذف پرانتز های انتخاب شده از فیلترهای انتخاب شده امکان پذیر نمی باشد ",
-    "AddBracesMsg": "درج پرانتز برای فیلترهای انتخاب شده امکان پذیر نمی باشد",
+    "PleaseSelectField": "لطفاً یک فیلد را انتخاب کنید.",
+    "PleaseEnterValue": "لطفاً مقدار فیلتر را وارد کنید.",
+    "PleaseSelectOperator": "لطفاً عملگر مورد نظر را انتخاب کنید.",
+    "PleaseSelectLogicOperator": "لطفاً عملگر منطقی را انتخاب کنید.",
+    "FilterInsertedSuccess": "فیلتر با موفقیت درج شد.",
+    "FilterEditedSuccess": "فیلتر با موفقیت ذخیره شد.",
+    "FilterDeletedSuccess": "فیلتر با موفقیت حذف شد.",
+    "NoDataForOperators": "لطفا یک فیلد را انتخاب کنید.",
+    "FilterNameIsRequired": "نام برای ذخیره فیلتر اجباری است.",
+    "FilterNameIsDuplicated": "نام فیلتر تکراری است.",
+    "RemoveBracesMsg": "حذف پرانتز های انتخاب شده از فیلترهای انتخاب شده امکان پذیر نیست. ",
+    "AddBracesMsg": "درج پرانتز برای فیلترهای انتخاب شده امکان پذیر نیست.",
     "Name": "نام",
     "GroupFilter": "فیلتر ذخیره شده",
     "SaveFilter": "ذخیره فیلتر",
@@ -370,11 +371,11 @@
     "AddGroupfilter": "درج فیلتر جدید",
     "DeleteGroupfilter": "حذف فیلتر",
     "UseForOthers": "قابل استفاده برای همه کاربران",
-    "FilterSavedSuccess": "تغییرات با موفقیت ذخیره شد",
+    "FilterSavedSuccess": "تغییرات با موفقیت ذخیره شد.",
     "SaveChanges": "ذخیره فیلتر",
-    "FilterRemovedSuccess": "فیلتر با موفقیت حذف شد",
+    "FilterRemovedSuccess": "فیلتر با موفقیت حذف شد.",
     "CopyFilter": "کپی فیلتر با نام جدید",
-    "FilterCopiedSuccess": "فیلتر با موفقیت کپی شد",
+    "FilterCopiedSuccess": "فیلتر با موفقیت کپی شد.",
     "EditGroupfilter": "ویرایش"
   },
   "SystemIssue": {
@@ -1169,7 +1170,7 @@
     "Branches": "شعب",
     "Detail": "جزئیات",
     "FiscalPeriod": "دوره مالی",
-    "RecordNotFound": "این نقش هیچ دسترسی ندارد",
+    "RecordNotFound": "این نقش هیچ دسترسی ندارد.",
     "RoleDetail": "جزئیات نقش",
     "Companies": "شرکت",
     "ViewAccess": "مشاهده",
@@ -1182,25 +1183,25 @@
     "PersonLastName": "نام خانوادگی",
     "IsEnabled": "وضعیت",
     "RoleUsersTitle": "کاربران دارای نقش '{0}'",
-    "RecordNotFound": "این نقش به هیچ کاربری تخصیص داده نشده است"
+    "RecordNotFound": "این نقش به هیچ کاربری تخصیص داده نشده است."
   },
   "RoleBranches": {
     "Name": "نام شعبه",
     "Description": "توضیحات",
     "RoleBranchesTitle": "شعب قابل دسترسی توسط '{0}'",
-    "RecordNotFound": "این نقش به هیچ شعبه ای دسترسی ندارد"
+    "RecordNotFound": "این نقش به هیچ شعبه ای دسترسی ندارد."
   },
   "RoleCompanies": {
     "Name": "نام شرکت",
     "Description": "توضیحات",
     "RoleCompaniesTitle": "شرکت های قابل دسترسی توسط '{0}'",
-    "RecordNotFound": "این نقش به هیچ شرکتی دسترسی ندارد"
+    "RecordNotFound": "این نقش به هیچ شرکتی دسترسی ندارد."
   },
   "CompanyRoles": {
     "Name": "نام نقش",
     "Description": "توضیحات",
     "CompanyRolesTitle": "نقش های دارای دسترسی به '{0}'",
-    "RecordNotFound": "این شرکت به هیچ نقشی دسترسی ندارد"
+    "RecordNotFound": "این نقش به هیچ شرکتی دسترسی ندارد."
   },
   "RoleFiscalPeriod": {
     "Name": "نام دوره مالی",
@@ -1211,7 +1212,7 @@
   },
   "DetailAccount": {
     "New": "تفصیلی شناور جدید",
-    "NewSubDetailAccount": "درج زیر تفصیلی شناور جدید",
+    "NewSubDetailAccount": "ایجاد تفصیلی شناور زیرمجموعه",
     "Name": "نام",
     "Code": "کد",
     "FullCode": "کد کامل",
@@ -1226,7 +1227,7 @@
   },
   "CostCenter": {
     "New": "مرکز هزینه جدید",
-    "NewSubCostCenter": "درج زیر مرکز هزینه جدید",
+    "NewSubCostCenter": "ایجاد مرکز هزینه زیرمجموعه",
     "Name": "نام",
     "Code": "کد",
     "FullCode": "کد کامل",
@@ -1240,7 +1241,7 @@
   },
   "Project": {
     "New": "پروژه جدید",
-    "NewSubProject": "درج زیر پروژه جدید",
+    "NewSubProject": "ایجاد پروژه زیرمجموعه",
     "Name": "نام",
     "Code": "کد",
     "FullCode": "کد کامل",
@@ -1260,8 +1261,8 @@
     "CostCenter": "مرکز هزینه",
     "Project": "پروژه",
     "Select": "-- انتخاب کنید --",
-    "NotFound": "نتیجه ای یافت نشد",
-    "NoRelateion": "رابطه ای ایجاد نشده است",
+    "NotFound": "نتیجه ای یافت نشد.",
+    "NoRelateion": "رابطه ای ایجاد نشده است.",
     "CreateRelation": "ایجاد ارتباط",
     "CreateRelationBtn": "ایجاد ارتباط",
     "DeleteRelationBtn": "حذف ارتباط",
@@ -1269,7 +1270,7 @@
     "FormTitle": "برقراری ارتباط برای '{0}'",
     "NewRelations": "ارتباطات جدید",
     "RemainingRelations": "ارتباطات باقیمانده",
-    "noRemainingRelations": "هیچ گزینه ای برای ایجاد ارتباط وجود ندارد",
+    "noRemainingRelations": "گزینه ای برای ایجاد ارتباط وجود ندارد.",
     "SelectAll": "انتخاب همه"
   },
   "FiscalPeriod": {
@@ -1279,7 +1280,7 @@
     "StartDate": "تاریخ شروع",
     "EndDate": "تاریخ پایان",
     "Description": "شرح",
-    "UpdateRoles": "نقش های دارای دسترسی با موفقیت ویرایش شد",
+    "UpdateRoles": "نقش های دارای دسترسی با موفقیت ویرایش شد.",
     "Roles": "نقش ها",
     "RolesTitle": "نقش های دارای دسترسی به دوره مالی",
     "CreateFiscalPeriod": "ایجاد دوره مالی",
@@ -1287,12 +1288,12 @@
   },
   "Fiscal": {
     "FiscalPeriod": "دوره مالی",
-    "NotFoundData": "دوره مالی وجود ندارد"
+    "NotFoundData": "دوره مالی برای نمایش وجود ندارد."
   },
   "CashRegisters": {
     "CashRegisters": "صندوق اسناد",
     "New": "صندوق جدید",
-    "Edit": "اصلاح صندوق اسناد",
+    "Edit": "اصلاح صندوق",
     "Delete":"حذف صندوق",
     "UsersAssigned": "کاربران تخصیص یافته به صندوق",
     "UsersCanBeAssigned": "کاربران قابل تخصیص به صندوق",
@@ -1311,7 +1312,7 @@
     "BankName": "نام بانک",
     "StartNumber": "شماره شروع",
     "EndNumber": "شماره پایان",
-    "PagesCount": "تعداد برگ",
+    "PagesCount": "تعداد برگه",
     "Other": "سایر",
     "Archive": "بایگانی",
     "UndoArchive":"برگشت از بایگانی",
@@ -1321,13 +1322,39 @@
     "ConnectCheck": "ایجاد ارتباط",
     "DisconnectCheck": "حذف ارتباط",
     "isArchived": "بایگانی",
+    "IssueDate": "تاریخ صدور",
+    "SeriesNo": "شماره سری",
+    "SayyadStartNo": "شماره شروع صیادی",
     "Delete": "حذف دسته چک",
     "CheckBookNo": "شماره دسته چک",
     "SearchCheckBook": "جستجوی دسته چک",
-    "CheckBookNotFound": "دسته چک یافت نشد.",
+    "CheckBookNotFound": "دسته چکی با شماره یا نام مورد نظر یافت نشد.",
     "DeletePages": "حذف برگه ها",
     "DeleteCheckBookPages": "حذف برگه های دسته چک",
-    "DeletedMsg": "{0} با موفقیت حذف شدند."
+    "DeletedMsg": "{0} با موفقیت حذف شد."
+  },
+  "CheckBookReport": {
+    "FilterByArchive": "فیلتر براساس وضعیت بایگانی",
+    "All": "همه",
+    "Archived": "بایگانی شده",
+    "Active": "فعال",
+    "SelectFormList": "انتخاب از لیست",
+    "InsertNew": "جدید"
+  },
+  "SourceApp": {
+    "New": "منابع/مصارف جدید",
+    "Edit": "ویرایش منابع/مصارف",
+    "Code": "کد",
+    "Type": "نوع ",
+    "BranchScope": "دسترسی شعبه",
+    "Source": "منابع",
+    "Application": "مصارف",
+    "Delete": "حذف منابع/مصارف"
+  },
+  "UserValueFilter": {
+    "Title":"فرم انتخاب شرح های تکراری",
+    "Name": "نام",
+    "RowNo": "ردیف"
   },
   "Paging": {
     "Record": "رکورد",
@@ -1335,11 +1362,11 @@
     "ItemsPerPage": "سطر در هر صفحه",
     "NextPage": "صفحه بعدی",
     "PreviousPage": "صفحه قبلی",
-    "FirstPage": "برو به اولین صفحه",
-    "LastPage": "برو به آخرین صفحه"
+    "FirstPage": "اولین صفحه",
+    "LastPage": "آخرین صفحه"
   },
   "Grid": {
-    "noRecords": "هیچ رکوردی یافت نشد!!!!!!!!!!"
+    "noRecords": "رکوردی برای نمایش وجود ندارد."
   },
   "Login": {
     "Ok": "تایید",
@@ -1358,11 +1385,11 @@
   "Sppc-DateRange": {
     "FromDate": "از تاریخ",
     "ToDate": "تا تاریخ",
-    "FromDateSmallerFpStart": "تاریخ ابتدا کوچکتر از ابتدای دوره مالی میباشد. سیستم به صورت خودکار تاریخ را اصلاح میکند",
-    "ToDateGreaterFpEnd": "تاریخ انتها بزرگتر از انتهای دوره مالی میباشد. سیستم به صورت خودکار تاریخ را اصلاح میکند",
-    "InvalidDate": "محدوده تاریخی انتخابی معتبر نیست",
-    "InvalidFpStart": "تاریخ ابتدا کوچکتر از ابتدای دوره مالی میباشد.",
-    "InvalidFpEnd": "تاریخ انتها بزرگتر از انتهای دوره مالی میباشد."
+    "FromDateSmallerFpStart": "تاریخ ابتدا کوچکتر از ابتدای دوره مالی است. سیستم به صورت خودکار تاریخ را اصلاح می کند.",
+    "ToDateGreaterFpEnd": "تاریخ انتها بزرگتر از انتهای دوره مالی است. سیستم به صورت خودکار تاریخ را اصلاح می کند.",
+    "InvalidDate": "محدوده تاریخی انتخابی معتبر نیست.",
+    "InvalidFpStart": "تاریخ ابتدا کوچکتر از ابتدای دوره مالی است.",
+    "InvalidFpEnd": "تاریخ انتها بزرگتر از انتهای دوره مالی است."
   },
   "OperationLog": {
     "UserName": "نام کاربری",
@@ -1372,7 +1399,7 @@
     "Entity": "موجودیت",
     "Action": "عملیات",
     "Result": "نتیجه عملیات",
-    "DialogTitle": "جزئیات لاگ عملیاتی",
+    "DialogTitle": "جزئیات رویداد عملیاتی",
     "BeforeState": "وضعیت قدیم",
     "AfterState": "وضعیت جدید",
     "ErrorMessage": "پیغام خطا",
@@ -1383,31 +1410,31 @@
     "SelectEntity": "انتخاب موجودیت",
     "SelectCompany": "انتخاب شرکت",
     "Archive": "بایگانی",
-    "SystemLog": "رویداد های سیستمی",
+    "SystemLog": "رویدادهای سیستمی",
     "ShowLog": "نمایش رویداد",
     "AllFiscalPeriod": "(کلیه دوره های مالی)",
     "AllCompanies": "(کلیه شرکت ها)",
-    "LogArchived": "لاگ های موجود در بازه تاریخ انتخابی بایگانی شد",
-    "SelectedLogArchived": "لاگ های انتخاب شده بایگانی شد",
+    "LogArchived": "رویدادهای موجود در بازه تاریخی انتخابی بایگانی شد.",
+    "SelectedLogArchived": "رویدادهای انتخاب شده بایگانی شد.",
     "DeleteArchive": "حذف بایگانی",
-    "DeleteArchivedMsg": "حذف از بایگانی با موفقیت انجام شد",
+    "DeleteArchivedMsg": ".حذف از بایگانی با موفقیت انجام شد",
     "ReportLog": "نوع رویداد",
     "ReportTypeLog": "نوع گزارش",
     "AllLogs": "کلیه رویدادها",
-    "ActiveLogs": "رویداد های فعال",
-    "ArchivedLogs": "رویداد های بایگانی شده",
-    "OperationalLogs": "رویداد های عملیاتی",
-    "SystemLogs": "رویداد های سیستمی",
+    "ActiveLogs": "رویدادهای فعال",
+    "ArchivedLogs": "رویدادهای بایگانی شده",
+    "OperationalLogs": "رویدادهای عملیاتی",
+    "SystemLogs": "رویدادهای سیستمی",
     "DeleteArchiveMsgConfirm": "آیا برای حذف از بایگانی مطمئن هستید؟",
-    "ArchiveMsgConfirm": "آیا برای بایگانی رویدادهای فعال مطمئن هستید؟",
-    "PleaseSelectRowsAsDeleteArchive": "لطفا برای حذف از بایگانی رویداد های مورد نظر را انتخاب کنید"
+    "ArchiveMsgConfirm": "آیا برای بایگانی رویدادهای انتخاب شده مطمئن هستید؟",
+    "PleaseSelectRowsAsDeleteArchive": "لطفا برای حذف از بایگانی رویدادهای مورد نظر را انتخاب کنید."
   },
   "Widget": {
     "New": "ویجت جدید",
     "Title": "نام ویجت",
     "FunctionName": "نام تابع",
     "TypeName": "نوع ویجت",
-    "CreatedByFullName": "نام سازنده",
+    "CreatedByFullName": "نام ایجادکننده",
     "Accounts": "حسابها",
     "Description": "توضیحات",
     "MyWidgets": "ویجت های من",
@@ -1424,7 +1451,7 @@
     "Date": "تاریخ"
   },
   "MetaDataValidation": {
-    "CodeLength": "طول کد مجاز نمیباشد."
+    "CodeLength": "طول کد واردشده غیرمجاز است."
   },
   "AllValidations": {
     "Account": {
@@ -1634,8 +1661,19 @@
     "CheckBook": {
       "StartNoRequired": "وارد کردن شماره شروع اجباری است.",
       "NoIsRequired": "وارد کردن شماره دسته چک اجباری است.",
+      "StartNoIsRequired": "وارد کردن شماره شروع اجباری است.",
+      "SeriesNoIsRequired": "وارد کردن شماره سری اجباری است.",
+      "SayyadStartNoIsRequired": "وارد کردن شماره شروع صیادی اجباری است.",
       "PagesCountMax": "تعداد برگه ها نمیتواند بیشتر از 1000 باشد.",
-      "PagesCountMin": "تعداد برگه ها نمیتواند کمتر از 1 باشد."
+      "PagesCountMin": "تعداد برگه ها نمیتواند کمتر از 1 باشد.",
+      "SayyadStartNoIsTooLong": "شماره صیادی می تواند حداکثر 16 حرف داشته باشد.",
+      "SeriesNoIsTooLong": "شماره سری می تواند حداکثر 32 حرف داشته باشد."
+    },
+    "SourceApp": {
+      "CodeIsRequired": "وارد کردن کد اجباری است.",
+      "CodeIsTooLong": "کد می تواند حداکثر 64 حرف داشته باشد.",
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 256 حرف داشته باشد."
     }
   }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SPPC.Framework.Common;
-using SPPC.Tadbir.Model.Finance;
 
 namespace SPPC.Tadbir.Model
 {
@@ -57,7 +55,7 @@ namespace SPPC.Tadbir.Model
 
             // Subsystem-specific model types are expected to have full type name like below :
             // SPPC.Tadbir.Model.[Schema].[Table]
-            if (idItems.Count() != 5)
+            if (idItems.Length != 5)
             {
                 return null;
             }

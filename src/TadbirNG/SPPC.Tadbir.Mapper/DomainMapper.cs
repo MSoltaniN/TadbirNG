@@ -97,7 +97,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<CashRegisterViewModel, CashRegister>();
             mapperConfig.CreateMap<UserCashRegister, UserCashRegisterViewModel>();
             mapperConfig.CreateMap<UserCashRegisterViewModel, UserCashRegister>();
-            mapperConfig.CreateMap<SourceApp, SourceAppViewModel>();
+            mapperConfig.CreateMap<SourceApp, SourceAppViewModel>()
+                .ForMember(dest => dest.TypeName, opts => opts.MapFrom(src => SourceAppHelper.GetTypeName(src)));
             mapperConfig.CreateMap<SourceAppViewModel, SourceApp>();
         }
 
@@ -119,8 +120,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<CheckBook, CheckBookReportViewModel>()
                 .ForMember(dest => dest.IsArchivedName, opts => opts.MapFrom(src =>
                     src.IsArchived.HasValue && src.IsArchived.Value
-                        ? AppStrings.BooleanYes
-                        : AppStrings.BooleanNo));
+                        ? AppStrings.Archived
+                        : AppStrings.Active));
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)

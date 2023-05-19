@@ -1062,3 +1062,64 @@ SET IDENTITY_INSERT [Config].[UserValueCategory] ON
 INSERT INTO [Config].[UserValueCategory] ([CategoryID], [NameKey])
     VALUES (1, 'BankName')
 SET IDENTITY_INSERT [Config].[UserValueCategory] OFF
+
+-- 1.2.1513
+CREATE TABLE [CashFlow].[SourceApp] (
+    [SourceAppID]    INT              IDENTITY (1, 1) NOT NULL,
+    [BranchID]       INT              NOT NULL,
+    [FiscalPeriodID] INT              NOT NULL,
+    [BranchScope]    SMALLINT         NOT NULL,
+    [Code]           NVARCHAR(64)     NOT NULL,
+    [Name]           NVARCHAR(256)    NOT NULL,
+    [Description]    NVARCHAR(512)    NULL,
+    [Type]           SMALLINT         NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_SourceApp_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_CashFlow_SourceApp_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_CashFlow_SourceApp] PRIMARY KEY CLUSTERED ([SourceAppID] ASC)
+    , CONSTRAINT [FK_CashFlow_SourceApp_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_CashFlow_SourceApp_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+)
+GO
+
+-- 1.2.1515
+ALTER TABLE [Finance].[VoucherLine]
+ADD [DetailAccountID] INT NULL
+GO
+
+UPDATE [Finance].[VoucherLine]
+SET [DetailAccountID] = [DetailID]
+
+ALTER TABLE [Finance].[VoucherLine]
+DROP CONSTRAINT [FK_Finance_VoucherLine_Finance_DetailAccount]
+GO
+
+ALTER TABLE [Finance].[VoucherLine]
+DROP COLUMN [DetailID]
+GO
+
+ALTER TABLE [Finance].[VoucherLine]
+ADD CONSTRAINT [FK_Finance_VoucherLine_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailAccountID])
+GO
+
+ALTER TABLE [Finance].[AccountDetailAccount]
+ADD [DetailAccountID] INT NULL
+GO
+
+UPDATE [Finance].[AccountDetailAccount]
+SET [DetailAccountID] = [DetailID]
+
+ALTER TABLE [Finance].[AccountDetailAccount]
+DROP CONSTRAINT [FK_Finance_AccountDetailAccount_Finance_DetailAccount]
+GO
+
+ALTER TABLE [Finance].[AccountDetailAccount]
+DROP COLUMN [DetailID]
+GO
+
+ALTER TABLE [Finance].[AccountDetailAccount]
+ALTER COLUMN [DetailAccountID] INT NOT NULL
+
+ALTER TABLE [Finance].[AccountDetailAccount]
+ADD CONSTRAINT [FK_Finance_AccountDetailAccount_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailAccountID])
+GO
+
