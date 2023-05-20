@@ -19,14 +19,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های شرکتی موجود</returns>
-        Task<PagedList<OperationLogViewModel>> GetLogsAsync(GridOptions gridOptions = null);
+        Task<PagedList<OperationLogViewModel>> GetLogsAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، کلیه لاگ های شرکتی بایگانی شده را  خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های شرکتی بایگانی شده</returns>
-        Task<PagedList<OperationLogViewModel>> GetLogsArchiveAsync(GridOptions gridOptions = null);
+        Task<PagedList<OperationLogViewModel>> GetLogsArchiveAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، کلیه لاگ های عملیات شرکتی موجود را به همراه لاگ های بایگانی شده
@@ -79,14 +79,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های سیستمی موجود</returns>
-        Task<PagedList<OperationLogViewModel>> GetSystemLogsAsync(GridOptions gridOptions = null);
+        Task<PagedList<OperationLogViewModel>> GetSystemLogsAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، کلیه لاگ های سیستمی بایگانی شده را  خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های سیستمی بایگانی شده</returns>
-        Task<PagedList<OperationLogViewModel>> GetSystemLogsArchiveAsync(GridOptions gridOptions = null);
+        Task<PagedList<OperationLogViewModel>> GetSystemLogsArchiveAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، کلیه لاگ های عملیات سیستمی موجود را به همراه لاگ های بایگانی شده
@@ -94,7 +94,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های سیستمی موجود و لاگ های بایگانی شده</returns>
-        Task<PagedList<OperationLogViewModel>> GetMergedSystemLogsAsync(GridOptions gridOptions = null);
+        Task<PagedList<OperationLogViewModel>> GetMergedSystemLogsAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات داده شده برای یک لاگ عملیات سیستمی جدید را ذخیره می کند
@@ -131,6 +131,5 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteArchivedSystemLogsAsync(IEnumerable<int> deletedIds);
 
         #endregion
-
     }
 }

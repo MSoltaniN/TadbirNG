@@ -16,7 +16,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از منابع و مصارف تعریف شده</returns>
-        Task<PagedList<SourceAppViewModel>> GetSourceAppsAsync(GridOptions gridOptions = null);
+        Task<PagedList<SourceAppViewModel>> GetSourceAppsAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، منبع و مصرف با شناسه عددی مشخص شده را خوانده و برمی گرداند

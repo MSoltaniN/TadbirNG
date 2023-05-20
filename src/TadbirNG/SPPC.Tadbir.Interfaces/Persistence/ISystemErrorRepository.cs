@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Persistence

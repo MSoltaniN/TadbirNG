@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
@@ -22,7 +21,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه سرفصل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        Task<IEnumerable<KeyValue>> GetAccountsAsync(GridOptions gridOptions = null);
+        Task<IEnumerable<KeyValue>> GetAccountsAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده را
@@ -30,7 +29,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه تفصیلی های شناور تعریف شده در دوره و شعبه مشخص شده</returns>
-        Task<IEnumerable<KeyValue>> GetDetailAccountsAsync(GridOptions gridOptions = null);
+        Task<IEnumerable<KeyValue>> GetDetailAccountsAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده را
@@ -38,7 +37,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه مراکز هزینه تعریف شده در دوره و شعبه مشخص شده</returns>
-        Task<IEnumerable<KeyValue>> GetCostCentersAsync(GridOptions gridOptions = null);
+        Task<IEnumerable<KeyValue>> GetCostCentersAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، پروژه های تعریف شده در دوره مالی و شعبه مشخص شده را
@@ -46,7 +45,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه پروژه های تعریف شده در دوره و شعبه مشخص شده</returns>
-        Task<IEnumerable<KeyValue>> GetProjectsAsync(GridOptions gridOptions = null);
+        Task<IEnumerable<KeyValue>> GetProjectsAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را
@@ -54,7 +53,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه اسناد مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        Task<IEnumerable<KeyValue>> GetVouchersAsync(GridOptions gridOptions = null);
+        Task<IEnumerable<KeyValue>> GetVouchersAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، آرتیکل های مالی تعریف شده در دوره مالی و شعبه مشخص شده را
@@ -62,7 +61,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه آرتیکل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        Task<IEnumerable<KeyValue>> GetVoucherLinesAsync(GridOptions gridOptions = null);
+        Task<IEnumerable<KeyValue>> GetVoucherLinesAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، ارزهای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
@@ -168,7 +167,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، نقش های امنیتی تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه نقش های امنیتی تعریف شده</returns>
-        Task<IList<KeyValue>> GetRolesAsync(GridOptions gridOptions = null);
+        Task<IList<KeyValue>> GetRolesAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، کلیه کاربران را به صورت مجموعه ای از کلید و مقدار برمی گرداند
@@ -184,7 +183,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، موجودیت های پایه تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه موجودیت های پایه تعریف شده</returns>
-        Task<IList<ViewSummaryViewModel>> GetBaseEntityViewsAsync(GridOptions gridOptions = null);
+        Task<IList<ViewSummaryViewModel>> GetBaseEntityViewsAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، موجودیت تعریف شده را به صورت کلید و مقدار برمی گرداند
@@ -196,13 +195,13 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، موجودیت های تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه موجودیت های تعریف شده</returns>
-        Task<IList<KeyValue>> GetEntityViewsAsync(GridOptions gridOptions = null);
+        Task<IList<KeyValue>> GetEntityViewsAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، موجودیت های سلسله مراتبی (درختی) را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه موجودیت های درختی</returns>
-        Task<IList<KeyValue>> GetTreeViewsAsync(GridOptions gridOptions = null);
+        Task<IList<KeyValue>> GetTreeViewsAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، موجودیت های برنامه را به صورت مجموعه ای از کلید و مقدار برمی گرداند

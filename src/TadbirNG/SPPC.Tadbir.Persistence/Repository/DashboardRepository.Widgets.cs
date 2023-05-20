@@ -330,8 +330,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>ویجت های ایجادشده توسط کاربر جاری</returns>
-        public async Task<PagedList<WidgetViewModel>> GetCurrentUserWidgetsAsync(
-            GridOptions gridOptions = null)
+        public async Task<PagedList<WidgetViewModel>> GetCurrentUserWidgetsAsync(GridOptions gridOptions)
         {
             return await GetWidgetsByCriteria(wgt => wgt.CreatedById == UserContext.Id, gridOptions);
         }
@@ -341,8 +340,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>ویجت های قابل دسترسی توسط کاربر جاری</returns>
-        public async Task<PagedList<WidgetViewModel>> GetAccessibleWidgetsAsync(
-            GridOptions gridOptions = null)
+        public async Task<PagedList<WidgetViewModel>> GetAccessibleWidgetsAsync(GridOptions gridOptions)
         {
             Expression<Func<Widget, bool>> criteria = wgt => true;
             var roleWidgetRepository = UnitOfWork.GetAsyncRepository<RoleWidget>();
@@ -697,7 +695,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات ویجت های قابل دسترسی</returns>
         public async Task<List<WidgetViewModel>> GetWidgetsLookupAsync()
         {
-            var lookup = await GetAccessibleWidgetsAsync();
+            var lookup = await GetAccessibleWidgetsAsync(new GridOptions());
             return lookup.Items;
         }
 
@@ -1325,11 +1323,11 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<PagedList<WidgetViewModel>> GetWidgetsByCriteria(
-            Expression<Func<Widget, bool>> criteria, GridOptions gridOptions = null)
+            Expression<Func<Widget, bool>> criteria, GridOptions gridOptions)
         {
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var widgets = new List<WidgetViewModel>();
-            var options = gridOptions ?? new GridOptions();
-            if (options.Operation != (int)OperationId.Print)
+            if (gridOptions.Operation != (int)OperationId.Print)
             {
                 var repository = UnitOfWork.GetAsyncRepository<Widget>();
                 var userWidgets = await repository.GetByCriteriaAsync(
@@ -1345,8 +1343,8 @@ namespace SPPC.Tadbir.Persistence
                 });
             }
 
-            await ReadAsync(options);
-            return new PagedList<WidgetViewModel>(widgets, options);
+            await ReadAsync(gridOptions);
+            return new PagedList<WidgetViewModel>(widgets, gridOptions);
         }
 
         private async Task SetUserFullNamesAsync(List<WidgetViewModel> widgets)

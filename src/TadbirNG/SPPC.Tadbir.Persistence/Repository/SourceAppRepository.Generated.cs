@@ -34,11 +34,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از منابع و مصارف تعریف شده</returns>
-        public async Task<PagedList<SourceAppViewModel>> GetSourceAppsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<SourceAppViewModel>> GetSourceAppsAsync(GridOptions gridOptions)
         {
-            var options = gridOptions ?? new GridOptions();
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var sourceApps = new List<SourceAppViewModel>();
-            if (options.Operation != (int)OperationId.Print)
+            if (gridOptions.Operation != (int)OperationId.Print)
             {
                 var query = Repository.GetAllQuery<SourceApp>(ViewId.SourceApp);
                 sourceApps = await query
@@ -47,8 +47,8 @@ namespace SPPC.Tadbir.Persistence
             }
 
             Array.ForEach(sourceApps.ToArray(), sa => Localize(sa));
-            await ReadAsync(options);
-            return new PagedList<SourceAppViewModel>(sourceApps, options);
+            await ReadAsync(gridOptions);
+            return new PagedList<SourceAppViewModel>(sourceApps, gridOptions);
         }
 
         /// <summary>

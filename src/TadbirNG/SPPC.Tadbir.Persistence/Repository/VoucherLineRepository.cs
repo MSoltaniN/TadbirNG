@@ -38,7 +38,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
-        public async Task<PagedList<VoucherLineViewModel>> GetArticlesAsync(int voucherId, GridOptions gridOptions = null)
+        public async Task<PagedList<VoucherLineViewModel>> GetArticlesAsync(
+            int voucherId, GridOptions gridOptions)
         {
             var query = GetVoucherLinesQuery(voucherId);
             query = Repository.ApplyRowFilter(ref query, ViewId.VoucherLine);

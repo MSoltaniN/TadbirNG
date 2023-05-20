@@ -43,8 +43,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از ارزها تعریف شده</returns>
-        public async Task<PagedList<CurrencyViewModel>> GetCurrenciesAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<CurrencyViewModel>> GetCurrenciesAsync(GridOptions gridOptions)
         {
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var currencies = new List<CurrencyViewModel>();
             if (gridOptions.Operation != (int)OperationId.Print)
             {
