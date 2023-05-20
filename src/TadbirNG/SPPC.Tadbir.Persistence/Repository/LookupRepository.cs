@@ -43,7 +43,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه سرفصل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetAccountsAsync(GridOptions gridOptions = null)
+        public async Task<IEnumerable<KeyValue>> GetAccountsAsync(GridOptions gridOptions)
         {
             int fpId = UserContext.FiscalPeriodId;
             int branchId = UserContext.BranchId;
@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه تفصیلی های شناور تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetDetailAccountsAsync(GridOptions gridOptions = null)
+        public async Task<IEnumerable<KeyValue>> GetDetailAccountsAsync(GridOptions gridOptions)
         {
             int fpId = UserContext.FiscalPeriodId;
             int branchId = UserContext.BranchId;
@@ -79,7 +79,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه مراکز هزینه تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetCostCentersAsync(GridOptions gridOptions = null)
+        public async Task<IEnumerable<KeyValue>> GetCostCentersAsync(GridOptions gridOptions)
         {
             int fpId = UserContext.FiscalPeriodId;
             int branchId = UserContext.BranchId;
@@ -97,7 +97,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه پروژه های تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetProjectsAsync(GridOptions gridOptions = null)
+        public async Task<IEnumerable<KeyValue>> GetProjectsAsync(GridOptions gridOptions)
         {
             int fpId = UserContext.FiscalPeriodId;
             int branchId = UserContext.BranchId;
@@ -115,7 +115,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه اسناد مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetVouchersAsync(GridOptions gridOptions = null)
+        public async Task<IEnumerable<KeyValue>> GetVouchersAsync(GridOptions gridOptions)
         {
             int fpId = UserContext.FiscalPeriodId;
             int branchId = UserContext.BranchId;
@@ -133,7 +133,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه آرتیکل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetVoucherLinesAsync(GridOptions gridOptions = null)
+        public async Task<IEnumerable<KeyValue>> GetVoucherLinesAsync(GridOptions gridOptions)
         {
             int fpId = UserContext.FiscalPeriodId;
             int branchId = UserContext.BranchId;
@@ -433,7 +433,8 @@ namespace SPPC.Tadbir.Persistence
             {
                 ViewId.Account, ViewId.DetailAccount, ViewId.CostCenter, ViewId.Project
             };
-            return await GetViewsByCriteriaAsync<ViewSummaryViewModel>(view => partViewIds.Contains(view.Id));
+            return await GetViewsByCriteriaAsync<ViewSummaryViewModel>(
+                view => partViewIds.Contains(view.Id), null);
         }
 
         /// <summary>
@@ -509,7 +510,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، نقش های امنیتی تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه نقش های امنیتی تعریف شده</returns>
-        public async Task<IList<KeyValue>> GetRolesAsync(GridOptions gridOptions = null)
+        public async Task<IList<KeyValue>> GetRolesAsync(GridOptions gridOptions)
         {
             UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<Role>();
@@ -563,7 +564,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، موجودیت های پایه تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه موجودیت های پایه تعریف شده</returns>
-        public async Task<IList<ViewSummaryViewModel>> GetBaseEntityViewsAsync(GridOptions gridOptions = null)
+        public async Task<IList<ViewSummaryViewModel>> GetBaseEntityViewsAsync(GridOptions gridOptions)
         {
             return await GetViewsByCriteriaAsync<ViewSummaryViewModel>(
                 view => view.EntityType == "Base", gridOptions);
@@ -731,7 +732,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IList<TModel>> GetViewsByCriteriaAsync<TModel>(
-            Expression<Func<View, bool>> criteria, GridOptions gridOptions = null)
+            Expression<Func<View, bool>> criteria, GridOptions gridOptions)
             where TModel : class, new()
         {
             UnitOfWork.UseSystemContext();

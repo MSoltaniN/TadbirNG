@@ -174,8 +174,8 @@ using SPPC.Tadbir.Model.");
             
             #line default
             #line hidden
-            this.Write("Async(GridOptions gridOptions = null)\r\n        {\r\n            var options = gridO" +
-                    "ptions ?? new GridOptions();\r\n            var ");
+            this.Write("Async(GridOptions gridOptions)\r\n        {\r\n            Verify.ArgumentNotNull(gri" +
+                    "dOptions, nameof(gridOptions));\r\n            var ");
             
             #line 58 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(plural.CamelCase()));
@@ -189,8 +189,8 @@ using SPPC.Tadbir.Model.");
             
             #line default
             #line hidden
-            this.Write("ViewModel>();\r\n            if (options.Operation != (int)OperationId.Print)\r\n    " +
-                    "        {\r\n");
+            this.Write("ViewModel>();\r\n            if (gridOptions.Operation != (int)OperationId.Print)\r\n" +
+                    "            {\r\n");
             
             #line 61 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
  if(entityInfo.IsFiscalEntity)
@@ -264,8 +264,8 @@ using SPPC.Tadbir.Model.");
             
             #line default
             #line hidden
-            this.Write("            }\r\n\r\n            await ReadAsync(options);\r\n            return new Pa" +
-                    "gedList<");
+            this.Write("            }\r\n\r\n            await ReadAsync(gridOptions);\r\n            return ne" +
+                    "w PagedList<");
             
             #line 79 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entity.Name));
@@ -279,7 +279,8 @@ using SPPC.Tadbir.Model.");
             
             #line default
             #line hidden
-            this.Write(", options);\r\n        }\r\n\r\n        /// <summary>\r\n        /// به روش آسنکرون، ");
+            this.Write(", gridOptions);\r\n        }\r\n\r\n        /// <summary>\r\n        /// به روش آسنکرون، " +
+                    "");
             
             #line 83 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoImplementationFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));

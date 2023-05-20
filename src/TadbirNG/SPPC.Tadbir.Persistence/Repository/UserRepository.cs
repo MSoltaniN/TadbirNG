@@ -50,8 +50,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>لیست کاربران برنامه</returns>
-        public async Task<PagedList<UserViewModel>> GetUsersAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<UserViewModel>> GetUsersAsync(GridOptions gridOptions)
         {
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var users = new List<UserViewModel>();
             if (gridOptions.Operation != (int)OperationId.Print)
             {

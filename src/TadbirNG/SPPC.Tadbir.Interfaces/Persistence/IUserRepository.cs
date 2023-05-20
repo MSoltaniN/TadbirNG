@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Utility;
@@ -19,7 +18,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>لیست کاربران برنامه</returns>
-        Task<PagedList<UserViewModel>> GetUsersAsync(GridOptions gridOptions = null);
+        Task<PagedList<UserViewModel>> GetUsersAsync(GridOptions gridOptions);
 
         /// <summary>
         /// Asynchronously retrieves a single user specified by user name from repository.

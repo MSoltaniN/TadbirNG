@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های عملیاتی موجود</returns>
-        public async Task<PagedList<OperationLogViewModel>> GetLogsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<OperationLogViewModel>> GetLogsAsync(GridOptions gridOptions)
         {
             return await FetchLogsFromSource(gridOptions, "OperationLog");
         }
@@ -52,7 +52,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های شرکتی بایگانی شده</returns>
-        public async Task<PagedList<OperationLogViewModel>> GetLogsArchiveAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<OperationLogViewModel>> GetLogsArchiveAsync(GridOptions gridOptions)
         {
             return await FetchLogsFromSource(gridOptions, "OperationLogArchive");
         }
@@ -65,11 +65,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه لاگ های شرکتی موجود و لاگ های بایگانی شده</returns>
         public async Task<PagedList<OperationLogViewModel>> GetMergedLogsAsync(GridOptions gridOptions)
         {
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             IEnumerable<OperationLogViewModel> merged = new List<OperationLogViewModel>();
             if (gridOptions.Operation != (int)OperationId.Print)
             {
-                var active = await GetLogsAsync();
-                var archived = await GetLogsArchiveAsync();
+                var active = await GetLogsAsync(gridOptions);
+                var archived = await GetLogsArchiveAsync(gridOptions);
                 merged = active.Items
                     .Concat(archived.Items);
                 if (gridOptions.SortColumns.Count == 0)
@@ -196,7 +197,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های سیستمی موجود</returns>
-        public async Task<PagedList<OperationLogViewModel>> GetSystemLogsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<OperationLogViewModel>> GetSystemLogsAsync(GridOptions gridOptions)
         {
             return await FetchLogsFromSource(gridOptions, "SysOperationLog", true);
         }
@@ -206,7 +207,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های سیستمی بایگانی شده</returns>
-        public async Task<PagedList<OperationLogViewModel>> GetSystemLogsArchiveAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<OperationLogViewModel>> GetSystemLogsArchiveAsync(GridOptions gridOptions)
         {
             return await FetchLogsFromSource(gridOptions, "SysOperationLogArchive", true);
         }
@@ -217,13 +218,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های سیستمی موجود و لاگ های بایگانی شده</returns>
-        public async Task<PagedList<OperationLogViewModel>> GetMergedSystemLogsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<OperationLogViewModel>> GetMergedSystemLogsAsync(GridOptions gridOptions)
         {
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             IEnumerable<OperationLogViewModel> merged = new List<OperationLogViewModel>();
             if (gridOptions.Operation != (int)OperationId.Print)
             {
-                var active = await GetSystemLogsAsync();
-                var archived = await GetSystemLogsArchiveAsync();
+                var active = await GetSystemLogsAsync(gridOptions);
+                var archived = await GetSystemLogsArchiveAsync(gridOptions);
                 merged = active.Items
                     .Concat(archived.Items);
                 if (gridOptions.SortColumns.Count == 0)

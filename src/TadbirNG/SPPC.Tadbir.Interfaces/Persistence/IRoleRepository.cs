@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>لیست نقش های تعریف شده</returns>
-        Task<PagedList<RoleViewModel>> GetRolesAsync(GridOptions gridOptions = null);
+        Task<PagedList<RoleViewModel>> GetRolesAsync(GridOptions gridOptions);
 
         /// <summary>
         /// Asynchronously initializes and returns a new role object that contains all available security permissions.

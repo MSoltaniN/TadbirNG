@@ -107,14 +107,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>ویجت های ایجادشده توسط کاربر جاری</returns>
-        Task<PagedList<WidgetViewModel>> GetCurrentUserWidgetsAsync(GridOptions gridOptions = null);
+        Task<PagedList<WidgetViewModel>> GetCurrentUserWidgetsAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، فهرست ویجت های قابل دسترسی توسط کاربر جاری برنامه را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>ویجت های قابل دسترسی توسط کاربر جاری</returns>
-        Task<PagedList<WidgetViewModel>> GetAccessibleWidgetsAsync(GridOptions gridOptions = null);
+        Task<PagedList<WidgetViewModel>> GetAccessibleWidgetsAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، تعداد موارد استفاده از ویجت داده شده را خوانده و برمی گرداند

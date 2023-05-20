@@ -21,7 +21,6 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="parameters">مجموعه پارامترهای مورد نیاز برای گزارش گیری</param>
         /// <returns>اطلاعات دفتر عملیات ارزی برای کلیه ارزها</returns>
-        Task<CurrencyBookViewModel> GetCurrencyBookAllCurrenciesAsync(
-            CurrencyBookParameters parameters);
+        Task<CurrencyBookViewModel> GetCurrencyBookAllCurrenciesAsync(CurrencyBookParameters parameters);
     }
 }
