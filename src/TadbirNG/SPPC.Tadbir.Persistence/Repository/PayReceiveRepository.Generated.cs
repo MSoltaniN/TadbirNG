@@ -1,10 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
+using AutoMapper.Configuration.Conventions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.CashFlow;
@@ -12,6 +17,7 @@ using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.CashFlow;
 using SPPC.Tadbir.ViewModel.Check;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -170,12 +176,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceiveNo">شماره یکی از فرم های دریافت/پرداخت موجود</param>
         /// <param name="type">نوع فرم دریافت/پرداخت</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شماره</returns>
-        public async Task<PayReceiveViewModel> GetPayReceiveNoAsync(string payReceiveNo, PayReceiveType type)
+        public async Task<PayReceiveViewModel> GetPayReceiveNoAsync(string payReceiveNo, int type)
         {
             var byNo = default(PayReceiveViewModel);
-            var viewId = (int)(type == PayReceiveType.Payment
-                ? ViewId.Payment
-                : ViewId.Receival);
+            var viewId = GetViewId((int)type);
             var payReceiveByNo = await Repository.GetAllOperationQuery<PayReceive>(viewId)
                 .Where(pr => pr.PayReceiveNo == payReceiveNo.Trim() && pr.Type == (int)type)
                 .SingleOrDefaultAsync();
@@ -188,6 +192,151 @@ namespace SPPC.Tadbir.Persistence
             return byNo;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اولین فرم دریافت/پرداخت را از نوع مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="type">مشخص می کند عملیات جاری روی فرم پرداخت یا دریافت</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>اولین فرم دریافت/پرداخت</returns>
+        public async Task<PayReceiveViewModel> GetFirstPayReceiveAsync(int type, GridOptions gridOptions = null)
+        {
+            var payReceives = GetPayReceiveItemsByCriteria(type, null, gridOptions);
+            var firstpayReceive = payReceives.FirstOrDefault();
+            if (firstpayReceive != null) 
+            {
+                await SetPayReceiveNavigationAsync(firstpayReceive, gridOptions);
+            }
+            
+            return firstpayReceive;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات آخرین فرم دریافت/پرداخت را از نوع مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="type">مشخص می کند عملیات جاری روی فرم پرداخت یا دریافت</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>آخرین فرم دریافت/پرداخت</returns>
+        public async Task<PayReceiveViewModel> GetLastPayReceiveAsync(int type, GridOptions gridOptions = null)
+        {
+            var payReceives = GetPayReceiveItemsByCriteria(type, null, gridOptions);
+            var firstpayReceive = payReceives.LastOrDefault();
+            if (firstpayReceive != null)
+            {
+                await SetPayReceiveNavigationAsync(firstpayReceive, gridOptions);
+            }
+
+            return firstpayReceive;
+        }
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فرم دریافت/پرداخت بعدی را از نوع مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="type">مشخص می کند عملیات جاری روی فرم پرداخت یا دریافت</param>
+        /// <param name="currentNo">شماره فرم دریافت/پرداخت جاری در برنامه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>فرم دریافت/پرداخت بعدی</returns>
+        public async Task<PayReceiveViewModel> GetNextPayReceiveAsync(string currentNo, int type,
+            GridOptions gridOptions = null)
+        {
+            var payReceives = GetPayReceiveItemsByCriteria(type, pr => 
+            String.Compare(pr.PayReceiveNo, currentNo) > 0, gridOptions);
+            var firstpayReceive = payReceives.FirstOrDefault();
+            if (firstpayReceive != null)
+            {
+                await SetPayReceiveNavigationAsync(firstpayReceive, gridOptions);
+            }
+
+            return firstpayReceive;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فرم دریافت/پرداخت قبلی را از نوع مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="type">مشخص می کند عملیات جاری روی فرم پرداخت یا دریافت</param>
+        /// <param name="currentNo">شماره فرم دریافت/پرداخت جاری در برنامه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>فرم دریافت/پرداخت قبلی</returns>
+        public async Task<PayReceiveViewModel> GetPreviousayReceiveAsync(string currentNo, int type,
+            GridOptions gridOptions = null)
+        {
+            var payReceives = GetPayReceiveItemsByCriteria(type, pr =>
+            String.Compare(pr.PayReceiveNo, currentNo) < 0, gridOptions);
+            var firstpayReceive = payReceives.FirstOrDefault();
+            if (firstpayReceive != null)
+            {
+                await SetPayReceiveNavigationAsync(firstpayReceive, gridOptions);
+            }
+
+            return firstpayReceive;
+        }
+        private IEnumerable<PayReceiveViewModel> GetPayReceiveItemsByCriteria(int type, 
+            Expression<Func<PayReceive, bool>> criteria = null, GridOptions gridOptions = null)
+        {
+            if(criteria == null)
+            {
+                criteria = pr => pr.Type == type;
+            }
+            else
+            {
+                var funcCriteria = criteria.Compile();
+                criteria = pr => funcCriteria(pr) && pr.Type == type;
+            }
+
+            var options = gridOptions ?? new GridOptions();
+            int viewId = GetViewId(type);
+            return Repository
+                .GetAllOperationQuery<PayReceive>(viewId)
+                .Where(criteria)
+                .Select(item => Mapper.Map<PayReceiveViewModel>(item))
+                .Apply(options)
+                .OrderBy(item => item.PayReceiveNo);
+        }
+
+        private async Task SetPayReceiveNavigationAsync(PayReceiveViewModel payReceive, GridOptions gridOptions = null)
+        {
+            int nextCount, prevCount;
+            int viewId = GetViewId(payReceive.Type);
+            var query = Repository
+                .GetAllOperationQuery<PayReceive>(viewId)
+                .Where(pr => String.Compare(pr.PayReceiveNo,payReceive.PayReceiveNo) < 0 &&
+                pr.Type == payReceive.Type);
+            var options = gridOptions ?? new GridOptions();
+
+            if (!options.IsEmpty)
+            {
+                var items = await query.ToListAsync();
+                prevCount = items
+                    .Select(item => Mapper.Map<PayReceiveViewModel>(item))
+                    .ApplyQuickFilter(options,false)
+                    .Apply(options,false)
+                    .Count();
+            }
+            else
+            {
+                prevCount = await query.CountAsync();
+            }
+
+            query = Repository
+                .GetAllOperationQuery<PayReceive>(viewId)
+                .Where(pr => String.Compare(pr.PayReceiveNo, payReceive.PayReceiveNo) > 0 &&
+                pr.Type == payReceive.Type);
+
+            if (!options.IsEmpty)
+            {
+                var items = await query.ToListAsync();
+                nextCount = items
+                    .Select(item => Mapper.Map<PayReceiveViewModel>(item))
+                    .ApplyQuickFilter(options, false)
+                    .Apply(options, false)
+                    .Count();
+            }
+            else 
+            { 
+                nextCount = await query.CountAsync(); 
+            }
+
+            payReceive.HasNext = nextCount > 0;
+            payReceive.HasPrevious = nextCount > 0;
+        }
         internal override int? EntityType
         {
             get { return (int?)EntityTypeId.Payment; }
@@ -236,6 +385,13 @@ namespace SPPC.Tadbir.Persistence
             return (int)(type == (int)PayReceiveType.Receival
                    ? EntityTypeId.Receival
                    : EntityTypeId.Payment);
+        }
+
+        private int GetViewId(int type)
+        {
+            return (int)(type == (int)PayReceiveType.Payment
+                ? ViewId.Payment
+                : ViewId.Receival);
         }
 
         private ISecureRepository Repository

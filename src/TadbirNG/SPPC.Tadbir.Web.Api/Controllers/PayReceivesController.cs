@@ -395,7 +395,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.View)]
         public async Task<IActionResult> GetPaymentByNoAsync(string payReceiveNo)
         {
-            var payReceiveByNo = await _repository.GetPayReceiveNoAsync(payReceiveNo, PayReceiveType.Payment);
+            var payReceiveByNo = await _repository.GetPayReceiveNoAsync(payReceiveNo, (int)PayReceiveType.Payment);
             return JsonReadResult(payReceiveByNo);
         }
 
@@ -410,8 +410,128 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.View)]
         public async Task<IActionResult> GetReceivalByNoAsync(string payReceiveNo)
         {
-            var payReceiveByNo = await _repository.GetPayReceiveNoAsync(payReceiveNo, PayReceiveType.Receival);
+            var payReceiveByNo = await _repository.GetPayReceiveNoAsync(payReceiveNo, (int)PayReceiveType.Receival);
             return JsonReadResult(payReceiveByNo);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اولین فرم پرداخت قابل دسترسی را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی اولین فرم پرداخت قابل دسترسی</returns>
+        // GET: api/payments/first
+        [HttpGet]
+        [Route(PayReceiveApi.FirstPaymentUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Navigate)]
+        public async Task<IActionResult> GetFirstPaymentAsync()
+        {
+            var first = await _repository.GetFirstPayReceiveAsync((int)PayReceiveType.Payment, GridOptions);
+            return JsonReadResult(first);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اولین فرم دریافت قابل دسترسی را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی اولین فرم دریافت قابل دسترسی</returns>
+        // GET: api/receivals/first
+        [HttpGet]
+        [Route(PayReceiveApi.FirstReceivalUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Navigate)]
+        public async Task<IActionResult> GetFirstReceivalAsync()
+        {
+            var first = await _repository.GetFirstPayReceiveAsync((int)PayReceiveType.Receival, GridOptions);
+            return JsonReadResult(first);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات آخرین فرم پرداخت قابل دسترسی را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی آخرین فرم پرداخت قابل دسترسی</returns>
+        // GET: api/payments/last
+        [HttpGet]
+        [Route(PayReceiveApi.LastPaymentUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Navigate)]
+        public async Task<IActionResult> GetLastPaymentAsync()
+        {
+            var last = await _repository.GetLastPayReceiveAsync((int)PayReceiveType.Payment, GridOptions);
+            return JsonReadResult(last);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات آخرین فرم دریافت قابل دسترسی را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی آخرین فرم دریافت قابل دسترسی</returns>
+        // GET: api/receivals/last
+        [HttpGet]
+        [Route(PayReceiveApi.LastReceivalUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Navigate)]
+        public async Task<IActionResult> GetLastReceivalAsync()
+        {
+            var last = await _repository.GetLastPayReceiveAsync((int)PayReceiveType.Receival, GridOptions);
+            return JsonReadResult(last);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فرم پرداخت پیش از شماره مشخص شده را برمی گرداند
+        /// </summary>
+        /// <param name="payReceiveNo">شماره فرم پرداخت فعلی</param>
+        /// <returns>اطلاعات نمایشی فرم پرداخت قابل دسترسی قبلی</returns>
+        // GET: api/payments/{payReceiveNo:min(1)}/previous
+        [HttpGet]
+        [Route(PayReceiveApi.PreviousPaymentUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Navigate)]
+        public async Task<IActionResult> GetPreviousPaymentAsync(string payReceiveNo)
+        {
+            var previous = await _repository.GetPreviousayReceiveAsync(payReceiveNo,
+                (int)PayReceiveType.Payment, GridOptions);
+            return JsonReadResult(previous);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فرم دریافت پیش از شماره مشخص شده را برمی گرداند
+        /// </summary>
+        /// <param name="payReceiveNo">شماره فرم دریافت فعلی</param>
+        /// <returns>اطلاعات نمایشی فرم دریافت قابل دسترسی قبلی</returns>
+        // GET: api/receivals/{payReceiveNo:min(1)}/previous
+        [HttpGet]
+        [Route(PayReceiveApi.PreviousReceivalUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Navigate)]
+        public async Task<IActionResult> GetPreviousReceivalAsync(string payReceiveNo)
+        {
+            var previous = await _repository.GetPreviousayReceiveAsync(payReceiveNo,
+                (int)PayReceiveType.Receival, GridOptions);
+            return JsonReadResult(previous);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فرم پرداخت بعد از شماره مشخص شده را برمی گرداند
+        /// </summary>
+        /// <param name="payReceiveNo">شماره فرم پرداخت فعلی</param>
+        /// <returns>اطلاعات نمایشی فرم پرداخت قابل دسترسی بعدی</returns>
+        // GET: api/payments/{payReceiveNo:min(1)}/next
+        [HttpGet]
+        [Route(PayReceiveApi.NextPaymentUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Navigate)]
+        public async Task<IActionResult> GetNextPaymentAsync(string payReceiveNo)
+        {
+            var next = await _repository.GetNextPayReceiveAsync(payReceiveNo,
+                (int)PayReceiveType.Payment, GridOptions);
+            return JsonReadResult(next);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فرم دریافت بعد از شماره مشخص شده را برمی گرداند
+        /// </summary>
+        /// <param name="payReceiveNo">شماره فرم دریافت فعلی</param>
+        /// <returns>اطلاعات نمایشی فرم دریافت قابل دسترسی بعدی</returns>
+        // GET: api/receivals/{payReceiveNo:min(1)}/next
+        [HttpGet]
+        [Route(PayReceiveApi.NextReceivalUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Navigate)]
+        public async Task<IActionResult> GetNextReceivalAsync(string payReceiveNo)
+        {
+            var next = await _repository.GetNextPayReceiveAsync(payReceiveNo,
+                (int)PayReceiveType.Receival, GridOptions);
+            return JsonReadResult(next);
         }
 
         /// <summary>

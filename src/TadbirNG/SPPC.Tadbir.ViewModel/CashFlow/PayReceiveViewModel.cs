@@ -33,5 +33,16 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// مشخص می کند که آیا فرم دریافت/پرداخت مورد نظر تصویب شده است یا نه؟
         /// </summary>
         public bool IsApproved { get; set; }
+
+
+        /// <summary>
+        /// مشخص می کند که شماره فرمی بعد از این فرم دریافت/پرداخت وجود دارد یا نه
+        /// </summary>
+        public bool HasNext { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که شماره فرمی قبل از این فرم دریافت/پرداخت وجود دارد یا نه
+        /// </summary>
+        public bool HasPrevious { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.CashFlow;
 using SPPC.Tadbir.ViewModel.Check;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -64,6 +65,40 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceiveNo">شماره یکی از فرم های دریافت/پرداخت موجود</param>
         /// <param name="type">نوع فرم دریافت/پرداخت</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شماره</returns>
-        Task<PayReceiveViewModel> GetPayReceiveNoAsync(string payReceiveNo, PayReceiveType type);
+        Task<PayReceiveViewModel> GetPayReceiveNoAsync(string payReceiveNo, int type);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اولین فرم دریافت/پرداخت را از نوع مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="type">مشخص می کند عملیات جاری روی فرم پرداخت یا دریافت</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>اولین فرم دریافت/پرداخت</returns>
+        Task<PayReceiveViewModel> GetFirstPayReceiveAsync(int type, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات آخرین فرم دریافت/پرداخت را از نوع مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="type">مشخص می کند عملیات جاری روی فرم پرداخت یا دریافت</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>آخرین فرم دریافت/پرداخت</returns>
+        Task<PayReceiveViewModel> GetLastPayReceiveAsync(int type, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فرم دریافت/پرداخت بعدی را از نوع مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="type">مشخص می کند عملیات جاری روی فرم پرداخت یا دریافت</param>
+        /// <param name="currentNo">شماره فرم دریافت/پرداخت جاری در برنامه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>فرم دریافت/پرداخت بعدی</returns>
+        Task<PayReceiveViewModel> GetNextPayReceiveAsync(string currentNo, int type, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فرم دریافت/پرداخت قبلی را از نوع مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="type">مشخص می کند عملیات جاری روی فرم پرداخت یا دریافت</param>
+        /// <param name="currentNo">شماره فرم دریافت/پرداخت جاری در برنامه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>فرم دریافت/پرداخت قبلی</returns>
+        Task<PayReceiveViewModel> GetPreviousayReceiveAsync(string currentNo, int type, GridOptions gridOptions = null);
     }
 }
