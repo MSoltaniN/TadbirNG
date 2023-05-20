@@ -25,6 +25,7 @@
 
       <input type="text" class="k-textbox"
        (keyup)="toEnglishChars($event)"
+       onkeypress="return /[a-z0-9]/i.test(event.key)"
        formControlName="dbName" [attr.disabled]='isNew?null:""'/>
 
       <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.dbName.valid || editForm.controls.dbName.pristine">
