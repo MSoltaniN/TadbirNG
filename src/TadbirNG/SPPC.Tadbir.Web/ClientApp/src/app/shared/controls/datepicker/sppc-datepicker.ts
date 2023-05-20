@@ -108,10 +108,10 @@ export class SppcDatepicker
   @Input() date: any;
   @Input() isDisplayDate: boolean = true;
   @Input() displayDate: any;
-  // دریافت تاریخ بدون ساعت
-  @Input() set justDate(value: boolean) {
+  // دریافت تاریخ با ساعت
+  @Input() set dateWithHour(value: boolean) {
     if (value) {
-      this.inputDateFormat = "yyyy/MM/d";
+      this.inputDateFormat = "yyyy/MM/d HH:mm:ss";
     }
   }
 

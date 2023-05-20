@@ -53,7 +53,6 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   @Input() dialogMode = false;
   @Input() set checkBookItem(value:CheckBookInfo) {
     this.model = value;
-    this.dialogMode = true;
     this.initFullAccountFromGroup();
     this.initCheckBookForm();
   }
@@ -313,40 +312,19 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
                 this.quickFilter
                 )
               ).then((next:CheckBook) => {
-                setTimeout(() => {
-                  this.checkBookItem = next;
-                }, 0);
-                this.router.routeReuseStrategy.store(null,null);
+                this.checkBookItem = next;
 
                 if (!this.dialogMode) {
-                  this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
-                    no: next.checkBookNo
-                  }});
+                  history.pushState(null,null,`/treasury/check-books/by-no?no=${next.checkBookNo}`)
                 }
+                  // this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
+                  //   no: next.checkBookNo
+                  // }});
               }).catch(err => {
                 //if next checkbook not exists try for previous checkbook;
-                lastValueFrom(this.checkBookService.
-                  getModelsByFilters(CheckBooksApi.LastCheckBook,
-                  this.filter,
-                  this.quickFilter
-                  )
-                ).then((previous:CheckBook) => {
-                  setTimeout(() => {
-                    this.checkBookItem = previous;
-                  }, 0);
-                    this.router.routeReuseStrategy.store(null,null)
-
-                    if (!this.dialogMode)
-                      this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
-                        no: previous.checkBookNo
-                      }});
-                  }).catch( err2 => {
-                    //if previous check-book not exists show check-book list
-                    // this.cancel.emit();
-                    this.addNew();
-                    if (!this.dialogMode)
-                      this.router.navigate(["/treasury/check-books/"]);
-                  })
+                this.addNew();
+                  if (!this.dialogMode)
+                    this.router.navigate(["/treasury/check-books/"]);
               })
           },
           error: err =>{
@@ -420,11 +398,13 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
       error: (err) => {
         if (err == null || err.statusCode == 404) {
           this.isFirstCheckBook = true;
-          if (!isNew)
+          if (!isNew) {
             this.showMessage(
               this.getText("CheckBook.CheckBookNotFound"),
               MessageType.Warning
             );
+            this.addNew();
+          }
 
           if (this.urlMode == 'by-no') {
             if (this.returnUrl)
@@ -610,6 +590,8 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
 
   // Events
   onChangePagesCountDropDown(e) {
+    console.log(this.editForm.get('issueDate').value);
+    
     if (e == -1) {
       this.otherSizeOfPages = true;
       this.selectedPagesCount = 1;
