@@ -127,5 +127,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for the last check book in current environment
         /// </summary>
         public const string LastCheckBookUrl = "check-books/last";
+
+        /// <summary>
+        /// API client URL for a newly initialized check book
+        /// </summary>
+        public const string NewCheckBook = "check-books/new";
+
+        /// <summary>
+        /// API server route URL for a newly initialized check book
+        /// </summary>
+        public const string NewCheckBookUrl = "check-books/new";
     }
 }

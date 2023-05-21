@@ -49,7 +49,23 @@ namespace SPPC.Tadbir.Persistence
             await ReadAsync(new GridOptions(), GetState(existing));
             return checkBook;
         }
-        
+
+        /// <summary>
+        /// به روش آسنکرون، دسته چک جدید با مقادیر پیشنهادی را برمی گرداند
+        /// </summary>
+        /// <returns>دسته چک جدید با مقادیر پیشنهادی</returns>
+        public async Task<CheckBookViewModel> GetNewCheckBookAsync()
+        {
+            int lastNo = await GetLastCheckBookNoAsync();
+            var newCheckBook = new CheckBookViewModel()
+            {
+                CheckBookNo = lastNo + 1,
+                BranchId = UserContext.BranchId,
+            };
+
+            return newCheckBook;
+        }
+
         /// <summary>
         /// به روش آسنکرون، دسته چک با شماره مشخص شده را خوانده و برمی گرداند
         /// </summary>
@@ -350,6 +366,20 @@ namespace SPPC.Tadbir.Persistence
                     AppStrings.IssueDate, entity.IssueDate, AppStrings.StartNo, entity.StartNo,
                     AppStrings.EndNo, entity.EndNo, AppStrings.BankName, entity.BankName)
                 : null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، شماره آخرین دسته چک موجود را برمی گرداند
+        /// </summary>
+        protected async Task<int> GetLastCheckBookNoAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
+            var lastCheckBook = await repository
+                .GetEntityQuery()
+                .Where(checkBook => checkBook.BranchId == UserContext.BranchId)
+                .OrderByDescending(checkBook => checkBook.CheckBookNo)
+                .FirstOrDefaultAsync();
+            return (lastCheckBook != null) ? lastCheckBook.CheckBookNo ?? 0 : 0;
         }
 
         private IQueryable<CheckBook> GetCheckBookQuery(int checkBookId)
