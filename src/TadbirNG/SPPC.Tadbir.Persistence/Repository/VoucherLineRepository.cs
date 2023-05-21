@@ -233,7 +233,7 @@ namespace SPPC.Tadbir.Persistence
         protected override void UpdateExisting(VoucherLineViewModel lineView, VoucherLine line)
         {
             line.AccountId = lineView.FullAccount.Account.Id;
-            line.DetailId = lineView.FullAccount.DetailAccount.Id > 0 ? lineView.FullAccount.DetailAccount.Id : null;
+            line.DetailAccountId = lineView.FullAccount.DetailAccount.Id > 0 ? lineView.FullAccount.DetailAccount.Id : null;
             line.CostCenterId = lineView.FullAccount.CostCenter.Id > 0 ? lineView.FullAccount.CostCenter.Id : null;
             line.ProjectId = lineView.FullAccount.Project.Id > 0 ? lineView.FullAccount.Project.Id : null;
             line.CurrencyId = lineView.CurrencyId;

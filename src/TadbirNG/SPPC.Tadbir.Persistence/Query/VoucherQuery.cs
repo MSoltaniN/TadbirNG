@@ -17,17 +17,17 @@ WHERE {0}
 ORDER BY {1}";
 
         internal const string BalanceByItemsByCurrency = @"
-SELECT vl.DetailID, vl.CostCenterID, vl.ProjectID, vl.CurrencyID, SUM(COALESCE(vl.CurrencyValue, 0)) AS CurrencyValueSum, SUM(vl.Debit - vl.Credit) AS Balance
+SELECT vl.DetailAccountID, vl.CostCenterID, vl.ProjectID, vl.CurrencyID, SUM(COALESCE(vl.CurrencyValue, 0)) AS CurrencyValueSum, SUM(vl.Debit - vl.Credit) AS Balance
 FROM [Finance].[Voucher] v
     INNER JOIN [Finance].[VoucherLine] vl ON v.VoucherID = vl.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
-    LEFT OUTER JOIN [Finance].[DetailAccount] facc ON vl.DetailID = facc.DetailAccountID
+    LEFT OUTER JOIN [Finance].[DetailAccount] facc ON vl.DetailAccountID = facc.DetailAccountID
     LEFT OUTER JOIN [Finance].[CostCenter] cc ON vl.CostCenterID = cc.CostCenterID
     LEFT OUTER JOIN [Finance].[Project] prj ON vl.ProjectID = prj.ProjectID
     LEFT OUTER JOIN [Finance].[Currency] curr ON vl.CurrencyID = curr.CurrencyID
 WHERE v.FiscalPeriodID = {0} AND vl.BranchID = {1} AND vl.AccountID = {2} AND v.SubjectType = 0
-GROUP BY vl.DetailID, vl.CostCenterID, vl.ProjectID, vl.CurrencyID
-ORDER BY vl.DetailID, vl.CostCenterID, vl.ProjectID, vl.CurrencyID";
+GROUP BY vl.DetailAccountID, vl.CostCenterID, vl.ProjectID, vl.CurrencyID
+ORDER BY vl.DetailAccountID, vl.CostCenterID, vl.ProjectID, vl.CurrencyID";
 
         internal const string VoucherSummaryByLevel = @"
 SELECT SUBSTRING(acc.FullCode, 1, {0}) AS FullCode, SUM(vl.Debit) AS Debit, 0 AS Credit1

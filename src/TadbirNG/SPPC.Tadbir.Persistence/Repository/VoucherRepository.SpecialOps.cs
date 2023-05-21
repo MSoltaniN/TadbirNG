@@ -189,7 +189,7 @@ namespace SPPC.Tadbir.Persistence
             var accountBrief = new AccountItemBriefViewModel() { Id = account.Id };
             if (account.AccountDetailAccounts.Count > 0)
             {
-                foreach (var detailAccountId in account.AccountDetailAccounts.Select(ada => ada.DetailId))
+                foreach (var detailAccountId in account.AccountDetailAccounts.Select(ada => ada.DetailAccountId))
                 {
                     var detailAccountBrief = new AccountItemBriefViewModel() { Id = detailAccountId };
                     if (account.AccountCostCenters.Count > 0)
@@ -376,7 +376,7 @@ namespace SPPC.Tadbir.Persistence
                 CurrencyValue = _report.ValueOrDefault<int>(row, "CurrencyValueSum"),
                 Debit = _report.ValueOrDefault<decimal>(row, "Balance"),
                 Description = description,
-                DetailId = detailAccountId > 0 ? (int?)detailAccountId : null,
+                DetailAccountId = detailAccountId > 0 ? (int?)detailAccountId : null,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 ProjectId = projectId > 0 ? (int?)projectId : null,
                 TypeId = (short)VoucherLineType.NormalLine
@@ -574,7 +574,7 @@ namespace SPPC.Tadbir.Persistence
                 CurrencyValue = line.CurrencyValue,
                 Debit = line.Debit,
                 Description = line.Description,
-                DetailId = line.DetailId,
+                DetailAccountId = line.DetailAccountId,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 FollowupNo = line.FollowupNo,
                 ProjectId = line.ProjectId,
@@ -624,7 +624,7 @@ namespace SPPC.Tadbir.Persistence
                 CostCenterId = fa.CostCenter.Id > 0 ? (int?)fa.CostCenter.Id : null,
                 CreatedById = UserContext.Id,
                 Description = description,
-                DetailId = fa.DetailAccount.Id > 0 ? (int?)fa.DetailAccount.Id : null,
+                DetailAccountId = fa.DetailAccount.Id > 0 ? (int?)fa.DetailAccount.Id : null,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 ProjectId = fa.Project.Id > 0 ? (int?)fa.Project.Id : null,
                 TypeId = (short)VoucherLineType.NormalLine

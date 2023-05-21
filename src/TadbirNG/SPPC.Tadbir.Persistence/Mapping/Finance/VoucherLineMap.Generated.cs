@@ -80,7 +80,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasConstraintName("FK_Finance_VoucherLine_Finance_Account");
             builder.HasOne(e => e.DetailAccount)
                 .WithMany()
-                .HasForeignKey(e => e.DetailId)
+                .HasForeignKey(e => e.DetailAccountId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_VoucherLine_Finance_DetailAccount");
             builder.HasOne(e => e.CostCenter)

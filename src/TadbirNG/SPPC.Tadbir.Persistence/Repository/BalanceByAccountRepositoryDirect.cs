@@ -133,7 +133,7 @@ namespace SPPC.Tadbir.Persistence
                     : "LEFT OUTER JOIN";
                 fromBuilder.AppendLine();
                 fromBuilder.AppendFormat(
-                    "    {0} [Finance].[DetailAccount] facc ON facc.DetailAccountID = vl.DetailID", joinType);
+                    "    {0} [Finance].[DetailAccount] facc ON facc.DetailAccountID = vl.DetailAccountID", joinType);
             }
 
             if (parameters.IsSelectedCostCenter)

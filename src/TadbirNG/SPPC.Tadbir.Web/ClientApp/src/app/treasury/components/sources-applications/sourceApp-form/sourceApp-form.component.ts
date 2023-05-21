@@ -29,8 +29,11 @@ export class SourceAppFormComponent extends DetailComponent implements OnInit {
   @Input() public model: SourceApp;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
-
   @Input() public isWizard: boolean = false;
+  
+  @Input() public set preferedCode(code:string) {
+    this.setNewCode(code);
+  }
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<SourceApp> = new EventEmitter();
@@ -41,6 +44,7 @@ export class SourceAppFormComponent extends DetailComponent implements OnInit {
     {key: 'SourceApp.Source', value: soucrceAppType.Source},
     {key: 'SourceApp.Application', value: soucrceAppType.App}
   ];
+  newCode = '';
 
   constructor(public toastrService: ToastrService,
      public translate: TranslateService,
@@ -61,12 +65,12 @@ export class SourceAppFormComponent extends DetailComponent implements OnInit {
         this.model.branchScope = this.selectedBranchScope;
         this.model.type = this.selectedType;
         this.model.fiscalPeriodId = this.FiscalPeriodId;
+        this.model.code = this.newCode;
       } else {
         this.selectedBranchScope = this.model.branchScope;
         this.selectedType = this.model.type;
       }
       this.editForm.reset(this.model);
-      console.log(this.editForm);
     });
     
   }
@@ -95,6 +99,33 @@ export class SourceAppFormComponent extends DetailComponent implements OnInit {
     this.editForm.patchValue({
       type: e
     });
+  }
+
+  setNewCode(code) {
+    if (code) {
+      let serial = <string>code.replace(/\d/g,'_');
+      let startNo:any = <string>code.replace(/\D+/g, '_');
+      let endNumber;
+
+      startNo = startNo.split('_');
+
+      if (!isNaN(startNo[startNo.length - 1]))
+        endNumber = +startNo[startNo.length - 1] + 1;
+      
+      if (serial[serial.length-1] != '_') {
+        serial = serial + '_';
+        endNumber = startNo[startNo.length - 1] + '1';
+      }
+
+      startNo[startNo.length - 1] = endNumber.toString();
+
+      let endNo = startNo.join('');
+      endNo.split('').forEach(d => {
+        serial = serial.replace('_',d);
+      })
+      this.newCode = serial;
+
+    }
   }
 
 }
