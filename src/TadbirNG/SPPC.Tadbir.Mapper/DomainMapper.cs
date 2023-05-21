@@ -300,7 +300,7 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.TypeId,
                     opts => opts.MapFrom(src => src.LineTypeId))
                 .AfterMap((viewModel, model) => model.AccountId = viewModel.FullAccount.Account.Id)
-                .AfterMap((viewModel, model) => model.DetailId = GetNullableId(viewModel.FullAccount.DetailAccount))
+                .AfterMap((viewModel, model) => model.DetailAccountId = GetNullableId(viewModel.FullAccount.DetailAccount))
                 .AfterMap((viewModel, model) => model.CostCenterId = GetNullableId(viewModel.FullAccount.CostCenter))
                 .AfterMap((viewModel, model) => model.ProjectId = GetNullableId(viewModel.FullAccount.Project));
             mapperConfig.CreateMap<VoucherLine, KeyValue>()

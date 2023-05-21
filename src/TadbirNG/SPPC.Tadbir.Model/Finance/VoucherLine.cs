@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SPPC.Tadbir.Model.Finance
 {
@@ -19,7 +17,7 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// شناسه دیتابیسی مولفه تفصیلی شناور از بردار حساب مورد استفاده در این آرتیکل مالی
         /// </summary>
-        public virtual int? DetailId { get; set; }
+        public virtual int? DetailAccountId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی مولفه مرکز هزینه از بردار حساب مورد استفاده در این آرتیکل مالی

@@ -254,7 +254,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var accDetailrepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
             int relatedAccounts = await accDetailrepository.GetCountByCriteriaAsync(
-                ada => ada.DetailId == faccountId);
+                ada => ada.DetailAccountId == faccountId);
             return (relatedAccounts > 0);
         }
 

@@ -13,7 +13,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("AccountDetailAccountID");
-            builder.HasAlternateKey(e => new { e.AccountId, e.DetailId });
+            builder.HasAlternateKey(e => new { e.AccountId, e.DetailAccountId });
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey(d => d.AccountId);
             builder.HasOne(d => d.DetailAccount)
                 .WithMany(p => p.AccountDetailAccounts)
-                .HasForeignKey(d => d.DetailId);
+                .HasForeignKey(d => d.DetailAccountId);
         }
     }
 }
