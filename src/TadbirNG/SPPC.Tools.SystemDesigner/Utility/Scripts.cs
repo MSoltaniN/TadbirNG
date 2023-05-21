@@ -63,7 +63,7 @@ namespace SPPC.Tools.SystemDesigner
 
         public const string InsertDetailAccount =
             @"INSERT INTO [Finance].[DetailAccount]
-           ([DetailID]
+           ([DetailAccountID]
 		   ,[ParentID]
            ,[FiscalPeriodID]
            ,[BranchID]
@@ -108,7 +108,7 @@ namespace SPPC.Tools.SystemDesigner
 
         public const string InsertAccountDetailAccount =
             @"INSERT INTO [Finance].[AccountDetailAccount]
-           ([AccountDetailAccountID], [AccountID], [DetailID])
+           ([AccountDetailAccountID], [AccountID], [DetailAccountID])
      VALUES
            ('{0}', '{1}', '{2}')";
 
@@ -153,7 +153,7 @@ namespace SPPC.Tools.SystemDesigner
            ,[FiscalPeriodID]
            ,[BranchID]
            ,[AccountID]
-           ,[DetailID]
+           ,[DetailAccountID]
            ,[CostCenterID]
            ,[ProjectID]
            ,[CurrencyID]

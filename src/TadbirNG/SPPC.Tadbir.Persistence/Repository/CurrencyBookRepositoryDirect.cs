@@ -184,7 +184,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 fromBuilder.AppendLine();
                 fromBuilder.AppendFormat(
-                    "    INNER JOIN [Finance].[DetailAccount] facc ON vl.DetailID = facc.DetailAccountID");
+                    "    INNER JOIN [Finance].[DetailAccount] facc ON vl.DetailAccountID = facc.DetailAccountID");
             }
             if (parameters.CostCenterId.HasValue)
             {
