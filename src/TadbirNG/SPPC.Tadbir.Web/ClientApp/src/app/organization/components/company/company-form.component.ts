@@ -75,8 +75,6 @@ export class CompanyFormComponent extends DetailComponent implements OnInit {
 
   dbNameValue: string = '';
   toEnglishChars(e:KeyboardEvent) {
-    console.log(e);
-    
     let char = e.code.toString().split('Key');
 
     if (char.length > 1 && !(e.code == 'KeyA' && e.ctrlKey == true)) {

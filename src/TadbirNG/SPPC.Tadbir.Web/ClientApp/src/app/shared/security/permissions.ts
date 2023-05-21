@@ -447,6 +447,18 @@ export enum CheckBookReportPermissions {
   All = 63
 }
 
+export enum SourceAppPermissions {
+  None = 0,
+  View = 1,
+  Filter = 2,
+  Print = 4,
+  Export = 8,
+  Create = 16,
+  Edit = 32,
+  Delete = 64,
+  All = 127
+}
+
 @Injectable()
 export class Permissions {
   getPermission(enumeration: string, premissionName: string): number {
@@ -570,6 +582,10 @@ export class Permissions {
       case "checkbookreportpermissions":
         id = <any>CheckBookReportPermissions[<any>premissionName];
         break;
+      case "sourceapppermissions":
+        id = <any>SourceAppPermissions[<any>premissionName];
+        break;
+
     }
 
     return id;
