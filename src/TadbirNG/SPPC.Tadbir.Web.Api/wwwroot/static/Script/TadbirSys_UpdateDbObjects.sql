@@ -910,7 +910,7 @@ GO
 DROP TABLE [Config].[UserValueCategory]
 GO
 
---1.2.1516
+-- 1.2.1516
 UPDATE [Auth].[PermissionGroup]
 SET [SubsystemID] = 3
 WHERE [PermissionGroupID] = 40
