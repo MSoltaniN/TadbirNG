@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SPPC.Tadbir.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SPPC.Tadbir.ViewModel.CashFlow
 {
-    public partial class SourceAppViewModel
+    public partial class SourceAppViewModel : IFiscalEntityView
     {
         /// <summary>
         /// شناسه دیتابیسی دوره مالی که این منبع یا مصرف در آن تعریف شده است
