@@ -90,7 +90,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="currentNo">شماره فرم دریافت/پرداخت جاری در برنامه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>فرم دریافت/پرداخت بعدی</returns>
-        Task<PayReceiveViewModel> GetNextPayReceiveAsync(string currentNo, int type, GridOptions gridOptions = null);
+        Task<PayReceiveViewModel> GetNextPayReceiveAsync(string currentNo, int type,
+            GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فرم دریافت/پرداخت قبلی را از نوع مشخص شده خوانده و برمی گرداند
@@ -99,6 +100,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="currentNo">شماره فرم دریافت/پرداخت جاری در برنامه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>فرم دریافت/پرداخت قبلی</returns>
-        Task<PayReceiveViewModel> GetPreviousayReceiveAsync(string currentNo, int type, GridOptions gridOptions = null);
+        Task<PayReceiveViewModel> GetPreviousPayReceiveAsync(string currentNo, int type,
+            GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، نمونه ای جدید از فرم دریافت/پرداخت می سازد
+        /// </summary>
+        /// <param name="type">مشخص می کند که نوع فرم پرداخت یا دریافت</param>
+        /// <returns>فرم دریافت/پرداخت جدید</returns>
+        Task<PayReceiveViewModel> GetNewPayReceiveAsync(int type);
     }
 }

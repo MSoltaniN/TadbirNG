@@ -481,7 +481,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Navigate)]
         public async Task<IActionResult> GetPreviousPaymentAsync(string payReceiveNo)
         {
-            var previous = await _repository.GetPreviousayReceiveAsync(payReceiveNo,
+            var previous = await _repository.GetPreviousPayReceiveAsync(payReceiveNo,
                 (int)PayReceiveType.Payment, GridOptions);
             return JsonReadResult(previous);
         }
@@ -497,7 +497,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Navigate)]
         public async Task<IActionResult> GetPreviousReceivalAsync(string payReceiveNo)
         {
-            var previous = await _repository.GetPreviousayReceiveAsync(payReceiveNo,
+            var previous = await _repository.GetPreviousPayReceiveAsync(payReceiveNo,
                 (int)PayReceiveType.Receival, GridOptions);
             return JsonReadResult(previous);
         }
@@ -532,6 +532,34 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var next = await _repository.GetNextPayReceiveAsync(payReceiveNo,
                 (int)PayReceiveType.Receival, GridOptions);
             return JsonReadResult(next);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، فرم پرداخت جدیدی با مقادیر پیشنهادی در دیتابیس ایجاد کرده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی فرم پرداخت جدید با مقادیر پیشنهادی</returns>
+        // GET: api/payments/new
+        [HttpGet]
+        [Route(PayReceiveApi.NewPaymentUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Create)]
+        public async Task<IActionResult> GetNewPaymentAsync()
+        {
+            var payReceive = await _repository.GetNewPayReceiveAsync((int)PayReceiveType.Payment);
+            return Json(payReceive);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، فرم دریافت جدیدی با مقادیر پیشنهادی در دیتابیس ایجاد کرده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی فرم دریافت جدید با مقادیر پیشنهادی</returns>
+        // GET: api/receives/new
+        [HttpGet]
+        [Route(PayReceiveApi.NewReceivalUrl)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Create)]
+        public async Task<IActionResult> GetNewReceivalAsync()
+        {
+            var payReceive = await _repository.GetNewPayReceiveAsync((int)PayReceiveType.Receival);
+            return Json(payReceive);
         }
 
         /// <summary>
