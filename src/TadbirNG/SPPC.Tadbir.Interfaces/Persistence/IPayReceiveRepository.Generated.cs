@@ -11,24 +11,24 @@ namespace SPPC.Tadbir.Persistence
     public interface IPayReceiveRepository
     {
         /// <summary>
-        /// به روش آسنکرون، دریافت و پرداخت با شناسه عددی مشخص شده را خوانده و برمی گرداند
+        /// به روش آسنکرون، فرم دریافت/پرداخت با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="payReceiveId">شناسه عددی یکی از دریافت ها و پرداخت ها موجود</param>
-        /// <returns>دریافت و پرداخت مشخص شده با شناسه عددی</returns>
+        /// <param name="payReceiveId">شناسه عددی یکی از فرم های دریافت یا پرداخت موجود</param>
+        /// <returns>فرم دریافت/پرداخت مشخص شده با شناسه عددی</returns>
         Task<PayReceiveViewModel> GetPayReceiveAsync(int payReceiveId);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات یک دریافت و پرداخت را ایجاد یا اصلاح می کند
+        /// به روش آسنکرون، اطلاعات یک فرم دریافت/پرداخت را ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="payReceive">دریافت و پرداخت مورد نظر برای ایجاد یا اصلاح</param>
-        /// <returns>اطلاعات نمایشی دریافت و پرداخت ایجاد یا اصلاح شده</returns>
+        /// <param name="payReceive">فرم دریافت/پرداخت مورد نظر برای ایجاد یا اصلاح</param>
+        /// <returns>اطلاعات نمایشی فرم دریافت/پرداخت ایجاد یا اصلاح شده</returns>
         Task<PayReceiveViewModel> SavePayReceiveAsync(PayReceiveViewModel payReceive);
 
         /// <summary>
-        /// به روش آسنکرون، دریافت و پرداخت مشخص شده با شناسه عددی را حذف می کند
+        /// به روش آسنکرون، فرم دریافت/پرداخت مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
-        /// <param name="payReceiveId">شناسه عددی دریافت و پرداخت مورد نظر برای حذف</param>
-        /// <param name="type">نمشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="payReceiveId">شناسه عددی فرم دریافت/پرداخت مورد نظر برای حذف</param>
+        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
         Task DeletePayReceiveAsync(int payReceiveId, int type);
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت/پرداخت مورد نظر</param>
         /// <param name="isConfirmed"> در صورت تایید فرم دریافت/پرداخت با مقدار درست 
-        /// و در غیر این صورت با مقدار نادرست پر می شود.</param>
+        /// و در غیر این صورت با مقدار نادرست پر می شود</param>
         Task SetPayReceiveConfirmationAsync(int payReceiveId, bool isConfirmed);
 
         /// <summary>
@@ -52,13 +52,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت/پرداخت مورد نظر</param>
         /// <param name="isApproved"> در صورت تصویب فرم دریافت/پرداخت با مقدار درست 
-        /// و در غیر این صورت با مقدار نادرست پر می شود.</param>
+        /// و در غیر این صورت با مقدار نادرست پر می شود</param>
          Task SetPayReceiveApprovalAsync(int payReceiveId, bool isApproved);
 
         /// <summary>
         /// به روش آسنکرون، فرم دریافت/پرداخت با شماره مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="payReceiveNo">شماره یکی از فرم های دریافت/پرداخت موجود</param>
+        /// <param name="payReceiveNo">شماره فرم دریافت/پرداخت مورد نظر</param>
         /// <param name="type">مشخص می کند که درخواست از نوع پرداختی یا دریافتی می باشد</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شماره</returns>
         Task<PayReceiveViewModel> GetPayReceiveNoAsync(string payReceiveNo, int type);

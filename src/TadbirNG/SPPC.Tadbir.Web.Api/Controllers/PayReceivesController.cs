@@ -14,7 +14,7 @@ using SPPC.Tadbir.Web.Api.Filters;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     /// <summary>
-    /// عملیات سرویس وب برای مدیریت اطلاعات دریافت ها و پرداخت ها را پیاده سازی می کند
+    /// عملیات سرویس وب برای مدیریت اطلاعات دریافتی ها و پرداختی ها را پیاده سازی می کند
     /// </summary>
     [Produces("application/json")]
     public class PayReceivesController : ValidatingController<PayReceiveViewModel>
@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="repository">امکان ذخیره و بازیابی اطلاعات دریافت ها و پرداخت ها در دیتابیس را فراهم می کند</param>
+        /// <param name="repository">امکان ذخیره و بازیابی اطلاعات دریافتی ها و پرداختی ها در دیتابیس را فراهم می کند</param>
         /// <param name="strings">امکان خواندن متن های چندزبانه را فراهم می کند</param>
         /// <param name="tokenManager">امکان کار با توکن امنیتی برنامه را فراهم می کند</param>
         public PayReceivesController(IPayReceiveRepository repository, IStringLocalizer<AppStrings> strings,
@@ -113,7 +113,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک فرم پرداخت موجود را پس از اعتبارسنجی در دیتابیس ذخیره می کند
+        /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک فرم پرداخت موجود را
+        /// پس از اعتبارسنجی در دیتابیس ذخیره می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت اصلاح شده</param>
         /// <param name="payReceive">اطلاعات نمایشی اصلاح شده برای فرم پرداخت</param>
@@ -122,7 +123,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPut]
         [Route(PayReceiveApi.PaymentUrl)]
         [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Edit)]
-        public async Task<IActionResult> PutModifiedPaymentAsync(int payReceiveId, [FromBody] PayReceiveViewModel payReceive)
+        public async Task<IActionResult> PutModifiedPaymentAsync(int payReceiveId,
+            [FromBody] PayReceiveViewModel payReceive)
         {
             var result = await PayReceiveValidationResultAsync(payReceive, AppStrings.Payment, payReceiveId);
             if (result is BadRequestObjectResult)
@@ -135,7 +137,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک فرم دریافت موجود را پس از اعتبارسنجی در دیتابیس ذخیره می کند
+        /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک فرم دریافت موجود را
+        /// پس از اعتبارسنجی در دیتابیس ذخیره می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت اصلاح شده</param>
         /// <param name="payReceive">اطلاعات نمایشی اصلاح شده برای فرم دریافت</param>
@@ -144,7 +147,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPut]
         [Route(PayReceiveApi.ReceivalUrl)]
         [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Edit)]
-        public async Task<IActionResult> PutModifiedReceivalAsync(int payReceiveId, [FromBody] PayReceiveViewModel payReceive)
+        public async Task<IActionResult> PutModifiedReceivalAsync(int payReceiveId, 
+            [FromBody] PayReceiveViewModel payReceive)
         {
             var result = await PayReceiveValidationResultAsync(payReceive, AppStrings.Receival, payReceiveId);
             if (result is BadRequestObjectResult)
@@ -237,8 +241,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 return result;
             }
-            await _repository.SetPayReceiveConfirmationAsync(payReceiveId, true);
 
+            await _repository.SetPayReceiveConfirmationAsync(payReceiveId, true);
             return Ok();
         }
 
@@ -654,13 +658,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (action == AppStrings.Approve && !payReceive.IsConfirmed)
             {
                 return BadRequestResult(_strings.Format(AppStrings.InvalidEntityActionMessage, action,
-                       entityNameKey, AppStrings.Confirm));
+                    entityNameKey, AppStrings.Confirm));
             }
 
             if (action == AppStrings.UndoApprove && !payReceive.IsApproved)
             {
                 return BadRequestResult(_strings.Format(AppStrings.InvalidEntityActionMessage, action,
-                       entityNameKey, AppStrings.Approve));
+                    entityNameKey, AppStrings.Approve));
             }
 
             return Ok();

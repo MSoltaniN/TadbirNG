@@ -229,23 +229,22 @@ namespace SPPC.Tadbir.Api
         public const string LastReceivalUrl = "receivals/last";
 
         /// <summary>
-        /// API client URL for a newly initialized and saved Payment
+        /// API client URL for a newly initialized
         /// </summary>
         public const string NewPayment = "payments/new";
 
         /// <summary>
-        /// API server route URL for a newly initialized and saved payment
+        /// API server route URL for a newly initialized
         /// </summary>
         public const string NewPaymentUrl = "payments/new";
 
         /// <summary>
-        /// API client URL for a newly initialized and saved Receival
+        /// API client URL for a newly initialized
         /// </summary>
         public const string NewReceival = "receivals/new";
 
         /// <summary>
-        /// API server route URL for a newly initialized and saved Receival
-        /// </summary>
+        /// API server route URL for a newly initialized
         public const string NewReceivalUrl = "receivals/new";
     }
 }

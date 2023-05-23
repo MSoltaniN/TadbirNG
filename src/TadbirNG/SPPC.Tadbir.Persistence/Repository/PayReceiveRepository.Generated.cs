@@ -32,14 +32,13 @@ namespace SPPC.Tadbir.Persistence
             : base(context, system.Logger)
         {
             _system = system;
-            _userRepository = userRepository;
         }
 
         /// <summary>
-        /// به روش آسنکرون، دریافت و پرداخت با شناسه عددی مشخص شده را خوانده و برمی گرداند
+        /// به روش آسنکرون، فرم دریافت/پرداخت با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="payReceiveId">شناسه عددی یکی از دریافت ها و پرداخت ها موجود</param>
-        /// <returns>دریافت و پرداخت مشخص شده با شناسه عددی</returns>
+        /// <param name="payReceiveId">شناسه عددی یکی از فرم های دریافت یا پرداخت موجود</param>
+        /// <returns>فرم دریافت/پرداخت مشخص شده با شناسه عددی</returns>
         public async Task<PayReceiveViewModel> GetPayReceiveAsync(int payReceiveId)
         {
             PayReceiveViewModel item = null;
@@ -54,10 +53,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات یک دریافت و پرداخت را ایجاد یا اصلاح می کند
+        /// به روش آسنکرون، اطلاعات یک فرم دریافت/پرداخت را ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="payReceive">دریافت و پرداخت مورد نظر برای ایجاد یا اصلاح</param>
-        /// <returns>اطلاعات نمایشی دریافت و پرداخت ایجاد یا اصلاح شده</returns>
+        /// <param name="payReceive">فرم دریافت/پرداخت مورد نظر برای ایجاد یا اصلاح</param>
+        /// <returns>اطلاعات نمایشی فرم دریافت/پرداخت ایجاد یا اصلاح شده</returns>
         public async Task<PayReceiveViewModel> SavePayReceiveAsync(PayReceiveViewModel payReceive)
         {
             Verify.ArgumentNotNull(payReceive, nameof(payReceive));
@@ -90,9 +89,9 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، دریافت و پرداخت مشخص شده با شناسه عددی را حذف می کند
+        /// به روش آسنکرون، فرم دریافت/پرداخت مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
-        /// <param name="payReceiveId">شناسه عددی دریافت و پرداخت مورد نظر برای حذف</param>
+        /// <param name="payReceiveId">شناسه عددی فرم دریافت/پرداخت مورد نظر برای حذف</param>
         /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
         public async Task DeletePayReceiveAsync(int payReceiveId, int type)
         {
@@ -117,10 +116,10 @@ namespace SPPC.Tadbir.Persistence
             return await repository
                 .GetEntityQuery()
                 .AnyAsync(pr => payReceive.Id != pr.Id
-                && payReceive.PayReceiveNo == pr.PayReceiveNo
-                && payReceive.Type == pr.Type
-                && payReceive.FiscalPeriodId == pr.FiscalPeriodId
-                && payReceive.BranchId == pr.BranchId);
+                    && payReceive.PayReceiveNo == pr.PayReceiveNo
+                    && payReceive.Type == pr.Type
+                    && payReceive.FiscalPeriodId == pr.FiscalPeriodId
+                    && payReceive.BranchId == pr.BranchId);
         }
 
         /// <summary>
@@ -128,7 +127,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت/پرداخت مورد نظر</param>
         /// <param name="isConfirmed"> در صورت تایید فرم دریافت/پرداخت با مقدار درست 
-        /// و در غیر این صورت با مقدار نادرست پر می شود.</param>
+        /// و در غیر این صورت با مقدار نادرست پر می شود</param>
         public async Task SetPayReceiveConfirmationAsync(int payReceiveId, bool isConfirmed)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
@@ -149,7 +148,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت/پرداخت مورد نظر</param>
         /// <param name="isApproved"> در صورت تصویب فرم دریافت/پرداخت با مقدار درست 
-        /// و در غیر این صورت با مقدار نادرست پر می شود.</param>
+        /// و در غیر این صورت با مقدار نادرست پر می شود</param>
         public async Task SetPayReceiveApprovalAsync(int payReceiveId, bool isApproved)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
@@ -168,7 +167,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، فرم دریافت/پرداخت با شماره مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="payReceiveNo">شماره یکی از فرم های دریافت/پرداخت موجود</param>
+        /// <param name="payReceiveNo">شماره فرم دریافت/پرداخت مورد نظر</param>
         /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شماره</returns>
         public async Task<PayReceiveViewModel> GetPayReceiveNoAsync(string payReceiveNo, int type)
@@ -235,7 +234,7 @@ namespace SPPC.Tadbir.Persistence
             GridOptions gridOptions = null)
         {
             var payReceives = await GetOrderedPayReceiveItemsAsync(type, pr => 
-            String.Compare(pr.PayReceiveNo, currentNo) > 0 && pr.Type == type, gridOptions);
+                String.Compare(pr.PayReceiveNo, currentNo) > 0 && pr.Type == type, gridOptions);
             var next = payReceives.FirstOrDefault();
             if (next != null)
             {
@@ -256,7 +255,7 @@ namespace SPPC.Tadbir.Persistence
             GridOptions gridOptions = null)
         {
             var payReceives = await GetOrderedPayReceiveItemsAsync(type, pr =>
-            String.Compare(pr.PayReceiveNo, currentNo) < 0 && pr.Type == type, gridOptions);
+                String.Compare(pr.PayReceiveNo, currentNo) < 0 && pr.Type == type, gridOptions);
             var previous = payReceives.LastOrDefault();
             if (previous != null)
             {
@@ -328,7 +327,8 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
         }
 
-        private async Task SetPayReceiveNavigationAsync(PayReceiveViewModel payReceive, GridOptions gridOptions = null)
+        private async Task SetPayReceiveNavigationAsync(PayReceiveViewModel payReceive, 
+            GridOptions gridOptions = null)
         {
             int nextCount, prevCount;
             int viewId = GetViewId(payReceive.Type);
@@ -336,7 +336,7 @@ namespace SPPC.Tadbir.Persistence
             var query = Repository
                 .GetAllOperationQuery<PayReceive>(viewId)
                 .Where(pr => String.Compare(pr.PayReceiveNo,payReceive.PayReceiveNo) < 0 &&
-                pr.Type == payReceive.Type);
+                    pr.Type == payReceive.Type);
 
             if (!options.IsEmpty)
             {
@@ -355,7 +355,7 @@ namespace SPPC.Tadbir.Persistence
             query = Repository
                 .GetAllOperationQuery<PayReceive>(viewId)
                 .Where(pr => String.Compare(pr.PayReceiveNo, payReceive.PayReceiveNo) > 0 &&
-                pr.Type == payReceive.Type);
+                    pr.Type == payReceive.Type);
 
             if (!options.IsEmpty)
             {
@@ -374,6 +374,21 @@ namespace SPPC.Tadbir.Persistence
             payReceive.HasNext = nextCount > 0;
             payReceive.HasPrevious = prevCount > 0;
         }
+
+        private int GetEntityTypeId(int type)
+        {
+            return (int)(type == (int)PayReceiveType.Receival
+                ? EntityTypeId.Receival
+                : EntityTypeId.Payment);
+        }
+
+        private int GetViewId(int type)
+        {
+            return (int)(type == (int)PayReceiveType.Payment
+                ? ViewId.Payment
+                : ViewId.Receival);
+        }
+
         internal override int? EntityType
         {
             get { return (int?)EntityTypeId.Receival; }
@@ -410,26 +425,11 @@ namespace SPPC.Tadbir.Persistence
                 : String.Empty;
         }
 
-        private int GetEntityTypeId(int type)
-        {
-            return (int)(type == (int)PayReceiveType.Receival
-                   ? EntityTypeId.Receival
-                   : EntityTypeId.Payment);
-        }
-
-        private int GetViewId(int type)
-        {
-            return (int)(type == (int)PayReceiveType.Payment
-                ? ViewId.Payment
-                : ViewId.Receival);
-        }
-
         private ISecureRepository Repository
         {
             get { return _system.Repository; }
         }
 
         private readonly ISystemRepository _system;
-        private readonly IUserRepository _userRepository;
     }
 }

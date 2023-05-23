@@ -127,12 +127,12 @@ namespace SPPC.Tadbir.Domain
         public const int SourceApp = 73;
 
         /// <summary>
-        /// نمای اطلاعاتی پرداخت 
+        /// نمای اطلاعاتی فرم پرداخت 
         /// </summary>
         public const int Payment = 74;
 
         /// <summary>
-        /// نمای اطلاعاتی دریافت 
+        /// نمای اطلاعاتی فرم دریافت 
         /// </summary>
         public const int Receival = 75;
     }
