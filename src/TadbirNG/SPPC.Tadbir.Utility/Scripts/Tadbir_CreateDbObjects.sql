@@ -988,6 +988,35 @@ CREATE TABLE [CashFlow].[SourceApp] (
 )
 GO
 
+CREATE TABLE [CashFlow].[PayReceive] (
+    [PayReceiveID]      INT              IDENTITY (1, 1) NOT NULL,
+    [FiscalPeriodID]    INT              NOT NULL,
+    [BranchID]          INT              NOT NULL,
+    [IssuedByID]        INT              NOT NULL,
+    [ModifiedByID]      INT              NOT NULL,
+    [ConfirmedByID]     INT              NULL,
+    [ApprovedByID]      INT              NULL,
+    [Type]              SMALLINT         NOT NULL,
+    [PayReceiveNo]                NVARCHAR(16)     NOT NULL,
+    [Reference]         NVARCHAR(64)     NULL,
+    [Date]              DATETIME         NOT NULL,
+    [CurrencyID]        INT              NULL,
+    [CurrencyRate]      money            NULL,
+    [Description]       NVARCHAR(1024)   NULL,
+    [CreatedDate]       DATETIME         NOT NULL,
+    [IssuedByName]      NVARCHAR(64)     NOT NULL,
+    [ModifiedByName]    NVARCHAR(64)     NOT NULL,
+    [ConfirmedByName]   NVARCHAR(64)     NULL,
+    [ApprovedByName]    NVARCHAR(64)     NULL,
+    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_PayReceive_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_CashFlow_PayReceive_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_CashFlow_PayReceive] PRIMARY KEY CLUSTERED ([PayReceiveID] ASC)
+    , CONSTRAINT [FK_CashFlow_PayReceive_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_CashFlow_PayReceive_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+	, CONSTRAINT [FK_CashFlow_PayReceive_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency]([CurrencyID])
+)
+GO
+
 -- Insert system records...
 SET IDENTITY_INSERT [Reporting].[WidgetFunction] ON 
 INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (1, N'Function_DebitTurnover')
@@ -1137,9 +1166,9 @@ INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (23, N'SourceApp', NULL)
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
-    VALUES (24, N'Pay', NULL)
+    VALUES (24, N'Payment', NULL)
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
-    VALUES (25, N'Receive', NULL)
+    VALUES (25, N'Receival', NULL)
 SET IDENTITY_INSERT [Metadata].[EntityType] OFF
 
 SET IDENTITY_INSERT [Metadata].[Operation] ON

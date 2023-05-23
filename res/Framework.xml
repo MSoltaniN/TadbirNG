@@ -2190,28 +2190,28 @@
           <ValidationRule name="Id_Validation" required="False" minimum="" maximum="" format="" type="Value" />
         </Property>
         <Property name="IssuedByID" type="Int32" isValidated="True" description="شناسه کاربر صادر کننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="spnIssuedByID" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyView name="spnIssuedById" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="IssuedByID" type="int" nullable="False" />
-          <ColumnView name="IssuedByID" visible="True" width="120" />
-          <ValidationRule name="IssuedByID_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ColumnView name="IssuedById" visible="True" width="120" />
+          <ValidationRule name="IssuedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="ModifiedByID" type="Int32" isValidated="True" description="شناسه آخرین کاربر تغییر دهنده اطلاعات" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="spnModifiedByID" format="" type="SpinButton" bindingMember="Value" />
+        <Property name="ModifiedById" type="Int32" isValidated="True" description="شناسه آخرین کاربر تغییر دهنده اطلاعات" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnModifiedById" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="ModifiedByID" type="int" nullable="False" />
-          <ColumnView name="ModifiedByID" visible="True" width="120" />
-          <ValidationRule name="ModifiedByID_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+          <ColumnView name="ModifiedById" visible="True" width="120" />
+          <ValidationRule name="ModifiedById_Validation" required="False" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="ConfirmedByID" type="Int32" isValidated="True" description="شناسه کاربر تأییدکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="spnConfirmedByID" format="" type="SpinButton" bindingMember="Value" />
+        <Property name="ConfirmedById" type="Int32" isValidated="True" description="شناسه کاربر تأییدکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnConfirmedById" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="ConfirmedByID" type="int" nullable="True" />
-          <ColumnView name="ConfirmedByID" visible="True" width="120" />
-          <ValidationRule name="ConfirmedByID_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+          <ColumnView name="ConfirmedById" visible="True" width="120" />
+          <ValidationRule name="ConfirmedById_Validation" required="False" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="ApprovedByID" type="Int32" isValidated="True" description="شناسه کاربر تصویب‌کننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="spnApprovedByID" format="" type="SpinButton" bindingMember="Value" />
+        <Property name="ApprovedById" type="Int32" isValidated="True" description="شناسه کاربر تصویب‌کننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnApprovedById" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="ApprovedByID" type="int" nullable="True" />
-          <ColumnView name="ApprovedByID" visible="True" width="120" />
-          <ValidationRule name="ApprovedByID_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+          <ColumnView name="ApprovedById" visible="True" width="120" />
+          <ValidationRule name="ApprovedById_Validation" required="False" minimum="" maximum="" format="" type="Value" />
         </Property>
         <Property name="Type" type="Int16" isValidated="True" description="نوع فرم؛ 0 برای دریافت و 1 برای پرداخت" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnType" format="" type="SpinButton" bindingMember="Value" />
@@ -2237,11 +2237,11 @@
           <ColumnView name="Date" visible="True" width="120" />
           <ValidationRule name="Date_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="CurrencyID" type="Int32" isValidated="True" description="شناسه ارز" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="spnCurrencyID" format="" type="SpinButton" bindingMember="Value" />
+        <Property name="CurrencyId" type="Int32" isValidated="True" description="شناسه ارز" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnCurrencyId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="CurrencyID" type="int" nullable="True" />
-          <ColumnView name="CurrencyID" visible="True" width="120" />
-          <ValidationRule name="CurrencyID_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+          <ColumnView name="CurrencyId" visible="True" width="120" />
+          <ValidationRule name="CurrencyId_Validation" required="False" minimum="" maximum="" format="" type="Value" />
         </Property>
         <Property name="CurrencyRate" type="Decimal" isValidated="True" description="نرخ ارز" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtCurrencyRate" format="" type="TextBox" bindingMember="Text" />

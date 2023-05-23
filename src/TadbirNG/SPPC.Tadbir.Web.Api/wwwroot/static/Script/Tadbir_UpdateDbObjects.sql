@@ -1087,9 +1087,10 @@ WHERE EntityTypeID = 24
 DELETE FROM [Config].[LogSetting]
 WHERE EntityTypeID = 25
 
--- 1.2.1514
+-- 1.2.1520
 SET IDENTITY_INSERT [Metadata].[Operation] ON
-INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (68, N'Register')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description])
+    VALUES (68, N'Register', NULL)
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[EntityType] ON

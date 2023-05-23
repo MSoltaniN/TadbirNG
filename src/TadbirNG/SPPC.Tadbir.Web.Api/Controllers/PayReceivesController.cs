@@ -2,17 +2,13 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.CashFlow;
-using SPPC.Tadbir.ViewModel.Core;
-using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -41,7 +37,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         protected override string EntityNameKey
         {
-            get { return String.Empty; }
+            get { return AppStrings.Receival; }
         }
 
         /// <summary>
@@ -64,7 +60,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر</param>
         /// <returns>اطلاعات نمایشی فرم دریافت مورد نظر</returns>
-        // GET: api/payments/{payReceiveId:min(1)}
+        // GET: api/receivals/{payReceiveId:min(1)}
         [HttpGet]
         [Route(PayReceiveApi.ReceivalUrl)]
         [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.View)]
@@ -184,7 +180,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات فرم دریافت مشخص شده با شناسه دیتابیسی را پس از اعتبارسنجی از دیتابیس حذف می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر برای حذف</param>
-        // DELETE: api/payments/{payReceiveId:min(1)}
+        // DELETE: api/receivals/{payReceiveId:min(1)}
         [HttpDelete]
         [Route(PayReceiveApi.ReceivalUrl)]
         [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Delete)]
@@ -229,7 +225,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر برای تأیید</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
         /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
-        // PUT: api/reseivals/{payReceiveId:int}/confirm
+        // PUT: api/receivals/{payReceiveId:int}/confirm
         [HttpPut]
         [Route(PayReceiveApi.ConfirmReceivalUrl)]
         [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Confirm)]
@@ -247,7 +243,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، فرم پرداخع مشخص شده را برگشت از تأیید کرده و وضعیتش را در حالت تأییدنشده قرار می دهد
+        /// به روش آسنکرون، فرم پرداخت مشخص شده را برگشت از تأیید کرده و وضعیتش را در حالت تأییدنشده قرار می دهد
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت مورد نظر برای برگشت از تأیید</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
@@ -341,7 +337,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، فرم پرداخت مشخص شده را برگشت از تصویب کرده و وضعیتش را در حالت تصویب نشده قرار می دهد
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی سند مورد نظر برای برگشت از تصویب</param>
+        /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت مورد نظر برای برگشت از تصویب</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
         /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
         // PUT: api/payments/{payReceiveId:int}/approve/undo
@@ -351,7 +347,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingPaymentAsUnapproved(int payReceiveId)
         {
             var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.UndoApprove,
-                AppStrings.Payments);
+                AppStrings.Payment);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -367,14 +363,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر برای برگشت از تصویب</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
         /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
-        // PUT: api/payments/{payReceiveId:int}/approve/undo
+        // PUT: api/receivals/{payReceiveId:int}/approve/undo
         [HttpPut]
         [Route(PayReceiveApi.UndoApproveReceivalUrl)]
         [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.UndoApprove)]
         public async Task<IActionResult> PutExistingReceivalAsUnapproved(int payReceiveId)
         {
             var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.UndoApprove,
-                AppStrings.Receivals);
+                AppStrings.Receival);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -526,7 +522,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/receivals/{payReceiveNo:min(1)}/next
         [HttpGet]
         [Route(PayReceiveApi.NextReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Navigate)]
+        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Navigate)]
         public async Task<IActionResult> GetNextReceivalAsync(string payReceiveNo)
         {
             var next = await _repository.GetNextPayReceiveAsync(payReceiveNo,
@@ -552,7 +548,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، فرم دریافت جدیدی با مقادیر پیشنهادی در دیتابیس ایجاد کرده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات نمایشی فرم دریافت جدید با مقادیر پیشنهادی</returns>
-        // GET: api/receives/new
+        // GET: api/receivals/new
         [HttpGet]
         [Route(PayReceiveApi.NewReceivalUrl)]
         [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Create)]
@@ -613,7 +609,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicatePayReceiveNo(payReceive))
             {
-                string fieldTitle = payReceive.Type == (int)PayReceiveType.Payment
+                string fieldTitle = entityNameKey == AppStrings.Payment
                     ? AppStrings.PaymentNo
                     : AppStrings.ReceivalNo;
 

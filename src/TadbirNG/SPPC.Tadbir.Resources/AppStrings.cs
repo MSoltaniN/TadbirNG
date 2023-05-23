@@ -5245,7 +5245,7 @@ namespace SPPC.Tadbir.Resources
         public const string Password = "Password";
 
         /// <summary>
-        /// Default text : پرداخت
+        /// Default text : فرم پرداخت
         /// </summary>
         public const string Payment = "Payment";
 
@@ -5445,7 +5445,7 @@ namespace SPPC.Tadbir.Resources
         public const string QuickReportDesign = "QuickReportDesign";
 
         /// <summary>
-        /// Default text : دریافت
+        /// Default text : فرم دریافت
         /// </summary>
         public const string Receival = "Receival";
 

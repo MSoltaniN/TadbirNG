@@ -3892,7 +3892,7 @@
     <value>سند دریافت جدید</value>
   </data>
   <data name="Payment" xml:space="preserve">
-    <value>پرداخت</value>
+    <value>فرم پرداخت</value>
   </data>
   <data name="PaymentFormbyNo" xml:space="preserve">
     <value>سند پرداخت به شماره ...</value>
@@ -3904,7 +3904,7 @@
     <value>پرداخت ها</value>
   </data>
   <data name="Receival" xml:space="preserve">
-    <value>دریافت</value>
+    <value>فرم دریافت</value>
   </data>
   <data name="ReceivalFormbyNo" xml:space="preserve">
     <value>سند دریافت به شماره ...</value>

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace SPPC.Tadbir.Api
 {
     /// <summary>
-    /// Defines API server routes and API client operation URLs for working with pays and receivals.
+    /// Defines API server routes and API client operation URLs for working with payments and receivals.
     /// </summary>
     public sealed class PayReceiveApi
     {
