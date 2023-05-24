@@ -13,7 +13,7 @@ import { NumberValidators } from '@sppc/shared/directive/Validator/Sppc-national
 import { Entities, Layout, MessageType } from '@sppc/shared/enum/metadata';
 import { ViewName } from '@sppc/shared/security';
 import { BrowserStorageService, ErrorHandlingService, MetaDataService } from '@sppc/shared/services';
-import { checkBookOperations } from '@sppc/treasury/models/chechBookOperations';
+import { checkBookOperations } from '@sppc/treasury/enums/chechBookOperations';
 import { CheckBook, CheckBookPage } from '@sppc/treasury/models/checkBook';
 import { CheckBooksApi } from '@sppc/treasury/service/api/checkBooksApi';
 import { CheckBookInfo, CheckBookService } from '@sppc/treasury/service/check-book.service';

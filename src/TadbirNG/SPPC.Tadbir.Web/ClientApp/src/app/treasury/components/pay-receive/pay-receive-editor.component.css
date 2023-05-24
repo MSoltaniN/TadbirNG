@@ -1,0 +1,73 @@
+::ng-deep .content-header {
+  margin-bottom: 10px;
+}
+.pr-form-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-top: 5px;
+  border: solid 1px #3c8dbc;
+  padding: 7px 10px 0;
+}
+input[type="text"],
+textarea,
+.ddl-type {
+  width: 100%;
+}
+.voucher-status-item {
+  display: inline;
+  margin: 0 10px;
+}
+
+::ng-deep.dialog-padding .k-window-content {
+  padding: 15px !important;
+}
+
+.col-xs-5ths,
+.col-sm-5ths,
+.col-md-5ths,
+.col-lg-5ths,
+.col-sm-4-5ths {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.col-xs-5ths {
+  width: 32%;
+  float: left;
+}
+
+.k-button-md.k-icon-button {
+  padding: 2px 4px !important;
+}
+
+@media (min-width: 768px) {
+  .pr-form-content {
+    flex-direction: row;
+  }
+  .col-sm-5ths {
+    width: 32%;
+    float: left;
+  }
+  .col-sm-4-5ths {
+    width: 80%;
+    float: left;
+  }
+}
+
+@media (min-width: 992px) {
+  .col-md-5ths {
+    width: 20%;
+    float: left;
+  }
+}
+
+@media (min-width: 1200px) {
+  .col-lg-5ths {
+    width: 20%;
+    float: left;
+  }
+}

@@ -11,6 +11,9 @@ import { CashRegisterRolesFormComponent } from './components/cash-registers/cash
 import { CheckBookPagesComponent } from './components/check-book/check-book-pages/check-book-pages.component';
 import { SourcesApplicationsComponent } from './components/sources-applications/sources-applications.component';
 import { SourceAppFormComponent } from './components/sources-applications/sourceApp-form/sourceApp-form.component';
+import { PayReceiveEditorComponent } from './components/pay-receive/pay-receive-editor.component';
+import { PayerReceiverComponent } from './components/pay-receive/payer-receiver/payer-receiver.component';
+import { PayReciveCheksComponent } from './components/pay-receive/pay-recive-cheks/pay-recive-cheks.component';
 
 @NgModule({
   imports: [
@@ -26,7 +29,10 @@ import { SourceAppFormComponent } from './components/sources-applications/source
     CashRegisterRolesFormComponent,
     CheckBookPagesComponent,
     SourcesApplicationsComponent,
-    SourceAppFormComponent
+    SourceAppFormComponent,
+    PayReceiveEditorComponent,
+    PayerReceiverComponent,
+    PayReciveCheksComponent
   ],
   entryComponents:[CashRegistersFormComponent,CashRegisterRolesFormComponent],
   exports: [TreasuryRoutingModule]

@@ -1,0 +1,118 @@
+<view-identifier [ViewID]="viewId">
+    <report-param ParamName="no" [ParamValue]=""></report-param>
+  </view-identifier>
+  <!-- <report-viewer id="compviewer"></report-viewer>
+  <report-management [ViewIdentity]="viewIdentity"></report-management> -->
+  
+  <div class="panel-body" style="padding-top: 0">
+    <div *ngIf="errorMessages">
+      <div *ngFor="let err of errorMessages" class="alert alert-danger">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        {{ err }}
+      </div>
+    </div>
+  
+    <div>
+      <div class="row" >
+        <div class="col-xs-12">
+          <div class="voucher-form-content">
+              <div class="panel-body">
+                  <kendo-grid
+                    id="{{ viewId }}"
+                    #GridID
+                    [ngClass]="{
+                      tRtl: this.currentlang === 'fa',
+                      tLtr: this.currentlang === 'en'
+                    }"
+                    [data]="rowData"
+                    [height]="250"
+                    [sortable]="{ allowUnsort: true, mode: 'multiple' }"
+                    [sort]="sort"
+                    [pageSize]="pageSize"
+                    [skip]="skip"
+                    [pageable]="true"
+                    [resizable]="true"
+                    [scrollable]="'scrollable'"
+                    (pageChange)="onPageChange($event)"
+                    (sortChange)="sortChange($event)"
+                    (edit)="editHandler($event)"
+                    (remove)="removeHandler()"
+                    [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+                    [(selectedKeys)]="selectedRows"
+                    [kendoGridSelectBy]="getSelectedRow"
+                    sppc-auto-generated-grid-reorder
+                    sppc-auto-generated-grid-resize
+                  >
+                    <ng-template kendoGridNoRecordsTemplate>
+                      {{ ("App.RecordNotFound" | translate) }}
+                    </ng-template>
+                
+                    <kendo-grid-messages
+                      pagerPage="{{ 'Paging.Record' | translate }}"
+                      pagerOf="{{ 'Paging.Of' | translate }}"
+                      pagerItems="{{ 'Paging.Record' | translate }}"
+                      pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}"
+                      pagerNextPage="{{ 'Paging.NextPage' | translate }}"
+                      pagerPreviousPage="{{ 'Paging.PreviousPage' | translate }}"
+                      pagerFirstPage="{{ 'Paging.FirstPage' | translate }}"
+                      pagerLastPage="{{ 'Paging.LastPage' | translate }}"
+                    >
+                    </kendo-grid-messages>
+  
+                    <ng-template kendoGridToolbarTemplate>
+                      <button
+                        kendoGridAddCommand
+                        (click)="openDialog(itemListRef,accountItem.Account)"
+                        [icon]="'file-add'"
+                        type="button"
+                        title="{{ 'Buttons.Add' | translate }}"
+                      ></button>
+                      <!-- [disabled]="!accountRequired" -->
+                
+                      <button
+                        (click)="editHandler()"
+                        class="k-button k-button-icon"
+                        [disabled]="selectedRows.length != 1"
+                        title="{{ 'Buttons.Edit' | translate }}"
+                      >
+                        <span class="k-icon k-i-pencil"></span>
+                      </button>
+                      <button
+                        (click)="removeHandler()"
+                        class="k-button k-button-icon"
+                        [disabled]="selectedRows.length == 0"
+                        title="{{ 'Buttons.Delete' | translate }}"
+                      >
+                        <span class="k-icon k-i-delete"></span>
+                      </button>
+                    </ng-template>
+  
+                    <kendo-grid-checkbox-column
+                      showSelectAll="true"
+                      [width]="45"
+                    >
+                    </kendo-grid-checkbox-column>
+  
+                    <kendo-grid-column [width]="100" field="account.name" title="{{ 'VoucherLine.FullAccount.Account.Name' | translate }}">
+                    </kendo-grid-column>
+                    
+                    <kendo-grid-column [width]="150" field="detailAccount.name" title="{{ 'VoucherLine.FullAccount.DetailAccount.Name' | translate }}">
+                    </kendo-grid-column>
+  
+                    <kendo-grid-column [width]="150" field="costCenter.name" title="{{ 'VoucherLine.FullAccount.CostCenter.Name' | translate }}">
+                    </kendo-grid-column>
+  
+                    <kendo-grid-column [width]="100" field="project.name" title="{{ 'VoucherLine.FullAccount.Project.Name' | translate }}">
+                    </kendo-grid-column>
+  
+                  </kendo-grid>
+                </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #itemListRef>
+    <sppc-full-account-detail (save)="onSave($event);" [accountItem]="accountItem" [selectedItem]="selectedItem" [fullAccount]="fullAccount" (close)="closeDialog();"></sppc-full-account-detail>
+  </ng-template>
