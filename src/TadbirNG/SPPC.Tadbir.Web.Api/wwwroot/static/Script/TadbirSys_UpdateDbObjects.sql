@@ -982,12 +982,12 @@ SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
-    VALUES (41, 3, 2, N'ManageEntities,Payments', N'PayReceive', NULL)
+    VALUES (41, 3, 2, N'ManageEntities,Payments', N'Payment', NULL)
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
-    VALUES (42, 3, 2, N'ManageEntities,Receivals', N'PayReceive', NULL)
+    VALUES (42, 3, 2, N'ManageEntities,Receivals', N'Recieval', NULL)
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON

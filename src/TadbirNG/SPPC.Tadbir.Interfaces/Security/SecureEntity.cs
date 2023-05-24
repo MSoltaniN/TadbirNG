@@ -212,8 +212,13 @@ namespace SPPC.Tadbir.Security
         public const string SourceApp = "SourceApp";
 
         /// <summary>
-        /// نام موجودیت دریافت و پرداخت
+        /// نام موجودیت پرداخت
         /// </summary>
-        public const string PayReceive = "PayReceive";
+        public const string Payment = "Payment";
+
+        /// <summary>
+        /// نام موجودیت دریافت
+        /// </summary>
+        public const string Receival = "Receival";
     }
 }

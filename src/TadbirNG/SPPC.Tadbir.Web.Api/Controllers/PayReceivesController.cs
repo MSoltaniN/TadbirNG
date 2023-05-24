@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
@@ -48,10 +49,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/payments/{payReceiveId:min(1)}
         [HttpGet]
         [Route(PayReceiveApi.PaymentUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.View)]
-        public async Task<IActionResult> GetPaymentAsync(int payReceiveId)
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.View)]
+        public async Task<IActionResult> GetPaymentAsync(int payReceiveId, GridOptions gridOptions = null)
         {
-            var payment = await _repository.GetPayReceiveAsync(payReceiveId);
+            var payment = await _repository.GetPayReceiveAsync(payReceiveId, gridOptions);
             return JsonReadResult(payment);
         }
 
@@ -63,7 +64,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/receivals/{payReceiveId:min(1)}
         [HttpGet]
         [Route(PayReceiveApi.ReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.View)]
         public async Task<IActionResult> GetReceivalAsync(int payReceiveId)
         {
             var receival = await _repository.GetPayReceiveAsync(payReceiveId);
@@ -78,7 +79,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // POST: api/payments
         [HttpPost]
         [Route(PayReceiveApi.PaymentsUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Create)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Create)]
         public async Task<IActionResult> PostNewPaymentAsync([FromBody] PayReceiveViewModel payReceive)
         {
             var result = await PayReceiveValidationResultAsync(payReceive,AppStrings.Payment);
@@ -99,7 +100,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // POST: api/receivals
         [HttpPost]
         [Route(PayReceiveApi.ReceivalsUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Create)]
+        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Create)]
         public async Task<IActionResult> PostNewReceivalAsync([FromBody] PayReceiveViewModel payReceive)
         {
             var result = await PayReceiveValidationResultAsync(payReceive, AppStrings.Receival);
@@ -122,7 +123,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/payments/{payReceiveId:min(1)}
         [HttpPut]
         [Route(PayReceiveApi.PaymentUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Edit)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Edit)]
         public async Task<IActionResult> PutModifiedPaymentAsync(int payReceiveId,
             [FromBody] PayReceiveViewModel payReceive)
         {
@@ -146,7 +147,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/receivals/{payReceiveId:min(1)}
         [HttpPut]
         [Route(PayReceiveApi.ReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Edit)]
+        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Edit)]
         public async Task<IActionResult> PutModifiedReceivalAsync(int payReceiveId, 
             [FromBody] PayReceiveViewModel payReceive)
         {
@@ -167,7 +168,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // DELETE: api/payments/{payReceiveId:min(1)}
         [HttpDelete]
         [Route(PayReceiveApi.PaymentUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Delete)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingPaymentAsync(int payReceiveId)
         {
             string message = await ValidateDeleteAsync(payReceiveId);
@@ -187,7 +188,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // DELETE: api/receivals/{payReceiveId:min(1)}
         [HttpDelete]
         [Route(PayReceiveApi.ReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Delete)]
+        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingReceivalAsync(int payReceiveId)
         {
             string message = await ValidateDeleteAsync(payReceiveId);
@@ -209,7 +210,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/payments/{payReceiveId:int}/confirm
         [HttpPut]
         [Route(PayReceiveApi.ConfirmPaymentUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Confirm)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Confirm)]
         public async Task<IActionResult> PutExistingPaymentAsConfirmed(int payReceiveId)
         {
             var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.Confirm,
@@ -232,7 +233,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/receivals/{payReceiveId:int}/confirm
         [HttpPut]
         [Route(PayReceiveApi.ConfirmReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Confirm)]
+        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Confirm)]
         public async Task<IActionResult> PutExistingReceivalAsConfirmed(int payReceiveId)
         {
             var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.Confirm,
@@ -255,7 +256,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/payments/{payReceiveId:int}/confirm/undo
         [HttpPut]
         [Route(PayReceiveApi.UndoConfirmPaymentUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.UndoConfirm)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.UndoConfirm)]
         public async Task<IActionResult> PutExistingPaymentAsUnconfirmed(int payReceiveId)
         {
             var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.UndoConfirm,
@@ -278,7 +279,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/receivals/{payReceiveId:int}/confirm/undo
         [HttpPut]
         [Route(PayReceiveApi.UndoConfirmReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.UndoConfirm)]
+        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.UndoConfirm)]
         public async Task<IActionResult> PutExistingReceivalAsUnconfirmed(int payReceiveId)
         {
             var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.UndoConfirm,
@@ -301,7 +302,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/payments/{payReceiveId:int}/approve
         [HttpPut]
         [Route(PayReceiveApi.ApprovePaymentUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Approve)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Approve)]
         public async Task<IActionResult> PutExistingPaymentAsApproved(int payReceiveId)
         {
             var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.Approve,
@@ -324,7 +325,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/receivals/{payReceiveId:int}/approve
         [HttpPut]
         [Route(PayReceiveApi.ApproveReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Approve)]
+        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Approve)]
         public async Task<IActionResult> PutExistingReceivalAsApproved(int payReceiveId)
         {
             var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.Approve,
@@ -347,7 +348,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/payments/{payReceiveId:int}/approve/undo
         [HttpPut]
         [Route(PayReceiveApi.UndoApprovePaymentUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.UndoApprove)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.UndoApprove)]
         public async Task<IActionResult> PutExistingPaymentAsUnapproved(int payReceiveId)
         {
             var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.UndoApprove,
@@ -370,7 +371,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/receivals/{payReceiveId:int}/approve/undo
         [HttpPut]
         [Route(PayReceiveApi.UndoApproveReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.UndoApprove)]
+        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.UndoApprove)]
         public async Task<IActionResult> PutExistingReceivalAsUnapproved(int payReceiveId)
         {
             var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.UndoApprove,
@@ -392,7 +393,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/payments/by-no/{payReceiveNo:min(1)}
         [HttpGet]
         [Route(PayReceiveApi.PaymentByNoUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.View)]
         public async Task<IActionResult> GetPaymentByNoAsync(string payReceiveNo)
         {
             var payReceiveByNo = await _repository.GetPayReceiveNoAsync(payReceiveNo, (int)PayReceiveType.Payment);
@@ -407,7 +408,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/receivals/by-no/{payReceiveNo:min(1)}
         [HttpGet]
         [Route(PayReceiveApi.ReceivalByNoUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.View)]
         public async Task<IActionResult> GetReceivalByNoAsync(string payReceiveNo)
         {
             var payReceiveByNo = await _repository.GetPayReceiveNoAsync(payReceiveNo, (int)PayReceiveType.Receival);
@@ -421,7 +422,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/payments/first
         [HttpGet]
         [Route(PayReceiveApi.FirstPaymentUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Navigate)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Navigate)]
         public async Task<IActionResult> GetFirstPaymentAsync()
         {
             var first = await _repository.GetFirstPayReceiveAsync((int)PayReceiveType.Payment, GridOptions);
@@ -435,7 +436,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/receivals/first
         [HttpGet]
         [Route(PayReceiveApi.FirstReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Navigate)]
+        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Navigate)]
         public async Task<IActionResult> GetFirstReceivalAsync()
         {
             var first = await _repository.GetFirstPayReceiveAsync((int)PayReceiveType.Receival, GridOptions);
@@ -449,7 +450,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/payments/last
         [HttpGet]
         [Route(PayReceiveApi.LastPaymentUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Navigate)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Navigate)]
         public async Task<IActionResult> GetLastPaymentAsync()
         {
             var last = await _repository.GetLastPayReceiveAsync((int)PayReceiveType.Payment, GridOptions);
@@ -463,7 +464,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/receivals/last
         [HttpGet]
         [Route(PayReceiveApi.LastReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Navigate)]
+        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Navigate)]
         public async Task<IActionResult> GetLastReceivalAsync()
         {
             var last = await _repository.GetLastPayReceiveAsync((int)PayReceiveType.Receival, GridOptions);
@@ -478,7 +479,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/payments/{payReceiveNo:min(1)}/previous
         [HttpGet]
         [Route(PayReceiveApi.PreviousPaymentUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Navigate)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Navigate)]
         public async Task<IActionResult> GetPreviousPaymentAsync(string payReceiveNo)
         {
             var previous = await _repository.GetPreviousPayReceiveAsync(payReceiveNo,
@@ -494,7 +495,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/receivals/{payReceiveNo:min(1)}/previous
         [HttpGet]
         [Route(PayReceiveApi.PreviousReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Navigate)]
+        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Navigate)]
         public async Task<IActionResult> GetPreviousReceivalAsync(string payReceiveNo)
         {
             var previous = await _repository.GetPreviousPayReceiveAsync(payReceiveNo,
@@ -510,7 +511,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/payments/{payReceiveNo:min(1)}/next
         [HttpGet]
         [Route(PayReceiveApi.NextPaymentUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Navigate)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Navigate)]
         public async Task<IActionResult> GetNextPaymentAsync(string payReceiveNo)
         {
             var next = await _repository.GetNextPayReceiveAsync(payReceiveNo,
@@ -526,7 +527,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/receivals/{payReceiveNo:min(1)}/next
         [HttpGet]
         [Route(PayReceiveApi.NextReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Navigate)]
+        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Navigate)]
         public async Task<IActionResult> GetNextReceivalAsync(string payReceiveNo)
         {
             var next = await _repository.GetNextPayReceiveAsync(payReceiveNo,
@@ -541,7 +542,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/payments/new
         [HttpGet]
         [Route(PayReceiveApi.NewPaymentUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)PaymentPermissions.Create)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Create)]
         public async Task<IActionResult> GetNewPaymentAsync()
         {
             var payReceive = await _repository.GetNewPayReceiveAsync((int)PayReceiveType.Payment);
@@ -555,7 +556,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/receivals/new
         [HttpGet]
         [Route(PayReceiveApi.NewReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.PayReceive, (int)ReceivalPermissions.Create)]
+        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Create)]
         public async Task<IActionResult> GetNewReceivalAsync()
         {
             var payReceive = await _repository.GetNewPayReceiveAsync((int)PayReceiveType.Receival);
@@ -595,6 +596,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (result is BadRequestObjectResult)
             {
                 return result;
+            }
+
+            if(payReceive.CurrencyId > 0 && payReceive.CurrencyRate <= 0)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.FieldIsRequired, AppStrings.CurrencyRate));
             }
 
             if (payReceiveId > 0)

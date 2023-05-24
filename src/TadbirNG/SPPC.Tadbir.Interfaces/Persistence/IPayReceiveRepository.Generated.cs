@@ -14,8 +14,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، فرم دریافت/پرداخت با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="payReceiveId">شناسه عددی یکی از فرم های دریافت یا پرداخت موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای دریافت اطلاعات لازم از سمت وب</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شناسه عددی</returns>
-        Task<PayReceiveViewModel> GetPayReceiveAsync(int payReceiveId);
+        Task<PayReceiveViewModel> GetPayReceiveAsync(int payReceiveId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک فرم دریافت/پرداخت را ایجاد یا اصلاح می کند

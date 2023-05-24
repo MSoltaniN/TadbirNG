@@ -38,15 +38,25 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، فرم دریافت/پرداخت با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="payReceiveId">شناسه عددی یکی از فرم های دریافت یا پرداخت موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای دریافت اطلاعات لازم از سمت وب</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شناسه عددی</returns>
-        public async Task<PayReceiveViewModel> GetPayReceiveAsync(int payReceiveId)
+        public async Task<PayReceiveViewModel> GetPayReceiveAsync(int payReceiveId, GridOptions gridOptions = null)
         {
             PayReceiveViewModel item = null;
-            var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
-            var payReceive = await repository.GetByIDAsync(payReceiveId);
-            if (payReceive != null)
+            if(gridOptions.Operation != (int)OperationId.Print && 
+                gridOptions.Operation != (int)OperationId.PrintPreview)
             {
-                item = Mapper.Map<PayReceiveViewModel>(payReceive);
+                var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
+                var payReceive = await repository.GetByIDAsync(payReceiveId);
+                if (payReceive != null)
+                {
+                    item = Mapper.Map<PayReceiveViewModel>(payReceive);
+                }
+            }
+            else
+            {
+                var options = gridOptions ?? new GridOptions();
+                await ReadAsync(options);
             }
 
             return item;
