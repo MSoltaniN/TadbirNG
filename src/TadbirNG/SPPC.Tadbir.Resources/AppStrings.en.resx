@@ -3931,10 +3931,10 @@
     <value>Number</value>
   </data>
   <data name="PaymentNo" xml:space="preserve">
-    <value>Payment Number</value>
+    <value>Payment number</value>
   </data>
   <data name="ReceivalNo" xml:space="preserve">
-    <value>Receival Number</value>
+    <value>Receival number</value>
   </data>
   <data name="CantSaveAsDraft" xml:space="preserve">
     <value>This {0} is either confirmed or finalized and cannot be saved as draft.</value>
