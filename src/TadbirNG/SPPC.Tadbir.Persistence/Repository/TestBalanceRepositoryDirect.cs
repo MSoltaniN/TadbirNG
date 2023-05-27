@@ -560,7 +560,7 @@ namespace SPPC.Tadbir.Persistence
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             if (parameters.IsByBranch)
             {
-                await AddTurnoversByBranchAsync(length, items, parameters);
+                await AddTurnoversByBranchAsync(length, items, parameters, filter);
                 return;
             }
 
@@ -609,10 +609,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task AddTurnoversByBranchAsync(
-            int length, List<TestBalanceItemViewModel> items, TestBalanceParameters parameters)
+            int length, List<TestBalanceItemViewModel> items, TestBalanceParameters parameters, string filter = null)
         {
             var initMap = new Dictionary<FullCodeBranch, VoucherLineAmountsViewModel>();
-            var query = await GetTurnoverQueryAsync(length, parameters);
+            var query = await GetTurnoverQueryAsync(length, parameters, filter);
             var result = DbConsole.ExecuteQuery(query.Query);
             foreach (DataRow row in result.Rows)
             {
@@ -834,9 +834,6 @@ namespace SPPC.Tadbir.Persistence
         {
             ReportQuery query;
             string componentName = GetComponentName(parameters.ViewId);
-            string fieldName = parameters.ViewId == ViewId.DetailAccount
-                ? "Detail"
-                : componentName;
 
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
@@ -844,18 +841,18 @@ namespace SPPC.Tadbir.Persistence
                 var toDate = parameters.ToDate.Value;
                 query = parameters.IsByBranch
                     ? new ReportQuery(String.Format(BalanceQuery.EndBalanceByDateByBranch, length, componentName,
-                        fieldName, fpStart.ToShortDateString(false), toDate.ToShortDateString(false)))
+                        fpStart.ToShortDateString(false), toDate.ToShortDateString(false)))
                     : new ReportQuery(String.Format(BalanceQuery.EndBalanceByDate, length, componentName,
-                        fieldName, fpStart.ToShortDateString(false), toDate.ToShortDateString(false)));
+                        fpStart.ToShortDateString(false), toDate.ToShortDateString(false)));
             }
             else
             {
                 var toNo = parameters.ToNo.Value;
                 query = parameters.IsByBranch
                     ? new ReportQuery(String.Format(BalanceQuery.EndBalanceByNoByBranch, length, componentName,
-                        fieldName, 1, toNo))
+                        1, toNo))
                     : new ReportQuery(String.Format(BalanceQuery.EndBalanceByNo, length, componentName,
-                        fieldName, 1, toNo));
+                        1, toNo));
             }
 
             var openingVoucher = await _utility.GetOpeningVoucherAsync();
@@ -868,27 +865,24 @@ namespace SPPC.Tadbir.Persistence
         {
             ReportQuery query;
             string componentName = GetComponentName(parameters.ViewId);
-            string fieldName = parameters.ViewId == ViewId.DetailAccount
-                ? "Detail"
-                : componentName;
 
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
                 var toDate = parameters.ToDate.Value;
                 query = parameters.IsByBranch
                     ? new ReportQuery(String.Format(BalanceQuery.TurnoverByDateByBranch, length, componentName,
-                        fieldName, toDate.ToShortDateString(false)))
+                        toDate.ToShortDateString(false)))
                     : new ReportQuery(String.Format(BalanceQuery.TurnoverByDate, length, componentName,
-                        fieldName, toDate.ToShortDateString(false)));
+                        toDate.ToShortDateString(false)));
             }
             else
             {
                 var toNo = parameters.ToNo.Value;
                 query = parameters.IsByBranch
                     ? new ReportQuery(String.Format(BalanceQuery.TurnoverByNoByBranch, length, componentName,
-                        fieldName, toNo))
+                        toNo))
                     : new ReportQuery(String.Format(BalanceQuery.TurnoverByNo, length, componentName,
-                        fieldName, toNo));
+                        toNo));
             }
 
             var openingVoucher = await _utility.GetOpeningVoucherAsync();
@@ -901,24 +895,17 @@ namespace SPPC.Tadbir.Persistence
         {
             ReportQuery query;
             string componentName = GetComponentName(parameters.ViewId);
-            string fieldName = parameters.ViewId == ViewId.DetailAccount
-                ? "Detail"
-                : componentName;
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
                 query = parameters.IsByBranch
-                    ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByDateByBranch,
-                        length, componentName, fieldName))
-                    : new ReportQuery(String.Format(BalanceQuery.InitBalanceByDate,
-                        length, componentName, fieldName));
+                    ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByDateByBranch, length, componentName))
+                    : new ReportQuery(String.Format(BalanceQuery.InitBalanceByDate, length, componentName));
             }
             else
             {
                 query = parameters.IsByBranch
-                    ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByNoByBranch,
-                        length, componentName, fieldName))
-                    : new ReportQuery(String.Format(BalanceQuery.InitBalanceByNo,
-                        length, componentName, fieldName));
+                    ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByNoByBranch, length, componentName))
+                    : new ReportQuery(String.Format(BalanceQuery.InitBalanceByNo, length, componentName));
             }
 
             var openingVoucher = await _utility.GetOpeningVoucherAsync();

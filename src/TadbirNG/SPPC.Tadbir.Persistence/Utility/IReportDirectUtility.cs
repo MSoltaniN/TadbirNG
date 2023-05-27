@@ -25,13 +25,6 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <summary>
         ///
         /// </summary>
-        /// <param name="viewId"></param>
-        /// <returns></returns>
-        string GetFieldName(int viewId);
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="row"></param>
         /// <param name="field"></param>

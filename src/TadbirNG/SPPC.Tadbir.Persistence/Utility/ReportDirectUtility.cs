@@ -58,26 +58,6 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <summary>
         ///
         /// </summary>
-        /// <param name="viewId"></param>
-        /// <returns></returns>
-        public string GetFieldName(int viewId)
-        {
-            string fieldName;
-            if (viewId == ViewId.DetailAccount)
-            {
-                fieldName = "Detail";
-            }
-            else
-            {
-                fieldName = GetItemName(viewId);
-            }
-
-            return fieldName;
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
         /// <param name="gridOptions"></param>
         /// <param name="fiscalPeriodId"></param>
         /// <param name="branchId"></param>
