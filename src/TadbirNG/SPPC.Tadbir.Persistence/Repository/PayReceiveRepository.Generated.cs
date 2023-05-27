@@ -26,9 +26,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="context">امکانات مشترک مورد نیاز را برای عملیات دیتابیسی فراهم می کند</param>
         /// <param name="system">امکانات مورد نیاز در دیتابیس های سیستمی را فراهم می کند</param>
-        /// <param name="userRepository">امکان خواندن اطلاعات کاربران برنامه را فراهم می کند</param>
-        public PayReceiveRepository(IRepositoryContext context, ISystemRepository system,
-            IUserRepository userRepository)
+        public PayReceiveRepository(IRepositoryContext context, ISystemRepository system)
             : base(context, system.Logger)
         {
             _system = system;
@@ -38,13 +36,16 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، فرم دریافت/پرداخت با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="payReceiveId">شناسه عددی یکی از فرم های دریافت یا پرداخت موجود</param>
+        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای دریافت اطلاعات لازم از سمت وب</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شناسه عددی</returns>
-        public async Task<PayReceiveViewModel> GetPayReceiveAsync(int payReceiveId, GridOptions gridOptions = null)
+        public async Task<PayReceiveViewModel> GetPayReceiveAsync(int payReceiveId, int type = 0,
+            GridOptions gridOptions = null)
         {
-            PayReceiveViewModel item = null;
-            if(gridOptions.Operation != (int)OperationId.Print && 
-                gridOptions.Operation != (int)OperationId.PrintPreview)
+            PayReceiveViewModel item = new PayReceiveViewModel();
+            var options = gridOptions ?? new GridOptions();
+            if (options.Operation != (int)OperationId.Print &&
+                options.Operation != (int)OperationId.PrintPreview)
             {
                 var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
                 var payReceive = await repository.GetByIDAsync(payReceiveId);
@@ -55,8 +56,8 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                var options = gridOptions ?? new GridOptions();
-                await ReadAsync(options);
+                int entityTypeId = GetEntityTypeId(type);
+                await ReadAsync(options, null, entityTypeId);
             }
 
             return item;
@@ -207,11 +208,11 @@ namespace SPPC.Tadbir.Persistence
             var payReceives = await GetOrderedPayReceiveItemsAsync(type,
                 pr => pr.Type == type, gridOptions);
             var first = payReceives.FirstOrDefault();
-            if (first != null) 
+            if (first != null)
             {
                 await SetPayReceiveNavigationAsync(first, gridOptions);
             }
-            
+
             return first;
         }
 
@@ -243,7 +244,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PayReceiveViewModel> GetNextPayReceiveAsync(string currentNo, int type,
             GridOptions gridOptions = null)
         {
-            var payReceives = await GetOrderedPayReceiveItemsAsync(type, pr => 
+            var payReceives = await GetOrderedPayReceiveItemsAsync(type, pr =>
                 String.Compare(pr.PayReceiveNo, currentNo) > 0 && pr.Type == type, gridOptions);
             var next = payReceives.FirstOrDefault();
             if (next != null)
@@ -321,7 +322,7 @@ namespace SPPC.Tadbir.Persistence
 
             return lastByDate.Date;
         }
-        
+
         private async Task<IEnumerable<PayReceiveViewModel>> GetOrderedPayReceiveItemsAsync(int type,
             Expression<Func<PayReceive, bool>> criteria = null, GridOptions gridOptions = null)
         {
@@ -337,7 +338,7 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
         }
 
-        private async Task SetPayReceiveNavigationAsync(PayReceiveViewModel payReceive, 
+        private async Task SetPayReceiveNavigationAsync(PayReceiveViewModel payReceive,
             GridOptions gridOptions = null)
         {
             int nextCount, prevCount;
@@ -345,7 +346,7 @@ namespace SPPC.Tadbir.Persistence
             var options = gridOptions ?? new GridOptions();
             var query = Repository
                 .GetAllOperationQuery<PayReceive>(viewId)
-                .Where(pr => String.Compare(pr.PayReceiveNo,payReceive.PayReceiveNo) < 0 &&
+                .Where(pr => String.Compare(pr.PayReceiveNo, payReceive.PayReceiveNo) < 0 &&
                     pr.Type == payReceive.Type);
 
             if (!options.IsEmpty)
@@ -353,8 +354,8 @@ namespace SPPC.Tadbir.Persistence
                 var items = await query.ToListAsync();
                 prevCount = items
                     .Select(item => Mapper.Map<PayReceiveViewModel>(item))
-                    .ApplyQuickFilter(options,false)
-                    .Apply(options,false)
+                    .ApplyQuickFilter(options, false)
+                    .Apply(options, false)
                     .Count();
             }
             else
@@ -376,9 +377,9 @@ namespace SPPC.Tadbir.Persistence
                     .Apply(options, false)
                     .Count();
             }
-            else 
-            { 
-                nextCount = await query.CountAsync(); 
+            else
+            {
+                nextCount = await query.CountAsync();
             }
 
             payReceive.HasNext = nextCount > 0;
@@ -394,9 +395,9 @@ namespace SPPC.Tadbir.Persistence
 
         private int GetViewId(int type)
         {
-            return (int)(type == (int)PayReceiveType.Payment
+            return type == (int)PayReceiveType.Payment
                 ? ViewId.Payment
-                : ViewId.Receival);
+                : ViewId.Receival;
         }
 
         internal override int? EntityType

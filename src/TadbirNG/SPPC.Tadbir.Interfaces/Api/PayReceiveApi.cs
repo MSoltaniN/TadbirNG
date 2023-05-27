@@ -11,7 +11,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for all payment items
         /// </summary>
-        public const string Payments = "payment";
+        public const string Payments = "payments";
 
         /// <summary>
         /// API server route URL for all payment items
@@ -46,7 +46,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for a receival item specified by unique identifier
         /// </summary>
-        public const string ReceivalUrl = "Receivals/{payReceiveId:min(1)}";
+        public const string ReceivalUrl = "receivals/{payReceiveId:min(1)}";
 
         /// <summary>
         /// API client URL for confirming a single payment specified by identifier
@@ -229,22 +229,22 @@ namespace SPPC.Tadbir.Api
         public const string LastReceivalUrl = "receivals/last";
 
         /// <summary>
-        /// API client URL for a newly initialized
+        /// API client URL for a newly payment initialized
         /// </summary>
         public const string NewPayment = "payments/new";
 
         /// <summary>
-        /// API server route URL for a newly initialized
+        /// API server route URL for a newly payment initialized
         /// </summary>
         public const string NewPaymentUrl = "payments/new";
 
         /// <summary>
-        /// API client URL for a newly initialized
+        /// API client URL for a newly receival initialized
         /// </summary>
         public const string NewReceival = "receivals/new";
 
         /// <summary>
-        /// API server route URL for a newly initialized
+        /// API server route URL for a newly receival initialized
         public const string NewReceivalUrl = "receivals/new";
     }
 }

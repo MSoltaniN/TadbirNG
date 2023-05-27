@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.CashFlow;
@@ -14,9 +13,11 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، فرم دریافت/پرداخت با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="payReceiveId">شناسه عددی یکی از فرم های دریافت یا پرداخت موجود</param>
+        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای دریافت اطلاعات لازم از سمت وب</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شناسه عددی</returns>
-        Task<PayReceiveViewModel> GetPayReceiveAsync(int payReceiveId, GridOptions gridOptions = null);
+        Task<PayReceiveViewModel> GetPayReceiveAsync(int payReceiveId, int type = 0,
+            GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک فرم دریافت/پرداخت را ایجاد یا اصلاح می کند
@@ -54,7 +55,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت/پرداخت مورد نظر</param>
         /// <param name="isApproved"> در صورت تصویب فرم دریافت/پرداخت با مقدار درست 
         /// و در غیر این صورت با مقدار نادرست پر می شود</param>
-         Task SetPayReceiveApprovalAsync(int payReceiveId, bool isApproved);
+        Task SetPayReceiveApprovalAsync(int payReceiveId, bool isApproved);
 
         /// <summary>
         /// به روش آسنکرون، فرم دریافت/پرداخت با شماره مشخص شده را خوانده و برمی گرداند

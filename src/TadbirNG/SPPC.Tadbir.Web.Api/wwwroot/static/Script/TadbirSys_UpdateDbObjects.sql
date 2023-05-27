@@ -982,12 +982,9 @@ SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
-    VALUES (41, 3, 2, N'ManageEntities,Payments', N'Payment', NULL)
-SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
-
-SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
+    VALUES (41, 3, 2, N'Payments', N'Payment', NULL)
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
-    VALUES (42, 3, 2, N'ManageEntities,Receivals', N'Recieval', NULL)
+    VALUES (42, 3, 2, N'Receivals', N'Recieval', NULL)
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON
@@ -1013,9 +1010,6 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Des
     VALUES (255, 41, N'Approve', 512, NULL)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
     VALUES (256, 41, N'UndoApprove', 1024, NULL)
-SET IDENTITY_INSERT [Auth].[Permission] OFF
-
-SET IDENTITY_INSERT [Auth].[Permission] ON
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
     VALUES (257, 42, N'View', 1, NULL)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])

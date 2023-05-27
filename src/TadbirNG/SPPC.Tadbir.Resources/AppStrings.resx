@@ -3927,8 +3927,8 @@
   <data name="ReceivalNo" xml:space="preserve">
     <value>شماره فرم دریافت</value>
   </data>
-  <data name="CantSaveAsDraft" xml:space="preserve">
-    <value>این {0} ثبت قطعی یا تأیید شده و قابل تبدیل به سند پیش نویس نیست.</value>
+  <data name="CantSaveEntity" xml:space="preserve">
+    <value>این {0} تایید یا تصویب شده و امکان ذخیره اطلاعات وجود ندارد.</value>
   </data>
   <data name="RepeatedEntityActionMessage" xml:space="preserve">
     <value>{1} مورد نظر قبلاً {0} شده است.</value>

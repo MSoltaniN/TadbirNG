@@ -790,14 +790,14 @@ namespace SPPC.Tadbir.Resources
         public const string CantModifySystemReport = "CantModifySystemReport";
 
         /// <summary>
-        /// Default text : این {0} ثبت قطعی یا تأیید شده و قابل تبدیل به سند پیش نویس نیست.
-        /// </summary>
-        public const string CantSaveAsDraft = "CantSaveAsDraft";
-
-        /// <summary>
         /// Default text : این سند ثبت قطعی یا تأیید شده و قابل تبدیل به سند پیش نویس نیست.
         /// </summary>
         public const string CantSaveAsDraftVoucher = "CantSaveAsDraftVoucher";
+
+        /// <summary>
+        /// Default text : این {0} تایید یا تصویب شده و امکان ذخیره اطلاعات وجود ندارد .
+        /// </summary>
+        public const string CantSaveEntity = "CantSaveEntity";
 
         /// <summary>
         /// Default text : {0} {1} دارای زیرمجموعه بوده و نمی توان در اسناد عملیاتی از آن استفاده کرد.

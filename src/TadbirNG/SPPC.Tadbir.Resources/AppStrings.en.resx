@@ -3936,8 +3936,8 @@
   <data name="ReceivalNo" xml:space="preserve">
     <value>Receival number</value>
   </data>
-  <data name="CantSaveAsDraft" xml:space="preserve">
-    <value>This {0} is either confirmed or finalized and cannot be saved as draft.</value>
+  <data name="CantSaveEntity" xml:space="preserve">
+    <value>This {0} is either confirmed or approved and cannot be saved.</value>
   </data>
   <data name="RepeatedEntityActionMessage" xml:space="preserve">
     <value>Action '{0}' has already been performed on this {1}.</value>

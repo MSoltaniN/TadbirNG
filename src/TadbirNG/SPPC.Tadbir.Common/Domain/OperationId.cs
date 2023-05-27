@@ -342,5 +342,10 @@ namespace SPPC.Tadbir.Domain
         /// کد عملیاتی برگشت از بایگانی
         /// </summary>
         UndoArchive = 67,
+
+        /// <summary>
+        /// کد عملیاتی ثبت مالی
+        /// </summary>
+        Register = 68
     }
 }

@@ -2189,7 +2189,7 @@
           <ColumnView name="Id" visible="True" width="120" />
           <ValidationRule name="Id_Validation" required="False" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="IssuedByID" type="Int32" isValidated="True" description="شناسه کاربر صادر کننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="IssuedById" type="Int32" isValidated="True" description="شناسه کاربر صادر کننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnIssuedById" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="IssuedByID" type="int" nullable="False" />
           <ColumnView name="IssuedById" visible="True" width="120" />

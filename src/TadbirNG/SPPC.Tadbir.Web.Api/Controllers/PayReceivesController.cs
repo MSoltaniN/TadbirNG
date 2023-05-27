@@ -50,9 +50,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpGet]
         [Route(PayReceiveApi.PaymentUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.View)]
-        public async Task<IActionResult> GetPaymentAsync(int payReceiveId, GridOptions gridOptions = null)
+        public async Task<IActionResult> GetPaymentAsync(int payReceiveId)
         {
-            var payment = await _repository.GetPayReceiveAsync(payReceiveId, gridOptions);
+            var payment = await _repository.GetPayReceiveAsync(payReceiveId, (int)PayReceiveType.Payment
+                , GridOptions);
             return JsonReadResult(payment);
         }
 
@@ -67,7 +68,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.View)]
         public async Task<IActionResult> GetReceivalAsync(int payReceiveId)
         {
-            var receival = await _repository.GetPayReceiveAsync(payReceiveId);
+            var receival = await _repository.GetPayReceiveAsync(payReceiveId,
+                (int)PayReceiveType.Receival, GridOptions);
             return JsonReadResult(receival);
         }
 
@@ -82,7 +84,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Create)]
         public async Task<IActionResult> PostNewPaymentAsync([FromBody] PayReceiveViewModel payReceive)
         {
-            var result = await PayReceiveValidationResultAsync(payReceive,AppStrings.Payment);
+            var result = await PayReceiveValidationResultAsync(payReceive, AppStrings.Payment);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -148,7 +150,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPut]
         [Route(PayReceiveApi.ReceivalUrl)]
         [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Edit)]
-        public async Task<IActionResult> PutModifiedReceivalAsync(int payReceiveId, 
+        public async Task<IActionResult> PutModifiedReceivalAsync(int payReceiveId,
             [FromBody] PayReceiveViewModel payReceive)
         {
             var result = await PayReceiveValidationResultAsync(payReceive, AppStrings.Receival, payReceiveId);
@@ -598,11 +600,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if(payReceive.CurrencyId > 0 && payReceive.CurrencyRate <= 0)
-            {
-                return BadRequestResult(_strings.Format(AppStrings.FieldIsRequired, AppStrings.CurrencyRate));
-            }
-
             if (payReceiveId > 0)
             {
                 result = BranchValidationResult(payReceive);
@@ -613,7 +610,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
                 if (payReceive.IsConfirmed)
                 {
-                    return BadRequestResult(_strings.Format(AppStrings.CantSaveAsDraft, entityNameKey));
+                    return BadRequestResult(_strings.Format(AppStrings.CantSaveEntity, entityNameKey));
                 }
             }
 
@@ -624,6 +621,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     : AppStrings.ReceivalNo;
 
                 return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, fieldTitle));
+            }
+
+            if (payReceive.CurrencyId > 0 && payReceive.CurrencyRate == decimal.Zero)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.FieldIsRequired, AppStrings.CurrencyRate));
             }
 
             return Ok();

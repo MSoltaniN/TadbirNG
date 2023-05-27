@@ -52,18 +52,13 @@ namespace SPPC.Tadbir.Persistence
             Array.ForEach(relations, prop => Reflector.SetProperty(entity, prop, null));
         }
 
-        protected override async Task ReadAsync(GridOptions gridOptions, string description = null)
-        {
-            await ReadAsync(gridOptions, description);
-        }
-
         /// <summary>
         /// به روش آسنکرون، لاگ عملیاتی را در صورت نیاز برای عملیات خواندن لیست موجودیت ها ایجاد می کند
         /// </summary>
         /// <param name="gridOptions">اطلاعات مورد نیاز برای ایجاد لاگ</param>
         /// <param name="description">شرح اختیاری برای رویداد</param>
         /// <param name="entityTypeId">شناسه نوع موجودیت که پیش فرض با پراپرتی انتیتی تایپ آیدی پر میشود</param> 
-        protected override async Task ReadAsync(GridOptions gridOptions, string description,
+        protected override async Task ReadAsync(GridOptions gridOptions, string description = null,
             int? entityTypeId = null)
         {
             var options = gridOptions ?? new GridOptions();
