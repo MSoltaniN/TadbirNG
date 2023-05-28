@@ -3885,6 +3885,72 @@
   <data name="SayyadNo" xml:space="preserve">
     <value>Sayyad No</value>
   </data>
+  <data name="PayReceive" xml:space="preserve">
+    <value>PayReceive</value>
+  </data>
+  <data name="LastPaymentForm" xml:space="preserve">
+    <value>Last payment form</value>
+  </data>
+  <data name="LastReceivalForm" xml:space="preserve">
+    <value>Last receival form</value>
+  </data>
+  <data name="NewPaymentForm" xml:space="preserve">
+    <value>New payment form</value>
+  </data>
+  <data name="NewReceivalForm" xml:space="preserve">
+    <value>New receival form</value>
+  </data>
+  <data name="Payment" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="PaymentFormbyNo" xml:space="preserve">
+    <value>Payment form by number...</value>
+  </data>
+  <data name="PaymentOperations" xml:space="preserve">
+    <value>Payment operations</value>
+  </data>
+  <data name="Payments" xml:space="preserve">
+    <value>Payments</value>
+  </data>
+  <data name="Receival" xml:space="preserve">
+    <value>Receival</value>
+  </data>
+  <data name="ReceivalFormbyNo" xml:space="preserve">
+    <value>Receival form by number...</value>
+  </data>
+  <data name="ReceivalOperations" xml:space="preserve">
+    <value>Receival operations</value>
+  </data>
+  <data name="Receivals" xml:space="preserve">
+    <value>Receivals</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="PayReceiveNo" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="PaymentNo" xml:space="preserve">
+    <value>Payment number</value>
+  </data>
+  <data name="ReceivalNo" xml:space="preserve">
+    <value>Receival number</value>
+  </data>
+  <data name="CantSaveEntity" xml:space="preserve">
+    <value>This {0} is either confirmed or approved and cannot be saved.</value>
+  </data>
+  <data name="RepeatedEntityActionMessage" xml:space="preserve">
+    <value>Action '{0}' has already been performed on this {1}.</value>
+  </data>
+  <data name="InvalidEntityActionMessage" xml:space="preserve">
+    <value>To perform '{0}' action on a {1}, first you have to {2} it.</value>
+  </data>
+  <data name="InvalidLetterForNumberField" xml:space="preserve">
+    <value>Letters cannot be used for {0}.</value>
+  </data>
+  <data name="NumberFieldHasFixedLength" xml:space="preserve">
+    <value>{0} can only be {1} digits.</value>
+  </data>
   <data name="Active" xml:space="preserve">
     <value>Active</value>
   </data>

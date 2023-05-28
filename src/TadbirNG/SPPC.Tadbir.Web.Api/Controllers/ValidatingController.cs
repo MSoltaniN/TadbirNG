@@ -49,7 +49,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// متن خطا را با کد وضعیتی 400 برای درخواست نامعتبر برمی گرداند</returns>
         protected virtual IActionResult BasicValidationResult(TViewModel item, int itemId = 0)
         {
-            return GetBasicValidationResult(item, itemId);
+            return BasicValidationResult(item, itemId, null);
+        }
+
+        /// <summary>
+        /// قواعد اعتبارسنجی پایه ای را روی آبجکت داده شده بررسی می کند
+        /// و نتیجه اعتبارسنجی را برمی گرداند
+        /// </summary>
+        /// <param name="item">آبجکت داده شده برای اعتبارسنجی</param>
+        /// <param name="itemId">شناسه دیتابیسی آبجکت مشخص شده در آدرس وب درخواست</param>
+        /// <param name="entityKey">عنوان انتیتی که پیش فرض با پراپرتی نام موجودیت پر می شود</param>
+        /// <returns>در صورت نبود خطای اعتبارسنجی کد وضعیتی 200 و در غیر این صورت
+        /// متن خطا را با کد وضعیتی 400 برای درخواست نامعتبر برمی گرداند</returns>
+        protected virtual IActionResult BasicValidationResult(TViewModel item, int itemId, string entityKey = null)
+        {
+            return GetBasicValidationResult(item, itemId, entityKey);
         }
 
         /// <summary>
@@ -239,11 +253,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return null;
         }
 
-        private IActionResult GetBasicValidationResult(object item, int itemId)
+        private IActionResult GetBasicValidationResult(object item, int itemId, string entityKey = null)
         {
+            string entityNameKey = entityKey ?? EntityNameKey;
             if (item == null)
             {
-                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, EntityNameKey));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, entityNameKey));
             }
 
             if (!ModelState.IsValid)
@@ -254,7 +269,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int id = Int32.Parse(Reflector.GetProperty(item, "Id").ToString());
             if (itemId != id)
             {
-                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, EntityNameKey));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, entityNameKey));
             }
 
             return Ok();
