@@ -203,6 +203,7 @@
           <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.sayyadStartNo.valid || editForm.controls.sayyadStartNo.pristine">
             <span *ngIf="editForm.controls.sayyadStartNo.errors?.required">{{ 'AllValidations.CheckBook.SayyadStartNoIsRequired' | translate }}</span>
             <span *ngIf="editForm.controls.sayyadStartNo.errors?.maxlength">{{ 'AllValidations.CheckBook.SayyadStartNoIsTooLong' | translate }}</span>
+            <span *ngIf="editForm.controls.sayyadStartNo.errors?.minlength">{{ 'AllValidations.CheckBook.SayyadStartNoIsTooShort' | translate }}</span>
           </div>
         </div>
   
