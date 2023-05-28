@@ -65,4 +65,8 @@ export class CheckBooksApi
     */
     public static UndoArchiveCheckBooks = environment.BaseUrl + "/check-books/archive/undo";
 
+    /**
+    * API client URL for a newly initialized check book
+    */
+    public static NewCheckBook = environment.BaseUrl + "/check-books/new"
 }
