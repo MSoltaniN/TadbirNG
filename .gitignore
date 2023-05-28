@@ -20,3 +20,5 @@ src/**/Upload/*.*
 src/**/instance.id
 src/**/environment.ts
 src/**/tadbir.lic
+/misc/tools/tar.exe
+/misc/tools/gzip.exe

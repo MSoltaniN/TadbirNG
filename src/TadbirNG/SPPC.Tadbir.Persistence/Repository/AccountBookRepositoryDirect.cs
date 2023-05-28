@@ -200,8 +200,7 @@ namespace SPPC.Tadbir.Persistence
             string bookQuery = parameters.IsByBranch ? BookQuery.ByRowByBranch : BookQuery.ByRow;
             var book = new AccountBookViewModel();
             var items = await GetInitialItemsAsync(parameters);
-            var query = new ReportQuery(String.Format(bookQuery,
-                _utility.GetItemName(parameters.ViewId), _utility.GetFieldName(parameters.ViewId),
+            var query = new ReportQuery(String.Format(bookQuery, _utility.GetItemName(parameters.ViewId),
                 parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
                 fullCode));
 
@@ -303,8 +302,7 @@ namespace SPPC.Tadbir.Persistence
         private List<AccountBookItemViewModel> GetQueryResult(
             string fullCode, string bookQuery, AccountBookParameters parameters, bool byNo = false)
         {
-            var builder = new StringBuilder(String.Format(bookQuery,
-                _utility.GetItemName(parameters.ViewId), _utility.GetFieldName(parameters.ViewId),
+            var builder = new StringBuilder(String.Format(bookQuery, _utility.GetItemName(parameters.ViewId),
                 parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
                 fullCode));
             var debitItems = GetQueryResult(builder.ToString(), parameters);
@@ -340,10 +338,9 @@ namespace SPPC.Tadbir.Persistence
             string bookQuery = parameters.IsByBranch
                 ? BookQuery.SpecialVoucherByBranch
                 : BookQuery.SpecialVoucher;
-            var builder = new StringBuilder(String.Format(bookQuery,
-                _utility.GetItemName(parameters.ViewId), _utility.GetFieldName(parameters.ViewId),
-                parameters.FromDate.ToShortDateString(false),
-                parameters.ToDate.ToShortDateString(false), (int)originId, fullCode));
+            var builder = new StringBuilder(String.Format(bookQuery, _utility.GetItemName(parameters.ViewId),
+                parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
+                (int)originId, fullCode));
             var debitItems = GetQueryResult(builder.ToString(), parameters);
             builder.Replace("Debit", "Credit")
                 .Replace("Credit1", "Debit");
@@ -402,13 +399,12 @@ namespace SPPC.Tadbir.Persistence
                     };
         }
 
-        private async Task<AccountBookItemViewModel> GetFirstBookItemAsync(
-            AccountBookParameters parameters)
+        private async Task<AccountBookItemViewModel> GetFirstBookItemAsync(AccountBookParameters parameters)
         {
             var firstItem = default(AccountBookItemViewModel);
             var item = await _utility.GetItemAsync(parameters.ViewId, parameters.ItemId);
             var query = new ReportQuery(String.Format(AccountItemQuery.BalanceByDate,
-                _utility.GetItemName(parameters.ViewId), _utility.GetFieldName(parameters.ViewId),
+                _utility.GetItemName(parameters.ViewId),
                 parameters.FromDate.ToShortDateString(false), item.FullCode));
             query.SetFilter(_utility.GetEnvironmentFilters(
                 parameters.GridOptions, UserContext.FiscalPeriodId));
