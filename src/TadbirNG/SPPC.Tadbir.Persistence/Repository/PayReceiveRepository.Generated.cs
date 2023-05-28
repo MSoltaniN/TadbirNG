@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Model.Finance;
@@ -72,7 +73,7 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(payReceive, nameof(payReceive));
             int entityTypeId = GetEntityTypeId(payReceive.Type);
-            string personName = GetCurrentUserFullName(); ;
+            string personName = GetCurrentUserFullName();
             PayReceive payReceiveModel;
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
             if (payReceive.Id == 0)
@@ -284,6 +285,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PayReceiveViewModel> GetNewPayReceiveAsync(int type)
         {
             string personName = GetCurrentUserFullName();
+            var existingNumbers = await GetPayReceiveNumbersAsync(type);
             var newPayReceive = new PayReceiveViewModel()
             {
                 CreatedDate = DateTime.Now,
@@ -294,6 +296,7 @@ namespace SPPC.Tadbir.Persistence
                 BranchId = UserContext.BranchId,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 Date = await GetLastPayReceiveDateAsync(type),
+                PayReceiveNo = GetNewPayReceiveNo(existingNumbers, 8),
                 Type = (short)type
             };
 
@@ -398,6 +401,25 @@ namespace SPPC.Tadbir.Persistence
             return type == (int)PayReceiveType.Payment
                 ? ViewId.Payment
                 : ViewId.Receival;
+        }
+
+        private static string GetNewPayReceiveNo(IEnumerable<string> existingCodes, int codeLength)
+        {
+            string format = String.Format("D{0}", codeLength);
+            var maxCode = (long)Math.Pow(10, codeLength) - 1;
+            var lastCode = (existingCodes.Any()) ? Int64.Parse(existingCodes.Max()) : 0;
+            var newCode = Math.Min(lastCode + 1, maxCode);
+            return newCode.ToString(format);
+        }
+
+        private async Task<IList<string>> GetPayReceiveNumbersAsync(int type)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
+            return await repository
+                .GetEntityQuery()
+                .Where(pr => pr.Type == type)
+                .Select(pr => pr.PayReceiveNo)
+                .ToListAsync();
         }
 
         internal override int? EntityType

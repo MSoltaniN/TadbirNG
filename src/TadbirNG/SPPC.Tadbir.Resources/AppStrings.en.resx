@@ -3945,4 +3945,10 @@
   <data name="InvalidEntityActionMessage" xml:space="preserve">
     <value>To perform '{0}' action on a {1}, first you have to {2} it.</value>
   </data>
+  <data name="InvalidLetterForNumberField" xml:space="preserve">
+    <value>Letters cannot be used for {0}.</value>
+  </data>
+  <data name="NumberFieldHasFixedLength" xml:space="preserve">
+    <value>{0} can only be {1} digits.</value>
+  </data>
 </root>

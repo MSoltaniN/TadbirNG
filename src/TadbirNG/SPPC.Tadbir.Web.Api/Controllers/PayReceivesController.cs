@@ -614,6 +614,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 }
             }
 
+            int numberLength = AppConstants.DefaultNumberLength;
+            if (payReceive.PayReceiveNo.Length != numberLength)
+            {
+                return BadRequestResult(_strings.Format(
+                    AppStrings.NumberFieldHasFixedLength,AppStrings.Number, numberLength.ToString()));
+            }
+
+            if (!Int32.TryParse(payReceive.PayReceiveNo, out int numberValue))
+            {
+                return BadRequestResult(_strings.Format(
+                    AppStrings.InvalidLetterForNumberField, AppStrings.Number));
+            }
+
             if (await _repository.IsDuplicatePayReceiveNo(payReceive))
             {
                 string fieldTitle = entityNameKey == AppStrings.Payment

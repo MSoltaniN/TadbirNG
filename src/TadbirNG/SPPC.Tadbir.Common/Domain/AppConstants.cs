@@ -111,5 +111,10 @@ namespace SPPC.Tadbir.Domain
         /// قالب پیش فرض برای برچسب های زمانی
         /// </summary>
         public const string TimestampFormat = "yyyy-MM-dd HH:mm:ss";
+
+        /// <summary>
+        /// طول پیش فرض برای عدد های متنی
+        /// </summary>
+        public const int DefaultNumberLength = 8;
     }
 }

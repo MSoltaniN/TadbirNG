@@ -245,6 +245,7 @@ namespace SPPC.Tadbir.Api
 
         /// <summary>
         /// API server route URL for a newly receival initialized
+        /// </summary>
         public const string NewReceivalUrl = "receivals/new";
     }
 }
