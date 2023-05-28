@@ -283,7 +283,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
       this.checkBookPages = [];
       this.isNew = true;
       this.errorMessages = undefined;
-      this.getCheckBook(CheckBooksApi.LastCheckBook,true)
+      this.getCheckBook(CheckBooksApi.NewCheckBook,true)
     }
   }
 
@@ -383,17 +383,9 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
         if (this.urlMode == 'by-no') {
           this.searchConfirm = false;
         }
-        if (!isNew) {
-          this.model = res;
-          this.initCheckBookForm()
-        } else {
-          this.lastModel = res;
-          this.editForm.patchValue({
-            checkBookNo: +(this.lastModel.checkBookNo)+1
-          });
-          this.isLastCheckBook = !this.lastModel.hasNext;
-          this.isFirstCheckBook = !this.lastModel.hasPrevious;
-        }
+
+        this.model = res;
+        this.initCheckBookForm();
       },
       error: (err) => {
         if (err == null || err.statusCode == 404) {

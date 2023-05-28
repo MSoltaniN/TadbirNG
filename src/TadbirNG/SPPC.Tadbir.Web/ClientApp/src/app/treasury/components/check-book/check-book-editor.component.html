@@ -12,279 +12,280 @@
 
 <div class="panel-body" style="padding-top: 0">
 
-    <div class="row">
-      <div class="col-xs-12 sppc-float" style="margin-top: 5px">
-        <button
-          class="k-button sh-new-voucher"
-          title="{{ 'CheckBook.New' | translate }}"
-          [EntityName]="entityTypeName"
-          SppcPermissionCheck="Create"
-          (sppcClick)="checkOperation(checkBookOperationsItem.New)"
-        >
-          <span class="k-icon k-i-file-add"></span>
-        </button>
-        <button
-          [EntityName]="entityTypeName"
-          SppcPermissionCheck="Delete"
-          (sppcClick)="removeHandler()"
-          [disabled]="isNew ? true : null"
-          class="k-button sh-remove-voucher"
-          title="{{ 'CheckBook.Delete' | translate }}"
-        >
-          <span class="k-icon k-i-delete"></span>
-        </button>
+  <div class="row">
+    <div class="col-xs-12 sppc-float" style="margin-top: 5px">
+      <button
+        class="k-button sh-new-voucher"
+        title="{{ 'CheckBook.New' | translate }}"
+        [EntityName]="entityTypeName"
+        SppcPermissionCheck="Create"
+        (sppcClick)="checkOperation(checkBookOperationsItem.New)"
+      >
+        <span class="k-icon k-i-file-add"></span>
+      </button>
+      <button
+        [EntityName]="entityTypeName"
+        SppcPermissionCheck="Delete"
+        (sppcClick)="removeHandler()"
+        [disabled]="isNew ? true : null"
+        class="k-button sh-remove-voucher"
+        title="{{ 'CheckBook.Delete' | translate }}"
+      >
+        <span class="k-icon k-i-delete"></span>
+      </button>
 
-        <button
-          class="k-button"
-          title="{{ 'CheckBook.SearchCheckBook' | translate }}"
-          (click)="checkOperation(checkBookOperationsItem.Search)"
-        >
-          <span class="k-icon k-i-search"></span>
-        </button>
+      <button
+        class="k-button"
+        title="{{ 'CheckBook.SearchCheckBook' | translate }}"
+        (click)="checkOperation(checkBookOperationsItem.Search)"
+      >
+        <span class="k-icon k-i-search"></span>
+      </button>
 
-        <button
-          class="k-button not-change"
-          title="{{ 'CheckBook.FirstCheckBook' | translate }}"
-          [attr.disabled]="isFirstCheckBook ? true : null"
-          [EntityName]="entityTypeName"
-          SppcPermissionCheck="Navigate"
-          (sppcClick)="checkOperation(checkBookOperationsItem.First)"
-        >
-          <span class="k-icon k-i-arrow-end-right"></span>
-        </button>
+      <button
+        class="k-button not-change"
+        title="{{ 'CheckBook.FirstCheckBook' | translate }}"
+        [attr.disabled]="isFirstCheckBook ? true : null"
+        [EntityName]="entityTypeName"
+        SppcPermissionCheck="Navigate"
+        (sppcClick)="checkOperation(checkBookOperationsItem.First)"
+      >
+        <span class="k-icon k-i-arrow-end-right"></span>
+      </button>
 
-        <button
-          class="k-button not-change"
-          [attr.disabled]="isFirstCheckBook ? true : null"
-          title="{{ 'CheckBook.PreviousCheckBook' | translate }}"
-          [EntityName]="entityTypeName"
-          SppcPermissionCheck="Navigate"
-          (sppcClick)="checkOperation(checkBookOperationsItem.Previous)"
-        >
-          <span class="k-icon k-i-arrow-double-60-right"></span>
-        </button>
+      <button
+        class="k-button not-change"
+        [attr.disabled]="isFirstCheckBook ? true : null"
+        title="{{ 'CheckBook.PreviousCheckBook' | translate }}"
+        [EntityName]="entityTypeName"
+        SppcPermissionCheck="Navigate"
+        (sppcClick)="checkOperation(checkBookOperationsItem.Previous)"
+      >
+        <span class="k-icon k-i-arrow-double-60-right"></span>
+      </button>
 
-        <button
-          class="k-button not-change"
-          [attr.disabled]="isLastCheckBook ? true : null"
-          title="{{ 'CheckBook.NextCheckBook' | translate }}"
-          [EntityName]="entityTypeName"
-          SppcPermissionCheck="Navigate"
-          (sppcClick)="checkOperation(checkBookOperationsItem.Next)"
-        >
-          <span class="k-icon k-i-arrow-double-60-left"></span>
-        </button>
+      <button
+        class="k-button not-change"
+        [attr.disabled]="isLastCheckBook ? true : null"
+        title="{{ 'CheckBook.NextCheckBook' | translate }}"
+        [EntityName]="entityTypeName"
+        SppcPermissionCheck="Navigate"
+        (sppcClick)="checkOperation(checkBookOperationsItem.Next)"
+      >
+        <span class="k-icon k-i-arrow-double-60-left"></span>
+      </button>
 
-        <button
-          class="k-button not-change "
-          title="{{ 'CheckBook.LastCheckBook' | translate }}"
-          [attr.disabled]="isLastCheckBook ? true : null"
-          [EntityName]="entityTypeName"
-          SppcPermissionCheck="Navigate"
-          (sppcClick)="checkOperation(checkBookOperationsItem.Last)"
-        >
-          <span class="k-icon k-i-arrow-end-left"></span>
-        </button>
+      <button
+        class="k-button not-change "
+        title="{{ 'CheckBook.LastCheckBook' | translate }}"
+        [attr.disabled]="isLastCheckBook ? true : null"
+        [EntityName]="entityTypeName"
+        SppcPermissionCheck="Navigate"
+        (sppcClick)="checkOperation(checkBookOperationsItem.Last)"
+      >
+        <span class="k-icon k-i-arrow-end-left"></span>
+      </button>
 
-        <button
-          class="k-button prevent-duplicate"
-          [disabled]="editForm.status == 'INVALID' || editMode"
-          SppcPermissionCheck="Edit"
-          [EntityName]="entityTypeName"
-          (sppcClick)="onSave($event)"
-          title="{{ 'CheckBook.Save' | translate }}"
-        >
-            <span class="k-icon k-i-save"></span>
-        </button>
+      <button
+        class="k-button prevent-duplicate"
+        [disabled]="editForm.status == 'INVALID' || editMode"
+        SppcPermissionCheck="Edit"
+        [EntityName]="entityTypeName"
+        (sppcClick)="onSave($event)"
+        title="{{ 'CheckBook.Save' | translate }}"
+      >
+          <span class="k-icon k-i-save"></span>
+      </button>
 
-        <button
-          kendoButton
-          [EntityName]="entityTypeName"
-          SppcPermissionCheck="Print"
-          (sppcClick)="showReport()"
-          class="hidden-xs rm print sh-print"
-          type="button"
-          [icon]="'printer'"
-        ></button>
+      <button
+        kendoButton
+        [EntityName]="entityTypeName"
+        SppcPermissionCheck="Print"
+        (sppcClick)="showReport()"
+        class="hidden-xs rm print sh-print"
+        type="button"
+        [icon]="'printer'"
+      ></button>
 
-        <button
-          class="k-button k-button-icon sppc-float-diff"
-          title="{{ 'Buttons.Help' | translate }}"
-        >
-          <span class="k-icon k-i-help"></span>
-        </button>
+      <button
+        class="k-button k-button-icon sppc-float-diff"
+        title="{{ 'Buttons.Help' | translate }}"
+      >
+        <span class="k-icon k-i-help"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <div *ngIf="errorMessages">
+      <div *ngFor="let err of errorMessages" class="alert alert-danger">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        {{ err }}
       </div>
     </div>
-
-    <div class="form-container">
-      <div *ngIf="errorMessages">
-        <div *ngFor="let err of errorMessages" class="alert alert-danger">
-          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-          {{ err }}
+    <form novalidate class="myForm" [formGroup]="editForm">
+      <div class="form-group col-sm-5ths col-xs-12 item">
+        <label for="name" class="control-label">{{ 'CheckBook.CheckBookNo' | translate }}</label>
+  
+        <input [sppcAutoFocus]="urlMode!='by-no'?100:false" type="text" class="k-textbox" formControlName="checkBookNo" [OnlyNumber] [disabled]="editMode"/>
+  
+        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.checkBookNo.valid || editForm.controls.checkBookNo.pristine">
+          <span *ngIf="editForm.controls.checkBookNo.errors?.required">{{ 'AllValidations.CheckBook.NoIsRequired' | translate }}</span>
+          <span *ngIf="editForm.controls.checkBookNo.errors?.maxlength">{{ 'AllValidations.CheckBook.NoIsTooLong' | translate }}</span>
         </div>
       </div>
-      <form novalidate class="myForm" [formGroup]="editForm">
-        <div class="form-group col-sm-5ths col-xs-12 item">
-          <label for="name" class="control-label">{{ 'CheckBook.CheckBookNo' | translate }}</label>
-    
-          <input [sppcAutoFocus]="urlMode!='by-no'?100:false" type="text" class="k-textbox" formControlName="checkBookNo" [OnlyNumber] [disabled]="editMode"/>
-    
-          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.checkBookNo.valid || editForm.controls.checkBookNo.pristine">
-            <span *ngIf="editForm.controls.checkBookNo.errors?.required">{{ 'AllValidations.CheckBook.NoIsRequired' | translate }}</span>
-            <span *ngIf="editForm.controls.checkBookNo.errors?.maxlength">{{ 'AllValidations.CheckBook.NoIsTooLong' | translate }}</span>
-          </div>
-        </div>
 
-        <div class="form-group col-sm-5ths col-xs-12 item">
-          <label for="name" class="control-label">{{ 'CheckBook.Name' | translate }}</label>
-    
-          <input type="text" class="k-textbox" formControlName="name" [disabled]="editMode"/>
-    
-          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
-            <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
-            <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
-          </div>
-        </div>
+      <div class="form-group col-sm-5ths col-xs-12 item">
+        <label for="name" class="control-label">{{ 'CheckBook.Name' | translate }}</label>
   
-        <div class="form-group col-sm-5ths col-xs-12 item">
-          <label for="name" class="control-label">{{ 'CheckBook.BankName' | translate }}</label>
-    
-          <input type="text" class="k-textbox" formControlName="bankName" [disabled]="editMode"/>
-    
-          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.bankName.valid || editForm.controls.bankName.pristine">
-            <span *ngIf="editForm.controls.bankName.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
-            <span *ngIf="editForm.controls.bankName.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
-          </div>
-        </div>
+        <input type="text" class="k-textbox" formControlName="name" [disabled]="editMode"/>
   
-        <div class="col-sm-5ths col-xs-12 sppc-float">
-          <div class="form-group">
-            <label for="date" class="control-label">{{
-              "CheckBook.IssueDate" | translate
-            }}</label>
-
-            <fieldset [disabled]="editMode" [ngClass]="{'disabled': editMode}">
-              <sppc-datepicker
-                formControlName="issueDate"
-                [isReadOnly]="editMode"
-                [dateWithHour]="true"
-              ></sppc-datepicker>
-            </fieldset>
-          </div>
+        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
+          <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
+          <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
         </div>
+      </div>
 
-        <div class="form-group col-sm-5ths col-xs-12 item">
-          <label for="name" class="control-label">{{ 'CheckBook.SeriesNo' | translate }}</label>
-    
-          <input type="text" class="k-textbox" formControlName="seriesNo" [disabled]="editMode"/>
-    
-          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.seriesNo.valid || editForm.controls.seriesNo.pristine">
-            <span *ngIf="editForm.controls.seriesNo.errors?.required">{{ 'AllValidations.CheckBook.SeriesNoIsRequired' | translate }}</span>
-            <span *ngIf="editForm.controls.seriesNo.errors?.maxlength">{{ 'AllValidations.CheckBook.SeriesNoIsTooLong' | translate }}</span>
-          </div>
-        </div>
-
-        <div class="form-group col-sm-5ths col-xs-12 item">
-          <label for="name" class="control-label">{{ 'CheckBook.StartNumber' | translate }}</label>
-    
-          <input type="text" class="k-textbox" formControlName="startNo" [disabled]="editMode"/>
-    
-          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.startNo.valid || editForm.controls.startNo.pristine">
-            <span *ngIf="editForm.controls.startNo.errors?.required">{{ 'AllValidations.CheckBook.StartNoIsRequired' | translate }}</span>
-            <span *ngIf="editForm.controls.startNo.errors?.maxlength">{{ 'AllValidations.CheckBook.SeriesNoIsTooLong' | translate }}</span>
-          </div>
-        </div>
-
-        <div class="form-group col-sm-5ths col-xs-12 item">
-          <label for="name" class="control-label">{{ 'CheckBook.SayyadStartNo' | translate }}</label>
-    
-          <input type="text" class="k-textbox" formControlName="sayyadStartNo" [disabled]="editMode"/>
-    
-          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.sayyadStartNo.valid || editForm.controls.sayyadStartNo.pristine">
-            <span *ngIf="editForm.controls.sayyadStartNo.errors?.required">{{ 'AllValidations.CheckBook.SayyadStartNoIsRequired' | translate }}</span>
-            <span *ngIf="editForm.controls.sayyadStartNo.errors?.maxlength">{{ 'AllValidations.CheckBook.SayyadStartNoIsTooLong' | translate }}</span>
-          </div>
-        </div>
+      <div class="form-group col-sm-5ths col-xs-12 item">
+        <label for="name" class="control-label">{{ 'CheckBook.BankName' | translate }}</label>
   
-        <div class="col-xs-12 col-sm-7 sppc-float">
+        <input type="text" class="k-textbox" formControlName="bankName" [disabled]="editMode"/>
+  
+        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.bankName.valid || editForm.controls.bankName.pristine">
+          <span *ngIf="editForm.controls.bankName.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
+          <span *ngIf="editForm.controls.bankName.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="col-sm-5ths col-xs-12 sppc-float">
+        <div class="form-group">
+          <label for="date" class="control-label">{{
+            "CheckBook.IssueDate" | translate
+          }}</label>
+
           <fieldset [disabled]="editMode" [ngClass]="{'disabled': editMode}">
-            <div class="form-group" [formGroup]="fullAccountForm">
-              <label for="fullAccount" class="control-label" style="position:absolute;">{{ 'VoucherLine.Account' | translate }}</label>
-    
-              <sppc-fullAccount formGroupName="fullAccount"
-               (isInputFocused)="onFullAccountInpusFocuse($event)"
-               (setFocus)="onSelectFullAccount($event)"
-               [inputFullAccount]="this.model.fullAccount"
-               [strictMode]="false">
-              </sppc-fullAccount>
-            </div>
+            <sppc-datepicker
+              formControlName="issueDate"
+              [isReadOnly]="editMode"
+              [dateWithHour]="true"
+            ></sppc-datepicker>
           </fieldset>
         </div>
+      </div>
 
-        <div class="form-group col-xs-5ths col-xs-12 item">
-          <label for="" style="padding: 0;" class="control-label col-xs-12 col-md-12">{{ 'CheckBook.PagesCount' | translate }}</label>
-          <div class="col-md-6 col-xs-6" style="padding: 0;">
-            <input type="number"
-              class="k-textbox"
-              [disabled]="!otherSizeOfPages || editMode"
+      <div class="form-group col-sm-5ths col-xs-12 item">
+        <label for="name" class="control-label">{{ 'CheckBook.SeriesNo' | translate }}</label>
+  
+        <input type="text" class="k-textbox" formControlName="seriesNo" [disabled]="editMode"/>
+  
+        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.seriesNo.valid || editForm.controls.seriesNo.pristine">
+          <span *ngIf="editForm.controls.seriesNo.errors?.required">{{ 'AllValidations.CheckBook.SeriesNoIsRequired' | translate }}</span>
+          <span *ngIf="editForm.controls.seriesNo.errors?.maxlength">{{ 'AllValidations.CheckBook.SeriesNoIsTooLong' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="form-group col-sm-5ths col-xs-12 item">
+        <label for="name" class="control-label">{{ 'CheckBook.StartNumber' | translate }}</label>
+  
+        <input type="text" class="k-textbox" formControlName="startNo" [disabled]="editMode"/>
+  
+        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.startNo.valid || editForm.controls.startNo.pristine">
+          <span *ngIf="editForm.controls.startNo.errors?.required">{{ 'AllValidations.CheckBook.StartNoIsRequired' | translate }}</span>
+          <span *ngIf="editForm.controls.startNo.errors?.maxlength">{{ 'AllValidations.CheckBook.SeriesNoIsTooLong' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="form-group col-sm-5ths col-xs-12 item">
+        <label for="name" class="control-label">{{ 'CheckBook.SayyadStartNo' | translate }}</label>
+  
+        <input type="text" class="k-textbox" formControlName="sayyadStartNo" [disabled]="editMode"/>
+  
+        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.sayyadStartNo.valid || editForm.controls.sayyadStartNo.pristine">
+          <span *ngIf="editForm.controls.sayyadStartNo.errors?.required">{{ 'AllValidations.CheckBook.SayyadStartNoIsRequired' | translate }}</span>
+          <span *ngIf="editForm.controls.sayyadStartNo.errors?.maxlength">{{ 'AllValidations.CheckBook.SayyadStartNoIsTooLong' | translate }}</span>
+          <span *ngIf="editForm.controls.sayyadStartNo.errors?.minlength">{{ 'AllValidations.CheckBook.SayyadStartNoIsTooShort' | translate }}</span>
+        </div>
+      </div>
+
+      <div class="col-xs-12 col-sm-7 sppc-float">
+        <fieldset [disabled]="editMode" [ngClass]="{'disabled': editMode}">
+          <div class="form-group" [formGroup]="fullAccountForm">
+            <label for="fullAccount" class="control-label" style="position:absolute;">{{ 'VoucherLine.Account' | translate }}</label>
+  
+            <sppc-fullAccount formGroupName="fullAccount"
+              (isInputFocused)="onFullAccountInpusFocuse($event)"
+              (setFocus)="onSelectFullAccount($event)"
+              [inputFullAccount]="this.model.fullAccount"
+              [strictMode]="false">
+            </sppc-fullAccount>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="form-group col-xs-5ths col-xs-12 item">
+        <label for="" style="padding: 0;" class="control-label col-xs-12 col-md-12">{{ 'CheckBook.PagesCount' | translate }}</label>
+        <div class="col-md-6 col-xs-6" style="padding: 0;">
+          <input type="number"
+            class="k-textbox"
+            [disabled]="!otherSizeOfPages || editMode"
+            [(ngModel)]="selectedPagesCount"
+            [ngModelOptions]="{standalone: true}"
+            (keyup)="onChangePagesCountInput($event)"
+            (change)="onChangePagesCountInput($event)"
+            min="1" max="1000"
+            style="max-width: 100%;"
+          />
+        </div>
+        <div class="col-md-6 col-xs-6" style="padding: 0;">
+          <fieldset [disabled]="editMode" [ngClass]="{'disabled': editMode}">
+            <kendo-dropdownlist [data]="pagesCount" class="mx-1"
+              [textField]="'value'"
+              [valueField]="'key'"
+              [valuePrimitive]="true"
+              [value]="selectedPagesCount"
+              (valueChange)="onChangePagesCountDropDown($event)"
               [(ngModel)]="selectedPagesCount"
               [ngModelOptions]="{standalone: true}"
-              (keyup)="onChangePagesCountInput($event)"
-              (change)="onChangePagesCountInput($event)"
-              min="1" max="1000"
-              style="max-width: 100%;"
-            />
-          </div>
-          <div class="col-md-6 col-xs-6" style="padding: 0;">
-            <fieldset [disabled]="editMode" [ngClass]="{'disabled': editMode}">
-              <kendo-dropdownlist [data]="pagesCount" class="mx-1"
-                [textField]="'value'"
-                [valueField]="'key'"
-                [valuePrimitive]="true"
-                [value]="selectedPagesCount"
-                (valueChange)="onChangePagesCountDropDown($event)"
-                [(ngModel)]="selectedPagesCount"
-                [ngModelOptions]="{standalone: true}"
-                [disabled]="editMode"
-              >
-                <ng-template kendoDropDownListValueTemplate let-dataItem>
-                  {{ dataItem?.value | translate }}
-                </ng-template>
-                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                  {{ dataItem?.value | translate }}
-                </ng-template>
-              </kendo-dropdownlist>
-            </fieldset>
-          </div>
+              [disabled]="editMode"
+            >
+              <ng-template kendoDropDownListValueTemplate let-dataItem>
+                {{ dataItem?.value | translate }}
+              </ng-template>
+              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                {{ dataItem?.value | translate }}
+              </ng-template>
+            </kendo-dropdownlist>
+          </fieldset>
         </div>
+      </div>
 
-        <div class="form-group col-sm-5ths col-xs-12 item">
-          <label for="name" class="control-label">{{ 'CheckBook.EndNumber' | translate }}</label>
-    
-          <input type="text" class="k-textbox" formControlName="endNo" [disabled]="editMode" readonly/>
-    
-          <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.endNo.valid || editForm.controls.endNo.pristine">
-            <span *ngIf="editForm.controls.endNo.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
-            <span *ngIf="editForm.controls.endNo.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
-          </div>
+      <div class="form-group col-sm-5ths col-xs-12 item">
+        <label for="name" class="control-label">{{ 'CheckBook.EndNumber' | translate }}</label>
+  
+        <input type="text" class="k-textbox" formControlName="endNo" [disabled]="editMode" readonly/>
+  
+        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.endNo.valid || editForm.controls.endNo.pristine">
+          <span *ngIf="editForm.controls.endNo.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
+          <span *ngIf="editForm.controls.endNo.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
         </div>
+      </div>
 
-        <div class="col-sm-5ths col-xs-12 item">
-          <p>&nbsp;</p>
-          <div class="form-group">
-            <input type="checkbox" class="k-checkbox" id="isArchived" formControlName="isArchived" [attr.disabled]="isNew"/>
-            <label for="isArchived" [ngClass]="{'disabled': isNew}">{{ 'CheckBook.isArchived' | translate }}</label>
-          </div>
+      <div class="col-sm-5ths col-xs-12 item">
+        <p>&nbsp;</p>
+        <div class="form-group">
+          <input type="checkbox" class="k-checkbox" id="isArchived" formControlName="isArchived" [attr.disabled]="isNew"/>
+          <label for="isArchived" [ngClass]="{'disabled': isNew}">{{ 'CheckBook.isArchived' | translate }}</label>
         </div>
+      </div>
 
-      </form>
-    </div>
+    </form>
   </div>
-  <div>
-      <check-book-pages [pages]="checkBookPages"
-       [checkBookId]="this.model.id"
-       (nullPages)="nullPages($event);"></check-book-pages>
-  </div>
+</div>
+<div>
+    <check-book-pages [pages]="checkBookPages"
+      [checkBookId]="this.model.id"
+      (nullPages)="nullPages($event);"></check-book-pages>
+</div>
 <!-- فرم جستوجو -->
 <kendo-dialog
   title="{{ 'CheckBook.SearchCheckBook' | translate }}"
