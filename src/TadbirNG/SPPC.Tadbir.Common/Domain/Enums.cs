@@ -269,4 +269,20 @@ namespace SPPC.Tadbir.Domain
         /// </summary>
         Application = 1,
     }
+
+    /// <summary>
+    /// نوع فرم دریافت/پرداخت
+    /// </summary>
+    public enum PayReceiveType
+    {
+        /// <summary>
+        /// دریافت 
+        /// </summary>
+        Receival = 0,
+
+        /// <summary>
+        /// پرداخت
+        /// </summary>
+        Payment = 1,
+    }
 }
