@@ -79,6 +79,7 @@ namespace SPPC.Tadbir.Persistence
             if (payReceive.Id == 0)
             {
                 payReceiveModel = Mapper.Map<PayReceive>(payReceive);
+                payReceiveModel.PayReceiveNo = payReceive.PayReceiveNo.Trim();
                 payReceiveModel.IssuedById = UserContext.Id;
                 payReceiveModel.ModifiedById = UserContext.Id;
                 payReceiveModel.IssuedByName =
@@ -286,6 +287,7 @@ namespace SPPC.Tadbir.Persistence
         {
             string personName = GetCurrentUserFullName();
             var existingNumbers = await GetPayReceiveNumbersAsync(type);
+            int numberLength = AppConstants.DefaultNumberLength;
             var newPayReceive = new PayReceiveViewModel()
             {
                 CreatedDate = DateTime.Now,
@@ -296,7 +298,7 @@ namespace SPPC.Tadbir.Persistence
                 BranchId = UserContext.BranchId,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 Date = await GetLastPayReceiveDateAsync(type),
-                PayReceiveNo = GetNewPayReceiveNo(existingNumbers, 8),
+                PayReceiveNo = GetNewPayReceiveNo(existingNumbers, numberLength),
                 Type = (short)type
             };
 
@@ -391,8 +393,8 @@ namespace SPPC.Tadbir.Persistence
 
         private int GetEntityTypeId(int type)
         {
-            return (int)(type == (int)PayReceiveType.Receival
-                ? EntityTypeId.Receival
+            return (int)(type == (int)PayReceiveType.Receipt
+                ? EntityTypeId.Receipt
                 : EntityTypeId.Payment);
         }
 
@@ -400,16 +402,16 @@ namespace SPPC.Tadbir.Persistence
         {
             return type == (int)PayReceiveType.Payment
                 ? ViewId.Payment
-                : ViewId.Receival;
+                : ViewId.Receipt;
         }
 
-        private static string GetNewPayReceiveNo(IEnumerable<string> existingCodes, int codeLength)
+        private static string GetNewPayReceiveNo(IEnumerable<string> existingNumbers, int numberLength)
         {
-            string format = String.Format("D{0}", codeLength);
-            var maxCode = (long)Math.Pow(10, codeLength) - 1;
-            var lastCode = (existingCodes.Any()) ? Int64.Parse(existingCodes.Max()) : 0;
-            var newCode = Math.Min(lastCode + 1, maxCode);
-            return newCode.ToString(format);
+            string format = String.Format("D{0}", numberLength);
+            var maxNumber = (long)Math.Pow(10, numberLength) - 1;
+            var lastNumber = (existingNumbers.Any()) ? Int64.Parse(existingNumbers.Max()) : 0;
+            var newNumber = Math.Min(lastNumber + 1, maxNumber);
+            return newNumber.ToString(format);
         }
 
         private async Task<IList<string>> GetPayReceiveNumbersAsync(int type)
@@ -417,14 +419,16 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
             return await repository
                 .GetEntityQuery()
-                .Where(pr => pr.Type == type)
+                .Where(pr => pr.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && pr.BranchId == UserContext.BranchId
+                    && pr.Type == type)
                 .Select(pr => pr.PayReceiveNo)
                 .ToListAsync();
         }
 
         internal override int? EntityType
         {
-            get { return (int?)EntityTypeId.Receival; }
+            get { return (int?)EntityTypeId.Receipt; }
         }
 
         /// <summary>
@@ -434,7 +438,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceive">سطر اطلاعاتی موجود</param>
         protected override void UpdateExisting(PayReceiveViewModel payReceiveViewModel, PayReceive payReceive)
         {
-            payReceive.PayReceiveNo = payReceiveViewModel.PayReceiveNo;
+            payReceive.PayReceiveNo = payReceiveViewModel.PayReceiveNo.Trim();
             payReceive.Reference = payReceiveViewModel.Reference;
             payReceive.Date = payReceiveViewModel.Date;
             payReceive.CurrencyId = payReceiveViewModel.CurrencyId;

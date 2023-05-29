@@ -38,7 +38,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         protected override string EntityNameKey
         {
-            get { return AppStrings.Receival; }
+            get { return AppStrings.Receipt; }
         }
 
         /// <summary>
@@ -62,15 +62,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر</param>
         /// <returns>اطلاعات نمایشی فرم دریافت مورد نظر</returns>
-        // GET: api/receivals/{payReceiveId:min(1)}
+        // GET: api/receipts/{payReceiveId:min(1)}
         [HttpGet]
-        [Route(PayReceiveApi.ReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.View)]
-        public async Task<IActionResult> GetReceivalAsync(int payReceiveId)
+        [Route(PayReceiveApi.ReceiptUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.View)]
+        public async Task<IActionResult> GetReceiptAsync(int payReceiveId)
         {
-            var receival = await _repository.GetPayReceiveAsync(payReceiveId,
-                (int)PayReceiveType.Receival, GridOptions);
-            return JsonReadResult(receival);
+            var receipt = await _repository.GetPayReceiveAsync(payReceiveId,
+                (int)PayReceiveType.Receipt, GridOptions);
+            return JsonReadResult(receipt);
         }
 
         /// <summary>
@@ -99,13 +99,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="payReceive">اطلاعات نمایشی فرم دریافت جدید</param>
         /// <returns>اطلاعات نمایشی ذخیره شده برای فرم دریافت</returns>
-        // POST: api/receivals
+        // POST: api/receipts
         [HttpPost]
-        [Route(PayReceiveApi.ReceivalsUrl)]
-        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Create)]
-        public async Task<IActionResult> PostNewReceivalAsync([FromBody] PayReceiveViewModel payReceive)
+        [Route(PayReceiveApi.ReceiptsUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Create)]
+        public async Task<IActionResult> PostNewReceiptAsync([FromBody] PayReceiveViewModel payReceive)
         {
-            var result = await PayReceiveValidationResultAsync(payReceive, AppStrings.Receival);
+            var result = await PayReceiveValidationResultAsync(payReceive, AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -146,14 +146,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت اصلاح شده</param>
         /// <param name="payReceive">اطلاعات نمایشی اصلاح شده برای فرم دریافت</param>
         /// <returns>اطلاعات نمایشی ذخیره شده برای فرم دریافت</returns>
-        // PUT: api/receivals/{payReceiveId:min(1)}
+        // PUT: api/receipts/{payReceiveId:min(1)}
         [HttpPut]
-        [Route(PayReceiveApi.ReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Edit)]
-        public async Task<IActionResult> PutModifiedReceivalAsync(int payReceiveId,
+        [Route(PayReceiveApi.ReceiptUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Edit)]
+        public async Task<IActionResult> PutModifiedReceiptAsync(int payReceiveId,
             [FromBody] PayReceiveViewModel payReceive)
         {
-            var result = await PayReceiveValidationResultAsync(payReceive, AppStrings.Receival, payReceiveId);
+            var result = await PayReceiveValidationResultAsync(payReceive, AppStrings.Receipt, payReceiveId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -187,11 +187,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات فرم دریافت مشخص شده با شناسه دیتابیسی را پس از اعتبارسنجی از دیتابیس حذف می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر برای حذف</param>
-        // DELETE: api/receivals/{payReceiveId:min(1)}
+        // DELETE: api/receipts/{payReceiveId:min(1)}
         [HttpDelete]
-        [Route(PayReceiveApi.ReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Delete)]
-        public async Task<IActionResult> DeleteExistingReceivalAsync(int payReceiveId)
+        [Route(PayReceiveApi.ReceiptUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Delete)]
+        public async Task<IActionResult> DeleteExistingReceiptAsync(int payReceiveId)
         {
             string message = await ValidateDeleteAsync(payReceiveId);
             if (!String.IsNullOrEmpty(message))
@@ -199,7 +199,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(message);
             }
 
-            await _repository.DeletePayReceiveAsync(payReceiveId, (int)PayReceiveType.Receival);
+            await _repository.DeletePayReceiveAsync(payReceiveId, (int)PayReceiveType.Receipt);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
@@ -232,14 +232,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر برای تأیید</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
         /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
-        // PUT: api/receivals/{payReceiveId:int}/confirm
+        // PUT: api/receipts/{payReceiveId:int}/confirm
         [HttpPut]
-        [Route(PayReceiveApi.ConfirmReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Confirm)]
-        public async Task<IActionResult> PutExistingReceivalAsConfirmed(int payReceiveId)
+        [Route(PayReceiveApi.ConfirmReceiptUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Confirm)]
+        public async Task<IActionResult> PutExistingReceiptAsConfirmed(int payReceiveId)
         {
             var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.Confirm,
-                AppStrings.Receival);
+                AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -278,14 +278,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر برای برگشت از تأیید</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
         /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
-        // PUT: api/receivals/{payReceiveId:int}/confirm/undo
+        // PUT: api/receipts/{payReceiveId:int}/confirm/undo
         [HttpPut]
-        [Route(PayReceiveApi.UndoConfirmReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.UndoConfirm)]
-        public async Task<IActionResult> PutExistingReceivalAsUnconfirmed(int payReceiveId)
+        [Route(PayReceiveApi.UndoConfirmReceiptUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.UndoConfirm)]
+        public async Task<IActionResult> PutExistingReceiptAsUnconfirmed(int payReceiveId)
         {
             var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.UndoConfirm,
-                AppStrings.Receival);
+                AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -324,14 +324,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر برای تصویب</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
         /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
-        // PUT: api/receivals/{payReceiveId:int}/approve
+        // PUT: api/receipts/{payReceiveId:int}/approve
         [HttpPut]
-        [Route(PayReceiveApi.ApproveReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Approve)]
-        public async Task<IActionResult> PutExistingReceivalAsApproved(int payReceiveId)
+        [Route(PayReceiveApi.ApproveReceiptUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Approve)]
+        public async Task<IActionResult> PutExistingReceiptAsApproved(int payReceiveId)
         {
             var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.Approve,
-                AppStrings.Receival);
+                AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -370,14 +370,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر برای برگشت از تصویب</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
         /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
-        // PUT: api/receivals/{payReceiveId:int}/approve/undo
+        // PUT: api/receipts/{payReceiveId:int}/approve/undo
         [HttpPut]
-        [Route(PayReceiveApi.UndoApproveReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.UndoApprove)]
-        public async Task<IActionResult> PutExistingReceivalAsUnapproved(int payReceiveId)
+        [Route(PayReceiveApi.UndoApproveReceiptUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.UndoApprove)]
+        public async Task<IActionResult> PutExistingReceiptAsUnapproved(int payReceiveId)
         {
             var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.UndoApprove,
-                AppStrings.Receival);
+                AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -407,13 +407,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="payReceiveNo">شماره فرم دریافت مورد نظر</param>
         /// <returns>اطلاعات نمایشی فرم دریافت مورد نظر</returns>
-        // GET: api/receivals/by-no/{payReceiveNo:min(1)}
+        // GET: api/receipts/by-no/{payReceiveNo:min(1)}
         [HttpGet]
-        [Route(PayReceiveApi.ReceivalByNoUrl)]
-        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.View)]
-        public async Task<IActionResult> GetReceivalByNoAsync(string payReceiveNo)
+        [Route(PayReceiveApi.ReceiptByNoUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.View)]
+        public async Task<IActionResult> GetReceiptByNoAsync(string payReceiveNo)
         {
-            var payReceiveByNo = await _repository.GetPayReceiveNoAsync(payReceiveNo, (int)PayReceiveType.Receival);
+            var payReceiveByNo = await _repository.GetPayReceiveNoAsync(payReceiveNo, (int)PayReceiveType.Receipt);
             return JsonReadResult(payReceiveByNo);
         }
 
@@ -435,13 +435,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات اولین فرم دریافت قابل دسترسی را برمی گرداند
         /// </summary>
         /// <returns>اطلاعات نمایشی اولین فرم دریافت قابل دسترسی</returns>
-        // GET: api/receivals/first
+        // GET: api/receipts/first
         [HttpGet]
-        [Route(PayReceiveApi.FirstReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Navigate)]
-        public async Task<IActionResult> GetFirstReceivalAsync()
+        [Route(PayReceiveApi.FirstReceiptUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Navigate)]
+        public async Task<IActionResult> GetFirstReceiptAsync()
         {
-            var first = await _repository.GetFirstPayReceiveAsync((int)PayReceiveType.Receival, GridOptions);
+            var first = await _repository.GetFirstPayReceiveAsync((int)PayReceiveType.Receipt, GridOptions);
             return JsonReadResult(first);
         }
 
@@ -463,13 +463,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات آخرین فرم دریافت قابل دسترسی را برمی گرداند
         /// </summary>
         /// <returns>اطلاعات نمایشی آخرین فرم دریافت قابل دسترسی</returns>
-        // GET: api/receivals/last
+        // GET: api/receipts/last
         [HttpGet]
-        [Route(PayReceiveApi.LastReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Navigate)]
-        public async Task<IActionResult> GetLastReceivalAsync()
+        [Route(PayReceiveApi.LastReceiptUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Navigate)]
+        public async Task<IActionResult> GetLastReceiptAsync()
         {
-            var last = await _repository.GetLastPayReceiveAsync((int)PayReceiveType.Receival, GridOptions);
+            var last = await _repository.GetLastPayReceiveAsync((int)PayReceiveType.Receipt, GridOptions);
             return JsonReadResult(last);
         }
 
@@ -494,14 +494,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="payReceiveNo">شماره فرم دریافت فعلی</param>
         /// <returns>اطلاعات نمایشی فرم دریافت قابل دسترسی قبلی</returns>
-        // GET: api/receivals/{payReceiveNo:min(1)}/previous
+        // GET: api/receipts/{payReceiveNo:min(1)}/previous
         [HttpGet]
-        [Route(PayReceiveApi.PreviousReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Navigate)]
-        public async Task<IActionResult> GetPreviousReceivalAsync(string payReceiveNo)
+        [Route(PayReceiveApi.PreviousReceiptUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Navigate)]
+        public async Task<IActionResult> GetPreviousReceiptAsync(string payReceiveNo)
         {
             var previous = await _repository.GetPreviousPayReceiveAsync(payReceiveNo,
-                (int)PayReceiveType.Receival, GridOptions);
+                (int)PayReceiveType.Receipt, GridOptions);
             return JsonReadResult(previous);
         }
 
@@ -526,14 +526,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="payReceiveNo">شماره فرم دریافت فعلی</param>
         /// <returns>اطلاعات نمایشی فرم دریافت قابل دسترسی بعدی</returns>
-        // GET: api/receivals/{payReceiveNo:min(1)}/next
+        // GET: api/receipts/{payReceiveNo:min(1)}/next
         [HttpGet]
-        [Route(PayReceiveApi.NextReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Navigate)]
-        public async Task<IActionResult> GetNextReceivalAsync(string payReceiveNo)
+        [Route(PayReceiveApi.NextReceiptUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Navigate)]
+        public async Task<IActionResult> GetNextReceiptAsync(string payReceiveNo)
         {
             var next = await _repository.GetNextPayReceiveAsync(payReceiveNo,
-                (int)PayReceiveType.Receival, GridOptions);
+                (int)PayReceiveType.Receipt, GridOptions);
             return JsonReadResult(next);
         }
 
@@ -555,13 +555,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، فرم دریافت جدیدی با مقادیر پیشنهادی در دیتابیس ایجاد کرده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات نمایشی فرم دریافت جدید با مقادیر پیشنهادی</returns>
-        // GET: api/receivals/new
+        // GET: api/receipts/new
         [HttpGet]
-        [Route(PayReceiveApi.NewReceivalUrl)]
-        [AuthorizeRequest(SecureEntity.Receival, (int)ReceivalPermissions.Create)]
-        public async Task<IActionResult> GetNewReceivalAsync()
+        [Route(PayReceiveApi.NewReceiptUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Create)]
+        public async Task<IActionResult> GetNewReceiptAsync()
         {
-            var payReceive = await _repository.GetNewPayReceiveAsync((int)PayReceiveType.Receival);
+            var payReceive = await _repository.GetNewPayReceiveAsync((int)PayReceiveType.Receipt);
             return Json(payReceive);
         }
 
@@ -615,28 +615,36 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             int numberLength = AppConstants.DefaultNumberLength;
-            if (payReceive.PayReceiveNo.Length != numberLength)
+            var payReceiveNo = payReceive.PayReceiveNo.Trim();
+            if (payReceiveNo.Length != numberLength)
             {
                 return BadRequestResult(_strings.Format(
-                    AppStrings.NumberFieldHasFixedLength,AppStrings.Number, numberLength.ToString()));
+                    AppStrings.StringNumberHasFixedLength,AppStrings.Number, numberLength.ToString()));
             }
 
-            if (!Int32.TryParse(payReceive.PayReceiveNo, out int numberValue))
+            if (!Int64.TryParse(payReceiveNo, out long numberValue))
             {
                 return BadRequestResult(_strings.Format(
-                    AppStrings.InvalidLetterForNumberField, AppStrings.Number));
+                    AppStrings.InvalidLetterForStringNumber, AppStrings.Number));
+            }
+
+            if(numberValue <= 0)
+            {
+                var minNumberString = 1.ToString($"D{numberLength}");
+                return BadRequestResult(_strings.Format(
+                   AppStrings.InvalidStringNumber, minNumberString,AppStrings.Number));
             }
 
             if (await _repository.IsDuplicatePayReceiveNo(payReceive))
             {
                 string fieldTitle = entityNameKey == AppStrings.Payment
                     ? AppStrings.PaymentNo
-                    : AppStrings.ReceivalNo;
+                    : AppStrings.ReceiptNo;
 
                 return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, fieldTitle));
             }
 
-            if (payReceive.CurrencyId > 0 && payReceive.CurrencyRate == decimal.Zero)
+            if (payReceive.CurrencyId > 0 && payReceive.CurrencyRate == Decimal.Zero)
             {
                 return BadRequestResult(_strings.Format(AppStrings.FieldIsRequired, AppStrings.CurrencyRate));
             }

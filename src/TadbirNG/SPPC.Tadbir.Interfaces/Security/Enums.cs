@@ -2001,7 +2001,7 @@ namespace SPPC.Tadbir.Security
     /// فلگ های تعریف شده برای دسترسی های امنیتی به یک فرم دریافت را تعریف می کند
     /// </summary>
     [Flags]
-    public enum ReceivalPermissions
+    public enum ReceiptPermissions
     {
         /// <summary>
         /// عدم دسترسی به اطلاعات فرم های دریافت 

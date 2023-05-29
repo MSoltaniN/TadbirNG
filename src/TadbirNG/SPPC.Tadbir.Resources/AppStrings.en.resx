@@ -3891,14 +3891,14 @@
   <data name="LastPaymentForm" xml:space="preserve">
     <value>Last payment form</value>
   </data>
-  <data name="LastReceivalForm" xml:space="preserve">
-    <value>Last receival form</value>
+  <data name="LastReceiptForm" xml:space="preserve">
+    <value>Last receipt form</value>
   </data>
   <data name="NewPaymentForm" xml:space="preserve">
     <value>New payment form</value>
   </data>
-  <data name="NewReceivalForm" xml:space="preserve">
-    <value>New receival form</value>
+  <data name="NewReceiptForm" xml:space="preserve">
+    <value>New receipt form</value>
   </data>
   <data name="Payment" xml:space="preserve">
     <value>Payment</value>
@@ -3912,17 +3912,17 @@
   <data name="Payments" xml:space="preserve">
     <value>Payments</value>
   </data>
-  <data name="Receival" xml:space="preserve">
-    <value>Receival</value>
+  <data name="Receipt" xml:space="preserve">
+    <value>Receipt</value>
   </data>
-  <data name="ReceivalFormbyNo" xml:space="preserve">
-    <value>Receival form by number...</value>
+  <data name="ReceiptFormbyNo" xml:space="preserve">
+    <value>Receipt form by number...</value>
   </data>
-  <data name="ReceivalOperations" xml:space="preserve">
-    <value>Receival operations</value>
+  <data name="ReceiptOperations" xml:space="preserve">
+    <value>Receipt operations</value>
   </data>
-  <data name="Receivals" xml:space="preserve">
-    <value>Receivals</value>
+  <data name="Receipts" xml:space="preserve">
+    <value>Receipts</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>Register</value>
@@ -3933,8 +3933,8 @@
   <data name="PaymentNo" xml:space="preserve">
     <value>Payment number</value>
   </data>
-  <data name="ReceivalNo" xml:space="preserve">
-    <value>Receival number</value>
+  <data name="ReceiptNo" xml:space="preserve">
+    <value>Receipt number</value>
   </data>
   <data name="CantSaveEntity" xml:space="preserve">
     <value>This {0} is either confirmed or approved and cannot be saved.</value>
@@ -3945,10 +3945,10 @@
   <data name="InvalidEntityActionMessage" xml:space="preserve">
     <value>To perform '{0}' action on a {1}, first you have to {2} it.</value>
   </data>
-  <data name="InvalidLetterForNumberField" xml:space="preserve">
+  <data name="InvalidLetterForStringNumber" xml:space="preserve">
     <value>Letters cannot be used for {0}.</value>
   </data>
-  <data name="NumberFieldHasFixedLength" xml:space="preserve">
+  <data name="StringNumberHasFixedLength" xml:space="preserve">
     <value>{0} can only be {1} digits.</value>
   </data>
   <data name="Active" xml:space="preserve">
@@ -3959,5 +3959,8 @@
   </data>
   <data name="CantDeleteMiddleFiscalPeriods" xml:space="preserve">
     <value>Due to possibly shared data in fiscal periods, only last item can be deleted with data.</value>
+  </data>
+  <data name="InvalidStringNumber" xml:space="preserve">
+    <value>Value smaller than {0} is not valid for the {1}.</value>
   </data>
 </root>

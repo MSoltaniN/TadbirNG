@@ -462,7 +462,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<string> GetAssignedItemsDescriptionAsync(int[] newItemIds,
             int[] removedItemIds, string resourceName, OperationId operationId)
         {
-            StringBuilder description = new StringBuilder();
+            StringBuilder description = new();
             if (newItemIds.Length > 0)
             {
                 description.Append(await LocalizeAssignedItemsDescriptionAsync(newItemIds,

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace SPPC.Tadbir.Api
 {
     /// <summary>
-    /// Defines API server routes and API client operation URLs for working with payments and receivals.
+    /// Defines API server routes and API client operation URLs for working with payments and receipts.
     /// </summary>
     public sealed class PayReceiveApi
     {
@@ -29,24 +29,24 @@ namespace SPPC.Tadbir.Api
         public const string PaymentUrl = "payments/{payReceiveId:min(1)}";
 
         /// <summary>
-        /// API client URL for all receival items
+        /// API client URL for all receipt items
         /// </summary>
-        public const string Receivals = "receivals";
+        public const string Receipts = "receipts";
 
         /// <summary>
-        /// API server route URL for all receival items
+        /// API server route URL for all receipt items
         /// </summary>
-        public const string ReceivalsUrl = "receivals";
+        public const string ReceiptsUrl = "receipts";
 
         /// <summary>
-        /// API client URL for a receival item specified by unique identifier
+        /// API client URL for a receipt item specified by unique identifier
         /// </summary>
-        public const string Receival = "receivals/{0}";
+        public const string Receipt = "receipts/{0}";
 
         /// <summary>
-        /// API server route URL for a receival item specified by unique identifier
+        /// API server route URL for a receipt item specified by unique identifier
         /// </summary>
-        public const string ReceivalUrl = "receivals/{payReceiveId:min(1)}";
+        public const string ReceiptUrl = "receipts/{payReceiveId:min(1)}";
 
         /// <summary>
         /// API client URL for confirming a single payment specified by identifier
@@ -89,44 +89,44 @@ namespace SPPC.Tadbir.Api
         public const string UndoApprovePaymentUrl = "payments/{payReceiveId:min(1)}/approve/undo";
 
         /// <summary>
-        /// API client URL for confirming a single receival specified by identifier
+        /// API client URL for confirming a single receipt specified by identifier
         /// </summary>
-        public const string ConfirmReceival = "receivals/{0}/confirm";
+        public const string ConfirmReceipt = "receipts/{0}/confirm";
 
         /// <summary>
-        /// API server route URL for confirming a single receival specified by identifier
+        /// API server route URL for confirming a single receipt specified by identifier
         /// </summary>
-        public const string ConfirmReceivalUrl = "receivals/{payReceiveId:min(1)}/confirm";
+        public const string ConfirmReceiptUrl = "receipts/{payReceiveId:min(1)}/confirm";
 
         /// <summary>
-        /// API client URL for undoing confirmation of a single receival specified by identifier
+        /// API client URL for undoing confirmation of a single receipt specified by identifier
         /// </summary>
-        public const string UndoConfirmReceival = "receivals/{0}/confirm/undo";
+        public const string UndoConfirmReceipt = "receipts/{0}/confirm/undo";
 
         /// <summary>
-        /// API server route URL for undoing confirmation of a single receival specified by identifier
+        /// API server route URL for undoing confirmation of a single receipt specified by identifier
         /// </summary>
-        public const string UndoConfirmReceivalUrl = "receivals/{payReceiveId:min(1)}/confirm/undo";
+        public const string UndoConfirmReceiptUrl = "receipts/{payReceiveId:min(1)}/confirm/undo";
 
         /// <summary>
-        /// API client URL for approving a single receival specified by identifier
+        /// API client URL for approving a single receipt specified by identifier
         /// </summary>
-        public const string ApproveReceival = "receivals/{0}/approve";
+        public const string ApproveReceipt = "receipts/{0}/approve";
 
         /// <summary>
-        /// API server route URL for approving a single receival specified by identifier
+        /// API server route URL for approving a single receipt specified by identifier
         /// </summary>
-        public const string ApproveReceivalUrl = "receivals/{payReceiveId:min(1)}/approve";
+        public const string ApproveReceiptUrl = "receipts/{payReceiveId:min(1)}/approve";
 
         /// <summary>
-        /// API client URL for undoing approval of a single receival specified by identifier
+        /// API client URL for undoing approval of a single receipt specified by identifier
         /// </summary>
-        public const string UndoApproveReceival = "receivals/{0}/approve/undo";
+        public const string UndoApproveReceipt = "receipts/{0}/approve/undo";
 
         /// <summary>
-        /// API server route URL for undoing approval of a single receival specified by identifier
+        /// API server route URL for undoing approval of a single receipt specified by identifier
         /// </summary>
-        public const string UndoApproveReceivalUrl = "receivals/{payReceiveId:min(1)}/approve/undo";
+        public const string UndoApproveReceiptUrl = "receipts/{payReceiveId:min(1)}/approve/undo";
 
         /// <summary>
         /// API client URL for a single payment specified by number
@@ -179,54 +179,54 @@ namespace SPPC.Tadbir.Api
         public const string LastPaymentUrl = "payments/last";
 
         /// <summary>
-        /// API client URL for a single receival specified by number
+        /// API client URL for a single receipt specified by number
         /// </summary>
-        public const string ReceivalByNo = "receivals/by-no/{0}";
+        public const string ReceiptByNo = "receipts/by-no/{0}";
 
         /// <summary>
-        /// API server route URL for a single receival specified by number
+        /// API server route URL for a single receipt specified by number
         /// </summary>
-        public const string ReceivalByNoUrl = "receivals/by-no/{payReceiveNo:min(1)}";
+        public const string ReceiptByNoUrl = "receipts/by-no/{payReceiveNo:min(1)}";
 
         /// <summary>
-        /// API client URL for the first receival in current environment
+        /// API client URL for the first receipt in current environment
         /// </summary>
-        public const string FirstReceival = "receivals/first";
+        public const string FirstReceipt = "receipts/first";
 
         /// <summary>
-        /// API server route URL for the first receival in current environment
+        /// API server route URL for the first receipt in current environment
         /// </summary>
-        public const string FirstReceivalUrl = "receivals/first";
+        public const string FirstReceiptUrl = "receipts/first";
 
         /// <summary>
-        /// API client URL for previous receival in current environment
+        /// API client URL for previous receipt in current environment
         /// </summary>
-        public const string PreviousReceival = "receivals/{0}/previous";
+        public const string PreviousReceipt = "receipts/{0}/previous";
 
         /// <summary>
-        /// API server route URL for previous receival in current environment
+        /// API server route URL for previous receipt in current environment
         /// </summary>
-        public const string PreviousReceivalUrl = "receivals/{payReceiveNo:min(1)}/previous";
+        public const string PreviousReceiptUrl = "receipts/{payReceiveNo:min(1)}/previous";
 
         /// <summary>
-        /// API client URL for next receival in current environment
+        /// API client URL for next receipt in current environment
         /// </summary>
-        public const string NextReceival = "receivals/{0}/next";
+        public const string NextReceipt = "receipts/{0}/next";
 
         /// <summary>
-        /// API server route URL for next receival in current environment
+        /// API server route URL for next receipt in current environment
         /// </summary>
-        public const string NextReceivalUrl = "receivals/{payReceiveNo:min(1)}/next";
+        public const string NextReceiptUrl = "receipts/{payReceiveNo:min(1)}/next";
 
         /// <summary>
-        /// API client URL for the last receival in current environment
+        /// API client URL for the last receipt in current environment
         /// </summary>
-        public const string LastReceival = "receivals/last";
+        public const string LastReceipt = "receipts/last";
 
         /// <summary>
-        /// API server route URL for the last receival in current environment
+        /// API server route URL for the last receipt in current environment
         /// </summary>
-        public const string LastReceivalUrl = "receivals/last";
+        public const string LastReceiptUrl = "receipts/last";
 
         /// <summary>
         /// API client URL for a newly payment initialized
@@ -239,13 +239,13 @@ namespace SPPC.Tadbir.Api
         public const string NewPaymentUrl = "payments/new";
 
         /// <summary>
-        /// API client URL for a newly receival initialized
+        /// API client URL for a newly receipt initialized
         /// </summary>
-        public const string NewReceival = "receivals/new";
+        public const string NewReceipt = "receipts/new";
 
         /// <summary>
-        /// API server route URL for a newly receival initialized
+        /// API server route URL for a newly receipt initialized
         /// </summary>
-        public const string NewReceivalUrl = "receivals/new";
+        public const string NewReceiptUrl = "receipts/new";
     }
 }

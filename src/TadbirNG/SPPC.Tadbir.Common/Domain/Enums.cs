@@ -278,7 +278,7 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// دریافت 
         /// </summary>
-        Receival = 0,
+        Receipt = 0,
 
         /// <summary>
         /// پرداخت

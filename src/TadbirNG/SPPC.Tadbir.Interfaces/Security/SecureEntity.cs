@@ -219,6 +219,6 @@ namespace SPPC.Tadbir.Security
         /// <summary>
         /// نام موجودیت دریافت
         /// </summary>
-        public const string Receival = "Receival";
+        public const string Receipt = "Receipt";
     }
 }

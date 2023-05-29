@@ -134,6 +134,6 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// نمای اطلاعاتی فرم دریافت 
         /// </summary>
-        public const int Receival = 75;
+        public const int Receipt = 75;
     }
 }

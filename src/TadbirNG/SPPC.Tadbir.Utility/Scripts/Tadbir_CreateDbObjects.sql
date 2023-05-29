@@ -1168,7 +1168,7 @@ INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (24, N'Payment', NULL)
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
-    VALUES (25, N'Receival', NULL)
+    VALUES (25, N'Receipt', NULL)
 SET IDENTITY_INSERT [Metadata].[EntityType] OFF
 
 SET IDENTITY_INSERT [Metadata].[Operation] ON

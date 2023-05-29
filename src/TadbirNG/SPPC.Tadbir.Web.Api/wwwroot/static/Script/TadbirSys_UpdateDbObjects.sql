@@ -931,7 +931,7 @@ SET IDENTITY_INSERT [Metadata].[View] ON
 INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [EntityType], [FetchUrl], [SearchUrl], [IsHierarchy], [IsCartableIntegrated])
     VALUES (74, 'Payment', N'Payment', N'Operational', NULL, NULL, 0, 0)
 INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [EntityType], [FetchUrl], [SearchUrl], [IsHierarchy], [IsCartableIntegrated])
-    VALUES (75, 'Receival', N'Receival', N'Operational', NULL, NULL, 0, 0)
+    VALUES (75, 'Receipt', N'Receipt', N'Operational', NULL, NULL, 0, 0)
 SET IDENTITY_INSERT [Metadata].[View] OFF
 
 SET IDENTITY_INSERT [Metadata].[Column] ON
@@ -997,7 +997,7 @@ SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
     VALUES (41, 3, 2, N'Payments', N'Payment', NULL)
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
-    VALUES (42, 3, 2, N'Receivals', N'Receival', NULL)
+    VALUES (42, 3, 2, N'Receipts', N'Receipt', NULL)
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON
@@ -1034,7 +1034,7 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Des
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
     VALUES (261, 42, N'Delete', 64, NULL)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
-    VALUES (262, 42, N'NavigateEntities,Receivals', 32, NULL)
+    VALUES (262, 42, N'NavigateEntities,Receipts', 32, NULL)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
     VALUES (263, 42, N'Register', 64, NULL)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
@@ -1051,18 +1051,18 @@ SET IDENTITY_INSERT [Metadata].[Command] ON
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (62, 52, NULL, N'PaymentOperations', NULL, 'folder-close', NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (63, 52, NULL, N'ReceivalOperations', NULL, 'folder-close', NULL)
+    VALUES (63, 52, NULL, N'ReceiptOperations', NULL, 'folder-close', NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (64, 62, 248, N'NewPaymentForm', N'/treasury/payments/new', 'plus', NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (65, 63, 259, N'NewReceivalForm', N'/treasury/receivals/new', 'plus', NULL)
+    VALUES (65, 63, 259, N'NewReceiptForm', N'/treasury/receipts/new', 'plus', NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (66, 62, 251, N'LastPaymentForm', N'/treasury/payments/last', 'list', NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (67, 63, 262, N'LastReceivalForm', N'/treasury/receivals/last', 'list', NULL)
+    VALUES (67, 63, 262, N'LastReceiptForm', N'/treasury/receipts/last', 'list', NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (68, 62, 246, N'PaymentFormbyNo', N'/treasury/payments/by-no', 'search', NULL)
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (69, 63, 257, N'ReceivalFormbyNo', N'/treasury/receivals/by-no', 'search', NULL)
+    VALUES (69, 63, 257, N'ReceiptFormbyNo', N'/treasury/receipts/by-no', 'search', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
