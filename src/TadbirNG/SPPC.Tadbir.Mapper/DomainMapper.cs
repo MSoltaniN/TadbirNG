@@ -100,6 +100,14 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<SourceApp, SourceAppViewModel>()
                 .ForMember(dest => dest.TypeName, opts => opts.MapFrom(src => SourceAppHelper.GetTypeName(src)));
             mapperConfig.CreateMap<SourceAppViewModel, SourceApp>();
+            mapperConfig.CreateMap<PayReceive, PayReceiveViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.Reference, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.ConfirmedByName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.ApprovedByName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.IsApproved, opts => opts.MapFrom(src => src.ApprovedById != null))
+                .ForMember(dest => dest.IsConfirmed, opts => opts.MapFrom(src => src.ConfirmedById != null));
+            mapperConfig.CreateMap<PayReceiveViewModel, PayReceive>();
         }
 
         private static void MapCheckTypes(IMapperConfigurationExpression mapperConfig)

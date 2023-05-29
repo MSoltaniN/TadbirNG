@@ -1924,4 +1924,148 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         All = 0x7f
     }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به یک فرم پرداخت را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum PaymentPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به اطلاعات فرم های پرداخت 
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست فرم های پرداخت یا جزییات یک فرم پرداخت
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی چاپ فرم های پرداخت موجود
+        /// </summary>
+        Print = 0x2,
+
+        /// <summary>
+        /// دسترسی ایجاد یک فرم پرداخت جدید
+        /// </summary>
+        Create = 0x4,
+
+        /// <summary>
+        /// دسترسی ویرایش یک فرم پرداخت موجود
+        /// </summary>
+        Edit = 0x8,
+
+        /// <summary>
+        /// دسترسی حذف یک فرم پرداخت موجود
+        /// </summary>
+        Delete = 0x10,
+
+        /// <summary>
+        /// دسترسی حرکت روی فرم های پرداخت
+        /// </summary>
+        Navigate = 0x20,
+
+        /// <summary>
+        /// دسترسی ایجاد سند حسابداری فرم پرداخت
+        /// </summary>
+        Register = 0x40,
+
+        /// <summary>
+        /// دسترسی تایید فرم پرداخت
+        /// </summary>
+        Confirm = 0x80,
+
+        /// <summary>
+        /// دسترسی برگشت از تایید فرم پرداخت
+        /// </summary>
+        UndoConfirm = 0x100,
+
+        /// <summary>
+        /// دسترسی تصویب فرم پرداخت
+        /// </summary>
+        Approve = 0x200,
+
+        /// <summary>
+        /// دسترسی برگشت از تصویب فرم پرداخت
+        /// </summary>
+        UndoApprove = 0x400,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت فرم های پرداخت 
+        /// </summary>
+        All = 0x7ff
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به یک فرم دریافت را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum ReceiptPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به اطلاعات فرم های دریافت 
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست فرم های دریافت یا جزییات یک فرم دریافت
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی چاپ فرم های دریافت موجود
+        /// </summary>
+        Print = 0x2,
+
+        /// <summary>
+        /// دسترسی ایجاد یک فرم دریافت جدید
+        /// </summary>
+        Create = 0x4,
+
+        /// <summary>
+        /// دسترسی ویرایش یک فرم دریافت موجود
+        /// </summary>
+        Edit = 0x8,
+
+        /// <summary>
+        /// دسترسی حذف یک فرم دریافت موجود
+        /// </summary>
+        Delete = 0x10,
+
+        /// <summary>
+        /// دسترسی حرکت روی فرم های دریافت
+        /// </summary>
+        Navigate = 0x20,
+
+        /// <summary>
+        /// دسترسی ایجاد سند حسابداری فرم دریافت
+        /// </summary>
+        Register = 0x40,
+
+        /// <summary>
+        /// دسترسی تایید فرم دریافت
+        /// </summary>
+        Confirm = 0x80,
+
+        /// <summary>
+        /// دسترسی برگشت از تایید فرم دریافت
+        /// </summary>
+        UndoConfirm = 0x100,
+
+        /// <summary>
+        /// دسترسی تصویب فرم دریافت
+        /// </summary>
+        Approve = 0x200,
+
+        /// <summary>
+        /// دسترسی برگشت از تصویب فرم دریافت
+        /// </summary>
+        UndoApprove = 0x400,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت فرم های دریافت 
+        /// </summary>
+        All = 0x7ff
+    }
 }

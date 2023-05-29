@@ -1123,3 +1123,98 @@ ALTER TABLE [Finance].[AccountDetailAccount]
 ADD CONSTRAINT [FK_Finance_AccountDetailAccount_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailAccountID])
 GO
 
+-- 1.2.1521
+DELETE FROM [Config].[LogSetting]
+WHERE EntityTypeID = 24
+
+DELETE FROM [Config].[LogSetting]
+WHERE EntityTypeID = 25
+
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description])
+    VALUES (68, N'Register', NULL)
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+SET IDENTITY_INSERT [Metadata].[EntityType] ON
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
+    VALUES (24, N'Payment', NULL)
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
+    VALUES (25, N'Receipt', NULL)
+SET IDENTITY_INSERT [Metadata].[EntityType] OFF
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (240, 3, 2, NULL, 24, 1, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (241, 3, 2, NULL, 24, 2, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (242, 3, 2, NULL, 24, 3, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (243, 3, 2, NULL, 24, 4, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (244, 3, 2, NULL, 24, 6, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (245, 3, 2, NULL, 24, 13, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (246, 3, 2, NULL, 24, 14, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (247, 3, 2, NULL, 24, 15, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (248, 3, 2, NULL, 24, 16, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (249, 3, 2, NULL, 24, 58, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (250, 3, 2, NULL, 24, 68, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (251, 3, 2, NULL, 25, 1, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (252, 3, 2, NULL, 25, 2, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (253, 3, 2, NULL, 25, 3, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (254, 3, 2, NULL, 25, 4, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (255, 3, 2, NULL, 25, 6, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (256, 3, 2, NULL, 25, 13, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (257, 3, 2, NULL, 25, 14, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (258, 3, 2, NULL, 25, 15, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (259, 3, 2, NULL, 25, 16, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (260, 3, 2, NULL, 25, 58, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (261, 3, 2, NULL, 25, 68, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+CREATE TABLE [CashFlow].[PayReceive] (
+    [PayReceiveID]      INT              IDENTITY (1, 1) NOT NULL,
+    [FiscalPeriodID]    INT              NOT NULL,
+    [BranchID]          INT              NOT NULL,
+    [IssuedByID]        INT              NOT NULL,
+    [ModifiedByID]      INT              NOT NULL,
+    [ConfirmedByID]     INT              NULL,
+    [ApprovedByID]      INT              NULL,
+    [Type]              SMALLINT         NOT NULL,
+    [PayReceiveNo]      NVARCHAR(16)     NOT NULL,
+    [Reference]         NVARCHAR(64)     NULL,
+    [Date]              DATETIME         NOT NULL,
+    [CurrencyID]        INT              NULL,
+    [CurrencyRate]      Money            NULL,
+    [Description]       NVARCHAR(1024)   NULL,
+    [CreatedDate]       DATETIME         NOT NULL,
+    [IssuedByName]      NVARCHAR(64)     NOT NULL,
+    [ModifiedByName]    NVARCHAR(64)     NOT NULL,
+    [ConfirmedByName]   NVARCHAR(64)     NULL,
+    [ApprovedByName]    NVARCHAR(64)     NULL,
+    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_PayReceive_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_CashFlow_PayReceive_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_CashFlow_PayReceive] PRIMARY KEY CLUSTERED ([PayReceiveID] ASC)
+    , CONSTRAINT [FK_CashFlow_PayReceive_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_CashFlow_PayReceive_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+	, CONSTRAINT [FK_CashFlow_PayReceive_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency]([CurrencyID])
+)
+GO
+

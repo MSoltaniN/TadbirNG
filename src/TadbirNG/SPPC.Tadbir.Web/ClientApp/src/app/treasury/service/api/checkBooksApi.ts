@@ -69,5 +69,4 @@ export class CheckBooksApi
     * API client URL for a newly initialized check book
     */
     public static NewCheckBook = environment.BaseUrl + "/check-books/new"
-
 }
