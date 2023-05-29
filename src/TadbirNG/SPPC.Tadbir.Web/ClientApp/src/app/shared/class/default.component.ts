@@ -21,6 +21,7 @@ import { FilterExpression } from "./filterExpression";
 import { FilterExpressionBuilder } from "./filterExpressionBuilder";
 import { Property } from "./metadata/property";
 import { String } from "./source";
+import { shareReplay } from "rxjs";
 
 @Injectable()
 export class DefaultComponent extends BaseComponent {
@@ -245,11 +246,19 @@ export class DefaultComponent extends BaseComponent {
 
     if (treeConfig == undefined || treeConfig.length == 0) {
       treeConfig = [];
-      this.settingService.getViewTreeSettings(viewId).subscribe((res) => {
+      this.settingService.getViewTreeSettings(viewId)
+      .pipe(
+        shareReplay()
+      )
+      .subscribe((res) => {
         let result: any = res;
-        treeConfig.push({ name: viewName, viewTree: result.current });
+        let viewTree = result.current;
+        if (this.currentlang == 'en')
+          viewTree.levels.map((i,index) => { i.name = result.default.levels[index].name });
+
+        treeConfig.push({ name: viewName, viewTree: viewTree });
         this.bStorageService.setViewTreeConfig(treeConfig);
-        return JSON.parse(JSON.stringify(result.current));
+        return JSON.parse(JSON.stringify(viewTree));
       });
     } else {
       var config = treeConfig.find((f) => f.name == viewName);
@@ -258,9 +267,13 @@ export class DefaultComponent extends BaseComponent {
       } else {
         this.settingService.getViewTreeSettings(viewId).subscribe((res) => {
           let result: any = res;
-          treeConfig.push({ name: viewName, viewTree: result.current });
+          let viewTree = result.current;
+          if (this.currentlang == 'en')
+            viewTree.levels.map((i,index) => { i.name = result.default.levels[index].name });
+
+          treeConfig.push({ name: viewName, viewTree: viewTree });
           this.bStorageService.setViewTreeConfig(treeConfig);
-          return JSON.parse(JSON.stringify(result.current));
+          return JSON.parse(JSON.stringify(viewTree));
         });
       }
     }
