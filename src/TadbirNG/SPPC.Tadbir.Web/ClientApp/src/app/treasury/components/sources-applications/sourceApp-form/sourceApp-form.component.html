@@ -12,7 +12,7 @@
       <div class="form-group">
         <label for="name" class="control-label">{{ 'SourceApp.Code' | translate }}</label>
   
-        <input sppcAutoFocus type="text" class="k-textbox" formControlName="code" />
+        <input sppcAutoFocus type="text" class="k-textbox" formControlName="code" [OnlyNumber]/>
   
         <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
           <span *ngIf="editForm.controls.code.errors?.required">{{ 'AllValidations.SourceApp.CodeIsRequired' | translate }}</span>
