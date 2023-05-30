@@ -1082,3 +1082,8 @@ WHERE PermissionID = 262
 UPDATE [Metadata].[Command]
 Set TitleKey = REPLACE(TitleKey, 'Receival', 'Receipt'), RouteUrl = REPLACE(RouteUrl, 'receival', 'receipt')
 WHERE TitleKey LIKE '%Receival%' 
+
+-- 1.2.1524
+update Metadata.[Column]
+set IsNullable=1
+where ColumnID=750

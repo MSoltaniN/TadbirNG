@@ -158,8 +158,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<SourceApp>();
             int count = await repository.GetCountByCriteriaAsync(
                 sa => sa.Id != sourceApp.Id
-                    && sa.Name == sourceApp.Name
-                    && sa.BranchId == sourceApp.BranchId);
+                    && sa.Name == sourceApp.Name);
             return count > 0;
         }
 
@@ -174,8 +173,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<SourceApp>();
             int count = await repository.GetCountByCriteriaAsync(
                 c => c.Id != sourceApp.Id
-                    && c.Code == sourceApp.Code
-                    && c.BranchId == sourceApp.BranchId);
+                    && c.Code == sourceApp.Code);
             return count > 0;
         }
         
