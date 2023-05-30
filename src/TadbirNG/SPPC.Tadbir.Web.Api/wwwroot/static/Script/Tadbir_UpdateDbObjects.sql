@@ -1217,7 +1217,40 @@ CREATE TABLE [CashFlow].[PayReceive] (
 	, CONSTRAINT [FK_CashFlow_PayReceive_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency]([CurrencyID])
 )
 GO
--- -- 1.2.1523
+-- 1.2.1523
  UPDATE [Metadata].[EntityType]
  SET [Name] = N'Receipt'
  WHERE EntityTypeID = 25
+
+ -- 1.2.1524
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (69, N'RemoveInvalidRows')
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES (70, N'RowsAggregation')
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (262, 3, 2, NULL, 25, 69, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (263, 3, 2, NULL, 25, 70, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+CREATE TABLE [CashFlow].[PayReceiveAccount] (
+    [PayReceiveAccountID]   INT              IDENTITY (1, 1) NOT NULL,
+    [AccountID]             INT              NULL,
+    [CostCenterID]          INT              NULL,
+    [ProjectID]             INT              NULL,
+    [PayReceiveID]          INT              NOT NULL,
+    [DetailAccountID]       INT              NULL,
+    [Amount]                MONEY            NOT NULL,
+    [Description]           NVARCHAR(512)    NULL,
+    [rowguid]               UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_PayReceiveAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]          DATETIME         CONSTRAINT [DF_CashFlow_PayReceiveAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_CashFlow_PayReceiveAccount] PRIMARY KEY CLUSTERED ([PayReceiveAccountID] ASC)
+    , CONSTRAINT [FK_CashFlow_PayReceiveAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
+    , CONSTRAINT [FK_CashFlow_PayReceiveAccount_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_CashFlow_PayReceiveAccount_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project]([ProjectID])
+    , CONSTRAINT [FK_CashFlow_PayReceiveAccount_CashFlow_PayReceive] FOREIGN KEY ([PayReceiveID]) REFERENCES [CashFlow].[PayReceive]([PayReceiveID])
+    , CONSTRAINT [FK_CashFlow_PayReceiveAccount_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailAccountID])
+)
+GO

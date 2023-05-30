@@ -247,5 +247,26 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a newly receipt initialized
         /// </summary>
         public const string NewReceiptUrl = "receipts/new";
+
+        /// <summary>
+        /// API client URL for all account articles in a single payment specified by identifier
+        /// </summary>
+        public const string PaymentAccountArticles = "payments/{0}/account-articles";
+
+        /// <summary>
+        /// API server route URL for all account articles in a single payment specified by identifier
+        /// </summary>
+        public const string PaymentAccountArticlesUrl = "payments/{payReceiveId:min(1)}/account-articles";
+
+        /// <summary>
+        /// API client URL for all account articles in a single receipt specified by identifier
+        /// </summary>
+        public const string ReceiptAccountArticles = "receipts/{0}/account-articles";
+
+        /// <summary>
+        /// API server route URL for all account articles in a single receipt specified by identifier
+        /// </summary>
+        public const string ReceiptAccountArticlesUrl = "receipts/{payReceiveId:min(1)}/account-articles";
+
     }
 }

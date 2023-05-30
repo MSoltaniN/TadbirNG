@@ -23,14 +23,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="repository">امکان ذخیره و بازیابی اطلاعات دریافتی ها و پرداختی ها در دیتابیس را فراهم می کند</param>
+        /// <param name="repository">امکان مدیریت اطلاعات فرم های دریافت/پرداخت را فراهم می کند</param>
+        /// <param name="articleAccountRepository">امکان مدیریت اطلاعات طرف حساب را فراهم می کند</param>
         /// <param name="strings">امکان خواندن متن های چندزبانه را فراهم می کند</param>
         /// <param name="tokenManager">امکان کار با توکن امنیتی برنامه را فراهم می کند</param>
-        public PayReceivesController(IPayReceiveRepository repository, IStringLocalizer<AppStrings> strings,
+        public PayReceivesController(
+            IPayReceiveRepository repository,
+            IPayReceiveAccountRepository articleAccountRepository, 
+            IStringLocalizer<AppStrings> strings,
             ITokenManager tokenManager)
             : base(strings, tokenManager)
         {
             _repository = repository;
+            _accountArticleRepository = articleAccountRepository;
         }
 
         /// <summary>
@@ -566,6 +571,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، کلیه آرتیکل های طرف حساب شناسه پرداخت داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت مورد نظر</param>
+        /// <returns>فهرست صفحه بندی شده آرتیکل های سند</returns>
+        // GET: api/payments/{payReceiveId:min(1)}/account-articles
+        [HttpGet]
+        [Route(PayReceiveApi.PaymentAccountArticlesUrl)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.View)]
+        public async Task<IActionResult> GetAccountArticlesAsync(int payReceiveId)
+        {
+            var articles = await _accountArticleRepository.GetAccountArticlesAsync(payReceiveId, GridOptions);
+            return Json(articles.Items);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، عمل حذف را برای یکی از فرم های دریافت یا پرداخت اعتبارسنجی می کند
         /// </summary>
         /// <param name="item">شناسه دیتابیسی فرم دریافت یا پرداخت مورد نظر برای حذف</param>
@@ -700,5 +720,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private readonly IPayReceiveRepository _repository;
+        private readonly IPayReceiveAccountRepository _accountArticleRepository;
     }
 }
