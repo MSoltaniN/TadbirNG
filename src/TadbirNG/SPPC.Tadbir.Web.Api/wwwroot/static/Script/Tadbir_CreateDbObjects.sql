@@ -1316,7 +1316,7 @@ INSERT INTO [Metadata].[OperationSource] ([OperationSourceID], [Name], [Descript
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID], [Name], [Description])
     VALUES (13, N'SystemIssue', NULL)
 INSERT INTO [Metadata].[OperationSource] ([OperationSourceID], [Name], [Description])
-    VALUES (15, N'CheckBook', NULL)
+    VALUES (15, N'CheckBookReport', NULL)
 SET IDENTITY_INSERT [Metadata].[OperationSource] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSourceList] ON
