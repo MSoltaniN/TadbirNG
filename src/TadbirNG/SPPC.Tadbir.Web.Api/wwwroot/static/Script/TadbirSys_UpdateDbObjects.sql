@@ -1066,3 +1066,19 @@ INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [Titl
     VALUES (69, 63, 257, N'ReceiptFormbyNo', N'/treasury/receipts/by-no', 'search', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
+-- 1.2.1523
+UPDATE [Metadata].[View]
+SET [Name] = 'Receipt', EntityName = N'Receipt'
+WHERE ViewID = 75
+
+UPDATE [Auth].[PermissionGroup]
+Set [Name] = N'Receipts', EntityName = N'Receipt'
+WHERE PermissionGroupID = 42
+
+UPDATE [Auth].[Permission]
+Set [Name] = N'NavigateEntities,Receipts'
+WHERE PermissionID = 262
+
+UPDATE [Metadata].[Command]
+Set TitleKey = REPLACE(TitleKey, 'Receival', 'Receipt'), RouteUrl = REPLACE(RouteUrl, 'receival', 'receipt')
+WHERE TitleKey LIKE '%Receival%' 

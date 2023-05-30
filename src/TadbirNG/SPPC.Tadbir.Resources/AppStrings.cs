@@ -5295,7 +5295,7 @@ namespace SPPC.Tadbir.Resources
         public const string PaymentOperations = "PaymentOperations";
 
         /// <summary>
-        /// Default text : پرداخت ها
+        /// Default text : پرداختی‌ها
         /// </summary>
         public const string Payments = "Payments";
 
@@ -5495,7 +5495,7 @@ namespace SPPC.Tadbir.Resources
         public const string ReceiptOperations = "ReceiptOperations";
 
         /// <summary>
-        /// Default text : دریافتی ها
+        /// Default text : دریافتی‌ها
         /// </summary>
         public const string Receipts = "Receipts";
 

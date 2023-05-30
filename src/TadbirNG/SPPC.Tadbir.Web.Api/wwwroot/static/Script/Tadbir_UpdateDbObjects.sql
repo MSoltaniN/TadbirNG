@@ -1217,4 +1217,7 @@ CREATE TABLE [CashFlow].[PayReceive] (
 	, CONSTRAINT [FK_CashFlow_PayReceive_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency]([CurrencyID])
 )
 GO
-
+-- -- 1.2.1523
+ UPDATE [Metadata].[EntityType]
+ SET [Name] = N'Receipt'
+ WHERE EntityTypeID = 25
