@@ -3910,7 +3910,7 @@
     <value>عملیات پرداخت</value>
   </data>
   <data name="Payments" xml:space="preserve">
-    <value>پرداخت ها</value>
+    <value>پرداختی‌ها</value>
   </data>
   <data name="Receipt" xml:space="preserve">
     <value>فرم دریافت</value>
@@ -3922,7 +3922,7 @@
     <value>عملیات دریافت</value>
   </data>
   <data name="Receipts" xml:space="preserve">
-    <value>دریافتی ها</value>
+    <value>دریافتی‌ها</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>ثبت مالی</value>
