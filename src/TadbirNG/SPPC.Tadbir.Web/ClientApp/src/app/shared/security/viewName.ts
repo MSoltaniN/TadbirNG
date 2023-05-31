@@ -77,5 +77,5 @@ export enum ViewName {
   CheckBookReport = 72,
   SourceApp = 73,
   Payment = 74,
-  Receival = 75
+  Receipt = 75
 }

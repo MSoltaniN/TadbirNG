@@ -4,6 +4,7 @@ export interface PayReceive {
     id: number,
     fiscalPeriodId: number,
     branchId: number,
+    date: Date,
     /**
     * شماره فرم دریافت/پرداخت
     */
@@ -13,30 +14,6 @@ export interface PayReceive {
     * شماره رفرنس
     */
     reference: string;
-    /**
-    * شناسه کاربر صادر کننده
-    */
-    issuedById: number,
-
-    /**
-    * شناسه آخرین کاربر تغییر دهنده اطلاعات
-    */
-    modifiedById: number,
-
-    /**
-    * شناسه کاربر تأییدکننده ?
-    */
-    confirmedById: number,
-
-    /**
-    * شناسه کاربر تصویب‌ کننده ?
-    */
-    approvedById: number,
-
-    /**
-    * نوع فرم؛ 0 برای دریافت و 1 برای پرداخت
-    */
-    type: number,
 
     /**
     * نرخ ارز ?
@@ -49,19 +26,9 @@ export interface PayReceive {
     description: string,
 
     /**
-    * تاریخ ایجاد فرم
-    */
-    createdDate: Date,
-
-    /**
     * نام کامل کاربر صادرکننده
     */
     issuedByName: string,
-
-    /**
-    * نام کامل کاربر تغییردهنده
-    */
-    modifiedByName: string,
 
     /**
     * نام کامل کاربر تأییدکننده
@@ -76,5 +43,8 @@ export interface PayReceive {
     /**
     * پول یا ارز مورد استفاده در فرم دریافت/پرداخت
     */
-    currency: number
+    currencyId: number,
+
+    isApproved: boolean,
+    isConfirmed: boolean
 }

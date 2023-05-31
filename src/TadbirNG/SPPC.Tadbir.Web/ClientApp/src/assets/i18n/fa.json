@@ -188,6 +188,10 @@
     "ComingBack": "بازگشت",
     "Exit": "خروج"
   },
+  "Form": {
+    "New": "{0} جدید",
+    "Edit":"اصلاح {0}"
+  },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
     "FieldName": "نام ستون"
@@ -236,7 +240,9 @@
     "CashRegister": "صندوق",
     "CheckBook": "دسته چک",
     "CheckBookReport": "گزارش دسته چک",
-    "SourceApp": "منابع و مصارف"
+    "SourceApp": "منابع و مصارف",
+    "Payment": "سند پرداخت",
+    "Receipt": "سند دریافت"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",
@@ -1350,6 +1356,11 @@
     "Source": "منابع",
     "Application": "مصارف",
     "Delete": "حذف منابع/مصارف"
+  },
+  "PayReceipt": {
+    "PayReceipt": "دریافت و پرداخت",
+    "Recipients": "دریافت کنندگان",
+    "Payers": "پرداخت کنندگان"
   },
   "UserValueFilter": {
     "Title":"فرم انتخاب شرح های تکراری",

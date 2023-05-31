@@ -166,6 +166,10 @@
     "ComingBack": "Return",
     "Exit": "Exit"
   },
+  "Form": {
+    "New": "New {0}",
+    "Edit": "Edit {0}"
+  },
   "GridSetting": {
     "Visibility": "Visibility",
     "FieldName": "Field Name"
@@ -211,7 +215,9 @@
     "CashRegister": "Cash Register",
     "CheckBook": "Check Books",
     "CheckBookReport": "Check Book Report",
-    "SourceApp": "Sources and Applications"
+    "SourceApp": "Sources and Applications",
+    "Payment": "Payment",
+    "Receipt": "Receipt"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "Count of Selected Vouchers :",
@@ -1319,6 +1325,9 @@
     "Source": "Source",
     "Application": "Application",
     "Delete": "Delete source/application"
+  },
+  "PayReceipt": {
+    "PayReceipt": "Paymets and Receipts"
   },
   "UserValueFilter": {
     "Title":"فرم انتخاب شرح های تکراری",

@@ -12,7 +12,7 @@ const routes: Routes = [
   {path:'check-books', component:CheckBookEditorComponent},
   {path:'check-books/:mode', component:CheckBookEditorComponent},
   {path:'check-book-report', component:CheckBookReportComponent},
-  {path:'receivals/:mode', component:PayReceiveEditorComponent},
+  {path:'receipts/:mode', component:PayReceiveEditorComponent},
   {path:'payments/:mode', component:PayReceiveEditorComponent}
 ];
 

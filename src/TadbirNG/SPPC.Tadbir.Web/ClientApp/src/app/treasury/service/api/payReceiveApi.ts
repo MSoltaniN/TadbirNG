@@ -12,14 +12,14 @@ export class PayReceiveApi {
     public static Payment = environment.BaseUrl + "/payments/{0}";
 
     /**
-    * API client URL for all receival items
+    * API client URL for all Receipt items
     */
-    public static Receivals = environment.BaseUrl + "/receivals";
+    public static Receipts = environment.BaseUrl + "/receipts";
 
     /**
-    * API client URL for a receival item specified by unique {payReceiveId:min(1)} identifier
+    * API client URL for a Receipt item specified by unique {payReceiveId:min(1)} identifier
     */
-    public static Receival = environment.BaseUrl + "/receivals/{0}";
+    public static Receipt = environment.BaseUrl + "/receipts/{0}";
 
     /**
     * API client URL for confirming a single payment specified by {payReceiveId:min(1)} identifier
@@ -42,24 +42,24 @@ export class PayReceiveApi {
     public static UndoApprovePayment = environment.BaseUrl + "/payments/{0}/approve/undo";
 
     /**
-    * API client URL for confirming a single receival specified by {payReceiveId:min(1)} identifier
+    * API client URL for confirming a single Receipt specified by {payReceiveId:min(1)} identifier
     */
-    public static ConfirmReceival = environment.BaseUrl + "/receivals/{0}/confirm";
+    public static ConfirmReceipt = environment.BaseUrl + "/receipts/{0}/confirm";
 
     /**
-    * API client URL for undoing confirmation of a single receival specified by {payReceiveId:min(1)} identifier
+    * API client URL for undoing confirmation of a single Receipt specified by {payReceiveId:min(1)} identifier
     */
-    public static UndoConfirmReceival = environment.BaseUrl + "/receivals/{0}/confirm/undo";
+    public static UndoConfirmReceipt = environment.BaseUrl + "/receipts/{0}/confirm/undo";
 
     /**
-    * API client URL for approving a single receival specified by {payReceiveId:min(1)} identifier
+    * API client URL for approving a single Receipt specified by {payReceiveId:min(1)} identifier
     */
-    public static ApproveReceival = environment.BaseUrl + "/receivals/{0}/approve";
+    public static ApproveReceipt = environment.BaseUrl + "/receipts/{0}/approve";
 
     /**
-    * API client URL for undoing approval of a single receival specified by {payReceiveId:min(1)} identifier
+    * API client URL for undoing approval of a single Receipt specified by {payReceiveId:min(1)} identifier
     */
-    public static UndoApproveReceival = environment.BaseUrl + "/receivals/{0}/approve/undo";
+    public static UndoApproveReceipt = environment.BaseUrl + "/receipts/{0}/approve/undo";
 
     /**
     * API client URL for a single payment specified by {payReceiveNo:min(1)} number
@@ -87,29 +87,29 @@ export class PayReceiveApi {
     public static LastPayment = environment.BaseUrl + "/payments/last";
 
     /**
-    * API client URL for a single receival specified by number {payReceiveNo:min(1)}
+    * API client URL for a single Receipt specified by number {payReceiveNo:min(1)}
     */
-    public static ReceivalByNo = environment.BaseUrl + "/receivals/by-no/{0}";
+    public static ReceiptByNo = environment.BaseUrl + "/receipts/by-no/{0}";
 
     /**
-    * API client URL for the first receival in current environment
+    * API client URL for the first Receipt in current environment
     */
-    public static FirstReceival = environment.BaseUrl + "/receivals/first";
+    public static FirstReceipt = environment.BaseUrl + "/receipts/first";
 
     /**
-    * API client URL for previous receival in current environment {payReceiveNo:min(1)}
+    * API client URL for previous Receipt in current environment {payReceiveNo:min(1)}
     */
-    public static PreviousReceival = environment.BaseUrl + "/receivals/{0}/previous";
+    public static PreviousReceipt = environment.BaseUrl + "/receipts/{0}/previous";
 
     /**
-    * API client URL for next receival in current environment {payReceiveNo:min(1)}
+    * API client URL for next Receipt in current environment {payReceiveNo:min(1)}
     */
-    public static NextReceival = environment.BaseUrl + "/receivals/{0}/next";
+    public static NextReceipt = environment.BaseUrl + "/receipts/{0}/next";
 
     /**
-    * API client URL for the last receival in current environment
+    * API client URL for the last Receipt in current environment
     */
-    public static LastReceival = environment.BaseUrl + "/receivals/last";
+    public static LastReceipt = environment.BaseUrl + "/receipts/last";
 
     /**
     * API client URL for a newly initialized
@@ -119,5 +119,5 @@ export class PayReceiveApi {
     /**
     * API client URL for a newly initialized
     */
-    public static NewReceival = environment.BaseUrl + "/receivals/new";
+    public static NewReceipt = environment.BaseUrl + "/receipts/new";
 }

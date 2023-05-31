@@ -8,23 +8,21 @@ export class PayReceiveInfo implements PayReceive {
   id: number = 0;
   fiscalPeriodId: number;
   branchId: number;
+  date: Date;
   payReceiveNo: string;
   reference: string;
-  issuedById: number;
-  modifiedById: number;
   confirmedById: number;
   approvedById: number;
-  type: number;
   currencyRate: number;
   description: string;
-  createdDate: Date;
   issuedByName: string;
-  modifiedByName: string;
   confirmedByName: string;
   approvedByName: string;
-  currency: number;
-  hasNext: number;
-  hasPrevious: number;
+  currencyId: number;
+  isApproved: boolean;
+  isConfirmed: boolean;
+  hasNext: boolean;
+  hasPrevious: boolean;
 }
 
 @Injectable({

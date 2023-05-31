@@ -7,8 +7,8 @@ import { DetailComponent, FilterExpression, String } from '@sppc/shared/class';
 import { Entities, Layout, MessageType } from '@sppc/shared/enum/metadata';
 import { ViewName } from '@sppc/shared/security';
 import { BrowserStorageService, ErrorHandlingService, MetaDataService, SessionKeys } from '@sppc/shared/services';
-import { payReceiveOperations, urlPathType } from '@sppc/treasury/enums/payReceive';
-import { PayReceive } from '@sppc/treasury/models/payReceive';
+import { PayReceiveTypes, PayReceiveOperations, UrlPathType } from '@sppc/treasury/enums/payReceive';
+import { PayReceiveApi } from '@sppc/treasury/service/api';
 import { PayReceiveInfo, PayReceiveService } from '@sppc/treasury/service/pay-receive.service';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs';
@@ -56,24 +56,28 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   isShowBreadcrumb = true;
-  payReceiveOperationsItem = payReceiveOperations;
+  payReceiveOperationsItem = PayReceiveOperations;
   isFirstItem = false;
   isLastItem = false;
   deleteConfirm = false;
+  type:PayReceiveTypes;
 
   public get urlPath() {
     return this.route.snapshot.url[0].path;
   }
   
   public set entType(type: string) {
-    if (type == urlPathType.receivals) {
-      this.entityType = Entities.Receival;
+    if (type == UrlPathType.Receipts) {
+      this.entityType = Entities.Receipt;
+      this.type = PayReceiveTypes.Receipt;
+    } else {
+      this.type = PayReceiveTypes.Payment;
     }
   }
 
   public set viewID(type: string) {
-    if (type == urlPathType.receivals) {
-      this.viewId = ViewName.Receival;
+    if (type == UrlPathType.Receipts) {
+      this.viewId = ViewName.Receipt;
       this.metadataKey = String.Format(SessionKeys.MetadataKey, this.viewId ? this.viewId.toString() : '', this.CurrentLanguage);
       this.localizeMsg();
     }
@@ -85,8 +89,6 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   
 
   ngOnInit(): void {
-    console.log(this.urlPath,this.route,this.viewId,this.entityType);
-    this.initform();
     this.route.paramMap.subscribe(param => {
       this.urlMode = param.get('mode');
       switch (param.get('mode')) {
@@ -119,64 +121,48 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
       }
     })
   }
-  public form1: FormGroup;
 
   payReceiveOperation(mode){
     let url;
-    // switch (mode) {
-    //   case checkBookOperations.New:
-    //     this.addNew();
-    //     break;
+    switch (mode) {
+      case PayReceiveOperations.New:
+        this.addNew();
+        break;
 
-    //   case checkBookOperations.Next:
-    //     this.goNext();
-    //     break;
+      case PayReceiveOperations.Next:
+        this.goNext();
+        break;
 
-    //   case checkBookOperations.Previous:
-    //     this.goPrevious();
-    //     break;
+      case PayReceiveOperations.Previous:
+        this.goPrevious();
+        break;
 
-    //   case checkBookOperations.Last:
-    //     this.goLast();
-    //     break;
+      case PayReceiveOperations.Last:
+        this.goLast();
+        break;
 
-    //   case checkBookOperations.First:
-    //     this.goFirst();
-    //     break;
+      case PayReceiveOperations.First:
+        this.goFirst();
+        break;
 
-    //   case checkBookOperations.Search:
-    //     this.goSearch();
-    //     break;
+      case PayReceiveOperations.Search:
+        this.goSearch();
+        break;
 
-    //   default:
-    //     break;
-    // }
+      default:
+        break;
+    }
   }
 
-  initform() {
-    this.form1 = new FormGroup({
-      id: new FormControl(''),
-      fiscalPeriodId: new FormControl(''),
-      branchId: new FormControl(''),
-      payReceiveNo: new FormControl(''),
-      reference: new FormControl(''),
-      issuedById: new FormControl(''),
-      modifiedById: new FormControl(''),
-      confirmedById: new FormControl(''),
-      approvedById: new FormControl(''),
-      type: new FormControl(''),
-      currencyRate: new FormControl(''),
-      description: new FormControl(''),
-      date: new FormControl(''),
-      issuedByName: new FormControl(''),
-      modifiedByName: new FormControl(''),
-      confirmedByName: new FormControl(''),
-      approvedByName: new FormControl(''),
-      currency: new FormControl('')
-    })
+  addNew() {
+    if (this.urlMode != 'new' && !this.dialogMode){
+      this.router.navigate(['/treasury/check-books/new']);
+    } else {
+      this.isNew = true;
+      this.errorMessages = undefined;
+      this.getPayReceive(this.urlPath == UrlPathType.Payments?PayReceiveApi.NewPayment: PayReceiveApi.NewReceipt,true);
+    }
   }
-
-  addNew() {}
 
   goFirst() {}
 
@@ -233,16 +219,13 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
 
   initCheckBookForm() {
     if (this.model.id == 0) {
-      this.model.branchId = this.BranchId;
-      this.model.fiscalPeriodId = this.FiscalPeriodId;
       this.isNew = true;
       this.searchConfirm = false;
-      // this.setEditMode = false;
       this.isLastItem = true;
       this.isFirstItem = false;
     } else {
       this.isNew = false;
-      // this.setEditMode = true;
+
       this.searchConfirm = false;
       this.isLastItem = !this.model.hasNext;
       this.isFirstItem = !this.model.hasPrevious;
@@ -251,6 +234,8 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
 
     setTimeout(() => {
       this.editForm.reset(this.model);
+      console.log(this.editForm);
+      
     }, 0);
   }
 

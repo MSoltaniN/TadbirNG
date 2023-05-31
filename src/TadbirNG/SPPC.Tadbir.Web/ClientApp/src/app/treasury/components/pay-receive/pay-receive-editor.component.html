@@ -1,7 +1,5 @@
 <app-bread-cumb
-  entityType="{{
-    subjectMode === 1 ? 'DraftVoucherEditor' : 'VoucherEditor'
-  }}"
+  [entityTypeName]="entityType"
   *ngIf="isShowBreadcrumb"
 ></app-bread-cumb>
 <!-- <view-identifier [ViewID]="viewId">
@@ -19,7 +17,7 @@
   </div>
 
   <div>
-    <form novalidate [formGroup]="form1" (keydown.enter)="onSave($event)">
+    <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
       <div class="row">
         <div class="col-xs-12 sppc-float" style="margin-top: 5px">
           <button
@@ -96,7 +94,7 @@
 
           <button
             class="k-button"
-            [disabled]="form1.status == 'INVALID'"
+            [disabled]="editForm.status == 'INVALID'"
             SppcPermissionCheck="Edit"
             [EntityName]="entityType"
             (sppcClick)="onSave($event)"
@@ -138,21 +136,19 @@
                   class="k-textbox"
                   formControlName="payReceiveNo"
                   [OnlyNumber]
-                  [attr.disabled]="
-                    isConfirmed ? 'disabled' : null
-                  "
+                  [attr.disabled]="isConfirmed ? 'disabled' : null"
                 />
 
                 <div
                   class="k-tooltip k-tooltip-validation"
                   [hidden]="
-                    form1.controls.payReceiveNo.valid || form1.controls.payReceiveNo.pristine
+                    editForm.controls.payReceiveNo.valid || editForm.controls.payReceiveNo.pristine
                   "
                 >
-                  <span *ngIf="form1.controls.payReceiveNo.errors?.required">{{
+                  <span *ngIf="editForm.controls.payReceiveNo.errors?.required">{{
                     "AllValidations.Voucher.NoIsRequired" | translate
                   }}</span>
-                  <span *ngIf="form1.controls.payReceiveNo.errors?.maxlength">{{
+                  <span *ngIf="editForm.controls.payReceiveNo.errors?.maxlength">{{
                     "AllValidations.Voucher.NoIsTooLong" | translate
                   }}</span>
                 </div>
@@ -169,19 +165,17 @@
                   type="text"
                   class="k-textbox"
                   formControlName="reference"
-                  [attr.disabled]="
-                    isConfirmed ? 'disabled' : null
-                  "
+                  [attr.disabled]="isConfirmed ? 'disabled' : null"
                 />
 
                 <div
                   class="k-tooltip k-tooltip-validation"
                   [hidden]="
-                    form1.controls.reference.valid ||
-                    form1.controls.reference.pristine
+                    editForm.controls.reference.valid ||
+                    editForm.controls.reference.pristine
                   "
                 >
-                  <span *ngIf="form1.controls.reference.errors?.maxlength">{{
+                  <span *ngIf="editForm.controls.reference.errors?.maxlength">{{
                     "AllValidations.Voucher.ReferenceIsTooLong" | translate
                   }}</span>
                 </div>
@@ -207,7 +201,7 @@
             <div class="col-md-6 sppc-float">
                 <div class="form-group">
                     <label for="date" class="control-label">{{
-                    "Voucher.Date" | translate
+                    (type == 0? "PayReceipt.Recipients": "PayReceipt.Payers") | translate
                     }}</label>
     
                     <payer-receiver></payer-receiver>
