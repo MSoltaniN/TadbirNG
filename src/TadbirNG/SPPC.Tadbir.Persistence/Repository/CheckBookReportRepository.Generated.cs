@@ -123,7 +123,7 @@ namespace SPPC.Tadbir.Persistence
 
         internal override OperationSourceId OperationSource
         {
-            get { return OperationSourceId.CheckBook; }
+            get { return OperationSourceId.CheckBookReport; }
         }
 
         private ISecureRepository Repository { get; }

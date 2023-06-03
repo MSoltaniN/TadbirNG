@@ -20,6 +20,6 @@ namespace SPPC.Tadbir.Persistence
         BalanceSheet = 12,
         SystemIssue = 13,
         SystemSettings = 14,
-        CheckBook = 15
+        CheckBookReport = 15
     }
 }

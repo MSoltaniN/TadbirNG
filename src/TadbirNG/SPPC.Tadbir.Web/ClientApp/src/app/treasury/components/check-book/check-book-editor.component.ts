@@ -210,8 +210,8 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   initCheckBookForm(insert=false) {
     if (this.model.id == 0) {
       this.model.branchId = this.BranchId;
-      // this.model.issueDate = new Date();
-      this.checkBookPages = []
+      this.model.issueDate = new Date();
+      this.checkBookPages = [];
       this.selectedPagesCount = undefined;
       this.fullAccountForm.reset();
 
