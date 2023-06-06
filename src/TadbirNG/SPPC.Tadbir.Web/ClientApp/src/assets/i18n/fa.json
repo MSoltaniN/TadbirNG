@@ -1360,7 +1360,8 @@
   "PayReceipt": {
     "PayReceipt": "دریافت و پرداخت",
     "Recipients": "دریافت کنندگان",
-    "Payers": "پرداخت کنندگان"
+    "Payers": "پرداخت کنندگان",
+    "Details": "جزئیات"
   },
   "UserValueFilter": {
     "Title":"فرم انتخاب شرح های تکراری",

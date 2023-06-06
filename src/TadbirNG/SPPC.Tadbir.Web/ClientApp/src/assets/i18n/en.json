@@ -1327,7 +1327,9 @@
     "Delete": "Delete source/application"
   },
   "PayReceipt": {
-    "PayReceipt": "Paymets and Receipts"
+    "PayReceipt": "Paymets and Receipts",
+    "Name": "Name",
+    "Details": "Details"
   },
   "UserValueFilter": {
     "Title":"فرم انتخاب شرح های تکراری",

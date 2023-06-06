@@ -11,7 +11,7 @@ import { PayReceiveTypes, PayReceiveOperations, UrlPathType } from '@sppc/treasu
 import { PayReceiveApi } from '@sppc/treasury/service/api';
 import { PayReceiveInfo, PayReceiveService } from '@sppc/treasury/service/pay-receive.service';
 import { ToastrService } from 'ngx-toastr';
-import { take } from 'rxjs';
+import { shareReplay, take } from 'rxjs';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -37,7 +37,6 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   @Input() dialogMode = false;
   searchConfirm: boolean;
   urlMode: string;
-  returnUrl: any;
 
   constructor(public toastrService: ToastrService,
     public translate: TranslateService,
@@ -61,9 +60,10 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   isLastItem = false;
   deleteConfirm = false;
   type:PayReceiveTypes;
+  payReceiveNo;
 
   public get urlPath() {
-    return this.route.snapshot.url[0].path;
+    return this.route.snapshot.url[0].path.toLowerCase();
   }
   
   public set entType(type: string) {
@@ -83,12 +83,23 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     }
   }
 
+  get returnUrl() {
+    let rurl = this.route.snapshot.queryParamMap.get('returnUrl');
+    return rurl?rurl.toLowerCase():'';
+  }
+
   public get isConfirmed() : boolean {
     return this.model?.confirmedById > 0;
   }
-  
+
+  get noQueryParam() {
+    let no = this.route.snapshot.queryParamMap.get('no');
+    return no?no:'';
+  }
 
   ngOnInit(): void {
+    console.log(this.route);
+
     this.route.paramMap.subscribe(param => {
       this.urlMode = param.get('mode');
       switch (param.get('mode')) {
@@ -113,7 +124,13 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
           break;
 
         case 'by-no':
-          this.goSearch();
+          if (!this.noQueryParam)
+            this.searchConfirm = true;
+          else {
+            let baseUrl = this.urlPath == 'payments'? PayReceiveApi.PaymentByNo: PayReceiveApi.ReceiptByNo;
+            let url = String.Format(baseUrl,this.noQueryParam);
+            this.getPayReceive(url);
+          }
           break;
 
         default:
@@ -130,11 +147,24 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
         break;
 
       case PayReceiveOperations.Next:
-        this.goNext();
+        if (!this.isFirstItem) {
+          let baseUrl = this.urlPath == 'payments'? PayReceiveApi.NextPayment: PayReceiveApi.NextReceipt;
+          url = String.Format(baseUrl,
+            this.noQueryParam? this.noQueryParam:this.model.payReceiveNo);
+          this.getPayReceive(url);
+        }
         break;
 
       case PayReceiveOperations.Previous:
-        this.goPrevious();
+        let baseUrl = this.urlPath == 'payments'? PayReceiveApi.PreviousPayment: PayReceiveApi.PreviousReceipt;
+
+        if (this.noQueryParam || this.model.id) {
+          url = String.Format(baseUrl,
+            this.noQueryParam?this.noQueryParam:this.model.payReceiveNo);
+        } else {
+          url = this.urlPath == 'payments'? PayReceiveApi.LastPayment: PayReceiveApi.LastReceipt;;
+        }
+        this.getPayReceive(url);
         break;
 
       case PayReceiveOperations.Last:
@@ -151,12 +181,12 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
 
       default:
         break;
-    }
+    }    
   }
 
   addNew() {
     if (this.urlMode != 'new' && !this.dialogMode){
-      this.router.navigate(['/treasury/check-books/new']);
+      this.router.navigate([`/treasury/${this.urlPath}/new`]);
     } else {
       this.isNew = true;
       this.errorMessages = undefined;
@@ -164,15 +194,111 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     }
   }
 
-  goFirst() {}
+  goFirst() {
+    let url;
+    if (this.urlMode != 'first' && !this.dialogMode) {
+      this.router.navigate([`/treasury/${this.urlPath}/first`]);
+    } else {
+      url = this.urlPath == 'payments'? PayReceiveApi.FirstPayment: PayReceiveApi.FirstReceipt;
+      this.getPayReceive(url);
+    }
+  }
 
-  goLast() {}
+  goLast() {
+    let url;
+    if (this.urlMode != 'first' && !this.dialogMode) {
+      this.router.navigate([`/treasury/${this.urlPath}/last`]);
+    } else {
+      url = this.urlPath == 'payments'? PayReceiveApi.LastPayment: PayReceiveApi.LastPayment;
+      this.getPayReceive(url);
+    }
+  }
 
-  goNext() {}
+  goNext() {
+    let baseUrl = this.urlPath == 'payments'? PayReceiveApi.NextPayment: PayReceiveApi.NextReceipt;
+    let apiUrl;
 
-  goPrevious() {}
+    if (this.urlMode != 'next' && !this.dialogMode) {
+      let no = this.model.id > 0? this.model.payReceiveNo: '';
+      this.router.navigate([`/treasury/${this.urlPath}/next`],{
+        queryParams: {
+          no: no
+        }
+      });
+    } else {
+      if (!this.isLastItem) {
+        apiUrl = String.Format(baseUrl,this.model.payReceiveNo);
+        this.getPayReceive(apiUrl);
+        let no = this.model.id > 0? this.model.payReceiveNo: '';
+        if (!this.dialogMode)
+          this.router.navigate([`/treasury/${this.urlPath}/next`],{
+            queryParams: {
+              no: no
+            }
+          });
+      }
+    }
+  }
 
-  goSearch() {}
+  goPrevious() {
+    let baseUrl = this.urlPath == 'payments'? PayReceiveApi.PreviousPayment: PayReceiveApi.PreviousReceipt;
+    let url;
+
+    if (this.urlMode != 'previous' && !this.dialogMode) {
+      let no = this.model.id > 0? this.model.payReceiveNo: '';
+      this.router.navigate([`/treasury/${this.urlPath}/previous`],{
+        queryParams: {
+          no: no
+        }
+      });
+    } else {
+      if (this.model.id) {
+        url = String.Format(baseUrl,this.model.payReceiveNo);
+      } else {
+        url = this.urlPath == 'payments'? PayReceiveApi.LastPayment: PayReceiveApi.LastReceipt;
+      }
+      this.getPayReceive(url);
+      let no = this.model.id > 0? this.model.payReceiveNo: '';
+      if (!this.dialogMode)
+        this.router.navigate([`/treasury/${this.urlPath}/previous`],{
+          queryParams: {
+            no: no
+          }
+        });
+    }
+  }
+
+  goSearch() {
+    this.searchConfirm = true;
+    if (this.urlMode != 'by-no' && !this.dialogMode) {
+      this.router.navigate([`/treasury/${this.urlPath}/by-no`],{queryParams:{
+        returnUrl: `/treasury/${this.urlPath}/`+this.urlMode
+      }});
+    }
+  }
+
+  searchByNo(searchConfirm = false) {
+    let baseUrl = this.urlPath == 'payments'? PayReceiveApi.PaymentByNo: PayReceiveApi.ReceiptByNo;
+    let url;
+    if (searchConfirm) {
+      if (this.payReceiveNo && !this.dialogMode) {
+        this.router.navigate([`/treasury/${this.urlPath}/by-no`],{queryParams:{
+          no: this.payReceiveNo,
+          returnUrl: this.returnUrl
+        }});
+        url = String.Format(baseUrl,this.payReceiveNo);
+        // this.getPayReceive(url);
+      } else {
+        return;
+      }
+    } else {
+      this.searchConfirm = false;
+      if (this.returnUrl)
+        this.router.navigate([this.returnUrl]);
+      else
+        this.router.navigate([`/treasury/${this.urlPath}/new`]);
+    }
+  }
 
   getPayReceive(apiUrl:string,isNew=false) {
     this.payReceive.getModelsByFilters(apiUrl,this.filter,this.quickFilter)
@@ -239,9 +365,65 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     }, 0);
   }
 
-  removeHandler() {}
+  removeHandler() {
+    this.deleteConfirm = true;
+    let ent = this.urlPath == "payments"? "Entity.Payment": "Entity.Receipt";
+    this.prepareDeleteConfirm(this.getText(ent));
+  }
 
-  onSave(e) {}
+  onSave(e) {
+    let insertUrl = this.urlPath == 'payments'? PayReceiveApi.Payments: PayReceiveApi.Receipts;
+    let editUrl = this.urlPath == 'payments'? PayReceiveApi.Payment: PayReceiveApi.Receipt;
+    let value = this.editForm.value;
+
+    let request = this.model.id>0?
+      this.payReceive.edit(String.Format(editUrl,this.model.id),value):
+      this.payReceive.insert(insertUrl,value);
+
+    request
+    .pipe(
+      shareReplay()
+    )
+    .subscribe({
+      next: async (res) => {
+        if (this.model.id>0)
+          this.showMessage(this.updateMsg, MessageType.Succes);
+        else {
+          // res.checkBook.hasPrevious = this.lastModel.hasPrevious;
+          // res.checkBook.hasNext = this.lastModel.hasNext;
+          this.showMessage(this.insertMsg, MessageType.Succes);
+        }
+        
+        this.model = res as PayReceiveInfo;
+        this.initCheckBookForm();
+        // this.setEditMode = true;
+        this.errorMessages = undefined;
+      },
+      error: (error) => {
+        if (e) {
+          if (error)
+            this.errorMessages =
+              this.errorHandlingService.handleError(error);
+        } else
+          this.showMessage(
+            this.errorHandlingService.handleError(error),
+            MessageType.Warning
+          );
+      }
+    });
+  }
 
   showReport() {}
+
+  /**
+   * prepare confim message for delete operation
+   * @param text is a part of message that use for delete confirm message
+   */
+  public prepareDeleteConfirm(text: string) {
+    this.translate
+      .get("Messages.DeleteConfirm")
+      .subscribe((msg: string) => {
+        this.deleteConfirmMsg = String.Format(msg, text);
+      });
+  }
 }

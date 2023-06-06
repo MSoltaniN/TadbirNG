@@ -58,7 +58,7 @@ textarea,
   }
 }
 
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
   .col-md-5ths {
     width: 20%;
     float: left;
@@ -70,4 +70,18 @@ textarea,
     width: 20%;
     float: left;
   }
+} */
+
+.no,.inpt.form-group{
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.no .form-group input{
+  width: 50%;
+}
+
+p-accordion{
+  width: 100%;
 }

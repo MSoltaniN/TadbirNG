@@ -125,8 +125,8 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="pr-form-content">
-            <div class="col-sm-5ths col-xs-12 sppc-float">
-              <div class="form-group">
+            <div class="no sppc-float">
+              <div class="form-group inpt">
                 <label for="no" class="control-label">{{
                   "Voucher.No" | translate
                 }}</label>
@@ -153,21 +153,18 @@
                   }}</span>
                 </div>
               </div>
-            </div>
-
-            <div class="col-sm-5ths col-xs-12 sppc-float">
-              <div class="form-group">
+              <div class="form-group inpt">
                 <label for="reference" class="control-label">{{
                   "Voucher.Reference" | translate
                 }}</label>
-
+  
                 <input
                   type="text"
                   class="k-textbox"
                   formControlName="reference"
                   [attr.disabled]="isConfirmed ? 'disabled' : null"
                 />
-
+  
                 <div
                   class="k-tooltip k-tooltip-validation"
                   [hidden]="
@@ -182,8 +179,8 @@
               </div>
             </div>
 
-            <div class="col-sm-5ths col-xs-12 sppc-float">
-              <div class="form-group">
+            <div class="sppc-float">
+              <div class="form-group inpt">
                 <label for="date" class="control-label">{{
                   "Voucher.Date" | translate
                 }}</label>
@@ -197,16 +194,20 @@
                 ></sppc-datepicker>
               </div>
             </div>
-
-            <div class="col-md-6 sppc-float">
-                <div class="form-group">
-                    <label for="date" class="control-label">{{
-                    (type == 0? "PayReceipt.Recipients": "PayReceipt.Payers") | translate
-                    }}</label>
-    
-                    <payer-receiver></payer-receiver>
+            <p-accordion [multiple]="true" activeIndex="0">
+              <p-accordionTab header="{{ 'PayReceipt.Details' | translate }}">
+                <div class="col-md-6 sppc-float">
+                    <div class="form-group">
+                        <label for="date" class="control-label">{{
+                        (type == 0? "PayReceipt.Recipients": "PayReceipt.Payers") | translate
+                        }}</label>
+        
+                        <payer-receiver></payer-receiver>
+                    </div>
                 </div>
-            </div>
+                <div class="clear"></div>
+              </p-accordionTab>
+            </p-accordion>
 
             <div class="clearfix"></div>
           </div>
@@ -215,15 +216,42 @@
     </form>
 
     <div class="row">
-      <div class="col-xs-12">
-        <div class="pr-form-content">
-          <pay-recive-cheks [urlPath]="urlPath" style="width: 100%;"></pay-recive-cheks>
-        </div>
+      <div class="col-xs-12" style="margin-top: 5px;padding: 7px 10px 0;">
+        <!-- <div class="pr-form-content">
+        </div> -->
+        <p-accordion [multiple]="true" [activeIndex]="0">
+
+          <p-accordionTab header="چکها">
+            <pay-recive-cheks [urlPath]="urlPath" style="width: 100%;"></pay-recive-cheks>
+          </p-accordionTab>
+        </p-accordion>
       </div>
     </div>
   </div>
 </div>
+<!-- فرم جستوجو -->
+<kendo-dialog
+  title="{{ 'CheckBook.SearchCheckBook' | translate }}"
+  *ngIf="searchConfirm"
+  (close)="searchByNo(false)"
+  [minWidth]="250"
+  [width]="450"
+>
+  <div class="form-group" (keydown.enter)="searchByNo(true)">
+    <label class="control-label">{{'CheckBook.CheckBookNo' | translate}}</label>
+    <input type="text" class="k-textbox" [(ngModel)]="payReceiveNo" [OnlyNumber] sppcAutoFocus/>
+  </div>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="searchByNo(true)" primary="true">
+      {{ "Buttons.Ok" | translate }}
+    </button>
+    <button class="k-button" (click)="searchByNo(false)">
+      {{ "Buttons.Cancel" | translate }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
 
+<!-- فرم تایید حذف -->
 <kendo-dialog
   title="{{ 'Voucher.Delete' | translate }}"
   *ngIf="deleteConfirm"

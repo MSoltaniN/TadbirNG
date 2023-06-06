@@ -96,3 +96,8 @@ kendo-textbox .k-input-icon.k-i-search {
   padding: 0;
   margin: -11px -16px;
 }
+
+.p-component {
+  font-family: inherit !important;
+  font-size: inherit !important;
+}

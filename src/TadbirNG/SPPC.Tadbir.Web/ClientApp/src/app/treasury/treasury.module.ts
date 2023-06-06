@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AccordionModule } from 'primeng/accordion';
 
 import { TreasuryRoutingModule } from './treasury-routing.module';
 import { CheckBookEditorComponent } from './components/check-book/check-book-editor.component';
@@ -19,7 +20,8 @@ import { PayReciveCheksComponent } from './components/pay-receive/pay-recive-che
   imports: [
     CommonModule,
     TreasuryRoutingModule,
-    SharedModule
+    SharedModule,
+    AccordionModule
   ],
   declarations: [
     CheckBookEditorComponent,
