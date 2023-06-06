@@ -1072,18 +1072,18 @@ SET [Name] = 'Receipt', EntityName = N'Receipt'
 WHERE ViewID = 75
 
 UPDATE [Auth].[PermissionGroup]
-Set [Name] = N'Receipts', EntityName = N'Receipt'
+SET [Name] = N'Receipts', EntityName = N'Receipt'
 WHERE PermissionGroupID = 42
 
 UPDATE [Auth].[Permission]
-Set [Name] = N'NavigateEntities,Receipts'
+SET [Name] = N'NavigateEntities,Receipts'
 WHERE PermissionID = 262
 
 UPDATE [Metadata].[Command]
-Set TitleKey = REPLACE(TitleKey, 'Receival', 'Receipt'), RouteUrl = REPLACE(RouteUrl, 'receival', 'receipt')
+SET TitleKey = REPLACE(TitleKey, 'Receival', 'Receipt'), RouteUrl = REPLACE(RouteUrl, 'receival', 'receipt')
 WHERE TitleKey LIKE '%Receival%' 
 
 -- 1.2.1524
-update Metadata.[Column]
-set IsNullable=1
-where ColumnID=750
+UPDATE [Metadata].[Column]
+SET IsNullable = 1
+WHERE ColumnID = 750

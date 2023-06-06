@@ -587,7 +587,7 @@ namespace SPPC.Tadbir.Persistence
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             if (parameters.IsByBranch)
             {
-                await AddInitialBalanceByBranchAsync(length, items, parameters);
+                await AddInitialBalanceByBranchAsync(length, items, parameters, filter);
                 return;
             }
 
@@ -633,10 +633,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task AddInitialBalanceByBranchAsync(
-            int length, List<TestBalanceItemViewModel> items, TestBalanceParameters parameters)
+            int length, List<TestBalanceItemViewModel> items, TestBalanceParameters parameters, string filter = null)
         {
             var initMap = new Dictionary<FullCodeBranch, VoucherLineAmountsViewModel>();
-            var query = await GetInitBalanceQueryAsync(length, parameters);
+            var query = await GetInitBalanceQueryAsync(length, parameters, filter);
             var result = DbConsole.ExecuteQuery(query.Query);
             foreach (DataRow row in result.Rows)
             {
