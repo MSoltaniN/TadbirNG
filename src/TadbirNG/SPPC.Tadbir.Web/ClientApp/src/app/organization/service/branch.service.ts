@@ -9,7 +9,6 @@ import { BrowserStorageService } from "@sppc/shared/services";
 import { map } from "rxjs/operators";
 
 export class BranchInfo implements Branch {
-  companyId: number = 0;
   parentId?: number | undefined;
   id: number = 0;
   name: string;

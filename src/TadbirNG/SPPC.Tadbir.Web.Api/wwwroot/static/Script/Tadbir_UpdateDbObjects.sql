@@ -1227,3 +1227,12 @@ WHERE EntityTypeID = 25
 UPDATE [Metadata].[OperationSource]
 SET [Name] = N'CheckBookReport'
 WHERE OperationSourceID = 15
+
+-- 1.2.1531
+ALTER TABLE [Corporate].[Branch]
+DROP COLUMN [CompanyID]
+GO
+
+ALTER TABLE [Finance].[FiscalPeriod]
+DROP COLUMN [CompanyID]
+GO

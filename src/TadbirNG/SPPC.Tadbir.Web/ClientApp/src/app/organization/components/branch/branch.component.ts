@@ -65,7 +65,7 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
     this.viewId = ViewName[this.entityTypeName];
 
     this.getTreeNode();
-    this.getDataUrl = String.Format(BranchApi.CompanyBranches, this.CompanyId);
+    this.getDataUrl = BranchApi.Branches;
     this.reloadGrid();
   }
 

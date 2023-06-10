@@ -234,7 +234,7 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(fiscalPeriod, "fiscalPeriod");
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             var fiscalPeriods = await repository.GetByCriteriaAsync(
-                fp => fp.CompanyId == fiscalPeriod.CompanyId && fp.Id != fiscalPeriod.Id
+                fp => fp.Id != fiscalPeriod.Id
                 && ((fiscalPeriod.StartDate.Date >= fp.StartDate.Date
                     && fiscalPeriod.StartDate.Date <= fp.EndDate.Date)
                 || (fiscalPeriod.EndDate.Date >= fp.StartDate.Date
@@ -368,7 +368,6 @@ namespace SPPC.Tadbir.Persistence
             fiscalPeriod.StartDate = fiscalPeriodView.StartDate;
             fiscalPeriod.EndDate = fiscalPeriodView.EndDate;
             fiscalPeriod.Description = fiscalPeriodView.Description;
-            fiscalPeriod.CompanyId = fiscalPeriodView.CompanyId;
         }
 
         /// <summary>

@@ -14,9 +14,6 @@ import { environment } from "@sppc/env/environment";
 
 export class FiscalPeriodApi {
 
-    // fperiods/company/{companyId:min(1)}
-    public static CompanyFiscalPeriods = environment.BaseUrl + "/fperiods/company/{0}";
-
     // fperiods
     public static FiscalPeriods = environment.BaseUrl + "/fperiods";
 
@@ -25,9 +22,6 @@ export class FiscalPeriodApi {
 
     // fperiods/{fpId:min(1)}/data
     public static FiscalPeriodData = environment.BaseUrl + "/fperiods/{0}/data";
-
-    // fperiods/metadata
-    public static FiscalPeriodMetadata = environment.BaseUrl + "/fperiods/metadata";
 
     // fperiods/{fpId:min(1)}/roles
     public static FiscalPeriodRoles = environment.BaseUrl + "/fperiods/{0}/roles";

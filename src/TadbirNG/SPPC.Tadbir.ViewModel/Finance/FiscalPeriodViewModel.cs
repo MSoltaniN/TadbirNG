@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -16,10 +12,5 @@ namespace SPPC.Tadbir.ViewModel.Finance
         {
             return Name;
         }
-
-        /// <summary>
-        /// شناسه دیتابیسی شرکت که این دوره مالی در آن تعریف شده است
-        /// </summary>
-        public int CompanyId { get; set; }
     }
 }

@@ -9,7 +9,6 @@ import { map } from "rxjs/operators";
 import { FiscalPeriodApi } from "./api/index";
 
 export class FiscalPeriodInfo implements FiscalPeriod {
-  companyId: number;
   id: number = 0;
   name: string;
   startDate: Date = new Date();

@@ -11,8 +11,6 @@
 // ------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using SPPC.Tadbir.Model.Auth;
 
 namespace SPPC.Tadbir.Model.Corporate
 {

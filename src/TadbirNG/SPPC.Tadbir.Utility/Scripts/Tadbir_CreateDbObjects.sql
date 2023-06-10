@@ -152,7 +152,6 @@ GO
 
 CREATE TABLE [Corporate].[Branch] (
     [BranchID]       INT              IDENTITY (1, 1) NOT NULL,
-	[CompanyID]      INT              NOT NULL,
 	[ParentID]       INT              NULL,
     [Name]           NVARCHAR(128)    NOT NULL,
     [Description]    NVARCHAR(512)    NULL,
@@ -326,7 +325,6 @@ GO
 
 CREATE TABLE [Finance].[FiscalPeriod] (
     [FiscalPeriodID]   INT              IDENTITY (1, 1) NOT NULL,
-	[CompanyID]        INT              NOT NULL,
     [Name]             NVARCHAR(64)     NOT NULL,
     [StartDate]        DATETIME         NOT NULL,
     [EndDate]          DATETIME         NOT NULL,
