@@ -24,9 +24,9 @@ namespace SPPC.Tadbir.Model.Metadata
         /// </summary>
         public Province()
         {
-            this.Name = String.Empty;
-            this.Code = String.Empty;
-            this.ModifiedDate = DateTime.Now;
+            Name = String.Empty;
+            Code = String.Empty;
+            ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

@@ -13,7 +13,7 @@ namespace SPPC.Tadbir.Persistence
     public interface IRoleRepository
     {
         /// <summary>
-        /// به روش آسنکرون، لیست نقش های تعریف شده را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، لیست نقش های تعریف شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>لیست نقش های تعریف شده</returns>

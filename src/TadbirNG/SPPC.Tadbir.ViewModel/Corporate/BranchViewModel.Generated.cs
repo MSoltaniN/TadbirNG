@@ -27,8 +27,8 @@ namespace SPPC.Tadbir.ViewModel.Corporate
         /// </summary>
         public BranchViewModel()
         {
-            this.Name = String.Empty;
-            this.Description = String.Empty;
+            Name = String.Empty;
+            Description = String.Empty;
         }
 
         /// <summary>

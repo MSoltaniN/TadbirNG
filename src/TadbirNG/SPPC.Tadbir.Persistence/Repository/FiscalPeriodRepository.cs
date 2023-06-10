@@ -57,7 +57,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون،دوره مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون،دوره مالی با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="fperiodId">شناسه عددی یکی از دوره های مالی</param>
         /// <returns>دوره مالی مشخص شده با شناسه عددی</returns>
@@ -169,7 +169,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، دوره مالی مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، دوره مالی مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="fperiodId">شناسه عددی دوره مالی مورد نظر برای حذف</param>
         public async Task DeleteFiscalPeriodAsync(int fperiodId)

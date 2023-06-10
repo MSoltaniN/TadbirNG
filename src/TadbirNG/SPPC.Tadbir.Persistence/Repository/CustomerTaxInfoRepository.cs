@@ -51,7 +51,7 @@ namespace SPPC.Tadbir.Persistence.Repository
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات مالیاتی مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، اطلاعات مالیاتی مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="customerTaxId">شناسه عددی اطلاعات مالیاتی مورد نظر برای حذف</param>
         public async Task DeleteCustomerTaxInfoAsync(int customerTaxId)
@@ -65,7 +65,7 @@ namespace SPPC.Tadbir.Persistence.Repository
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات مالیاتی مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، اطلاعات مالیاتی مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="customerTaxIds">مجموعه ای از شناسه های عددی اطلاعات مالیاتی مورد نظر برای حذف</param>
         public async Task DeleteCustomerTaxInfosAsync(IList<int> customerTaxIds)

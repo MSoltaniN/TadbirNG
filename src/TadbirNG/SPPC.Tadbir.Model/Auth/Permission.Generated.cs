@@ -24,9 +24,9 @@ namespace SPPC.Tadbir.Model.Auth
         /// </summary>
         public Permission()
         {
-            this.Name = String.Empty;
-            this.Description = String.Empty;
-            this.ModifiedDate = DateTime.Now;
+            Name = String.Empty;
+            Description = String.Empty;
+            ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

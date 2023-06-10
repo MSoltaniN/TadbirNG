@@ -26,9 +26,9 @@ namespace SPPC.Tadbir.Model.Corporate
         /// </summary>
         public Branch()
         {
-            this.Name = String.Empty;
-            this.Description = String.Empty;
-            this.ModifiedDate = DateTime.Now;
+            Name = String.Empty;
+            Description = String.Empty;
+            ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

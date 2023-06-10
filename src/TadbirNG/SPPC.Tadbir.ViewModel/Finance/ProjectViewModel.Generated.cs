@@ -27,10 +27,10 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public ProjectViewModel()
         {
-            this.Code = String.Empty;
-            this.FullCode = String.Empty;
-            this.Name = String.Empty;
-            this.Description = String.Empty;
+            Code = String.Empty;
+            FullCode = String.Empty;
+            Name = String.Empty;
+            Description = String.Empty;
         }
 
         /// <summary>

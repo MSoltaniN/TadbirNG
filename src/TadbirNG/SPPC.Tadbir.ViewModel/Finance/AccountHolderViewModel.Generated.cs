@@ -26,8 +26,8 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public AccountHolderViewModel()
         {
-            this.FirstName = String.Empty;
-            this.LastName = String.Empty;
+            FirstName = String.Empty;
+            LastName = String.Empty;
         }
 
         /// <summary>

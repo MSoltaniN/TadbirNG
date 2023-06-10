@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.Persistence
         Task<PagedList<VoucherViewModel>> GetVouchersAsync(GridOptions gridOptions);
 
         /// <summary>
-        /// به روش آسنکرون، سند مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، سند مالی با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="voucherId">شناسه عددی یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -105,7 +105,7 @@ namespace SPPC.Tadbir.Persistence
         Task<VoucherViewModel> GetLastVoucherAsync(SubjectType subject = SubjectType.Normal);
 
         /// <summary>
-        /// به روش آسنکرون، مدل نمایشی دوره مالی مورد استفاده در یک سند مالی را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، مدل نمایشی دوره مالی مورد استفاده در یک سند مالی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="voucher">مدل نمایشی سند مالی مورد نظر</param>
         /// <returns>مدل نمایشی دوره مالی به کار رفته در سند مالی</returns>
@@ -113,7 +113,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، تعداد اسناد مالی تعریف شده در دوره مالی و شعبه جاری را
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات موجودیت استفاده می شود</typeparam>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -149,7 +149,7 @@ namespace SPPC.Tadbir.Persistence
         Task<VoucherViewModel> SaveVoucherAsync(VoucherViewModel voucher);
 
         /// <summary>
-        /// به روش آسنکرون، سند مالی مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، سند مالی مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="voucherId">شناسه عددی سند مالی برای حذف</param>
         Task DeleteVoucherAsync(int voucherId);

@@ -27,8 +27,8 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// </summary>
         public UserViewModel()
         {
-            this.UserName = String.Empty;
-            this.Password = String.Empty;
+            UserName = String.Empty;
+            Password = String.Empty;
         }
 
         /// <summary>

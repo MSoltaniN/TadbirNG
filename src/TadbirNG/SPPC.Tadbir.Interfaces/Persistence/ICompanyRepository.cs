@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Persistence
         Task<PagedList<CompanyDbViewModel>> GetCompaniesAsync(GridOptions gridOptions);
 
         /// <summary>
-        /// به روش آسنکرون،شرکت با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون،شرکت با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="companyId">شناسه عددی یکی از شرکت های موجود</param>
         /// <returns>شرکت مشخص شده با شناسه عددی</returns>
@@ -34,7 +34,7 @@ namespace SPPC.Tadbir.Persistence
         Task<CompanyDbViewModel> SaveCompanyAsync(CompanyDbViewModel company);
 
         /// <summary>
-        /// به روش آسنکرون، شرکت مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، شرکت مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="companyId">شناسه عددی شرکت مورد نظر برای حذف</param>
         Task DeleteCompanyAsync(int companyId);
