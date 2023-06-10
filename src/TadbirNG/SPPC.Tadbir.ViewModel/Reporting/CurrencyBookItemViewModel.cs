@@ -8,11 +8,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
     public class CurrencyBookItemViewModel : ViewModelBase
     {
         /// <summary>
-        /// شناسه دیتابیسی آرتیکل مالی
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// تاریخ سند مالی
         /// </summary>
         public DateTime? VoucherDate { get; set; }

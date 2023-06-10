@@ -32,11 +32,6 @@ namespace SPPC.Tadbir.ViewModel.Auth
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity.
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// Gets or sets the login name of this user
         /// </summary>
         [Display(Name = FieldNames.UserName)]

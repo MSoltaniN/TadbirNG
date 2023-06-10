@@ -35,11 +35,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// شناسه دیتابیسی کاربری که این ویجت را ایجاد کرده است
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

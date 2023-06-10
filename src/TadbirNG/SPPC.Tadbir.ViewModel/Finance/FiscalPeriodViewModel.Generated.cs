@@ -32,11 +32,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// Name of this fiscal period
         /// </summary>
         [Display(Name = FieldNames.NameField)]

@@ -32,11 +32,6 @@ namespace SPPC.Tadbir.ViewModel.Corporate
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity.
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// Gets or sets the name of this branch
         /// </summary>
         [Display(Name = FieldNames.NameField)]

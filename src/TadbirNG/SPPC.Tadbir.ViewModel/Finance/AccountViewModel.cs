@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using SPPC.Tadbir.Domain;
+﻿using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class AccountViewModel : ViewModelBase, IFiscalEntityView, ITreeEntityView
+    public partial class AccountViewModel : ViewModelBase, IFiscalEntity, ITreeEntityView
     {
         /// <summary>
         /// شناسه دیتابیسی حساب والد این حساب در ساختار درختی
@@ -25,11 +23,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// شناسه دیتابیسی شعبه سازمانی که این سرفصل حسابداری در آن تعریف شده است
         /// </summary>
         public int BranchId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی شرکتی که اطلاعات حساب در آن تعریف شده است
-        /// </summary>
-        public int CompanyId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی پول یا ارز مورد استفاده در این سرفصل حسابداری

@@ -11,8 +11,6 @@
 // ------------------------------------------------------------------------------
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using SPPC.Framework.Values;
 
 namespace SPPC.Tadbir.ViewModel.Reporting
 {
@@ -27,10 +25,5 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public UsedParameterViewModel()
         {
         }
-
-        /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
     }
 }

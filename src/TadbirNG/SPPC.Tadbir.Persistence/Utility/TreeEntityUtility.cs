@@ -19,7 +19,7 @@ namespace SPPC.Tadbir.Persistence.Utility
     /// <typeparam name="TViewModel">نوع مدل نمایشی موجودیت درختی</typeparam>
     public class TreeEntityUtility<TModel, TViewModel>
         where TModel : TreeEntity
-        where TViewModel : class, IFiscalEntityView, ITreeEntityView, new()
+        where TViewModel : class, IFiscalEntity, ITreeEntityView, new()
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -75,7 +75,7 @@ namespace SPPC.Tadbir.Persistence.Utility
             int codeLength = _treeConfig.Levels[childLevel].CodeLength;
             var childrenCodes = await GetChildrenCodesAsync(parentId);
             var numericText = new NumericText(codeLength);
-            string newCode = numericText.GetNewValue(childrenCodes);
+            string newCode = numericText.GetNewCodeValue(childrenCodes);
             return GetNewChildItem(parent, newCode);
         }
 
@@ -104,7 +104,7 @@ namespace SPPC.Tadbir.Persistence.Utility
             Verify.ArgumentNotNull(itemView, nameof(itemView));
             var repository = _unitOfWork.GetAsyncRepository<TModel>();
             int count = await repository
-                .GetCountByCriteriaAsync(item => item.Id != itemView.Id
+                .GetCountByCriteriaAsync(item => item.Id != ((IFiscalEntity)itemView).Id
                     && item.FullCode == itemView.FullCode);
             return count > 0;
         }
@@ -119,7 +119,7 @@ namespace SPPC.Tadbir.Persistence.Utility
             Verify.ArgumentNotNull(itemView, nameof(itemView));
             var repository = _unitOfWork.GetAsyncRepository<TModel>();
             int count = await repository
-                .GetCountByCriteriaAsync(item => item.Id != itemView.Id
+                .GetCountByCriteriaAsync(item => item.Id != ((IFiscalEntity)itemView).Id
                     && item.ParentId == itemView.ParentId
                     && item.Name == itemView.Name);
             return count > 0;
