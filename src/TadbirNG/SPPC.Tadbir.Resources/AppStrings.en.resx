@@ -3963,4 +3963,19 @@
   <data name="InvalidStringNumber" xml:space="preserve">
     <value>Value smaller than {0} is not valid for the {1}.</value>
   </data>
+  <data name="PayReceiveAccount" xml:space="preserve">
+    <value>Account Article</value>
+  </data>
+  <data name="CantDeleteDetailEntity" xml:space="preserve">
+    <value>This {0} is either confirmed or approved and the {1} data cannot be deleted.</value>
+  </data>
+  <data name="CantSaveDetailEntity" xml:space="preserve">
+    <value>This {0} is either confirmed or approved and the {1} data cannot be saved.</value>
+  </data>
+  <data name="NegativeAmountNotAllowed" xml:space="preserve">
+    <value>Negative amount for {0} is not allowed.</value>
+  </data>
+  <data name="ZeroOrNegativeAmountNotAllowed" xml:space="preserve">
+    <value>Zero or negative amount for {0} is not allowed.</value>
+  </data>
 </root>

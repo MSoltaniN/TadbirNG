@@ -3957,4 +3957,19 @@
   <data name="InvalidStringNumber" xml:space="preserve">
     <value>مقدار کوچک‌تر از {0} برای {1} مجاز نمی باشد.</value>
   </data>
+  <data name="PayReceiveAccount" xml:space="preserve">
+    <value>آرتیکل طرف حساب</value>
+  </data>
+  <data name="CantDeleteDetailEntity" xml:space="preserve">
+    <value>این {0} تایید یا تصویب شده و امکان حذف اطلاعات {1} وجود ندارد.</value>
+  </data>
+  <data name="CantSaveDetailEntity" xml:space="preserve">
+    <value>این {0} تایید یا تصویب شده و امکان ذخیره اطلاعات {1} وجود ندارد.</value>
+  </data>
+  <data name="NegativeAmountNotAllowed" xml:space="preserve">
+    <value>مبالغ منفی برای {0} امکان پذیر نمی باشد.</value>
+  </data>
+  <data name="ZeroOrNegativeAmountNotAllowed" xml:space="preserve">
+    <value>مبالغ صفر یا منفی برای {0} امکان پذیر نمی باشد.</value>
+  </data>
 </root>

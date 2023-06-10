@@ -2307,17 +2307,17 @@
           <ColumnView name="Id" visible="True" width="120" />
           <ValidationRule name="Id_Validation" required="False" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="Amount" type="Decimal" isValidated="True" description="مبلغ آرتیکل طرف حساب" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1523.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtAmount" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="Amount" type="money" nullable="False" />
-          <ColumnView name="Amount" visible="True" width="120" />
-          <ValidationRule name="Amount_Validation" required="False" minimum="" maximum="" format="" type="Value" />
-        </Property>
         <Property name="Description" type="String" isValidated="True" description="ملاحظات آرتیکل طرف حساب" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1523.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
           <ValidationRule name="Description_Validation" required="False" minimum="" maximum="512" format="" type="Length" />
+        </Property>
+        <Property name="Amount" type="Decimal" isValidated="True" description="مبلغ آرتیکل طرف حساب" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1523.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtAmount" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Amount" type="money" nullable="False" />
+          <ColumnView name="Amount" visible="True" width="120" />
+          <ValidationRule name="Amount_Validation" required="False" minimum="0" maximum="" format="" type="Value" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="شناسه یکتای ردیف در دیتابیس" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1523.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />

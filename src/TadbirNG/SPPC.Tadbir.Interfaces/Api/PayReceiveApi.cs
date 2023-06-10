@@ -268,5 +268,44 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string ReceiptAccountArticlesUrl = "receipts/{payReceiveId:min(1)}/account-articles";
 
+        /// <summary>
+        /// API client URL for a single payment account article specified by identifier
+        /// </summary>
+        public const string PaymentArticle = "payments/account-articles/{0}";
+
+        /// <summary>
+        /// API server route URL for a single payment account article specified by identifier
+        /// </summary>
+        public const string PaymentAccountArticleUrl = "payments/account-articles/{accountArticleId:min(1)}";
+
+        /// <summary>
+        /// API client URL for a single receipt account article specified by identifier
+        /// </summary>
+        public const string ReceiptArticle = "receipts/account-articles/{0}";
+
+        /// <summary>
+        /// API server route URL for a single receipt account article specified by identifier
+        /// </summary>
+        public const string ReceiptAccountArticleUrl = "receipts/account-articles/{accountArticleId:min(1)}";
+
+        /// <summary>
+        /// API client URL for all available payment account articles
+        /// </summary>
+        public const string AllPaymentAccountArticles = "payments/account-articles";
+
+        /// <summary>
+        /// API server route URL for all available payment account articles
+        /// </summary>
+        public const string AllPaymentAccountArticlesUrl = "payments/account-articles";
+
+        /// <summary>
+        /// API client URL for all available receipt account articles
+        /// </summary>
+        public const string AllReceiptAccountArticles = "receipts/account-articles";
+
+        /// <summary>
+        /// API server route URL for all available receipt account articles
+        /// </summary>
+        public const string AllReceiptAccountArticlesUrl = "receipts/account-articles";
     }
 }

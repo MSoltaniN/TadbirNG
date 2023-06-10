@@ -51,7 +51,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CashFlow_PayReceiveAccount_Finance_Project");
             builder.HasOne(e => e.PayReceive)
-                .WithMany()
+                .WithMany(pr => pr.Accounts)
                 .HasForeignKey(e => e.PayReceiveId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CashFlow_PayReceiveAccount_CashFlow_PayReceive");
