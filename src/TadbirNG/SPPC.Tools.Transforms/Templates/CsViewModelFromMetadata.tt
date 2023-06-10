@@ -43,51 +43,42 @@ foreach(var textProp in textProps)
 <# } #>
         }
 <#
-foreach(var property in _entity.Properties.Where(prop => prop.Name != "RowGuid" && prop.Name != "ModifiedDate"))
+var baseProperties = new string[] { "Id", "RowGuid", "ModifiedDate" };
+foreach(var property in _entity.Properties.Where(prop => !baseProperties.Contains(prop.Name)))
 {
-    if(property.Name == "Id")
+    if(!String.IsNullOrWhiteSpace(property.Description))
     { #>
-
-        /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-<#  }
-    else
-    {
-        if(!String.IsNullOrWhiteSpace(property.Description))
-        { #>
 
         /// <summary>
         /// <#= property.Description #>
         /// </summary>
-<#      }
-        if(property.IsValidated)
-        {
-            var rule = property.ValidationRule;
-            if (rule.Required)
-	        { #>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-<#          }
-            if (HasMinLengthRestrictionOnly(property))
-	        { #>
-        [MinLength(<#= rule.Minimum #>, ErrorMessage = ValidationMessages.TextFieldIsTooShort)]
-<#          }
-            if (HasMaxLengthRestrictionOnly(property))
-	        { #>
-        [StringLength(<#= rule.Maximum #>, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-<#          }
-            if (HasLengthRangeRestriction(property))
-	        { #>
-        [StringLength(<#= rule.Maximum #>, MinimumLength = <#= rule.Minimum #>, ErrorMessage = ValidationMessages.TextFieldHasLengthRange)]
-<#          }
-            if (HasRangeRestriction(property))
-	        { #>
-        [Range(<#= rule.Minimum #>, <#= rule.Maximum #>, ErrorMessage = ValidationMessages.NumberHasValueRange)]
-<#          }
-        } #>
-        public <#= GetTypeAlias(property) #> <#= property.Name #> { get; set; }
 <#  }
+    if(property.IsValidated)
+    {
+        var rule = property.ValidationRule;
+        if (rule.Required)
+	    { #>
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+<#      }
+        if (HasMinLengthRestrictionOnly(property))
+	    { #>
+        [MinLength(<#= rule.Minimum #>, ErrorMessage = ValidationMessages.TextFieldIsTooShort)]
+<#      }
+        if (HasMaxLengthRestrictionOnly(property))
+	    { #>
+        [StringLength(<#= rule.Maximum #>, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+<#      }
+        if (HasLengthRangeRestriction(property))
+	    { #>
+        [StringLength(<#= rule.Maximum #>, MinimumLength = <#= rule.Minimum #>, ErrorMessage = ValidationMessages.TextFieldHasLengthRange)]
+<#      }
+        if (HasRangeRestriction(property))
+	    { #>
+        [Range(<#= rule.Minimum #>, <#= rule.Maximum #>, ErrorMessage = ValidationMessages.NumberHasValueRange)]
+<#      }
+    } #>
+        public <#= GetTypeAlias(property) #> <#= property.Name #> { get; set; }
+<#
 } #>
     }
 }

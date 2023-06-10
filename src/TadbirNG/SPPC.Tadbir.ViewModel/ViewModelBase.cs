@@ -9,6 +9,15 @@ namespace SPPC.Tadbir.ViewModel
     public class ViewModelBase : IEntity
     {
         /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
+        public ViewModelBase()
+        {
+            RowGuid = Guid.NewGuid();
+            ModifiedDate = DateTime.Now;
+        }
+
+        /// <summary>
         /// شماره ردیف سطر اطلاعاتی در لیست اطلاعاتی
         /// </summary>
         public int RowNo { get; set; }
