@@ -43,40 +43,53 @@
 
           <div class="row">
             <div class="col-xs-12">
-              <div class="form-group row">
-                <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float"></label>
-                <div class="voucher-mode-item">
-                  <input type="radio" name="creditDebiteMode" id="mode1" class="k-radio"
-                         [(ngModel)]="creditDebiteMode" value="1" (change)="onCreditDebiteModeChange()"
-                         [ngModelOptions]="{standalone: true}" />
-                  <label for="mode1">{{ 'VoucherLine.Debit' | translate }}</label>
+              <fieldset [disabled]="isPayReciept" [ngClass]="{'disabled': isPayReciept}">
+                <div class="form-group row">
+                  <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float"></label>
+                  <div class="voucher-mode-item">
+                    <input type="radio" name="creditDebiteMode" id="mode1" class="k-radio"
+                      [(ngModel)]="creditDebiteMode" value="1"
+                      (change)="onCreditDebiteModeChange()"
+                      [ngModelOptions]="{standalone: true}"
+                    />
+                    <label for="mode1">{{ 'VoucherLine.Debit' | translate }}</label>
+                  </div>
+  
+                  <div class="voucher-mode-item">
+                    <input type="radio" name="creditDebiteMode" id="mode2" class="k-radio"
+                      [(ngModel)]="creditDebiteMode" value="2"
+                      (change)="onCreditDebiteModeChange()"
+                      [ngModelOptions]="{standalone: true}"
+                    />
+                    <label for="mode2">{{ 'VoucherLine.Credit' | translate }}</label>
+                  </div>
+  
                 </div>
-
-                <div class="voucher-mode-item">
-                  <input type="radio" name="creditDebiteMode" id="mode2" class="k-radio"
-                         [(ngModel)]="creditDebiteMode" value="2" (change)="onCreditDebiteModeChange()"
-                         [ngModelOptions]="{standalone: true}" />
-                  <label for="mode2">{{ 'VoucherLine.Credit' | translate }}</label>
-                </div>
-
-              </div>
+              </fieldset>
             </div>
           </div>
 
           <div class="row">
             <div class="col-xs-12">
-              <div class="form-group row">
-                <label class="control-label col-xs-4 col-sm-3 sppc-float" style="padding: 0 10px;">{{ 'VoucherLine.ArticleType' | translate }}</label>
-
-                <kendo-dropdownlist [data]="voucherLineTypeList" class="col-xs-8 col-sm-9 sppc-float"
-                                    [textField]="'value'"
-                                    [valueField]="'key'"
-                                    [valuePrimitive]="true"
-                                    [value]="selectedArticleType"
-                                    [(ngModel)]="selectedArticleType"
-                                    [ngModelOptions]="{standalone: true}"
-                                    formControlName="typeId">
-                </kendo-dropdownlist>
+              <div class="form-group row" *ngIf="!isPayReciept">
+                  <label
+                    class="control-label col-xs-4 col-sm-3 sppc-float"
+                    style="padding: 7px 10px;"
+                  >
+                    {{ 'VoucherLine.ArticleType' | translate }}
+                  </label>
+  
+                  <kendo-dropdownlist [data]="voucherLineTypeList"
+                    class="col-xs-8 col-sm-9 sppc-float"
+                    [textField]="'value'"
+                    [valueField]="'key'"
+                    [valuePrimitive]="true"
+                    [value]="selectedArticleType"
+                    [(ngModel)]="selectedArticleType"
+                    [ngModelOptions]="{standalone: true}"
+                    formControlName="typeId"
+                  >
+                  </kendo-dropdownlist>
               </div>
             </div>
           </div>
@@ -85,7 +98,7 @@
 
       </div>
 
-      <div class="row">
+      <div class="row" [style]="isPayReciept? 'margin-top:20px':''">
         <div class="col-xs-12">
           <div class="form-group">
 
@@ -106,10 +119,19 @@
 
         <div class="row">
           <div class="col-xs-12">
-            <div class="form-group">
-              <input type="checkbox" id="currencyInfo" class="k-checkbox" (change)="onCurrencyInfoChange()" [(ngModel)]="isDisplayCurrencyInfo" [ngModelOptions]="{standalone: true}" />
-              <label for="currencyInfo" class="control-label" style="margin: 0 5px;">{{ 'VoucherLine.CurrencyInfo' | translate }}</label>
-            </div>
+            <fieldset [disabled]="isPayReciept" [ngClass]="{'disabled': isPayReciept}">
+              <div class="form-group">
+                <input
+                  type="checkbox"
+                  id="currencyInfo"
+                  class="k-checkbox"
+                  (change)="onCurrencyInfoChange()"
+                  [(ngModel)]="isDisplayCurrencyInfo"
+                  [ngModelOptions]="{standalone: true}"
+                />
+                <label for="currencyInfo" class="control-label" style="margin: 0 5px;">{{ 'VoucherLine.CurrencyInfo' | translate }}</label>
+              </div>
+            </fieldset>
           </div>
 
         </div>

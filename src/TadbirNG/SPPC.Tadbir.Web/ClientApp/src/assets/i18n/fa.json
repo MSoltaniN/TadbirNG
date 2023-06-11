@@ -190,7 +190,8 @@
   },
   "Form": {
     "New": "{0} جدید",
-    "Edit":"اصلاح {0}"
+    "Edit": "اصلاح {0}",
+    "No": "شماره {0}"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
@@ -1678,8 +1679,8 @@
       "SayyadStartNoIsRequired": "وارد کردن شماره شروع صیادی اجباری است.",
       "PagesCountMax": "تعداد برگه ها نمیتواند بیشتر از 1000 باشد.",
       "PagesCountMin": "تعداد برگه ها نمیتواند کمتر از 1 باشد.",
-      "SayyadStartNoIsTooLong": "شماره صیادی می تواند حداکثر 16 حرف داشته باشد.",
-      "SayyadStartNoIsTooShort": "شماره صیادی حداقل باید 16 حرف داشته باشد.",
+      "SayyadStartNoIsTooLong": "شماره صیادی می تواند حداکثر 16 رقم داشته باشد.",
+      "SayyadStartNoIsTooShort": "شماره صیادی حداقل باید 16 رقم داشته باشد.",
       "SeriesNoIsTooLong": "شماره سری می تواند حداکثر 32 حرف داشته باشد."
     },
     "SourceApp": {

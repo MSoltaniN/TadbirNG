@@ -71,12 +71,16 @@ export class VoucherLineFormComponent
   decimalCount: number = 0;
   errorMsg: string;
   isFullAccountInputFocused = false;
+  isPayReciept = false;
 
   @Input() public isNew: boolean = false;
 
   @Input() public isNewBalance: boolean = false;
   @Input() public balance: number = 0;
   @Input() public model: VoucherLine;
+  @Input() public set payReciept(value:boolean) {
+    this.isPayReciept = false;
+  }
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<{ model: VoucherLine; isOpen: boolean }> =

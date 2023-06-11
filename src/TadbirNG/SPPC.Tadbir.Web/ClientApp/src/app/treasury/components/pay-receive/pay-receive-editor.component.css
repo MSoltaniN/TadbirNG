@@ -24,21 +24,6 @@ textarea,
   padding: 15px !important;
 }
 
-.col-xs-5ths,
-.col-sm-5ths,
-.col-md-5ths,
-.col-lg-5ths,
-.col-sm-4-5ths {
-  position: relative;
-  min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-.col-xs-5ths {
-  width: 32%;
-  float: left;
-}
 
 .k-button-md.k-icon-button {
   padding: 2px 4px !important;
@@ -55,6 +40,23 @@ textarea,
   .col-sm-4-5ths {
     width: 80%;
     float: left;
+  }
+  .inf-section{
+    flex-direction: row !important;
+  }
+  .totalCashAmount, .totalCashAmount .form-group{
+    display: flex !important;
+  }
+  .inf-section input{
+    max-width: 150px;
+  }
+  .inf-section, .chbx, .chbx div {
+    display: flex;
+    gap: 2px;
+    align-items: baseline;
+  }
+  .chbx input[type=checkbox] {
+    align-self: center !important;
   }
 }
 
@@ -77,11 +79,42 @@ textarea,
   gap: 10px;
   align-items: baseline;
 }
-
 .no .form-group input{
   width: 50%;
 }
-
 p-accordion{
   width: 100%;
+}
+.totalCashAmount{
+  padding: 5px;
+  margin-top: 10px;
+  justify-content: space-between;
+  width: 100%;
+}
+.totalCashAmount, .totalCashAmount .form-group {
+  gap: 3px;
+  align-items: baseline;
+  margin-bottom: 5px;
+}
+.totalCashAmount .control-label {
+  width:35%
+}
+::ng-deep .p-accordion .p-accordion-content{
+  background: #fff5 !important;
+}
+
+::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon {
+    margin-left: 0.5rem;
+}
+
+.chbx input[type=checkbox] {
+  align-self: self-start;
+}
+.inf-section{
+  gap: 20px;
+  flex-direction: column;
+}
+
+.chbx div{
+  align-items: flex-end;
 }

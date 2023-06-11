@@ -101,3 +101,9 @@ kendo-textbox .k-input-icon.k-i-search {
   font-family: inherit !important;
   font-size: inherit !important;
 }
+
+.disabled{
+  color: #777;
+  pointer-events: none;
+  /* opacity: 0.8; */
+}

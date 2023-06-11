@@ -3,10 +3,12 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
+import { CurrencyInfo } from '@sppc/finance/models';
 import { DetailComponent, FilterExpression, String } from '@sppc/shared/class';
 import { Entities, Layout, MessageType } from '@sppc/shared/enum/metadata';
 import { ViewName } from '@sppc/shared/security';
-import { BrowserStorageService, ErrorHandlingService, MetaDataService, SessionKeys } from '@sppc/shared/services';
+import { BrowserStorageService, ErrorHandlingService, LookupService, MetaDataService, SessionKeys } from '@sppc/shared/services';
+import { LookupApi } from '@sppc/shared/services/api';
 import { PayReceiveTypes, PayReceiveOperations, UrlPathType } from '@sppc/treasury/enums/payReceive';
 import { PayReceiveApi } from '@sppc/treasury/service/api';
 import { PayReceiveInfo, PayReceiveService } from '@sppc/treasury/service/pay-receive.service';
@@ -46,6 +48,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     public elem:ElementRef,
     private route: ActivatedRoute,
     private payReceive: PayReceiveService,
+    public lookupService: LookupService,
     private router: Router,
     public errorHandlingService: ErrorHandlingService)
   {
@@ -61,6 +64,12 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   deleteConfirm = false;
   type:PayReceiveTypes;
   payReceiveNo;
+  totalCashAmount: number;
+  currenciesRows: Array<CurrencyInfo>;
+  selectedCurrencyValue: number;
+  decimalCount: number = 0;
+  currencyRate: number | undefined;
+  currencyValue: number;
 
   public get urlPath() {
     return this.route.snapshot.url[0].path.toLowerCase();
@@ -98,6 +107,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   ngOnInit(): void {
+    this.getCurrencies();
     console.log(this.route);
 
     this.route.paramMap.subscribe(param => {
@@ -415,6 +425,131 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
 
   showReport() {}
 
+  setTotalCashAmount(event) {
+    this.totalCashAmount = event;
+  }
+
+  getCurrencies() {
+    this.lookupService.GetLookup(LookupApi.CurrenciesInfo).subscribe((res) => {
+      this.currenciesRows = res;
+      if (this.model != undefined && this.model.currencyId != undefined) {
+        // this.isDisplayCurrencyInfo = true;
+        this.selectedCurrencyValue = this.model.currencyId;
+        
+        // var cdValue =
+        //   this.model.credit > 0 ? this.model.credit : this.model.debit;
+        // this.currencyRate =
+        //   cdValue && this.model.currencyValue
+        //     ? cdValue / this.model.currencyValue
+        //     : undefined;
+
+        var currency = this.currenciesRows.find(
+          (f) => f.id == this.model.currencyId
+        );
+        this.decimalCount = currency ? currency.decimalCount : 0;
+      }
+    });
+  }
+
+  onChangeCurrency() {
+    if (this.selectedCurrencyValue) {
+      var selectedCurrency = this.currenciesRows.find(
+        (f) => f.id == this.selectedCurrencyValue
+      );
+      this.decimalCount = selectedCurrency.decimalCount;
+      this.currencyRate = selectedCurrency.lastRate;
+
+      if (this.totalCashAmount) {
+        // this.totalCashAmount = this.currencyValue * this.currencyRate;
+        this.currencyValue = this.totalCashAmount / this.currencyRate;
+      }
+    } else {
+      this.decimalCount = 0;
+      this.currencyRate = undefined;
+    }
+
+    if (this.selectedCurrencyValue == 0)
+      this.editForm.patchValue({
+        currencyId: undefined,
+        currencyValue: undefined,
+      });
+  }
+
+  changeCurrencyValue(e) {
+    var cdValue = this.totalCashAmount;
+
+    var currencyValue = this.currencyValue;
+
+    if (this.selectedCurrencyValue) {
+      //#region آپشن فعال است و با تغییر مبلغ ارزی، مبلغ ریالی تغییر میکند
+
+      if (this.currencyRate) {
+        cdValue = currencyValue ? this.currencyRate * currencyValue : undefined;
+      }
+
+      this.totalCashAmount = cdValue;
+      //#endregion
+    } else {
+      //#region آپشن غیرفعال است و با تغییر مبلغ ارزی، نرخ ارز تغییر میکند
+      if (this.selectedCurrencyValue) {
+        if (cdValue && currencyValue) {
+          this.currencyRate = cdValue / currencyValue;
+        } else {
+          this.currencyRate = this.currenciesRows.find(
+            (f) => f.id == this.selectedCurrencyValue
+          ).lastRate;
+        }
+      }
+
+      
+      //endregion
+    }
+  }
+
+  onChangeCurrencyRate() {
+    var cdValue = undefined;
+    var currencyValue = this.currencyValue;
+    if (this.currencyRate && currencyValue) {
+      cdValue = this.currencyRate * currencyValue;
+    } else {
+      cdValue = undefined;
+    }
+
+    // this.totalCashAmount = cdValue;
+    if (this.totalCashAmount) {
+      this.currencyValue = this.totalCashAmount / this.currencyRate;
+    }
+  }
+
+  confirmedBy(e) {
+    // console.log(e);
+    if (e.target.checked) {
+      this.editForm.patchValue({
+        isConfirmed: true,
+        confirmedByName: this.UserName
+      });
+    } else {
+      this.editForm.patchValue({
+        isConfirmed: false,
+        confirmedByName: ''
+      });
+    }
+  }
+
+  approvedBy(e) {
+    // console.log(e.target.checked,this.UserId);
+    if (e.target.checked) {
+      this.editForm.patchValue({
+        isApproved: true,
+        approvedByName: this.UserName
+      });
+    } else {
+      this.editForm.patchValue({
+        isApproved: false,
+        approvedByName: ''
+      });
+    }
+  }
   /**
    * prepare confim message for delete operation
    * @param text is a part of message that use for delete confirm message
@@ -425,5 +560,9 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
       .subscribe((msg: string) => {
         this.deleteConfirmMsg = String.Format(msg, text);
       });
+  }
+
+  stringFormat(format:string,...args) {
+    return String.Format(format,...args);
   }
 }
