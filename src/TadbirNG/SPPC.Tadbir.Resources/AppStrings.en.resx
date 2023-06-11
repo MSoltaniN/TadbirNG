@@ -3978,4 +3978,25 @@
   <data name="ZeroOrNegativeAmountNotAllowed" xml:space="preserve">
     <value>Zero or negative amount for {0} is not allowed.</value>
   </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="CreateAccount" xml:space="preserve">
+    <value>Create account article</value>
+  </data>
+  <data name="DeleteAccount" xml:space="preserve">
+    <value>Delete account article</value>
+  </data>
+  <data name="EditAccount" xml:space="preserve">
+    <value>Edit account article</value>
+  </data>
+  <data name="GroupDeleteAccounts" xml:space="preserve">
+    <value>Group delete account articles</value>
+  </data>
+  <data name="RemoveInvalidRows" xml:space="preserve">
+    <value>Remove invalid rows</value>
+  </data>
+  <data name="RowsAggregation" xml:space="preserve">
+    <value>Rows aggregation</value>
+  </data>
 </root>

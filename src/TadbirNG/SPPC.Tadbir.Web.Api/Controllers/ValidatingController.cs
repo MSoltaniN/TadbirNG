@@ -281,4 +281,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     /// </summary>
     /// <param name="items">مجموعه شناسه های دیتابیسی موجودیت های انتخاب شده برای حذف گروهی</param>
     public delegate Task GroupDeleteAsyncDelegate(IList<int> items);
+
+    /// <summary>
+    /// شکل متد مورد نیاز برای حذف گروهی نوع مشخص شده از موجودیت ها را تعریف می کند.
+    /// </summary>
+    /// <param name="items">مجموعه شناسه های دیتابیسی موجودیت های انتخاب شده برای حذف گروهی</param>
+    /// <param name="entityTypeId">شناسه نوع موجودیت که در فرم‌های تک حالته مقدار پیش‌فرض دارد</param> 
+    public delegate Task GroupDeleteSpecialAsyncDelegate(IList<int> items, int entityTypeId);
 }

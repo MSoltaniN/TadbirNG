@@ -656,7 +656,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PostNewPaymentAccountArticleAsync(
             int payReceiveId, [FromBody] PayReceiveAccountViewModel accountArticle)
         {
-            return await SaveAccountArticleAsync(accountArticle, payReceiveId, AppStrings.Payment);
+            return await SaveAccountArticleAsync(
+                accountArticle, payReceiveId, AppStrings.Payment, (int)PayReceiveType.Payment);
         }
 
         /// <summary>
@@ -672,7 +673,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PostNewReceiptAccountArticleAsync(
             int payReceiveId, [FromBody] PayReceiveAccountViewModel accountArticle)
         {
-            return await SaveAccountArticleAsync(accountArticle, payReceiveId, AppStrings.Receipt);
+            return await SaveAccountArticleAsync(
+                accountArticle, payReceiveId, AppStrings.Receipt, (int)PayReceiveType.Receipt);
         }
 
         /// <summary>
@@ -688,8 +690,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedPaymentAccountArticleAsync(
             int accountArticleId, [FromBody] PayReceiveAccountViewModel accountArticle)
         {
-            return await SaveAccountArticleAsync(
-                accountArticle, accountArticle.PayReceiveId,AppStrings.Payment, accountArticleId);
+            return await SaveAccountArticleAsync(accountArticle, accountArticle.PayReceiveId, 
+                AppStrings.Payment, (int)PayReceiveType.Payment,accountArticleId);
         }
 
         /// <summary>
@@ -705,8 +707,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedReceiptAccountArticleAsync(
             int accountArticleId, [FromBody] PayReceiveAccountViewModel accountArticle)
         {
-            return await SaveAccountArticleAsync(
-                accountArticle, accountArticle.PayReceiveId, AppStrings.Receipt, accountArticleId);
+            return await SaveAccountArticleAsync(accountArticle, accountArticle.PayReceiveId, 
+                AppStrings.Receipt, (int)PayReceiveType.Receipt, accountArticleId);
         }
 
         /// <summary>
@@ -721,7 +723,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Edit)]
         public async Task<IActionResult> DeleteExistingPaymentAccountArticleAsync(int accountArticleId)
         {
-            return await DeleteAccountArticleAsync(accountArticleId, AppStrings.Payment);
+            return await DeleteAccountArticleAsync(
+                accountArticleId, AppStrings.Payment, (int)PayReceiveType.Payment);
         }
 
         /// <summary>
@@ -736,7 +739,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Edit)]
         public async Task<IActionResult> DeleteExistingReceiptAccountArticleAsync(int accountArticleId)
         {
-            return await DeleteAccountArticleAsync(accountArticleId, AppStrings.Receipt);
+            return await DeleteAccountArticleAsync(
+                accountArticleId, AppStrings.Receipt, (int)PayReceiveType.Receipt);
         }
 
         /// <summary>
@@ -752,8 +756,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingPaymentAccountArticlesAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            return await GroupDeleteArticleResultAsync(
-                actionDetail, _accountArticleRepository.DeleteAccountArticlesAsync, AppStrings.Payment);
+            return await GroupDeleteArticleResultAsync(actionDetail, _accountArticleRepository.DeleteAccountArticlesAsync,
+                AppStrings.Payment, (int)PayReceiveType.Payment);
         }
 
         /// <summary>
@@ -769,8 +773,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutExistingReceiptAccountArticlesAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
-            return await GroupDeleteArticleResultAsync(
-                actionDetail, _accountArticleRepository.DeleteAccountArticlesAsync, AppStrings.Receipt);
+            return await GroupDeleteArticleResultAsync(actionDetail,
+                _accountArticleRepository.DeleteAccountArticlesAsync, AppStrings.Receipt, (int)PayReceiveType.Receipt);
         }
 
         /// <summary>
@@ -871,6 +875,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     payReceiveId.ToString()));
             }
 
+            var result = BranchValidationResult(payReceive);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             if ((action == AppStrings.Confirm && payReceive.IsConfirmed)
                 || (action == AppStrings.Approve && payReceive.IsApproved))
             {
@@ -908,15 +918,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> GroupDeleteArticleResultAsync(
-            ActionDetailViewModel actionDetail, GroupDeleteAsyncDelegate groupDelete, string entityNameKey)
+        private async Task<IActionResult> GroupDeleteArticleResultAsync(ActionDetailViewModel actionDetail,
+            GroupDeleteSpecialAsyncDelegate groupDelete, string entityNameKey, int type)
         {
             if (actionDetail == null || actionDetail.Items.Count == 0)
             {
                 return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
-            var result = await ValidateArticleDeleteByPayReceiveResultAsync(entityNameKey ,actionDetail.Items.ToArray());
+            var result = await ValidateArticleDeleteByPayReceiveResultAsync(entityNameKey, actionDetail.Items.ToArray());
             if(result is BadRequestObjectResult)
             {
                 return result;
@@ -939,7 +949,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (validated.Count > 0)
             {
-                await groupDelete(validated);
+                await groupDelete(validated, type);
             }
 
             return Ok(notValidated);
@@ -948,6 +958,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<IActionResult> AccountArticleValidationResultAsync(
             PayReceiveViewModel payReceive,PayReceiveAccountViewModel accountArticle, string entityNameKey)
         {
+            var result = BranchValidationResult(payReceive);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             if (payReceive.IsApproved || payReceive.IsConfirmed)
             {
                 return BadRequestResult(_strings.Format(
@@ -976,8 +992,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> SaveAccountArticleAsync(
-            PayReceiveAccountViewModel accountArticle, int payReceiveId, string entityNameKey, int accountArticleId = 0) 
+        private async Task<IActionResult> SaveAccountArticleAsync(PayReceiveAccountViewModel accountArticle, 
+            int payReceiveId, string entityNameKey, int type, int accountArticleId = 0) 
         {
             int inputId;
             string name;
@@ -1006,7 +1022,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var outputItem = await _accountArticleRepository.SaveAccountArticleAsync(accountArticle);
+            var outputItem = await _accountArticleRepository.SaveAccountArticleAsync(accountArticle, type);
             if(accountArticleId == 0)
             {
                 return StatusCode(StatusCodes.Status201Created, outputItem);
@@ -1051,7 +1067,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<GroupActionResultViewModel> ValidateArticleDeleteResultAsync(int accountArticleId)
         {
             string message = String.Empty;
-            var article = await _accountArticleRepository.GetAccountArticleAsync(accountArticleId);
+            var article = await _accountArticleRepository.GetAccountArticleSummaryAsync(accountArticleId);
             if (article == null)
             {
                 message = _strings.Format(
@@ -1065,7 +1081,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             string entityNameKey , params int[] accountArticleIds)
         {
             var payReceive = await _accountArticleRepository.GetPayReceiveAsync(accountArticleIds);
-            if(payReceive != null && (payReceive.IsApproved || payReceive.IsConfirmed))
+
+            var result = BranchValidationResult(payReceive);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (payReceive != null && (payReceive.IsApproved || payReceive.IsConfirmed))
             {
                 return BadRequestResult(_strings.Format(
                     AppStrings.CantDeleteDetailEntity, entityNameKey ,AppStrings.PayReceiveAccount));
@@ -1074,7 +1097,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> DeleteAccountArticleAsync(int accountArticleId, string entityNameKey)
+        private async Task<IActionResult> DeleteAccountArticleAsync(int accountArticleId, string entityNameKey, int type)
         {
             var result = await ValidateArticleDeleteByPayReceiveResultAsync(entityNameKey, accountArticleId);
             if (result is BadRequestObjectResult)
@@ -1088,7 +1111,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(error.ErrorMessage);
             }
 
-            await _accountArticleRepository.DeleteAccountArticleAsync(accountArticleId);
+            await _accountArticleRepository.DeleteAccountArticleAsync(accountArticleId, type);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 

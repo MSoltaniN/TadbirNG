@@ -3972,4 +3972,25 @@
   <data name="ZeroOrNegativeAmountNotAllowed" xml:space="preserve">
     <value>مبالغ صفر یا منفی برای {0} امکان پذیر نمی باشد.</value>
   </data>
+  <data name="Amount" xml:space="preserve">
+    <value>مبلغ</value>
+  </data>
+  <data name="CreateAccount" xml:space="preserve">
+    <value>ایجاد طرف حساب</value>
+  </data>
+  <data name="DeleteAccount" xml:space="preserve">
+    <value>حذف طرف حساب</value>
+  </data>
+  <data name="EditAccount" xml:space="preserve">
+    <value>ویرایش طرف حساب</value>
+  </data>
+  <data name="GroupDeleteAccounts" xml:space="preserve">
+    <value>حذف گروهی طرف های حساب</value>
+  </data>
+  <data name="RemoveInvalidRows" xml:space="preserve">
+    <value>حذف ردیف های نامعتبر</value>
+  </data>
+  <data name="RowsAggregation" xml:space="preserve">
+    <value>تجمیع ردیف ها</value>
+  </data>
 </root>

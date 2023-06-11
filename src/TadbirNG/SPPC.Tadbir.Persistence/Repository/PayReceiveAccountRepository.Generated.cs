@@ -7,6 +7,9 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.CashFlow;
+using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Persistence.Utility;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.CashFlow;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -82,23 +85,27 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک طرف حساب را ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="accountArticle">طرف حساب مورد نظر برای ایجاد یا اصلاح</param>
+        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
         /// <returns>اطلاعات نمایشی طرف حساب ایجاد یا اصلاح شده</returns>
-        public async Task<PayReceiveAccountViewModel> SaveAccountArticleAsync(PayReceiveAccountViewModel accountArticle)
+        public async Task<PayReceiveAccountViewModel> SaveAccountArticleAsync(
+            PayReceiveAccountViewModel accountArticle, int type)
         {
             Verify.ArgumentNotNull(accountArticle, nameof(accountArticle));
             PayReceiveAccount accountArticleModel;
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
+            int? entityTypeId = GetEntityTypeId(type);
             if (accountArticle.Id == 0)
             {
                 accountArticleModel = Mapper.Map<PayReceiveAccount>(accountArticle);
-                await InsertAsync(repository, accountArticleModel);
+                await InsertAsync(repository, accountArticleModel, OperationId.CreateAccount, entityTypeId);
             }
             else
             {
                 accountArticleModel = await repository.GetByIDAsync(accountArticle.Id);
                 if (accountArticleModel != null)
                 {
-                    await UpdateAsync(repository, accountArticleModel, accountArticle);
+                    await UpdateAsync(
+                        repository, accountArticleModel, accountArticle, OperationId.EditAccount, entityTypeId);
                 }
             }
 
@@ -109,13 +116,16 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، طرف حساب مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="accountArticleId">شناسه عددی طرف حساب مورد نظر برای حذف</param>
-        public async Task DeleteAccountArticleAsync(int accountArticleId)
+        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param> 
+        public async Task DeleteAccountArticleAsync(int accountArticleId, int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
             var accountArticle = await repository.GetByIDAsync(accountArticleId);
             if (accountArticle != null)
             {
-                await DeleteAsync(repository, accountArticle);
+                int? entityTypeId = GetEntityTypeId(type);
+                await DeleteAsync(
+                    repository, accountArticle, OperationId.DeleteAccount, entityTypeId);
             }
         }
 
@@ -123,7 +133,8 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، طرف‌های حساب مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="accountArticleIds">مجموعه ای از شناسه های عددی طرف‌های حساب مورد نظر برای حذف</param>
-        public async Task DeleteAccountArticlesAsync(IList<int> accountArticleIds)
+        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param> 
+        public async Task DeleteAccountArticlesAsync(IList<int> accountArticleIds, int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
             foreach (int accountArticleId in accountArticleIds)
@@ -135,7 +146,8 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await OnEntityGroupDeleted(accountArticleIds);
+            int entityTypeId = GetEntityTypeId(type);
+            await OnEntityGroupDeleted(accountArticleIds, OperationId.DeleteGroupAccounts, entityTypeId);
         }
 
         /// <summary>
@@ -187,14 +199,36 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
         protected override string GetState(PayReceiveAccount entity)
         {
-            return String.Empty;
-        }
+            var repository = UnitOfWork.GetRepository<Account>();
+            string accountFullCode = String.Empty;
+            if(entity.AccountId.HasValue)
+            {
+                int accountId = entity.AccountId ?? 0;
+                var account = repository.GetByID(accountId);
+                if(account != null) 
+                {
+                    accountFullCode = $"{AppStrings.Account} : {account.FullCode}, ";
+                }
+            }
 
+            return entity != null
+                ? accountFullCode +
+                $"{AppStrings.Amount} : {entity.Amount}, {AppStrings.Description} : {entity.Description}"
+                : String.Empty;
+        }
+        
         private static int? GetNullableId(AccountItemBriefViewModel item)
         {
             return (item != null && item.Id > 0)
                 ? item.Id
                 : null;
+        }
+
+        private int GetEntityTypeId(int type)
+        {
+            return (int)(type == (int)PayReceiveType.Receipt
+                ? EntityTypeId.Receipt
+                : EntityTypeId.Payment);
         }
     }
 }

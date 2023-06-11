@@ -117,6 +117,7 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.DetailAccountId = GetNullableId(viewModel.FullAccount.DetailAccount))
                 .AfterMap((viewModel, model) => model.CostCenterId = GetNullableId(viewModel.FullAccount.CostCenter))
                 .AfterMap((viewModel, model) => model.ProjectId = GetNullableId(viewModel.FullAccount.Project));
+            mapperConfig.CreateMap<PayReceiveAccount, PayReceiveAccountSummaryViewModel>();
         }
 
         private static void MapCheckTypes(IMapperConfigurationExpression mapperConfig)
