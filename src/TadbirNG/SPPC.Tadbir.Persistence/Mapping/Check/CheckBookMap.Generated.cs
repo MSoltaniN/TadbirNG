@@ -27,6 +27,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.CheckBookNo);
             builder.Property(e => e.SeriesNo)
                 .IsRequired()
+                .IsFixedLength()
                 .HasMaxLength(32);
             builder.Property(e => e.SayyadStartNo)
                 .IsRequired()
