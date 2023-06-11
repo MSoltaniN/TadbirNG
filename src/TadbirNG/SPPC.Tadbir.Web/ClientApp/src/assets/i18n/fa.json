@@ -188,6 +188,10 @@
     "ComingBack": "بازگشت",
     "Exit": "خروج"
   },
+  "Form": {
+    "SelectTitle": "انتخاب {0}",
+    "BankName": "نام بانک"
+  },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
     "FieldName": "نام ستون"

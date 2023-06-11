@@ -166,6 +166,10 @@
     "ComingBack": "Return",
     "Exit": "Exit"
   },
+  "Form": {
+    "SelectTitle": "Select {0}",
+    "BankName": "Bank Name"
+  },
   "GridSetting": {
     "Visibility": "Visibility",
     "FieldName": "Field Name"
