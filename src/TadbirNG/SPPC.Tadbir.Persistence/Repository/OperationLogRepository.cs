@@ -508,6 +508,7 @@ namespace SPPC.Tadbir.Persistence
                 CompanyId = _utility.ValueOrDefault<int>(row, "CompanyID"),
                 BranchId = _utility.ValueOrDefault<int>(row, "BranchID"),
                 FiscalPeriodId = _utility.ValueOrDefault<int>(row, "FiscalPeriodID"),
+                SourceId = _utility.ValueOrDefault<int>(row,"SourceID")
             };
             if (voucherItem.EntityDate == DateTime.MinValue)
             {
