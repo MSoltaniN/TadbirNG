@@ -482,15 +482,14 @@ export class AutoGridExplorerComponent<T>
     }
 
     var parent_Id = this.parentId ? this.parentId.toString() : null;
-    if (parent_Id) {
-      filter = this.addFilterToFilterExpression(
-        filter,
-        parent_Id
-          ? new Filter("ParentId", parent_Id, "== {0}", "System.Int32")
-          : new Filter("ParentId", "", "== null", ""),
-        FilterExpressionOperator.And
-      );
-    }
+
+    filter = this.addFilterToFilterExpression(
+      filter,
+      parent_Id
+        ? new Filter("ParentId", parent_Id, "== {0}", "System.Int32")
+        : new Filter("ParentId", "", "== null", ""),
+      FilterExpressionOperator.And
+    );
 
     if (this.defaultFilter && this.defaultFilter.length > 0) {
       this.defaultFilter.forEach((item) => {
