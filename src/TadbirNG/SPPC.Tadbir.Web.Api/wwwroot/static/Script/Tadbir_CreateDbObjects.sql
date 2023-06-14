@@ -976,7 +976,7 @@ CREATE TABLE [CashFlow].[SourceApp] (
     [BranchID]       INT              NOT NULL,
     [FiscalPeriodID] INT              NOT NULL,
     [BranchScope]    SMALLINT         NOT NULL,
-    [Code]           NVARCHAR(64)     NOT NULL,
+    [Code]           NVARCHAR(16)     NOT NULL,
     [Name]           NVARCHAR(256)    NOT NULL,
     [Description]    NVARCHAR(512)    NULL,
     [Type]           SMALLINT         NOT NULL,

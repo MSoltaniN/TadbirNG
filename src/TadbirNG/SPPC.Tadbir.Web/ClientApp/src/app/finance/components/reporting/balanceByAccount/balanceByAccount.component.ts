@@ -205,6 +205,7 @@ export class BalanceByAccountComponent
 
   breadCrumbAdded: boolean = false;
   typeViewId: number;
+  dateRange: SppcDateRangeSelector;
 
   private docClickSubscription: any;
 
@@ -215,7 +216,11 @@ export class BalanceByAccountComponent
   reportManager: ReportManagementComponent;
   @ViewChild(QuickReportSettingComponent, {static: true})
   reportSetting: QuickReportSettingComponent;
-  @ViewChild(SppcDateRangeSelector, {static: true}) dateRange: SppcDateRangeSelector;
+  @ViewChild(SppcDateRangeSelector) set setDateRange(content: SppcDateRangeSelector){
+    if(content) {
+      this.dateRange = content;
+    }
+  };
 
   constructor(
     public toastrService: ToastrService,

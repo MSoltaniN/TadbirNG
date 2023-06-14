@@ -1227,3 +1227,6 @@ WHERE EntityTypeID = 25
 UPDATE [Metadata].[OperationSource]
 SET [Name] = N'CheckBookReport'
 WHERE OperationSourceID = 15
+
+-- 1.2.1528
+ALTER TABLE cashFlow.SourceApp  ALTER COLUMN [Code] varchar(16) not null

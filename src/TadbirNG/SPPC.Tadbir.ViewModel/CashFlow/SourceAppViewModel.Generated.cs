@@ -46,7 +46,7 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// کد منبع یا مصرف
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        [StringLength(16, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Code { get; set; }
 
         /// <summary>
