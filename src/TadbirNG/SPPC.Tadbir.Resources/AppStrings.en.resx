@@ -3964,6 +3964,6 @@
     <value>Value smaller than {0} is not valid for the {1}.</value>
   </data>
   <data name="SayyadNoLength" xml:space="preserve">
-    <value>The fishing number must be exactly 16 digits</value>
+    <value>Sayyad number must have exactly 16 digits.</value>
   </data>
 </root>

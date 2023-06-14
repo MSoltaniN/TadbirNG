@@ -1229,4 +1229,5 @@ SET [Name] = N'CheckBookReport'
 WHERE OperationSourceID = 15
 
 -- 1.2.1528
-ALTER TABLE cashFlow.SourceApp  ALTER COLUMN [Code] varchar(16) not null
+ALTER TABLE [CashFlow].[SourceApp]
+ALTER COLUMN [Code] NVARCHAR(16) NOT NULL
