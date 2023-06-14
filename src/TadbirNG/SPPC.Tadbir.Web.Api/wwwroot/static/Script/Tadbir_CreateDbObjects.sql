@@ -1286,8 +1286,6 @@ INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description])
     VALUES (66, N'AssignCashRegisterUser', NULL)
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description])
     VALUES (67, N'UndoArchive', NULL)
-INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) 
-    VALUES (68, N'Register',NULL)
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description])
     VALUES (68, N'Register', NULL)
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
