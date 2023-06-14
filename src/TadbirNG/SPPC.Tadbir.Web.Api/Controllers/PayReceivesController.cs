@@ -778,6 +778,98 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، آرتیکل های حساب نامعتبر فرم پرداخت داده شده را - در صورت امکان - حذف می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم پرداخت مورد نظر</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // PUT: api/payments/{payReceiveId:min(1)}/account-articles/remove-Invalid-rows
+        [HttpDelete]
+        [Route(PayReceiveApi.RemovePaymentAccountInvalidRowsUrl)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Edit)]
+        public async Task<IActionResult> DeleteExistingInvalidPaymentAccountArticlesAsync(int payReceiveId)
+        {
+            var result = await ValidationRemoveInvalidRowsAsync(payReceiveId, AppStrings.Payment);
+            if(result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _accountArticleRepository.DeleteInvalidRowsAccountArticleAsync(
+                payReceiveId, (int)PayReceiveType.Payment);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل های حساب نامعتبر فرم دریافت داده شده را - در صورت امکان - حذف می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت مورد نظر</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // PUT: api/receipts/{payReceiveId:min(1)}/account-articles/remove-Invalid-rows
+        [HttpDelete]
+        [Route(PayReceiveApi.RemoveReceiptAccountInvalidRowsUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Edit)]
+        public async Task<IActionResult> DeleteExistingInvalidReceiptAccountArticlesAsync(int payReceiveId)
+        {
+            var result = await ValidationRemoveInvalidRowsAsync(payReceiveId, AppStrings.Receipt);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _accountArticleRepository.DeleteInvalidRowsAccountArticleAsync(
+                payReceiveId, (int)PayReceiveType.Receipt);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل های حساب فرم پرداخت داده شده را - در صورت امکان - تجمیع می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم پرداخت مورد نظر</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // PUT: api/payments/{payReceiveId:min(1)}/account-articles/aggregate-rows
+        [HttpPut]
+        [Route(PayReceiveApi.AggregatePaymentAccountArticleRowsUrl)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Edit)]
+        public async Task<IActionResult> PutExistingPaymentAccountArticlesAsAggregateAsync(int payReceiveId)
+        {
+            var result = await ValidationAggregateRowsAsync(payReceiveId, AppStrings.Payment);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _accountArticleRepository.AggregateAccountArticleRowsAsync(
+                payReceiveId, (int)PayReceiveType.Payment);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل های حساب فرم دریافت داده شده را - در صورت امکان - تجمیع می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت مورد نظر</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 200 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // PUT: api/receipts/{payReceiveId:min(1)}/account-articles/aggregate-rows
+        [HttpPut]
+        [Route(PayReceiveApi.AggregateReceiptAccountArticleRowsUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Edit)]
+        public async Task<IActionResult> PutExistingReceiptAccountArticlesAsAggregateAsync(int payReceiveId)
+        {
+            var result = await ValidationAggregateRowsAsync(payReceiveId, AppStrings.Receipt);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _accountArticleRepository.AggregateAccountArticleRowsAsync(
+                payReceiveId, (int)PayReceiveType.Receipt);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، عمل حذف را برای یکی از فرم های دریافت یا پرداخت اعتبارسنجی می کند
         /// </summary>
         /// <param name="item">شناسه دیتابیسی فرم دریافت یا پرداخت مورد نظر برای حذف</param>
@@ -826,13 +918,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 }
             }
 
-            int numberLength = AppConstants.DefaultNumberLength;
             var payReceiveNo = payReceive.PayReceiveNo.Trim();
-            if (payReceiveNo.Length != numberLength)
-            {
-                return BadRequestResult(_strings.Format(
-                    AppStrings.StringNumberHasFixedLength,AppStrings.Number, numberLength.ToString()));
-            }
 
             if (!Int64.TryParse(payReceiveNo, out long numberValue))
             {
@@ -842,7 +928,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if(numberValue <= 0)
             {
-                var minNumberString = 1.ToString($"D{numberLength}");
+                var minNumberString = "1";
                 return BadRequestResult(_strings.Format(
                    AppStrings.InvalidStringNumber, minNumberString,AppStrings.Number));
             }
@@ -1078,22 +1164,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private async Task<IActionResult> ValidateArticleDeleteByPayReceiveResultAsync(
-            string entityNameKey , params int[] accountArticleIds)
+            string entityNameKey, params int[] accountArticleIds)
         {
             var payReceive = await _accountArticleRepository.GetPayReceiveAsync(accountArticleIds);
+            if (payReceive != null) 
+            { 
+                var result = BranchValidationResult(payReceive);
+                if (result is BadRequestObjectResult)
+                {
+                    return result;
+                }
 
-            var result = BranchValidationResult(payReceive);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
+                if (payReceive.IsApproved || payReceive.IsConfirmed)
+                {
+                    return BadRequestResult(_strings.Format(
+                        AppStrings.CantDeleteDetailEntity, entityNameKey, AppStrings.PayReceiveAccount));
+                }
             }
-
-            if (payReceive != null && (payReceive.IsApproved || payReceive.IsConfirmed))
-            {
-                return BadRequestResult(_strings.Format(
-                    AppStrings.CantDeleteDetailEntity, entityNameKey ,AppStrings.PayReceiveAccount));
-            }
-
             return Ok();
         }
 
@@ -1113,6 +1200,55 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             await _accountArticleRepository.DeleteAccountArticleAsync(accountArticleId, type);
             return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        private async Task<IActionResult> ValidationRemoveInvalidRowsAsync(int payReceiveId, string entityNameKey)
+        {
+            var payReceive = await _repository.GetPayReceiveAsync(payReceiveId);
+            if (payReceive.Id <= 0) 
+            {
+                return BadRequestResult(
+                    _strings.Format(AppStrings.ItemByIdNotFound, entityNameKey, payReceiveId.ToString()));
+            }
+
+            var result = BranchValidationResult(payReceive);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (!await _accountArticleRepository.HasAccountArticleInvalidRowsAsync(payReceiveId))
+            {
+                return BadRequestResult(
+                    _strings.Format(AppStrings.NotFoundInvalidRows, AppStrings.PayReceiveAccount, entityNameKey));
+            }
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> ValidationAggregateRowsAsync(int payReceiveId, string entityNameKey)
+        {
+            var payReceive = await _repository.GetPayReceiveAsync(payReceiveId);
+            if (payReceive.Id <= 0)
+            {
+                return BadRequestResult(
+                    _strings.Format(AppStrings.ItemByIdNotFound, entityNameKey, payReceiveId.ToString()));
+            }
+
+            var result = BranchValidationResult(payReceive);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (!await _accountArticleRepository.HasAccountArticlestoAggregateAsync(payReceiveId))
+            {
+                return BadRequestResult(
+                    _strings.Format(AppStrings.NotFoundAggregateRows, AppStrings.PayReceiveAccount, entityNameKey));
+            }
+
+            return Ok();
+
         }
 
         private readonly IPayReceiveRepository _repository;

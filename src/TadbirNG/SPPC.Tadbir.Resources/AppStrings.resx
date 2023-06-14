@@ -3993,4 +3993,10 @@
   <data name="RowsAggregation" xml:space="preserve">
     <value>تجمیع ردیف ها</value>
   </data>
+  <data name="NotFoundInvalidRows" xml:space="preserve">
+    <value>{0} این {1} هیچ ردیف نامعتبری برای حذف ندارد.</value>
+  </data>
+  <data name="NotFoundAggregateRows" xml:space="preserve">
+    <value>{0} این {1} دارای هیچ ردیفی برای تجمیع با دیگر ردیف‌ها نمی‌باشد.</value>
+  </data>
 </root>

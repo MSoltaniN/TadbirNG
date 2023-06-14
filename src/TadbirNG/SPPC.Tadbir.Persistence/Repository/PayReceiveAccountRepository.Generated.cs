@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
@@ -67,15 +68,33 @@ namespace SPPC.Tadbir.Persistence
         {
             PayReceiveAccountViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
-            var accountArticle = await repository.GetByIDAsync(accountArticleId, 
-                account => account.PayReceive, 
-                account => account.Account, 
-                account => account.Project, 
-                account => account.DetailAccount, 
+            var accountArticle = await repository.GetByIDAsync(accountArticleId,
+                account => account.PayReceive,
+                account => account.Account,
+                account => account.Project,
+                account => account.DetailAccount,
                 account => account.CostCenter);
             if (accountArticle != null)
             {
                 item = Mapper.Map<PayReceiveAccountViewModel>(accountArticle);
+            }
+
+            return item;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات خلاطه طرف حساب با شناسه عددی مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountArticleId">شناسه عددی یکی از طرف‌های حساب موجود</param>
+        /// <returns>طرف حساب مشخص شده با شناسه عددی</returns>
+        public async Task<PayReceiveAccountSummaryViewModel> GetAccountArticleSummaryAsync(int accountArticleId)
+        {
+            PayReceiveAccountSummaryViewModel item = null;
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
+            var accountArticle = await repository.GetByIDAsync(accountArticleId);
+            if (accountArticle != null)
+            {
+                item = Mapper.Map<PayReceiveAccountSummaryViewModel>(accountArticle);
             }
 
             return item;
@@ -164,12 +183,126 @@ namespace SPPC.Tadbir.Persistence
                 .GetEntityQuery()
                 .Where(pr => pr.Accounts.Any(acc => accountArticleIds.Any(id => id == acc.Id)))
                 .SingleOrDefaultAsync();
-            if(payReceive != null)
+            if (payReceive != null)
             {
                 item = Mapper.Map<PayReceiveViewModel>(payReceive);
             }
 
             return item;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ردیف های نامعتبر طرف حساب در فرم دریافت/پرداخت داده شده را حذف می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        public async Task DeleteInvalidRowsAccountArticleAsync(int payReceiveId, int type)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
+            var articles = repository
+                .GetEntityQuery()
+                .Where(article => article.PayReceiveId == payReceiveId &&
+                    (article.Amount <= Decimal.Zero || article.AccountId == null))
+                .ToArray();
+
+            foreach (var article in articles)
+            {
+                DisconnectEntity(article);
+                repository.Delete(article);
+            }
+
+            await UnitOfWork.CommitAsync();
+            int entityTypeId = GetEntityTypeId(type);
+            var articleIds = articles.Select(article => article.Id).ToArray();
+            await OnEntityGroupDeleted(articleIds, OperationId.RemoveInvalidRows, entityTypeId);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، وجود ردیف های نامعتبر طرف حساب در فرم دریافت/پرداخت داده شده را بررسی می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <returns></returns>
+        public async Task<bool> HasAccountArticleInvalidRowsAsync(int payReceiveId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
+            return await repository
+                .GetEntityQuery()
+                .AnyAsync(article => article.PayReceiveId == payReceiveId &&
+                    (article.Amount <= Decimal.Zero || article.AccountId == null));
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ردیف های طرف حساب با بردار حساب مشترک را 
+        /// در فرم دریافت/پرداخت داده شده تجمیع می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        public async Task AggregateAccountArticleRowsAsync(int payReceiveId, int type)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
+            var aggregatedRows = repository
+                .GetEntityQuery()
+                .Where(article => article.PayReceiveId == payReceiveId && article.AccountId.HasValue)
+                .AsEnumerable()
+                .GroupBy(acc => new { acc.AccountId, acc.DetailAccountId, acc.CostCenterId, acc.ProjectId })
+                .Where(articles => articles.Count() > 1)
+                .Select(articles => new PayReceiveAccount
+                {
+                    Id = articles.Min(article => article.Id),
+                    Amount = articles.Sum(article => article.Amount),
+                    AccountId = articles.Key.AccountId,
+                    DetailAccountId = articles.Key.DetailAccountId,
+                    CostCenterId = articles.Key.CostCenterId,
+                    ProjectId = articles.Key.ProjectId,
+                    Description = String.Join(" - ",
+                        articles.Select(
+                            article => article.Description.Trim()).Where(a => !String.IsNullOrEmpty(a)).ToList()),
+                })
+                .ToArray();
+
+            foreach (var item in aggregatedRows)
+            {
+                var aggregatedArticle = await repository.GetByIDAsync(item.Id);
+                aggregatedArticle.Amount = item.Amount;
+                aggregatedArticle.Description = item.Description;
+                repository.Update(aggregatedArticle);
+
+                var removedArticles = await repository.GetByCriteriaAsync(
+                    article => article.PayReceiveId == payReceiveId
+                        && article.Id != aggregatedArticle.Id
+                        && article.AccountId == aggregatedArticle.AccountId
+                        && article.DetailAccountId == aggregatedArticle.DetailAccountId
+                        && article.CostCenterId == aggregatedArticle.CostCenterId
+                        && article.ProjectId == aggregatedArticle.ProjectId);
+                foreach (var article in removedArticles)
+                {
+                    DisconnectEntity(article);
+                    repository.Delete(article);
+                }
+            }
+
+            await UnitOfWork.CommitAsync();
+            int entityTypeId = GetEntityTypeId(type);
+            OnEntityAction(OperationId.RowsAggregation, entityTypeId);
+            await TrySaveLogAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، وجود ردیف برای تجمیع طرف حساب در فرم دریافت/پرداخت داده شده را بررسی می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <returns></returns>
+        public async Task<bool> HasAccountArticlestoAggregateAsync(int payReceiveId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
+            var aggregateCount = repository
+                .GetEntityQuery()
+                .Where(article => article.PayReceiveId == payReceiveId && article.AccountId != null)
+                .GroupBy(acc => new { acc.AccountId, acc.DetailAccountId, acc.CostCenterId, acc.ProjectId })
+                .Where(articles => articles.Count() > 1)
+                .Count();
+
+            return await Task.Run(() => aggregateCount > 0);
         }
 
         internal override int? EntityType
@@ -201,11 +334,11 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetRepository<Account>();
             string accountFullCode = String.Empty;
-            if(entity.AccountId.HasValue)
+            if (entity.AccountId.HasValue)
             {
                 int accountId = entity.AccountId ?? 0;
                 var account = repository.GetByID(accountId);
-                if(account != null) 
+                if (account != null)
                 {
                     accountFullCode = $"{AppStrings.Account} : {account.FullCode}, ";
                 }
@@ -216,7 +349,7 @@ namespace SPPC.Tadbir.Persistence
                 $"{AppStrings.Amount} : {entity.Amount}, {AppStrings.Description} : {entity.Description}"
                 : String.Empty;
         }
-        
+
         private static int? GetNullableId(AccountItemBriefViewModel item)
         {
             return (item != null && item.Id > 0)

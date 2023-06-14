@@ -3999,4 +3999,10 @@
   <data name="RowsAggregation" xml:space="preserve">
     <value>Rows aggregation</value>
   </data>
+  <data name="NotFoundInvalidRows" xml:space="preserve">
+    <value>{0} of this {1} has no invalid rows to delete.</value>
+  </data>
+  <data name="NotFoundAggregateRows" xml:space="preserve">
+    <value>{0} of this {1} has no rows to aggregate with other rows.</value>
+  </data>
 </root>

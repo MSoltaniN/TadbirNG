@@ -23,16 +23,16 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، طرف حساب با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="payreceiveaccountId">شناسه عددی یکی از طرف‌های حساب موجود</param>
+        /// <param name="accountArticleId">شناسه عددی یکی از طرف‌های حساب موجود</param>
         /// <returns>طرف حساب مشخص شده با شناسه عددی</returns>
-        Task<PayReceiveAccountViewModel> GetAccountArticleAsync(int payreceiveaccountId);
+        Task<PayReceiveAccountViewModel> GetAccountArticleAsync(int accountArticleId);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات خلاطه طرف حساب با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="payreceiveaccountId">شناسه عددی یکی از طرف‌های حساب موجود</param>
+        /// <param name="accountArticleId">شناسه عددی یکی از طرف‌های حساب موجود</param>
         /// <returns>طرف حساب مشخص شده با شناسه عددی</returns>
-        Task<PayReceiveAccountSummaryViewModel> GetAccountArticleSummaryAsync(int payreceiveaccountId);
+        Task<PayReceiveAccountSummaryViewModel> GetAccountArticleSummaryAsync(int accountArticleId);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک طرف حساب را ایجاد یا اصلاح می کند
@@ -63,5 +63,34 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="accountArticleIds">لیست شناسه های آرتیکل حساب</param>
         /// <returns>فرم دریافت/پرداخت</returns>
         Task<PayReceiveViewModel> GetPayReceiveAsync(IList<int> accountArticleIds);
+
+        /// <summary>
+        /// به روش آسنکرون، ردیف های نامعتبر طرف حساب در فرم دریافت/پرداخت داده شده را حذف می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        Task DeleteInvalidRowsAccountArticleAsync(int payReceiveId, int type);
+
+        /// <summary>
+        /// به روش آسنکرون، وجود ردیف های نامعتبر طرف حساب در فرم دریافت/پرداخت داده شده را بررسی می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <returns></returns>
+        Task<bool> HasAccountArticleInvalidRowsAsync(int payReceiveId);
+
+        /// <summary>
+        /// به روش آسنکرون، ردیف های طرف حساب با بردار حساب مشترک را 
+        /// در فرم دریافت/پرداخت داده شده تجمیع می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        Task AggregateAccountArticleRowsAsync(int payReceiveId, int type);
+
+        /// <summary>
+        /// به روش آسنکرون، وجود ردیف برای تجمیع طرف حساب در فرم دریافت/پرداخت داده شده را بررسی می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <returns></returns>
+        Task<bool> HasAccountArticlestoAggregateAsync(int payReceiveId);
     }
 }

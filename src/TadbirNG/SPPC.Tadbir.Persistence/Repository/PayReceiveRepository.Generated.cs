@@ -79,7 +79,7 @@ namespace SPPC.Tadbir.Persistence
             if (payReceive.Id == 0)
             {
                 payReceiveModel = Mapper.Map<PayReceive>(payReceive);
-                payReceiveModel.PayReceiveNo = payReceive.PayReceiveNo.Trim();
+                payReceiveModel.PayReceiveNo = Int64.Parse(payReceive.PayReceiveNo).ToString();
                 payReceiveModel.IssuedById = UserContext.Id;
                 payReceiveModel.ModifiedById = UserContext.Id;
                 payReceiveModel.IssuedByName =
@@ -109,9 +109,10 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeletePayReceiveAsync(int payReceiveId, int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
-            var payReceive = await repository.GetByIDAsync(payReceiveId);
+            var payReceive = await repository.GetByIDWithTrackingAsync(payReceiveId, pr => pr.Accounts);
             if (payReceive != null)
             {
+                payReceive.Accounts.Clear();
                 int entityTypeId = GetEntityTypeId(type);
                 await DeleteAsync(repository, payReceive, OperationId.Delete, entityTypeId);
             }
@@ -287,7 +288,7 @@ namespace SPPC.Tadbir.Persistence
         {
             string personName = GetCurrentUserFullName();
             var existingNumbers = await GetPayReceiveNumbersAsync(type);
-            int numberLength = AppConstants.DefaultNumberLength;
+            int numberLength = 0;
             var newPayReceive = new PayReceiveViewModel()
             {
                 CreatedDate = DateTime.Now,

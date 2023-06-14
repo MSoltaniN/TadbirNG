@@ -251,7 +251,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for all account articles in a single payment specified by identifier
         /// </summary>
-        public const string PaymentAccountArticles = "payments/{0}/account-articles";
+        public const string PaymentAccountArticles = "payments/{0}/{";
 
         /// <summary>
         /// API server route URL for all account articles in a single payment specified by identifier
@@ -307,5 +307,45 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all available receipt account articles
         /// </summary>
         public const string AllReceiptAccountArticlesUrl = "receipts/account-articles";
+
+        /// <summary>
+        /// API client URL for remove invalid account articles a single payment specified by identifier
+        /// </summary>
+        public const string RemovePaymentAccountInvalidRows = "payments/{0}/account-articles/remove-Invalid-rows";
+
+        /// <summary>
+        /// API server route URL for remove invalid account articles a single payment specified by identifier
+        /// </summary>
+        public const string RemovePaymentAccountInvalidRowsUrl = "payments/{payReceiveId:min(1)}/account-articles/remove-Invalid-rows";
+
+        /// <summary>
+        /// API client URL for remove invalid account articles a single receipt specified by identifier
+        /// </summary>
+        public const string RemoveReceiptAccountInvalidRows = "receipts/{0}/account-articles/remove-Invalid-rows";
+
+        /// <summary>
+        /// API server route URL for remove invalid account articles a single receipt specified by identifier
+        /// </summary>
+        public const string RemoveReceiptAccountInvalidRowsUrl = "receipts/{payReceiveId:min(1)}/account-articles/remove-Invalid-rows";
+
+        /// <summary>
+        /// API client URL for Aggregate account articles a single payment specified by identifier
+        /// </summary>
+        public const string AggregatePaymentAccountArticleRows = "payments/{0}/account-articles/aggregate-rows";
+
+        /// <summary>
+        /// API server route URL for Aggregate account articles a single payment specified by identifier
+        /// </summary>
+        public const string AggregatePaymentAccountArticleRowsUrl = "payments/{payReceiveId:min(1)}/account-articles/aggregate-rows";
+
+        /// <summary>
+        /// API client URL for Aggregate account articles a single receipt specified by identifier
+        /// </summary>
+        public const string AggregateReceiptAccountArticleRows = "receipts/{0}/account-articles/aggregate-rows";
+
+        /// <summary>
+        /// API server route URL for Aggregate account articles a single receipt specified by identifier
+        /// </summary>
+        public const string AggregateReceiptAccountArticleRowsUrl = "receipts/{payReceiveId:min(1)}/account-articles/aggregate-rows";
     }
 }
