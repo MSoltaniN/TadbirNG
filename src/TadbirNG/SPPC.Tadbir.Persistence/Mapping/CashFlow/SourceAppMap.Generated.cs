@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .IsRequired();
             builder.Property(e => e.Code)
                 .IsRequired()
-                .HasMaxLength(64);
+                .HasMaxLength(16);
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(256);

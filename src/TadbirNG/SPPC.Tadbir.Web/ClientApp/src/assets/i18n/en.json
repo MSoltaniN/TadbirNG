@@ -169,7 +169,9 @@
   "Form": {
     "New": "New {0}",
     "Edit": "Edit {0}",
-    "No": "{0} No"
+    "No": "{0} No",
+    "SelectTitle": "Select {0}",
+    "BankName": "Bank Name"
   },
   "GridSetting": {
     "Visibility": "Visibility",

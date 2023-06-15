@@ -347,6 +347,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            if (checkBook.SayyadStartNo.Length != 16)
+            {
+                string message = _strings[AppStrings.SayyadNoLength];
+                return BadRequestResult(message);
+            }
+
             if (checkBookId > 0 && await _repository.HasPagesAsync(checkBookId))
             {
                 string message = _strings[AppStrings.CantEditCheckbook];

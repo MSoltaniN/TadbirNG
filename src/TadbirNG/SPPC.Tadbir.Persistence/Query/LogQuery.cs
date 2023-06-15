@@ -8,7 +8,7 @@ namespace SPPC.Tadbir.Persistence
 SELECT [{0}ID] AS [Id], [Date], [Time], br.[Name] AS [BranchName], fp.[Name] AS [FiscalPeriodName], ent.[Name] AS [EntityTypeName],
     src.[Name] AS [SourceName], list.[Name] AS [SourceListName], op.[Name] AS [OperationName],
     [EntityCode], [EntityName], [EntityDescription], [EntityNo], [EntityDate], [EntityReference],
-    [EntityAssociation], oplog.[Description], oplog.[UserID], oplog.[CompanyID], oplog.[BranchID], oplog.[FiscalPeriodID],
+    [EntityAssociation], oplog.[Description], oplog.[UserID], oplog.[CompanyID], oplog.[BranchID], oplog.[FiscalPeriodID], oplog.[SourceID],
     oplog.[EntityTypeID]
 FROM [Core].[{0}] oplog
     INNER JOIN [Corporate].[Branch] br ON oplog.BranchID = br.BranchID

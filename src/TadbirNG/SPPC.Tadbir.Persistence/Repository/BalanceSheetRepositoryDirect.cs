@@ -272,7 +272,7 @@ namespace SPPC.Tadbir.Persistence
                 var projectRepository = UnitOfWork.GetAsyncRepository<Project>();
                 var fullCode = await projectRepository
                     .GetEntityQuery()
-                    .Where(prj => prj.Id == parameters.CostCenterId)
+                    .Where(prj => prj.Id == parameters.ProjectId)
                     .Select(prj => prj.FullCode)
                     .SingleOrDefaultAsync();
 

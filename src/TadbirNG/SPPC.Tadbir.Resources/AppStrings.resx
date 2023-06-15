@@ -3957,4 +3957,7 @@
   <data name="InvalidStringNumber" xml:space="preserve">
     <value>مقدار کوچک‌تر از {0} برای {1} مجاز نمی باشد.</value>
   </data>
+  <data name="SayyadNoLength" xml:space="preserve">
+    <value>شماره صیادی دقیقاً باید 16 رقم باشد.</value>
+  </data>
 </root>
