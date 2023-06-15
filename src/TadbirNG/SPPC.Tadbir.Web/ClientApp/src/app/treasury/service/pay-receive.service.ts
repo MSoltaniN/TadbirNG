@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { BaseService } from '@sppc/shared/class';
 import { BrowserStorageService } from '@sppc/shared/services';
 import { PayReceive } from '../models/payReceive';
+import { map } from 'rxjs';
 
 export class PayReceiveInfo implements PayReceive {
   id: number = 0;
@@ -34,5 +35,9 @@ export class PayReceiveService extends BaseService {
     public bStorageService: BrowserStorageService
   ) {
     super(http, bStorageService);
+  }
+
+  public changeStatus(apiUrl: string) {
+    return this.http.put(apiUrl, null, this.option).pipe(map((res) => res));
   }
 }

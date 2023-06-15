@@ -6,7 +6,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { CurrencyInfo } from '@sppc/finance/models';
 import { DetailComponent, FilterExpression, String } from '@sppc/shared/class';
 import { Entities, Layout, MessageType } from '@sppc/shared/enum/metadata';
-import { ViewName } from '@sppc/shared/security';
+import { PaymentPermissions, ReceiptPermissions, ViewName } from '@sppc/shared/security';
 import { BrowserStorageService, ErrorHandlingService, LookupService, MetaDataService, SessionKeys } from '@sppc/shared/services';
 import { LookupApi } from '@sppc/shared/services/api';
 import { PayReceiveTypes, PayReceiveOperations, UrlPathType } from '@sppc/treasury/enums/payReceive';
@@ -39,6 +39,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   @Input() dialogMode = false;
   searchConfirm: boolean;
   urlMode: string;
+  isApproved: boolean;
 
   constructor(public toastrService: ToastrService,
     public translate: TranslateService,
@@ -57,12 +58,15 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     this.viewID = this.urlPath;
   }
 
+  /**
+   * نوع فرم؛ 0 برای دریافت و 1 برای پرداخت
+   */
+  type:PayReceiveTypes;
   isShowBreadcrumb = true;
   payReceiveOperationsItem = PayReceiveOperations;
   isFirstItem = false;
   isLastItem = false;
   deleteConfirm = false;
-  type:PayReceiveTypes;
   payReceiveNo;
   totalCashAmount: number;
   currenciesRows: Array<CurrencyInfo>;
@@ -522,34 +526,89 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   confirmedBy(e) {
-    // console.log(e);
-    if (e.target.checked) {
-      this.editForm.patchValue({
-        isConfirmed: true,
-        confirmedByName: this.UserName
-      });
-    } else {
-      this.editForm.patchValue({
-        isConfirmed: false,
-        confirmedByName: ''
-      });
-    }
+    let confirmApiUrl = this.type == 1? PayReceiveApi.ConfirmPayment: PayReceiveApi.ConfirmReceipt;
+    let undoConfirmApiUrl = this.type == 1? PayReceiveApi.UndoConfirmPayment: PayReceiveApi.UndoApproveReceipt;
+
+    let apiUrl = String.Format(
+      this.isConfirmed
+        ? undoConfirmApiUrl
+        : confirmApiUrl,
+      this.model.id
+    );
+
+    this.changeStatus(apiUrl, () => {
+      if (e.target.checked) {
+        this.editForm.patchValue({
+          isConfirmed: true,
+          confirmedByName: this.UserName
+        });
+      } else {
+        this.editForm.patchValue({
+          isConfirmed: false,
+          confirmedByName: ''
+        });
+      }
+    })
   }
 
   approvedBy(e) {
-    // console.log(e.target.checked,this.UserId);
-    if (e.target.checked) {
-      this.editForm.patchValue({
-        isApproved: true,
-        approvedByName: this.UserName
-      });
+    let approveApiUrl = this.type == 1? PayReceiveApi.ConfirmPayment: PayReceiveApi.ConfirmReceipt;
+    let undoApproveApiUrl = this.type == 1? PayReceiveApi.UndoConfirmPayment: PayReceiveApi.UndoApproveReceipt;
+
+    let apiUrl = String.Format(
+      this.isApproved
+        ? undoApproveApiUrl
+        : approveApiUrl,
+      this.model.id
+    );
+
+    this.changeStatus(apiUrl,() => {
+      if (e.target.checked) {
+        this.editForm.patchValue({
+          isApproved: true,
+          approvedByName: this.UserName
+        });
+      } else {
+        this.editForm.patchValue({
+          isApproved: false,
+          approvedByName: ''
+        });
+      }
+    })
+  }
+
+  changeStatus(apiUrl, cb:Function) {
+    let permissions = this.type == 1? PaymentPermissions: ReceiptPermissions;
+
+    let hasPermission = this.isAccess(
+      this.entityType,
+      this.isConfirmed
+        ? permissions.Confirm
+        : permissions.UndoConfirm
+    );
+
+    if (hasPermission) {
+      this.payReceive.changeStatus(apiUrl).subscribe(
+        (res) => {
+          cb();
+          // this.getPayReceive();
+        },
+        (error) => {
+          // this.getPayReceive();
+          //this.showMessage(error, MessageType.Warning);
+          if (error)
+            this.showMessage(
+              this.errorHandlingService.handleError(error),
+              MessageType.Warning
+            );
+        }
+      );
     } else {
-      this.editForm.patchValue({
-        isApproved: false,
-        approvedByName: ''
-      });
+      this.showMessage(this.getText("App.AccessDenied"), MessageType.Warning);
+      // this.getPayReceive();
     }
   }
+
   /**
    * prepare confim message for delete operation
    * @param text is a part of message that use for delete confirm message

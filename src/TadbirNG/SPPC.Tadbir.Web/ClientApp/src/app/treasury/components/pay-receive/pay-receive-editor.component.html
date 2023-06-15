@@ -228,21 +228,22 @@
               </div>
               <div class="form-group">
                 <div class="col-xs-12 col-sm-4">
-
-                  <div class="form-group">
-                    <label for="currencyId" class="control-label">{{ 'VoucherLine.Currency' | translate }}</label>
-                    <kendo-dropdownlist [data]="currenciesRows"
-                      class="ddl-currency"
-                      [textField]="'name'"
-                      [valueField]="'id'"
-                      [valuePrimitive]="true"
-                      [value]="selectedCurrencyValue"
-                      [(ngModel)]="selectedCurrencyValue"
-                      (valueChange)="onChangeCurrency()"
-                      formControlName="currencyId"
-                      [defaultItem]="{ name: '', id: 0 }">
-                    </kendo-dropdownlist>
-                  </div>
+                  <fieldset disabled class="disabled">
+                    <div class="form-group">
+                      <label for="currencyId" class="control-label">{{ 'VoucherLine.Currency' | translate }}</label>
+                      <kendo-dropdownlist [data]="currenciesRows"
+                        class="ddl-currency"
+                        [textField]="'name'"
+                        [valueField]="'id'"
+                        [valuePrimitive]="true"
+                        [value]="selectedCurrencyValue"
+                        [(ngModel)]="selectedCurrencyValue"
+                        (valueChange)="onChangeCurrency()"
+                        formControlName="currencyId"
+                        [defaultItem]="{ name: '', id: 0 }">
+                      </kendo-dropdownlist>
+                    </div>
+                  </fieldset>
       
                 </div>
       
@@ -259,22 +260,23 @@
                       disabled
                     >
                     </sppc-numericInput>
-      
                   </div>
                   </fieldset>
                 </div>
       
                 <div class="col-xs-12 col-sm-4">
-                  <div class="form-group">
-                    <label for="description" class="control-label">{{ 'VoucherLine.CurrencyRate' | translate }}</label>
-                    <sppc-numericInput
-                      [(ngModel)]="currencyRate"
-                      (ngModelChange)="onChangeCurrencyRate()"
-                      [ngModelOptions]="{standalone: true}"
-                      class="sppc-input-num"
-                    >
-                    </sppc-numericInput>
-                  </div>
+                  <fieldset disabled class="disabled">
+                    <div class="form-group">
+                      <label for="description" class="control-label">{{ 'VoucherLine.CurrencyRate' | translate }}</label>
+                      <sppc-numericInput
+                        [(ngModel)]="currencyRate"
+                        (ngModelChange)="onChangeCurrencyRate()"
+                        [ngModelOptions]="{standalone: true}"
+                        class="sppc-input-num"
+                      >
+                      </sppc-numericInput>
+                    </div>
+                  </fieldset>
                 </div>
               </div>
             </div>
