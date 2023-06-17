@@ -2,7 +2,7 @@
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class AccountCollectionAccountViewModel : ViewModelBase, IFiscalEntityView
+    public partial class AccountCollectionAccountViewModel : ViewModelBase, IFiscalEntity
     {
         /// <summary>
         /// شناسه دیتابیسی سرفصل حسابداری در این ارتباط

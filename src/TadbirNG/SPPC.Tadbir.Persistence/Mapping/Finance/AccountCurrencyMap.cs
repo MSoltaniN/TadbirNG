@@ -25,12 +25,12 @@ namespace SPPC.Tadbir.Persistence.Mapping.Finance
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(d => d.Currency)
-                .WithMany(p => p.AccountCurrencies)
+                .WithMany()
                 .HasForeignKey(d => d.CurrencyId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(d => d.Branch)
-                .WithMany(p => p.AccountCurrencies)
+                .WithMany()
                 .HasForeignKey(d => d.BranchId)
                 .OnDelete(DeleteBehavior.Cascade);
         }

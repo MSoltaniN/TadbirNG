@@ -2,7 +2,7 @@
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class VoucherViewModel : ViewModelBase, IFiscalEntityView
+    public partial class VoucherViewModel : ViewModelBase, IFiscalEntity
     {
         /// <summary>
         /// شناسه دیتابیسی دوره مالی که این سرفصل حسابداری در آن تعریف شده است

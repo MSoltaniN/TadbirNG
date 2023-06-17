@@ -27,14 +27,9 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// </summary>
         public RoleViewModel()
         {
-            this.Name = String.Empty;
-            this.Description = String.Empty;
+            Name = String.Empty;
+            Description = String.Empty;
         }
-
-        /// <summary>
-        /// Gets or sets the unique identifier for this entity.
-        /// </summary>
-        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the name of this application role

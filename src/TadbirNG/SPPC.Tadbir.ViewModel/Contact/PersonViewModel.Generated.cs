@@ -27,8 +27,8 @@ namespace SPPC.Tadbir.ViewModel.Contact
         /// </summary>
         public PersonViewModel()
         {
-            this.FirstName = String.Empty;
-            this.LastName = String.Empty;
+            FirstName = String.Empty;
+            LastName = String.Empty;
         }
 
         /// <summary>

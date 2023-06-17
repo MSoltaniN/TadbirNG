@@ -3,11 +3,6 @@
     public partial class BranchViewModel : ViewModelBase
     {
         /// <summary>
-        /// Gets or sets the unique identifier of the company related to this branch.
-        /// </summary>
-        public int CompanyId { get; set; }
-
-        /// <summary>
         /// شناسه دیتابیسی شعبه سازمانی والد در ساختار درختی
         /// </summary>
         public int? ParentId { get; set; }

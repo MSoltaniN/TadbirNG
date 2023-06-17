@@ -35,11 +35,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// تنظیمات نمایشی و محاسباتی جاری برای ویجت
         /// </summary>
         [StringLength(1024, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]

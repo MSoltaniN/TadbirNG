@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.Persistence
         Task<PagedList<BranchViewModel>> GetBranchesAsync(GridOptions gridOptions);
 
         /// <summary>
-        /// به روش آسنکرون، شعبه سازمانی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، شعبه سازمانی با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="branchId">شناسه عددی یکی از شعب سازمانی موجود</param>
         /// <returns>شعبه سازمانی مشخص شده با شناسه عددی</returns>

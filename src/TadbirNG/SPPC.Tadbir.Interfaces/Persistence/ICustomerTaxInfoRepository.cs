@@ -17,13 +17,13 @@ namespace SPPC.Tadbir.Persistence
         Task<CustomerTaxInfoViewModel> SaveCustomerTaxInfoAsync(CustomerTaxInfoViewModel customerTax);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات مالیاتی مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، اطلاعات مالیاتی مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="customerTaxId">شناسه عددی اطلاعات مالیاتی مورد نظر برای حذف</param>
         Task DeleteCustomerTaxInfoAsync(int customerTaxId);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات مالیاتی مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، اطلاعات مالیاتی مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="customerTaxIds">مجموعه ای از شناسه های عددی اطلاعات مالیاتی مورد نظر برای حذف</param>
         Task DeleteCustomerTaxInfosAsync(IList<int> customerTaxIds);

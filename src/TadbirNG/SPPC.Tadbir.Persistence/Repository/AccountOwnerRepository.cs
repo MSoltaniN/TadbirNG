@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات حساب بانکی مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، اطلاعات حساب بانکی مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="ownerId">شناسه عددی اطلاعات حساب بانکی مورد نظر برای حذف</param>
         public async Task DeleteAccountOwnerAsync(int ownerId)

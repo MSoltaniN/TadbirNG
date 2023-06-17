@@ -1,10 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class VoucherLineViewModel : IFiscalEntityView
+    public partial class VoucherLineViewModel : ViewModelBase, IFiscalEntity
     {
         /// <summary>
         /// شناسه دیتابیسی سند مالی که این آرتیکل برای آن ایجاد شده است

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -32,14 +32,11 @@ namespace SPPC.Tadbir.Persistence
         {
             _system = system;
             _relationRepository = relations;
+            var fullConfig = _system.Config.GetViewTreeConfigByViewAsync(ViewId.Project).Result;
+            _treeUtility = new TreeEntityUtility<Project, ProjectViewModel>(context, fullConfig.Current);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه جاری تعریف شده اند،
-        /// از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
+        /// <inheritdoc/>
         public async Task<PagedList<ProjectViewModel>> GetProjectsAsync(GridOptions gridOptions)
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
@@ -56,11 +53,7 @@ namespace SPPC.Tadbir.Persistence
             return new PagedList<ProjectViewModel>(projects, gridOptions);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، پروژه با شناسه عددی مشخص شده را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="projectId">شناسه عددی یکی از پروژه های موجود</param>
-        /// <returns>پروژه مشخص شده با شناسه عددی</returns>
+        /// <inheritdoc/>
         public async Task<ProjectViewModel> GetProjectAsync(int projectId)
         {
             ProjectViewModel item = null;
@@ -74,37 +67,7 @@ namespace SPPC.Tadbir.Persistence
             return item;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، برای پروژه والد مشخص شده پروژه زیرمجموعه جدیدی پیشنهاد داده و برمی گرداند
-        /// </summary>
-        /// <param name="parentId">شناسه دیتابیسی پروژه والد - اگر مقدار نداشته باشد پروژه جدید
-        /// در سطح کل پیشنهاد می شود</param>
-        /// <returns>مدل نمایشی پروژه پیشنهادی</returns>
-        public async Task<ProjectViewModel> GetNewChildProjectAsync(int? parentId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Project>();
-            var parent = await repository.GetByIDAsync(parentId ?? 0);
-            if (parentId > 0 && parent == null)
-            {
-                return null;
-            }
-
-            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewId.Project);
-            var treeConfig = fullConfig.Current;
-            if (parent != null && parent.Level + 1 == treeConfig.MaxDepth)
-            {
-                return new ProjectViewModel() { Level = -1 };
-            }
-
-            var childrenCodes = await GetChildrenCodesAsync(parentId);
-            string newCode = GetNewProjectCode(parent, childrenCodes, treeConfig);
-            return GetNewChildProject(parent, newCode, treeConfig);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مجموعه ای از پروژه های سطح اول را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه ای از مدل نمایشی خلاصه پروژه های سطح اول</returns>
+        /// <inheritdoc/>
         public async Task<IList<AccountItemBriefViewModel>> GetRootProjectsAsync()
         {
             var projects = await Repository
@@ -115,11 +78,7 @@ namespace SPPC.Tadbir.Persistence
             return projects;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، پروژه های زیرمجموعه را برای پروژه مشخص شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="projectId">شناسه یکی از پروژه های موجود</param>
-        /// <returns>مدل نمایشی پروژه های زیرمجموعه</returns>
+        /// <inheritdoc/>
         public async Task<IList<AccountItemBriefViewModel>> GetProjectChildrenAsync(int projectId)
         {
             var children = await Repository
@@ -130,11 +89,7 @@ namespace SPPC.Tadbir.Persistence
             return children;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات یک پروژه را در دیتابیس ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="project">پروژه مورد نظر برای ایجاد یا اصلاح</param>
-        /// <returns>اطلاعات نمایشی پروژه ایجاد یا اصلاح شده</returns>
+        /// <inheritdoc/>
         public async Task<ProjectViewModel> SaveProjectAsync(ProjectViewModel project)
         {
             Verify.ArgumentNotNull(project, "project");
@@ -164,10 +119,7 @@ namespace SPPC.Tadbir.Persistence
             return Mapper.Map<ProjectViewModel>(projectModel);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، پروژه مشخص شده با شناسه عددی را از دیتابیس حذف می کند
-        /// </summary>
-        /// <param name="projectId">شناسه عددی پروژه مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task DeleteProjectAsync(int projectId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Project>();
@@ -179,10 +131,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، پروژه های مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
-        /// </summary>
-        /// <param name="projectIds">مجموعه ای از شناسه های عددی پروژه های مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task DeleteProjectsAsync(IList<int> projectIds)
         {
             var repository = UnitOfWork.GetAsyncRepository<Project>();
@@ -201,50 +150,13 @@ namespace SPPC.Tadbir.Persistence
             await OnEntityGroupDeleted(projectIds);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا کد پروژه مورد نظر تکراری است یا نه
-        /// </summary>
-        /// <param name="project">مدل نمایشی پروژه مورد نظر</param>
-        /// <returns>اگر کد پروژه تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
-        public async Task<bool> IsDuplicateFullCodeAsync(ProjectViewModel project)
-        {
-            Verify.ArgumentNotNull(project, nameof(project));
-            var repository = UnitOfWork.GetAsyncRepository<Project>();
-            int count = await repository
-                .GetCountByCriteriaAsync(prj => prj.Id != project.Id
-                    && prj.FullCode == project.FullCode);
-            return count > 0;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که نام پروژه مورد نظر بین پروژه های همسطح با والد یکسان تکراری است یا نه
-        /// </summary>
-        /// <param name="project">مدل نمایشی پروژه مورد نظر</param>
-        /// <returns>اگر نام پروژه تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
-        public async Task<bool> IsDuplicateNameAsync(ProjectViewModel project)
-        {
-            Verify.ArgumentNotNull(project, nameof(project));
-            var repository = UnitOfWork.GetAsyncRepository<Project>();
-            int count = await repository
-                .GetCountByCriteriaAsync(prj => prj.Id != project.Id
-                    && prj.ParentId == project.ParentId
-                    && prj.Name == project.Name);
-            return count > 0;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا پروژه انتخاب شده توسط رکوردهای اطلاعاتی دیگر
-        /// در حال استفاده است یا نه
-        /// </summary>
-        /// <param name="projectId">شناسه یکتای یکی از پروژه های موجود</param>
-        /// <returns>در حالتی که پروژه مشخص شده در حال استفاده باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
+        /// <inheritdoc/>
         public async Task<bool> IsUsedProjectAsync(int projectId)
         {
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var articles = await repository
                 .GetByCriteriaAsync(art => art.Project.Id == projectId);
-            return (articles.Count != 0);
+            return articles.Count != 0;
         }
 
         /// <inheritdoc/>
@@ -253,56 +165,49 @@ namespace SPPC.Tadbir.Persistence
             var accProjectRepository = UnitOfWork.GetAsyncRepository<AccountProject>();
             int relatedAccounts = await accProjectRepository.GetCountByCriteriaAsync(
                 ap => ap.ProjectId == projectId);
-            return (relatedAccounts > 0);
+            return relatedAccounts > 0;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا پروژه انتخاب شده دارای زیرمجموعه هست یا نه
-        /// </summary>
-        /// <param name="projectId">شناسه یکتای یکی از پروژه های موجود</param>
-        /// <returns>در حالتی که پروژه مشخص شده دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
-        public async Task<bool?> HasChildrenAsync(int projectId)
+        #region Common TreeEntity Operations
+
+        /// <inheritdoc/>
+        public async Task<ProjectViewModel> GetNewChildProjectAsync(int? parentId)
         {
-            bool? hasChildren = null;
-            var repository = UnitOfWork.GetAsyncRepository<Project>();
-            var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
-            if (project != null)
-            {
-                hasChildren = project.Children.Count > 0;
-            }
-
-            return hasChildren;
+            return await _treeUtility.GetNewChildItemAsync(parentId);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، کد کامل پروژه با شناسه داده شده را برمی گرداند
-        /// </summary>
-        /// <param name="projectId">شناسه دیتابیسی یکی از پروژه های موجود</param>
-        /// <returns>اگر پروژه با شناسه داده شده وجود نداشته باشد مقدار خالی
-        /// و در غیر این صورت کد کامل را برمی گرداند</returns>
+        /// <inheritdoc/>
         public async Task<string> GetProjectFullCodeAsync(int projectId)
         {
-            var repository = UnitOfWork.GetAsyncRepository<Project>();
-            var project = await repository.GetByIDAsync(projectId);
-            if (project == null)
-            {
-                return String.Empty;
-            }
-
-            return project.FullCode;
+            return await _treeUtility.GetItemFullCodeAsync(projectId);
         }
+
+        /// <inheritdoc/>
+        public async Task<bool?> HasChildrenAsync(int projectId)
+        {
+            return await _treeUtility.HasChildrenAsync(projectId);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> IsDuplicateFullCodeAsync(ProjectViewModel project)
+        {
+            return await _treeUtility.IsDuplicateFullCodeAsync(project);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> IsDuplicateNameAsync(ProjectViewModel project)
+        {
+            return await _treeUtility.IsDuplicateNameAsync(project);
+        }
+
+        #endregion
 
         internal override int? EntityType
         {
             get { return (int)EntityTypeId.Project; }
         }
 
-        /// <summary>
-        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
-        /// </summary>
-        /// <param name="projectViewModel">مدل نمایشی شامل آخرین تغییرات</param>
-        /// <param name="project">سطر اطلاعاتی موجود</param>
+        /// <inheritdoc/>
         protected override void UpdateExisting(ProjectViewModel projectViewModel, Project project)
         {
             project.Code = projectViewModel.Code;
@@ -312,11 +217,7 @@ namespace SPPC.Tadbir.Persistence
             project.Description = projectViewModel.Description;
         }
 
-        /// <summary>
-        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
-        /// </summary>
-        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
-        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        /// <inheritdoc/>
         protected override string GetState(Project entity)
         {
             return (entity != null)
@@ -335,18 +236,6 @@ namespace SPPC.Tadbir.Persistence
         private IConfigRepository Config
         {
             get { return _system.Config; }
-        }
-
-        private static string GetNewProjectCode(
-            Project parent, IEnumerable<string> existingCodes, ViewTreeConfig treeConfig)
-        {
-            int childLevel = (parent != null) ? parent.Level + 1 : 0;
-            int codeLength = treeConfig.Levels[childLevel].CodeLength;
-            string format = String.Format("D{0}", codeLength);
-            var maxCode = (long)Math.Pow(10, codeLength) - 1;
-            var lastCode = (existingCodes.Any()) ? Int64.Parse(existingCodes.Max()) : 0;
-            var newCode = Math.Min(lastCode + 1, maxCode);
-            return newCode.ToString(format);
         }
 
         /// <summary>
@@ -378,40 +267,8 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private async Task<IList<string>> GetChildrenCodesAsync(int? parentId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Project>();
-            return await repository
-                .GetEntityQuery()
-                .Where(prj => prj.ParentId == parentId)
-                .Select(prj => prj.Code)
-                .ToListAsync();
-        }
-
-        private ProjectViewModel GetNewChildProject(
-            Project parent, string newCode, ViewTreeConfig treeConfig)
-        {
-            var childProject = new ProjectViewModel()
-            {
-                Code = newCode,
-                ParentId = parent?.Id,
-                FiscalPeriodId = UserContext.FiscalPeriodId,
-                BranchId = UserContext.BranchId
-            };
-            childProject.FullCode = (parent != null)
-                ? parent.FullCode + childProject.Code
-                : childProject.Code;
-            if (parent != null)
-            {
-                childProject.Level = (short)((parent.Level + 1 < treeConfig.MaxDepth)
-                    ? parent.Level + 1
-                    : -1);
-            }
-
-            return childProject;
-        }
-
         private readonly ISystemRepository _system;
         private readonly IRelationRepository _relationRepository;
+        private readonly TreeEntityUtility<Project, ProjectViewModel> _treeUtility;
     }
 }

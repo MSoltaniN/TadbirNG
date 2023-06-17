@@ -40,11 +40,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// شناسه متنی پارامتر که برای یک گزارش باید غیرتکراری باشد
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

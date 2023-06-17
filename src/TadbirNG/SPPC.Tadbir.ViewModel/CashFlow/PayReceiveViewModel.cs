@@ -2,7 +2,7 @@
 
 namespace SPPC.Tadbir.ViewModel.CashFlow
 {
-    public partial class PayReceiveViewModel : IFiscalEntityView
+    public partial class PayReceiveViewModel : IFiscalEntity
     {
         /// <summary>
         /// شناسه دیتابیسی دوره مالی که فرم دریافت یا پرداخت در آن تعریف شده است
@@ -28,7 +28,6 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// مشخص می کند که آیا فرم دریافت/پرداخت مورد نظر تصویب شده است یا نه؟
         /// </summary>
         public bool IsApproved { get; set; }
-
 
         /// <summary>
         /// مشخص می کند که شماره فرمی بعد از این فرم دریافت/پرداخت وجود دارد یا نه

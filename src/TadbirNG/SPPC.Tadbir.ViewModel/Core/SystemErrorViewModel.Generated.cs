@@ -35,11 +35,6 @@ namespace SPPC.Tadbir.ViewModel.Core
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// شناسه دیتابیسی دوره مالی که خطا هنگام کار با آن روی داده است
         /// </summary>
         public int? FiscalPeriodId { get; set; }

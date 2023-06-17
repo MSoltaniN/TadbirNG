@@ -47,11 +47,7 @@ namespace SPPC.Tadbir.Persistence
 <# } #>
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات کلیه <#= entityInfo.PluralName #> را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از <#= entityInfo.PluralName #> تعریف شده</returns>
+        /// <inheritdoc/>
         public async Task<PagedList<<#= entity.Name #>ViewModel>> Get<#= plural #>Async(GridOptions gridOptions)
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
@@ -79,11 +75,7 @@ namespace SPPC.Tadbir.Persistence
             return new PagedList<<#= entity.Name #>ViewModel>(<#= plural.CamelCase() #>, gridOptions);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، <#= entityInfo.SingularName #> با شناسه عددی مشخص شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="<#= camelCase #>Id">شناسه عددی یکی از <#= entityInfo.PluralName #> موجود</param>
-        /// <returns><#= entityInfo.SingularName #> مشخص شده با شناسه عددی</returns>
+        /// <inheritdoc/>
         public async Task<<#= entity.Name #>ViewModel> Get<#= entity.Name #>Async(int <#= camelCase #>Id)
         {
             <#= entity.Name #>ViewModel item = null;
@@ -97,11 +89,7 @@ namespace SPPC.Tadbir.Persistence
             return item;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات یک <#= entityInfo.SingularName #> را ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="<#= camelCase #>"><#= entityInfo.SingularName #> مورد نظر برای ایجاد یا اصلاح</param>
-        /// <returns>اطلاعات نمایشی <#= entityInfo.SingularName #> ایجاد یا اصلاح شده</returns>
+        /// <inheritdoc/>
         public async Task<<#= entity.Name #>ViewModel> Save<#= entity.Name #>Async(<#= entity.Name #>ViewModel <#= camelCase #>)
         {
             Verify.ArgumentNotNull(<#= camelCase #>, nameof(<#= camelCase #>));
@@ -124,10 +112,7 @@ namespace SPPC.Tadbir.Persistence
             return Mapper.Map<<#= entity.Name #>ViewModel>(<#= camelCase #>Model);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، <#= entityInfo.SingularName #> مشخص شده با شناسه عددی را حذف می کند
-        /// </summary>
-        /// <param name="<#= camelCase #>Id">شناسه عددی <#= entityInfo.SingularName #> مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task Delete<#= entity.Name #>Async(int <#= camelCase #>Id)
         {
             var repository = UnitOfWork.GetAsyncRepository<<#= entity.Name #>>();
@@ -138,10 +123,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، <#= entityInfo.PluralName #> مشخص شده با شناسه عددی را حذف می کند
-        /// </summary>
-        /// <param name="<#= camelCase #>Ids">مجموعه ای از شناسه های عددی <#= entityInfo.PluralName #> مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task Delete<#= plural #>Async(IList<int> <#= camelCase #>Ids)
         {
             var repository = UnitOfWork.GetAsyncRepository<<#= entity.Name #>>();
@@ -162,11 +144,7 @@ namespace SPPC.Tadbir.Persistence
             get { return (int?)EntityTypeId.<#= entity.Name #>; }
         }
 
-        /// <summary>
-        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
-        /// </summary>
-        /// <param name="<#= camelCase #>ViewModel">مدل نمایشی شامل آخرین تغییرات</param>
-        /// <param name="<#= camelCase #>">سطر اطلاعاتی موجود</param>
+        /// <inheritdoc/>
         protected override void UpdateExisting(<#= entity.Name #>ViewModel <#= camelCase #>ViewModel, <#= entity.Name #> <#= camelCase #>)
         {
 <#
@@ -178,11 +156,7 @@ foreach(var property in entity.Properties
 <# } #>
         }
 
-        /// <summary>
-        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
-        /// </summary>
-        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
-        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        /// <inheritdoc/>
         protected override string GetState(<#= entity.Name #> entity)
         {
             return String.Empty;

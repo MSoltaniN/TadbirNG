@@ -14,6 +14,16 @@ namespace SPPC.Tadbir.Domain
         int Id { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی موجودیت والد در ساختار درختی
+        /// </summary>
+        int? ParentId { get; set; }
+
+        /// <summary>
+        /// نام موجودیت درختی در این رکورد
+        /// </summary>
+        string Name { get; set; }
+
+        /// <summary>
         /// کد شناسایی جزئی این رکورد در ساختار درختی
         /// </summary>
         string Code { get; set; }

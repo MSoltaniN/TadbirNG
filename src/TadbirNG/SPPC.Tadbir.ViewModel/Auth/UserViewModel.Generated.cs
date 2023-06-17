@@ -27,14 +27,9 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// </summary>
         public UserViewModel()
         {
-            this.UserName = String.Empty;
-            this.Password = String.Empty;
+            UserName = String.Empty;
+            Password = String.Empty;
         }
-
-        /// <summary>
-        /// Gets or sets the unique identifier for this entity.
-        /// </summary>
-        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the login name of this user

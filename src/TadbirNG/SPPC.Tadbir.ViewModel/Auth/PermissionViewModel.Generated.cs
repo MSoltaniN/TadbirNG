@@ -27,8 +27,8 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// </summary>
         public PermissionViewModel()
         {
-            this.Name = String.Empty;
-            this.Description = String.Empty;
+            Name = String.Empty;
+            Description = String.Empty;
         }
 
         /// <summary>

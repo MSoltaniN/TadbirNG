@@ -25,8 +25,8 @@ namespace SPPC.Tadbir.Model.Core
         /// </summary>
         public DocumentStatus()
         {
-            this.Name = String.Empty;
-            this.ModifiedDate = DateTime.Now;
+            Name = String.Empty;
+            ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

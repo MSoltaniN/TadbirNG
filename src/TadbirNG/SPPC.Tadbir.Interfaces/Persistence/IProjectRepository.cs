@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Persistence
         Task<PagedList<ProjectViewModel>> GetProjectsAsync(GridOptions gridOptions);
 
         /// <summary>
-        /// به روش آسنکرون، پروژه با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، پروژه با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="projectId">شناسه عددی یکی از پروژه های موجود</param>
         /// <returns>پروژه مشخص شده با شناسه عددی</returns>
@@ -55,13 +55,13 @@ namespace SPPC.Tadbir.Persistence
         Task<ProjectViewModel> SaveProjectAsync(ProjectViewModel project);
 
         /// <summary>
-        /// به روش آسنکرون، پروژه مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، پروژه مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="projectId">شناسه عددی پروژه مورد نظر برای حذف</param>
         Task DeleteProjectAsync(int projectId);
 
         /// <summary>
-        /// به روش آسنکرون، پروژه های مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، پروژه های مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="projectIds">مجموعه ای از شناسه های عددی پروژه های مورد نظر برای حذف</param>
         Task DeleteProjectsAsync(IList<int> projectIds);

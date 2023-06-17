@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Domain
 {
@@ -106,6 +105,11 @@ namespace SPPC.Tadbir.Domain
         /// حداکثر عمق قابل پشتیبانی برای ساختار درختی مولفه های حساب
         /// </summary>
         public const int MaxAccountTreeLevel = 8;
+
+        /// <summary>
+        /// حداکثر طول مجاز برای عددهای متنی - مورد استفاده در فیلدهای کد و شماره
+        /// </summary>
+        public const int MaxCodeLength = 16;
 
         /// <summary>
         /// قالب پیش فرض برای برچسب های زمانی

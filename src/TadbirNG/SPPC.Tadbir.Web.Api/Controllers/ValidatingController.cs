@@ -89,7 +89,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns>در صورت نبود خطای اعتبارسنجی کد وضعیتی 200 و در غیر این صورت
         /// متن خطا را با کد وضعیتی 400 برای درخواست نامعتبر برمی گرداند</returns>
         protected IActionResult BranchValidationResult<TFiscalView>(TFiscalView item)
-            where TFiscalView : class, IFiscalEntityView
+            where TFiscalView : class, IFiscalEntity
         {
             Verify.ArgumentNotNull(item, nameof(item));
             var currentContext = SecurityContext.User;
