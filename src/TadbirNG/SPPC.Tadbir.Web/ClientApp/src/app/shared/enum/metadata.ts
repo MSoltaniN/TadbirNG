@@ -113,7 +113,7 @@ export const Entities = {
   SysOperationLog: 'SysOperationLog',
   SysOperationLogArchive: 'SysOperationLogArchive',
   OperationLogArchive: 'OperationLogArchive',
-  ProfitLost: 'ProfitLost',
+  ProfitLoss: 'ProfitLoss',
   GroupActionResult: 'GroupActionResult',
   ProfitLossSimple: 'ProfitLossSimple',
   ComparativeProfitLoss: 'ComparativeProfitLoss',
