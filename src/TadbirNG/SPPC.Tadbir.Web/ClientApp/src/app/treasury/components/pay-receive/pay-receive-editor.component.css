@@ -29,7 +29,7 @@ textarea,
   padding: 2px 4px !important;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
   .pr-form-content {
     flex-direction: row;
   }
@@ -58,21 +58,10 @@ textarea,
   .chbx input[type=checkbox] {
     align-self: center !important;
   }
-}
-
-/* @media (min-width: 992px) {
-  .col-md-5ths {
-    width: 20%;
-    float: left;
+  ::ng-deep .acc1 .col-xs-12 {
+    margin-bottom: 15px !important;
   }
 }
-
-@media (min-width: 1200px) {
-  .col-lg-5ths {
-    width: 20%;
-    float: left;
-  }
-} */
 
 .no,.inpt.form-group{
   display: flex;
@@ -117,4 +106,14 @@ p-accordion{
 
 .chbx div{
   align-items: flex-end;
+}
+
+::ng-deep .tRtl .p-selectbutton {
+  direction: ltr;
+  width: fit-content;
+}
+
+::ng-deep .p-selectbutton .p-button {
+  padding: 6px 10px;
+  margin-bottom:3px !important;
 }

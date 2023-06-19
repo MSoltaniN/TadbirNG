@@ -195,20 +195,36 @@
               </div>
             </div>
 
-            <p-accordion [multiple]="true" activeIndex="0">
+            <p-accordion [activeIndex]="0" class="acc1">
               <p-accordionTab header="{{ 'PayReceipt.Details' | translate }}">
-                <div class="col-md-6 sppc-float">
-                    <div class="form-group">
-                        <label for="date" class="control-label">{{
-                        (type == 0? "PayReceipt.Recipients": "PayReceipt.Payers") | translate
-                        }}</label>
-        
-                        <payer-receiver
-                          [type]="this.urlPath == 'payments'? '1': '2'"
-                          (setTotalCashAmount)="setTotalCashAmount($event)"
-                        >
-                        </payer-receiver>
-                    </div>
+                <div class="col-md-6 col-xs-12 sppc-float">
+                  <label for="date" class="control-label" style="padding: 6px 0px;">
+                    {{ (type == 0? "PayReceipt.Recipients": "PayReceipt.Payers") | translate }}
+                  </label>
+  
+                  <payer-receiver
+                    [type]="this.urlPath == 'payments'? '1': '2'"
+                    (setTotalCashAmount)="setTotalCashAmount($event)"
+                  >
+                  </payer-receiver>
+                </div>
+                <div class="col-md-6 col-xs-12 sppc-float">
+                  <p-selectButton [options]="stateOptions"
+                    [(ngModel)]="fundOrBankType"
+                    [ngModelOptions]="{standalone: true}"
+                    optionLabel="label"
+                    optionValue="value"
+                  >
+                    <ng-template let-item pTemplate>
+                      <span>{{ item.label | translate }}</span>
+                    </ng-template>
+                  </p-selectButton>
+
+                  <fund-or-bank
+                    [type]="this.urlPath == 'payments'? '1': '2'"
+                    (setTotalCashAmount)="setTotalCashAmount($event)"
+                  >
+                  </fund-or-bank>
                 </div>
                 <div class="clear"></div>
               </p-accordionTab>
@@ -281,7 +297,7 @@
               </div>
             </div>
 
-            <p-accordion class="form-group" [multiple]="true" [activeIndex]="0">
+            <p-accordion class="form-group">
               <p-accordionTab header="چکها">
                 <pay-recive-cheks [urlPath]="urlPath" style="width: 100%;"></pay-recive-cheks>
               </p-accordionTab>

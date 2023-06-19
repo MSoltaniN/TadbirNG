@@ -74,6 +74,11 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   decimalCount: number = 0;
   currencyRate: number | undefined;
   currencyValue: number;
+  stateOptions: any[] = [{label: 'PayReceipt.Bank', value: 2}, {label: 'PayReceipt.Fund', value: 1}];
+  /**
+   *  1 for cashRegister ,2 for Bank
+   */
+  fundOrBankType: number = 1;
 
   public get urlPath() {
     return this.route.snapshot.url[0].path.toLowerCase();

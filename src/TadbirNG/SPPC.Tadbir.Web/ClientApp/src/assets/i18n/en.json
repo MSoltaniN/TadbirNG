@@ -1332,7 +1332,9 @@
   "PayReceipt": {
     "PayReceipt": "Paymets and Receipts",
     "Name": "Name",
-    "Details": "Details"
+    "Details": "Details",
+    "Fund": "CashRegister",
+    "Bank": "Bank"
   },
   "UserValueFilter": {
     "Title":"فرم انتخاب شرح های تکراری",
