@@ -3948,9 +3948,6 @@
   <data name="InvalidLetterForStringNumber" xml:space="preserve">
     <value>Letters cannot be used for {0}.</value>
   </data>
-  <data name="StringNumberHasFixedLength" xml:space="preserve">
-    <value>{0} can only be {1} digits.</value>
-  </data>
   <data name="Active" xml:space="preserve">
     <value>Active</value>
   </data>
@@ -3964,7 +3961,7 @@
     <value>Value smaller than {0} is not valid for the {1}.</value>
   </data>
   <data name="PayReceiveAccount" xml:space="preserve">
-    <value>Account Article</value>
+    <value>Account article</value>
   </data>
   <data name="CantDeleteDetailEntity" xml:space="preserve">
     <value>This {0} is either confirmed or approved and the {1} data cannot be deleted.</value>
@@ -4004,5 +4001,8 @@
   </data>
   <data name="NotFoundAggregateRows" xml:space="preserve">
     <value>{0} of this {1} has no rows to aggregate with other rows.</value>
+  </data>
+  <data name="InvalidEmptyArticleAction" xml:space="preserve">
+    <value>Action {0} cannot be done on a {1} that has no {2}.</value>
   </data>
 </root>

@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.CashFlow;
@@ -83,7 +81,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات خلاطه طرف حساب با شناسه عددی مشخص شده را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات خلاصه طرف حساب با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountArticleId">شناسه عددی یکی از طرف‌های حساب موجود</param>
         /// <returns>طرف حساب مشخص شده با شناسه عددی</returns>
@@ -181,7 +179,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
             var payReceive = await repository
                 .GetEntityQuery()
-                .Where(pr => pr.Accounts.Any(acc => accountArticleIds.Any(id => id == acc.Id)))
+                .Where(pr => pr.Accounts.Any(
+                    aa => accountArticleIds.Any(id => id == aa.Id)))
                 .SingleOrDefaultAsync();
             if (payReceive != null)
             {
@@ -199,11 +198,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteInvalidRowsAccountArticleAsync(int payReceiveId, int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
-            var articles = repository
+            var articles = await repository
                 .GetEntityQuery()
                 .Where(article => article.PayReceiveId == payReceiveId &&
                     (article.Amount <= Decimal.Zero || article.AccountId == null))
-                .ToArray();
+                .ToArrayAsync();
 
             foreach (var article in articles)
             {
@@ -221,7 +220,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، وجود ردیف های نامعتبر طرف حساب در فرم دریافت/پرداخت داده شده را بررسی می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
-        /// <returns></returns>
+        /// <returns>در صورت وجود ردیف مقدار درست و در غیر این صورت نادرست برمی گرداند</returns>
         public async Task<bool> HasAccountArticleInvalidRowsAsync(int payReceiveId)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
@@ -242,20 +241,16 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
             var aggregatedRows = repository
                 .GetEntityQuery()
-                .Where(article => article.PayReceiveId == payReceiveId && article.AccountId.HasValue)
+                .Where(a => a.PayReceiveId == payReceiveId && a.AccountId.HasValue)
                 .AsEnumerable()
                 .GroupBy(acc => new { acc.AccountId, acc.DetailAccountId, acc.CostCenterId, acc.ProjectId })
-                .Where(articles => articles.Count() > 1)
-                .Select(articles => new PayReceiveAccount
+                .Where(group => group.Count() > 1)
+                .Select(group => new
                 {
-                    Id = articles.Min(article => article.Id),
-                    Amount = articles.Sum(article => article.Amount),
-                    AccountId = articles.Key.AccountId,
-                    DetailAccountId = articles.Key.DetailAccountId,
-                    CostCenterId = articles.Key.CostCenterId,
-                    ProjectId = articles.Key.ProjectId,
+                    Id = group.Min(article => article.Id),
+                    Amount = group.Sum(article => article.Amount),
                     Description = String.Join(" - ",
-                        articles.Select(
+                        group.Select(
                             article => article.Description.Trim()).Where(a => !String.IsNullOrEmpty(a)).ToList()),
                 })
                 .ToArray();
@@ -268,12 +263,12 @@ namespace SPPC.Tadbir.Persistence
                 repository.Update(aggregatedArticle);
 
                 var removedArticles = await repository.GetByCriteriaAsync(
-                    article => article.PayReceiveId == payReceiveId
-                        && article.Id != aggregatedArticle.Id
-                        && article.AccountId == aggregatedArticle.AccountId
-                        && article.DetailAccountId == aggregatedArticle.DetailAccountId
-                        && article.CostCenterId == aggregatedArticle.CostCenterId
-                        && article.ProjectId == aggregatedArticle.ProjectId);
+                    a => a.PayReceiveId == payReceiveId
+                        && a.Id != aggregatedArticle.Id
+                        && a.AccountId == aggregatedArticle.AccountId
+                        && a.DetailAccountId == aggregatedArticle.DetailAccountId
+                        && a.CostCenterId == aggregatedArticle.CostCenterId
+                        && a.ProjectId == aggregatedArticle.ProjectId);
                 foreach (var article in removedArticles)
                 {
                     DisconnectEntity(article);
@@ -291,18 +286,18 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، وجود ردیف برای تجمیع طرف حساب در فرم دریافت/پرداخت داده شده را بررسی می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
-        /// <returns></returns>
+        /// <returns>در صورت وجود ردیف مقدار درست و در غیر این صورت نادرست برمی گرداند</returns>
         public async Task<bool> HasAccountArticlestoAggregateAsync(int payReceiveId)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
-            var aggregateCount = repository
+            var aggregateCount = await repository
                 .GetEntityQuery()
                 .Where(article => article.PayReceiveId == payReceiveId && article.AccountId != null)
                 .GroupBy(acc => new { acc.AccountId, acc.DetailAccountId, acc.CostCenterId, acc.ProjectId })
                 .Where(articles => articles.Count() > 1)
-                .Count();
+                .CountAsync();
 
-            return await Task.Run(() => aggregateCount > 0);
+            return aggregateCount > 0;
         }
 
         internal override int? EntityType

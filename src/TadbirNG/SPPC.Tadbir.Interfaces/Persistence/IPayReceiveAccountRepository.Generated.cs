@@ -28,7 +28,7 @@ namespace SPPC.Tadbir.Persistence
         Task<PayReceiveAccountViewModel> GetAccountArticleAsync(int accountArticleId);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات خلاطه طرف حساب با شناسه عددی مشخص شده را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات خلاصه طرف حساب با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountArticleId">شناسه عددی یکی از طرف‌های حساب موجود</param>
         /// <returns>طرف حساب مشخص شده با شناسه عددی</returns>
@@ -37,11 +37,11 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک طرف حساب را ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="payreceiveaccount">طرف حساب مورد نظر برای ایجاد یا اصلاح</param>
+        /// <param name="accountArticle">طرف حساب مورد نظر برای ایجاد یا اصلاح</param>
         /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param> 
         /// <returns>اطلاعات نمایشی طرف حساب ایجاد یا اصلاح شده</returns>
         Task<PayReceiveAccountViewModel> SaveAccountArticleAsync(
-            PayReceiveAccountViewModel payreceiveaccount, int type);
+            PayReceiveAccountViewModel accountArticle, int type);
 
         /// <summary>
         /// به روش آسنکرون، طرف حساب مشخص شده با شناسه عددی را حذف می کند
@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، فرم دریافت/پرداخت مربوط به شناسه های آرتیکل حساب ورودی را برمی گرداند
         /// </summary>
         /// <param name="accountArticleIds">لیست شناسه های آرتیکل حساب</param>
-        /// <returns>فرم دریافت/پرداخت</returns>
+        /// <returns>فرم دریافت/پرداخت مشخص شده با شناسه عددی</returns>
         Task<PayReceiveViewModel> GetPayReceiveAsync(IList<int> accountArticleIds);
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، وجود ردیف های نامعتبر طرف حساب در فرم دریافت/پرداخت داده شده را بررسی می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
-        /// <returns></returns>
+        /// <returns>در صورت وجود ردیف مقدار درست و در غیر این صورت نادرست برمی گرداند</returns>
         Task<bool> HasAccountArticleInvalidRowsAsync(int payReceiveId);
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، وجود ردیف برای تجمیع طرف حساب در فرم دریافت/پرداخت داده شده را بررسی می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
-        /// <returns></returns>
+        /// <returns>در صورت وجود ردیف مقدار درست و در غیر این صورت نادرست برمی گرداند</returns>
         Task<bool> HasAccountArticlestoAggregateAsync(int payReceiveId);
     }
 }

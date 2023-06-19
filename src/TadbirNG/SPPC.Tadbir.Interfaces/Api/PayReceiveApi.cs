@@ -251,7 +251,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for all account articles in a single payment specified by identifier
         /// </summary>
-        public const string PaymentAccountArticles = "payments/{0}/{";
+        public const string PaymentAccountArticles = "payments/{0}/account-articles";
 
         /// <summary>
         /// API server route URL for all account articles in a single payment specified by identifier
@@ -329,22 +329,22 @@ namespace SPPC.Tadbir.Api
         public const string RemoveReceiptAccountInvalidRowsUrl = "receipts/{payReceiveId:min(1)}/account-articles/remove-Invalid-rows";
 
         /// <summary>
-        /// API client URL for Aggregate account articles a single payment specified by identifier
+        /// API client URL for aggregate account articles a single payment specified by identifier
         /// </summary>
         public const string AggregatePaymentAccountArticleRows = "payments/{0}/account-articles/aggregate-rows";
 
         /// <summary>
-        /// API server route URL for Aggregate account articles a single payment specified by identifier
+        /// API server route URL for aggregate account articles a single payment specified by identifier
         /// </summary>
         public const string AggregatePaymentAccountArticleRowsUrl = "payments/{payReceiveId:min(1)}/account-articles/aggregate-rows";
 
         /// <summary>
-        /// API client URL for Aggregate account articles a single receipt specified by identifier
+        /// API client URL for aggregate account articles a single receipt specified by identifier
         /// </summary>
         public const string AggregateReceiptAccountArticleRows = "receipts/{0}/account-articles/aggregate-rows";
 
         /// <summary>
-        /// API server route URL for Aggregate account articles a single receipt specified by identifier
+        /// API server route URL for aggregate account articles a single receipt specified by identifier
         /// </summary>
         public const string AggregateReceiptAccountArticleRowsUrl = "receipts/{payReceiveId:min(1)}/account-articles/aggregate-rows";
     }

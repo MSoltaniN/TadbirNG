@@ -3951,9 +3951,6 @@
   <data name="InvalidLetterForStringNumber" xml:space="preserve">
     <value>استفاده از حروف برای {0} غیر مجاز می باشد.</value>
   </data>
-  <data name="StringNumberHasFixedLength" xml:space="preserve">
-    <value>طول {0} فقط می تواند {1} رقم باشد.</value>
-  </data>
   <data name="InvalidStringNumber" xml:space="preserve">
     <value>مقدار کوچک‌تر از {0} برای {1} مجاز نمی باشد.</value>
   </data>
@@ -3985,18 +3982,21 @@
     <value>ویرایش طرف حساب</value>
   </data>
   <data name="GroupDeleteAccounts" xml:space="preserve">
-    <value>حذف گروهی طرف های حساب</value>
+    <value>حذف گروهی طرف‌های حساب</value>
   </data>
   <data name="RemoveInvalidRows" xml:space="preserve">
-    <value>حذف ردیف های نامعتبر</value>
+    <value>حذف ردیف‌های نامعتبر</value>
   </data>
   <data name="RowsAggregation" xml:space="preserve">
-    <value>تجمیع ردیف ها</value>
+    <value>تجمیع ردیف‌ها</value>
   </data>
   <data name="NotFoundInvalidRows" xml:space="preserve">
     <value>{0} این {1} هیچ ردیف نامعتبری برای حذف ندارد.</value>
   </data>
   <data name="NotFoundAggregateRows" xml:space="preserve">
     <value>{0} این {1} دارای هیچ ردیفی برای تجمیع با دیگر ردیف‌ها نمی‌باشد.</value>
+  </data>
+  <data name="InvalidEmptyArticleAction" xml:space="preserve">
+    <value>عمل {0} روی {1} بدون {2} امکان پذیر نیست.</value>
   </data>
 </root>

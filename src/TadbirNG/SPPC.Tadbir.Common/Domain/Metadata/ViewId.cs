@@ -135,5 +135,10 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی فرم دریافت 
         /// </summary>
         public const int Receipt = 75;
+
+        /// <summary>
+        /// نمای اطلاعاتی طرف حساب فرم دریافت/پرداخت 
+        /// </summary>
+        public const int PayReceiveAccount = 76;
     }
 }

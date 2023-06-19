@@ -245,6 +245,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، عمل حذف را برای سطر مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
         /// </summary>
         /// <param name="item">شناسه دیتابیسی سطر اطلاعاتی مورد نظر برای حذف</param>
+        /// <param name="entityNameKey">عنوان کلیدی انتیتی برای فرم های با چند حالت انتیتی</param> 
+        /// <returns>پیغام خطای به دست آمده از اعتبارسنجی یا رشته خالی در صورت نبود خطا</returns>
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        protected virtual async Task<string> ValidateDeleteAsync(int item, string entityNameKey)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، عمل حذف را برای سطر مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
+        /// </summary>
+        /// <param name="item">شناسه دیتابیسی سطر اطلاعاتی مورد نظر برای حذف</param>
         /// <returns>نتیجه به دست آمده از اعتبارسنجی یا رشته خالی در صورت نبود خطا</returns>
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected virtual async Task<GroupActionResultViewModel> ValidateDeleteResultAsync(int item)

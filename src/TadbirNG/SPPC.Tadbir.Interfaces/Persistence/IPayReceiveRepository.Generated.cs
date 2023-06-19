@@ -107,5 +107,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
         /// <returns>فرم دریافت/پرداخت جدید</returns>
         Task<PayReceiveViewModel> GetNewPayReceiveAsync(int type);
+
+        /// <summary>
+        /// به روش آسنکرون، بررسی می کند که آیا برای فرم دریافت/پرداخت داده شده
+        /// طرف حساب تعریف شده است یا خیر        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <returns>در صورت وجود آرتیکل حساب مقدار درست و
+        /// در غیر این صورت مقدار نادرست برمی گرداند</returns>
+        Task<bool> HasAccountArticle(int payReceiveId);
     }
 }
