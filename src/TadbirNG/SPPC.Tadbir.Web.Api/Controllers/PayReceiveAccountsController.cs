@@ -56,30 +56,30 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، کلیه آرتیکل های طرف حساب شناسه پرداخت داده شده را برمی گرداند
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت مورد نظر</param>
+        /// <param name="paymentId">شناسه دیتابیسی فرم پرداخت مورد نظر</param>
         /// <returns>فهرست صفحه بندی شده آرتیکل های فرم پرداخت</returns>
-        // GET: api/payments/{payReceiveId:min(1)}/account-articles
+        // GET: api/payments/{paymentId:min(1)}/account-articles
         [HttpGet]
         [Route(PayReceiveApi.PaymentAccountArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Edit)]
-        public async Task<IActionResult> GetPaymentAccountArticlesAsync(int payReceiveId)
+        public async Task<IActionResult> GetPaymentAccountArticlesAsync(int paymentId)
         {
-            var articles = await _accountArticleRepository.GetAccountArticlesAsync(payReceiveId, GridOptions);
+            var articles = await _accountArticleRepository.GetAccountArticlesAsync(paymentId, GridOptions);
             return Json(articles.Items);
         }
 
         /// <summary>
         /// به روش آسنکرون، کلیه آرتیکل های طرف حساب شناسه دریافت داده شده را برمی گرداند
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر</param>
+        /// <param name="receiptId">شناسه دیتابیسی فرم دریافت مورد نظر</param>
         /// <returns>فهرست صفحه بندی شده آرتیکل های فرم دریافت</returns>
-        // GET: api/receipts/{payReceiveId:min(1)}/account-articles
+        // GET: api/receipts/{receiptId:min(1)}/account-articles
         [HttpGet]
         [Route(PayReceiveApi.ReceiptAccountArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Edit)]
-        public async Task<IActionResult> GetReceiptAccountArticlesAsync(int payReceiveId)
+        public async Task<IActionResult> GetReceiptAccountArticlesAsync(int receiptId)
         {
-            var articles = await _accountArticleRepository.GetAccountArticlesAsync(payReceiveId, GridOptions);
+            var articles = await _accountArticleRepository.GetAccountArticlesAsync(receiptId, GridOptions);
             return Json(articles.Items);
         }
 
@@ -116,35 +116,35 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، آرتیکل حساب پرداختی داده شده را ایجاد می کند
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت مورد نظر</param>
+        /// <param name="paymentId">شناسه دیتابیسی فرم پرداخت مورد نظر</param>
         /// <param name="accountArticle">اطلاعات کامل آرتیکل حساب جدید</param>
         /// <returns>اطلاعات آرتیکل حساب بعد از ایجاد در دیتابیس</returns>
-        // POST: api/payments/{payReceiveId:min(1)}/account-articles
+        // POST: api/payments/{paymentId:min(1)}/account-articles
         [HttpPost]
         [Route(PayReceiveApi.PaymentAccountArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Edit)]
         public async Task<IActionResult> PostNewPaymentAccountArticleAsync(
-            int payReceiveId, [FromBody] PayReceiveAccountViewModel accountArticle)
+            int paymentId, [FromBody] PayReceiveAccountViewModel accountArticle)
         {
             return await SaveAccountArticleAsync(
-                accountArticle, payReceiveId, AppStrings.Payment, (int)PayReceiveType.Payment);
+                accountArticle, paymentId, AppStrings.Payment, (int)PayReceiveType.Payment);
         }
 
         /// <summary>
         /// به روش آسنکرون، آرتیکل حساب دریافتی داده شده را ایجاد می کند
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر</param>
+        /// <param name="receiptId">شناسه دیتابیسی فرم دریافت مورد نظر</param>
         /// <param name="accountArticle">اطلاعات کامل آرتیکل حساب جدید</param>
         /// <returns>اطلاعات آرتیکل حساب بعد از ایجاد در دیتابیس</returns>
-        // POST: api/receipts/{payReceiveId:min(1)}/account-articles
+        // POST: api/receipts/{receiptId:min(1)}/account-articles
         [HttpPost]
         [Route(PayReceiveApi.ReceiptAccountArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Edit)]
         public async Task<IActionResult> PostNewReceiptAccountArticleAsync(
-            int payReceiveId, [FromBody] PayReceiveAccountViewModel accountArticle)
+            int receiptId, [FromBody] PayReceiveAccountViewModel accountArticle)
         {
             return await SaveAccountArticleAsync(
-                accountArticle, payReceiveId, AppStrings.Receipt, (int)PayReceiveType.Receipt);
+                accountArticle, receiptId, AppStrings.Receipt, (int)PayReceiveType.Receipt);
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="accountArticleId">شناسه دیتابیسی آرتیکل حساب دریافتی مورد نظر برای اصلاح</param>
         /// <param name="accountArticle">اطلاعات اصلاح شده آرتیکل حساب دریافتی</param>
         /// <returns>اطلاعات آرتیکل حساب دریافتی بعد از اصلاح در دیتابیس</returns>
-        // PUT: api/receipts/account-articles/{payReceiveId:min(1)}
+        // PUT: api/receipts/account-articles/{receiptId:min(1)}
         [HttpPut]
         [Route(PayReceiveApi.ReceiptAccountArticleUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Edit)]
@@ -250,92 +250,92 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، آرتیکل های حساب نامعتبر فرم پرداخت داده شده را - در صورت امکان - حذف می کند
         /// </summary>
-        /// <param name="payReceiveId">شناسه فرم پرداخت مورد نظر</param>
+        /// <param name="paymentId">شناسه فرم پرداخت مورد نظر</param>
         /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // PUT: api/payments/{payReceiveId:min(1)}/account-articles/remove-Invalid-rows
+        // PUT: api/payments/{paymentId:min(1)}/account-articles/remove-Invalid-rows
         [HttpDelete]
         [Route(PayReceiveApi.RemovePaymentAccountInvalidRowsUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Edit)]
-        public async Task<IActionResult> DeleteExistingInvalidPaymentAccountArticlesAsync(int payReceiveId)
+        public async Task<IActionResult> DeleteExistingInvalidPaymentAccountArticlesAsync(int paymentId)
         {
-            var result = await ValidationRemoveInvalidRowsAsync(payReceiveId, AppStrings.Payment);
+            var result = await ValidationRemoveInvalidRowsAsync(paymentId, AppStrings.Payment);
             if(result is BadRequestObjectResult)
             {
                 return result;
             }
 
             await _accountArticleRepository.DeleteInvalidRowsAccountArticleAsync(
-                payReceiveId, (int)PayReceiveType.Payment);
+                paymentId, (int)PayReceiveType.Payment);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
         /// <summary>
         /// به روش آسنکرون، آرتیکل های حساب نامعتبر فرم دریافت داده شده را - در صورت امکان - حذف می کند
         /// </summary>
-        /// <param name="payReceiveId">شناسه فرم دریافت مورد نظر</param>
+        /// <param name="receiptId">شناسه فرم دریافت مورد نظر</param>
         /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // PUT: api/receipts/{payReceiveId:min(1)}/account-articles/remove-Invalid-rows
+        // PUT: api/receipts/{receiptId:min(1)}/account-articles/remove-Invalid-rows
         [HttpDelete]
         [Route(PayReceiveApi.RemoveReceiptAccountInvalidRowsUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Edit)]
-        public async Task<IActionResult> DeleteExistingInvalidReceiptAccountArticlesAsync(int payReceiveId)
+        public async Task<IActionResult> DeleteExistingInvalidReceiptAccountArticlesAsync(int receiptId)
         {
-            var result = await ValidationRemoveInvalidRowsAsync(payReceiveId, AppStrings.Receipt);
+            var result = await ValidationRemoveInvalidRowsAsync(receiptId, AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
             await _accountArticleRepository.DeleteInvalidRowsAccountArticleAsync(
-                payReceiveId, (int)PayReceiveType.Receipt);
+                receiptId, (int)PayReceiveType.Receipt);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
         /// <summary>
         /// به روش آسنکرون، آرتیکل های حساب فرم پرداخت داده شده را - در صورت امکان - تجمیع می کند
         /// </summary>
-        /// <param name="payReceiveId">شناسه فرم پرداخت مورد نظر</param>
+        /// <param name="paymentId">شناسه فرم پرداخت مورد نظر</param>
         /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // PUT: api/payments/{payReceiveId:min(1)}/account-articles/aggregate-rows
+        // PUT: api/payments/{paymentId:min(1)}/account-articles/aggregate-rows
         [HttpPut]
         [Route(PayReceiveApi.AggregatePaymentAccountArticleRowsUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Edit)]
-        public async Task<IActionResult> PutExistingPaymentAccountArticlesAsAggregateAsync(int payReceiveId)
+        public async Task<IActionResult> PutExistingPaymentAccountArticlesAsAggregateAsync(int paymentId)
         {
-            var result = await ValidationAggregateRowsAsync(payReceiveId, AppStrings.Payment);
+            var result = await ValidationAggregateRowsAsync(paymentId, AppStrings.Payment);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
             await _accountArticleRepository.AggregateAccountArticleRowsAsync(
-                payReceiveId, (int)PayReceiveType.Payment);
+                paymentId, (int)PayReceiveType.Payment);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
         /// <summary>
         /// به روش آسنکرون، آرتیکل های حساب فرم دریافت داده شده را - در صورت امکان - تجمیع می کند
         /// </summary>
-        /// <param name="payReceiveId">شناسه فرم دریافت مورد نظر</param>
+        /// <param name="receiptId">شناسه فرم دریافت مورد نظر</param>
         /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // PUT: api/receipts/{payReceiveId:min(1)}/account-articles/aggregate-rows
+        // PUT: api/receipts/{receiptId:min(1)}/account-articles/aggregate-rows
         [HttpPut]
         [Route(PayReceiveApi.AggregateReceiptAccountArticleRowsUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Edit)]
-        public async Task<IActionResult> PutExistingReceiptAccountArticlesAsAggregateAsync(int payReceiveId)
+        public async Task<IActionResult> PutExistingReceiptAccountArticlesAsAggregateAsync(int receiptId)
         {
-            var result = await ValidationAggregateRowsAsync(payReceiveId, AppStrings.Receipt);
+            var result = await ValidationAggregateRowsAsync(receiptId, AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
             await _accountArticleRepository.AggregateAccountArticleRowsAsync(
-                payReceiveId, (int)PayReceiveType.Receipt);
+                receiptId, (int)PayReceiveType.Receipt);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 

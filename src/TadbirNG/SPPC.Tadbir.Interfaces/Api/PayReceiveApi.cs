@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Api
 {
@@ -8,6 +7,8 @@ namespace SPPC.Tadbir.Api
     /// </summary>
     public sealed class PayReceiveApi
     {
+        #region Payment Normal Resources
+
         /// <summary>
         /// API client URL for all payment items
         /// </summary>
@@ -26,27 +27,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for a payment item specified by unique identifier
         /// </summary>
-        public const string PaymentUrl = "payments/{payReceiveId:min(1)}";
-
-        /// <summary>
-        /// API client URL for all receipt items
-        /// </summary>
-        public const string Receipts = "receipts";
-
-        /// <summary>
-        /// API server route URL for all receipt items
-        /// </summary>
-        public const string ReceiptsUrl = "receipts";
-
-        /// <summary>
-        /// API client URL for a receipt item specified by unique identifier
-        /// </summary>
-        public const string Receipt = "receipts/{0}";
-
-        /// <summary>
-        /// API server route URL for a receipt item specified by unique identifier
-        /// </summary>
-        public const string ReceiptUrl = "receipts/{payReceiveId:min(1)}";
+        public const string PaymentUrl = "payments/{paymentId:min(1)}";
 
         /// <summary>
         /// API client URL for confirming a single payment specified by identifier
@@ -56,7 +37,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for confirming a single payment specified by identifier
         /// </summary>
-        public const string ConfirmPaymentUrl = "payments/{payReceiveId:min(1)}/confirm";
+        public const string ConfirmPaymentUrl = "payments/{paymentId:min(1)}/confirm";
 
         /// <summary>
         /// API client URL for undoing confirmation of a single payment specified by identifier
@@ -66,7 +47,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for undoing confirmation of a single payment specified by identifier
         /// </summary>
-        public const string UndoConfirmPaymentUrl = "payments/{payReceiveId:min(1)}/confirm/undo";
+        public const string UndoConfirmPaymentUrl = "payments/{paymentId:min(1)}/confirm/undo";
 
         /// <summary>
         /// API client URL for approving a single payment specified by identifier
@@ -76,7 +57,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for approving a single payment specified by identifier
         /// </summary>
-        public const string ApprovePaymentUrl = "payments/{payReceiveId:min(1)}/approve";
+        public const string ApprovePaymentUrl = "payments/{paymentId:min(1)}/approve";
 
         /// <summary>
         /// API client URL for undoing approval of a single payment specified by identifier
@@ -86,47 +67,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for undoing approval of a single payment specified by identifier
         /// </summary>
-        public const string UndoApprovePaymentUrl = "payments/{payReceiveId:min(1)}/approve/undo";
-
-        /// <summary>
-        /// API client URL for confirming a single receipt specified by identifier
-        /// </summary>
-        public const string ConfirmReceipt = "receipts/{0}/confirm";
-
-        /// <summary>
-        /// API server route URL for confirming a single receipt specified by identifier
-        /// </summary>
-        public const string ConfirmReceiptUrl = "receipts/{payReceiveId:min(1)}/confirm";
-
-        /// <summary>
-        /// API client URL for undoing confirmation of a single receipt specified by identifier
-        /// </summary>
-        public const string UndoConfirmReceipt = "receipts/{0}/confirm/undo";
-
-        /// <summary>
-        /// API server route URL for undoing confirmation of a single receipt specified by identifier
-        /// </summary>
-        public const string UndoConfirmReceiptUrl = "receipts/{payReceiveId:min(1)}/confirm/undo";
-
-        /// <summary>
-        /// API client URL for approving a single receipt specified by identifier
-        /// </summary>
-        public const string ApproveReceipt = "receipts/{0}/approve";
-
-        /// <summary>
-        /// API server route URL for approving a single receipt specified by identifier
-        /// </summary>
-        public const string ApproveReceiptUrl = "receipts/{payReceiveId:min(1)}/approve";
-
-        /// <summary>
-        /// API client URL for undoing approval of a single receipt specified by identifier
-        /// </summary>
-        public const string UndoApproveReceipt = "receipts/{0}/approve/undo";
-
-        /// <summary>
-        /// API server route URL for undoing approval of a single receipt specified by identifier
-        /// </summary>
-        public const string UndoApproveReceiptUrl = "receipts/{payReceiveId:min(1)}/approve/undo";
+        public const string UndoApprovePaymentUrl = "payments/{paymentId:min(1)}/approve/undo";
 
         /// <summary>
         /// API client URL for a single payment specified by number
@@ -179,6 +120,80 @@ namespace SPPC.Tadbir.Api
         public const string LastPaymentUrl = "payments/last";
 
         /// <summary>
+        /// API client URL for a newly payment initialized
+        /// </summary>
+        public const string NewPayment = "payments/new";
+
+        /// <summary>
+        /// API server route URL for a newly payment initialized
+        /// </summary>
+        public const string NewPaymentUrl = "payments/new";
+
+        #endregion Payment Normal Resources
+
+        #region Receipt Normal Resources
+
+        /// <summary>
+        /// API client URL for all receipt items
+        /// </summary>
+        public const string Receipts = "receipts";
+
+        /// <summary>
+        /// API server route URL for all receipt items
+        /// </summary>
+        public const string ReceiptsUrl = "receipts";
+
+        /// <summary>
+        /// API client URL for a receipt item specified by unique identifier
+        /// </summary>
+        public const string Receipt = "receipts/{0}";
+
+        /// <summary>
+        /// API server route URL for a receipt item specified by unique identifier
+        /// </summary>
+        public const string ReceiptUrl = "receipts/{receiptId:min(1)}";
+
+        /// <summary>
+        /// API client URL for confirming a single receipt specified by identifier
+        /// </summary>
+        public const string ConfirmReceipt = "receipts/{0}/confirm";
+
+        /// <summary>
+        /// API server route URL for confirming a single receipt specified by identifier
+        /// </summary>
+        public const string ConfirmReceiptUrl = "receipts/{receiptId:min(1)}/confirm";
+
+        /// <summary>
+        /// API client URL for undoing confirmation of a single receipt specified by identifier
+        /// </summary>
+        public const string UndoConfirmReceipt = "receipts/{0}/confirm/undo";
+
+        /// <summary>
+        /// API server route URL for undoing confirmation of a single receipt specified by identifier
+        /// </summary>
+        public const string UndoConfirmReceiptUrl = "receipts/{receiptId:min(1)}/confirm/undo";
+
+        /// <summary>
+        /// API client URL for approving a single receipt specified by identifier
+        /// </summary>
+        public const string ApproveReceipt = "receipts/{0}/approve";
+
+        /// <summary>
+        /// API server route URL for approving a single receipt specified by identifier
+        /// </summary>
+        public const string ApproveReceiptUrl = "receipts/{receiptId:min(1)}/approve";
+
+        /// <summary>
+        /// API client URL for undoing approval of a single receipt specified by identifier
+        /// </summary>
+        public const string UndoApproveReceipt = "receipts/{0}/approve/undo";
+
+        /// <summary>
+        /// API server route URL for undoing approval of a single receipt specified by identifier
+        /// </summary>
+        public const string UndoApproveReceiptUrl = "receipts/{receiptId:min(1)}/approve/undo";
+
+        /// <summary>
         /// API client URL for a single receipt specified by number
         /// </summary>
         public const string ReceiptByNo = "receipts/by-no/{0}";
@@ -229,16 +244,6 @@ namespace SPPC.Tadbir.Api
         public const string LastReceiptUrl = "receipts/last";
 
         /// <summary>
-        /// API client URL for a newly payment initialized
-        /// </summary>
-        public const string NewPayment = "payments/new";
-
-        /// <summary>
-        /// API server route URL for a newly payment initialized
-        /// </summary>
-        public const string NewPaymentUrl = "payments/new";
-
-        /// <summary>
         /// API client URL for a newly receipt initialized
         /// </summary>
         public const string NewReceipt = "receipts/new";
@@ -248,6 +253,10 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string NewReceiptUrl = "receipts/new";
 
+        #endregion Receipt Normal Resources
+
+        #region Payment Account Article Resources
+
         /// <summary>
         /// API client URL for all account articles in a single payment specified by identifier
         /// </summary>
@@ -256,17 +265,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for all account articles in a single payment specified by identifier
         /// </summary>
-        public const string PaymentAccountArticlesUrl = "payments/{payReceiveId:min(1)}/account-articles";
-
-        /// <summary>
-        /// API client URL for all account articles in a single receipt specified by identifier
-        /// </summary>
-        public const string ReceiptAccountArticles = "receipts/{0}/account-articles";
-
-        /// <summary>
-        /// API server route URL for all account articles in a single receipt specified by identifier
-        /// </summary>
-        public const string ReceiptAccountArticlesUrl = "receipts/{payReceiveId:min(1)}/account-articles";
+        public const string PaymentAccountArticlesUrl = "payments/{paymentId:min(1)}/account-articles";
 
         /// <summary>
         /// API client URL for a single payment account article specified by identifier
@@ -279,16 +278,6 @@ namespace SPPC.Tadbir.Api
         public const string PaymentAccountArticleUrl = "payments/account-articles/{accountArticleId:min(1)}";
 
         /// <summary>
-        /// API client URL for a single receipt account article specified by identifier
-        /// </summary>
-        public const string ReceiptArticle = "receipts/account-articles/{0}";
-
-        /// <summary>
-        /// API server route URL for a single receipt account article specified by identifier
-        /// </summary>
-        public const string ReceiptAccountArticleUrl = "receipts/account-articles/{accountArticleId:min(1)}";
-
-        /// <summary>
         /// API client URL for all available payment account articles
         /// </summary>
         public const string AllPaymentAccountArticles = "payments/account-articles";
@@ -297,6 +286,50 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all available payment account articles
         /// </summary>
         public const string AllPaymentAccountArticlesUrl = "payments/account-articles";
+
+        /// <summary>
+        /// API client URL for remove invalid account articles a single payment specified by identifier
+        /// </summary>
+        public const string RemovePaymentAccountInvalidRows = "payments/{0}/account-articles/remove-Invalid-rows";
+
+        /// <summary>
+        /// API server route URL for remove invalid account articles a single payment specified by identifier
+        /// </summary>
+        public const string RemovePaymentAccountInvalidRowsUrl = "payments/{paymentId:min(1)}/account-articles/remove-Invalid-rows";
+
+        /// <summary>
+        /// API client URL for aggregate account articles a single payment specified by identifier
+        /// </summary>
+        public const string AggregatePaymentAccountArticleRows = "payments/{0}/account-articles/aggregate-rows";
+
+        /// <summary>
+        /// API server route URL for aggregate account articles a single payment specified by identifier
+        /// </summary>
+        public const string AggregatePaymentAccountArticleRowsUrl = "payments/{paymentId:min(1)}/account-articles/aggregate-rows";
+
+        #endregion Payment Account Article Resources
+
+        #region Receipt Account Article Resources
+
+        /// <summary>
+        /// API client URL for all account articles in a single receipt specified by identifier
+        /// </summary>
+        public const string ReceiptAccountArticles = "receipts/{0}/account-articles";
+
+        /// <summary>
+        /// API server route URL for all account articles in a single receipt specified by identifier
+        /// </summary>
+        public const string ReceiptAccountArticlesUrl = "receipts/{receiptId:min(1)}/account-articles";
+
+        /// <summary>
+        /// API client URL for a single receipt account article specified by identifier
+        /// </summary>
+        public const string ReceiptArticle = "receipts/account-articles/{0}";
+
+        /// <summary>
+        /// API server route URL for a single receipt account article specified by identifier
+        /// </summary>
+        public const string ReceiptAccountArticleUrl = "receipts/account-articles/{accountArticleId:min(1)}";
 
         /// <summary>
         /// API client URL for all available receipt account articles
@@ -309,16 +342,6 @@ namespace SPPC.Tadbir.Api
         public const string AllReceiptAccountArticlesUrl = "receipts/account-articles";
 
         /// <summary>
-        /// API client URL for remove invalid account articles a single payment specified by identifier
-        /// </summary>
-        public const string RemovePaymentAccountInvalidRows = "payments/{0}/account-articles/remove-Invalid-rows";
-
-        /// <summary>
-        /// API server route URL for remove invalid account articles a single payment specified by identifier
-        /// </summary>
-        public const string RemovePaymentAccountInvalidRowsUrl = "payments/{payReceiveId:min(1)}/account-articles/remove-Invalid-rows";
-
-        /// <summary>
         /// API client URL for remove invalid account articles a single receipt specified by identifier
         /// </summary>
         public const string RemoveReceiptAccountInvalidRows = "receipts/{0}/account-articles/remove-Invalid-rows";
@@ -326,17 +349,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for remove invalid account articles a single receipt specified by identifier
         /// </summary>
-        public const string RemoveReceiptAccountInvalidRowsUrl = "receipts/{payReceiveId:min(1)}/account-articles/remove-Invalid-rows";
-
-        /// <summary>
-        /// API client URL for aggregate account articles a single payment specified by identifier
-        /// </summary>
-        public const string AggregatePaymentAccountArticleRows = "payments/{0}/account-articles/aggregate-rows";
-
-        /// <summary>
-        /// API server route URL for aggregate account articles a single payment specified by identifier
-        /// </summary>
-        public const string AggregatePaymentAccountArticleRowsUrl = "payments/{payReceiveId:min(1)}/account-articles/aggregate-rows";
+        public const string RemoveReceiptAccountInvalidRowsUrl = "receipts/{receiptId:min(1)}/account-articles/remove-Invalid-rows";
 
         /// <summary>
         /// API client URL for aggregate account articles a single receipt specified by identifier
@@ -346,6 +359,8 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for aggregate account articles a single receipt specified by identifier
         /// </summary>
-        public const string AggregateReceiptAccountArticleRowsUrl = "receipts/{payReceiveId:min(1)}/account-articles/aggregate-rows";
+        public const string AggregateReceiptAccountArticleRowsUrl = "receipts/{receiptId:min(1)}/account-articles/aggregate-rows";
+
+        #endregion Receipt Account Article Resources
     }
 }
