@@ -27,6 +27,7 @@
       "@sppc/config/*": ["app/config/*"],
       "@sppc/organization/*": ["app/organization/*"],
       "@sppc/admin/*": ["app/admin/*"],
+      "@sppc/treasury/*": ["app/treasury/*"],
       "@sppc/env/*": ["environments/*"]
     }
   }

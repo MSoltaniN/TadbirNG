@@ -9,7 +9,23 @@ import { AuthenticationService } from '@sppc/core/services/authentication.servic
 
 @Component({
   selector: 'superuser-password',
-  templateUrl: './superuser-password.component.html'  
+  templateUrl: './superuser-password.component.html',
+  styles: [`
+    @font-face{font-family:'text-security-disc';
+      src:url('../../../../assets/resources/fonts/text-security-disc-compat.woff2') format('woff2')
+    }
+    .password-field {
+      display: flex;
+      margin: 6px 0;
+      align-items: center;
+      gap: 10px;
+    }
+    .password-field input {
+      width:80%;
+      -webkit-text-security: square;
+      font-family:'text-security-disc';
+    }
+  `]
 })
 export class SuperuserPasswordComponent extends DetailComponent implements OnInit {
 
