@@ -30,11 +30,6 @@ namespace SPPC.Tadbir.ViewModel.Config
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// کلید چندزبانه نام مورد نظر برای دسته بندی مقادیر کاربری
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

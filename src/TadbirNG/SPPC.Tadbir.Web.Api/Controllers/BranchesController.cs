@@ -51,9 +51,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات کلیه شعبه های سازمانی قابل دسترسی توسط کاربر جاری را برمی گرداند
         /// </summary>
         /// <returns>لیست صفحه بندی شده شعبه های سازمانی</returns>
-        // GET: api/branches/company/{companyId:min(1)}
+        // GET: api/branches
         [HttpGet]
-        [Route(BranchApi.CompanyBranchesUrl)]
+        [Route(BranchApi.BranchesUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
         public async Task<IActionResult> GetBranchesAsync()
         {

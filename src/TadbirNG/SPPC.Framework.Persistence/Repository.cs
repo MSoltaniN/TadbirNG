@@ -443,6 +443,7 @@ namespace SPPC.Framework.Persistence
                 State = EntityState.Modified
             };
             _dataContext.ChangeTracker.TrackGraph(entity, SetTrackingStatus);
+            entity.ModifiedDate = DateTime.Now;
             _dataSet.Update(entity);
         }
 
@@ -453,6 +454,7 @@ namespace SPPC.Framework.Persistence
         public void UpdateWithTracking(TEntity entity)
         {
             _dataContext.Attach(entity);
+            entity.ModifiedDate = DateTime.Now;
             _dataSet.Update(entity);
         }
 

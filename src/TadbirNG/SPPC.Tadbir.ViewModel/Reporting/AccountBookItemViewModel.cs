@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.ViewModel.Reporting
 {
@@ -10,11 +9,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
     /// </summary>
     public class AccountBookItemViewModel : ViewModelBase
     {
-        /// <summary>
-        /// شناسه دیتابیسی آرتیکل مالی
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// تاریخ سند مالی
         /// </summary>

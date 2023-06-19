@@ -11,8 +11,6 @@
 // ------------------------------------------------------------------------------
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using SPPC.Framework.Values;
 
 namespace SPPC.Tadbir.ViewModel.CashFlow
 {
@@ -27,11 +25,6 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         public UserCashRegisterViewModel()
         {
         }
-
-        /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی کاربری که به صندوق تخصیص یافته است

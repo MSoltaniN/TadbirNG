@@ -25,8 +25,8 @@ namespace SPPC.Tadbir.Model.Core
         /// </summary>
         public DocumentType()
         {
-            this.Name = String.Empty;
-            this.ModifiedDate = DateTime.Now;
+            Name = String.Empty;
+            ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

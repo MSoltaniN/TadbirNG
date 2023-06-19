@@ -33,11 +33,6 @@ namespace SPPC.Tadbir.ViewModel.Check
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// شماره دسته چک
         /// </summary>
         public int? CheckBookNo { get; set; }

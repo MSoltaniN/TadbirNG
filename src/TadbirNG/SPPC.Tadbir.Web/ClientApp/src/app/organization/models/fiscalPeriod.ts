@@ -13,8 +13,7 @@ import { IEntity } from "@sppc/shared/models";
 // ------------------------------------------------------------------------------
 
 
-export interface FiscalPeriod extends IEntity{
-    companyId: number;
+export interface FiscalPeriod extends IEntity {
     id: number;
     name: string;
     startDate: Date;

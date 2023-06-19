@@ -27,16 +27,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public CostCenterViewModel()
         {
-            this.Code = String.Empty;
-            this.FullCode = String.Empty;
-            this.Name = String.Empty;
-            this.Description = String.Empty;
+            Code = String.Empty;
+            FullCode = String.Empty;
+            Name = String.Empty;
+            Description = String.Empty;
         }
-
-        /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
 
         /// <summary>
         /// محدوده دسترسی به مرکز هزینه را در سطح شعبه های موجود در سازمان مشخص می کند. مقادیر مجاز شامل

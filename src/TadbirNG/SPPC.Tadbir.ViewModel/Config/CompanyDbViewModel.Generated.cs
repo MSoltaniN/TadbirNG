@@ -36,11 +36,6 @@ namespace SPPC.Tadbir.ViewModel.Config
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// نام شرکت به صورتی که در لیست شرکت های موجود نمایش داده می شود
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

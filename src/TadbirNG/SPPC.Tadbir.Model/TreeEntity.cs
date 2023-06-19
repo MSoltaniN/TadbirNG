@@ -8,6 +8,11 @@ namespace SPPC.Tadbir.Model
     public class TreeEntity : BaseEntity, ITreeEntity
     {
         /// <summary>
+        /// شناسه دیتابیسی موجودیت والد در ساختار درختی
+        /// </summary>
+        public int? ParentId { get; set; }
+
+        /// <summary>
         /// کد شناسایی برای سطح جاری موجودیت چندسطحی در ساختار درختی
         /// </summary>
         public virtual string Code { get; set; }

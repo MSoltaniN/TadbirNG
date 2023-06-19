@@ -64,7 +64,6 @@ export class BranchFormComponent extends DetailComponent implements OnInit {
     e.preventDefault();
     if (this.editForm.valid) {
       let model: Branch = this.editForm.value;
-      model.companyId = this.CompanyId;
       if (this.isNew) {
         model.level = this.parent ? this.parent.level + 1 : 0;
         model.parentId = this.parent ? this.parent.id : null;

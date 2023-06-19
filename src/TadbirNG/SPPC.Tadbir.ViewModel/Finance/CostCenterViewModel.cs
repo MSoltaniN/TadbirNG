@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using SPPC.Tadbir.Domain;
+﻿using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class CostCenterViewModel : ViewModelBase, IFiscalEntityView, ITreeEntityView
+    public partial class CostCenterViewModel : ViewModelBase, IFiscalEntity, ITreeEntityView
     {
         /// <summary>
         /// شناسه دیتابیسی دوره مالی که این مرکز هزینه در آن تعریف شده است
@@ -20,11 +18,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// شناسه دیتابیسی مرکز هزینه والد در ساختار درختی
         /// </summary>
         public int? ParentId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی شرکتی که اطلاعات مرکز هزینه در آن تعریف شده است
-        /// </summary>
-        public int CompanyId { get; set; }
 
         /// <summary>
         /// تعداد مراکز هزینه زیرمجموعه این مرکز هزینه در ساختار درختی

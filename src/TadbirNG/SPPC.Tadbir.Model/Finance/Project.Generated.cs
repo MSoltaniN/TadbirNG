@@ -26,11 +26,11 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public Project()
         {
-            this.Code = String.Empty;
-            this.FullCode = String.Empty;
-            this.Name = String.Empty;
-            this.Description = String.Empty;
-            this.ModifiedDate = DateTime.Now;
+            Code = String.Empty;
+            FullCode = String.Empty;
+            Name = String.Empty;
+            Description = String.Empty;
+            ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

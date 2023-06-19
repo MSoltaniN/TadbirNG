@@ -1231,3 +1231,12 @@ WHERE OperationSourceID = 15
 -- 1.2.1528
 ALTER TABLE [CashFlow].[SourceApp]
 ALTER COLUMN [Code] NVARCHAR(16) NOT NULL
+
+-- 1.2.1531
+ALTER TABLE [Corporate].[Branch]
+DROP COLUMN [CompanyID]
+GO
+
+ALTER TABLE [Finance].[FiscalPeriod]
+DROP COLUMN [CompanyID]
+GO

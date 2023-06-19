@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -34,14 +34,11 @@ namespace SPPC.Tadbir.Persistence
             _system = system;
             _customerTaxInfo = customerTaxInfo;
             _accountOwner = accountOwner;
+            var fullConfig = _system.Config.GetViewTreeConfigByViewAsync(ViewId.Account).Result;
+            _treeUtility = new TreeEntityUtility<Account, AccountViewModel>(context, fullConfig.Current);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، کلیه حساب هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
-        /// از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
+        /// <inheritdoc/>
         public async Task<PagedList<AccountViewModel>> GetAccountsAsync(GridOptions gridOptions)
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
@@ -61,13 +58,7 @@ namespace SPPC.Tadbir.Persistence
             return new PagedList<AccountViewModel>(accounts, gridOptions);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، کلیه حساب های قابل انتخاب در دوره مالی و شعبه جاری برنامه را
-        /// خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از حساب های قابل انتخاب در دوره مالی و شعبه جاری برنامه</returns>
-        /// <remarks>این متد حسابهای غیرفعال در دوره مالی جاری برنامه را از فهرست خروجی فیلتر می کند</remarks>
+        /// <inheritdoc/>
         public async Task<PagedList<AccountViewModel>> GetAccountsLookupAsync(GridOptions gridOptions)
         {
             var inactiveAccountIds = await GetInactiveAccountIdsAsync();
@@ -79,11 +70,7 @@ namespace SPPC.Tadbir.Persistence
             return new PagedList<AccountViewModel>(accounts, gridOptions);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، حساب با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه عددی یکی از حساب های موجود</param>
-        /// <returns>حساب مشخص شده با شناسه عددی</returns>
+        /// <inheritdoc/>
         public async Task<AccountViewModel> GetAccountAsync(int accountId)
         {
             AccountViewModel item = null;
@@ -102,11 +89,7 @@ namespace SPPC.Tadbir.Persistence
             return item;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، حساب با سایر مشخصات حساب را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public async Task<AccountFullDataViewModel> GetAccountFullDataAsync(int accountId)
         {
             AccountFullDataViewModel item = null;
@@ -141,47 +124,7 @@ namespace SPPC.Tadbir.Persistence
             return item;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، برای حساب والد مشخص شده حساب زیرمجموعه جدیدی پیشنهاد داده و برمی گرداند
-        /// </summary>
-        /// <param name="parentId">شناسه دیتابیسی حساب والد - اگر مقدار نداشته باشد حساب جدید
-        /// در سطح کل پیشنهاد می شود</param>
-        /// <returns>مدل نمایشی کلی حساب </returns>
-        public async Task<AccountFullDataViewModel> GetNewChildAccountAsync(int? parentId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var parent = await repository.GetByIDAsync(parentId ?? 0);
-            if (parentId > 0 && parent == null)
-            {
-                return null;
-            }
-
-            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewId.Account);
-            var treeConfig = fullConfig.Current;
-            if (parent != null && parent.Level + 1 == treeConfig.MaxDepth)
-            {
-                return new AccountFullDataViewModel()
-                {
-                    Account = new AccountViewModel() { Level = -1 },
-                    CustomerTaxInfo = null,
-                    AccountOwner = null
-                };
-            }
-
-            var childrenCodes = await GetChildrenCodesAsync(parentId);
-            string newCode = GetNewAccountCode(parent, childrenCodes, treeConfig);
-            return new AccountFullDataViewModel()
-            {
-                Account = GetNewChildAccount(parent, newCode, treeConfig),
-                CustomerTaxInfo = null,
-                AccountOwner = null
-            };
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری در سطح کل را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه ای از مدل نمایشی خلاصه سرفصل های حسابداری در سطح کل</returns>
+        /// <inheritdoc/>
         public async Task<IList<AccountItemBriefViewModel>> GetLedgerAccountsAsync()
         {
             var accounts = await Repository
@@ -192,11 +135,7 @@ namespace SPPC.Tadbir.Persistence
             return accounts;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری یک گروه حساب را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="groupId">شناسه یکتای دیتابیسی گروه حساب</param>
-        /// <returns>مجموعه ای از مدل نمایشی خلاصه سرفصل های حسابداری یک گروه حساب</returns>
+        /// <inheritdoc/>
         public async Task<IList<AccountItemBriefViewModel>> GetLedgerAccountsByGroupIdAsync(int groupId)
         {
             var accounts = await Repository
@@ -207,11 +146,7 @@ namespace SPPC.Tadbir.Persistence
             return accounts;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری زیرمجموعه یک سرفصل حسابداری مشخص را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه یکی از سرفصل های حسابداری موجود</param>
-        /// <returns>مجموعه ای از سرفصل های حسابداری زیرمجموعه</returns>
+        /// <inheritdoc/>
         public async Task<IList<AccountItemBriefViewModel>> GetAccountChildrenAsync(int accountId)
         {
             var children = await Repository
@@ -222,11 +157,7 @@ namespace SPPC.Tadbir.Persistence
             return children;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات یک حساب را در محل ذخیره ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="accountFullView">اطلاعات مالیاتی طرف حساب مورد نظر برای ایجاد یا اصلاح</param>
-        /// <returns>اطلاعات نمایشی حساب ایجاد یا اصلاح شده</returns>
+        /// <inheritdoc/>
         public async Task<AccountFullDataViewModel> SaveAccountAsync(AccountFullDataViewModel accountFullView)
         {
             Verify.ArgumentNotNull(accountFullView, "accountFullView");
@@ -279,10 +210,7 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        /// <summary>
-        /// به روش آسنکرون، حساب مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
-        /// </summary>
-        /// <param name="accountId">شناسه عددی حساب مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task DeleteAccountAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
@@ -311,10 +239,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، حساب های مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
-        /// </summary>
-        /// <param name="accountIds">مجموعه ای از شناسه های عددی حساب های مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task DeleteAccountsAsync(IList<int> accountIds)
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
@@ -350,47 +275,7 @@ namespace SPPC.Tadbir.Persistence
             await OnEntityGroupDeleted(accountIds);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا کد حساب مورد نظر تکراری است یا نه
-        /// </summary>
-        /// <param name="account">مدل نمایشی حساب مورد نظر</param>
-        /// <returns>اگر کد حساب تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
-        /// <remarks>اگر کد حساب در حسابی با شناسه یکتای همین حساب به کار رفته باشد (مثلاً در حالتی که
-        /// یک حساب در حالت ویرایش است) در این صورت مقدار "نادرست" را برمی گرداند</remarks>
-        public async Task<bool> IsDuplicateFullCodeAsync(AccountViewModel account)
-        {
-            Verify.ArgumentNotNull(account, nameof(account));
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-            int count = await repository
-                .GetCountByCriteriaAsync(acc => acc.Id != account.Id
-                    && acc.FullCode == account.FullCode);
-            return count > 0;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که نام حساب مورد نظر بین حساب های همسطح با حساب والد یکسان تکراری است یا نه
-        /// </summary>
-        /// <param name="account">مدل نمایشی حساب مورد نظر</param>
-        /// <returns>اگر نام حساب تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
-        /// <remarks>اگر نام حساب در حسابی با شناسه یکتای همین حساب به کار رفته باشد (مثلاً در حالتی که
-        /// یک حساب در حالت ویرایش است) در این صورت مقدار "نادرست" را برمی گرداند</remarks>
-        public async Task<bool> IsDuplicateNameAsync(AccountViewModel account)
-        {
-            Verify.ArgumentNotNull(account, nameof(account));
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-            int count = await repository
-                .GetCountByCriteriaAsync(acc => acc.Id != account.Id
-                    && acc.ParentId == account.ParentId
-                    && acc.Name == account.Name);
-            return count > 0;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که حساب مورد نظر زیرمجموعه یک حساب رابط است یا نه
-        /// </summary>
-        /// <param name="account">مدل نمایشی حساب مورد نظر</param>
-        /// <returns>اگر حساب والد از نوع حساب رابط باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" برمی گرداند</returns>
+        /// <inheritdoc/>
         public async Task<bool> IsAssociationChildAccountAsync(AccountViewModel account)
         {
             bool isInvalid = false;
@@ -408,12 +293,7 @@ namespace SPPC.Tadbir.Persistence
             return isInvalid;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص میکند که حساب با شناسه داده شده می تواند زیرمجموعه داشته باشد یا نه
-        /// </summary>
-        /// <param name="accountId">شناسه دیتابیسی حساب مورد نظر</param>
-        /// <returns>اگر حساب مورد نظر امکان داشتن زیرمجموعه را داشته باشد مقدار"درست" و
-        /// در غیر این صورت مقدار "نادرست" را برمیگرداند</returns>
+        /// <inheritdoc/>
         public async Task<bool> CanHaveChildrenAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
@@ -435,13 +315,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده توسط رکوردهای اطلاعاتی دیگر
-        /// در حال استفاده است یا نه
-        /// </summary>
-        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
-        /// <returns>در حالتی که حساب مشخص شده در حال استفاده باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
+        /// <inheritdoc/>
         public async Task<bool> IsUsedAccountAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
@@ -450,13 +324,7 @@ namespace SPPC.Tadbir.Persistence
             return (articleCount > 0);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده توسط ارتباطات موجود برای بردار حساب
-        /// در حال استفاده است یا نه
-        /// </summary>
-        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
-        /// <returns>در حالتی که حساب مشخص شده در حال استفاده باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
+        /// <inheritdoc/>
         public async Task<bool> IsRelatedAccountAsync(int accountId)
         {
             var accDetailRepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
@@ -469,34 +337,10 @@ namespace SPPC.Tadbir.Persistence
             int relatedProjects = await accProjectRepository.GetCountByCriteriaAsync(
                 ap => ap.AccountId == accountId);
 
-            return (relatedDetails > 0 || relatedCenters > 0 || relatedProjects > 0);
+            return relatedDetails > 0 || relatedCenters > 0 || relatedProjects > 0;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده دارای حساب زیرمجموعه هست یا نه
-        /// </summary>
-        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
-        /// <returns>در حالتی که حساب مشخص شده دارای حساب زیرمجموعه باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
-        public async Task<bool?> HasChildrenAsync(int accountId)
-        {
-            bool? hasChildren = null;
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
-            if (account != null)
-            {
-                hasChildren = account.Children.Count > 0;
-            }
-
-            return hasChildren;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مشخص میکند که آیا حساب انتخاب شده در مجموعه حسابی وجود دارد یا نه
-        /// </summary>
-        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
-        /// <returns>در حالتی که حساب مشخص شده در مجموعه حسابی باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
+        /// <inheritdoc/>
         public async Task<bool> IsUsedInAccountCollectionAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
@@ -505,28 +349,7 @@ namespace SPPC.Tadbir.Persistence
             return (accountCount > 0);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، کد کامل حساب با شناسه داده شده را برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
-        /// <returns>اگر حساب با شناسه داده شده وجود نداشته باشد مقدار خالی
-        /// و در غیر این صورت کد کامل را برمی گرداند</returns>
-        public async Task<string> GetAccountFullCodeAsync(int accountId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId);
-            if (account == null)
-            {
-                return String.Empty;
-            }
-
-            return account.FullCode;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد کل حساب های ثبت شده را برمیگرداند
-        /// </summary>
-        /// <returns>تعداد کل حساب ها</returns>
+        /// <inheritdoc/>
         public async Task<int> GetAllAccountsCountAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
@@ -534,16 +357,49 @@ namespace SPPC.Tadbir.Persistence
             return await query.CountAsync();
         }
 
+        #region Common TreeEntity Operations
+
+        /// <inheritdoc/>
+        public async Task<AccountFullDataViewModel> GetNewChildAccountAsync(int? parentId)
+        {
+            var child = await _treeUtility.GetNewChildItemAsync(parentId);
+            return child != null
+                ? new AccountFullDataViewModel() { Account = child }
+                : null;
+        }
+
+        /// <inheritdoc/>
+        public async Task<string> GetAccountFullCodeAsync(int accountId)
+        {
+            return await _treeUtility.GetItemFullCodeAsync(accountId);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> IsDuplicateFullCodeAsync(AccountViewModel account)
+        {
+            return await _treeUtility.IsDuplicateFullCodeAsync(account);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> IsDuplicateNameAsync(AccountViewModel account)
+        {
+            return await _treeUtility.IsDuplicateNameAsync(account);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool?> HasChildrenAsync(int accountId)
+        {
+            return await _treeUtility.HasChildrenAsync(accountId);
+        }
+
+        #endregion
+
         internal override int? EntityType
         {
             get { return (int)EntityTypeId.Account; }
         }
 
-        /// <summary>
-        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
-        /// </summary>
-        /// <param name="accountViewModel">مدل نمایشی شامل آخرین تغییرات</param>
-        /// <param name="account">سطر اطلاعاتی موجود</param>
+        /// <inheritdoc/>
         protected override void UpdateExisting(AccountViewModel accountViewModel, Account account)
         {
             account.GroupId = accountViewModel.GroupId;
@@ -557,11 +413,7 @@ namespace SPPC.Tadbir.Persistence
             account.TurnoverMode = (short)Enum.Parse(typeof(TurnoverMode), accountViewModel.TurnoverMode);
         }
 
-        /// <summary>
-        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
-        /// </summary>
-        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
-        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        /// <inheritdoc/>
         protected override string GetState(Account entity)
         {
             return (entity != null)
@@ -593,18 +445,6 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return parent.GroupId ?? 0;
-        }
-
-        private static string GetNewAccountCode(
-            Account parent, IEnumerable<string> existingCodes, ViewTreeConfig treeConfig)
-        {
-            int childLevel = (parent != null) ? parent.Level + 1 : 0;
-            int codeLength = treeConfig.Levels[childLevel].CodeLength;
-            string format = String.Format("D{0}", codeLength);
-            var maxCode = (long)Math.Pow(10, codeLength) - 1;
-            var lastCode = (existingCodes.Any()) ? Int64.Parse(existingCodes.Max()) : 0;
-            var newCode = Math.Min(lastCode + 1, maxCode);
-            return newCode.ToString(format);
         }
 
         private async Task<bool> IsCommercialDebtorAndCreditorAsync(int accountId)
@@ -652,39 +492,6 @@ namespace SPPC.Tadbir.Persistence
                     await CascadeUpdateFullCodeAsync(child.Id);
                 }
             }
-        }
-
-        private async Task<IList<string>> GetChildrenCodesAsync(int? parentId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-            return await repository
-                .GetEntityQuery()
-                .Where(acc => acc.ParentId == parentId)
-                .Select(acc => acc.Code)
-                .ToListAsync();
-        }
-
-        private AccountViewModel GetNewChildAccount(
-            Account parent, string newCode, ViewTreeConfig treeConfig)
-        {
-            var childAccount = new AccountViewModel()
-            {
-                Code = newCode,
-                ParentId = parent?.Id,
-                FiscalPeriodId = UserContext.FiscalPeriodId,
-                BranchId = UserContext.BranchId
-            };
-            childAccount.FullCode = (parent != null)
-                ? parent.FullCode + childAccount.Code
-                : childAccount.Code;
-            if (parent != null)
-            {
-                childAccount.Level = (short)((parent.Level + 1 < treeConfig.MaxDepth)
-                    ? parent.Level + 1
-                    : -1);
-            }
-
-            return childAccount;
         }
 
         private async Task InsertAccountCurrencyAsync(AccountViewModel accountViewModel, Account account)
@@ -817,5 +624,6 @@ namespace SPPC.Tadbir.Persistence
         private readonly ISystemRepository _system;
         private readonly ICustomerTaxInfoRepository _customerTaxInfo;
         private readonly IAccountOwnerRepository _accountOwner;
+        private readonly TreeEntityUtility<Account, AccountViewModel> _treeUtility;
     }
 }

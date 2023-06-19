@@ -33,11 +33,6 @@ namespace SPPC.Tadbir.ViewModel.Auth
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// نام وسیله مورد استفاده در این جلسه برنامه
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

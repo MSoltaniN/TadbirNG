@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
-using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -32,14 +32,11 @@ namespace SPPC.Tadbir.Persistence
         {
             _system = system;
             _relationRepository = relations;
+            var fullConfig = _system.Config.GetViewTreeConfigByViewAsync(ViewId.CostCenter).Result;
+            _treeUtility = new TreeEntityUtility<CostCenter, CostCenterViewModel>(context, fullConfig.Current);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، کلیه مراکز هزینه ای را که در دوره مالی و شعبه جاری تعریف شده اند،
-        /// از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
+        /// <inheritdoc/>
         public async Task<PagedList<CostCenterViewModel>> GetCostCentersAsync(GridOptions gridOptions)
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
@@ -56,10 +53,7 @@ namespace SPPC.Tadbir.Persistence
             return new PagedList<CostCenterViewModel>(costCenters, gridOptions);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مجموعه ای از مراکز هزینه در سطح اول را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه ای از مدل نمایشی خلاصه مراکز هزینه در سطح اول</returns>
+        /// <inheritdoc/>
         public async Task<IList<AccountItemBriefViewModel>> GetRootCostCentersAsync()
         {
             var costCenters = await Repository
@@ -70,11 +64,7 @@ namespace SPPC.Tadbir.Persistence
             return costCenters;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مرکز هزینه با شناسه عددی مشخص شده را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="costCenterId">شناسه عددی یکی از مراکز هزینه موجود</param>
-        /// <returns>مرکز هزینه مشخص شده با شناسه عددی</returns>
+        /// <inheritdoc/>
         public async Task<CostCenterViewModel> GetCostCenterAsync(int costCenterId)
         {
             CostCenterViewModel item = null;
@@ -88,38 +78,7 @@ namespace SPPC.Tadbir.Persistence
             return item;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، برای مرکز هزینه والد مشخص شده مرکز زیرمجموعه جدیدی پیشنهاد داده و برمی گرداند
-        /// </summary>
-        /// <param name="parentId">شناسه دیتابیسی مرکز هزینه والد - اگر مقدار نداشته باشد مرکز جدید
-        /// در سطح اول پیشنهاد می شود</param>
-        /// <returns>مدل نمایشی مرکز هزینه پیشنهادی</returns>
-        public async Task<CostCenterViewModel> GetNewChildCostCenterAsync(int? parentId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            var parent = await repository.GetByIDAsync(parentId ?? 0);
-            if (parentId > 0 && parent == null)
-            {
-                return null;
-            }
-
-            var fullConfig = await Config.GetViewTreeConfigByViewAsync(ViewId.CostCenter);
-            var treeConfig = fullConfig.Current;
-            if (parent != null && parent.Level + 1 == treeConfig.MaxDepth)
-            {
-                return new CostCenterViewModel() { Level = -1 };
-            }
-
-            var childrenCodes = await GetChildrenCodesAsync(parentId);
-            string newCode = GetNewCostCenterCode(parent, childrenCodes, treeConfig);
-            return GetNewChildCostCenter(parent, newCode, treeConfig);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مراکز هزینه زیرمجموعه را برای مرکز هزینه مشخص شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="costCenterId">شناسه یکی از مراکز هزینه موجود</param>
-        /// <returns>مدل نمایشی مراکز هزینه زیرمجموعه</returns>
+        /// <inheritdoc/>
         public async Task<IList<AccountItemBriefViewModel>> GetCostCenterChildrenAsync(int costCenterId)
         {
             var children = await Repository
@@ -130,11 +89,7 @@ namespace SPPC.Tadbir.Persistence
             return children;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات یک مرکز هزینه را در دیتابیس ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="costCenter">مرکز هزینه مورد نظر برای ایجاد یا اصلاح</param>
-        /// <returns>اطلاعات نمایشی مرکز هزینه ایجاد یا اصلاح شده</returns>
+        /// <inheritdoc/>
         public async Task<CostCenterViewModel> SaveCostCenterAsync(CostCenterViewModel costCenter)
         {
             Verify.ArgumentNotNull(costCenter, "costCenter");
@@ -164,10 +119,7 @@ namespace SPPC.Tadbir.Persistence
             return Mapper.Map<CostCenterViewModel>(costCenterModel);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مرکز هزینه مشخص شده با شناسه عددی را از دیتابیس حذف می کند
-        /// </summary>
-        /// <param name="costCenterId">شناسه عددی مرکز هزینه مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task DeleteCostCenterAsync(int costCenterId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
@@ -179,10 +131,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مراکز مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
-        /// </summary>
-        /// <param name="centerIds">مجموعه ای از شناسه های عددی مراکز مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task DeleteCostCentersAsync(IList<int> centerIds)
         {
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
@@ -201,44 +150,7 @@ namespace SPPC.Tadbir.Persistence
             await OnEntityGroupDeleted(centerIds);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا کد مرکز هزینه مورد نظر تکراری است یا نه
-        /// </summary>
-        /// <param name="costCenter">مدل نمایشی مرکز هزینه مورد نظر</param>
-        /// <returns>اگر کد مرکز هزینه تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
-        public async Task<bool> IsDuplicateFullCodeAsync(CostCenterViewModel costCenter)
-        {
-            Verify.ArgumentNotNull(costCenter, nameof(costCenter));
-            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            int count = await repository
-                .GetCountByCriteriaAsync(cc => cc.Id != costCenter.Id
-                    && cc.FullCode == costCenter.FullCode);
-            return count > 0;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که نام مرکز هزینه مورد نظر بین مراکز همسطح با والد یکسان تکراری است یا نه
-        /// </summary>
-        /// <param name="costCenter">مدل نمایشی مرکز هزینه مورد نظر</param>
-        /// <returns>اگر نام مرکز هزینه تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
-        public async Task<bool> IsDuplicateNameAsync(CostCenterViewModel costCenter)
-        {
-            Verify.ArgumentNotNull(costCenter, nameof(costCenter));
-            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            int count = await repository
-                .GetCountByCriteriaAsync(cc => cc.Id != costCenter.Id
-                    && cc.ParentId == costCenter.ParentId
-                    && cc.Name == costCenter.Name);
-            return count > 0;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا مرکز هزینه انتخاب شده توسط رکوردهای اطلاعاتی دیگر
-        /// در حال استفاده است یا نه
-        /// </summary>
-        /// <param name="costCenterId">شناسه یکتای یکی از مراکز هزینه موجود</param>
-        /// <returns>در حالتی که مرکز هزینه مشخص شده در حال استفاده باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
+        /// <inheritdoc/>
         public async Task<bool> IsUsedCostCenterAsync(int costCenterId)
         {
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
@@ -253,56 +165,49 @@ namespace SPPC.Tadbir.Persistence
             var accCenterRepository = UnitOfWork.GetAsyncRepository<AccountCostCenter>();
             int relatedAccounts = await accCenterRepository.GetCountByCriteriaAsync(
                 ac => ac.CostCenterId == costCenterId);
-            return (relatedAccounts > 0);
+            return relatedAccounts > 0;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا مرکز هزینه انتخاب شده دارای زیرمجموعه هست یا نه
-        /// </summary>
-        /// <param name="costCenterId">شناسه یکتای یکی از مراکز هزینه موجود</param>
-        /// <returns>در حالتی که مرکز هزینه مشخص شده دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
-        public async Task<bool?> HasChildrenAsync(int costCenterId)
+        #region Common TreeEntity Operations
+
+        /// <inheritdoc/>
+        public async Task<CostCenterViewModel> GetNewChildCostCenterAsync(int? parentId)
         {
-            bool? hasChildren = null;
-            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenter = await repository.GetByIDAsync(costCenterId, cc => cc.Children);
-            if (costCenter != null)
-            {
-                hasChildren = costCenter.Children.Count > 0;
-            }
-
-            return hasChildren;
+            return await _treeUtility.GetNewChildItemAsync(parentId);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، کد کامل مرکز هزینه با شناسه داده شده را برمی گرداند
-        /// </summary>
-        /// <param name="costCenterId">شناسه دیتابیسی یکی از مراکز هزینه موجود</param>
-        /// <returns>اگر مرکز هزینه با شناسه داده شده وجود نداشته باشد مقدار خالی
-        /// و در غیر این صورت کد کامل را برمی گرداند</returns>
+        /// <inheritdoc/>
         public async Task<string> GetCostCenterFullCodeAsync(int costCenterId)
         {
-            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenter = await repository.GetByIDAsync(costCenterId);
-            if (costCenter == null)
-            {
-                return String.Empty;
-            }
-
-            return costCenter.FullCode;
+            return await _treeUtility.GetItemFullCodeAsync(costCenterId);
         }
+
+        /// <inheritdoc/>
+        public async Task<bool> IsDuplicateFullCodeAsync(CostCenterViewModel costCenter)
+        {
+            return await _treeUtility.IsDuplicateFullCodeAsync(costCenter);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> IsDuplicateNameAsync(CostCenterViewModel costCenter)
+        {
+            return await _treeUtility.IsDuplicateNameAsync(costCenter);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool?> HasChildrenAsync(int costCenterId)
+        {
+            return await _treeUtility.HasChildrenAsync(costCenterId);
+        }
+
+        #endregion
 
         internal override int? EntityType
         {
             get { return (int)EntityTypeId.CostCenter; }
         }
 
-        /// <summary>
-        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
-        /// </summary>
-        /// <param name="costCenterViewModel">مدل نمایشی شامل آخرین تغییرات</param>
-        /// <param name="costCenter">سطر اطلاعاتی موجود</param>
+        /// <inheritdoc/>
         protected override void UpdateExisting(CostCenterViewModel costCenterViewModel, CostCenter costCenter)
         {
             costCenter.Code = costCenterViewModel.Code;
@@ -312,11 +217,7 @@ namespace SPPC.Tadbir.Persistence
             costCenter.Description = costCenterViewModel.Description;
         }
 
-        /// <summary>
-        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
-        /// </summary>
-        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
-        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        /// <inheritdoc/>
         protected override string GetState(CostCenter entity)
         {
             return (entity != null)
@@ -335,18 +236,6 @@ namespace SPPC.Tadbir.Persistence
         private IConfigRepository Config
         {
             get { return _system.Config; }
-        }
-
-        private static string GetNewCostCenterCode(
-            CostCenter parent, IEnumerable<string> existingCodes, ViewTreeConfig treeConfig)
-        {
-            int childLevel = (parent != null) ? parent.Level + 1 : 0;
-            int codeLength = treeConfig.Levels[childLevel].CodeLength;
-            string format = String.Format("D{0}", codeLength);
-            var maxCode = (long)Math.Pow(10, codeLength) - 1;
-            var lastCode = (existingCodes.Any()) ? Int64.Parse(existingCodes.Max()) : 0;
-            var newCode = Math.Min(lastCode + 1, maxCode);
-            return newCode.ToString(format);
         }
 
         /// <summary>
@@ -378,40 +267,8 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private async Task<IList<string>> GetChildrenCodesAsync(int? parentId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            return await repository
-                .GetEntityQuery()
-                .Where(cc => cc.ParentId == parentId)
-                .Select(cc => cc.Code)
-                .ToListAsync();
-        }
-
-        private CostCenterViewModel GetNewChildCostCenter(
-            CostCenter parent, string newCode, ViewTreeConfig treeConfig)
-        {
-            var childCenter = new CostCenterViewModel()
-            {
-                Code = newCode,
-                ParentId = parent?.Id,
-                FiscalPeriodId = UserContext.FiscalPeriodId,
-                BranchId = UserContext.BranchId
-            };
-            childCenter.FullCode = (parent != null)
-                ? parent.FullCode + childCenter.Code
-                : childCenter.Code;
-            if (parent != null)
-            {
-                childCenter.Level = (short)((parent.Level + 1 < treeConfig.MaxDepth)
-                    ? parent.Level + 1
-                    : -1);
-            }
-
-            return childCenter;
-        }
-
         private readonly ISystemRepository _system;
         private readonly IRelationRepository _relationRepository;
+        private readonly TreeEntityUtility<CostCenter, CostCenterViewModel> _treeUtility;
     }
 }

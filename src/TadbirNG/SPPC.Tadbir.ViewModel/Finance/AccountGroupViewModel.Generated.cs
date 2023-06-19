@@ -32,11 +32,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// نام یا عنوان نمایشی گروه حساب به زبان پیش فرض برنامه
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

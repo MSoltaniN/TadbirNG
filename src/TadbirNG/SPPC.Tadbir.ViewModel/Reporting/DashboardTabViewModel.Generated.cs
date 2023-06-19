@@ -32,11 +32,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// شماره ترتیبی زبانه در داشبورد مورد نظر
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

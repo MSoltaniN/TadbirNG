@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SPPC.Framework.Extensions;
+using SPPC.Framework.Domain;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Finance;
@@ -148,7 +148,7 @@ namespace SPPC.Tadbir.Persistence.Utility
         /// <param name="itemId">شناسه دیتابیسی مولفه حساب مورد نظر</param>
         /// <returns>اطلاعات خوانده شده برای مولفه حساب</returns>
         protected async Task<TModel> GetAccountItemAsync<TModel>(int itemId)
-            where TModel : class, ITreeEntity
+            where TModel : class, IEntity
         {
             var repository = UnitOfWork.GetAsyncRepository<TModel>();
             return await repository.GetByIDAsync(itemId);

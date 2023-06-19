@@ -10,7 +10,6 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
 
@@ -27,11 +26,6 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public RoleWidgetViewModel()
         {
         }
-
-        /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی یکی از نقش های دارای دسترسی به یک ویجت کاربری

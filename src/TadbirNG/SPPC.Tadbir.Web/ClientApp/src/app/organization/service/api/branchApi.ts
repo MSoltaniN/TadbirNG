@@ -15,9 +15,6 @@ import { environment } from "@sppc/env/environment";
 
 export class BranchApi {
 
-    // branches/company/{companyId:min(1)}
-    public static CompanyBranches = environment.BaseUrl + "/branches/company/{0}";
-
     // branches
     public static Branches = environment.BaseUrl + "/branches";
 

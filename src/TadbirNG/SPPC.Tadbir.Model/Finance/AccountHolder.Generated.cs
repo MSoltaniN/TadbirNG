@@ -25,9 +25,9 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public AccountHolder()
         {
-            this.FirstName = String.Empty;
-            this.LastName = String.Empty;
-            this.ModifiedDate = DateTime.Now;
+            FirstName = String.Empty;
+            LastName = String.Empty;
+            ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

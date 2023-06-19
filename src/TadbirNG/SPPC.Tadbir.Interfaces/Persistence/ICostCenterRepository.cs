@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<AccountItemBriefViewModel>> GetRootCostCentersAsync();
 
         /// <summary>
-        /// به روش آسنکرون،مرکز هزینه با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون،مرکز هزینه با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="costCenterId">شناسه عددی یکی از مراکز هزینه موجود</param>
         /// <returns>مرکز هزینه مشخص شده با شناسه عددی</returns>
@@ -55,13 +55,13 @@ namespace SPPC.Tadbir.Persistence
         Task<CostCenterViewModel> SaveCostCenterAsync(CostCenterViewModel costCenter);
 
         /// <summary>
-        /// به روش آسنکرون، مرکز هزینه مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، مرکز هزینه مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="costCenterId">شناسه عددی مرکز هزینه مورد نظر برای حذف</param>
         Task DeleteCostCenterAsync(int costCenterId);
 
         /// <summary>
-        /// به روش آسنکرون، مراکز مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، مراکز مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="centerIds">مجموعه ای از شناسه های عددی مراکز مورد نظر برای حذف</param>
         Task DeleteCostCentersAsync(IList<int> centerIds);

@@ -275,10 +275,7 @@ namespace SPPC.Tadbir.Persistence
                         {
                             var rolePeriods = relatedRepository.GetByCriteria(
                                 rfp => rfp.RoleId == roleId, rfp => rfp.FiscalPeriod);
-                            fiscalPeriods.AddRange(
-                                rolePeriods
-                                    .Select(rfp => rfp.FiscalPeriod)
-                                    .Where(fp => fp.CompanyId == companyId));
+                            fiscalPeriods.AddRange(rolePeriods.Select(rfp => rfp.FiscalPeriod));
                         });
                     fiscalPeriods = fiscalPeriods
                         .Distinct(new EntityEqualityComparer())
@@ -324,10 +321,7 @@ namespace SPPC.Tadbir.Persistence
                         {
                             var roleBranches = relatedRepository.GetByCriteria(
                                 rb => rb.RoleId == roleId, rb => rb.Branch);
-                            branches.AddRange(
-                                roleBranches
-                                    .Select(rb => rb.Branch)
-                                    .Where(br => br.CompanyId == companyId));
+                            branches.AddRange(roleBranches.Select(rb => rb.Branch));
                         });
                     branches = branches
                         .Distinct(new EntityEqualityComparer())
