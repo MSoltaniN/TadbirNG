@@ -329,7 +329,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(pr => pr.FiscalPeriodId == UserContext.FiscalPeriodId
                     && pr.BranchId == UserContext.BranchId
                     && pr.Type == type)
-                .OrderByDescending(pr => pr.Date)
+                .OrderByDescending(pr => pr.Id)
                 .FirstOrDefaultAsync();
             if (lastByDate == null)
             {
@@ -423,12 +423,17 @@ namespace SPPC.Tadbir.Persistence
         private async Task<string> GetNewPayReceiveNumberAsync(int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
-            var lastNumber = await repository
+            var Numbers = repository
                 .GetEntityQuery()
                 .Where(pr => pr.FiscalPeriodId == UserContext.FiscalPeriodId
                     && pr.BranchId == UserContext.BranchId
-                    && pr.Type == type)
-                .MaxAsync(pr => Convert.ToInt64(pr.PayReceiveNo));
+                    && pr.Type == type);
+            Int64 lastNumber = 0;
+            if(Numbers.Any()) 
+            { 
+                lastNumber = await Numbers.MaxAsync(pr => Convert.ToInt64(pr.PayReceiveNo));
+            }
+                
             var maxNumber = (long)Math.Pow(10, 16) - 1;
             return Math.Min(lastNumber + 1, maxNumber).ToString();
         }
