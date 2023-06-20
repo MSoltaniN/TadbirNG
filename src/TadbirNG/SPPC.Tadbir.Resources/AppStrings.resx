@@ -3949,10 +3949,10 @@
     <value>طول شماره فرم </value>
   </data>
   <data name="InvalidLetterForStringNumber" xml:space="preserve">
-    <value>استفاده از حروف برای {0} غیر مجاز می باشد.</value>
+    <value>استفاده از حروف برای {0} غیر مجاز است.</value>
   </data>
   <data name="InvalidStringNumber" xml:space="preserve">
-    <value>مقدار کوچک‌تر از {0} برای {1} مجاز نمی باشد.</value>
+    <value>مقدار کوچک‌تر از {0} برای {1} غیرمجاز است.</value>
   </data>
   <data name="PayReceiveAccount" xml:space="preserve">
     <value>آرتیکل طرف حساب</value>
@@ -3964,21 +3964,21 @@
     <value>این {0} تایید یا تصویب شده و امکان ذخیره اطلاعات {1} وجود ندارد.</value>
   </data>
   <data name="NegativeAmountNotAllowed" xml:space="preserve">
-    <value>مبالغ منفی برای {0} امکان پذیر نمی باشد.</value>
+    <value>مقدار منفی برای مبلغ معتبر نیست.</value>
   </data>
   <data name="ZeroOrNegativeAmountNotAllowed" xml:space="preserve">
-    <value>مبالغ صفر یا منفی برای {0} امکان پذیر نمی باشد.</value>
+    <value>مبالغ صفر یا منفی برای {0} معتبر نیست.</value>
   </data>
   <data name="Amount" xml:space="preserve">
     <value>مبلغ</value>
   </data>
-  <data name="CreateAccount" xml:space="preserve">
+  <data name="CreateAccountLine" xml:space="preserve">
     <value>ایجاد طرف حساب</value>
   </data>
-  <data name="DeleteAccount" xml:space="preserve">
+  <data name="DeleteAccountLine" xml:space="preserve">
     <value>حذف طرف حساب</value>
   </data>
-  <data name="EditAccount" xml:space="preserve">
+  <data name="EditAccountLine" xml:space="preserve">
     <value>ویرایش طرف حساب</value>
   </data>
   <data name="GroupDeleteAccounts" xml:space="preserve">
@@ -3994,9 +3994,12 @@
     <value>{0} این {1} هیچ ردیف نامعتبری برای حذف ندارد.</value>
   </data>
   <data name="NotFoundAggregateRows" xml:space="preserve">
-    <value>{0} این {1} دارای هیچ ردیفی برای تجمیع با دیگر ردیف‌ها نمی‌باشد.</value>
+    <value>{0} این {1} دارای هیچ ردیفی برای تجمیع با دیگر ردیف‌ها نیست.</value>
   </data>
   <data name="InvalidEmptyArticleAction" xml:space="preserve">
     <value>عمل {0} روی {1} بدون {2} امکان پذیر نیست.</value>
+  </data>
+  <data name="GroupDeleteAccountLines" xml:space="preserve">
+    <value>حذف گروهی طرف های حساب</value>
   </data>
 </root>

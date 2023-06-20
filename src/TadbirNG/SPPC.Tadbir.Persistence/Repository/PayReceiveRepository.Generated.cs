@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، فرم دریافت/پرداخت با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="payReceiveId">شناسه عددی یکی از فرم های دریافت یا پرداخت موجود</param>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای دریافت اطلاعات لازم از سمت وب</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شناسه عددی</returns>
         public async Task<PayReceiveViewModel> GetPayReceiveAsync(int payReceiveId, int type = 0,
@@ -104,7 +104,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، فرم دریافت/پرداخت مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه عددی فرم دریافت/پرداخت مورد نظر برای حذف</param>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         public async Task DeletePayReceiveAsync(int payReceiveId, int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
@@ -181,9 +181,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، فرم دریافت/پرداخت با شماره مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="payReceiveNo">شماره فرم دریافت/پرداخت مورد نظر</param>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شماره</returns>
-        public async Task<PayReceiveViewModel> GetPayReceiveNoAsync(string payReceiveNo, int type)
+        public async Task<PayReceiveViewModel> GetPayReceiveByNoAsync(string payReceiveNo, int type)
         {
             var byNo = default(PayReceiveViewModel);
             var viewId = GetViewId((int)type);
@@ -203,7 +203,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات اولین فرم دریافت/پرداخت را از نوع مشخص شده خوانده و برمی گرداند
         /// </summary>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>اولین فرم دریافت/پرداخت</returns>
         public async Task<PayReceiveViewModel> GetFirstPayReceiveAsync(int type, GridOptions gridOptions = null)
@@ -222,7 +222,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات آخرین فرم دریافت/پرداخت را از نوع مشخص شده خوانده و برمی گرداند
         /// </summary>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آخرین فرم دریافت/پرداخت</returns>
         public async Task<PayReceiveViewModel> GetLastPayReceiveAsync(int type, GridOptions gridOptions = null)
@@ -237,10 +237,11 @@ namespace SPPC.Tadbir.Persistence
 
             return last;
         }
+
         /// <summary>
         /// به روش آسنکرون، اطلاعات فرم دریافت/پرداخت بعدی را از نوع مشخص شده خوانده و برمی گرداند
         /// </summary>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <param name="currentNo">شماره فرم دریافت/پرداخت جاری در برنامه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>فرم دریافت/پرداخت بعدی</returns>
@@ -261,7 +262,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات فرم دریافت/پرداخت قبلی را از نوع مشخص شده خوانده و برمی گرداند
         /// </summary>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <param name="currentNo">شماره فرم دریافت/پرداخت جاری در برنامه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>فرم دریافت/پرداخت قبلی</returns>
@@ -282,7 +283,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، نمونه ای جدید از فرم دریافت/پرداخت می سازد
         /// </summary>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <returns>فرم دریافت/پرداخت جدید</returns>
         public async Task<PayReceiveViewModel> GetNewPayReceiveAsync(int type)
         {
@@ -297,7 +298,7 @@ namespace SPPC.Tadbir.Persistence
                 BranchId = UserContext.BranchId,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 Date = await GetLastPayReceiveDateAsync(type),
-                PayReceiveNo = await GetNewPayReceiveNumbersAsync(type),
+                PayReceiveNo = await GetNewPayReceiveNumberAsync(type),
                 Type = (short)type
             };
 
@@ -352,8 +353,8 @@ namespace SPPC.Tadbir.Persistence
                 .Where(criteria)
                 .OrderBy(item => Convert.ToInt64(item.PayReceiveNo))
                 .Select(item => Mapper.Map<PayReceiveViewModel>(item))
-                .ApplyQuickFilter(options)
-                .Apply(options)
+                .ApplyQuickFilter(options, false)
+                .Apply(options, false)
                 .ToListAsync();
         }
 
@@ -419,7 +420,7 @@ namespace SPPC.Tadbir.Persistence
                 : ViewId.Receipt;
         }
 
-        private async Task<string> GetNewPayReceiveNumbersAsync(int type)
+        private async Task<string> GetNewPayReceiveNumberAsync(int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
             var lastNumber = await repository
@@ -450,8 +451,6 @@ namespace SPPC.Tadbir.Persistence
             payReceive.CurrencyId = payReceiveViewModel.CurrencyId;
             payReceive.CurrencyRate = payReceiveViewModel.CurrencyRate;
             payReceive.Description = payReceiveViewModel.Description;
-            payReceive.ModifiedByName = payReceiveViewModel.ModifiedByName;
-            payReceive.ModifiedById = payReceiveViewModel.ModifiedById;
         }
 
         /// <summary>
@@ -463,8 +462,8 @@ namespace SPPC.Tadbir.Persistence
         {
             return entity != null
                 ? $"{AppStrings.PayReceiveNo} : {entity.PayReceiveNo}, " +
-                $"{AppStrings.Reference} : {entity.Reference}, {AppStrings.Date} : {entity.Date}, " +
-                $"{AppStrings.CurrencyRate} : {entity.CurrencyRate}, {AppStrings.Description} : {entity.Description}, "
+                    $"{AppStrings.Reference} : {entity.Reference}, {AppStrings.Date} : {entity.Date}, " +
+                    $"{AppStrings.CurrencyRate} : {entity.CurrencyRate}, {AppStrings.Description} : {entity.Description}, "
                 : String.Empty;
         }
 

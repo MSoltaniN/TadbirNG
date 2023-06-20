@@ -18,7 +18,8 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت طرف‌های حساب را پیاده سازی می کند
     /// </summary>
-    public class PayReceiveAccountRepository : EntityLoggingRepository<PayReceiveAccount, PayReceiveAccountViewModel>, IPayReceiveAccountRepository
+    public class PayReceiveAccountRepository
+        : EntityLoggingRepository<PayReceiveAccount, PayReceiveAccountViewModel>, IPayReceiveAccountRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -46,9 +47,9 @@ namespace SPPC.Tadbir.Persistence
                 var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
                 accountArticles = await repository
                     .GetEntityQuery(account => account.Account,
-                    account => account.CostCenter,
-                    account => account.DetailAccount,
-                    account => account.Project)
+                        account => account.CostCenter,
+                        account => account.DetailAccount,
+                        account => account.Project)
                     .Where(account => account.PayReceiveId == payReceiveId)
                     .Select(account => Mapper.Map<PayReceiveAccountViewModel>(account))
                     .ToListAsync();
@@ -102,7 +103,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک طرف حساب را ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="accountArticle">طرف حساب مورد نظر برای ایجاد یا اصلاح</param>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <returns>اطلاعات نمایشی طرف حساب ایجاد یا اصلاح شده</returns>
         public async Task<PayReceiveAccountViewModel> SaveAccountArticleAsync(
             PayReceiveAccountViewModel accountArticle, int type)
@@ -114,7 +115,7 @@ namespace SPPC.Tadbir.Persistence
             if (accountArticle.Id == 0)
             {
                 accountArticleModel = Mapper.Map<PayReceiveAccount>(accountArticle);
-                await InsertAsync(repository, accountArticleModel, OperationId.CreateAccount, entityTypeId);
+                await InsertAsync(repository, accountArticleModel, OperationId.CreateAccountLine, entityTypeId);
             }
             else
             {
@@ -122,7 +123,7 @@ namespace SPPC.Tadbir.Persistence
                 if (accountArticleModel != null)
                 {
                     await UpdateAsync(
-                        repository, accountArticleModel, accountArticle, OperationId.EditAccount, entityTypeId);
+                        repository, accountArticleModel, accountArticle, OperationId.EditAccountLine, entityTypeId);
                 }
             }
 
@@ -133,7 +134,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، طرف حساب مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="accountArticleId">شناسه عددی طرف حساب مورد نظر برای حذف</param>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param> 
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param> 
         public async Task DeleteAccountArticleAsync(int accountArticleId, int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
@@ -142,7 +143,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 int? entityTypeId = GetEntityTypeId(type);
                 await DeleteAsync(
-                    repository, accountArticle, OperationId.DeleteAccount, entityTypeId);
+                    repository, accountArticle, OperationId.DeleteAccountLine, entityTypeId);
             }
         }
 
@@ -150,7 +151,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، طرف‌های حساب مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="accountArticleIds">مجموعه ای از شناسه های عددی طرف‌های حساب مورد نظر برای حذف</param>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param> 
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param> 
         public async Task DeleteAccountArticlesAsync(IList<int> accountArticleIds, int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
@@ -164,7 +165,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             int entityTypeId = GetEntityTypeId(type);
-            await OnEntityGroupDeleted(accountArticleIds, OperationId.DeleteGroupAccounts, entityTypeId);
+            await OnEntityGroupDeleted(accountArticleIds, OperationId.GroupDeleteAccountLines, entityTypeId);
         }
 
         /// <summary>
@@ -194,7 +195,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، ردیف های نامعتبر طرف حساب در فرم دریافت/پرداخت داده شده را حذف می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         public async Task DeleteInvalidRowsAccountArticleAsync(int payReceiveId, int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
@@ -212,7 +213,9 @@ namespace SPPC.Tadbir.Persistence
 
             await UnitOfWork.CommitAsync();
             int entityTypeId = GetEntityTypeId(type);
-            var articleIds = articles.Select(article => article.Id).ToArray();
+            var articleIds = articles
+                .Select(article => article.Id)
+                .ToArray();
             await OnEntityGroupDeleted(articleIds, OperationId.RemoveInvalidRows, entityTypeId);
         }
 
@@ -235,7 +238,7 @@ namespace SPPC.Tadbir.Persistence
         /// در فرم دریافت/پرداخت داده شده تجمیع می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         public async Task AggregateAccountArticleRowsAsync(int payReceiveId, int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
@@ -249,9 +252,10 @@ namespace SPPC.Tadbir.Persistence
                 {
                     Id = group.Min(article => article.Id),
                     Amount = group.Sum(article => article.Amount),
-                    Description = String.Join(" - ",
-                        group.Select(
-                            article => article.Description.Trim()).Where(a => !String.IsNullOrEmpty(a)).ToList()),
+                    Description = String.Join(" - ", group
+                        .Select(article => article.Description.Trim())
+                        .Where(a => !String.IsNullOrEmpty(a))
+                        .ToList()),
                 })
                 .ToArray();
 
@@ -341,7 +345,7 @@ namespace SPPC.Tadbir.Persistence
 
             return entity != null
                 ? accountFullCode +
-                $"{AppStrings.Amount} : {entity.Amount}, {AppStrings.Description} : {entity.Description}"
+                    $"{AppStrings.Amount} : {entity.Amount}, {AppStrings.Description} : {entity.Description}"
                 : String.Empty;
         }
 

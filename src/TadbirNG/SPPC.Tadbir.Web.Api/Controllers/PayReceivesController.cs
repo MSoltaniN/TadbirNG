@@ -11,7 +11,6 @@ using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.CashFlow;
 using SPPC.Tadbir.Web.Api.Filters;
 
-
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     /// <summary>
@@ -235,8 +234,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 return result;
             }
-            await _repository.SetPayReceiveConfirmationAsync(paymentId, true);
 
+            await _repository.SetPayReceiveConfirmationAsync(paymentId, true);
             return Ok();
         }
 
@@ -412,7 +411,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.View)]
         public async Task<IActionResult> GetPaymentByNoAsync(string payReceiveNo)
         {
-            var payReceiveByNo = await _repository.GetPayReceiveNoAsync(payReceiveNo, (int)PayReceiveType.Payment);
+            var payReceiveByNo = await _repository.GetPayReceiveByNoAsync(payReceiveNo, (int)PayReceiveType.Payment);
             return JsonReadResult(payReceiveByNo);
         }
 
@@ -427,7 +426,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.View)]
         public async Task<IActionResult> GetReceiptByNoAsync(string payReceiveNo)
         {
-            var payReceiveByNo = await _repository.GetPayReceiveNoAsync(payReceiveNo, (int)PayReceiveType.Receipt);
+            var payReceiveByNo = await _repository.GetPayReceiveByNoAsync(payReceiveNo, (int)PayReceiveType.Receipt);
             return JsonReadResult(payReceiveByNo);
         }
 
@@ -640,7 +639,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 var minNumberString = "1";
                 return BadRequestResult(_strings.Format(
-                   AppStrings.InvalidStringNumber, minNumberString,AppStrings.Number));
+                   AppStrings.InvalidStringNumber, minNumberString, AppStrings.Number));
             }
 
             if (await _repository.IsDuplicatePayReceiveNo(payReceive))
@@ -667,7 +666,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var payReceive = await _repository.GetPayReceiveAsync(payReceiveId);
             if (payReceive == null)
             {
-                return BadRequestResult(_strings.Format(AppStrings.ItemByIdNotFound, action,
+                return BadRequestResult(_strings.Format(AppStrings.ItemByIdNotFound, entityNameKey,
                     payReceiveId.ToString()));
             }
 

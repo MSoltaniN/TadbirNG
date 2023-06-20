@@ -359,23 +359,23 @@ namespace SPPC.Tadbir.Domain
         RowsAggregation = 70,
 
         /// <summary>
-        /// کد عملیاتی ایجاد آرتیکل حساب موجودیت عملیات
+        /// کد عملیاتی ایجاد آرتیکل حساب موجودیت عملیاتی
         /// </summary>
-        CreateAccount = 71,
+        CreateAccountLine = 71,
 
         /// <summary>
-        /// کد عملیاتی ویرایش آرتیکل حساب موجودیت عملیات
+        /// کد عملیاتی ویرایش آرتیکل حساب موجودیت عملیاتی
         /// </summary>
-        EditAccount = 72,
+        EditAccountLine = 72,
 
         /// <summary>
-        /// کد عملیاتی حذف آرتیکل حساب موجودیت عملیات
+        /// کد عملیاتی حذف آرتیکل حساب موجودیت عملیاتی
         /// </summary>
-        DeleteAccount = 73,
+        DeleteAccountLine = 73,
 
         /// <summary>
-        /// کد عملیاتی حذف گروهی آرتیکل حساب موجودیت عملیات
+        /// کد عملیاتی حذف گروهی آرتیکل حساب موجودیت عملیاتی
         /// </summary>
-        DeleteGroupAccounts = 74
+        GroupDeleteAccountLines = 74
     }
 }

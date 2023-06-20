@@ -15,7 +15,6 @@ using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Filters;
 
-
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     /// <summary>
@@ -259,7 +258,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Edit)]
         public async Task<IActionResult> DeleteExistingInvalidPaymentAccountArticlesAsync(int paymentId)
         {
-            var result = await ValidationRemoveInvalidRowsAsync(paymentId, AppStrings.Payment);
+            var result = await ValidateRemoveInvalidRowsAsync(paymentId, AppStrings.Payment);
             if(result is BadRequestObjectResult)
             {
                 return result;
@@ -282,7 +281,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Edit)]
         public async Task<IActionResult> DeleteExistingInvalidReceiptAccountArticlesAsync(int receiptId)
         {
-            var result = await ValidationRemoveInvalidRowsAsync(receiptId, AppStrings.Receipt);
+            var result = await ValidateRemoveInvalidRowsAsync(receiptId, AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -305,7 +304,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Edit)]
         public async Task<IActionResult> PutExistingPaymentAccountArticlesAsAggregateAsync(int paymentId)
         {
-            var result = await ValidationAggregateRowsAsync(paymentId, AppStrings.Payment);
+            var result = await ValidateAggregateRowsAsync(paymentId, AppStrings.Payment);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -328,7 +327,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Edit)]
         public async Task<IActionResult> PutExistingReceiptAccountArticlesAsAggregateAsync(int receiptId)
         {
-            var result = await ValidationAggregateRowsAsync(receiptId, AppStrings.Receipt);
+            var result = await ValidateAggregateRowsAsync(receiptId, AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -377,7 +376,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private async Task<IActionResult> AccountArticleValidationResultAsync(
-            PayReceiveViewModel payReceive,PayReceiveAccountViewModel accountArticle, string entityNameKey)
+            PayReceiveViewModel payReceive, PayReceiveAccountViewModel accountArticle, string entityNameKey)
         {
             var result = BranchValidationResult(payReceive);
             if (result is BadRequestObjectResult)
@@ -406,8 +405,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (accountArticle.Amount < Decimal.Zero) 
             {
-                return BadRequestResult(_strings.Format(
-                    AppStrings.NegativeAmountNotAllowed, AppStrings.FullAccount));
+                return BadRequestResult(_strings[AppStrings.NegativeAmountNotAllowed]);
             }
 
             return Ok();
@@ -440,7 +438,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
-        private IActionResult GetBasicValidation(int accountArticleId,int payReceiveId, PayReceiveAccountViewModel accountArticle)
+        private IActionResult GetBasicValidation(
+            int accountArticleId, int payReceiveId, PayReceiveAccountViewModel accountArticle)
         {
             if (accountArticleId == 0)
             {
@@ -537,7 +536,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        private async Task<IActionResult> ValidationRemoveInvalidRowsAsync(int payReceiveId, string entityNameKey)
+        private async Task<IActionResult> ValidateRemoveInvalidRowsAsync(int payReceiveId, string entityNameKey)
         {
             var payReceive = await _repository.GetPayReceiveAsync(payReceiveId);
             if (payReceive == null) 
@@ -561,7 +560,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> ValidationAggregateRowsAsync(int payReceiveId, string entityNameKey)
+        private async Task<IActionResult> ValidateAggregateRowsAsync(int payReceiveId, string entityNameKey)
         {
             var payReceive = await _repository.GetPayReceiveAsync(payReceiveId);
             if (payReceive == null)

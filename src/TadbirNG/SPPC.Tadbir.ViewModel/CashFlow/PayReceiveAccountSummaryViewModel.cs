@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace SPPC.Tadbir.ViewModel.CashFlow
 {
     /// <summary>

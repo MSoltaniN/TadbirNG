@@ -1313,13 +1313,13 @@ INSERT INTO [Metadata].[Operation] ([OperationID], [Name])
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) 
 	VALUES (70, N'RowsAggregation', NULL)
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) 
-	VALUES (71, N'CreateAccount', NULL)
+	VALUES (71, N'CreateAccountLine', NULL)
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) 
-	VALUES (72, N'EditAccount', NULL)
+	VALUES (72, N'EditAccountLine', NULL)
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) 
-	VALUES (73, N'DeleteAccount', NULL)
+	VALUES (73, N'DeleteAccountLine', NULL)
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name]) VALUES 
-	(74, N'GroupDeleteAccounts', NULL)
+	(74, N'GroupDeleteAccountLines', NULL)
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON

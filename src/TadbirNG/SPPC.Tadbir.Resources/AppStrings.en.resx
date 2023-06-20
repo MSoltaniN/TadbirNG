@@ -3970,7 +3970,7 @@
     <value>This {0} is either confirmed or approved and the {1} data cannot be saved.</value>
   </data>
   <data name="NegativeAmountNotAllowed" xml:space="preserve">
-    <value>Negative amount for {0} is not allowed.</value>
+    <value>Negative amount is not allowed.</value>
   </data>
   <data name="ZeroOrNegativeAmountNotAllowed" xml:space="preserve">
     <value>Zero or negative amount for {0} is not allowed.</value>
@@ -3978,13 +3978,13 @@
   <data name="Amount" xml:space="preserve">
     <value>Amount</value>
   </data>
-  <data name="CreateAccount" xml:space="preserve">
+  <data name="CreateAccountLine" xml:space="preserve">
     <value>Create account article</value>
   </data>
-  <data name="DeleteAccount" xml:space="preserve">
+  <data name="DeleteAccountLine" xml:space="preserve">
     <value>Delete account article</value>
   </data>
-  <data name="EditAccount" xml:space="preserve">
+  <data name="EditAccountLine" xml:space="preserve">
     <value>Edit account article</value>
   </data>
   <data name="GroupDeleteAccounts" xml:space="preserve">
@@ -4004,5 +4004,8 @@
   </data>
   <data name="InvalidEmptyArticleAction" xml:space="preserve">
     <value>Action {0} cannot be done on a {1} that has no {2}.</value>
+  </data>
+  <data name="GroupDeleteAccountLines" xml:space="preserve">
+    <value>Group delete account articles</value>
   </data>
 </root>

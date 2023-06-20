@@ -38,7 +38,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک طرف حساب را ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="accountArticle">طرف حساب مورد نظر برای ایجاد یا اصلاح</param>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param> 
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param> 
         /// <returns>اطلاعات نمایشی طرف حساب ایجاد یا اصلاح شده</returns>
         Task<PayReceiveAccountViewModel> SaveAccountArticleAsync(
             PayReceiveAccountViewModel accountArticle, int type);
@@ -47,14 +47,14 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، طرف حساب مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="accountArticleId">شناسه عددی طرف حساب مورد نظر برای حذف</param>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param> 
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param> 
         Task DeleteAccountArticleAsync(int accountArticleId, int type);
 
         /// <summary>
         /// به روش آسنکرون، طرف‌های حساب مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="accountArticleIds">مجموعه ای از شناسه های عددی طرف‌های حساب مورد نظر برای حذف</param>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param> 
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param> 
         Task DeleteAccountArticlesAsync(IList<int> accountArticleIds, int type);
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، ردیف های نامعتبر طرف حساب در فرم دریافت/پرداخت داده شده را حذف می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         Task DeleteInvalidRowsAccountArticleAsync(int payReceiveId, int type);
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace SPPC.Tadbir.Persistence
         /// در فرم دریافت/پرداخت داده شده تجمیع می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         Task AggregateAccountArticleRowsAsync(int payReceiveId, int type);
 
         /// <summary>
