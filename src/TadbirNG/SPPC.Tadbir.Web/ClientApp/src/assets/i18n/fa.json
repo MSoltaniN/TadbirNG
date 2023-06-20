@@ -1205,7 +1205,7 @@
     "Name": "نام نقش",
     "Description": "توضیحات",
     "CompanyRolesTitle": "نقش های دارای دسترسی به '{0}'",
-    "RecordNotFound": "این نقش به هیچ شرکتی دسترسی ندارد."
+    "RecordNotFound": "رکوردی برای نمایش وجود ندارد."
   },
   "RoleFiscalPeriod": {
     "Name": "نام دوره مالی",

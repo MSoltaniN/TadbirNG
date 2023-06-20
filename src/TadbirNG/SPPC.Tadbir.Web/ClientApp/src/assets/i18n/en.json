@@ -1079,6 +1079,12 @@
     "RoleCompaniesTitle": "Companies accessible by '{0}'",
     "RecordNotFound": "This role cannot access any company."
   },
+  "CompanyRoles": {
+    "Name": "Role Name",
+    "Description": "Description",
+    "CompanyRolesTitle": "Roles who can access the '{0}'",
+    "RecordNotFound": "Record Not Found!"
+  },
   "RoleFiscalPeriod": {
     "Name": "Fiscal Period Name",
     "RoleFiscalPeriodTitle": "Fiscal periods accessible by '{0}'"
