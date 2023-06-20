@@ -390,7 +390,8 @@ export function loadEcharts(): any {
     InputDirective,
     TooltipDirective,
     AutoFocusDirective,
-    UserValueFilterComponent
+    UserValueFilterComponent,
+    SppcFullAccountDetailComponent
   ],
 })
 export class SharedModule {

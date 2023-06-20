@@ -459,6 +459,38 @@ export enum SourceAppPermissions {
   All = 127
 }
 
+export enum PaymentPermissions {
+  None = 0,
+  View = 1,
+  Print = 2,
+  Create = 4,
+  Edit = 8,
+  Delete = 16,
+  Navigate = 32,
+  Register = 64,
+  Confirm = 128,
+  UndoConfirm = 256,
+  Approve = 512,
+  UndoApprove = 1024,
+  All = 2047
+}
+
+export enum ReceiptPermissions {
+  None = 0,
+  View = 1,
+  Print = 2,
+  Create = 4,
+  Edit = 8,
+  Delete = 16,
+  Navigate = 32,
+  Register = 64,
+  Confirm = 128,
+  UndoConfirm = 256,
+  Approve = 512,
+  UndoApprove = 1024,
+  All = 2047
+}
+
 @Injectable()
 export class Permissions {
   getPermission(enumeration: string, premissionName: string): number {

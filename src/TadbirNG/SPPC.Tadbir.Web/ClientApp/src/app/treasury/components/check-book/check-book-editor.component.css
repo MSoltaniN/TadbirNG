@@ -80,11 +80,6 @@ textarea,
   display: flex;
   flex-direction: row-reverse;
 }
-.disabled{
-  /* color: #999; */
-  pointer-events: none;
-  opacity: 0.8;
-}
 
 .section-account .acc-code-rtl {
   left: 16px;

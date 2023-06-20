@@ -1,0 +1,119 @@
+::ng-deep .content-header {
+  margin-bottom: 10px;
+}
+.pr-form-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-top: 5px;
+  border: solid 1px #3c8dbc;
+  padding: 7px 10px 0;
+}
+input[type="text"],
+textarea,
+.ddl-type {
+  width: 100%;
+}
+.voucher-status-item {
+  display: inline;
+  margin: 0 10px;
+}
+
+::ng-deep.dialog-padding .k-window-content {
+  padding: 15px !important;
+}
+
+
+.k-button-md.k-icon-button {
+  padding: 2px 4px !important;
+}
+
+@media (min-width: 992px) {
+  .pr-form-content {
+    flex-direction: row;
+  }
+  .col-sm-5ths {
+    width: 32%;
+    float: left;
+  }
+  .col-sm-4-5ths {
+    width: 80%;
+    float: left;
+  }
+  .inf-section{
+    flex-direction: row !important;
+  }
+  .totalCashAmount, .totalCashAmount .form-group{
+    display: flex !important;
+  }
+  .inf-section input{
+    max-width: 150px;
+  }
+  .inf-section, .chbx, .chbx div {
+    display: flex;
+    gap: 2px;
+    align-items: baseline;
+  }
+  .chbx input[type=checkbox] {
+    align-self: center !important;
+  }
+  ::ng-deep .acc1 .col-xs-12 {
+    margin-bottom: 15px !important;
+  }
+}
+
+.no,.inpt.form-group{
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+.no .form-group input{
+  width: 50%;
+}
+p-accordion{
+  width: 100%;
+}
+.totalCashAmount{
+  padding: 5px;
+  margin-top: 10px;
+  justify-content: space-between;
+  width: 100%;
+}
+.totalCashAmount, .totalCashAmount .form-group {
+  gap: 3px;
+  align-items: baseline;
+  margin-bottom: 5px;
+}
+.totalCashAmount .control-label {
+  width:35%
+}
+::ng-deep .p-accordion .p-accordion-content{
+  background: #fff5 !important;
+}
+
+::ng-deep .p-accordion .p-accordion-header .p-accordion-header-link .p-accordion-toggle-icon {
+    margin-left: 0.5rem;
+}
+
+.chbx input[type=checkbox] {
+  align-self: self-start;
+}
+.inf-section{
+  gap: 20px;
+  flex-direction: column;
+}
+
+.chbx div{
+  align-items: flex-end;
+}
+
+::ng-deep .tRtl .p-selectbutton {
+  direction: ltr;
+  width: fit-content;
+}
+
+::ng-deep .p-selectbutton .p-button {
+  padding: 6px 10px;
+  margin-bottom:3px !important;
+}
