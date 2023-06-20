@@ -13,7 +13,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، فرم دریافت/پرداخت با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="payReceiveId">شناسه عددی یکی از فرم های دریافت یا پرداخت موجود</param>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای دریافت اطلاعات لازم از سمت وب</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شناسه عددی</returns>
         Task<PayReceiveViewModel> GetPayReceiveAsync(int payReceiveId, int type = 0,
@@ -30,7 +30,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، فرم دریافت/پرداخت مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="payReceiveId">شناسه عددی فرم دریافت/پرداخت مورد نظر برای حذف</param>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         Task DeletePayReceiveAsync(int payReceiveId, int type);
 
         /// <summary>
@@ -63,12 +63,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceiveNo">شماره فرم دریافت/پرداخت مورد نظر</param>
         /// <param name="type">مشخص می کند که درخواست از نوع پرداختی یا دریافتی می باشد</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شماره</returns>
-        Task<PayReceiveViewModel> GetPayReceiveNoAsync(string payReceiveNo, int type);
+        Task<PayReceiveViewModel> GetPayReceiveByNoAsync(string payReceiveNo, int type);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات اولین فرم دریافت/پرداخت را از نوع مشخص شده خوانده و برمی گرداند
         /// </summary>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>اولین فرم دریافت/پرداخت</returns>
         Task<PayReceiveViewModel> GetFirstPayReceiveAsync(int type, GridOptions gridOptions = null);
@@ -76,7 +76,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات آخرین فرم دریافت/پرداخت را از نوع مشخص شده خوانده و برمی گرداند
         /// </summary>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آخرین فرم دریافت/پرداخت</returns>
         Task<PayReceiveViewModel> GetLastPayReceiveAsync(int type, GridOptions gridOptions = null);
@@ -84,7 +84,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات فرم دریافت/پرداخت بعدی را از نوع مشخص شده خوانده و برمی گرداند
         /// </summary>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <param name="currentNo">شماره فرم دریافت/پرداخت جاری در برنامه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>فرم دریافت/پرداخت بعدی</returns>
@@ -94,7 +94,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات فرم دریافت/پرداخت قبلی را از نوع مشخص شده خوانده و برمی گرداند
         /// </summary>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <param name="currentNo">شماره فرم دریافت/پرداخت جاری در برنامه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>فرم دریافت/پرداخت قبلی</returns>
@@ -104,8 +104,16 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، نمونه ای جدید از فرم دریافت/پرداخت می سازد
         /// </summary>
-        /// <param name="type">مشخص می کند که درخواست جاری از نوع پرداختی یا دریافتی می باشد</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <returns>فرم دریافت/پرداخت جدید</returns>
         Task<PayReceiveViewModel> GetNewPayReceiveAsync(int type);
+
+        /// <summary>
+        /// به روش آسنکرون، بررسی می کند که آیا برای فرم دریافت/پرداخت داده شده
+        /// طرف حساب تعریف شده است یا خیر        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <returns>در صورت وجود آرتیکل حساب مقدار درست و
+        /// در غیر این صورت مقدار نادرست برمی گرداند</returns>
+        Task<bool> HasAccountArticle(int payReceiveId);
     }
 }

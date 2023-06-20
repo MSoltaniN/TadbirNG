@@ -346,6 +346,36 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// کد عملیاتی ثبت مالی
         /// </summary>
-        Register = 68
+        Register = 68,
+
+        /// <summary>
+        /// کد عملیاتی حذف سطرهای نامعتبر
+        /// </summary>
+        RemoveInvalidRows = 69,
+
+        /// <summary>
+        /// کد عملیاتی تجمیع سطرها
+        /// </summary>
+        RowsAggregation = 70,
+
+        /// <summary>
+        /// کد عملیاتی ایجاد آرتیکل حساب موجودیت عملیاتی
+        /// </summary>
+        CreateAccountLine = 71,
+
+        /// <summary>
+        /// کد عملیاتی ویرایش آرتیکل حساب موجودیت عملیاتی
+        /// </summary>
+        EditAccountLine = 72,
+
+        /// <summary>
+        /// کد عملیاتی حذف آرتیکل حساب موجودیت عملیاتی
+        /// </summary>
+        DeleteAccountLine = 73,
+
+        /// <summary>
+        /// کد عملیاتی حذف گروهی آرتیکل حساب موجودیت عملیاتی
+        /// </summary>
+        GroupDeleteAccountLines = 74
     }
 }

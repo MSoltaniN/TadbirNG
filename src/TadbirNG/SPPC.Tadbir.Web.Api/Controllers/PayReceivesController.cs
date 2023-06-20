@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
@@ -15,18 +14,20 @@ using SPPC.Tadbir.Web.Api.Filters;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     /// <summary>
-    /// عملیات سرویس وب برای مدیریت اطلاعات دریافتی ها و پرداختی ها را پیاده سازی می کند
+    /// عملیات سرویس وب برای مدیریت اطلاعات فرم های پایه دریافت و پرداخت را پیاده سازی می کند
     /// </summary>
     [Produces("application/json")]
-    public class PayReceivesController : ValidatingController<PayReceiveViewModel>
+    public partial class PayReceivesController : ValidatingController<PayReceiveViewModel>
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="repository">امکان ذخیره و بازیابی اطلاعات دریافتی ها و پرداختی ها در دیتابیس را فراهم می کند</param>
+        /// <param name="repository">امکان مدیریت اطلاعات فرم های دریافت/پرداخت را فراهم می کند</param>
         /// <param name="strings">امکان خواندن متن های چندزبانه را فراهم می کند</param>
         /// <param name="tokenManager">امکان کار با توکن امنیتی برنامه را فراهم می کند</param>
-        public PayReceivesController(IPayReceiveRepository repository, IStringLocalizer<AppStrings> strings,
+        public PayReceivesController(
+            IPayReceiveRepository repository,
+            IStringLocalizer<AppStrings> strings,
             ITokenManager tokenManager)
             : base(strings, tokenManager)
         {
@@ -44,74 +45,86 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، اطلاعات نمایشی فرم پرداخت مشخص شده با شناسه دیتابیسی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت مورد نظر</param>
+        /// <param name="paymentId">شناسه دیتابیسی فرم پرداخت مورد نظر</param>
         /// <returns>اطلاعات نمایشی فرم پرداخت مورد نظر</returns>
-        // GET: api/payments/{payReceiveId:min(1)}
+        // GET: api/payments/{paymentId:min(1)}
         [HttpGet]
         [Route(PayReceiveApi.PaymentUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.View)]
-        public async Task<IActionResult> GetPaymentAsync(int payReceiveId)
+        public async Task<IActionResult> GetPaymentAsync(int paymentId)
         {
-            var payment = await _repository.GetPayReceiveAsync(payReceiveId, (int)PayReceiveType.Payment
+            var payment = await _repository.GetPayReceiveAsync(paymentId, (int)PayReceiveType.Payment
                 , GridOptions);
+            if(GridOptions.Operation == (int)OperationId.Print 
+                || GridOptions.Operation == (int)OperationId.PrintPreview)
+            {
+                return Ok();
+            }
+
             return JsonReadResult(payment);
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات نمایشی فرم دریافت مشخص شده با شناسه دیتابیسی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر</param>
+        /// <param name="receiptId">شناسه دیتابیسی فرم دریافت مورد نظر</param>
         /// <returns>اطلاعات نمایشی فرم دریافت مورد نظر</returns>
-        // GET: api/receipts/{payReceiveId:min(1)}
+        // GET: api/receipts/{receiptId:min(1)}
         [HttpGet]
         [Route(PayReceiveApi.ReceiptUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.View)]
-        public async Task<IActionResult> GetReceiptAsync(int payReceiveId)
+        public async Task<IActionResult> GetReceiptAsync(int receiptId)
         {
-            var receipt = await _repository.GetPayReceiveAsync(payReceiveId,
+            var receipt = await _repository.GetPayReceiveAsync(receiptId,
                 (int)PayReceiveType.Receipt, GridOptions);
+            if (GridOptions.Operation == (int)OperationId.Print
+                || GridOptions.Operation == (int)OperationId.PrintPreview)
+            {
+                return Ok();
+            }
+
             return JsonReadResult(receipt);
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات نمایشی یک فرم پرداخت جدید را پس از اعتبارسنجی در دیتابیس ذخیره می کند
         /// </summary>
-        /// <param name="payReceive">اطلاعات نمایشی فرم پرداخت جدید</param>
+        /// <param name="payment">اطلاعات نمایشی فرم پرداخت جدید</param>
         /// <returns>اطلاعات نمایشی ذخیره شده برای فرم پرداخت</returns>
         // POST: api/payments
         [HttpPost]
         [Route(PayReceiveApi.PaymentsUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Create)]
-        public async Task<IActionResult> PostNewPaymentAsync([FromBody] PayReceiveViewModel payReceive)
+        public async Task<IActionResult> PostNewPaymentAsync([FromBody] PayReceiveViewModel payment)
         {
-            var result = await PayReceiveValidationResultAsync(payReceive, AppStrings.Payment);
+            var result = await PayReceiveValidationResultAsync(payment, AppStrings.Payment);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            var outputItem = await _repository.SavePayReceiveAsync(payReceive);
+            var outputItem = await _repository.SavePayReceiveAsync(payment);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات نمایشی یک فرم دریافت جدید را پس از اعتبارسنجی در دیتابیس ذخیره می کند
         /// </summary>
-        /// <param name="payReceive">اطلاعات نمایشی فرم دریافت جدید</param>
+        /// <param name="receipt">اطلاعات نمایشی فرم دریافت جدید</param>
         /// <returns>اطلاعات نمایشی ذخیره شده برای فرم دریافت</returns>
         // POST: api/receipts
         [HttpPost]
         [Route(PayReceiveApi.ReceiptsUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Create)]
-        public async Task<IActionResult> PostNewReceiptAsync([FromBody] PayReceiveViewModel payReceive)
+        public async Task<IActionResult> PostNewReceiptAsync([FromBody] PayReceiveViewModel receipt)
         {
-            var result = await PayReceiveValidationResultAsync(payReceive, AppStrings.Receipt);
+            var result = await PayReceiveValidationResultAsync(receipt, AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            var outputItem = await _repository.SavePayReceiveAsync(payReceive);
+            var outputItem = await _repository.SavePayReceiveAsync(receipt);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
@@ -119,23 +132,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک فرم پرداخت موجود را
         /// پس از اعتبارسنجی در دیتابیس ذخیره می کند
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت اصلاح شده</param>
-        /// <param name="payReceive">اطلاعات نمایشی اصلاح شده برای فرم پرداخت</param>
+        /// <param name="paymentId">شناسه دیتابیسی فرم پرداخت اصلاح شده</param>
+        /// <param name="payment">اطلاعات نمایشی اصلاح شده برای فرم پرداخت</param>
         /// <returns>اطلاعات نمایشی ذخیره شده برای فرم پرداخت</returns>
-        // PUT: api/payments/{payReceiveId:min(1)}
+        // PUT: api/payments/{paymentId:min(1)}
         [HttpPut]
         [Route(PayReceiveApi.PaymentUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Edit)]
-        public async Task<IActionResult> PutModifiedPaymentAsync(int payReceiveId,
-            [FromBody] PayReceiveViewModel payReceive)
+        public async Task<IActionResult> PutModifiedPaymentAsync(int paymentId,
+            [FromBody] PayReceiveViewModel payment)
         {
-            var result = await PayReceiveValidationResultAsync(payReceive, AppStrings.Payment, payReceiveId);
+            var result = await PayReceiveValidationResultAsync(payment, AppStrings.Payment, paymentId);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            var outputItem = await _repository.SavePayReceiveAsync(payReceive);
+            var outputItem = await _repository.SavePayReceiveAsync(payment);
             return OkReadResult(outputItem);
         }
 
@@ -143,247 +156,247 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک فرم دریافت موجود را
         /// پس از اعتبارسنجی در دیتابیس ذخیره می کند
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت اصلاح شده</param>
-        /// <param name="payReceive">اطلاعات نمایشی اصلاح شده برای فرم دریافت</param>
+        /// <param name="receiptId">شناسه دیتابیسی فرم دریافت اصلاح شده</param>
+        /// <param name="receipt">اطلاعات نمایشی اصلاح شده برای فرم دریافت</param>
         /// <returns>اطلاعات نمایشی ذخیره شده برای فرم دریافت</returns>
-        // PUT: api/receipts/{payReceiveId:min(1)}
+        // PUT: api/receipts/{receiptId:min(1)}
         [HttpPut]
         [Route(PayReceiveApi.ReceiptUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Edit)]
-        public async Task<IActionResult> PutModifiedReceiptAsync(int payReceiveId,
-            [FromBody] PayReceiveViewModel payReceive)
+        public async Task<IActionResult> PutModifiedReceiptAsync(int receiptId,
+            [FromBody] PayReceiveViewModel receipt)
         {
-            var result = await PayReceiveValidationResultAsync(payReceive, AppStrings.Receipt, payReceiveId);
+            var result = await PayReceiveValidationResultAsync(receipt, AppStrings.Receipt, receiptId);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            var outputItem = await _repository.SavePayReceiveAsync(payReceive);
+            var outputItem = await _repository.SavePayReceiveAsync(receipt);
             return OkReadResult(outputItem);
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فرم پرداخت مشخص شده با شناسه دیتابیسی را پس از اعتبارسنجی از دیتابیس حذف می کند
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت مورد نظر برای حذف</param>
-        // DELETE: api/payments/{payReceiveId:min(1)}
+        /// <param name="paymentId">شناسه دیتابیسی فرم پرداخت مورد نظر برای حذف</param>
+        // DELETE: api/payments/{paymentId:min(1)}
         [HttpDelete]
         [Route(PayReceiveApi.PaymentUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Delete)]
-        public async Task<IActionResult> DeleteExistingPaymentAsync(int payReceiveId)
+        public async Task<IActionResult> DeleteExistingPaymentAsync(int paymentId)
         {
-            string message = await ValidateDeleteAsync(payReceiveId);
+            string message = await ValidateDeleteAsync(paymentId, AppStrings.Payment);
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequestResult(message);
             }
 
-            await _repository.DeletePayReceiveAsync(payReceiveId, (int)PayReceiveType.Payment);
+            await _repository.DeletePayReceiveAsync(paymentId, (int)PayReceiveType.Payment);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فرم دریافت مشخص شده با شناسه دیتابیسی را پس از اعتبارسنجی از دیتابیس حذف می کند
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر برای حذف</param>
-        // DELETE: api/receipts/{payReceiveId:min(1)}
+        /// <param name="receiptId">شناسه دیتابیسی فرم دریافت مورد نظر برای حذف</param>
+        // DELETE: api/receipts/{receiptId:min(1)}
         [HttpDelete]
         [Route(PayReceiveApi.ReceiptUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Delete)]
-        public async Task<IActionResult> DeleteExistingReceiptAsync(int payReceiveId)
+        public async Task<IActionResult> DeleteExistingReceiptAsync(int receiptId)
         {
-            string message = await ValidateDeleteAsync(payReceiveId);
+            string message = await ValidateDeleteAsync(receiptId, AppStrings.Receipt);
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequestResult(message);
             }
 
-            await _repository.DeletePayReceiveAsync(payReceiveId, (int)PayReceiveType.Receipt);
+            await _repository.DeletePayReceiveAsync(receiptId, (int)PayReceiveType.Receipt);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
         /// <summary>
         /// به روش آسنکرون، فرم پرداخت مشخص شده را در حالت تأییدشده قرار می دهد
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت مورد نظر برای تأیید</param>
+        /// <param name="paymentId">شناسه دیتابیسی فرم پرداخت مورد نظر برای تأیید</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
         /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
-        // PUT: api/payments/{payReceiveId:int}/confirm
+        // PUT: api/payments/{paymentId:int}/confirm
         [HttpPut]
         [Route(PayReceiveApi.ConfirmPaymentUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Confirm)]
-        public async Task<IActionResult> PutExistingPaymentAsConfirmed(int payReceiveId)
+        public async Task<IActionResult> PutExistingPaymentAsConfirmed(int paymentId)
         {
-            var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.Confirm,
+            var result = await PayReceiveActionValidationResultAsync(paymentId, AppStrings.Confirm,
                 AppStrings.Payment);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
-            await _repository.SetPayReceiveConfirmationAsync(payReceiveId, true);
 
+            await _repository.SetPayReceiveConfirmationAsync(paymentId, true);
             return Ok();
         }
 
         /// <summary>
         /// به روش آسنکرون، فرم دریافت مشخص شده را در حالت تأییدشده قرار می دهد
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر برای تأیید</param>
+        /// <param name="receiptId">شناسه دیتابیسی فرم دریافت مورد نظر برای تأیید</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
         /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
-        // PUT: api/receipts/{payReceiveId:int}/confirm
+        // PUT: api/receipts/{receiptId:int}/confirm
         [HttpPut]
         [Route(PayReceiveApi.ConfirmReceiptUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Confirm)]
-        public async Task<IActionResult> PutExistingReceiptAsConfirmed(int payReceiveId)
+        public async Task<IActionResult> PutExistingReceiptAsConfirmed(int receiptId)
         {
-            var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.Confirm,
+            var result = await PayReceiveActionValidationResultAsync(receiptId, AppStrings.Confirm,
                 AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            await _repository.SetPayReceiveConfirmationAsync(payReceiveId, true);
+            await _repository.SetPayReceiveConfirmationAsync(receiptId, true);
             return Ok();
         }
 
         /// <summary>
         /// به روش آسنکرون، فرم پرداخت مشخص شده را برگشت از تأیید کرده و وضعیتش را در حالت تأییدنشده قرار می دهد
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت مورد نظر برای برگشت از تأیید</param>
+        /// <param name="paymentId">شناسه دیتابیسی فرم پرداخت مورد نظر برای برگشت از تأیید</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
         /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
-        // PUT: api/payments/{payReceiveId:int}/confirm/undo
+        // PUT: api/payments/{paymentId:int}/confirm/undo
         [HttpPut]
         [Route(PayReceiveApi.UndoConfirmPaymentUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.UndoConfirm)]
-        public async Task<IActionResult> PutExistingPaymentAsUnconfirmed(int payReceiveId)
+        public async Task<IActionResult> PutExistingPaymentAsUnconfirmed(int paymentId)
         {
-            var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.UndoConfirm,
+            var result = await PayReceiveActionValidationResultAsync(paymentId, AppStrings.UndoConfirm,
                 AppStrings.Payment);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            await _repository.SetPayReceiveConfirmationAsync(payReceiveId, false);
+            await _repository.SetPayReceiveConfirmationAsync(paymentId, false);
             return Ok();
         }
 
         /// <summary>
         /// به روش آسنکرون، فرم دریافت مشخص شده را برگشت از تأیید کرده و وضعیتش را در حالت تأییدنشده قرار می دهد
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر برای برگشت از تأیید</param>
+        /// <param name="receiptId">شناسه دیتابیسی فرم دریافت مورد نظر برای برگشت از تأیید</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
         /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
-        // PUT: api/receipts/{payReceiveId:int}/confirm/undo
+        // PUT: api/receipts/{receiptId:int}/confirm/undo
         [HttpPut]
         [Route(PayReceiveApi.UndoConfirmReceiptUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.UndoConfirm)]
-        public async Task<IActionResult> PutExistingReceiptAsUnconfirmed(int payReceiveId)
+        public async Task<IActionResult> PutExistingReceiptAsUnconfirmed(int receiptId)
         {
-            var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.UndoConfirm,
+            var result = await PayReceiveActionValidationResultAsync(receiptId, AppStrings.UndoConfirm,
                 AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            await _repository.SetPayReceiveConfirmationAsync(payReceiveId, false);
+            await _repository.SetPayReceiveConfirmationAsync(receiptId, false);
             return Ok();
         }
 
         /// <summary>
         /// به روش آسنکرون، فرم پرداخت مشخص شده را در حالت تصویب شده قرار می دهد
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت مورد نظر برای تصویب</param>
+        /// <param name="paymentId">شناسه دیتابیسی فرم پرداخت مورد نظر برای تصویب</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
         /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
-        // PUT: api/payments/{payReceiveId:int}/approve
+        // PUT: api/payments/{paymentId:int}/approve
         [HttpPut]
         [Route(PayReceiveApi.ApprovePaymentUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Approve)]
-        public async Task<IActionResult> PutExistingPaymentAsApproved(int payReceiveId)
+        public async Task<IActionResult> PutExistingPaymentAsApproved(int paymentId)
         {
-            var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.Approve,
+            var result = await PayReceiveActionValidationResultAsync(paymentId, AppStrings.Approve,
                 AppStrings.Payment);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            await _repository.SetPayReceiveApprovalAsync(payReceiveId, true);
+            await _repository.SetPayReceiveApprovalAsync(paymentId, true);
             return Ok();
         }
 
         /// <summary>
         /// به روش آسنکرون، فرم دریافت مشخص شده را در حالت تصویب شده قرار می دهد
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر برای تصویب</param>
+        /// <param name="receiptId">شناسه دیتابیسی فرم دریافت مورد نظر برای تصویب</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
         /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
-        // PUT: api/receipts/{payReceiveId:int}/approve
+        // PUT: api/receipts/{receiptId:int}/approve
         [HttpPut]
         [Route(PayReceiveApi.ApproveReceiptUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Approve)]
-        public async Task<IActionResult> PutExistingReceiptAsApproved(int payReceiveId)
+        public async Task<IActionResult> PutExistingReceiptAsApproved(int receiptId)
         {
-            var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.Approve,
+            var result = await PayReceiveActionValidationResultAsync(receiptId, AppStrings.Approve,
                 AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            await _repository.SetPayReceiveApprovalAsync(payReceiveId, true);
+            await _repository.SetPayReceiveApprovalAsync(receiptId, true);
             return Ok();
         }
 
         /// <summary>
         /// به روش آسنکرون، فرم پرداخت مشخص شده را برگشت از تصویب کرده و وضعیتش را در حالت تصویب نشده قرار می دهد
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم پرداخت مورد نظر برای برگشت از تصویب</param>
+        /// <param name="paymentId">شناسه دیتابیسی فرم پرداخت مورد نظر برای برگشت از تصویب</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
         /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
-        // PUT: api/payments/{payReceiveId:int}/approve/undo
+        // PUT: api/payments/{paymentId:int}/approve/undo
         [HttpPut]
         [Route(PayReceiveApi.UndoApprovePaymentUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.UndoApprove)]
-        public async Task<IActionResult> PutExistingPaymentAsUnapproved(int payReceiveId)
+        public async Task<IActionResult> PutExistingPaymentAsUnapproved(int paymentId)
         {
-            var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.UndoApprove,
+            var result = await PayReceiveActionValidationResultAsync(paymentId, AppStrings.UndoApprove,
                 AppStrings.Payment);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            await _repository.SetPayReceiveApprovalAsync(payReceiveId, false);
+            await _repository.SetPayReceiveApprovalAsync(paymentId, false);
             return Ok();
         }
 
         /// <summary>
         /// به روش آسنکرون، فرم دریافت مشخص شده را برگشت از تصویب کرده و وضعیتش را در حالت تصویب نشده قرار می دهد
         /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت مورد نظر برای برگشت از تصویب</param>
+        /// <param name="receiptId">شناسه دیتابیسی فرم دریافت مورد نظر برای برگشت از تصویب</param>
         /// <returns>در صورت وجود خطای اعتبارسنجی، کد وضعیت 400 و
         /// در غیر این صورت، کد وضعیتی 200 (به معنای موفق بودن عملیات) را برمی گرداند</returns>
-        // PUT: api/receipts/{payReceiveId:int}/approve/undo
+        // PUT: api/receipts/{receiptId:int}/approve/undo
         [HttpPut]
         [Route(PayReceiveApi.UndoApproveReceiptUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.UndoApprove)]
-        public async Task<IActionResult> PutExistingReceiptAsUnapproved(int payReceiveId)
+        public async Task<IActionResult> PutExistingReceiptAsUnapproved(int receiptId)
         {
-            var result = await PayReceiveActionValidationResultAsync(payReceiveId, AppStrings.UndoApprove,
+            var result = await PayReceiveActionValidationResultAsync(receiptId, AppStrings.UndoApprove,
                 AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            await _repository.SetPayReceiveApprovalAsync(payReceiveId, false);
+            await _repository.SetPayReceiveApprovalAsync(receiptId, false);
             return Ok();
         }
 
@@ -398,7 +411,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.View)]
         public async Task<IActionResult> GetPaymentByNoAsync(string payReceiveNo)
         {
-            var payReceiveByNo = await _repository.GetPayReceiveNoAsync(payReceiveNo, (int)PayReceiveType.Payment);
+            var payReceiveByNo = await _repository.GetPayReceiveByNoAsync(payReceiveNo, (int)PayReceiveType.Payment);
             return JsonReadResult(payReceiveByNo);
         }
 
@@ -413,7 +426,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.View)]
         public async Task<IActionResult> GetReceiptByNoAsync(string payReceiveNo)
         {
-            var payReceiveByNo = await _repository.GetPayReceiveNoAsync(payReceiveNo, (int)PayReceiveType.Receipt);
+            var payReceiveByNo = await _repository.GetPayReceiveByNoAsync(payReceiveNo, (int)PayReceiveType.Receipt);
             return JsonReadResult(payReceiveByNo);
         }
 
@@ -547,8 +560,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Create)]
         public async Task<IActionResult> GetNewPaymentAsync()
         {
-            var payReceive = await _repository.GetNewPayReceiveAsync((int)PayReceiveType.Payment);
-            return Json(payReceive);
+            var payment = await _repository.GetNewPayReceiveAsync((int)PayReceiveType.Payment);
+            return Json(payment);
         }
 
         /// <summary>
@@ -561,23 +574,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Create)]
         public async Task<IActionResult> GetNewReceiptAsync()
         {
-            var payReceive = await _repository.GetNewPayReceiveAsync((int)PayReceiveType.Receipt);
-            return Json(payReceive);
+            var receipt = await _repository.GetNewPayReceiveAsync((int)PayReceiveType.Receipt);
+            return Json(receipt);
         }
 
         /// <summary>
         /// به روش آسنکرون، عمل حذف را برای یکی از فرم های دریافت یا پرداخت اعتبارسنجی می کند
         /// </summary>
         /// <param name="item">شناسه دیتابیسی فرم دریافت یا پرداخت مورد نظر برای حذف</param>
+        /// <param name="entityNameKey">عنوان کلیدی انتیتی برای فرم های با چند حالت انتیتی</param> 
         /// <returns>اگر خطای اعتبارسنجی برای حذف وجود داشته باشد، متن محلی شده خطا
         /// و در غیر این صورت رشته خالی را برمی گرداند</returns>
-        protected override async Task<string> ValidateDeleteAsync(int item)
+        protected override async Task<string> ValidateDeleteAsync(int item, string entityNameKey)
         {
             string message = String.Empty;
             var payReceive = await _repository.GetPayReceiveAsync(item);
             if (payReceive == null)
             {
-                message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.PayReceive, item.ToString());
+                message = _strings.Format(AppStrings.ItemByIdNotFound, entityNameKey, item.ToString());
             }
             else
             {
@@ -614,14 +628,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 }
             }
 
-            int numberLength = AppConstants.DefaultNumberLength;
             var payReceiveNo = payReceive.PayReceiveNo.Trim();
-            if (payReceiveNo.Length != numberLength)
-            {
-                return BadRequestResult(_strings.Format(
-                    AppStrings.StringNumberHasFixedLength,AppStrings.Number, numberLength.ToString()));
-            }
-
             if (!Int64.TryParse(payReceiveNo, out long numberValue))
             {
                 return BadRequestResult(_strings.Format(
@@ -630,9 +637,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if(numberValue <= 0)
             {
-                var minNumberString = 1.ToString($"D{numberLength}");
+                var minNumberString = "1";
                 return BadRequestResult(_strings.Format(
-                   AppStrings.InvalidStringNumber, minNumberString,AppStrings.Number));
+                   AppStrings.InvalidStringNumber, minNumberString, AppStrings.Number));
             }
 
             if (await _repository.IsDuplicatePayReceiveNo(payReceive))
@@ -644,9 +651,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, fieldTitle));
             }
 
-            if (payReceive.CurrencyId > 0 && payReceive.CurrencyRate == Decimal.Zero)
+            if (payReceive.CurrencyId > 0 && payReceive.CurrencyRate <= Decimal.Zero)
             {
-                return BadRequestResult(_strings.Format(AppStrings.FieldIsRequired, AppStrings.CurrencyRate));
+                return BadRequestResult(_strings.Format(
+                    AppStrings.ZeroOrNegativeAmountNotAllowed, AppStrings.CurrencyRate));
             }
 
             return Ok();
@@ -658,8 +666,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var payReceive = await _repository.GetPayReceiveAsync(payReceiveId);
             if (payReceive == null)
             {
-                return BadRequestResult(_strings.Format(AppStrings.ItemByIdNotFound, action,
+                return BadRequestResult(_strings.Format(AppStrings.ItemByIdNotFound, entityNameKey,
                     payReceiveId.ToString()));
+            }
+
+            if((action == AppStrings.Confirm || action == AppStrings.Approve) 
+                && !await _repository.HasAccountArticle(payReceiveId)) 
+            {
+                return BadRequestResult(_strings.Format(AppStrings.InvalidEmptyArticleAction, action,
+                        entityNameKey, AppStrings.PayReceiveAccount));
+            }
+
+            var result = BranchValidationResult(payReceive);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
             }
 
             if ((action == AppStrings.Confirm && payReceive.IsConfirmed)

@@ -161,7 +161,7 @@ namespace SPPC.Tadbir.Persistence
 
             var criteria = GetFullAccountCriteria(account);
             errorKey = EnsureNoMissingItemInFullAccount(criteria, fullAccount);
-            if (!String.IsNullOrEmpty(errorKey))
+             if (!String.IsNullOrEmpty(errorKey))
             {
                 return errorKey;
             }

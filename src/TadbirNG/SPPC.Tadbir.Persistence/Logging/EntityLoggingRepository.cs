@@ -210,9 +210,9 @@ namespace SPPC.Tadbir.Persistence
         }
 
         internal virtual async Task OnEntityGroupDeleted(
-            IEnumerable<int> deletedIds, OperationId operation = OperationId.GroupDelete)
+            IEnumerable<int> deletedIds, OperationId operation = OperationId.GroupDelete, int? entityTypeId = null)
         {
-            OnEntityAction(operation);
+            OnEntityAction(operation, entityTypeId);
             Log.Description = Context.Localize(String.Format(
                 "{0} : {1}", AppStrings.DeletedItemCount, deletedIds.Count()));
             await TrySaveLogAsync();

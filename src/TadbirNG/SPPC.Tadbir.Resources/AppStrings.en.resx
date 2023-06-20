@@ -3963,6 +3963,54 @@
   <data name="InvalidStringNumber" xml:space="preserve">
     <value>Value smaller than {0} is not valid for the {1}.</value>
   </data>
+  <data name="PayReceiveAccount" xml:space="preserve">
+    <value>Account article</value>
+  </data>
+  <data name="CantDeleteDetailEntity" xml:space="preserve">
+    <value>This {0} is either confirmed or approved and the {1} data cannot be deleted.</value>
+  </data>
+  <data name="CantSaveDetailEntity" xml:space="preserve">
+    <value>This {0} is either confirmed or approved and the {1} data cannot be saved.</value>
+  </data>
+  <data name="NegativeAmountNotAllowed" xml:space="preserve">
+    <value>Negative amount is not allowed.</value>
+  </data>
+  <data name="ZeroOrNegativeAmountNotAllowed" xml:space="preserve">
+    <value>Zero or negative amount for {0} is not allowed.</value>
+  </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="CreateAccountLine" xml:space="preserve">
+    <value>Create account article</value>
+  </data>
+  <data name="DeleteAccountLine" xml:space="preserve">
+    <value>Delete account article</value>
+  </data>
+  <data name="EditAccountLine" xml:space="preserve">
+    <value>Edit account article</value>
+  </data>
+  <data name="GroupDeleteAccounts" xml:space="preserve">
+    <value>Group delete account articles</value>
+  </data>
+  <data name="RemoveInvalidRows" xml:space="preserve">
+    <value>Remove invalid rows</value>
+  </data>
+  <data name="RowsAggregation" xml:space="preserve">
+    <value>Rows aggregation</value>
+  </data>
+  <data name="NotFoundInvalidRows" xml:space="preserve">
+    <value>{0} of this {1} has no invalid rows to delete.</value>
+  </data>
+  <data name="NotFoundAggregateRows" xml:space="preserve">
+    <value>{0} of this {1} has no rows to aggregate with other rows.</value>
+  </data>
+  <data name="InvalidEmptyArticleAction" xml:space="preserve">
+    <value>Action {0} cannot be done on a {1} that has no {2}.</value>
+  </data>
+  <data name="GroupDeleteAccountLines" xml:space="preserve">
+    <value>Group delete account articles</value>
+  </data>
   <data name="SayyadNoLength" xml:space="preserve">
     <value>Sayyad number must have exactly 16 digits.</value>
   </data>

@@ -45,7 +45,7 @@ namespace SPPC.Tools.SystemDesignerCli
 
             DateTime resxLastModified = File.GetLastWriteTime(_resFilePath);
             DateTime csLastModified = File.GetLastWriteTime(path);
-            return (resxLastModified > csLastModified);
+            return resxLastModified > csLastModified;
         }
 
         private readonly string _resFilePath;
