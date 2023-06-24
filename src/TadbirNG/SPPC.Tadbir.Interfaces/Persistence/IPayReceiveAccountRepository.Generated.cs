@@ -14,11 +14,12 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات کلیه طرف‌های حساب را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <param name="payReceiveId">شناسه یکی از فرم های دریافت/پرداخت موجود</param> 
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از طرف‌های حساب تعریف شده</returns>
         Task<PagedList<PayReceiveAccountViewModel>> GetAccountArticlesAsync(
-           int payReceiveId, GridOptions gridOptions);
+           int payReceiveId, int type, GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، طرف حساب با شناسه عددی مشخص شده را خوانده و برمی گرداند
