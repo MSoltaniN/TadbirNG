@@ -4005,4 +4005,16 @@
   <data name="SayyadNoLength" xml:space="preserve">
     <value>شماره صیادی دقیقاً باید 16 رقم باشد.</value>
   </data>
+  <data name="ExportAccountLines" xml:space="preserve">
+    <value>ارسال طرف‌های حساب</value>
+  </data>
+  <data name="FilterAccountLines" xml:space="preserve">
+    <value>فیلتر طرف‌های حساب</value>
+  </data>
+  <data name="PrintAccountLines" xml:space="preserve">
+    <value>چاپ طرف‌های حساب</value>
+  </data>
+  <data name="PrintPreviewAccountLines" xml:space="preserve">
+    <value>پیش نمایش چاپ طرف‌های حساب</value>
+  </data>
 </root>

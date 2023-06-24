@@ -63,7 +63,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.View)]
         public async Task<IActionResult> GetPaymentAccountArticlesAsync(int paymentId)
         {
-            var articles = await _accountArticleRepository.GetAccountArticlesAsync(paymentId, GridOptions);
+            var articles = await _accountArticleRepository.GetAccountArticlesAsync(
+                paymentId, (int)PayReceiveType.Payment, GridOptions);
             return Json(articles.Items);
         }
 
@@ -78,7 +79,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.View)]
         public async Task<IActionResult> GetReceiptAccountArticlesAsync(int receiptId)
         {
-            var articles = await _accountArticleRepository.GetAccountArticlesAsync(receiptId, GridOptions);
+            var articles = await _accountArticleRepository.GetAccountArticlesAsync(
+                receiptId, (int)PayReceiveType.Receipt, GridOptions);
             return Json(articles.Items);
         }
 

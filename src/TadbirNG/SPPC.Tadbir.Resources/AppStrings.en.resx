@@ -4014,4 +4014,16 @@
   <data name="SayyadNoLength" xml:space="preserve">
     <value>Sayyad number must have exactly 16 digits.</value>
   </data>
+  <data name="ExportAccountLines" xml:space="preserve">
+    <value>Export account articles</value>
+  </data>
+  <data name="FilterAccountLines" xml:space="preserve">
+    <value>Filter account articles</value>
+  </data>
+  <data name="PrintAccountLines" xml:space="preserve">
+    <value>Print account articles</value>
+  </data>
+  <data name="PrintPreviewAccountLines" xml:space="preserve">
+    <value>Print preview account articles</value>
+  </data>
 </root>

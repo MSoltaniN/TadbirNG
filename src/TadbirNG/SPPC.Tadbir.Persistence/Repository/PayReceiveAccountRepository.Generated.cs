@@ -34,15 +34,16 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات کلیه طرف‌های حساب را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <param name="payReceiveId">شناسه یکی از فرم های دریافت/پرداخت موجود</param> 
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از طرف‌های حساب تعریف شده</returns>
         public async Task<PagedList<PayReceiveAccountViewModel>> GetAccountArticlesAsync(
-            int payReceiveId, GridOptions gridOptions)
+            int payReceiveId, int type, GridOptions gridOptions)
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var accountArticles = new List<PayReceiveAccountViewModel>();
-            if (gridOptions.Operation != (int)OperationId.Print)
+            if (gridOptions.Operation != (int)OperationId.PrintAccountLines)
             {
                 var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
                 accountArticles = await repository
@@ -55,6 +56,8 @@ namespace SPPC.Tadbir.Persistence
                     .ToListAsync();
             }
 
+            int entityTypeId = GetEntityTypeId(type);
+            await ReadAsync(gridOptions, null, entityTypeId);
             return new PagedList<PayReceiveAccountViewModel>(accountArticles, gridOptions);
         }
 
