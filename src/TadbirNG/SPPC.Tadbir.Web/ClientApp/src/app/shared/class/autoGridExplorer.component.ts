@@ -483,13 +483,19 @@ export class AutoGridExplorerComponent<T>
 
     var parent_Id = this.parentId ? this.parentId.toString() : null;
 
-    filter = this.addFilterToFilterExpression(
-      filter,
+    this.quickFilter = [];
+    this.quickFilter.push(
       parent_Id
         ? new Filter("ParentId", parent_Id, "== {0}", "System.Int32")
         : new Filter("ParentId", "", "== null", ""),
-      FilterExpressionOperator.And
     );
+    // filter = this.addFilterToFilterExpression(
+    //   filter,
+    //   parent_Id
+    //     ? new Filter("ParentId", parent_Id, "== {0}", "System.Int32")
+    //     : new Filter("ParentId", "", "== null", ""),
+    //   FilterExpressionOperator.And
+    // );
 
     if (this.defaultFilter && this.defaultFilter.length > 0) {
       this.defaultFilter.forEach((item) => {
@@ -542,7 +548,7 @@ export class AutoGridExplorerComponent<T>
         this.pageSize,
         this.sort,
         filter,
-        undefined,
+        filterExp,
         this.listChanged,
         this.operationId
       )
