@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using SPPC.Framework.Common;
-using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -14,30 +13,16 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="length"></param>
-        public NumericText(int length)
-        {
-            Verify.ArgumentNotOutOfRange(length, 1, AppConstants.MaxCodeLength, nameof(length));
-            Length = length;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public int Length { get; }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="existingValues"></param>
         /// <returns></returns>
-        public string GetNewCodeValue(IEnumerable<string> existingValues)
+        public static string GetNewCodeValue(IEnumerable<string> existingValues)
         {
-            string format = String.Format("D{0}", Length);
-            var maxValue = (long)Math.Pow(10, Length) - 1;
+            int maxLength = existingValues.Max(value => value.Length);
+            string format = String.Format("D{0}", maxLength);
+            var maxValue = (long)Math.Pow(10, maxLength) - 1;
             var lastValue = existingValues.Any()
                 ? Int64.Parse(existingValues.Max())
-                : 0;
+                : 0L;
             var newValue = Math.Min(lastValue + 1, maxValue);
             return newValue.ToString(format);
         }
@@ -49,17 +34,17 @@ namespace SPPC.Tadbir.Persistence
         /// <returns></returns>
         public static string GetNewNumberValue(IEnumerable<string> existingValues)
         {
-            if (existingValues.Any(value => !Int32.TryParse(value, out int num)))
+            if (existingValues.Any(value => !Int64.TryParse(value, out long number)))
             {
                 throw ExceptionBuilder.NewArgumentException(
                     "Sequence contains one or more non-numeric values.", nameof(existingValues));
             }
 
-            int maxValue = existingValues
-                .Select(value => Int32.Parse(value))
+            var lastValue = existingValues
+                .Select(value => Int64.Parse(value))
                 .OrderByDescending(num => num)
                 .FirstOrDefault();
-            int newValue = Math.Min(maxValue + 1, Int32.MaxValue);
+            var newValue = Math.Min(lastValue + 1, Int64.MaxValue);
             return newValue.ToString();
         }
     }

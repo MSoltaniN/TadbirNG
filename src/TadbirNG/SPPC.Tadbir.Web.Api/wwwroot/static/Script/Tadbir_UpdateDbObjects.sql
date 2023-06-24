@@ -1328,3 +1328,4 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (281, 3, 2, NULL, 25, 78, 0)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
