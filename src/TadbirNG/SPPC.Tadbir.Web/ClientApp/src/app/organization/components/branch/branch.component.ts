@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ChangeDetectorRef, NgZone, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Renderer2, ChangeDetectorRef, NgZone, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 // import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -25,6 +25,7 @@ import { Router } from '@angular/router';
 import { OperationId } from '@sppc/shared/enum/operationId';
 import { ShareDataService } from '@sppc/shared/services/share-data.service';
 import { lastValueFrom } from 'rxjs';
+import { ServiceLocator } from '@sppc/service.locator';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -42,7 +43,9 @@ export function getLayoutModule(layout: Layout) {
 })
 
 
-export class BranchComponent extends AutoGridExplorerComponent<Branch> implements OnInit {
+export default class BranchComponent extends AutoGridExplorerComponent<Branch> implements OnInit,OnDestroy {
+
+  scopes = ["BranchComponent","AutoGridExplorerComponent"];
 
   @ViewChild(GridComponent, {static: true}) grid: GridComponent;
   @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
@@ -57,7 +60,16 @@ export class BranchComponent extends AutoGridExplorerComponent<Branch> implement
     super(toastrService, translate, service, dialogService, renderer, metadata, settingService, bStorageService, Entities.Branch,
       "Branch.LedgerBranch", "", "",
       BranchApi.Branches, BranchApi.RootBranches, BranchApi.Branch, BranchApi.BranchChildren,
-      "", cdref, ngZone,elem)
+      "", cdref, ngZone,elem);
+
+    this.scopeService = ServiceLocator.injector.get(ShareDataService);    
+    this.scopeService.setScope(this);
+  }
+
+  ngOnDestroy(): void {    
+    this.scopeService = ServiceLocator.injector.get(ShareDataService);    
+    this.scopeService.clearScope(this);
+    
   }
 
   ngOnInit() {

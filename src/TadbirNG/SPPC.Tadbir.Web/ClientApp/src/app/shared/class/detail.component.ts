@@ -22,7 +22,6 @@ import { of, Subject } from 'rxjs';
 export class DetailComponent extends BaseComponent implements OnDestroy {
 
   //shortcuts: ShortcutCommand[] = [new ShortcutCommand(1, 0, null, null, "Ctrl+Shift+Y", "addNew")];
-
   private form: FormGroup;
   public properties: Map<string, Array<Property>>;
 
@@ -32,8 +31,6 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
   @Input() public errorMessages: string[];
 
   scopeService: ShareDataService;
-
-  scopes:Array<any> = [];
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     public renderer: Renderer2, private metadataService: MetaDataService,
@@ -62,35 +59,35 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
       this.selector = elem.nativeElement.tagName.toLowerCase();     
     }
 
-    this.scopeService = ServiceLocator.injector.get(ShareDataService);
-    this.scopeService.setScope(this);
+    // this.scopeService = ServiceLocator.injector.get(ShareDataService);
+    // this.scopeService.setScope(this);
 
-    this.scopeService.getScope().subscribe((component) => {
-      if (component) {
-        var componentName = component.constructor.name;
-        if(ShareDataService.exceptionComponents.findIndex(s=>s == componentName) == -1
-        && ShareDataService.components.findIndex(s=>s.constructor.name == componentName) == -1)
-        {          
-          ShareDataService.components.unshift(component);
-        }
-      }
-      else
-      {
-        if(ShareDataService.removedComponent)
-        {
-            var findIndex = ShareDataService.components.findIndex(s=>s.constructor.name == ShareDataService.removedComponent.constructor.name);
-            if(findIndex >= 0)
-            {
-              ShareDataService.removedComponent = undefined;
-              ShareDataService.components.splice(findIndex,1)
-            }
-        }        
-      }
-    })
+    // this.scopeService.getScope().subscribe((component) => {
+    //   if (component) {
+    //     var componentName = component.constructor.name;
+    //     if(ShareDataService.exceptionComponents.findIndex(s=>s == componentName) == -1
+    //     && ShareDataService.components.findIndex(s=>s.constructor.name == componentName) == -1)
+    //     {          
+    //       ShareDataService.components.unshift(component);
+    //     }
+    //   }
+    //   else
+    //   {
+    //     if(ShareDataService.removedComponent)
+    //     {
+    //         var findIndex = ShareDataService.components.findIndex(s=>s.constructor.name == ShareDataService.removedComponent.constructor.name);
+    //         if(findIndex >= 0)
+    //         {
+    //           ShareDataService.removedComponent = undefined;
+    //           ShareDataService.components.splice(findIndex,1)
+    //         }
+    //     }        
+    //   }
+    // })
   }
 
   ngOnDestroy(): void {
-    this.scopeService.clearScope(this);
+    //this.scopeService.clearScope(this);
   }
 
   getProperties(metadataKey:string) : Array<Property> {

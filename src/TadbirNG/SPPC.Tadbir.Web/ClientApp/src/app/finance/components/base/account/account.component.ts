@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   NgZone,
+  OnDestroy,
   OnInit,
   Renderer2,
   ViewChild,
@@ -33,6 +34,7 @@ import {
 import { ShareDataService } from "@sppc/shared/services/share-data.service";
 import { ToastrService } from "ngx-toastr";
 import { AccountFormComponent } from "./account-form.component";
+import { ServiceLocator } from "@sppc/service.locator";
 
 //#endregion
 
@@ -53,8 +55,10 @@ export function getLayoutModule(layout: Layout) {
 })
 export class AccountComponent
   extends AutoGridExplorerComponent<Account>
-  implements OnInit
+  implements OnInit,OnDestroy
 {
+  scopes = ["AccountComponent","AutoGridExplorerComponent"];
+
   @ViewChild(GridComponent, {static: true}) grid: GridComponent;
   @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
   @ViewChild(ReportManagementComponent, {static: true})
@@ -101,6 +105,9 @@ export class AccountComponent
       ngZone,
       elem
     );
+
+    this.scopeService = ServiceLocator.injector.get(ShareDataService);    
+    this.scopeService.setScope(this);
   }
 
   ngOnInit(): void {
@@ -114,6 +121,13 @@ export class AccountComponent
 
     //this.cdref.detectChanges();
   }
+
+  
+  ngOnDestroy(): void {    
+    this.scopeService = ServiceLocator.injector.get(ShareDataService);    
+    this.scopeService.clearScope(this);
+  }
+
 
   public onSelectContextmenu({ item }): void {
     let hasPermission: boolean = false;

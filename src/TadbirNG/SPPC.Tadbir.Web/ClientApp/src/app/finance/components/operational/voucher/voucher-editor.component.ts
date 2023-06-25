@@ -3,6 +3,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   Renderer2,
@@ -48,6 +49,8 @@ import {
 import { ToastrService } from "ngx-toastr";
 import { SpecialVoucherPermissions } from "@sppc/shared/security";
 import { VoucherViewAccessGuard } from "@sppc/core/services/voucher-view-access.guard";
+import { ServiceLocator } from "@sppc/service.locator";
+import { ShareDataService } from "@sppc/shared/services/share-data.service";
 // import "rxjs/Rx";
 
 export function getLayoutModule(layout: Layout) {
@@ -135,7 +138,10 @@ export function getLayoutModule(layout: Layout) {
     },
   ],
 })
-export class VoucherEditorComponent extends DetailComponent implements OnInit {
+export class VoucherEditorComponent extends DetailComponent implements OnInit,OnDestroy {
+  
+  scopes = ["VoucherEditorComponent","DetailComponent"];
+
   errorMessage: string;
   voucherModel: Voucher;
   voucherTypeList: Array<Item> = [];
@@ -217,6 +223,8 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       elem
     );
 
+    this.scopeService = ServiceLocator.injector.get(ShareDataService);    
+    this.scopeService.setScope(this);
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
@@ -362,6 +370,12 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit {
       });
     }
   }
+
+  ngOnDestroy(): void {    
+    this.scopeService = ServiceLocator.injector.get(ShareDataService);    
+    this.scopeService.clearScope(this);
+  }
+
 
   //report methods
   public showReport() {
