@@ -73,26 +73,23 @@ export class CompanyFormComponent extends DetailComponent implements OnInit {
     this.closeForm();
   }
 
-  dbNameValue: string;
+  dbNameValue: string = '';
   toEnglishChars(e:KeyboardEvent) {
     let char = e.code.toString().split('Key');
 
     if (char.length > 1 && !(e.code == 'KeyA' && e.ctrlKey == true)) {
-
-      if (char[1].toLowerCase() == e.key.toLowerCase()) {
+      if (char[1].toLowerCase() == e.key.toLowerCase()) { // اگر زبان کیبوردانگلیسی است
 
         this.editForm.patchValue({
           dbName: this.dbNameValue+e.key
         });
 
-      } else {
-
+      } else { // اگر زبان کیبورد انگلیسی نیست
         if (e.shiftKey) {
           this.editForm.patchValue({
             dbName: this.dbNameValue+char[1]
           });
         } else {
-
           this.editForm.patchValue({
             dbName: this.dbNameValue+char[1].toLowerCase()
           });

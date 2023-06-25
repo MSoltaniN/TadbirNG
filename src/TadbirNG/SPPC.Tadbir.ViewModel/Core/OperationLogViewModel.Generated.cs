@@ -40,11 +40,6 @@ namespace SPPC.Tadbir.ViewModel.Core
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// تاریخ انجام عملیات
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

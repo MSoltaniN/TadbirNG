@@ -18,6 +18,12 @@ namespace SPPC.Tadbir.Persistence
         Task<CheckBookViewModel> GetCheckBookAsync(int checkBookId);
 
         /// <summary>
+        /// به روش آسنکرون، دسته چک جدید با مقادیر پیشنهادی را برمی گرداند
+        /// </summary>
+        /// <returns>دسته چک جدید با مقادیر پیشنهادی</returns>
+        Task<CheckBookViewModel> GetNewCheckBookAsync();
+
+        /// <summary>
         /// به روش آسنکرون، دسته چک با شماره مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="checkBookNo">شماره یکی از دسته چک های موجود</param>

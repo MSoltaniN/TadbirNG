@@ -25,8 +25,8 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// </summary>
         public SystemIssueViewModel()
         {
-            this.Title = String.Empty;
-            this.ApiUrl = String.Empty;
+            Title = String.Empty;
+            ApiUrl = String.Empty;
         }
 
         /// <summary>

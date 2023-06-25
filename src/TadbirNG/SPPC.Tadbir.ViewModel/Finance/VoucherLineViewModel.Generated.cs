@@ -33,17 +33,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// شماره ردیف آرتیکل
-        /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int RowNo { get; set; }
-
-        /// <summary>
         /// مبلغ بدهکار برای این آرتیکل مالی
         /// </summary>
         [Display(Name = FieldNames.DebitField)]

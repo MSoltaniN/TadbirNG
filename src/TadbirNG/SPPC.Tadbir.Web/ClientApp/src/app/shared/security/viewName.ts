@@ -64,7 +64,7 @@ export enum ViewName {
   SysOperationLog = 59,
   SysOperationLogArchive = 60,
   OperationLogArchive = 61,
-  ProfitLost = 62,
+  ProfitLoss = 62,
   GroupActionResult = 63,
   ProfitLossSimple = 64,
   ComparativeProfitLossSimple = 66,
@@ -75,5 +75,7 @@ export enum ViewName {
   CashRegister = 70,
   CheckBook = 71,
   CheckBookReport = 72,
-  SourceApp = 73
+  SourceApp = 73,
+  Payment = 74,
+  Receipt = 75
 }

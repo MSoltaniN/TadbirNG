@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// </summary>
         public DocumentStatusViewModel()
         {
-            this.Name = String.Empty;
+            Name = String.Empty;
         }
 
         /// <summary>

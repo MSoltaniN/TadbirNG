@@ -6,13 +6,8 @@ namespace SPPC.Tadbir.ViewModel.Finance
     /// <summary>
     ///
     /// </summary>
-    public class VoucherInfoViewModel : IFiscalEntityView
+    public class VoucherInfoViewModel : ViewModelBase, IFiscalEntity
     {
-        /// <summary>
-        ///
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         ///
         /// </summary>

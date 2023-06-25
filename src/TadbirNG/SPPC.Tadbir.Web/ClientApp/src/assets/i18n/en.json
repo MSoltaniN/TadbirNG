@@ -166,6 +166,13 @@
     "ComingBack": "Return",
     "Exit": "Exit"
   },
+  "Form": {
+    "New": "New {0}",
+    "Edit": "Edit {0}",
+    "No": "{0} No",
+    "SelectTitle": "Select {0}",
+    "BankName": "Bank Name"
+  },
   "GridSetting": {
     "Visibility": "Visibility",
     "FieldName": "Field Name"
@@ -211,7 +218,9 @@
     "CashRegister": "Cash Register",
     "CheckBook": "Check Books",
     "CheckBookReport": "Check Book Report",
-    "SourceApp": "Sources and Applications"
+    "SourceApp": "Sources and Applications",
+    "Payment": "Payment",
+    "Receipt": "Receipt"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "Count of Selected Vouchers :",
@@ -1075,6 +1084,12 @@
     "RoleCompaniesTitle": "Companies accessible by '{0}'",
     "RecordNotFound": "This role cannot access any company."
   },
+  "CompanyRoles": {
+    "Name": "Role Name",
+    "Description": "Description",
+    "CompanyRolesTitle": "Roles who can access the '{0}'",
+    "RecordNotFound": "Record Not Found!"
+  },
   "RoleFiscalPeriod": {
     "Name": "Fiscal Period Name",
     "RoleFiscalPeriodTitle": "Fiscal periods accessible by '{0}'"
@@ -1320,6 +1335,13 @@
     "Application": "Application",
     "Delete": "Delete source/application"
   },
+  "PayReceipt": {
+    "PayReceipt": "Paymets and Receipts",
+    "Name": "Name",
+    "Details": "Details",
+    "Fund": "CashRegister",
+    "Bank": "Bank"
+  },
   "UserValueFilter": {
     "Title":"فرم انتخاب شرح های تکراری",
     "Name": "نام",
@@ -1538,7 +1560,8 @@
       "SayyadStartNoIsRequired": "Sayyad Start No number is required.",
       "PagesCountMax": "The number of sheets cannot be more than 1000.",
       "PagesCountMin": "The number of sheets cannot be less than 1.",
-      "SayyadStartNoIsTooLong": "The Sayyad Start No can have a maximum of 16 characters.",
+      "SayyadStartNoIsTooLong": "The Sayyad Start No can have a maximum of 16 digits.",
+      "SayyadStartNoIsTooShort": "The Sayyad Start No must have at least 16 digits.",
       "SeriesNoIsTooLong": "The Series No can have a maximum of 32 characters."
     },
     "SourceApp": {

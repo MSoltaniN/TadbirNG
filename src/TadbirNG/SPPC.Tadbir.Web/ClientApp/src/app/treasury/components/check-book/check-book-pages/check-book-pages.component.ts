@@ -31,7 +31,7 @@ import {
   GridService,
   MetaDataService,
 } from "@sppc/shared/services";
-import { PageOperations } from "@sppc/treasury/models/chechBookOperations";
+import { PageOperations } from "@sppc/treasury/enums/chechBookOperations";
 import { CheckBookPage } from "@sppc/treasury/models/checkBook";
 import { CheckBooksApi } from "@sppc/treasury/service/api/checkBooksApi";
 import { CheckBookService } from "@sppc/treasury/service/check-book.service";

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Utility;
@@ -15,11 +14,11 @@ namespace SPPC.Tadbir.Persistence
     public interface IUserRepository
     {
         /// <summary>
-        /// به روش آسنکرون، لیست کاربران برنامه را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، لیست کاربران برنامه را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>لیست کاربران برنامه</returns>
-        Task<PagedList<UserViewModel>> GetUsersAsync(GridOptions gridOptions = null);
+        Task<PagedList<UserViewModel>> GetUsersAsync(GridOptions gridOptions);
 
         /// <summary>
         /// Asynchronously retrieves a single user specified by user name from repository.
@@ -60,7 +59,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، دسترسی های امنیتی داده شده به یک کاربر را به صورت مجموعه ای از شناسه های یکتا
-        /// از محل ذخیره خوانده و بر می گرداند
+        /// خوانده و بر می گرداند
         /// </summary>
         /// <param name="userId">شناسه یکتای یکی از کاربران موجود</param>
         /// <returns>مجموعه شناسه های دسترسی های داده شده به کاربر</returns>

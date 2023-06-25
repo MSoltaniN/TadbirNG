@@ -58,6 +58,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، دسته چک جدید با مقادیر پیشنهادی را برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی دسته چک جدید با مقادیر پیشنهادی</returns>
+        // GET: api/check-books/new
+        [HttpGet]
+        [Route(CheckBookApi.NewCheckBookUrl)]
+        [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Create)]
+        public async Task<IActionResult> GetNewCheckBookAsync()
+        {
+            var newCheckBook = await _repository.GetNewCheckBookAsync();
+            return Json(newCheckBook);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات دسته چک مشخص شده با شماره را برمی گرداند
         /// </summary>
         /// <param name="checkBookNo">شماره دسته چک مورد نظر</param>
@@ -331,6 +345,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (result is BadRequestObjectResult)
             {
                 return result;
+            }
+
+            if (checkBook.SayyadStartNo.Length != 16)
+            {
+                string message = _strings[AppStrings.SayyadNoLength];
+                return BadRequestResult(message);
             }
 
             if (checkBookId > 0 && await _repository.HasPagesAsync(checkBookId))

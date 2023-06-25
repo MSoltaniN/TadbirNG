@@ -14,7 +14,7 @@ namespace SPPC.Tadbir.Persistence
     {
         /// <summary>
         /// به روش آسنکرون، کلیه حساب هایی را که در دوره مالی و شعبه جاری برنامه تعریف شده اند،
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه جاری برنامه</returns>
@@ -30,7 +30,7 @@ namespace SPPC.Tadbir.Persistence
         Task<PagedList<AccountViewModel>> GetAccountsLookupAsync(GridOptions gridOptions);
 
         /// <summary>
-        /// به روش آسنکرون، حساب با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، حساب با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه عددی یکی از حساب های موجود</param>
         /// <returns>حساب مشخص شده با شناسه عددی</returns>
@@ -72,13 +72,13 @@ namespace SPPC.Tadbir.Persistence
         Task<AccountFullDataViewModel> SaveAccountAsync(AccountFullDataViewModel accountFullView);
 
         /// <summary>
-        /// به روش آسنکرون، حساب مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، حساب مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="accountId">شناسه عددی حساب مورد نظر برای حذف</param>
         Task DeleteAccountAsync(int accountId);
 
         /// <summary>
-        /// به روش آسنکرون، حساب های مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، حساب های مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="accountIds">مجموعه ای از شناسه های عددی حساب های مورد نظر برای حذف</param>
         Task DeleteAccountsAsync(IList<int> accountIds);

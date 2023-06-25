@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -22,7 +20,7 @@ namespace SPPC.Tadbir.Persistence
         Task<PagedList<DetailAccountViewModel>> GetDetailAccountsAsync(GridOptions gridOptions);
 
         /// <summary>
-        /// به روش آسنکرون، تفصیلی شناور با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، تفصیلی شناور با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="faccountId">شناسه عددی یکی از تفصیلی های شناور موجود</param>
         /// <returns>تفصیلی شناور مشخص شده با شناسه عددی</returns>
@@ -57,13 +55,13 @@ namespace SPPC.Tadbir.Persistence
         Task<DetailAccountViewModel> SaveDetailAccountAsync(DetailAccountViewModel detailAccount);
 
         /// <summary>
-        /// به روش آسنکرون، تفصیلی شناور مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، تفصیلی شناور مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="faccountId">شناسه عددی تفصیلی شناور مورد نظر برای حذف</param>
         Task DeleteDetailAccountAsync(int faccountId);
 
         /// <summary>
-        /// به روش آسنکرون، تفصیلی های مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، تفصیلی های مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="detailIds">مجموعه ای از شناسه های عددی تفصیلی های مورد نظر برای حذف</param>
         Task DeleteDetailAccountsAsync(IList<int> detailIds);

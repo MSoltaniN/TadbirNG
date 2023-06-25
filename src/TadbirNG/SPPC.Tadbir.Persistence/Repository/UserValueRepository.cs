@@ -45,16 +45,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از مقادیر کاربری تعریف شده در دسته بندی</returns>
         public async Task<PagedList<UserValueViewModel>> GetUserValuesAsync(
-            int categoryId, GridOptions gridOptions = null)
+            int categoryId, GridOptions gridOptions)
         {
-            var options = gridOptions ?? new GridOptions();
             var repository = UnitOfWork.GetAsyncRepository<UserValue>();
             var values = await repository
                 .GetEntityQuery()
                 .Where(val => val.CategoryId == categoryId)
                 .Select(val => Mapper.Map<UserValueViewModel>(val))
                 .ToListAsync();
-            return new PagedList<UserValueViewModel>(values, options);
+            return new PagedList<UserValueViewModel>(values, gridOptions);
         }
 
         /// <summary>

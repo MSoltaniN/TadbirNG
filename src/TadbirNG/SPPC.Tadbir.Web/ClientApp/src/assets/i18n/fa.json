@@ -188,6 +188,13 @@
     "ComingBack": "بازگشت",
     "Exit": "خروج"
   },
+  "Form": {
+    "New": "{0} جدید",
+    "Edit": "اصلاح {0}",
+    "No": "شماره {0}",
+    "SelectTitle": "انتخاب {0}",
+    "BankName": "نام بانک"
+  },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
     "FieldName": "نام ستون"
@@ -236,7 +243,9 @@
     "CashRegister": "صندوق",
     "CheckBook": "دسته چک",
     "CheckBookReport": "گزارش دسته چک",
-    "SourceApp": "منابع و مصارف"
+    "SourceApp": "منابع و مصارف",
+    "Payment": "سند پرداخت",
+    "Receipt": "سند دریافت"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",
@@ -1201,7 +1210,7 @@
     "Name": "نام نقش",
     "Description": "توضیحات",
     "CompanyRolesTitle": "نقش های دارای دسترسی به '{0}'",
-    "RecordNotFound": "این نقش به هیچ شرکتی دسترسی ندارد."
+    "RecordNotFound": "رکوردی برای نمایش وجود ندارد."
   },
   "RoleFiscalPeriod": {
     "Name": "نام دوره مالی",
@@ -1350,6 +1359,14 @@
     "Source": "منابع",
     "Application": "مصارف",
     "Delete": "حذف منابع/مصارف"
+  },
+  "PayReceipt": {
+    "PayReceipt": "دریافت و پرداخت",
+    "Recipients": "دریافت کنندگان",
+    "Payers": "پرداخت کنندگان",
+    "Details": "جزئیات",
+    "Fund": "صندوق",
+    "Bank": "بانک"
   },
   "UserValueFilter": {
     "Title":"فرم انتخاب شرح های تکراری",
@@ -1666,7 +1683,8 @@
       "SayyadStartNoIsRequired": "وارد کردن شماره شروع صیادی اجباری است.",
       "PagesCountMax": "تعداد برگه ها نمیتواند بیشتر از 1000 باشد.",
       "PagesCountMin": "تعداد برگه ها نمیتواند کمتر از 1 باشد.",
-      "SayyadStartNoIsTooLong": "شماره صیادی می تواند حداکثر 16 حرف داشته باشد.",
+      "SayyadStartNoIsTooLong": "شماره صیادی می تواند حداکثر 16 رقم داشته باشد.",
+      "SayyadStartNoIsTooShort": "شماره صیادی حداقل باید 16 رقم داشته باشد.",
       "SeriesNoIsTooLong": "شماره سری می تواند حداکثر 32 حرف داشته باشد."
     },
     "SourceApp": {

@@ -329,7 +329,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(LookupApi.RolesUrl)]
         public async Task<IActionResult> GetRolesLookupAsync()
         {
-            var rolesLookup = await _repository.GetRolesAsync();
+            var rolesLookup = await _repository.GetRolesAsync(GridOptions);
             var sortedLookup = Localize(rolesLookup, true);
             return Json(sortedLookup);
         }
@@ -362,7 +362,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(LookupApi.EntityViewsUrl)]
         public async Task<IActionResult> GetEntityViewsLookupAsync()
         {
-            var viewsLookup = await _repository.GetEntityViewsAsync();
+            var viewsLookup = await _repository.GetEntityViewsAsync(GridOptions);
             Array.ForEach(viewsLookup.ToArray(), kv => kv.Value = _strings[kv.Value]);
             viewsLookup = viewsLookup
                 .OrderBy(kv => kv.Value)
@@ -379,7 +379,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(LookupApi.BaseEntityViewsUrl)]
         public async Task<IActionResult> GetBaseViewsLookupAsync()
         {
-            var baseLookup = await _repository.GetBaseEntityViewsAsync();
+            var baseLookup = await _repository.GetBaseEntityViewsAsync(GridOptions);
             Array.ForEach(baseLookup.ToArray(), lookup => lookup.Name = _strings[lookup.Name]);
             return Json(baseLookup);
         }
@@ -408,7 +408,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(LookupApi.TreeViewsUrl)]
         public async Task<IActionResult> GetTreeViewsLookupAsync()
         {
-            var treesLookup = await _repository.GetTreeViewsAsync();
+            var treesLookup = await _repository.GetTreeViewsAsync(GridOptions);
             Array.ForEach(treesLookup.ToArray(), kv => kv.Value = _strings[kv.Value]);
             return Json(treesLookup);
         }

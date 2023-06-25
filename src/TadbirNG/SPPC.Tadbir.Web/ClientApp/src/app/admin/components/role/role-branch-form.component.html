@@ -13,24 +13,10 @@
 
     <div class="panel panel-primary">
         <div class="panel-body">
-
-            <!-- <kendo-grid id="grdRoleBranch" [data]="gridData"
-                        [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-                        [(selectedKeys)]="selectedRows"
-                        [kendoGridSelectBy]="selectionKey">
-                <ng-template kendoGridNoRecordsTemplate>
-                    {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
-                </ng-template>
-
-                <kendo-grid-checkbox-column showSelectAll="true" width="40"></kendo-grid-checkbox-column>
-
-                <kendo-grid-column sppc-grid-column="RoleBranches.name">
-                </kendo-grid-column>
-            </kendo-grid> -->
             <kendo-treeview [nodes]="gridData" [textField]="['name']"
                             [loadOnDemand]="false"
                             kendoTreeViewExpandable
-                            kendoTreeViewCheckable
+                            [kendoTreeViewCheckable]="checkableSettings"
                             kendoTreeViewFlatDataBinding
                             [checkBy]="checkById"
                             (checkedChange)="handleCheckingRows($event)"

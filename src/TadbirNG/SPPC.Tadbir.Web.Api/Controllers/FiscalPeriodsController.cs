@@ -45,12 +45,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه دوره های مالی در شرکت جاری برنامه را برمی گرداند
+        /// به روش آسنکرون، کلیه دوره های مالی قابل دسترسی توسط کاربر جاری را برمی گرداند
         /// </summary>
         /// <returns>لیست صفحه بندی شده دوره های مالی</returns>
-        // GET: api/fperiods/company/{companyId:min(1)}
+        // GET: api/fperiods
         [HttpGet]
-        [Route(FiscalPeriodApi.CompanyFiscalPeriodsUrl)]
+        [Route(FiscalPeriodApi.FiscalPeriodsUrl)]
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
         public async Task<IActionResult> GetFiscalPeriodsAsync()
         {

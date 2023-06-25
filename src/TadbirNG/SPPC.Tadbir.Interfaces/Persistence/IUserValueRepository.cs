@@ -24,7 +24,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="categoryId">شناسه دیتابیسی یکی از دسته بندی های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از مقادیر کاربری تعریف شده در دسته بندی</returns>
-        Task<PagedList<UserValueViewModel>> GetUserValuesAsync(int categoryId, GridOptions gridOptions = null);
+        Task<PagedList<UserValueViewModel>> GetUserValuesAsync(int categoryId, GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، مقدار کاربری داده شده را ایجاد می کند

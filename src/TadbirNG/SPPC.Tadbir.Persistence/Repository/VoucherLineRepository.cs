@@ -33,12 +33,13 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
-        public async Task<PagedList<VoucherLineViewModel>> GetArticlesAsync(int voucherId, GridOptions gridOptions = null)
+        public async Task<PagedList<VoucherLineViewModel>> GetArticlesAsync(
+            int voucherId, GridOptions gridOptions)
         {
             var query = GetVoucherLinesQuery(voucherId);
             query = Repository.ApplyRowFilter(ref query, ViewId.VoucherLine);
@@ -68,7 +69,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات موجودیت استفاده می شود</typeparam>
         /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
@@ -137,7 +138,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را حذف می کند
         /// </summary>
         /// <param name="articleId">شناسه دیتابیسی آرتیکل برای حذف</param>
         public async Task DeleteArticleAsync(int articleId)
@@ -232,7 +233,7 @@ namespace SPPC.Tadbir.Persistence
         protected override void UpdateExisting(VoucherLineViewModel lineView, VoucherLine line)
         {
             line.AccountId = lineView.FullAccount.Account.Id;
-            line.DetailId = lineView.FullAccount.DetailAccount.Id > 0 ? lineView.FullAccount.DetailAccount.Id : null;
+            line.DetailAccountId = lineView.FullAccount.DetailAccount.Id > 0 ? lineView.FullAccount.DetailAccount.Id : null;
             line.CostCenterId = lineView.FullAccount.CostCenter.Id > 0 ? lineView.FullAccount.CostCenter.Id : null;
             line.ProjectId = lineView.FullAccount.Project.Id > 0 ? lineView.FullAccount.Project.Id : null;
             line.CurrencyId = lineView.CurrencyId;

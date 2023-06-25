@@ -29,8 +29,9 @@ export class SourceAppFormComponent extends DetailComponent implements OnInit {
   @Input() public model: SourceApp;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
-
   @Input() public isWizard: boolean = false;
+  @Input() public newCode;
+
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<SourceApp> = new EventEmitter();
@@ -47,7 +48,8 @@ export class SourceAppFormComponent extends DetailComponent implements OnInit {
      public bStorageService: BrowserStorageService,
      public renderer: Renderer2,
      public metadata: MetaDataService,
-     public elem:ElementRef)
+     public elem:ElementRef
+     )
   {
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.SourceApp, ViewName.SourceApp,elem);
   }
@@ -55,18 +57,18 @@ export class SourceAppFormComponent extends DetailComponent implements OnInit {
   ngOnInit(): void {
     this.editForm.reset();
 
-    setTimeout(() => {
+    setTimeout( () => {
       if (this.model.id == 0) {
         this.model.branchId = this.BranchId;
         this.model.branchScope = this.selectedBranchScope;
         this.model.type = this.selectedType;
         this.model.fiscalPeriodId = this.FiscalPeriodId;
+        this.model.code = this.newCode;
       } else {
         this.selectedBranchScope = this.model.branchScope;
         this.selectedType = this.model.type;
       }
       this.editForm.reset(this.model);
-      console.log(this.editForm);
     });
     
   }
@@ -96,5 +98,4 @@ export class SourceAppFormComponent extends DetailComponent implements OnInit {
       type: e
     });
   }
-
 }

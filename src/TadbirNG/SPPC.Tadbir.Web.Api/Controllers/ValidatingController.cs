@@ -49,7 +49,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// متن خطا را با کد وضعیتی 400 برای درخواست نامعتبر برمی گرداند</returns>
         protected virtual IActionResult BasicValidationResult(TViewModel item, int itemId = 0)
         {
-            return GetBasicValidationResult(item, itemId);
+            return BasicValidationResult(item, itemId, null);
+        }
+
+        /// <summary>
+        /// قواعد اعتبارسنجی پایه ای را روی آبجکت داده شده بررسی می کند
+        /// و نتیجه اعتبارسنجی را برمی گرداند
+        /// </summary>
+        /// <param name="item">آبجکت داده شده برای اعتبارسنجی</param>
+        /// <param name="itemId">شناسه دیتابیسی آبجکت مشخص شده در آدرس وب درخواست</param>
+        /// <param name="entityKey">عنوان انتیتی که پیش فرض با پراپرتی نام موجودیت پر می شود</param>
+        /// <returns>در صورت نبود خطای اعتبارسنجی کد وضعیتی 200 و در غیر این صورت
+        /// متن خطا را با کد وضعیتی 400 برای درخواست نامعتبر برمی گرداند</returns>
+        protected virtual IActionResult BasicValidationResult(TViewModel item, int itemId, string entityKey = null)
+        {
+            return GetBasicValidationResult(item, itemId, entityKey);
         }
 
         /// <summary>
@@ -75,7 +89,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns>در صورت نبود خطای اعتبارسنجی کد وضعیتی 200 و در غیر این صورت
         /// متن خطا را با کد وضعیتی 400 برای درخواست نامعتبر برمی گرداند</returns>
         protected IActionResult BranchValidationResult<TFiscalView>(TFiscalView item)
-            where TFiscalView : class, IFiscalEntityView
+            where TFiscalView : class, IFiscalEntity
         {
             Verify.ArgumentNotNull(item, nameof(item));
             var currentContext = SecurityContext.User;
@@ -231,6 +245,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، عمل حذف را برای سطر مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
         /// </summary>
         /// <param name="item">شناسه دیتابیسی سطر اطلاعاتی مورد نظر برای حذف</param>
+        /// <param name="entityNameKey">عنوان کلیدی انتیتی برای فرم های با چند حالت انتیتی</param> 
+        /// <returns>پیغام خطای به دست آمده از اعتبارسنجی یا رشته خالی در صورت نبود خطا</returns>
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        protected virtual async Task<string> ValidateDeleteAsync(int item, string entityNameKey)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، عمل حذف را برای سطر مشخص شده توسط شناسه دیتابیسی اعتبارسنجی می کند
+        /// </summary>
+        /// <param name="item">شناسه دیتابیسی سطر اطلاعاتی مورد نظر برای حذف</param>
         /// <returns>نتیجه به دست آمده از اعتبارسنجی یا رشته خالی در صورت نبود خطا</returns>
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected virtual async Task<GroupActionResultViewModel> ValidateDeleteResultAsync(int item)
@@ -239,11 +266,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return null;
         }
 
-        private IActionResult GetBasicValidationResult(object item, int itemId)
+        private IActionResult GetBasicValidationResult(object item, int itemId, string entityKey = null)
         {
+            string entityNameKey = entityKey ?? EntityNameKey;
             if (item == null)
             {
-                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, EntityNameKey));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, entityNameKey));
             }
 
             if (!ModelState.IsValid)
@@ -254,7 +282,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int id = Int32.Parse(Reflector.GetProperty(item, "Id").ToString());
             if (itemId != id)
             {
-                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, EntityNameKey));
+                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, entityNameKey));
             }
 
             return Ok();
@@ -266,4 +294,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     /// </summary>
     /// <param name="items">مجموعه شناسه های دیتابیسی موجودیت های انتخاب شده برای حذف گروهی</param>
     public delegate Task GroupDeleteAsyncDelegate(IList<int> items);
+
+    /// <summary>
+    /// شکل متد مورد نیاز برای حذف گروهی نوع مشخص شده از موجودیت ها را تعریف می کند.
+    /// </summary>
+    /// <param name="items">مجموعه شناسه های دیتابیسی موجودیت های انتخاب شده برای حذف گروهی</param>
+    /// <param name="entityTypeId">شناسه نوع موجودیت که در فرم‌های تک حالته مقدار پیش‌فرض دارد</param> 
+    public delegate Task GroupDeleteSpecialAsyncDelegate(IList<int> items, int entityTypeId);
 }

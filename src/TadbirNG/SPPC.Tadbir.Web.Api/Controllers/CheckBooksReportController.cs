@@ -64,7 +64,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPut]
         [Route(CheckBookApi.ArchiveCheckBooksUrl)]
         [AuthorizeRequest(SecureEntity.CheckBookReport, (int)CheckBookReportPermissions.Archive)]
-        public async Task<IActionResult> PutExsitingCheckBooksAsArchivedAsync(
+        public async Task<IActionResult> PutExistingCheckBooksAsArchivedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
             return await GroupArchiveResultAsync(actionDetail, true);
@@ -80,7 +80,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPut]
         [Route(CheckBookApi.UndoArchiveCheckBooksUrl)]
         [AuthorizeRequest(SecureEntity.CheckBookReport, (int)CheckBookReportPermissions.UndoArchive)]
-        public async Task<IActionResult> PutExsitingCheckBooksAsUndoArchivedAsync(
+        public async Task<IActionResult> PutExistingCheckBooksAsUndoArchivedAsync(
             [FromBody] ActionDetailViewModel actionDetail)
         {
             return await GroupArchiveResultAsync(actionDetail, false);

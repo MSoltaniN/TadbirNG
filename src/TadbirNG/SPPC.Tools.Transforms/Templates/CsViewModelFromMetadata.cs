@@ -134,149 +134,137 @@ foreach(var textProp in textProps)
             
             #line 45 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
 
-foreach(var property in _entity.Properties.Where(prop => prop.Name != "RowGuid" && prop.Name != "ModifiedDate"))
+var baseProperties = new string[] { "Id", "RowGuid", "ModifiedDate" };
+foreach(var property in _entity.Properties.Where(prop => !baseProperties.Contains(prop.Name)))
 {
-    if(property.Name == "Id")
+    if(!String.IsNullOrWhiteSpace(property.Description))
     { 
-            
-            #line default
-            #line hidden
-            this.Write("\r\n        /// <summary>\r\n        /// شناسه دیتابیسی این موجودیت که به صورت خودکار" +
-                    " توسط دیتابیس تولید می شود\r\n        /// </summary>\r\n        public int Id { get;" +
-                    " set; }\r\n");
-            
-            #line 55 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
-  }
-    else
-    {
-        if(!String.IsNullOrWhiteSpace(property.Description))
-        { 
             
             #line default
             #line hidden
             this.Write("\r\n        /// <summary>\r\n        /// ");
             
-            #line 62 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+            #line 53 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.Description));
             
             #line default
             #line hidden
             this.Write("\r\n        /// </summary>\r\n");
             
-            #line 64 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
-      }
-        if(property.IsValidated)
-        {
-            var rule = property.ValidationRule;
-            if (rule.Required)
-	        { 
+            #line 55 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+  }
+    if(property.IsValidated)
+    {
+        var rule = property.ValidationRule;
+        if (rule.Required)
+	    { 
             
             #line default
             #line hidden
             this.Write("        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]\r\n");
             
-            #line 71 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
-          }
-            if (HasMinLengthRestrictionOnly(property))
-	        { 
+            #line 62 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+      }
+        if (HasMinLengthRestrictionOnly(property))
+	    { 
             
             #line default
             #line hidden
             this.Write("        [MinLength(");
             
-            #line 74 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+            #line 65 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(rule.Minimum));
             
             #line default
             #line hidden
             this.Write(", ErrorMessage = ValidationMessages.TextFieldIsTooShort)]\r\n");
             
-            #line 75 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
-          }
-            if (HasMaxLengthRestrictionOnly(property))
-	        { 
+            #line 66 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+      }
+        if (HasMaxLengthRestrictionOnly(property))
+	    { 
             
             #line default
             #line hidden
             this.Write("        [StringLength(");
             
-            #line 78 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+            #line 69 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(rule.Maximum));
             
             #line default
             #line hidden
             this.Write(", ErrorMessage = ValidationMessages.TextFieldIsTooLong)]\r\n");
             
-            #line 79 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
-          }
-            if (HasLengthRangeRestriction(property))
-	        { 
+            #line 70 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+      }
+        if (HasLengthRangeRestriction(property))
+	    { 
             
             #line default
             #line hidden
             this.Write("        [StringLength(");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+            #line 73 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(rule.Maximum));
             
             #line default
             #line hidden
             this.Write(", MinimumLength = ");
             
-            #line 82 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+            #line 73 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(rule.Minimum));
             
             #line default
             #line hidden
             this.Write(", ErrorMessage = ValidationMessages.TextFieldHasLengthRange)]\r\n");
             
-            #line 83 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
-          }
-            if (HasRangeRestriction(property))
-	        { 
+            #line 74 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+      }
+        if (HasRangeRestriction(property))
+	    { 
             
             #line default
             #line hidden
             this.Write("        [Range(");
             
-            #line 86 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+            #line 77 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(rule.Minimum));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 86 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+            #line 77 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(rule.Maximum));
             
             #line default
             #line hidden
             this.Write(", ErrorMessage = ValidationMessages.NumberHasValueRange)]\r\n");
             
-            #line 87 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
-          }
-        } 
+            #line 78 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+      }
+    } 
             
             #line default
             #line hidden
             this.Write("        public ");
             
-            #line 89 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+            #line 80 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GetTypeAlias(property)));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 89 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+            #line 80 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.Name));
             
             #line default
             #line hidden
             this.Write(" { get; set; }\r\n");
             
-            #line 90 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
-  }
+            #line 81 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
+
 } 
             
             #line default

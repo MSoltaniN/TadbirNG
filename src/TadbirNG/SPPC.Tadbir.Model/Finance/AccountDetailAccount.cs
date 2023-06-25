@@ -1,5 +1,4 @@
 ﻿using System;
-using SPPC.Framework.Domain;
 
 namespace SPPC.Tadbir.Model.Finance
 {
@@ -23,7 +22,7 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// شناسه دیتابیسی تفصیلی شناور در این ارتباط
         /// </summary>
-        public virtual int DetailId { get; set; }
+        public virtual int DetailAccountId { get; set; }
 
         /// <summary>
         /// نمونه سرفصل حسابداری متناظر با شناسه دیتابیسی موجود

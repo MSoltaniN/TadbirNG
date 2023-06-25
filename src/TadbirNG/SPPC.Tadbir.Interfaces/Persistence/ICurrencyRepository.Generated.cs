@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
@@ -18,7 +17,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از ارزها تعریف شده</returns>
-        Task<PagedList<CurrencyViewModel>> GetCurrenciesAsync(GridOptions gridOptions = null);
+        Task<PagedList<CurrencyViewModel>> GetCurrenciesAsync(GridOptions gridOptions);
 
         /// <summary>
         /// به روش آسنکرون، ارز با شناسه عددی مشخص شده را خوانده و برمی گرداند

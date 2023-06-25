@@ -480,7 +480,8 @@ export class AutoGridExplorerComponent<T>
       this.skip = 0;
     }
 
-    var parent_Id = this.parentId ? this.parentId.toString() : "null";
+    var parent_Id = this.parentId ? this.parentId.toString() : null;
+
     filter = this.addFilterToFilterExpression(
       filter,
       parent_Id

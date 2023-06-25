@@ -136,10 +136,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.SourceApp, (int)SourceAppPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingSourceAppAsync(int sourceAppId)
         {
-            string message = await ValidateDeleteAsync(sourceAppId);
-            if (!String.IsNullOrEmpty(message))
+            var result = await ValidateDeleteResultAsync(sourceAppId);
+            if (result != null)
             {
-                return BadRequestResult(message);
+                return BadRequestResult(result.ErrorMessage);
             }
 
             await _repository.DeleteSourceAppAsync(sourceAppId);
@@ -168,16 +168,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="item">شناسه دیتابیسی منبع و مصرف مورد نظر برای حذف</param>
         /// <returns>اگر خطای اعتبارسنجی برای حذف وجود داشته باشد، متن محلی شده خطا
         /// و در غیر این صورت رشته خالی را برمی گرداند</returns>
-        protected override async Task<string> ValidateDeleteAsync(int item)
+        protected override async Task<GroupActionResultViewModel> ValidateDeleteResultAsync(int item)
         {
             string message = String.Empty;
             var sourceApp = await _repository.GetSourceAppAsync(item);
             if (sourceApp == null)
             {
                 message = _strings.Format(AppStrings.ItemByIdNotFound, AppStrings.SourceApp, item.ToString());
+                return GetGroupActionResult(message, sourceApp);
             }
-
-            return message;
+            var result = BranchValidationResult(sourceApp);
+            if (result is BadRequestObjectResult errorResult)
+            {
+                return GetGroupActionResult(errorResult.Value.ToString(), sourceApp);
+            }
+            return GetGroupActionResult(message, sourceApp);
         }
 
         private async Task<IActionResult> ValidationResultAsync(SourceAppViewModel sourceApp, int sourceAppId = 0)
@@ -196,6 +201,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (await _repository.IsDuplicateCodeAsync(sourceApp))
             {
                 return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.Code));
+            }
+
+            result = BranchValidationResult(sourceApp);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
             }
 
             return Ok();

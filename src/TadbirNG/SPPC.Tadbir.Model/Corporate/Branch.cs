@@ -7,11 +7,6 @@ namespace SPPC.Tadbir.Model.Corporate
     public partial class Branch
     {
         /// <summary>
-        /// شناسه دیتابیسی شرکتی که این شعبه برای آن تعریف شده است
-        /// </summary>
-        public int CompanyId { get; set; }
-
-        /// <summary>
         /// مجموعه ای از شعب سازمانی زیرشاخه (فرزند) در ساختار درختی
         /// </summary>
         public IList<Branch> Children { get; protected set; }
@@ -25,10 +20,5 @@ namespace SPPC.Tadbir.Model.Corporate
         /// Gets a collection of existing associations between roles and branches
         /// </summary>
         public virtual IList<RoleBranch> RoleBranches { get; protected set; }
-
-        /// <summary>
-        /// مجموعه ای از سرفصل های حسابداری و ارزهای انتخاب شده برای این شعبه
-        /// </summary>
-        public IList<AccountCurrency> AccountCurrencies { get; set; }
     }
 }

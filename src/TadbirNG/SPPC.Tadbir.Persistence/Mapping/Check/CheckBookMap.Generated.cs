@@ -30,6 +30,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasMaxLength(32);
             builder.Property(e => e.SayyadStartNo)
                 .IsRequired()
+                .IsFixedLength()
                 .HasMaxLength(16);
             builder.Property(e => e.Name)
                 .IsRequired()

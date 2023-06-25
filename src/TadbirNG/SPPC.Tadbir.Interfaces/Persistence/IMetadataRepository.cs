@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SPPC.Framework.Domain;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Metadata;
@@ -9,19 +7,19 @@ using SPPC.Tadbir.ViewModel.Metadata;
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    /// عملیات مورد نیاز برای خواندن اطلاعات فراداده ای از محل ذخیره را تعریف می کند
+    /// عملیات مورد نیاز برای خواندن اطلاعات فراداده ای را تعریف می کند
     /// </summary>
     public interface IMetadataRepository
     {
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای موجودیت با نام مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای موجودیت با نام مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewName">نام (شناسه متنی) موجودیت مورد نظر</param>
         /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
         Task<ViewViewModel> GetViewMetadataAsync(string viewName);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای موجودیت با نام مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای موجودیت با نام مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewId">شناسه عددی موجودیت مورد نظر</param>
         /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
@@ -35,7 +33,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات نمایشی تمام دستوراتی که در بالاترین سطح ساختار درختی قرار دارند را
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه ای از دستورات در بالاترین سطح</returns>
         Task<IList<CommandViewModel>> GetTopLevelCommandsAsync();
@@ -47,7 +45,7 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<CommandViewModel>> GetDefaultCommandsAsync();
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای همه موجودیت ها را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای همه موجودیت ها را خوانده و برمی گرداند
         /// </summary>
         /// <returns> اطلاعات فراداده ای تعریف شده برای همه موجودیت ها</returns>
         Task<IList<ViewViewModel>> GetViewsMetadataAsync();

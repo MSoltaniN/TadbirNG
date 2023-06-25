@@ -38,12 +38,13 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، لیست نقش های تعریف شده را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، لیست نقش های تعریف شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>لیست نقش های تعریف شده</returns>
-        public async Task<PagedList<RoleViewModel>> GetRolesAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<RoleViewModel>> GetRolesAsync(GridOptions gridOptions)
         {
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var roles = new List<RoleViewModel>();
             if (gridOptions.Operation != (int)OperationId.Print)
             {

@@ -10,16 +10,6 @@
         }
 
         /// <summary>
-        /// API client URL for fiscal periods defined in a company
-        /// </summary>
-        public const string CompanyFiscalPeriods = "fperiods/company/{0}";
-
-        /// <summary>
-        /// API server route URL for fiscal period defined in a company
-        /// </summary>
-        public const string CompanyFiscalPeriodsUrl = "fperiods/company/{companyId:min(1)}";
-
-        /// <summary>
         /// API client URL for all fiscal period items
         /// </summary>
         public const string FiscalPeriods = "fperiods";

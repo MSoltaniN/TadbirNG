@@ -5,7 +5,7 @@ using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class CurrencyViewModel : ViewModelBase, IFiscalEntityView
+    public partial class CurrencyViewModel : ViewModelBase, IFiscalEntity
     {
         /// <summary>
         /// شناسه دیتابیسی دوره مالی که ارز در آن تعریف شده است - این فیلد فعلاً استفاده نمی شود

@@ -28,7 +28,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>آخرین نسخه دیتابیس شرکتی</returns>
         public string GetCompanyDbVersion(string scriptRoot)
         {
-            var scriptPath = Path.Combine(scriptRoot, ScriptConstants.SysDbUpdateScript);
+            var scriptPath = Path.Combine(scriptRoot, ScriptConstants.DbUpdateScript);
             return GetLatestDbVersion(scriptPath);
         }
 

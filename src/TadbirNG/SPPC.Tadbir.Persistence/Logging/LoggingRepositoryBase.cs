@@ -35,7 +35,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">اطلاعات مورد نیاز برای ایجاد لاگ</param>
         /// <param name="description">شرح اختیاری برای رویداد</param>
-        protected virtual async Task ReadAsync(GridOptions gridOptions, string description = null)
+        /// <param name="entityTypeId">شناسه نوع موجودیت که پیش فرض با پراپرتی انتیتی تایپ آیدی پر میشود</param> 
+        protected virtual async Task ReadAsync(GridOptions gridOptions, string description = null,
+            int? entityTypeId = null)
         {
             var options = gridOptions ?? new GridOptions();
             await OnSourceActionAsync(options, SourceListId.None);

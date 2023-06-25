@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Utility;
@@ -13,15 +12,15 @@ namespace SPPC.Tadbir.Persistence
     public interface IVoucherLineRepository
     {
         /// <summary>
-        /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
-        Task<PagedList<VoucherLineViewModel>> GetArticlesAsync(int voucherId, GridOptions gridOptions = null);
+        Task<PagedList<VoucherLineViewModel>> GetArticlesAsync(int voucherId, GridOptions gridOptions);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="articleId">شناسه عددی آرتیکل موجود</param>
         /// <returns>اطلاعات آرتیکل مشخص شده با شناسه عددی</returns>
@@ -29,7 +28,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات موجودیت استفاده می شود</typeparam>
         /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
@@ -51,7 +50,7 @@ namespace SPPC.Tadbir.Persistence
         Task SaveArticleMarkAsync(VoucherLineMarkViewModel mark);
 
         /// <summary>
-        /// به روش آسنکرون، سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="articleId">شناسه عددی آرتیکل برای حذف</param>
         Task DeleteArticleAsync(int articleId);

@@ -41,8 +41,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از دوره های مالی تعریف شده در شرکت جاری</returns>
-        public async Task<PagedList<FiscalPeriodViewModel>> GetFiscalPeriodsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<FiscalPeriodViewModel>> GetFiscalPeriodsAsync(GridOptions gridOptions)
         {
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var fiscalPeriods = new List<FiscalPeriod>();
             if (gridOptions.Operation != (int)OperationId.Print)
             {
@@ -56,7 +57,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون،دوره مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون،دوره مالی با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="fperiodId">شناسه عددی یکی از دوره های مالی</param>
         /// <returns>دوره مالی مشخص شده با شناسه عددی</returns>
@@ -168,7 +169,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، دوره مالی مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// به روش آسنکرون، دوره مالی مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
         /// <param name="fperiodId">شناسه عددی دوره مالی مورد نظر برای حذف</param>
         public async Task DeleteFiscalPeriodAsync(int fperiodId)
@@ -233,7 +234,7 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(fiscalPeriod, "fiscalPeriod");
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             var fiscalPeriods = await repository.GetByCriteriaAsync(
-                fp => fp.CompanyId == fiscalPeriod.CompanyId && fp.Id != fiscalPeriod.Id
+                fp => fp.Id != fiscalPeriod.Id
                 && ((fiscalPeriod.StartDate.Date >= fp.StartDate.Date
                     && fiscalPeriod.StartDate.Date <= fp.EndDate.Date)
                 || (fiscalPeriod.EndDate.Date >= fp.StartDate.Date
@@ -367,7 +368,6 @@ namespace SPPC.Tadbir.Persistence
             fiscalPeriod.StartDate = fiscalPeriodView.StartDate;
             fiscalPeriod.EndDate = fiscalPeriodView.EndDate;
             fiscalPeriod.Description = fiscalPeriodView.Description;
-            fiscalPeriod.CompanyId = fiscalPeriodView.CompanyId;
         }
 
         /// <summary>

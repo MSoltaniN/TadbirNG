@@ -26,9 +26,9 @@ namespace SPPC.Tadbir.Model.Reporting
         /// </summary>
         public SystemIssue()
         {
-            this.TitleKey = String.Empty;
-            this.ApiUrl = String.Empty;
-            this.ModifiedDate = DateTime.Now;
+            TitleKey = String.Empty;
+            ApiUrl = String.Empty;
+            ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

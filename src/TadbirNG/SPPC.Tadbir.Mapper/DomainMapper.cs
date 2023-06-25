@@ -100,6 +100,24 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<SourceApp, SourceAppViewModel>()
                 .ForMember(dest => dest.TypeName, opts => opts.MapFrom(src => SourceAppHelper.GetTypeName(src)));
             mapperConfig.CreateMap<SourceAppViewModel, SourceApp>();
+            mapperConfig.CreateMap<PayReceive, PayReceiveViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.Reference, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.ConfirmedByName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.ApprovedByName, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.IsApproved, opts => opts.MapFrom(src => src.ApprovedById != null))
+                .ForMember(dest => dest.IsConfirmed, opts => opts.MapFrom(src => src.ConfirmedById != null));
+            mapperConfig.CreateMap<PayReceiveViewModel, PayReceive>();
+            mapperConfig.CreateMap<PayReceiveAccount, PayReceiveAccountViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.FullAccount,opts => opts.MapFrom(
+                    src => BuildFullAccount(src.Account, src.DetailAccount, src.CostCenter, src.Project)));
+            mapperConfig.CreateMap<PayReceiveAccountViewModel, PayReceiveAccount>()
+                .AfterMap((viewModel, model) => model.AccountId = GetNullableId(viewModel.FullAccount.Account))
+                .AfterMap((viewModel, model) => model.DetailAccountId = GetNullableId(viewModel.FullAccount.DetailAccount))
+                .AfterMap((viewModel, model) => model.CostCenterId = GetNullableId(viewModel.FullAccount.CostCenter))
+                .AfterMap((viewModel, model) => model.ProjectId = GetNullableId(viewModel.FullAccount.Project));
+            mapperConfig.CreateMap<PayReceiveAccount, PayReceiveAccountSummaryViewModel>();
         }
 
         private static void MapCheckTypes(IMapperConfigurationExpression mapperConfig)
@@ -300,7 +318,7 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.TypeId,
                     opts => opts.MapFrom(src => src.LineTypeId))
                 .AfterMap((viewModel, model) => model.AccountId = viewModel.FullAccount.Account.Id)
-                .AfterMap((viewModel, model) => model.DetailId = GetNullableId(viewModel.FullAccount.DetailAccount))
+                .AfterMap((viewModel, model) => model.DetailAccountId = GetNullableId(viewModel.FullAccount.DetailAccount))
                 .AfterMap((viewModel, model) => model.CostCenterId = GetNullableId(viewModel.FullAccount.CostCenter))
                 .AfterMap((viewModel, model) => model.ProjectId = GetNullableId(viewModel.FullAccount.Project));
             mapperConfig.CreateMap<VoucherLine, KeyValue>()

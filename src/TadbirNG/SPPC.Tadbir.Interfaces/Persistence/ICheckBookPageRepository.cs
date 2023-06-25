@@ -40,6 +40,6 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="checkBookId">شناسه یکی از دسته چک های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>برگه های چک مشخص شده با شناسه عددی</returns>
-        Task<PagedList<CheckBookPageViewModel>> GetPagesAsync(int checkBookId, GridOptions gridOptions = null);
+        Task<PagedList<CheckBookPageViewModel>> GetPagesAsync(int checkBookId, GridOptions gridOptions);
     }
 }

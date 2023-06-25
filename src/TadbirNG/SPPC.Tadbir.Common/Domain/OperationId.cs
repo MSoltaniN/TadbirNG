@@ -342,5 +342,60 @@ namespace SPPC.Tadbir.Domain
         /// کد عملیاتی برگشت از بایگانی
         /// </summary>
         UndoArchive = 67,
+
+        /// <summary>
+        /// کد عملیاتی ثبت مالی
+        /// </summary>
+        Register = 68,
+
+        /// <summary>
+        /// کد عملیاتی حذف سطرهای نامعتبر
+        /// </summary>
+        RemoveInvalidRows = 69,
+
+        /// <summary>
+        /// کد عملیاتی تجمیع سطرها
+        /// </summary>
+        RowsAggregation = 70,
+
+        /// <summary>
+        /// کد عملیاتی ایجاد آرتیکل حساب موجودیت عملیاتی
+        /// </summary>
+        CreateAccountLine = 71,
+
+        /// <summary>
+        /// کد عملیاتی ویرایش آرتیکل حساب موجودیت عملیاتی
+        /// </summary>
+        EditAccountLine = 72,
+
+        /// <summary>
+        /// کد عملیاتی حذف آرتیکل حساب موجودیت عملیاتی
+        /// </summary>
+        DeleteAccountLine = 73,
+
+        /// <summary>
+        /// کد عملیاتی حذف گروهی آرتیکل حساب موجودیت عملیاتی
+        /// </summary>
+        GroupDeleteAccountLines = 74,
+
+        /// <summary>
+        /// کد عملیاتی چاپ آرتیکل های حساب موجودیت عملیاتی
+        /// </summary>ب
+        PrintAccountLines = 75,
+
+        /// <summary>
+        /// کد عملیاتی پیش نمایش چاپ آرتیکل های حساب موجودیت عملیاتی
+        /// </summary>
+        PrintPreviewAccountLines = 76,
+
+        /// <summary>
+        /// کد عملیاتی فیلتر پیشرفته آرتیکل های حساب موجودیت عملیاتی
+        /// </summary>
+        FilterAccountLines = 77,
+
+        /// <summary>
+        /// کد عملیاتی ارسال آرتیکل های حساب موجودیت عملیاتی به فایل
+        /// </summary>
+        ExportAccountLines = 78
     }
 }

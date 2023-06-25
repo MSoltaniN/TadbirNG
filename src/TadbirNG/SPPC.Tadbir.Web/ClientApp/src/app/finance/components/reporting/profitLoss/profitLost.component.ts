@@ -299,13 +299,13 @@ export class ProfitLostComponent
   }
   
   ngOnInit(): void {
-    if (!this.isAccess(Entities.ProfitLost, ProfitLossPermissions.View)) {
+    if (!this.isAccess(Entities.ProfitLoss, ProfitLossPermissions.View)) {
       this.showMessage(
         this.getText("App.AccessDenied"),
         MessageType.Warning
       );
     }
-    this.entityName = Entities.ProfitLost;
+    this.entityName = Entities.ProfitLoss;
     this.viewId = ViewName[this.entityTypeName];
     this.showloadingMessage = false;
     this.tax = 0;
@@ -461,7 +461,7 @@ export class ProfitLostComponent
     else {
       if (!this.comparativeSelected) {
         this.getDataUrl = ProfitLossApi.ProfitLoss;
-        this.entityName = Entities.ProfitLost;
+        this.entityName = Entities.ProfitLoss;
         this.viewId = ViewName[this.entityTypeName];
 
         if (this.oldDataUrl != ProfitLossApi.ProfitLoss) {
@@ -635,7 +635,7 @@ export class ProfitLostComponent
 
   onChangeFilterByRef(event) {
     if (
-      !this.isAccess(Entities.ProfitLost, ProfitLossPermissions.FilterByRef)
+      !this.isAccess(Entities.ProfitLoss, ProfitLossPermissions.FilterByRef)
     ) {
       setTimeout(() => {
         this.selectedReferences = [];

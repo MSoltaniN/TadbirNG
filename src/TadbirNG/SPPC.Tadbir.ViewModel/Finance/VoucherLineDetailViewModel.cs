@@ -9,11 +9,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
     public class VoucherLineDetailViewModel : ViewModelBase, IFiscalEntity
     {
         /// <summary>
-        /// شناسه دیتابیسی آرتیکل مالی
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// تاریخ سندی که آرتیکل مالی در آن ایجاد شده است
         /// </summary>
         public DateTime VoucherDate { get; set; }
@@ -167,15 +162,5 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// شناسه دیتابیسی دوره مالی که آرتیکل سند در آن ایجاد شده است
         /// </summary>
         public int FiscalPeriodId { get; set; }
-
-        /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public DateTime ModifiedDate { get; set; }
     }
 }

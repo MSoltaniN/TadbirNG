@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Domain
 {
@@ -108,8 +107,18 @@ namespace SPPC.Tadbir.Domain
         public const int MaxAccountTreeLevel = 8;
 
         /// <summary>
+        /// حداکثر طول مجاز برای عددهای متنی - مورد استفاده در فیلدهای کد و شماره
+        /// </summary>
+        public const int MaxCodeLength = 16;
+
+        /// <summary>
         /// قالب پیش فرض برای برچسب های زمانی
         /// </summary>
         public const string TimestampFormat = "yyyy-MM-dd HH:mm:ss";
+
+        /// <summary>
+        /// طول پیش فرض برای عدد های متنی
+        /// </summary>
+        public const int DefaultNumberLength = 8;
     }
 }

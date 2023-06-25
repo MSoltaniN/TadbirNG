@@ -34,11 +34,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از منابع و مصارف تعریف شده</returns>
-        public async Task<PagedList<SourceAppViewModel>> GetSourceAppsAsync(GridOptions gridOptions = null)
+        public async Task<PagedList<SourceAppViewModel>> GetSourceAppsAsync(GridOptions gridOptions)
         {
-            var options = gridOptions ?? new GridOptions();
+            Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var sourceApps = new List<SourceAppViewModel>();
-            if (options.Operation != (int)OperationId.Print)
+            if (gridOptions.Operation != (int)OperationId.Print)
             {
                 var query = Repository.GetAllQuery<SourceApp>(ViewId.SourceApp);
                 sourceApps = await query
@@ -47,8 +47,8 @@ namespace SPPC.Tadbir.Persistence
             }
 
             Array.ForEach(sourceApps.ToArray(), sa => Localize(sa));
-            await ReadAsync(options);
-            return new PagedList<SourceAppViewModel>(sourceApps, options);
+            await ReadAsync(gridOptions);
+            return new PagedList<SourceAppViewModel>(sourceApps, gridOptions);
         }
 
         /// <summary>
@@ -158,8 +158,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<SourceApp>();
             int count = await repository.GetCountByCriteriaAsync(
                 sa => sa.Id != sourceApp.Id
-                    && sa.Name == sourceApp.Name
-                    && sa.BranchId == sourceApp.BranchId);
+                    && sa.Name == sourceApp.Name);
             return count > 0;
         }
 
@@ -174,8 +173,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<SourceApp>();
             int count = await repository.GetCountByCriteriaAsync(
                 c => c.Id != sourceApp.Id
-                    && c.Code == sourceApp.Code
-                    && c.BranchId == sourceApp.BranchId);
+                    && c.Code == sourceApp.Code);
             return count > 0;
         }
         
@@ -224,7 +222,6 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<SourceApp>();
             var lastByNo = await repository
                 .GetEntityQuery()
-                .Where(sourceApp => sourceApp.BranchId == UserContext.BranchId)
                 .OrderByDescending(sourceApp => sourceApp.Code)
                 .FirstOrDefaultAsync();
             return (lastByNo != null) ? Int32.Parse(lastByNo.Code) : 0;

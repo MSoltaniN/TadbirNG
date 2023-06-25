@@ -33,11 +33,6 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// شناسه متنی یکتا برای این کلید میانبر
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

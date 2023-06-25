@@ -109,8 +109,8 @@ var camelCase = entity.Name.CamelCase();
             
             #line default
             #line hidden
-            this.Write("Async(GridOptions gridOptions = null);\r\n\r\n        /// <summary>\r\n        /// به ر" +
-                    "وش آسنکرون، ");
+            this.Write("Async(GridOptions gridOptions);\r\n\r\n        /// <summary>\r\n        /// به روش آسنک" +
+                    "رون، ");
             
             #line 37 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\RepoInterfaceFromMetadata.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(entityInfo.SingularName));

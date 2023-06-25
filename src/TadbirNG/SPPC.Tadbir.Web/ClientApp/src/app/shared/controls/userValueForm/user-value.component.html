@@ -20,21 +20,7 @@
     </ng-container>
     <ng-container *ngIf="mode == 'new'">
         <ng-container *ngTemplateOutlet="insertForm"></ng-container>
-    </ng-container>
-    <!-- <kendo-tabstrip>
-        <kendo-tabstrip-tab [title]="getText('CheckBookReport.SelectFormList')" [selected]="true">
-            <ng-template kendoTabContent>
-                <user-value-form [viewID]="viewID" (selectedKey)="selectedKey($event)"></user-value-form>
-            </ng-template>
-        </kendo-tabstrip-tab>
-        start Insert form -->
-        <!-- <kendo-tabstrip-tab [title]="getText('CheckBookReport.InsertNew')">
-            <ng-template kendoTabContent>
-                <ng-container *ngTemplateOutlet="insertForm"></ng-container>
-            </ng-template>
-        </kendo-tabstrip-tab>
-    </kendo-tabstrip> -->
-    
+    </ng-container>    
 
     <ng-template #insertForm>
         <div class="insert-new-form" style="padding:15px;" (keydown.esc)="escPress()">
@@ -58,6 +44,7 @@
                         [value]="customType"
                         [(ngModel)]="customType"
                         [ngModelOptions]="{standalone: true}"
+                        disabled
                     >
                     </kendo-dropdownlist>
                 </div>

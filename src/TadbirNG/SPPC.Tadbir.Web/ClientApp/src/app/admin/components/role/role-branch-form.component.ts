@@ -5,7 +5,7 @@ import { Layout } from '@sppc/shared/enum/metadata';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { DetailComponent } from '@sppc/shared/class';
 import { RelatedItems } from '@sppc/shared/models';
-import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
+import { CheckableSettings, TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
 
 
 
@@ -39,7 +39,14 @@ export class RoleBranchFormComponent extends DetailComponent {
   public selectedRows: number[] = [];
   public showloadingMessage: boolean = true;
   public model: RelatedItems;
-
+  public checkableSettings: CheckableSettings = {
+      checkChildren: true,
+      checkDisabledChildren: false,
+      checkParents: false,
+      enabled: true,
+      // mode: this.checkMode,
+      // checkOnClick: this.checkOnClick,
+  }
 
   @Input() public inputRoleBranches: boolean = false;
  // @Input() public errorMessage: string = '';

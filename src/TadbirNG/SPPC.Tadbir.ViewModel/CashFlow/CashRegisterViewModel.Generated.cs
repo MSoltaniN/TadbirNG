@@ -31,11 +31,6 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// نام صندوق
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

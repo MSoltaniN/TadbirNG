@@ -161,7 +161,7 @@ namespace SPPC.Tadbir.Persistence
 
             var criteria = GetFullAccountCriteria(account);
             errorKey = EnsureNoMissingItemInFullAccount(criteria, fullAccount);
-            if (!String.IsNullOrEmpty(errorKey))
+             if (!String.IsNullOrEmpty(errorKey))
             {
                 return errorKey;
             }
@@ -228,7 +228,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             var relatedDetailIds = await existingItemsQuery
-                .Select(ada => ada.DetailId)
+                .Select(ada => ada.DetailAccountId)
                 .ToListAsync();
             var detailAccounts = await Repository
                 .GetAllQuery<DetailAccount>(ViewId.DetailAccount)
@@ -333,7 +333,7 @@ namespace SPPC.Tadbir.Persistence
             var relationRepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
             var relatedAccountIds = await relationRepository
                 .GetEntityQuery()
-                .Where(ada => ada.DetailId == detailId
+                .Where(ada => ada.DetailAccountId == detailId
                     && ada.Account.Children.Count == 0)
                 .Select(ada => ada.AccountId)
                 .ToListAsync();
@@ -450,7 +450,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task AddNewAccountDetailAccount(Account existing, int detailId)
         {
             var existingRelation = existing.AccountDetailAccounts
-                .Where(ada => ada.AccountId == existing.Id && ada.DetailId == detailId)
+                .Where(ada => ada.AccountId == existing.Id && ada.DetailAccountId == detailId)
                 .FirstOrDefault();
             if (existingRelation != null)
             {
@@ -462,7 +462,7 @@ namespace SPPC.Tadbir.Persistence
             var accountDetailAccount = new AccountDetailAccount()
             {
                 AccountId = existing.Id,
-                DetailId = detailAccount.Id
+                DetailAccountId = detailAccount.Id
             };
             existing.AccountDetailAccounts.Add(accountDetailAccount);
             foreach (var child in detailAccount.Children)
@@ -503,7 +503,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task RemoveAccountDetailAccountAsync(Account existing, int detailId)
         {
             var existingRelation = existing.AccountDetailAccounts
-                .Where(ada => ada.DetailId == detailId)
+                .Where(ada => ada.DetailAccountId == detailId)
                 .SingleOrDefault();
             if (existingRelation == null)
             {
@@ -553,7 +553,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task AddConnectedAccountAsync(DetailAccount existing, Account account)
         {
             var existingRelation = existing.AccountDetailAccounts
-                .Where(ada => ada.AccountId == account.Id && ada.DetailId == existing.Id)
+                .Where(ada => ada.AccountId == account.Id && ada.DetailAccountId == existing.Id)
                 .FirstOrDefault();
             if (existingRelation != null)
             {
@@ -564,7 +564,7 @@ namespace SPPC.Tadbir.Persistence
             var accountDetailAccount = new AccountDetailAccount()
             {
                 AccountId = account.Id,
-                DetailId = existing.Id
+                DetailAccountId = existing.Id
             };
             existing.AccountDetailAccounts.Add(accountDetailAccount);
             foreach (var child in existing.Children)
@@ -1060,7 +1060,7 @@ namespace SPPC.Tadbir.Persistence
             var relatedDetailIds = await relationRepository
                 .GetEntityQuery()
                 .Where(ada => ada.AccountId == accountId)
-                .Select(ada => ada.DetailId)
+                .Select(ada => ada.DetailAccountId)
                 .ToListAsync();
             var query = Repository
                 .GetAllQuery<DetailAccount>(ViewId.DetailAccount, facc => facc.Children)
@@ -1157,7 +1157,7 @@ namespace SPPC.Tadbir.Persistence
             var relationRepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
             var relatedAccountIds = await relationRepository
                 .GetEntityQuery()
-                .Where(ada => ada.DetailId == detailId)
+                .Where(ada => ada.DetailAccountId == detailId)
                 .Select(ada => ada.AccountId)
                 .ToListAsync();
             var inactiveAccountIds = await GetInactiveAccountIdsAsync();
@@ -1252,7 +1252,7 @@ namespace SPPC.Tadbir.Persistence
                 int count = detailAccount.AccountDetailAccounts.Count;
                 var relatedAccounts = await relationRepository
                     .GetEntityQuery(ada => ada.Account)
-                    .Where(ada => ada.DetailId == detailAccount.ParentId.Value
+                    .Where(ada => ada.DetailAccountId == detailAccount.ParentId.Value
                         && ada.Account.FiscalPeriodId <= UserContext.FiscalPeriodId)
                     .Select(ada => ada.Account)
                     .ToListAsync();
@@ -1261,7 +1261,7 @@ namespace SPPC.Tadbir.Persistence
                     var accountDetailAccount = new AccountDetailAccount()
                     {
                         AccountId = account.Id,
-                        DetailId = detailAccount.Id
+                        DetailAccountId = detailAccount.Id
                     };
                     detailAccount.AccountDetailAccounts.Add(accountDetailAccount);
                 }
@@ -1412,7 +1412,7 @@ namespace SPPC.Tadbir.Persistence
             if (fullAccount.DetailAccount != null)
             {
                 bool isValidRelation = account.AccountDetailAccounts
-                    .Select(ada => ada.DetailId)
+                    .Select(ada => ada.DetailAccountId)
                     .Contains(fullAccount.DetailAccount.Id);
                 if (!isValidRelation)
                 {

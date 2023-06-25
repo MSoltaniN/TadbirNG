@@ -272,7 +272,7 @@ namespace SPPC.Tadbir.Persistence
                 var projectRepository = UnitOfWork.GetAsyncRepository<Project>();
                 var fullCode = await projectRepository
                     .GetEntityQuery()
-                    .Where(prj => prj.Id == parameters.CostCenterId)
+                    .Where(prj => prj.Id == parameters.ProjectId)
                     .Select(prj => prj.FullCode)
                     .SingleOrDefaultAsync();
 
@@ -397,7 +397,7 @@ namespace SPPC.Tadbir.Persistence
             string query, int length, object value, string filter, GridOptions gridOptions, int fpId)
         {
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-            string command = String.Format(query, length, "Account", "Account", value, filter);
+            string command = String.Format(query, length, "Account", value, filter);
             command = command.Replace(" AND ()", String.Empty);
             var balanceQuery = new ReportQuery(command);
             balanceQuery.SetFilter(_utility.GetEnvironmentFilters(gridOptions, fpId));

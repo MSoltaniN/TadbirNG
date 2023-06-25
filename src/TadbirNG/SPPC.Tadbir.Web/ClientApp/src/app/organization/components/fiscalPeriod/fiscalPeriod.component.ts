@@ -119,10 +119,7 @@ export class FiscalPeriodComponent
     this.entityName = Entities.FiscalPeriod;
     this.viewId = ViewName[this.entityTypeName];
 
-    this.getDataUrl = String.Format(
-      FiscalPeriodApi.CompanyFiscalPeriods,
-      this.CompanyId
-    );
+    this.getDataUrl = FiscalPeriodApi.FiscalPeriods;
     this.reloadGrid();
     this.cdref.detectChanges();
   }

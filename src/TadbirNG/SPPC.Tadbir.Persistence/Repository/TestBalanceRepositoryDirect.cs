@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
@@ -135,7 +136,8 @@ namespace SPPC.Tadbir.Persistence
                         AddOperationSums(items);
                     }
 
-                    items = await ApplyZeroBalanceOptionAsync(items, parameters, level);
+                    filter = $"FullCode.StartsWith(\"{accountItem.FullCode}\")";
+                    items = await ApplyZeroBalanceOptionAsync(items, parameters, level, filter);
                     PrepareBalance(balance, items, parameters, length);
                 }
             }
@@ -458,13 +460,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<List<TestBalanceItemViewModel>> ApplyZeroBalanceOptionAsync(
-            IEnumerable<TestBalanceItemViewModel> items, TestBalanceParameters parameters, int level)
+            IEnumerable<TestBalanceItemViewModel> items, TestBalanceParameters parameters, int level,
+            string filter = null)
         {
             IEnumerable<TestBalanceItemViewModel> newItems = null;
             if ((parameters.Options & FinanceReportOptions.ShowZeroBalanceItems) > 0)
             {
                 newItems = items.Concat(
-                    await GetZeroBalanceItemsAsync(parameters.ViewId, items, level));
+                    await GetZeroBalanceItemsAsync(parameters.ViewId, items, level, filter));
             }
             else
             {
@@ -479,10 +482,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IEnumerable<TestBalanceItemViewModel>> GetZeroBalanceItemsAsync(
-            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level)
+            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level, string filter = null)
         {
             var zeroItems = new List<TestBalanceItemViewModel>();
-            var notUsed = await GetNotUsedItemsAsync(viewId, items, level);
+            var notUsed = await GetNotUsedItemsAsync(viewId, items, level, filter);
             foreach (var notUsedItem in notUsed)
             {
                 zeroItems.Add(new TestBalanceItemViewModel()
@@ -499,22 +502,22 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IEnumerable<TreeEntity>> GetNotUsedItemsAsync(
-            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level)
+            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level, string filter = null)
         {
             IEnumerable<TreeEntity> notUsed = null;
             switch (viewId)
             {
                 case ViewId.Account:
-                    notUsed = await GetNotUsedItemsAsync<Account>(viewId, items, level);
+                    notUsed = await GetNotUsedItemsAsync<Account>(viewId, items, level, filter);
                     break;
                 case ViewId.DetailAccount:
-                    notUsed = await GetNotUsedItemsAsync<DetailAccount>(viewId, items, level);
+                    notUsed = await GetNotUsedItemsAsync<DetailAccount>(viewId, items, level, filter);
                     break;
                 case ViewId.CostCenter:
-                    notUsed = await GetNotUsedItemsAsync<CostCenter>(viewId, items, level);
+                    notUsed = await GetNotUsedItemsAsync<CostCenter>(viewId, items, level, filter);
                     break;
                 case ViewId.Project:
-                    notUsed = await GetNotUsedItemsAsync<Project>(viewId, items, level);
+                    notUsed = await GetNotUsedItemsAsync<Project>(viewId, items, level, filter);
                     break;
             }
 
@@ -522,16 +525,21 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IEnumerable<T>> GetNotUsedItemsAsync<T>(
-            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level)
+            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level, string filter = null)
             where T : TreeEntity
         {
             var repository = _system.Repository;
             var usedCodes = items
                 .Select(item => item.AccountFullCode);
-            return await repository
+            var notUsed = await repository
                 .GetAllQuery<T>(viewId, tree => tree.Branch)
                 .Where(tree => !usedCodes.Contains(tree.FullCode) && tree.Level == level)
                 .ToListAsync();
+            return filter != null
+                ? notUsed
+                    .AsQueryable()
+                    .Where(filter)
+                : notUsed;
         }
 
         private void PrepareBalance(
@@ -560,7 +568,7 @@ namespace SPPC.Tadbir.Persistence
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             if (parameters.IsByBranch)
             {
-                await AddTurnoversByBranchAsync(length, items, parameters);
+                await AddTurnoversByBranchAsync(length, items, parameters, filter);
                 return;
             }
 
@@ -587,7 +595,7 @@ namespace SPPC.Tadbir.Persistence
             DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
             if (parameters.IsByBranch)
             {
-                await AddInitialBalanceByBranchAsync(length, items, parameters);
+                await AddInitialBalanceByBranchAsync(length, items, parameters, filter);
                 return;
             }
 
@@ -609,10 +617,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task AddTurnoversByBranchAsync(
-            int length, List<TestBalanceItemViewModel> items, TestBalanceParameters parameters)
+            int length, List<TestBalanceItemViewModel> items, TestBalanceParameters parameters, string filter = null)
         {
             var initMap = new Dictionary<FullCodeBranch, VoucherLineAmountsViewModel>();
-            var query = await GetTurnoverQueryAsync(length, parameters);
+            var query = await GetTurnoverQueryAsync(length, parameters, filter);
             var result = DbConsole.ExecuteQuery(query.Query);
             foreach (DataRow row in result.Rows)
             {
@@ -633,10 +641,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task AddInitialBalanceByBranchAsync(
-            int length, List<TestBalanceItemViewModel> items, TestBalanceParameters parameters)
+            int length, List<TestBalanceItemViewModel> items, TestBalanceParameters parameters, string filter = null)
         {
             var initMap = new Dictionary<FullCodeBranch, VoucherLineAmountsViewModel>();
-            var query = await GetInitBalanceQueryAsync(length, parameters);
+            var query = await GetInitBalanceQueryAsync(length, parameters, filter);
             var result = DbConsole.ExecuteQuery(query.Query);
             foreach (DataRow row in result.Rows)
             {
@@ -834,9 +842,6 @@ namespace SPPC.Tadbir.Persistence
         {
             ReportQuery query;
             string componentName = GetComponentName(parameters.ViewId);
-            string fieldName = parameters.ViewId == ViewId.DetailAccount
-                ? "Detail"
-                : componentName;
 
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
@@ -844,18 +849,18 @@ namespace SPPC.Tadbir.Persistence
                 var toDate = parameters.ToDate.Value;
                 query = parameters.IsByBranch
                     ? new ReportQuery(String.Format(BalanceQuery.EndBalanceByDateByBranch, length, componentName,
-                        fieldName, fpStart.ToShortDateString(false), toDate.ToShortDateString(false)))
+                        fpStart.ToShortDateString(false), toDate.ToShortDateString(false)))
                     : new ReportQuery(String.Format(BalanceQuery.EndBalanceByDate, length, componentName,
-                        fieldName, fpStart.ToShortDateString(false), toDate.ToShortDateString(false)));
+                        fpStart.ToShortDateString(false), toDate.ToShortDateString(false)));
             }
             else
             {
                 var toNo = parameters.ToNo.Value;
                 query = parameters.IsByBranch
                     ? new ReportQuery(String.Format(BalanceQuery.EndBalanceByNoByBranch, length, componentName,
-                        fieldName, 1, toNo))
+                        1, toNo))
                     : new ReportQuery(String.Format(BalanceQuery.EndBalanceByNo, length, componentName,
-                        fieldName, 1, toNo));
+                        1, toNo));
             }
 
             var openingVoucher = await _utility.GetOpeningVoucherAsync();
@@ -868,27 +873,24 @@ namespace SPPC.Tadbir.Persistence
         {
             ReportQuery query;
             string componentName = GetComponentName(parameters.ViewId);
-            string fieldName = parameters.ViewId == ViewId.DetailAccount
-                ? "Detail"
-                : componentName;
 
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
                 var toDate = parameters.ToDate.Value;
                 query = parameters.IsByBranch
                     ? new ReportQuery(String.Format(BalanceQuery.TurnoverByDateByBranch, length, componentName,
-                        fieldName, toDate.ToShortDateString(false)))
+                        toDate.ToShortDateString(false)))
                     : new ReportQuery(String.Format(BalanceQuery.TurnoverByDate, length, componentName,
-                        fieldName, toDate.ToShortDateString(false)));
+                        toDate.ToShortDateString(false)));
             }
             else
             {
                 var toNo = parameters.ToNo.Value;
                 query = parameters.IsByBranch
                     ? new ReportQuery(String.Format(BalanceQuery.TurnoverByNoByBranch, length, componentName,
-                        fieldName, toNo))
+                        toNo))
                     : new ReportQuery(String.Format(BalanceQuery.TurnoverByNo, length, componentName,
-                        fieldName, toNo));
+                        toNo));
             }
 
             var openingVoucher = await _utility.GetOpeningVoucherAsync();
@@ -901,24 +903,17 @@ namespace SPPC.Tadbir.Persistence
         {
             ReportQuery query;
             string componentName = GetComponentName(parameters.ViewId);
-            string fieldName = parameters.ViewId == ViewId.DetailAccount
-                ? "Detail"
-                : componentName;
             if (parameters.FromDate.HasValue && parameters.ToDate.HasValue)
             {
                 query = parameters.IsByBranch
-                    ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByDateByBranch,
-                        length, componentName, fieldName))
-                    : new ReportQuery(String.Format(BalanceQuery.InitBalanceByDate,
-                        length, componentName, fieldName));
+                    ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByDateByBranch, length, componentName))
+                    : new ReportQuery(String.Format(BalanceQuery.InitBalanceByDate, length, componentName));
             }
             else
             {
                 query = parameters.IsByBranch
-                    ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByNoByBranch,
-                        length, componentName, fieldName))
-                    : new ReportQuery(String.Format(BalanceQuery.InitBalanceByNo,
-                        length, componentName, fieldName));
+                    ? new ReportQuery(String.Format(BalanceQuery.InitBalanceByNoByBranch, length, componentName))
+                    : new ReportQuery(String.Format(BalanceQuery.InitBalanceByNo, length, componentName));
             }
 
             var openingVoucher = await _utility.GetOpeningVoucherAsync();

@@ -113,7 +113,7 @@ export const Entities = {
   SysOperationLog: 'SysOperationLog',
   SysOperationLogArchive: 'SysOperationLogArchive',
   OperationLogArchive: 'OperationLogArchive',
-  ProfitLost: 'ProfitLost',
+  ProfitLoss: 'ProfitLoss',
   GroupActionResult: 'GroupActionResult',
   ProfitLossSimple: 'ProfitLossSimple',
   ComparativeProfitLoss: 'ComparativeProfitLoss',
@@ -127,7 +127,9 @@ export const Entities = {
   CashRegister: "CashRegister",
   CheckBook: "CheckBook",
   CheckBookReport: "CheckBookReport",
-  SourceApp: "SourceApp"
+  SourceApp: "SourceApp",
+  Payment: "Payment",
+  Receipt: "Receipt"
 }
 
 export const CustomForm =

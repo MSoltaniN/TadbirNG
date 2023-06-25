@@ -1,0 +1,418 @@
+<app-bread-cumb
+  [entityTypeName]="entityType"
+  *ngIf="isShowBreadcrumb"
+></app-bread-cumb>
+<!-- <view-identifier [ViewID]="viewId">
+  <report-param ParamName="no" [ParamValue]="currentVoucherNo"></report-param>
+</view-identifier>
+<report-viewer id="compviewer"></report-viewer>
+<report-management [ViewIdentity]="viewIdentity"></report-management> -->
+
+<div class="panel-body" style="padding-top: 0">
+  <div *ngIf="errorMessages">
+    <div *ngFor="let err of errorMessages" class="alert alert-danger">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+      {{ err }}
+    </div>
+  </div>
+
+  <div>
+    <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
+      <div class="row">
+        <div class="col-xs-12 sppc-float" style="margin-top: 5px">
+          <button
+            class="k-button sh-new-voucher"
+            title="{{ 'Voucher.NewVoucher' | translate }}"
+            SppcPermissionCheck="Create"
+            [EntityName]="entityType"
+            (sppcClick)="payReceiveOperation(payReceiveOperationsItem.New)"
+          >
+            <span class="k-icon k-i-file-add"></span>
+          </button>
+
+          <button
+            SppcPermissionCheck="Delete"
+            [EntityName]="entityType"
+            (sppcClick)="removeHandler()"
+            class="k-button sh-remove-voucher"
+            title="{{ 'Buttons.Delete' | translate }}"
+          >
+            <span class="k-icon k-i-delete"></span>
+          </button>
+
+          <button
+            class="k-button"
+            title="{{ 'Voucher.SearchVoucher' | translate }}"
+            (click)="payReceiveOperation(payReceiveOperationsItem.Search)"
+          >
+            <span class="k-icon k-i-search"></span>
+          </button>
+
+          <button
+            class="k-button not-change"
+            title="{{ 'Voucher.FirstVoucher' | translate }}"
+            [attr.disabled]="isFirstItem ? true : null"
+            SppcPermissionCheck="Navigate"
+            [EntityName]="entityType"
+            (sppcClick)="payReceiveOperation(payReceiveOperationsItem.First)"
+          >
+            <span class="k-icon k-i-arrow-end-right"></span>
+          </button>
+
+          <button
+            class="k-button not-change"
+            [attr.disabled]="isFirstItem ? true : null"
+            title="{{ 'Voucher.PreviousVoucher' | translate }}"
+            SppcPermissionCheck="Navigate"
+            [EntityName]="entityType"
+            (sppcClick)="payReceiveOperation(payReceiveOperationsItem.Previous)"
+          >
+            <span class="k-icon k-i-arrow-double-60-right"></span>
+          </button>
+
+          <button
+            class="k-button not-change"
+            [attr.disabled]="isLastItem ? true : null"
+            title="{{ 'Voucher.NextVoucher' | translate }}"
+            SppcPermissionCheck="Navigate"
+            [EntityName]="entityType"
+            (sppcClick)="payReceiveOperation(payReceiveOperationsItem.Next)"
+          >
+            <span class="k-icon k-i-arrow-double-60-left"></span>
+          </button>
+
+          <button
+            class="k-button not-change"
+            title="{{ 'Voucher.LastVoucher' | translate }}"
+            [attr.disabled]="isLastItem ? true : null"
+            SppcPermissionCheck="Navigate"
+            [EntityName]="entityType"
+            (sppcClick)="payReceiveOperation(payReceiveOperationsItem.Last)"
+          >
+            <span class="k-icon k-i-arrow-end-left"></span>
+          </button>
+
+          <button
+            class="k-button"
+            [disabled]="editForm.status == 'INVALID'"
+            SppcPermissionCheck="Edit"
+            [EntityName]="entityType"
+            (sppcClick)="onSave($event)"
+            title="{{ 'Voucher.Save' | translate }}"
+          >
+            <span class="k-icon k-i-save"></span>
+          </button>
+
+          <button
+            kendoButton
+            SppcPermissionCheck="Print"
+            [EntityName]="entityType"
+            (sppcClick)="showReport()"
+            class="hidden-xs rm print sh-print"
+            type="button"
+            [icon]="'printer'"
+          ></button>
+
+          <button
+            class="k-button k-button-icon sppc-float-diff"
+            title="{{ 'Buttons.Help' | translate }}"
+          >
+            <span class="k-icon k-i-help"></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="pr-form-content">
+            <div class="no sppc-float">
+              <div class="form-group inpt">
+                <label for="no" class="control-label">{{
+                  "Voucher.No" | translate
+                }}</label>
+
+                <input
+                  type="text"
+                  class="k-textbox"
+                  formControlName="payReceiveNo"
+                  [OnlyNumber]
+                  [attr.disabled]="isConfirmed ? 'disabled' : null"
+                />
+
+                <div
+                  class="k-tooltip k-tooltip-validation"
+                  [hidden]="
+                    editForm.controls.payReceiveNo.valid || editForm.controls.payReceiveNo.pristine
+                  "
+                >
+                  <span *ngIf="editForm.controls.payReceiveNo.errors?.required">{{
+                    "AllValidations.Voucher.NoIsRequired" | translate
+                  }}</span>
+                  <span *ngIf="editForm.controls.payReceiveNo.errors?.maxlength">{{
+                    "AllValidations.Voucher.NoIsTooLong" | translate
+                  }}</span>
+                </div>
+              </div>
+              <div class="form-group inpt">
+                <label for="reference" class="control-label">{{
+                  "Voucher.Reference" | translate
+                }}</label>
+  
+                <input
+                  type="text"
+                  class="k-textbox"
+                  formControlName="reference"
+                  [attr.disabled]="isConfirmed ? 'disabled' : null"
+                />
+  
+                <div
+                  class="k-tooltip k-tooltip-validation"
+                  [hidden]="
+                    editForm.controls.reference.valid ||
+                    editForm.controls.reference.pristine
+                  "
+                >
+                  <span *ngIf="editForm.controls.reference.errors?.maxlength">{{
+                    "AllValidations.Voucher.ReferenceIsTooLong" | translate
+                  }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="sppc-float">
+              <div class="form-group inpt">
+                <label for="date" class="control-label">{{
+                  "Voucher.Date" | translate
+                }}</label>
+
+                <sppc-datepicker
+                  [isReadOnly]="isConfirmed"
+                  formControlName="date"
+                  [minDate]="FiscalPeriodStartDate"
+                  [maxDate]="FiscalPeriodEndDate"
+                  [displayType]="'voucherDateType'"
+                ></sppc-datepicker>
+              </div>
+            </div>
+
+            <p-accordion [activeIndex]="0" class="acc1">
+              <p-accordionTab header="{{ 'PayReceipt.Details' | translate }}">
+                <div class="col-md-6 col-xs-12 sppc-float">
+                  <label for="date" class="control-label" style="padding: 6px 0px;">
+                    {{ (type == 0? "PayReceipt.Recipients": "PayReceipt.Payers") | translate }}
+                  </label>
+  
+                  <payer-receiver
+                    [type]="this.urlPath == 'payments'? '1': '2'"
+                    (setTotalCashAmount)="setTotalCashAmount($event)"
+                  >
+                  </payer-receiver>
+                </div>
+                <div class="col-md-6 col-xs-12 sppc-float">
+                  <p-selectButton [options]="stateOptions"
+                    [(ngModel)]="fundOrBankType"
+                    [ngModelOptions]="{standalone: true}"
+                    optionLabel="label"
+                    optionValue="value"
+                  >
+                    <ng-template let-item pTemplate>
+                      <span>{{ item.label | translate }}</span>
+                    </ng-template>
+                  </p-selectButton>
+
+                  <fund-or-bank
+                    [type]="this.urlPath == 'payments'? '1': '2'"
+                    (setTotalCashAmount)="setTotalCashAmount($event)"
+                  >
+                  </fund-or-bank>
+                </div>
+                <div class="clear"></div>
+              </p-accordionTab>
+            </p-accordion>
+
+            <div class="totalCashAmount">
+              <div class="form-group">
+                <label for="money" class="control-label">وجه نقد</label>
+                <input
+                  type="text"
+                  class="k-textbox"
+                  [(ngModel)]="totalCashAmount"
+                  [ngModelOptions]="{standalone: true}"
+                  [attr.disabled]="isConfirmed ? 'disabled' : null"
+                  readonly
+                />
+              </div>
+              <div class="form-group">
+                <div class="col-xs-12 col-sm-4">
+                  <fieldset disabled class="disabled">
+                    <div class="form-group">
+                      <label for="currencyId" class="control-label">{{ 'VoucherLine.Currency' | translate }}</label>
+                      <kendo-dropdownlist [data]="currenciesRows"
+                        class="ddl-currency"
+                        [textField]="'name'"
+                        [valueField]="'id'"
+                        [valuePrimitive]="true"
+                        [value]="selectedCurrencyValue"
+                        [(ngModel)]="selectedCurrencyValue"
+                        (valueChange)="onChangeCurrency()"
+                        formControlName="currencyId"
+                        [defaultItem]="{ name: '', id: 0 }">
+                      </kendo-dropdownlist>
+                    </div>
+                  </fieldset>
+      
+                </div>
+      
+                <div class="col-xs-12 col-sm-4">
+                  <fieldset disabled class="disabled">
+                  <div class="form-group">
+                    <label for="description" class="control-label">{{ 'VoucherLine.CurrencyValue' | translate }}</label>
+                    <sppc-numericInput
+                      [(ngModel)]="currencyValue"
+                      (keyup)="changeCurrencyValue($event)"
+                      [ngModelOptions]="{standalone: true}"
+                      [decimalCount]="decimalCount"
+                      class="sppc-input-num"
+                      disabled
+                    >
+                    </sppc-numericInput>
+                  </div>
+                  </fieldset>
+                </div>
+      
+                <div class="col-xs-12 col-sm-4">
+                  <fieldset disabled class="disabled">
+                    <div class="form-group">
+                      <label for="description" class="control-label">{{ 'VoucherLine.CurrencyRate' | translate }}</label>
+                      <sppc-numericInput
+                        [(ngModel)]="currencyRate"
+                        (ngModelChange)="onChangeCurrencyRate()"
+                        [ngModelOptions]="{standalone: true}"
+                        class="sppc-input-num"
+                      >
+                      </sppc-numericInput>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+
+            <p-accordion class="form-group">
+              <p-accordionTab header="چکها">
+                <pay-recive-cheks [urlPath]="urlPath" style="width: 100%;"></pay-recive-cheks>
+              </p-accordionTab>
+            </p-accordion>
+
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="pr-form-content">
+            <div class="inf-section">
+              <div class="form-group chbx">
+                <label for="issuedByName" class="control-label">
+                  {{ "Voucher.IssuerName" | translate }}
+                </label>
+    
+                <input
+                  type="text"
+                  id="issuedByName"
+                  class="k-textbox"
+                  formControlName="issuedByName"
+                  [OnlyNumber]
+                  readonly
+                />
+              </div>
+              <div class="form-group chbx">
+                <input
+                  type="checkbox"
+                  id="confirmedByName"
+                  class="k-checkbox"
+                  (click)="confirmedBy($event)"
+                  [attr.disabled]="isConfirmed ? 'disabled' : null"
+                />
+                <label for="confirmedByName" class="control-label">
+                  {{ "Voucher.ConfirmerName" | translate }}
+                </label>
+    
+                <input
+                  type="text"
+                  class="k-textbox"
+                  formControlName="confirmedByName"
+                  [OnlyNumber]
+                  readonly
+                />
+              </div>
+              <div class="form-group chbx">
+                <input
+                  type="checkbox"
+                  id="approvedByName"
+                  class="k-checkbox"
+                  (click)="approvedBy($event)"
+                  [attr.disabled]="isConfirmed ? 'disabled' : null"
+                />
+                <label for="approvedByName" class="control-label">
+                  {{ "Voucher.ApproverName" | translate }}
+                </label>
+    
+                <input
+                  type="text"
+                  class="k-textbox"
+                  formControlName="approvedByName"
+                  [OnlyNumber]
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+<!-- فرم جستوجو -->
+<kendo-dialog
+  title="{{ 'Buttons.Search' | translate }}"
+  *ngIf="searchConfirm"
+  (close)="searchByNo(false)"
+  [minWidth]="250"
+  [width]="450"
+>
+  <div class="form-group" (keydown.enter)="searchByNo(true)">
+    <label class="control-label">{{ stringFormat("Form.No" | translate, "Entity."+entityType | translate) }}</label>
+    <input type="text" class="k-textbox" [(ngModel)]="payReceiveNo" [OnlyNumber] sppcAutoFocus/>
+  </div>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="searchByNo(true)" primary="true">
+      {{ "Buttons.Ok" | translate }}
+    </button>
+    <button class="k-button" (click)="searchByNo(false)">
+      {{ "Buttons.Cancel" | translate }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<!-- فرم تایید حذف -->
+<kendo-dialog
+  title="{{ 'Voucher.Delete' | translate }}"
+  *ngIf="deleteConfirm"
+  (close)="deleteModel(false)"
+  [minWidth]="250"
+  [width]="450"
+>
+  <p >
+    {{ this.deleteConfirmMsg }}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="deleteModel(true)" primary="true">
+      {{ "Buttons.Yes" | translate }}
+    </button>
+    <button class="k-button" (click)="deleteModel(false)">
+      {{ "Buttons.No" | translate }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>

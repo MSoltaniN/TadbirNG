@@ -2,7 +2,7 @@
 
 namespace SPPC.Tadbir.ViewModel.CashFlow
 {
-    public partial class CashRegisterViewModel : IFiscalEntityView
+    public partial class CashRegisterViewModel : IFiscalEntity
     {
         /// <summary>
         /// شناسه دیتابیسی دوره مالی که صندوق در آن تعریف شده است

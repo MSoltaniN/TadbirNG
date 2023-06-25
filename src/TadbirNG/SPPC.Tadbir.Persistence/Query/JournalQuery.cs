@@ -24,7 +24,7 @@ SELECT COUNT(*) AS TotalCount, SUM(vl.Debit) AS DebitSum, SUM(vl.Credit) AS Cred
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
-    LEFT OUTER JOIN [Finance].[DetailAccount] facc ON vl.DetailID = facc.DetailAccountID
+    LEFT OUTER JOIN [Finance].[DetailAccount] facc ON vl.DetailAccountID = facc.DetailAccountID
     LEFT OUTER JOIN [Finance].[CostCenter] cc ON vl.CostCenterID = cc.CostCenterID
     LEFT OUTER JOIN [Finance].[Project] prj ON vl.ProjectID = prj.ProjectID
 WHERE v.Date >= '{0}' AND v.Date <= '{1}' AND {{0}}";
@@ -63,7 +63,7 @@ prj.FullCode AS ProjectFullCode, prj.Name AS ProjectName, vl.Description, vl.Deb
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
-    LEFT OUTER JOIN [Finance].[DetailAccount] facc ON vl.DetailID = facc.DetailAccountID
+    LEFT OUTER JOIN [Finance].[DetailAccount] facc ON vl.DetailAccountID = facc.DetailAccountID
     LEFT OUTER JOIN [Finance].[CostCenter] cc ON vl.CostCenterID = cc.CostCenterID
     LEFT OUTER JOIN [Finance].[Project] prj ON vl.ProjectID = prj.ProjectID
 WHERE v.Date >= '{1}' AND v.Date <= '{2}' AND {{0}} ) AS PagedResult
@@ -81,7 +81,7 @@ FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
     INNER JOIN [Corporate].[Branch] br ON vl.BranchID = br.BranchID
-    LEFT OUTER JOIN [Finance].[DetailAccount] facc ON vl.DetailID = facc.DetailAccountID
+    LEFT OUTER JOIN [Finance].[DetailAccount] facc ON vl.DetailAccountID = facc.DetailAccountID
     LEFT OUTER JOIN [Finance].[CostCenter] cc ON vl.CostCenterID = cc.CostCenterID
     LEFT OUTER JOIN [Finance].[Project] prj ON vl.ProjectID = prj.ProjectID
 WHERE v.Date >= '{1}' AND v.Date <= '{2}' AND {{0}} ) AS PagedResult
@@ -94,7 +94,7 @@ SELECT COUNT(*) AS TotalCount, SUM(vl.Debit) AS DebitSum, SUM(vl.Credit) AS Cred
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
-    LEFT OUTER JOIN [Finance].[DetailAccount] facc ON vl.DetailID = facc.DetailAccountID
+    LEFT OUTER JOIN [Finance].[DetailAccount] facc ON vl.DetailAccountID = facc.DetailAccountID
     LEFT OUTER JOIN [Finance].[CostCenter] cc ON vl.CostCenterID = cc.CostCenterID
     LEFT OUTER JOIN [Finance].[Project] prj ON vl.ProjectID = prj.ProjectID
 WHERE v.No >= '{0}' AND v.No <= '{1}' AND {{0}}";
@@ -133,7 +133,7 @@ vl.VoucherLineID AS [Id]
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
-    LEFT OUTER JOIN [Finance].[DetailAccount] facc ON vl.DetailID = facc.DetailAccountID
+    LEFT OUTER JOIN [Finance].[DetailAccount] facc ON vl.DetailAccountID = facc.DetailAccountID
     LEFT OUTER JOIN [Finance].[CostCenter] cc ON vl.CostCenterID = cc.CostCenterID
     LEFT OUTER JOIN [Finance].[Project] prj ON vl.ProjectID = prj.ProjectID
 WHERE v.No >= '{1}' AND v.No <= '{2}' AND {{0}} ) AS PagedResult
@@ -151,7 +151,7 @@ FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[Account] acc ON vl.AccountID = acc.AccountID
     INNER JOIN [Corporate].[Branch] br ON vl.BranchID = br.BranchID
-    LEFT OUTER JOIN [Finance].[DetailAccount] facc ON vl.DetailID = facc.DetailAccountID
+    LEFT OUTER JOIN [Finance].[DetailAccount] facc ON vl.DetailAccountID = facc.DetailAccountID
     LEFT OUTER JOIN [Finance].[CostCenter] cc ON vl.CostCenterID = cc.CostCenterID
     LEFT OUTER JOIN [Finance].[Project] prj ON vl.ProjectID = prj.ProjectID
 WHERE v.No >= '{1}' AND v.No <= '{2}' AND {{0}} ) AS PagedResult

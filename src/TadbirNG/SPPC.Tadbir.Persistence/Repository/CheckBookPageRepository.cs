@@ -110,17 +110,17 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await OnEntityGroupInserted(checkBookPageIds, OperationId.CreatePages);
-            return await GetPagesAsync(checkBookId);
+            return await GetPagesAsync(checkBookId, null);
         }
 
         /// <summary>
-        /// به روش آسنکرون، برگه های یک دسته چک مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، برگه های یک دسته چک مشخص شده با شناسه عددی را خوانده و برمی گرداند
         /// </summary>
         /// <param name="checkBookId">شناسه یکی از دسته چک های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>برگه های دسته چک مشخص شده با شناسه عددی</returns>
         public async Task<PagedList<CheckBookPageViewModel>> GetPagesAsync(
-            int checkBookId, GridOptions gridOptions = null)
+            int checkBookId, GridOptions gridOptions)
         {
             var query = GetCheckBookPagesQuery(checkBookId);
             var pages = await query

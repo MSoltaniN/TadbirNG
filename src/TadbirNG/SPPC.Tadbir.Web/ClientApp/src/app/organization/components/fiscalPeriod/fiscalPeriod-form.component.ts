@@ -68,7 +68,6 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
         this.model.endDate = this.getEndDate();
       }
 
-      this.model.companyId = this.CompanyId;
       this.editForm.reset(this.model);
       
       if (this.model) {
@@ -117,7 +116,6 @@ export class FiscalPeriodFormComponent extends DetailComponent implements OnInit
     e.preventDefault();
     if (this.editForm.valid) {
       var model = <FiscalPeriod>this.editForm.value;
-      model.companyId = this.CompanyId;
       this.save.emit(model);
     }
     else if (this.isWizard) {
