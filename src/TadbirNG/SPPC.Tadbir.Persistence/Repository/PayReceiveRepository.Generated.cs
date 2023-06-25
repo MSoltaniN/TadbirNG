@@ -302,6 +302,7 @@ namespace SPPC.Tadbir.Persistence
                 Type = (short)type
             };
 
+            newPayReceive = await SavePayReceiveAsync(newPayReceive);
             await SetPayReceiveNavigationAsync(newPayReceive);
             return newPayReceive;
         }
