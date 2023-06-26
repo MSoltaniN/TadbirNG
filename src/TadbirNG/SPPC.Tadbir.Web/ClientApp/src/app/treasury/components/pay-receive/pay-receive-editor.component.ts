@@ -13,7 +13,7 @@ import { PayReceiveTypes, PayReceiveOperations, UrlPathType } from '@sppc/treasu
 import { PayReceiveApi } from '@sppc/treasury/service/api';
 import { PayReceiveInfo, PayReceiveService } from '@sppc/treasury/service/pay-receive.service';
 import { ToastrService } from 'ngx-toastr';
-import { shareReplay, take } from 'rxjs';
+import { catchError, exhaustMap, shareReplay, take } from 'rxjs';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -56,6 +56,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.Payment, ViewName.Payment,elem);
     this.entType = this.urlPath;
     this.viewID = this.urlPath;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   /**
@@ -116,13 +117,18 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    this.getCurrencies();
-    console.log(this.route);
+    // this.getCurrencies();
 
     this.route.paramMap.subscribe(param => {
       this.urlMode = param.get('mode');
-      switch (param.get('mode')) {
-        case 'new':
+      this.manageRouting(param.get('mode'));
+    })
+  }
+
+  manageRouting(mode){
+    let url;
+    switch (mode) {
+      case 'new':
           this.addNew();
           break;
 
@@ -135,11 +141,21 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
           break;
 
         case 'next':
-          this.goNext();
+          if (!this.isFirstItem) {
+            let url = String.Format(this.type == 1? PayReceiveApi.NextPayment: PayReceiveApi.NextReceipt,
+                      this.noQueryParam?this.noQueryParam:this.model.payReceiveNo);
+            this.getPayReceive(url);
+          }
           break;
 
         case 'previous':
-          this.goPrevious();
+          if (this.noQueryParam || this.model.id) {
+            url = String.Format(this.type == 1? PayReceiveApi.PreviousPayment: PayReceiveApi.PreviousReceipt,
+                  this.noQueryParam?this.noQueryParam:this.model.payReceiveNo);
+          } else {
+            url = this.type == 1? PayReceiveApi.LastPayment: PayReceiveApi.LastReceipt;
+          }
+          this.getPayReceive(url);
           break;
 
         case 'by-no':
@@ -154,52 +170,6 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
 
         default:
           break;
-      }
-    })
-  }
-
-  payReceiveOperation(mode){
-    let url;
-    switch (mode) {
-      case PayReceiveOperations.New:
-        this.addNew();
-        break;
-
-      case PayReceiveOperations.Next:
-        if (!this.isFirstItem) {
-          let baseUrl = this.urlPath == 'payments'? PayReceiveApi.NextPayment: PayReceiveApi.NextReceipt;
-          url = String.Format(baseUrl,
-            this.noQueryParam? this.noQueryParam:this.model.payReceiveNo);
-          this.getPayReceive(url);
-        }
-        break;
-
-      case PayReceiveOperations.Previous:
-        let baseUrl = this.urlPath == 'payments'? PayReceiveApi.PreviousPayment: PayReceiveApi.PreviousReceipt;
-
-        if (this.noQueryParam || this.model.id) {
-          url = String.Format(baseUrl,
-            this.noQueryParam?this.noQueryParam:this.model.payReceiveNo);
-        } else {
-          url = this.urlPath == 'payments'? PayReceiveApi.LastPayment: PayReceiveApi.LastReceipt;;
-        }
-        this.getPayReceive(url);
-        break;
-
-      case PayReceiveOperations.Last:
-        this.goLast();
-        break;
-
-      case PayReceiveOperations.First:
-        this.goFirst();
-        break;
-
-      case PayReceiveOperations.Search:
-        this.goSearch();
-        break;
-
-      default:
-        break;
     }    
   }
 
@@ -225,10 +195,10 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
 
   goLast() {
     let url;
-    if (this.urlMode != 'first' && !this.dialogMode) {
+    if (this.urlMode != 'last' && !this.dialogMode) {
       this.router.navigate([`/treasury/${this.urlPath}/last`]);
     } else {
-      url = this.urlPath == 'payments'? PayReceiveApi.LastPayment: PayReceiveApi.LastPayment;
+      url = this.urlPath == 'payments'? PayReceiveApi.LastPayment: PayReceiveApi.LastReceipt;
       this.getPayReceive(url);
     }
   }
@@ -256,6 +226,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
             }
           });
       }
+      
     }
   }
 
@@ -299,6 +270,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   searchByNo(searchConfirm = false) {
     let baseUrl = this.urlPath == 'payments'? PayReceiveApi.PaymentByNo: PayReceiveApi.ReceiptByNo;
     let url;
+
     if (searchConfirm) {
       if (this.payReceiveNo && !this.dialogMode) {
         this.router.navigate([`/treasury/${this.urlPath}/by-no`],{queryParams:{
@@ -330,7 +302,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
           this.searchConfirm = false;
         }
         this.model = res;
-        this.initCheckBookForm()
+        this.initPayReceiveForm()
       },
       error: (err) => {
         if (err == null || err.statusCode == 404) {
@@ -362,7 +334,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     })
   }
 
-  initCheckBookForm() {
+  initPayReceiveForm() {
     if (this.model.id == 0) {
       this.isNew = true;
       this.searchConfirm = false;
@@ -379,8 +351,6 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
 
     setTimeout(() => {
       this.editForm.reset(this.model);
-      console.log(this.editForm);
-      
     }, 0);
   }
 
@@ -388,6 +358,49 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     this.deleteConfirm = true;
     let ent = this.urlPath == "payments"? "Entity.Payment": "Entity.Receipt";
     this.prepareDeleteConfirm(this.getText(ent));
+  }
+
+  deleteModel(confirm:boolean) {
+    if (confirm) {
+      if (this.model.id) {
+        let deleteURL = String.Format(this.type == 1? PayReceiveApi.Payment: PayReceiveApi.Receipt,this.model.id);
+        let url = this.type == 1? PayReceiveApi.NextPayment: PayReceiveApi.NextReceipt;
+
+        this.payReceive.delete(deleteURL)
+        .pipe(
+          //try for next item
+          exhaustMap( () => this.payReceive.getModels(String.Format(url, this.model.payReceiveNo))
+            .pipe(
+              catchError(() => {
+                //if next voucher not exists try for previous Item
+                url = this.type == 1? PayReceiveApi.PreviousPayment: PayReceiveApi.PreviousReceipt;
+                return this.payReceive.getModels(String.Format(url, this.model.payReceiveNo));
+              })
+            )
+          ),
+          take(2)
+        )
+        .subscribe({
+          next: res =>{
+            this.deleteConfirm = false;
+    
+            this.showMessage(this.deleteMsg,MessageType.Info);
+
+            this.model = res;
+            this.initPayReceiveForm();
+            
+            if (!this.dialogMode) {
+              history.pushState({},'',`/treasury/${this.urlPath}/by-no?no=${res.payReceiveNo}`)
+            }
+          },
+          error: err =>{
+            this.showMessage(this.errorHandlingService.handleError(err),MessageType.Error);
+          }
+        })
+      }
+    } else {
+      this.deleteConfirm = false
+    }
   }
 
   onSave(e) {
@@ -414,7 +427,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
         }
         
         this.model = res as PayReceiveInfo;
-        this.initCheckBookForm();
+        this.initPayReceiveForm();
         // this.setEditMode = true;
         this.errorMessages = undefined;
       },

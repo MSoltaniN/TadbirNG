@@ -220,7 +220,8 @@
     "CheckBookReport": "Check Book Report",
     "SourceApp": "Sources and Applications",
     "Payment": "Payment",
-    "Receipt": "Receipt"
+    "Receipt": "Receipt",
+    "PayReceiveAccount": "Account party"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "Count of Selected Vouchers :",

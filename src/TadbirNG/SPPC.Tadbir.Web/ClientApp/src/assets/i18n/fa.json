@@ -245,7 +245,8 @@
     "CheckBookReport": "گزارش دسته چک",
     "SourceApp": "منابع و مصارف",
     "Payment": "سند پرداخت",
-    "Receipt": "سند دریافت"
+    "Receipt": "سند دریافت",
+    "PayReceiveAccount": "طرف حساب"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",

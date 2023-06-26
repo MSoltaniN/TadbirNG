@@ -25,7 +25,7 @@
             title="{{ 'Voucher.NewVoucher' | translate }}"
             SppcPermissionCheck="Create"
             [EntityName]="entityType"
-            (sppcClick)="payReceiveOperation(payReceiveOperationsItem.New)"
+            (sppcClick)="addNew()"
           >
             <span class="k-icon k-i-file-add"></span>
           </button>
@@ -43,7 +43,7 @@
           <button
             class="k-button"
             title="{{ 'Voucher.SearchVoucher' | translate }}"
-            (click)="payReceiveOperation(payReceiveOperationsItem.Search)"
+            (click)="goSearch()"
           >
             <span class="k-icon k-i-search"></span>
           </button>
@@ -54,7 +54,7 @@
             [attr.disabled]="isFirstItem ? true : null"
             SppcPermissionCheck="Navigate"
             [EntityName]="entityType"
-            (sppcClick)="payReceiveOperation(payReceiveOperationsItem.First)"
+            (sppcClick)="goFirst()"
           >
             <span class="k-icon k-i-arrow-end-right"></span>
           </button>
@@ -65,7 +65,7 @@
             title="{{ 'Voucher.PreviousVoucher' | translate }}"
             SppcPermissionCheck="Navigate"
             [EntityName]="entityType"
-            (sppcClick)="payReceiveOperation(payReceiveOperationsItem.Previous)"
+            (sppcClick)="goPrevious()"
           >
             <span class="k-icon k-i-arrow-double-60-right"></span>
           </button>
@@ -76,7 +76,7 @@
             title="{{ 'Voucher.NextVoucher' | translate }}"
             SppcPermissionCheck="Navigate"
             [EntityName]="entityType"
-            (sppcClick)="payReceiveOperation(payReceiveOperationsItem.Next)"
+            (sppcClick)="goNext()"
           >
             <span class="k-icon k-i-arrow-double-60-left"></span>
           </button>
@@ -87,7 +87,7 @@
             [attr.disabled]="isLastItem ? true : null"
             SppcPermissionCheck="Navigate"
             [EntityName]="entityType"
-            (sppcClick)="payReceiveOperation(payReceiveOperationsItem.Last)"
+            (sppcClick)="goLast()"
           >
             <span class="k-icon k-i-arrow-end-left"></span>
           </button>
@@ -204,6 +204,7 @@
   
                   <payer-receiver
                     [type]="this.urlPath == 'payments'? '1': '2'"
+                    [payReceiveId]="this.model?.id"
                     (setTotalCashAmount)="setTotalCashAmount($event)"
                   >
                   </payer-receiver>
