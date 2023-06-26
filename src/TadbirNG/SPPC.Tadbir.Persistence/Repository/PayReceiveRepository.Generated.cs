@@ -424,19 +424,16 @@ namespace SPPC.Tadbir.Persistence
         private async Task<string> GetNewPayReceiveNumberAsync(int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
-            var Numbers = repository
+            var lastNumber = await repository
                 .GetEntityQuery()
                 .Where(pr => pr.FiscalPeriodId == UserContext.FiscalPeriodId
                     && pr.BranchId == UserContext.BranchId
-                    && pr.Type == type);
-            Int64 lastNumber = 0;
-            if(Numbers.Any()) 
-            { 
-                lastNumber = await Numbers.MaxAsync(pr => Convert.ToInt64(pr.PayReceiveNo));
-            }
+                    && pr.Type == type)
+                .Select(pr => Convert.ToInt64(pr.PayReceiveNo))
+                .OrderByDescending(no => no)
+                .FirstOrDefaultAsync();
                 
-            var maxNumber = (long)Math.Pow(10, 16) - 1;
-            return Math.Min(lastNumber + 1, maxNumber).ToString();
+            return Math.Min(lastNumber + 1, Int64.MaxValue).ToString();
         }
 
         internal override int? EntityType
