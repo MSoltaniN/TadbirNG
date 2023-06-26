@@ -3847,7 +3847,7 @@
     <value>Assign user to cash register</value>
   </data>
   <data name="IsArchivedName" xml:space="preserve">
-    <value>Archive status</value>
+    <value>Archive Status</value>
   </data>
   <data name="AssignEntityToResource" xml:space="preserve">
     <value>Assign {0} {1} access to {2} {3}</value>
