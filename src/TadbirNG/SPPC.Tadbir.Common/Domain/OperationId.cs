@@ -396,6 +396,46 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// کد عملیاتی ارسال آرتیکل های حساب موجودیت عملیاتی به فایل
         /// </summary>
-        ExportAccountLines = 78
+        ExportAccountLines = 78,
+
+        /// <summary>
+        /// کد عملیاتی ایجاد آرتیکل حساب نقد موجودیت عملیاتی
+        /// </summary>
+        CreateCashAccountLine = 79,
+
+        /// <summary>
+        /// کد عملیاتی ویرایش آرتیکل حساب نقد موجودیت عملیاتی
+        /// </summary>
+        EditCashAccountLine = 80,
+
+        /// <summary>
+        /// کد عملیاتی حذف آرتیکل حساب نقد موجودیت عملیاتی
+        /// </summary>
+        DeleteCashAccountLine = 81,
+
+        /// <summary>
+        /// کد عملیاتی حذف گروهی آرتیکل حساب نقد موجودیت عملیاتی
+        /// </summary>
+        GroupDeleteCashAccountLines = 82,
+
+        /// <summary>
+        /// کد عملیاتی چاپ آرتیکل های حساب نقد موجودیت عملیاتی
+        /// </summary>ب
+        PrintCashAccountLines = 83,
+
+        /// <summary>
+        /// کد عملیاتی پیش نمایش چاپ آرتیکل های حساب نقد موجودیت عملیاتی
+        /// </summary>
+        PrintPreviewCashAccountLines = 84,
+
+        /// <summary>
+        /// کد عملیاتی فیلتر پیشرفته آرتیکل های حساب نقد موجودیت عملیاتی
+        /// </summary>
+        FilterCashAccountLines = 85,
+
+        /// <summary>
+        /// کد عملیاتی ارسال آرتیکل های حساب نقد موجودیت عملیاتی به فایل
+        /// </summary>
+        ExportCashAccountLines = 86
     }
 }

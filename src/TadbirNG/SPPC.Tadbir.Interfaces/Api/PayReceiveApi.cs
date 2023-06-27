@@ -270,7 +270,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for a single payment account article specified by identifier
         /// </summary>
-        public const string PaymentArticle = "payments/account-articles/{0}";
+        public const string PaymentAccountArticle = "payments/account-articles/{0}";
 
         /// <summary>
         /// API server route URL for a single payment account article specified by identifier
@@ -324,7 +324,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for a single receipt account article specified by identifier
         /// </summary>
-        public const string ReceiptArticle = "receipts/account-articles/{0}";
+        public const string ReceiptAccountArticle = "receipts/account-articles/{0}";
 
         /// <summary>
         /// API server route URL for a single receipt account article specified by identifier
@@ -362,5 +362,73 @@ namespace SPPC.Tadbir.Api
         public const string AggregateReceiptAccountArticleRowsUrl = "receipts/{receiptId:min(1)}/account-articles/aggregate-rows";
 
         #endregion Receipt Account Article Resources
+
+        #region Payment Cash Account Article Resources
+
+        /// <summary>
+        /// API client URL for all cash account articles in a single payment specified by identifier
+        /// </summary>
+        public const string PaymentCashAccountArticles = "payments/{0}/cash-account-articles";
+
+        /// <summary>
+        /// API server route URL for all cash account articles in a single payment specified by identifier
+        /// </summary>
+        public const string PaymentCashAccountArticlesUrl = "payments/{paymentId:min(1)}/cash-account-articles";
+
+        /// <summary>
+        /// API client URL for a single payment cash account article specified by identifier
+        /// </summary>
+        public const string PaymentCashAccountArticle = "payments/cash-account-articles/{0}";
+
+        /// <summary>
+        /// API server route URL for a single payment cash account article specified by identifier
+        /// </summary>
+        public const string PaymentCashAccountArticleUrl = "payments/cash-account-articles/{cashAccountArticleId:min(1)}";
+
+        /// <summary>
+        /// API client URL for all available payment cash account articles
+        /// </summary>
+        public const string AllPaymentCashAccountArticles = "payments/cash-account-articles";
+
+        /// <summary>
+        /// API server route URL for all available payment cash account articles
+        /// </summary>
+        public const string AllPaymentCashAccountArticlesUrl = "payments/cash-account-articles";
+
+        #endregion Payment Cash Account Article Resources
+
+        #region Receipt Cash Account Article Resources
+
+        /// <summary>
+        /// API client URL for all cash account articles in a single receipt specified by identifier
+        /// </summary>
+        public const string ReceiptCashAccountArticles = "receipts/{0}/cash-account-articles";
+
+        /// <summary>
+        /// API server route URL for all cash account articles in a single receipt specified by identifier
+        /// </summary>
+        public const string ReceiptCashAccountArticlesUrl = "receipts/{receiptId:min(1)}/cash-account-articles";
+
+        /// <summary>
+        /// API client URL for a single receipt cash account article specified by identifier
+        /// </summary>
+        public const string ReceiptCashAccountArticle = "receipts/cash-account-articles/{0}";
+
+        /// <summary>
+        /// API server route URL for a single receipt cash account article specified by identifier
+        /// </summary>
+        public const string ReceiptCashAccountArticleUrl = "receipts/cash-account-articles/{cashAccountArticleId:min(1)}";
+
+        /// <summary>
+        /// API client URL for all available receipt cash account articles
+        /// </summary>
+        public const string AllReceiptCashAccountArticles = "receipts/cash-account-articles";
+
+        /// <summary>
+        /// API server route URL for all available receipt cash account articles
+        /// </summary>
+        public const string AllReceiptCashAccountArticlesUrl = "receipts/cash-account-articles";
+
+        #endregion Receipt Cash Account Article Resources
     }
 }

@@ -4032,4 +4032,34 @@
   <data name="SeriesNo" xml:space="preserve">
     <value>Series No</value>
   </data>
+  <data name="PayReceiveCashAccount" xml:space="preserve">
+    <value>PayReceiveCashAccount</value>
+  </data>
+  <data name="PayReceiveCashAccounts" xml:space="preserve">
+    <value>PayReceiveCashAccounts</value>
+  </data>
+  <data name="CreateCashAccountLine" xml:space="preserve">
+    <value>Create cash account article</value>
+  </data>
+  <data name="DeleteCashAccountLine" xml:space="preserve">
+    <value>Delete cash account article</value>
+  </data>
+  <data name="EditCashAccountLine" xml:space="preserve">
+    <value>Edit cash account article</value>
+  </data>
+  <data name="ExportCashAccountLines" xml:space="preserve">
+    <value>Export cash account articles</value>
+  </data>
+  <data name="FilterCashAccountLines" xml:space="preserve">
+    <value>Filter cash account articles</value>
+  </data>
+  <data name="GroupDeleteCashAccountLines" xml:space="preserve">
+    <value>Group delete cash account articles</value>
+  </data>
+  <data name="PrintCashAccountLines" xml:space="preserve">
+    <value>Print cash account articles</value>
+  </data>
+  <data name="PrintPreviewCashAccountLines" xml:space="preserve">
+    <value>Print preview cash account articles</value>
+  </data>
 </root>

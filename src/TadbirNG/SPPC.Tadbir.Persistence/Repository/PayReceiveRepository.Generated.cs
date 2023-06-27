@@ -108,10 +108,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeletePayReceiveAsync(int payReceiveId, int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
-            var payReceive = await repository.GetByIDWithTrackingAsync(payReceiveId, pr => pr.Accounts);
+            var payReceive = await repository.GetByIDWithTrackingAsync(payReceiveId, pr => pr.Accounts, pr => pr.CashAccounts);
             if (payReceive != null)
             {
                 payReceive.Accounts.Clear();
+                payReceive.CashAccounts.Clear();
                 int entityTypeId = GetEntityTypeId(type);
                 await DeleteAsync(repository, payReceive, OperationId.Delete, entityTypeId);
             }
@@ -314,12 +315,21 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
         /// <returns>در صورت وجود آرتیکل حساب مقدار درست و
         /// در غیر این صورت مقدار نادرست برمی گرداند</returns>
-        public async Task<bool> HasAccountArticle(int payReceiveId)
+        public async Task<bool> HasAccountArticleAsync(int payReceiveId)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
             return await repository.
                 GetEntityQuery()
                 .AnyAsync(a => a.PayReceiveId == payReceiveId);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> HasCashAccountArticleAsync(int payReceiveId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveCashAccount>();
+            return await repository.
+                GetEntityQuery()
+                .AnyAsync(ca => ca.PayReceiveId == payReceiveId);
         }
 
         private async Task<DateTime> GetLastPayReceiveDateAsync(int type)

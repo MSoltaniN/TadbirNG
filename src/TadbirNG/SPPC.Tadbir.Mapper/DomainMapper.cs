@@ -118,6 +118,17 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.CostCenterId = GetNullableId(viewModel.FullAccount.CostCenter))
                 .AfterMap((viewModel, model) => model.ProjectId = GetNullableId(viewModel.FullAccount.Project));
             mapperConfig.CreateMap<PayReceiveAccount, PayReceiveAccountSummaryViewModel>();
+            mapperConfig.CreateMap<PayReceiveCashAccount, PayReceiveCashAccountViewModel>()
+                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.BankOrderNo, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.FullAccount, opts => opts.MapFrom(
+                    src => BuildFullAccount(src.Account, src.DetailAccount, src.CostCenter, src.Project)));
+            mapperConfig.CreateMap<PayReceiveCashAccountViewModel, PayReceiveCashAccount>()
+                .AfterMap((viewModel, model) => model.AccountId = GetNullableId(viewModel.FullAccount.Account))
+                .AfterMap((viewModel, model) => model.DetailAccountId = GetNullableId(viewModel.FullAccount.DetailAccount))
+                .AfterMap((viewModel, model) => model.CostCenterId = GetNullableId(viewModel.FullAccount.CostCenter))
+                .AfterMap((viewModel, model) => model.ProjectId = GetNullableId(viewModel.FullAccount.Project));
+            mapperConfig.CreateMap<PayReceiveCashAccount, PayReceiveCashAccountSummaryViewModel>();
         }
 
         private static void MapCheckTypes(IMapperConfigurationExpression mapperConfig)

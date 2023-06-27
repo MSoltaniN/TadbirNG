@@ -35,7 +35,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// کلید متنی چندزبانه برای موجودیت دریافت و پرداخت
+        /// کلید متنی چندزبانه برای موجودیت فرم دریافت/پرداخت
         /// </summary>
         protected override string EntityNameKey
         {
@@ -670,11 +670,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     payReceiveId.ToString()));
             }
 
-            if((action == AppStrings.Confirm || action == AppStrings.Approve) 
-                && !await _repository.HasAccountArticle(payReceiveId)) 
+            if(action == AppStrings.Confirm || action == AppStrings.Approve) 
             {
-                return BadRequestResult(_strings.Format(AppStrings.InvalidEmptyArticleAction, action,
-                        entityNameKey, AppStrings.PayReceiveAccount));
+                if(!await _repository.HasAccountArticleAsync(payReceiveId))
+                {
+                    return BadRequestResult(_strings.Format(AppStrings.InvalidEmptyArticleAction, action,
+                            entityNameKey, AppStrings.PayReceiveAccount));
+                }
+
+                if (!await _repository.HasCashAccountArticleAsync(payReceiveId))
+                {
+                    return BadRequestResult(_strings.Format(AppStrings.InvalidEmptyArticleAction, action,
+                            entityNameKey, AppStrings.PayReceiveCashAccount));
+                }
             }
 
             var result = BranchValidationResult(payReceive);

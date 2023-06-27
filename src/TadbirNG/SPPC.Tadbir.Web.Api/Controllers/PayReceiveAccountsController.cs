@@ -45,7 +45,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// کلید متنی چندزبانه برای موجودیت دریافت و پرداخت
+        /// کلید متنی چندزبانه برای موجودیت فرم دریافت/پرداخت
         /// </summary>
         protected override string EntityNameKey
         {
