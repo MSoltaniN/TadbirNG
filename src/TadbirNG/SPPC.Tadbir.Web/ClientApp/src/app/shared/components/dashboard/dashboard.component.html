@@ -130,7 +130,7 @@
                     [widgetId]="item.id"
                     [tabId]="tab.id"
                     [isEditMode]="isDashboardEditMode"
-                    [headerTitle]="item.title"
+                    [headerTitle]="widgetSettings[item.id + '-' + tab.id].title"
                     [setting]="widgetSettings[item.id + '-' + tab.id]"
                     (settingChanged)="onSettingChanged($event)"
                     (refreshWidget)="onRefreshWidget(tab,item)"
