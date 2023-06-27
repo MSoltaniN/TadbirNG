@@ -1341,12 +1341,14 @@
     "Name": "Name",
     "Details": "Details",
     "Fund": "CashRegister",
-    "Bank": "Bank"
+    "Bank": "Bank",
+    "AggregateRows": "Aggregate Rows",
+    "RemoveInvalidRows": "Remove Invalid Rows"
   },
   "UserValueFilter": {
     "Title":"فرم انتخاب شرح های تکراری",
-    "Name": "نام",
-    "RowNo": "ردیف"
+    "Name": "Name",
+    "RowNo": "Row No"
   },
   "AllValidations": {
     "Account": {

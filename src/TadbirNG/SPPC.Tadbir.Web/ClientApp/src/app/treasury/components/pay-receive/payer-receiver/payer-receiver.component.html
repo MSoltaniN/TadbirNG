@@ -7,6 +7,7 @@
   <div class="panel-body" style="padding-top: 0">
     <div *ngIf="errorMessages">
       <div *ngFor="let err of errorMessages" class="alert alert-danger">
+        <i class="fa fa-close" aria-hidden="true" (click)="closeAlert()"></i>
         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
         {{ err }}
       </div>
@@ -92,9 +93,9 @@
                     SppcPermissionCheck="ConnectToCheck|Edit"
                     [EntityName]="permissionEntityName"
                     (sppcClick)="aggregateRows($event)"
+                    [disabled]="rowData?.data.length < 1"
                     class="k-button"
-                    [disabled]="!isConnected"
-                    title="{{ 'CheckBook.CreateConnection' | translate }}"
+                    title="{{ 'PayReceipt.AggregateRows' | translate }}"
                   >
                     <span class="k-icon k-i-decrease-vertical-spacing"></span>
                   </button>
@@ -102,9 +103,9 @@
                     SppcPermissionCheck="ConnectToCheck|Edit"
                     [EntityName]="permissionEntityName"
                     (sppcClick)="removeInvalidRows($event)"
+                    [disabled]="rowData?.data.length < 1"
                     class="k-button"
-                    [disabled]="!isConnected"
-                    title="{{ 'CheckBook.CreateConnection' | translate }}"
+                    title="{{ 'PayReceipt.RemoveInvalidRows' | translate }}"
                   >
                     <span class="k-icon k-i-remove-vertical-spacing"></span>
                   </button>
