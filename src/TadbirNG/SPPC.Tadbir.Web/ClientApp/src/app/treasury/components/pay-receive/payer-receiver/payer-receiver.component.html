@@ -62,6 +62,18 @@
                 >
                 </kendo-grid-messages>
 
+                <ng-template kendoPagerTemplate>
+                  <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+                  <kendo-pager-info></kendo-pager-info>
+                  <kendo-pager-numeric-buttons
+                    [buttonCount]="5"
+                  ></kendo-pager-numeric-buttons>
+                  <kendo-pager-next-buttons></kendo-pager-next-buttons>
+                  <kendo-pager-page-sizes
+                    [pageSizes]="pageSizeArray"
+                  ></kendo-pager-page-sizes>
+                </ng-template>
+
                 <ng-template kendoGridToolbarTemplate>
                   <button
                     kendoGridAddCommand
@@ -229,7 +241,7 @@
 
   <!-- فرم تایید حذف -->
 <kendo-dialog
-  title="{{ 'Voucher.Delete' | translate }}"
+  title="{{ 'PayReceipt.DeletePayReceiveAccount' | translate }}"
   *ngIf="deleteConfirm"
   (close)="deleteModel(false)"
   [minWidth]="250"

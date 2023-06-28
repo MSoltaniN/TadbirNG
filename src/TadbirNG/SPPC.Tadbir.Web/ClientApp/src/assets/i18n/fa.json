@@ -195,7 +195,8 @@
     "SelectTitle": "انتخاب {0}",
     "BankName": "نام بانک",
     "First": "اولین {0}",
-    "Last": "آخرین {0}"
+    "Last": "آخرین {0}",
+    "Delete": "حذف {0}"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
@@ -1371,7 +1372,8 @@
     "Fund": "صندوق",
     "Bank": "بانک",
     "AggregateRows": "تجمیع سطرهای دارای بردار حساب یکسان",
-    "RemoveInvalidRows": "حذف ردیفهای نامعتبر"
+    "RemoveInvalidRows": "حذف ردیفهای نامعتبر",
+    "DeletePayReceiveAccount": "حذف آرتیکل طرف حساب"
   },
   "UserValueFilter": {
     "Title":"فرم انتخاب شرح های تکراری",

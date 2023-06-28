@@ -173,7 +173,8 @@
     "SelectTitle": "Select {0}",
     "BankName": "Bank Name",
     "First": "The first {0}",
-    "Last": "The last {0}"
+    "Last": "The last {0}",
+    "Delete": "Delete {0}"
   },
   "GridSetting": {
     "Visibility": "Visibility",
@@ -1345,7 +1346,8 @@
     "Fund": "CashRegister",
     "Bank": "Bank",
     "AggregateRows": "Aggregate Rows",
-    "RemoveInvalidRows": "Remove Invalid Rows"
+    "RemoveInvalidRows": "Remove Invalid Rows",
+    "DeletePayReceiveAccount": "Delete the account article"
   },
   "UserValueFilter": {
     "Title":"فرم انتخاب شرح های تکراری",
