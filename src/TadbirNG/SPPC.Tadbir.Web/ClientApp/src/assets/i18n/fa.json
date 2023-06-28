@@ -193,7 +193,9 @@
     "Edit": "اصلاح {0}",
     "No": "شماره {0}",
     "SelectTitle": "انتخاب {0}",
-    "BankName": "نام بانک"
+    "BankName": "نام بانک",
+    "First": "اولین {0}",
+    "Last": "آخرین {0}"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",

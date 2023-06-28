@@ -1,4 +1,5 @@
 <app-bread-cumb
+  [customTitle]="breadCrumbTitle"
   [entityTypeName]="entityType"
   *ngIf="isShowBreadcrumb"
 ></app-bread-cumb>
@@ -333,7 +334,8 @@
                   id="confirmedByName"
                   class="k-checkbox"
                   (click)="confirmedBy($event)"
-                  [attr.disabled]="isConfirmed ? 'disabled' : null"
+                  [checked]="isConfirmed"
+                  [attr.disabled]="isApproved ? 'disabled' : null"
                 />
                 <label for="confirmedByName" class="control-label">
                   {{ "Voucher.ConfirmerName" | translate }}
@@ -352,8 +354,8 @@
                   type="checkbox"
                   id="approvedByName"
                   class="k-checkbox"
+                  [checked]="isApproved"
                   (click)="approvedBy($event)"
-                  [attr.disabled]="isConfirmed ? 'disabled' : null"
                 />
                 <label for="approvedByName" class="control-label">
                   {{ "Voucher.ApproverName" | translate }}

@@ -171,7 +171,9 @@
     "Edit": "Edit {0}",
     "No": "{0} No",
     "SelectTitle": "Select {0}",
-    "BankName": "Bank Name"
+    "BankName": "Bank Name",
+    "First": "The first {0}",
+    "Last": "The last {0}"
   },
   "GridSetting": {
     "Visibility": "Visibility",
