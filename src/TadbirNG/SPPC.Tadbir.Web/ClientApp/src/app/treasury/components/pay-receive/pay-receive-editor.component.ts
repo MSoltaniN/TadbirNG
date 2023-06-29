@@ -1,5 +1,4 @@
 import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -14,7 +13,7 @@ import { PayReceiveTypes, PayReceiveOperations, UrlPathType } from '@sppc/treasu
 import { PayReceiveApi } from '@sppc/treasury/service/api';
 import { PayReceiveInfo, PayReceiveService } from '@sppc/treasury/service/pay-receive.service';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, concat, concatMap, exhaustMap, from, lastValueFrom, of, shareReplay, take } from 'rxjs';
+import { catchError, concatMap, exhaustMap, lastValueFrom, of, shareReplay, take } from 'rxjs';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -38,8 +37,20 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   @Input() filter: FilterExpression;
   @Input() quickFilter: FilterExpression;
   @Input() dialogMode = false;
-  searchConfirm: boolean;
-  urlMode: string;
+  /**
+  * نوع فرم؛ 0 برای دریافت و 1 برای پرداخت
+  */
+  @Input() set type (value:any) {
+    if (value == PayReceiveTypes.Receipt || value == UrlPathType.Receipts) {
+      this._formType = PayReceiveTypes.Receipt;
+      this.entityType = Entities.Receipt;
+      this.viewId = ViewName.Receipt;
+      this.metadataKey = String.Format(SessionKeys.MetadataKey, this.viewId ? this.viewId.toString() : '', this.CurrentLanguage);
+      this.localizeMsg();
+    } else {
+      this._formType = PayReceiveTypes.Payment;
+    }
+  }
 
   constructor(public toastrService: ToastrService,
     public translate: TranslateService,
@@ -54,15 +65,14 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     public errorHandlingService: ErrorHandlingService)
   {
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.Payment, ViewName.Payment,elem);
-    this.entType = this.urlPath;
-    this.viewID = this.urlPath;
+    this.type = this.urlPath;
+    this.insertedInNew = true;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
-  /**
-   * نوع فرم؛ 0 برای دریافت و 1 برای پرداخت
-   */
-  type:PayReceiveTypes;
+  private _formType: PayReceiveTypes;
+  searchConfirm: boolean;
+  urlMode: string;
   isShowBreadcrumb = true;
   payReceiveOperationsItem = PayReceiveOperations;
   isFirstItem = false;
@@ -88,24 +98,11 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     return this.route.snapshot.url[0].path.toLowerCase();
   }
   
-  public set entType(type: string) {
-    if (type == UrlPathType.Receipts) {
-      this.entityType = Entities.Receipt;
-      this.type = PayReceiveTypes.Receipt;
-    } else {
-      this.type = PayReceiveTypes.Payment;
-    }
+  public get type() {
+    return this._formType;
   }
 
-  public set viewID(type: string) {
-    if (type == UrlPathType.Receipts) {
-      this.viewId = ViewName.Receipt;
-      this.metadataKey = String.Format(SessionKeys.MetadataKey, this.viewId ? this.viewId.toString() : '', this.CurrentLanguage);
-      this.localizeMsg();
-    }
-  }
-
-  get returnUrl() {
+  public get returnUrl() {
     let rurl = this.route.snapshot.queryParamMap.get('returnUrl');
     return rurl?rurl.toLowerCase():'';
   }
@@ -118,7 +115,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     return this.editForm?.value.isApproved;
   }
 
-  get noQueryParam() {
+  public get noQueryParam() {
     let no = this.route.snapshot.queryParamMap.get('no');
     return no?no:'';
   }
@@ -227,7 +224,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     } else {
       if (!this.isLastItem) {
         this.getDataUrl = String.Format(baseUrl,this.model.payReceiveNo);
-        this.getPayReceive(this.getDataUrl);
+
         let no = this.model.id > 0? this.model.payReceiveNo: '';
         if (!this.dialogMode)
           this.router.navigate([`/treasury/${this.urlPath}/next`],{
@@ -235,6 +232,19 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
               no: no
             }
           });
+        else {
+          if (this.isFormChanged()) {
+            this.saveChangesConfirmDialog({
+              onDiscard: () => {
+                this.getPayReceive(this.getDataUrl);
+              }
+            });
+          }
+          else {
+            this.getPayReceive(this.getDataUrl);
+          }
+  
+        }
       }
       
     }
@@ -256,7 +266,6 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
       } else {
         this.getDataUrl = this.urlPath == 'payments'? PayReceiveApi.LastPayment: PayReceiveApi.LastReceipt;
       }
-      this.getPayReceive(this.getDataUrl);
       let no = this.model.id > 0? this.model.payReceiveNo: '';
       if (!this.dialogMode)
         this.router.navigate([`/treasury/${this.urlPath}/previous`],{
@@ -264,6 +273,19 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
             no: no
           }
         });
+      else {
+        if (this.isFormChanged()) {
+          this.saveChangesConfirmDialog({
+            onDiscard: () => {
+              this.getPayReceive(this.getDataUrl);
+            }
+          });
+        }
+        else {
+          this.getPayReceive(this.getDataUrl);
+        }
+
+      }
     }
   }
 
@@ -418,7 +440,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     }
   }
 
-  onSave(e) {
+  onSave(e?) {
     let insertUrl = this.urlPath == 'payments'? PayReceiveApi.Payments: PayReceiveApi.Receipts;
     let editUrl = this.urlPath == 'payments'? PayReceiveApi.Payment: PayReceiveApi.Receipt;
     let value = this.editForm.value;
@@ -636,6 +658,16 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   showReport() {}
+
+  saveChangesHandler() {
+    this.onSave();
+  }
+
+  discardChangesHandler() {
+    if (this.isNew && this.insertedInNew) {
+      this.deleteModel(true);
+    }
+  }
   /**
    * prepare confim message for delete operation
    * @param text is a part of message that use for delete confirm message

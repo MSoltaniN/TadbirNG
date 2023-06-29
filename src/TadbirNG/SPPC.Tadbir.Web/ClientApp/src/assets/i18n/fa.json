@@ -196,7 +196,8 @@
     "BankName": "نام بانک",
     "First": "اولین {0}",
     "Last": "آخرین {0}",
-    "Delete": "حذف {0}"
+    "Delete": "حذف {0}",
+    "SaveChanges": "ذخیره تغییرات"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",

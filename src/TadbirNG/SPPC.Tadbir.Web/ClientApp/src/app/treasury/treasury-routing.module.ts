@@ -5,6 +5,7 @@ import { CheckBookEditorComponent } from './components/check-book/check-book-edi
 import { CheckBookReportComponent } from './components/checkBook-report/checkBook-report.component';
 import { SourcesApplicationsComponent } from './components/sources-applications/sources-applications.component';
 import { PayReceiveEditorComponent } from './components/pay-receive/pay-receive-editor.component';
+import { DeactivateGuard } from '@sppc/core/services/deactivate.guard';
 
 const routes: Routes = [
   {path:'cash-register', component:CashRegistersComponent},
@@ -12,8 +13,8 @@ const routes: Routes = [
   {path:'check-books', component:CheckBookEditorComponent},
   {path:'check-books/:mode', component:CheckBookEditorComponent},
   {path:'check-book-report', component:CheckBookReportComponent},
-  {path:'receipts/:mode', component:PayReceiveEditorComponent},
-  {path:'payments/:mode', component:PayReceiveEditorComponent}
+  {path:'receipts/:mode', component:PayReceiveEditorComponent, runGuardsAndResolvers: 'pathParamsOrQueryParamsChange', canDeactivate:[DeactivateGuard]},
+  {path:'payments/:mode', component:PayReceiveEditorComponent, runGuardsAndResolvers: 'pathParamsOrQueryParamsChange', canDeactivate:[DeactivateGuard]}
 ];
 
 @NgModule({
