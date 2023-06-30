@@ -62,6 +62,18 @@
                 >
                 </kendo-grid-messages>
 
+                <ng-template kendoPagerTemplate>
+                  <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+                  <kendo-pager-info></kendo-pager-info>
+                  <kendo-pager-numeric-buttons
+                    [buttonCount]="5"
+                  ></kendo-pager-numeric-buttons>
+                  <kendo-pager-next-buttons></kendo-pager-next-buttons>
+                  <kendo-pager-page-sizes
+                    [pageSizes]="pageSizeArray"
+                  ></kendo-pager-page-sizes>
+                </ng-template>
+
                 <ng-template kendoGridToolbarTemplate>
                   <button
                     kendoGridAddCommand
@@ -69,13 +81,14 @@
                     [icon]="'file-add'"
                     type="button"
                     title="{{ 'Buttons.Add' | translate }}"
+                    [disabled]="isConfirmed"
                   ></button>
                   <!-- [disabled]="!accountRequired" -->
             
                   <button
                     (click)="editHandler()"
                     class="k-button k-button-icon"
-                    [disabled]="selectedRows.length != 1"
+                    [disabled]="selectedRows.length != 1 || isConfirmed"
                     title="{{ 'Buttons.Edit' | translate }}"
                   >
                     <span class="k-icon k-i-pencil"></span>
@@ -83,29 +96,25 @@
                   <button
                     (click)="removeHandler()"
                     class="k-button k-button-icon"
-                    [disabled]="selectedRows.length == 0"
                     title="{{ 'Buttons.Delete' | translate }}"
+                    [disabled]="selectedRows.length == 0 || isConfirmed"
                   >
                     <span class="k-icon k-i-delete"></span>
                   </button>
                   <!-- .k-i-decrease-vertical-spacing -->
                   <button
-                    SppcPermissionCheck="ConnectToCheck|Edit"
-                    [EntityName]="permissionEntityName"
-                    (sppcClick)="aggregateRows($event)"
-                    [disabled]="rowData?.data.length < 1"
+                    (click)="aggregateRows($event)"
                     class="k-button"
                     title="{{ 'PayReceipt.AggregateRows' | translate }}"
+                    [disabled]="rowData?.data.length < 1 || isConfirmed"
                   >
                     <span class="k-icon k-i-decrease-vertical-spacing"></span>
                   </button>
                   <button
-                    SppcPermissionCheck="ConnectToCheck|Edit"
-                    [EntityName]="permissionEntityName"
-                    (sppcClick)="removeInvalidRows($event)"
-                    [disabled]="rowData?.data.length < 1"
+                    (click)="removeInvalidRows($event)"
                     class="k-button"
                     title="{{ 'PayReceipt.RemoveInvalidRows' | translate }}"
+                    [disabled]="rowData?.data.length < 1 || isConfirmed"
                   >
                     <span class="k-icon k-i-remove-vertical-spacing"></span>
                   </button>
@@ -229,7 +238,7 @@
 
   <!-- فرم تایید حذف -->
 <kendo-dialog
-  title="{{ 'Voucher.Delete' | translate }}"
+  title="{{ 'PayReceipt.DeletePayReceiveAccount' | translate }}"
   *ngIf="deleteConfirm"
   (close)="deleteModel(false)"
   [minWidth]="250"

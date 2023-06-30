@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { CurrencyInfo } from '@sppc/finance/models';
 import { DetailComponent, FilterExpression, String } from '@sppc/shared/class';
+import { Persist } from '@sppc/shared/decorator/persist.decorator';
 import { Entities, Layout, MessageType } from '@sppc/shared/enum/metadata';
 import { PaymentPermissions, ReceiptPermissions, ViewName } from '@sppc/shared/security';
 import { BrowserStorageService, ErrorHandlingService, LookupService, MetaDataService, SessionKeys } from '@sppc/shared/services';
@@ -81,6 +82,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   fundOrBankType: number = 1;
   getDataUrl: string;
   breadCrumbTitle: string;
+  @Persist() preferedDate;
 
   public get urlPath() {
     return this.route.snapshot.url[0].path.toLowerCase();
@@ -341,18 +343,15 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   initPayReceiveForm() {
-    if (this.model.id == 0) {
-      this.isNew = true;
+    if (this.isNew) {
       this.searchConfirm = false;
-      this.isLastItem = true;
-      this.isFirstItem = false;
+      this.model.date = this.preferedDate? this.preferedDate: this.model.date;
     } else {
-      this.isNew = false;
-
       this.searchConfirm = false;
-      this.isLastItem = !this.model.hasNext;
-      this.isFirstItem = !this.model.hasPrevious;
     }
+
+    this.isLastItem = !this.model.hasNext;
+    this.isFirstItem = !this.model.hasPrevious;
     this.errorMessages = [];
 
     setTimeout(() => {
@@ -396,6 +395,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
         .subscribe({
           next: res =>{
             this.deleteConfirm = false;
+            this.isNew = false;
     
             this.showMessage(this.deleteMsg,MessageType.Info);
 
@@ -433,14 +433,16 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     )
     .subscribe({
       next: async (res) => {
-        if (this.model.id>0)
-          this.showMessage(this.updateMsg, MessageType.Succes);
-        else {
-          // res.checkBook.hasPrevious = this.lastModel.hasPrevious;
-          // res.checkBook.hasNext = this.lastModel.hasNext;
+        if (this.isNew){
           this.showMessage(this.insertMsg, MessageType.Succes);
         }
+        else {
+          this.showMessage(this.updateMsg, MessageType.Succes);
+        }
+        res.hasPrevious = this.model.hasPrevious;
+        res.hasNext = this.model.hasNext;
         
+        this.isNew = false;
         this.model = res as PayReceiveInfo;
         this.initPayReceiveForm();
         // this.setEditMode = true;

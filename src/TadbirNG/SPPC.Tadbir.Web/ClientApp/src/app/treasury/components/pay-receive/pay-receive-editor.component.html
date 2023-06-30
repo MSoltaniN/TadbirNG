@@ -188,6 +188,7 @@
 
                 <sppc-datepicker
                   [isReadOnly]="isConfirmed"
+                  [(ngModel)]="preferedDate"
                   formControlName="date"
                   [minDate]="FiscalPeriodStartDate"
                   [maxDate]="FiscalPeriodEndDate"
@@ -204,6 +205,7 @@
                   </label>
   
                   <payer-receiver
+                    [isConfirmed]="isConfirmed"
                     [type]="this.urlPath == 'payments'? '1': '2'"
                     [payReceiveId]="this.model?.id"
                     (setTotalCashAmount)="setTotalCashAmount($event)"
@@ -401,7 +403,7 @@
 
 <!-- فرم تایید حذف -->
 <kendo-dialog
-  title="{{ 'Voucher.Delete' | translate }}"
+  title='{{ stringFormat("Form.Delete" | translate, "Entity."+entityType | translate) }}'
   *ngIf="deleteConfirm"
   (close)="deleteModel(false)"
   [minWidth]="250"
