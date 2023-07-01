@@ -1397,7 +1397,7 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
 UPDATE [Metadata].[Operation]
-SET [Metadata].[Operation].[Name] = N'RemoveAccountLinesInvalidRows' 
+SET [Metadata].[Operation].[Name] = N'RemoveInvalidAccountLines' 
 WHERE OperationID = 69 and  [NAME] = N'RemoveInvalidRows'
 
 UPDATE [Metadata].[Operation]
