@@ -28,26 +28,32 @@ namespace SPPC.Tools.Maintenance
 
         static void RunBackup()
         {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            var backup = new BackupUtility();
-            backup.TaskStarted += Backup_TaskStarted;
-            backup.TaskFinished += Backup_TaskFinished;
-            backup.FtpProgress += Backup_FtpProgress;
-            backup.BackupNgTadbirDatabases();
-            backup.BackupNgTadbirSites();
-            var tempPath = Path.Combine(".", "temp");
-            if (Directory.Exists(tempPath))
+            try
             {
-                Directory.Delete(tempPath);
-            }
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
 
-            stopwatch.Stop();
-            Console.WriteLine("Backup completed.");
-            Console.WriteLine($"Elapsed : {stopwatch.Elapsed}");
-            Console.WriteLine("Press any key to quit...");
-            Console.ReadKey();
+                var backup = new BackupUtility();
+                backup.TaskStarted += Backup_TaskStarted;
+                backup.TaskFinished += Backup_TaskFinished;
+                backup.FtpProgress += Backup_FtpProgress;
+                backup.BackupNgTadbirDatabases();
+                backup.BackupNgTadbirSites();
+                var tempPath = Path.Combine(".", "temp");
+                if (Directory.Exists(tempPath))
+                {
+                    Directory.Delete(tempPath);
+                }
+
+                stopwatch.Stop();
+                Console.WriteLine("Backup completed.");
+                Console.WriteLine($"Elapsed : {stopwatch.Elapsed}");
+            }
+            catch (Exception ex)
+            {
+                var message = $"Error occured.{Environment.NewLine}{ex.GetErrorInfo()}{Environment.NewLine}{ex.StackTrace}";
+                File.WriteAllText("error.log", message);
+            }
         }
 
         private static void Backup_TaskStarted(object sender, TaskStartedEventArgs e)
