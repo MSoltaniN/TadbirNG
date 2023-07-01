@@ -349,14 +349,14 @@ namespace SPPC.Tadbir.Domain
         Register = 68,
 
         /// <summary>
-        /// کد عملیاتی حذف سطرهای نامعتبر
+        /// کد عملیاتی حذف آرتیکل های نامعتبر حساب موجودیت عملیاتی
         /// </summary>
-        RemoveInvalidRows = 69,
+        RemoveInvalidAccountLines = 69,
 
         /// <summary>
-        /// کد عملیاتی تجمیع سطرها
+        ///کد عملیاتی تجمیع آرتیکل های حساب موجودیت عملیاتی
         /// </summary>
-        RowsAggregation = 70,
+        AggregateAccountLines = 70,
 
         /// <summary>
         /// کد عملیاتی ایجاد آرتیکل حساب موجودیت عملیاتی
@@ -436,6 +436,16 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// کد عملیاتی ارسال آرتیکل های حساب نقد موجودیت عملیاتی به فایل
         /// </summary>
-        ExportCashAccountLines = 86
+        ExportCashAccountLines = 86,
+
+        /// <summary>
+        /// کد عملیاتی حذف آرتیکل های نامعتبر حساب نقد موجودیت عملیاتی
+        /// </summary>
+        RemoveInvalidCashAccountLines = 87,
+
+        /// <summary>
+        /// کد عملیاتی تجمیع آرتیکل های حساب نقد موجودیت عملیاتی
+        /// </summary>
+        AggregateCashAccountLines = 88
     }
 }

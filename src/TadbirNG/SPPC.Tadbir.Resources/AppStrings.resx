@@ -3984,11 +3984,11 @@
   <data name="GroupDeleteAccounts" xml:space="preserve">
     <value>حذف گروهی طرف‌های حساب</value>
   </data>
-  <data name="RemoveInvalidRows" xml:space="preserve">
-    <value>حذف ردیف‌های نامعتبر</value>
+  <data name="RemoveInvalidAccountLines" xml:space="preserve">
+    <value>حذف ردیف‌های نامعتبر طرف حساب</value>
   </data>
-  <data name="RowsAggregation" xml:space="preserve">
-    <value>تجمیع ردیف‌ها</value>
+  <data name="AggregateAccountLines" xml:space="preserve">
+    <value>تجمیع ردیف‌های طرف حساب</value>
   </data>
   <data name="NotFoundInvalidRows" xml:space="preserve">
     <value>{0} این {1} هیچ ردیف نامعتبری برای حذف ندارد.</value>
@@ -4024,10 +4024,7 @@
     <value>شماره سری</value>
   </data>
   <data name="PayReceiveCashAccount" xml:space="preserve">
-    <value>حساب نقدی</value>
-  </data>
-  <data name="PayReceiveCashAccounts" xml:space="preserve">
-    <value>حساب‌های نقدی</value>
+    <value>آرتیکل حساب نقدی</value>
   </data>
   <data name="CreateCashAccountLine" xml:space="preserve">
     <value>ایجاد آرتیکل حساب نقدی</value>
@@ -4052,5 +4049,17 @@
   </data>
   <data name="PrintPreviewCashAccountLines" xml:space="preserve">
     <value>پیش نمایش چاپ آرتیکل‌های حساب نقدی</value>
+  </data>
+  <data name="AggregateCashAccountLines" xml:space="preserve">
+    <value>تجمیع ردیف‌های حساب نقدی</value>
+  </data>
+  <data name="RemoveInvalidCashAccountLines" xml:space="preserve">
+    <value>حذف ردیف‌های نامعتبر حساب نقدی</value>
+  </data>
+  <data name="CantChangeDetailEntity" xml:space="preserve">
+    <value>این {0} تایید یا تصویب شده و امکان تغییر اطلاعات {1} وجود ندارد.</value>
+  </data>
+  <data name="CantConfirmWithInvalidRows" xml:space="preserve">
+    <value>تایید فرم با وجود {0} نامعتبر امکان پذیر نیست.</value>
   </data>
 </root>

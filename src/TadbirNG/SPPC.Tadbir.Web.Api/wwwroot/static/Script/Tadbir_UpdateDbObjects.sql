@@ -1347,6 +1347,10 @@ INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description])
 	VALUES (85, N'FilterCashAccountLines', NULL)
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description]) 
 	VALUES (86, N'ExportCashAccountLines', NULL)
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description]) 
+	VALUES (87, N'RemoveInvalidCashAccountLines', NULL)
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description]) 
+	VALUES (88, N'AggregateCashAccountLines', NULL)
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Config].[LogSetting] ON
@@ -1382,7 +1386,24 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
     VALUES (296, 3, 2, NULL, 25, 85, 0)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (297, 3, 2, NULL, 25, 86, 0)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (298, 3, 2, NULL, 24, 87, 0)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (299, 3, 2, NULL, 24, 88, 0)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (300, 3, 2, NULL, 25, 87, 0)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (301, 3, 2, NULL, 25, 88, 0)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+UPDATE [Metadata].[Operation]
+SET [Metadata].[Operation].[Name] = N'RemoveAccountLinesInvalidRows' 
+WHERE OperationID = 69 and  [NAME] = N'RemoveInvalidRows'
+
+UPDATE [Metadata].[Operation]
+SET [Metadata].[Operation].[Name] = N'AggregateAccountLines' 
+WHERE OperationID = 70 and  [NAME] = N'RowsAggregation'
+
 
 CREATE TABLE [CashFlow].[PayReceiveCashAccount] (
     [PayReceiveCashAccountID]   INT              IDENTITY (1, 1) NOT NULL,

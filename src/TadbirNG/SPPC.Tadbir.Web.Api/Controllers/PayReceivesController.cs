@@ -23,15 +23,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="repository">امکان مدیریت اطلاعات فرم های دریافت/پرداخت را فراهم می کند</param>
+        /// <param name="accountArticleRepository">امکان مدیریت اطلاعات طرف حساب را فراهم می کند</param>
+        /// <param name="cashAccountArtricleRepository">امکان مدیریت اطلاعات حساب نقدی را فراهم می کند</param>
         /// <param name="strings">امکان خواندن متن های چندزبانه را فراهم می کند</param>
         /// <param name="tokenManager">امکان کار با توکن امنیتی برنامه را فراهم می کند</param>
         public PayReceivesController(
             IPayReceiveRepository repository,
+            IPayReceiveAccountRepository accountArticleRepository,
+            IPayReceiveCashAccountRepository cashAccountArtricleRepository,
             IStringLocalizer<AppStrings> strings,
             ITokenManager tokenManager)
             : base(strings, tokenManager)
         {
             _repository = repository;
+            _accountArticleRepository = accountArticleRepository;
+            _cashAccountArticleRepository = cashAccountArtricleRepository;
         }
 
         /// <summary>
@@ -678,10 +684,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                             entityNameKey, AppStrings.PayReceiveAccount));
                 }
 
-                if (!await _repository.HasCashAccountArticleAsync(payReceiveId))
+                if (action == AppStrings.Confirm)
                 {
-                    return BadRequestResult(_strings.Format(AppStrings.InvalidEmptyArticleAction, action,
-                            entityNameKey, AppStrings.PayReceiveCashAccount));
+                    if (await _accountArticleRepository.HasAccountArticleInvalidRowsAsync(payReceiveId))
+                    {
+                        return BadRequestResult(_strings.Format(
+                            AppStrings.CantConfirmWithInvalidRows, AppStrings.PayReceiveAccount));
+                    }
+
+                    if (await _cashAccountArticleRepository.HasCashAccountArticleInvalidRowsAsync(payReceiveId))
+                    {
+                        return BadRequestResult(_strings.Format(
+                            AppStrings.CantConfirmWithInvalidRows, AppStrings.PayReceiveCashAccount));
+                    }
                 }
             }
 
@@ -729,5 +744,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private readonly IPayReceiveRepository _repository;
+        private readonly IPayReceiveAccountRepository _accountArticleRepository;
+        private readonly IPayReceiveCashAccountRepository _cashAccountArticleRepository;
     }
 }

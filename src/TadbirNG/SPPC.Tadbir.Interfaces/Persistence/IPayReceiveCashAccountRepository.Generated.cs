@@ -64,5 +64,34 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="cashAccountArticleIds">لیست شناسه های آرتیکل حساب نقدی</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شناسه عددی</returns>
         Task<PayReceiveViewModel> GetPayReceiveAsync(IList<int> cashAccountArticleIds);
+
+        /// <summary>
+        /// به روش آسنکرون، ردیف های نامعتبر حساب نقدی در فرم دریافت/پرداخت داده شده را حذف می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
+        Task DeleteInvalidRowsCashAccountArticleAsync(int payReceiveId, int type);
+
+        /// <summary>
+        /// به روش آسنکرون، وجود ردیف های نامعتبر حساب نقدی در فرم دریافت/پرداخت داده شده را بررسی می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <returns>در صورت وجود ردیف مقدار درست و در غیر این صورت نادرست برمی گرداند</returns>
+        Task<bool> HasCashAccountArticleInvalidRowsAsync(int payReceiveId);
+
+        /// <summary>
+        /// به روش آسنکرون، ردیف های حساب نقدی با بردار حساب مشترک را 
+        /// در فرم دریافت/پرداخت داده شده تجمیع می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
+        Task AggregateCashAccountArticleRowsAsync(int payReceiveId, int type);
+
+        /// <summary>
+        /// به روش آسنکرون، وجود ردیف برای تجمیع حساب نقدی در فرم دریافت/پرداخت داده شده را بررسی می کند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <returns>در صورت وجود ردیف مقدار درست و در غیر این صورت نادرست برمی گرداند</returns>
+        Task<bool> HasCashAccountArticlestoAggregateAsync(int payReceiveId);
     }
 }

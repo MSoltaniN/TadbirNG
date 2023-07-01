@@ -27,20 +27,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="repository">امکان مدیریت اطلاعات فرم های دریافت/پرداخت را فراهم می کند</param>
-        /// <param name="articleAccountRepository">امکان مدیریت اطلاعات طرف حساب را فراهم می کند</param>
+        /// <param name="accountArticleRepository">امکان مدیریت اطلاعات طرف حساب را فراهم می کند</param>
         /// <param name="relationRepository">امکان خواندن ارتباطات موجود در  بردار حساب را فراهم می کند</param>  
         /// <param name="strings">امکان خواندن متن های چندزبانه را فراهم می کند</param>
         /// <param name="tokenManager">امکان کار با توکن امنیتی برنامه را فراهم می کند</param>
         public PayReceiveAccountsController(
             IPayReceiveRepository repository,
-            IPayReceiveAccountRepository articleAccountRepository,
+            IPayReceiveAccountRepository accountArticleRepository,
             IRelationRepository relationRepository,
             IStringLocalizer<AppStrings> strings,
             ITokenManager tokenManager)
             : base(strings, tokenManager)
         {
             _repository = repository;
-            _accountArticleRepository = articleAccountRepository;
+            _accountArticleRepository = accountArticleRepository;
             _relationRepository = relationRepository;
         }
 
@@ -254,7 +254,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="paymentId">شناسه فرم پرداخت مورد نظر</param>
         /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // PUT: api/payments/{paymentId:min(1)}/account-articles/remove-Invalid-rows
+        // DELETE: api/payments/{paymentId:min(1)}/account-articles/remove-Invalid-rows
         [HttpDelete]
         [Route(PayReceiveApi.RemovePaymentAccountInvalidRowsUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Edit)]
@@ -277,7 +277,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="receiptId">شناسه فرم دریافت مورد نظر</param>
         /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
-        // PUT: api/receipts/{receiptId:min(1)}/account-articles/remove-Invalid-rows
+        // DELETE: api/receipts/{receiptId:min(1)}/account-articles/remove-Invalid-rows
         [HttpDelete]
         [Route(PayReceiveApi.RemoveReceiptAccountInvalidRowsUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Edit)]
@@ -553,6 +553,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            if (payReceive.IsApproved || payReceive.IsConfirmed)
+            {
+                return BadRequestResult(_strings.Format(
+                    AppStrings.CantDeleteDetailEntity, entityNameKey, AppStrings.PayReceiveAccount));
+            }
+
             if (!await _accountArticleRepository.HasAccountArticleInvalidRowsAsync(payReceiveId))
             {
                 return BadRequestResult(
@@ -575,6 +581,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (result is BadRequestObjectResult)
             {
                 return result;
+            }
+
+            if (payReceive.IsApproved || payReceive.IsConfirmed)
+            {
+                return BadRequestResult(_strings.Format(
+                    AppStrings.CantChangeDetailEntity, entityNameKey, AppStrings.PayReceiveAccount));
             }
 
             if (!await _accountArticleRepository.HasAccountArticlestoAggregateAsync(payReceiveId))

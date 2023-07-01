@@ -219,7 +219,7 @@ namespace SPPC.Tadbir.Persistence
             var articleIds = articles
                 .Select(article => article.Id)
                 .ToArray();
-            await OnEntityGroupDeleted(articleIds, OperationId.RemoveInvalidRows, entityTypeId);
+            await OnEntityGroupDeleted(articleIds, OperationId.RemoveInvalidAccountLines, entityTypeId);
         }
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace SPPC.Tadbir.Persistence
 
             await UnitOfWork.CommitAsync();
             int entityTypeId = GetEntityTypeId(type);
-            OnEntityAction(OperationId.RowsAggregation, entityTypeId);
+            OnEntityAction(OperationId.RemoveInvalidAccountLines, entityTypeId);
             await TrySaveLogAsync();
         }
 

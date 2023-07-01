@@ -162,6 +162,104 @@ namespace SPPC.Tadbir.Persistence
             return item;
         }
 
+        /// <inheritdoc/>
+        public async Task DeleteInvalidRowsCashAccountArticleAsync(int payReceiveId, int type)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveCashAccount>();
+            var articles = await repository
+                .GetEntityQuery()
+                .Where(article => article.PayReceiveId == payReceiveId &&
+                    (article.Amount <= Decimal.Zero || article.AccountId == null))
+                .ToArrayAsync();
+
+            foreach (var article in articles)
+            {
+                DisconnectEntity(article);
+                repository.Delete(article);
+            }
+
+            await UnitOfWork.CommitAsync();
+            int entityTypeId = GetEntityTypeId(type);
+            var articleIds = articles
+                .Select(article => article.Id)
+                .ToArray();
+            await OnEntityGroupDeleted(articleIds, OperationId.RemoveInvalidCashAccountLines, entityTypeId);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> HasCashAccountArticleInvalidRowsAsync(int payReceiveId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveCashAccount>();
+            return await repository
+                .GetEntityQuery()
+                .AnyAsync(article => article.PayReceiveId == payReceiveId &&
+                    (article.Amount <= Decimal.Zero || article.AccountId == null));
+        }
+
+        /// <inheritdoc/>
+        public async Task AggregateCashAccountArticleRowsAsync(int payReceiveId, int type)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveCashAccount>();
+            var aggregatedRows = repository
+                .GetEntityQuery()
+                .Where(a => a.PayReceiveId == payReceiveId && a.AccountId.HasValue)
+                .AsEnumerable()
+                .GroupBy(acc => new { acc.AccountId, acc.DetailAccountId, acc.CostCenterId, acc.ProjectId })
+                .Where(group => group.Count() > 1)
+                .Select(group => new
+                {
+                    Id = group.Min(article => article.Id),
+                    Amount = group.Sum(article => article.Amount),
+                    Descriptions = group
+                        .Select(article => article.Description?.Trim())
+                        .Where(d => !String.IsNullOrEmpty(d))
+                        .ToArray()
+                })
+                .ToArray();
+
+            foreach (var item in aggregatedRows)
+            {
+                var aggregatedArticle = await repository.GetByIDAsync(item.Id);
+                aggregatedArticle.Amount = item.Amount;
+                aggregatedArticle.Description = item.Descriptions.Length > 0
+                    ? String.Join(" - ", item.Descriptions)
+                    : null;
+                repository.Update(aggregatedArticle);
+
+                var removedArticles = await repository.GetByCriteriaAsync(
+                    a => a.PayReceiveId == payReceiveId
+                        && a.Id != aggregatedArticle.Id
+                        && a.AccountId == aggregatedArticle.AccountId
+                        && a.DetailAccountId == aggregatedArticle.DetailAccountId
+                        && a.CostCenterId == aggregatedArticle.CostCenterId
+                        && a.ProjectId == aggregatedArticle.ProjectId);
+                foreach (var article in removedArticles)
+                {
+                    DisconnectEntity(article);
+                    repository.Delete(article);
+                }
+            }
+
+            await UnitOfWork.CommitAsync();
+            int entityTypeId = GetEntityTypeId(type);
+            OnEntityAction(OperationId.AggregateCashAccountLines, entityTypeId);
+            await TrySaveLogAsync();
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> HasCashAccountArticlestoAggregateAsync(int payReceiveId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveCashAccount>();
+            var aggregateCount = await repository
+                .GetEntityQuery()
+                .Where(article => article.PayReceiveId == payReceiveId && article.AccountId != null)
+                .GroupBy(acc => new { acc.AccountId, acc.DetailAccountId, acc.CostCenterId, acc.ProjectId })
+                .Where(articles => articles.Count() > 1)
+                .CountAsync();
+
+            return aggregateCount > 0;
+        }
+
         internal override int? EntityType
         {
             get { return (int?)EntityTypeId.Receipt; }

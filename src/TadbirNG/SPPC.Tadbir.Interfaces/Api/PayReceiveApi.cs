@@ -395,6 +395,26 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string AllPaymentCashAccountArticlesUrl = "payments/cash-account-articles";
 
+        /// <summary>
+        /// API client URL for remove invalid cash account articles a single payment specified by identifier
+        /// </summary>
+        public const string RemovePaymentCashAccountInvalidRows = "payments/{0}/cash-account- articles/remove-Invalid-rows";
+
+        /// <summary>
+        /// API server route URL for remove invalid cash account articles a single payment specified by identifier
+        /// </summary>
+        public const string RemovePaymentCashAccountInvalidRowsUrl = "payments/{paymentId:min(1)}/cash-account-articles/remove-Invalid-rows";
+
+        /// <summary>
+        /// API client URL for aggregate cash account articles a single payment specified by identifier
+        /// </summary>
+        public const string AggregatePaymentCashAccountArticleRows = "payments/{0}/cash-account- articles/aggregate-rows";
+
+        /// <summary>
+        /// API server route URL for aggregate cash account articles a single payment specified by identifier
+        /// </summary>
+        public const string AggregatePaymentCashAccountArticleRowsUrl = "payments/{paymentId:min(1)}/cash-account-articles/aggregate-rows";
+
         #endregion Payment Cash Account Article Resources
 
         #region Receipt Cash Account Article Resources
@@ -428,6 +448,26 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all available receipt cash account articles
         /// </summary>
         public const string AllReceiptCashAccountArticlesUrl = "receipts/cash-account-articles";
+
+        /// <summary>
+        /// API client URL for remove invalid cash account articles a single receipt specified by identifier
+        /// </summary>
+        public const string RemoveReceiptCashAccountInvalidRows = "receipts/{0}/cash-account-articles/remove-Invalid-rows";
+
+        /// <summary>
+        /// API server route URL for remove invalid cash account articles a single receipt specified by identifier
+        /// </summary>
+        public const string RemoveReceiptCashAccountInvalidRowsUrl = "receipts/{receiptId:min(1)}/cash-account-articles/remove-Invalid-rows";
+
+        /// <summary>
+        /// API client URL for aggregate cash account articles a single receipt specified by identifier
+        /// </summary>
+        public const string AggregateReceiptCashAccountArticleRows = "receipts/{0}/cash-account-articles/aggregate-rows";
+
+        /// <summary>
+        /// API server route URL for aggregate cash account articles a single receipt specified by identifier
+        /// </summary>
+        public const string AggregateReceiptCashAccountArticleRowsUrl = "receipts/{receiptId:min(1)}/cash-account-articles/aggregate-rows";
 
         #endregion Receipt Cash Account Article Resources
     }
