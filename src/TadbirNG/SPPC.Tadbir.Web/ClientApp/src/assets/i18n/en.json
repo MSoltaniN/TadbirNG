@@ -100,7 +100,9 @@
     "FirstRemoveWidgets": "Before removing the tab from the dashboard, you must first remove the widgets added to the tab.",
     "CheckBookDeleteConfirm": "Are you sure you want to delete this check book?",
     "CheckBookPagesCancelConfirm": "Are you sure you want to cancel check book page having number {0}?",
-    "CheckBookPagesUndoCancelConfirm": "Are you sure you want to undo previous cancellation of check book page having number {0}?"
+    "CheckBookPagesUndoCancelConfirm": "Are you sure you want to undo previous cancellation of check book page having number {0}?",
+    "AggregateConfirm": "Are you sure you want to Aggregation of rows with the same account vector?",
+    "RemoveInvalidRowsConfirm": "Are you sure you want to Delete invalid rows?"
   },
   "Report": {
     "ReportViewer": "View of",

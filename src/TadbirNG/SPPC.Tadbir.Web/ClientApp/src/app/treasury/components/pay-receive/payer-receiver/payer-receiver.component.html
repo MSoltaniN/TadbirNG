@@ -103,7 +103,7 @@
                   </button>
                   <!-- .k-i-decrease-vertical-spacing -->
                   <button
-                    (click)="aggregateRows($event)"
+                    (click)="callOperation(payReceiveOperationsItems.Aggregate)"
                     class="k-button"
                     title="{{ 'PayReceipt.AggregateRows' | translate }}"
                     [disabled]="rowData?.data.length < 1 || isConfirmed"
@@ -111,7 +111,7 @@
                     <span class="k-icon k-i-decrease-vertical-spacing"></span>
                   </button>
                   <button
-                    (click)="removeInvalidRows($event)"
+                    (click)="callOperation(payReceiveOperationsItems.RemoveInvalidRows)"
                     class="k-button"
                     title="{{ 'PayReceipt.RemoveInvalidRows' | translate }}"
                     [disabled]="rowData?.data.length < 1 || isConfirmed"
@@ -236,6 +236,26 @@
     </div>
   </div>
 
+<!-- فرم تایید عملگرها -->
+<kendo-dialog
+  title="{{ confirmDialogTitle | translate }}"
+  *ngIf="confirmDialog"
+  (close)="confirmOperation(false)"
+  [minWidth]="250"
+  [width]="450"
+>
+  <p >
+    {{ confirmMsg | translate }}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="confirmOperation(true)" primary="true">
+      {{ "Buttons.Yes" | translate }}
+    </button>
+    <button class="k-button" (click)="confirmOperation(false)">
+      {{ "Buttons.No" | translate }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
   <!-- فرم تایید حذف -->
 <kendo-dialog
   title="{{ 'PayReceipt.DeletePayReceiveAccount' | translate }}"

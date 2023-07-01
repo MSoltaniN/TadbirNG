@@ -9,6 +9,8 @@ export enum PayReceiveOperations {
     Previous = 4,
     New = 5,
     Search = 6,
+    Aggregate = 7,
+    RemoveInvalidRows = 8
 }
 /**
 * نوع فرم؛ 0 برای دریافت و 1 برای پرداخت
