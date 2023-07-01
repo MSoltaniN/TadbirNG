@@ -1,19 +1,17 @@
 
-import {exhaustMap, finalize, take} from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { BaseComponent } from "./base.component";
-import { Injectable, Renderer2, Optional, Inject, Host, Input, HostListener, OnInit, OnDestroy, ElementRef, EventEmitter, Directive } from "@angular/core";
+import { Injectable, Renderer2, Optional, Inject, Input, OnDestroy, ElementRef, Directive } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from '@ngx-translate/core';
-import { FormGroup, FormControl, ValidatorFn, Validators, AsyncValidatorFn } from "@angular/forms";
+import { FormGroup, FormControl, ValidatorFn, Validators } from "@angular/forms";
 import { Property } from "./metadata/property";
 import { String } from './source';
 import { MetaDataService, BrowserStorageService, SessionKeys } from "../services";
-import { ShortcutCommand } from "../models/shortcutCommand";
 import { ShortcutService } from "../services/shortcut.service";
 import { ServiceLocator } from "@sppc/service.locator";
 import { ShareDataService } from "@sppc/shared/services/share-data.service";
-import { Guid } from "../models";
-import { BehaviorSubject, lastValueFrom, of, Subject } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { DialogRef, DialogService } from '@progress/kendo-angular-dialog';
 
 
@@ -317,8 +315,6 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
   //      }
   //    }    
   //  }
-
-  
 
 }
 
