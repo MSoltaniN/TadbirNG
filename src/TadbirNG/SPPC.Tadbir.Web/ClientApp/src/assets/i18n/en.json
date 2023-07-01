@@ -176,7 +176,8 @@
     "BankName": "Bank Name",
     "First": "The first {0}",
     "Last": "The last {0}",
-    "Delete": "Delete {0}"
+    "Delete": "Delete {0}",
+    "SaveChanges": "Save changes"
   },
   "GridSetting": {
     "Visibility": "Visibility",
