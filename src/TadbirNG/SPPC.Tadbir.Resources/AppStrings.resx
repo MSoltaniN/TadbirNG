@@ -4023,4 +4023,7 @@
   <data name="SeriesNo" xml:space="preserve">
     <value>شماره سری</value>
   </data>
+  <data name="Remarks" xml:space="preserve">
+    <value>ملاحظات</value>
+  </data>
 </root>
