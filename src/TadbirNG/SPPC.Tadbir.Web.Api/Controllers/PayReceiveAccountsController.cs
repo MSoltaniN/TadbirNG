@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     /// عملیات سرویس وب برای مدیریت اطلاعات طرف‌های حساب فرم دریافت/پرداخت را پیاده سازی می کند
     /// </summary>
     [Produces("application/json")]
-    public partial class PayReceiveAccountsController : ValidatingController<PayReceiveViewModel>
+    public class PayReceiveAccountsController : ValidatingController<PayReceiveViewModel>
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -60,10 +60,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/payments/{paymentId:min(1)}/account-articles
         [HttpGet]
         [Route(PayReceiveApi.PaymentAccountArticlesUrl)]
-        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Edit)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.View)]
         public async Task<IActionResult> GetPaymentAccountArticlesAsync(int paymentId)
         {
-            var articles = await _accountArticleRepository.GetAccountArticlesAsync(paymentId, GridOptions);
+            var articles = await _accountArticleRepository.GetAccountArticlesAsync(
+                paymentId, (int)PayReceiveType.Payment, GridOptions);
             return Json(articles.Items);
         }
 
@@ -75,10 +76,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/receipts/{receiptId:min(1)}/account-articles
         [HttpGet]
         [Route(PayReceiveApi.ReceiptAccountArticlesUrl)]
-        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Edit)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.View)]
         public async Task<IActionResult> GetReceiptAccountArticlesAsync(int receiptId)
         {
-            var articles = await _accountArticleRepository.GetAccountArticlesAsync(receiptId, GridOptions);
+            var articles = await _accountArticleRepository.GetAccountArticlesAsync(
+                receiptId, (int)PayReceiveType.Receipt, GridOptions);
             return Json(articles.Items);
         }
 
@@ -90,7 +92,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/payments/account-articles/{accountArticleId:min(1)}
         [HttpGet]
         [Route(PayReceiveApi.PaymentAccountArticleUrl)]
-        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Edit)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.View)]
         public async Task<IActionResult> GetPaymentAccountArticleAsync(int accountArticleId)
         {
             var article = await _accountArticleRepository.GetAccountArticleAsync(accountArticleId);
@@ -105,7 +107,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/receipts/account-articles/{accountArticleId:min(1)}
         [HttpGet]
         [Route(PayReceiveApi.ReceiptAccountArticleUrl)]
-        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Edit)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.View)]
         public async Task<IActionResult> GetReceiptAccountArticleAsync(int accountArticleId)
         {
             var article = await _accountArticleRepository.GetAccountArticleAsync(accountArticleId);

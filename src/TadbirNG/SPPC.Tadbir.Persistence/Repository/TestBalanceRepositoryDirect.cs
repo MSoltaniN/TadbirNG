@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
@@ -135,7 +136,8 @@ namespace SPPC.Tadbir.Persistence
                         AddOperationSums(items);
                     }
 
-                    items = await ApplyZeroBalanceOptionAsync(items, parameters, level);
+                    filter = $"FullCode.StartsWith(\"{accountItem.FullCode}\")";
+                    items = await ApplyZeroBalanceOptionAsync(items, parameters, level, filter);
                     PrepareBalance(balance, items, parameters, length);
                 }
             }
@@ -458,13 +460,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<List<TestBalanceItemViewModel>> ApplyZeroBalanceOptionAsync(
-            IEnumerable<TestBalanceItemViewModel> items, TestBalanceParameters parameters, int level)
+            IEnumerable<TestBalanceItemViewModel> items, TestBalanceParameters parameters, int level,
+            string filter = null)
         {
             IEnumerable<TestBalanceItemViewModel> newItems = null;
             if ((parameters.Options & FinanceReportOptions.ShowZeroBalanceItems) > 0)
             {
                 newItems = items.Concat(
-                    await GetZeroBalanceItemsAsync(parameters.ViewId, items, level));
+                    await GetZeroBalanceItemsAsync(parameters.ViewId, items, level, filter));
             }
             else
             {
@@ -479,10 +482,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IEnumerable<TestBalanceItemViewModel>> GetZeroBalanceItemsAsync(
-            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level)
+            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level, string filter = null)
         {
             var zeroItems = new List<TestBalanceItemViewModel>();
-            var notUsed = await GetNotUsedItemsAsync(viewId, items, level);
+            var notUsed = await GetNotUsedItemsAsync(viewId, items, level, filter);
             foreach (var notUsedItem in notUsed)
             {
                 zeroItems.Add(new TestBalanceItemViewModel()
@@ -499,22 +502,22 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IEnumerable<TreeEntity>> GetNotUsedItemsAsync(
-            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level)
+            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level, string filter = null)
         {
             IEnumerable<TreeEntity> notUsed = null;
             switch (viewId)
             {
                 case ViewId.Account:
-                    notUsed = await GetNotUsedItemsAsync<Account>(viewId, items, level);
+                    notUsed = await GetNotUsedItemsAsync<Account>(viewId, items, level, filter);
                     break;
                 case ViewId.DetailAccount:
-                    notUsed = await GetNotUsedItemsAsync<DetailAccount>(viewId, items, level);
+                    notUsed = await GetNotUsedItemsAsync<DetailAccount>(viewId, items, level, filter);
                     break;
                 case ViewId.CostCenter:
-                    notUsed = await GetNotUsedItemsAsync<CostCenter>(viewId, items, level);
+                    notUsed = await GetNotUsedItemsAsync<CostCenter>(viewId, items, level, filter);
                     break;
                 case ViewId.Project:
-                    notUsed = await GetNotUsedItemsAsync<Project>(viewId, items, level);
+                    notUsed = await GetNotUsedItemsAsync<Project>(viewId, items, level, filter);
                     break;
             }
 
@@ -522,16 +525,21 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private async Task<IEnumerable<T>> GetNotUsedItemsAsync<T>(
-            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level)
+            int viewId, IEnumerable<TestBalanceItemViewModel> items, int level, string filter = null)
             where T : TreeEntity
         {
             var repository = _system.Repository;
             var usedCodes = items
                 .Select(item => item.AccountFullCode);
-            return await repository
+            var notUsed = await repository
                 .GetAllQuery<T>(viewId, tree => tree.Branch)
                 .Where(tree => !usedCodes.Contains(tree.FullCode) && tree.Level == level)
                 .ToListAsync();
+            return filter != null
+                ? notUsed
+                    .AsQueryable()
+                    .Where(filter)
+                : notUsed;
         }
 
         private void PrepareBalance(

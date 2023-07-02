@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     /// عملیات سرویس وب برای مدیریت اطلاعات فرم های پایه دریافت و پرداخت را پیاده سازی می کند
     /// </summary>
     [Produces("application/json")]
-    public partial class PayReceivesController : ValidatingController<PayReceiveViewModel>
+    public class PayReceivesController : ValidatingController<PayReceiveViewModel>
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

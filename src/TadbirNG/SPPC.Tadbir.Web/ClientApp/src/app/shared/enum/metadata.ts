@@ -129,7 +129,8 @@ export const Entities = {
   CheckBookReport: "CheckBookReport",
   SourceApp: "SourceApp",
   Payment: "Payment",
-  Receipt: "Receipt"
+  Receipt: "Receipt",
+  PayReceiveAccount: "PayReceiveAccount"
 }
 
 export const CustomForm =

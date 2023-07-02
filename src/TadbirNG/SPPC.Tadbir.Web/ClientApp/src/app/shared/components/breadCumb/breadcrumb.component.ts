@@ -12,13 +12,20 @@ export class BreadCumbComponent implements OnInit,OnDestroy {
     
 
   @Input() public set entityTypeName(name: string) {
-    if (name) {
+    if (name && !this.hasCustomTitle) {
       this.getEntityFromParent = false;
       this.getEntityTitle(name);
     }
-
   }
 
+  @Input() public set customTitle(title: string) {
+    if (title) {
+      this.hasCustomTitle = true;
+      this.setCustomTitle(title);
+    }
+  }
+
+  hasCustomTitle: boolean = false;
   getEntityFromParent: boolean = true;
   title: string;
   subs$: Subscription;
@@ -29,7 +36,7 @@ export class BreadCumbComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
     
-    if (this.getEntityFromParent) {
+    if (this.getEntityFromParent && !this.hasCustomTitle) {
       var entityTypeName = this.parentComponet['_hostLView'][8].entityTypeName;
 
       if (entityTypeName) {
@@ -44,7 +51,7 @@ export class BreadCumbComponent implements OnInit,OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subs$.unsubscribe();
+    this.subs$?.unsubscribe();
   }
 
   getText(key: string): void {
@@ -54,6 +61,10 @@ export class BreadCumbComponent implements OnInit,OnDestroy {
     });
   }
 
+  setCustomTitle(title:string) {
+    this.title = title;
+    this.titleService.setTitle(title)
+  }
 
   getEntityTitle(entityType: string) {
     switch (entityType.toLowerCase()) {

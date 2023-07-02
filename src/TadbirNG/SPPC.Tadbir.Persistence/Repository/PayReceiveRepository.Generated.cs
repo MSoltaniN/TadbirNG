@@ -302,6 +302,7 @@ namespace SPPC.Tadbir.Persistence
                 Type = (short)type
             };
 
+            newPayReceive = await SavePayReceiveAsync(newPayReceive);
             await SetPayReceiveNavigationAsync(newPayReceive);
             return newPayReceive;
         }
@@ -329,7 +330,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(pr => pr.FiscalPeriodId == UserContext.FiscalPeriodId
                     && pr.BranchId == UserContext.BranchId
                     && pr.Type == type)
-                .OrderByDescending(pr => pr.Date)
+                .OrderByDescending(pr => pr.Id)
                 .FirstOrDefaultAsync();
             if (lastByDate == null)
             {
@@ -428,9 +429,11 @@ namespace SPPC.Tadbir.Persistence
                 .Where(pr => pr.FiscalPeriodId == UserContext.FiscalPeriodId
                     && pr.BranchId == UserContext.BranchId
                     && pr.Type == type)
-                .MaxAsync(pr => Convert.ToInt64(pr.PayReceiveNo));
-            var maxNumber = (long)Math.Pow(10, 16) - 1;
-            return Math.Min(lastNumber + 1, maxNumber).ToString();
+                .Select(pr => Convert.ToInt64(pr.PayReceiveNo))
+                .OrderByDescending(no => no)
+                .FirstOrDefaultAsync();
+                
+            return Math.Min(lastNumber + 1, Int64.MaxValue).ToString();
         }
 
         internal override int? EntityType

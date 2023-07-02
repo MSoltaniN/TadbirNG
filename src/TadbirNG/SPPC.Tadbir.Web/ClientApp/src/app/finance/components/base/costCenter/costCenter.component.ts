@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ViewChild, ChangeDetectorRef, NgZone, ElementRef } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild, ChangeDetectorRef, NgZone, ElementRef, OnDestroy } from '@angular/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
@@ -16,6 +16,8 @@ import { String, AutoGridExplorerComponent } from '@sppc/shared/class';
 import { ViewName, CostCenterPermissions } from '@sppc/shared/security';
 import { OperationId } from '@sppc/shared/enum/operationId';
 import { GridComponent } from '@progress/kendo-angular-grid';
+import { ServiceLocator } from '@sppc/service.locator';
+import { ShareDataService } from '@sppc/shared/services/share-data.service';
 
 
 
@@ -35,13 +37,14 @@ export function getLayoutModule(layout: Layout) {
 })
 
 
-export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> implements OnInit {
+export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> implements OnInit,OnDestroy {
 
   @ViewChild(GridComponent, {static: true}) grid: GridComponent;
   @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
   @ViewChild(ReportManagementComponent, {static: true}) reportManager: ReportManagementComponent;
   @ViewChild(QuickReportSettingComponent, {static: true}) reportSetting: QuickReportSettingComponent;
 
+  scopes = ["CostCenterComponent","AutoGridExplorerComponent"];
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public service: GridService, public dialogService: DialogService,
     public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService, public bStorageService: BrowserStorageService,
@@ -50,6 +53,11 @@ export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> i
       "CostCenter.LedgerCostCenter", "CostCenter.EditorTitleNew", "CostCenter.EditorTitleEdit",
       CostCenterApi.EnvironmentCostCenters, CostCenterApi.RootCostCenters, CostCenterApi.CostCenter, CostCenterApi.CostCenterChildren,
       CostCenterApi.NewChildCostCenter, cdref, ngZone,elem)
+
+      
+    this.scopeService = ServiceLocator.injector.get(ShareDataService);    
+    this.scopeService.setScope(this);
+
   }
 
   ngOnInit(): void {
@@ -62,6 +70,12 @@ export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> i
     this.reloadGrid();
 
   }
+
+  ngOnDestroy(): void {    
+    this.scopeService = ServiceLocator.injector.get(ShareDataService);    
+    this.scopeService.clearScope(this);
+  }
+
 
   public onSelectContextmenu({ item }): void {
 

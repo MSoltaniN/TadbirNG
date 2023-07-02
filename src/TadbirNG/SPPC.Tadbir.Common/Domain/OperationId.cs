@@ -376,6 +376,26 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// کد عملیاتی حذف گروهی آرتیکل حساب موجودیت عملیاتی
         /// </summary>
-        GroupDeleteAccountLines = 74
+        GroupDeleteAccountLines = 74,
+
+        /// <summary>
+        /// کد عملیاتی چاپ آرتیکل های حساب موجودیت عملیاتی
+        /// </summary>ب
+        PrintAccountLines = 75,
+
+        /// <summary>
+        /// کد عملیاتی پیش نمایش چاپ آرتیکل های حساب موجودیت عملیاتی
+        /// </summary>
+        PrintPreviewAccountLines = 76,
+
+        /// <summary>
+        /// کد عملیاتی فیلتر پیشرفته آرتیکل های حساب موجودیت عملیاتی
+        /// </summary>
+        FilterAccountLines = 77,
+
+        /// <summary>
+        /// کد عملیاتی ارسال آرتیکل های حساب موجودیت عملیاتی به فایل
+        /// </summary>
+        ExportAccountLines = 78
     }
 }

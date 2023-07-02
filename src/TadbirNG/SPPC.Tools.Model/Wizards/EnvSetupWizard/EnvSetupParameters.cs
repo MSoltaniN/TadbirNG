@@ -134,6 +134,11 @@ namespace SPPC.Tools.Model
             get { return _queryLicenseActivation; }
         }
 
+        public static string QueryServerJob
+        {
+            get { return _queryServerJob; }
+        }
+
         public static string CreateSampleInitScript
         {
             get { return _createSampleInitScript; }
@@ -283,6 +288,10 @@ USE [NGLicense]
 SELECT [IsActivated]
 FROM [dbo].[License]
 WHERE [LicenseID] = 1";
+        private static readonly string _queryServerJob = @"
+SELECT [job_id] 
+FROM [msdb].[dbo].[sysjobs_view] 
+WHERE [name] = N'CleanUp_CloseExpiredSessions'";
         private static readonly string _createSampleInitScript = @"
 CREATE DATABASE NGTadbir
 GO

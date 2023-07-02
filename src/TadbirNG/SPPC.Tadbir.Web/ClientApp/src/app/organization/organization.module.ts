@@ -7,7 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 
 import { BranchService, CompanyService, FiscalPeriodService } from '@sppc/organization/service/index';
 
-import { BranchComponent } from '@sppc/organization/components/branch/branch.component';
+import BranchComponent from '@sppc/organization/components/branch/branch.component';
 import { BranchFormComponent } from '@sppc/organization/components/branch/branch-form.component';
 import { BranchRolesFormComponent } from '@sppc/organization/components/branch/branch-roles-form.component';
 import { CompanyComponent } from '@sppc/organization/components/company/company.component';

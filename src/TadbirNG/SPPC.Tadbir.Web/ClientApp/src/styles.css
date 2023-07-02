@@ -107,3 +107,7 @@ kendo-textbox .k-input-icon.k-i-search {
   pointer-events: none;
   /* opacity: 0.8; */
 }
+
+.save-changes-box .k-dialog-content{
+  overflow: hidden;
+}

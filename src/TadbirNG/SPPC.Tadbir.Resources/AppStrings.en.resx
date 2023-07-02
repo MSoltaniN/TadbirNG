@@ -3760,7 +3760,7 @@
     <value>Check Book No</value>
   </data>
   <data name="EndNo" xml:space="preserve">
-    <value>To No</value>
+    <value>End Number</value>
   </data>
   <data name="IssueDate" xml:space="preserve">
     <value>Issue Date</value>
@@ -3769,7 +3769,7 @@
     <value>Serial No</value>
   </data>
   <data name="StartNo" xml:space="preserve">
-    <value>From No</value>
+    <value>Start Number</value>
   </data>
   <data name="CheckBookPagesExist" xml:space="preserve">
     <value>Checkbook pages have already been created</value>
@@ -3847,7 +3847,7 @@
     <value>Assign user to cash register</value>
   </data>
   <data name="IsArchivedName" xml:space="preserve">
-    <value>Is Archived</value>
+    <value>Archive Status</value>
   </data>
   <data name="AssignEntityToResource" xml:space="preserve">
     <value>Assign {0} {1} access to {2} {3}</value>
@@ -4013,5 +4013,26 @@
   </data>
   <data name="SayyadNoLength" xml:space="preserve">
     <value>Sayyad number must have exactly 16 digits.</value>
+  </data>
+  <data name="ExportAccountLines" xml:space="preserve">
+    <value>Export account articles</value>
+  </data>
+  <data name="FilterAccountLines" xml:space="preserve">
+    <value>Filter account articles</value>
+  </data>
+  <data name="PrintAccountLines" xml:space="preserve">
+    <value>Print account articles</value>
+  </data>
+  <data name="PrintPreviewAccountLines" xml:space="preserve">
+    <value>Print preview account articles</value>
+  </data>
+  <data name="SayyadStartNo" xml:space="preserve">
+    <value>Sayyad Start No</value>
+  </data>
+  <data name="SeriesNo" xml:space="preserve">
+    <value>Series No</value>
+  </data>
+  <data name="Remarks" xml:space="preserve">
+    <value>Remarks</value>
   </data>
 </root>

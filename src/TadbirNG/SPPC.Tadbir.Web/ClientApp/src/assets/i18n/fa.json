@@ -104,7 +104,9 @@
     "ClickOnCearteRelation": "سپس روی دکمه 'ایجاد ارتباط' کلیک نمایید.",
     "FirstRemoveWidgets": "پیش از حذف برگه از داشبورد، ابتدا باید ویجت های اضافه شده به برگه را حذف کنید",
     "CheckBookPagesCancelConfirm": "آیا برای ابطال چک به شماره {0} اطمینان دارید؟",
-    "CheckBookPagesUndoCancelConfirm": "آیا برای برگشت از ابطال چک به شماره {0} اطمینان دارید؟"
+    "CheckBookPagesUndoCancelConfirm": "آیا برای برگشت از ابطال چک به شماره {0} اطمینان دارید؟",
+    "AggregateConfirm": "آیا برای تجمیع سطرهای دارای بردار حساب یکسان اطمینان دارید؟",
+    "RemoveInvalidRowsConfirm": "آیا برای حذف ردیفهای نامعتبر اطمینان دارید؟"
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
@@ -193,7 +195,11 @@
     "Edit": "اصلاح {0}",
     "No": "شماره {0}",
     "SelectTitle": "انتخاب {0}",
-    "BankName": "نام بانک"
+    "BankName": "نام بانک",
+    "First": "اولین {0}",
+    "Last": "آخرین {0}",
+    "Delete": "حذف {0}",
+    "SaveChanges": "ذخیره تغییرات"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
@@ -245,7 +251,8 @@
     "CheckBookReport": "گزارش دسته چک",
     "SourceApp": "منابع و مصارف",
     "Payment": "سند پرداخت",
-    "Receipt": "سند دریافت"
+    "Receipt": "سند دریافت",
+    "PayReceiveAccount": "طرف حساب"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",
@@ -1366,7 +1373,10 @@
     "Payers": "پرداخت کنندگان",
     "Details": "جزئیات",
     "Fund": "صندوق",
-    "Bank": "بانک"
+    "Bank": "بانک",
+    "AggregateRows": "تجمیع سطرهای دارای بردار حساب یکسان",
+    "RemoveInvalidRows": "حذف ردیفهای نامعتبر",
+    "DeletePayReceiveAccount": "حذف آرتیکل طرف حساب"
   },
   "UserValueFilter": {
     "Title":"فرم انتخاب شرح های تکراری",

@@ -71,11 +71,8 @@ namespace SPPC.Tadbir.Persistence.Utility
                 return new TViewModel() { Level = -1 };
             }
 
-            int childLevel = (parent != null) ? parent.Level + 1 : 0;
-            int codeLength = _treeConfig.Levels[childLevel].CodeLength;
             var childrenCodes = await GetChildrenCodesAsync(parentId);
-            var numericText = new NumericText(codeLength);
-            string newCode = numericText.GetNewCodeValue(childrenCodes);
+            string newCode = NumericText.GetNewCodeValue(childrenCodes);
             return GetNewChildItem(parent, newCode);
         }
 

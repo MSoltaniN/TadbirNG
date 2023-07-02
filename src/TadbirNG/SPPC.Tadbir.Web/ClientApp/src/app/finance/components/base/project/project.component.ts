@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ChangeDetectorRef, NgZone, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Renderer2, ChangeDetectorRef, NgZone, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
@@ -16,6 +16,8 @@ import { ProjectFormComponent } from './project-form.component';
 import { ViewName, ProjectPermissions } from '@sppc/shared/security';
 import { OperationId } from '@sppc/shared/enum/operationId';
 import { GridComponent } from '@progress/kendo-angular-grid';
+import { ServiceLocator } from '@sppc/service.locator';
+import { ShareDataService } from '@sppc/shared/services/share-data.service';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -33,7 +35,8 @@ export function getLayoutModule(layout: Layout) {
 })
 
 
-export class ProjectComponent extends AutoGridExplorerComponent<Project> implements OnInit{
+export class ProjectComponent extends AutoGridExplorerComponent<Project> implements OnInit,OnDestroy{
+  scopes = ["ProjectComponent", "AutoGridExplorerComponent"];
 
   @ViewChild(GridComponent, {static: true}) grid: GridComponent;
   @ViewChild(ViewIdentifierComponent, {static: true}) viewIdentity: ViewIdentifierComponent;
@@ -58,7 +61,13 @@ export class ProjectComponent extends AutoGridExplorerComponent<Project> impleme
     this.getTreeNode();
     this.reloadGrid();
 
-    //this.cdref.detectChanges();
+    this.scopeService = ServiceLocator.injector.get(ShareDataService);
+    this.scopeService.setScope(this);
+  }
+
+  ngOnDestroy(): void {
+    this.scopeService = ServiceLocator.injector.get(ShareDataService);
+    this.scopeService.clearScope(this);
   }
 
   public onSelectContextmenu({ item }): void {

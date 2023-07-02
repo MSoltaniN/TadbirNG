@@ -125,7 +125,7 @@ export class VoucherLineFormComponent
         this.creditDebiteMode = "1";
       }
 
-    if (!this.isNew) {
+    if (!this.isNew && !this.isPayReciept) {
       if (this.model.credit > 0) this.creditDebiteMode = "2";
       else this.creditDebiteMode = "1";
     }

@@ -1,3 +1,15 @@
 .panel-body {
     padding: 0 !important;
 }
+.alert-danger{
+    position: relative;
+}
+.alert-danger .fa-close{
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    cursor: pointer;
+}
+.alert-danger .fa-close:hover {
+    color: #c71541;
+}
