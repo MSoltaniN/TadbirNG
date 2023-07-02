@@ -1358,7 +1358,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetEntityQuery(usr => usr.Person)
                 .Where(usr => userIds.Contains(usr.Id))
                 .Select(usr => new KeyValuePair<int, string>(
-                    usr.Id, $"{usr.Person.LastName}, {usr.Person.FirstName}"))
+                    usr.Id, $"{usr.Person.FullName}"))
                 .ToListAsync());
             Array.ForEach(widgets.ToArray(), widget =>
             {

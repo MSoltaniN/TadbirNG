@@ -129,7 +129,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>نام و نام خانوادگی کاربر جاری</returns>
         protected string GetCurrentUserFullName()
         {
-            return $"{UserContext.PersonLastName}, {UserContext.PersonFirstName}";
+            return $"{UserContext.PersonFullName}";
         }
 
         /// <summary>

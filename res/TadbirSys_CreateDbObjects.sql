@@ -179,8 +179,7 @@ GO
 CREATE TABLE [Contact].[Person] (
     [PersonID]       INT              IDENTITY (1, 1) NOT NULL,
 	[UserID]         INT              NOT NULL,
-    [FirstName]      NVARCHAR(64)     NOT NULL,
-    [LastName]       NVARCHAR(64)     NOT NULL,
+    [FullName]      NVARCHAR(64)     NOT NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Contact_Person_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Contact_Person_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Contact_Person] PRIMARY KEY CLUSTERED ([PersonID] ASC)
@@ -872,9 +871,7 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (52, 4, 'IsEnabled', NULL, NULL, 'System.Boolean', 'bit', 'boolean', 0, 0, 0, 0, 1, 1, NULL, 3, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
-    VALUES (53, 4, 'PersonFirstName', NULL, NULL, 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 0, 1, 1, NULL, 4, 'Person.FirstName')
-INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
-    VALUES (54, 4, 'PersonLastName', NULL, NULL, 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 0, 1, 1, NULL, 5, 'Person.LastName')
+    VALUES (53, 4, 'PersonFullName', NULL, NULL, 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 0, 1, 1, NULL, 4, 'Person.FullName')
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (55, 5, 'RowNo', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 1, 0, 0, N'AlwaysVisible', 0, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
@@ -2409,7 +2406,7 @@ INSERT INTO [Auth].[User] (UserID, UserName, PasswordHash, IsEnabled) VALUES (1,
 SET IDENTITY_INSERT [Auth].[User] OFF
 
 SET IDENTITY_INSERT [Contact].[Person] ON
-INSERT INTO [Contact].[Person] (PersonID, UserID, FirstName, LastName) VALUES (1, 1, N'راهبر', N'سیستم')
+INSERT INTO [Contact].[Person] (PersonID, UserID, FullName) VALUES (1, 1, N'راهبر سیستم')
 SET IDENTITY_INSERT [Contact].[Person] OFF
 
 SET IDENTITY_INSERT [Auth].[Role] ON

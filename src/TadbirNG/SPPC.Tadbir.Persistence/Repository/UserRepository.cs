@@ -171,13 +171,13 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// نام کاربر جاری را با قالب پیش فرض (نام خانوادگی، نام) برمی گرداند
+        /// نام و نام خانوادگی کاربر جاری را برمی گرداند
         /// </summary>
-        /// <returns>نام کاربر جاری با قالب پیش فرض</returns>
+        /// <returns>نام و نام خانوادگی کاربر جاری </returns>
         public async Task<string> GetCurrentUserDisplayNameAsync()
         {
             var user = await GetUserAsync(UserContext.Id);
-            return String.Format("{0}, {1}", user.PersonLastName, user.PersonFirstName);
+            return user.PersonFullName;
         }
 
         /// <summary>
@@ -465,8 +465,7 @@ namespace SPPC.Tadbir.Persistence
             var modifiedUser = Mapper.Map<User>(userView);
             user.UserName = userView.UserName;
             user.IsEnabled = userView.IsEnabled;
-            user.Person.FirstName = userView.PersonFirstName;
-            user.Person.LastName = userView.PersonLastName;
+            user.Person.FullName = userView.PersonFullName;
             if (!String.IsNullOrEmpty(modifiedUser.PasswordHash))
             {
                 user.PasswordHash = modifiedUser.PasswordHash;
@@ -483,8 +482,7 @@ namespace SPPC.Tadbir.Persistence
             return (entity != null)
                 ? String.Format(
                     "{0} : {1} , {2} : {3} , {4} : {5}",
-                    AppStrings.UserName, entity.UserName, AppStrings.PersonFirstName, entity.Person.FirstName,
-                    AppStrings.PersonLastName, entity.Person.LastName)
+                    AppStrings.UserName, entity.UserName, AppStrings.PersonFullName, entity.Person.FullName)
                 : null;
         }
 
@@ -695,8 +693,7 @@ namespace SPPC.Tadbir.Persistence
                 Person = new Person()
                 {
                     Id = user.Person.Id,
-                    FirstName = user.Person.FirstName,
-                    LastName = user.Person.LastName
+                    FullName = user.Person.FullName
                 }
             };
         }
@@ -706,8 +703,7 @@ namespace SPPC.Tadbir.Persistence
             var user = Mapper.Map<User>(userViewModel);
             var person = new Person()
             {
-                FirstName = userViewModel.PersonFirstName,
-                LastName = userViewModel.PersonLastName
+                FullName = userViewModel.PersonFullName
             };
 
             user.Person = person;

@@ -13,10 +13,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("PersonID");
-            builder.Property(e => e.FirstName)
-                .IsRequired()
-                .HasMaxLength(64);
-            builder.Property(e => e.LastName)
+            builder.Property(e => e.FullName)
                 .IsRequired()
                 .HasMaxLength(64);
             builder.Property(e => e.ModifiedDate)
