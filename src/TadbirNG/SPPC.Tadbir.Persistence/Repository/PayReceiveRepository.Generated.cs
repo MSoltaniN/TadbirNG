@@ -332,6 +332,28 @@ namespace SPPC.Tadbir.Persistence
                 .AnyAsync(ca => ca.PayReceiveId == payReceiveId);
         }
 
+        /// <inheritdoc/>
+        public async Task<bool> IsUnbalancedPayReceive(int payReceiveId)
+        {
+            bool unbalanced = true;
+            var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
+            var result = await repository.
+                GetEntityQuery()
+                .Where(pr => pr.Id == payReceiveId)
+                .Select(pr => new 
+                {
+                    AccountsSum = pr.Accounts.Sum(a => a.Amount),
+                    CashAccountsSum = pr.CashAccounts.Sum(c => c.Amount)
+                })
+                .SingleOrDefaultAsync();
+            if(result != null)
+            {
+                unbalanced = (result.AccountsSum - result.CashAccountsSum) != 0;
+            }
+
+            return unbalanced;
+        }
+
         private async Task<DateTime> GetLastPayReceiveDateAsync(int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();

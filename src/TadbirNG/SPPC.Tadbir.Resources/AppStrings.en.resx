@@ -4071,4 +4071,13 @@
   <data name="CantConfirmWithInvalidRows" xml:space="preserve">
     <value>It is not possible to confirm form with invalid {0}.</value>
   </data>
+  <data name="Bank" xml:space="preserve">
+    <value>Bank</value>
+  </data>
+  <data name="CantConfirmUnbalancedForm" xml:space="preserve">
+    <value>Because unbalnced between the {0} and {1}, not possible to confirm {2}.</value>
+  </data>
+  <data name="SelectedAccountNotInCollection" xml:space="preserve">
+    <value>Selected account is not related to the {0} collection</value>
+  </data>
 </root>

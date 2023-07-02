@@ -260,6 +260,39 @@ namespace SPPC.Tadbir.Persistence
             return aggregateCount > 0;
         }
 
+        /// <inheritdoc/>
+        public async Task<bool> IsBankCashAccount(int accountId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            return await repository
+                .GetEntityQuery()
+                .AnyAsync(aca => aca.AccountId == accountId 
+                    && aca.CollectionId == (int)AccountCollectionId.Bank 
+                    && aca.BranchId == UserContext.BranchId
+                    && aca.FiscalPeriodId <= UserContext.FiscalPeriodId);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> IsCashierCashAccount(int accountId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            return await  repository
+                .GetEntityQuery()
+                .AnyAsync(aca => aca.AccountId == accountId
+                    && aca.CollectionId == (int)AccountCollectionId.Cashier
+                    && aca.BranchId == UserContext.BranchId 
+                    && aca.FiscalPeriodId <= UserContext.FiscalPeriodId);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> IsSourceCashAccount(int sourceId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<SourceApp>();
+            return await repository
+                .GetEntityQuery()
+                .AnyAsync()
+        }
+
         internal override int? EntityType
         {
             get { return (int?)EntityTypeId.Receipt; }

@@ -397,6 +397,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             cashAccountArticle.FullAccount.Project = GetNullableItem(cashAccountArticle.FullAccount.Project);
             if (cashAccountArticle.FullAccount.Account != null)
             {
+                int accountId = cashAccountArticle.FullAccount.Account.Id;
+                if (cashAccountArticle.IsBank)
+                {
+                    if(!await _cashAccountArticleRepository.IsBankCashAccount(accountId))
+                    {
+                        return BadRequestResult(_strings.Format(
+                            AppStrings.SelectedAccountNotInCollection, AppStrings.Bank));
+                    }
+                }
+                else 
+                {
+                    if (!await _cashAccountArticleRepository.IsCashierCashAccount(accountId))
+                    {
+                        return BadRequestResult(_strings.Format(
+                            AppStrings.SelectedAccountNotInCollection, AppStrings.CashRegister));
+                    }
+                }
+
                 var lookupResult = await FullAccountValidationResultAsync(cashAccountArticle.FullAccount, _relationRepository);
                 if (lookupResult is BadRequestObjectResult)
                 {

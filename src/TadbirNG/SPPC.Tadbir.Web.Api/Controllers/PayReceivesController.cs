@@ -676,7 +676,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     payReceiveId.ToString()));
             }
 
-            if(action == AppStrings.Confirm || action == AppStrings.Approve) 
+            var result = BranchValidationResult(payReceive);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (action == AppStrings.Confirm) 
             {
                 if(!await _repository.HasAccountArticleAsync(payReceiveId))
                 {
@@ -684,26 +690,29 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                             entityNameKey, AppStrings.PayReceiveAccount));
                 }
 
-                if (action == AppStrings.Confirm)
+                if (!await _repository.HasCashAccountArticleAsync(payReceiveId))
                 {
-                    if (await _accountArticleRepository.HasAccountArticleInvalidRowsAsync(payReceiveId))
-                    {
-                        return BadRequestResult(_strings.Format(
-                            AppStrings.CantConfirmWithInvalidRows, AppStrings.PayReceiveAccount));
-                    }
-
-                    if (await _cashAccountArticleRepository.HasCashAccountArticleInvalidRowsAsync(payReceiveId))
-                    {
-                        return BadRequestResult(_strings.Format(
-                            AppStrings.CantConfirmWithInvalidRows, AppStrings.PayReceiveCashAccount));
-                    }
+                    return BadRequestResult(_strings.Format(AppStrings.InvalidEmptyArticleAction, action,
+                            entityNameKey, AppStrings.PayReceiveCashAccount));
                 }
-            }
 
-            var result = BranchValidationResult(payReceive);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
+                if (await _accountArticleRepository.HasAccountArticleInvalidRowsAsync(payReceiveId))
+                {
+                    return BadRequestResult(_strings.Format(
+                        AppStrings.CantConfirmWithInvalidRows, AppStrings.PayReceiveAccount));
+                }
+
+                if (await _cashAccountArticleRepository.HasCashAccountArticleInvalidRowsAsync(payReceiveId))
+                {
+                    return BadRequestResult(_strings.Format(
+                        AppStrings.CantConfirmWithInvalidRows, AppStrings.PayReceiveCashAccount));
+                }
+
+                if(await _repository.IsUnbalancedPayReceive(payReceiveId))
+                {
+                    return BadRequestResult(_strings.Format(AppStrings.CantConfirmUnbalancedForm, 
+                        AppStrings.PayReceiveAccount, AppStrings.PayReceiveCashAccount, entityNameKey));
+                }              
             }
 
             if ((action == AppStrings.Confirm && payReceive.IsConfirmed)

@@ -93,5 +93,32 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
         /// <returns>در صورت وجود ردیف مقدار درست و در غیر این صورت نادرست برمی گرداند</returns>
         Task<bool> HasCashAccountArticlestoAggregateAsync(int payReceiveId);
+
+        /// <summary>
+        /// به روش آسنکرون، بررسی می کند که حساب انتخاب شده برای 
+        /// آرتیکل حساب نقدی از نوع بانک یا خیر
+        /// </summary>
+        /// <param name="accountId">شناسه عددی حساب مربوط به آرتیکل حساب نقدی</param>
+        /// <returns>در صورتی که حساب در کالکشن بانک باشد مقدار درست
+        /// و در غیر اینصورت نادرست برمی گرداند</returns>
+        Task<bool> IsBankCashAccount(int accountId);
+
+        /// <summary>
+        /// به روش آسنکرون، بررسی می کند که حساب انتخاب شده برای 
+        /// آرتیکل حساب نقدی از نوع صندوق یا خیر
+        /// </summary>
+        /// <param name="accountId">شناسه عددی حساب مربوط به آرتیکل حساب نقدی</param>
+        /// <returns>در صورتی که حساب در کالکشن صندق باشد مقدار درست
+        /// و در غیر اینصورت نادرست برمی گرداند</returns>
+        Task<bool> IsCashierCashAccount(int accountId);
+
+        /// <summary>
+        /// به روش آسنکرون، بررسی می کند که منابع/مصارف انتخابی در حساب نقدی 
+        /// از نوع منبع می‌باشد یا خیر
+        /// </summary>
+        /// <param name="sourceId">شناسه عددی منبع/مصرف مورد نظر</param>
+        /// <returns>در صورتی که منبع/مصرف حساب نقدی از نوع منبع باشد مقدار درست
+        /// و در غیر اینصورت نادرست برمی گرداند</returns>
+        Task<bool> IsSourceCashAccount(int sourceId);
     }
 }

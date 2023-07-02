@@ -124,5 +124,14 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در صورت وجود آرتیکل حساب نقدی مقدار درست و
         /// در غیر این صورت مقدار نادرست برمی گرداند</returns>
         Task<bool> HasCashAccountArticleAsync(int payReceiveId);
+
+        /// <summary>
+        /// به روش آسنکرون، بررسی می کند که آیا فرم دریافت/پرداخت داده شده
+        /// تراز می باشد یا خیر        
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <returns>در صورت ناترازی مقدار درست و
+        /// در غیر این صورت مقدار نادرست برمی گرداند</returns>
+        Task<bool> IsUnbalancedPayReceive(int payReceiveId);
     }
 }

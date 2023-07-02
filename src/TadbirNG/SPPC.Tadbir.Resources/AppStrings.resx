@@ -4062,4 +4062,13 @@
   <data name="CantConfirmWithInvalidRows" xml:space="preserve">
     <value>تایید فرم با وجود {0} نامعتبر امکان پذیر نیست.</value>
   </data>
+  <data name="Bank" xml:space="preserve">
+    <value>بانک</value>
+  </data>
+  <data name="CantConfirmUnbalancedForm" xml:space="preserve">
+    <value>به دلیل ناترازی {0} و {1} امکان تایید {2} وجود ندارد.</value>
+  </data>
+  <data name="SelectedAccountNotInCollection" xml:space="preserve">
+    <value>حساب انتخابی مرتبط با مجموعه حساب {0} نمی‌باشد.</value>
+  </data>
 </root>
