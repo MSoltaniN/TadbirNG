@@ -114,16 +114,16 @@ export class AppComponent implements AfterViewInit, OnInit {
     
     this.scopeService.getScope().subscribe((component) => {      
       if (component) {
-        var componentName = component.constructor.name;
+        var componentName = component.selector?.toString().toLowerCase();
         if(ShareDataService.exceptionComponents.findIndex(s=>s == componentName) == -1
-        && ShareDataService.components.findIndex(s=>s.constructor.name == componentName) == -1)
+        && ShareDataService.components.findIndex(s=>s.selector.toString().toLowerCase() == componentName) == -1)
           ShareDataService.components.unshift(component);
       }
       else
       {
         if(ShareDataService.removedComponent)
         {
-            var findIndex = ShareDataService.components.findIndex(s=>s.constructor.name == ShareDataService.removedComponent.constructor.name);
+            var findIndex = ShareDataService.components.findIndex(s=>s.selector.toString().toLowerCase()  == ShareDataService.removedComponent.selector.toString().toLowerCase());
             if(findIndex >= 0)
             {
               ShareDataService.removedComponent = undefined;
@@ -299,7 +299,9 @@ export class AppComponent implements AfterViewInit, OnInit {
           isDialog = true;
         }
 
+        
         var components = ShareDataService.components; 
+        console.log('shared components', components);
         var selectors = "";
         components.forEach((item)=>{
           if(parentElement.querySelector(item.selector))
@@ -311,8 +313,9 @@ export class AppComponent implements AfterViewInit, OnInit {
         if(selectors == "") return;
 
         selectors = selectors.substring(0,selectors.length - 1);
-        
+        console.log('selectors', selectors);
         var elements = parentElement.querySelectorAll(selectors);
+        console.log(elements);
         if(elements.length > 0)
         {
           elements.forEach((item)=>{

@@ -277,9 +277,9 @@ export class VoucherLineComponent
     })
   }
 
-  ngOnDestroy(): void {    
+  ngOnDestroy(): void {        
     this.scopeService = ServiceLocator.injector.get(ShareDataService);    
-    this.scopeService.clearScope(this);
+    this.scopeService.clearScope(this);  
   }
 
   /**
