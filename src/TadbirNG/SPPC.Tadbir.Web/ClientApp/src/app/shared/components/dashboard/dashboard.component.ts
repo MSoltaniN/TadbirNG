@@ -397,7 +397,7 @@ export class DashboardComponent
     const id = option.widgetId + "-" + option.tabId;
     this.widgetSettings[id].series = option.setting.series;
     this.widgetSettings[id].title = option.setting.title;
-
+    
     const data = this.chartService.applyChartSetting(
       this.widgetSettings[id],
       this.widgetData[id]
@@ -457,8 +457,10 @@ export class DashboardComponent
     }
   }
 
-  onCancelClick() {
+  onCancelClick() {    
     this.cancelEditMode();
+    this.widgetSettings={};
+    this.refreshDashboard();
   }
 
   cancelEditMode() {
@@ -481,19 +483,19 @@ export class DashboardComponent
     const promise = new Promise((resolve) => {
       this.currentDashboard.tabs.forEach((tab) => {
         this.getWidgets(tab.id)
-          .pipe(take(1))
-          .subscribe((changedWidgets) => {
-            if (changedWidgets) {
-              changedWidgets.forEach((item, index) => {
-                if (tab.widgets.length > 0) {
-                  const setting = JSON.parse(tab.widgets[index].settings);
+        .pipe(take(1))
+        .subscribe((changedWidgets) => {
+          if (changedWidgets) {
+            changedWidgets.forEach((item, index) => {
+              if (tab.widgets.length > 0) {
+                const setting = JSON.parse(tab.widgets[index].settings);
                   const widgetSetting =
                     this.widgetSettings[item.id + "-" + tab.id];
                   setting.width = item.cols;
                   setting.height = item.rows;
                   setting.x = item.x;
                   setting.y = item.y;
-
+                  
                   if (widgetSetting.series.length > 0)
                     setting.series = widgetSetting.series;
                   if (widgetSetting.title) setting.title = widgetSetting.title;

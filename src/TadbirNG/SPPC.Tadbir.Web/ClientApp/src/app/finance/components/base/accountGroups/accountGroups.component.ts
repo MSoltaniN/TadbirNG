@@ -273,6 +273,7 @@ export class AccountGroupsComponent
     this.parentId = undefined;
 
     this.defaultFilter = [];
+    this.quickFilter = [];
     this.selectedItem = item.dataItem;
     this.selectedRows = [];
     this.pageIndex = 0;
@@ -296,10 +297,10 @@ export class AccountGroupsComponent
       this.getAccountGroupParent();
       this.parentId = undefined;
 
-      this.defaultFilter.push(
+      this.quickFilter.push(
         new Filter("ParentId", "null", "== {0}", "System.Int32")
       );
-      this.defaultFilter.push(
+      this.quickFilter.push(
         new Filter(
           "GroupId",
           this.selectedItem.id.toString(),
@@ -315,7 +316,7 @@ export class AccountGroupsComponent
       this.viewId = ViewName[Entities.Account];
       this.getDataUrl = AccountApi.EnvironmentAccounts;
 
-      this.defaultFilter.push(
+      this.quickFilter.push(
         new Filter(
           "ParentId",
           this.parentId.toString(),

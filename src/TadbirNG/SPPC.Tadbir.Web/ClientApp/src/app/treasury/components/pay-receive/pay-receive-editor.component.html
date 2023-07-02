@@ -1,4 +1,5 @@
 <app-bread-cumb
+  [customTitle]="breadCrumbTitle"
   [entityTypeName]="entityType"
   *ngIf="isShowBreadcrumb"
 ></app-bread-cumb>
@@ -25,7 +26,7 @@
             title="{{ 'Voucher.NewVoucher' | translate }}"
             SppcPermissionCheck="Create"
             [EntityName]="entityType"
-            (sppcClick)="payReceiveOperation(payReceiveOperationsItem.New)"
+            (sppcClick)="addNew()"
           >
             <span class="k-icon k-i-file-add"></span>
           </button>
@@ -43,7 +44,7 @@
           <button
             class="k-button"
             title="{{ 'Voucher.SearchVoucher' | translate }}"
-            (click)="payReceiveOperation(payReceiveOperationsItem.Search)"
+            (click)="goSearch()"
           >
             <span class="k-icon k-i-search"></span>
           </button>
@@ -54,7 +55,7 @@
             [attr.disabled]="isFirstItem ? true : null"
             SppcPermissionCheck="Navigate"
             [EntityName]="entityType"
-            (sppcClick)="payReceiveOperation(payReceiveOperationsItem.First)"
+            (sppcClick)="goFirst()"
           >
             <span class="k-icon k-i-arrow-end-right"></span>
           </button>
@@ -65,7 +66,7 @@
             title="{{ 'Voucher.PreviousVoucher' | translate }}"
             SppcPermissionCheck="Navigate"
             [EntityName]="entityType"
-            (sppcClick)="payReceiveOperation(payReceiveOperationsItem.Previous)"
+            (sppcClick)="goPrevious()"
           >
             <span class="k-icon k-i-arrow-double-60-right"></span>
           </button>
@@ -76,7 +77,7 @@
             title="{{ 'Voucher.NextVoucher' | translate }}"
             SppcPermissionCheck="Navigate"
             [EntityName]="entityType"
-            (sppcClick)="payReceiveOperation(payReceiveOperationsItem.Next)"
+            (sppcClick)="goNext()"
           >
             <span class="k-icon k-i-arrow-double-60-left"></span>
           </button>
@@ -87,7 +88,7 @@
             [attr.disabled]="isLastItem ? true : null"
             SppcPermissionCheck="Navigate"
             [EntityName]="entityType"
-            (sppcClick)="payReceiveOperation(payReceiveOperationsItem.Last)"
+            (sppcClick)="goLast()"
           >
             <span class="k-icon k-i-arrow-end-left"></span>
           </button>
@@ -187,6 +188,7 @@
 
                 <sppc-datepicker
                   [isReadOnly]="isConfirmed"
+                  [(ngModel)]="preferedDate"
                   formControlName="date"
                   [minDate]="FiscalPeriodStartDate"
                   [maxDate]="FiscalPeriodEndDate"
@@ -203,22 +205,14 @@
                   </label>
   
                   <payer-receiver
+                    [isConfirmed]="isConfirmed"
                     [type]="this.urlPath == 'payments'? '1': '2'"
+                    [payReceiveId]="this.model?.id"
                     (setTotalCashAmount)="setTotalCashAmount($event)"
                   >
                   </payer-receiver>
                 </div>
                 <div class="col-md-6 col-xs-12 sppc-float">
-                  <p-selectButton [options]="stateOptions"
-                    [(ngModel)]="fundOrBankType"
-                    [ngModelOptions]="{standalone: true}"
-                    optionLabel="label"
-                    optionValue="value"
-                  >
-                    <ng-template let-item pTemplate>
-                      <span>{{ item.label | translate }}</span>
-                    </ng-template>
-                  </p-selectButton>
 
                   <fund-or-bank
                     [type]="this.urlPath == 'payments'? '1': '2'"
@@ -332,7 +326,8 @@
                   id="confirmedByName"
                   class="k-checkbox"
                   (click)="confirmedBy($event)"
-                  [attr.disabled]="isConfirmed ? 'disabled' : null"
+                  [checked]="isConfirmed"
+                  [attr.disabled]="isApproved ? 'disabled' : null"
                 />
                 <label for="confirmedByName" class="control-label">
                   {{ "Voucher.ConfirmerName" | translate }}
@@ -351,8 +346,8 @@
                   type="checkbox"
                   id="approvedByName"
                   class="k-checkbox"
+                  [checked]="isApproved"
                   (click)="approvedBy($event)"
-                  [attr.disabled]="isConfirmed ? 'disabled' : null"
                 />
                 <label for="approvedByName" class="control-label">
                   {{ "Voucher.ApproverName" | translate }}
@@ -398,7 +393,7 @@
 
 <!-- فرم تایید حذف -->
 <kendo-dialog
-  title="{{ 'Voucher.Delete' | translate }}"
+  title='{{ stringFormat("Form.Delete" | translate, "Entity."+entityType | translate) }}'
   *ngIf="deleteConfirm"
   (close)="deleteModel(false)"
   [minWidth]="250"

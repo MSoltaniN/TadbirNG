@@ -255,10 +255,10 @@ namespace SPPC.Tadbir.Persistence
                 {
                     Id = group.Min(article => article.Id),
                     Amount = group.Sum(article => article.Amount),
-                    Description = String.Join(" - ", group
-                        .Select(article => article.Description.Trim())
-                        .Where(a => !String.IsNullOrEmpty(a))
-                        .ToList()),
+                    Descriptions = group
+                        .Select(article => article.Description?.Trim())
+                        .Where(d => !String.IsNullOrEmpty(d))
+                        .ToArray()
                 })
                 .ToArray();
 
@@ -266,7 +266,9 @@ namespace SPPC.Tadbir.Persistence
             {
                 var aggregatedArticle = await repository.GetByIDAsync(item.Id);
                 aggregatedArticle.Amount = item.Amount;
-                aggregatedArticle.Description = item.Description;
+                aggregatedArticle.Description = item.Descriptions.Length > 0 
+                    ? String.Join(" - ", item.Descriptions)
+                    : null;
                 repository.Update(aggregatedArticle);
 
                 var removedArticles = await repository.GetByCriteriaAsync(

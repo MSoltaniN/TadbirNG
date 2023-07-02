@@ -3751,7 +3751,7 @@
     <value>شماره دسته چک</value>
   </data>
   <data name="EndNo" xml:space="preserve">
-    <value>تا شماره</value>
+    <value>شماره پایان</value>
   </data>
   <data name="IssueDate" xml:space="preserve">
     <value>تاریخ صدور</value>
@@ -3760,7 +3760,7 @@
     <value>شماره سری برگه</value>
   </data>
   <data name="StartNo" xml:space="preserve">
-    <value>از شماره</value>
+    <value>شماره شروع</value>
   </data>
   <data name="CheckBookPagesExist" xml:space="preserve">
     <value>برگه های دسته چک قبلا ایجاد شده است.</value>
@@ -3838,7 +3838,7 @@
     <value>تخصیص کاربر به صندوق اسناد</value>
   </data>
   <data name="IsArchivedName" xml:space="preserve">
-    <value>بایگانی شده</value>
+    <value>وضعیت بایگانی</value>
   </data>
   <data name="SourceApp" xml:space="preserve">
     <value>منبع و مصرف</value>
@@ -4016,5 +4016,14 @@
   </data>
   <data name="PrintPreviewAccountLines" xml:space="preserve">
     <value>پیش نمایش چاپ طرف‌های حساب</value>
+  </data>
+  <data name="SayyadStartNo" xml:space="preserve">
+    <value>شماره شروع صیادی</value>
+  </data>
+  <data name="SeriesNo" xml:space="preserve">
+    <value>شماره سری</value>
+  </data>
+  <data name="Remarks" xml:space="preserve">
+    <value>ملاحظات</value>
   </data>
 </root>

@@ -280,8 +280,11 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
                     builder.AppendLine(File.ReadAllText(_params.SystemDbTriggers));
                     sql.ExecuteNonQuery(builder.ToString());
                     builder.Clear();
-                    builder.AppendLine(File.ReadAllText(_params.SystemDbJobs));
-                    sql.ExecuteNonQuery(builder.ToString());
+                    if (!ExistsServerJob())
+                    {
+                        builder.AppendLine(File.ReadAllText(_params.SystemDbJobs));
+                        sql.ExecuteNonQuery(builder.ToString());
+                    }
                 }
 
                 _outputBuilder.AppendLine("(OK)");
@@ -409,6 +412,13 @@ namespace SPPC.Tools.SystemDesigner.Wizards.EnvSetupWizard
             var result = sql.ExecuteQuery(EnvSetupParameters.QueryLicenseActivation);
             bool isActivated = result.Rows[0].ValueOrDefault<bool>("IsActivated");
             return isActivated;
+        }
+
+        private bool ExistsServerJob()
+        {
+            var sql = new SqlServerConsole() { ConnectionString = _params.Connection };
+            var result = sql.ExecuteQuery(EnvSetupParameters.QueryServerJob);
+            return result.Rows.Count == 1;
         }
 
         private bool EnsureLocalServerIsUp()

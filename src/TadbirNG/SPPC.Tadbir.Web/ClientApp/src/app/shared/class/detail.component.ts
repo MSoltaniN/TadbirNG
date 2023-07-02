@@ -1,19 +1,18 @@
 
-import {exhaustMap, finalize, take} from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { BaseComponent } from "./base.component";
-import { Injectable, Renderer2, Optional, Inject, Host, Input, HostListener, OnInit, OnDestroy, ElementRef, EventEmitter, Directive } from "@angular/core";
+import { Injectable, Renderer2, Optional, Inject, Input, OnDestroy, ElementRef, Directive } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from '@ngx-translate/core';
-import { FormGroup, FormControl, ValidatorFn, Validators, AsyncValidatorFn } from "@angular/forms";
+import { FormGroup, FormControl, ValidatorFn, Validators } from "@angular/forms";
 import { Property } from "./metadata/property";
 import { String } from './source';
 import { MetaDataService, BrowserStorageService, SessionKeys } from "../services";
-import { ShortcutCommand } from "../models/shortcutCommand";
 import { ShortcutService } from "../services/shortcut.service";
 import { ServiceLocator } from "@sppc/service.locator";
 import { ShareDataService } from "@sppc/shared/services/share-data.service";
-import { Guid } from "../models";
-import { of, Subject } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
+import { DialogRef, DialogService } from '@progress/kendo-angular-dialog';
 
 
 
@@ -27,6 +26,11 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
 
   public metadataKey: string;
   public isEnableSaveBtn: boolean = true;
+  private _dialogService: DialogService;
+  /**
+   * برای شناسایی فرمهایی که در بدو ورود ساخته وذخیره میشوند
+   */
+  public insertedInNew = false;
 
   @Input() public errorMessages: string[];
 
@@ -49,6 +53,7 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
       
     }      
 
+    this._dialogService = ServiceLocator.injector.get(DialogService);
     this.errorMessages = [];
     this.shortcutService = ServiceLocator.injector.get(ShortcutService);
     this.localizeMsg();
@@ -189,6 +194,76 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
 
   }
 
+  isFormChanged() {
+    let self:any = this;
+    let model = self.model;
+    let form = this.editForm.value;
+
+    let modelCopy1 = {};
+    let modelCopy2 = {};
+
+    if (model) {
+      Object.keys(model).forEach(key => {
+        if (form[key]) {
+          if (key.toLowerCase().includes('date')) {
+            modelCopy1[key] = new Date(model[key]);
+            modelCopy2[key] = new Date(form[key]);
+          }
+          else {
+            modelCopy1[key] = model[key];
+            modelCopy2[key] = form[key];
+          }
+        }
+      })
+
+      return (JSON.stringify(modelCopy1) != JSON.stringify(modelCopy2)) || (this.insertedInNew && self.isNew?true:false);
+    }
+    else {
+      return true;
+    }
+  }
+
+  async saveChangesConfirmDialog(cb?:{onSave?: Function, onDiscard?: Function}) {
+    let result;
+    const dialog: DialogRef = this._dialogService.open({
+      title: this.getText("Form.SaveChanges"),
+      content: this.getText("Voucher.SaveChanges"),
+      actions: [
+        { text: this.getText("Buttons.Yes"), mode: 1, primary: true },
+        { text: this.getText("Buttons.No"), mode: 0 },
+      ],
+      width: 450,
+      height: 150,
+      minWidth: 250,
+      cssClass: 'save-changes-box'
+    });
+
+    dialog.dialog.location.nativeElement.classList.add("dialog-padding");
+
+    result = await lastValueFrom(dialog.result);
+    if (result?.mode == 1) {
+
+      if (cb?.onSave)
+        cb.onSave();
+      else
+        this.saveChangesHandler();
+
+      return false;
+    } else {
+
+      if (cb?.onDiscard)
+        cb.onDiscard();
+      else
+        this.discardChangesHandler();
+
+      return true;
+    }
+
+  }
+
+  saveChangesHandler() {}
+
+  discardChangesHandler() {}
 
   public getText(key: string): string {
     var msgText = '';
@@ -241,8 +316,6 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
   //      }
   //    }    
   //  }
-
-  
 
 }
 

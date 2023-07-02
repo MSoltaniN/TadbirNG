@@ -317,14 +317,25 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
                 if (!this.dialogMode) {
                   history.pushState(null,null,`/treasury/check-books/by-no?no=${next.checkBookNo}`)
                 }
-                  // this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
-                  //   no: next.checkBookNo
-                  // }});
+
               }).catch(err => {
                 //if next checkbook not exists try for previous checkbook;
-                this.addNew();
-                  if (!this.dialogMode)
-                    this.router.navigate(["/treasury/check-books/"]);
+                lastValueFrom(this.checkBookService.
+                  getModelsByFilters(String.Format(CheckBooksApi.PreviousCheckBook,this.model.issueDate),
+                    this.filter,
+                    this.quickFilter
+                  )
+                ).then( prev => {
+                  this.checkBookItem = prev;
+
+                  if (!this.dialogMode) {
+                    history.pushState(null,null,`/treasury/check-books/by-no?no=${prev.checkBookNo}`)
+                  }
+                }).catch( err => {
+                  this.addNew();
+                    if (!this.dialogMode)
+                      this.router.navigate(["/treasury/check-books/"]);
+                })
               })
           },
           error: err =>{
