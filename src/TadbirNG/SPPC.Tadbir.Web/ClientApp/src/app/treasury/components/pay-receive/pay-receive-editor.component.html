@@ -213,16 +213,6 @@
                   </payer-receiver>
                 </div>
                 <div class="col-md-6 col-xs-12 sppc-float">
-                  <p-selectButton [options]="stateOptions"
-                    [(ngModel)]="fundOrBankType"
-                    [ngModelOptions]="{standalone: true}"
-                    optionLabel="label"
-                    optionValue="value"
-                  >
-                    <ng-template let-item pTemplate>
-                      <span>{{ item.label | translate }}</span>
-                    </ng-template>
-                  </p-selectButton>
 
                   <fund-or-bank
                     [type]="this.urlPath == 'payments'? '1': '2'"
