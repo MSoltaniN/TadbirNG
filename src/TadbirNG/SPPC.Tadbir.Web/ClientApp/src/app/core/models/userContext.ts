@@ -16,8 +16,7 @@ import { IEntity } from "@sppc/shared/models";
 
 export interface UserContext extends IEntity{
     id: number;
-    personFirstName: string;
-    personLastName: string;
+    personFullName: string;
     branches: number;
     roles: number;
     permissions: Array<PermissionBrief>;

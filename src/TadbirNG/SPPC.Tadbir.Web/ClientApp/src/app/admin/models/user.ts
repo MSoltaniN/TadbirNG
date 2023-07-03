@@ -16,8 +16,7 @@ import { IEntity } from "@sppc/shared/models";
 
 
 export interface User extends IEntity{
-    personFirstName: string;
-    personLastName: string;
+    personFullName: string;
     id: number;
     userName: string;
     password: string;

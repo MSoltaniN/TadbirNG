@@ -11,8 +11,7 @@ import { User } from "../models";
 import { UserApi } from "./api";
 
 export class UserInfo implements User {
-  personFirstName: string;
-  personLastName: string;
+  personFullName: string;
   id: number = 0;
   userName: string;
   password: string;

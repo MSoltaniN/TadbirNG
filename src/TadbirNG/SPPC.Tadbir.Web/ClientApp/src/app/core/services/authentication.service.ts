@@ -16,8 +16,7 @@ import { Context } from "../models/context";
 
 export class ContextInfo implements Context {
   userName: string = "";
-  firstName: string = "";
-  lastName: string = "";
+  fullName: string = "";
   ticket: string = "";
   fpId: number = 0;
   branchId: number = 0;

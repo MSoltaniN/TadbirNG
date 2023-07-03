@@ -31,8 +31,7 @@ export interface RoleFullViewModel extends IEntity {
 export interface UserBriefViewModel extends IEntity {
     id: number;
     userName: string;
-    personFirstName: string;
-    personLastName: string;
+    personFullName: string;
     isEnabled: boolean;
     hasRole: boolean;
 }

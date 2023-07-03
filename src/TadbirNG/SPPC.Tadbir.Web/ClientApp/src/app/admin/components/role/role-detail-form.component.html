@@ -69,11 +69,8 @@
                             <dt>{{ 'RoleUsers.UserName' | translate }}</dt>
                             <dd>{{ roleUsers.userName }}</dd>
 
-                            <dt>{{ 'RoleUsers.PersonFirstName' | translate }}</dt>
-                            <dd>{{ roleUsers.personFirstName }}</dd>
-
-                            <dt>{{ 'RoleUsers.PersonLastName' | translate }}</dt>
-                            <dd>{{ roleUsers.personLastName }}</dd>
+                            <dt>{{ 'RoleUsers.PersonFullName' | translate }}</dt>
+                            <dd>{{ roleUsers.PersonFullName }}</dd>
 
                             <dt>{{ 'RoleUsers.IsEnabled' | translate }}</dt>
                             <dd>
@@ -93,9 +90,7 @@
                 <!-- additional columns on large devices -->
                 <kendo-grid-column media="(min-width: 450px)" width="300" sppc-grid-column="RoleUsers.userName">
                 </kendo-grid-column>
-                <kendo-grid-column media="(min-width: 450px)" width="300" sppc-grid-column="RoleUsers.personFirstName">
-                </kendo-grid-column>
-                <kendo-grid-column media="(min-width: 450px)" width="300" sppc-grid-column="RoleUsers.personLastName">
+                <kendo-grid-column media="(min-width: 450px)" width="300" sppc-grid-column="RoleUsers.personFullName">
                 </kendo-grid-column>
                 <kendo-grid-column media="(min-width: 450px)" sppc-grid-column="RoleUsers.isEnabled">
                     <ng-template kendoGridCellTemplate let-roleUsers>
