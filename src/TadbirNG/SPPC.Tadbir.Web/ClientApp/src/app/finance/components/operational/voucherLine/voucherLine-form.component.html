@@ -43,7 +43,7 @@
 
           <div class="row">
             <div class="col-xs-12">
-              <fieldset [disabled]="isPayReciept" [ngClass]="{'disabled': isPayReciept}">
+              <fieldset *ngIf="isPayReciept">
                 <div class="form-group row">
                   <label for="debit" class="control-label col-xs-4 col-sm-3 sppc-float"></label>
                   <div class="voucher-mode-item">

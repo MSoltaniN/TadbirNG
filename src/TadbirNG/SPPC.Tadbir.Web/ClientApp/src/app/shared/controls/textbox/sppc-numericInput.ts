@@ -9,8 +9,28 @@ import { KeyCode } from '@sppc/shared/enum';
 @Component({
   selector: 'sppc-numericInput',
   template: `
-<input *ngIf="autoFocus" sppcAutoFocus type="text" #numinput [(ngModel)]="showValue" (ngModelChange)="changeValue()" [OnlyNumber] class="k-textbox num-input" [ngClass]="cssClass" (keyup)="keyPress($event)"/>
-<input *ngIf="!autoFocus" type="text" #numinput [(ngModel)]="showValue" (ngModelChange)="changeValue()" [OnlyNumber] class="k-textbox num-input" [ngClass]="cssClass" (keyup)="keyPress($event)"/>
+<input *ngIf="autoFocus"
+  sppcAutoFocus
+  type="text"
+  #numinput
+  [(ngModel)]="showValue"
+  (ngModelChange)="changeValue()"
+  [OnlyNumber]
+  class="k-textbox num-input"
+  [ngClass]="cssClass"
+  (keyup)="keyPress($event)"
+  [attr.readonly]="readOnly"
+/>
+<input
+  *ngIf="!autoFocus"
+  type="text" #numinput
+  [(ngModel)]="showValue"
+  (ngModelChange)="changeValue()"
+  [OnlyNumber] class="k-textbox num-input"
+  [ngClass]="cssClass"
+  (keyup)="keyPress($event)"
+  [attr.readonly]="readOnly"
+/>
 `,
   styles: [`.num-input { width:100%; background: #fff !important; border: 1px solid #ccc !important; }`],
   providers: [
@@ -32,6 +52,7 @@ export class SppcNumericInput implements OnInit, ControlValueAccessor, Validator
   @ViewChild('numinput', {static: true}) numInput: ElementRef;
   
   @Input('autoFocus') autoFocus = false;
+  @Input() readOnly = false;
   @Input() cssClass: string = "";
   @Input('naturalNumbers') naturalNumbers = false
   @Input() set decimalCount(decCount: number) {

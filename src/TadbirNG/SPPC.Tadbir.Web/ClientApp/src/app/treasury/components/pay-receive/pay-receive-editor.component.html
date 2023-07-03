@@ -227,14 +227,13 @@
             <div class="totalCashAmount">
               <div class="form-group">
                 <label for="money" class="control-label">وجه نقد</label>
-                <input
-                  type="text"
-                  class="k-textbox"
+                <sppc-numericInput
                   [(ngModel)]="totalCashAmount"
                   [ngModelOptions]="{standalone: true}"
                   [attr.disabled]="isConfirmed ? 'disabled' : null"
-                  readonly
-                />
+                  [readOnly]="true"
+                >
+                </sppc-numericInput>
               </div>
               <div class="form-group">
                 <div class="col-xs-12 col-sm-4">
