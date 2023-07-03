@@ -519,6 +519,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
+        #region Treasury Subsystem API
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/lookup/source-apps/types/{sourceAppType}
+        [HttpGet]
+        [Route(LookupApi.SourceAppsUrl)]
+        public async Task<IActionResult> GetDetailAccountsLookupAsync(int sourceAppType)
+        {
+            var lookup = await _repository.GetSourceApps(sourceAppType);
+            return Json(lookup);
+        }
+
+        #endregion Treasury Subsystem API
+
         private IList<KeyValue> Localize(IList<KeyValue> keyValues, bool isNameSorted = false)
         {
             for (int i = 0; i < keyValues.Count; i++)

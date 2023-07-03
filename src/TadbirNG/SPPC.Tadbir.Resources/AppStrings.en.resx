@@ -4075,9 +4075,18 @@
     <value>Bank</value>
   </data>
   <data name="CantConfirmUnbalancedForm" xml:space="preserve">
-    <value>Because unbalnced between the {0} and {1}, not possible to confirm {2}.</value>
+    <value>Because unbalanced between the {0} and {1}, not possible to confirm {2}.</value>
   </data>
   <data name="SelectedAccountNotInCollection" xml:space="preserve">
-    <value>Selected account is not related to the {0} collection</value>
+    <value>Selected account is not related to the {0} collection.</value>
+  </data>
+  <data name="Applications" xml:space="preserve">
+    <value>Applications</value>
+  </data>
+  <data name="InvalidSourceAppInForm" xml:space="preserve">
+    <value>Selected {0} are inaccessible or the type is {1} and invalid for {2}.</value>
+  </data>
+  <data name="Sources" xml:space="preserve">
+    <value>Sources</value>
   </data>
 </root>

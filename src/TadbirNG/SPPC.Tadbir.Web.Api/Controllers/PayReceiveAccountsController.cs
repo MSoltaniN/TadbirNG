@@ -589,7 +589,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     AppStrings.CantChangeDetailEntity, entityNameKey, AppStrings.PayReceiveAccount));
             }
 
-            if (!await _accountArticleRepository.HasAccountArticlestoAggregateAsync(payReceiveId))
+            if (!await _accountArticleRepository.HasAccountArticlesToAggregateAsync(payReceiveId))
             {
                 return BadRequestResult(
                     _strings.Format(AppStrings.NotFoundAggregateRows, AppStrings.PayReceiveAccount, entityNameKey));

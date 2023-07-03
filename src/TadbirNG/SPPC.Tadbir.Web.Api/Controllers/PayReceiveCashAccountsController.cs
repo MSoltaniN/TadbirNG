@@ -397,10 +397,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             cashAccountArticle.FullAccount.Project = GetNullableItem(cashAccountArticle.FullAccount.Project);
             if (cashAccountArticle.FullAccount.Account != null)
             {
+                var lookupResult = await FullAccountValidationResultAsync(cashAccountArticle.FullAccount, _relationRepository);
+                if (lookupResult is BadRequestObjectResult)
+                {
+                    return lookupResult;
+                }
+
                 int accountId = cashAccountArticle.FullAccount.Account.Id;
                 if (cashAccountArticle.IsBank)
                 {
-                    if(!await _cashAccountArticleRepository.IsBankCashAccount(accountId))
+                    if(!await _cashAccountArticleRepository.IsBankCashAccountAsync(accountId))
                     {
                         return BadRequestResult(_strings.Format(
                             AppStrings.SelectedAccountNotInCollection, AppStrings.Bank));
@@ -408,23 +414,38 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 }
                 else 
                 {
-                    if (!await _cashAccountArticleRepository.IsCashierCashAccount(accountId))
+                    if (!await _cashAccountArticleRepository.IsCashierCashAccountAsync(accountId))
                     {
                         return BadRequestResult(_strings.Format(
                             AppStrings.SelectedAccountNotInCollection, AppStrings.CashRegister));
                     }
-                }
-
-                var lookupResult = await FullAccountValidationResultAsync(cashAccountArticle.FullAccount, _relationRepository);
-                if (lookupResult is BadRequestObjectResult)
-                {
-                    return lookupResult;
                 }
             }
 
             if (cashAccountArticle.Amount < Decimal.Zero)
             {
                 return BadRequestResult(_strings[AppStrings.NegativeAmountNotAllowed]);
+            }
+            
+            if (cashAccountArticle.SourceAppId > 0) 
+            {
+                int sourceAppId = (int)cashAccountArticle.SourceAppId;
+                if (payReceive.Type == (int)PayReceiveType.Payment)
+                {
+                    if(!await _cashAccountArticleRepository.IsAppCashAccountAsync(sourceAppId))
+                    {
+                        return BadRequestResult(_strings.Format(AppStrings.InvalidSourceAppInForm, 
+                            AppStrings.Applications, AppStrings.Source, entityNameKey));
+                    }
+                }
+                else if (payReceive.Type == (int)PayReceiveType.Receipt)
+                {
+                    if (!await _cashAccountArticleRepository.IsSourceCashAccountAsync(sourceAppId))
+                    {
+                        return BadRequestResult(_strings.Format(AppStrings.InvalidSourceAppInForm, 
+                            AppStrings.Sources, AppStrings.Application, entityNameKey));
+                    }
+                }
             }
 
             return Ok();
@@ -606,7 +627,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     AppStrings.CantChangeDetailEntity, entityNameKey, AppStrings.PayReceiveCashAccount));
             }
 
-            if (!await _cashAccountArticleRepository.HasCashAccountArticlestoAggregateAsync(payReceiveId))
+            if (!await _cashAccountArticleRepository.HasCashAccountArticlesToAggregateAsync(payReceiveId))
             {
                 return BadRequestResult(
                     _strings.Format(AppStrings.NotFoundAggregateRows, AppStrings.PayReceiveCashAccount, entityNameKey));

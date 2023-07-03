@@ -28,6 +28,7 @@ namespace SPPC.Tadbir.Persistence
         public PayReceiveCashAccountRepository(IRepositoryContext context, ISystemRepository system)
             : base(context, system.Logger)
         {
+            _system = system;
         }
 
         /// <inheritdoc/>
@@ -247,7 +248,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public async Task<bool> HasCashAccountArticlestoAggregateAsync(int payReceiveId)
+        public async Task<bool> HasCashAccountArticlesToAggregateAsync(int payReceiveId)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveCashAccount>();
             var aggregateCount = await repository
@@ -261,36 +262,41 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public async Task<bool> IsBankCashAccount(int accountId)
+        public async Task<bool> IsBankCashAccountAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
             return await repository
                 .GetEntityQuery()
                 .AnyAsync(aca => aca.AccountId == accountId 
-                    && aca.CollectionId == (int)AccountCollectionId.Bank 
-                    && aca.BranchId == UserContext.BranchId
-                    && aca.FiscalPeriodId <= UserContext.FiscalPeriodId);
+                    && aca.CollectionId == (int)AccountCollectionId.Bank);
         }
 
         /// <inheritdoc/>
-        public async Task<bool> IsCashierCashAccount(int accountId)
+        public async Task<bool> IsCashierCashAccountAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
             return await  repository
                 .GetEntityQuery()
                 .AnyAsync(aca => aca.AccountId == accountId
-                    && aca.CollectionId == (int)AccountCollectionId.Cashier
-                    && aca.BranchId == UserContext.BranchId 
-                    && aca.FiscalPeriodId <= UserContext.FiscalPeriodId);
+                    && aca.CollectionId == (int)AccountCollectionId.Cashier);
         }
 
         /// <inheritdoc/>
-        public async Task<bool> IsSourceCashAccount(int sourceId)
+        public async Task<bool> IsSourceCashAccountAsync(int sourceAppId)
         {
-            var repository = UnitOfWork.GetAsyncRepository<SourceApp>();
-            return await repository
-                .GetEntityQuery()
-                .AnyAsync()
+            return await Repository
+                .GetAllQuery<SourceApp>(ViewId.SourceApp)
+                .AnyAsync(sa => sa.Id == sourceAppId
+                    && sa.Type == (int)SourceAppType.Source);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> IsAppCashAccountAsync(int sourceAppId)
+        {
+            return await Repository
+                .GetAllQuery<SourceApp>(ViewId.SourceApp)
+                .AnyAsync(sa => sa.Id == sourceAppId
+                    && sa.Type == (int)SourceAppType.Application);
         }
 
         internal override int? EntityType
@@ -305,11 +311,15 @@ namespace SPPC.Tadbir.Persistence
             cashAccountArticle.DetailAccountId = GetNullableId(cashAccountArticleView.FullAccount.DetailAccount);
             cashAccountArticle.CostCenterId = GetNullableId(cashAccountArticleView.FullAccount.CostCenter);
             cashAccountArticle.ProjectId = GetNullableId(cashAccountArticleView.FullAccount.Project);
-            cashAccountArticle.SourceAppId = cashAccountArticleView.SourceAppId;
             cashAccountArticle.Amount = cashAccountArticleView.Amount;
             cashAccountArticle.IsBank = cashAccountArticleView.IsBank;
-            cashAccountArticle.BankOrderNo = cashAccountArticleView.BankOrderNo;
             cashAccountArticle.Description = cashAccountArticleView.Description;
+            cashAccountArticle.SourceAppId = cashAccountArticleView.SourceAppId == 0 
+                ? null 
+                : cashAccountArticleView.SourceAppId;
+            cashAccountArticle.BankOrderNo = cashAccountArticleView.IsBank 
+                ? cashAccountArticleView.BankOrderNo 
+                : null;
         }
 
         /// <inheritdoc/>
@@ -346,5 +356,12 @@ namespace SPPC.Tadbir.Persistence
                 ? EntityTypeId.Receipt
                 : EntityTypeId.Payment);
         }
+
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
+        private readonly ISystemRepository _system;
     }
 }

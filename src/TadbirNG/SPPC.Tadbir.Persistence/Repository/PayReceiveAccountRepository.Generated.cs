@@ -296,7 +296,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
         /// <returns>در صورت وجود ردیف مقدار درست و در غیر این صورت نادرست برمی گرداند</returns>
-        public async Task<bool> HasAccountArticlestoAggregateAsync(int payReceiveId)
+        public async Task<bool> HasAccountArticlesToAggregateAsync(int payReceiveId)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
             var aggregateCount = await repository

@@ -7,7 +7,7 @@ using SPPC.Tadbir.ViewModel.CashFlow;
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    /// عملیات مورد نیاز برای مدیریت حساب‌های نقدیی را تعریف می کند
+    /// عملیات مورد نیاز برای مدیریت حساب‌های نقدی را تعریف می کند
     /// </summary>
     public interface IPayReceiveCashAccountRepository
     {
@@ -92,7 +92,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
         /// <returns>در صورت وجود ردیف مقدار درست و در غیر این صورت نادرست برمی گرداند</returns>
-        Task<bool> HasCashAccountArticlestoAggregateAsync(int payReceiveId);
+        Task<bool> HasCashAccountArticlesToAggregateAsync(int payReceiveId);
 
         /// <summary>
         /// به روش آسنکرون، بررسی می کند که حساب انتخاب شده برای 
@@ -101,24 +101,33 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="accountId">شناسه عددی حساب مربوط به آرتیکل حساب نقدی</param>
         /// <returns>در صورتی که حساب در کالکشن بانک باشد مقدار درست
         /// و در غیر اینصورت نادرست برمی گرداند</returns>
-        Task<bool> IsBankCashAccount(int accountId);
+        Task<bool> IsBankCashAccountAsync(int accountId);
 
         /// <summary>
         /// به روش آسنکرون، بررسی می کند که حساب انتخاب شده برای 
         /// آرتیکل حساب نقدی از نوع صندوق یا خیر
         /// </summary>
         /// <param name="accountId">شناسه عددی حساب مربوط به آرتیکل حساب نقدی</param>
-        /// <returns>در صورتی که حساب در کالکشن صندق باشد مقدار درست
+        /// <returns>در صورتی که حساب در کالکشن صندوق باشد مقدار درست
         /// و در غیر اینصورت نادرست برمی گرداند</returns>
-        Task<bool> IsCashierCashAccount(int accountId);
+        Task<bool> IsCashierCashAccountAsync(int accountId);
 
         /// <summary>
         /// به روش آسنکرون، بررسی می کند که منابع/مصارف انتخابی در حساب نقدی 
-        /// از نوع منبع می‌باشد یا خیر
+        /// قابل دسترسی برای کاربر جاری و آیا از نوع منبع می‌باشد یا خیر
         /// </summary>
-        /// <param name="sourceId">شناسه عددی منبع/مصرف مورد نظر</param>
-        /// <returns>در صورتی که منبع/مصرف حساب نقدی از نوع منبع باشد مقدار درست
+        /// <param name="sourceAppId">شناسه عددی منابع/مصارف مورد نظر</param>
+        /// <returns>در صورتی که منابع/مصارف حساب نقدی از نوع منبع باشد مقدار درست
         /// و در غیر اینصورت نادرست برمی گرداند</returns>
-        Task<bool> IsSourceCashAccount(int sourceId);
+        Task<bool> IsSourceCashAccountAsync(int sourceAppId);
+
+        /// <summary>
+        /// به روش آسنکرون، بررسی می کند که منابع/مصارف انتخابی در حساب نقدی 
+        /// قابل دسترسی برای کاربر جاری و آیا از نوع مصرفی می‌باشد یا خیر
+        /// </summary>
+        /// <param name="sourceAppId">شناسه عددی منابع/مصارف مورد نظر</param>
+        /// <returns>در صورتی که منابع/مصارف حساب نقدی از نوع منبع باشد مقدار درست
+        /// و در غیر اینصورت نادرست برمی گرداند</returns>
+        Task<bool> IsAppCashAccountAsync(int sourceAppId);
     }
 }

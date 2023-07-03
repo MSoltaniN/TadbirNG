@@ -4071,4 +4071,13 @@
   <data name="SelectedAccountNotInCollection" xml:space="preserve">
     <value>حساب انتخابی مرتبط با مجموعه حساب {0} نمی‌باشد.</value>
   </data>
+  <data name="Applications" xml:space="preserve">
+    <value>مصارف</value>
+  </data>
+  <data name="InvalidSourceAppInForm" xml:space="preserve">
+    <value>{0} انتخاب شده غیر قابل دسترس و یا از نوع {1} و برای {2} نامعتبر است.</value>
+  </data>
+  <data name="Sources" xml:space="preserve">
+    <value>منابع</value>
+  </data>
 </root>

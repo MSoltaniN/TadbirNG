@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         public int Id { get; set; }
 
         /// <summary>
-        /// مبلغ آرتیکل طرف حساب
+        /// مبلغ آرتیکل حساب نقدی
         /// </summary>
         public decimal Amount { get; set; }
     }
