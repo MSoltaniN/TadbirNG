@@ -691,11 +691,22 @@ namespace SPPC.Tadbir.Persistence
         /// <inheritdoc/>
         public async Task<IList<KeyValue>> GetSourceApps(int sourceAppType)
         {
-            return await Repository
+            var result = await Repository
                 .GetAllQuery<SourceApp>(ViewId.SourceApp)
                 .Where(sa => sa.Type == sourceAppType)
                 .Select(sa => Mapper.Map<KeyValue>(sa))
                 .ToListAsync();
+            var noneItem = new KeyValue
+            {
+                Key = null,
+                Value = Context.Localize(AppStrings.None)
+            };
+
+            result.Add(noneItem);
+            result = result
+                .OrderBy(sa => Convert.ToInt32(sa.Key ?? "0"))
+                .ToList();
+            return result;
         }
 
         #endregion Treasury Subsystem lookup
