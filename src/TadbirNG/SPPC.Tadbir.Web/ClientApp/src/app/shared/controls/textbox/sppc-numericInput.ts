@@ -19,7 +19,7 @@ import { KeyCode } from '@sppc/shared/enum';
   class="k-textbox num-input"
   [ngClass]="cssClass"
   (keyup)="keyPress($event)"
-  [attr.readonly]="readOnly"
+  [readonly]="readOnly"
 />
 <input
   *ngIf="!autoFocus"
@@ -29,7 +29,7 @@ import { KeyCode } from '@sppc/shared/enum';
   [OnlyNumber] class="k-textbox num-input"
   [ngClass]="cssClass"
   (keyup)="keyPress($event)"
-  [attr.readonly]="readOnly"
+  [readonly]="readOnly"
 />
 `,
   styles: [`.num-input { width:100%; background: #fff !important; border: 1px solid #ccc !important; }`],
