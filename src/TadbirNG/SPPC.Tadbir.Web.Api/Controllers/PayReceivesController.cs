@@ -671,7 +671,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             if((action == AppStrings.Confirm || action == AppStrings.Approve) 
-                && !await _repository.HasAccountArticle(payReceiveId)) 
+                && !await _repository.HasAccountArticleAsync(payReceiveId)) 
             {
                 return BadRequestResult(_strings.Format(AppStrings.InvalidEmptyArticleAction, action,
                         entityNameKey, AppStrings.PayReceiveAccount));
