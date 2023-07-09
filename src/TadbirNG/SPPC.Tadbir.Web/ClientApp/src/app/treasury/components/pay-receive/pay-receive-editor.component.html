@@ -143,29 +143,36 @@
                 <div
                   class="k-tooltip k-tooltip-validation"
                   [hidden]="
-                    editForm.controls.payReceiveNo.valid || editForm.controls.payReceiveNo.pristine
+                    editForm.controls.payReceiveNo.valid ||
+                    editForm.controls.payReceiveNo.pristine
                   "
                 >
-                  <span *ngIf="editForm.controls.payReceiveNo.errors?.required">{{
-                    "AllValidations.Voucher.NoIsRequired" | translate
-                  }}</span>
-                  <span *ngIf="editForm.controls.payReceiveNo.errors?.maxlength">{{
-                    "AllValidations.Voucher.NoIsTooLong" | translate
-                  }}</span>
+                  <span
+                    *ngIf="editForm.controls.payReceiveNo.errors?.required"
+                    >{{
+                      "AllValidations.Voucher.NoIsRequired" | translate
+                    }}</span
+                  >
+                  <span
+                    *ngIf="editForm.controls.payReceiveNo.errors?.maxlength"
+                    >{{
+                      "AllValidations.Voucher.NoIsTooLong" | translate
+                    }}</span
+                  >
                 </div>
               </div>
               <div class="form-group inpt">
                 <label for="reference" class="control-label">{{
                   "Voucher.Reference" | translate
                 }}</label>
-  
+
                 <input
                   type="text"
                   class="k-textbox"
                   formControlName="reference"
                   [attr.disabled]="isConfirmed ? 'disabled' : null"
                 />
-  
+
                 <div
                   class="k-tooltip k-tooltip-validation"
                   [hidden]="
@@ -193,6 +200,7 @@
                   [minDate]="FiscalPeriodStartDate"
                   [maxDate]="FiscalPeriodEndDate"
                   [displayType]="'voucherDateType'"
+                  دل
                 ></sppc-datepicker>
               </div>
             </div>
@@ -200,22 +208,30 @@
             <p-accordion [activeIndex]="0" class="acc1">
               <p-accordionTab header="{{ 'PayReceipt.Details' | translate }}">
                 <div class="col-md-6 col-xs-12 sppc-float">
-                  <label for="date" class="control-label" style="padding: 6px 0px;">
-                    {{ (type == 0? "PayReceipt.Recipients": "PayReceipt.Payers") | translate }}
+                  <label
+                    for="date"
+                    class="control-label"
+                    style="padding: 6px 0px"
+                  >
+                    {{
+                      (type != 0
+                        ? "PayReceipt.Recipients"
+                        : "PayReceipt.Payers"
+                      ) | translate
+                    }}
                   </label>
-  
+
                   <payer-receiver
                     [isConfirmed]="isConfirmed"
-                    [type]="this.urlPath == 'payments'? '1': '2'"
+                    [type]="this.urlPath == 'payments' ? '1' : '2'"
                     [payReceiveId]="this.model?.id"
                     (setTotalCashAmount)="setTotalCashAmount($event)"
                   >
                   </payer-receiver>
                 </div>
                 <div class="col-md-6 col-xs-12 sppc-float">
-
                   <fund-or-bank
-                    [type]="this.urlPath == 'payments'? '1': '2'"
+                    [type]="this.urlPath == 'payments' ? '1' : '2'"
                     (setTotalCashAmount)="setTotalCashAmount($event)"
                   >
                   </fund-or-bank>
@@ -229,7 +245,7 @@
                 <label for="money" class="control-label">وجه نقد</label>
                 <sppc-numericInput
                   [(ngModel)]="totalCashAmount"
-                  [ngModelOptions]="{standalone: true}"
+                  [ngModelOptions]="{ standalone: true }"
                   [attr.disabled]="isConfirmed ? 'disabled' : null"
                   [readOnly]="true"
                 >
@@ -239,8 +255,11 @@
                 <div class="col-xs-12 col-sm-4">
                   <fieldset disabled class="disabled">
                     <div class="form-group">
-                      <label for="currencyId" class="control-label">{{ 'VoucherLine.Currency' | translate }}</label>
-                      <kendo-dropdownlist [data]="currenciesRows"
+                      <label for="currencyId" class="control-label">{{
+                        "VoucherLine.Currency" | translate
+                      }}</label>
+                      <kendo-dropdownlist
+                        [data]="currenciesRows"
                         class="ddl-currency"
                         [textField]="'name'"
                         [valueField]="'id'"
@@ -249,38 +268,42 @@
                         [(ngModel)]="selectedCurrencyValue"
                         (valueChange)="onChangeCurrency()"
                         formControlName="currencyId"
-                        [defaultItem]="{ name: '', id: 0 }">
+                        [defaultItem]="{ name: '', id: 0 }"
+                      >
                       </kendo-dropdownlist>
                     </div>
                   </fieldset>
-      
                 </div>
-      
-                <div class="col-xs-12 col-sm-4">
-                  <fieldset disabled class="disabled">
-                  <div class="form-group">
-                    <label for="description" class="control-label">{{ 'VoucherLine.CurrencyValue' | translate }}</label>
-                    <sppc-numericInput
-                      [(ngModel)]="currencyValue"
-                      (keyup)="changeCurrencyValue($event)"
-                      [ngModelOptions]="{standalone: true}"
-                      [decimalCount]="decimalCount"
-                      class="sppc-input-num"
-                      disabled
-                    >
-                    </sppc-numericInput>
-                  </div>
-                  </fieldset>
-                </div>
-      
+
                 <div class="col-xs-12 col-sm-4">
                   <fieldset disabled class="disabled">
                     <div class="form-group">
-                      <label for="description" class="control-label">{{ 'VoucherLine.CurrencyRate' | translate }}</label>
+                      <label for="description" class="control-label">{{
+                        "VoucherLine.CurrencyValue" | translate
+                      }}</label>
+                      <sppc-numericInput
+                        [(ngModel)]="currencyValue"
+                        (keyup)="changeCurrencyValue($event)"
+                        [ngModelOptions]="{ standalone: true }"
+                        [decimalCount]="decimalCount"
+                        class="sppc-input-num"
+                        disabled
+                      >
+                      </sppc-numericInput>
+                    </div>
+                  </fieldset>
+                </div>
+
+                <div class="col-xs-12 col-sm-4">
+                  <fieldset disabled class="disabled">
+                    <div class="form-group">
+                      <label for="description" class="control-label">{{
+                        "VoucherLine.CurrencyRate" | translate
+                      }}</label>
                       <sppc-numericInput
                         [(ngModel)]="currencyRate"
                         (ngModelChange)="onChangeCurrencyRate()"
-                        [ngModelOptions]="{standalone: true}"
+                        [ngModelOptions]="{ standalone: true }"
                         class="sppc-input-num"
                       >
                       </sppc-numericInput>
@@ -292,7 +315,10 @@
 
             <p-accordion class="form-group">
               <p-accordionTab header="چکها">
-                <pay-recive-cheks [urlPath]="urlPath" style="width: 100%;"></pay-recive-cheks>
+                <pay-recive-cheks
+                  [urlPath]="urlPath"
+                  style="width: 100%"
+                ></pay-recive-cheks>
               </p-accordionTab>
             </p-accordion>
 
@@ -309,7 +335,7 @@
                 <label for="issuedByName" class="control-label">
                   {{ "Voucher.IssuerName" | translate }}
                 </label>
-    
+
                 <input
                   type="text"
                   id="issuedByName"
@@ -331,7 +357,7 @@
                 <label for="confirmedByName" class="control-label">
                   {{ "Voucher.ConfirmerName" | translate }}
                 </label>
-    
+
                 <input
                   type="text"
                   class="k-textbox"
@@ -351,7 +377,7 @@
                 <label for="approvedByName" class="control-label">
                   {{ "Voucher.ApproverName" | translate }}
                 </label>
-    
+
                 <input
                   type="text"
                   class="k-textbox"
@@ -365,7 +391,6 @@
         </div>
       </div>
     </form>
-
   </div>
 </div>
 <!-- فرم جستوجو -->
@@ -377,8 +402,16 @@
   [width]="450"
 >
   <div class="form-group" (keydown.enter)="searchByNo(true)">
-    <label class="control-label">{{ stringFormat("Form.No" | translate, "Entity."+entityType | translate) }}</label>
-    <input type="text" class="k-textbox" [(ngModel)]="payReceiveNo" [OnlyNumber] sppcAutoFocus/>
+    <label class="control-label">{{
+      stringFormat("Form.No" | translate, "Entity." + entityType | translate)
+    }}</label>
+    <input
+      type="text"
+      class="k-textbox"
+      [(ngModel)]="payReceiveNo"
+      [OnlyNumber]
+      sppcAutoFocus
+    />
   </div>
   <kendo-dialog-actions>
     <button class="k-button" (click)="searchByNo(true)" primary="true">
@@ -392,13 +425,15 @@
 
 <!-- فرم تایید حذف -->
 <kendo-dialog
-  title='{{ stringFormat("Form.Delete" | translate, "Entity."+entityType | translate) }}'
+  title="{{
+    stringFormat('Form.Delete' | translate, 'Entity.' + entityType | translate)
+  }}"
   *ngIf="deleteConfirm"
   (close)="deleteModel(false)"
   [minWidth]="250"
   [width]="450"
 >
-  <p >
+  <p>
     {{ this.deleteConfirmMsg }}
   </p>
   <kendo-dialog-actions>
