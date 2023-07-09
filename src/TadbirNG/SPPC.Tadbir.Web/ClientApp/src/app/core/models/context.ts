@@ -2,8 +2,7 @@ import { PermissionBrief } from "./permissionBrief";
 
 export interface Context {
   userName: string;
-  firstName: string;
-  lastName: string;
+  fullName: string;
   ticket: string;
   fpId: number;
   branchId: number;

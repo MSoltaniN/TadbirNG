@@ -17,8 +17,7 @@ import { IEntity } from "@sppc/shared/models";
 export interface UserBrief extends IEntity{
     id: number;
     userName: string;
-    personFirstName: string;
-    personLastName: string;
+    personFullName: string;
     isEnabled: boolean;
     hasRole: boolean;
 }

@@ -687,7 +687,7 @@ namespace SPPC.Tadbir.Persistence
 
         private static string GetFullName(User user)
         {
-            return String.Format("{0}, {1}", user.Person.LastName, user.Person.FirstName);
+            return user.Person.FullName;
         }
 
         private ISecureRepository Repository

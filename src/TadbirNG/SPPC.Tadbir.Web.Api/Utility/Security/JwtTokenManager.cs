@@ -41,8 +41,7 @@ namespace SPPC.Tadbir.Security
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, context.User.UserName),
-                new Claim(ClaimTypes.GivenName, context.User.PersonFirstName),
-                new Claim(ClaimTypes.Surname, context.User.PersonLastName)
+                new Claim(ClaimTypes.GivenName, context.User.PersonFullName)
             };
             var descriptor = new SecurityTokenDescriptor
             {

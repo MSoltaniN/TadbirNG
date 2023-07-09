@@ -1132,7 +1132,7 @@ SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 UPDATE [Metadata].[Column]
 SET [DisplayIndex] = [DisplayIndex] + 2
-WHERE [ViewID] = 72 and [ColumnID] > 726 and [ColumnID] < 738
+WHERE [ViewID] = 72 and [ColumnID] > 726 and [ColumnID] < 738 
 
 -- 1.2.1539
 DELETE FROM [Metadata].[Column]
@@ -1170,7 +1170,17 @@ INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Typ
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 
+
 -- 1.2.1542
+UPDATE [Metadata].[Column]
+SET [Name] = N'PersonFullName', Expression = N'Person.FullName'
+WHERE ViewID = 4 AND [Name] = N'PersonFirstName'
+
+DELETE FROM [Metadata].[Column]
+WHERE ViewID = 4 AND [Name] = N'PersonLastName'
+
+
+-- 1.2.1543
 UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+G' Where TitleKey = 'AccountGroup'
 UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+U' Where TitleKey = 'Currency'
 UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+H' Where TitleKey = 'AccountCollections'

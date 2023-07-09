@@ -44,11 +44,10 @@
     sppc-auto-generated-grid-reorder
     sppc-auto-generated-grid-resize
   >
-  
-  <kendo-grid-excel
-    [fileName]="excelFileName"
-    [fetchData]="allData"
-  ></kendo-grid-excel>
+    <kendo-grid-excel
+      [fileName]="excelFileName"
+      [fetchData]="allData"
+    ></kendo-grid-excel>
 
     <ng-template kendoGridNoRecordsTemplate>
       {{
@@ -173,7 +172,7 @@
             <dd *ngIf="item.scriptType == 'Date'" class="dl-value">
               {{
                 getRowValue(item.name, dataItem, item.scriptType)
-                  | SppcDate: item.type:item.scriptType
+                  | SppcDate : item.type : item.scriptType
               }}
             </dd>
           </ng-template>
@@ -202,7 +201,7 @@
       >
         {{
           getRowValue(item.name, dataItem, item.scriptType)
-            | SppcDate: item.type:item.scriptType
+            | SppcDate : item.type : item.scriptType
         }}
       </ng-template>
 
@@ -225,9 +224,9 @@
       </ng-template>
     </kendo-grid-column>
 
-    <kendo-grid-command-column media="(min-width: 450px)" [width]="330">
+    <kendo-grid-command-column media="(min-width: 450px)" [width]="430">
       <ng-template kendoGridCellTemplate let-role>
-        <div style="display: flex;flex-direction: row;">
+        <div style="display: flex; flex-direction: row">
           <button kendoButton (click)="detailHandler(role.id)" [primary]="true">
             {{ "Role.Detail" | translate }}
           </button>
@@ -332,7 +331,7 @@
   [minWidth]="250"
   [width]="450"
 >
-  <p >
+  <p>
     {{ this.deleteConfirmMsg }}
   </p>
   <kendo-dialog-actions>
