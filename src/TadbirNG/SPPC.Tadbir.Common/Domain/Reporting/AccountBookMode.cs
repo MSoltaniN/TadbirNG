@@ -18,12 +18,12 @@ namespace SPPC.Tadbir.Domain
         VoucherSum = 1,
 
         /// <summary>
-        /// جمع مبالغ اسناد هر  روز
+        /// جمع مبالغ اسناد هر روز
         /// </summary>
         DailySum = 2,
 
         /// <summary>
-        /// جمع مبالغ اسناد هر  ماه
+        /// جمع مبالغ اسناد هر ماه
         /// </summary>
         MonthlySum = 3
     }

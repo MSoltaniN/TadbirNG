@@ -314,7 +314,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
         /// <returns>در صورت وجود آرتیکل حساب مقدار درست و
         /// در غیر این صورت مقدار نادرست برمی گرداند</returns>
-        public async Task<bool> HasAccountArticle(int payReceiveId)
+        public async Task<bool> HasAccountArticleAsync(int payReceiveId)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
             return await repository.
