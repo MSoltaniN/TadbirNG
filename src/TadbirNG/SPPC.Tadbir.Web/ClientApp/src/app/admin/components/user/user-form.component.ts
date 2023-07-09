@@ -26,8 +26,7 @@ export class UserFormComponent extends DetailComponent {
   //create a form controls
   private editForm1 = new FormGroup({
     id: new FormControl(),
-    personFirstName: new FormControl("", [Validators.required, Validators.maxLength(64)]),
-    personLastName: new FormControl("", [Validators.required, Validators.maxLength(64)]),
+    personFullName: new FormControl("", [Validators.required, Validators.maxLength(64)]),
     userName: new FormControl("", [Validators.required, Validators.maxLength(64)]),
     passwordHash: new FormControl("", [Validators.required, Validators.maxLength(32)]),
     isEnabled: new FormControl(),

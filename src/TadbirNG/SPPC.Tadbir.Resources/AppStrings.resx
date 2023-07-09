@@ -261,11 +261,8 @@
   <data name="Password" xml:space="preserve">
     <value>رمز ورود</value>
   </data>
-  <data name="PersonFirstName" xml:space="preserve">
-    <value>نام</value>
-  </data>
-  <data name="PersonLastName" xml:space="preserve">
-    <value>نام خانوادگی</value>
+  <data name="PersonFullName" xml:space="preserve">
+    <value>نام و نام خانوادگی</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>پروفایل</value>
@@ -747,7 +744,7 @@
   <data name="FromDate" xml:space="preserve">
     <value>از تاریخ</value>
   </data>
-  <data name="PgNumber" xml:space="preserve">
+  <data name="PageNo" xml:space="preserve">
     <value>شماره  صفحه :</value>
   </data>
   <data name="ReportTitle" xml:space="preserve">

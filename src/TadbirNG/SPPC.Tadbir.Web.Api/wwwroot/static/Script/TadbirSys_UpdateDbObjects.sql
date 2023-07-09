@@ -1132,7 +1132,7 @@ SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 UPDATE [Metadata].[Column]
 SET [DisplayIndex] = [DisplayIndex] + 2
-WHERE [ViewID] = 72 and [ColumnID] > 726 and [ColumnID] < 738
+WHERE [ViewID] = 72 and [ColumnID] > 726 and [ColumnID] < 738 
 
 -- 1.2.1539
 DELETE FROM [Metadata].[Column]
@@ -1168,3 +1168,11 @@ INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Typ
 INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (795, 76, 'Id', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
+
+-- 1.2.1542
+UPDATE [Metadata].[Column]
+SET [Name] = N'PersonFullName', Expression = N'Person.FullName'
+WHERE ViewID = 4 AND [Name] = N'PersonFirstName'
+
+DELETE FROM [Metadata].[Column]
+WHERE ViewID = 4 AND [Name] = N'PersonLastName'

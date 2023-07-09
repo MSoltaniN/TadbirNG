@@ -27,8 +27,7 @@ namespace SPPC.Tadbir.ViewModel.Contact
         /// </summary>
         public PersonViewModel()
         {
-            FirstName = String.Empty;
-            LastName = String.Empty;
+            FullName = String.Empty;
         }
 
         /// <summary>
@@ -37,19 +36,11 @@ namespace SPPC.Tadbir.ViewModel.Contact
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the first name of this person
+        /// Gets or sets the first name and last name of this person
         /// </summary>
-        [Display(Name = FieldNames.FirstNameField)]
+        [Display(Name = FieldNames.FullNameField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the last name of this person
-        /// </summary>
-        [Display(Name = FieldNames.LastNameField)]
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string LastName { get; set; }
+        public string FullName { get; set; }
     }
 }

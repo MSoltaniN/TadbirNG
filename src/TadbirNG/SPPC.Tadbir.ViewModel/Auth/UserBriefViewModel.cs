@@ -20,16 +20,10 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public string UserName { get; set; }
 
         /// <summary>
-        /// Gets or sets the first name of the organization person related to this user.
+        /// Gets or sets the first name and last name of the organization person related to this user.
         /// </summary>
-        [Display(Name = FieldNames.FirstNameField)]
-        public string PersonFirstName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the last name of the organization person related to this user.
-        /// </summary>
-        [Display(Name = FieldNames.LastNameField)]
-        public string PersonLastName { get; set; }
+        [Display(Name = FieldNames.FullNameField)]
+        public string PersonFullName { get; set; }
 
         /// <summary>
         /// Gets or sets the value that indicates if this user is enabled inside the application's security system

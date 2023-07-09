@@ -163,8 +163,7 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<User, RelatedItemViewModel>()
                 .ForMember(
                     dest => dest.Name,
-                    opts => opts.MapFrom(
-                        src => String.Format("{0} {1}", src.Person.FirstName, src.Person.LastName)));
+                    opts => opts.MapFrom(src => src.Person.FullName));
 
             mapperConfig.CreateMap<Role, RoleViewModel>()
                 .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
