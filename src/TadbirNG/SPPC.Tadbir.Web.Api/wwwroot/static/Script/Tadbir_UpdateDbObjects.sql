@@ -1416,7 +1416,7 @@ CREATE TABLE [CashFlow].[PayReceiveCashAccount] (
     [IsBank]                    BIT              NOT NULL,
     [Amount]                    MONEY            NOT NULL,
     [BankOrderNo]               NVARCHAR(64)     NULL,
-    [Description]               NVARCHAR(512)    NULL,
+    [Remarks]                   NVARCHAR(512)    NULL,
     [rowguid]                   UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_PayReceiveCashAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]              DATETIME         CONSTRAINT [DF_CashFlow_PayReceiveCashAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_CashFlow_PayReceiveCashAccount] PRIMARY KEY CLUSTERED ([PayReceiveCashAccountID] ASC)
@@ -1428,3 +1428,6 @@ CREATE TABLE [CashFlow].[PayReceiveCashAccount] (
     , CONSTRAINT [FK_CashFlow_PayReceiveCashAccount_CashFlow_SourceApp] FOREIGN KEY ([SourceAppID]) REFERENCES [CashFlow].[SourceApp]([SourceAppID])
 )
 GO
+
+EXEC sp_rename '[CashFlow].[PayReceiveAccount].[Description]', 'Remarks', 'COLUMN'
+

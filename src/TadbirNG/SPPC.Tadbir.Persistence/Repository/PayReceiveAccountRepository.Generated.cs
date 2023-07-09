@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.CashFlow;
@@ -208,12 +209,7 @@ namespace SPPC.Tadbir.Persistence
                     (article.Amount <= Decimal.Zero || article.AccountId == null))
                 .ToArrayAsync();
 
-            foreach (var article in articles)
-            {
-                DisconnectEntity(article);
-                repository.Delete(article);
-            }
-
+            DeleteArticlesGroup(repository, articles);
             await UnitOfWork.CommitAsync();
             int entityTypeId = GetEntityTypeId(type);
             var articleIds = articles
@@ -255,8 +251,8 @@ namespace SPPC.Tadbir.Persistence
                 {
                     Id = group.Min(article => article.Id),
                     Amount = group.Sum(article => article.Amount),
-                    Descriptions = group
-                        .Select(article => article.Description?.Trim())
+                    Remarks = group
+                        .Select(article => article.Remarks?.Trim())
                         .Where(d => !String.IsNullOrEmpty(d))
                         .ToArray()
                 })
@@ -266,29 +262,17 @@ namespace SPPC.Tadbir.Persistence
             {
                 var aggregatedArticle = await repository.GetByIDAsync(item.Id);
                 aggregatedArticle.Amount = item.Amount;
-                aggregatedArticle.Description = item.Descriptions.Length > 0 
-                    ? String.Join(" - ", item.Descriptions)
+                aggregatedArticle.Remarks = item.Remarks.Length > 0 
+                    ? String.Join(" - ", item.Remarks)
                     : null;
                 repository.Update(aggregatedArticle);
 
-                var removedArticles = await repository.GetByCriteriaAsync(
-                    a => a.PayReceiveId == payReceiveId
-                        && a.Id != aggregatedArticle.Id
-                        && a.AccountId == aggregatedArticle.AccountId
-                        && a.DetailAccountId == aggregatedArticle.DetailAccountId
-                        && a.CostCenterId == aggregatedArticle.CostCenterId
-                        && a.ProjectId == aggregatedArticle.ProjectId);
-                foreach (var article in removedArticles)
-                {
-                    DisconnectEntity(article);
-                    repository.Delete(article);
-                }
+                var removedArticles = await GetRemovedAggregetedArticlesAsync(repository, aggregatedArticle);
+                DeleteArticlesGroup(repository, removedArticles);
             }
 
-            await UnitOfWork.CommitAsync();
             int entityTypeId = GetEntityTypeId(type);
-            OnEntityAction(OperationId.RemoveInvalidAccountLines, entityTypeId);
-            await TrySaveLogAsync();
+            await FinalizeActionAsync(OperationId.AggregateAccountLines, entityTypeId);
         }
 
         /// <summary>
@@ -326,7 +310,7 @@ namespace SPPC.Tadbir.Persistence
             accountArticle.CostCenterId = GetNullableId(accountArticleView.FullAccount.CostCenter);
             accountArticle.ProjectId = GetNullableId(accountArticleView.FullAccount.Project);
             accountArticle.Amount = accountArticleView.Amount;
-            accountArticle.Description = accountArticleView.Description;
+            accountArticle.Remarks = accountArticleView.Remarks;
         }
 
         /// <summary>
@@ -336,21 +320,17 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
         protected override string GetState(PayReceiveAccount entity)
         {
-            var repository = UnitOfWork.GetRepository<Account>();
             string accountFullCode = String.Empty;
             if (entity.AccountId.HasValue)
             {
-                int accountId = entity.AccountId ?? 0;
-                var account = repository.GetByID(accountId);
-                if (account != null)
-                {
-                    accountFullCode = $"{AppStrings.Account} : {account.FullCode}, ";
-                }
+                var repository = UnitOfWork.GetRepository<Account>();
+                var account = repository.GetByID((int)entity.AccountId);
+                accountFullCode = $"{AppStrings.Account} : {account.FullCode}, ";
             }
 
             return entity != null
                 ? accountFullCode +
-                    $"{AppStrings.Amount} : {entity.Amount}, {AppStrings.Description} : {entity.Description}"
+                    $"{AppStrings.Amount} : {entity.Amount}, {AppStrings.Description} : {entity.Remarks}"
                 : String.Empty;
         }
 
@@ -366,6 +346,29 @@ namespace SPPC.Tadbir.Persistence
             return (int)(type == (int)PayReceiveType.Receipt
                 ? EntityTypeId.Receipt
                 : EntityTypeId.Payment);
+        }
+
+        private async Task<IList<PayReceiveAccount>> GetRemovedAggregetedArticlesAsync(
+            IAsyncRepository<PayReceiveAccount> repository, PayReceiveAccount aggregatedArticle)
+        {
+            var removedArticles = await repository.GetByCriteriaAsync(
+                a => a.PayReceiveId == aggregatedArticle.PayReceiveId
+                && a.Id != aggregatedArticle.Id
+                && a.AccountId == aggregatedArticle.AccountId
+                && a.DetailAccountId == aggregatedArticle.DetailAccountId
+                && a.CostCenterId == aggregatedArticle.CostCenterId
+                && a.ProjectId == aggregatedArticle.ProjectId);
+            return removedArticles;
+        }
+
+        private void DeleteArticlesGroup(
+            IRepository<PayReceiveAccount> repository, IList<PayReceiveAccount> removedArticles)
+        {
+            foreach (var article in removedArticles)
+            {
+                DisconnectEntity(article);
+                repository.Delete(article);
+            }
         }
     }
 }

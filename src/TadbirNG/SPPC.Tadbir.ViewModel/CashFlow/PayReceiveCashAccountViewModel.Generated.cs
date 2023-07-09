@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         {
             FullAccount = new FullAccountViewModel();
             BankOrderNo = String.Empty;
-            Description = String.Empty;
+            Remarks = String.Empty;
         }
 
         /// <summary>
@@ -54,6 +54,6 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         ///  مالحظات آرتیکل حساب نقد
         /// </summary>
         [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string Description { get; set; }
+        public string Remarks { get; set; }
     }
 }

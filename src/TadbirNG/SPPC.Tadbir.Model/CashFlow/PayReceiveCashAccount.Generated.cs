@@ -26,8 +26,9 @@ namespace SPPC.Tadbir.Model.CashFlow
         public PayReceiveCashAccount()
         {
             BankOrderNo = String.Empty;
-            Description = String.Empty;
+            Remarks = String.Empty;
             ModifiedDate = DateTime.Now;
+            SourceAppId = null;
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace SPPC.Tadbir.Model.CashFlow
         /// <summary>
         ///  ملاحظات آرتیکل حساب نقد
         /// </summary>
-        public virtual string Description { get; set; }
+        public virtual string Remarks { get; set; }
 
         /// <summary>
         /// شناسه فرم دریافت/پرداخت اصلی

@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.Id)
                 .HasColumnName("PayReceiveAccountID");
             builder.Property(e => e.Amount);
-            builder.Property(e => e.Description)
+            builder.Property(e => e.Remarks)
                 .HasMaxLength(512);
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.CashFlow;
@@ -44,7 +45,8 @@ namespace SPPC.Tadbir.Persistence
                     .GetEntityQuery(ca => ca.Account,
                         ca => ca.CostCenter,
                         ca => ca.DetailAccount,
-                        ca => ca.Project)
+                        ca => ca.Project,
+                        ca => ca.SourceApp)
                     .Where(account => account.PayReceiveId == payReceiveId)
                     .Select(account => Mapper.Map<PayReceiveCashAccountViewModel>(account))
                     .ToListAsync();
@@ -98,7 +100,14 @@ namespace SPPC.Tadbir.Persistence
             int? entityTypeId = GetEntityTypeId(type);
             if (cashAccountArticle.Id == 0)
             {
+                cashAccountArticle.SourceAppId = cashAccountArticle.SourceAppId == 0
+                    ? null
+                    : cashAccountArticle.SourceAppId;
+                cashAccountArticle.BankOrderNo = cashAccountArticle.IsBank
+                    ? cashAccountArticle.BankOrderNo.Trim()
+                    : null;
                 cashAccountArticleModel = Mapper.Map<PayReceiveCashAccount>(cashAccountArticle);
+
                 await InsertAsync(repository, cashAccountArticleModel, OperationId.CreateCashAccountLine, entityTypeId);
             }
             else
@@ -106,7 +115,7 @@ namespace SPPC.Tadbir.Persistence
                 cashAccountArticleModel = await repository.GetByIDAsync(cashAccountArticle.Id);
                 if (cashAccountArticleModel != null)
                 {
-                    await UpdateAsync(repository, cashAccountArticleModel, 
+                    await UpdateAsync(repository, cashAccountArticleModel,
                         cashAccountArticle, OperationId.EditCashAccountLine, entityTypeId);
                 }
             }
@@ -173,12 +182,7 @@ namespace SPPC.Tadbir.Persistence
                     (article.Amount <= Decimal.Zero || article.AccountId == null))
                 .ToArrayAsync();
 
-            foreach (var article in articles)
-            {
-                DisconnectEntity(article);
-                repository.Delete(article);
-            }
-
+            DeleteArticlesGroup(repository, articles);
             await UnitOfWork.CommitAsync();
             int entityTypeId = GetEntityTypeId(type);
             var articleIds = articles
@@ -205,14 +209,14 @@ namespace SPPC.Tadbir.Persistence
                 .GetEntityQuery()
                 .Where(a => a.PayReceiveId == payReceiveId && a.AccountId.HasValue)
                 .AsEnumerable()
-                .GroupBy(acc => new { acc.AccountId, acc.DetailAccountId, acc.CostCenterId, acc.ProjectId })
+                .GroupBy(acc => new { acc.AccountId, acc.DetailAccountId, acc.CostCenterId, acc.ProjectId, acc.SourceAppId, acc.BankOrderNo })
                 .Where(group => group.Count() > 1)
                 .Select(group => new
                 {
                     Id = group.Min(article => article.Id),
                     Amount = group.Sum(article => article.Amount),
-                    Descriptions = group
-                        .Select(article => article.Description?.Trim())
+                    Remarks = group
+                        .Select(article => article.Remarks?.Trim())
                         .Where(d => !String.IsNullOrEmpty(d))
                         .ToArray()
                 })
@@ -222,29 +226,16 @@ namespace SPPC.Tadbir.Persistence
             {
                 var aggregatedArticle = await repository.GetByIDAsync(item.Id);
                 aggregatedArticle.Amount = item.Amount;
-                aggregatedArticle.Description = item.Descriptions.Length > 0
-                    ? String.Join(" - ", item.Descriptions)
+                aggregatedArticle.Remarks = item.Remarks.Length > 0
+                    ? String.Join(" - ", item.Remarks)
                     : null;
                 repository.Update(aggregatedArticle);
-
-                var removedArticles = await repository.GetByCriteriaAsync(
-                    a => a.PayReceiveId == payReceiveId
-                        && a.Id != aggregatedArticle.Id
-                        && a.AccountId == aggregatedArticle.AccountId
-                        && a.DetailAccountId == aggregatedArticle.DetailAccountId
-                        && a.CostCenterId == aggregatedArticle.CostCenterId
-                        && a.ProjectId == aggregatedArticle.ProjectId);
-                foreach (var article in removedArticles)
-                {
-                    DisconnectEntity(article);
-                    repository.Delete(article);
-                }
+                var removedArticles = await GetRemovedAggregetedArticlesAsync(repository, aggregatedArticle);
+                DeleteArticlesGroup(repository, removedArticles);
             }
 
-            await UnitOfWork.CommitAsync();
             int entityTypeId = GetEntityTypeId(type);
-            OnEntityAction(OperationId.AggregateCashAccountLines, entityTypeId);
-            await TrySaveLogAsync();
+            await FinalizeActionAsync(OperationId.AggregateCashAccountLines, entityTypeId);
         }
 
         /// <inheritdoc/>
@@ -254,7 +245,7 @@ namespace SPPC.Tadbir.Persistence
             var aggregateCount = await repository
                 .GetEntityQuery()
                 .Where(article => article.PayReceiveId == payReceiveId && article.AccountId != null)
-                .GroupBy(acc => new { acc.AccountId, acc.DetailAccountId, acc.CostCenterId, acc.ProjectId })
+                .GroupBy(acc => new { acc.AccountId, acc.DetailAccountId, acc.CostCenterId, acc.ProjectId, acc.SourceAppId, acc.BankOrderNo })
                 .Where(articles => articles.Count() > 1)
                 .CountAsync();
 
@@ -267,7 +258,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
             return await repository
                 .GetEntityQuery()
-                .AnyAsync(aca => aca.AccountId == accountId 
+                .AnyAsync(aca => aca.AccountId == accountId
                     && aca.CollectionId == (int)AccountCollectionId.Bank);
         }
 
@@ -275,7 +266,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> IsCashierCashAccountAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
-            return await  repository
+            return await repository
                 .GetEntityQuery()
                 .AnyAsync(aca => aca.AccountId == accountId
                     && aca.CollectionId == (int)AccountCollectionId.Cashier);
@@ -313,33 +304,44 @@ namespace SPPC.Tadbir.Persistence
             cashAccountArticle.ProjectId = GetNullableId(cashAccountArticleView.FullAccount.Project);
             cashAccountArticle.Amount = cashAccountArticleView.Amount;
             cashAccountArticle.IsBank = cashAccountArticleView.IsBank;
-            cashAccountArticle.Description = cashAccountArticleView.Description;
-            cashAccountArticle.SourceAppId = cashAccountArticleView.SourceAppId == 0 
-                ? null 
+            cashAccountArticle.Remarks = cashAccountArticleView.Remarks;
+            cashAccountArticle.SourceAppId = cashAccountArticleView.SourceAppId == 0
+                ? null
                 : cashAccountArticleView.SourceAppId;
-            cashAccountArticle.BankOrderNo = cashAccountArticleView.IsBank 
-                ? cashAccountArticleView.BankOrderNo 
+            cashAccountArticle.BankOrderNo = cashAccountArticleView.IsBank
+                ? cashAccountArticleView.BankOrderNo.Trim()
                 : null;
         }
 
         /// <inheritdoc/>
         protected override string GetState(PayReceiveCashAccount entity)
         {
-            var repository = UnitOfWork.GetRepository<Account>();
             string accountFullCode = String.Empty;
             if (entity.AccountId.HasValue)
             {
-                int accountId = entity.AccountId ?? 0;
-                var account = repository.GetByID(accountId);
-                if (account != null)
+                var repository = UnitOfWork.GetRepository<Account>();
+                var account = repository.GetByID((int)entity.AccountId);
+                accountFullCode = $"{AppStrings.Account} : {account.FullCode}, ";
+            }
+
+            string sourceAppName = String.Empty;
+            if (entity.SourceAppId.HasValue)
+            {
+                var repository = UnitOfWork.GetRepository<SourceApp>();
+                var sourceApp = repository.GetByID((int)entity.SourceAppId);
+                if (sourceApp.Type == (int)SourceAppType.Source)
                 {
-                    accountFullCode = $"{AppStrings.Account} : {account.FullCode}, ";
+                    sourceAppName = $"{AppStrings.Source} : {sourceApp.Name}, ";
+                }
+                else
+                {
+                    sourceAppName = $"{AppStrings.Application} : {sourceApp.Name}, ";
                 }
             }
 
             return entity != null
-                ? accountFullCode +
-                    $"{AppStrings.Amount} : {entity.Amount}, {AppStrings.Description} : {entity.Description}"
+                ? accountFullCode + sourceAppName +
+                    $"{AppStrings.Amount} : {entity.Amount}, {AppStrings.Description} : {entity.Remarks}"
                 : String.Empty;
         }
 
@@ -355,6 +357,31 @@ namespace SPPC.Tadbir.Persistence
             return (int)(type == (int)PayReceiveType.Receipt
                 ? EntityTypeId.Receipt
                 : EntityTypeId.Payment);
+        }
+
+        private async Task<IList<PayReceiveCashAccount>> GetRemovedAggregetedArticlesAsync(
+            IAsyncRepository<PayReceiveCashAccount> repository, PayReceiveCashAccount aggregatedArticle)
+        {
+            var removedArticles = await repository.GetByCriteriaAsync(
+                a => a.PayReceiveId == aggregatedArticle.PayReceiveId
+                && a.Id != aggregatedArticle.Id
+                && a.AccountId == aggregatedArticle.AccountId
+                && a.DetailAccountId == aggregatedArticle.DetailAccountId
+                && a.CostCenterId == aggregatedArticle.CostCenterId
+                && a.ProjectId == aggregatedArticle.ProjectId
+                && a.SourceAppId == aggregatedArticle.SourceAppId
+                && a.BankOrderNo == aggregatedArticle.BankOrderNo);
+            return removedArticles;
+        }
+
+        private void DeleteArticlesGroup(
+            IRepository<PayReceiveCashAccount> repository, IList<PayReceiveCashAccount> removedArticles)
+        {
+            foreach (var article in removedArticles)
+            {
+                DisconnectEntity(article);
+                repository.Delete(article);
+            }
         }
 
         private ISecureRepository Repository

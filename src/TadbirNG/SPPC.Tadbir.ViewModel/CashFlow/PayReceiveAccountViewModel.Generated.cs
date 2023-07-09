@@ -28,7 +28,7 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         public PayReceiveAccountViewModel()
         {
             FullAccount = new FullAccountViewModel();
-            Description = String.Empty;
+            Remarks = String.Empty;
         }
 
         /// <summary>
@@ -40,6 +40,6 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// ملاحظات آرتیکل طرف حساب
         /// </summary>
         [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string Description { get; set; }
+        public string Remarks { get; set; }
     }
 }

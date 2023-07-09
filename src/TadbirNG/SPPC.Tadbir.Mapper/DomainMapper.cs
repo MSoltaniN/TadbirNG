@@ -112,7 +112,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.IsConfirmed, opts => opts.MapFrom(src => src.ConfirmedById != null));
             mapperConfig.CreateMap<PayReceiveViewModel, PayReceive>();
             mapperConfig.CreateMap<PayReceiveAccount, PayReceiveAccountViewModel>()
-                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.Remarks, opts => opts.NullSubstitute(String.Empty))
                 .ForMember(dest => dest.FullAccount,opts => opts.MapFrom(
                     src => BuildFullAccount(src.Account, src.DetailAccount, src.CostCenter, src.Project)));
             mapperConfig.CreateMap<PayReceiveAccountViewModel, PayReceiveAccount>()
@@ -122,7 +122,7 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.ProjectId = GetNullableId(viewModel.FullAccount.Project));
             mapperConfig.CreateMap<PayReceiveAccount, PayReceiveAccountSummaryViewModel>();
             mapperConfig.CreateMap<PayReceiveCashAccount, PayReceiveCashAccountViewModel>()
-                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.Remarks, opts => opts.NullSubstitute(String.Empty))
                 .ForMember(dest => dest.BankOrderNo, opts => opts.NullSubstitute(String.Empty))
                 .ForMember(dest => dest.FullAccount, opts => opts.MapFrom(
                     src => BuildFullAccount(src.Account, src.DetailAccount, src.CostCenter, src.Project)));

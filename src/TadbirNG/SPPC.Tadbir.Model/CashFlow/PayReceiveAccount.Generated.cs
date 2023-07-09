@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.Model.CashFlow
         /// </summary>
         public PayReceiveAccount()
         {
-            Description = String.Empty;
+            Remarks = String.Empty;
             ModifiedDate = DateTime.Now;
         }
 
@@ -37,7 +37,7 @@ namespace SPPC.Tadbir.Model.CashFlow
         /// <summary>
         /// ملاحظات آرتیکل طرف حساب
         /// </summary>
-        public virtual string Description { get; set; }
+        public virtual string Remarks { get; set; }
 
         /// <summary>
         /// مولفه سرفصل حسابداری در بردار حساب
