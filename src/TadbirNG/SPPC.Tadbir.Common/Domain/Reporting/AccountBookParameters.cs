@@ -31,14 +31,24 @@ namespace SPPC.Tadbir.Domain
         public int ItemId { get; set; }
 
         /// <summary>
-        /// تاریخ ابتدای دوره گزارشگیری
+        /// تاریخ شروع دوره گزارش گیری در حالت گزارش بر اساس تاریخ
         /// </summary>
         public DateTime FromDate { get; set; }
 
         /// <summary>
-        /// تاریخ انتهای دوره گزارشگیری
+        /// تاریخ پایان دوره گزارش گیری در حالت گزارش بر اساس تاریخ
         /// </summary>
         public DateTime ToDate { get; set; }
+
+        /// <summary>
+        /// اولین سند در حالت گزارش بر اساس سند
+        /// </summary>
+        public int FromNo { get; set; }
+
+        /// <summary>
+        /// آخرین سند در حالت گزارش بر اساس سند
+        /// </summary>
+        public int ToNo { get; set; }
 
         /// <summary>
         /// مشخص می کند که آیا تفکیک شعبه مورد نیاز است یا نه؟

@@ -38,34 +38,21 @@ namespace SPPC.Tadbir.Persistence
             _utility = utility;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش دفتر حساب را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
-        /// <returns>اطلاعات دفتر حساب بر حسب تاریخ</returns>
+        /// <inheritdoc/>
         public async Task<AccountBookViewModel> GetAccountBookAsync(
             AccountBookParameters parameters)
         {
             return await GetAccountBookDataAsync(parameters);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش دفتر حساب به تفکیک شعبه را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
-        /// <returns>اطلاعات دفتر حساب به تفکیک شعبه</returns>
+        /// <inheritdoc/>
         public async Task<AccountBookViewModel> GetAccountBookByBranchAsync(
             AccountBookParameters parameters)
         {
             return await GetAccountBookDataAsync(parameters);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مولفه حساب قبلی قابل دسترسی نسبت به مولفه حساب مشخص شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مولفه حساب</param>
-        /// <param name="itemId">شناسه دیتابیسی مولفه حساب جاری</param>
-        /// <returns>اطلاعات نمایشی مختصر برای مولفه حساب قبلی</returns>
+        /// <inheritdoc/>
         public async Task<AccountItemBriefViewModel> GetPreviousAccountItemAsync(int viewId, int itemId)
         {
             var previous = default(AccountItemBriefViewModel);
@@ -82,12 +69,7 @@ namespace SPPC.Tadbir.Persistence
             return previous;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مولفه حساب بعدی قابل دسترسی نسبت به مولفه حساب مشخص شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مولفه حساب</param>
-        /// <param name="itemId">شناسه دیتابیسی مولفه حساب جاری</param>
-        /// <returns>اطلاعات نمایشی مختصر برای مولفه حساب بعدی</returns>
+        /// <inheritdoc/>
         public async Task<AccountItemBriefViewModel> GetNextAccountItemAsync(int viewId, int itemId)
         {
             var next = default(AccountItemBriefViewModel);
@@ -124,11 +106,11 @@ namespace SPPC.Tadbir.Persistence
             string query;
             if (byNo)
             {
-                query = byBranch ? BookQuery.VoucherSumByBranch : BookQuery.VoucherSum;
+                query = byBranch ? BookQuery.VoucherSumByDateByBranch : BookQuery.VoucherSumByDate;
             }
             else
             {
-                query = byBranch ? BookQuery.DailySumByBranch : BookQuery.DailySum;
+                query = byBranch ? BookQuery.DailySumByDateByBranch : BookQuery.DailySumByDate;
             }
 
             return query;
@@ -197,7 +179,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<AccountBookViewModel> GetSimpleBookAsync(
             string fullCode, AccountBookParameters parameters)
         {
-            string bookQuery = parameters.IsByBranch ? BookQuery.ByRowByBranch : BookQuery.ByRow;
+            string bookQuery = parameters.IsByBranch ? BookQuery.ByDateByRowByBranch : BookQuery.ByDateByRow;
             var book = new AccountBookViewModel();
             var items = await GetInitialItemsAsync(parameters);
             var query = new ReportQuery(String.Format(bookQuery, _utility.GetItemName(parameters.ViewId),
@@ -237,7 +219,7 @@ namespace SPPC.Tadbir.Persistence
         private async Task<AccountBookViewModel> GetMonthlySummaryBookAsync(
             string fullCode, AccountBookParameters parameters)
         {
-            string bookQuery = parameters.IsByBranch ? BookQuery.MonthlySumByBranch : BookQuery.MonthlySum;
+            string bookQuery = parameters.IsByBranch ? BookQuery.MonthlySumByDateByBranch : BookQuery.MonthlySumByDate;
             var book = new AccountBookViewModel();
             var items = await GetInitialItemsAsync(parameters);
             items.AddRange(GetQueryResult(fullCode, VoucherOriginId.OpeningVoucher, parameters));
@@ -336,8 +318,8 @@ namespace SPPC.Tadbir.Persistence
             string fullCode, VoucherOriginId originId, AccountBookParameters parameters)
         {
             string bookQuery = parameters.IsByBranch
-                ? BookQuery.SpecialVoucherByBranch
-                : BookQuery.SpecialVoucher;
+                ? BookQuery.SpecialVoucherByDateByBranch
+                : BookQuery.SpecialVoucherByDate;
             var builder = new StringBuilder(String.Format(bookQuery, _utility.GetItemName(parameters.ViewId),
                 parameters.FromDate.ToShortDateString(false), parameters.ToDate.ToShortDateString(false),
                 (int)originId, fullCode));
