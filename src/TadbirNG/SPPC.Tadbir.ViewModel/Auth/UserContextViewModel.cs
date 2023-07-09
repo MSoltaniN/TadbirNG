@@ -28,14 +28,9 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public string UserName { get; set; }
 
         /// <summary>
-        /// نام این کاربر
+        /// نام و نام خانوادگی این کاربر
         /// </summary>
-        public string PersonFirstName { get; set; }
-
-        /// <summary>
-        /// نام خانوادگی این کاربر
-        /// </summary>
-        public string PersonLastName { get; set; }
+        public string PersonFullName { get; set; }
 
         /// <summary>
         /// اطلاعات مورد نیاز برای اتصال به دیتابیس شرکت جاری

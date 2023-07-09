@@ -1157,8 +1157,7 @@
     "New": "کاربر جدید",
     "Edit": "ویرایش",
     "Delete": "حذف",
-    "PersonFirstName": "نام",
-    "PersonLastName": "نام خانوادگی",
+    "PersonFullName": "نام و نام خانوادگی",
     "UserName": "نام کاربری",
     "LastLoginDate": "تاریخ آخرین ورود",
     "IsEnabled": "وضعیت",
@@ -1196,8 +1195,7 @@
   "RoleUsers": {
     "Name": "نام و نام خانوادگی",
     "UserName": "نام کاربری",
-    "PersonFirstName": "نام",
-    "PersonLastName": "نام خانوادگی",
+    "PersonFullName": "نام و نام خانوادگی",
     "IsEnabled": "وضعیت",
     "RoleUsersTitle": "کاربران دارای نقش '{0}'",
     "RecordNotFound": "این نقش به هیچ کاربری تخصیص داده نشده است."
@@ -1637,10 +1635,8 @@
       "RepeatPasswordAndNewPasswordDoNotMatch": "تکرار رمز ورود و رمز ورود جدید متفاوت هستند."
     },
     "User": {
-      "PersonFirstNameIsRequired": "وارد کردن نام اجباری است.",
-      "PersonFirstNameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
-      "PersonLastNameIsRequired": "وارد کردن نام خانوادگی اجباری است.",
-      "PersonLastNameIsTooLong": "نام خانوادگی می تواند حداکثر 64 حرف داشته باشد.",
+      "PersonFullNameIsRequired": "وارد کردن نام و نام خانوادگی اجباری است.",
+      "PersonFullNameIsTooLong": "نام و نام خانوادگی می تواند حداکثر 64 حرف داشته باشد.",
       "UserNameIsRequired": "وارد کردن نام کاربری اجباری است.",
       "UserNameIsTooLong": "نام کاربری می تواند حداکثر 64 حرف داشته باشد.",
       "PasswordIsRequired": "وارد کردن رمز ورود اجباری است.",

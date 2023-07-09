@@ -1035,8 +1035,7 @@
     "New": "New User",
     "Edit": "Edit",
     "Delete": "Delete",
-    "PersonFirstName": "First Name",
-    "PersonLastName": "Last Name",
+    "PersonFullName": "Full Name",
     "UserName": "User Name",
     "LastLoginDate": "Last Login Date",
     "IsEnabled": "Status",
@@ -1074,8 +1073,7 @@
   "RoleUsers": {
     "Name": "Full Name",
     "UserName": "User Name",
-    "PersonFirstName": "First Name",
-    "PersonLastName": "Last Name",
+    "PersonFullName": "Full Name",
     "IsEnabled": "Status",
     "RoleUsersTitle": "Users with role '{0}'",
     "RecordNotFound": "This role is currently not assigned to any user."
@@ -1514,10 +1512,9 @@
       "RepeatPasswordAndNewPasswordDoNotMatch": "Repeat password and New password do not match."
     },
     "User": {
-      "PersonFirstNameIsRequired": "First name is required.",
-      "PersonFirstNameIsTooLong": "First name can have a maximum of 64 characters.",
+      "PersonFullNameIsRequired": "Full name is required.",
+      "PersonFullNameIsTooLong": "Full name can have a maximum of 64 characters.",
       "PersonLastNameIsRequired": "Last name is required.",
-      "PersonLastNameIsTooLong": "Last name can have a maximum of 64 characters.",
       "UserNameIsRequired": "User name is required.",
       "UserNameIsTooLong": "User name can have a maximum of 64 characters.",
       "PasswordIsRequired": "Password is required.",

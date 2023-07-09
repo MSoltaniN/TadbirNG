@@ -115,8 +115,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
                 CompanyId = 1,
                 FiscalPeriodId = 1,
                 Id = 2,                     // User (Id = 1) is reserved for Admin user.
-                PersonFirstName = "Test",
-                PersonLastName = "User",
+                PersonFullName = "Test User",
                 Connection = "Test Connection"
             });
             var ticket = Transform.ToBase64String(

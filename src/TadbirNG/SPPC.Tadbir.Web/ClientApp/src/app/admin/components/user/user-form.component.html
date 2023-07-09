@@ -15,26 +15,14 @@
   <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
 
     <div class="form-group">
-      <label for="personFirstName" class="control-label">{{ 'User.PersonFirstName' | translate }}</label>
+      <label for="personFullName" class="control-label">{{ 'User.PersonFullName' | translate }}</label>
 
-      <input sppcAutoFocus type="text" class="k-textbox" formControlName="personFirstName" />
+      <input sppcAutoFocus type="text" class="k-textbox" formControlName="personFullName" />
 
-      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.personFirstName.valid || editForm.controls.personFirstName.pristine">
-        <span *ngIf="editForm.controls.personFirstName.errors?.required">{{ 'AllValidations.User.PersonFirstNameIsRequired' | translate }}</span>
-        <span *ngIf="editForm.controls.personFirstName.errors?.maxlength">{{ 'AllValidations.User.PersonFirstNameIsTooLong' | translate }}</span>
+      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.personFullName.valid || editForm.controls.personFullName.pristine">
+        <span *ngIf="editForm.controls.personFullName.errors?.required">{{ 'AllValidations.User.PersonFullNameIsRequired' | translate }}</span>
+        <span *ngIf="editForm.controls.personFullName.errors?.maxlength">{{ 'AllValidations.User.PersonFullNameIsTooLong' | translate }}</span>
       </div>
-    </div>
-
-    <div class="form-group">
-      <label for="personLastName" class="control-label">{{ 'User.PersonLastName' | translate }}</label>
-
-      <input type="text" class="k-textbox" formControlName="personLastName" />
-
-      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.personLastName.valid || editForm.controls.personLastName.pristine">
-        <span *ngIf="editForm.controls.personLastName.errors?.required">{{ 'AllValidations.User.PersonLastNameIsRequired' | translate }}</span>
-        <span *ngIf="editForm.controls.personLastName.errors?.maxlength">{{ 'AllValidations.User.PersonLastNameIsTooLong' | translate }}</span>
-      </div>
-
     </div>
 
     <div class="form-group">

@@ -18,14 +18,9 @@ namespace SPPC.Tadbir.Domain
         public const string IdField = "شناسه";
 
         /// <summary>
-        /// Localized name of FirstName field.
+        /// Localized name of FirstName and LastName field.
         /// </summary>
-        public const string FirstNameField = "نام";
-
-        /// <summary>
-        /// Localized name of LastName field.
-        /// </summary>
-        public const string LastNameField = "نام خانوادگی";
+        public const string FullNameField = "نام و نام خانوادگی";
 
         /// <summary>
         /// Localized name of Name field.

@@ -25,20 +25,15 @@ namespace SPPC.Tadbir.Model.Contact
         /// </summary>
         public Person()
         {
-            FirstName = String.Empty;
-            LastName = String.Empty;
+            FullName = String.Empty;
             ModifiedDate = DateTime.Now;
         }
 
         /// <summary>
-        /// Gets or sets the first name of this person
+        /// Gets or sets the first name and last name of this person
         /// </summary>
-        public virtual string FirstName { get; set; }
+        public virtual string FullName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the last name of this person
-        /// </summary>
-        public virtual string LastName { get; set; }
 
         /// <summary>
         /// Gets or sets the application user that represents this user in security subsystem
