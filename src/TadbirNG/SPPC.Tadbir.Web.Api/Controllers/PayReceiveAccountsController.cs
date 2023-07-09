@@ -65,7 +65,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var articles = await _accountArticleRepository.GetAccountArticlesAsync(
                 paymentId, (int)PayReceiveType.Payment, GridOptions);
-            return Json(articles.Items);
+            return JsonListResult(articles);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var articles = await _accountArticleRepository.GetAccountArticlesAsync(
                 receiptId, (int)PayReceiveType.Receipt, GridOptions);
-            return Json(articles.Items);
+            return JsonListResult(articles);
         }
 
         /// <summary>
