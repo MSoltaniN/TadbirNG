@@ -482,7 +482,7 @@ namespace SPPC.Tadbir.Persistence
             return (entity != null)
                 ? String.Format(
                     "{0} : {1} , {2} : {3}",
-                    AppStrings.UserName, entity.UserName, AppStrings.PersonFullName, entity.Person.FullName)
+                    AppStrings.UserName, entity.UserName, AppStrings.PersonFullName, entity.Person?.FullName)
                 : null;
         }
 

@@ -179,7 +179,7 @@ GO
 CREATE TABLE [Contact].[Person] (
     [PersonID]       INT              IDENTITY (1, 1) NOT NULL,
 	[UserID]         INT              NOT NULL,
-    [FullName]      NVARCHAR(64)     NOT NULL,
+    [FullName]       NVARCHAR(64)     NOT NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Contact_Person_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Contact_Person_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Contact_Person] PRIMARY KEY CLUSTERED ([PersonID] ASC)

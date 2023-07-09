@@ -1136,6 +1136,8 @@ WHERE [ViewID] = 72 and [ColumnID] > 726 and [ColumnID] < 738
 
 -- 1.2.1539
 UPDATE [Metadata].[Column]
-SET [Name] = N'PersonFullName', Expression=N'Person.FullName'
-WHERE ColumnID = 53
-DELETE FROM [Metadata].[Column] WHERE ColumnID = 54;
+SET [Name] = N'PersonFullName', Expression = N'Person.FullName'
+WHERE ViewID = 4 AND [Name] = N'PersonFirstName'
+
+DELETE FROM [Metadata].[Column]
+WHERE ViewID = 4 AND [Name] = N'PersonLastName'

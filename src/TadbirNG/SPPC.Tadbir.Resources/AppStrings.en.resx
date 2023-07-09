@@ -262,7 +262,7 @@
     <value>Password</value>
   </data>
   <data name="PersonFullName" xml:space="preserve">
-    <value>First name and last name</value>
+    <value>Full name</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>
