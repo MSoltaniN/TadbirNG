@@ -93,7 +93,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetNewCostCenterAsync(int ccenterId)
         {
             var newCenter = await _repository.GetNewChildCostCenterAsync(
-                ccenterId > 0 ? ccenterId : (int?)null);
+                ccenterId > 0 ? ccenterId : null);
             if (newCenter == null)
             {
                 return BadRequestResult(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.CostCenter));

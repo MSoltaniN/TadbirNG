@@ -72,7 +72,12 @@ namespace SPPC.Tadbir.Persistence.Utility
             }
 
             var childrenCodes = await GetChildrenCodesAsync(parentId);
-            string newCode = NumericText.GetNewCodeValue(childrenCodes);
+            int childLevel = parent != null
+                ? parent.Level + 1
+                : 0;
+            string newCode = childrenCodes.Any()
+                ? NumericText.GetNewCodeValue(childrenCodes)
+                : NumericText.GetNewCodeValue(_treeConfig.Levels[childLevel].CodeLength);
             return GetNewChildItem(parent, newCode);
         }
 

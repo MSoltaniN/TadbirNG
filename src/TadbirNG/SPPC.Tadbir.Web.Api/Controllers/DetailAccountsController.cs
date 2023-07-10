@@ -122,7 +122,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetNewDetailAccountAsync(int faccountId)
         {
             var newDetail = await _repository.GetNewChildDetailAccountAsync(
-                faccountId > 0 ? faccountId : (int?)null);
+                faccountId > 0 ? faccountId : null);
             if (newDetail == null)
             {
                 return BadRequestResult(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.DetailAccount));

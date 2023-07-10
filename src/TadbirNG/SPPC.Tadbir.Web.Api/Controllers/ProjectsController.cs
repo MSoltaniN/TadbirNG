@@ -93,7 +93,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetNewProjectAsync(int projectId)
         {
             var newProject = await _repository.GetNewChildProjectAsync(
-                projectId > 0 ? projectId : (int?)null);
+                projectId > 0 ? projectId : null);
             if (newProject == null)
             {
                 return BadRequestResult(_strings.Format(AppStrings.ParentItemNotFound, AppStrings.Project));
