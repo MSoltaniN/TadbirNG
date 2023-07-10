@@ -42,7 +42,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
 
   public isActive: boolean = false;
-  public EditeMode: boolean = false;
+  public editMode: boolean = false;
   public searchValue: string;
   public noResultMessage: boolean = false;
   public relatedSearchValue: string;
@@ -332,7 +332,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         }
       }
       //this.sppcLoading.show();
-      this.accountRelationsService.getRelatedComponentModel(this.relatedComponentApiUrl,null,!this.EditeMode).subscribe(res => {
+      this.accountRelationsService.getRelatedComponentModel(this.relatedComponentApiUrl,null,!this.editMode).subscribe(res => {
         this.relatedComponentCategories = res;
         if (res.length) {
           this.relatedComponentCategories.map(item => item.parentId = -1);
@@ -393,9 +393,9 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.showMessage(this.updateMsg, MessageType.Succes);
         
         this.mainComponentModel = undefined;
-      this.EditeMode=true;
+      this.editMode=true;
       this.loadRelatedComponent();
-      this.EditeMode=false;
+      this.editMode=false;
 
     }, (error => {
         if (error)
@@ -438,9 +438,9 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
       this.showMessage(this.updateMsg, MessageType.Succes);
       
       this.mainComponentModel = undefined;
-      this.EditeMode=true;
+      this.editMode = true;
       this.loadRelatedComponent();
-      this.EditeMode=false;
+      this.editMode = false;
 
     }, (error => {
         if (error)
