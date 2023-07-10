@@ -53,20 +53,20 @@
     "White": "سفید",
     "SettingConfirm": "آیا تنظیمات داشبورد ذخیره شود؟",
     "AddWidget": "ویجت جدید",
-    "AddTab":"برگه جدید",
-    "TabName":"نام برگه",
+    "AddTab": "برگه جدید",
+    "TabName": "نام برگه",
     "WidgetSetting": "تنظیمات ویجت",
     "ChartType": "نوع نمودار",
-    "GeneralSettings":"تنظیمات عمومی",
-    "SeriesSettings":"سری ها",
-    "ParamSettings":"پارامتر",
-    "ChartColor":"رنگ",
-    "SerieName":"نام سری",
+    "GeneralSettings": "تنظیمات عمومی",
+    "SeriesSettings": "سری ها",
+    "ParamSettings": "پارامتر",
+    "ChartColor": "رنگ",
+    "SerieName": "نام سری",
     "ManageWidgets": "مدیریت ویجت ها",
-    "WidgetTitle":"عنوان ویجت",
-    "WidgetNoData":"!دیتا موجود نیست",
-    "WidgetInProgress":"در حال بارگذاری دیتا ...",
-    "RefreshDashboard":"تازه‌سازی داشبورد"
+    "WidgetTitle": "عنوان ویجت",
+    "WidgetNoData": "!دیتا موجود نیست",
+    "WidgetInProgress": "در حال بارگذاری دیتا ...",
+    "RefreshDashboard": "تازه‌سازی داشبورد"
   },
   "Exception": {
     "ErrorCode": "کد خطا",
@@ -471,8 +471,8 @@
     "OffLabel": "خیر",
     "ModelNotValid": "{0} معتبر نمیباشد",
     "Report": "گزارش",
-    "CollapseDetail":"بستن جزئیات",
-    "ExpandDetail":"بازکردن جزئیات"
+    "CollapseDetail": "بستن جزئیات",
+    "ExpandDetail": "بازکردن جزئیات"
   },
   "AccountBookSingle": {
     "RowNo": "ردیف",
@@ -973,6 +973,7 @@
     "DebitSum": "جمع بدهکار",
     "CreditSum": "جمع بستانکار",
     "Description": "شرح",
+    "Considerations": "ملاحضات",
     "New": "آرتیکل جدید",
     "Delete": "حذف آرتیکل",
     "Currency": "نوع ارز",
@@ -1308,14 +1309,14 @@
     "CashRegisters": "صندوق اسناد",
     "New": "صندوق جدید",
     "Edit": "اصلاح صندوق",
-    "Delete":"حذف صندوق",
+    "Delete": "حذف صندوق",
     "UsersAssigned": "کاربران تخصیص یافته به صندوق",
     "UsersCanBeAssigned": "کاربران قابل تخصیص به صندوق",
     "AssignUserToCashRegister": "تخصیص کاربر به صندوق"
   },
   "CheckBook": {
     "New": "دسته چک جدید",
-    "Save":"ذخیره",
+    "Save": "ذخیره",
     "FirstCheckBook": "اولین دسته چک",
     "LastCheckBook": "آخرین دسته چک",
     "NextCheckBook": "دسته چک بعدی",
@@ -1329,7 +1330,7 @@
     "PagesCount": "تعداد برگه",
     "Other": "سایر",
     "Archive": "بایگانی",
-    "UndoArchive":"برگشت از بایگانی",
+    "UndoArchive": "برگشت از بایگانی",
     "BankAccount": "حساب بانک",
     "CancelCheck": "ابطال چک",
     "UndoCancelCheck": "برگشت از ابطال",
@@ -1377,7 +1378,7 @@
     "DeletePayReceiveAccount": "حذف آرتیکل طرف حساب"
   },
   "UserValueFilter": {
-    "Title":"فرم انتخاب شرح های تکراری",
+    "Title": "فرم انتخاب شرح های تکراری",
     "Name": "نام",
     "RowNo": "ردیف"
   },

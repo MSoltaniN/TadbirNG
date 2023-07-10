@@ -38,10 +38,10 @@ export class AccountRelationsService extends BaseService {
       map(response => <any>(<Response>response)));
   }
 
-  public getRelatedComponentModel(apiUrl: string, filter?: FilterExpression) {
+  public getRelatedComponentModel(apiUrl: string, filter?: FilterExpression , isListChanged:boolean=true) {
     var intMaxValue = 2147483647
     var gridPaging = { pageIndex: 1, pageSize: intMaxValue };
-    var postItem = { Paging: gridPaging, filter: filter, sortColumns: null };
+    var postItem = { Paging: gridPaging, filter: filter, sortColumns: null , listChanged:isListChanged };
     var searchHeaders = this.httpHeaders;
     var postBody = JSON.stringify(postItem);
     var base64Body = btoa(encodeURIComponent(postBody));

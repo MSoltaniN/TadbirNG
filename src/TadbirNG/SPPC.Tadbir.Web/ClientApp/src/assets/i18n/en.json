@@ -856,6 +856,7 @@
     "DebitSum": "Debit Sum",
     "CreditSum": "Credit Sum",
     "Description": "Description",
+    "Considerations": "Considerations",
     "New": "New Article",
     "Delete": "Delete Article",
     "Currency": "Currency",
@@ -1351,7 +1352,7 @@
     "DeletePayReceiveAccount": "Delete the account article"
   },
   "UserValueFilter": {
-    "Title":"فرم انتخاب شرح های تکراری",
+    "Title": "فرم انتخاب شرح های تکراری",
     "Name": "Name",
     "RowNo": "Row No"
   },

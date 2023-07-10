@@ -1169,6 +1169,8 @@ INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Typ
     VALUES (795, 76, 'Id', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
+
+
 -- 1.2.1542
 UPDATE [Metadata].[Column]
 SET [Name] = N'PersonFullName', Expression = N'Person.FullName'
@@ -1176,3 +1178,32 @@ WHERE ViewID = 4 AND [Name] = N'PersonFirstName'
 
 DELETE FROM [Metadata].[Column]
 WHERE ViewID = 4 AND [Name] = N'PersonLastName'
+
+
+-- 1.2.1543
+UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+G' Where TitleKey = 'AccountGroup'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+U' Where TitleKey = 'Currency'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+H' Where TitleKey = 'AccountCollections'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+V' Where TitleKey = 'NewDraftVoucher'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+D' Where TitleKey = 'DraftVoucherByNo'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+Q' Where TitleKey = 'LastDraftVoucher'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+Y' Where TitleKey = 'IssueOpeningVoucher'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+U' Where TitleKey = 'IssueClosingVoucher'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+I' Where TitleKey = 'ClosingTempAccounts'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+Z' Where TitleKey = 'JournalLedger'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+B' Where TitleKey = 'AccountBook'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+J' Where TitleKey = 'CurrencyBook'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+T' Where TitleKey = 'TestBalance'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+I' Where TitleKey = 'ItemBalance'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+B' Where TitleKey = 'BalanceByAccount'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+R' Where TitleKey = 'ProfitLoss'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+K' Where TitleKey = 'BalanceSheet'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+C' Where TitleKey = 'Companies'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+B' Where TitleKey = 'Branches'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+H' Where TitleKey = 'Roles'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+W' Where TitleKey = 'RowAccessSettings'
+UPDATE Metadata.Command set HotKey = 'Ctrl+K' Where TitleKey = 'Settings'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+O' Where TitleKey = 'OperationLogs'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+S' Where TitleKey = 'SystemIssue'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+N' Where TitleKey = 'NewVoucher'
+UPDATE Metadata.Command set HotKey = NULL Where TitleKey = 'ReportManagement'

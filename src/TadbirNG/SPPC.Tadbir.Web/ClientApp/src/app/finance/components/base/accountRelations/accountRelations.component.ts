@@ -42,6 +42,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
 
   public isActive: boolean = false;
+  public editMode: boolean = false;
   public searchValue: string;
   public noResultMessage: boolean = false;
   public relatedSearchValue: string;
@@ -331,7 +332,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         }
       }
       //this.sppcLoading.show();
-      this.accountRelationsService.getRelatedComponentModel(this.relatedComponentApiUrl).subscribe(res => {
+      this.accountRelationsService.getRelatedComponentModel(this.relatedComponentApiUrl,null,!this.editMode).subscribe(res => {
         this.relatedComponentCategories = res;
         if (res.length) {
           this.relatedComponentCategories.map(item => item.parentId = -1);
@@ -388,11 +389,13 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     var apiUrl = this.relationUrl(model);
 
     this.accountRelationsService.edit<AccountItemRelationsInfo>(apiUrl, model).subscribe(response => {
-
-      this.showMessage(this.updateMsg, MessageType.Succes);
-
-      this.mainComponentModel = undefined;
+        
+        this.showMessage(this.updateMsg, MessageType.Succes);
+        
+        this.mainComponentModel = undefined;
+      this.editMode=true;
       this.loadRelatedComponent();
+      this.editMode=false;
 
     }, (error => {
         if (error)
@@ -417,7 +420,6 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     if (relationModel) {
       var keyArray = this.relatedComponentCheckedKeys.concat(relationModel.relatedItemIds, this.deleteKey);
       relationModel.relatedItemIds = keyArray;
-
       this.saveRelations(relationModel);
       this.isActive = false;
     }
@@ -431,13 +433,14 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     this.errorMessages = [];
 
     var apiUrl = this.relationUrl(relationsModel);
-
     this.accountRelationsService.insert<AccountItemRelationsInfo>(apiUrl, relationsModel).subscribe(response => {
       ////this.sppcLoading.hide();
       this.showMessage(this.updateMsg, MessageType.Succes);
-
+      
       this.mainComponentModel = undefined;
+      this.editMode = true;
       this.loadRelatedComponent();
+      this.editMode = false;
 
     }, (error => {
         if (error)
