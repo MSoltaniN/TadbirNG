@@ -400,7 +400,9 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
                 .pipe(
                   catchError(() => {
                     this.deleteConfirm = false;
-                    this.addNew();
+                    if (!this.navigateOperation)
+                      this.addNew();
+
                     return of();
                   })
                 )

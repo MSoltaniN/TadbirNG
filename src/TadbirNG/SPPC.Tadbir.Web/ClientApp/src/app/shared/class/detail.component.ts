@@ -31,6 +31,7 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
    * برای شناسایی فرمهایی که در بدو ورود ساخته وذخیره میشوند
    */
   public insertedInNew = false;
+  public navigateOperation: boolean;
 
   @Input() public errorMessages: string[];
 
@@ -201,6 +202,7 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
 
     let modelCopy1 = {};
     let modelCopy2 = {};
+console.log(model);
 
     if (model) {
       Object.keys(model).forEach(key => {
@@ -219,7 +221,7 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
       return (JSON.stringify(modelCopy1) != JSON.stringify(modelCopy2)) || (this.insertedInNew && self.isNew?true:false);
     }
     else {
-      return true;
+      return false;
     }
   }
 
