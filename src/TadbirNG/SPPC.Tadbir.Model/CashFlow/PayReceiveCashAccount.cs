@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SPPC.Tadbir.Model.CashFlow
 {
@@ -19,7 +15,7 @@ namespace SPPC.Tadbir.Model.CashFlow
         public virtual int? AccountId { get; set; }
 
         /// <summary>
-        /// شناسه دیتابیسی مولفه تفضیلی شناور در بردار حساب        
+        /// شناسه دیتابیسی مولفه تفصیلی شناور در بردار حساب        
         /// </summary>
         public virtual int? DetailAccountId { get; set; }
 

@@ -19,7 +19,8 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت حساب‌های نقدی را پیاده سازی می کند
     /// </summary>
-    public class PayReceiveCashAccountRepository : EntityLoggingRepository<PayReceiveCashAccount, PayReceiveCashAccountViewModel>, IPayReceiveCashAccountRepository
+    public class PayReceiveCashAccountRepository
+        : EntityLoggingRepository<PayReceiveCashAccount, PayReceiveCashAccountViewModel>, IPayReceiveCashAccountRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -77,7 +78,8 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public async Task<PayReceiveCashAccountSummaryViewModel> GetCashAccountArticleSummaryAsync(int cashAccountArticleId)
+        public async Task<PayReceiveCashAccountSummaryViewModel> GetCashAccountArticleSummaryAsync(
+            int cashAccountArticleId)
         {
             PayReceiveCashAccountSummaryViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveCashAccount>();
@@ -162,7 +164,7 @@ namespace SPPC.Tadbir.Persistence
             var payReceive = await repository
                 .GetEntityQuery()
                 .Where(pr => pr.CashAccounts.Any(
-                    aa => cashAccountArticleIds.Any(id => id == aa.Id)))
+                    ca => cashAccountArticleIds.Any(id => id == ca.Id)))
                 .SingleOrDefaultAsync();
             if (payReceive != null)
             {
@@ -209,7 +211,15 @@ namespace SPPC.Tadbir.Persistence
                 .GetEntityQuery()
                 .Where(a => a.PayReceiveId == payReceiveId && a.AccountId.HasValue)
                 .AsEnumerable()
-                .GroupBy(acc => new { acc.AccountId, acc.DetailAccountId, acc.CostCenterId, acc.ProjectId, acc.SourceAppId, acc.BankOrderNo })
+                .GroupBy(acc => new
+                    {
+                        acc.AccountId,
+                        acc.DetailAccountId,
+                        acc.CostCenterId,
+                        acc.ProjectId,
+                        acc.SourceAppId,
+                        acc.BankOrderNo
+                    })
                 .Where(group => group.Count() > 1)
                 .Select(group => new
                 {
@@ -245,7 +255,15 @@ namespace SPPC.Tadbir.Persistence
             var aggregateCount = await repository
                 .GetEntityQuery()
                 .Where(article => article.PayReceiveId == payReceiveId && article.AccountId != null)
-                .GroupBy(acc => new { acc.AccountId, acc.DetailAccountId, acc.CostCenterId, acc.ProjectId, acc.SourceAppId, acc.BankOrderNo })
+                .GroupBy(acc => new
+                    {
+                        acc.AccountId,
+                        acc.DetailAccountId,
+                        acc.CostCenterId,
+                        acc.ProjectId,
+                        acc.SourceAppId,
+                        acc.BankOrderNo
+                    })
                 .Where(articles => articles.Count() > 1)
                 .CountAsync();
 
@@ -296,7 +314,8 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        protected override void UpdateExisting(PayReceiveCashAccountViewModel cashAccountArticleView, PayReceiveCashAccount cashAccountArticle)
+        protected override void UpdateExisting(
+            PayReceiveCashAccountViewModel cashAccountArticleView, PayReceiveCashAccount cashAccountArticle)
         {
             cashAccountArticle.AccountId = GetNullableId(cashAccountArticleView.FullAccount.Account);
             cashAccountArticle.DetailAccountId = GetNullableId(cashAccountArticleView.FullAccount.DetailAccount);
