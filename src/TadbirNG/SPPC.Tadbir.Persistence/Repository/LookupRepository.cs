@@ -10,6 +10,7 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
@@ -684,6 +685,31 @@ namespace SPPC.Tadbir.Persistence
         }
 
         #endregion
+
+        #region Treasury Subsystem lookup
+
+        /// <inheritdoc/>
+        public async Task<IList<KeyValue>> GetSourceApps(int sourceAppType)
+        {
+            var result = await Repository
+                .GetAllQuery<SourceApp>(ViewId.SourceApp)
+                .Where(sa => sa.Type == sourceAppType)
+                .Select(sa => Mapper.Map<KeyValue>(sa))
+                .ToListAsync();
+            var noneItem = new KeyValue
+            {
+                Key = null,
+                Value = Context.Localize(AppStrings.None)
+            };
+
+            result.Add(noneItem);
+            result = result
+                .OrderBy(sa => Convert.ToInt32(sa.Key ?? "0"))
+                .ToList();
+            return result;
+        }
+
+        #endregion Treasury Subsystem lookup
 
         private static string GetFullName(User user)
         {

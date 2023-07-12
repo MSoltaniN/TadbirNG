@@ -92,6 +92,6 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
         /// <returns>در صورت وجود ردیف مقدار درست و در غیر این صورت نادرست برمی گرداند</returns>
-        Task<bool> HasAccountArticlestoAggregateAsync(int payReceiveId);
+        Task<bool> HasAccountArticlesToAggregateAsync(int payReceiveId);
     }
 }

@@ -115,5 +115,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all row premissions applicable to a view specified by unique identifier
         /// </summary>
         public const string ValidRowPermissionsUrl = "lookup/rowaccess/views/{viewId:min(1)}";
+
+        /// <summary>
+        /// API client URL for lookup collection of all source/application based on type
+        /// </summary>
+        public const string SourceApps = "lookup/source-apps/types/{0}";
+
+        /// <summary>
+        /// API server route URL for lookup collection of all source/application based on type
+        /// </summary>
+        public const string SourceAppsUrl = "lookup/source-apps/types/{sourceAppType}";
     }
 }
