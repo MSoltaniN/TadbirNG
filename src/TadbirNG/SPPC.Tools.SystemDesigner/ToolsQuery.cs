@@ -35,5 +35,11 @@ FROM Config.SysLogSetting [sls]
         public const string AddDbVersion = @"
 INSERT INTO [Core].[Version] ([VersionID], [Number])
 VALUES (1, '{0}')";
+
+        public const string UsersLookup = @"
+SELECT [u].[UserID], [u].[UserName], [p].[FullName]
+FROM [Auth].[User] u INNER JOIN [Contact].[Person] p
+    ON [u].[UserID] = [p].[UserID]
+WHERE [u].[IsEnabled] = 1";
     }
 }

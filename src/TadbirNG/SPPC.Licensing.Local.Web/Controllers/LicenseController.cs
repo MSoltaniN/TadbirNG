@@ -192,7 +192,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
         [Route(LicenseApi.CurrentSessionUrl)]
         public async Task<IActionResult> DeleteCurrentSessionAsync()
         {
-            string userAgent = Request.Headers["User-Agent"];
+            string userAgent = (string)Request.Headers["User-Agent"] ?? "Generic HTTP Client";
             await _repository.DeleteSessionAsync(userAgent);
             return NoContent();
         }
@@ -267,7 +267,7 @@ namespace SPPC.Licensing.Local.Web.Controllers
 
         private async Task RegisterUserSessionAsync(int userId)
         {
-            string userAgent = Request.Headers["User-Agent"];
+            string userAgent = (string)Request.Headers["User-Agent"] ?? "Generic HTTP Client";
             string ipAddress = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
             await _repository.SaveSessionAsync(userAgent, ipAddress, userId);
         }

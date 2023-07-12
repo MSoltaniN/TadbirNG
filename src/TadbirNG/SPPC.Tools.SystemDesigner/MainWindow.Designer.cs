@@ -61,6 +61,7 @@
             this.testingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testSuitesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testRunsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -97,49 +98,49 @@
             // menuMetadataEntities
             // 
             this.menuMetadataEntities.Name = "menuMetadataEntities";
-            this.menuMetadataEntities.Size = new System.Drawing.Size(224, 26);
+            this.menuMetadataEntities.Size = new System.Drawing.Size(174, 26);
             this.menuMetadataEntities.Text = "&Entities";
             this.menuMetadataEntities.Click += new System.EventHandler(this.MetadataEntities_Click);
             // 
             // menuMetadataListViews
             // 
             this.menuMetadataListViews.Name = "menuMetadataListViews";
-            this.menuMetadataListViews.Size = new System.Drawing.Size(224, 26);
+            this.menuMetadataListViews.Size = new System.Drawing.Size(174, 26);
             this.menuMetadataListViews.Text = "&List Views";
             this.menuMetadataListViews.Click += new System.EventHandler(this.MetadataListViews_Click);
             // 
             // menuMetadataPermissions
             // 
             this.menuMetadataPermissions.Name = "menuMetadataPermissions";
-            this.menuMetadataPermissions.Size = new System.Drawing.Size(224, 26);
+            this.menuMetadataPermissions.Size = new System.Drawing.Size(174, 26);
             this.menuMetadataPermissions.Text = "&Permissions";
             this.menuMetadataPermissions.Click += new System.EventHandler(this.MetadataPermissions_Click);
             // 
             // menuMetadataReports
             // 
             this.menuMetadataReports.Name = "menuMetadataReports";
-            this.menuMetadataReports.Size = new System.Drawing.Size(224, 26);
+            this.menuMetadataReports.Size = new System.Drawing.Size(174, 26);
             this.menuMetadataReports.Text = "&Reports";
             this.menuMetadataReports.Click += new System.EventHandler(this.MetadataReports_Click);
             // 
             // menuMetadataLogSettings
             // 
             this.menuMetadataLogSettings.Name = "menuMetadataLogSettings";
-            this.menuMetadataLogSettings.Size = new System.Drawing.Size(224, 26);
+            this.menuMetadataLogSettings.Size = new System.Drawing.Size(174, 26);
             this.menuMetadataLogSettings.Text = "&Log Settings";
             this.menuMetadataLogSettings.Click += new System.EventHandler(this.MetadataLogSettings_Click);
             // 
             // menuMetadataMenus
             // 
             this.menuMetadataMenus.Name = "menuMetadataMenus";
-            this.menuMetadataMenus.Size = new System.Drawing.Size(224, 26);
+            this.menuMetadataMenus.Size = new System.Drawing.Size(174, 26);
             this.menuMetadataMenus.Text = "&Menus";
             this.menuMetadataMenus.Click += new System.EventHandler(this.MetadataMenus_Click);
             // 
             // menuMetadataShortcuts
             // 
             this.menuMetadataShortcuts.Name = "menuMetadataShortcuts";
-            this.menuMetadataShortcuts.Size = new System.Drawing.Size(224, 26);
+            this.menuMetadataShortcuts.Size = new System.Drawing.Size(174, 26);
             this.menuMetadataShortcuts.Text = "&Shortcuts";
             this.menuMetadataShortcuts.Click += new System.EventHandler(this.MetadataShortcuts_Click);
             // 
@@ -178,21 +179,22 @@
             // menuGenerateBlankController
             // 
             this.menuGenerateBlankController.Name = "menuGenerateBlankController";
-            this.menuGenerateBlankController.Size = new System.Drawing.Size(224, 26);
+            this.menuGenerateBlankController.Size = new System.Drawing.Size(199, 26);
             this.menuGenerateBlankController.Text = "API Controller...";
             this.menuGenerateBlankController.Click += new System.EventHandler(this.GenerateApiController_Click);
             // 
             // menuGenerateFixDbScript
             // 
             this.menuGenerateFixDbScript.Name = "menuGenerateFixDbScript";
-            this.menuGenerateFixDbScript.Size = new System.Drawing.Size(224, 26);
+            this.menuGenerateFixDbScript.Size = new System.Drawing.Size(199, 26);
             this.menuGenerateFixDbScript.Text = "Arabic Fix Script";
             this.menuGenerateFixDbScript.Click += new System.EventHandler(this.GenerateFixDbScript_Click);
             // 
             // menuManage
             // 
             this.menuManage.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuManageSecurityTicket});
+            this.menuManageSecurityTicket,
+            this.loginToolStripMenuItem});
             this.menuManage.Name = "menuManage";
             this.menuManage.Size = new System.Drawing.Size(62, 24);
             this.menuManage.Text = "&Utility";
@@ -219,7 +221,7 @@
             // dashboardToolStripMenuItem
             // 
             this.dashboardToolStripMenuItem.Name = "dashboardToolStripMenuItem";
-            this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
             this.dashboardToolStripMenuItem.Text = "&Dashboard";
             // 
             // manageToolStripMenuItem
@@ -229,25 +231,25 @@
             this.abilitiesToolStripMenuItem,
             this.featuresToolStripMenuItem});
             this.manageToolStripMenuItem.Name = "manageToolStripMenuItem";
-            this.manageToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.manageToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
             this.manageToolStripMenuItem.Text = "Ma&nage";
             // 
             // goalsToolStripMenuItem
             // 
             this.goalsToolStripMenuItem.Name = "goalsToolStripMenuItem";
-            this.goalsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.goalsToolStripMenuItem.Size = new System.Drawing.Size(147, 26);
             this.goalsToolStripMenuItem.Text = "&Goals";
             // 
             // abilitiesToolStripMenuItem
             // 
             this.abilitiesToolStripMenuItem.Name = "abilitiesToolStripMenuItem";
-            this.abilitiesToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.abilitiesToolStripMenuItem.Size = new System.Drawing.Size(147, 26);
             this.abilitiesToolStripMenuItem.Text = "&Abilities";
             // 
             // featuresToolStripMenuItem
             // 
             this.featuresToolStripMenuItem.Name = "featuresToolStripMenuItem";
-            this.featuresToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.featuresToolStripMenuItem.Size = new System.Drawing.Size(147, 26);
             this.featuresToolStripMenuItem.Text = "&Features";
             // 
             // scheduleToolStripMenuItem
@@ -257,25 +259,25 @@
             this.tasksToolStripMenuItem,
             this.releasesToolStripMenuItem});
             this.scheduleToolStripMenuItem.Name = "scheduleToolStripMenuItem";
-            this.scheduleToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.scheduleToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
             this.scheduleToolStripMenuItem.Text = "&Schedule";
             // 
             // sprintsToolStripMenuItem
             // 
             this.sprintsToolStripMenuItem.Name = "sprintsToolStripMenuItem";
-            this.sprintsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.sprintsToolStripMenuItem.Size = new System.Drawing.Size(149, 26);
             this.sprintsToolStripMenuItem.Text = "&Sprints";
             // 
             // tasksToolStripMenuItem
             // 
             this.tasksToolStripMenuItem.Name = "tasksToolStripMenuItem";
-            this.tasksToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.tasksToolStripMenuItem.Size = new System.Drawing.Size(149, 26);
             this.tasksToolStripMenuItem.Text = "&Tasks";
             // 
             // releasesToolStripMenuItem
             // 
             this.releasesToolStripMenuItem.Name = "releasesToolStripMenuItem";
-            this.releasesToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.releasesToolStripMenuItem.Size = new System.Drawing.Size(149, 26);
             this.releasesToolStripMenuItem.Text = "&Releases";
             // 
             // teamToolStripMenuItem
@@ -284,19 +286,19 @@
             this.usersToolStripMenuItem,
             this.rolesToolStripMenuItem});
             this.teamToolStripMenuItem.Name = "teamToolStripMenuItem";
-            this.teamToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.teamToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
             this.teamToolStripMenuItem.Text = "Tea&m";
             // 
             // usersToolStripMenuItem
             // 
             this.usersToolStripMenuItem.Name = "usersToolStripMenuItem";
-            this.usersToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.usersToolStripMenuItem.Size = new System.Drawing.Size(128, 26);
             this.usersToolStripMenuItem.Text = "&Users";
             // 
             // rolesToolStripMenuItem
             // 
             this.rolesToolStripMenuItem.Name = "rolesToolStripMenuItem";
-            this.rolesToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.rolesToolStripMenuItem.Size = new System.Drawing.Size(128, 26);
             this.rolesToolStripMenuItem.Text = "&Roles";
             // 
             // testingToolStripMenuItem
@@ -305,20 +307,27 @@
             this.testSuitesToolStripMenuItem,
             this.testRunsToolStripMenuItem});
             this.testingToolStripMenuItem.Name = "testingToolStripMenuItem";
-            this.testingToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.testingToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
             this.testingToolStripMenuItem.Text = "&Testing";
             // 
             // testSuitesToolStripMenuItem
             // 
             this.testSuitesToolStripMenuItem.Name = "testSuitesToolStripMenuItem";
-            this.testSuitesToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.testSuitesToolStripMenuItem.Size = new System.Drawing.Size(161, 26);
             this.testSuitesToolStripMenuItem.Text = "Test &Suites";
             // 
             // testRunsToolStripMenuItem
             // 
             this.testRunsToolStripMenuItem.Name = "testRunsToolStripMenuItem";
-            this.testRunsToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.testRunsToolStripMenuItem.Size = new System.Drawing.Size(161, 26);
             this.testRunsToolStripMenuItem.Text = "Test &Runs";
+            // 
+            // loginToolStripMenuItem
+            // 
+            this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
+            this.loginToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.loginToolStripMenuItem.Text = "Login";
+            this.loginToolStripMenuItem.Click += new System.EventHandler(this.Login_Click);
             // 
             // MainWindow
             // 
@@ -374,6 +383,7 @@
         private System.Windows.Forms.ToolStripMenuItem testingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testSuitesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testRunsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loginToolStripMenuItem;
     }
 }
 
