@@ -317,6 +317,7 @@ export class SystemIssueComponent
         -1
       ) {
         this.listChanged = true;
+        this.customListChanged=true;
         this.clickedIssues.push(this.selectedSystemIssue.id);
       } else this.listChanged = false;
 
