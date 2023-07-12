@@ -222,7 +222,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<SourceApp>();
             var lastByNo = await repository
                 .GetEntityQuery()
-                .OrderByDescending(sourceApp => sourceApp.Code)
+                .OrderByDescending(sourceApp => sourceApp.Id)
                 .FirstOrDefaultAsync();
             return (lastByNo != null) ? Int32.Parse(lastByNo.Code) : 0;
         }

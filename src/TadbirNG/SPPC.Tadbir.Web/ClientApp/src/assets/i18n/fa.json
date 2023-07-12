@@ -66,7 +66,8 @@
     "WidgetTitle": "عنوان ویجت",
     "WidgetNoData": "!دیتا موجود نیست",
     "WidgetInProgress": "در حال بارگذاری دیتا ...",
-    "RefreshDashboard": "تازه‌سازی داشبورد"
+    "RefreshDashboard": "تازه‌سازی داشبورد",
+    "WidgetList": "لیست ویجت ها"
   },
   "Exception": {
     "ErrorCode": "کد خطا",

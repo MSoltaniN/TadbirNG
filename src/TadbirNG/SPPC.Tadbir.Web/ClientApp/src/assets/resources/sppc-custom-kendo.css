@@ -5824,13 +5824,18 @@ auto-generated-grid-setting,selectform-grid-setting,grid-filter {
     margin: 0;
 }
 
-    .k-grid-toolbar .k-button {
-        vertical-align: middle;
-    }
+.tLtr auto-generated-grid-setting, .tLtr selectform-grid-setting, .tLtr grid-filter {
+    float: right;
+    margin: 0;
+}
 
-        .k-grid-toolbar .k-button + .k-button {
-            /*margin-left: 4px;*/
-        }
+.k-grid-toolbar .k-button {
+    vertical-align: middle;
+}
+
+.k-grid-toolbar .k-button + .k-button {
+    /*margin-left: 4px;*/
+}
 
 .k-grouping-header {
     display: block;

@@ -61,7 +61,8 @@
     "WidgetTitle": "Widget title",
     "WidgetNoData": "Data is not available!",
     "WidgetInProgress": "Loading data ...",
-    "RefreshDashboard": "Refresh Dashboard"
+    "RefreshDashboard": "Refresh Dashboard",
+    "WidgetList": "Widget list"
   },
   "Exception": {
     "ErrorCode": "Error Code",

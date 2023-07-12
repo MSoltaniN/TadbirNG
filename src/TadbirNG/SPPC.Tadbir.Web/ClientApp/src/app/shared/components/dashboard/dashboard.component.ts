@@ -582,7 +582,7 @@ export class DashboardComponent
     if (!this.isDashboardEditMode) this.goToEditMode();
 
     this.dialogRef = this.dialogService.open({
-      title: this.getText("Dashboard.AddWidget"),
+      title: this.getText("Dashboard.WidgetList"),
       content: AddWidgetComponent,
     });
 

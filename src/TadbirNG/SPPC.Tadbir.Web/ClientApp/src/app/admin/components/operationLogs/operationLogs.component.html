@@ -106,7 +106,8 @@
         <div class="col-xs-12 col-sm-6">
           <button
             (click)="editHandler()"
-            class="k-button k-button-icon pull-left"
+            class="k-button k-button-icon"
+            [ngClass]="CurrentLanguage == 'fa'? 'pull-left': 'pull-right' "
             [disabled]="selectedRows.length != 1"
             title="{{ 'OperationLog.Detail' | translate }}"
           >
