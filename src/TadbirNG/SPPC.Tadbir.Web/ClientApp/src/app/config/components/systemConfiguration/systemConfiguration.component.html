@@ -65,7 +65,7 @@
         <label for="radio1">{{ 'Settings.Permanent' | translate }}</label>
         <input
             type="radio" [(ngModel)]="inventoryMode"
-            name="inventoryMode" class="k-radio mx-7" id="radio1" [value]="0"
+            name="inventoryMode" class="k-radio mx-7" id="radio1" [value]="InventoryModeItem.Perpetual"
           />
 
         <label for="radio2" [class]="CurrentLanguage == 'fa'? 'mr-25': 'ml-25' ">
@@ -73,7 +73,7 @@
         </label>
         <input
             type="radio" [(ngModel)]="inventoryMode"
-            name="inventoryMode" class="k-radio mx-7" id="radio2" [value]="1"
+            name="inventoryMode" class="k-radio mx-7" id="radio2" [value]="InventoryModeItem.Periodic"
           />
 
       </div>

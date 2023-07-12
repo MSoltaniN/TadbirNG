@@ -15,6 +15,7 @@ import { ViewName } from '@sppc/shared/security';
 import { LookupApi } from '@sppc/shared/services/api';
 import { CurrencyService } from '@sppc/finance/service';
 import { CurrencyApi, VoucherApi, AccountApi } from '@sppc/finance/service/api';
+import {InventoryMode} from "@sppc/config/enums/inventoryMode";
 
 
 
@@ -57,6 +58,7 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
     { key: 0, value: "Settings.PersianCalendar" },
     { key: 1, value: "Settings.ADCalendar" }
   ];
+  InventoryModeItem=InventoryMode;
   inventoryMode: number = 0;
 
   isRefreshTreeView: boolean = false;
