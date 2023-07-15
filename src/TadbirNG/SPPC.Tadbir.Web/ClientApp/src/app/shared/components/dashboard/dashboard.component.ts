@@ -156,6 +156,7 @@ export class DashboardComponent
   grossChartData;
   netChartData;
   manageWidgets = DashboardPermissions.ManageWidgets;
+  refreshWidgets: boolean;
 
   subscription: Subscription;
 
@@ -378,15 +379,28 @@ export class DashboardComponent
     } else {
       if (refreshIcon && refreshIcon.classList.contains('toSpin'))
         refreshIcon.classList.remove('toSpin');
+      
+      if (this.refreshWidgets) {
+        let dashboard = JSON.stringify(this.currentDashboard);
+        this.currentDashboard = undefined;
+        setTimeout(() => {
+          this.currentDashboard = JSON.parse(dashboard);
+          this.refreshWidgets = false;
+        }, 50);
+      }
     }
   }
 
   onRefreshDashboardClick() {
+    this.refreshWidgets = true;
+
     this.spinRefreshIcon(`#refreshDashboard`,true);
     this.refreshDashboard()
   }
 
   onRefreshWidget(tab,widget) {
+    this.refreshWidgets = true;
+
     this.spinRefreshIcon(`#refresh-${widget.id}`,true);
     this.widgetService.getWidgets(widget.id).subscribe((res:Widget) =>{
       this.getWidgetData(res.typeId,widget.id,tab.id,res.title,widget.series);
