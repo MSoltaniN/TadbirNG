@@ -3,14 +3,14 @@
 namespace SPPC.Tadbir.ViewModel.CashFlow
 {
     /// <summary>
-    /// خلاصه اطلاعات مورد نیاز از طرف حساب سرویس دریافت/پرداخت
+    /// خلاصه اطلاعات مورد نیاز از حساب نقدی سرویس دریافت/پرداخت
     /// </summary>
-    public class PayReceiveAccountSummaryViewModel
+    public class PayReceiveCashAccountSummaryViewModel
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        public PayReceiveAccountSummaryViewModel()
+        public PayReceiveCashAccountSummaryViewModel()
         {
 
         }
@@ -21,13 +21,8 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         public int Id { get; set; }
 
         /// <summary>
-        /// مبلغ آرتیکل طرف حساب
+        /// مبلغ آرتیکل حساب نقدی
         /// </summary>
         public decimal Amount { get; set; }
-
-        /// <summary>
-        /// ملاحظات آرتیکل طرف حساب
-        /// </summary>
-        public string Description { get; set; }
     }
 }

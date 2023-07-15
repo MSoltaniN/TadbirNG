@@ -237,5 +237,15 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<string>> GetValidRowPermissionsAsync(int viewId);
 
         #endregion
+
+        #region Treasury Subsystem lookup
+
+        /// <summary>
+        /// به روش آسنکرون، موجودیت های پایه تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه موجودیت های پایه تعریف شده</returns>
+        Task<IList<KeyValue>> GetSourceApps(int type);
+
+        #endregion Treasury Subsystem lookup
     }
 }

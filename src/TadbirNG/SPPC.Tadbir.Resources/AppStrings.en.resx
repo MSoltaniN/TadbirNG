@@ -3990,11 +3990,11 @@
   <data name="GroupDeleteAccounts" xml:space="preserve">
     <value>Group delete account articles</value>
   </data>
-  <data name="RemoveInvalidRows" xml:space="preserve">
-    <value>Remove invalid rows</value>
+  <data name="RemoveInvalidAccountLines" xml:space="preserve">
+    <value>Remove invalid account articles</value>
   </data>
-  <data name="RowsAggregation" xml:space="preserve">
-    <value>Rows aggregation</value>
+  <data name="AggregateAccountLines" xml:space="preserve">
+    <value>Aggregate account articles</value>
   </data>
   <data name="NotFoundInvalidRows" xml:space="preserve">
     <value>{0} of this {1} has no invalid rows to delete.</value>
@@ -4031,5 +4031,62 @@
   </data>
   <data name="Remarks" xml:space="preserve">
     <value>Remarks</value>
+  </data>
+  <data name="PayReceiveCashAccount" xml:space="preserve">
+    <value>Cash account article</value>
+  </data>
+  <data name="CreateCashAccountLine" xml:space="preserve">
+    <value>Create cash account article</value>
+  </data>
+  <data name="DeleteCashAccountLine" xml:space="preserve">
+    <value>Delete cash account article</value>
+  </data>
+  <data name="EditCashAccountLine" xml:space="preserve">
+    <value>Edit cash account article</value>
+  </data>
+  <data name="ExportCashAccountLines" xml:space="preserve">
+    <value>Export cash account articles</value>
+  </data>
+  <data name="FilterCashAccountLines" xml:space="preserve">
+    <value>Filter cash account articles</value>
+  </data>
+  <data name="GroupDeleteCashAccountLines" xml:space="preserve">
+    <value>Group delete cash account articles</value>
+  </data>
+  <data name="PrintCashAccountLines" xml:space="preserve">
+    <value>Print cash account articles</value>
+  </data>
+  <data name="PrintPreviewCashAccountLines" xml:space="preserve">
+    <value>Print preview cash account articles</value>
+  </data>
+  <data name="AggregateCashAccountLines" xml:space="preserve">
+    <value>Aggregate cash account articles</value>
+  </data>
+  <data name="RemoveInvalidCashAccountLines" xml:space="preserve">
+    <value>Remove invalid cash account articles</value>
+  </data>
+  <data name="CantChangeDetailEntity" xml:space="preserve">
+    <value>This {0} is either confirmed or approved and the {1} data cannot be changed.</value>
+  </data>
+  <data name="CantConfirmWithInvalidRows" xml:space="preserve">
+    <value>It is not possible to confirm form with invalid {0}.</value>
+  </data>
+  <data name="Bank" xml:space="preserve">
+    <value>Bank</value>
+  </data>
+  <data name="CantConfirmUnbalancedForm" xml:space="preserve">
+    <value>Because unbalanced between the {0} and {1}, not possible to confirm {2}.</value>
+  </data>
+  <data name="SelectedAccountNotInCollection" xml:space="preserve">
+    <value>Selected account is not related to the {0} collection.</value>
+  </data>
+  <data name="Applications" xml:space="preserve">
+    <value>Applications</value>
+  </data>
+  <data name="InvalidSourceAppInForm" xml:space="preserve">
+    <value>Selected {0} are inaccessible or the type is {1} and invalid for {2}.</value>
+  </data>
+  <data name="Sources" xml:space="preserve">
+    <value>Sources</value>
   </data>
 </root>

@@ -108,10 +108,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeletePayReceiveAsync(int payReceiveId, int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
-            var payReceive = await repository.GetByIDWithTrackingAsync(payReceiveId, pr => pr.Accounts);
+            var payReceive = await repository.GetByIDWithTrackingAsync(payReceiveId, pr => pr.Accounts, pr => pr.CashAccounts);
             if (payReceive != null)
             {
                 payReceive.Accounts.Clear();
+                payReceive.CashAccounts.Clear();
                 int entityTypeId = GetEntityTypeId(type);
                 await DeleteAsync(repository, payReceive, OperationId.Delete, entityTypeId);
             }
@@ -320,6 +321,37 @@ namespace SPPC.Tadbir.Persistence
             return await repository.
                 GetEntityQuery()
                 .AnyAsync(a => a.PayReceiveId == payReceiveId);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> HasCashAccountArticleAsync(int payReceiveId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveCashAccount>();
+            return await repository.
+                GetEntityQuery()
+                .AnyAsync(ca => ca.PayReceiveId == payReceiveId);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> IsUnbalancedPayReceive(int payReceiveId)
+        {
+            bool unbalanced = true;
+            var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
+            var result = await repository.
+                GetEntityQuery()
+                .Where(pr => pr.Id == payReceiveId)
+                .Select(pr => new 
+                {
+                    AccountsSum = pr.Accounts.Sum(a => a.Amount),
+                    CashAccountsSum = pr.CashAccounts.Sum(c => c.Amount)
+                })
+                .SingleOrDefaultAsync();
+            if(result != null)
+            {
+                unbalanced = (result.AccountsSum - result.CashAccountsSum) != 0;
+            }
+
+            return unbalanced;
         }
 
         private async Task<DateTime> GetLastPayReceiveDateAsync(int type)

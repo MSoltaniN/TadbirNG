@@ -100,6 +100,9 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<SourceApp, SourceAppViewModel>()
                 .ForMember(dest => dest.TypeName, opts => opts.MapFrom(src => SourceAppHelper.GetTypeName(src)));
             mapperConfig.CreateMap<SourceAppViewModel, SourceApp>();
+            mapperConfig.CreateMap<SourceApp, KeyValue>()
+               .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+               .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
             mapperConfig.CreateMap<PayReceive, PayReceiveViewModel>()
                 .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
                 .ForMember(dest => dest.Reference, opts => opts.NullSubstitute(String.Empty))
@@ -109,7 +112,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.IsConfirmed, opts => opts.MapFrom(src => src.ConfirmedById != null));
             mapperConfig.CreateMap<PayReceiveViewModel, PayReceive>();
             mapperConfig.CreateMap<PayReceiveAccount, PayReceiveAccountViewModel>()
-                .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.Remarks, opts => opts.NullSubstitute(String.Empty))
                 .ForMember(dest => dest.FullAccount,opts => opts.MapFrom(
                     src => BuildFullAccount(src.Account, src.DetailAccount, src.CostCenter, src.Project)));
             mapperConfig.CreateMap<PayReceiveAccountViewModel, PayReceiveAccount>()
@@ -118,6 +121,17 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.CostCenterId = GetNullableId(viewModel.FullAccount.CostCenter))
                 .AfterMap((viewModel, model) => model.ProjectId = GetNullableId(viewModel.FullAccount.Project));
             mapperConfig.CreateMap<PayReceiveAccount, PayReceiveAccountSummaryViewModel>();
+            mapperConfig.CreateMap<PayReceiveCashAccount, PayReceiveCashAccountViewModel>()
+                .ForMember(dest => dest.Remarks, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.BankOrderNo, opts => opts.NullSubstitute(String.Empty))
+                .ForMember(dest => dest.FullAccount, opts => opts.MapFrom(
+                    src => BuildFullAccount(src.Account, src.DetailAccount, src.CostCenter, src.Project)));
+            mapperConfig.CreateMap<PayReceiveCashAccountViewModel, PayReceiveCashAccount>()
+                .AfterMap((viewModel, model) => model.AccountId = GetNullableId(viewModel.FullAccount.Account))
+                .AfterMap((viewModel, model) => model.DetailAccountId = GetNullableId(viewModel.FullAccount.DetailAccount))
+                .AfterMap((viewModel, model) => model.CostCenterId = GetNullableId(viewModel.FullAccount.CostCenter))
+                .AfterMap((viewModel, model) => model.ProjectId = GetNullableId(viewModel.FullAccount.Project));
+            mapperConfig.CreateMap<PayReceiveCashAccount, PayReceiveCashAccountSummaryViewModel>();
         }
 
         private static void MapCheckTypes(IMapperConfigurationExpression mapperConfig)

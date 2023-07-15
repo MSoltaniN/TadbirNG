@@ -250,6 +250,19 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// تغییرات انجام شده را اعمال کرده و در صورت نیاز، لاگ عملیاتی را ایجاد می کند
+        /// </summary>
+        /// <param name="operation">کد عملیات انجام شده</param>
+        /// <param name="entityTypeId">شناسه نوع موجودیت </param>
+        protected virtual async Task FinalizeActionAsync(OperationId operation, int? entityTypeId = null)
+        {
+            await UnitOfWork.CommitAsync();
+            entityTypeId ??= EntityType;
+            OnEntityAction(operation, entityTypeId);
+            await TrySaveLogAsync();
+        }
+
+        /// <summary>
         /// به روش آسنکرون، رکورد مشخص شده با شناسه دیتابیسی داده شده را
         /// به همراه کلیه اطلاعات وابسته به آن از دیتابیس حذف می کند
         /// </summary>

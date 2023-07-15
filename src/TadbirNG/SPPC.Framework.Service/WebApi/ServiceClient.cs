@@ -450,7 +450,17 @@ namespace SPPC.Framework.Service
                 throw new HttpRequestException("Error occurred while executing Web API request.");
             }
 
+            ExtractHeaders(response, serviceResponse);
             return serviceResponse;
+        }
+
+        private static void ExtractHeaders(HttpResponseMessage httpResponse, ServiceResponse serviceResponse)
+        {
+            foreach (var header in httpResponse.Headers)
+            {
+                var value = String.Join('|', header.Value);
+                serviceResponse.Headers.Add(header.Key, value);
+            }
         }
 
         private Uri GetApiResourceUrl(string apiResource, params object[] args)

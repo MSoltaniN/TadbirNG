@@ -745,7 +745,7 @@
     <value>از تاریخ</value>
   </data>
   <data name="PageNo" xml:space="preserve">
-    <value>شماره  صفحه :</value>
+    <value>شماره صفحه :</value>
   </data>
   <data name="ReportTitle" xml:space="preserve">
     <value>خلاصه اسناد حسابداری - براساس تاریخ</value>
@@ -3934,7 +3934,7 @@
     <value>شماره فرم دریافت</value>
   </data>
   <data name="CantSaveEntity" xml:space="preserve">
-    <value>این {0}، تایید یا تصویب شده است و امکان ذخیره اطلاعات وجود ندارد.</value>
+    <value>این {0} تایید یا تصویب شده و امکان ذخیره اطلاعات وجود ندارد.</value>
   </data>
   <data name="RepeatedEntityActionMessage" xml:space="preserve">
     <value>{1} مورد نظر قبلاً {0} شده است.</value>
@@ -3955,10 +3955,10 @@
     <value>آرتیکل طرف حساب</value>
   </data>
   <data name="CantDeleteDetailEntity" xml:space="preserve">
-    <value>این {0}، تایید یا تصویب شده است و امکان حذف اطلاعات {1} وجود ندارد.</value>
+    <value>این {0} تایید یا تصویب شده و امکان حذف اطلاعات {1} وجود ندارد.</value>
   </data>
   <data name="CantSaveDetailEntity" xml:space="preserve">
-    <value>این {0}، تایید یا تصویب شده است و امکان ذخیره اطلاعات {1} وجود ندارد.</value>
+    <value>این {0} تایید یا تصویب شده و امکان ذخیره اطلاعات {1} وجود ندارد.</value>
   </data>
   <data name="NegativeAmountNotAllowed" xml:space="preserve">
     <value>مقدار منفی برای مبلغ معتبر نیست.</value>
@@ -3981,11 +3981,11 @@
   <data name="GroupDeleteAccounts" xml:space="preserve">
     <value>حذف گروهی طرف‌های حساب</value>
   </data>
-  <data name="RemoveInvalidRows" xml:space="preserve">
-    <value>حذف ردیف‌های نامعتبر</value>
+  <data name="RemoveInvalidAccountLines" xml:space="preserve">
+    <value>حذف ردیف‌های نامعتبر طرف حساب</value>
   </data>
-  <data name="RowsAggregation" xml:space="preserve">
-    <value>تجمیع ردیف‌ها</value>
+  <data name="AggregateAccountLines" xml:space="preserve">
+    <value>تجمیع ردیف‌های طرف حساب</value>
   </data>
   <data name="NotFoundInvalidRows" xml:space="preserve">
     <value>{0} این {1} هیچ ردیف نامعتبری برای حذف ندارد.</value>
@@ -3997,7 +3997,7 @@
     <value>عمل {0} روی {1} بدون {2} امکان پذیر نیست.</value>
   </data>
   <data name="GroupDeleteAccountLines" xml:space="preserve">
-    <value>حذف گروهی طرف های حساب</value>
+    <value>حذف گروهی طرف‌های حساب</value>
   </data>
   <data name="SayyadNoLength" xml:space="preserve">
     <value>شماره صیادی دقیقاً باید 16 رقم باشد.</value>
@@ -4022,5 +4022,62 @@
   </data>
   <data name="Remarks" xml:space="preserve">
     <value>ملاحظات</value>
+  </data>
+  <data name="PayReceiveCashAccount" xml:space="preserve">
+    <value>آرتیکل حساب نقدی</value>
+  </data>
+  <data name="CreateCashAccountLine" xml:space="preserve">
+    <value>ایجاد آرتیکل حساب نقدی</value>
+  </data>
+  <data name="DeleteCashAccountLine" xml:space="preserve">
+    <value>حذف آرتیکل حساب نقدی</value>
+  </data>
+  <data name="EditCashAccountLine" xml:space="preserve">
+    <value>ویرایش آرتیکل حساب نقدی</value>
+  </data>
+  <data name="ExportCashAccountLines" xml:space="preserve">
+    <value>ارسال آرتیکل‌های حساب نقدی</value>
+  </data>
+  <data name="FilterCashAccountLines" xml:space="preserve">
+    <value>فیلتر آرتیکل‌های حساب نقدی</value>
+  </data>
+  <data name="GroupDeleteCashAccountLines" xml:space="preserve">
+    <value>حذف گروهی آرتیکل‌های حساب نقدی</value>
+  </data>
+  <data name="PrintCashAccountLines" xml:space="preserve">
+    <value>چاپ آرتیکل‌های حساب نقدی</value>
+  </data>
+  <data name="PrintPreviewCashAccountLines" xml:space="preserve">
+    <value>پیش نمایش چاپ آرتیکل‌های حساب نقدی</value>
+  </data>
+  <data name="AggregateCashAccountLines" xml:space="preserve">
+    <value>تجمیع ردیف‌های حساب نقدی</value>
+  </data>
+  <data name="RemoveInvalidCashAccountLines" xml:space="preserve">
+    <value>حذف ردیف‌های نامعتبر حساب نقدی</value>
+  </data>
+  <data name="CantChangeDetailEntity" xml:space="preserve">
+    <value>این {0} تایید یا تصویب شده و امکان تغییر اطلاعات {1} وجود ندارد.</value>
+  </data>
+  <data name="CantConfirmWithInvalidRows" xml:space="preserve">
+    <value>تایید فرم با وجود {0} نامعتبر امکان پذیر نیست.</value>
+  </data>
+  <data name="Bank" xml:space="preserve">
+    <value>بانک</value>
+  </data>
+  <data name="CantConfirmUnbalancedForm" xml:space="preserve">
+    <value>به دلیل ناترازی {0} و {1} امکان تایید {2} وجود ندارد.</value>
+  </data>
+  <data name="SelectedAccountNotInCollection" xml:space="preserve">
+    <value>حساب انتخابی مرتبط با مجموعه حساب {0} نمی‌باشد.</value>
+  </data>
+  <data name="Applications" xml:space="preserve">
+    <value>مصارف</value>
+  </data>
+  <data name="InvalidSourceAppInForm" xml:space="preserve">
+    <value>{0} انتخاب شده غیر قابل دسترس و یا از نوع {1} و برای {2} نامعتبر است.</value>
+  </data>
+  <data name="Sources" xml:space="preserve">
+    <value>منابع</value>
   </data>
 </root>

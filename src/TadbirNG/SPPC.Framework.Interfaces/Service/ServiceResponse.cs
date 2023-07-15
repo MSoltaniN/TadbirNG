@@ -1,4 +1,5 @@
-﻿using SPPC.Framework.Values;
+﻿using System.Collections.Generic;
+using SPPC.Framework.Values;
 
 namespace SPPC.Framework.Service
 {
@@ -18,6 +19,7 @@ namespace SPPC.Framework.Service
         {
             Result = result;
             Message = message;
+            Headers = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -42,5 +44,13 @@ namespace SPPC.Framework.Service
         /// Gets a value that shows the result of a service operation.
         /// </summary>
         public ServiceResult Result { get; }
+
+        /// <summary>
+        /// Gets a dictionary containing all headers returned in HTTP response
+        /// </summary>
+        /// <remarks>
+        /// To simplify API, multiple values in a header are joined with pipe character (|)
+        /// </remarks>
+        public Dictionary<string, string> Headers { get; }
     }
 }

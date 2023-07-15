@@ -1169,8 +1169,6 @@ INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Typ
     VALUES (795, 76, 'Id', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
-
-
 -- 1.2.1542
 UPDATE [Metadata].[Column]
 SET [Name] = N'PersonFullName', Expression = N'Person.FullName'
@@ -1179,31 +1177,81 @@ WHERE ViewID = 4 AND [Name] = N'PersonFirstName'
 DELETE FROM [Metadata].[Column]
 WHERE ViewID = 4 AND [Name] = N'PersonLastName'
 
-
 -- 1.2.1543
-UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+G' Where TitleKey = 'AccountGroup'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+U' Where TitleKey = 'Currency'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+H' Where TitleKey = 'AccountCollections'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+V' Where TitleKey = 'NewDraftVoucher'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+D' Where TitleKey = 'DraftVoucherByNo'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+Q' Where TitleKey = 'LastDraftVoucher'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+Y' Where TitleKey = 'IssueOpeningVoucher'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+U' Where TitleKey = 'IssueClosingVoucher'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+I' Where TitleKey = 'ClosingTempAccounts'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+Z' Where TitleKey = 'JournalLedger'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+B' Where TitleKey = 'AccountBook'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+J' Where TitleKey = 'CurrencyBook'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+T' Where TitleKey = 'TestBalance'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+I' Where TitleKey = 'ItemBalance'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+B' Where TitleKey = 'BalanceByAccount'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+R' Where TitleKey = 'ProfitLoss'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+K' Where TitleKey = 'BalanceSheet'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+C' Where TitleKey = 'Companies'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+B' Where TitleKey = 'Branches'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+H' Where TitleKey = 'Roles'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+W' Where TitleKey = 'RowAccessSettings'
-UPDATE Metadata.Command set HotKey = 'Ctrl+K' Where TitleKey = 'Settings'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+O' Where TitleKey = 'OperationLogs'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Shift+S' Where TitleKey = 'SystemIssue'
-UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+N' Where TitleKey = 'NewVoucher'
-UPDATE Metadata.Command set HotKey = NULL Where TitleKey = 'ReportManagement'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Shift+G' WHERE TitleKey = 'AccountGroup'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Shift+U' WHERE TitleKey = 'Currency'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Shift+H' WHERE TitleKey = 'AccountCollections'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Alt+V'   WHERE TitleKey = 'NewDraftVoucher'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Alt+D'   WHERE TitleKey = 'DraftVoucherByNo'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Alt+Q'   WHERE TitleKey = 'LastDraftVoucher'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Alt+Y'   WHERE TitleKey = 'IssueOpeningVoucher'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Alt+U'   WHERE TitleKey = 'IssueClosingVoucher'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Alt+I'   WHERE TitleKey = 'ClosingTempAccounts'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Alt+Z'   WHERE TitleKey = 'JournalLedger'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Alt+B'   WHERE TitleKey = 'AccountBook'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Alt+J'   WHERE TitleKey = 'CurrencyBook'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Shift+T' WHERE TitleKey = 'TestBalance'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Shift+I' WHERE TitleKey = 'ItemBalance'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Shift+B' WHERE TitleKey = 'BalanceByAccount'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Shift+R' WHERE TitleKey = 'ProfitLoss'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Shift+K' WHERE TitleKey = 'BalanceSheet'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Alt+C'   WHERE TitleKey = 'Companies'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Shift+B' WHERE TitleKey = 'Branches'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Alt+H'   WHERE TitleKey = 'Roles'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Alt+W'   WHERE TitleKey = 'RowAccessSettings'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+K'       WHERE TitleKey = 'Settings'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Shift+O' WHERE TitleKey = 'OperationLogs'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Shift+S' WHERE TitleKey = 'SystemIssue'
+UPDATE Metadata.Command SET HotKey = 'Ctrl+Alt+N'   WHERE TitleKey = 'NewVoucher'
+UPDATE Metadata.Command SET HotKey = NULL           WHERE TitleKey = 'ReportManagement'
+
+-- 1.2.1545
+SET IDENTITY_INSERT [Metadata].[View] ON
+INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [EntityType], [FetchUrl], [SearchUrl], [IsHierarchy], [IsCartableIntegrated])
+    VALUES (77, 'PayReceiveCashAccount', N'PayReceiveCashAccount', N'Core', NULL, NULL, 0, 0)
+SET IDENTITY_INSERT [Metadata].[View] OFF
+
+SET IDENTITY_INSERT [Metadata].[Column] ON
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (796, 77, 'RowNo', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 0, 0, 0, 0, N'AlwaysVisible', 0, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (797, 77, 'FullAccount', NULL, NULL, 'System.Object', 'int', 'Object', 0, 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (798, 77, 'IsBank', NULL, NULL, 'System.Boolean', 'bit', 'boolean', 0, 0, 0, 0, 0, 1, 1, NULL, -1, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (799, 77, 'PayReceiveId', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (800, 77, 'SourceAppId', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 0, 1, 1, 1, N'(not set)', -1, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (801, 77, 'BankOrderNo', NULL, NULL, 'System.String', 'nvarchar', 'string', 64, 0, 0, 0, 1, 1, 1, NULL, -1, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (802, 77, 'Id', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (803, 77, 'AccountId', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (804, 77, 'DetailAccountId', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 1, 1, 1, N'AlwaysHidden', -1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (805, 77, 'CostCenterId', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 1, 1, 1, N'AlwaysHidden', -1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (806, 77, 'ProjectId', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 1, 1, 1, N'AlwaysHidden', -1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (807, 77, 'FullAccount.Account.FullCode', NULL, NULL, 'System.String', 'nvarchar', 'string', 256, 0, 0, 0, 1, 1, NULL, 1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (808, 77, 'FullAccount.Account.Name', NULL, NULL, 'System.String', 'nvarchar', 'string', 256, 0, 0, 0, 1, 1, NULL, 2, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (809, 77, 'FullAccount.DetailAccount.FullCode', NULL, NULL, 'System.String', 'nvarchar', 'string', 256, 0, 0, 0, 1, 1, N'Hidden', 3, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (810, 77, 'FullAccount.DetailAccount.Name', NULL, NULL, 'System.String', 'nvarchar', 'string', 256, 0, 0, 0, 1, 1, N'Hidden', 4, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (811, 77, 'FullAccount.CostCenter.FullCode', NULL, NULL, 'System.String', 'nvarchar', 'string', 256, 0, 0, 0, 1, 1, N'Hidden', 5, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (812, 77, 'FullAccount.CostCenter.Name', NULL, NULL, 'System.String', 'nvarchar', 'string', 256, 0, 0, 0, 1, 1, N'Hidden', 6, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (813, 77, 'FullAccount.Project.FullCode', NULL, NULL, 'System.String', 'nvarchar', 'string', 256, 0, 0, 0, 1, 1, N'Hidden', 7, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (814, 77, 'FullAccount.Project.Name', NULL, NULL, 'System.String', 'nvarchar', 'string', 256, 0, 0, 0, 1, 1, N'Hidden', 8, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (815, 77, 'Amount', NULL, 'Money', 'System.Decimal', 'money', 'number', 0, 0, 0, 0, 0, 1, 1, NULL, 9, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (816, 77, 'Remarks', NULL, NULL, 'System.String', 'nvarchar', 'string', 512, 0, 0, 0, 1, 1, 1, NULL, 10, NULL)
+SET IDENTITY_INSERT [Metadata].[Column] OFF

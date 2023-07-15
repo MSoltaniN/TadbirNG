@@ -128,5 +128,11 @@ namespace SPPC.Tools.SystemDesigner
             var wizard = new EnvSetupWizardForm();
             wizard.ShowDialog(this);
         }
+
+        private void Login_Click(object sender, EventArgs e)
+        {
+            var utility = new LoginUtilityForm();
+            utility.ShowDialog(this);
+        }
     }
 }

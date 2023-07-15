@@ -23,19 +23,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="repository">امکان مدیریت اطلاعات فرم های دریافت/پرداخت را فراهم می کند</param>
+        /// <param name="accountArticleRepository">امکان مدیریت اطلاعات طرف حساب را فراهم می کند</param>
+        /// <param name="cashAccountArtricleRepository">امکان مدیریت اطلاعات حساب نقدی را فراهم می کند</param>
         /// <param name="strings">امکان خواندن متن های چندزبانه را فراهم می کند</param>
         /// <param name="tokenManager">امکان کار با توکن امنیتی برنامه را فراهم می کند</param>
         public PayReceivesController(
             IPayReceiveRepository repository,
+            IPayReceiveAccountRepository accountArticleRepository,
+            IPayReceiveCashAccountRepository cashAccountArtricleRepository,
             IStringLocalizer<AppStrings> strings,
             ITokenManager tokenManager)
             : base(strings, tokenManager)
         {
             _repository = repository;
+            _accountArticleRepository = accountArticleRepository;
+            _cashAccountArticleRepository = cashAccountArtricleRepository;
         }
 
         /// <summary>
-        /// کلید متنی چندزبانه برای موجودیت دریافت و پرداخت
+        /// کلید متنی چندزبانه برای موجودیت فرم دریافت/پرداخت
         /// </summary>
         protected override string EntityNameKey
         {
@@ -55,7 +61,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var payment = await _repository.GetPayReceiveAsync(paymentId, (int)PayReceiveType.Payment
                 , GridOptions);
-            if(GridOptions.Operation == (int)OperationId.Print 
+            if (GridOptions.Operation == (int)OperationId.Print
                 || GridOptions.Operation == (int)OperationId.PrintPreview)
             {
                 return Ok();
@@ -403,30 +409,30 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، اطلاعات فرم پرداخت مشخص شده با شماره را برمی گرداند
         /// </summary>
-        /// <param name="payReceiveNo">شماره فرم پرداخت مورد نظر</param>
+        /// <param name="paymentNo">شماره فرم پرداخت مورد نظر</param>
         /// <returns>اطلاعات نمایشی فرم پرداخت مورد نظر</returns>
-        // GET: api/payments/by-no/{payReceiveNo:min(1)}
+        // GET: api/payments/by-no/{paymentNo:min(1)}
         [HttpGet]
         [Route(PayReceiveApi.PaymentByNoUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.View)]
-        public async Task<IActionResult> GetPaymentByNoAsync(string payReceiveNo)
+        public async Task<IActionResult> GetPaymentByNoAsync(string paymentNo)
         {
-            var payReceiveByNo = await _repository.GetPayReceiveByNoAsync(payReceiveNo, (int)PayReceiveType.Payment);
+            var payReceiveByNo = await _repository.GetPayReceiveByNoAsync(paymentNo, (int)PayReceiveType.Payment);
             return JsonReadResult(payReceiveByNo);
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فرم دریافت مشخص شده با شماره را برمی گرداند
         /// </summary>
-        /// <param name="payReceiveNo">شماره فرم دریافت مورد نظر</param>
+        /// <param name="receiptNo">شماره فرم دریافت مورد نظر</param>
         /// <returns>اطلاعات نمایشی فرم دریافت مورد نظر</returns>
-        // GET: api/receipts/by-no/{payReceiveNo:min(1)}
+        // GET: api/receipts/by-no/{receiptNo:min(1)}
         [HttpGet]
         [Route(PayReceiveApi.ReceiptByNoUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.View)]
-        public async Task<IActionResult> GetReceiptByNoAsync(string payReceiveNo)
+        public async Task<IActionResult> GetReceiptByNoAsync(string receiptNo)
         {
-            var payReceiveByNo = await _repository.GetPayReceiveByNoAsync(payReceiveNo, (int)PayReceiveType.Receipt);
+            var payReceiveByNo = await _repository.GetPayReceiveByNoAsync(receiptNo, (int)PayReceiveType.Receipt);
             return JsonReadResult(payReceiveByNo);
         }
 
@@ -489,15 +495,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، اطلاعات فرم پرداخت پیش از شماره مشخص شده را برمی گرداند
         /// </summary>
-        /// <param name="payReceiveNo">شماره فرم پرداخت فعلی</param>
+        /// <param name="paymentNo">شماره فرم پرداخت فعلی</param>
         /// <returns>اطلاعات نمایشی فرم پرداخت قابل دسترسی قبلی</returns>
-        // GET: api/payments/{payReceiveNo:min(1)}/previous
+        // GET: api/payments/{paymentNo:min(1)}/previous
         [HttpGet]
         [Route(PayReceiveApi.PreviousPaymentUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Navigate)]
-        public async Task<IActionResult> GetPreviousPaymentAsync(string payReceiveNo)
+        public async Task<IActionResult> GetPreviousPaymentAsync(string paymentNo)
         {
-            var previous = await _repository.GetPreviousPayReceiveAsync(payReceiveNo,
+            var previous = await _repository.GetPreviousPayReceiveAsync(paymentNo,
                 (int)PayReceiveType.Payment, GridOptions);
             return JsonReadResult(previous);
         }
@@ -505,15 +511,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، اطلاعات فرم دریافت پیش از شماره مشخص شده را برمی گرداند
         /// </summary>
-        /// <param name="payReceiveNo">شماره فرم دریافت فعلی</param>
+        /// <param name="receiptNo">شماره فرم دریافت فعلی</param>
         /// <returns>اطلاعات نمایشی فرم دریافت قابل دسترسی قبلی</returns>
-        // GET: api/receipts/{payReceiveNo:min(1)}/previous
+        // GET: api/receipts/{receiptNo:min(1)}/previous
         [HttpGet]
         [Route(PayReceiveApi.PreviousReceiptUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Navigate)]
-        public async Task<IActionResult> GetPreviousReceiptAsync(string payReceiveNo)
+        public async Task<IActionResult> GetPreviousReceiptAsync(string receiptNo)
         {
-            var previous = await _repository.GetPreviousPayReceiveAsync(payReceiveNo,
+            var previous = await _repository.GetPreviousPayReceiveAsync(receiptNo,
                 (int)PayReceiveType.Receipt, GridOptions);
             return JsonReadResult(previous);
         }
@@ -521,15 +527,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، اطلاعات فرم پرداخت بعد از شماره مشخص شده را برمی گرداند
         /// </summary>
-        /// <param name="payReceiveNo">شماره فرم پرداخت فعلی</param>
+        /// <param name="paymentNo">شماره فرم پرداخت فعلی</param>
         /// <returns>اطلاعات نمایشی فرم پرداخت قابل دسترسی بعدی</returns>
-        // GET: api/payments/{payReceiveNo:min(1)}/next
+        // GET: api/payments/{paymentNo:min(1)}/next
         [HttpGet]
         [Route(PayReceiveApi.NextPaymentUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Navigate)]
-        public async Task<IActionResult> GetNextPaymentAsync(string payReceiveNo)
+        public async Task<IActionResult> GetNextPaymentAsync(string paymentNo)
         {
-            var next = await _repository.GetNextPayReceiveAsync(payReceiveNo,
+            var next = await _repository.GetNextPayReceiveAsync(paymentNo,
                 (int)PayReceiveType.Payment, GridOptions);
             return JsonReadResult(next);
         }
@@ -537,15 +543,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، اطلاعات فرم دریافت بعد از شماره مشخص شده را برمی گرداند
         /// </summary>
-        /// <param name="payReceiveNo">شماره فرم دریافت فعلی</param>
+        /// <param name="receiptNo">شماره فرم دریافت فعلی</param>
         /// <returns>اطلاعات نمایشی فرم دریافت قابل دسترسی بعدی</returns>
-        // GET: api/receipts/{payReceiveNo:min(1)}/next
+        // GET: api/receipts/{receiptNo:min(1)}/next
         [HttpGet]
         [Route(PayReceiveApi.NextReceiptUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Navigate)]
-        public async Task<IActionResult> GetNextReceiptAsync(string payReceiveNo)
+        public async Task<IActionResult> GetNextReceiptAsync(string receiptNo)
         {
-            var next = await _repository.GetNextPayReceiveAsync(payReceiveNo,
+            var next = await _repository.GetNextPayReceiveAsync(receiptNo,
                 (int)PayReceiveType.Receipt, GridOptions);
             return JsonReadResult(next);
         }
@@ -635,7 +641,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     AppStrings.InvalidLetterForStringNumber, AppStrings.Number));
             }
 
-            if(numberValue <= 0)
+            if (numberValue <= 0)
             {
                 var minNumberString = "1";
                 return BadRequestResult(_strings.Format(
@@ -670,17 +676,43 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     payReceiveId.ToString()));
             }
 
-            if((action == AppStrings.Confirm || action == AppStrings.Approve) 
-                && !await _repository.HasAccountArticleAsync(payReceiveId)) 
-            {
-                return BadRequestResult(_strings.Format(AppStrings.InvalidEmptyArticleAction, action,
-                        entityNameKey, AppStrings.PayReceiveAccount));
-            }
-
             var result = BranchValidationResult(payReceive);
             if (result is BadRequestObjectResult)
             {
                 return result;
+            }
+
+            if (action == AppStrings.Confirm)
+            {
+                if (!await _repository.HasAccountArticleAsync(payReceiveId))
+                {
+                    return BadRequestResult(_strings.Format(AppStrings.InvalidEmptyArticleAction, action,
+                            entityNameKey, AppStrings.PayReceiveAccount));
+                }
+
+                if (!await _repository.HasCashAccountArticleAsync(payReceiveId))
+                {
+                    return BadRequestResult(_strings.Format(AppStrings.InvalidEmptyArticleAction, action,
+                            entityNameKey, AppStrings.PayReceiveCashAccount));
+                }
+
+                if (await _accountArticleRepository.HasAccountArticleInvalidRowsAsync(payReceiveId))
+                {
+                    return BadRequestResult(_strings.Format(
+                        AppStrings.CantConfirmWithInvalidRows, AppStrings.PayReceiveAccount));
+                }
+
+                if (await _cashAccountArticleRepository.HasCashAccountArticleInvalidRowsAsync(payReceiveId))
+                {
+                    return BadRequestResult(_strings.Format(
+                        AppStrings.CantConfirmWithInvalidRows, AppStrings.PayReceiveCashAccount));
+                }
+
+                if (await _repository.IsUnbalancedPayReceive(payReceiveId))
+                {
+                    return BadRequestResult(_strings.Format(AppStrings.CantConfirmUnbalancedForm,
+                        AppStrings.PayReceiveAccount, AppStrings.PayReceiveCashAccount, entityNameKey));
+                }
             }
 
             if ((action == AppStrings.Confirm && payReceive.IsConfirmed)
@@ -721,5 +753,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private readonly IPayReceiveRepository _repository;
+        private readonly IPayReceiveAccountRepository _accountArticleRepository;
+        private readonly IPayReceiveCashAccountRepository _cashAccountArticleRepository;
     }
 }
