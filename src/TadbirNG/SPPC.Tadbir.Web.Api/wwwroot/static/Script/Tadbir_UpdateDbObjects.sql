@@ -1329,7 +1329,7 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
     VALUES (281, 3, 2, NULL, 25, 78, 0)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
--- 1.2.1538
+-- 1.2.1545
 SET IDENTITY_INSERT [Metadata].[Operation] ON
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description]) 
 	VALUES (79, N'CreateCashAccountLine', NULL)
@@ -1398,12 +1398,11 @@ SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
 UPDATE [Metadata].[Operation]
 SET [Metadata].[Operation].[Name] = N'RemoveInvalidAccountLines' 
-WHERE OperationID = 69 and  [NAME] = N'RemoveInvalidRows'
+WHERE OperationID = 69 and  [Name] = N'RemoveInvalidRows'
 
 UPDATE [Metadata].[Operation]
 SET [Metadata].[Operation].[Name] = N'AggregateAccountLines' 
-WHERE OperationID = 70 and  [NAME] = N'RowsAggregation'
-
+WHERE OperationID = 70 and  [Name] = N'RowsAggregation'
 
 CREATE TABLE [CashFlow].[PayReceiveCashAccount] (
     [PayReceiveCashAccountID]   INT              IDENTITY (1, 1) NOT NULL,

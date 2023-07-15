@@ -1023,7 +1023,7 @@ CREATE TABLE [CashFlow].[PayReceiveAccount] (
     [PayReceiveID]          INT              NOT NULL,
     [DetailAccountID]       INT              NULL,
     [Amount]                MONEY            NOT NULL,
-    [Description]           NVARCHAR(512)    NULL,
+    [Remarks]               NVARCHAR(512)    NULL,
     [rowguid]               UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_PayReceiveAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]          DATETIME         CONSTRAINT [DF_CashFlow_PayReceiveAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_CashFlow_PayReceiveAccount] PRIMARY KEY CLUSTERED ([PayReceiveAccountID] ASC)
@@ -1032,6 +1032,30 @@ CREATE TABLE [CashFlow].[PayReceiveAccount] (
     , CONSTRAINT [FK_CashFlow_PayReceiveAccount_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project]([ProjectID])
     , CONSTRAINT [FK_CashFlow_PayReceiveAccount_CashFlow_PayReceive] FOREIGN KEY ([PayReceiveID]) REFERENCES [CashFlow].[PayReceive]([PayReceiveID])
     , CONSTRAINT [FK_CashFlow_PayReceiveAccount_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailAccountID])
+)
+GO
+
+CREATE TABLE [CashFlow].[PayReceiveCashAccount] (
+    [PayReceiveCashAccountID]   INT              IDENTITY (1, 1) NOT NULL,
+    [PayReceiveID]              INT              NOT NULL,
+    [AccountID]                 INT              NULL,
+    [DetailAccountID]           INT              NULL,
+    [CostCenterID]              INT              NULL,
+    [ProjectID]                 INT              NULL,
+    [SourceAppID]               INT              NULL,
+    [IsBank]                    BIT              NOT NULL,
+    [Amount]                    MONEY            NOT NULL,
+    [BankOrderNo]               NVARCHAR(64)     NULL,
+    [Remarks]                   NVARCHAR(512)    NULL,
+    [rowguid]                   UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_PayReceiveCashAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]              DATETIME         CONSTRAINT [DF_CashFlow_PayReceiveCashAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_CashFlow_PayReceiveCashAccount] PRIMARY KEY CLUSTERED ([PayReceiveCashAccountID] ASC)
+    , CONSTRAINT [FK_CashFlow_PayReceiveCashAccount_CashFlow_PayReceive] FOREIGN KEY ([PayReceiveID]) REFERENCES [CashFlow].[PayReceive]([PayReceiveID])
+    , CONSTRAINT [FK_CashFlow_PayReceiveCashAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
+    , CONSTRAINT [FK_CashFlow_PayReceiveCashAccount_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailAccountID])
+    , CONSTRAINT [FK_CashFlow_PayReceiveCashAccount_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_CashFlow_PayReceiveCashAccount_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project]([ProjectID])
+    , CONSTRAINT [FK_CashFlow_PayReceiveCashAccount_CashFlow_SourceApp] FOREIGN KEY ([SourceAppID]) REFERENCES [CashFlow].[SourceApp]([SourceAppID])
 )
 GO
 

@@ -360,7 +360,7 @@ namespace SPPC.Tadbir.Persistence
 
             return entity != null
                 ? accountFullCode + sourceAppName +
-                    $"{AppStrings.Amount} : {entity.Amount}, {AppStrings.Description} : {entity.Remarks}"
+                    $"{AppStrings.Amount} : {entity.Amount}, {AppStrings.Remarks} : {entity.Remarks}"
                 : String.Empty;
         }
 
