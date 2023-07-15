@@ -78,5 +78,6 @@ export enum ViewName {
   SourceApp = 73,
   Payment = 74,
   Receipt = 75,
-  PayReceiveAccount = 76
+  PayReceiveAccount = 76,
+  PayReceiveCashAccount = 77
 }

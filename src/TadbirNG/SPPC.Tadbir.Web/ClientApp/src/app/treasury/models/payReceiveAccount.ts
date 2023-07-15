@@ -4,6 +4,6 @@ export interface PayReceiveAccount {
     id: number,
     payReceiveId: number,
     amount: number,
-    description: string,
+    remarks: string,
     fullAccount: FullAccount
 } 

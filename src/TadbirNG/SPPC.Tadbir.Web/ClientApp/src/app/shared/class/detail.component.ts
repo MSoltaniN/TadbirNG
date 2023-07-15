@@ -202,7 +202,6 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
 
     let modelCopy1 = {};
     let modelCopy2 = {};
-console.log(model);
 
     if (model) {
       Object.keys(model).forEach(key => {
