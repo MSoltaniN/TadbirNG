@@ -97,6 +97,13 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsDuplicateCheckBookNameAsync(CheckBookViewModel checkBook);
 
         /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا شماره صیادی دسته چک مورد نظر تکراری است یا نه
+        /// </summary>
+        /// <param name="checkBook">دسته چکی که تکراری بودن شماره صیادی آن باید بررسی شود</param>
+        /// <returns>مقدار بولی درست در صورت تکراری بودن شماره صیادی، در غیر این صورت مقدار بولی نادرست</returns>
+        Task<bool> IsDuplicateSayyadNumberAsync(CheckBookViewModel checkBook);
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا حداقل یک برگ از دسته چک با چک ارتباط دارد یا نه
         /// </summary>
         /// <param name="checkBookId">شناسه دسته چک موجود</param>

@@ -365,6 +365,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     AppStrings.CheckBookName));
             }
 
+            if (await _repository.IsDuplicateSayyadNumberAsync(checkBook))
+            {
+                return BadRequestResult(_strings.Format(AppStrings.DuplicateFieldValue,
+                    AppStrings.SayyadNo));
+            }
+
             return Ok();
         }
 

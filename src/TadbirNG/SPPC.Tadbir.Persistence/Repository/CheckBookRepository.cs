@@ -240,7 +240,7 @@ namespace SPPC.Tadbir.Persistence
                 await SetCheckBookNavigationAsync(lastCheckBook, options);
             }
 
-            return lastCheckBook; 
+            return lastCheckBook;
         }
 
         /// <summary>
@@ -287,6 +287,31 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا شماره صیادی دسته چک مورد نظر تکراری است یا نه
+        /// </summary>
+        /// <param name="checkBook">دسته چکی که تکراری بودن شماره صیادی آن باید بررسی شود</param>
+        /// <returns>مقدار بولی درست در صورت تکراری بودن شماره صیادی، در غیر این صورت مقدار بولی نادرست</returns>
+        public async Task<bool> IsDuplicateSayyadNumberAsync(CheckBookViewModel checkBook)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
+
+            foreach (int pageIndex in Enumerable.Range(0, checkBook.PageCount))
+            {
+                long sayyadNo = Convert.ToInt64(checkBook.SayyadStartNo) + pageIndex;
+                int count = await repository.GetCountByCriteriaAsync(checkBookPage =>
+                checkBookPage.CheckBookId != checkBook.Id &&
+                checkBookPage.SayyadNo == sayyadNo.ToString());
+                if (count > 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا حداقل یک برگ از دسته چک با چک ارتباط دارد یا نه
         /// </summary>
         /// <param name="checkBookId">شناسه دسته چک موجود</param>
@@ -297,7 +322,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
             int count = await repository
                 .GetCountByCriteriaAsync(
-                    c => c.CheckBookId == checkBookId 
+                    c => c.CheckBookId == checkBookId
                     && c.CheckId != null);
             return count > 0;
         }
