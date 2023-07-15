@@ -30,6 +30,7 @@ namespace SPPC.Tadbir.Persistence
         public PayReceiveAccountRepository(IRepositoryContext context, ISystemRepository system)
             : base(context, system.Logger)
         {
+            _system = system;
         }
 
         /// <summary>
@@ -204,12 +205,27 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
             var articles = await repository
-                .GetEntityQuery()
-                .Where(article => article.PayReceiveId == payReceiveId &&
-                    (article.Amount <= Decimal.Zero || article.AccountId == null))
+                .GetEntityQuery(a => a.Account, a => a.DetailAccount, a => a.Project, a => a.CostCenter)
+                .Where(article => article.PayReceiveId == payReceiveId)
                 .ToArrayAsync();
+            var invalidItems = articles.Where(
+                article => article.Amount <= Decimal.Zero 
+                || article.AccountId == null)
+                .ToList();
 
-            DeleteArticlesGroup(repository, articles);
+            var fullAccountArticles = articles.Where(article =>
+                article.Amount > Decimal.Zero
+                || article.AccountId != null);
+            foreach (var article in fullAccountArticles)
+            {
+               var articleView = Mapper.Map<PayReceiveAccountViewModel>(article);
+               if(!await IsValidFullAccountAsync(articleView.FullAccount, Repository))
+               {
+                    invalidItems.Add(article);
+               }
+            }
+
+            DeleteArticlesGroup(repository, invalidItems);
             await UnitOfWork.CommitAsync();
             int entityTypeId = GetEntityTypeId(type);
             var articleIds = articles
@@ -226,10 +242,31 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> HasAccountArticleInvalidRowsAsync(int payReceiveId)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveAccount>();
-            return await repository
-                .GetEntityQuery()
-                .AnyAsync(article => article.PayReceiveId == payReceiveId &&
-                    (article.Amount <= Decimal.Zero || article.AccountId == null));
+            var articles = await repository
+                .GetEntityQuery(a => a.Account, a => a.DetailAccount, a => a.Project, a => a.CostCenter)
+                .Where(article => article.PayReceiveId == payReceiveId)
+                .ToArrayAsync();
+            var hasInvalidItems = articles.Any(
+                article => article.Amount <= Decimal.Zero
+                || article.AccountId == null);
+            if (hasInvalidItems) 
+            {
+                return true;
+            }
+            var fullAccountArticles = articles.Where(article =>
+                article.Amount > Decimal.Zero
+                || article.AccountId != null);
+
+            foreach (var article in fullAccountArticles)
+            {
+                var articleView = Mapper.Map<PayReceiveAccountViewModel>(article);
+                if (!await IsValidFullAccountAsync(articleView.FullAccount, Repository))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -370,5 +407,10 @@ namespace SPPC.Tadbir.Persistence
                 repository.Delete(article);
             }
         }
-    }
+        private ISecureRepository Repository
+        {
+            get { return _system.Repository; }
+        }
+
+        private readonly ISystemRepository _system;    }
 }

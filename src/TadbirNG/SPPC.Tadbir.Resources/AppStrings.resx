@@ -3934,7 +3934,7 @@
     <value>شماره فرم دریافت</value>
   </data>
   <data name="CantSaveEntity" xml:space="preserve">
-    <value>این {0} تایید یا تصویب شده و امکان ذخیره اطلاعات وجود ندارد.</value>
+    <value>این {0}، تایید یا تصویب شده است و امکان ذخیره اطلاعات وجود ندارد.</value>
   </data>
   <data name="RepeatedEntityActionMessage" xml:space="preserve">
     <value>{1} مورد نظر قبلاً {0} شده است.</value>
@@ -3955,10 +3955,10 @@
     <value>آرتیکل طرف حساب</value>
   </data>
   <data name="CantDeleteDetailEntity" xml:space="preserve">
-    <value>این {0} تایید یا تصویب شده و امکان حذف اطلاعات {1} وجود ندارد.</value>
+    <value>این {0}، تایید یا تصویب شده است و امکان حذف اطلاعات {1} وجود ندارد.</value>
   </data>
   <data name="CantSaveDetailEntity" xml:space="preserve">
-    <value>این {0} تایید یا تصویب شده و امکان ذخیره اطلاعات {1} وجود ندارد.</value>
+    <value>این {0}، تایید یا تصویب شده است و امکان ذخیره اطلاعات {1} وجود ندارد.</value>
   </data>
   <data name="NegativeAmountNotAllowed" xml:space="preserve">
     <value>مقدار منفی برای مبلغ معتبر نیست.</value>
