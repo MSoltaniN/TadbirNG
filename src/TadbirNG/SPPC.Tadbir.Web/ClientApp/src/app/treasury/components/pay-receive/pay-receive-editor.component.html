@@ -223,7 +223,7 @@
 
                   <payer-receiver
                     [isConfirmed]="isConfirmed"
-                    [type]="this.urlPath == 'payments' ? '1' : '2'"
+                    [type]="this.type == 1 ? '1' : '2'"
                     [payReceiveId]="this.model?.id"
                     (setTotalCashAmount)="setTotalCashAmount($event)"
                   >
@@ -231,8 +231,9 @@
                 </div>
                 <div class="col-md-6 col-xs-12 sppc-float">
                   <fund-or-bank
-                    [type]="this.urlPath == 'payments' ? '1' : '2'"
-                    (setTotalCashAmount)="setTotalCashAmount($event)"
+                    [isConfirmed]="isConfirmed"
+                    [payReceiveId]="this.model?.id"
+                    [payReceiptType]="this.type == 1 ? '1' : '2'"
                   >
                   </fund-or-bank>
                 </div>

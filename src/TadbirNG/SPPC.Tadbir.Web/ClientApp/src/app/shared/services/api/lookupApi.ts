@@ -106,4 +106,9 @@ export class LookupApi {
 
     // lookup/vouchers/references
     public static VoucherReferences = environment.BaseUrl + "/lookup/vouchers/references";
+
+    /*
+    * API client URL for lookup collection of all source/application based on type {sourceAppType}
+    */
+    public static SourceApps = environment.BaseUrl + "/lookup/source-apps/types/{0}";
 }
