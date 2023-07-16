@@ -1431,7 +1431,7 @@ GO
 EXEC sp_rename '[CashFlow].[PayReceiveAccount].[Description]', 'Remarks', 'COLUMN'
 
 
--- 1.2.1545
+-- 1.2.1548
 ALTER TABLE [Finance].[VoucherLine]
 ADD SourceAppID INT;
 UPDATE [Finance].[VoucherLine]
