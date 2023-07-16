@@ -607,7 +607,7 @@ CREATE TABLE [Finance].[VoucherLine] (
     [CurrencyValue]   MONEY            NULL,
     [Mark]            NVARCHAR(128)    NULL,
     [TypeID]          SMALLINT         NOT NULL,
-    [SourceID]        INT              NULL,
+    [SourceAppID]        INT              NULL,
     [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_VoucherLine_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]    DATETIME         CONSTRAINT [DF_Finance_VoucherLine_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_VoucherLine] PRIMARY KEY CLUSTERED ([VoucherLineID] ASC)

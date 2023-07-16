@@ -80,7 +80,7 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// شناسه دیتابیسی منابع و مصارف مرتبط با این آرتیکل
         /// </summary>
-        public virtual int? SourceId { get; set; }
+        public virtual int? SourceAppID { get; set; }
 
         /// <summary>
         /// سند مالی که این آرتیکل برای آن ایجاد شده است

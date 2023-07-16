@@ -81,6 +81,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// شناسه دیتابیسی منابع و مصارف مرتبط با این آرتیکل
         /// </summary>
-        public int? SourceId { get; set; }
+        public int? SourceAppId { get; set; }
     }
 }
