@@ -268,6 +268,11 @@ namespace SPPC.Tadbir.Domain
         /// نوع مصرف
         /// </summary>
         Application = 1,
+
+        /// <summary>
+        /// همه منابع/مصارف
+        /// </summary>
+        Both = 2
     }
 
     /// <summary>
