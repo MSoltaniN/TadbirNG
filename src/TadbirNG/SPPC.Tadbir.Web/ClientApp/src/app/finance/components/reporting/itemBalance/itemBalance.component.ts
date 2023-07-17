@@ -182,7 +182,7 @@ export class ItemBalanceComponent
 
   @Persist() selectedModel: any;
 
-  selectedModelTitle: string;
+  @Persist() selectedModelTitle: string;
   baseModelTitle: string;
   modelUrl: string;
   selectedBookType: Item;
@@ -1312,12 +1312,13 @@ export class ItemBalanceComponent
     this.entityName = Entities.DetailAccountBalance6Column;
     this.viewId = ViewName[this.entityTypeName];
 
+    
+    this.loadEntity();
+    
     this.translate.get("ItemBalance.DetailAccount").subscribe((res) => {
       this.baseModelTitle = res;
-      this.selectedModelTitle = this.baseModelTitle;
+      this.selectedModelTitle = this.selectedModelTitle == undefined? this.baseModelTitle: this.selectedModelTitle;
     });
-
-    this.loadEntity();
 
     this.getFirstAndLastVoucherNo();
     this.showloadingMessage = false;

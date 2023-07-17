@@ -1361,9 +1361,11 @@
   },
   "PayReceipt": {
     "PayReceipt": "Paymets and Receipts",
+    "Recipients": "Recipients",
+    "Payers": "Payers",
     "Name": "Name",
     "Details": "Details",
-    "Fund": "CashRegister",
+    "Fund": "Cash Register",
     "Bank": "Bank",
     "AggregateRows": "Aggregate Rows",
     "RemoveInvalidRows": "Remove Invalid Rows",
