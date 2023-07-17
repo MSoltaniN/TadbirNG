@@ -974,7 +974,7 @@
     "DebitSum": "جمع بدهکار",
     "CreditSum": "جمع بستانکار",
     "Description": "شرح",
-    "Considerations": "ملاحضات",
+    "Considerations": "ملاحظات",
     "New": "آرتیکل جدید",
     "Delete": "حذف آرتیکل",
     "Currency": "نوع ارز",
@@ -1365,7 +1365,8 @@
     "BranchScope": "دسترسی شعبه",
     "Source": "منابع",
     "Application": "مصارف",
-    "Delete": "حذف منابع/مصارف"
+    "Delete": "حذف منابع/مصارف",
+    "SourceAppType": "منبع یا مصرف"
   },
   "PayReceipt": {
     "PayReceipt": "دریافت و پرداخت",
@@ -1376,7 +1377,9 @@
     "Bank": "بانک",
     "AggregateRows": "تجمیع سطرهای دارای بردار حساب یکسان",
     "RemoveInvalidRows": "حذف ردیفهای نامعتبر",
-    "DeletePayReceiveAccount": "حذف آرتیکل طرف حساب"
+    "DeletePayReceiveAccount": "حذف آرتیکل طرف حساب",
+    "BankOrderNo": "شماره حواله بانکی",
+    "CashAccount": "حسابهای نقدی"
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",

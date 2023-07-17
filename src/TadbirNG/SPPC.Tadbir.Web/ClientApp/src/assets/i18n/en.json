@@ -1340,7 +1340,8 @@
     "BranchScope": "Branch Scope",
     "Source": "Source",
     "Application": "Application",
-    "Delete": "Delete source/application"
+    "Delete": "Delete source/application",
+    "SourceAppType": "Source or Application"
   },
   "PayReceipt": {
     "PayReceipt": "Paymets and Receipts",
@@ -1350,7 +1351,9 @@
     "Bank": "Bank",
     "AggregateRows": "Aggregate Rows",
     "RemoveInvalidRows": "Remove Invalid Rows",
-    "DeletePayReceiveAccount": "Delete the account article"
+    "DeletePayReceiveAccount": "Delete the account article",
+    "BankOrderNo": "Bank Order No",
+    "CashAccount": "Cash Accounts"
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",
