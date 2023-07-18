@@ -96,6 +96,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        ///به روش آسنکرون، لیست حساب های  مجموعه حساب صندوق و بانک را برمی گرداند.
+        /// </summary>
+        /// <returns>لیست حساب های متعلق به مجموعه حساب صندوق و بانک را بر میگرداند.</returns>
+        // GET: api/acccollections-cashbank
+        [HttpGet]
+        [Route(AccountCollectionApi.AccountCollectionsCashBankUrl)]
+        [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.View)]
+        public async Task<IActionResult> GetAccountCollectionsSourceAppAsync()
+        {
+            var accCollection = await _repository.GetCollectionsCashBankAsync();
+            return Json(accCollection);
+        }
+
         private readonly IAccountCollectionRepository _repository;
     }
 }

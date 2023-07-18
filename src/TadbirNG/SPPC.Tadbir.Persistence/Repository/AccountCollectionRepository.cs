@@ -112,6 +112,28 @@ namespace SPPC.Tadbir.Persistence
             return canManage;
         }
 
+        /// <summary>
+        ///به روش آسنکرون، لیست حساب های  مجموعه حساب صندوق و بانک را برمی گرداند.
+        /// </summary>
+        /// <returns>لیست حساب های متعلق به مجموعه حساب صندوق و بانک را بر میگرداند.</returns>
+        public async Task<IList<AccountCollectionAccountViewModel>> GetCollectionsCashBankAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            var collectionIdsToCheck = new int[] { (int)AccountCollectionId.Bank, (int)AccountCollectionId.Cashier };
+            var userBranchId = UserContext.BranchId;
+            var userFiscalPeriodId = UserContext.FiscalPeriodId;
+            var collectionsCashBank = await repository.GetEntityQuery()
+                .Include(aca => aca.Account)
+                .Where(aca =>
+                    collectionIdsToCheck.Contains(aca.CollectionId) &&
+                    aca.BranchId == userBranchId &&
+                    aca.FiscalPeriodId == userFiscalPeriodId)
+                .Select(aca => Mapper.Map<AccountCollectionAccountViewModel>(aca))
+                .ToListAsync();
+            return collectionsCashBank;
+        }
+
+
         internal override int? EntityType
         {
             get { return (int)EntityTypeId.AccountCollectionAccount; }

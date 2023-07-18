@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -204,6 +205,26 @@ namespace SPPC.Tadbir.Persistence
                 .Where(line => line.Id == articleId)
                 .Select(line => line.Voucher.SubjectType)
                 .FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده متعلق به مجموعه حساب های صندوق یا بانک است یا نه
+        /// </summary>
+        /// <param name="accountId">شناسه حساب که باید بررسی شود</param>
+        /// <returns>مقدار بولی درست در صورت متعلق بودن شماره حساب، در غیر این صورت مقدار بولی نادرست</returns>
+        public async Task<bool> IsAccountBelongsCollectionsCashBankAsync(int accountId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            var collectionIdsToCheck = new int[] { (int)AccountCollectionId.Bank, (int)AccountCollectionId.Cashier };
+            var userBranchId = UserContext.BranchId;
+            var userFiscalPeriodId = UserContext.FiscalPeriodId;
+            var isAccountInCollection = await repository.GetEntityQuery()
+                .AnyAsync(aca =>
+                    collectionIdsToCheck.Contains(aca.CollectionId) &&
+                    aca.AccountId == accountId &&
+                    aca.BranchId == userBranchId &&
+                    aca.FiscalPeriodId == userFiscalPeriodId);
+            return isAccountInCollection;
         }
 
         /// <inheritdoc/>

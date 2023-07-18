@@ -4080,4 +4080,7 @@
   <data name="Sources" xml:space="preserve">
     <value>منابع</value>
   </data>
+  <data name="AccountBelongsCollectionsCashBank" xml:space="preserve">
+    <value>زمانی که منابع یا مصارف برای یک بردار حساب انتخاب می‌شود، آن حساب باید متعلق به مجموع حساب‌های صندوق بانک باشد.</value>
+  </data>
 </root>

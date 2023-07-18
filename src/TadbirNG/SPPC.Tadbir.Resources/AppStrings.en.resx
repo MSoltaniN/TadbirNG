@@ -4089,4 +4089,7 @@
   <data name="Sources" xml:space="preserve">
     <value>Sources</value>
   </data>
+  <data name="AccountBelongsCollectionsCashBank" xml:space="preserve">
+    <value>When source or expenses are selected for an account vector, that account must belong to the total of cash or bank accounts.</value>
+  </data>
 </root>

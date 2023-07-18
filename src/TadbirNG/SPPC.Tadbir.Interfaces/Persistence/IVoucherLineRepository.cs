@@ -73,5 +73,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="articleId">شناسه دیتابیسی آرتیکل مورد نظر</param>
         /// <returns>نوع مفهومی سند مرتبط با شناسه آرتیکل داده شده</returns>
         Task<int> GetLineSubjectTypeAsync(int articleId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده متعلق به مجموعه حساب های صندوق یا بانک است یا نه
+        /// </summary>
+        /// <param name="accountId">شناسه حساب که باید بررسی شود</param>
+        /// <returns>مقدار بولی درست در صورت متعلق بودن شماره حساب، در غیر این صورت مقدار بولی نادرست</returns>
+        Task<bool> IsAccountBelongsCollectionsCashBankAsync(int accountId);
     }
 }

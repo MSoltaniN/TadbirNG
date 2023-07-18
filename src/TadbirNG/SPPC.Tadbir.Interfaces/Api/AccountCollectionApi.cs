@@ -28,5 +28,15 @@
         /// API server route URL for account collection items
         /// </summary>
         public const string AccountCollectionAccountsUrl = "acccollections/{collectionId:min(1)}/accounts";
+
+        /// <summary>
+        /// API client URL for account collections cash/bank
+        /// </summary>
+        public const string AccountCollectionsCashBank = "acccollections-cashbank";
+
+        /// <summary>
+        /// API server route URL for account collections cash/bank
+        /// </summary>
+        public const string AccountCollectionsCashBankUrl = "acccollections-cashbank";
     }
 }
