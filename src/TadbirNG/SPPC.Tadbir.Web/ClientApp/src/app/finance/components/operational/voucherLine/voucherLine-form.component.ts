@@ -60,7 +60,7 @@ export class VoucherLineFormComponent
   public editForm1: FormGroup;
 
   currenciesRows: Array<CurrencyInfo>;
-  voucherLineTypeList: Array<Item> = [];
+  articleTypeList: Array<Item> = [];
 
   selectedCurrencyValue: number;
   selectedArticleType: string = "0";
@@ -72,6 +72,7 @@ export class VoucherLineFormComponent
   errorMsg: string;
   isFullAccountInputFocused = false;
   isPayReciept = false;
+  isBank: 1|0 = 1;
 
   @Input() public isNew: boolean = false;
 
@@ -80,7 +81,9 @@ export class VoucherLineFormComponent
   @Input() public model: VoucherLine;
   @Input() public set payReciept(value:boolean) {
     this.isPayReciept = false;
+    this.selectedArticleType = null;
   }
+  @Input() public isSourceApp = false;
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<{ model: VoucherLine; isOpen: boolean }> =
@@ -113,8 +116,10 @@ export class VoucherLineFormComponent
     this.initFromGroup();
     this.editForm1.reset(this.model);
 
-    this.getCurrencies();
     this.getArticleType();
+
+    if (!this.isPayReciept) 
+      this.getCurrencies();
 
     if (this.isNewBalance)
       if (this.balance > 0) {
@@ -134,38 +139,72 @@ export class VoucherLineFormComponent
   }
 
   initFromGroup() {
-    this.editForm1 = new FormGroup({
-      id: new FormControl(),
-      voucherId: new FormControl(),
-      currencyId: new FormControl(),
-      debit: new FormControl(),
-      credit: new FormControl(),
-      currencyValue: new FormControl(),
-      typeId: new FormControl(),
-      description: new FormControl("", Validators.maxLength(512)),
-      fullAccount: new FormGroup({
-        account: new FormGroup({
-          id: new FormControl("", Validators.required),
-          name: new FormControl(),
-          fullCode: new FormControl(),
+    if (this.isPayReciept) {
+      this.editForm1 = new FormGroup({
+        id: new FormControl(),
+        amount: new FormControl(),
+        currencyValue: new FormControl(),
+        sourceAppId: new FormControl(),
+        bankOrderNo: new FormControl(),
+        remarks: new FormControl("", Validators.maxLength(512)),
+        fullAccount: new FormGroup({
+          account: new FormGroup({
+            id: new FormControl("", Validators.required),
+            name: new FormControl(),
+            fullCode: new FormControl(),
+          }),
+          detailAccount: new FormGroup({
+            id: new FormControl(),
+            name: new FormControl(),
+            fullCode: new FormControl(),
+          }),
+          costCenter: new FormGroup({
+            id: new FormControl(),
+            name: new FormControl(),
+            fullCode: new FormControl(),
+          }),
+          project: new FormGroup({
+            id: new FormControl(),
+            name: new FormControl(),
+            fullCode: new FormControl(),
+          }),
         }),
-        detailAccount: new FormGroup({
-          id: new FormControl(),
-          name: new FormControl(),
-          fullCode: new FormControl(),
+      });  
+    } else {
+      this.editForm1 = new FormGroup({
+        id: new FormControl(),
+        voucherId: new FormControl(),
+        currencyId: new FormControl(),
+        debit: new FormControl(),
+        credit: new FormControl(),
+        currencyValue: new FormControl(),
+        typeId: new FormControl(),
+        description: new FormControl("", Validators.maxLength(512)),
+        fullAccount: new FormGroup({
+          account: new FormGroup({
+            id: new FormControl("", Validators.required),
+            name: new FormControl(),
+            fullCode: new FormControl(),
+          }),
+          detailAccount: new FormGroup({
+            id: new FormControl(),
+            name: new FormControl(),
+            fullCode: new FormControl(),
+          }),
+          costCenter: new FormGroup({
+            id: new FormControl(),
+            name: new FormControl(),
+            fullCode: new FormControl(),
+          }),
+          project: new FormGroup({
+            id: new FormControl(),
+            name: new FormControl(),
+            fullCode: new FormControl(),
+          }),
         }),
-        costCenter: new FormGroup({
-          id: new FormControl(),
-          name: new FormControl(),
-          fullCode: new FormControl(),
-        }),
-        project: new FormGroup({
-          id: new FormControl(),
-          name: new FormControl(),
-          fullCode: new FormControl(),
-        }),
-      }),
-    });
+      });
+    }
+    
   }
 
   public onSave(isOpen: boolean): void {
@@ -213,10 +252,11 @@ export class VoucherLineFormComponent
   }
 
   getArticleType() {
+    let apiUrl = this.isSourceApp? String.Format(LookupApi.SourceApps,+this.creditDebiteMode-1): LookupApi.VoucherLineTypes;
     this.lookupService
-      .getModels(LookupApi.VoucherLineTypes)
+      .getModels(apiUrl)
       .subscribe((res) => {
-        this.voucherLineTypeList = res;
+        this.articleTypeList = res;
       });
   }
 
@@ -416,6 +456,8 @@ export class VoucherLineFormComponent
       }
     });
   }
+
+  onBankOrFundChange($e) {}
 
   fullAccountFocuse(value:boolean) {
     this.isFullAccountInputFocused = value;

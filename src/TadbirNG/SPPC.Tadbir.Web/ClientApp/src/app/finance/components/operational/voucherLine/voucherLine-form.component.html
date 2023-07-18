@@ -29,11 +29,31 @@
 
         <div class="col-xs-12 col-sm-5 sppc-float">
           <div class="row">
-            <div class="col-xs-12 cost-field">
+            <div class="col-xs-12 cost-field" *ngIf="isPayReciept">
+              <div class="form-group row">
+                <label
+                  for="amount"
+                  class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
+                  style="padding-top: 7px;"
+                  >{{ "VoucherLine.Amount" | translate }}</label
+                >
+
+                <sppc-numericInput
+                  [autoFocus]="true"
+                  id="amount"
+                  formControlName="amount"
+                  [decimalCount]="decimalCount"
+                  class="sppc-input-num sppc-float"
+                ></sppc-numericInput>
+              </div>
+            </div>
+
+            <div class="col-xs-12 cost-field" *ngIf="!isPayReciept">
               <div class="form-group row" *ngIf="creditDebiteMode == '1'">
                 <label
                   for="debit"
-                  class="control-label col-xs-4 col-sm-3 sppc-float"
+                  class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
+                  style="padding-top: 7px;"
                   >{{ "VoucherLine.Amount" | translate }}</label
                 >
 
@@ -42,14 +62,15 @@
                   formControlName="debit"
                   (keyup)="onDebitChange()"
                   [decimalCount]="decimalCount"
-                  class="col-xs-8 col-sm-9 sppc-input-num sppc-float"
+                  class="sppc-input-num sppc-float"
                 ></sppc-numericInput>
               </div>
 
               <div class="form-group row" *ngIf="creditDebiteMode == '2'">
                 <label
                   for="debit"
-                  class="control-label col-xs-4 col-sm-3 sppc-float"
+                  class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
+                  style="padding-top: 7px;"
                   >{{ "VoucherLine.Amount" | translate }}</label
                 >
 
@@ -58,7 +79,7 @@
                   formControlName="credit"
                   (keyup)="onCreditChange()"
                   [decimalCount]="decimalCount"
-                  class="col-xs-8 col-sm-9 sppc-input-num sppc-float"
+                  class="sppc-input-num sppc-float"
                 ></sppc-numericInput>
               </div>
             </div>
@@ -66,11 +87,11 @@
 
           <div class="row">
             <div class="col-xs-12">
-              <fieldset *ngIf="!isPayReciept">
+              <fieldset *ngIf="!isPayReciept;else isBankOrFund">
                 <div class="form-group row">
                   <label
                     for="debit"
-                    class="control-label col-xs-4 col-sm-3 sppc-float"
+                    class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
                   ></label>
                   <div class="voucher-mode-item">
                     <input
@@ -105,32 +126,91 @@
                   </div>
                 </div>
               </fieldset>
+              <ng-template #isBankOrFund>
+                <div *ngIf="isSourceApp" class="form-group row">
+                  <label
+                    for="bank"
+                    class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
+                  ></label>
+                  <div class="voucher-mode-item">
+                    <input
+                      type="radio"
+                      name="bank"
+                      id="bank"
+                      class="k-radio"
+                      [(ngModel)]="isBank"
+                      [value]="1"
+                      (change)="onBankOrFundChange($event)"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                    <label for="bank">{{
+                      "PayReceipt.Bank" | translate
+                    }}</label>
+                  </div>
+
+                  <div class="voucher-mode-item">
+                    <input
+                      type="radio"
+                      name="fund"
+                      id="fund"
+                      class="k-radio"
+                      [(ngModel)]="isBank"
+                      [value]="0"
+                      (change)="onBankOrFundChange($event)"
+                      [ngModelOptions]="{ standalone: true }"
+                    />
+                    <label for="fund">{{
+                      "PayReceipt.Fund" | translate
+                    }}</label>
+                  </div>
+                </div>
+              </ng-template>
             </div>
           </div>
 
           <div class="row">
             <div class="col-xs-12">
-              <div class="form-group row" *ngIf="!isPayReciept">
+              <div class="form-group row" *ngIf="!isPayReciept || (isPayReciept && isSourceApp && isBank == 0)">
                 <label
-                  class="control-label col-xs-4 col-sm-3 sppc-float"
+                  class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
                   style="padding: 7px 10px"
                 >
-                  {{ "VoucherLine.ArticleType" | translate }}
+                  {{ (isSourceApp? "SourceApp.SourceAppType": "VoucherLine.ArticleType") | translate }}
                 </label>
 
                 <kendo-dropdownlist
-                  [data]="voucherLineTypeList"
+                  [data]="articleTypeList"
                   class="col-xs-8 col-sm-9 sppc-float"
+                  style="padding: 0;width: 59%;"
                   [textField]="'value'"
                   [valueField]="'key'"
                   [valuePrimitive]="true"
                   [value]="selectedArticleType"
                   [(ngModel)]="selectedArticleType"
                   [ngModelOptions]="{ standalone: true }"
-                  formControlName="typeId"
+                  [formControlName]="isPayReciept? 'sourceAppId':'typeId'"
                 >
                 </kendo-dropdownlist>
               </div>
+
+              <div class="form-group row" *ngIf="isPayReciept && isSourceApp && isBank == 1">
+                <label
+                  class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
+                  style="padding: 7px 8px;font-size: 13px;"
+                  for="bankOrderNo"
+                >
+                  {{ "PayReceipt.BankOrderNo" | translate }}
+                </label>
+
+                <sppc-numericInput
+                  id="bankOrderNo"
+                  formControlName="bankOrderNo"
+                  [decimalCount]="decimalCount"
+                  class="sppc-input-num sppc-float"
+                ></sppc-numericInput>
+
+              </div>
+
             </div>
           </div>
         </div>
@@ -148,14 +228,14 @@
             <input
               type="text"
               class="k-textbox"
-              formControlName="description"
+              [formControlName]="isPayReciept?'remarks':'description'"
             />
 
             <div
               class="k-tooltip k-tooltip-validation"
               [hidden]="
-                editForm1.controls.description.valid ||
-                editForm1.controls.description.pristine
+                editForm1.controls[isPayReciept?'remarks':'description'].valid ||
+                editForm1.controls[isPayReciept?'remarks':'description'].pristine
               "
             >
               {{
@@ -171,27 +251,22 @@
 
         <div class="row">
           <div class="col-xs-12">
-            <fieldset
-              [disabled]="isPayReciept"
-              [ngClass]="{ disabled: isPayReciept }"
-            >
-              <div class="form-group">
-                <input
-                  type="checkbox"
-                  id="currencyInfo"
-                  class="k-checkbox"
-                  (change)="onCurrencyInfoChange()"
-                  [(ngModel)]="isDisplayCurrencyInfo"
-                  [ngModelOptions]="{ standalone: true }"
-                />
-                <label
-                  for="currencyInfo"
-                  class="control-label"
-                  style="margin: 0 5px"
-                  >{{ "VoucherLine.CurrencyInfo" | translate }}</label
-                >
-              </div>
-            </fieldset>
+            <div class="form-group" *ngIf="!isPayReciept">
+              <input
+                type="checkbox"
+                id="currencyInfo"
+                class="k-checkbox"
+                (change)="onCurrencyInfoChange()"
+                [(ngModel)]="isDisplayCurrencyInfo"
+                [ngModelOptions]="{ standalone: true }"
+              />
+              <label
+                for="currencyInfo"
+                class="control-label"
+                style="margin: 0 5px"
+                >{{ "VoucherLine.CurrencyInfo" | translate }}</label
+              >
+            </div>
           </div>
         </div>
 
