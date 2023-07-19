@@ -691,11 +691,23 @@ namespace SPPC.Tadbir.Persistence
         /// <inheritdoc/>
         public async Task<IList<KeyValue>> GetSourceApps(int sourceAppType)
         {
-            var result = await Repository
-                .GetAllQuery<SourceApp>(ViewId.SourceApp)
-                .Where(sa => sa.Type == sourceAppType)
-                .Select(sa => Mapper.Map<KeyValue>(sa))
-                .ToListAsync();
+            List<KeyValue> result;
+            if (sourceAppType != (int)SourceAppType.Both)
+            {
+                result = await Repository
+                    .GetAllQuery<SourceApp>(ViewId.SourceApp)
+                    .Where(sa => sa.Type == sourceAppType)
+                    .Select(sa => Mapper.Map<KeyValue>(sa))
+                    .ToListAsync();
+            }
+            else
+            {
+                result = await Repository
+                    .GetAllQuery<SourceApp>(ViewId.SourceApp)
+                    .Select(sa => Mapper.Map<KeyValue>(sa))
+                    .ToListAsync();
+            }
+
             var noneItem = new KeyValue
             {
                 Key = null,

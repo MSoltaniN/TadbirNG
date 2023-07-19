@@ -1,4 +1,4 @@
-<p-selectButton [options]="stateOptions"
+<!-- <p-selectButton [options]="stateOptions"
     [(ngModel)]="fundOrBankType"
     [ngModelOptions]="{standalone: true}"
     optionLabel="label"
@@ -7,7 +7,7 @@
     <ng-template let-item pTemplate>
         <span>{{ item.label | translate }}</span>
     </ng-template>
-</p-selectButton>
+</p-selectButton> -->
 
 <div class="panel-body" style="padding-top: 0">
 <div *ngIf="errorMessages">
@@ -53,16 +53,28 @@
                         </ng-template>
                     
                         <kendo-grid-messages
-                            pagerPage="{{ 'Paging.Record' | translate }}"
-                            pagerOf="{{ 'Paging.Of' | translate }}"
-                            pagerItems="{{ 'Paging.Record' | translate }}"
-                            pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}"
-                            pagerNextPage="{{ 'Paging.NextPage' | translate }}"
-                            pagerPreviousPage="{{ 'Paging.PreviousPage' | translate }}"
-                            pagerFirstPage="{{ 'Paging.FirstPage' | translate }}"
-                            pagerLastPage="{{ 'Paging.LastPage' | translate }}"
+                        pagerPage="{{ 'Paging.Record' | translate }}"
+                        pagerOf="{{ 'Paging.Of' | translate }}"
+                        pagerItems="{{ 'Paging.Record' | translate }}"
+                        pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}"
+                        pagerNextPage="{{ 'Paging.NextPage' | translate }}"
+                        pagerPreviousPage="{{ 'Paging.PreviousPage' | translate }}"
+                        pagerFirstPage="{{ 'Paging.FirstPage' | translate }}"
+                        pagerLastPage="{{ 'Paging.LastPage' | translate }}"
                         >
                         </kendo-grid-messages>
+
+                        <ng-template kendoPagerTemplate>
+                        <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+                        <kendo-pager-info></kendo-pager-info>
+                        <kendo-pager-numeric-buttons
+                            [buttonCount]="5"
+                        ></kendo-pager-numeric-buttons>
+                        <kendo-pager-next-buttons></kendo-pager-next-buttons>
+                        <kendo-pager-page-sizes
+                            [pageSizes]="pageSizeArray"
+                        ></kendo-pager-page-sizes>
+                        </ng-template>
 
                         <ng-template kendoGridToolbarTemplate>
                             <button
@@ -72,7 +84,6 @@
                             type="button"
                             title="{{ 'Buttons.Add' | translate }}"
                             ></button>
-                            <!-- [disabled]="!accountRequired" -->
                     
                             <button
                             (click)="editHandler()"

@@ -185,6 +185,7 @@
     "FieldName": "Field Name"
   },
   "Entity": {
+    "Dashboard": "Dashboard",
     "Account": "Account",
     "Voucher": "Vouchers Management",
     "VoucherLine": "Voucher Article",
@@ -220,7 +221,9 @@
     "TestBalance": "Balance",
     "CurrencyBook": "Currency Book",
     "SystemIssue": "System Control",
+    "ProfitLoss": "Profit Loss",
     "BalanceByAccount": "Balance By Account",
+    "BalanceSheet": "Balance Sheet",
     "Widget": "Widget",
     "CashRegister": "Cash Register",
     "CheckBook": "Check Books",
@@ -235,6 +238,18 @@
     "SuccessfulNumber": "Successful Count :",
     "NumberOfErrors": "Failed Count :",
     "GroupOperationReport": "Group Operation Summary"
+  },
+  "BalanceSheet": {
+    "Branch": "Branch",
+    "CostCenter": "Cost Center",
+    "Project": "Project",
+    "VoucherStatus": "Voucher Status",
+    "FilterByRef": "Filter by Ref",
+    "Closing": "Considering the closing document",
+    "SelectCostCenter": "Please select a cost center.",
+    "SelectProject": "Please select a project.",
+    "FilterByRefMsg": "Please enter a reference filter.",
+    "ToDate": "To Date"
   },
   "Balance": {
     "ByDate": "By date",
@@ -263,6 +278,7 @@
     "ShowAccountBookHint": "To view the account book, please set filter by date",
     "LevelIsNotExists": "No account with turnover could be found at lower levels",
     "AllDocsSelectHint": "Selecting all documents may be a not balance report",
+    "FilterByRef": "Filter by Ref",
     "Format": {
       "Balance2Column": "2 Columns",
       "Balance4Column": "4 Columns",
@@ -1340,17 +1356,22 @@
     "BranchScope": "Branch Scope",
     "Source": "Source",
     "Application": "Application",
-    "Delete": "Delete source/application"
+    "Delete": "Delete source/application",
+    "SourceAppType": "Source or Application"
   },
   "PayReceipt": {
     "PayReceipt": "Paymets and Receipts",
+    "Recipients": "Recipients",
+    "Payers": "Payers",
     "Name": "Name",
     "Details": "Details",
-    "Fund": "CashRegister",
+    "Fund": "Cash Register",
     "Bank": "Bank",
     "AggregateRows": "Aggregate Rows",
     "RemoveInvalidRows": "Remove Invalid Rows",
-    "DeletePayReceiveAccount": "Delete the account article"
+    "DeletePayReceiveAccount": "Delete the account article",
+    "BankOrderNo": "Bank Order No",
+    "CashAccount": "Cash Accounts"
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",

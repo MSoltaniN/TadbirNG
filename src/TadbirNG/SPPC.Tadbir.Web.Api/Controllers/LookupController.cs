@@ -528,7 +528,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/lookup/source-apps/types/{sourceAppType}
         [HttpGet]
         [Route(LookupApi.SourceAppsUrl)]
-        public async Task<IActionResult> GetDetailAccountsLookupAsync(int sourceAppType)
+        public async Task<IActionResult> GetSourceAppsLookupAsync(int sourceAppType)
         {
             var lookup = await _repository.GetSourceApps(sourceAppType);
             return Json(lookup);

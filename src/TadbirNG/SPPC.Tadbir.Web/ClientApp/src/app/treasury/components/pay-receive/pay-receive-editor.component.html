@@ -230,6 +230,15 @@
                   </payer-receiver>
                 </div>
                 <div class="col-md-6 col-xs-12 sppc-float">
+                  <label
+                    for="date"
+                    class="control-label"
+                    style="padding: 6px 0px"
+                  >
+                    {{
+                      "PayReceipt.CashAccount" | translate
+                    }}
+                  </label>
                   <fund-or-bank
                     [isConfirmed]="isConfirmed"
                     [payReceiveId]="this.model?.id"
