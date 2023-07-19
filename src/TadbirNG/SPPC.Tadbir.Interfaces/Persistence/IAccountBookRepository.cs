@@ -18,13 +18,6 @@ namespace SPPC.Tadbir.Persistence
         Task<AccountBookViewModel> GetAccountBookAsync(AccountBookParameters parameters);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات گزارش دفتر حساب به تفکیک شعبه را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="parameters">پارامترهای مورد نیاز برای گزارش</param>
-        /// <returns>اطلاعات دفتر حساب به تفکیک شعبه</returns>
-        Task<AccountBookViewModel> GetAccountBookByBranchAsync(AccountBookParameters parameters);
-
-        /// <summary>
         /// به روش آسنکرون، مولفه حساب قبلی قابل دسترسی نسبت به مولفه حساب مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <param name="viewId">شناسه دیتابیسی نمای اطلاعاتی مولفه حساب</param>

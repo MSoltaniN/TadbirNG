@@ -111,15 +111,15 @@ SELECT COUNT(*) AS TotalCount, SUM(vl.Debit) AS DebitSum, SUM(vl.Credit) AS Cred
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{0}] acc ON vl.{0}ID = acc.{0}ID
-WHERE CONVERT(int, v.No) >= {1} AND CONVERT(int, v.No) <= {2} AND acc.FullCode LIKE '{3}%' AND {{0}}";
+WHERE v.No >= {1} AND v.No <= {2} AND acc.FullCode LIKE '{3}%' AND {{0}}";
 
         internal const string ByNoByRow = @"
 SELECT CONVERT(date, v.Date) AS Date, v.No, vl.Description, vl.Debit, vl.Credit, vl.Mark, vl.VoucherLineID AS [Id]
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{0}] acc ON vl.{0}ID = acc.{0}ID
-WHERE CONVERT(int, v.No) >= {1} AND CONVERT(int, v.No) <= {2} AND acc.FullCode LIKE '{3}%' AND {{0}}
-ORDER BY CONVERT(int, v.No), vl.RowNo";
+WHERE v.No >= {1} AND v.No <= {2} AND acc.FullCode LIKE '{3}%' AND {{0}}
+ORDER BY v.No, vl.RowNo";
 
         internal const string ByNoByRowByBranch = @"
 SELECT CONVERT(date, v.Date) AS Date, v.No, vl.Description, vl.Debit, vl.Credit, vl.Mark, br.Name AS BranchName, vl.VoucherLineID AS [Id]
@@ -127,17 +127,17 @@ FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{0}] acc ON vl.{0}ID = acc.{0}ID
     INNER JOIN [Corporate].[Branch] br ON vl.BranchID = br.BranchID
-WHERE CONVERT(int, v.No) >= {1} AND CONVERT(int, v.No) <= {2} AND acc.FullCode LIKE '{3}%' AND {{0}}
-ORDER BY CONVERT(int, v.No), vl.BranchID";
+WHERE v.No >= {1} AND v.No <= {2} AND acc.FullCode LIKE '{3}%' AND {{0}}
+ORDER BY v.No, vl.BranchID";
 
         internal const string VoucherSumByNo = @"
 SELECT CONVERT(date, v.Date) AS Date, v.No, SUM(vl.Debit) AS Debit, 0 AS Credit1
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{0}] acc ON vl.{0}ID = acc.{0}ID
-WHERE CONVERT(int, v.No) >= {1} AND CONVERT(int, v.No) <= {2} AND acc.FullCode LIKE '{3}%' AND vl.Debit > 0 AND {{0}}
+WHERE v.No >= {1} AND v.No <= {2} AND acc.FullCode LIKE '{3}%' AND vl.Debit > 0 AND {{0}}
 GROUP BY CONVERT(date, v.Date), v.No
-ORDER BY CONVERT(int, v.No)";
+ORDER BY v.No";
 
         internal const string VoucherSumByNoByBranch = @"
 SELECT CONVERT(date, v.Date) AS Date, v.No, SUM(vl.Debit) AS Debit, 0 AS Credit1, br.Name AS BranchName
@@ -145,16 +145,16 @@ FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{0}] acc ON vl.{0}ID = acc.{0}ID
     INNER JOIN [Corporate].[Branch] br ON vl.BranchID = br.BranchID
-WHERE CONVERT(int, v.No) >= {1} AND CONVERT(int, v.No) <= {2} AND acc.FullCode LIKE '{3}%' AND vl.Debit > 0 AND {{0}}
+WHERE v.No >= {1} AND v.No <= {2} AND acc.FullCode LIKE '{3}%' AND vl.Debit > 0 AND {{0}}
 GROUP BY CONVERT(date, v.Date), v.No, br.BranchID, br.Name
-ORDER BY CONVERT(int, v.No), br.BranchID";
+ORDER BY v.No, br.BranchID";
 
         internal const string DailySumByNo = @"
 SELECT CONVERT(date, v.Date) AS Date, COUNT(vl.RowNo) AS LineCount, SUM(vl.Debit) AS Debit, 0 AS Credit1
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{0}] acc ON vl.{0}ID = acc.{0}ID
-WHERE CONVERT(int, v.No) >= {1} AND CONVERT(int, v.No) <= {2} AND acc.FullCode LIKE '{3}%' AND vl.Debit > 0 AND {{0}}
+WHERE v.No >= {1} AND v.No <= {2} AND acc.FullCode LIKE '{3}%' AND vl.Debit > 0 AND {{0}}
 GROUP BY CONVERT(date, v.Date)
 ORDER BY CONVERT(date, v.Date)";
 
@@ -164,7 +164,7 @@ FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{0}] acc ON vl.{0}ID = acc.{0}ID
     INNER JOIN [Corporate].[Branch] br ON vl.BranchID = br.BranchID
-WHERE CONVERT(int, v.No) >= {1} AND CONVERT(int, v.No) <= {2} AND acc.FullCode LIKE '{3}%' AND vl.Debit > 0 AND {{0}}
+WHERE v.No >= {1} AND v.No <= {2} AND acc.FullCode LIKE '{3}%' AND vl.Debit > 0 AND {{0}}
 GROUP BY CONVERT(date, v.Date), br.BranchID, br.Name
 ORDER BY CONVERT(date, v.Date), br.BranchID";
 
@@ -173,7 +173,7 @@ SELECT COUNT(vl.RowNo) AS LineCount, SUM(vl.Debit) AS Debit, 0 AS Credit1
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{0}] acc ON vl.{0}ID = acc.{0}ID
-WHERE CONVERT(int, v.No) >= {1} AND CONVERT(int, v.No) <= {2} AND acc.FullCode LIKE '{3}%' AND v.OriginID = 1 AND vl.Debit > 0 AND {{0}}";
+WHERE v.No >= {1} AND v.No <= {2} AND acc.FullCode LIKE '{3}%' AND v.OriginID = 1 AND vl.Debit > 0 AND {{0}}";
 
         internal const string MonthlySumByNoByBranch = @"
 SELECT COUNT(vl.RowNo) AS LineCount, SUM(vl.Debit) AS Debit, 0 AS Credit1, br.Name AS BranchName
@@ -181,7 +181,7 @@ FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{0}] acc ON vl.{0}ID = acc.{0}ID
     INNER JOIN [Corporate].[Branch] br ON vl.BranchID = br.BranchID
-WHERE CONVERT(int, v.No) >= {1} AND CONVERT(int, v.No) <= {2} AND acc.FullCode LIKE '{3}%' AND v.OriginID = 1 AND vl.Debit > 0 AND {{0}}
+WHERE v.No >= {1} AND v.No <= {2} AND acc.FullCode LIKE '{3}%' AND v.OriginID = 1 AND vl.Debit > 0 AND {{0}}
 GROUP BY br.BranchID, br.Name
 ORDER BY br.BranchID";
 
@@ -190,7 +190,7 @@ SELECT COUNT(vl.RowNo) AS LineCount, SUM(vl.Debit) AS Debit, 0 AS Credit1
 FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{0}] acc ON vl.{0}ID = acc.{0}ID
-WHERE CONVERT(int, v.No) >= {1} AND CONVERT(int, v.No) <= {2} AND v.OriginID = {3} AND acc.FullCode LIKE '{4}%' AND vl.Debit > 0 AND {{0}}";
+WHERE v.No >= {1} AND v.No <= {2} AND v.OriginID = {3} AND acc.FullCode LIKE '{4}%' AND vl.Debit > 0 AND {{0}}";
 
         internal const string SpecialVoucherByNoByBranch = @"
 SELECT COUNT(vl.RowNo) AS LineCount, SUM(vl.Debit) AS Debit, 0 AS Credit1, br.Name AS BranchName
@@ -198,7 +198,7 @@ FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
     INNER JOIN [Finance].[{0}] acc ON vl.{0}ID = acc.{0}ID
     INNER JOIN [Corporate].[Branch] br ON vl.BranchID = br.BranchID
-WHERE CONVERT(int, v.No) >= {1} AND CONVERT(int, v.No) <= {2} AND v.OriginID = {3} AND acc.FullCode LIKE '{4}%' AND vl.Debit > 0 AND {{0}}
+WHERE v.No >= {1} AND v.No <= {2} AND v.OriginID = {3} AND acc.FullCode LIKE '{4}%' AND vl.Debit > 0 AND {{0}}
 GROUP BY br.BranchID, br.Name
 ORDER BY br.BranchID";
 

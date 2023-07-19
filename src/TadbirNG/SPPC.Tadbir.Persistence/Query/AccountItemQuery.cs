@@ -45,6 +45,13 @@ FROM [Finance].[VoucherLine] vl
     INNER JOIN [Finance].[{0}] acc ON vl.{0}ID = acc.{0}ID
 WHERE v.Date < '{1}' AND acc.FullCode LIKE '{2}%' AND {{0}}";
 
+        internal const string BalanceByNo = @"
+SELECT SUM(vl.Debit - vl.Credit) AS Balance
+FROM [Finance].[VoucherLine] vl
+    INNER JOIN [Finance].[Voucher] v ON vl.VoucherID = v.VoucherID
+    INNER JOIN [Finance].[{0}] acc ON vl.{0}ID = acc.{0}ID
+WHERE v.No < {1} AND acc.FullCode LIKE '{2}%' AND {{0}}";
+
         internal const string OpeningVoucherBalanceByNo = @"
 SELECT SUM(vl.Debit - vl.Credit) AS Balance
 FROM [Finance].[VoucherLine] vl

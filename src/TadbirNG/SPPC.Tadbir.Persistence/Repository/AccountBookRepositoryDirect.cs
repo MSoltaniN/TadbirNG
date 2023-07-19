@@ -39,17 +39,39 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public async Task<AccountBookViewModel> GetAccountBookAsync(
-            AccountBookParameters parameters)
+        public async Task<AccountBookViewModel> GetAccountBookAsync(AccountBookParameters parameters)
         {
-            return await GetAccountBookDataAsync(parameters);
-        }
+            Verify.ArgumentNotNull(parameters, nameof(parameters));
+            var book = default(AccountBookViewModel);
+            var sourceList = GetSourceList(parameters.Mode);
 
-        /// <inheritdoc/>
-        public async Task<AccountBookViewModel> GetAccountBookByBranchAsync(
-            AccountBookParameters parameters)
-        {
-            return await GetAccountBookDataAsync(parameters);
+            if (parameters.GridOptions.Operation != (int)OperationId.Print)
+            {
+                var accountItem = await _utility.GetItemAsync(parameters.ViewId, parameters.ItemId);
+                string fullCode = accountItem?.FullCode ?? String.Empty;
+                DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
+
+                switch (parameters.Mode)
+                {
+                    case AccountBookMode.ByRows:
+                        book = await GetSimpleBookAsync(fullCode, parameters);
+                        break;
+                    case AccountBookMode.VoucherSum:
+                        book = await GetSummaryBookAsync(fullCode, parameters, true);
+                        break;
+                    case AccountBookMode.DailySum:
+                        book = await GetSummaryBookAsync(fullCode, parameters, false);
+                        break;
+                    case AccountBookMode.MonthlySum:
+                        book = await GetMonthlySummaryBookAsync(fullCode, parameters);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            await OnSourceActionAsync(parameters.GridOptions, sourceList);
+            return book;
         }
 
         /// <inheritdoc/>
@@ -101,6 +123,67 @@ namespace SPPC.Tadbir.Persistence
             get { return _system.Config; }
         }
 
+        private static string GetBookQuery(AccountBookParameters parameters)
+        {
+            var query = String.Empty;
+            if (parameters.FromNo > 0 && parameters.ToNo > 0)
+            {
+                if (parameters.Mode == AccountBookMode.ByRows)
+                {
+                    query = parameters.IsByBranch
+                        ? BookQuery.ByNoByRowByBranch
+                        : BookQuery.ByNoByRow;
+                }
+                else if (parameters.Mode == AccountBookMode.VoucherSum)
+                {
+                    query = parameters.IsByBranch
+                        ? BookQuery.VoucherSumByNoByBranch
+                        : BookQuery.VoucherSumByNo;
+                }
+                else if (parameters.Mode == AccountBookMode.DailySum)
+                {
+                    query = parameters.IsByBranch
+                        ? BookQuery.DailySumByNoByBranch
+                        : BookQuery.DailySumByNo;
+                }
+                else if (parameters.Mode == AccountBookMode.MonthlySum)
+                {
+                    query = parameters.IsByBranch
+                        ? BookQuery.MonthlySumByNoByBranch
+                        : BookQuery.MonthlySumByNo;
+                }
+            }
+            else
+            {
+                if (parameters.Mode == AccountBookMode.ByRows)
+                {
+                    query = parameters.IsByBranch
+                        ? BookQuery.ByDateByRowByBranch
+                        : BookQuery.ByDateByRow;
+                }
+                else if (parameters.Mode == AccountBookMode.VoucherSum)
+                {
+                    query = parameters.IsByBranch
+                        ? BookQuery.VoucherSumByDateByBranch
+                        : BookQuery.VoucherSumByDate;
+                }
+                else if (parameters.Mode == AccountBookMode.DailySum)
+                {
+                    query = parameters.IsByBranch
+                        ? BookQuery.DailySumByDateByBranch
+                        : BookQuery.DailySumByDate;
+                }
+                else if (parameters.Mode == AccountBookMode.MonthlySum)
+                {
+                    query = parameters.IsByBranch
+                        ? BookQuery.MonthlySumByDateByBranch
+                        : BookQuery.MonthlySumByDate;
+                }
+            }
+
+            return query;
+        }
+
         private static string GetSummaryQuery(bool byNo, bool byBranch)
         {
             string query;
@@ -140,46 +223,10 @@ namespace SPPC.Tadbir.Persistence
             return sourceList;
         }
 
-        private async Task<AccountBookViewModel> GetAccountBookDataAsync(
-            AccountBookParameters parameters)
-        {
-            Verify.ArgumentNotNull(parameters, nameof(parameters));
-            var book = default(AccountBookViewModel);
-            var sourceList = GetSourceList(parameters.Mode);
-
-            if (parameters.GridOptions.Operation != (int)OperationId.Print)
-            {
-                var accountItem = await _utility.GetItemAsync(parameters.ViewId, parameters.ItemId);
-                string fullCode = accountItem?.FullCode ?? String.Empty;
-                DbConsole.ConnectionString = UnitOfWork.CompanyConnection;
-
-                switch (parameters.Mode)
-                {
-                    case AccountBookMode.ByRows:
-                        book = await GetSimpleBookAsync(fullCode, parameters);
-                        break;
-                    case AccountBookMode.VoucherSum:
-                        book = await GetSummaryBookAsync(fullCode, parameters, true);
-                        break;
-                    case AccountBookMode.DailySum:
-                        book = await GetSummaryBookAsync(fullCode, parameters, false);
-                        break;
-                    case AccountBookMode.MonthlySum:
-                        book = await GetMonthlySummaryBookAsync(fullCode, parameters);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            await OnSourceActionAsync(parameters.GridOptions, sourceList);
-            return book;
-        }
-
         private async Task<AccountBookViewModel> GetSimpleBookAsync(
             string fullCode, AccountBookParameters parameters)
         {
-            string bookQuery = parameters.IsByBranch ? BookQuery.ByDateByRowByBranch : BookQuery.ByDateByRow;
+            string bookQuery = GetBookQuery(parameters);
             var book = new AccountBookViewModel();
             var items = await GetInitialItemsAsync(parameters);
             var query = new ReportQuery(String.Format(bookQuery, _utility.GetItemName(parameters.ViewId),

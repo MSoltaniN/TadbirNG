@@ -8,7 +8,6 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Filters;
 
@@ -629,6 +628,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
+        private async Task<IActionResult> AccountBookResultAsync(
+            AccountBookMode bookMode, int viewId, int accountId, DateTime? from, DateTime? to,
+            bool byBranch = false)
+        {
+            var parameters = GetParameters(bookMode, viewId, accountId, from, to, byBranch);
+            var book = await _repository.GetAccountBookAsync(parameters);
+            SetItemCount(book.TotalCount);
+            SetRowNumbers(book.Items);
+            return Json(book);
+        }
+
         private AccountBookParameters GetParameters(
             AccountBookMode bookMode, int viewId, int accountId, DateTime? from, DateTime? to, bool byBranch)
         {
@@ -646,27 +656,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             };
         }
 
-        private async Task<IActionResult> AccountBookResultAsync(
-            AccountBookMode bookMode, int viewId, int accountId, DateTime? from, DateTime? to,
-            bool byBranch = false)
-        {
-            var parameters = GetParameters(bookMode, viewId, accountId, from, to, byBranch);
-            var book = byBranch
-                ? await _repository.GetAccountBookByBranchAsync(parameters)
-                : await _repository.GetAccountBookAsync(parameters);
-            SetItemCount(book.TotalCount);
-            SetRowNumbers(book.Items);
-            return Json(book);
-        }
-
         private void Sanitize(ref DateTime? from, ref DateTime? to)
         {
             if (from == null || to == null)
             {
-                DateTime rangeFrom, rangeTo;
-                _configRepository.GetDefaultFiscalDateRange(out rangeFrom, out rangeTo);
-                from = from ?? rangeFrom;
-                to = to ?? rangeTo;
+                _configRepository.GetDefaultFiscalDateRange(out DateTime rangeFrom, out DateTime rangeTo);
+                from ??= rangeFrom;
+                to ??= rangeTo;
             }
         }
 
