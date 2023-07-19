@@ -130,7 +130,7 @@ export class HomeComponent extends DefaultComponent implements OnInit {
 
   showByNoDialog() {
     this.dialog = this.dialogService.open({
-      title: "شماره سند",
+      title: this.getText("Voucher.VoucherNo"),
       content: this.el,
       actions: this.actionBtn,
     });
@@ -138,7 +138,7 @@ export class HomeComponent extends DefaultComponent implements OnInit {
 
   showOpeningVoucherConfirm() {
     this.dialog = this.dialogService.open({
-      title: "پیغام تایید",
+      title: this.getText("Entity.ConfirmationMessage"),
       content: this.elOVConfirmBox,
       actions: this.elOVConfirmBoxActions,
       width: 430,

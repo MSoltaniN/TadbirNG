@@ -8,7 +8,7 @@ import { VoucherLine } from '@sppc/finance/models';
   template: `
     <div class="row article-account">
       <div class="col-xs-12">
-        <label class="control-label" style="position: absolute;">حساب</label>
+        <label class="control-label" style="position: absolute;">{{ 'Entity.Account' | translate }}</label>
         <label class="control-label" style="text-align: center; direction: ltr; display:block;">
           {{ model?.fullAccount?.account.fullCode }} -
           {{ model?.fullAccount?.detailAccount.fullCode }} -

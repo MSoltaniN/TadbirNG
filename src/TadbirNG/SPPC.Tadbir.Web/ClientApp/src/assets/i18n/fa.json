@@ -253,7 +253,8 @@
     "SourceApp": "منابع و مصارف",
     "Payment": "سند پرداخت",
     "Receipt": "سند دریافت",
-    "PayReceiveAccount": "طرف حساب"
+    "PayReceiveAccount": "طرف حساب",
+    "ConfirmationMessage":"پیغام تایید"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",
@@ -1380,6 +1381,8 @@
     "DeletePayReceiveAccount": "حذف آرتیکل طرف حساب",
     "BankOrderNo": "شماره حواله بانکی",
     "CashAccount": "حسابهای نقدی",
+    "Checks":"چکها",
+    "Cash":"وجه نقد"
     "TotalAmount": "مجموع مبالغ"
   },
   "UserValueFilter": {
