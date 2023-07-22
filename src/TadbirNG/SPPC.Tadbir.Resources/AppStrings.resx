@@ -4080,4 +4080,10 @@
   <data name="Sources" xml:space="preserve">
     <value>منابع</value>
   </data>
+  <data name="Deactivate" xml:space="preserve">
+    <value>غیرفعال کردن</value>
+  </data>
+  <data name="Reactivate" xml:space="preserve">
+    <value>فعال کردن</value>
+  </data>
 </root>

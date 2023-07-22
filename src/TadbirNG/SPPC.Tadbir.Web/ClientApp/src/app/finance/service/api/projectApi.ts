@@ -31,4 +31,10 @@ export class ProjectApi {
 
     // projects/{projectId:int}/fullcode
     public static ProjectFullCode = environment.BaseUrl + "/projects/{0}/fullcode";
+
+    // projects/{projectId:min(1)}/deactivate
+    public static DeactivateProject = environment.BaseUrl + "/projects/{0}/deactivate";
+
+    // projects/{projectId:min(1)}/reactivate
+    public static ReactivateProject = environment.BaseUrl + "/projects/{0}/reactivate";
 }

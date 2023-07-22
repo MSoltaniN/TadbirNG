@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Api
 {
@@ -37,5 +36,25 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all Users assigned to the cash register item specified by unique identifier
         /// </summary>
         public const string CashRegisterUsersUrl = "cash-registers/{cashRegisterId:min(1)}/users";
+
+        /// <summary>
+        /// API client URL for marking an active cash register as inactive
+        /// </summary>
+        public const string DeactivateCashRegister = "cash-registers/{0}/deactivate";
+
+        /// <summary>
+        /// API server route URL for marking an active cash register as inactive
+        /// </summary>
+        public const string DeactivateCashRegisterUrl = "cash-registers/{cashRegisterId:int}/deactivate";
+
+        /// <summary>
+        /// API client URL for marking an inactive cash register as active
+        /// </summary>
+        public const string ReactivateCashRegister = "cash-registers/{0}/reactivate";
+
+        /// <summary>
+        /// API server route URL for marking an inactive cash register as active
+        /// </summary>
+        public const string ReactivateCashRegisterUrl = "cash-registers/{cashRegisterId:int}/reactivate";
     }
 }

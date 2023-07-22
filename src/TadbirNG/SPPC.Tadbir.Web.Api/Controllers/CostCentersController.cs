@@ -215,6 +215,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، مرکز هزینه مشخص شده با شناسه دیتابیسی را غیرفعال می کند
+        /// </summary>
+        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر برای غیرفعال کردن</param>
+        // PUT: api/ccenters/{ccenterId:min(1)}/deactivate
+        [HttpPut]
+        [Route(CostCenterApi.DeactivateCostCenterUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Deactivate)]
+        public async Task<IActionResult> PutCostCenterAsDeactivated(int ccenterId)
+        {
+            return Ok();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مرکز هزینه مشخص شده با شناسه دیتابیسی را فعال می کند
+        /// </summary>
+        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر برای فعال کردن</param>
+        // PUT: api/ccenters/{ccenterId:min(1)}/reactivate
+        [HttpPut]
+        [Route(CostCenterApi.ReactivateCostCenterUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Reactivate)]
+        public async Task<IActionResult> PutCostCenterAsReactivated(int ccenterId)
+        {
+            return Ok();
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مرکز هزینه مشخص شده با شناسه دیتابیسی را حذف می کند
         /// </summary>
         /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر برای حذف</param>

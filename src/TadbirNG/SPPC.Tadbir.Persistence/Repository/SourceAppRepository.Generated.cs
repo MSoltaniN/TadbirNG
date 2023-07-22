@@ -52,10 +52,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، منبع و مصرف با شناسه عددی مشخص شده را خوانده و برمی گرداند
+        /// به روش آسنکرون، منبع یا مصرف با شناسه عددی مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="sourceAppId">شناسه عددی یکی از منابع و مصارف موجود</param>
-        /// <returns>منبع و مصرف مشخص شده با شناسه عددی</returns>
+        /// <param name="sourceAppId">شناسه عددی یکی از منابع یا مصارف موجود</param>
+        /// <returns>منبع یا مصرف مشخص شده با شناسه عددی</returns>
         public async Task<SourceAppViewModel> GetSourceAppAsync(int sourceAppId)
         {
             SourceAppViewModel item = null;
@@ -88,10 +88,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات یک منبع و مصرف را ایجاد یا اصلاح می کند
+        /// به روش آسنکرون، اطلاعات یک منبع یا مصرف را ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="sourceApp">منبع و مصرف مورد نظر برای ایجاد یا اصلاح</param>
-        /// <returns>اطلاعات نمایشی منبع و مصرف ایجاد یا اصلاح شده</returns>
+        /// <param name="sourceApp">منبع یا مصرف مورد نظر برای ایجاد یا اصلاح</param>
+        /// <returns>اطلاعات نمایشی منبع یا مصرف ایجاد یا اصلاح شده</returns>
         public async Task<SourceAppViewModel> SaveSourceAppAsync(SourceAppViewModel sourceApp)
         {
             Verify.ArgumentNotNull(sourceApp, nameof(sourceApp));
@@ -115,9 +115,9 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، منبع و مصرف مشخص شده با شناسه عددی را حذف می کند
+        /// به روش آسنکرون، منبع یا مصرف مشخص شده با شناسه عددی را حذف می کند
         /// </summary>
-        /// <param name="sourceAppId">شناسه عددی منبع و مصرف مورد نظر برای حذف</param>
+        /// <param name="sourceAppId">شناسه عددی منبع یا مصرف مورد نظر برای حذف</param>
         public async Task DeleteSourceAppAsync(int sourceAppId)
         {
             var repository = UnitOfWork.GetAsyncRepository<SourceApp>();

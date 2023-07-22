@@ -55,10 +55,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی منبع و مصرف مشخص شده با شناسه دیتابیسی را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات نمایشی منبع یا مصرف مشخص شده با شناسه دیتابیسی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="sourceAppId">شناسه دیتابیسی منبع و مصرف مورد نظر</param>
-        /// <returns>اطلاعات نمایشی منبع و مصرف مورد نظر</returns>
+        /// <param name="sourceAppId">شناسه دیتابیسی منبع یا مصرف مورد نظر</param>
+        /// <returns>اطلاعات نمایشی منبع یا مصرف مورد نظر</returns>
         // GET: api/source-apps/{sourceAppId:min(1)}
         [HttpGet]
         [Route(SourceAppApi.SourceAppUrl)]
@@ -70,9 +70,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، منبع جدیدی با مقادیر پیشنهادی در دیتابیس ایجاد کرده و برمی گرداند
+        /// به روش آسنکرون، منبع یا مصرف جدیدی با مقادیر پیشنهادی را برمی گرداند
         /// </summary>
-        /// <returns>اطلاعات نمایشی منبع جدید با مقادیر پیشنهادی</returns>
+        /// <returns>اطلاعات نمایشی منبع یا مصرف جدید با مقادیر پیشنهادی</returns>
         // GET: api/source-apps/new
         [HttpGet]
         [Route(SourceAppApi.NewSourceAppUrl)]
@@ -84,10 +84,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی یک منبع و مصرف جدید را پس از اعتبارسنجی در دیتابیس ذخیره می کند
+        /// به روش آسنکرون، اطلاعات نمایشی یک منبع یا مصرف جدید را پس از اعتبارسنجی در دیتابیس ذخیره می کند
         /// </summary>
-        /// <param name="sourceApp">اطلاعات نمایشی منبع و مصرف جدید</param>
-        /// <returns>اطلاعات نمایشی ذخیره شده برای منبع و مصرف</returns>
+        /// <param name="sourceApp">اطلاعات نمایشی منبع یا مصرف جدید</param>
+        /// <returns>اطلاعات نمایشی ذخیره شده برای منبع یا مصرف</returns>
         // POST: api/source-apps
         [HttpPost]
         [Route(SourceAppApi.SourceAppsUrl)]
@@ -105,11 +105,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک منبع و مصرف موجود را پس از اعتبارسنجی در دیتابیس ذخیره می کند
+        /// به روش آسنکرون، اطلاعات نمایشی اصلاح شده برای یک منبع یا مصرف موجود را پس از اعتبارسنجی در دیتابیس ذخیره می کند
         /// </summary>
-        /// <param name="sourceAppId">شناسه دیتابیسی منبع و مصرف اصلاح شده</param>
-        /// <param name="sourceApp">اطلاعات نمایشی اصلاح شده برای منبع و مصرف</param>
-        /// <returns>اطلاعات نمایشی ذخیره شده برای منبع و مصرف</returns>
+        /// <param name="sourceAppId">شناسه دیتابیسی منبع یا مصرف اصلاح شده</param>
+        /// <param name="sourceApp">اطلاعات نمایشی اصلاح شده برای منبع یا مصرف</param>
+        /// <returns>اطلاعات نمایشی ذخیره شده برای منبع یا مصرف</returns>
         // PUT: api/source-apps/{sourceAppId:min(1)}
         [HttpPut]
         [Route(SourceAppApi.SourceAppUrl)]
@@ -124,6 +124,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var outputItem = await _repository.SaveSourceAppAsync(sourceApp);
             return OkReadResult(outputItem);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، منبع یا مصرف مشخص شده با شناسه دیتابیسی را غیرفعال می کند
+        /// </summary>
+        /// <param name="sourceAppId">شناسه دیتابیسی منبع یا مصرف مورد نظر برای غیرفعال کردن</param>
+        // PUT: api/source-apps/{sourceAppId:min(1)}/deactivate
+        [HttpPut]
+        [Route(SourceAppApi.DeactivateSourceAppUrl)]
+        [AuthorizeRequest(SecureEntity.SourceApp, (int)SourceAppPermissions.Deactivate)]
+        public async Task<IActionResult> PutSourceAppAsDeactivated(int sourceAppId)
+        {
+            return Ok();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، منبع یا مصرف مشخص شده با شناسه دیتابیسی را فعال می کند
+        /// </summary>
+        /// <param name="sourceAppId">شناسه دیتابیسی منبع یا مصرف مورد نظر برای فعال کردن</param>
+        // PUT: api/source-apps/{sourceAppId:min(1)}/reactivate
+        [HttpPut]
+        [Route(SourceAppApi.ReactivateSourceAppUrl)]
+        [AuthorizeRequest(SecureEntity.SourceApp, (int)SourceAppPermissions.Reactivate)]
+        public async Task<IActionResult> PutSourceAppAsReactivated(int sourceAppId)
+        {
+            return Ok();
         }
 
         /// <summary>

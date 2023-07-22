@@ -1255,3 +1255,38 @@ INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Typ
 INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (816, 77, 'Remarks', NULL, NULL, 'System.String', 'nvarchar', 'string', 512, 0, 0, 0, 1, 1, 1, NULL, 10, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
+
+-- 1.2.1548
+
+-- Add permissions for new generic operations (Deactivate and Reactivate)...
+SET IDENTITY_INSERT [Auth].[Permission] ON
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (268, 1, N'Deactivate', 128, N'Mark an active account as inactive')
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (269, 1, N'Reactivate', 256, N'Mark an inactive account as active')
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (270, 2, N'Deactivate', 128, N'Mark an active detail account as inactive')
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (271, 2, N'Reactivate', 256, N'Mark an inactive detail account as active')
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (272, 3, N'Deactivate', 128, N'Mark an active cost center as inactive')
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (273, 3, N'Reactivate', 256, N'Mark an inactive cost center as active')
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (274, 4, N'Deactivate', 128, N'Mark an active project as inactive')
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (275, 4, N'Reactivate', 256, N'Mark an inactive project as active')
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (276, 6, N'Deactivate', 128, N'Mark an active currency as inactive')
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (277, 6, N'Reactivate', 256, N'Mark an inactive currency as active')
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (278, 38, N'Deactivate', 256, N'Mark an active cash register as inactive')
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (279, 38, N'Reactivate', 512, N'Mark an inactive cash register as active')
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (280, 40, N'Deactivate', 128, N'Mark an active source/application as inactive')
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (281, 40, N'Reactivate', 256, N'Mark an inactive source/application as active')
+SET IDENTITY_INSERT [Auth].[Permission] OFF
+

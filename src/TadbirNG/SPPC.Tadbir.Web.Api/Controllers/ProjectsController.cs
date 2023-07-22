@@ -216,6 +216,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، پروژه مشخص شده با شناسه دیتابیسی را غیرفعال می کند
+        /// </summary>
+        /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر برای غیرفعال کردن</param>
+        // PUT: api/projects/{projectId:min(1)}/deactivate
+        [HttpPut]
+        [Route(ProjectApi.DeactivateProjectUrl)]
+        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Deactivate)]
+        public async Task<IActionResult> PutProjectAsDeactivated(int projectId)
+        {
+            return Ok();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، پروژه مشخص شده با شناسه دیتابیسی را فعال می کند
+        /// </summary>
+        /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر برای فعال کردن</param>
+        // PUT: api/projects/{projectId:min(1)}/reactivate
+        [HttpPut]
+        [Route(ProjectApi.ReactivateProjectUrl)]
+        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Reactivate)]
+        public async Task<IActionResult> PutProjectAsReactivated(int projectId)
+        {
+            return Ok();
+        }
+
+        /// <summary>
         /// به روش آسنکرون، پروژه مشخص شده با شناسه دیتابیسی را حذف می کند
         /// </summary>
         /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر برای حذف</param>

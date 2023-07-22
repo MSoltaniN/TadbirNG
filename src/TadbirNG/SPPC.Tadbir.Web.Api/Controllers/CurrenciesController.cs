@@ -320,6 +320,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، ارز مشخص شده با شناسه دیتابیسی را غیرفعال می کند
+        /// </summary>
+        /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر برای غیرفعال کردن</param>
+        // PUT: api/currencies/{currencyId:min(1)}/deactivate
+        [HttpPut]
+        [Route(CurrencyApi.DeactivateCurrencyUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.Deactivate)]
+        public async Task<IActionResult> PutCurrencyAsDeactivated(int currencyId)
+        {
+            return Ok();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ارز مشخص شده با شناسه دیتابیسی را فعال می کند
+        /// </summary>
+        /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر برای فعال کردن</param>
+        // PUT: api/currencies/{currencyId:min(1)}/reactivate
+        [HttpPut]
+        [Route(CurrencyApi.ReactivateCurrencyUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.Reactivate)]
+        public async Task<IActionResult> PutCurrencyAsReactivated(int currencyId)
+        {
+            return Ok();
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="currencyId"></param>

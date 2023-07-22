@@ -275,6 +275,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، سرفصل حسابداری مشخص شده با شناسه دیتابیسی را غیرفعال می کند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی سرفصل حسابداری مورد نظر برای غیرفعال کردن</param>
+        // PUT: api/accounts/{accountId:min(1)}/deactivate
+        [HttpPut]
+        [Route(AccountApi.DeactivateAccountUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Deactivate)]
+        public async Task<IActionResult> PutAccountAsDeactivated(int accountId)
+        {
+            return Ok();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سرفصل حسابداری مشخص شده با شناسه دیتابیسی را فعال می کند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی سرفصل حسابداری مورد نظر برای فعال کردن</param>
+        // PUT: api/accounts/{accountId:min(1)}/reactivate
+        [HttpPut]
+        [Route(AccountApi.ReactivateAccountUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Reactivate)]
+        public async Task<IActionResult> PutAccountAsReactivated(int accountId)
+        {
+            return Ok();
+        }
+
+        /// <summary>
         /// به روش آسنکرون، سرفصل حسابداری مشخص شده با شناسه دیتابیسی را حذف می کند
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی سرفصل حسابداری مورد نظر برای حذف</param>
