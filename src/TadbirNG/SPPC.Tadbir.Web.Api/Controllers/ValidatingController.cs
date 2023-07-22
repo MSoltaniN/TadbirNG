@@ -95,7 +95,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var currentContext = SecurityContext.User;
             if (item.BranchId != currentContext.BranchId)
             {
-                return BadRequestResult(_strings.Format(AppStrings.OtherBranchEditNotAllowed));
+                return BadRequestResult(_strings[AppStrings.OtherBranchEditNotAllowed]);
             }
 
             return Ok();
@@ -156,6 +156,33 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (!String.IsNullOrEmpty(lookupResult))
             {
                 return BadRequestResult(_strings.Format(lookupResult));
+            }
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// قواعد اعتبارسنجی مربوط به فعال یا غیرفعال کردن را روی آبجکت داده شده بررسی می کند
+        /// و نتیجه اعتبارسنجی را برمی گرداند
+        /// </summary>
+        /// <typeparam name="TFiscalView">نوع مدل نمایشی برای یکی از موجودیت های پایه</typeparam>
+        /// <param name="item">آبجکت داده شده برای اعتبارسنجی</param>
+        /// <returns>در صورت نبود خطای اعتبارسنجی کد وضعیتی 200 و در غیر این صورت
+        /// متن خطا را با کد وضعیتی 400 برای درخواست نامعتبر برمی گرداند</returns>
+        protected IActionResult ActiveStateValidationResult<TFiscalView>(TFiscalView item)
+            where TFiscalView : class, IFiscalEntity
+        {
+            Verify.ArgumentNotNull(item, nameof(item));
+            if (item.BranchId != SecurityContext.User.BranchId)
+            {
+                var message = _strings.Format(AppStrings.ActiveStateBranchError, EntityNameKey);
+                return BadRequestResult(message);
+            }
+
+            if (item.FiscalPeriodId > SecurityContext.User.FiscalPeriodId)
+            {
+                var message = _strings.Format(AppStrings.ActiveStateFPeriodError, EntityNameKey);
+                return BadRequestResult(message);
             }
 
             return Ok();

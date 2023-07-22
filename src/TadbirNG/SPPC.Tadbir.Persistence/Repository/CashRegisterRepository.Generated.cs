@@ -19,7 +19,8 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت صندوق ها را پیاده سازی می کند
     /// </summary>
-    public class CashRegisterRepository : EntityLoggingRepository<CashRegister, CashRegisterViewModel>, ICashRegisterRepository
+    public class CashRegisterRepository :
+        ActiveStateRepository<CashRegister, CashRegisterViewModel>, ICashRegisterRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

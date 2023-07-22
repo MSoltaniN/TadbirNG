@@ -2,7 +2,7 @@
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class CostCenterViewModel : ViewModelBase, IFiscalEntity, ITreeEntityView
+    public partial class CostCenterViewModel : ViewModelBase, IFiscalEntity, ITreeEntityView, IBaseEntityView
     {
         /// <summary>
         /// شناسه دیتابیسی دوره مالی که این مرکز هزینه در آن تعریف شده است
@@ -23,5 +23,10 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// تعداد مراکز هزینه زیرمجموعه این مرکز هزینه در ساختار درختی
         /// </summary>
         public int ChildCount { get; set; }
+
+        /// <summary>
+        /// وضعیت فعال یا غیر فعال برای این سطر اطلاعاتی
+        /// </summary>
+        public string State { get; set; }
     }
 }

@@ -4086,4 +4086,13 @@
   <data name="Reactivate" xml:space="preserve">
     <value>فعال کردن</value>
   </data>
+  <data name="ActiveStateBranchError" xml:space="preserve">
+    <value>این {0} در شعبه جاری ایجاد نشده و فعال یا غیرفعال کردن آن امکان پذیر نیست.</value>
+  </data>
+  <data name="ActiveStateFPeriodError" xml:space="preserve">
+    <value>این {0} در یکی از دوره های مالی بعدی ایجاد شده و فعال یا غیرفعال کردن آن امکان پذیر نیست.</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>غیرفعال</value>
+  </data>
 </root>

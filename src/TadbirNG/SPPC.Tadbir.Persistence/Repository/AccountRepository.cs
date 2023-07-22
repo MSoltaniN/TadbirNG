@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات سرفصل های حسابداری را تعریف می کند.
     /// </summary>
-    public class AccountRepository : EntityLoggingRepository<Account, AccountViewModel>, IAccountRepository
+    public class AccountRepository : ActiveStateRepository<Account, AccountViewModel>, IAccountRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

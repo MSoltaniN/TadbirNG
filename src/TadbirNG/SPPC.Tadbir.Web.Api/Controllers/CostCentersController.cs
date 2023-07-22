@@ -224,7 +224,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Deactivate)]
         public async Task<IActionResult> PutCostCenterAsDeactivated(int ccenterId)
         {
-            return Ok();
+            return await UpdateActiveStateAsync(ccenterId, false);
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Reactivate)]
         public async Task<IActionResult> PutCostCenterAsReactivated(int ccenterId)
         {
-            return Ok();
+            return await UpdateActiveStateAsync(ccenterId, true);
         }
 
         /// <summary>
@@ -358,6 +358,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            return Ok();
+        }
+
+        private async Task<IActionResult> UpdateActiveStateAsync(int costCenterId, bool isActive)
+        {
+            var costCenter = await _repository.GetCostCenterAsync(costCenterId);
+            if (costCenter == null)
+            {
+                string message = _strings.Format(
+                    AppStrings.ItemByIdNotFound, EntityNameKey, costCenterId.ToString());
+                return BadRequestResult(message);
+            }
+
+            var result = ActiveStateValidationResult(costCenter);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<CostCenterViewModel>;
+            await repository.SetActiveStatusAsync(costCenter, isActive);
             return Ok();
         }
 

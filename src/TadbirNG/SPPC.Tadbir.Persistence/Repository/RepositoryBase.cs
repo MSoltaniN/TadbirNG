@@ -14,6 +14,7 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Config;
+using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -123,6 +124,34 @@ namespace SPPC.Tadbir.Persistence
         public IEnumerable<int> GetParentTree(int branchId)
         {
             return GetParentTreeAsync(branchId).Result;
+        }
+
+        /// <summary>
+        /// کامل بودن بردار حساب ورودی را بررسی می کند
+        /// </summary>
+        /// <param name="fullAccount">بردار حساب داده شده برای اعتبارسنجی</param>
+        /// <param name="repository">امکان خواندن اطلاعات را با توجه به دسترسی های سطری و شعب فراهم می کند</param>
+        /// <returns> در صورت کامل بودن بردار حساب ورودی مقدار درست
+        /// و در غیر اینصورت نادرست برمی گرداند</returns>
+        protected static async Task<bool> IsValidFullAccountAsync(
+            FullAccountViewModel fullAccount, ISecureRepository repository)
+        {
+            Verify.ArgumentNotNull(fullAccount, nameof(fullAccount));
+            var accountId = fullAccount.Account.Id;
+            var detailAccountId = fullAccount.DetailAccount.Id;
+            var costCenterId = fullAccount.CostCenter.Id;
+            var projectId = fullAccount.Project.Id;
+            return await repository
+                .GetAllQuery<Account>(ViewId.Account, acc => acc.Children,
+                    acc => acc.AccountDetailAccounts, acc => acc.AccountCostCenters, acc => acc.AccountProjects)
+                .AnyAsync(acc => acc.Id == accountId
+                    && acc.Children.Count() == 0
+                    && ((detailAccountId > 0 && acc.AccountDetailAccounts.Any(da => da.DetailAccountId == detailAccountId))
+                    || (detailAccountId <= 0 && acc.AccountDetailAccounts.Count == 0))
+                    && ((costCenterId > 0 && acc.AccountCostCenters.Any(ac => ac.CostCenterId == costCenterId))
+                    || (costCenterId <= 0 && acc.AccountCostCenters.Count == 0))
+                    && ((projectId > 0 && acc.AccountProjects.Any(ap => ap.ProjectId == projectId))
+                    || (projectId <= 0 && acc.AccountProjects.Count == 0)));
         }
 
         /// <summary>
@@ -352,33 +381,6 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return branchFilter;
-        }
-
-        /// <summary>
-        /// کامل بودن بردار حساب ورودی را بررسی می کند
-        /// </summary>
-        /// <param name="fullAccount">بردار حساب داده شده برای اعتبارسنجی</param>
-        /// <param name="repository">امکان خواندن اطلاعات را با توجه به دسترسی های سطری و شعب فراهم می کند</param>
-        /// <returns> در صورت کامل بودن بردار حساب ورودی مقدار درست
-        /// و در غیر اینصورت نادرست برمی گرداند</returns>
-        protected async Task<bool> IsValidFullAccountAsync(FullAccountViewModel fullAccount, ISecureRepository repository)
-        {
-            Verify.ArgumentNotNull(fullAccount, nameof(fullAccount));
-            var accountId = fullAccount.Account.Id;
-            var detailAccountId = fullAccount.DetailAccount.Id;
-            var costCenterId = fullAccount.CostCenter.Id;
-            var projectId = fullAccount.Project.Id;
-            return await repository
-                .GetAllQuery<Account>(ViewId.Account, acc => acc.Children,
-                    acc => acc.AccountDetailAccounts, acc => acc.AccountCostCenters, acc => acc.AccountProjects)
-                .AnyAsync(acc => acc.Id == accountId
-                    && acc.Children.Count() == 0
-                    && ((detailAccountId > 0 && acc.AccountDetailAccounts.Any(da => da.DetailAccountId == detailAccountId))
-                    || (detailAccountId <= 0 && acc.AccountDetailAccounts.Count == 0))
-                    && ((costCenterId > 0 && acc.AccountCostCenters.Any(ac => ac.CostCenterId == costCenterId))
-                    || (costCenterId <= 0 && acc.AccountCostCenters.Count == 0))
-                    && ((projectId > 0 && acc.AccountProjects.Any(ap => ap.ProjectId == projectId))
-                    || (projectId <= 0 && acc.AccountProjects.Count == 0)));
         }
 
         private void AddChildren(Branch branch, IList<int> children)

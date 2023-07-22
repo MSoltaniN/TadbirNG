@@ -329,7 +329,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.Deactivate)]
         public async Task<IActionResult> PutCurrencyAsDeactivated(int currencyId)
         {
-            return Ok();
+            return await UpdateActiveStateAsync(currencyId, false);
         }
 
         /// <summary>
@@ -342,7 +342,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.Reactivate)]
         public async Task<IActionResult> PutCurrencyAsReactivated(int currencyId)
         {
-            return Ok();
+            return await UpdateActiveStateAsync(currencyId, true);
         }
 
         /// <summary>
@@ -535,6 +535,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            return Ok();
+        }
+
+        private async Task<IActionResult> UpdateActiveStateAsync(int currencyId, bool isActive)
+        {
+            var currency = await _repository.GetCurrencyAsync(currencyId);
+            if (currency == null)
+            {
+                string message = _strings.Format(
+                    AppStrings.ItemByIdNotFound, EntityNameKey, currencyId.ToString());
+                return BadRequestResult(message);
+            }
+
+            var result = ActiveStateValidationResult(currency);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<CurrencyViewModel>;
+            await repository.SetActiveStatusAsync(currency, isActive);
             return Ok();
         }
 

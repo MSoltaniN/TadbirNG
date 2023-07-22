@@ -225,7 +225,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Deactivate)]
         public async Task<IActionResult> PutProjectAsDeactivated(int projectId)
         {
-            return Ok();
+            return await UpdateActiveStateAsync(projectId, false);
         }
 
         /// <summary>
@@ -238,7 +238,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Reactivate)]
         public async Task<IActionResult> PutProjectAsReactivated(int projectId)
         {
-            return Ok();
+            return await UpdateActiveStateAsync(projectId, true);
         }
 
         /// <summary>
@@ -357,6 +357,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            return Ok();
+        }
+
+        private async Task<IActionResult> UpdateActiveStateAsync(int projectId, bool isActive)
+        {
+            var project = await _repository.GetProjectAsync(projectId);
+            if (project == null)
+            {
+                string message = _strings.Format(
+                    AppStrings.ItemByIdNotFound, EntityNameKey, projectId.ToString());
+                return BadRequestResult(message);
+            }
+
+            var result = ActiveStateValidationResult(project);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<ProjectViewModel>;
+            await repository.SetActiveStatusAsync(project, isActive);
             return Ok();
         }
 

@@ -16,7 +16,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت منابع و مصارف را پیاده سازی می کند
     /// </summary>
-    public class SourceAppRepository : EntityLoggingRepository<SourceApp, SourceAppViewModel>, ISourceAppRepository
+    public class SourceAppRepository : ActiveStateRepository<SourceApp, SourceAppViewModel>, ISourceAppRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -44,9 +44,10 @@ namespace SPPC.Tadbir.Persistence
                 sourceApps = await query
                     .Select(item => Mapper.Map<SourceAppViewModel>(item))
                     .ToListAsync();
+                await UpdateInactiveItemsAsync(sourceApps);
+                Array.ForEach(sourceApps.ToArray(), sa => Localize(sa));
             }
 
-            Array.ForEach(sourceApps.ToArray(), sa => Localize(sa));
             await ReadAsync(gridOptions);
             return new PagedList<SourceAppViewModel>(sourceApps, gridOptions);
         }
@@ -64,6 +65,10 @@ namespace SPPC.Tadbir.Persistence
             if (sourceApp != null)
             {
                 item = Mapper.Map<SourceAppViewModel>(sourceApp);
+                var isDeactivated = await IsDeactivatedAsync(item.Id);
+                item.State = isDeactivated
+                    ? Context.Localize(AppStrings.Inactive)
+                    : Context.Localize(AppStrings.Active);
             }
 
             return Localize(item);
@@ -232,6 +237,7 @@ namespace SPPC.Tadbir.Persistence
             if (sourceApp != null)
             {
                 sourceApp.TypeName = Context.Localize(sourceApp.TypeName);
+                sourceApp.State = Context.Localize(sourceApp.State);
             }
 
             return sourceApp;

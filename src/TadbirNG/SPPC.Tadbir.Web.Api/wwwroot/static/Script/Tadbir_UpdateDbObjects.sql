@@ -1430,7 +1430,7 @@ GO
 
 EXEC sp_rename '[CashFlow].[PayReceiveAccount].[Description]', 'Remarks', 'COLUMN'
 
--- 1.2.1548
+-- 1.2.1549
 
 -- Add operation codes and log settings for new generic operations (Deactivate and Reactivate)...
 SET IDENTITY_INSERT [Metadata].[Operation] ON
@@ -1440,6 +1440,7 @@ INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description])
 	VALUES (90, N'Reactivate', NULL)
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
+-- Add log settings for new generic operations (Deactivate and Reactivate) for all base entities ...
 SET IDENTITY_INSERT [Config].[LogSetting] ON
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (302, 2, 1, NULL, 1, 89, 1)
@@ -1470,3 +1471,17 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (315, 2, 1, NULL, 23, 90, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+CREATE TABLE [Core].[InactiveEntity] (
+    [InactiveEntityID]   INT              IDENTITY (1, 1) NOT NULL,
+    [BranchID]           INT              NOT NULL,
+    [FiscalPeriodID]     INT              NOT NULL,
+    [EntityID]           INT              NOT NULL,
+    [EntityName]         VARCHAR(64)      NOT NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Core_InactiveEntity_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Core_InactiveEntity_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_InactiveEntity] PRIMARY KEY CLUSTERED ([InactiveEntityID] ASC)
+    , CONSTRAINT [FK_Core_InactiveEntity_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_Core_InactiveEntity_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+)
+GO

@@ -284,7 +284,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Deactivate)]
         public async Task<IActionResult> PutAccountAsDeactivated(int accountId)
         {
-            return Ok();
+            return await UpdateActiveStateAsync(accountId, false);
         }
 
         /// <summary>
@@ -297,7 +297,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Reactivate)]
         public async Task<IActionResult> PutAccountAsReactivated(int accountId)
         {
-            return Ok();
+            return await UpdateActiveStateAsync(accountId, true);
         }
 
         /// <summary>
@@ -451,6 +451,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            return Ok();
+        }
+
+        private async Task<IActionResult> UpdateActiveStateAsync(int accountId, bool isActive)
+        {
+            var account = await _repository.GetAccountAsync(accountId);
+            if (account == null)
+            {
+                string message = _strings.Format(
+                    AppStrings.ItemByIdNotFound, EntityNameKey, accountId.ToString());
+                return BadRequestResult(message);
+            }
+
+            var result = ActiveStateValidationResult(account);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<AccountViewModel>;
+            await repository.SetActiveStatusAsync(account, isActive);
             return Ok();
         }
 

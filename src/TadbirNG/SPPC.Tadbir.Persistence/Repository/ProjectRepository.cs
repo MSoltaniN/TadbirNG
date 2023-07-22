@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Persistence
     /// عملیات مورد نیاز برای مدیریت اطلاعات پروژه ها را پیاده سازی می کند.
     /// </summary>
     public class ProjectRepository
-        : EntityLoggingRepository<Project, ProjectViewModel>, IProjectRepository
+        : ActiveStateRepository<Project, ProjectViewModel>, IProjectRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

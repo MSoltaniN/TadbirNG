@@ -136,7 +136,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.SourceApp, (int)SourceAppPermissions.Deactivate)]
         public async Task<IActionResult> PutSourceAppAsDeactivated(int sourceAppId)
         {
-            return Ok();
+            return await UpdateActiveStateAsync(sourceAppId, false);
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.SourceApp, (int)SourceAppPermissions.Reactivate)]
         public async Task<IActionResult> PutSourceAppAsReactivated(int sourceAppId)
         {
-            return Ok();
+            return await UpdateActiveStateAsync(sourceAppId, true);
         }
 
         /// <summary>
@@ -235,6 +235,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            return Ok();
+        }
+
+        private async Task<IActionResult> UpdateActiveStateAsync(int sourceAppId, bool isActive)
+        {
+            var sourceApp = await _repository.GetSourceAppAsync(sourceAppId);
+            if (sourceApp == null)
+            {
+                string message = _strings.Format(
+                    AppStrings.ItemByIdNotFound, EntityNameKey, sourceAppId.ToString());
+                return BadRequestResult(message);
+            }
+
+            var result = ActiveStateValidationResult(sourceApp);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<SourceAppViewModel>;
+            await repository.SetActiveStatusAsync(sourceApp, isActive);
             return Ok();
         }
 

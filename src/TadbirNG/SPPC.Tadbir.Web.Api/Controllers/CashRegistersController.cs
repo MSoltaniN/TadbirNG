@@ -124,7 +124,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CashRegister, (int)CashRegisterPermissions.Deactivate)]
         public async Task<IActionResult> PutCashRegisterAsDeactivated(int cashRegisterId)
         {
-            return Ok();
+            return await UpdateActiveStateAsync(cashRegisterId, false);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CashRegister, (int)CashRegisterPermissions.Reactivate)]
         public async Task<IActionResult> PutCashRegisterAsReactivated(int cashRegisterId)
         {
-            return Ok();
+            return await UpdateActiveStateAsync(cashRegisterId, true);
         }
 
         /// <summary>
@@ -215,7 +215,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-
         /// <summary>
         /// به روش آسنکرون، عمل حذف را برای یکی از صندوق ها اعتبارسنجی می کند
         /// </summary>
@@ -271,6 +270,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     AppStrings.DuplicateNameValue, AppStrings.CashRegister, cashRegister.Name));
             }
 
+            return Ok();
+        }
+
+        private async Task<IActionResult> UpdateActiveStateAsync(int cashRegisterId, bool isActive)
+        {
+            var cashRegister = await _repository.GetCashRegisterAsync(cashRegisterId);
+            if (cashRegister == null)
+            {
+                string message = _strings.Format(
+                    AppStrings.ItemByIdNotFound, EntityNameKey, cashRegisterId.ToString());
+                return BadRequestResult(message);
+            }
+
+            var result = ActiveStateValidationResult(cashRegister);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<CashRegisterViewModel>;
+            await repository.SetActiveStatusAsync(cashRegister, isActive);
             return Ok();
         }
 

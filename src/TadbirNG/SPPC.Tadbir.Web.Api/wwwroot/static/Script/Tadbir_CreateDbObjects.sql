@@ -1059,6 +1059,20 @@ CREATE TABLE [CashFlow].[PayReceiveCashAccount] (
 )
 GO
 
+CREATE TABLE [Core].[InactiveEntity] (
+    [InactiveEntityID]   INT              IDENTITY (1, 1) NOT NULL,
+    [BranchID]           INT              NOT NULL,
+    [FiscalPeriodID]     INT              NOT NULL,
+    [EntityID]           INT              NOT NULL,
+    [EntityName]         VARCHAR(64)      NOT NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Core_InactiveEntity_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Core_InactiveEntity_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_InactiveEntity] PRIMARY KEY CLUSTERED ([InactiveEntityID] ASC)
+    , CONSTRAINT [FK_Core_InactiveEntity_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_Core_InactiveEntity_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+)
+GO
+
 -- Insert system records...
 SET IDENTITY_INSERT [Reporting].[WidgetFunction] ON 
 INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (1, N'Function_DebitTurnover')

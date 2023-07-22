@@ -13,6 +13,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
+using SPPC.Tadbir.Resources;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -31,6 +32,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
             MinorUnit = String.Empty;
             Description = String.Empty;
             IsActive = true;
+            State = AppStrings.Active;
         }
 
         /// <summary>

@@ -4095,4 +4095,13 @@
   <data name="Reactivate" xml:space="preserve">
     <value>Reactivate</value>
   </data>
+  <data name="ActiveStateBranchError" xml:space="preserve">
+    <value>This {0} was not created in current branch and cannot be deactivated or reactivated.</value>
+  </data>
+  <data name="ActiveStateFPeriodError" xml:space="preserve">
+    <value>This {0} was created in one of later fiscal periods and cannot be deactivated or reactivated.</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
 </root>
