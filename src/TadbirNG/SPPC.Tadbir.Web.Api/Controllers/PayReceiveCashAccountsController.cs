@@ -7,6 +7,7 @@ using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -56,7 +57,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="paymentId">شناسه دیتابیسی فرم پرداخت مورد نظر</param>
         /// <returns>فهرست صفحه بندی شده آرتیکل های فرم پرداخت</returns>
-        // GET: api/payments/{paymentId:min(1)}/cash-account-articles
+        // GET: api/payments/{paymentId:min(1)}/cash/articles
         [HttpGet]
         [Route(PayReceiveApi.PaymentCashAccountArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.View)]
@@ -64,7 +65,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var articles = await _cashAccountArticleRepository.GetCashAccountArticlesAsync(
                 paymentId, (int)PayReceiveType.Payment, GridOptions);
-            return Json(articles.Items);
+            return JsonListResult(articles);
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <param name="receiptId">شناسه دیتابیسی فرم دریافت مورد نظر</param>
         /// <returns>فهرست صفحه بندی شده آرتیکل های فرم دریافت</returns>
-        // GET: api/receipts/{receiptId:min(1)}/cash-account-articles
+        // GET: api/receipts/{receiptId:min(1)}/cash/articles
         [HttpGet]
         [Route(PayReceiveApi.ReceiptCashAccountArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.View)]
@@ -80,36 +81,36 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var articles = await _cashAccountArticleRepository.GetCashAccountArticlesAsync(
                 receiptId, (int)PayReceiveType.Receipt, GridOptions);
-            return Json(articles.Items);
+            return JsonListResult(articles);
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات آرتیکل حساب نقدی پرداختی داده شده را برمی گرداند
         /// </summary>
-        /// <param name="cashAccountArticleId">شناسه دیتابیسی آرتیکل حساب نقدی پرداختی مورد نظر</param>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل حساب نقدی پرداختی مورد نظر</param>
         /// <returns>اطلاعات نمایشی آرتیکل حساب نقدی پرداختی</returns>
-        // GET: api/payments/cash-account-articles/{CashAccountArticleId:min(1)}
+        // GET: api/payments/cash/articles/{articleId:min(1)}
         [HttpGet]
         [Route(PayReceiveApi.PaymentCashAccountArticleUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.View)]
-        public async Task<IActionResult> GetPaymentCashAccountArticleAsync(int cashAccountArticleId)
+        public async Task<IActionResult> GetPaymentCashAccountArticleAsync(int articleId)
         {
-            var article = await _cashAccountArticleRepository.GetCashAccountArticleAsync(cashAccountArticleId);
+            var article = await _cashAccountArticleRepository.GetCashAccountArticleAsync(articleId);
             return JsonReadResult(article);
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات آرتیکل حساب نقدی دریافتی داده شده را برمی گرداند
         /// </summary>
-        /// <param name="cashAccountArticleId">شناسه دیتابیسی آرتیکل حساب نقدی دریافتی مورد نظر</param>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل حساب نقدی دریافتی مورد نظر</param>
         /// <returns>اطلاعات نمایشی آرتیکل حساب نقدی دریافتی</returns>
-        // GET: api/receipts/cash-account-articles/{CashAccountArticleId:min(1)}
+        // GET: api/receipts/cash/articles/{articleId:min(1)}
         [HttpGet]
         [Route(PayReceiveApi.ReceiptCashAccountArticleUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.View)]
-        public async Task<IActionResult> GetReceiptCashAccountArticleAsync(int cashAccountArticleId)
+        public async Task<IActionResult> GetReceiptCashAccountArticleAsync(int articleId)
         {
-            var article = await _cashAccountArticleRepository.GetCashAccountArticleAsync(cashAccountArticleId);
+            var article = await _cashAccountArticleRepository.GetCashAccountArticleAsync(articleId);
             return JsonReadResult(article);
         }
 

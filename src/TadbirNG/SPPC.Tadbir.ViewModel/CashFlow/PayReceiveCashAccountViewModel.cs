@@ -18,5 +18,10 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// شناسه منبع یا مصرف مورد استفاده
         /// </summary>
         public int? SourceAppId { get; set; }
+
+        /// <summary>
+        /// عنوان منبع/مصرف انتخاب شده در این فرم حساب نقدی
+        /// </summary>
+        public string SourceAppName { get; set; }
     }
 }
