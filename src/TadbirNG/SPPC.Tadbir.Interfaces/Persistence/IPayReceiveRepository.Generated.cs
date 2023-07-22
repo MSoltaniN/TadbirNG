@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.CashFlow;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -134,5 +135,21 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در صورت ناترازی مقدار درست و
         /// در غیر این صورت مقدار نادرست برمی گرداند</returns>
         Task<bool> IsUnbalancedPayReceive(int payReceiveId);
+
+        /// <summary>
+        /// به روش آسنکرون، ثبت مالی فرم دریافت/پرداخت را انجام می‌دهد     
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <returns>اطلاعات نمایشی سند مالی به همراه آرتیکل‌های ایجاد شده</returns>
+        Task<VoucherViewModel> RegisterAsync(int payReceiveId);
+
+        /// <summary>
+        /// به روش آسنکرون، بررسی می کند که آیا فرم دریافت/پرداخت ثبت مالی
+        /// شده است یا خیر        
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <returns>در صورتی که فرم دریافت/پرداخت ثبت مالی شده باشد مقدار درست و
+        /// در غیر این صورت مقدار نادرست برمی گرداند</returns>
+        Task<bool> IsRegisteredAsync(int payReceiveId);
     }
 }

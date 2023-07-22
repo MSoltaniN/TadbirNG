@@ -585,6 +585,46 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، آرتیکل‌های فرم پرداخت را ثبت مالی می‌کند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی سند ثبت شده مرتبط با فرم پرداخت</returns>
+        // Post: api/payments/{paymentId:min(1)}/register
+        [HttpPost]
+        [Route(PayReceiveApi.RegisterPaymentUrl)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Register)]
+        public async Task<IActionResult> PostNewRegisterPaymentArticlesAsync(int paymentId)
+        {
+            var result = await PayReceiveActionValidationResultAsync(paymentId, AppStrings.Register,
+                AppStrings.Payment);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+            var outputItem = await _repository.RegisterAsync(paymentId);
+            return StatusCode(StatusCodes.Status201Created, outputItem);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل‌های فرم دریافت را ثبت مالی می‌کند
+        /// </summary>
+        /// <returns>اطلاعات نمایشی سند ثبت شده مرتبط با فرم دریافت</returns>
+        // Post: api/receipts/{receiptId:min(1)}/register
+        [HttpPost]
+        [Route(PayReceiveApi.RegisterReceiptUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Register)]
+        public async Task<IActionResult> PostNewRegisterReceiptArticlesAsync(int receiptId)
+        {
+            var result = await PayReceiveActionValidationResultAsync(receiptId, AppStrings.Register,            
+                AppStrings.Receipt);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+            var outputItem = await _repository.RegisterAsync(receiptId);
+            return StatusCode(StatusCodes.Status201Created, outputItem);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، عمل حذف را برای یکی از فرم های دریافت یا پرداخت اعتبارسنجی می کند
         /// </summary>
         /// <param name="item">شناسه دیتابیسی فرم دریافت یا پرداخت مورد نظر برای حذف</param>
@@ -605,6 +645,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 if (result is BadRequestObjectResult errorResult)
                 {
                     message = errorResult.Value.ToString();
+                }
+
+                if (payReceive.IsConfirmed || payReceive.IsApproved || await _repository.IsRegisteredAsync(payReceive.Id))
+                {
+                    message = _strings.Format(AppStrings.CantDeleteEntity, entityNameKey);
                 }
             }
 
@@ -628,7 +673,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     return result;
                 }
 
-                if (payReceive.IsConfirmed)
+                if (payReceive.IsConfirmed || payReceive.IsApproved || await _repository.IsRegisteredAsync(payReceive.Id))
                 {
                     return BadRequestResult(_strings.Format(AppStrings.CantSaveEntity, entityNameKey));
                 }
@@ -682,7 +727,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (action == AppStrings.Confirm)
+            if ((action == AppStrings.Confirm && payReceive.IsConfirmed)
+                || (action == AppStrings.Approve && payReceive.IsApproved)
+                || await _repository.IsRegisteredAsync(payReceive.Id))
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RepeatedEntityActionMessage, action,
+                    entityNameKey));
+            }
+
+            if (action == AppStrings.Confirm || action == AppStrings.Approve || action == AppStrings.Register)
             {
                 if (!await _repository.HasAccountArticleAsync(payReceiveId))
                 {
@@ -699,27 +752,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 if (await _accountArticleRepository.HasAccountArticleInvalidRowsAsync(payReceiveId))
                 {
                     return BadRequestResult(_strings.Format(
-                        AppStrings.CantConfirmWithInvalidRows, AppStrings.PayReceiveAccount));
+                        AppStrings.CantActionWithInvalidRows, action, AppStrings.PayReceiveAccount));
                 }
 
                 if (await _cashAccountArticleRepository.HasCashAccountArticleInvalidRowsAsync(payReceiveId))
                 {
                     return BadRequestResult(_strings.Format(
-                        AppStrings.CantConfirmWithInvalidRows, AppStrings.PayReceiveCashAccount));
+                        AppStrings.CantActionWithInvalidRows, action, AppStrings.PayReceiveCashAccount));
                 }
 
                 if (await _repository.IsUnbalancedPayReceive(payReceiveId))
                 {
-                    return BadRequestResult(_strings.Format(AppStrings.CantConfirmUnbalancedForm,
-                        AppStrings.PayReceiveAccount, AppStrings.PayReceiveCashAccount, entityNameKey));
+                    return BadRequestResult(_strings.Format(AppStrings.CantActionUnbalancedForm,
+                        AppStrings.PayReceiveAccount, AppStrings.PayReceiveCashAccount, action,entityNameKey));
                 }
-            }
-
-            if ((action == AppStrings.Confirm && payReceive.IsConfirmed)
-                || (action == AppStrings.Approve && payReceive.IsApproved))
-            {
-                return BadRequestResult(_strings.Format(AppStrings.RepeatedEntityActionMessage, action,
-                    entityNameKey));
             }
 
             if (action == AppStrings.UndoConfirm)

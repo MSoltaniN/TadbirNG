@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.ViewModel.CashFlow;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -73,5 +74,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="articleId">شناسه دیتابیسی آرتیکل مورد نظر</param>
         /// <returns>نوع مفهومی سند مرتبط با شناسه آرتیکل داده شده</returns>
         Task<int> GetLineSubjectTypeAsync(int articleId);
+
+        /// <summary>
+        /// به روش آسنکرون، فرم دریافت/پرداخت مرتبط با آرتیکل را 
+        ///در صورت وجود برمی گرداند
+        /// </summary>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل مورد نظر</param>
+        /// <returns>در صورت وجود فرم دریافت/پرداخت مرتبط با آرتیکل‌ داده شده
+        /// آن را برمی گرداند</returns>
+        Task<PayReceiveViewModel> GetRelatedPayReceiveAsync(int articleId);
     }
 }

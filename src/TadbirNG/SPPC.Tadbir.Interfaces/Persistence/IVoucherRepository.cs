@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.ViewModel.CashFlow;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -234,5 +235,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر</param>
         /// <returns>اطلاعات خلاصه سند مالی با شناسه دیتابیسی داده شده</returns>
         Task<VoucherInfoViewModel> GetVoucherInfoAsync(int voucherId);
+
+        /// <summary>
+        /// به روش آسنکرون، بررسی می‌کند که سند دارای آرتیکل سیستمی هست یا خیر
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر</param>
+        /// <returns>اگر سند دارای آرتیکل سیستمی باشد مقدار درست و
+        /// در غیر این صورت نادرست برمی گرداند.</returns>
+        Task<bool> HasSystemicArticleAsync(int voucherId);
     }
 }

@@ -76,6 +76,7 @@ namespace SPPC.Tadbir.Persistence
             PayReceiveMap.BuildMapping(modelBuilder.Entity<PayReceive>());
             PayReceiveAccountMap.BuildMapping(modelBuilder.Entity<PayReceiveAccount>());
             PayReceiveCashAccountMap.BuildMapping(modelBuilder.Entity<PayReceiveCashAccount>());
+            PayReceiveVoucherLineMap.BuildMapping(modelBuilder.Entity<PayReceiveVoucherLine>());
             PermissionMap.BuildMapping(modelBuilder.Entity<Permission>());
             PermissionGroupMap.BuildMapping(modelBuilder.Entity<PermissionGroup>());
             PersonMap.BuildMapping(modelBuilder.Entity<Person>());

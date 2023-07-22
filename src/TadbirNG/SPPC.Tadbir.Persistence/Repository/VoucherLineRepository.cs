@@ -8,9 +8,11 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Extensions;
+using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Utility;
+using SPPC.Tadbir.ViewModel.CashFlow;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -204,6 +206,17 @@ namespace SPPC.Tadbir.Persistence
                 .Where(line => line.Id == articleId)
                 .Select(line => line.Voucher.SubjectType)
                 .FirstOrDefaultAsync();
+        }
+
+        /// <inheritdoc/>
+        public async Task<PayReceiveViewModel> GetRelatedPayReceiveAsync(int articleId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveVoucherLine>();
+            return await repository
+                .GetEntityQuery(item => item.PayReceive)
+                .Where(item => item.VoucherLineId == articleId)
+                .Select(item => Mapper.Map<PayReceiveViewModel>(item.PayReceive))
+                .SingleOrDefaultAsync();
         }
 
         /// <inheritdoc/>

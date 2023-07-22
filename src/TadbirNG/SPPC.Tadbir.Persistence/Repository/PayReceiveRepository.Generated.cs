@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.CashFlow;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -354,6 +356,74 @@ namespace SPPC.Tadbir.Persistence
             return unbalanced;
         }
 
+        /// <inheritdoc/>
+        public async Task<VoucherViewModel> RegisterAsync(int payReceiveId)
+        {
+            var voucher = await GetNewVoucherAsync();
+            var voucherRepository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var lineRepository = UnitOfWork.GetAsyncRepository<VoucherLine>();
+            voucherRepository.Insert(voucher);
+            var payReceive = await GetPayReceiveAsync(payReceiveId);
+            if(payReceive.Type == (int)PayReceiveType.Receipt)
+            {
+                AddCashAccountArticlesToVoucher(lineRepository, payReceive, voucher);
+                AddAccountArticlesToVoucher(lineRepository ,payReceive, voucher);
+            }
+            else 
+            {
+                AddAccountArticlesToVoucher(lineRepository, payReceive, voucher);
+                AddCashAccountArticlesToVoucher(lineRepository, payReceive, voucher);
+            }
+
+            int entityTypeId = GetEntityTypeId(payReceive.Type);
+            InsertPayReceiveVoucherLinesRelationAsync(payReceiveId, voucher.Lines);
+            await FinalizeActionAsync(OperationId.Register, entityTypeId);
+            return Mapper.Map<VoucherViewModel>(voucher);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> IsRegisteredAsync(int payReceiveId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveVoucherLine>();
+            return await repository.
+                GetEntityQuery()
+                .AnyAsync(p => p.PayReceiveId == payReceiveId);
+        }
+
+        internal override int? EntityType
+        {
+            get { return (int?)EntityTypeId.Receipt; }
+        }
+
+        /// <summary>
+        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
+        /// </summary>
+        /// <param name="payReceiveViewModel">مدل نمایشی شامل آخرین تغییرات</param>
+        /// <param name="payReceive">سطر اطلاعاتی موجود</param>
+        protected override void UpdateExisting(PayReceiveViewModel payReceiveViewModel, PayReceive payReceive)
+        {
+            payReceive.PayReceiveNo = Int64.Parse(payReceiveViewModel.PayReceiveNo.Trim()).ToString();
+            payReceive.Reference = payReceiveViewModel.Reference;
+            payReceive.Date = payReceiveViewModel.Date;
+            payReceive.CurrencyId = payReceiveViewModel.CurrencyId;
+            payReceive.CurrencyRate = payReceiveViewModel.CurrencyRate;
+            payReceive.Description = payReceiveViewModel.Description;
+        }
+
+        /// <summary>
+        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
+        /// </summary>
+        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
+        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        protected override string GetState(PayReceive entity)
+        {
+            return entity != null
+                ? $"{AppStrings.PayReceiveNo} : {entity.PayReceiveNo}, " +
+                    $"{AppStrings.Reference} : {entity.Reference}, {AppStrings.Date} : {entity.Date}, " +
+                    $"{AppStrings.CurrencyRate} : {entity.CurrencyRate}, {AppStrings.Description} : {entity.Description}, "
+                : String.Empty;
+        }
+
         private async Task<DateTime> GetLastPayReceiveDateAsync(int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
@@ -464,42 +534,221 @@ namespace SPPC.Tadbir.Persistence
                 .Select(pr => Convert.ToInt64(pr.PayReceiveNo))
                 .OrderByDescending(no => no)
                 .FirstOrDefaultAsync();
-                
+
             return Math.Min(lastNumber + 1, Int64.MaxValue).ToString();
         }
 
-        internal override int? EntityType
+        private async Task<Voucher> GetNewVoucherAsync()
         {
-            get { return (int?)EntityTypeId.Receipt; }
+            var subject = SubjectType.Normal;
+            string fullName = GetCurrentUserFullName();
+            DateTime date = await GetLastVoucherDateAsync();
+            int no = await GetLastVoucherNoAsync();
+            int dailyNo = await GetNextDailyNoAsync(date, subject);
+            return new Voucher()
+            {
+                BranchId = UserContext.BranchId,
+                DailyNo = dailyNo,
+                Date = date,
+                Description = string.Empty,
+                FiscalPeriodId = UserContext.FiscalPeriodId,
+                IsBalanced = true,
+                CreatedById = UserContext.Id,
+                IssuerName = fullName,
+                ModifiedById = UserContext.Id,
+                ModifierName = fullName,
+                No = no + 1,
+                StatusId = (int)DocumentStatusId.NotChecked,
+                SubjectType = (short)subject,
+                Type = (short)VoucherType.NormalVoucher,
+            };
         }
 
-        /// <summary>
-        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
-        /// </summary>
-        /// <param name="payReceiveViewModel">مدل نمایشی شامل آخرین تغییرات</param>
-        /// <param name="payReceive">سطر اطلاعاتی موجود</param>
-        protected override void UpdateExisting(PayReceiveViewModel payReceiveViewModel, PayReceive payReceive)
+        private string GetCashArticleDescription(PayReceive payReceive, PayReceiveCashAccount payReceiveCashAccount)
         {
-            payReceive.PayReceiveNo = Int64.Parse(payReceiveViewModel.PayReceiveNo.Trim()).ToString();
-            payReceive.Reference = payReceiveViewModel.Reference;
-            payReceive.Date = payReceiveViewModel.Date;
-            payReceive.CurrencyId = payReceiveViewModel.CurrencyId;
-            payReceive.CurrencyRate = payReceiveViewModel.CurrencyRate;
-            payReceive.Description = payReceiveViewModel.Description;
+            string description = string.Empty;
+            string currencyText = String.Empty;
+            if(payReceive.CurrencyId > 0)
+            {
+                currencyText = Context.Localize($" - {AppStrings.Currency} {payReceive.Currency.Name}").ToLower();
+            }
+
+            string ArticleText = String.Empty;
+            if (!String.IsNullOrWhiteSpace(payReceiveCashAccount.Remarks))
+            {
+                ArticleText = $" - {payReceiveCashAccount.Remarks.ToLower().Trim()}";
+            }
+
+            string payReceiveText = String.Empty;
+            if (!String.IsNullOrWhiteSpace(payReceive.Description))
+            {
+                payReceiveText = $" - {payReceive.Description.ToLower().Trim()}";
+            }
+
+            if (payReceive.Type == (int)PayReceiveType.Receipt)
+            {
+                string bankOrederNoText = String.Empty;
+                if(payReceiveCashAccount.IsBank && !String.IsNullOrWhiteSpace(payReceiveCashAccount.BankOrderNo))
+                {
+                    string template = $" - {Context.Localize(AppStrings.DuringOrderOfBankNo)}";
+                    bankOrederNoText = String.Format(template, payReceiveCashAccount.BankOrderNo).ToLower();
+                }
+                
+                description = String.Format
+                    (Context.Localize(AppStrings.ReceiverCashArticleDescriptionTemplate),
+                    payReceive.PayReceiveNo, bankOrederNoText, currencyText,
+                    ArticleText, payReceiveText);
+            }
+            else
+            {
+                description = String.Format
+                    (Context.Localize(AppStrings.PayerCashArticleDescriptionTemplate),
+                    payReceive.PayReceiveNo, currencyText,
+                    ArticleText, payReceiveText);
+            }
+
+            return description;
         }
 
-        /// <summary>
-        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
-        /// </summary>
-        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
-        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
-        protected override string GetState(PayReceive entity)
+        private async Task<int> GetLastVoucherNoAsync(SubjectType type = SubjectType.Normal)
         {
-            return entity != null
-                ? $"{AppStrings.PayReceiveNo} : {entity.PayReceiveNo}, " +
-                    $"{AppStrings.Reference} : {entity.Reference}, {AppStrings.Date} : {entity.Date}, " +
-                    $"{AppStrings.CurrencyRate} : {entity.CurrencyRate}, {AppStrings.Description} : {entity.Description}, "
-                : String.Empty;
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var lastByNo = await repository
+                .GetEntityQuery()
+                .Where(voucher => voucher.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && voucher.SubjectType == (short)type)
+                .OrderByDescending(voucher => voucher.No)
+                .FirstOrDefaultAsync();
+            return (lastByNo != null) ? lastByNo.No : 0;
+        }
+
+        private async Task<DateTime> GetLastVoucherDateAsync(SubjectType type = SubjectType.Normal)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var lastByDate = await repository
+                .GetEntityQuery()
+                .Where(voucher => voucher.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && voucher.SubjectType == (short)type)
+                .OrderByDescending(voucher => voucher.Date)
+                .FirstOrDefaultAsync();
+            DateTime lastDate;
+            if (lastByDate != null)
+            {
+                lastDate = lastByDate.Date;
+            }
+            else
+            {
+                var periodRepository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+                var fiscalPeriod = await periodRepository.GetByIDAsync(UserContext.FiscalPeriodId);
+                lastDate = (fiscalPeriod != null) ? fiscalPeriod.StartDate : DateTime.Now;
+            }
+
+            return lastDate;
+        }
+
+        private async Task<int> GetNextDailyNoAsync(DateTime date, SubjectType subject)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var sameDate = await repository
+                .GetByCriteriaAsync(v => v.Date == date
+                    && v.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && v.SubjectType == (short)subject);
+            int lastNo = sameDate
+                .OrderByDescending(v => v.DailyNo)
+                .Select(v => v.DailyNo)
+                .FirstOrDefault();
+            return (lastNo + 1);
+        }
+
+        private async Task<PayReceive> GetPayReceiveAsync(int payReceiveId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
+            return await repository.GetByIDAsync(payReceiveId,
+                pr => pr.Accounts,
+                pr => pr.CashAccounts,
+                pr => pr.Currency);
+        }
+
+        private void AddCashAccountArticlesToVoucher(IRepository<VoucherLine> repository,PayReceive payReceive, Voucher voucher)
+        {
+            int rowNo = voucher.Lines.Count;
+            foreach(var item in payReceive.CashAccounts)
+            {
+                var voucherArticle = new VoucherLine
+                {
+                    AccountId = (int)item.AccountId,
+                    DetailAccountId = item.DetailAccountId,
+                    CostCenterId = item.CostCenterId,
+                    ProjectId = item.ProjectId,
+                    RowNo = ++rowNo,
+                    SourceId = item.SourceAppId,
+                    Description = GetCashArticleDescription(payReceive, item),
+                    CreatedById = UserContext.Id,
+                    TypeId = (int)VoucherLineType.NormalLine,
+                    BranchId = Context.UserContext.BranchId,
+                    FiscalPeriodId = Context.UserContext.FiscalPeriodId,
+                    Voucher = voucher
+                };
+
+                if(payReceive.Type == (int)PayReceiveType.Receipt)
+                {
+                    voucherArticle.Debit = item.Amount;
+                }
+                else
+                {
+                    voucherArticle.Credit = item.Amount;
+                }
+
+                repository.Insert(voucherArticle);
+            }
+        }
+
+        private void AddAccountArticlesToVoucher(IRepository<VoucherLine> repository, PayReceive payReceive, Voucher voucher)
+        {
+            int rowNo = voucher.Lines.Count;
+            foreach (var item in payReceive.Accounts)
+            {
+                var voucherArticle = new VoucherLine
+                {
+                    AccountId = (int)item.AccountId,
+                    DetailAccountId = item.DetailAccountId,
+                    CostCenterId = item.CostCenterId,
+                    ProjectId = item.ProjectId,
+                    RowNo = ++rowNo,
+                    Description = item.Remarks,
+                    CreatedById = UserContext.Id,
+                    TypeId = (int)VoucherLineType.NormalLine,
+                    BranchId = Context.UserContext.BranchId,
+                    FiscalPeriodId = Context.UserContext.FiscalPeriodId,
+                    Voucher = voucher
+                };
+
+                if (payReceive.Type == (int)PayReceiveType.Receipt)
+                {
+                    voucherArticle.Credit = item.Amount;
+                }
+                else
+                {
+                    voucherArticle.Debit = item.Amount;
+                }
+
+                repository.Insert(voucherArticle);
+            }
+        }
+
+        private void InsertPayReceiveVoucherLinesRelationAsync(int payReceiveId, List<VoucherLine> voucherLines)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveVoucherLine>();
+            foreach(var voucherLine in voucherLines)
+            {
+                var payReceiveVoucherLine = new PayReceiveVoucherLine
+                {
+                    PayReceiveId = payReceiveId,
+                    VoucherLine = voucherLine,
+                };
+
+                repository.Insert(payReceiveVoucherLine);
+            }            
         }
 
         private ISecureRepository Repository
