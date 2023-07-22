@@ -1,8 +1,8 @@
 {
   "App": {
     "Title": "Welcome to Tadbir New System",
-    "SELECT": "Change language",
-    "Loading": "loading ...",
+    "SELECT": "Change Language",
+    "Loading": "Loading ...",
     "RecordNotFound": "There are no items to display.",
     "Name": "Tadbir Accounting System",
     "SummaryName": "Tadbir",
@@ -54,15 +54,15 @@
     "SettingConfirm": "Are you sure about the dashboard settings?",
     "WidgetSetting": "Widget Settings",
     "ChartType": "Chart type",
-    "AddTab": "Add new Tab",
-    "AddWidget": "Add widget to tab",
-    "TabName": "Tab name",
-    "ManageWidgets": "Manage widgets",
-    "WidgetTitle": "Widget title",
+    "AddTab": "Add New Tab",
+    "AddWidget": "Add Widget to Tab",
+    "TabName": "Tab Name",
+    "ManageWidgets": "Manage Widgets",
+    "WidgetTitle": "Widget Title",
     "WidgetNoData": "Data is not available!",
     "WidgetInProgress": "Loading data ...",
     "RefreshDashboard": "Refresh Dashboard",
-    "WidgetList": "Widget list"
+    "WidgetList": "Widget List"
   },
   "Exception": {
     "ErrorCode": "Error Code",
@@ -187,11 +187,11 @@
   "Entity": {
     "Dashboard": "Dashboard",
     "Account": "Account",
-    "VoucherNo":"Voucher Number",
+    "VoucherNo": "Voucher Number",
     "Voucher": "Vouchers Management",
     "VoucherLine": "Voucher Article",
     "VoucherEditor": "Voucher Detail",
-    "DraftVoucherEditor":"Draft Voucher",
+    "DraftVoucherEditor": "Draft Voucher",
     "User": "User",
     "Role": "Role",
     "Password": "Password",
@@ -233,9 +233,9 @@
     "SourceApp": "Sources and Applications",
     "Payment": "Payment",
     "Receipt": "Receipt",
-    "PayReceiveAccount": "Account party",
-    "ConfirmationMessage":"Confirmation Message",
-    "ItemBalance": "Circulation And Balance Of Detail Account"
+    "PayReceiveAccount": "Account Party",
+    "ConfirmationMessage": "Confirmation Message",
+    "ItemBalance": "Item Turnover and Balance"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "Count of Selected Vouchers :",
@@ -1617,7 +1617,7 @@
     "ByDate": "By Date",
     "ByVoucher": "By Voucher",
     "BalanceType": "Balance Type",
-    "FormatType": "Format Type",
+    "FormatType": "Format",
     "PleaseSelectAccount": "Please select account",
     "SelectBranch": "Select Branch",
     "FromDate": "From Date",
@@ -1633,9 +1633,9 @@
     "ShowZeroRemains": "نمایش سطرهای با مبلغ صفر",
     "OpeningVoucher": "انعکاس افتتاحیه در ستون مانده ابتدا",
     "UserSettings": "تنظیمات کاربر",
-    "Options": "تنظیمات",
-    "AccountBook": "دفتر حساب",
-    "Title": "گردش و مانده سطوح شناور",
+    "Options": "Options",
+    "AccountBook": "Account Book",
+    "Title": "Item Turnover and Balance",
     "Ledger": "Ledger",
     "Reference": "Reference",
     "FilterByRef": "Filter By Ref",
@@ -1657,11 +1657,11 @@
       "ByDetailOfSubsidiary": "تفصیلی های یک حساب معین"
     },
     "VoucherStatuses": {
-      "Committed": "ثبت شده",
-      "Finalized": "ثبت قطعی",
-      "Accepted": "تایید شده",
-      "Approved": "تصویب شده",
-      "AllVouchers": "کلیه اسناد"
+      "Committed": "Committed",
+      "Finalized": "Finalized",
+      "Accepted": "Accepted",
+      "Approved": "Approved",
+      "AllVouchers": "All Vouchers"
     }
   }
 
