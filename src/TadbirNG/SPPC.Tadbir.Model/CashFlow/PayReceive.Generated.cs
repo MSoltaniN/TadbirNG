@@ -117,5 +117,10 @@ namespace SPPC.Tadbir.Model.CashFlow
         /// مجموعه ای از حساب‌های نقدی فرم دریافت/پرداخت
         /// </summary>
         public virtual IList<PayReceiveCashAccount> CashAccounts { get; protected set; }
+
+        /// <summary>
+        /// مجموعه ای از آرتیکل‌های مالی مرتبط با این فرم دریافت/پرداخت
+        /// </summary>
+        public virtual IList<PayReceiveVoucherLine> PayReceiveVoucherLines { get; protected set; }
     }
 }

@@ -360,7 +360,9 @@
                   type="checkbox"
                   id="confirmedByName"
                   class="k-checkbox"
-                  (click)="confirmedBy($event)"
+                  SppcPermissionCheck="Edit"
+                  [EntityName]="entityType"
+                  (sppcClick)="confirmedBy($event)"
                   [checked]="isConfirmed"
                   [attr.disabled]="isApproved ? 'disabled' : null"
                 />
@@ -382,7 +384,9 @@
                   id="approvedByName"
                   class="k-checkbox"
                   [checked]="isApproved"
-                  (click)="approvedBy($event)"
+                  SppcPermissionCheck="Edit"
+                  [EntityName]="entityType"
+                  (sppcClick)="approvedBy($event)"
                 />
                 <label for="approvedByName" class="control-label">
                   {{ "Voucher.ApproverName" | translate }}

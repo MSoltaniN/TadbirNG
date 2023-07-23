@@ -3934,7 +3934,7 @@
     <value>Receipt number</value>
   </data>
   <data name="CantSaveEntity" xml:space="preserve">
-    <value>This {0} is either confirmed or approved and cannot be saved.</value>
+    <value>This {0} is either confirmed, approved or register and cannot be saved.</value>
   </data>
   <data name="RepeatedEntityActionMessage" xml:space="preserve">
     <value>Action '{0}' has already been performed on this {1}.</value>
@@ -3964,10 +3964,10 @@
     <value>Account article</value>
   </data>
   <data name="CantDeleteDetailEntity" xml:space="preserve">
-    <value>This {0} is either confirmed or approved and the {1} data cannot be deleted.</value>
+    <value>This {0} is either confirmed, approved or register and {1} data cannot be deleted.</value>
   </data>
   <data name="CantSaveDetailEntity" xml:space="preserve">
-    <value>This {0} is either confirmed or approved and the {1} data cannot be saved.</value>
+    <value>This {0} is either confirmed, approved or register and {1} data cannot be saved.</value>
   </data>
   <data name="NegativeAmountNotAllowed" xml:space="preserve">
     <value>Negative amount is not allowed.</value>
@@ -4068,14 +4068,14 @@
   <data name="CantChangeDetailEntity" xml:space="preserve">
     <value>This {0} is either confirmed or approved and the {1} data cannot be changed.</value>
   </data>
-  <data name="CantConfirmWithInvalidRows" xml:space="preserve">
-    <value>It is not possible to confirm form with invalid {0}.</value>
+  <data name="CantActionWithInvalidRows" xml:space="preserve">
+    <value>It is not possible to {0} form with invalid {1}.</value>
   </data>
   <data name="Bank" xml:space="preserve">
     <value>Bank</value>
   </data>
-  <data name="CantConfirmUnbalancedForm" xml:space="preserve">
-    <value>Because unbalanced between the {0} and {1}, not possible to confirm {2}.</value>
+  <data name="CantActionUnbalancedForm" xml:space="preserve">
+    <value>Because unbalanced between the {0} and {1}, not possible to {2} {3}.</value>
   </data>
   <data name="SelectedAccountNotInCollection" xml:space="preserve">
     <value>Selected account is not related to the {0} collection.</value>
@@ -4088,5 +4088,26 @@
   </data>
   <data name="Sources" xml:space="preserve">
     <value>Sources</value>
+  </data>
+  <data name="DuringOrderOfBankNo" xml:space="preserve">
+    <value>During order of bank No. {0}</value>
+  </data>
+  <data name="PayerCashArticleDescriptionTemplate" xml:space="preserve">
+    <value>For payment, through payment document No. {0}{1}{2}{3}</value>
+  </data>
+  <data name="ReceiverCashArticleDescriptionTemplate" xml:space="preserve">
+    <value>For receipt, through receipt document No. {0}{1}{2}{3}{4}</value>
+  </data>
+  <data name="CantDeleteEntity" xml:space="preserve">
+    <value>This {0} is either confirmed, approved or register and cannot be deleted.</value>
+  </data>
+  <data name="CantDeleteSystemicDetailVoucher" xml:space="preserve">
+    <value>Because systemic creation of article through {0}, cannot be deleted.</value>
+  </data>
+  <data name="CantDeleteVoucherWithSystemicArticle" xml:space="preserve">
+    <value>Because systemic creation of article through {0}, cannot be deleted.</value>
+  </data>
+  <data name="CantEditSystemicDetailVoucher" xml:space="preserve">
+    <value>Because systemic creation of article through {0}, cannot be edited.</value>
   </data>
 </root>

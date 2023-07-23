@@ -1256,7 +1256,17 @@ INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Typ
     VALUES (816, 77, 'Remarks', NULL, NULL, 'System.String', 'nvarchar', 'string', 512, 0, 0, 0, 1, 1, 1, NULL, 10, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
--- 1.2.1548
+-- 1.2.1549
+UPDATE [Metadata].[Column]
+SET [DisplayIndex] = 11
+WHERE ColumnID = 816 AND [Name] = N'Remarks'
+
+SET IDENTITY_INSERT [Metadata].[Column] ON
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (817, 77, 'SourceApp', NULL, NULL, 'System.String', 'nvarchar', 'string', 128, 0, 0, 0, 1, 1, 1, NULL, 10, NULL)
+SET IDENTITY_INSERT [Metadata].[Column] OFF
+
+-- 1.2.1550
 SET IDENTITY_INSERT [Metadata].[Operation] ON
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description])
     VALUES (54, 'Export', NULL)

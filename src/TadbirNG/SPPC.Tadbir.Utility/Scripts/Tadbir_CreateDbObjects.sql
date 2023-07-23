@@ -1059,6 +1059,17 @@ CREATE TABLE [CashFlow].[PayReceiveCashAccount] (
 )
 GO
 
+CREATE TABLE [CashFlow].[PayReceiveVoucherLine] (
+    [PayReceiveVoucherLineID]   INT              IDENTITY (1, 1) NOT NULL,
+    [PayReceiveID]              INT              NOT NULL,
+    [VoucherLineID]             INT              NOT NULL,
+    [rowguid]                   UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_PayReceiveVoucherLine_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]              DATETIME         CONSTRAINT [DF_CashFlow_PayReceiveVoucherLine_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_CashFlow_PayReceiveVoucherLine] PRIMARY KEY CLUSTERED ([PayReceiveVoucherLineID] ASC)
+    , CONSTRAINT [FK_CashFlow_PayReceiveVoucherLine_CashFlow_PayReceive] FOREIGN KEY ([PayReceiveID]) REFERENCES [CashFlow].[PayReceive]([PayReceiveID])
+    , CONSTRAINT [FK_CashFlow_PayReceiveVoucherLine_Finance_VoucherLine] FOREIGN KEY ([VoucherLineID]) REFERENCES [Finance].[VoucherLine]([VoucherLineID]))
+GO
+
 -- Insert system records...
 SET IDENTITY_INSERT [Reporting].[WidgetFunction] ON 
 INSERT [Reporting].[WidgetFunction] ([WidgetFunctionID], [Name]) VALUES (1, N'Function_DebitTurnover')

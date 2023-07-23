@@ -8,6 +8,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Resources;
@@ -650,6 +651,14 @@ namespace SPPC.Tadbir.Persistence
                 .Where(v => v.Id == voucherId)
                 .Select(v => Mapper.Map<VoucherInfoViewModel>(v))
                 .FirstOrDefaultAsync();
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> HasSystemicArticleAsync(int voucherId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveVoucherLine>();
+            return await repository.GetEntityQuery()
+                .AnyAsync(pv => pv.VoucherLine.VoucherId == voucherId);
         }
 
         internal override int? EntityType

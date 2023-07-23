@@ -1191,16 +1191,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 {
                     message = error.Messages[0];
                 }
-
-                return GetGroupActionResult(message, voucher);
             }
-
-            result = CheckedValidationResult(voucher);
-            if (result is BadRequestObjectResult statusError)
+            else if (voucher.SubjectType == (int)SubjectType.Normal && 
+                await _repository.HasSystemicArticleAsync(voucherId))
+            { 
+                message = _strings.Format(AppStrings.CantDeleteVoucherWithSystemicArticle, AppStrings.Treasury);
+            }
+            else
             {
-                if (statusError.Value is ErrorViewModel error)
+                result = CheckedValidationResult(voucher);
+                if (result is BadRequestObjectResult statusError)
                 {
-                    message = error.Messages[0];
+                    if (statusError.Value is ErrorViewModel error)
+                    {
+                        message = error.Messages[0];
+                    }
                 }
             }
 
@@ -1343,7 +1348,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private async Task<IActionResult> InsertArticleAsync(int voucherId, VoucherLineViewModel article)
         {
-            var result = VoucherLineValidationResultAsync(article);
+            var result = await VoucherLineValidationResultAsync(article);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -1380,7 +1385,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private async Task<IActionResult> UpdateArticleAsync(int articleId, VoucherLineViewModel article)
         {
-            var result = VoucherLineValidationResultAsync(article, articleId);
+            var result = await VoucherLineValidationResultAsync(article, articleId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -1497,13 +1502,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private IActionResult VoucherLineValidationResultAsync(
+        private async Task<IActionResult> VoucherLineValidationResultAsync(
             VoucherLineViewModel article, int articleId = 0)
         {
             var result = BasicValidationResult(article, AppStrings.VoucherLine, articleId);
             if (result is BadRequestObjectResult)
             {
                 return result;
+            }
+
+            if(articleId > 0)
+            {
+                var payReceive = await _lineRepository.GetRelatedPayReceiveAsync(articleId);
+                if (payReceive != null)
+                {
+                    string formName = payReceive.Type == (int)PayReceiveType.Payment
+                        ? AppStrings.Payment
+                        : AppStrings.Receipt;
+                    return BadRequestResult(_strings.Format(AppStrings.CantEditSystemicDetailVoucher, formName));
+                }
             }
 
             if ((article.Debit == 0m) && (article.Credit == 0m))
@@ -1571,6 +1588,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 if (result is BadRequestObjectResult errorResult)
                 {
                     message = errorResult.Value.ToString();
+                }
+                else
+                {
+                    var payReceive = await _lineRepository.GetRelatedPayReceiveAsync(articleId);
+                    if (payReceive != null)
+                    {
+                        string payReceiveFormName = payReceive.Type == (int)PayReceiveType.Payment
+                            ? AppStrings.Payment
+                            : AppStrings.Receipt;
+                        message = _strings.Format(AppStrings.CantDeleteSystemicDetailVoucher, payReceiveFormName);
+                    }
                 }
             }
 

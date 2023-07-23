@@ -42,8 +42,4 @@
     <ProjectReference Include="..\SPPC.Tadbir.Resources\SPPC.Tadbir.Resources.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Mapping\CashFlow\" />
-  </ItemGroup>
-
 </Project>
