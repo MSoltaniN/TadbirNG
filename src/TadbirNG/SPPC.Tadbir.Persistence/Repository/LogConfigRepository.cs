@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Tadbir.Model.Config;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Core;
 
@@ -117,7 +118,7 @@ namespace SPPC.Tadbir.Persistence
             var rootNode = new LogSettingNodeViewModel()
             {
                 Id = id++,
-                Name = "SystemLog",
+                Name = AppStrings.SystemLog,
                 ParentId = null
             };
             allConfig.Add(rootNode);
@@ -134,7 +135,6 @@ namespace SPPC.Tadbir.Persistence
                     ParentId = rootNode.Id
                 };
                 entityType.Items.AddRange(byEntity
-                    .OrderBy(cfg => cfg.Operation.Id)
                     .Select(cfg => Mapper.Map<LogSettingItemViewModel>(cfg)));
                 allConfig.Add(entityType);
             }
@@ -151,7 +151,6 @@ namespace SPPC.Tadbir.Persistence
                     ParentId = rootNode.Id
                 };
                 source.Items.AddRange(bySource
-                    .OrderBy(cfg => cfg.Operation.Id)
                     .Select(cfg => Mapper.Map<LogSettingItemViewModel>(cfg)));
                 allConfig.Add(source);
             }
