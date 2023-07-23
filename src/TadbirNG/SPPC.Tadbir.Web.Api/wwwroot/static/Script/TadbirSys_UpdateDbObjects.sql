@@ -1375,3 +1375,17 @@ INSERT INTO [Config].[SysLogSetting] ([SysLogSettingID], [SourceID], [EntityType
 INSERT INTO [Config].[SysLogSetting] ([SysLogSettingID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (49, NULL, 9, 10, 1)
 SET IDENTITY_INSERT [Config].[SysLogSetting] OFF
+
+-- 1.2.1551
+UPDATE [Metadata].[Column]
+SET [Visibility] = N'AlwaysHidden'
+WHERE ColumnID = 798 and [Name] = N'IsBank'
+
+UPDATE [Metadata].[Column]
+SET [DisplayIndex] = 12
+WHERE ColumnID = 816 AND [Name] = N'Remarks'
+
+UPDATE [Metadata].[Column]
+SET [DisplayIndex] = 11
+WHERE ColumnID = 801 AND [Name] = N'BankOrderNo'
+
