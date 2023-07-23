@@ -178,7 +178,7 @@
     "First": "The first {0}",
     "Last": "The last {0}",
     "Delete": "Delete {0}",
-    "SaveChanges": "Save changes"
+    "SaveChanges": "Save Changes"
   },
   "GridSetting": {
     "Visibility": "Visibility",
@@ -192,15 +192,15 @@
     "VoucherLine": "Voucher Article",
     "VoucherEditor": "Voucher Detail",
     "DraftVoucherEditor": "Draft Voucher",
-    "User": "User",
-    "Role": "Role",
+    "User": "Users",
+    "Role": "Roles",
     "Password": "Password",
     "DetailAccount": "Detail Account",
     "CostCenter": "Cost Center",
     "Project": "Project",
-    "FiscalPeriod": "Fiscal Period",
-    "Branch": "Branch",
-    "Company": "Company",
+    "FiscalPeriod": "Fiscal Periods",
+    "Branch": "Branches",
+    "Company": "Companies",
     "AccountRelations": "Account Relations",
     "Setting": "Settings",
     "RowAccess": "Row Access",
@@ -235,7 +235,8 @@
     "Receipt": "Receipt",
     "PayReceiveAccount": "Account Party",
     "ConfirmationMessage": "Confirmation Message",
-    "ItemBalance": "Item Turnover and Balance"
+    "ItemBalance": "Item Turnover and Balance",
+    "LogSetting": "Log Settings"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "Count of Selected Vouchers :",
@@ -1664,5 +1665,4 @@
       "AllVouchers": "All Vouchers"
     }
   }
-
 }
