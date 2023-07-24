@@ -254,7 +254,7 @@ CREATE TABLE [Config].[UserSetting] (
     [UserID]         INT              NULL,
     [RoleID]         INT              NULL,
     [ModelType]      VARCHAR(128)     NOT NULL,
-    [Values]         NTEXT            NOT NULL,
+    [Values]         NVARCHAR(MAX)            NOT NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Config_UserSetting_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Config_UserSetting_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Config_UserSetting] PRIMARY KEY CLUSTERED ([UserSettingID] ASC)
@@ -267,8 +267,8 @@ CREATE TABLE [Config].[ViewSetting] (
     [SettingID]      INT              NOT NULL,
     [ViewID]         INT              NULL,
     [ModelType]      VARCHAR(128)     NOT NULL,
-    [Values]         NTEXT            NOT NULL,
-    [DefaultValues]  NTEXT            NOT NULL,
+    [Values]         NVARCHAR(MAX)            NOT NULL,
+    [DefaultValues]  NVARCHAR(MAX)            NOT NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Config_ViewSetting_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Config_ViewSetting_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Config_ViewSetting] PRIMARY KEY CLUSTERED ([ViewSettingID] ASC)
@@ -282,8 +282,8 @@ CREATE TABLE [Config].[LabelSetting] (
     [CustomFormID]   INT              NOT NULL,
 	[LocaleID]       INT              NOT NULL,
 	[ModelType]      VARCHAR(128)     NOT NULL,
-	[Values]         NTEXT            NOT NULL,
-	[DefaultValues]  NTEXT            NOT NULL,
+	[Values]         NVARCHAR(MAX)            NOT NULL,
+	[DefaultValues]  NVARCHAR(MAX)            NOT NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Config_LabelSetting_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Config_LabelSetting_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Config_LabelSetting] PRIMARY KEY CLUSTERED ([LabelSettingID] ASC)

@@ -50,8 +50,8 @@ namespace SPPC.Tadbir.Persistence
                     .OrderBy(item => item.FullCode)
                     .Select(item => Mapper.Map<AccountViewModel>(item))
                     .ToListAsync();
-                await UpdateInactiveAccountsAsync(accounts);
-                Array.ForEach(accounts.ToArray(), acc => acc.TurnoverMode = Context.Localize(acc.TurnoverMode));
+                await UpdateInactiveItemsAsync(accounts);
+                Array.ForEach(accounts.ToArray(), acc => Localize(acc));
             }
 
             await ReadAsync(gridOptions);
@@ -562,6 +562,12 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return currencyId;
+        }
+
+        private void Localize(AccountViewModel account)
+        {
+            account.TurnoverMode = Context.Localize(account.TurnoverMode);
+            account.State = Context.Localize(account.State);
         }
 
         private async Task HandleActiveStateChangeAsync(Account account)
