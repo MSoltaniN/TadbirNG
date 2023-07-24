@@ -1379,7 +1379,8 @@
     "RemoveInvalidRows": "حذف ردیفهای نامعتبر",
     "DeletePayReceiveAccount": "حذف آرتیکل طرف حساب",
     "BankOrderNo": "شماره حواله بانکی",
-    "CashAccount": "حسابهای نقدی"
+    "CashAccount": "حسابهای نقدی",
+    "TotalAmount": "مجموع مبالغ"
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",
