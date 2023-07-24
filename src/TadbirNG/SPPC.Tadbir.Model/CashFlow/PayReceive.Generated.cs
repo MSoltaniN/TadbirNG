@@ -36,6 +36,8 @@ namespace SPPC.Tadbir.Model.CashFlow
             Date = DateTime.Now;
             CreatedDate = DateTime.Now;
             ModifiedDate = DateTime.Now;
+            this.Accounts = new List<PayReceiveAccount>();
+            this.CashAccounts = new List<PayReceiveCashAccount>();
         }
 
         /// <summary>

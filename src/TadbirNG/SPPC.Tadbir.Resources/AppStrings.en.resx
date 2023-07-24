@@ -4110,4 +4110,10 @@
   <data name="CantEditSystemicDetailVoucher" xml:space="preserve">
     <value>Because systemic creation of article through {0}, cannot be edited.</value>
   </data>
+  <data name="BankOrderNo" xml:space="preserve">
+    <value>Bank Order Number</value>
+  </data>
+  <data name="TreasurySystemicVoucherDefaultDescription" xml:space="preserve">
+    <value>Voucher created by treasury system.</value>
+  </data>
 </root>

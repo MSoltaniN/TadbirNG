@@ -50,7 +50,8 @@ namespace SPPC.Tadbir.Persistence
                 options.Operation != (int)OperationId.PrintPreview)
             {
                 var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
-                var payReceive = await repository.GetByIDAsync(payReceiveId);
+                var payReceive = await repository.GetByIDAsync(
+                    payReceiveId, pr => pr.Accounts, pr => pr.CashAccounts);
                 if (payReceive != null)
                 {
                     item = Mapper.Map<PayReceiveViewModel>(payReceive);
@@ -190,7 +191,8 @@ namespace SPPC.Tadbir.Persistence
         {
             var byNo = default(PayReceiveViewModel);
             var viewId = GetViewId((int)type);
-            var payReceiveByNo = await Repository.GetAllOperationQuery<PayReceive>(viewId)
+            var payReceiveByNo = await Repository.GetAllOperationQuery<PayReceive>(
+                viewId, pr => pr.Accounts, pr => pr.CashAccounts)
                 .Where(pr => pr.PayReceiveNo == payReceiveNo.Trim() && pr.Type == (int)type)
                 .SingleOrDefaultAsync();
 
@@ -452,7 +454,7 @@ namespace SPPC.Tadbir.Persistence
             var viewId = GetViewId(type);
             var options = gridOptions ?? new GridOptions();
             return await Repository
-                .GetAllOperationQuery<PayReceive>(viewId)
+                .GetAllOperationQuery<PayReceive>(viewId, pr => pr.Accounts, pr => pr.CashAccounts)
                 .Where(criteria)
                 .OrderBy(item => Convert.ToInt64(item.PayReceiveNo))
                 .Select(item => Mapper.Map<PayReceiveViewModel>(item))
@@ -543,6 +545,7 @@ namespace SPPC.Tadbir.Persistence
             var subject = SubjectType.Normal;
             string fullName = GetCurrentUserFullName();
             DateTime date = await GetLastVoucherDateAsync();
+            string description = Context.Localize(AppStrings.TreasurySystemicVoucherDefaultDescription);
             int no = await GetLastVoucherNoAsync();
             int dailyNo = await GetNextDailyNoAsync(date, subject);
             return new Voucher()
@@ -550,7 +553,7 @@ namespace SPPC.Tadbir.Persistence
                 BranchId = UserContext.BranchId,
                 DailyNo = dailyNo,
                 Date = date,
-                Description = string.Empty,
+                Description = description,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 IsBalanced = true,
                 CreatedById = UserContext.Id,

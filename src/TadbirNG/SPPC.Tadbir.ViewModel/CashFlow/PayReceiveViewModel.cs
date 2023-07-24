@@ -38,5 +38,15 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// مشخص می کند که شماره فرمی قبل از این فرم دریافت/پرداخت وجود دارد یا نه
         /// </summary>
         public bool HasPrevious { get; set; }
+
+        /// <summary>
+        /// مجموع مبلغ‌های طرف حساب
+        /// </summary>
+        public decimal AccountAmountsSum { get; set; }
+
+        /// <summary>
+        /// مجموع مبلغ‌های حساب نقدی
+        /// </summary>
+        public decimal CashAmountsSum { get; set; }
     }
 }

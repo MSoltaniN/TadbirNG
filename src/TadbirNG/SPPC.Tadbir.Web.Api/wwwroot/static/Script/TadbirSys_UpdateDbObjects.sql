@@ -1389,3 +1389,7 @@ UPDATE [Metadata].[Column]
 SET [DisplayIndex] = 11
 WHERE ColumnID = 801 AND [Name] = N'BankOrderNo'
 
+-- 1.2.1552
+UPDATE [Metadata].[Column]
+SET [Visibility] = N'AlwaysHidden'
+WHERE ColumnID = 800 AND [Name] = N'SourceAppId'
