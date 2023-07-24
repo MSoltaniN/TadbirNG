@@ -15,7 +15,7 @@ import { SourceAppFormComponent } from './components/sources-applications/source
 import { PayReceiveEditorComponent } from './components/pay-receive/pay-receive-editor.component';
 import { PayerReceiverComponent } from './components/pay-receive/payer-receiver/payer-receiver.component';
 import { PayReciveCheksComponent } from './components/pay-receive/pay-recive-cheks/pay-recive-cheks.component';
-import { FundOrBankComponent } from './components/pay-receive/fund-or-bank/fund-or-bank.component';
+import { CashAccountComponent } from './components/pay-receive/cash-account/cash-account.component';
 import { SelectButtonModule } from 'primeng/selectbutton';
 
 @NgModule({
@@ -38,7 +38,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
     PayReceiveEditorComponent,
     PayerReceiverComponent,
     PayReciveCheksComponent,
-    FundOrBankComponent
+    CashAccountComponent
   ],
   entryComponents:[CashRegistersFormComponent,CashRegisterRolesFormComponent],
   exports: [TreasuryRoutingModule]
