@@ -146,6 +146,7 @@ export class VoucherLineFormComponent
         currencyValue: new FormControl(),
         sourceAppId: new FormControl(),
         bankOrderNo: new FormControl(),
+        isBank: new FormControl(),
         remarks: new FormControl("", Validators.maxLength(512)),
         fullAccount: new FormGroup({
           account: new FormGroup({

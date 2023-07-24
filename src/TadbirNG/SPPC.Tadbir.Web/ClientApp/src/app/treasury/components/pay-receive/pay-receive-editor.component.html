@@ -239,12 +239,12 @@
                       "PayReceipt.CashAccount" | translate
                     }}
                   </label>
-                  <fund-or-bank
+                  <cash-account
                     [isConfirmed]="isConfirmed"
                     [payReceiveId]="this.model?.id"
                     [payReceiptType]="this.type == 1 ? '1' : '2'"
                   >
-                  </fund-or-bank>
+                  </cash-account>
                 </div>
                 <div class="clear"></div>
               </p-accordionTab>
