@@ -1371,7 +1371,8 @@
     "RemoveInvalidRows": "Remove Invalid Rows",
     "DeletePayReceiveAccount": "Delete the account article",
     "BankOrderNo": "Bank Order No",
-    "CashAccount": "Cash Accounts"
+    "CashAccount": "Cash Accounts",
+    "TotalAmount": "Total Amounts"
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",
