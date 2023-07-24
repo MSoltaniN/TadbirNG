@@ -38,5 +38,10 @@ namespace SPPC.Tadbir.Model.Finance
         /// شناسه دیتابیسی کاربر ایجادکننده این آرتیکل
         /// </summary>
         public virtual int CreatedById { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی منابع و مصارف مرتبط با این آرتیکل
+        /// </summary>
+        public virtual int? SourceAppId { get; set; }
     }
 }

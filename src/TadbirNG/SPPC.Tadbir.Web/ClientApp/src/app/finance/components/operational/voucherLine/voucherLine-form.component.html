@@ -34,7 +34,7 @@
                 <label
                   for="amount"
                   class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
-                  style="padding-top: 7px;"
+                  style="padding-top: 7px"
                   >{{ "VoucherLine.Amount" | translate }}</label
                 >
 
@@ -53,7 +53,7 @@
                 <label
                   for="debit"
                   class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
-                  style="padding-top: 7px;"
+                  style="padding-top: 7px"
                   >{{ "VoucherLine.Amount" | translate }}</label
                 >
 
@@ -70,7 +70,7 @@
                 <label
                   for="debit"
                   class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
-                  style="padding-top: 7px;"
+                  style="padding-top: 7px"
                   >{{ "VoucherLine.Amount" | translate }}</label
                 >
 
@@ -87,7 +87,7 @@
 
           <div class="row">
             <div class="col-xs-12">
-              <fieldset *ngIf="!isPayReciept;else isBankOrFund">
+              <fieldset *ngIf="!isPayReciept; else isBankOrFund">
                 <div class="form-group row">
                   <label
                     for="debit"
@@ -170,33 +170,66 @@
 
           <div class="row">
             <div class="col-xs-12">
-              <div class="form-group row" *ngIf="!isPayReciept || (isPayReciept && isSourceApp && isBank == 0)">
+              <div class="form-group row" *ngIf="!isPayReciept">
                 <label
                   class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
                   style="padding: 7px 10px"
                 >
-                  {{ (isSourceApp? "SourceApp.SourceAppType": "VoucherLine.ArticleType") | translate }}
+                  {{ "VoucherLine.ArticleType" | translate }}
                 </label>
 
                 <kendo-dropdownlist
                   [data]="articleTypeList"
                   class="col-xs-8 col-sm-9 sppc-float"
-                  style="padding: 0;width: 59%;"
+                  style="padding: 0; width: 59%"
                   [textField]="'value'"
                   [valueField]="'key'"
                   [valuePrimitive]="true"
                   [value]="selectedArticleType"
                   [(ngModel)]="selectedArticleType"
                   [ngModelOptions]="{ standalone: true }"
-                  [formControlName]="isPayReciept? 'sourceAppId':'typeId'"
+                  [formControlName]="'typeId'"
                 >
                 </kendo-dropdownlist>
               </div>
 
-              <div class="form-group row" *ngIf="isPayReciept && isSourceApp && isBank == 1">
+              <div class="form-group row">
                 <label
                   class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
-                  style="padding: 7px 8px;font-size: 13px;"
+                  style="padding: 7px 10px"
+                >
+                  {{ "SourceApp.SourceAppType" | translate }}
+                </label>
+
+                <kendo-dropdownlist
+                  [data]="sourceAppList"
+                  class="col-xs-8 col-sm-9 sppc-float"
+                  style="padding: 0; width: 59%"
+                  [disabled]="
+                    isPayReciept
+                      ? false
+                      : isActiveSourceAppDropDown
+                      ? false
+                      : true
+                  "
+                  [textField]="'value'"
+                  [valueField]="'key'"
+                  [valuePrimitive]="true"
+                  [value]="selectedSourceApp"
+                  [(ngModel)]="selectedSourceApp"
+                  [ngModelOptions]="{ standalone: true }"
+                  [formControlName]="'sourceAppId'"
+                >
+                </kendo-dropdownlist>
+              </div>
+
+              <div
+                class="form-group row"
+                *ngIf="isPayReciept && isSourceApp && isBank == 1"
+              >
+                <label
+                  class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
+                  style="padding: 7px 8px; font-size: 13px"
                   for="bankOrderNo"
                 >
                   {{ "PayReceipt.BankOrderNo" | translate }}
@@ -208,9 +241,7 @@
                   [decimalCount]="decimalCount"
                   class="sppc-input-num sppc-float"
                 ></sppc-numericInput>
-
               </div>
-
             </div>
           </div>
         </div>
@@ -228,14 +259,16 @@
             <input
               type="text"
               class="k-textbox"
-              [formControlName]="isPayReciept?'remarks':'description'"
+              [formControlName]="isPayReciept ? 'remarks' : 'description'"
             />
 
             <div
               class="k-tooltip k-tooltip-validation"
               [hidden]="
-                editForm1.controls[isPayReciept?'remarks':'description'].valid ||
-                editForm1.controls[isPayReciept?'remarks':'description'].pristine
+                editForm1.controls[isPayReciept ? 'remarks' : 'description']
+                  .valid ||
+                editForm1.controls[isPayReciept ? 'remarks' : 'description']
+                  .pristine
               "
             >
               {{

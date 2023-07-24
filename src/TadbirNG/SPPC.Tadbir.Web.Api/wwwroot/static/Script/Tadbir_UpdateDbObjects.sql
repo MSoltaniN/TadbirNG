@@ -1440,3 +1440,7 @@ SET SourceAppID = SourceID;
 Go
 ALTER TABLE [Finance].[VoucherLine]
 DROP COLUMN SourceID;
+Go
+ALTER TABLE [Finance].[VoucherLine]
+ADD CONSTRAINT [FK_Finance_VoucherLine_CashFlow_SourceApp] FOREIGN KEY ([SourceAppID])
+    REFERENCES [CashFlow].[SourceApp]([SourceAppID])

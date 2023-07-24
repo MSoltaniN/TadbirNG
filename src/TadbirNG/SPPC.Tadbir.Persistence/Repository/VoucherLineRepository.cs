@@ -262,6 +262,7 @@ namespace SPPC.Tadbir.Persistence
             line.Credit = lineView.Credit;
             line.Description = lineView.Description;
             line.CurrencyValue = lineView.CurrencyValue;
+            line.SourceAppId = lineView.SourceAppId;
         }
 
         /// <summary>

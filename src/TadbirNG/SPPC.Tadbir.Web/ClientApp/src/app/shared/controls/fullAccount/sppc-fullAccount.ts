@@ -6,7 +6,7 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  Input
+  Input,
 } from "@angular/core";
 import { ControlContainer } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
@@ -77,7 +77,7 @@ export class SppcFullAccountComponent
   //accountFullCode: string;
 
   fullAccount: FullAccountInfo;
-  @Output() isInputFocused:EventEmitter<boolean> = new EventEmitter(false);
+  @Output() isInputFocused: EventEmitter<boolean> = new EventEmitter(false);
   isOpenedDialog = false;
 
   private dialogRef: DialogRef;
@@ -86,7 +86,7 @@ export class SppcFullAccountComponent
   /**
    * برای تعیین اجبرای بودن یا نبودن انتخاب همه موارد بردار حساب درصورت موجود بودنشان
    */
-  @Input() strictMode:boolean = true;
+  @Input() strictMode: boolean = true;
   @Input() set inputFullAccount(data) {
     this.fullAccount = data;
     if (data != undefined) {
@@ -94,7 +94,7 @@ export class SppcFullAccountComponent
     } else {
       this.resetForm();
     }
-  };
+  }
   //#endregion
 
   constructor(
@@ -133,7 +133,6 @@ export class SppcFullAccountComponent
       this.isNew = false;
       this.accountSelectedId.push(this.fullAccount.account.id);
       this.accountTitle = this.fullAccount.account.name;
-
     } else this.isNew = true;
 
     if (!this.isNew) {
@@ -156,16 +155,16 @@ export class SppcFullAccountComponent
 
   resetForm() {
     this.accountSelectedId = [];
-    this.accountTitle = '';
+    this.accountTitle = "";
 
-    this.detailAccountSelectedId= [];
-    this.detailAccountTitle = '';
+    this.detailAccountSelectedId = [];
+    this.detailAccountTitle = "";
 
     this.costCenterSelectedId = [];
-    this.costCenterTitle = '';
+    this.costCenterTitle = "";
 
     this.projectSelectedId = [];
-    this.projectTitle = '';
+    this.projectTitle = "";
   }
   //#region Select item
   /**
@@ -554,21 +553,19 @@ export class SppcFullAccountComponent
   //#endregion
 
   onFocus(item?: number) {
-    if (item != undefined)
-      this.focusedItem = item;
+    if (item != undefined) this.focusedItem = item;
     this.isInputFocused.emit(true);
   }
 
   onBlur() {
-    if (!this.isOpenedDialog)
-      this.isInputFocused.emit(false);
+    if (!this.isOpenedDialog) this.isInputFocused.emit(false);
   }
 
   openDialog(template: TemplateRef<any>, item: number) {
     this.isOpenedDialog = true;
     this.selectedItem = item;
     this.onReset();
-    
+
     this.dialogRef = this.dialogService.open({
       title: this.getText("FullAccount.Title"),
       content: template,

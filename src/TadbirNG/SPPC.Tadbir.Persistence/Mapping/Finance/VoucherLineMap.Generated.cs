@@ -44,7 +44,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasMaxLength(64);
             builder.Property(e => e.TypeId)
                 .IsRequired();
-            builder.Property(e => e.SourceAppID);
+            builder.Property(e => e.SourceAppId);
             builder.Property(e => e.CurrencyId);
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
@@ -98,6 +98,11 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey(e => e.CreatedById)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_VoucherLine_Auth_CreatedBy");
+            builder.HasOne(e => e.SourceApp)
+                .WithMany()
+                .HasForeignKey(e => e.SourceAppId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Finance_VoucherLine_CashFlow_SourceApp");
         }
     }
 }

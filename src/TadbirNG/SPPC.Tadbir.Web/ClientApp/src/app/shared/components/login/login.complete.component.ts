@@ -310,7 +310,6 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
           var url = this.route.snapshot.queryParams["returnUrl"];
           this.router.navigate([url]);
         } else {
-
           if (this.FiscalPeriodId == 0 || this.BranchId == 0) {
             this.bStorageService.removeCurrentRoute();
             this.router.navigate(["/tadbir/dashboard"]);
@@ -399,8 +398,16 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     this.loadAllSetting();
     this.fetchMetaDatas(currentUser);
     this.loadShortcut();
+    this.setCollectionsCashBank();
   }
 
+  setCollectionsCashBank() {
+    this.metadata.getCollectionsCashBank().subscribe({
+      next: (res) => {
+        this.bStorageService.setMetadata(SessionKeys.AccountColletion, res);
+      },
+    });
+  }
   //#endregion
 
   createCompany() {
