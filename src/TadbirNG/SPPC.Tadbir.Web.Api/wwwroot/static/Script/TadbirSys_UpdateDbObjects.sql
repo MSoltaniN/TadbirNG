@@ -1393,3 +1393,8 @@ WHERE ColumnID = 801 AND [Name] = N'BankOrderNo'
 UPDATE [Metadata].[Column]
 SET [Visibility] = N'AlwaysHidden'
 WHERE ColumnID = 800 AND [Name] = N'SourceAppId'
+
+-- 1.2.1553
+UPDATE [Reporting].[Report]
+SET [ServiceUrl] = N'fperiods'
+WHERE ReportID = 21 AND [Code] = N'Fiscal-Periods'
