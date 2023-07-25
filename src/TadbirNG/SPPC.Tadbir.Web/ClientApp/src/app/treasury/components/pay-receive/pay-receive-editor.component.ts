@@ -31,7 +31,7 @@ export function getLayoutModule(layout: Layout) {
 })
 export class PayReceiveEditorComponent extends DetailComponent implements OnInit {
 
-  @Input() public model: PayReceiveInfo;
+  @Input() public model: PayReceiveInfo = new PayReceiveInfo();
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
   @Input() filter: FilterExpression;
@@ -93,7 +93,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     return this.route.snapshot.url[0].path.toLowerCase();
   }
   
-  public get type() {
+  public get type(): 1|0 {
     return this._formType;
   }
 
@@ -179,7 +179,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     } else {
       this.isNew = true;
       this.errorMessages = undefined;
-      this.getDataUrl = this.urlPath == UrlPathType.Payments?PayReceiveApi.NewPayment: PayReceiveApi.NewReceipt;
+      this.getDataUrl = this.type == 1?PayReceiveApi.NewPayment: PayReceiveApi.NewReceipt;
       this.getPayReceive(this.getDataUrl,true);
     }
   }
@@ -482,7 +482,8 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   setTotalCashAmount(event) {
-    this.totalCashAmount = event;
+    this.getDataUrl = String.Format(this.type == 1?PayReceiveApi.PaymentByNo: PayReceiveApi.ReceiptByNo,this.model.payReceiveNo);
+    this.getPayReceive(this.getDataUrl);
   }
 
   getCurrencies() {

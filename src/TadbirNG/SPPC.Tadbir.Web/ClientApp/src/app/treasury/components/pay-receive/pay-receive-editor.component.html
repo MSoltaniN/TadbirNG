@@ -228,6 +228,16 @@
                     (setTotalCashAmount)="setTotalCashAmount($event)"
                   >
                   </payer-receiver>
+                  <div class="form-group totalAmount">
+                    <label for="money" class="control-label">{{ "PayReceipt.TotalAmount" | translate }}</label>
+                    <sppc-numericInput
+                      [(ngModel)]="model.accountAmountsSum"
+                      [ngModelOptions]="{ standalone: true }"
+                      [attr.disabled]="isConfirmed ? 'disabled' : null"
+                      [readOnly]="true"
+                    >
+                    </sppc-numericInput>
+                  </div>
                 </div>
                 <div class="col-md-6 col-xs-12 sppc-float">
                   <label
@@ -243,8 +253,19 @@
                     [isConfirmed]="isConfirmed"
                     [payReceiveId]="this.model?.id"
                     [payReceiptType]="this.type == 1 ? '1' : '2'"
+                    (setTotalCashAmount)="setTotalCashAmount($event)"
                   >
                   </cash-account>
+                  <div class="form-group totalAmount">
+                    <label for="money" class="control-label">{{ "PayReceipt.TotalAmount" | translate }}</label>
+                    <sppc-numericInput
+                      [(ngModel)]="model.cashAmountsSum"
+                      [ngModelOptions]="{ standalone: true }"
+                      [attr.disabled]="isConfirmed ? 'disabled' : null"
+                      [readOnly]="true"
+                    >
+                    </sppc-numericInput>
+                  </div>
                 </div>
                 <div class="clear"></div>
               </p-accordionTab>

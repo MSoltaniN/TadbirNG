@@ -24,6 +24,8 @@ export class PayReceiveInfo implements PayReceive {
   isConfirmed: boolean;
   hasNext: boolean;
   hasPrevious: boolean;
+  accountAmountsSum: number;
+  cashAmountsSum: number;
 }
 
 @Injectable({

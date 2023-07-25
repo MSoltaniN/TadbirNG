@@ -253,7 +253,9 @@ export class VoucherLineFormComponent
   }
 
   getArticleType() {
-    let apiUrl = this.isSourceApp? String.Format(LookupApi.SourceApps,+this.creditDebiteMode-1): LookupApi.VoucherLineTypes;
+    let apiUrl = this.isSourceApp? String.Format(LookupApi.SourceApps,
+      this.creditDebiteMode == '1'? 1: 0
+      ): LookupApi.VoucherLineTypes;
     this.lookupService
       .getModels(apiUrl)
       .subscribe((res) => {
