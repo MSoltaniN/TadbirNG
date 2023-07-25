@@ -230,16 +230,6 @@
 
               </kendo-grid>
             </div>
-            <div class="form-group totalAmount">
-              <label for="money" class="control-label">{{ "PayReceipt.TotalAmount" | translate }}</label>
-              <sppc-numericInput
-                [(ngModel)]="totalAmount"
-                [ngModelOptions]="{ standalone: true }"
-                [attr.disabled]="isConfirmed ? 'disabled' : null"
-                [readOnly]="true"
-              >
-              </sppc-numericInput>
-            </div>
           </div>
         </div>
       </div>

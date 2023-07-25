@@ -109,6 +109,7 @@ export class LookupApi {
 
     /*
     * API client URL for lookup collection of all source/application based on type {sourceAppType}
+    * 0 for 'Sources', 1 for 'Applications', 2 for both
     */
     public static SourceApps = environment.BaseUrl + "/lookup/source-apps/types/{0}";
 }

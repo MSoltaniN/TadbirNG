@@ -10,228 +10,269 @@
 </p-selectButton> -->
 
 <div class="panel-body" style="padding-top: 0">
-<div *ngIf="errorMessages">
-    <div *ngFor="let err of errorMessages" class="alert alert-danger">
-    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-    {{ err }}
+    <div *ngIf="errorMessages">
+        <div *ngFor="let err of errorMessages" class="alert alert-danger">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        {{ err }}
+        </div>
     </div>
-</div>
 
-<div>
-    <div class="row" >
-        <div class="col-xs-12">
-            <div class="voucher-form-content">
-                <div class="panel-body">
-                    <kendo-grid
-                    id="{{ viewId }}"
-                    #GridID
-                    [ngClass]="{
-                        tRtl: this.currentlang === 'fa',
-                        tLtr: this.currentlang === 'en'
-                    }"
-                    [data]="rowData"
-                    [height]="250"
-                    [sortable]="{ allowUnsort: true, mode: 'multiple' }"
-                    [sort]="sort"
-                    [pageSize]="pageSize"
-                    [skip]="skip"
-                    [pageable]="true"
-                    [resizable]="true"
-                    [scrollable]="'scrollable'"
-                    (pageChange)="onPageChange($event)"
-                    (sortChange)="sortChange($event)"
-                    (edit)="editHandler($event)"
-                    (remove)="removeHandler()"
-                    [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-                    [(selectedKeys)]="selectedRows"
-                    [kendoGridSelectBy]="getSelectedRow"
-                    sppc-auto-generated-grid-reorder
-                    sppc-auto-generated-grid-resize
-                    >
-                        <ng-template kendoGridNoRecordsTemplate>
-                            {{ ("App.RecordNotFound" | translate) }}
-                        </ng-template>
-                    
-                        <kendo-grid-messages
-                        pagerPage="{{ 'Paging.Record' | translate }}"
-                        pagerOf="{{ 'Paging.Of' | translate }}"
-                        pagerItems="{{ 'Paging.Record' | translate }}"
-                        pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}"
-                        pagerNextPage="{{ 'Paging.NextPage' | translate }}"
-                        pagerPreviousPage="{{ 'Paging.PreviousPage' | translate }}"
-                        pagerFirstPage="{{ 'Paging.FirstPage' | translate }}"
-                        pagerLastPage="{{ 'Paging.LastPage' | translate }}"
+    <div>
+        <div class="row" >
+            <div class="col-xs-12">
+                <div class="voucher-form-content">
+                    <div class="panel-body">
+                        <kendo-grid
+                        id="{{ viewId }}"
+                        #GridID
+                        [ngClass]="{
+                            tRtl: this.currentlang === 'fa',
+                            tLtr: this.currentlang === 'en'
+                        }"
+                        [data]="rowData"
+                        [height]="250"
+                        [sortable]="{ allowUnsort: true, mode: 'multiple' }"
+                        [sort]="sort"
+                        [pageSize]="pageSize"
+                        [skip]="skip"
+                        [pageable]="true"
+                        [resizable]="true"
+                        [scrollable]="'scrollable'"
+                        (pageChange)="pageChange($event)"
+                        (sortChange)="sortChange($event)"
+                        (edit)="editHandler($event)"
+                        (remove)="removeHandler()"
+                        [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+                        [(selectedKeys)]="selectedRows"
+                        [kendoGridSelectBy]="getSelectedRow"
+                        sppc-auto-generated-grid-reorder
+                        sppc-auto-generated-grid-resize
                         >
-                        </kendo-grid-messages>
-
-                        <ng-template kendoPagerTemplate>
-                        <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
-                        <kendo-pager-info></kendo-pager-info>
-                        <kendo-pager-numeric-buttons
-                            [buttonCount]="5"
-                        ></kendo-pager-numeric-buttons>
-                        <kendo-pager-next-buttons></kendo-pager-next-buttons>
-                        <kendo-pager-page-sizes
-                            [pageSizes]="pageSizeArray"
-                        ></kendo-pager-page-sizes>
-                        </ng-template>
-
-                        <ng-template kendoGridToolbarTemplate>
-                            <button
-                            kendoGridAddCommand
-                            (click)="addNew()"
-                            [icon]="'file-add'"
-                            type="button"
-                            title="{{ 'Buttons.Add' | translate }}"
-                            ></button>
-                    
-                            <button
-                            (click)="editHandler()"
-                            class="k-button k-button-icon"
-                            [disabled]="selectedRows.length != 1"
-                            title="{{ 'Buttons.Edit' | translate }}"
+                            <ng-template kendoGridNoRecordsTemplate>
+                                {{ ("App.RecordNotFound" | translate) }}
+                            </ng-template>
+                        
+                            <kendo-grid-messages
+                            pagerPage="{{ 'Paging.Record' | translate }}"
+                            pagerOf="{{ 'Paging.Of' | translate }}"
+                            pagerItems="{{ 'Paging.Record' | translate }}"
+                            pagerItemsPerPage="{{ 'Paging.ItemsPerPage' | translate }}"
+                            pagerNextPage="{{ 'Paging.NextPage' | translate }}"
+                            pagerPreviousPage="{{ 'Paging.PreviousPage' | translate }}"
+                            pagerFirstPage="{{ 'Paging.FirstPage' | translate }}"
+                            pagerLastPage="{{ 'Paging.LastPage' | translate }}"
                             >
-                            <span class="k-icon k-i-pencil"></span>
-                            </button>
-                            <button
-                            (click)="removeHandler()"
-                            class="k-button k-button-icon"
-                            [disabled]="selectedRows.length == 0"
-                            title="{{ 'Buttons.Delete' | translate }}"
-                            >
-                            <span class="k-icon k-i-delete"></span>
-                            </button>
+                            </kendo-grid-messages>
 
-                            <auto-generated-grid-setting
-                                [entityTypeName]="entityTypeName"
-                                (columnsList)="getColumns($event)"
-                            >
-                            </auto-generated-grid-setting>
-                            <grid-filter
-                                *ngIf="this.grid.filterable"
-                                [parentComponent]="this"
-                                [showClearFilter]="this.grid.filter.filters.length"
-                            ></grid-filter>
-                            <left-action-toolbar
-                                class="sppc-float-diff"
-                                (onFilterOk)="onAdvanceFilterOk()"
-                                [quickReportDisabled]="true"
-                                [parentComponent]="this"
-                                [viewId]="viewId"
-                            ></left-action-toolbar>
-                        </ng-template>
+                            <ng-template kendoPagerTemplate>
+                            <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+                            <kendo-pager-info></kendo-pager-info>
+                            <kendo-pager-numeric-buttons
+                                [buttonCount]="5"
+                            ></kendo-pager-numeric-buttons>
+                            <kendo-pager-next-buttons></kendo-pager-next-buttons>
+                            <kendo-pager-page-sizes
+                                [pageSizes]="pageSizeArray"
+                            ></kendo-pager-page-sizes>
+                            </ng-template>
 
-                        <kendo-grid-checkbox-column
-                        showSelectAll="true"
-                        [width]="50"
-                        [headerClass]="{ 'chb-column': true }"
-                        [class]="{ 'chb-column': true }"
-                        [resizable]="false"
-                        [reorderable]="false"
-                        >
-                        </kendo-grid-checkbox-column>
-
-                        <kendo-grid-column media="(max-width: 450px)" title="">
-                        <ng-template kendoGridCellTemplate let-dataItem>
-                            <dl>
-                            <ng-template ngFor let-item [ngForOf]="gridColumns" let-i="index">
-                                <dt>{{ getColumnTitle(item) }}:</dt>
-                                <dd
-                                *ngIf="item.type == 'Money' || item.type == 'Currency'"
-                                class="dl-value"
+                            <ng-template kendoGridToolbarTemplate>
+                                <button
+                                kendoGridAddCommand
+                                (click)="addNew()"
+                                [icon]="'file-add'"
+                                type="button"
+                                title="{{ 'Buttons.Add' | translate }}"
+                                ></button>
+                        
+                                <button
+                                (click)="editHandler()"
+                                class="k-button k-button-icon"
+                                [disabled]="selectedRows.length != 1"
+                                title="{{ 'Buttons.Edit' | translate }}"
                                 >
-                                {{
-                                    getRowValue(item.name, dataItem, item.scriptType)
-                                    | SppcNumConfig
-                                    | async
-                                }}
-                                </dd>
-                                <dd
-                                *ngIf="
-                                    item.scriptType != 'Date' &&
-                                    item.type != 'Money' &&
-                                    item.type != 'Currency'
-                                "
-                                class="dl-value"
+                                <span class="k-icon k-i-pencil"></span>
+                                </button>
+                                <button
+                                (click)="removeHandler()"
+                                class="k-button k-button-icon"
+                                [disabled]="selectedRows.length == 0"
+                                title="{{ 'Buttons.Delete' | translate }}"
                                 >
-                                {{ getRowValue(item.name, dataItem, item.scriptType) }}
-                                </dd>
-                                <dd *ngIf="item.scriptType == 'Date'" class="dl-value">
+                                <span class="k-icon k-i-delete"></span>
+                                </button>
+                                <button
+                                (click)="callOperation(payReceiveOperationsItems.Aggregate)"
+                                class="k-button"
+                                title="{{ 'PayReceipt.AggregateRows' | translate }}"
+                                [disabled]="rowData?.data.length < 1 || isConfirmed"
+                                >
+                                    <span class="k-icon k-i-decrease-vertical-spacing"></span>
+                                </button>
+                                <button
+                                (click)="callOperation(payReceiveOperationsItems.RemoveInvalidRows)"
+                                class="k-button"
+                                title="{{ 'PayReceipt.RemoveInvalidRows' | translate }}"
+                                [disabled]="rowData?.data.length < 1 || isConfirmed"
+                                >
+                                    <span class="k-icon k-i-remove-vertical-spacing"></span>
+                                </button>
+
+                                <auto-generated-grid-setting
+                                    [entityTypeName]="entityTypeName"
+                                    (columnsList)="getColumns($event)"
+                                >
+                                </auto-generated-grid-setting>
+                                <grid-filter
+                                    *ngIf="this.grid.filterable"
+                                    [parentComponent]="this"
+                                    [showClearFilter]="this.grid.filter.filters.length"
+                                ></grid-filter>
+                                <left-action-toolbar
+                                    class="sppc-float-diff"
+                                    (onFilterOk)="onAdvanceFilterOk()"
+                                    [quickReportDisabled]="true"
+                                    [parentComponent]="this"
+                                    [viewId]="viewId"
+                                ></left-action-toolbar>
+                            </ng-template>
+
+                            <kendo-grid-checkbox-column
+                            showSelectAll="true"
+                            [width]="50"
+                            [headerClass]="{ 'chb-column': true }"
+                            [class]="{ 'chb-column': true }"
+                            [resizable]="false"
+                            [reorderable]="false"
+                            >
+                            </kendo-grid-checkbox-column>
+
+                            <kendo-grid-column media="(max-width: 450px)" title="">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <dl>
+                                <ng-template ngFor let-item [ngForOf]="gridColumns" let-i="index">
+                                    <dt>{{ getColumnTitle(item) }}:</dt>
+                                    <dd
+                                    *ngIf="item.type == 'Money' || item.type == 'Currency'"
+                                    class="dl-value"
+                                    >
+                                    {{
+                                        getRowValue(item.name, dataItem, item.scriptType)
+                                        | SppcNumConfig
+                                        | async
+                                    }}
+                                    </dd>
+                                    <dd
+                                    *ngIf="
+                                        item.scriptType != 'Date' &&
+                                        item.type != 'Money' &&
+                                        item.type != 'Currency'
+                                    "
+                                    class="dl-value"
+                                    >
+                                    {{ getRowValue(item.name, dataItem, item.scriptType) }}
+                                    </dd>
+                                    <dd *ngIf="item.scriptType == 'Date'" class="dl-value">
+                                    {{
+                                        getRowValue(item.name, dataItem, item.scriptType)
+                                        | SppcDate: item.type:item.scriptType
+                                    }}
+                                    </dd>
+                                </ng-template>
+                                </dl>
+                            </ng-template>
+                            </kendo-grid-column>
+
+                            <kendo-grid-column
+                            media="(min-width: 450px)"
+                            *ngFor="let item of gridColumns"
+                            sppc-auto-grid-column="{{ item.settings }}"
+                            >
+                            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                                <sppc-auto-grid-filter
+                                [metaDataItem]="item"
+                                [metaData]="item.scriptType"
+                                [column]="column"
+                                [filter]="filter"
+                                ></sppc-auto-grid-filter>
+                            </ng-template>
+
+                            <ng-template
+                                kendoGridCellTemplate
+                                let-dataItem
+                                *ngIf="item.scriptType == 'Date'"
+                            >
                                 {{
-                                    getRowValue(item.name, dataItem, item.scriptType)
+                                getRowValue(item.name, dataItem, item.scriptType)
                                     | SppcDate: item.type:item.scriptType
                                 }}
-                                </dd>
                             </ng-template>
-                            </dl>
-                        </ng-template>
-                        </kendo-grid-column>
 
-                        <kendo-grid-column
-                        media="(min-width: 450px)"
-                        *ngFor="let item of gridColumns"
-                        sppc-auto-grid-column="{{ item.settings }}"
-                        >
-                        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                            <sppc-auto-grid-filter
-                            [metaDataItem]="item"
-                            [metaData]="item.scriptType"
-                            [column]="column"
-                            [filter]="filter"
-                            ></sppc-auto-grid-filter>
-                        </ng-template>
+                            <ng-template
+                                kendoGridCellTemplate
+                                let-dataItem
+                                *ngIf="item.scriptType == 'boolean'"
+                            >
+                                {{ getRowValue(item.name, dataItem, item.scriptType) }}
+                            </ng-template>
 
-                        <ng-template
-                            kendoGridCellTemplate
-                            let-dataItem
-                            *ngIf="item.scriptType == 'Date'"
-                        >
-                            {{
-                            getRowValue(item.name, dataItem, item.scriptType)
-                                | SppcDate: item.type:item.scriptType
-                            }}
-                        </ng-template>
+                            <ng-template
+                                kendoGridCellTemplate
+                                let-dataItem
+                                *ngIf="item.type == 'Money' || item.type == 'Currency'"
+                            >
+                                {{
+                                getRowValue(item.name, dataItem, item.type) | SppcNumConfig | async
+                                }}
+                            </ng-template>
+                            </kendo-grid-column>
 
-                        <ng-template
-                            kendoGridCellTemplate
-                            let-dataItem
-                            *ngIf="item.scriptType == 'boolean'"
-                        >
-                            {{ getRowValue(item.name, dataItem, item.scriptType) }}
-                        </ng-template>
-
-                        <ng-template
-                            kendoGridCellTemplate
-                            let-dataItem
-                            *ngIf="item.type == 'Money' || item.type == 'Currency'"
-                        >
-                            {{
-                            getRowValue(item.name, dataItem, item.type) | SppcNumConfig | async
-                            }}
-                        </ng-template>
-                        </kendo-grid-column>
-
-                    </kendo-grid>
-                </div>
-
-                <div>
-                    <div class="form-group totalAmount">
-                      <label for="money" class="control-label">{{ "PayReceipt.TotalAmount" | translate }}</label>
-                      <sppc-numericInput
-                        [(ngModel)]="totalAmount"
-                        [ngModelOptions]="{ standalone: true }"
-                        [attr.disabled]="isConfirmed ? 'disabled' : null"
-                        [readOnly]="true"
-                      >
-                      </sppc-numericInput>
+                        </kendo-grid>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</div>
 
-<ng-template #itemListRef>
-<sppc-full-account-detail (save)="onSave($event);" [accountItem]="accountItem" [selectedItem]="selectedItem" [fullAccount]="fullAccount" (close)="closeDialog();"></sppc-full-account-detail>
-</ng-template>
+<!-- فرم تایید عملگرها -->
+<kendo-dialog
+  title="{{ confirmDialogTitle | translate }}"
+  *ngIf="confirmDialog"
+  (close)="confirmOperation(false)"
+  [minWidth]="250"
+  [width]="450"
+>
+  <p >
+    {{ confirmMsg | translate }}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="confirmOperation(true)" primary="true">
+      {{ "Buttons.Yes" | translate }}
+    </button>
+    <button class="k-button" (click)="confirmOperation(false)">
+      {{ "Buttons.No" | translate }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+
+<!-- فرم تایید حذف -->
+<kendo-dialog
+  title="{{ 'PayReceipt.DeletePayReceiveAccount' | translate }}"
+  *ngIf="deleteConfirm"
+  (close)="deleteModel(false)"
+  [minWidth]="250"
+  [width]="450"
+>
+  <p >
+    {{ this.deleteConfirmMsg }}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="deleteModel(true)" primary="true">
+      {{ "Buttons.Yes" | translate }}
+    </button>
+    <button class="k-button" (click)="deleteModel(false)">
+      {{ "Buttons.No" | translate }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>
