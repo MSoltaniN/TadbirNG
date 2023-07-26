@@ -1,8 +1,8 @@
 {
   "App": {
     "Title": "Welcome to Tadbir New System",
-    "SELECT": "Change language",
-    "Loading": "loading ...",
+    "SELECT": "Change Language",
+    "Loading": "Loading ...",
     "RecordNotFound": "There are no items to display.",
     "Name": "Tadbir Accounting System",
     "SummaryName": "Tadbir",
@@ -54,15 +54,15 @@
     "SettingConfirm": "Are you sure about the dashboard settings?",
     "WidgetSetting": "Widget Settings",
     "ChartType": "Chart type",
-    "AddTab": "Add new Tab",
-    "AddWidget": "Add widget to tab",
-    "TabName": "Tab name",
-    "ManageWidgets": "Manage widgets",
-    "WidgetTitle": "Widget title",
+    "AddTab": "Add New Tab",
+    "AddWidget": "Add Widget to Tab",
+    "TabName": "Tab Name",
+    "ManageWidgets": "Manage Widgets",
+    "WidgetTitle": "Widget Title",
     "WidgetNoData": "Data is not available!",
     "WidgetInProgress": "Loading data ...",
     "RefreshDashboard": "Refresh Dashboard",
-    "WidgetList": "Widget list"
+    "WidgetList": "Widget List"
   },
   "Exception": {
     "ErrorCode": "Error Code",
@@ -178,7 +178,7 @@
     "First": "The first {0}",
     "Last": "The last {0}",
     "Delete": "Delete {0}",
-    "SaveChanges": "Save changes"
+    "SaveChanges": "Save Changes"
   },
   "GridSetting": {
     "Visibility": "Visibility",
@@ -187,18 +187,20 @@
   "Entity": {
     "Dashboard": "Dashboard",
     "Account": "Account",
+    "VoucherNo": "Voucher Number",
     "Voucher": "Vouchers Management",
     "VoucherLine": "Voucher Article",
     "VoucherEditor": "Voucher Detail",
-    "User": "User",
-    "Role": "Role",
+    "DraftVoucherEditor": "Draft Voucher",
+    "User": "Users",
+    "Role": "Roles",
     "Password": "Password",
     "DetailAccount": "Detail Account",
     "CostCenter": "Cost Center",
     "Project": "Project",
-    "FiscalPeriod": "Fiscal Period",
-    "Branch": "Branch",
-    "Company": "Company",
+    "FiscalPeriod": "Fiscal Periods",
+    "Branch": "Branches",
+    "Company": "Companies",
     "AccountRelations": "Account Relations",
     "Setting": "Settings",
     "RowAccess": "Row Access",
@@ -232,7 +234,10 @@
     "Payment": "Payment",
     "Receipt": "Receipt",
     "PayReceiveAccount": "Account party",
-    "PayReceiveCashAccount": "Cash Account"
+    "PayReceiveCashAccount": "Cash Account",
+    "ConfirmationMessage": "Confirmation Message",
+    "ItemBalance": "Item Turnover and Balance",
+    "LogSetting": "Log Settings"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "Count of Selected Vouchers :",
@@ -265,8 +270,8 @@
     "ToVoucher": "To voucher",
     "Closing": "Use closing voucher",
     "CloseAccounts": "Use closing temp accounts",
-    "DebitSum": "Debit sum",
-    "CreditSum": "Credit sum",
+    "DebitSum": "Debit Sum",
+    "CreditSum": "Credit Sum",
     "Sum": "Sum",
     "SubBalance": "Sub balance",
     "ShowZeroRemains": "Show zero balance items",
@@ -812,7 +817,7 @@
       "StartTurnoverAsInitBalance": "Start turnover as initial balance"
     },
     "UserProfile": {
-      "ShowDashboardAtStartup": "show dashboard at startup"
+      "ShowDashboardAtStartup": "Show dashboard at startup"
     },
     "Description": "Description",
     "TitleText": "Settings List",
@@ -975,6 +980,7 @@
     "Delete": "Delete",
     "No": "Number",
     "Date": "Date",
+    "DraftVoucherEditor":"Draft Voucher",
     "Description": "Description",
     "BranchId": "Branch",
     "SelectBranch": "Select Branch",
@@ -1099,70 +1105,70 @@
   "RoleBranches": {
     "Name": " Branch Name",
     "Description": "Description",
-    "RoleBranchesTitle": "Branches accessible by '{0}'",
-    "RecordNotFound": "This role cannot access any branch."
+    "RoleBranchesTitle": "Branches Accessible By '{0}'",
+    "RecordNotFound": "This Role Cannot Access Any Branch."
   },
   "RoleCompanies": {
     "Name": " Company Name",
     "Description": "Description",
-    "RoleCompaniesTitle": "Companies accessible by '{0}'",
-    "RecordNotFound": "This role cannot access any company."
+    "RoleCompaniesTitle": "Companies Accessible By '{0}'",
+    "RecordNotFound": "This role Cannot Access Any Company."
   },
   "CompanyRoles": {
     "Name": "Role Name",
     "Description": "Description",
-    "CompanyRolesTitle": "Roles who can access the '{0}'",
+    "CompanyRolesTitle": "Roles who Can Access The '{0}'",
     "RecordNotFound": "Record Not Found!"
   },
   "RoleFiscalPeriod": {
     "Name": "Fiscal Period Name",
-    "RoleFiscalPeriodTitle": "Fiscal periods accessible by '{0}'"
+    "RoleFiscalPeriodTitle": "Fiscal Periods Accessible by '{0}'"
   },
   "RoleDetail": {
-    "RoleDetailTitle": "Role details for '{0}'"
+    "RoleDetailTitle": "Role Details For '{0}'"
   },
   "DetailAccount": {
-    "New": "New detail account",
-    "NewSubDetailAccount": "New child detail account",
+    "New": "New Detail Account",
+    "NewSubDetailAccount": "New Child Detail Account",
     "Name": "Name",
     "Code": "Code",
     "FullCode": "Full Code",
     "Level": "Level",
     "Description": "Description",
-    "Delete": "Delete detail account",
+    "Delete": "Delete Detail Account",
     "BranchScope": "Branch Scope",
     "LedgerDetailAccount": "Top-level Detail Accounts",
-    "EditorTitleEdit": "Edit detail account in level {0}",
-    "EditorTitleNew": "New detail account in level {0}",
+    "EditorTitleEdit": "Edit Detail Account In {0}",
+    "EditorTitleNew": "New Detail Account In {0}",
     "DefaultCurrency": "Default Currency"
   },
   "CostCenter": {
-    "New": "New cost center",
-    "NewSubCostCenter": "New child cost center",
+    "New": "New Cost Center",
+    "NewSubCostCenter": "New Child Cost Center",
     "Name": "Name",
     "Code": "Code",
     "FullCode": "Full Code",
     "Level": "Level",
     "Description": "Description",
-    "Delete": "Delete cost center",
+    "Delete": "Delete Cost Center",
     "BranchScope": "Branch Scope",
     "LedgerCostCenter": "Top-level Cost Centers",
-    "EditorTitleEdit": "Edit cost center in level {0}",
-    "EditorTitleNew": "New cost center in level {0}"
+    "EditorTitleEdit": "Edit Cost Center In {0}",
+    "EditorTitleNew": "New Cost Center In {0}"
   },
   "Project": {
     "New": "New project",
-    "NewSubProject": "New child project",
+    "NewSubProject": "New Child Project",
     "Name": "Name",
     "Code": "Code",
     "FullCode": "Full Code",
     "Level": "Level",
     "Description": "Description",
-    "Delete": "Delete project",
+    "Delete": "Delete Project",
     "BranchScope": "Branch Scope",
     "LedgerProject": "Top-level Projects",
-    "EditorTitleEdit": "Edit project in level {0}",
-    "EditorTitleNew": "New project in level {0}"
+    "EditorTitleEdit": "Edit Project In {0}",
+    "EditorTitleNew": "New Project In {0}"
   },
   "AccountRelations": {
     "MainComponent": "Main Component",
@@ -1178,15 +1184,15 @@
     "CreateRelationBtn": "New Relation",
     "DeleteRelationBtn": "Delete Relation",
     "SearchBtn": "Search",
-    "FormTitle": "Relations for '{0}'",
+    "FormTitle": "Relations For '{0}'",
     "NewRelations": "New Relations",
     "RemainingRelations": "Remaining Relations",
     "noRemainingRelations": "No relation is currently left to select.",
     "SelectAll": "Select All"
   },
   "FiscalPeriod": {
-    "New": "New fiscal period",
-    "Delete": "Delete fiscal period",
+    "New": "New Fiscal Period",
+    "Delete": "Delete Fiscal Period",
     "Name": "Name",
     "StartDate": "Start Date",
     "EndDate": "End Date",
@@ -1250,7 +1256,7 @@
     "ErrorMessage": "Error Message",
     "Detail": "Detail",
     "SelectBranch": "Select Branch",
-    "SelectFiscalPeriod": "Select FiscalPeriod",
+    "SelectFiscalPeriod": "Select Fiscal Period",
     "SelectUser": "Select User",
     "SelectEntity": "Select Entity",
     "SelectCompany": "Select Company",
@@ -1263,7 +1269,7 @@
     "SelectedLogArchived": "Selected logs were archived",
     "DeleteArchive": "Delete Archive",
     "DeleteArchivedMsg": "Deletion from the archive was successful",
-    "ReportLog": "Event type",
+    "ReportLog": "Event Type",
     "ReportTypeLog": "Report Type",
     "AllLogs": "All Logs",
     "ActiveLogs": "Active Logs",
@@ -1300,22 +1306,22 @@
   },
   "CashRegisters": {
     "CashRegisters": "Cash Registers",
-    "New": "New cash register",
-    "Edit": "Edit cash register",
-    "Delete": "Delete cash register",
+    "New": "New Cash Register",
+    "Edit": "Edit Cash Register",
+    "Delete": "Delete Cash Register",
     "UsersAssigned": "Users currently assigned to cash register",
     "UsersCanBeAssigned": "Users who can be assigned to cash register",
     "AssignUserToCashRegister": "Assign user to cash register"
   },
   "CheckBook": {
-    "New": "New check book",
+    "New": "New Check Book",
     "Save": "Save",
-    "FirstCheckBook": "First check book",
-    "LastCheckBook": "Last check book",
-    "NextCheckBook": "Next check book",
-    "PreviousCheckBook": "Previous check book",
+    "FirstCheckBook": "First Check Book",
+    "LastCheckBook": "Last Check Book",
+    "NextCheckBook": "Next Check Book",
+    "PreviousCheckBook": "Previous Check Book",
     "CheckBook": "Check Book",
-    "CheckBookPages": "Check book pages",
+    "CheckBookPages": "Check Book Pages",
     "Name": "Name",
     "BankName": "Bank Name",
     "StartNumber": "Start Number",
@@ -1350,14 +1356,14 @@
     "InsertNew": "Insert New"
   },
   "SourceApp": {
-    "New": "New source/application",
-    "Edit": "Edit source/application",
+    "New": "New Source/Application",
+    "Edit": "Edit Source/Application",
     "Code": "Code",
     "Type": "Type ",
     "BranchScope": "Branch Scope",
     "Source": "Source",
     "Application": "Application",
-    "Delete": "Delete source/application",
+    "Delete": "Delete Source/Application",
     "SourceAppType": "Source or Application"
   },
   "PayReceipt": {
@@ -1376,7 +1382,9 @@
     "TotalAmount": "Total Amounts",
     "AmountDifference": "Amount Difference",
     "Source": "Source",
-    "Application": "Application"
+    "Application": "Application",
+    "Checks":"Checks",
+    "Cash":"Cash"
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",
@@ -1604,6 +1612,61 @@
       "CodeIsTooLong": "Code can have a maximum of 64 characters.",
       "NameIsRequired": "Name is required.",
       "NameIsTooLong": "Name can have a maximum of 16 characters."
+    }
+  },
+  "ItemBalance": {
+    "DetailAccount": "Detail Account",
+    "CostCenter": "Cost Center",
+    "Project": "Project",
+    "Report": "Report",
+    "ByDate": "By Date",
+    "ByVoucher": "By Voucher",
+    "BalanceType": "Balance Type",
+    "FormatType": "Report Format",
+    "PleaseSelectAccount": "Please select an account",
+    "SelectBranch": "Select Branch",
+    "FromDate": "From Date",
+    "ToDate": "To Date",
+    "FromVoucher": "From Voucher",
+    "ToVoucher": "To Voucher",
+    "Closing": "Show Closing Voucher",
+    "CloseAccounts": "Show Closing Temp Accounts Voucher",
+    "DebitSum": "Debit Sum",
+    "CreditSum": "Credit Sum",
+    "Sum": "Sum",
+    "SubBalance": "Child Balance",
+    "ShowZeroRemains": "Show Items with Zero Amount",
+    "ApplyOpeningVoucherToOpeningBalance": "Apply Opening Voucher to Opening Balance",
+    "UserSettings": "User Settings",
+    "Options": "Options",
+    "AccountBook": "Account Book",
+    "Title": "Item Turnover and Balance",
+    "Ledger": "Ledger",
+    "Reference": "Reference",
+    "FilterByRef": "Filter By Ref",
+    "FilterByRefMsg": "Please specify reference filter.",
+    "ShowAccountBookHint": "Please run balance by date report before viewing account book.",
+    "LevelDoesntExist": "This account has no turnover at lower levels.",
+    "Format": {
+      "Balance2Column": "Two-column",
+      "Balance4Column": "Four-column",
+      "Balance6Column": "Six-column",
+      "Balance8Column": "Eight-column",
+      "Balance10Column": "Ten-column"
+    },
+    "DisplayTypes": {
+      "ByLedger": "By Ledger",
+      "BySubsidiary": "By Subsidiary",
+      "ByDetail": "By Detail",
+      "BySubsidiaryOfLedger": "By Subsidiaries of a Ledger",
+      "ByDetailOfSubsidiary": "By Details of a Subsidiary"
+    },
+    "VoucherStatuses": {
+      "Committed": "Committed",
+      "Finalized": "Finalized",
+      "Accepted": "Confirmed",
+      "Approved": "Approved",
+      "AllVouchers": "All Vouchers"
     }
   }
 }

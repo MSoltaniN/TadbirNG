@@ -1393,3 +1393,17 @@ WHERE ColumnID = 801 AND [Name] = N'BankOrderNo'
 UPDATE [Metadata].[Column]
 SET [Visibility] = N'AlwaysHidden'
 WHERE ColumnID = 800 AND [Name] = N'SourceAppId'
+
+-- 1.2.1553
+UPDATE [Reporting].[Report]
+SET [ServiceUrl] = N'fperiods'
+WHERE ReportID = 21 AND [Code] = N'Fiscal-Periods'
+
+-- 1.2.1555
+UPDATE Metadata.Command set HotKey = 'Ctrl+ALT+T' Where TitleKey = 'TestBalance'
+UPDATE Metadata.Command set HotKey = 'Ctrl+ALT+R' Where TitleKey = 'ProfitLoss'
+UPDATE Metadata.Command set HotKey = 'Ctrl+ALT+K' Where TitleKey = 'Users'
+UPDATE Metadata.Command set HotKey = 'Ctrl+ALT+L' Where TitleKey = 'OperationLogs'
+UPDATE [Metadata].[ShortcutCommand] Set HotKey = 'Ctrl+Shift+Insert' where [Name] = 'NewRecord'
+UPDATE Metadata.Command set HotKey = 'Ctrl+ALT+E' Where TitleKey = 'Branches'
+UPDATE Metadata.Command set HotKey = NULL Where TitleKey = 'ReportManagement'

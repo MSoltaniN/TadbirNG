@@ -567,19 +567,20 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private string GetCashArticleDescription(PayReceive payReceive, PayReceiveCashAccount payReceiveCashAccount)
+        private string GetArticleDescription(
+            PayReceive payReceive, string Remarks, string bankOrderNo = null)
         {
             string description = string.Empty;
             string currencyText = String.Empty;
-            if(payReceive.CurrencyId > 0)
+            if (payReceive.CurrencyId > 0)
             {
                 currencyText = Context.Localize($" - {AppStrings.Currency} {payReceive.Currency.Name}").ToLower();
             }
 
             string ArticleText = String.Empty;
-            if (!String.IsNullOrWhiteSpace(payReceiveCashAccount.Remarks))
+            if (!String.IsNullOrWhiteSpace(Remarks))
             {
-                ArticleText = $" - {payReceiveCashAccount.Remarks.ToLower().Trim()}";
+                ArticleText = $" - {Remarks.ToLower().Trim()}";
             }
 
             string payReceiveText = String.Empty;
@@ -591,12 +592,12 @@ namespace SPPC.Tadbir.Persistence
             if (payReceive.Type == (int)PayReceiveType.Receipt)
             {
                 string bankOrederNoText = String.Empty;
-                if(payReceiveCashAccount.IsBank && !String.IsNullOrWhiteSpace(payReceiveCashAccount.BankOrderNo))
+                if (!String.IsNullOrWhiteSpace(bankOrderNo))
                 {
                     string template = $" - {Context.Localize(AppStrings.DuringOrderOfBankNo)}";
-                    bankOrederNoText = String.Format(template, payReceiveCashAccount.BankOrderNo).ToLower();
+                    bankOrederNoText = String.Format(template, bankOrderNo).ToLower();
                 }
-                
+
                 description = String.Format
                     (Context.Localize(AppStrings.ReceiverCashArticleDescriptionTemplate),
                     payReceive.PayReceiveNo, bankOrederNoText, currencyText,
@@ -612,7 +613,6 @@ namespace SPPC.Tadbir.Persistence
 
             return description;
         }
-
         private async Task<int> GetLastVoucherNoAsync(SubjectType type = SubjectType.Normal)
         {
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
@@ -685,7 +685,7 @@ namespace SPPC.Tadbir.Persistence
                     ProjectId = item.ProjectId,
                     RowNo = ++rowNo,
                     SourceId = item.SourceAppId,
-                    Description = GetCashArticleDescription(payReceive, item),
+                    Description = GetArticleDescription(payReceive, item.Remarks, item.BankOrderNo),
                     CreatedById = UserContext.Id,
                     TypeId = (int)VoucherLineType.NormalLine,
                     BranchId = Context.UserContext.BranchId,
@@ -718,7 +718,7 @@ namespace SPPC.Tadbir.Persistence
                     CostCenterId = item.CostCenterId,
                     ProjectId = item.ProjectId,
                     RowNo = ++rowNo,
-                    Description = item.Remarks,
+                    Description = GetArticleDescription(payReceive, item.Remarks),
                     CreatedById = UserContext.Id,
                     TypeId = (int)VoucherLineType.NormalLine,
                     BranchId = Context.UserContext.BranchId,
