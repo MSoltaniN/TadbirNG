@@ -45,7 +45,7 @@ export class LogSettingComponent extends DefaultComponent implements OnInit {
   //#region constructor
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     private settingsService: SettingService, public renderer: Renderer2, public metadata: MetaDataService) {
-    super(toastrService, translate, bStorageService, renderer, metadata, settingsService, Entities.Setting, undefined);
+    super(toastrService, translate, bStorageService, renderer, metadata, settingsService, Entities.LogSetting, undefined);
   }
   //#endregion
 

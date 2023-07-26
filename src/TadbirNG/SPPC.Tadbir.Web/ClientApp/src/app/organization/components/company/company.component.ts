@@ -25,7 +25,7 @@ import { ReportManagementComponent } from "@sppc/shared/components/reportManagem
 import { Entities, Layout, MessageType } from "@sppc/shared/enum/metadata";
 import { OperationId } from "@sppc/shared/enum/operationId";
 import { RelatedItems } from "@sppc/shared/models";
-import { ViewName } from "@sppc/shared/security";
+import { AccountPermissions, ViewName } from "@sppc/shared/security";
 import {
   BrowserStorageService,
   GridService,
@@ -145,6 +145,13 @@ export class CompanyComponent
   }
 
   removeHandler(arg: any) {
+    if (!this.isAccess(this.entityName,AccountPermissions.Delete)) {
+      this.translate.get("App.AccessDenied").subscribe((msg: string) => {
+        this.toastrService.warning(msg);
+      });
+      return;
+    }
+
     this.deleteConfirm = true;
     if (this.groupOperation) {
       this.prepareDeleteConfirm(this.getText("Messages.SelectedItems"));
@@ -158,6 +165,13 @@ export class CompanyComponent
   }
 
   editHandler(arg: any) {
+    if (!this.isAccess(this.entityName,AccountPermissions.Edit)) {
+      this.translate.get("App.AccessDenied").subscribe((msg: string) => {
+        this.toastrService.warning(msg);
+      });
+      return;
+    }
+
     var recordId = this.selectedRows[0];
     this.grid.loading = true;
     this.companyService
@@ -175,7 +189,7 @@ export class CompanyComponent
   }
 
   addNew() {
-    if (this.isAccess(this.entityName,16)) {
+    if (this.isAccess(this.entityName,AccountPermissions.Create)) {
       this.editDataItem = new CompanyDbInfo();
       this.openEditorDialog(true);
     } else {
