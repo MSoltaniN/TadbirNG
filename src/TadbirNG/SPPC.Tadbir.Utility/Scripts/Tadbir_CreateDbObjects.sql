@@ -995,7 +995,7 @@ CREATE TABLE [CashFlow].[PayReceive] (
     [ConfirmedByID]     INT              NULL,
     [ApprovedByID]      INT              NULL,
     [Type]              SMALLINT         NOT NULL,
-    [PayReceiveNo]      NVARCHAR(16)     NOT NULL,
+    [TextNo]      NVARCHAR(16)     NOT NULL,
     [Reference]         NVARCHAR(64)     NULL,
     [Date]              DATETIME         NOT NULL,
     [CurrencyID]        INT              NULL,

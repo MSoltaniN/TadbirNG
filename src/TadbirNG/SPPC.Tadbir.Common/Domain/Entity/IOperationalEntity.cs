@@ -9,9 +9,9 @@ namespace SPPC.Tadbir.Domain
     public interface IOperationalEntity : IFiscalEntity
     {
         /// <summary>
-        /// شماره سند عملیاتی که مقداری عددی است
+        /// شماره سند عملیاتی که عددی متنی است
         /// </summary>
-        int No { get; set; }
+        string TextNo { get; set; }
 
         /// <summary>
         /// تاریخ وقوع عملیات سازمانی مربوط به این سند عملیاتی

@@ -27,7 +27,7 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         public PayReceiveViewModel()
         {
             Date = DateTime.Now;
-            PayReceiveNo = String.Empty;
+            TextNo = String.Empty;
             Reference = String.Empty;
             Description = String.Empty;
             IssuedByName = String.Empty;
@@ -68,7 +68,7 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(16, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string PayReceiveNo { get; set; }
+        public string TextNo { get; set; }
 
         /// <summary>
         /// شماره رفرنس فرم

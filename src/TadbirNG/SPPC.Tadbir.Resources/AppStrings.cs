@@ -5497,7 +5497,7 @@ namespace SPPC.Tadbir.Resources
         /// <summary>
         /// Default text : شماره
         /// </summary>
-        public const string PayReceiveNo = "PayReceiveNo";
+        public const string TextNo = "TextNo";
 
         /// <summary>
         /// Default text : گردش طی دوره

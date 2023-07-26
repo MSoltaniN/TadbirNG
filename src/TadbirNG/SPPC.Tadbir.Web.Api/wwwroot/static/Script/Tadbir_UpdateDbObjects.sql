@@ -1198,7 +1198,7 @@ CREATE TABLE [CashFlow].[PayReceive] (
     [ConfirmedByID]     INT              NULL,
     [ApprovedByID]      INT              NULL,
     [Type]              SMALLINT         NOT NULL,
-    [PayReceiveNo]      NVARCHAR(16)     NOT NULL,
+    [TextNo]      NVARCHAR(16)     NOT NULL,
     [Reference]         NVARCHAR(64)     NULL,
     [Date]              DATETIME         NOT NULL,
     [CurrencyID]        INT              NULL,
@@ -1441,3 +1441,7 @@ CREATE TABLE [CashFlow].[PayReceiveVoucherLine] (
     , CONSTRAINT [FK_CashFlow_PayReceiveVoucherLine_CashFlow_PayReceive] FOREIGN KEY ([PayReceiveID]) REFERENCES [CashFlow].[PayReceive]([PayReceiveID])
     , CONSTRAINT [FK_CashFlow_PayReceiveVoucherLine_Finance_VoucherLine] FOREIGN KEY ([VoucherLineID]) REFERENCES [Finance].[VoucherLine]([VoucherLineID]))
 GO
+
+-- 1.2.1549
+EXEC sp_rename '[CashFlow].[PayReceive].[PayReceiveNo]', 'TextNo', 'COLUMN'
+

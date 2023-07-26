@@ -59,7 +59,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
-            builder.Ignore(checkBook => checkBook.No);
             builder.Ignore(checkBook => checkBook.Reference);
             builder.Ignore(checkBook => checkBook.Date);
 
