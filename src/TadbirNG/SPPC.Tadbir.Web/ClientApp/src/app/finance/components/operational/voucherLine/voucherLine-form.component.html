@@ -139,7 +139,7 @@
                       class="k-radio"
                       formControlName="isBank"
                       [(ngModel)]="isBank"
-                      [value]="1"
+                      [value]="true"
                       (change)="onBankOrFundChange($event)"
                       [ngModelOptions]="{ standalone: true }"
                     />
@@ -155,7 +155,7 @@
                       class="k-radio"
                       formControlName="isBank"
                       [(ngModel)]="isBank"
-                      [value]="0"
+                      [value]="false"
                       (change)="onBankOrFundChange($event)"
                       [ngModelOptions]="{ standalone: true }"
                     />
@@ -170,12 +170,15 @@
 
           <div class="row">
             <div class="col-xs-12">
-              <div class="form-group row" *ngIf="!isPayReciept || (isPayReciept && isSourceApp && isBank == 0)">
+              <div class="form-group row" *ngIf="!isPayReciept || (isPayReciept && isSourceApp)">
                 <label
                   class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
                   style="padding: 7px 10px"
                 >
-                  {{ (isSourceApp? "SourceApp.SourceAppType": "VoucherLine.ArticleType") | translate }}
+                  {{ (isSourceApp? 
+                    (creditDebiteMode == '2'?
+                    "PayReceipt.Source" : "PayReceipt.Application"
+                    ): "VoucherLine.ArticleType") | translate }}
                 </label>
 
                 <kendo-dropdownlist
@@ -193,7 +196,12 @@
                 </kendo-dropdownlist>
               </div>
 
-              <div class="form-group row" *ngIf="isPayReciept && isSourceApp && isBank == 1">
+              <fieldset
+                class="form-group row"
+                *ngIf="isPayReciept && isSourceApp"
+                [disabled]="!isBank"
+                [ngClass]="!isBank? 'disabled': ''"
+              >
                 <label
                   class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
                   style="padding: 7px 8px;font-size: 13px;"
@@ -209,7 +217,7 @@
                   class="sppc-input-num sppc-float"
                 ></sppc-numericInput>
 
-              </div>
+              </fieldset>
 
             </div>
           </div>

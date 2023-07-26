@@ -225,7 +225,7 @@
                     [isConfirmed]="isConfirmed"
                     [type]="this.type == 1 ? '1' : '2'"
                     [payReceiveId]="this.model?.id"
-                    (setTotalCashAmount)="setTotalCashAmount($event)"
+                    (setTotalAmount)="setTotalCashAmount($event)"
                   >
                   </payer-receiver>
                   <div class="form-group totalAmount">
@@ -253,7 +253,7 @@
                     [isConfirmed]="isConfirmed"
                     [payReceiveId]="this.model?.id"
                     [payReceiptType]="this.type == 1 ? '1' : '2'"
-                    (setTotalCashAmount)="setTotalCashAmount($event)"
+                    (setTotalAmount)="setTotalCashAmount($event)"
                   >
                   </cash-account>
                   <div class="form-group totalAmount">
@@ -272,16 +272,16 @@
             </p-accordion>
 
             <div class="totalCashAmount">
-              <!-- <div class="form-group">
-                <label for="money" class="control-label">وجه نقد</label>
+              <div class="form-group">
+                <label for="money" class="control-label">{{ "PayReceipt.AmountDifference" | translate }}</label>
                 <sppc-numericInput
-                  [(ngModel)]="totalCashAmount"
+                  [(ngModel)]="amountDifference"
                   [ngModelOptions]="{ standalone: true }"
                   [attr.disabled]="isConfirmed ? 'disabled' : null"
                   [readOnly]="true"
                 >
                 </sppc-numericInput>
-              </div> -->
+              </div>
               <div class="form-group">
                 <div class="col-xs-12 col-sm-4">
                   <fieldset disabled class="disabled">

@@ -43,9 +43,15 @@
                 [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
                 [(selectedKeys)]="selectedRows"
                 [kendoGridSelectBy]="getSelectedRow"
+                (dataStateChange)="onDataStateChange($event)"
+                (excelExport)="onExcelExport($event)"
                 sppc-auto-generated-grid-reorder
                 sppc-auto-generated-grid-resize
               >
+                <kendo-grid-excel
+                [fileName]="excelFileName"
+                [fetchData]="allData"
+                ></kendo-grid-excel>
                 <ng-template kendoGridNoRecordsTemplate>
                   {{ ("App.RecordNotFound" | translate) }}
                 </ng-template>
@@ -77,7 +83,9 @@
                 <ng-template kendoGridToolbarTemplate>
                   <button
                     kendoGridAddCommand
-                    (click)="addNew()"
+                    SppcPermissionCheck="Edit"
+                    [EntityName]="permissionEntityTypeName"
+                    (sppcClick)="addNew()"
                     [icon]="'file-add'"
                     type="button"
                     title="{{ 'Buttons.Add' | translate }}"
@@ -86,7 +94,9 @@
                   <!-- [disabled]="!accountRequired" -->
             
                   <button
-                    (click)="editHandler()"
+                    SppcPermissionCheck="Edit"
+                    [EntityName]="permissionEntityTypeName"
+                    (sppcClick)="editHandler()"
                     class="k-button k-button-icon"
                     [disabled]="selectedRows.length != 1 || isConfirmed"
                     title="{{ 'Buttons.Edit' | translate }}"
@@ -94,7 +104,9 @@
                     <span class="k-icon k-i-pencil"></span>
                   </button>
                   <button
-                    (click)="removeHandler()"
+                    SppcPermissionCheck="Edit"
+                    [EntityName]="permissionEntityTypeName"
+                    (sppcClick)="removeHandler()"
                     class="k-button k-button-icon"
                     title="{{ 'Buttons.Delete' | translate }}"
                     [disabled]="selectedRows.length == 0 || isConfirmed"
@@ -103,7 +115,9 @@
                   </button>
                   <!-- .k-i-decrease-vertical-spacing -->
                   <button
-                    (click)="callOperation(payReceiveOperationsItems.Aggregate)"
+                    SppcPermissionCheck="Edit"
+                    [EntityName]="permissionEntityTypeName"
+                    (sppcClick)="callOperation(payReceiveOperationsItems.Aggregate)"
                     class="k-button"
                     title="{{ 'PayReceipt.AggregateRows' | translate }}"
                     [disabled]="rowData?.data.length < 1 || isConfirmed"
@@ -111,7 +125,9 @@
                     <span class="k-icon k-i-decrease-vertical-spacing"></span>
                   </button>
                   <button
-                    (click)="callOperation(payReceiveOperationsItems.RemoveInvalidRows)"
+                    SppcPermissionCheck="Edit"
+                    [EntityName]="permissionEntityTypeName"
+                    (sppcClick)="callOperation(payReceiveOperationsItems.RemoveInvalidRows)"
                     class="k-button"
                     title="{{ 'PayReceipt.RemoveInvalidRows' | translate }}"
                     [disabled]="rowData?.data.length < 1 || isConfirmed"

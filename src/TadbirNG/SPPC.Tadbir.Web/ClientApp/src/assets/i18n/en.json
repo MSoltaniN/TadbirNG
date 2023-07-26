@@ -231,7 +231,8 @@
     "SourceApp": "Sources and Applications",
     "Payment": "Payment",
     "Receipt": "Receipt",
-    "PayReceiveAccount": "Account party"
+    "PayReceiveAccount": "Account party",
+    "PayReceiveCashAccount": "Cash Account"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "Count of Selected Vouchers :",
@@ -1372,7 +1373,10 @@
     "DeletePayReceiveAccount": "Delete the account article",
     "BankOrderNo": "Bank Order No",
     "CashAccount": "Cash Accounts",
-    "TotalAmount": "Total Amounts"
+    "TotalAmount": "Total Amounts",
+    "AmountDifference": "Amount Difference",
+    "Source": "Source",
+    "Application": "Application"
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",

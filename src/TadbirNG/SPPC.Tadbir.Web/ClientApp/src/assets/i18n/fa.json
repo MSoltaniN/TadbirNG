@@ -253,7 +253,8 @@
     "SourceApp": "منابع و مصارف",
     "Payment": "سند پرداخت",
     "Receipt": "سند دریافت",
-    "PayReceiveAccount": "طرف حساب"
+    "PayReceiveAccount": "طرف حساب",
+    "PayReceiveCashAccount": "حساب نقدی"
   },
   "ErrorList": {
     "NumberOfVouchersSelected": "تعداد موارد انتخاب شده :",
@@ -1380,7 +1381,10 @@
     "DeletePayReceiveAccount": "حذف آرتیکل طرف حساب",
     "BankOrderNo": "شماره حواله بانکی",
     "CashAccount": "حسابهای نقدی",
-    "TotalAmount": "مجموع مبالغ"
+    "TotalAmount": "مجموع مبالغ",
+    "AmountDifference": "اختلاف مبالغ",
+    "Source": "منبع",
+    "Application": "مصرف"
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",

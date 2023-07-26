@@ -79,7 +79,6 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   isLastItem = false;
   deleteConfirm = false;
   payReceiveNo;
-  totalCashAmount: number;
   currenciesRows: Array<CurrencyInfo>;
   selectedCurrencyValue: number;
   decimalCount: number = 0;
@@ -87,7 +86,9 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   currencyValue: number;
   getDataUrl: string;
   breadCrumbTitle: string;
+  amountDifference: number;
   @Persist() preferedDate;
+
 
   public get urlPath() {
     return this.route.snapshot.url[0].path.toLowerCase();
@@ -370,6 +371,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     this.isLastItem = !this.model.hasNext;
     this.isFirstItem = !this.model.hasPrevious;
     this.errorMessages = [];
+    this.amountDifference = Math.abs(this.model.accountAmountsSum - this.model.cashAmountsSum);
 
     setTimeout(() => {
       this.editForm.reset(this.model);
@@ -516,9 +518,9 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
       this.decimalCount = selectedCurrency.decimalCount;
       this.currencyRate = selectedCurrency.lastRate;
 
-      if (this.totalCashAmount) {
+      if (this.amountDifference) {
         // this.totalCashAmount = this.currencyValue * this.currencyRate;
-        this.currencyValue = this.totalCashAmount / this.currencyRate;
+        this.currencyValue = this.amountDifference / this.currencyRate;
       }
     } else {
       this.decimalCount = 0;
@@ -533,7 +535,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   changeCurrencyValue(e) {
-    var cdValue = this.totalCashAmount;
+    var cdValue = this.amountDifference;
 
     var currencyValue = this.currencyValue;
 
@@ -544,7 +546,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
         cdValue = currencyValue ? this.currencyRate * currencyValue : undefined;
       }
 
-      this.totalCashAmount = cdValue;
+      // this.amountDifference = cdValue;
       //#endregion
     } else {
       //#region آپشن غیرفعال است و با تغییر مبلغ ارزی، نرخ ارز تغییر میکند
@@ -573,8 +575,8 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     }
 
     // this.totalCashAmount = cdValue;
-    if (this.totalCashAmount) {
-      this.currencyValue = this.totalCashAmount / this.currencyRate;
+    if (this.amountDifference) {
+      this.currencyValue = this.amountDifference / this.currencyRate;
     }
   }
 
