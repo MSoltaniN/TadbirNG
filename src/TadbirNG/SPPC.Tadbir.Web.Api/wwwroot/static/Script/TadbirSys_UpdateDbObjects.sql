@@ -1400,10 +1400,13 @@ SET [ServiceUrl] = N'fperiods'
 WHERE ReportID = 21 AND [Code] = N'Fiscal-Periods'
 
 -- 1.2.1555
-UPDATE Metadata.Command set HotKey = 'Ctrl+ALT+T' Where TitleKey = 'TestBalance'
-UPDATE Metadata.Command set HotKey = 'Ctrl+ALT+R' Where TitleKey = 'ProfitLoss'
-UPDATE Metadata.Command set HotKey = 'Ctrl+ALT+K' Where TitleKey = 'Users'
-UPDATE Metadata.Command set HotKey = 'Ctrl+ALT+L' Where TitleKey = 'OperationLogs'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+T' Where TitleKey = 'TestBalance'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+R' Where TitleKey = 'ProfitLoss'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+K' Where TitleKey = 'Users'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+L' Where TitleKey = 'OperationLogs'
 UPDATE [Metadata].[ShortcutCommand] Set HotKey = 'Ctrl+Shift+Insert' where [Name] = 'NewRecord'
-UPDATE Metadata.Command set HotKey = 'Ctrl+ALT+E' Where TitleKey = 'Branches'
+UPDATE Metadata.Command set HotKey = 'Ctrl+Alt+E' Where TitleKey = 'Branches'
 UPDATE Metadata.Command set HotKey = NULL Where TitleKey = 'ReportManagement'
+
+-- 1.2.1556
+UPDATE [Metadata].[ShortcutCommand] Set HotKey = 'Ctrl+Shift+Delete' where [Name] = 'DeleteRecord'
