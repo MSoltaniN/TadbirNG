@@ -1383,7 +1383,7 @@
     "BankOrderNo": "شماره حواله بانکی",
     "CashAccount": "حسابهای نقدی",
     "Checks":"چکها",
-    "Cash":"وجه نقد"
+    "Cash":"وجه نقد",
     "TotalAmount": "مجموع مبالغ"
   },
   "UserValueFilter": {

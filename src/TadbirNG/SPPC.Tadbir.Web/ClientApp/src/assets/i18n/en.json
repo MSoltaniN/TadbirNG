@@ -1379,7 +1379,7 @@
     "BankOrderNo": "Bank Order No",
     "CashAccount": "Cash Accounts",
     "Checks":"Checks",
-    "Cash":"Cash"
+    "Cash":"Cash",
     "TotalAmount": "Total Amounts"
   },
   "UserValueFilter": {
