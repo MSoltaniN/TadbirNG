@@ -1398,3 +1398,12 @@ WHERE ColumnID = 800 AND [Name] = N'SourceAppId'
 UPDATE [Reporting].[Report]
 SET [ServiceUrl] = N'fperiods'
 WHERE ReportID = 21 AND [Code] = N'Fiscal-Periods'
+
+-- 1.2.1555
+UPDATE Metadata.Command set HotKey = 'Ctrl+ALT+T' Where TitleKey = 'TestBalance'
+UPDATE Metadata.Command set HotKey = 'Ctrl+ALT+R' Where TitleKey = 'ProfitLoss'
+UPDATE Metadata.Command set HotKey = 'Ctrl+ALT+B' Where TitleKey = 'Branches'
+UPDATE Metadata.Command set HotKey = 'Ctrl+ALT+K' Where TitleKey = 'Users'
+UPDATE Metadata.Command set HotKey = 'Ctrl+ALT+L' Where TitleKey = 'OperationLogs'
+UPDATE Metadata.Command set HotKey = 'ALT+Q' Where TitleKey = 'ReportManagement'
+UPDATE [Metadata].[ShortcutCommand] Set HotKey = 'Ctrl+Shift+N' where [Name] = 'NewRecord' 
