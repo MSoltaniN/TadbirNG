@@ -1139,7 +1139,6 @@ export class TestBalanceComponent
   }
 
   onDblClick(event) {
-    this.selectedBranchSeparation = false;
     var currentLevel = this.displayType.filter(
       (dt) => dt.id === this.displayTypeSelected
     )[0].level;
