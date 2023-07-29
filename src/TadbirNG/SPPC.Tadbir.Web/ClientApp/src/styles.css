@@ -111,3 +111,19 @@ kendo-textbox .k-input-icon.k-i-search {
 .save-changes-box .k-dialog-content{
   overflow: hidden;
 }
+
+
+.breadcrumb>li{
+  display: inline !important;
+}
+body.tRtl .content-header > .breadcrumb > li > a{
+  display: contents !important;
+}
+@media (min-width: 992px){
+  body.tRtl .content-header > .breadcrumb{
+    max-width: 72%;
+  }
+  .kendo-grid-title{
+    max-width: 25%;
+  }
+}
