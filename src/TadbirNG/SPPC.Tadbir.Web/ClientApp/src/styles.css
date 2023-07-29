@@ -119,11 +119,18 @@ kendo-textbox .k-input-icon.k-i-search {
 body.tRtl .content-header > .breadcrumb > li > a{
   display: contents !important;
 }
-@media (min-width: 992px){
-  body.tRtl .content-header > .breadcrumb{
-    max-width: 72%;
-  }
-  .kendo-grid-title{
-    max-width: 25%;
-  }
+.grid-title-container{
+  padding-top: 0 !important;
+  display: block;
+}
+.kendo-grid-title{
+  margin: 0 0 7px 0;
+}
+.grid-title-container .breadcrumb{
+  position: unset !important;
+  float: unset !important;
+  padding-top: 0 !important;
+}
+*:has(.grid-title-container)::before {
+  content: none;
 }
