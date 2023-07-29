@@ -300,7 +300,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<Account> GetBranchClosingAccountAsync(int branchId)
         {
-            var accounts = await _utility.GetUsableAccountsAsync(AccountCollectionId.ClosingAccount, true, branchId);
+            var accounts = await _utility.GetUsableAccountsAsync(AccountCollectionId.Closing, true, branchId);
             return accounts.SingleOrDefault();
         }
 
@@ -317,7 +317,7 @@ namespace SPPC.Tadbir.Persistence
             var accounts = new List<Account>();
             accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.LiquidLiabilities, true, branchId));
             accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.NonLiquidLiabilities, true, branchId));
-            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.OwnerEquities, true, branchId));
+            accounts.AddRange(await _utility.GetUsableAccountsAsync(AccountCollectionId.StakeholderEquity, true, branchId));
             return accounts;
         }
 
@@ -651,7 +651,7 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task<Account> GetBranchOpeningAccountAsync(int branchId)
         {
-            var accounts = await _utility.GetUsableAccountsAsync(AccountCollectionId.OpeningAccount, true, branchId);
+            var accounts = await _utility.GetUsableAccountsAsync(AccountCollectionId.Opening, true, branchId);
             return accounts.SingleOrDefault();
         }
 
@@ -765,18 +765,18 @@ namespace SPPC.Tadbir.Persistence
             // Performance account (Debit)...
             // Sales reducer accounts by floating items and currency (Credit)...
             lines.AddRange(GetBranchBalancedAccountLines(
-                branchId, specialAccounts[AccountCollectionId.SalesRefundDiscount],
+                branchId, specialAccounts[AccountCollectionId.SalesRefundDiscounts],
                 performanceAccount, AppStrings.ClosingSalesReducerAccounts));
 
             // Performance account (Debit)...
             // Product cost accounts by floating items and currency (Credit)...
             lines.AddRange(GetBranchBalancedAccountLines(
-                branchId, specialAccounts[AccountCollectionId.SoldProductCost],
+                branchId, specialAccounts[AccountCollectionId.CostOfGoodsSold],
                 performanceAccount, AppStrings.ClosingCalculatedCostAccounts));
 
             // Performance account (Debit)
             // Current Profit-Loss (Credit)
-            var profitLossAccount = specialAccounts[AccountCollectionId.CurrentProfitLoss].SingleOrDefault();
+            var profitLossAccount = specialAccounts[AccountCollectionId.CurrentYearEarnings].SingleOrDefault();
             int profitLossAccountId = (profitLossAccount != null)
                 ? profitLossAccount.Id
                 : 0;
@@ -796,12 +796,12 @@ namespace SPPC.Tadbir.Persistence
             // Current Profit-Loss account (Debit)...
             // Other Cost-Revenue accounts by floating items and currency (Credit)...
             lines.AddRange(GetBranchBalancedAccountLines(
-                branchId, specialAccounts[AccountCollectionId.OtherCostRevenue],
+                branchId, specialAccounts[AccountCollectionId.OtherRevenuesCosts],
                 profitLossAccount, AppStrings.ClosingOtherCostRevenueAccounts));
 
             // Profit-Loss account (Debit)
             // Accumulated Profit-Loss account (Credit)
-            var accumulatedAccount = specialAccounts[AccountCollectionId.AccumulatedProfitLoss].SingleOrDefault();
+            var accumulatedAccount = specialAccounts[AccountCollectionId.RetainedEarnings].SingleOrDefault();
             decimal netProfitLoss = lines
                 .Where(line => line.AccountId == profitLossAccountId)
                 .Sum(line => line.Debit - line.Credit);
@@ -848,7 +848,7 @@ namespace SPPC.Tadbir.Persistence
             // Performance account (Debit)...
             // Sales reducer accounts by floating items and currency (Credit)...
             lines.AddRange(GetBranchBalancedAccountLines(
-                branchId, specialAccounts[AccountCollectionId.SalesRefundDiscount],
+                branchId, specialAccounts[AccountCollectionId.SalesRefundDiscounts],
                 performanceAccount, AppStrings.ClosingSalesReducerAccounts));
 
             // Performance account (Debit)...
@@ -860,12 +860,12 @@ namespace SPPC.Tadbir.Persistence
             // Purchase reducer accounts by floating items and currency (Debit)...
             // Performance account (Credit)...
             lines.AddRange(GetBranchBalancedAccountLines(
-                branchId, specialAccounts[AccountCollectionId.PurchaseRefundDiscount],
+                branchId, specialAccounts[AccountCollectionId.PurchaseRefundDiscounts],
                 performanceAccount, AppStrings.ClosingPurchaseReducerAccounts));
 
             // Performance account (Debit)
             // Current Profit-Loss (Credit)
-            var profitLossAccount = specialAccounts[AccountCollectionId.CurrentProfitLoss].SingleOrDefault();
+            var profitLossAccount = specialAccounts[AccountCollectionId.CurrentYearEarnings].SingleOrDefault();
             int profitLossAccountId = (profitLossAccount != null)
                 ? profitLossAccount.Id
                 : 0;
@@ -885,12 +885,12 @@ namespace SPPC.Tadbir.Persistence
             // Current Profit-Loss account (Debit)...
             // Other Cost-Revenue accounts by floating items and currency (Credit)...
             lines.AddRange(GetBranchBalancedAccountLines(
-                branchId, specialAccounts[AccountCollectionId.OtherCostRevenue],
+                branchId, specialAccounts[AccountCollectionId.OtherRevenuesCosts],
                 profitLossAccount, AppStrings.ClosingOtherCostRevenueAccounts));
 
             // Profit-Loss account (Debit)
             // Accumulated Profit-Loss account (Credit)
-            var accumulatedAccount = specialAccounts[AccountCollectionId.AccumulatedProfitLoss].SingleOrDefault();
+            var accumulatedAccount = specialAccounts[AccountCollectionId.RetainedEarnings].SingleOrDefault();
             decimal netProfitLoss = lines
                 .Where(line => line.AccountId == profitLossAccountId)
                 .Sum(line => line.Debit - line.Credit);
@@ -911,18 +911,18 @@ namespace SPPC.Tadbir.Persistence
                     AccountCollectionId.FinalSales, true, branchId),
                 [AccountCollectionId.Performance] = await _utility.GetUsableAccountsAsync(
                     AccountCollectionId.Performance, true, branchId),
-                [AccountCollectionId.SalesRefundDiscount] = await _utility.GetUsableAccountsAsync(
-                    AccountCollectionId.SalesRefundDiscount, true, branchId),
-                [AccountCollectionId.SoldProductCost] = await _utility.GetUsableAccountsAsync(
-                    AccountCollectionId.SoldProductCost, true, branchId),
-                [AccountCollectionId.CurrentProfitLoss] = await _utility.GetUsableAccountsAsync(
-                    AccountCollectionId.CurrentProfitLoss, true, branchId),
+                [AccountCollectionId.SalesRefundDiscounts] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.SalesRefundDiscounts, true, branchId),
+                [AccountCollectionId.CostOfGoodsSold] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.CostOfGoodsSold, true, branchId),
+                [AccountCollectionId.CurrentYearEarnings] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.CurrentYearEarnings, true, branchId),
                 [AccountCollectionId.OperationalCosts] = await _utility.GetUsableAccountsAsync(
                     AccountCollectionId.OperationalCosts, true, branchId),
-                [AccountCollectionId.OtherCostRevenue] = await _utility.GetUsableAccountsAsync(
-                    AccountCollectionId.OtherCostRevenue, true, branchId),
-                [AccountCollectionId.AccumulatedProfitLoss] = await _utility.GetUsableAccountsAsync(
-                    AccountCollectionId.AccumulatedProfitLoss, true, branchId)
+                [AccountCollectionId.OtherRevenuesCosts] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.OtherRevenuesCosts, true, branchId),
+                [AccountCollectionId.RetainedEarnings] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.RetainedEarnings, true, branchId)
             };
             return specialAccounts;
         }
@@ -932,26 +932,26 @@ namespace SPPC.Tadbir.Persistence
         {
             var specialAccounts = new Dictionary<AccountCollectionId, IEnumerable<Account>>
             {
-                [AccountCollectionId.ProductInventory] = await _utility.GetUsableAccountsAsync(
-                    AccountCollectionId.ProductInventory, true, branchId),
+                [AccountCollectionId.Inventory] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.Inventory, true, branchId),
                 [AccountCollectionId.FinalSales] = await _utility.GetUsableAccountsAsync(
                     AccountCollectionId.FinalSales, true, branchId),
                 [AccountCollectionId.Performance] = await _utility.GetUsableAccountsAsync(
                     AccountCollectionId.Performance, true, branchId),
-                [AccountCollectionId.SalesRefundDiscount] = await _utility.GetUsableAccountsAsync(
-                    AccountCollectionId.SalesRefundDiscount, true, branchId),
+                [AccountCollectionId.SalesRefundDiscounts] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.SalesRefundDiscounts, true, branchId),
                 [AccountCollectionId.FinalPurchase] = await _utility.GetUsableAccountsAsync(
                     AccountCollectionId.FinalPurchase, true, branchId),
-                [AccountCollectionId.PurchaseRefundDiscount] = await _utility.GetUsableAccountsAsync(
-                    AccountCollectionId.PurchaseRefundDiscount, true, branchId),
-                [AccountCollectionId.CurrentProfitLoss] = await _utility.GetUsableAccountsAsync(
-                    AccountCollectionId.CurrentProfitLoss, true, branchId),
+                [AccountCollectionId.PurchaseRefundDiscounts] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.PurchaseRefundDiscounts, true, branchId),
+                [AccountCollectionId.CurrentYearEarnings] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.CurrentYearEarnings, true, branchId),
                 [AccountCollectionId.OperationalCosts] = await _utility.GetUsableAccountsAsync(
                     AccountCollectionId.OperationalCosts, true, branchId),
-                [AccountCollectionId.OtherCostRevenue] = await _utility.GetUsableAccountsAsync(
-                    AccountCollectionId.OtherCostRevenue, true, branchId),
-                [AccountCollectionId.AccumulatedProfitLoss] = await _utility.GetUsableAccountsAsync(
-                    AccountCollectionId.AccumulatedProfitLoss, true, branchId)
+                [AccountCollectionId.OtherRevenuesCosts] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.OtherRevenuesCosts, true, branchId),
+                [AccountCollectionId.RetainedEarnings] = await _utility.GetUsableAccountsAsync(
+                    AccountCollectionId.RetainedEarnings, true, branchId)
             };
             return specialAccounts;
         }

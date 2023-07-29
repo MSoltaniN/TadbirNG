@@ -71,9 +71,9 @@ namespace SPPC.Tadbir.Persistence
 
                 // Calculate and add owner equity items...
                 balanceSheet.Items.Add(
-                    GetReportHeaderItem(null, AppStrings.OwnerEquities));
+                    GetReportHeaderItem(null, AppStrings.StakeholderEquity));
                 var equity = await GetOwnerEquityItemsAsync(parameters, length);
-                var equitySummary = GetReportSummaryItems(equity, null, AppStrings.OwnerEquitiesSum);
+                var equitySummary = GetReportSummaryItems(equity, null, AppStrings.StakeholderEquitySum);
                 balanceSheet.Items.AddRange(equity);
                 balanceSheet.Items.AddRange(equitySummary);
 
@@ -212,7 +212,7 @@ namespace SPPC.Tadbir.Persistence
             BalanceSheetParameters parameters, int length)
         {
             return await GetReportItemsAsync(
-                length, parameters, AccountCollectionId.OwnerEquities, false);
+                length, parameters, AccountCollectionId.StakeholderEquity, false);
         }
 
         private async Task<IEnumerable<BalanceSheetItemViewModel>> GetReportItemsAsync(

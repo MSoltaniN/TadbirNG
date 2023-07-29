@@ -451,8 +451,8 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
             int count = await repository.GetCountByCriteriaAsync(
-                col => (col.CollectionId == (int)AccountCollectionId.BusinessDebtors
-                    || col.CollectionId == (int)AccountCollectionId.BusinessCreditors)
+                col => (col.CollectionId == (int)AccountCollectionId.TradeDebtors
+                    || col.CollectionId == (int)AccountCollectionId.TradeCreditors)
                     && col.AccountId == accountId);
             return count > 0;
         }

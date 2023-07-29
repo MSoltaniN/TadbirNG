@@ -3418,33 +3418,33 @@
     <value>جمع بدهی ها و حقوق صاحبان سرمایه</value>
   </data>
   <data name="LiquidAssets" xml:space="preserve">
-    <value>دارایی های جاری</value>
+    <value>دارایی‌های جاری</value>
   </data>
   <data name="LiquidAssetsSum" xml:space="preserve">
-    <value>جمع دارایی های جاری</value>
+    <value>جمع دارایی‌های جاری</value>
   </data>
   <data name="LiquidLiabilities" xml:space="preserve">
-    <value>بدهی های جاری</value>
+    <value>بدهی‌های جاری</value>
   </data>
   <data name="LiquidLiabilitiesSum" xml:space="preserve">
-    <value>جمع بدهی های جاری</value>
+    <value>جمع بدهی‌های جاری</value>
   </data>
   <data name="NonLiquidAssets" xml:space="preserve">
-    <value>دارایی های غیرجاری</value>
+    <value>دارایی‌های غیرجاری</value>
   </data>
   <data name="NonLiquidAssetsSum" xml:space="preserve">
-    <value>جمع دارایی های غیرجاری</value>
+    <value>جمع دارایی‌های غیرجاری</value>
   </data>
   <data name="NonLiquidLiabilities" xml:space="preserve">
-    <value>بدهی های غیرجاری</value>
+    <value>بدهی‌های غیرجاری</value>
   </data>
   <data name="NonLiquidLiabilitiesSum" xml:space="preserve">
-    <value>جمع بدهی های غیرجاری</value>
+    <value>جمع بدهی‌های غیرجاری</value>
   </data>
-  <data name="OwnerEquities" xml:space="preserve">
+  <data name="StakeholderEquity" xml:space="preserve">
     <value>حقوق صاحبان سرمایه</value>
   </data>
-  <data name="OwnerEquitiesSum" xml:space="preserve">
+  <data name="StakeholderEquitySum" xml:space="preserve">
     <value>جمع حقوق صاحبان سرمایه</value>
   </data>
   <data name="Assets" xml:space="preserve">
@@ -4106,5 +4106,134 @@
   </data>
   <data name="TreasurySystemicVoucherDefaultDescription" xml:space="preserve">
     <value>سند مالی ایجاد شده توسط سیستم خزانه داری.</value>
+  </data>
+  <data name="BouncedNotes" xml:space="preserve">
+    <value>اسناد برگشتی</value>
+  </data>
+  <data name="CashFund" xml:space="preserve">
+    <value>صندوق</value>
+  </data>
+  <data name="Closing" xml:space="preserve">
+    <value>اختتامیه</value>
+  </data>
+  <data name="ClosingAccounts" xml:space="preserve">
+    <value>بستن حساب‌ها</value>
+  </data>
+  <data name="ContraAccounts" xml:space="preserve">
+    <value>حساب‌های انتظامی</value>
+  </data>
+  <data name="CostOfGoodsSold" xml:space="preserve">
+    <value>قیمت تمام‌شده کالای فروش‌رفته</value>
+  </data>
+  <data name="CurrentYearEarnings" xml:space="preserve">
+    <value>سود و زیان سال جاری</value>
+  </data>
+  <data name="FinalCost" xml:space="preserve">
+    <value>قیمت تمام‌شده</value>
+  </data>
+  <data name="FloatNotes" xml:space="preserve">
+    <value>اسناد در جریان وصول</value>
+  </data>
+  <data name="GuaranteedNotesPayable" xml:space="preserve">
+    <value>اسناد پرداختنی تضمینی</value>
+  </data>
+  <data name="GuaranteedNotesReceivable" xml:space="preserve">
+    <value>اسناد دریافتنی تضمینی</value>
+  </data>
+  <data name="NotesPayable" xml:space="preserve">
+    <value>اسناد پرداختنی</value>
+  </data>
+  <data name="NotesReceivable" xml:space="preserve">
+    <value>اسناد دریافتنی</value>
+  </data>
+  <data name="Opening" xml:space="preserve">
+    <value>افتتاحیه</value>
+  </data>
+  <data name="OperationalCosts" xml:space="preserve">
+    <value>هزینه‌های عملیاتی</value>
+  </data>
+  <data name="OtherRevenuesCosts" xml:space="preserve">
+    <value>سایر هزینه‌ها و درآمدها</value>
+  </data>
+  <data name="OtherSellerPurchaser" xml:space="preserve">
+    <value>فروشنده / خریدار متفرقه</value>
+  </data>
+  <data name="OverheadControl" xml:space="preserve">
+    <value>کنترل سربار</value>
+  </data>
+  <data name="Performance" xml:space="preserve">
+    <value>عملکرد</value>
+  </data>
+  <data name="PettyCash" xml:space="preserve">
+    <value>تنخواه گردان‌ها</value>
+  </data>
+  <data name="Property" xml:space="preserve">
+    <value>اموال</value>
+  </data>
+  <data name="PropertyEarnings" xml:space="preserve">
+    <value>سود و زیان عملیات اموال</value>
+  </data>
+  <data name="Purchase" xml:space="preserve">
+    <value>خرید</value>
+  </data>
+  <data name="PurchaseDiscount" xml:space="preserve">
+    <value>تخفیفات خرید</value>
+  </data>
+  <data name="PurchaseInvoiceCharges" xml:space="preserve">
+    <value>اضافات فاکتور خرید</value>
+  </data>
+  <data name="PurchaseRefund" xml:space="preserve">
+    <value>برگشت از خرید</value>
+  </data>
+  <data name="PurchaseRefundDiscounts" xml:space="preserve">
+    <value>برگشت از خرید و تخفیفات</value>
+  </data>
+  <data name="RetainedEarnings" xml:space="preserve">
+    <value>سود و زیان انباشته</value>
+  </data>
+  <data name="Sales" xml:space="preserve">
+    <value>فروش</value>
+  </data>
+  <data name="SalesDiscount" xml:space="preserve">
+    <value>تخفیفات فروش</value>
+  </data>
+  <data name="SalesInvoiceCharges" xml:space="preserve">
+    <value>اضافات فاکتور فروش</value>
+  </data>
+  <data name="SalesPurchase" xml:space="preserve">
+    <value>خرید و فروش</value>
+  </data>
+  <data name="SalesRefund" xml:space="preserve">
+    <value>برگشت از فروش</value>
+  </data>
+  <data name="SalesRefundDiscounts" xml:space="preserve">
+    <value>برگشت  از فروش و تخفیفات</value>
+  </data>
+  <data name="TaxPayable" xml:space="preserve">
+    <value>مالیات پرداختنی</value>
+  </data>
+  <data name="TaxReceivable" xml:space="preserve">
+    <value>مالیات دریافتنی</value>
+  </data>
+  <data name="TollPayable" xml:space="preserve">
+    <value>عوارض پرداختنی</value>
+  </data>
+  <data name="TollReceivable" xml:space="preserve">
+    <value>عوارض دریافتنی</value>
+  </data>
+  <data name="TradeCreditors" xml:space="preserve">
+    <value>بستانکاران تجاری</value>
+  </data>
+  <data name="TradeDebtors" xml:space="preserve">
+    <value>بدهکاران تجاری</value>
+  </data>
+  <data name="TransitionalProperty" xml:space="preserve">
+    <value>اموال انتقالی</value>
+  </data>
+  <data name="WageControl" xml:space="preserve">
+    <value>کنترل دستمزد</value>
+  </data>
+  <data name="Warehouse" xml:space="preserve">
+    <value>انبار</value>
   </data>
 </root>

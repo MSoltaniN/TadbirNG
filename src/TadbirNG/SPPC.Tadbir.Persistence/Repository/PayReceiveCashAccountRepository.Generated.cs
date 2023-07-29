@@ -323,7 +323,7 @@ namespace SPPC.Tadbir.Persistence
             return await repository
                 .GetEntityQuery()
                 .AnyAsync(aca => aca.AccountId == accountId
-                    && aca.CollectionId == (int)AccountCollectionId.Cashier);
+                    && aca.CollectionId == (int)AccountCollectionId.CashFund);
         }
 
         /// <inheritdoc/>

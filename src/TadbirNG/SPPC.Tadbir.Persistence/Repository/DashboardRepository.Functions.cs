@@ -187,7 +187,7 @@ namespace SPPC.Tadbir.Persistence
 
         private decimal CalculateCashBalance(DateTime from, DateTime to, FullAccountViewModel fullAccount = null)
         {
-            return GetCollectionBalance(AccountCollectionId.Cashier, from, to);
+            return GetCollectionBalance(AccountCollectionId.CashFund, from, to);
         }
 
         private decimal GetCollectionBalance(AccountCollectionId collectionId, DateTime from, DateTime to)
