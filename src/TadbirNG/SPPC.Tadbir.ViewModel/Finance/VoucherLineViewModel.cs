@@ -42,6 +42,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string CurrencyName { get; set; }
 
         /// <summary>
+        /// نام منبع یا مصرف به کار رفته در آرتیکل سند
+        /// </summary>
+        public string SourceAppName { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی منابع و مصارف مرتبط با این آرتیکل 
         /// </summary>
         public int? SourceAppId { get; set; }

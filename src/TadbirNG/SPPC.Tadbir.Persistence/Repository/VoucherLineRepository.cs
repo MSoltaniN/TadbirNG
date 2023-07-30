@@ -303,7 +303,7 @@ namespace SPPC.Tadbir.Persistence
             var linesQuery = Repository
                 .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine,
                     line => line.Voucher, line => line.Account, line => line.DetailAccount, line => line.CostCenter,
-                    line => line.Project, line => line.Currency, line => line.Branch)
+                    line => line.Project, line => line.Currency, line => line.Branch, line => line.SourceApp)
                 .Where(line => line.Voucher.Id == voucherId)
                 .OrderBy(line => line.RowNo);
             return linesQuery;

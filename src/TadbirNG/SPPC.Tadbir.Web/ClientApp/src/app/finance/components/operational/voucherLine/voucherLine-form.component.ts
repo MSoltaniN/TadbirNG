@@ -24,7 +24,6 @@ import { ViewName } from "@sppc/shared/security";
 import { LookupApi } from "@sppc/shared/services/api";
 import { CurrencyService } from "@sppc/finance/service";
 import { CurrencyApi } from "@sppc/finance/service/api";
-import { log } from "console";
 
 interface Item {
   Key: string;
@@ -90,6 +89,7 @@ export class VoucherLineFormComponent
   isFullAccountInputFocused = false;
   isPayReciept = false;
   isBank: 1 | 0 = 1;
+  isActiveSourceAppDropDown = false;
 
   @Input() public isNew: boolean = false;
 
@@ -291,7 +291,6 @@ export class VoucherLineFormComponent
     });
   }
 
-  isActiveSourceAppDropDown = false;
   hasAccountWithId(accountIdToFind: number) {
     let accountCollections: any = JSON.parse(
       this.bStorageService.getMetadata(SessionKeys.AccountColletion)
