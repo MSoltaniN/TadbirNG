@@ -452,7 +452,7 @@ namespace SPPC.Tadbir.Persistence
             accounts.AddRange(_utility.GetUsableAccounts(
                 AccountCollectionId.FinalSales, false, parameters.BranchId));
             accounts.AddRange(_utility.GetUsableAccounts(
-                AccountCollectionId.SalesRefundDiscount, false, parameters.BranchId));
+                AccountCollectionId.SalesRefundDiscounts, false, parameters.BranchId));
 
             var items = await GetReportItemsAsync(
                 accounts, parameters, ProfitLossQuery.BalanceTotalSelect,
@@ -476,7 +476,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var accounts = new List<AccountItemBriefViewModel>();
             accounts.AddRange(_utility.GetUsableAccounts(
-                AccountCollectionId.SoldProductCost, false, parameters.BranchId));
+                AccountCollectionId.CostOfGoodsSold, false, parameters.BranchId));
 
             var items = await GetReportItemsAsync(
                 accounts, parameters, ProfitLossQuery.BalanceTotalSelect,
@@ -500,7 +500,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var accounts = new List<AccountItemBriefViewModel>();
             accounts.AddRange(_utility.GetUsableAccounts(
-                AccountCollectionId.ProductInventory, false, parameters.BranchId));
+                AccountCollectionId.Inventory, false, parameters.BranchId));
             int fiscalPeriodId = parameters.FiscalPeriodId ?? UserContext.FiscalPeriodId;
             var startDate = await _utility.GetFiscalPeriodStartAsync(fiscalPeriodId);
             var paramCopy = parameters.GetCopy();
@@ -556,7 +556,7 @@ namespace SPPC.Tadbir.Persistence
             accounts.AddRange(_utility.GetUsableAccounts(
                 AccountCollectionId.FinalPurchase, false, parameters.BranchId));
             accounts.AddRange(_utility.GetUsableAccounts(
-                AccountCollectionId.PurchaseRefundDiscount, false, parameters.BranchId));
+                AccountCollectionId.PurchaseRefundDiscounts, false, parameters.BranchId));
 
             int fiscalPeriodId = parameters.FiscalPeriodId ?? UserContext.FiscalPeriodId;
             var startDate = await _utility.GetFiscalPeriodStartAsync(fiscalPeriodId);
@@ -617,7 +617,7 @@ namespace SPPC.Tadbir.Persistence
             };
 
             var accounts = _utility.GetUsableAccounts(
-                AccountCollectionId.OtherCostRevenue, false, parameters.BranchId);
+                AccountCollectionId.OtherRevenuesCosts, false, parameters.BranchId);
 
             var costItems = await GetReportItemsAsync(
                 accounts, parameters, ProfitLossQuery.BalanceByAccountSelect,

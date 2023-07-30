@@ -467,7 +467,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetEntityQuery()
                 .Include(aca => aca.Account)
                 .Where(aca => aca.FiscalPeriodId <= UserContext.FiscalPeriodId &&
-                    aca.CollectionId == (int)AccountCollectionId.ProductInventory)
+                    aca.CollectionId == (int)AccountCollectionId.Inventory)
                 .Select(aca => aca.Account)
                 .ToListAsync();
 
