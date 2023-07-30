@@ -106,7 +106,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for previous check book in current environment
         /// </summary>
-        public const string PreviousCheckBookUrl = "check-books/{issueDate:DateTime}/previous";
+        public const string PreviousCheckBookUrl = "check-books/{checkBookNo:min(1)}/previous";
 
         /// <summary>
         /// API client URL for next check book in current environment
@@ -116,7 +116,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for next check book in current environment
         /// </summary>
-        public const string NextCheckBookUrl = "check-books/{issueDate:DateTime}/next";
+        public const string NextCheckBookUrl = "check-books/{checkBookNo:min(1)}/next";
 
         /// <summary>
         /// API client URL for the last check book in current environment

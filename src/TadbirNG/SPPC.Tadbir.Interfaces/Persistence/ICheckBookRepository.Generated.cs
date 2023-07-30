@@ -26,9 +26,9 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، دسته چک با شماره مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="checkBookNo">شماره یکی از دسته چک های موجود</param>
+        /// <param name="textNo">شماره یکی از دسته چک های موجود</param>
         /// <returns>دسته چک مشخص شده با شماره</returns>
-        Task<CheckBookViewModel> GetCheckBookByNoAsync(int checkBookNo);
+        Task<CheckBookViewModel> GetCheckBookByNoAsync(string textNo);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک دسته چک را ایجاد یا اصلاح می کند
@@ -53,18 +53,18 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات دسته چک قبلی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="issueDate">تاریخ صدور دسته چک در برنامه</param>
+        /// <param name="checkBookNo">شماره دسته چک در برنامه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>دسته چک قبلی</returns>
-        Task<CheckBookViewModel> GetPreviousCheckBookAsync(DateTime issueDate, GridOptions gridOptions = null);
+        Task<CheckBookViewModel> GetPreviousCheckBookAsync(string checkBookNo, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات دسته چک بعدی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="issueDate">تاریخ صدور دسته چک در برنامه</param>
+        /// <param name="checkBookNo">شماره دسته چک در برنامه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>دسته چک بعدی</returns>
-        Task<CheckBookViewModel> GetNextCheckBookAsync(DateTime issueDate, GridOptions gridOptions = null);
+        Task<CheckBookViewModel> GetNextCheckBookAsync(string checkBookNo, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، آخرین دسته چک را خوانده و برمی گرداند

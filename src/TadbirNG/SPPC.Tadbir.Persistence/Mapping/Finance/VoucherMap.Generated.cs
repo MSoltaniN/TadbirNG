@@ -74,6 +74,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
+            builder.Ignore(e => e.TextNo);
 
             builder.HasOne(e => e.FiscalPeriod)
                 .WithMany()

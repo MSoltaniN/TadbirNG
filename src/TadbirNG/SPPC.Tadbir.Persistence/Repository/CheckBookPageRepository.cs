@@ -155,7 +155,7 @@ namespace SPPC.Tadbir.Persistence
             return (entity != null)
                 ? String.Format(
                     "{0} : {1}",
-                    AppStrings.CheckBookNo, entity.SerialNo)
+                    AppStrings.TextNo, entity.SerialNo)
                 : null;
         }
 

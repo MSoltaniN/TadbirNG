@@ -882,7 +882,7 @@ CREATE TABLE [Check].[CheckBook] (
     [CostCenterID]    INT              NULL,
     [ProjectID]       INT              NULL,
     [FiscalPeriodID]  INT              CONSTRAINT [DF_Check_CheckBook_FiscalPeriodID] DEFAULT (0) NULL,
-    [CheckBookNo]     NVARCHAR(32)     NOT NULL,
+    [TextNo]     NVARCHAR(32)     NOT NULL,
     [Name]            NVARCHAR(64)     NOT NULL,
     [IssueDate]       DATETIME         NOT NULL,
     [StartNo]         NVARCHAR(32)     NOT NULL,
@@ -992,11 +992,11 @@ SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
 -- 1.2.1509
 ALTER TABLE [Check].[CheckBook]
-DROP COLUMN [CheckBookNo]
+DROP COLUMN [TextNo]
 GO
 
 ALTER TABLE [Check].[CheckBook]
-ADD [CheckBookNo] INT NULL,
+ADD [TextNo] INT NULL,
     [CreatedByID] INT CONSTRAINT [DF_Check_CheckBook_CreatedByID] DEFAULT (1) NOT NULL,
 	[ModifiedByID] INT CONSTRAINT [DF_Check_CheckBook_ModifiedByID] DEFAULT (1) NOT NULL,
 	[SeriesNo] NVARCHAR(32) CONSTRAINT [DF_Check_CheckBook_SeriesNo] DEFAULT 'A' NOT NULL,
@@ -1444,4 +1444,7 @@ GO
 
 -- 1.2.1549
 EXEC sp_rename '[CashFlow].[PayReceive].[PayReceiveNo]', 'TextNo', 'COLUMN'
+EXEC sp_rename '[Check].[CheckBook].[CheckBookNo]', 'TextNo', 'COLUMN'
 
+ALTER TABLE [Check].[CheckBook]
+ALTER COLUMN [TextNo] NVARCHAR(16) NOT NULL

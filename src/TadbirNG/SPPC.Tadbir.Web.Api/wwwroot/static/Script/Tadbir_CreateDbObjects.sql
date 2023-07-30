@@ -692,7 +692,7 @@ CREATE TABLE [Check].[CheckBook] (
     [CreatedByID]     INT              NOT NULL,
     [ModifiedByID]    INT              NOT NULL,
     [FiscalPeriodID]  INT              CONSTRAINT [DF_Check_CheckBook_FiscalPeriodID] DEFAULT (0) NOT NULL,
-    [CheckBookNo]     INT              NULL,
+    [TextNo]     INT              NULL,
     [Name]            NVARCHAR(64)     NOT NULL,
     [IssueDate]       DATETIME         NOT NULL,
     [StartNo]         NVARCHAR(32)     NOT NULL,

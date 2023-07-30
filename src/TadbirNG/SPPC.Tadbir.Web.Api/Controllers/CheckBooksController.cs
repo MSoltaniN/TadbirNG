@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -80,7 +81,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpGet]
         [Route(CheckBookApi.CheckBookByNoUrl)]
         [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.View)]
-        public async Task<IActionResult> GetCheckBookByNoAsync(int checkBookNo)
+        public async Task<IActionResult> GetCheckBookByNoAsync(string checkBookNo)
         {
             var checkBookByNo = await _repository.GetCheckBookByNoAsync(checkBookNo);
             return JsonReadResult(checkBookByNo);
@@ -101,32 +102,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات دسته چک پیش از تاریخ صدور مشخص شده را برمی گرداند
+        /// به روش آسنکرون، اطلاعات دسته چک پیش از شماره مشخص شده را برمی گرداند
         /// </summary>
-        /// <param name="issueDate">تاریخ صدور دسته چک فعلی</param>
+        /// <param name="checkBookNo">شماره دسته چک فعلی</param>
         /// <returns>اطلاعات نمایشی دسته چک قابل دسترسی قبلی</returns>
-        // GET: api/check-books/{issueDate:DateTime}/previous
+        // GET: api/check-books/{checkBookNo:min(1)}/previous
         [HttpGet]
         [Route(CheckBookApi.PreviousCheckBookUrl)]
         [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Navigate)]
-        public async Task<IActionResult> GetPreviousCheckBookAsync(DateTime issueDate)
+        public async Task<IActionResult> GetPreviousCheckBookAsync(string checkBookNo)
         {
-            var previous = await _repository.GetPreviousCheckBookAsync(issueDate, GridOptions);
+            var previous = await _repository.GetPreviousCheckBookAsync(checkBookNo, GridOptions);
             return JsonReadResult(previous);
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات دسته چک بعد از تاریخ صدور مشخص شده را برمی گرداند
+        /// به روش آسنکرون، اطلاعات دسته چک بعد از شماره مشخص شده را برمی گرداند
         /// </summary>
-        /// <param name="issueDate">تاریخ صدور دسته چک فعلی</param>
+        /// <param name="checkBookNo">شماره دسته چک فعلی</param>
         /// <returns>اطلاعات نمایشی دسته چک قابل دسترسی بعدی</returns>
-        // GET: api/check-books/{issueDate:DateTime}/next
+        // GET: api/check-books/{checkBookNo:min(1)}/next
         [HttpGet]
         [Route(CheckBookApi.NextCheckBookUrl)]
         [AuthorizeRequest(SecureEntity.CheckBook, (int)CheckBookPermissions.Navigate)]
-        public async Task<IActionResult> GetNextCheckBookAsync(DateTime issueDate)
+        public async Task<IActionResult> GetNextCheckBookAsync(string checkBookNo)
         {
-            var next = await _repository.GetNextCheckBookAsync(issueDate, GridOptions);
+            var next = await _repository.GetNextCheckBookAsync(checkBookNo, GridOptions);
             return JsonReadResult(next);
         }
 
@@ -345,6 +346,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (result is BadRequestObjectResult)
             {
                 return result;
+            }
+
+            var textNo = checkBook.TextNo.Trim();
+            if (!Int64.TryParse(textNo, out long numberValue))
+            {
+                return BadRequestResult(_strings.Format(
+                    AppStrings.InvalidLetterForStringNumber, AppStrings.Number));
+            }
+
+            if (numberValue <= 0)
+            {
+                var minNumberString = "1";
+                return BadRequestResult(_strings.Format(
+                   AppStrings.InvalidStringNumber, minNumberString, AppStrings.Number));
             }
 
             if (checkBook.SayyadStartNo.Length != 16)
