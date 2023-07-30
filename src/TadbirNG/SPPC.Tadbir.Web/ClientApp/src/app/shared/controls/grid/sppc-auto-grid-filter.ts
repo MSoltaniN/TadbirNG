@@ -59,18 +59,18 @@ export class SppcAutoGridFilter extends BaseFilterCellComponent {
       this.allowFiltering = this.metaDataItem.allowFiltering;
   }
 
-  keyupHandler($e:KeyboardEvent) {
+  convertShamsiToMiladi($e:KeyboardEvent) {
     if (this.currentLang == 'fa') {
       let value = (<any>$e.target).value as string;
   
       if (value.length == 10 && value.split('/').length == 3) {
-        let currentFilter = this.filter.filters.find((f:any) => f.field == 'date');
+        let currentFilter = this.filter.filters.find((f:any) => f.field.toLowerCase().includes('date'));
         let miladi = +value.split('/')[0] < 1600? this.toMiladiDate(value) :value;
   
         if (+value.split('/')[0] < 1600) {
           this.filterValue = value;
         }
-  
+
         this.filter = this.removeFilter((<any>currentFilter).field);
         const filters = [];
         filters.push({
@@ -85,6 +85,8 @@ export class SppcAutoGridFilter extends BaseFilterCellComponent {
         if (filters.length) {
           root.filters.push(...filters);
         }
+
+        this.updateFilter(filters[0]);
   
         this.filterService.filter(root);
   
