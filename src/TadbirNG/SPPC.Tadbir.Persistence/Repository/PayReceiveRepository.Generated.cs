@@ -51,7 +51,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
                 var payReceive = await repository.GetByIDAsync(
-                    payReceiveId, pr => pr.Accounts, pr => pr.CashAccounts);
+                    payReceiveId, pr => pr.Accounts, pr => pr.CashAccounts, pr => pr.PayReceiveVoucherLines);
                 if (payReceive != null)
                 {
                     item = Mapper.Map<PayReceiveViewModel>(payReceive);
@@ -192,7 +192,7 @@ namespace SPPC.Tadbir.Persistence
             var byNo = default(PayReceiveViewModel);
             var viewId = GetViewId((int)type);
             var payReceiveByNo = await Repository.GetAllOperationQuery<PayReceive>(
-                viewId, pr => pr.Accounts, pr => pr.CashAccounts)
+                viewId, pr => pr.Accounts, pr => pr.CashAccounts, pr => pr.PayReceiveVoucherLines)
                 .Where(pr => pr.PayReceiveNo == payReceiveNo.Trim() && pr.Type == (int)type)
                 .SingleOrDefaultAsync();
 
@@ -454,7 +454,8 @@ namespace SPPC.Tadbir.Persistence
             var viewId = GetViewId(type);
             var options = gridOptions ?? new GridOptions();
             return await Repository
-                .GetAllOperationQuery<PayReceive>(viewId, pr => pr.Accounts, pr => pr.CashAccounts)
+                .GetAllOperationQuery<PayReceive>(viewId, 
+                    pr => pr.Accounts, pr => pr.CashAccounts, pr => pr.PayReceiveVoucherLines)
                 .Where(criteria)
                 .OrderBy(item => Convert.ToInt64(item.PayReceiveNo))
                 .Select(item => Mapper.Map<PayReceiveViewModel>(item))
