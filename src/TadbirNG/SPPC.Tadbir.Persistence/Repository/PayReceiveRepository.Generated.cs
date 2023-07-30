@@ -81,7 +81,7 @@ namespace SPPC.Tadbir.Persistence
             if (payReceive.Id == 0)
             {
                 payReceiveModel = Mapper.Map<PayReceive>(payReceive);
-                payReceiveModel.TextNo = Int64.Parse(payReceive.TextNo).ToString();
+                payReceiveModel.TextNo = Int64.Parse(payReceive.TextNo.Trim()).ToString();
                 payReceiveModel.IssuedById = UserContext.Id;
                 payReceiveModel.ModifiedById = UserContext.Id;
                 payReceiveModel.IssuedByName =

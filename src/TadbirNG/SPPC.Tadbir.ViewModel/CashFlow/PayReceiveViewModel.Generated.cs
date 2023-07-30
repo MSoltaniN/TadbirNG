@@ -27,7 +27,6 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         public PayReceiveViewModel()
         {
             Date = DateTime.Now;
-            TextNo = String.Empty;
             Reference = String.Empty;
             Description = String.Empty;
             IssuedByName = String.Empty;

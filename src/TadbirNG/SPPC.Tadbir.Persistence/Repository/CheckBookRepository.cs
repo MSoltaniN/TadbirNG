@@ -110,6 +110,7 @@ namespace SPPC.Tadbir.Persistence
                 checkBookModel.CreatedById = UserContext.Id;
                 checkBookModel.ModifiedById = UserContext.Id;
                 checkBookModel.CreatedDate = DateTime.Now;
+                checkBookModel.TextNo = Int64.Parse(checkBook.TextNo.Trim()).ToString();
                 await InsertAsync(repository, checkBookModel);
             }
             else

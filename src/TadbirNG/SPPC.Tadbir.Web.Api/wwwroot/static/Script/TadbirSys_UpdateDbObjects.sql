@@ -1397,10 +1397,10 @@ WHERE ColumnID = 800 AND [Name] = N'SourceAppId'
 -- 1.2.1553
 UPDATE [Metadata].[Column]
 SET [Name] = N'TextNo', [DotNetType] = 'System.Int64', [StorageType] = 'nvarchar(16)', [Length] = 0, ScriptType ='number'
-WHERE ColumnID = 764 AND [Name] = N'TextNo'
+WHERE ColumnID = 764 AND [Name] = N'PayReceiveNo'
 
 UPDATE [Metadata].[Column]
 SET [Name] = N'TextNo', [DotNetType] = 'System.Int64', [StorageType] = 'nvarchar(16)', [Length] = 0, ScriptType = 'number'
-WHERE (ColumnID = 713 OR ColumnID = 726) AND [Name] = N'TextNo'
+WHERE (ColumnID = 713 OR ColumnID = 726) AND [Name] = N'CheckBookNo'
 
 
