@@ -47,12 +47,7 @@
     width: 800px;
   }
   
-  @media screen and (max-width:800px) {
-    /deep/ .fullAccountForm > .k-dialog {
-      width: 90%;
-      min-width: 250px;
-    }
-  }
+  
   
   .fullAccount-grid {
     height: 200px;
@@ -78,3 +73,38 @@
     border-color: #ddd;
   }
   
+  .flex-container{
+    display: inline-flex;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .flex-container .dialog-item{
+    width: 30%;
+  }
+  .flex-direction-row{
+    flex-direction: row;
+  }
+  .flex-direction-row-reverse{
+    flex-direction: row-reverse;
+  }
+
+  @media screen and (max-width:800px) {
+    /*deep*/ .fullAccountForm > .k-dialog {
+      width: 90%;
+      min-width: 250px;
+    }
+
+
+    .flex-container{
+      display: inline-flex;
+      width: 100%;
+      justify-content: space-around;
+      flex-direction: column;
+    }
+  
+    .flex-container .dialog-item{
+      width: 95%;
+      margin: 10px auto;
+    }
+  }
