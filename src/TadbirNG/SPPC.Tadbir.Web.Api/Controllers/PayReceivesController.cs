@@ -647,7 +647,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     message = errorResult.Value.ToString();
                 }
 
-                if (payReceive.IsConfirmed || payReceive.IsApproved || await _repository.IsRegisteredAsync(payReceive.Id))
+                if (payReceive.IsConfirmed || payReceive.IsApproved || payReceive.IsRegistered)
                 {
                     message = _strings.Format(AppStrings.CantDeleteEntity, entityNameKey);
                 }
@@ -673,7 +673,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     return result;
                 }
 
-                if (payReceive.IsConfirmed || payReceive.IsApproved || await _repository.IsRegisteredAsync(payReceive.Id))
+                if (payReceive.IsConfirmed || payReceive.IsApproved || payReceive.IsRegistered)
                 {
                     return BadRequestResult(_strings.Format(AppStrings.CantSaveEntity, entityNameKey));
                 }
@@ -729,7 +729,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if ((action == AppStrings.Confirm && payReceive.IsConfirmed)
                 || (action == AppStrings.Approve && payReceive.IsApproved)
-                || await _repository.IsRegisteredAsync(payReceive.Id))
+                || (action == AppStrings.Register && payReceive.IsRegistered))
             {
                 return BadRequestResult(_strings.Format(AppStrings.RepeatedEntityActionMessage, action,
                     entityNameKey));

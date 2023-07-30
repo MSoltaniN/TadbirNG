@@ -38,6 +38,7 @@ namespace SPPC.Tadbir.Model.CashFlow
             ModifiedDate = DateTime.Now;
             this.Accounts = new List<PayReceiveAccount>();
             this.CashAccounts = new List<PayReceiveCashAccount>();
+            this.PayReceiveVoucherLines = new List<PayReceiveVoucherLine>();
         }
 
         /// <summary>
