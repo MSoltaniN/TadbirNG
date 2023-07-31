@@ -761,7 +761,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                         AppStrings.CantActionWithInvalidRows, action, AppStrings.PayReceiveCashAccount));
                 }
 
-                if (await _repository.IsUnbalancedPayReceive(payReceiveId))
+                if (payReceive.AccountAmountsSum != payReceive.CashAmountsSum)
                 {
                     return BadRequestResult(_strings.Format(AppStrings.CantActionUnbalancedForm,
                         AppStrings.PayReceiveAccount, AppStrings.PayReceiveCashAccount, action,entityNameKey));

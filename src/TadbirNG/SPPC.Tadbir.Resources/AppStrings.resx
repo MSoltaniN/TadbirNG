@@ -3955,10 +3955,10 @@
     <value>آرتیکل طرف حساب</value>
   </data>
   <data name="CantDeleteDetailEntity" xml:space="preserve">
-    <value>به دلیل تایید، تصویب و یا ثبت مالی {0} جاری، حذف اطلاعات {1} ممکن نمی‌باشد.</value>
+    <value>به دلیل تایید، تصویب و یا ثبت مالی این {0}، حذف اطلاعات {1} ممکن نمی‌باشد.</value>
   </data>
   <data name="CantSaveDetailEntity" xml:space="preserve">
-    <value>به دلیل تایید، تصویب و یا ثبت مالی {0} جاری، ذخیره اطلاعات {1} ممکن نمی‌باشد.</value>
+    <value>به دلیل تایید، تصویب و یا ثبت مالی این {0}، ذخیره اطلاعات {1} ممکن نمی‌باشد.</value>
   </data>
   <data name="NegativeAmountNotAllowed" xml:space="preserve">
     <value>مقدار منفی برای مبلغ معتبر نیست.</value>
@@ -4057,7 +4057,7 @@
     <value>حذف ردیف‌های نامعتبر حساب نقدی</value>
   </data>
   <data name="CantChangeDetailEntity" xml:space="preserve">
-    <value>روی {0} جاری عملیات تایید، تصویب یا ثبت مالی صورت گرفته و تغییر اطلاعات {1} ممکن نمی‌باشد.</value>
+    <value>روی این {0} عملیات تایید، تصویب یا ثبت مالی صورت گرفته و تغییر اطلاعات {1} ممکن نمی‌باشد.</value>
   </data>
   <data name="CantActionWithInvalidRows" xml:space="preserve">
     <value>{0} فرم با وجود {1} نامعتبر امکان پذیر نیست.</value>
@@ -4096,7 +4096,7 @@
     <value>به دلیل ایجاد آرتیکل به صورت سیستمی توسط {0}، حذف اطلاعات ممکن نمی‌باشد.</value>
   </data>
   <data name="CantDeleteVoucherWithSystemicArticle" xml:space="preserve">
-    <value>به دلیل ایجاد آرتیکل‌های سیستمی توسط {0} برای سند جاری، حذف اطلاعات ممکن نمی‌باشد.</value>
+    <value>به دلیل ایجاد آرتیکل‌های سیستمی توسط {0} برای این سند، حذف اطلاعات ممکن نمی‌باشد.</value>
   </data>
   <data name="CantEditSystemicDetailVoucher" xml:space="preserve">
     <value>به دلیل ایجاد آرتیکل به صورت سیستمی توسط {0}، ویرایش اطلاعات ممکن نمی‌باشد.</value>

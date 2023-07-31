@@ -180,18 +180,14 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>فرم دریافت/پرداخت</returns>
         public async Task<PayReceiveViewModel> GetPayReceiveAsync(IList<int> accountArticleIds)
         {
-            PayReceiveViewModel item = null;
             Verify.ArgumentNotNull(accountArticleIds, nameof(accountArticleIds));
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
-            var payReceive = await repository
-                .GetEntityQuery()
+            var item = await repository
+                .GetEntityQuery(pr => pr.PayReceiveVoucherLines)
                 .Where(pr => pr.Accounts.Any(
                     aa => accountArticleIds.Any(id => id == aa.Id)))
+                .Select(pr => Mapper.Map<PayReceiveViewModel>(pr))
                 .SingleOrDefaultAsync();
-            if (payReceive != null)
-            {
-                item = Mapper.Map<PayReceiveViewModel>(payReceive);
-            }
 
             return item;
         }

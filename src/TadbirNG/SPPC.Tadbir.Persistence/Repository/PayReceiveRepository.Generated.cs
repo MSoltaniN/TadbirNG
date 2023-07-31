@@ -337,28 +337,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public async Task<bool> IsUnbalancedPayReceive(int payReceiveId)
-        {
-            bool unbalanced = true;
-            var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
-            var result = await repository.
-                GetEntityQuery()
-                .Where(pr => pr.Id == payReceiveId)
-                .Select(pr => new 
-                {
-                    AccountsSum = pr.Accounts.Sum(a => a.Amount),
-                    CashAccountsSum = pr.CashAccounts.Sum(c => c.Amount)
-                })
-                .SingleOrDefaultAsync();
-            if(result != null)
-            {
-                unbalanced = (result.AccountsSum - result.CashAccountsSum) != 0;
-            }
-
-            return unbalanced;
-        }
-
-        /// <inheritdoc/>
         public async Task<VoucherViewModel> RegisterAsync(int payReceiveId)
         {
             var voucher = await GetNewVoucherAsync();
@@ -381,15 +359,6 @@ namespace SPPC.Tadbir.Persistence
             InsertPayReceiveVoucherLinesRelationAsync(payReceiveId, voucher.Lines);
             await FinalizeActionAsync(OperationId.Register, entityTypeId);
             return Mapper.Map<VoucherViewModel>(voucher);
-        }
-
-        /// <inheritdoc/>
-        public async Task<bool> IsRegisteredAsync(int payReceiveId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<PayReceiveVoucherLine>();
-            return await repository.
-                GetEntityQuery()
-                .AnyAsync(p => p.PayReceiveId == payReceiveId);
         }
 
         internal override int? EntityType
