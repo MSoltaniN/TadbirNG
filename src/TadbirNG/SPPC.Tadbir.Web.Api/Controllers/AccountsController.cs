@@ -389,21 +389,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (accountId == 0 && account.ParentId.HasValue)
-            {
-                var parent = await _repository.GetAccountAsync(account.ParentId.Value);
-                if (!parent.IsActive)
-                {
-                    string message = _strings.Format(AppStrings.InactiveAccountCantHaveChildren, parent.Name);
-                    return BadRequestResult(message);
-                }
-            }
+            //if (accountId == 0 && account.ParentId.HasValue)
+            //{
+            //    var parent = await _repository.GetAccountAsync(account.ParentId.Value);
+            //    if (!parent.IsActive)
+            //    {
+            //        string message = _strings.Format(AppStrings.InactiveAccountCantHaveChildren, parent.Name);
+            //        return BadRequestResult(message);
+            //    }
+            //}
 
-            if (accountId > 0 && account.ChildCount > 0 && !account.IsActive)
-            {
-                string message = _strings.Format(AppStrings.ParentAccountCantBeInactive, account.Name);
-                return BadRequestResult(message);
-            }
+            //if (accountId > 0 && account.ChildCount > 0 && !account.IsActive)
+            //{
+            //    string message = _strings.Format(AppStrings.ParentAccountCantBeInactive, account.Name);
+            //    return BadRequestResult(message);
+            //}
 
             if (account.Level == 0 && !account.GroupId.HasValue)
             {

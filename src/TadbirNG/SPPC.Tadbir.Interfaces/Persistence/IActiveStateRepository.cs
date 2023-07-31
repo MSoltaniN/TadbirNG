@@ -22,12 +22,6 @@ namespace SPPC.Tadbir.Persistence
         Task SetActiveStatusAsync(TEntity entity, bool isActive);
 
         /// <summary>
-        /// به روش آسنکرون، سطرهای اطلاعاتی غیرفعال را در فهرست اطلاعاتی ورودی به روزرسانی می کند
-        /// </summary>
-        /// <param name="items">مجموعه سطرهای اطلاعاتی مورد نظر برای به روزرسانی وضعیت</param>
-        Task UpdateInactiveItemsAsync(IEnumerable<TEntity> items);
-
-        /// <summary>
         /// به روش آسنکرون مشخص می کند که سطر داده شده غیرفعال شده یا نه
         /// </summary>
         /// <param name="itemId">شناسه دیتابیسی سطر مورد نظر برای بررسی</param>

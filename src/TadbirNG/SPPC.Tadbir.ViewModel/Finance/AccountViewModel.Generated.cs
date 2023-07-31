@@ -32,7 +32,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
             FullCode = String.Empty;
             Name = String.Empty;
             Description = String.Empty;
-            IsActive = true;
             IsCurrencyAdjustable = true;
             TurnoverMode = AppStrings.Unlimited;
             State = AppStrings.Active;
@@ -72,11 +71,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// شماره سطح که عمق این سرفصل حسابداری را در ساختار درختی مشخص می کند
         /// </summary>
         public short Level { get; set; }
-
-        /// <summary>
-        /// مشخص می کند که آیا حساب مورد نظر فعال است یا نه؟
-        /// </summary>
-        public bool IsActive { get; set; }
 
         /// <summary>
         /// مشخص می کند که آیا تسعیر ارزی برای حساب مورد نظر قابل انجام است یا نه؟

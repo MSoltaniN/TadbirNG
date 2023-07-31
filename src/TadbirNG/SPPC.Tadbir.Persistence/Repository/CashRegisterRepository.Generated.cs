@@ -33,11 +33,7 @@ namespace SPPC.Tadbir.Persistence
             _system = system;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات کلیه صندوق ها را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از صندوق های تعریف شده</returns>
+        /// <inheritdoc/>
         public async Task<PagedList<CashRegisterViewModel>> GetCashRegistersAsync(GridOptions gridOptions)
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
@@ -48,17 +44,15 @@ namespace SPPC.Tadbir.Persistence
                 cashRegisters = await query
                     .Select(item => Mapper.Map<CashRegisterViewModel>(item))
                     .ToListAsync();
+                await UpdateInactiveItemsAsync(cashRegisters);
+                Array.ForEach(cashRegisters.ToArray(), cr => cr.State = Context.Localize(cr.State));
             }
 
             await ReadAsync(gridOptions);
             return new PagedList<CashRegisterViewModel>(cashRegisters, gridOptions);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، صندوق با شناسه عددی مشخص شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="cashRegisterId">شناسه عددی یکی از صندوق های موجود</param>
-        /// <returns>صندوق مشخص شده با شناسه عددی</returns>
+        /// <inheritdoc/>
         public async Task<CashRegisterViewModel> GetCashRegisterAsync(int cashRegisterId)
         {
             CashRegisterViewModel item = null;
@@ -67,16 +61,16 @@ namespace SPPC.Tadbir.Persistence
             if (cashRegister != null)
             {
                 item = Mapper.Map<CashRegisterViewModel>(cashRegister);
+                var isDeactivated = await IsDeactivatedAsync(item.Id);
+                item.State = isDeactivated
+                    ? Context.Localize(AppStrings.Inactive)
+                    : Context.Localize(AppStrings.Active);
             }
 
             return item;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات یک صندوق را ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="cashRegister">صندوق مورد نظر برای ایجاد یا اصلاح</param>
-        /// <returns>اطلاعات نمایشی صندوق ایجاد یا اصلاح شده</returns>
+        /// <inheritdoc/>
         public async Task<CashRegisterViewModel> SaveCashRegisterAsync(CashRegisterViewModel cashRegister)
         {
             Verify.ArgumentNotNull(cashRegister, nameof(cashRegister));
@@ -99,24 +93,19 @@ namespace SPPC.Tadbir.Persistence
             return Mapper.Map<CashRegisterViewModel>(cashRegisterModel);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، صندوق مشخص شده با شناسه عددی را حذف می کند
-        /// </summary>
-        /// <param name="cashRegisterId">شناسه عددی صندوق مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task DeleteCashRegisterAsync(int cashRegisterId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CashRegister>();
             var cashRegister = await repository.GetByIDAsync(cashRegisterId);
             if (cashRegister != null)
             {
+                await OnDeleteItemAsync(cashRegister.Id);
                 await DeleteAsync(repository, cashRegister);
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، صندوق های مشخص شده با شناسه عددی را حذف می کند
-        /// </summary>
-        /// <param name="cashRegisterIds">مجموعه ای از شناسه های عددی صندوق های مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task DeleteCashRegistersAsync(IList<int> cashRegisterIds)
         {
             var repository = UnitOfWork.GetAsyncRepository<CashRegister>();
@@ -125,6 +114,7 @@ namespace SPPC.Tadbir.Persistence
                 var cashRegister = await repository.GetByIDAsync(cashRegisterId);
                 if (cashRegister != null)
                 {
+                    await OnDeleteItemAsync(cashRegister.Id);
                     await DeleteNoLogAsync(repository, cashRegister);
                 }
             }
@@ -132,11 +122,7 @@ namespace SPPC.Tadbir.Persistence
             await OnEntityGroupDeleted(cashRegisterIds);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، کاربران اختصاص داده شده به صندوق را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="cashRegisterId">شناسه عددی یکی از صندوق های موجود</param>
-        /// <returns>مجموعه ای از کاربران تخصیص داده شده به صندوق</returns>
+        /// <inheritdoc/>
         public async Task<RelatedItemsViewModel> GetCashRegisterUsersAsync(int cashRegisterId)
         {
             RelatedItemsViewModel userCashRegisters = null;
@@ -211,10 +197,7 @@ namespace SPPC.Tadbir.Persistence
             return userCashRegisters;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، کاربران را به صندوق تخصیص می دهد
-        /// </summary>
-        /// <param name="userCashRegisters">اطلاعات نمایشی کاربران</param>
+        /// <inheritdoc/>
         public async Task SaveCashRegisterUsersAsync(RelatedItemsViewModel userCashRegisters)
         {
             Verify.ArgumentNotNull(userCashRegisters, nameof(userCashRegisters));
@@ -240,11 +223,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، بررسی می کند که نام صندوق تکراری هست یا خیر
-        /// </summary>
-        /// <param name="cashRegister">صندوق مورد نظر</param>
-        /// <returns>برای نام تکراری مقدار درست و در غیر این صورت مقدار نادرست برمی گرداند</returns>
+        /// <inheritdoc/>
         public async Task<bool> IsDuplicateCashRegisterName(CashRegisterViewModel cashRegister)
         {
             Verify.ArgumentNotNull(cashRegister, nameof(cashRegister));
@@ -255,12 +234,7 @@ namespace SPPC.Tadbir.Persistence
                     && cr.Id != cashRegister.Id);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، بررسی می کند که به صندوق کاربر اختصاص یافته هست یا خیر
-        /// </summary>
-        /// <param name="cashRegisterId">شناسه یکتای صندوق مورد نظر</param>
-        /// <returns>اگر کاربر به صندوق اختصاص یافته مقدار درست و در غیر این صورت 
-        /// مقدار نادرست برمی گرداند</returns>
+        /// <inheritdoc/>
         public async Task<bool> HasAssignedUsersToCashRegAsync(int cashRegisterId)
         {
             var repository = UnitOfWork.GetAsyncRepository<UserCashRegister>();
@@ -274,11 +248,7 @@ namespace SPPC.Tadbir.Persistence
             get { return (int?)EntityTypeId.CashRegister; }
         }
 
-        /// <summary>
-        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
-        /// </summary>
-        /// <param name="cashRegisterViewModel">مدل نمایشی شامل آخرین تغییرات</param>
-        /// <param name="cashRegister">سطر اطلاعاتی موجود</param>
+        /// <inheritdoc/>
         protected override void UpdateExisting(CashRegisterViewModel cashRegisterViewModel, CashRegister cashRegister)
         {
             cashRegister.Name = cashRegisterViewModel.Name;
@@ -286,11 +256,7 @@ namespace SPPC.Tadbir.Persistence
             cashRegister.Description = cashRegisterViewModel.Description;
         }
 
-        /// <summary>
-        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
-        /// </summary>
-        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
-        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        /// <inheritdoc/>
         protected override string GetState(CashRegister entity)
         {
             return entity != null
@@ -298,12 +264,7 @@ namespace SPPC.Tadbir.Persistence
                 : String.Empty;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، لیست رشته ای از عناوین آیتم های ورودی را بر اساس کد عملیاتی برمی گرداند 
-        /// </summary>
-        /// <param name="itemIds">لیستی از شناسه آیتم های مورد نظر</param>
-        /// <param name="operationId">کد عملیاتی مورد نظر</param>
-        /// <returns>لیست رشته ای از عناوین آیتم ها</returns>
+        /// <inheritdoc/>
         protected override async Task<string[]> GetItemNamesAsync(int[] itemIds, OperationId operationId)
         {
             if (operationId == OperationId.AssignCashRegisterUser)

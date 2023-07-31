@@ -40,8 +40,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasMaxLength(512);
             builder.Property(e => e.Level)
                 .IsRequired();
-            builder.Property(e => e.IsActive)
-                .IsRequired();
             builder.Property(e => e.IsCurrencyAdjustable)
                 .IsRequired();
             builder.Property(e => e.TurnoverMode)

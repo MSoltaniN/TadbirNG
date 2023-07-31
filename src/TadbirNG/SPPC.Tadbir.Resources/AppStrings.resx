@@ -4095,4 +4095,7 @@
   <data name="Inactive" xml:space="preserve">
     <value>غیرفعال</value>
   </data>
+  <data name="State" xml:space="preserve">
+    <value>وضعیت</value>
+  </data>
 </root>

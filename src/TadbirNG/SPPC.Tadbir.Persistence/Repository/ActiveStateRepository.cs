@@ -45,7 +45,23 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public async Task UpdateInactiveItemsAsync(IEnumerable<TEntityView> items)
+        public async Task<bool> IsDeactivatedAsync(int itemId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<InactiveEntity>();
+            var isDeactivated = await repository
+                .GetEntityQuery()
+                .Where(item => item.FiscalPeriodId == UserContext.FiscalPeriodId
+                    && item.BranchId == UserContext.BranchId
+                    && item.EntityId == itemId)
+                .AnyAsync();
+            return isDeactivated;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سطرهای اطلاعاتی غیرفعال را در فهرست اطلاعاتی ورودی به روزرسانی می کند
+        /// </summary>
+        /// <param name="items">مجموعه سطرهای اطلاعاتی مورد نظر برای به روزرسانی وضعیت</param>
+        protected async Task UpdateInactiveItemsAsync(IEnumerable<TEntityView> items)
         {
             var repository = UnitOfWork.GetAsyncRepository<InactiveEntity>();
             var inactiveIds = await repository
@@ -64,17 +80,19 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        /// <inheritdoc/>
-        public async Task<bool> IsDeactivatedAsync(int itemId)
+        /// <summary>
+        /// به روش آسنکرون، سطر اطلاعات پایه را پیش از حذف از حالت غیرفعال خارج می کند
+        /// </summary>
+        /// <param name="itemId">شناسه دیتابیسی سطر اطلاعاتی مورد نظر برای حذف</param>
+        protected async Task OnDeleteItemAsync(int itemId)
         {
             var repository = UnitOfWork.GetAsyncRepository<InactiveEntity>();
-            var isDeactivated = await repository
-                .GetEntityQuery()
-                .Where(item => item.FiscalPeriodId == UserContext.FiscalPeriodId
-                    && item.BranchId == UserContext.BranchId
-                    && item.EntityId == itemId)
-                .AnyAsync();
-            return isDeactivated;
+            var inactiveItems = await repository.GetByCriteriaAsync(
+                item => item.EntityId == itemId);
+            foreach (var item in inactiveItems)
+            {
+                repository.Delete(item);
+            }
         }
 
         private async Task DeactivateAsync(TEntity entity, string entityName)

@@ -1485,3 +1485,19 @@ CREATE TABLE [Core].[InactiveEntity] (
     , CONSTRAINT [FK_Core_InactiveEntity_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
 )
 GO
+
+-- 1.2.1558
+DROP TABLE [Finance].[InactiveAccount]
+GO
+
+DROP TABLE [Finance].[InactiveCurrency]
+GO
+
+ALTER TABLE [Finance].[Account]
+DROP COLUMN [IsActive]
+GO
+
+ALTER TABLE [Finance].[Currency]
+DROP COLUMN [IsActive]
+GO
+

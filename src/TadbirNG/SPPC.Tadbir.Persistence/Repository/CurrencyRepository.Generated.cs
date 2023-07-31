@@ -38,11 +38,7 @@ namespace SPPC.Tadbir.Persistence
             _access = access;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، کلیه ارزها را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از ارزها تعریف شده</returns>
+        /// <inheritdoc/>
         public async Task<PagedList<CurrencyViewModel>> GetCurrenciesAsync(GridOptions gridOptions)
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
@@ -53,7 +49,7 @@ namespace SPPC.Tadbir.Persistence
                     .GetAllQuery<Currency>(ViewId.Currency, curr => curr.Branch)
                     .Select(item => Mapper.Map<CurrencyViewModel>(item))
                     .ToListAsync();
-                await UpdateInactiveCurrenciesAsync(currencies);
+                await UpdateInactiveItemsAsync(currencies);
                 Array.ForEach(currencies.ToArray(), curr => Localize(curr));
             }
 
@@ -61,11 +57,7 @@ namespace SPPC.Tadbir.Persistence
             return new PagedList<CurrencyViewModel>(currencies, gridOptions);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، ارز با شناسه عددی مشخص شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="currencyId">شناسه عددی یکی از ارزها موجود</param>
-        /// <returns>ارز مشخص شده با شناسه عددی</returns>
+        /// <inheritdoc/>
         public async Task<CurrencyViewModel> GetCurrencyAsync(int currencyId)
         {
             CurrencyViewModel item = null;
@@ -74,20 +66,17 @@ namespace SPPC.Tadbir.Persistence
             if (currency != null)
             {
                 item = Mapper.Map<CurrencyViewModel>(currency);
-                var inactiveIds = await GetInactiveCurrencyIdsAsync();
-                item.IsActive = !inactiveIds.Contains(item.Id);
+                var isDeactivated = await IsDeactivatedAsync(item.Id);
+                item.State = isDeactivated
+                    ? AppStrings.Inactive
+                    : AppStrings.Active;
                 Localize(item);
             }
 
             return item;
         }
 
-        /// <summary>
-        /// اطلاعات استاندارد یک ارز با نام مشخص شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="localDbPath">مسیر فیزیکی فایل استاتیک بانک اطلاعاتی ارزهای استاندارد</param>
-        /// <param name="nameKey">کلید متن چندزبانه برای نام ارز مورد نظر</param>
-        /// <returns>اطلاعات استاندارد ارز</returns>
+        /// <inheritdoc/>
         public CurrencyViewModel GetCurrencyByName(string localDbPath, string nameKey)
         {
             var currencies = GetLocalCurrencyDatabase(localDbPath);
@@ -99,11 +88,7 @@ namespace SPPC.Tadbir.Persistence
             return currency;
         }
 
-        /// <summary>
-        /// مجموعه ای از همه ارزهای معتبر شناخته شده را به صورت زوج های کلید-مقدار خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="localDbPath">مسیر فیزیکی فایل استاتیک بانک اطلاعاتی ارزهای استاندارد</param>
-        /// <returns>مجموعه ای از همه ارزهای معتبر شناخته شده</returns>
+        /// <inheritdoc/>
         public IList<KeyValue> GetCurrencyNamesLookup(string localDbPath)
         {
             var currencies = GetLocalCurrencyDatabase(localDbPath);
@@ -115,12 +100,7 @@ namespace SPPC.Tadbir.Persistence
             return names;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، ارز پیش فرض برای یک بردار حساب با حساب و شناور مشخص شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه دیتابیسی مولفه حساب در بردار حساب مورد نظر</param>
-        /// <param name="faccountId">شناسه دیتابیسی مولفه تفصیلی شناور در بردار حساب مورد نظر</param>
-        /// <returns>اطلاعات ارز پیش فرض برای بردار حساب مشخص شده</returns>
+        /// <inheritdoc/>
         public async Task<CurrencyInfoViewModel> GetDefaultCurrencyAsync(int accountId, int faccountId)
         {
             var currency = default(CurrencyInfoViewModel);
@@ -145,10 +125,7 @@ namespace SPPC.Tadbir.Persistence
             return currency;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مجموعه ارزهای مالیاتی تعریف شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>ارزهای مالیاتی تعریف شده در دیتابیس شرکت جاری</returns>
+        /// <inheritdoc/>
         public async Task<IList<TaxCurrencyViewModel>> GetTaxCurrenciesAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<TaxCurrency>();
@@ -159,10 +136,7 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
         }
 
-        /// <summary>
-        /// به روش آسنکرون، ارزهای مالیاتی تعریف شده در شرکت جاری را به روزرسانی می کند
-        /// </summary>
-        /// <param name="mdbPath">مسیر فایل بانک اطلاعاتی اکسس مرتبط با ارزهای مالیاتی</param>
+        /// <inheritdoc/>
         public async Task UpdateTaxCurrenciesAsync(string mdbPath)
         {
             var repository = UnitOfWork.GetAsyncRepository<TaxCurrency>();
@@ -176,11 +150,7 @@ namespace SPPC.Tadbir.Persistence
             await UnitOfWork.CommitAsync();
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات یک ارز را ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="currency">ارز مورد نظر برای ایجاد یا اصلاح</param>
-        /// <returns>اطلاعات نمایشی ارز ایجاد یا اصلاح شده</returns>
+        /// <inheritdoc/>
         public async Task<CurrencyViewModel> SaveCurrencyAsync(CurrencyViewModel currency)
         {
             Verify.ArgumentNotNull(currency, nameof(currency));
@@ -190,7 +160,6 @@ namespace SPPC.Tadbir.Persistence
             {
                 currencyModel = Mapper.Map<Currency>(currency);
                 await InsertAsync(repository, currencyModel);
-                await HandleActiveStateChangeAsync(currencyModel);
             }
             else
             {
@@ -198,17 +167,13 @@ namespace SPPC.Tadbir.Persistence
                 if (currencyModel != null)
                 {
                     await UpdateAsync(repository, currencyModel, currency);
-                    await HandleActiveStateChangeAsync(currencyModel);
                 }
             }
 
             return Mapper.Map<CurrencyViewModel>(currencyModel);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، ارز مشخص شده با شناسه عددی را حذف می کند
-        /// </summary>
-        /// <param name="currencyId">شناسه عددی ارز مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task DeleteCurrencyAsync(int currencyId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Currency>();
@@ -216,15 +181,12 @@ namespace SPPC.Tadbir.Persistence
             if (currency != null)
             {
                 currency.Rates.Clear();
-                await HandleInactiveCurrencyDeleteAsync(currency);
+                await OnDeleteItemAsync(currency.Id);
                 await DeleteAsync(repository, currency);
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، ارزهای مشخص شده با شناسه دیتابیسی را حذف می کند
-        /// </summary>
-        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task DeleteCurrenciesAsync(IEnumerable<int> items)
         {
             var repository = UnitOfWork.GetAsyncRepository<Currency>();
@@ -234,7 +196,7 @@ namespace SPPC.Tadbir.Persistence
                 if (currency != null)
                 {
                     currency.Rates.Clear();
-                    await HandleInactiveCurrencyDeleteAsync(currency);
+                    await OnDeleteItemAsync(currency.Id);
                     await DeleteNoLogAsync(repository, currency);
                 }
             }
@@ -242,12 +204,7 @@ namespace SPPC.Tadbir.Persistence
             await OnEntityGroupDeleted(items);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا ارز مشخص شده با شناسه دیتابیسی قابل حذف هست یا نه؟
-        /// </summary>
-        /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر برای حذف</param>
-        /// <returns>در صورتی که ارز مورد نظر قابل حذف باشد مقدار بولی "درست" و
-        /// در غیر این صورت مقدار بولی "نادرست" را برمی گرداند.</returns>
+        /// <inheritdoc/>
         public async Task<bool> CanDeleteCurrencyAsync(int currencyId)
         {
             bool isUsed = await IsUsedInAccounts(currencyId);
@@ -259,13 +216,7 @@ namespace SPPC.Tadbir.Persistence
             return !isUsed;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، تکراری بودن ارز مشخص شده توسط نمایه بین المللی را بررسی می کند
-        /// </summary>
-        /// <param name="code">نمایه بین المللی ارز مورد نظر</param>
-        /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر برای ایجاد یا اصلاح</param>
-        /// <returns>اگر ارز مشخص شده قبلاً تعریف شده باشد مقدار بولی "درست" و در غیر این صورت
-        /// مقدار بولی "نادرست" را برمی گرداند</returns>
+        /// <inheritdoc/>
         public async Task<bool> IsDuplicateCurrencyAsync(string code, int currencyId = 0)
         {
             var repository = UnitOfWork.GetAsyncRepository<Currency>();
@@ -274,11 +225,7 @@ namespace SPPC.Tadbir.Persistence
             return existing != null;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات یک ارز پایه را ایجاد می کند
-        /// </summary>
-        /// <param name="currency">ارز مورد نظر برای ایجاد</param>
-        /// <returns>اطلاعات نمایشی ارز ایجاد شده</returns>
+        /// <inheritdoc/>
         public async Task<CurrencyViewModel> InsertDefaultCurrencyAsync(CurrencyViewModel currency)
         {
             var repository = UnitOfWork.GetAsyncRepository<Currency>();
@@ -315,11 +262,7 @@ namespace SPPC.Tadbir.Persistence
             get { return (int)EntityTypeId.Currency; }
         }
 
-        /// <summary>
-        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
-        /// </summary>
-        /// <param name="currencyViewModel">مدل نمایشی شامل آخرین تغییرات</param>
-        /// <param name="currency">سطر اطلاعاتی موجود</param>
+        /// <inheritdoc/>
         protected override void UpdateExisting(CurrencyViewModel currencyViewModel, Currency currency)
         {
             currency.BranchScope = currencyViewModel.BranchScope;
@@ -328,24 +271,20 @@ namespace SPPC.Tadbir.Persistence
             currency.TaxCode = currencyViewModel.TaxCode;
             currency.MinorUnit = currencyViewModel.MinorUnit;
             currency.DecimalCount = currencyViewModel.DecimalCount;
-            currency.IsActive = currencyViewModel.IsActive;
             currency.Description = currencyViewModel.Description;
             currency.IsDefaultCurrency = currencyViewModel.IsDefaultCurrency;
         }
 
-        /// <summary>
-        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
-        /// </summary>
-        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
-        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        /// <inheritdoc/>
         protected override string GetState(Currency entity)
         {
-            return (entity != null)
-                ? String.Format("{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7} , {8} : {9}",
-                    AppStrings.Name, entity.Name, AppStrings.Code, entity.Code,
-                    AppStrings.MinorUnit, entity.MinorUnit, AppStrings.DecimalCount, entity.DecimalCount,
-                    AppStrings.Description, entity.Description)
-                : null;
+            return entity == null
+                ? String.Empty
+                : $"{AppStrings.Name} : {entity.Name} , " +
+                  $"{AppStrings.Code} : {entity.Code} , " +
+                  $"{AppStrings.MinorUnit} : {entity.MinorUnit} , " +
+                  $"{AppStrings.DecimalCount} : {entity.DecimalCount} , " +
+                  $"{AppStrings.Description} : {entity.Description}";
         }
 
         private ISecureRepository Repository
@@ -398,67 +337,11 @@ namespace SPPC.Tadbir.Persistence
             return Mapper.Map<CurrencyViewModel>(currencyModel);
         }
 
-        private async Task HandleActiveStateChangeAsync(Currency currency)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<InactiveCurrency>();
-            var inactive = await repository.GetSingleByCriteriaAsync(curr => curr.CurrencyId == currency.Id
-                && curr.FiscalPeriodId == UserContext.FiscalPeriodId);
-            if (inactive != null && currency.IsActive)
-            {
-                repository.Delete(inactive);
-                await UnitOfWork.CommitAsync();
-            }
-            else if (inactive == null && !currency.IsActive)
-            {
-                inactive = new InactiveCurrency()
-                {
-                    CurrencyId = currency.Id,
-                    FiscalPeriodId = UserContext.FiscalPeriodId
-                };
-                repository.Insert(inactive);
-                await UnitOfWork.CommitAsync();
-            }
-        }
-
-        private async Task HandleInactiveCurrencyDeleteAsync(Currency currency)
-        {
-            if (!currency.IsActive)
-            {
-                var repository = UnitOfWork.GetAsyncRepository<InactiveCurrency>();
-                var inactiveItems = await repository.GetByCriteriaAsync(
-                    curr => curr.CurrencyId == currency.Id);
-                foreach (var item in inactiveItems)
-                {
-                    repository.Delete(item);
-                }
-
-                await UnitOfWork.CommitAsync();
-            }
-        }
-
-        private async Task UpdateInactiveCurrenciesAsync(List<CurrencyViewModel> currencies)
-        {
-            var inactiveIds = await GetInactiveCurrencyIdsAsync();
-            foreach (var currency in currencies)
-            {
-                currency.IsActive = !inactiveIds.Contains(currency.Id);
-            }
-        }
-
-        private async Task<List<int>> GetInactiveCurrencyIdsAsync()
-        {
-            var repository = UnitOfWork.GetAsyncRepository<InactiveCurrency>();
-            return await repository
-                .GetEntityQuery()
-                .Where(curr => curr.FiscalPeriodId == UserContext.FiscalPeriodId)
-                .Select(curr => curr.CurrencyId)
-                .ToListAsync();
-        }
-
         private void Localize(CurrencyViewModel currency)
         {
             currency.Name = Context.Localize(currency.Name);
             currency.MinorUnit = Context.Localize(currency.MinorUnit);
+            currency.State = Context.Localize(currency.State);
         }
 
         private readonly ISystemRepository _system;

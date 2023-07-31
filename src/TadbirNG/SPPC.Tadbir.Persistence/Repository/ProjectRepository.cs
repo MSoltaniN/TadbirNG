@@ -47,6 +47,8 @@ namespace SPPC.Tadbir.Persistence
                     .GetAllQuery<Project>(ViewId.Project, prj => prj.Children)
                     .Select(item => Mapper.Map<ProjectViewModel>(item))
                     .ToListAsync();
+                await UpdateInactiveItemsAsync(projects);
+                Array.ForEach(projects.ToArray(), prj => prj.State = Context.Localize(prj.State));
             }
 
             await ReadAsync(gridOptions);
@@ -62,6 +64,10 @@ namespace SPPC.Tadbir.Persistence
             if (project != null)
             {
                 item = Mapper.Map<ProjectViewModel>(project);
+                var isDeactivated = await IsDeactivatedAsync(item.Id);
+                item.State = isDeactivated
+                    ? Context.Localize(AppStrings.Inactive)
+                    : Context.Localize(AppStrings.Active);
             }
 
             return item;
@@ -126,6 +132,7 @@ namespace SPPC.Tadbir.Persistence
             var project = await repository.GetByIDAsync(projectId);
             if (project != null)
             {
+                await OnDeleteItemAsync(project.Id);
                 await DeleteAsync(repository, project);
                 await UpdateLevelUsageAsync(project.Level);
             }
@@ -142,6 +149,7 @@ namespace SPPC.Tadbir.Persistence
                 if (project != null)
                 {
                     level = Math.Max(level, project.Level);
+                    await OnDeleteItemAsync(project.Id);
                     await DeleteNoLogAsync(repository, project);
                 }
             }
@@ -220,12 +228,12 @@ namespace SPPC.Tadbir.Persistence
         /// <inheritdoc/>
         protected override string GetState(Project entity)
         {
-            return (entity != null)
-               ? String.Format(
-                    "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7}",
-                    AppStrings.Name, entity.Name, AppStrings.Code, entity.Code,
-                    AppStrings.FullCode, entity.FullCode, AppStrings.Description, entity.Description)
-               : null;
+            return entity == null
+                ? String.Empty
+                : $"{AppStrings.Name} : {entity.Name} , " +
+                  $"{AppStrings.Code} : {entity.Code} , " +
+                  $"{AppStrings.FullCode} : {entity.FullCode} , " +
+                  $"{AppStrings.Description} : {entity.Description}";
         }
 
         private ISecureRepository Repository

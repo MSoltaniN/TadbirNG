@@ -1290,3 +1290,62 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Des
     VALUES (281, 40, N'Reactivate', 256, N'Mark an inactive source/application as active')
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
+-- 1.2.1558
+UPDATE [Metadata].[View]
+SET [SearchUrl] = '/faccounts/lookup'
+WHERE [Name] = 'DetailAccount'
+
+UPDATE [Metadata].[View]
+SET [SearchUrl] = '/ccenters/lookup'
+WHERE [Name] = 'CostCenter'
+
+UPDATE [Metadata].[View]
+SET [SearchUrl] = '/projects/lookup'
+WHERE [Name] = 'Project'
+
+UPDATE [Metadata].[View]
+SET [SearchUrl] = '/currencies/lookup', [EntityType] = 'Base'
+WHERE [Name] = 'Currency'
+
+UPDATE [Metadata].[View]
+SET [SearchUrl] = '/cash-registers/lookup'
+WHERE [Name] = 'CashRegister'
+
+UPDATE [Metadata].[View]
+SET [SearchUrl] = '/source-apps/lookup'
+WHERE [Name] = 'SourceApp'
+
+UPDATE [Metadata].[View]
+SET [SearchUrl] = '/fperiods'
+WHERE [Name] = 'FiscalPeriod'
+
+UPDATE [Metadata].[View]
+SET [SearchUrl] = '/branches'
+WHERE [Name] = 'Branch'
+
+DELETE FROM [Metadata].[Column]
+WHERE ViewID = 1 AND [Name] = 'IsActive'
+
+DELETE FROM [Metadata].[Column]
+WHERE ViewID = 30 AND [Name] = 'IsActive'
+
+UPDATE [Metadata].[Column]
+SET [DisplayIndex] = [DisplayIndex] - 1
+WHERE ViewID = 30 AND ColumnID >= 274 AND ColumnID <= 277
+
+SET IDENTITY_INSERT [Metadata].[Column] ON
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (11, 1, 'State', NULL, NULL, 'System.String', 'nvarchar', 'string', 32, 0, 0, 1, 1, 1, NULL, 5, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (278, 30, 'State', NULL, NULL, 'System.String', 'nvarchar', 'string', 32, 0, 0, 1, 1, 1, NULL, 7, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (817, 6, 'State', NULL, NULL, 'System.String', 'nvarchar', 'string', 32, 0, 0, 0, 1, 1, 1, NULL, 5, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (818, 7, 'State', NULL, NULL, 'System.String', 'nvarchar', 'string', 32, 0, 0, 0, 1, 1, 1, NULL, 5, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (819, 8, 'State', NULL, NULL, 'System.String', 'nvarchar', 'string', 32, 0, 0, 0, 1, 1, 1, NULL, 5, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (820, 70, 'State', NULL, NULL, 'System.String', 'nvarchar', 'string', 32, 0, 0, 0, 1, 1, 1, NULL, 3, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (821, 73, 'State', NULL, NULL, 'System.String', 'nvarchar', 'string', 32, 0, 0, 0, 1, 1, 1, NULL, 5, NULL)
+SET IDENTITY_INSERT [Metadata].[Column] OFF

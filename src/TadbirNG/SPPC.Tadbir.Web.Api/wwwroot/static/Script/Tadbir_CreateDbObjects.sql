@@ -163,20 +163,19 @@ CREATE TABLE [Corporate].[Branch] (
 GO
 
 CREATE TABLE [Finance].[Currency] (
-    [CurrencyID]     INT              IDENTITY (1, 1) NOT NULL,
-	[FiscalPeriodID] INT              CONSTRAINT [DF_Finance_Currency_FiscalPeriodID] DEFAULT (0) NOT NULL,
-	[BranchID]       INT              NOT NULL,
-	[BranchScope]    SMALLINT         CONSTRAINT [DF_Finance_Currency_BranchScope] DEFAULT (0) NOT NULL,
-    [Name]           NVARCHAR(64)     NOT NULL,
-    [Code]           NVARCHAR(8)      NOT NULL,
-    [TaxCode]        INT              NOT NULL,
-    [MinorUnit]      NVARCHAR(32)     NOT NULL,
-    [DecimalCount]   SMALLINT         NOT NULL,
-    [IsActive]       BIT              NOT NULL,
-	[IsDefaultCurrency] BIT           NOT NULL,
-    [Description]    NVARCHAR(512)    NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Currency_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_Currency_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    [CurrencyID]        INT              IDENTITY (1, 1) NOT NULL,
+	[FiscalPeriodID]    INT              CONSTRAINT [DF_Finance_Currency_FiscalPeriodID] DEFAULT (0) NOT NULL,
+	[BranchID]          INT              NOT NULL,
+	[BranchScope]       SMALLINT         CONSTRAINT [DF_Finance_Currency_BranchScope] DEFAULT (0) NOT NULL,
+    [Name]              NVARCHAR(64)     NOT NULL,
+    [Code]              NVARCHAR(8)      NOT NULL,
+    [TaxCode]           INT              NOT NULL,
+    [MinorUnit]         NVARCHAR(32)     NOT NULL,
+    [DecimalCount]      SMALLINT         NOT NULL,
+	[IsDefaultCurrency] BIT              NOT NULL,
+    [Description]       NVARCHAR(512)    NULL,
+    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Currency_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_Currency_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_Currency] PRIMARY KEY CLUSTERED ([CurrencyID] ASC)
     , CONSTRAINT [FK_Finance_Currency_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
 )
@@ -191,7 +190,7 @@ CREATE TABLE [Finance].[CurrencyRate] (
     [Date]             DATETIME         NOT NULL,
     [Time]             TIME(7)          NOT NULL,
     [Multiplier]       FLOAT            NOT NULL,
-	[Description]    NVARCHAR(512)      NULL,
+	[Description]      NVARCHAR(512)    NULL,
     [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_CurrencyRate_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]     DATETIME         CONSTRAINT [DF_Finance_CurrencyRate_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_CurrencyRate] PRIMARY KEY CLUSTERED ([CurrencyRateID] ASC)
@@ -424,7 +423,6 @@ CREATE TABLE [Finance].[Account] (
     [FullCode]               NVARCHAR(256)    NOT NULL,
     [Name]                   NVARCHAR(512)    NOT NULL,
     [Level]                  SMALLINT         NOT NULL,
-    [IsActive]               BIT              CONSTRAINT [DF_Finance_Account_IsActive] DEFAULT (1) NOT NULL,
     [IsCurrencyAdjustable]   BIT              CONSTRAINT [DF_Finance_Account_IsCurrencyAdjustable] DEFAULT (1) NOT NULL,
     [TurnoverMode]           SMALLINT         CONSTRAINT [DF_Finance_Account_TurnoverMode] DEFAULT (-1) NOT NULL,
     [Description]            NVARCHAR(512)    NULL,
@@ -655,30 +653,6 @@ CREATE TABLE [Finance].[AccountProject] (
     , CONSTRAINT [PK_Finance_AccountProject] PRIMARY KEY CLUSTERED ([AccountProjectID] ASC)
     , CONSTRAINT [FK_Finance_AccountProject_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
     , CONSTRAINT [FK_Finance_AccountProject_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project] ([ProjectID])
-)
-GO
-
-CREATE TABLE [Finance].[InactiveAccount] (
-    [InactiveAccountID]  INT              IDENTITY (1, 1) NOT NULL,
-    [AccountID]          INT              NOT NULL,
-    [FiscalPeriodID]     INT              NOT NULL,
-    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_InactiveAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Finance_InactiveAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_InactiveAccount] PRIMARY KEY CLUSTERED ([InactiveAccountID] ASC)
-    , CONSTRAINT [FK_Finance_InactiveAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
-    , CONSTRAINT [FK_Finance_InactiveAccount_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
-)
-GO
-
-CREATE TABLE [Finance].[InactiveCurrency] (
-    [InactiveCurrencyID] INT              IDENTITY (1, 1) NOT NULL,
-    [CurrencyID]         INT              NOT NULL,
-    [FiscalPeriodID]     INT              NOT NULL,
-    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_InactiveCurrency_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Finance_InactiveCurrency_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_InactiveCurrency] PRIMARY KEY CLUSTERED ([InactiveCurrencyID] ASC)
-    , CONSTRAINT [FK_Finance_InactiveCurrency_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
-    , CONSTRAINT [FK_Finance_InactiveCurrency_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
 )
 GO
 
