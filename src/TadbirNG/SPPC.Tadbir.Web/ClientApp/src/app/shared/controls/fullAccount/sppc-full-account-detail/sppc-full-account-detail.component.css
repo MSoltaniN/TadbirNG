@@ -82,19 +82,12 @@
   .flex-container .dialog-item{
     width: 30%;
   }
-  .flex-direction-row{
-    flex-direction: row;
-  }
-  .flex-direction-row-reverse{
-    flex-direction: row-reverse;
-  }
 
   @media screen and (max-width:800px) {
     /*deep*/ .fullAccountForm > .k-dialog {
       width: 90%;
       min-width: 250px;
     }
-
 
     .flex-container{
       display: inline-flex;
