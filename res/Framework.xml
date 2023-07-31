@@ -455,7 +455,7 @@
           <ColumnView name="Id" visible="True" width="120" />
           <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
         </Property>
-        <Property name="TextNo" type="Int64" isValidated="True" description="شماره دسته چک" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="TextNo" type="String" isValidated="True" description="شماره دسته چک" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1513.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnTextNo" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="TextNo" type="nvarchar(16)" nullable="True" />
           <ColumnView name="TextNo" visible="True" width="120" />
@@ -2375,7 +2375,7 @@
           <ColumnView name="Type" visible="True" width="120" />
           <ValidationRule name="Type_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="TextNo" type="Int64" isValidated="True" description="شماره فرم دریافت/پرداخت" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1523.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="TextNo" type="String" isValidated="True" description="شماره فرم دریافت/پرداخت" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1523.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtNo" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="TextNo" type="nvarchar(16)" nullable="False" />
           <ColumnView name="TextNo" visible="True" width="120" />
