@@ -9,4 +9,5 @@ export class PayReceiveCashAccount {
     sourceAppId: number;
     isBank: boolean = true;
     bankOrderNo: number;
+    sourceAppName: string;
 }

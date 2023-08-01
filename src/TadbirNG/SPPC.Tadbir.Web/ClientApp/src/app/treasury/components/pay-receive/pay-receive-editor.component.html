@@ -225,7 +225,7 @@
                     [isConfirmed]="isConfirmed"
                     [type]="this.type == 1 ? '1' : '2'"
                     [payReceiveId]="this.model?.id"
-                    (setTotalAmount)="setTotalCashAmount($event)"
+                    (setTotalAmount)="setTotalAmount($event)"
                   >
                   </payer-receiver>
                   <div class="form-group totalAmount">
@@ -253,7 +253,7 @@
                     [isConfirmed]="isConfirmed"
                     [payReceiveId]="this.model?.id"
                     [payReceiptType]="this.type == 1 ? '1' : '2'"
-                    (setTotalAmount)="setTotalCashAmount($event)"
+                    (setTotalAmount)="setTotalAmount($event)"
                   >
                   </cash-account>
                   <div class="form-group totalAmount">

@@ -86,6 +86,8 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   currencyValue: number;
   getDataUrl: string;
   breadCrumbTitle: string;
+  totalAccountAmount: number = 0;
+  totalCashAmount: number = 0;
   amountDifference: number;
   @Persist() preferedDate;
 
@@ -371,7 +373,6 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     this.isLastItem = !this.model.hasNext;
     this.isFirstItem = !this.model.hasPrevious;
     this.errorMessages = [];
-    this.amountDifference = Math.abs(this.model.accountAmountsSum - this.model.cashAmountsSum);
 
     setTimeout(() => {
       this.editForm.reset(this.model);
@@ -483,9 +484,14 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     });
   }
 
-  setTotalCashAmount(event) {
-    this.getDataUrl = String.Format(this.type == 1?PayReceiveApi.PaymentByNo: PayReceiveApi.ReceiptByNo,this.model.payReceiveNo);
-    this.getPayReceive(this.getDataUrl);
+  setTotalAmount(event:{totalAccountAmount:number, totalCashAmount:number}) {
+    if (event.totalAccountAmount)
+      this.totalAccountAmount = event.totalAccountAmount
+
+    if (event.totalCashAmount)
+      this.totalCashAmount = event.totalCashAmount;
+
+   this.amountDifference = Math.abs(this.totalAccountAmount - this.totalCashAmount);
   }
 
   getCurrencies() {
