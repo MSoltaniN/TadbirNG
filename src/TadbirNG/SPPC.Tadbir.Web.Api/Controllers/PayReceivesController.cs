@@ -679,8 +679,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 }
             }
 
-            var payReceiveNo = payReceive.PayReceiveNo.Trim();
-            if (!Int64.TryParse(payReceiveNo, out long numberValue))
+            var textNo = payReceive.TextNo.Trim();
+            if (!Int64.TryParse(textNo, out long numberValue))
             {
                 return BadRequestResult(_strings.Format(
                     AppStrings.InvalidLetterForStringNumber, AppStrings.Number));
@@ -693,7 +693,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                    AppStrings.InvalidStringNumber, minNumberString, AppStrings.Number));
             }
 
-            if (await _repository.IsDuplicatePayReceiveNo(payReceive))
+            if (await _repository.IsDuplicateTextNo(payReceive))
             {
                 string fieldTitle = entityNameKey == AppStrings.Payment
                     ? AppStrings.PaymentNo

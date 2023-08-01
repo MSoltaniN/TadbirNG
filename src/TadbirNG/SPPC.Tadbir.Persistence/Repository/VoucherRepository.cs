@@ -162,8 +162,7 @@ namespace SPPC.Tadbir.Persistence
             var first = await Repository
                 .GetAllOperationQuery<Voucher>(ViewId.Voucher, v => v.Status, v => v.Origin)
                 .Where(v => v.SubjectType == (short)subject)
-                .OrderBy(v => v.Date)
-                    .ThenBy(v => v.No)
+                .OrderBy(v => v.No)
                 .FirstOrDefaultAsync();
             if (first != null)
             {
@@ -208,8 +207,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllOperationQuery<Voucher>(ViewId.Voucher, v => v.Status, v => v.Origin)
                 .Where(v => v.SubjectType == (short)subject
                     && v.No < currentNo)
-                .OrderByDescending(v => v.Date)
-                    .ThenByDescending(v => v.No)
+                .OrderByDescending(v => v.No)
                 .FirstOrDefaultAsync();
             if (previous != null)
             {
@@ -254,8 +252,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllOperationQuery<Voucher>(ViewId.Voucher, v => v.Status, v => v.Origin)
                 .Where(v => v.SubjectType == (short)subject
                     && v.No > currentNo)
-                .OrderBy(v => v.Date)
-                    .ThenBy(v => v.No)
+                .OrderBy(v => v.No)
                 .FirstOrDefaultAsync();
             if (next != null)
             {
@@ -296,8 +293,7 @@ namespace SPPC.Tadbir.Persistence
             var last = await Repository
                 .GetAllOperationQuery<Voucher>(ViewId.Voucher, v => v.Status, v => v.Origin)
                 .Where(v => v.SubjectType == (short)subject)
-                .OrderByDescending(v => v.Date)
-                    .ThenByDescending(v => v.No)
+                .OrderByDescending(v => v.No)
                 .FirstOrDefaultAsync();
             if (last != null)
             {
@@ -970,8 +966,8 @@ namespace SPPC.Tadbir.Persistence
             return voucher;
         }
 
-        private const string DefaultSorting = "v.Date, v.No";
-        private const string DefaultDescendingSorting = "v.Date DESC, v.No DESC";
+        private const string DefaultSorting = "v.No";
+        private const string DefaultDescendingSorting = "v.No DESC";
         private readonly ISystemRepository _system;
         private readonly IUserRepository _userRepository;
         private readonly IReportDirectUtility _report;

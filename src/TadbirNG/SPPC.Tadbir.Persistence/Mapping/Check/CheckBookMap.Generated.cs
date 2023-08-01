@@ -24,7 +24,9 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("CheckBookID");
-            builder.Property(e => e.CheckBookNo);
+            builder.Property(e => e.TextNo)
+                .IsRequired()
+                .HasMaxLength(16);
             builder.Property(e => e.SeriesNo)
                 .IsRequired()
                 .HasMaxLength(32);
@@ -59,7 +61,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
-            builder.Ignore(checkBook => checkBook.No);
             builder.Ignore(checkBook => checkBook.Reference);
             builder.Ignore(checkBook => checkBook.Date);
 

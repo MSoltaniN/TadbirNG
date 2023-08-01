@@ -3924,7 +3924,7 @@
   <data name="Register" xml:space="preserve">
     <value>Register</value>
   </data>
-  <data name="PayReceiveNo" xml:space="preserve">
+  <data name="TextNo" xml:space="preserve">
     <value>Number</value>
   </data>
   <data name="PaymentNo" xml:space="preserve">

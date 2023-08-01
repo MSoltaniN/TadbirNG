@@ -1045,11 +1045,6 @@ namespace SPPC.Tadbir.Resources
         public const string CheckBookName = "CheckBookName";
 
         /// <summary>
-        /// Default text : شماره دسته چک
-        /// </summary>
-        public const string CheckBookNo = "CheckBookNo";
-
-        /// <summary>
         /// Default text : برگه های دسته چک قبلا ایجاد شده است.
         /// </summary>
         public const string CheckBookPagesExist = "CheckBookPagesExist";
@@ -5577,7 +5572,7 @@ namespace SPPC.Tadbir.Resources
         /// <summary>
         /// Default text : شماره
         /// </summary>
-        public const string PayReceiveNo = "PayReceiveNo";
+        public const string TextNo = "TextNo";
 
         /// <summary>
         /// Default text : عملکرد

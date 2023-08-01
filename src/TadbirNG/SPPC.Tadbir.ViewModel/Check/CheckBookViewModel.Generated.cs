@@ -35,7 +35,8 @@ namespace SPPC.Tadbir.ViewModel.Check
         /// <summary>
         /// شماره دسته چک
         /// </summary>
-        public int? CheckBookNo { get; set; }
+        [StringLength(16, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public string TextNo { get; set; }
 
         /// <summary>
         /// شماره سری دسته چک

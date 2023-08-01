@@ -70,7 +70,7 @@ CREATE TABLE [Check].[CheckBook] (
     [CostCenterID]    INT              NULL,
     [ProjectID]       INT              NULL,
     [FiscalPeriodID]  INT              CONSTRAINT [DF_Check_CheckBook_FiscalPeriodID] DEFAULT (0) NULL,
-    [CheckBookNo]     NVARCHAR(32)     NOT NULL,
+    [TextNo]     NVARCHAR(32)     NOT NULL,
     [Name]            NVARCHAR(64)     NOT NULL,
     [IssueDate]       DATETIME         NOT NULL,
     [StartNo]         NVARCHAR(32)     NOT NULL,
@@ -180,11 +180,11 @@ SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
 -- 1.2.1509
 ALTER TABLE [Check].[CheckBook]
-DROP COLUMN [CheckBookNo]
+DROP COLUMN [TextNo]
 GO
 
 ALTER TABLE [Check].[CheckBook]
-ADD [CheckBookNo] INT NULL,
+ADD [TextNo] INT NULL,
     [CreatedByID] INT CONSTRAINT [DF_Check_CheckBook_CreatedByID] DEFAULT (1) NOT NULL,
 	[ModifiedByID] INT CONSTRAINT [DF_Check_CheckBook_ModifiedByID] DEFAULT (1) NOT NULL,
 	[SeriesNo] NVARCHAR(32) CONSTRAINT [DF_Check_CheckBook_SeriesNo] DEFAULT 'A' NOT NULL,
@@ -386,7 +386,7 @@ CREATE TABLE [CashFlow].[PayReceive] (
     [ConfirmedByID]     INT              NULL,
     [ApprovedByID]      INT              NULL,
     [Type]              SMALLINT         NOT NULL,
-    [PayReceiveNo]      NVARCHAR(16)     NOT NULL,
+    [TextNo]      NVARCHAR(16)     NOT NULL,
     [Reference]         NVARCHAR(64)     NULL,
     [Date]              DATETIME         NOT NULL,
     [CurrencyID]        INT              NULL,
@@ -630,6 +630,7 @@ CREATE TABLE [CashFlow].[PayReceiveVoucherLine] (
     , CONSTRAINT [FK_CashFlow_PayReceiveVoucherLine_Finance_VoucherLine] FOREIGN KEY ([VoucherLineID]) REFERENCES [Finance].[VoucherLine]([VoucherLineID]))
 GO
 
+<<<<<<< HEAD
 -- 1.2.1557
 -- ترازنامه 
 UPDATE [Finance].[AccountCollectionCategory]
@@ -910,3 +911,11 @@ WHERE [CollectionID] = 50
 UPDATE [Finance].[AccountCollection]
 SET [Name] = N'TransitionalProperty'
 WHERE [CollectionID] = 51
+=======
+-- 1.2.1549
+EXEC sp_rename '[CashFlow].[PayReceive].[PayReceiveNo]', 'TextNo', 'COLUMN'
+EXEC sp_rename '[Check].[CheckBook].[CheckBookNo]', 'TextNo', 'COLUMN'
+
+ALTER TABLE [Check].[CheckBook]
+ALTER COLUMN [TextNo] NVARCHAR(16) NOT NULL
+>>>>>>> 3552a181ab18cbd7768d210ad78d0e271c1553f4
