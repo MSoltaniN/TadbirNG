@@ -14,5 +14,20 @@ namespace SPPC.Tadbir.Model
         /// "کلیه شعبه ها" (مقدار 0)، "شعبه جاری و زیرمجموعه ها" (مقدار 1) و "شعبه جاری" (مقدار 2) می شود.
         /// </summary>
         public virtual short BranchScope { get; set; }
+
+        /// <inheritdoc/>
+        public virtual int CreatedById { get; set; }
+
+        /// <inheritdoc/>
+        public string CreatedByName { get; set; }
+
+        /// <inheritdoc/>
+        public DateTime CreatedDate { get; set; }
+
+        /// <inheritdoc/>
+        public int ModifiedById { get; set; }
+
+        /// <inheritdoc/>
+        public string ModifiedByName { get; set; }
     }
 }
