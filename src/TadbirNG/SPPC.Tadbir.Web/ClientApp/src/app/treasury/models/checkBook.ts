@@ -2,7 +2,7 @@ import { FullAccount } from "@sppc/finance/models"
 
 export interface CheckBook {
     id: number,
-    checkBookNo: number,
+    textNo: number,
     name: string,
     issueDate: Date,
     startNo: string,

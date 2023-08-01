@@ -60,7 +60,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   @Output() cancel: EventEmitter<any> = new EventEmitter()
   editMode = false;
   set setEditMode(value:boolean){
-    this.editForm.get('checkBookNo')[!value ? 'enable' : 'disable']();
+    this.editForm.get('textNo')[!value ? 'enable' : 'disable']();
     this.editForm.get('name')[!value ? 'enable' : 'disable']();
     this.editForm.get('bankName')[!value ? 'enable' : 'disable']();
     this.editForm.get('startNo')[!value ? 'enable' : 'disable']();
@@ -89,7 +89,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
   fullAccountForm:FormGroup;
   deleteConfirmBox = false;
   searchConfirm = false;
-  checkBookNo:number;
+  textNo:number;
   lastModel: CheckBookInfo = new CheckBookInfo();
 
   get urlMode() {
@@ -315,7 +315,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
                 this.checkBookItem = next;
 
                 if (!this.dialogMode) {
-                  history.pushState(null,null,`/treasury/check-books/by-no?no=${next.checkBookNo}`)
+                  history.pushState(null,null,`/treasury/check-books/by-no?no=${next.textNo}`)
                 }
 
               }).catch(err => {
@@ -329,7 +329,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
                   this.checkBookItem = prev;
 
                   if (!this.dialogMode) {
-                    history.pushState(null,null,`/treasury/check-books/by-no?no=${prev.checkBookNo}`)
+                    history.pushState(null,null,`/treasury/check-books/by-no?no=${prev.textNo}`)
                   }
                 }).catch( err => {
                   this.addNew();
@@ -403,7 +403,7 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
           this.isFirstCheckBook = true;
           if (!isNew) {
             this.showMessage(
-              this.getText("CheckBook.CheckBookNotFound"),
+              this.getText("CheckBook.textNotFound"),
               MessageType.Warning
             );
             this.addNew();
@@ -517,12 +517,12 @@ export class CheckBookEditorComponent extends DetailComponent implements OnInit 
     this.breadCrumbTitle = "CheckBook";
     let url;
     if (searchConfirm) {
-      if (this.checkBookNo && !this.dialogMode) {
+      if (this.textNo && !this.dialogMode) {
         this.router.navigate(['/treasury/check-books/by-no'],{queryParams:{
-          no: this.checkBookNo,
+          no: this.textNo,
           returnUrl: this.returnUrl
         }});
-        url = String.Format(CheckBooksApi.CheckBookByNo,this.checkBookNo);
+        url = String.Format(CheckBooksApi.CheckBookByNo,this.textNo);
         // this.getCheckBook(url);
       } else {
         return;
