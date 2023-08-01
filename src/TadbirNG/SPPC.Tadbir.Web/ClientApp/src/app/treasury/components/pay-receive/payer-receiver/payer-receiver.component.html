@@ -23,7 +23,7 @@
                 tLtr: this.currentlang === 'en'
               }"
               [data]="rowData"
-              [height]="250"
+              [height]="300"
               [sortable]="{ allowUnsort: true, mode: 'multiple' }"
               [sort]="sort"
               [pageSize]="pageSize"
@@ -66,7 +66,7 @@
                   [icon]="'file-add'"
                   type="button"
                   title="{{ 'Buttons.Add' | translate }}"
-                  [disabled]="isConfirmed"
+                  [disabled]="disableOperations"
                 ></button>
                 <!-- [disabled]="!accountRequired" -->
           
@@ -75,7 +75,7 @@
                   [EntityName]="permissionEntityTypeName"
                   (sppcClick)="editHandler()"
                   class="k-button k-button-icon"
-                  [disabled]="selectedRows.length != 1 || isConfirmed"
+                  [disabled]="selectedRows.length != 1 || disableOperations"
                   title="{{ 'Buttons.Edit' | translate }}"
                 >
                   <span class="k-icon k-i-pencil"></span>
@@ -86,7 +86,7 @@
                   (sppcClick)="removeHandler()"
                   class="k-button k-button-icon"
                   title="{{ 'Buttons.Delete' | translate }}"
-                  [disabled]="selectedRows.length == 0 || isConfirmed"
+                  [disabled]="selectedRows.length == 0 || disableOperations"
                 >
                   <span class="k-icon k-i-delete"></span>
                 </button>
@@ -97,7 +97,7 @@
                   (sppcClick)="callOperation(payReceiveOperationsItems.Aggregate)"
                   class="k-button"
                   title="{{ 'PayReceipt.AggregateRows' | translate }}"
-                  [disabled]="rowData?.data.length < 1 || isConfirmed"
+                  [disabled]="rowData?.data.length < 1 || disableOperations"
                 >
                   <span class="k-icon k-i-decrease-vertical-spacing"></span>
                 </button>
@@ -107,7 +107,7 @@
                   (sppcClick)="callOperation(payReceiveOperationsItems.RemoveInvalidRows)"
                   class="k-button"
                   title="{{ 'PayReceipt.RemoveInvalidRows' | translate }}"
-                  [disabled]="rowData?.data.length < 1 || isConfirmed"
+                  [disabled]="rowData?.data.length < 1 || disableOperations"
                 >
                   <span class="k-icon k-i-remove-vertical-spacing"></span>
                 </button>

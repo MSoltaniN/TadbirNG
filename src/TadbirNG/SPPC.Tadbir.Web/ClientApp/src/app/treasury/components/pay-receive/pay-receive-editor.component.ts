@@ -113,6 +113,10 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     return this.editForm?.value.isApproved;
   }
 
+  public get isRegistered() : boolean {
+    return this.model.isRegistered;
+  }
+
   public get noQueryParam() {
     let no = this.route.snapshot.queryParamMap.get('no');
     return no?no:'';
@@ -376,6 +380,8 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
 
     setTimeout(() => {
       this.editForm.reset(this.model);
+      console.log(this.editForm);
+      
     }, 0);
   }
 
@@ -620,7 +626,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
       this.model.id
     );
 
-    let permission = this.isConfirmed? 'UndoApprove': 'Approve';
+    let permission = this.isApproved? 'UndoApprove': 'Approve';
 
     this.changeStatus(apiUrl, permission,{
       next: () => {
@@ -632,7 +638,31 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     })
   }
 
-  changeStatus(apiUrl,permission:string, cb:{next?:Function, error?:Function}) {
+  registerForm(e) {
+    let url = this.type == 1? PayReceiveApi.RegisterPayment: PayReceiveApi.RegisterReceipt;
+    let apiUrl = String.Format(url,this.model.id);
+
+    // let permission = 'Register';
+
+    lastValueFrom(this.payReceive.registerForm(apiUrl))
+      .then((res) => {
+        this.model.isRegistered = true;
+        // this.getDataUrl = String.Format(
+        //   this.type == PayReceiveTypes.Payment? PayReceiveApi.PaymentByNo: PayReceiveApi.ReceiptByNo,
+        //   this.model.payReceiveNo
+        // )
+        // this.getPayReceive(this.getDataUrl);
+      })
+      .catch((err) => {
+        if (err)
+          this.showMessage(
+            this.errorHandlingService.handleError(err),
+            MessageType.Warning
+          );
+      })
+  }
+
+  changeStatus(apiUrl,permission:string, cb?:{next?:Function, error?:Function}) {
     let permissionList = this.type == 1? PaymentPermissions: ReceiptPermissions;
 
     let hasPermission = this.isAccess(
@@ -643,7 +673,9 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     if (hasPermission) {
       lastValueFrom(this.payReceive.changeStatus(apiUrl))
       .then((res) => {
-        cb.next(res);
+        if (cb.next)
+          cb.next(res);
+
         this.getDataUrl = String.Format(
           this.type == PayReceiveTypes.Payment? PayReceiveApi.PaymentByNo: PayReceiveApi.ReceiptByNo,
           this.model.payReceiveNo
@@ -651,7 +683,9 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
         this.getPayReceive(this.getDataUrl);
       })
       .catch((err) => {
-        cb.error(err);
+        if (cb.error)
+          cb.error(err);
+
         if (err)
           this.showMessage(
             this.errorHandlingService.handleError(err),

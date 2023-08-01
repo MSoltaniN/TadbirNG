@@ -37,6 +37,7 @@
             (sppcClick)="removeHandler()"
             class="k-button sh-remove-voucher"
             title="{{ 'Buttons.Delete' | translate }}"
+            [disabled]="isRegistered"
           >
             <span class="k-icon k-i-delete"></span>
           </button>
@@ -105,6 +106,17 @@
           </button>
 
           <button
+            class="k-button sh-check-voucher"
+            SppcPermissionCheck="Register"
+            [EntityName]="entityType"
+            (sppcClick)="registerForm($event)"
+            [disabled]="isRegistered"
+            title="{{ 'Voucher.Commit' | translate }}"
+          >
+            <span class="k-icon k-i-check-outline"></span>
+          </button>
+
+          <button
             kendoButton
             SppcPermissionCheck="Print"
             [EntityName]="entityType"
@@ -137,7 +149,7 @@
                   class="k-textbox"
                   formControlName="payReceiveNo"
                   [OnlyNumber]
-                  [attr.disabled]="isConfirmed ? 'disabled' : null"
+                  [attr.disabled]="isConfirmed || isRegistered? 'disabled' : null"
                 />
 
                 <div
@@ -170,7 +182,7 @@
                   type="text"
                   class="k-textbox"
                   formControlName="reference"
-                  [attr.disabled]="isConfirmed ? 'disabled' : null"
+                  [attr.disabled]="isConfirmed || isRegistered? 'disabled' : null"
                 />
 
                 <div
@@ -194,13 +206,12 @@
                 }}</label>
 
                 <sppc-datepicker
-                  [isReadOnly]="isConfirmed"
+                  [isReadOnly]="isConfirmed || isRegistered"
                   [(ngModel)]="preferedDate"
                   formControlName="date"
                   [minDate]="FiscalPeriodStartDate"
                   [maxDate]="FiscalPeriodEndDate"
                   [displayType]="'voucherDateType'"
-                  دل
                 ></sppc-datepicker>
               </div>
             </div>
@@ -222,7 +233,7 @@
                   </label>
 
                   <payer-receiver
-                    [isConfirmed]="isConfirmed"
+                    [disableOperations]="isConfirmed || isRegistered"
                     [type]="this.type == 1 ? '1' : '2'"
                     [payReceiveId]="this.model?.id"
                     (setTotalAmount)="setTotalAmount($event)"
@@ -231,9 +242,9 @@
                   <div class="form-group totalAmount">
                     <label for="money" class="control-label">{{ "PayReceipt.TotalAmount" | translate }}</label>
                     <sppc-numericInput
-                      [(ngModel)]="model.accountAmountsSum"
+                      [(ngModel)]="totalAccountAmount"
                       [ngModelOptions]="{ standalone: true }"
-                      [attr.disabled]="isConfirmed ? 'disabled' : null"
+                      [attr.disabled]="isConfirmed || isRegistered? 'disabled' : null"
                       [readOnly]="true"
                     >
                     </sppc-numericInput>
@@ -250,7 +261,7 @@
                     }}
                   </label>
                   <cash-account
-                    [isConfirmed]="isConfirmed"
+                    [disableOperations]="isConfirmed || isRegistered"
                     [payReceiveId]="this.model?.id"
                     [payReceiptType]="this.type == 1 ? '1' : '2'"
                     (setTotalAmount)="setTotalAmount($event)"
@@ -259,9 +270,9 @@
                   <div class="form-group totalAmount">
                     <label for="money" class="control-label">{{ "PayReceipt.TotalAmount" | translate }}</label>
                     <sppc-numericInput
-                      [(ngModel)]="model.cashAmountsSum"
+                      [(ngModel)]="totalCashAmount"
                       [ngModelOptions]="{ standalone: true }"
-                      [attr.disabled]="isConfirmed ? 'disabled' : null"
+                      [attr.disabled]="isConfirmed || isRegistered? 'disabled' : null"
                       [readOnly]="true"
                     >
                     </sppc-numericInput>
@@ -277,7 +288,7 @@
                 <sppc-numericInput
                   [(ngModel)]="amountDifference"
                   [ngModelOptions]="{ standalone: true }"
-                  [attr.disabled]="isConfirmed ? 'disabled' : null"
+                  [attr.disabled]="isConfirmed || isRegistered? 'disabled' : null"
                   [readOnly]="true"
                 >
                 </sppc-numericInput>
@@ -381,7 +392,7 @@
                   type="checkbox"
                   id="confirmedByName"
                   class="k-checkbox"
-                  SppcPermissionCheck="Edit"
+                  SppcPermissionCheck="Confirm"
                   [EntityName]="entityType"
                   (sppcClick)="confirmedBy($event)"
                   [checked]="isConfirmed"
@@ -405,7 +416,7 @@
                   id="approvedByName"
                   class="k-checkbox"
                   [checked]="isApproved"
-                  SppcPermissionCheck="Edit"
+                  SppcPermissionCheck="Approve"
                   [EntityName]="entityType"
                   (sppcClick)="approvedBy($event)"
                 />
