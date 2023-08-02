@@ -73,7 +73,7 @@ namespace SPPC.Tadbir.Persistence
         {
             AccountViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDWithTrackingAsync(accountId);
+            var account = await repository.GetByIDWithTrackingAsync(accountId, acc => acc.Children);
             if (account != null)
             {
                 item = Mapper.Map<AccountViewModel>(account);

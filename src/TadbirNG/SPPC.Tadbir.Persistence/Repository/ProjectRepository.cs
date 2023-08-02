@@ -60,7 +60,7 @@ namespace SPPC.Tadbir.Persistence
         {
             ProjectViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<Project>();
-            var project = await repository.GetByIDAsync(projectId);
+            var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
             if (project != null)
             {
                 item = Mapper.Map<ProjectViewModel>(project);

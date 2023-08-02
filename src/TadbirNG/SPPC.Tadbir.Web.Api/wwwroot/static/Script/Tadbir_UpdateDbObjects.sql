@@ -1494,7 +1494,15 @@ DROP TABLE [Finance].[InactiveCurrency]
 GO
 
 ALTER TABLE [Finance].[Account]
+DROP CONSTRAINT DF_Finance_Account_IsActive
+GO
+
+ALTER TABLE [Finance].[Account]
 DROP COLUMN [IsActive]
+GO
+
+ALTER TABLE [Finance].[Currency]
+DROP CONSTRAINT DF_Finance_Currency_IsActive
 GO
 
 ALTER TABLE [Finance].[Currency]

@@ -365,6 +365,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            result = ActiveStateValidationResult(detailAccount);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<AccountViewModel>;
+            if (detailAccount.ParentId != null && await repository.IsDeactivatedAsync(detailAccount.ParentId.Value))
+            {
+                var message = _strings.Format(AppStrings.ActiveStateParentError, EntityNameKey);
+                return BadRequestResult(message);
+            }
+
             return Ok();
         }
 

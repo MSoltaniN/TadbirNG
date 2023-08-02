@@ -185,6 +185,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequestResult(message);
             }
 
+            if (item is ITreeEntityView treeItem)
+            {
+                if (treeItem.ChildCount > 0)
+                {
+                    var message = _strings.Format(AppStrings.ActiveStateChildError, EntityNameKey);
+                    return BadRequestResult(message);
+                }
+            }
+
             return Ok();
         }
 

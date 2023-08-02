@@ -4087,15 +4087,21 @@
     <value>فعال کردن</value>
   </data>
   <data name="ActiveStateBranchError" xml:space="preserve">
-    <value>این {0} در شعبه جاری ایجاد نشده و فعال یا غیرفعال کردن آن امکان پذیر نیست.</value>
+    <value>این {0} در شعبه جاری ایجاد نشده و غیرفعال کردن آن امکان پذیر نیست.</value>
   </data>
   <data name="ActiveStateFPeriodError" xml:space="preserve">
-    <value>این {0} در یکی از دوره های مالی بعدی ایجاد شده و فعال یا غیرفعال کردن آن امکان پذیر نیست.</value>
+    <value>این {0} در یکی از دوره های مالی بعدی ایجاد شده و غیرفعال کردن آن امکان پذیر نیست.</value>
   </data>
   <data name="Inactive" xml:space="preserve">
     <value>غیرفعال</value>
   </data>
   <data name="State" xml:space="preserve">
     <value>وضعیت</value>
+  </data>
+  <data name="ActiveStateChildError" xml:space="preserve">
+    <value>برای این {0} یک یا چند زیرمجموعه تعریف شده و غیرفعال کردن آن امکان‌پذیر نیست.</value>
+  </data>
+  <data name="ActiveStateParentError" xml:space="preserve">
+    <value>{0} والد غیرفعال شده و نمی‌توان برای آن زیرمجموعه جدید تعریف کرد.</value>
   </data>
 </root>

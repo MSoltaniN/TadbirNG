@@ -60,7 +60,7 @@ namespace SPPC.Tadbir.Persistence
         {
             DetailAccountViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
-            var detailAccount = await repository.GetByIDAsync(faccountId);
+            var detailAccount = await repository.GetByIDAsync(faccountId, facc => facc.Children);
             if (detailAccount != null)
             {
                 item = Mapper.Map<DetailAccountViewModel>(detailAccount);

@@ -71,7 +71,7 @@ namespace SPPC.Tadbir.Persistence
         {
             CostCenterViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenter = await repository.GetByIDAsync(costCenterId);
+            var costCenter = await repository.GetByIDAsync(costCenterId, cc => cc.Children);
             if (costCenter != null)
             {
                 item = Mapper.Map<CostCenterViewModel>(costCenter);
