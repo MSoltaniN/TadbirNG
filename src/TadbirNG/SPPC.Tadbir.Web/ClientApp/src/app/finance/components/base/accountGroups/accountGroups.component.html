@@ -172,7 +172,7 @@
                   class="sh-add-button"
                   [icon]="'file-add'"
                   type="button"
-                  title="{{ 'Account.New' | translate }}"
+                  title="{{ 'AccountGroup.New' | translate }}"
                 ></button>
 
                 <button
@@ -180,7 +180,7 @@
                   (sppcClick)="editHandler()"
                   class="k-button k-button-icon sh-edit-button"
                   [disabled]="selectedRows.length != 1"
-                  title="{{ 'Buttons.Edit' | translate }}"
+                  title="{{ 'AccountGroup.EditAccountGroup' | translate }}"
                 >
                   <span class="k-icon k-i-pencil"></span>
                 </button>
@@ -189,7 +189,7 @@
                   (sppcClick)="removeHandler()"
                   class="k-button k-button-icon sh-remove-button"
                   [disabled]="selectedRows.length == 0"
-                  title="{{ 'Buttons.Delete' | translate }}"
+                  title="{{ 'AccountGroup.Delete' | translate }}"
                 >
                   <span class="k-icon k-i-delete"></span>
                 </button>
@@ -329,7 +329,7 @@
             </kendo-grid>
           </div>
           <kendo-dialog
-            title="{{ 'Account.Delete' | translate }}"
+            title="{{ 'AccountGroup.Delete' | translate }}"
             *ngIf="deleteConfirm"
             (close)="deleteModel(false)"
             [minWidth]="250"
