@@ -176,8 +176,8 @@
                   style="padding: 7px 10px"
                 >
                   {{ (isSourceApp? 
-                    (creditDebiteMode == '2'?
-                    "PayReceipt.Source" : "PayReceipt.Application"
+                    (creditDebiteMode == '1'?
+                    "PayReceipt.Application": "PayReceipt.Source"
                     ): "VoucherLine.ArticleType") | translate }}
                 </label>
 

@@ -234,7 +234,7 @@
 
                   <payer-receiver
                     [disableOperations]="isConfirmed || isRegistered"
-                    [type]="this.type == 1 ? '1' : '2'"
+                    [type]="this.type == 1 ? '1' : '0'"
                     [payReceiveId]="this.model?.id"
                     (setTotalAmount)="setTotalAmount($event)"
                   >
@@ -263,7 +263,7 @@
                   <cash-account
                     [disableOperations]="isConfirmed || isRegistered"
                     [payReceiveId]="this.model?.id"
-                    [payReceiptType]="this.type == 1 ? '1' : '2'"
+                    [payReceiptType]="this.type == 1 ? '1' : '0'"
                     (setTotalAmount)="setTotalAmount($event)"
                   >
                   </cash-account>
