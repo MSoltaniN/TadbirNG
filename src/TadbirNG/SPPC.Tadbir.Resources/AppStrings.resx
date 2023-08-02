@@ -4236,4 +4236,7 @@
   <data name="Warehouse" xml:space="preserve">
     <value>انبار</value>
   </data>
+  <data name="InvalidCheckBookPageNo" xml:space="preserve">
+    <value>انتهای شماره برگه چک باید حداقل یک رقم وجود داشته باشد.</value>
+  </data>
 </root>
