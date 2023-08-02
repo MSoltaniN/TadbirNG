@@ -4245,4 +4245,7 @@
   <data name="Warehouse" xml:space="preserve">
     <value>Warehouse</value>
   </data>
+  <data name="InvalidCheckBookPageNo" xml:space="preserve">
+    <value>Check book page number must end with one or more digits.</value>
+  </data>
 </root>

@@ -16,7 +16,6 @@ using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Core;
-using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
