@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Persistence
     /// عملیات مورد نیاز برای مدیریت اطلاعات مراکز هزینه را پیاده سازی می کند.
     /// </summary>
     public class CostCenterRepository
-        : EntityLoggingRepository<CostCenter, CostCenterViewModel>, ICostCenterRepository
+        : ActiveStateRepository<CostCenter, CostCenterViewModel>, ICostCenterRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -47,6 +47,8 @@ namespace SPPC.Tadbir.Persistence
                     .GetAllQuery<CostCenter>(ViewId.CostCenter, cc => cc.Children)
                     .Select(item => Mapper.Map<CostCenterViewModel>(item))
                     .ToListAsync();
+                await UpdateInactiveItemsAsync(costCenters);
+                Array.ForEach(costCenters.ToArray(), cc => cc.State = Context.Localize(cc.State));
             }
 
             await ReadAsync(gridOptions);
@@ -69,10 +71,14 @@ namespace SPPC.Tadbir.Persistence
         {
             CostCenterViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenter = await repository.GetByIDAsync(costCenterId);
+            var costCenter = await repository.GetByIDAsync(costCenterId, cc => cc.Children);
             if (costCenter != null)
             {
                 item = Mapper.Map<CostCenterViewModel>(costCenter);
+                var isDeactivated = await IsDeactivatedAsync(item.Id);
+                item.State = isDeactivated
+                    ? Context.Localize(AppStrings.Inactive)
+                    : Context.Localize(AppStrings.Active);
             }
 
             return item;
@@ -126,6 +132,7 @@ namespace SPPC.Tadbir.Persistence
             var costCenter = await repository.GetByIDAsync(costCenterId);
             if (costCenter != null)
             {
+                await OnDeleteItemAsync(costCenter.Id);
                 await DeleteAsync(repository, costCenter);
                 await UpdateLevelUsageAsync(costCenter.Level);
             }
@@ -142,6 +149,7 @@ namespace SPPC.Tadbir.Persistence
                 if (costCenter != null)
                 {
                     level = Math.Max(level, costCenter.Level);
+                    await OnDeleteItemAsync(costCenter.Id);
                     await DeleteNoLogAsync(repository, costCenter);
                 }
             }
@@ -220,12 +228,12 @@ namespace SPPC.Tadbir.Persistence
         /// <inheritdoc/>
         protected override string GetState(CostCenter entity)
         {
-            return (entity != null)
-               ? String.Format(
-                    "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7}",
-                    AppStrings.Name, entity.Name, AppStrings.Code, entity.Code,
-                    AppStrings.FullCode, entity.FullCode, AppStrings.Description, entity.Description)
-               : null;
+            return entity == null
+                ? String.Empty
+                : $"{AppStrings.Name} : {entity.Name} , " +
+                  $"{AppStrings.Code} : {entity.Code} , " +
+                  $"{AppStrings.FullCode} : {entity.FullCode} , " +
+                  $"{AppStrings.Description} : {entity.Description}";
         }
 
         private ISecureRepository Repository

@@ -63,6 +63,7 @@ namespace SPPC.Tadbir.Persistence
             FilterMap.BuildMapping(modelBuilder.Entity<Filter>());
             FiscalPeriodMap.BuildMapping(modelBuilder.Entity<FiscalPeriod>());
             FunctionParameterMap.BuildMapping(modelBuilder.Entity<FunctionParameter>());
+            InactiveEntityMap.BuildMapping(modelBuilder.Entity<InactiveEntity>());
             InactiveAccountMap.BuildMapping(modelBuilder.Entity<InactiveAccount>());
             InactiveCurrencyMap.BuildMapping(modelBuilder.Entity<InactiveCurrency>());
             LabelSettingMap.BuildMapping(modelBuilder.Entity<LabelSetting>());
@@ -88,6 +89,7 @@ namespace SPPC.Tadbir.Persistence
             RolePermissionMap.BuildMapping(modelBuilder.Entity<RolePermission>());
             RoleWidgetMap.BuildMapping(modelBuilder.Entity<RoleWidget>());
             SettingMap.BuildMapping(modelBuilder.Entity<Setting>());
+            SourceAppMap.BuildMapping(modelBuilder.Entity<SourceApp>());
             SubsystemMap.BuildMapping(modelBuilder.Entity<Subsystem>());
             TabWidgetMap.BuildMapping(modelBuilder.Entity<TabWidget>());
             TaxCurrencyMap.BuildMapping(modelBuilder.Entity<TaxCurrency>());
@@ -107,7 +109,6 @@ namespace SPPC.Tadbir.Persistence
             WidgetFunctionMap.BuildMapping(modelBuilder.Entity<WidgetFunction>());
             WidgetMap.BuildMapping(modelBuilder.Entity<Widget>());
             WidgetTypeMap.BuildMapping(modelBuilder.Entity<WidgetType>());
-            SourceAppMap.BuildMapping(modelBuilder.Entity<SourceApp>());
         }
 
         /// <summary>

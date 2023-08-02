@@ -4248,4 +4248,28 @@
   <data name="InvalidCheckBookPageNo" xml:space="preserve">
     <value>Check book page number must end with one or more digits.</value>
   </data>
+  <data name="Deactivate" xml:space="preserve">
+    <value>Deactivate</value>
+  </data>
+  <data name="Reactivate" xml:space="preserve">
+    <value>Reactivate</value>
+  </data>
+  <data name="ActiveStateBranchError" xml:space="preserve">
+    <value>This {0} was not created in current branch and cannot be deactivated.</value>
+  </data>
+  <data name="ActiveStateFPeriodError" xml:space="preserve">
+    <value>This {0} was created in one of later fiscal periods and cannot be deactivated.</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="ActiveStateChildError" xml:space="preserve">
+    <value>This {0} has one or more child items and cannot be deactivated.</value>
+  </data>
+  <data name="ActiveStateParentError" xml:space="preserve">
+    <value>Parent {0} has been deactivated and cannot have child items.</value>
+  </data>
 </root>

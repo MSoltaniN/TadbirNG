@@ -43,4 +43,10 @@ export class AccountApi {
 
     // accounts/{accountId:min(1)}/fulldata
     public static AccountFullData = environment.BaseUrl + "/accounts/{0}/fulldata";
+
+    // accounts/{accountId:min(1)}/deactivate
+    public static DeactivateAccount = environment.BaseUrl + "/accounts/{0}/deactivate";
+
+    // accounts/{accountId:min(1)}/reactivate
+    public static ReactivateAccount = environment.BaseUrl + "/accounts/{0}/reactivate";
 }

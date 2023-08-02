@@ -17,9 +17,15 @@ export class SourceAppApi {
     // source-apps
     public static SourceApps = environment.BaseUrl + "/source-apps";
 
-    // source-apps/{0}
+    // source-apps/{sourceAppId:min(1)}
     public static SourceApp = environment.BaseUrl + "/source-apps/{0}";
 
     // source-apps/new
     public static NewSourceApp = environment.BaseUrl + "/source-apps/new";
+
+    // source-apps/{sourceAppId:min(1)}/deactivate
+    public static DeactivateSourceApp = environment.BaseUrl + "/source-apps/{0}/deactivate";
+
+    // source-apps/{sourceAppId:min(1)}/reactivate
+    public static ReactivateSourceApp = environment.BaseUrl + "/source-apps/{0}/reactivate";
 }

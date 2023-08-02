@@ -2,7 +2,7 @@
 
 namespace SPPC.Tadbir.ViewModel.CashFlow
 {
-    public partial class SourceAppViewModel : IFiscalEntity
+    public partial class SourceAppViewModel : IFiscalEntity, IBaseEntityView
     {
         /// <summary>
         /// شناسه دیتابیسی دوره مالی که این منبع یا مصرف در آن تعریف شده است
@@ -28,5 +28,10 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// نام نوع مفهومی منبع یا مصرف
         /// </summary>
         public string TypeName { get; set; }
+
+        /// <summary>
+        /// وضعیت فعال یا غیر فعال برای این سطر اطلاعاتی
+        /// </summary>
+        public string State { get; set; }
     }
 }

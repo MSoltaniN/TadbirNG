@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Domain
 {
@@ -446,6 +445,16 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// کد عملیاتی تجمیع آرتیکل های حساب نقدی موجودیت عملیاتی
         /// </summary>
-        AggregateCashAccountLines = 88
+        AggregateCashAccountLines = 88,
+
+        /// <summary>
+        /// کد عملیاتی غیرفعال کردن یک سطر اطلاعات پایه
+        /// </summary>
+        Deactivate = 89,
+
+        /// <summary>
+        /// کد عملیاتی فعال کردن یک سطر اطلاعات پایه
+        /// </summary>
+        Reactivate = 90
     }
 }

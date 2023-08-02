@@ -16,7 +16,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت منابع و مصارف را پیاده سازی می کند
     /// </summary>
-    public class SourceAppRepository : EntityLoggingRepository<SourceApp, SourceAppViewModel>, ISourceAppRepository
+    public class SourceAppRepository : ActiveStateRepository<SourceApp, SourceAppViewModel>, ISourceAppRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -29,11 +29,7 @@ namespace SPPC.Tadbir.Persistence
             _system = system;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات کلیه منابع و مصارف را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از منابع و مصارف تعریف شده</returns>
+        /// <inheritdoc/>
         public async Task<PagedList<SourceAppViewModel>> GetSourceAppsAsync(GridOptions gridOptions)
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
@@ -44,18 +40,15 @@ namespace SPPC.Tadbir.Persistence
                 sourceApps = await query
                     .Select(item => Mapper.Map<SourceAppViewModel>(item))
                     .ToListAsync();
+                await UpdateInactiveItemsAsync(sourceApps);
+                Array.ForEach(sourceApps.ToArray(), sa => Localize(sa));
             }
 
-            Array.ForEach(sourceApps.ToArray(), sa => Localize(sa));
             await ReadAsync(gridOptions);
             return new PagedList<SourceAppViewModel>(sourceApps, gridOptions);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، منبع و مصرف با شناسه عددی مشخص شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="sourceAppId">شناسه عددی یکی از منابع و مصارف موجود</param>
-        /// <returns>منبع و مصرف مشخص شده با شناسه عددی</returns>
+        /// <inheritdoc/>
         public async Task<SourceAppViewModel> GetSourceAppAsync(int sourceAppId)
         {
             SourceAppViewModel item = null;
@@ -64,15 +57,16 @@ namespace SPPC.Tadbir.Persistence
             if (sourceApp != null)
             {
                 item = Mapper.Map<SourceAppViewModel>(sourceApp);
+                var isDeactivated = await IsDeactivatedAsync(item.Id);
+                item.State = isDeactivated
+                    ? AppStrings.Inactive
+                    : AppStrings.Active;
             }
 
             return Localize(item);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، منبع یا مصرف با مقادیر پیشنهادی را برمی گرداند
-        /// </summary>
-        /// <returns>منبع یا مصرف با مقادیر پیشنهادی</returns>
+        /// <inheritdoc/>
         public async Task<SourceAppViewModel> GetNewSourceAppAsync()
         {
             int lastNo = await GetLastSourceAppNoAsync();
@@ -87,11 +81,7 @@ namespace SPPC.Tadbir.Persistence
             return Localize(newSourceApp);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات یک منبع و مصرف را ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="sourceApp">منبع و مصرف مورد نظر برای ایجاد یا اصلاح</param>
-        /// <returns>اطلاعات نمایشی منبع و مصرف ایجاد یا اصلاح شده</returns>
+        /// <inheritdoc/>
         public async Task<SourceAppViewModel> SaveSourceAppAsync(SourceAppViewModel sourceApp)
         {
             Verify.ArgumentNotNull(sourceApp, nameof(sourceApp));
@@ -114,24 +104,19 @@ namespace SPPC.Tadbir.Persistence
             return Localize(Mapper.Map<SourceAppViewModel>(sourceAppModel));
         }
 
-        /// <summary>
-        /// به روش آسنکرون، منبع و مصرف مشخص شده با شناسه عددی را حذف می کند
-        /// </summary>
-        /// <param name="sourceAppId">شناسه عددی منبع و مصرف مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task DeleteSourceAppAsync(int sourceAppId)
         {
             var repository = UnitOfWork.GetAsyncRepository<SourceApp>();
             var sourceApp = await repository.GetByIDAsync(sourceAppId);
             if (sourceApp != null)
             {
+                await OnDeleteItemAsync(sourceApp.Id);
                 await DeleteAsync(repository, sourceApp);
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، منابع و مصارف مشخص شده با شناسه عددی را حذف می کند
-        /// </summary>
-        /// <param name="sourceAppIds">مجموعه ای از شناسه های عددی منابع و مصارف مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task DeleteSourceAppsAsync(IList<int> sourceAppIds)
         {
             var repository = UnitOfWork.GetAsyncRepository<SourceApp>();
@@ -140,6 +125,7 @@ namespace SPPC.Tadbir.Persistence
                 var sourceApp = await repository.GetByIDAsync(sourceAppId);
                 if (sourceApp != null)
                 {
+                    await OnDeleteItemAsync(sourceApp.Id);
                     await DeleteNoLogAsync(repository, sourceApp);
                 }
             }
@@ -147,11 +133,7 @@ namespace SPPC.Tadbir.Persistence
             await OnEntityGroupDeleted(sourceAppIds);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا نام منبع یا مصرف مورد نظر تکراری است یا نه
-        /// </summary>
-        /// <param name="sourceApp">مشخصات منبع یا مصرف که تکراری بودن آنها باید بررسی شود</param>
-        /// <returns>مقدار بولی درست در صورت تکراری بودن نام در غیر این صورت مقدار بولی نادرست</returns>
+        /// <inheritdoc/>
         public async Task<bool> IsDuplicateNameAsync(SourceAppViewModel sourceApp)
         {
             Verify.ArgumentNotNull(sourceApp, nameof(sourceApp));
@@ -162,11 +144,7 @@ namespace SPPC.Tadbir.Persistence
             return count > 0;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا کد منبع یا مصرف مورد نظر تکراری است یا نه
-        /// </summary>
-        /// <param name="sourceApp"> مشخصات منبع یا مصرف که تکراری بودن آنها باید بررسی شود</param>
-        /// <returns>مقدار بولی درست در صورت تکراری بودن کد در غیر این صورت مقدار بولی نادرست</returns>
+        /// <inheritdoc/>
         public async Task<bool> IsDuplicateCodeAsync(SourceAppViewModel sourceApp)
         {
             Verify.ArgumentNotNull(sourceApp, nameof(sourceApp));
@@ -182,11 +160,7 @@ namespace SPPC.Tadbir.Persistence
             get { return (int?)EntityTypeId.SourceApp; }
         }
 
-        /// <summary>
-        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
-        /// </summary>
-        /// <param name="sourceAppViewModel">مدل نمایشی شامل آخرین تغییرات</param>
-        /// <param name="sourceApp">سطر اطلاعاتی موجود</param>
+        /// <inheritdoc/>
         protected override void UpdateExisting(SourceAppViewModel sourceAppViewModel, SourceApp sourceApp)
         {
             sourceApp.BranchScope = sourceAppViewModel.BranchScope;
@@ -196,11 +170,7 @@ namespace SPPC.Tadbir.Persistence
             sourceApp.Type = sourceAppViewModel.Type;
         }
 
-        /// <summary>
-        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
-        /// </summary>
-        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
-        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        /// <inheritdoc/>
         protected override string GetState(SourceApp entity)
         {
             var type = entity.Type == (short)SourceAppType.Source
@@ -232,6 +202,7 @@ namespace SPPC.Tadbir.Persistence
             if (sourceApp != null)
             {
                 sourceApp.TypeName = Context.Localize(sourceApp.TypeName);
+                sourceApp.State = Context.Localize(sourceApp.State);
             }
 
             return sourceApp;
