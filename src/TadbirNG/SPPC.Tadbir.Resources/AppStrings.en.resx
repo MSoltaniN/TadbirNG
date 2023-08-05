@@ -4272,4 +4272,7 @@
   <data name="ActiveStateParentError" xml:space="preserve">
     <value>Parent {0} has been deactivated and cannot have child items.</value>
   </data>
+  <data name="SourceAppName" xml:space="preserve">
+    <value>منبع یا مصرف</value>
+  </data>
 </root>

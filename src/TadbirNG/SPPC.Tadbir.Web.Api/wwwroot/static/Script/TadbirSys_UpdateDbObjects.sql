@@ -1240,3 +1240,8 @@ INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Typ
 INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (822, 73, 'State', NULL, NULL, 'System.String', 'nvarchar', 'string', 32, 0, 0, 0, 1, 1, 1, NULL, 5, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
+
+-- 1.2.1560
+UPDATE [Metadata].[Column]
+SET [Name] = 'SourceAppName'
+WHERE ColumnID = 817 AND [Name] = N'SourceApp'
