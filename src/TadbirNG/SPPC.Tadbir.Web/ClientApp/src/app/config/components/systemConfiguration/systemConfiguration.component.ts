@@ -171,7 +171,7 @@ export class SystemConfigurationComponent extends DefaultComponent implements On
   }
 
   /**
-   * بروز رسانی متادیتا هایی که شامل ستون از نوع تاریخ می باشد
+   * بروز رسانی متادیتا هایی که شامل ستون از نوع تاریخ است
    * */
   updateMetadatas() {
 

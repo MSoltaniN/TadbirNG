@@ -13,6 +13,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
+using SPPC.Tadbir.Resources;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -30,7 +31,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
             Code = String.Empty;
             MinorUnit = String.Empty;
             Description = String.Empty;
-            IsActive = true;
+            State = AppStrings.Active;
         }
 
         /// <summary>
@@ -71,11 +72,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public short DecimalCount { get; set; }
-
-        /// <summary>
-        /// مشخص می کند که آیا ارز مورد نظر در برنامه فعال است یا نه؟
-        /// </summary>
-        public bool IsActive { get; set; }
 
         /// <summary>
         /// شرح تکمیلی برای نگهداری جزئیات بیشتر در مورد ارز

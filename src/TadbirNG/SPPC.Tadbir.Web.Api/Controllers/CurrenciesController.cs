@@ -320,6 +320,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، ارز مشخص شده با شناسه دیتابیسی را غیرفعال می کند
+        /// </summary>
+        /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر برای غیرفعال کردن</param>
+        // PUT: api/currencies/{currencyId:min(1)}/deactivate
+        [HttpPut]
+        [Route(CurrencyApi.DeactivateCurrencyUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.Deactivate)]
+        public async Task<IActionResult> PutCurrencyAsDeactivated(int currencyId)
+        {
+            return await UpdateActiveStateAsync(currencyId, false);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ارز مشخص شده با شناسه دیتابیسی را فعال می کند
+        /// </summary>
+        /// <param name="currencyId">شناسه دیتابیسی ارز مورد نظر برای فعال کردن</param>
+        // PUT: api/currencies/{currencyId:min(1)}/reactivate
+        [HttpPut]
+        [Route(CurrencyApi.ReactivateCurrencyUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.Reactivate)]
+        public async Task<IActionResult> PutCurrencyAsReactivated(int currencyId)
+        {
+            return await UpdateActiveStateAsync(currencyId, true);
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="currencyId"></param>
@@ -509,6 +535,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            return Ok();
+        }
+
+        private async Task<IActionResult> UpdateActiveStateAsync(int currencyId, bool isActive)
+        {
+            var currency = await _repository.GetCurrencyAsync(currencyId);
+            if (currency == null)
+            {
+                string message = _strings.Format(
+                    AppStrings.ItemByIdNotFound, EntityNameKey, currencyId.ToString());
+                return BadRequestResult(message);
+            }
+
+            var result = ActiveStateValidationResult(currency);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<CurrencyViewModel>;
+            await repository.SetActiveStatusAsync(currency, isActive);
             return Ok();
         }
 

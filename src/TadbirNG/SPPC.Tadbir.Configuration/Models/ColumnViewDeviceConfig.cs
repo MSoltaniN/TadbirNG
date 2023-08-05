@@ -40,7 +40,7 @@ namespace SPPC.Tadbir.Configuration.Models
         public string Visibility { get; set; }
 
         /// <summary>
-        /// عنوان نمایشی ستون در نمای لیستی که بصورت فارسی یا انگلیسی می باشد و برای تمایش در فرم تنظیمات بکار میرود
+        /// عنوان نمایشی ستون در نمای لیستی که بصورت فارسی یا انگلیسی است و برای تمایش در فرم تنظیمات بکار میرود
         /// </summary>
         public string Title { get; set; }
 

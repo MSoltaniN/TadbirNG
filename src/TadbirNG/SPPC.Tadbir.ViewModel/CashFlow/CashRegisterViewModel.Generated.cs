@@ -13,6 +13,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
+using SPPC.Tadbir.Resources;
 
 namespace SPPC.Tadbir.ViewModel.CashFlow
 {
@@ -28,6 +29,7 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         {
             Name = String.Empty;
             Description = String.Empty;
+            State = AppStrings.Active;
         }
 
         /// <summary>

@@ -31,4 +31,10 @@ export class CostCenterApi {
 
     // ccenters/{ccenterId:int}/fullcode
     public static CostCenterFullCode = environment.BaseUrl + "/ccenters/{0}/fullcode";
+
+    // ccenters/{ccenterId:min(1)}/deactivate
+    public static DeactivateCostCenter = environment.BaseUrl + "/ccenters/{0}/deactivate";
+
+    // ccenters/{ccenterId:min(1)}/reactivate
+    public static ReactivateCostCenter = environment.BaseUrl + "/ccenters/{0}/reactivate";
 }

@@ -8,7 +8,7 @@ export class ReportParamComponent implements OnInit {
 
   @Input() public ParamName: string;
   @Input() public ParamValue: string;
-  /** مقدار تهی برای این مشخصه به معنی پارامتر ساده می باشد مقدار UrlParameter به معنی درج مقدار در آدرس سرویس می باشد **/
+  /** مقدار تهی برای این مشخصه به معنی پارامتر ساده است مقدار UrlParameter به معنی درج مقدار در آدرس سرویس است **/
   /** fperiods/company/{0} ===> UrlParamater ==> fperiods/company/1 **/
   @Input() public ParamType: string;
   /** مشخص کننده این هست که پارامتر در فرم ورودی پارامتر ها نمایش داده شود یا خیر **/

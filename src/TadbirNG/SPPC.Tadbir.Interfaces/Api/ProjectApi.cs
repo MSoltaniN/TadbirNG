@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Api
 {
@@ -71,5 +70,25 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for project full code
         /// </summary>
         public const string ProjectFullCodeUrl = "projects/{projectId:int}/fullcode";
+
+        /// <summary>
+        /// API client URL for marking an active project as inactive
+        /// </summary>
+        public const string DeactivateProject = "projects/{0}/deactivate";
+
+        /// <summary>
+        /// API server route URL for marking an active project as inactive
+        /// </summary>
+        public const string DeactivateProjectUrl = "projects/{projectId:min(1)}/deactivate";
+
+        /// <summary>
+        /// API client URL for marking an inactive project as active
+        /// </summary>
+        public const string ReactivateProject = "projects/{0}/reactivate";
+
+        /// <summary>
+        /// API server route URL for marking an inactive project as active
+        /// </summary>
+        public const string ReactivateProjectUrl = "projects/{projectId:min(1)}/reactivate";
     }
 }

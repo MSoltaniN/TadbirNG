@@ -55,7 +55,7 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual string Address { get; set; }
 
         /// <summary>
-        /// Gets or sets the در صورتی که نوع شخص حقوقی باشد شناسه ملی و در صورتی که حقیقی باشد کد ملی میباشد
+        /// Gets or sets the در صورتی که نوع شخص حقوقی باشد شناسه ملی و در صورتی که حقیقی باشد کد ملی است
         /// </summary>
         public virtual string NationalCode { get; set; }
 

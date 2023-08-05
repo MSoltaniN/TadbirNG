@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Api
 {
@@ -71,5 +70,25 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for cost center full code
         /// </summary>
         public const string CostCenterFullCodeUrl = "ccenters/{ccenterId:int}/fullcode";
+
+        /// <summary>
+        /// API client URL for marking an active cost center as inactive
+        /// </summary>
+        public const string DeactivateCostCenter = "ccenters/{0}/deactivate";
+
+        /// <summary>
+        /// API server route URL for marking an active cost center as inactive
+        /// </summary>
+        public const string DeactivateCostCenterUrl = "ccenters/{ccenterId:min(1)}/deactivate";
+
+        /// <summary>
+        /// API client URL for marking an inactive cost center as active
+        /// </summary>
+        public const string ReactivateCostCenter = "ccenters/{0}/reactivate";
+
+        /// <summary>
+        /// API server route URL for marking an inactive cost center as active
+        /// </summary>
+        public const string ReactivateCostCenterUrl = "ccenters/{ccenterId:min(1)}/reactivate";
     }
 }

@@ -72,7 +72,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string Address { get; set; }
 
         /// <summary>
-        /// در صورتی که نوع شخص حقوقی باشد شناسه ملی و در صورتی که حقیقی باشد کد ملی میباشد
+        /// در صورتی که نوع شخص حقوقی باشد شناسه ملی و در صورتی که حقیقی باشد کد ملی است
         /// </summary>
         [StringLength(11, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string NationalCode { get; set; }
