@@ -982,10 +982,6 @@ DROP COLUMN [IsActive]
 GO
 
 ALTER TABLE [Finance].[Currency]
-DROP CONSTRAINT DF_Finance_Currency_IsActive
-GO
-
-ALTER TABLE [Finance].[Currency]
 DROP COLUMN [IsActive]
 GO
 
