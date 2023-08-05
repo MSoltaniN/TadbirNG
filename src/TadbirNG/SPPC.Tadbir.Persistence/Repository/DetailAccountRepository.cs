@@ -98,6 +98,7 @@ namespace SPPC.Tadbir.Persistence
             if (detailAccount.Id == 0)
             {
                 detailModel = Mapper.Map<DetailAccount>(detailAccount);
+                SetBaseEntityInfo(detailModel);
                 await InsertAsync(repository, detailModel);
                 await UpdateLevelUsageAsync(detailModel.Level);
                 await _relationRepository.OnDetailAccountInsertedAsync(detailModel.Id);
@@ -108,6 +109,7 @@ namespace SPPC.Tadbir.Persistence
                 if (detailModel != null)
                 {
                     bool needsCascade = (detailModel.Code != detailAccount.Code);
+                    SetBaseEntityInfo(detailModel);
                     await UpdateAsync(repository, detailModel, detailAccount);
                     if (needsCascade)
                     {

@@ -381,6 +381,26 @@ namespace SPPC.Tadbir.Persistence
                     || (projectId <= 0 && acc.AccountProjects.Count == 0)));
         }
 
+        /// <summary>
+        /// فیلدها راهبری موجودیت پایه را مقداردهی می‌کند 
+        /// </summary>
+        /// <param name="baseEntity">موجودیت پایه مورد نظر</param>
+        protected void SetBaseEntityInfo(IBaseEntity baseEntity)
+        {
+            Verify.ArgumentNotNull(baseEntity, nameof(baseEntity));
+
+            if (baseEntity.Id == 0) 
+            {
+                baseEntity.CreatedById = UserContext.Id;
+                baseEntity.CreatedByName = UserContext.PersonFullName;
+                baseEntity.CreatedDate = DateTime.Now;
+            }
+
+            baseEntity.ModifiedById = UserContext.Id;
+            baseEntity.ModifiedByName = UserContext.PersonFullName;
+            baseEntity.ModifiedDate = DateTime.Now;
+        }
+
         private void AddChildren(Branch branch, IList<int> children)
         {
             var repository = UnitOfWork.GetRepository<Branch>();

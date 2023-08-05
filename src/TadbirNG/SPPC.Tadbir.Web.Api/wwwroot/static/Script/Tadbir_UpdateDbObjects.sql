@@ -910,3 +910,60 @@ WHERE [CollectionID] = 50
 UPDATE [Finance].[AccountCollection]
 SET [Name] = N'TransitionalProperty'
 WHERE [CollectionID] = 51
+
+-- 1.2.1558
+ALTER TABLE [CashFlow].[CashRegister]
+ADD [CreatedById]    Int          Not NULL, 
+	[CreatedByName]  NVARCHAR(64) Not NULL, 
+	[CreatedDate]    DATETIME     NOT NULL, 
+	[ModifiedById]   INT          NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) NOT NULL;
+
+ALTER TABLE [CashFlow].[SourceApp]
+ADD [CreatedById]    Int          CONSTRAINT [DF_CashFlow_SourceApp_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_CashFlow_SourceApp_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_CashFlow_SourceApp_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedById]   INT          CONSTRAINT [DF_CashFlow_SourceApp_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_CashFlow_SourceApp_ModifiedByName] DEFAULT ('') NOT NULL;
+
+ALTER TABLE [Finance].[Currency]
+ADD [CreatedById]    Int          CONSTRAINT [DF_Finance_Currency_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_Finance_Currency_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_Finance_Currency_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedById]   INT          CONSTRAINT [DF_Finance_Currency_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_Finance_Currency_ModifiedByName] DEFAULT ('') NOT NULL;
+
+ALTER TABLE [Finance].[CurrencyRate]
+ADD [CreatedById]    Int          CONSTRAINT [DF_Finance_CurrencyRate_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_Finance_CurrencyRate_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_Finance_CurrencyRate_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedById]   INT          CONSTRAINT [DF_Finance_CurrencyRate_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_Finance_CurrencyRate_ModifiedByName] DEFAULT ('') NOT NULL;
+
+ALTER TABLE [Finance].[Account]
+ADD [CreatedById]    Int          CONSTRAINT [DF_Finance_Account_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_Finance_Account_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_Finance_Account_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedById]   INT          CONSTRAINT [DF_Finance_Account_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_Finance_Account_ModifiedByName] DEFAULT ('') NOT NULL;
+
+ALTER TABLE [Finance].[CostCenter]
+ADD [CreatedById]    Int          CONSTRAINT [DF_Finance_CostCenter_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_Finance_CostCenter_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_Finance_CostCenter_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedById]   INT          CONSTRAINT [DF_Finance_CostCenter_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_Finance_CostCenter_ModifiedByName] DEFAULT ('') NOT NULL;
+
+ALTER TABLE [Finance].[DetailAccount]
+ADD [CreatedById]    Int          CONSTRAINT [DF_Finance_DetailAccount_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_Finance_DetailAccount_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_Finance_DetailAccount_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedById]   INT          CONSTRAINT [DF_Finance_DetailAccount_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_Finance_DetailAccount_ModifiedByName] DEFAULT ('') NOT NULL;
+
+ALTER TABLE [Finance].[Project]
+ADD [CreatedById]    Int          CONSTRAINT [DF_Finance_Project_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_Finance_Project_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_Finance_Project_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedById]   INT          CONSTRAINT [DF_Finance_Project_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_Finance_Project_ModifiedByName] DEFAULT ('') NOT NULL;

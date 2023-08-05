@@ -4245,4 +4245,16 @@
   <data name="Warehouse" xml:space="preserve">
     <value>Warehouse</value>
   </data>
+  <data name="CreatedByName" xml:space="preserve">
+    <value>FullName of Creating User</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
+  <data name="ModifiedByName" xml:space="preserve">
+    <value>FullName of Modifying User</value>
+  </data>
+  <data name="ModifiedDate" xml:space="preserve">
+    <value>Modified Date</value>
+  </data>
 </root>

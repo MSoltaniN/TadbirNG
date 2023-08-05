@@ -28,6 +28,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(256);
+            builder.Property(e => e.BranchScope)
+                .IsRequired();
             builder.Property(e => e.Description)
                 .HasMaxLength(256);
             builder.Property(e => e.CreatedById)
@@ -42,8 +44,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.ModifiedByName)
                 .IsRequired()
                 .HasMaxLength(64);
-            builder.Property(e => e.BranchScope)
-                .IsRequired();
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
@@ -53,12 +53,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.FiscalPeriod)
                 .WithMany()
-                .HasForeignKey("FiscalPeriodID")
+                .HasForeignKey(e => e.FiscalPeriodId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CashFlow_CashRegister_Finance_FiscalPeriod");
             builder.HasOne(e => e.Branch)
                 .WithMany()
-                .HasForeignKey("BranchID")
+                .HasForeignKey(e => e.BranchId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_CashFlow_CashRegister_Corporate_Branch");
         }
