@@ -114,12 +114,6 @@
             *ngIf="this.selectScriptType === ''"
             >{{ "AdvanceFilter.PleaseSelectField" | translate }}</label
           >
-          <!-- <input
-            class="k-textbox col-xs-12 col-sm-12 sppc-input-num sppc-float"
-            [(ngModel)]="selectedValue"
-            [OnlyNumber]
-            *ngIf="this.selectScriptType === 'number'"
-          /> -->
           <sppc-numericInput [(ngModel)]="selectedValue"
             *ngIf="this.selectScriptType === 'number'"
             class="sppc-input-num sppc-float sppc-width-100">
@@ -130,12 +124,15 @@
             [(ngModel)]="selectedValue"
             *ngIf="this.selectScriptType === 'string'"
           />
-          <input
-            class="col-xs-12 col-sm-12 sppc-input-num sppc-float"
+
+          <kendo-switch *ngIf="this.selectScriptType === 'boolean'"
             [(ngModel)]="selectedValue"
-            type="checkbox"
-            *ngIf="this.selectScriptType === 'boolean'"
-          />
+            class="sppc-float"
+            style="width: 80px;"
+            [onLabel]="getText('Account.Active')"
+            [offLabel]="getText('Account.Inactive')">
+          </kendo-switch>
+
           <sppc-datepicker
             *ngIf="this.selectScriptType === 'Date'"
             [(ngModel)]="selectedValue"

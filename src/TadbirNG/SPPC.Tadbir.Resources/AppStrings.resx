@@ -4263,6 +4263,9 @@
   <data name="ActiveStateParentError" xml:space="preserve">
     <value>{0} والد غیرفعال شده و نمی‌توان برای آن زیرمجموعه جدید تعریف کرد.</value>
   </data>
+  <data name="SourceAppName" xml:space="preserve">
+    <value>منبع یا مصرف</value>
+  </data>
   <data name="PrintForm" xml:space="preserve">
     <value>چاپ فرم</value>
   </data>
