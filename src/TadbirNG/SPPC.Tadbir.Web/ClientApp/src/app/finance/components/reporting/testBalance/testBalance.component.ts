@@ -1269,7 +1269,7 @@ export class TestBalanceComponent
               String.Format(
                 this.getText("Messages.VoucherNumberByStatus"),
                 res.toString(),
-                this.getText(statusFilter.key),
+                this.getText(statusFilter.key).replace("اسناد","").replace("voucheres",""),
                 statusFilter.url
               ),
               MessageType.Info
