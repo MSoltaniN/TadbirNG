@@ -913,11 +913,11 @@ WHERE [CollectionID] = 51
 
 -- 1.2.1558
 ALTER TABLE [CashFlow].[CashRegister]
-ADD [CreatedById]    Int          Not NULL, 
-	[CreatedByName]  NVARCHAR(64) Not NULL, 
-	[CreatedDate]    DATETIME     NOT NULL, 
-	[ModifiedById]   INT          NOT NULL, 
-	[ModifiedByName] NVARCHAR(64) NOT NULL;
+ADD [CreatedById]    Int          CONSTRAINT [DF_CashFlow_SourceApp_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_CashFlow_SourceApp_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_CashFlow_SourceApp_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedById]   INT          CONSTRAINT [DF_CashFlow_SourceApp_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_CashFlow_SourceApp_ModifiedByName] DEFAULT ('') NOT NULL;
 
 ALTER TABLE [CashFlow].[SourceApp]
 ADD [CreatedById]    Int          CONSTRAINT [DF_CashFlow_SourceApp_CreatedById] DEFAULT (0) NOT NULL, 
