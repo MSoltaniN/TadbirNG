@@ -26,4 +26,10 @@
     <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="6.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Update="AppStrings.en.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

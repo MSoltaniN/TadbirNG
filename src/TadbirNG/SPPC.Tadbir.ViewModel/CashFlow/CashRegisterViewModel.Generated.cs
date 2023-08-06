@@ -54,26 +54,26 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// <summary>
         /// شناسه کاربر ایجاد کننده
         /// </summary>
-        public int CreatedById { get; set; }
+        public int? CreatedById { get; set; }
 
         /// <summary>
         /// نام و نام خانوادگی کاربر ایجاد کننده
         /// </summary>
-        public string CreatedByName { get; set; }
+        public string? CreatedByName { get; set; }
 
         /// <summary>
         /// تاریخ ایجاد
         /// </summary>
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
         /// <summary>
         /// شناسه آخرین کاربر تغییر دهنده
         /// </summary>
-        public int ModifiedById { get; set; }
+        public int? ModifiedById { get; set; }
 
         /// <summary>
         /// نام و نام خانوادگی آخرین کاربر تغییر دهنده
         /// </summary>
-        public string ModifiedByName { get; set; }
+        public string? ModifiedByName { get; set; }
     }
 }
