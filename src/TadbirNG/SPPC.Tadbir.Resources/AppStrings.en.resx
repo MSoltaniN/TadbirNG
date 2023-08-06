@@ -4273,6 +4273,12 @@
     <value>Parent {0} has been deactivated and cannot have child items.</value>
   </data>
   <data name="SourceAppName" xml:space="preserve">
-    <value>منبع یا مصرف</value>
+    <value>Source or Application</value>
+  </data>
+  <data name="PrintForm" xml:space="preserve">
+    <value>Print Form</value>
+  </data>
+  <data name="PrintPreviewForm" xml:space="preserve">
+    <value>Print Preview Form</value>
   </data>
 </root>

@@ -1245,3 +1245,11 @@ SET IDENTITY_INSERT [Metadata].[Column] OFF
 UPDATE [Metadata].[Column]
 SET [Name] = 'SourceAppName'
 WHERE ColumnID = 817 AND [Name] = N'SourceApp'
+
+-- 1.2.1562
+DELETE FROM [Reporting].[LocalReport]
+WHERE ReportID = 12
+
+DELETE FROM [Reporting].[Report]
+WHERE ReportID = 12 AND Code = 'Operation-Logs'
+

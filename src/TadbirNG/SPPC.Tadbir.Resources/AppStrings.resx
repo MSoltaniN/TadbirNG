@@ -4266,4 +4266,10 @@
   <data name="SourceAppName" xml:space="preserve">
     <value>منبع یا مصرف</value>
   </data>
+  <data name="PrintForm" xml:space="preserve">
+    <value>چاپ فرم</value>
+  </data>
+  <data name="PrintPreviewForm" xml:space="preserve">
+    <value>پیش نمایش چاپ فرم</value>
+  </data>
 </root>

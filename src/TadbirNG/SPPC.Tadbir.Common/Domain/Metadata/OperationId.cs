@@ -455,6 +455,16 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// کد عملیاتی فعال کردن یک سطر اطلاعات پایه
         /// </summary>
-        Reactivate = 90
+        Reactivate = 90,
+
+        /// <summary>
+        /// کد عملیاتی چاپ یک فرم عملیاتی - مثل سند، دریافت/پرداخت و غیره
+        /// </summary>
+        PrintForm = 91,
+
+        /// <summary>
+        /// کد عملیاتی پیش نمایش چاپ یک فرم عملیاتی - مثل سند، دریافت/پرداخت و غیره
+        /// </summary>
+        PrintPreviewForm = 92
     }
 }

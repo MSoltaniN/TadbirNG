@@ -86,7 +86,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DraftVouchers, (int)ManageDraftVouchersPermissions.View)]
         public async Task<IActionResult> GetAllEnvironmentVouchersAsync()
         {
-            return await GetVoucherListAsync();
+            return await GetVoucherListAsync(SubjectType.All);
         }
 
         /// <summary>
@@ -339,7 +339,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DraftVouchers, (int)ManageDraftVouchersPermissions.View)]
         public async Task<IActionResult> GetEnvironmentDraftVouchersAsync()
         {
-            return await GetVoucherListAsync();
+            return await GetVoucherListAsync(SubjectType.Draft);
         }
 
         /// <summary>
@@ -1770,9 +1770,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
-        private async Task<IActionResult> GetVoucherListAsync()
+        private async Task<IActionResult> GetVoucherListAsync(SubjectType subject = SubjectType.Normal)
         {
-            var repository = GetVoucherRepository();
+            var repository = GetVoucherRepository(subject);
             var vouchers = await repository.GetVouchersAsync(GridOptions);
             return JsonListResult(vouchers);
         }
@@ -1851,20 +1851,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(last);
         }
 
-        private IVoucherRepository GetVoucherRepository()
-        {
-            var repository = _repository;
-            var gridOptions = GridOptions ?? new GridOptions();
-            if (gridOptions.Filter != null)
-            {
-                repository = gridOptions.Filter.ToString().Contains("SubjectType == 1")
-                    ? _draftRepository
-                    : _repository;
-            }
-
-            return repository;
-        }
-
         private async Task<IVoucherRepository> GetVoucherRepositoryAsync(int voucherId)
         {
             var voucherInfo = await _repository.GetVoucherInfoAsync(voucherId);
@@ -1874,7 +1860,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private IVoucherRepository GetVoucherRepository(SubjectType subject)
         {
-            return subject == SubjectType.Normal ? _repository : _draftRepository;
+            return subject == SubjectType.Draft ? _draftRepository : _repository;
         }
 
         private async Task<IVoucherLineRepository> GetLineRepositoryFromVoucherAsync(int voucherId)
