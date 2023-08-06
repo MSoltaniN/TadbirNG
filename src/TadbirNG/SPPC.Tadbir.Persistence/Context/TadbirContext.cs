@@ -64,8 +64,6 @@ namespace SPPC.Tadbir.Persistence
             FiscalPeriodMap.BuildMapping(modelBuilder.Entity<FiscalPeriod>());
             FunctionParameterMap.BuildMapping(modelBuilder.Entity<FunctionParameter>());
             InactiveEntityMap.BuildMapping(modelBuilder.Entity<InactiveEntity>());
-            InactiveAccountMap.BuildMapping(modelBuilder.Entity<InactiveAccount>());
-            InactiveCurrencyMap.BuildMapping(modelBuilder.Entity<InactiveCurrency>());
             LabelSettingMap.BuildMapping(modelBuilder.Entity<LabelSetting>());
             LogSettingMap.BuildMapping(modelBuilder.Entity<LogSetting>());
             OperationMap.BuildMapping(modelBuilder.Entity<Operation>());
