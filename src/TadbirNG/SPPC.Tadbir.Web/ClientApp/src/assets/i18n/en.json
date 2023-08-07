@@ -979,6 +979,7 @@
   },
   "Voucher": {
     "Voucher": "Voucher",
+    "Vouchers": "Vouchers",
     "New": "New Voucher",
     "Edit": "Edit Voucher",
     "Delete": "Delete Voucher",
@@ -1057,10 +1058,10 @@
     "CommittedVouchers": "Uncommitted Vouchers",
     "FinalizedVouchers": "Unfinalized Vouchers",
     "VoucherStatuses": {
-      "NotCommitted": "not committed voucheres",
-      "NotFinalized": "not finalized voucheres",
-      "NotConfirmed": "not confirmed voucheres",
-      "NotApproved": "not approved voucheres"
+      "NotCommitted": "not committed vouchers",
+      "NotFinalized": "not finalized vouchers",
+      "NotConfirmed": "not confirmed vouchers",
+      "NotApproved": "not approved vouchers"
     },
     "NoVoucherTitle": "There is no Voucher.",
     "NoVoucherMessage": "There is no Voucher. Should a new accounting voucher be created?"
