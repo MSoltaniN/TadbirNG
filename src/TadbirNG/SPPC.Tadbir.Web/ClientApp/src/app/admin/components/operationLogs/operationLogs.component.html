@@ -416,9 +416,10 @@
       <div class="col-xs-12 col-sm-3">
         <div *ngIf="this.logType != '3'" class="col-xs-12 col-sm-6 form-group">
           <button
+            SppcPermissionCheck="Archive"
+            (sppcClick)="confirmArchiveData()"
             class="k-button k-primary"
             [disabled]="disableButtons"
-            (click)="confirmArchiveData()"
           >
             {{ "OperationLog.Archive" | translate }}
           </button>
