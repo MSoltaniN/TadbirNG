@@ -1,0 +1,79 @@
+variables:
+  publish_path: '.\SPPC.Tadbir.Web.Api\publish\$CI_PIPELINE_ID\'
+  published_data_path: '.\SPPC.Tadbir.Web.Api\publish\$CI_PIPELINE_ID\*'
+  application_pool_name: 'TadbirNG.Api'
+  iis_worker_path: 'C:\inetpub\wwwroot\TadbirNG\TadbirNG.WebApi'
+  angular_project_path: '.\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\'
+  angular_build_output_server_path: 'C:\inetpub\wwwroot\TadbirNG\TadbirNG.WebNg14'
+
+stages:
+  - build
+  - deploy
+# Stage for building the Angular project
+build_angular:
+  stage: build
+  script:
+    - cd .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp
+    - npm install
+    - npm install -g @angular/cli
+    - node C:\Users\s_omidi\AppData\Roaming\npm\node_modules\@angular\cli\bin\ng build --configuration=production --output-path ${angular_build_output_server_path}
+  only:
+    changes:
+      - 'src/TadbirNG/SPPC.Tadbir.Web/**/*'
+      - .gitlab-ci.yml
+  
+# Stage for building the .NET Core project
+build_dotnet:
+  stage: build
+  script:
+    - dotnet restore .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj
+    - dotnet build .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj --no-restore
+    - dotnet publish .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj -c Release -o ${publish_path} --verbosity normal
+  artifacts:
+    paths:
+      - ${publish_path}
+    expire_in: '1 hrs'
+  tags:
+    - dotnet
+  only:
+    changes:
+        - 'src/TadbirNG/SPPC.Tadbir.Web.Api/**/*'
+        - .gitlab-ci.yml
+    refs:
+        - master
+
+production:
+  stage: deploy
+  script:
+    - |
+      if((Get-WebSiteState -Name ${application_pool_name}).Value -ne 'Stopped'){
+        Write-Output ('Stopping WebSite: {0}' -f ${application_pool_name})
+        Stop-WebSite -Name ${application_pool_name}
+      }
+    - |
+      if((Get-WebAppPoolState -Name ${application_pool_name}).Value -ne 'Stopped'){
+        Write-Output ('Stopping Application Pool: {0}' -f ${application_pool_name})
+        Stop-WebAppPool -Name ${application_pool_name}
+      }
+    - "Copy-Item ${published_data_path} -Destination ${iis_worker_path} -Recurse -Force"
+    - "Start-Sleep -s 180"
+    - |
+      if((Get-WebAppPoolState -Name ${application_pool_name}).Value -ne 'Started'){
+        Write-Output ('Starting Application Pool: {0}' -f ${application_pool_name})
+        Start-WebAppPool -Name ${application_pool_name}
+      }
+    - |
+      if((Get-WebSiteState -Name ${application_pool_name}).Value -ne 'Started'){
+        Write-Output ('Starting WebSite: {0}' -f ${application_pool_name})
+        Start-WebSite -Name ${application_pool_name}
+      }
+  only:
+    refs:
+        - master
+    changes:
+        - 'src/TadbirNG/SPPC.Tadbir.Web.Api/**/*'
+        - .gitlab-ci.yml
+  tags:
+    - dotnet
+  dependencies:
+    - build_dotnet
