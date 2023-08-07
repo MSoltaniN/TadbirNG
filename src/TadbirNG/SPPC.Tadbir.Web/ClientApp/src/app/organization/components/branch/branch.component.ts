@@ -84,7 +84,7 @@ export default class BranchComponent extends AutoGridExplorerComponent<Branch> i
   /**باز کردن و مقداردهی اولیه به فرم ویرایشگر */
   openEditorDialog(isNew: boolean) {
     this.dialogRef = this.dialogService.open({
-      title: this.getText(isNew ? 'Buttons.New' : 'Buttons.Edit'),
+      title: this.getText(isNew ? 'Branch.New' : 'Branch.Edit'),
       content: BranchFormComponent,
     });
 
