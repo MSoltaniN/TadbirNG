@@ -66,15 +66,11 @@ namespace SPPC.Tadbir.Persistence
             return item;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات یک فرم دریافت/پرداخت را ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="payReceive">فرم دریافت/پرداخت مورد نظر برای ایجاد یا اصلاح</param>
-        /// <returns>اطلاعات نمایشی فرم دریافت/پرداخت ایجاد یا اصلاح شده</returns>
-        public async Task<PayReceiveViewModel> SavePayReceiveAsync(PayReceiveViewModel payReceive)
+        /// <inheritdoc/>
+        public async Task<PayReceiveViewModel> SavePayReceiveAsync(PayReceiveViewModel payReceive, int type)
         {
             Verify.ArgumentNotNull(payReceive, nameof(payReceive));
-            int entityTypeId = GetEntityTypeId(payReceive.Type);
+            int entityTypeId = GetEntityTypeId(type);
             string personName = GetCurrentUserFullName();
             PayReceive payReceiveModel;
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
@@ -199,7 +195,7 @@ namespace SPPC.Tadbir.Persistence
             if (payReceiveByNo != null)
             {
                 byNo = Mapper.Map<PayReceiveViewModel>(payReceiveByNo);
-                await SetPayReceiveNavigationAsync(byNo);
+                await SetPayReceiveNavigationAsync(byNo, type);
             }
 
             return byNo;
@@ -218,7 +214,7 @@ namespace SPPC.Tadbir.Persistence
             var first = payReceives.FirstOrDefault();
             if (first != null)
             {
-                await SetPayReceiveNavigationAsync(first, gridOptions);
+                await SetPayReceiveNavigationAsync(first, type, gridOptions);
             }
 
             return first;
@@ -237,7 +233,7 @@ namespace SPPC.Tadbir.Persistence
             var last = payReceives.LastOrDefault();
             if (last != null)
             {
-                await SetPayReceiveNavigationAsync(last, gridOptions);
+                await SetPayReceiveNavigationAsync(last, type, gridOptions);
             }
 
             return last;
@@ -258,7 +254,7 @@ namespace SPPC.Tadbir.Persistence
             var next = payReceives.FirstOrDefault();
             if (next != null)
             {
-                await SetPayReceiveNavigationAsync(next, gridOptions);
+                await SetPayReceiveNavigationAsync(next, type, gridOptions);
             }
 
             return next;
@@ -279,7 +275,7 @@ namespace SPPC.Tadbir.Persistence
             var previous = payReceives.LastOrDefault();
             if (previous != null)
             {
-                await SetPayReceiveNavigationAsync(previous, gridOptions);
+                await SetPayReceiveNavigationAsync(previous, type, gridOptions);
             }
 
             return previous;
@@ -307,8 +303,8 @@ namespace SPPC.Tadbir.Persistence
                 Type = (short)type
             };
 
-            newPayReceive = await SavePayReceiveAsync(newPayReceive);
-            await SetPayReceiveNavigationAsync(newPayReceive);
+            newPayReceive = await SavePayReceiveAsync(newPayReceive, type);
+            await SetPayReceiveNavigationAsync(newPayReceive, type);
             return newPayReceive;
         }
 
@@ -433,16 +429,16 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
         }
 
-        private async Task SetPayReceiveNavigationAsync(PayReceiveViewModel payReceive,
+        private async Task SetPayReceiveNavigationAsync(PayReceiveViewModel payReceive, int type,
             GridOptions gridOptions = null)
         {
             int nextCount, prevCount;
-            int viewId = GetViewId(payReceive.Type);
+            int viewId = GetViewId(type);
             var options = gridOptions ?? new GridOptions();
             var query = Repository
                 .GetAllOperationQuery<PayReceive>(viewId)
                 .Where(pr => Convert.ToInt64(pr.PayReceiveNo) < Convert.ToInt64(payReceive.PayReceiveNo) &&
-                    pr.Type == payReceive.Type);
+                    pr.Type == type);
 
             if (!options.IsEmpty)
             {
@@ -461,7 +457,7 @@ namespace SPPC.Tadbir.Persistence
             query = Repository
                 .GetAllOperationQuery<PayReceive>(viewId)
                 .Where(pr => Convert.ToInt64(pr.PayReceiveNo) > Convert.ToInt64(payReceive.PayReceiveNo) &&
-                    pr.Type == payReceive.Type);
+                    pr.Type == type);
 
             if (!options.IsEmpty)
             {

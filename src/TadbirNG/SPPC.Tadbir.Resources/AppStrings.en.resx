@@ -4281,4 +4281,7 @@
   <data name="PrintPreviewForm" xml:space="preserve">
     <value>Print Preview Form</value>
   </data>
+  <data name="EntityReference" xml:space="preserve">
+    <value>Refrence</value>
+  </data>
 </root>
