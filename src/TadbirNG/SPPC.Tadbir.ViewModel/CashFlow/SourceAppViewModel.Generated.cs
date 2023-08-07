@@ -73,7 +73,6 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// <summary>
         /// نام و نام خانوادگی کاربر ایجاد کننده
         /// </summary>
-        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string CreatedByName { get; set; }
 
         /// <summary>
@@ -89,7 +88,6 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// <summary>
         /// نام و نام خانوادگی آخرین کاربر تغییر دهنده
         /// </summary>
-        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string ModifiedByName { get; set; }
     }
 }
