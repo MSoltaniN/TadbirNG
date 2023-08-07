@@ -109,7 +109,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var outputItem = await _repository.SavePayReceiveAsync(payment);
+            var outputItem = await _repository.SavePayReceiveAsync(payment, (int)PayReceiveType.Payment);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
@@ -130,7 +130,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var outputItem = await _repository.SavePayReceiveAsync(receipt);
+            var outputItem = await _repository.SavePayReceiveAsync(receipt, (int)PayReceiveType.Receipt);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
@@ -154,7 +154,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var outputItem = await _repository.SavePayReceiveAsync(payment);
+            var outputItem = await _repository.SavePayReceiveAsync(payment, (int)PayReceiveType.Payment);
             return OkReadResult(outputItem);
         }
 
@@ -178,7 +178,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var outputItem = await _repository.SavePayReceiveAsync(receipt);
+            var outputItem = await _repository.SavePayReceiveAsync(receipt, (int)PayReceiveType.Receipt);
             return OkReadResult(outputItem);
         }
 

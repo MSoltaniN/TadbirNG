@@ -364,7 +364,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var repository = _repository as IActiveStateRepository<AccountViewModel>;
+            var repository = _repository as IActiveStateRepository<CostCenterViewModel>;
             if (costCenter.ParentId != null && await repository.IsDeactivatedAsync(costCenter.ParentId.Value))
             {
                 var message = _strings.Format(AppStrings.ActiveStateParentError, EntityNameKey);
