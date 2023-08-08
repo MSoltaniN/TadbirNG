@@ -1,8 +1,8 @@
 variables:
-  publish_path: '.\tadbirng\src\TadbirNG\SPPC.Tadbir.Web.Api\publish\$CI_PIPELINE_ID\'
-  published_data_path: '.\tadbirng\src\TadbirNG\SPPC.Tadbir.Web.Api\publish\$CI_PIPELINE_ID\*'
-  publish_path_angular: '.\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\dist\'
-  publish_path_data_angular: '.\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\dist\*'
+  publish_path: '.\src\TadbirNG\SPPC.Tadbir.Web.Api\publish\$CI_PIPELINE_ID\'
+  published_data_path: '.\src\TadbirNG\SPPC.Tadbir.Web.Api\publish\$CI_PIPELINE_ID\*'
+  publish_path_angular: '.\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\dist\'
+  publish_path_data_angular: '.\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\dist\*'
   application_pool_name: 'TadbirNG.Api'
   iis_worker_path: 'C:\inetpub\wwwroot\TadbirNG\TadbirNG.WebApi'
   angular_build_output_server_path: 'C:\inetpub\wwwroot\TadbirNG\TadbirNG.WebNg14'
@@ -16,32 +16,32 @@ stages:
 install_packages_angular:
   stage: build
   script:
-    - cd .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp
+    - cd .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp
     - npm install
   cache:
     key: ${CI_COMMIT_REF_NAME}
     paths:
-      - .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\node_modules
+      - .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\node_modules
   artifacts:
     paths:
-      - .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\node_modules
+      - .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\node_modules
   only:
     refs:
       - master
     changes:
-      - .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\package.json
+      - .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\package.json
       - .gitlab-ci.yml
 
 # Stage for building the Angular project
 build_angular:
   stage: build
   script:
-    - cd .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp
+    - cd .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp
     - node .\node_modules\@angular\cli\bin\ng build
   cache:
     key: ${CI_COMMIT_REF_NAME}
     paths:
-      - .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\node_modules
+      - .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\node_modules
   artifacts:
     paths:
       - ${publish_path_angular}
@@ -56,9 +56,9 @@ build_angular:
 build_dotnet:
   stage: build
   script:
-    - dotnet restore .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj
-    - dotnet build .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj --no-restore
-    - dotnet publish .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj -c Release -o ${publish_path} --verbosity normal
+    - dotnet restore .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj
+    - dotnet build .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj --no-restore
+    - dotnet publish .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj -c Release -o ${publish_path} --verbosity normal
   artifacts:
     paths:
       - ${publish_path}
