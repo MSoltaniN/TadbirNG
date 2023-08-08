@@ -380,8 +380,6 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
 
     setTimeout(() => {
       this.editForm.reset(this.model);
-      console.log(this.editForm);
-      
     }, 0);
   }
 

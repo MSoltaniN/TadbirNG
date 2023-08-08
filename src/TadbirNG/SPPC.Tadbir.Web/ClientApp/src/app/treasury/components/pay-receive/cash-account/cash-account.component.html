@@ -1,10 +1,13 @@
-<view-identifier [ViewID]="viewId"></view-identifier>
+<view-identifier [ViewID]="viewId">
+    <report-param ParamName="payReceiveId" [ParamValue]="payReceiveId"></report-param>
+</view-identifier>
 <report-management
 [ViewIdentity]="viewIdentity"
 [Grid]="grid"
 [Sort]="sort"
 [Filter]="reportFilter"
 [RowData]="rowData"
+[OperationId]="operationItems.PrintPreviewCashAccountLines"
 ></report-management>
 
 <report-setting></report-setting>

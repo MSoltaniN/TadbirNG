@@ -96,6 +96,8 @@ export class ReportManagementComponent
 
   @Input() public ViewSettings: QuickReportViewSetting;
 
+  @Input() public OperationId:number = OperationId.PrintPreview;
+
   @Output() public onDataBind: EventEmitter<any> = new EventEmitter();
 
   @ViewChild(ReportParametersComponent)
@@ -713,7 +715,7 @@ export class ReportManagementComponent
           sort,
           filterExpression,
           quickFilter,
-          OperationId.PrintPreview
+          this.OperationId
         )
         .subscribe((response: any) => {
           var reportData = {
@@ -752,7 +754,7 @@ export class ReportManagementComponent
           sort,
           filterExpression,
           quickFilter,
-          OperationId.PrintPreview
+          this.OperationId
         )
         .subscribe((response: any) => {
           var data = null;
