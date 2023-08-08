@@ -12,7 +12,6 @@ res/_codegen_
 
 # Ignore all development-mode artifacts
 src/**/*.Development.json
-src/**/edition.Development.json
 
 # Ignore all uploaded files
 src/**/Upload/*.*
