@@ -13,36 +13,13 @@ stages:
   - build
   - deploy
 
-   # job for install the Angular project
-install_packages_angular:
-  stage: build
-  script:
-    - cd .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp
-    - npm install
-  cache:
-    key: ${CI_COMMIT_REF_NAME}
-    paths:
-      - .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\node_modules
-  artifacts:
-    paths:
-      - .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\node_modules
-  only:
-    refs:
-      - master
-    changes:
-      - .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\package.json
-      - .gitlab-ci.yml
-
 # Stage for building the Angular project
 build_angular:
   stage: build
   script:
     - cd .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp
+    - npm install
     - node .\node_modules\@angular\cli\bin\ng build
-  cache:
-    key: ${CI_COMMIT_REF_NAME}
-    paths:
-      - .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\node_modules
   artifacts:
     paths:
       - ${publish_path_angular}
