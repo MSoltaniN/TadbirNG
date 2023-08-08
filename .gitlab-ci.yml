@@ -1,34 +1,64 @@
 variables:
-  publish_path: '.\SPPC.Tadbir.Web.Api\publish\$CI_PIPELINE_ID\'
-  published_data_path: '.\SPPC.Tadbir.Web.Api\publish\$CI_PIPELINE_ID\*'
+  publish_path: '.\tadbirng\src\TadbirNG\SPPC.Tadbir.Web.Api\publish\$CI_PIPELINE_ID\'
+  published_data_path: '.\tadbirng\src\TadbirNG\SPPC.Tadbir.Web.Api\publish\$CI_PIPELINE_ID\*'
+  publish_path_angular: '.\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\dist\'
+  publish_path_data_angular: '.\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\dist\*'
   application_pool_name: 'TadbirNG.Api'
   iis_worker_path: 'C:\inetpub\wwwroot\TadbirNG\TadbirNG.WebApi'
-  angular_project_path: '.\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\'
   angular_build_output_server_path: 'C:\inetpub\wwwroot\TadbirNG\TadbirNG.WebNg14'
+  CI_COMMIT_REF_NAME: 'key_for_node_modules'
 
 stages:
   - build
   - deploy
+
+   # job for install the Angular project
+install_packages_angular:
+  stage: build
+  script:
+    - cd .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp
+    - npm install
+  cache:
+    key: ${CI_COMMIT_REF_NAME}
+    paths:
+      - .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\node_modules
+  artifacts:
+    paths:
+      - .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\node_modules
+  only:
+    refs:
+      - master
+    changes:
+      - .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\package.json
+      - .gitlab-ci.yml
+
 # Stage for building the Angular project
 build_angular:
   stage: build
   script:
-    - cd .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp
-    - npm install
-    - npm install -g @angular/cli
-    - node C:\Users\s_omidi\AppData\Roaming\npm\node_modules\@angular\cli\bin\ng build --configuration=production --output-path ${angular_build_output_server_path}
+    - cd .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp
+    - node .\node_modules\@angular\cli\bin\ng build
+  cache:
+    key: ${CI_COMMIT_REF_NAME}
+    paths:
+      - .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\node_modules
+  artifacts:
+    paths:
+      - ${publish_path_angular}
   only:
     changes:
-      - 'src/TadbirNG/SPPC.Tadbir.Web/**/*'
+      - "tadbirng/src/TadbirNG/SPPC.Tadbir.Web/**/*"
       - .gitlab-ci.yml
+    refs:
+        - master
   
 # Stage for building the .NET Core project
 build_dotnet:
   stage: build
   script:
-    - dotnet restore .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj
-    - dotnet build .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj --no-restore
-    - dotnet publish .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj -c Release -o ${publish_path} --verbosity normal
+    - dotnet restore .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj
+    - dotnet build .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj --no-restore
+    - dotnet publish .\tadbirng\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj -c Release -o ${publish_path} --verbosity normal
   artifacts:
     paths:
       - ${publish_path}
@@ -37,12 +67,27 @@ build_dotnet:
     - dotnet
   only:
     changes:
-        - 'src/TadbirNG/SPPC.Tadbir.Web.Api/**/*'
+        - 'tadbirng/src/TadbirNG/SPPC.Tadbir.Web.Api/**/*'
         - .gitlab-ci.yml
     refs:
         - master
 
-production:
+# Stage for deploy the angular project
+deploy_angular:
+  stage: deploy
+  script:
+       - "Copy-Item ${publish_path_data_angular} -Destination ${angular_build_output_server_path} -Recurse -Force"
+  only:
+    changes:
+      - "tadbirng/src/TadbirNG/SPPC.Tadbir.Web/**/*"
+      - .gitlab-ci.yml
+    refs:
+        - master
+  dependencies:
+    - build_angular  
+
+# Stage for deploy the .NET Core project
+deploy_dotnet:
   stage: deploy
   script:
     - |
@@ -55,8 +100,11 @@ production:
         Write-Output ('Stopping Application Pool: {0}' -f ${application_pool_name})
         Stop-WebAppPool -Name ${application_pool_name}
       }
-    - "Copy-Item ${published_data_path} -Destination ${iis_worker_path} -Recurse -Force"
-    - "Start-Sleep -s 180"
+    - |
+      while ((Get-WebSiteState -Name ${application_pool_name}).Value -ne 'Stopped' -or (Get-WebAppPoolState -Name ${application_pool_name}).Value -ne 'Stopped') {
+          Start-Sleep -Seconds 1
+      }
+    - Copy-Item ${published_data_path} -Destination ${iis_worker_path} -Recurse -Force
     - |
       if((Get-WebAppPoolState -Name ${application_pool_name}).Value -ne 'Started'){
         Write-Output ('Starting Application Pool: {0}' -f ${application_pool_name})
@@ -71,7 +119,7 @@ production:
     refs:
         - master
     changes:
-        - 'src/TadbirNG/SPPC.Tadbir.Web.Api/**/*'
+        - 'tadbirng/src/TadbirNG/SPPC.Tadbir.Web.Api/**/*'
         - .gitlab-ci.yml
   tags:
     - dotnet
