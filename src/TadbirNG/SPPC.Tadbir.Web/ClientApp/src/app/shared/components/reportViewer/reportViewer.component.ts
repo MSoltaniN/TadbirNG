@@ -428,8 +428,8 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
   }
 
   formatBoolean(rows: any, cols: Array<QuickReportColumnConfig>) {
-    let trueText = this.getText('Report.TrueLabel');
-    let falseText = this.getText('Report.FalseLabel');
+    let trueText = this.getText('Account.Active');
+    let falseText = this.getText('Account.Inactive');
 
     for (var index = 0; index < rows.length; index++) {
       cols.forEach(function (item) {

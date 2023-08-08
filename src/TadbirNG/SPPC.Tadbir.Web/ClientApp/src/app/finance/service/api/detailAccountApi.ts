@@ -34,4 +34,10 @@ export class DetailAccountApi {
 
     // faccounts/{faccountId:int}/fullcode
     public static DetailAccountFullCode = environment.BaseUrl + "/faccounts/{0}/fullcode";
+
+    // faccounts/{faccountId:min(1)}/deactivate
+    public static DeactivateDetailAccount = environment.BaseUrl + "/faccounts/{0}/deactivate";
+
+    // faccounts/{faccountId:min(1)}/reactivate
+    public static ReactivateDetailAccount = environment.BaseUrl + "/faccounts/{0}/reactivate";
 }

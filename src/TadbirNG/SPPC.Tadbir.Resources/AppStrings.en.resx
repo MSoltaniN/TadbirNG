@@ -391,7 +391,7 @@
     <value>Fiscal period</value>
   </data>
   <data name="Inventory" xml:space="preserve">
-    <value>product inventory</value>
+    <value>Inventory</value>
   </data>
   <data name="IssueVoucher" xml:space="preserve">
     <value>issue voucher</value>
@@ -3427,34 +3427,34 @@
     <value>Total liabilities and owner equities</value>
   </data>
   <data name="LiquidAssets" xml:space="preserve">
-    <value>Liquid assets</value>
+    <value>Liquid Assets</value>
   </data>
   <data name="LiquidAssetsSum" xml:space="preserve">
-    <value>Total liquid assets</value>
+    <value>Total Liquid Assets</value>
   </data>
   <data name="LiquidLiabilities" xml:space="preserve">
-    <value>Liquid liabilities</value>
+    <value>Liquid Liabilities</value>
   </data>
   <data name="LiquidLiabilitiesSum" xml:space="preserve">
-    <value>Total liquid liabilities</value>
+    <value>Total Liquid Liabilities</value>
   </data>
   <data name="NonLiquidAssets" xml:space="preserve">
-    <value>Non-liquid assets</value>
+    <value>Non-Liquid Assets</value>
   </data>
   <data name="NonLiquidAssetsSum" xml:space="preserve">
-    <value>Total non-liquid assets</value>
+    <value>Total Non-Liquid Assets</value>
   </data>
   <data name="NonLiquidLiabilities" xml:space="preserve">
-    <value>Non-liquid liabilities</value>
+    <value>Non-Liquid Liabilities</value>
   </data>
   <data name="NonLiquidLiabilitiesSum" xml:space="preserve">
-    <value>Total non-liquid liabilities</value>
+    <value>Total Non-Liquid Liabilities</value>
   </data>
-  <data name="OwnerEquities" xml:space="preserve">
-    <value>Owner equities</value>
+  <data name="StakeholderEquity" xml:space="preserve">
+    <value>Stakeholder Equity</value>
   </data>
-  <data name="OwnerEquitiesSum" xml:space="preserve">
-    <value>Total owner equities</value>
+  <data name="StakeholderEquitySum" xml:space="preserve">
+    <value>Total Stakeholder Equity</value>
   </data>
   <data name="Assets" xml:space="preserve">
     <value>Assets</value>
@@ -4115,5 +4115,176 @@
   </data>
   <data name="TreasurySystemicVoucherDefaultDescription" xml:space="preserve">
     <value>Voucher created by treasury system.</value>
+  </data>
+  <data name="BouncedNotes" xml:space="preserve">
+    <value>Bounced Notes</value>
+  </data>
+  <data name="CashFund" xml:space="preserve">
+    <value>Cash Fund</value>
+  </data>
+  <data name="Closing" xml:space="preserve">
+    <value>Closing</value>
+  </data>
+  <data name="ClosingAccounts" xml:space="preserve">
+    <value>Closing Accounts</value>
+  </data>
+  <data name="ContraAccounts" xml:space="preserve">
+    <value>Contra Accounts</value>
+  </data>
+  <data name="CostOfGoodsSold" xml:space="preserve">
+    <value>Cost of Goods Sold</value>
+  </data>
+  <data name="CurrentYearEarnings" xml:space="preserve">
+    <value>Current Year Earnings</value>
+  </data>
+  <data name="FinalCost" xml:space="preserve">
+    <value>Final Cost</value>
+  </data>
+  <data name="FloatNotes" xml:space="preserve">
+    <value>Float Notes</value>
+  </data>
+  <data name="GuaranteedNotesPayable" xml:space="preserve">
+    <value>Guaranteed Notes Payable</value>
+  </data>
+  <data name="GuaranteedNotesReceivable" xml:space="preserve">
+    <value>Guaranteed Notes Receivable</value>
+  </data>
+  <data name="NotesPayable" xml:space="preserve">
+    <value>Notes Payable</value>
+  </data>
+  <data name="NotesReceivable" xml:space="preserve">
+    <value>Notes Receivable</value>
+  </data>
+  <data name="Opening" xml:space="preserve">
+    <value>Opening</value>
+  </data>
+  <data name="OperationalCosts" xml:space="preserve">
+    <value>Operational Costs</value>
+  </data>
+  <data name="OtherRevenuesCosts" xml:space="preserve">
+    <value>Other Revenues and Costs</value>
+  </data>
+  <data name="OtherSellerPurchaser" xml:space="preserve">
+    <value>Other Seller / Purchaser</value>
+  </data>
+  <data name="OverheadControl" xml:space="preserve">
+    <value>Overhead Control</value>
+  </data>
+  <data name="Performance" xml:space="preserve">
+    <value>Performance</value>
+  </data>
+  <data name="PettyCash" xml:space="preserve">
+    <value>Petty Cash</value>
+  </data>
+  <data name="Property" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="PropertyEarnings" xml:space="preserve">
+    <value>Property Earnings</value>
+  </data>
+  <data name="Purchase" xml:space="preserve">
+    <value>Purchase</value>
+  </data>
+  <data name="PurchaseDiscount" xml:space="preserve">
+    <value>Purchase Discount</value>
+  </data>
+  <data name="PurchaseInvoiceCharges" xml:space="preserve">
+    <value>Purchase Invoice Charges</value>
+  </data>
+  <data name="PurchaseRefund" xml:space="preserve">
+    <value>Purchase Refund</value>
+  </data>
+  <data name="PurchaseRefundDiscounts" xml:space="preserve">
+    <value>Purchase Refund and Discounts</value>
+  </data>
+  <data name="RetainedEarnings" xml:space="preserve">
+    <value>Retained Earnings</value>
+  </data>
+  <data name="Sales" xml:space="preserve">
+    <value>Sales</value>
+  </data>
+  <data name="SalesDiscount" xml:space="preserve">
+    <value>Sales Discount</value>
+  </data>
+  <data name="SalesInvoiceCharges" xml:space="preserve">
+    <value>Sales Invoice Charges</value>
+  </data>
+  <data name="SalesPurchase" xml:space="preserve">
+    <value>Sales / Purchase</value>
+  </data>
+  <data name="SalesRefund" xml:space="preserve">
+    <value>Sales Reund</value>
+  </data>
+  <data name="SalesRefundDiscounts" xml:space="preserve">
+    <value>Sales Refund and Discounts</value>
+  </data>
+  <data name="TaxPayable" xml:space="preserve">
+    <value>Tax Payable</value>
+  </data>
+  <data name="TaxReceivable" xml:space="preserve">
+    <value>Tax Receivable</value>
+  </data>
+  <data name="TollPayable" xml:space="preserve">
+    <value>Toll Payable</value>
+  </data>
+  <data name="TollReceivable" xml:space="preserve">
+    <value>Toll Receivable</value>
+  </data>
+  <data name="TradeCreditors" xml:space="preserve">
+    <value>Trade Creditors</value>
+  </data>
+  <data name="TradeDebtors" xml:space="preserve">
+    <value>Trade Debtors</value>
+  </data>
+  <data name="TransitionalProperty" xml:space="preserve">
+    <value>Transitional Property</value>
+  </data>
+  <data name="WageControl" xml:space="preserve">
+    <value>Wage Control</value>
+  </data>
+  <data name="Warehouse" xml:space="preserve">
+    <value>Warehouse</value>
+  </data>
+  <data name="InvalidCheckBookPageNo" xml:space="preserve">
+    <value>Check book page number must end with one or more digits.</value>
+  </data>
+  <data name="Deactivate" xml:space="preserve">
+    <value>Deactivate</value>
+  </data>
+  <data name="Reactivate" xml:space="preserve">
+    <value>Reactivate</value>
+  </data>
+  <data name="ActiveStateBranchError" xml:space="preserve">
+    <value>This {0} was not created in current branch and cannot be deactivated.</value>
+  </data>
+  <data name="ActiveStateFPeriodError" xml:space="preserve">
+    <value>This {0} was created in one of later fiscal periods and cannot be deactivated.</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="ActiveStateChildError" xml:space="preserve">
+    <value>This {0} has one or more child items and cannot be deactivated.</value>
+  </data>
+  <data name="ActiveStateParentError" xml:space="preserve">
+    <value>Parent {0} has been deactivated and cannot have child items.</value>
+  </data>
+  <data name="SourceAppName" xml:space="preserve">
+    <value>Source or Application</value>
+  </data>
+  <data name="PrintForm" xml:space="preserve">
+    <value>Print Form</value>
+  </data>
+  <data name="PrintPreviewForm" xml:space="preserve">
+    <value>Print Preview Form</value>
+  </data>
+  <data name="EntityReference" xml:space="preserve">
+    <value>Refrence</value>
+  </data>
+  <data name="UndoRegister" xml:space="preserve">
+    <value>Undo register</value>
   </data>
 </root>

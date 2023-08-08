@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -7,7 +9,6 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Filters;
 
@@ -51,8 +52,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.View)]
         public async Task<IActionResult> GetAccountCollectionCategoriesAsync()
         {
-            var accCollection = await _repository.GetCollectionCategoriesAsync();
-            return Json(accCollection);
+            var categories = await _repository.GetCollectionCategoriesAsync();
+            Array.ForEach(categories.ToArray(), cat =>
+            {
+                cat.Name = _strings[cat.Name];
+                Array.ForEach(cat.AccountCollections.ToArray(), coll =>
+                    coll.Name = _strings[coll.Name]);
+            });
+            return Json(categories);
         }
 
         /// <summary>
@@ -64,7 +71,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpGet]
         [Route(AccountCollectionApi.AccountCollectionAccountsUrl)]
         [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.View)]
-        public async Task<IActionResult> GetAccountCollectionAccountAsync(int collectionId)
+        public async Task<IActionResult> GetAccountCollectionAccountsAsync(int collectionId)
         {
             var gridOptions = GridOptions ?? new GridOptions();
             var accounts = await _repository.GetCollectionAccountsAsync(collectionId, gridOptions);
@@ -82,7 +89,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPost]
         [Route(AccountCollectionApi.AccountCollectionAccountsUrl)]
         [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.Save)]
-        public async Task<IActionResult> PostAccountCollectionAccountAsync(
+        public async Task<IActionResult> PostAccountCollectionAccountsAsync(
             int collectionId, [FromBody]List<AccountCollectionAccountViewModel> accCollections)
         {
             bool canManage = await _repository.CanBranchManageCollectionAsync(

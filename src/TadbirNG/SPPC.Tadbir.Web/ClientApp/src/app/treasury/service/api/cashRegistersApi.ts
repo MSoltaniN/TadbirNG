@@ -10,4 +10,10 @@ export class CashRegisterApi
 
     // API client URL for all users assigned to the cash register item specified by unique identifier
     public static CashRegisterUsers = environment.BaseUrl + "/cash-registers/{0}/users";
+
+    // cash-registers/{cashRegisterId:min(1)}/deactivate
+    public static DeactivateCashRegister = environment.BaseUrl + "/cash-registers/{0}/deactivate";
+
+    // cash-registers/{cashRegisterId:min(1)}/reactivate
+    public static ReactivateCashRegister = environment.BaseUrl + "/cash-registers/{0}/reactivate";
 }

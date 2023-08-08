@@ -38,6 +38,7 @@ namespace SPPC.Tadbir.Model.CashFlow
             ModifiedDate = DateTime.Now;
             this.Accounts = new List<PayReceiveAccount>();
             this.CashAccounts = new List<PayReceiveCashAccount>();
+            this.PayReceiveVoucherLines = new List<PayReceiveVoucherLine>();
         }
 
         /// <summary>
@@ -64,11 +65,6 @@ namespace SPPC.Tadbir.Model.CashFlow
         /// نوع فرم؛ 0 برای دریافت و 1 برای پرداخت
         /// </summary>
         public virtual short Type { get; set; }
-
-        /// <summary>
-        /// شماره فرم دریافت/پرداخت
-        /// </summary>
-        public virtual string TextNo { get; set; }
 
         /// <summary>
         /// نرخ ارز

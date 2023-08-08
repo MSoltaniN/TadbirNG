@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Domain
 {
@@ -36,12 +35,12 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// مجموعه حساب حقوق صاحبان سرمایه
         /// </summary>
-        OwnerEquities = 5,
+        StakeholderEquity = 5,
 
         /// <summary>
         /// مجموعه حساب حساب های انتظامی
         /// </summary>
-        OrganizerAccounts = 6,
+        ContraAccounts = 6,
 
         /// <summary>
         /// مجموعه حساب فروش - سود و زیان
@@ -51,12 +50,12 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// مجموعه حساب برگشت از فروش و تخفیفات
         /// </summary>
-        SalesRefundDiscount = 10,
+        SalesRefundDiscounts = 10,
 
         /// <summary>
         /// مجموعه حساب قیمت تمام شده کالای فروش رفته
         /// </summary>
-        SoldProductCost = 11,
+        CostOfGoodsSold = 11,
 
         /// <summary>
         /// مجموعه حساب خرید - سود و زیان
@@ -66,7 +65,7 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// مجموعه حساب برگشت از خرید و تخفیفات
         /// </summary>
-        PurchaseRefundDiscount = 13,
+        PurchaseRefundDiscounts = 13,
 
         /// <summary>
         /// مجموعه حساب هزینه های عملیاتی
@@ -76,12 +75,12 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// مجموعه حساب سایر هزینه ها و درآمدها
         /// </summary>
-        OtherCostRevenue = 15,
+        OtherRevenuesCosts = 15,
 
         /// <summary>
         /// مجموعه حساب صندوق
         /// </summary>
-        Cashier = 16,
+        CashFund = 16,
 
         /// <summary>
         /// مجموعه حساب بانک
@@ -91,37 +90,37 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// مجموعه حساب اسناد دریافتنی
         /// </summary>
-        ReceivableDocuments = 18,
+        NotesReceivable = 18,
 
         /// <summary>
         /// مجموعه حساب اسناد پرداختنی
         /// </summary>
-        PayableDocuments = 19,
+        NotesPayable = 19,
 
         /// <summary>
         /// مجموعه حساب اسناد دریافتنی تضمینی
         /// </summary>
-        VerifiedReceivableDocuments = 20,
+        GuaranteedNotesReceivable = 20,
 
         /// <summary>
         /// مجموعه حساب اسناد پرداختنی تضمینی
         /// </summary>
-        VerifiedPayableDocuments = 21,
+        GuaranteedNotesPayable = 21,
 
         /// <summary>
         /// مجموعه حساب اسناد در جریان وصول
         /// </summary>
-        OngoingDocuments = 22,
+        FloatNotes = 22,
 
         /// <summary>
         /// مجموعه حساب اسناد برگشتی
         /// </summary>
-        BouncedDocuments = 23,
+        BouncedNotes = 23,
 
         /// <summary>
         /// مجموعه حساب تنخواه گردان ها
         /// </summary>
-        CashHolders = 24,
+        PettyCash = 24,
 
         /// <summary>
         /// مجموعه حساب فروش
@@ -146,22 +145,22 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// مجموعه حساب اضافات فاکتور فروش
         /// </summary>
-        SalesInvoiceExtras = 29,
+        SalesInvoiceCharges = 29,
 
         /// <summary>
         /// مجموعه حساب اضافات فاکتور خرید
         /// </summary>
-        PurchaseInvoiceExtras = 30,
+        PurchaseInvoiceCharges = 30,
 
         /// <summary>
         /// مجموعه حساب بدهکاران تجاری
         /// </summary>
-        BusinessDebtors = 31,
+        TradeDebtors = 31,
 
         /// <summary>
         /// مجموعه حساب بستانکاران تجاری
         /// </summary>
-        BusinessCreditors = 32,
+        TradeCreditors = 32,
 
         /// <summary>
         /// مجموعه حساب تخفیفات فروش
@@ -176,42 +175,42 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// مجموعه حساب قیمت تمام شده
         /// </summary>
-        CalculatedCost = 35,
+        FinalCost = 35,
 
         /// <summary>
         /// مجموعه حساب فروشنده / خریدار  متفرقه
         /// </summary>
-        MiscBuyerSeller = 36,
+        OtherSellerPurchaser = 36,
 
         /// <summary>
         /// مجموعه حساب مالیات پرداختنی
         /// </summary>
-        PayableTax = 37,
+        TaxPayable = 37,
 
         /// <summary>
         /// مجموعه حساب عوارض پرداختنی
         /// </summary>
-        PayableToll = 38,
+        TollPayable = 38,
 
         /// <summary>
         /// مجموعه حساب مالیات دریافتنی
         /// </summary>
-        ReceivableTax = 39,
+        TaxReceivable = 39,
 
         /// <summary>
         /// مجموعه حساب عوارض دریافتنی
         /// </summary>
-        ReceivableToll = 40,
+        TollReceivable = 40,
 
         /// <summary>
         /// مجموعه حساب افتتاحیه
         /// </summary>
-        OpeningAccount = 41,
+        Opening = 41,
 
         /// <summary>
         /// مجموعه حساب اختتامیه
         /// </summary>
-        ClosingAccount = 42,
+        Closing = 42,
 
         /// <summary>
         /// مجموعه حساب عملکرد
@@ -221,17 +220,17 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// مجموعه حساب سود و زیان سال جاری
         /// </summary>
-        CurrentProfitLoss = 44,
+        CurrentYearEarnings = 44,
 
         /// <summary>
         /// مجموعه حساب سود و زیان انباشته
         /// </summary>
-        AccumulatedProfitLoss = 45,
+        RetainedEarnings = 45,
 
         /// <summary>
         /// مجموعه حساب موجودی کالا
         /// </summary>
-        ProductInventory = 46,
+        Inventory = 46,
 
         /// <summary>
         /// مجموعه حساب کنترل دستمزد
@@ -246,16 +245,16 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// مجموعه حساب اموال
         /// </summary>
-        Properties = 49,
+        Property = 49,
 
         /// <summary>
         /// مجموعه حساب سود و زیان عملیات اموال
         /// </summary>
-        ProfitLossFromProperties = 50,
+        PropertyEarnings = 50,
 
         /// <summary>
         /// مجموعه حساب اموال انتقالی
         /// </summary>
-        TransferedProperties = 51,
+        TransitionalProperty = 51,
     }
 }

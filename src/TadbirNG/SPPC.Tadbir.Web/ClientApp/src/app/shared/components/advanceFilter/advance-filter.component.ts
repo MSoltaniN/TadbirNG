@@ -18,6 +18,7 @@ import { Filter } from "@sppc/shared/class/filter";
 import { FilterExpression } from "@sppc/shared/class/filterExpression";
 import { Layout, MessageType } from "@sppc/shared/enum/metadata";
 import {
+  BooleanOperatorResource,
   Braces,
   FilterColumn,
   FilterRow,
@@ -68,7 +69,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
   selectScriptType: string = "";
 
   totalFilterExpression: string = "";
-  selectedValue: string;
+  selectedValue: string|any;
   formMode: string;
   currentEditIndex: number;
 
@@ -116,6 +117,11 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     { value: StringOperatorResource.Like, key: "contains" },
     { value: StringOperatorResource.NotLike, key: "doesnotcontain" },
   ];
+
+  booleanOperators: Array<Item> = [
+    { value: BooleanOperatorResource.EQ, key: "eq" },
+    { value: BooleanOperatorResource.NEQ, key: "neq" },
+  ]
 
   constructor(
     public toastrService: ToastrService,
@@ -228,6 +234,11 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
           this.filters = item.filters;
         }
 
+        let index = this.groupFilters.findIndex(
+          (gf) => gf.id === this.gFilterSelected
+        );
+        this.filters = this.groupFilters[index].filters;
+
         this.computeTotalExpression();
       });
   }
@@ -242,7 +253,8 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
           this.operatorsList = this.numberDateOperators;
           break;
         case "boolean":
-          //this.operatorsList = this.bool
+          this.operatorsList = this.booleanOperators;
+          this.selectedValue = false;
           break;
         case "Date":
           this.operatorsList = this.numberDateOperators;
@@ -274,11 +286,13 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       this.selectedOperator = selectedOp;
 
       this.selectedLogicalOperator = filter.logicOperator;
-      this.selectedValue = filter.value;
+
       this.currentEditIndex = this.filters.findIndex(
         (f) => f === this.selectedRows[0]
       );
       this.selectedColumnChange();
+
+      this.selectedValue = filter.value;
     }
   }
 
@@ -989,7 +1003,9 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       return false;
     }
 
-    if (!this.selectedValue) {
+    if (!this.selectedValue && this.selectedValue !== false) {
+      console.log(this.selectedValue);
+      
       this.showMessage(
         this.getText("AdvanceFilter.PleaseEnterValue"),
         MessageType.Warning

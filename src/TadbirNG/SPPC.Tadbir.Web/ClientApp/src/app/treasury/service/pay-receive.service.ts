@@ -26,6 +26,7 @@ export class PayReceiveInfo implements PayReceive {
   hasPrevious: boolean;
   accountAmountsSum: number;
   cashAmountsSum: number;
+  isRegistered: boolean = false;
 }
 
 @Injectable({
@@ -41,5 +42,9 @@ export class PayReceiveService extends BaseService {
 
   public changeStatus(apiUrl: string) {
     return this.http.put(apiUrl, null, this.option).pipe(map((res) => res));
+  }
+
+  public registerForm(apiUrl: string) {
+    return this.http.post(apiUrl, null, this.option).pipe(map((res) => res));
   }
 }

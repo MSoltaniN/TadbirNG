@@ -118,5 +118,14 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در حالتی که حداقل یک برگ از دسته چک ابطال شده باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
         Task<bool> ExistsCancelledPage(int checkBookId);
+
+        /// <summary>
+        /// شماره برگه چک را اعتبارسنجی می کند
+        /// </summary>
+        /// <param name="pageNo">شماره برگه مورد نظر برای اعتبارسنجی</param>
+        /// <returns>در صورت وجود خطای اعتبارسنجی مقدار بولی نادرست و در غیر این صورت
+        /// مقدار بولی درست را برمی گرداند</returns>
+        /// <remarks>انتهای شماره برگه باید حداقل یک کاراکتر عددی باشد</remarks>
+        bool ValidatePageNo(string pageNo);
     }
 }

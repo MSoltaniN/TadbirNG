@@ -215,6 +215,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، مرکز هزینه مشخص شده با شناسه دیتابیسی را غیرفعال می کند
+        /// </summary>
+        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر برای غیرفعال کردن</param>
+        // PUT: api/ccenters/{ccenterId:min(1)}/deactivate
+        [HttpPut]
+        [Route(CostCenterApi.DeactivateCostCenterUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Deactivate)]
+        public async Task<IActionResult> PutCostCenterAsDeactivated(int ccenterId)
+        {
+            return await UpdateActiveStateAsync(ccenterId, false);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مرکز هزینه مشخص شده با شناسه دیتابیسی را فعال می کند
+        /// </summary>
+        /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر برای فعال کردن</param>
+        // PUT: api/ccenters/{ccenterId:min(1)}/reactivate
+        [HttpPut]
+        [Route(CostCenterApi.ReactivateCostCenterUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Reactivate)]
+        public async Task<IActionResult> PutCostCenterAsReactivated(int ccenterId)
+        {
+            return await UpdateActiveStateAsync(ccenterId, true);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مرکز هزینه مشخص شده با شناسه دیتابیسی را حذف می کند
         /// </summary>
         /// <param name="ccenterId">شناسه دیتابیسی مرکز هزینه مورد نظر برای حذف</param>
@@ -332,6 +358,40 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            result = ActiveStateValidationResult(costCenter);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<CostCenterViewModel>;
+            if (costCenter.ParentId != null && await repository.IsDeactivatedAsync(costCenter.ParentId.Value))
+            {
+                var message = _strings.Format(AppStrings.ActiveStateParentError, EntityNameKey);
+                return BadRequestResult(message);
+            }
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> UpdateActiveStateAsync(int costCenterId, bool isActive)
+        {
+            var costCenter = await _repository.GetCostCenterAsync(costCenterId);
+            if (costCenter == null)
+            {
+                string message = _strings.Format(
+                    AppStrings.ItemByIdNotFound, EntityNameKey, costCenterId.ToString());
+                return BadRequestResult(message);
+            }
+
+            var result = ActiveStateValidationResult(costCenter);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<CostCenterViewModel>;
+            await repository.SetActiveStatusAsync(costCenter, isActive);
             return Ok();
         }
 

@@ -46,5 +46,6 @@ export interface PayReceive {
     currencyId: number,
 
     isApproved: boolean,
-    isConfirmed: boolean
+    isConfirmed: boolean,
+    isRegistered: boolean,
 }

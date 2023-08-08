@@ -1139,7 +1139,6 @@ export class TestBalanceComponent
   }
 
   onDblClick(event) {
-    this.selectedBranchSeparation = false;
     var currentLevel = this.displayType.filter(
       (dt) => dt.id === this.displayTypeSelected
     )[0].level;
@@ -1270,7 +1269,7 @@ export class TestBalanceComponent
               String.Format(
                 this.getText("Messages.VoucherNumberByStatus"),
                 res.toString(),
-                this.getText(statusFilter.key),
+                this.getText(statusFilter.key).replace(this.getText("Voucher.Vouchers").toLowerCase(),""),
                 statusFilter.url
               ),
               MessageType.Info

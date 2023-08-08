@@ -275,6 +275,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، سرفصل حسابداری مشخص شده با شناسه دیتابیسی را غیرفعال می کند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی سرفصل حسابداری مورد نظر برای غیرفعال کردن</param>
+        // PUT: api/accounts/{accountId:min(1)}/deactivate
+        [HttpPut]
+        [Route(AccountApi.DeactivateAccountUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Deactivate)]
+        public async Task<IActionResult> PutAccountAsDeactivated(int accountId)
+        {
+            return await UpdateActiveStateAsync(accountId, false);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سرفصل حسابداری مشخص شده با شناسه دیتابیسی را فعال می کند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی سرفصل حسابداری مورد نظر برای فعال کردن</param>
+        // PUT: api/accounts/{accountId:min(1)}/reactivate
+        [HttpPut]
+        [Route(AccountApi.ReactivateAccountUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Reactivate)]
+        public async Task<IActionResult> PutAccountAsReactivated(int accountId)
+        {
+            return await UpdateActiveStateAsync(accountId, true);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، سرفصل حسابداری مشخص شده با شناسه دیتابیسی را حذف می کند
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی سرفصل حسابداری مورد نظر برای حذف</param>
@@ -363,21 +389,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (accountId == 0 && account.ParentId.HasValue)
-            {
-                var parent = await _repository.GetAccountAsync(account.ParentId.Value);
-                if (!parent.IsActive)
-                {
-                    string message = _strings.Format(AppStrings.InactiveAccountCantHaveChildren, parent.Name);
-                    return BadRequestResult(message);
-                }
-            }
+            //if (accountId == 0 && account.ParentId.HasValue)
+            //{
+            //    var parent = await _repository.GetAccountAsync(account.ParentId.Value);
+            //    if (!parent.IsActive)
+            //    {
+            //        string message = _strings.Format(AppStrings.InactiveAccountCantHaveChildren, parent.Name);
+            //        return BadRequestResult(message);
+            //    }
+            //}
 
-            if (accountId > 0 && account.ChildCount > 0 && !account.IsActive)
-            {
-                string message = _strings.Format(AppStrings.ParentAccountCantBeInactive, account.Name);
-                return BadRequestResult(message);
-            }
+            //if (accountId > 0 && account.ChildCount > 0 && !account.IsActive)
+            //{
+            //    string message = _strings.Format(AppStrings.ParentAccountCantBeInactive, account.Name);
+            //    return BadRequestResult(message);
+            //}
 
             if (account.Level == 0 && !account.GroupId.HasValue)
             {
@@ -425,6 +451,40 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            result = ActiveStateValidationResult(account);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<AccountViewModel>;
+            if (account.ParentId != null && await repository.IsDeactivatedAsync(account.ParentId.Value))
+            {
+                var message = _strings.Format(AppStrings.ActiveStateParentError, EntityNameKey);
+                return BadRequestResult(message);
+            }
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> UpdateActiveStateAsync(int accountId, bool isActive)
+        {
+            var account = await _repository.GetAccountAsync(accountId);
+            if (account == null)
+            {
+                string message = _strings.Format(
+                    AppStrings.ItemByIdNotFound, EntityNameKey, accountId.ToString());
+                return BadRequestResult(message);
+            }
+
+            var result = ActiveStateValidationResult(account);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<AccountViewModel>;
+            await repository.SetActiveStatusAsync(account, isActive);
             return Ok();
         }
 

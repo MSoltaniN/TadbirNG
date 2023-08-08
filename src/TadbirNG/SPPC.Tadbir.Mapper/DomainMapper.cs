@@ -112,7 +112,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.IsConfirmed, opts => opts.MapFrom(src => src.ConfirmedById != null))
                 .BeforeMap((src, dest) => dest.AccountAmountsSum = PayReceiveHelper.GetAccountAmountsSum(src))
                 .BeforeMap((src, dest) => dest.CashAmountsSum = PayReceiveHelper.GetCashAmountsSum(src))
-                .ForMember(dest => dest.IsConfirmed, opts => opts.MapFrom(src => src.ConfirmedById != null));
+                .ForMember(dest => dest.IsRegistered, opts => opts.MapFrom(src => src.PayReceiveVoucherLines.Count > 0));
             mapperConfig.CreateMap<PayReceiveViewModel, PayReceive>();
             mapperConfig.CreateMap<PayReceiveAccount, PayReceiveAccountViewModel>()
                 .ForMember(dest => dest.Remarks, opts => opts.NullSubstitute(String.Empty))

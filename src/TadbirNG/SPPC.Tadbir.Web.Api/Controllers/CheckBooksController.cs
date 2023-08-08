@@ -386,6 +386,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     AppStrings.SayyadNo));
             }
 
+            if (!_repository.ValidatePageNo(checkBook.StartNo))
+            {
+                return BadRequestResult(_strings[AppStrings.InvalidCheckBookPageNo]);
+            }
+
             return Ok();
         }
 

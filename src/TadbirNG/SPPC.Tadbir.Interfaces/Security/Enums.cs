@@ -81,9 +81,19 @@ namespace SPPC.Tadbir.Security
         Delete = 0x40,
 
         /// <summary>
+        /// دسترسی غیرفعال کردن یک سرفصل حسابداری فعال
+        /// </summary>
+        Deactivate = 0x80,
+
+        /// <summary>
+        /// دسترسی فعال کردن یک سرفصل حسابداری غیرفعال
+        /// </summary>
+        Reactivate = 0x100,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت سرفصل حسابداری
         /// </summary>
-        All = 0x7f
+        All = 0x1ff
     }
 
     /// <summary>
@@ -133,9 +143,19 @@ namespace SPPC.Tadbir.Security
         Delete = 0x40,
 
         /// <summary>
+        /// دسترسی غیرفعال کردن یک تفصیلی شناور فعال
+        /// </summary>
+        Deactivate = 0x80,
+
+        /// <summary>
+        /// دسترسی فعال کردن یک تفصیلی شناور غیرفعال
+        /// </summary>
+        Reactivate = 0x100,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت تفصیلی شناور
         /// </summary>
-        All = 0x7f
+        All = 0x1ff
     }
 
     /// <summary>
@@ -185,9 +205,19 @@ namespace SPPC.Tadbir.Security
         Delete = 0x40,
 
         /// <summary>
+        /// دسترسی غیرفعال کردن یک مرکز هزینه فعال
+        /// </summary>
+        Deactivate = 0x80,
+
+        /// <summary>
+        /// دسترسی فعال کردن یک مرکز هزینه غیرفعال
+        /// </summary>
+        Reactivate = 0x100,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت مرکز هزینه
         /// </summary>
-        All = 0x7f
+        All = 0x1ff
     }
 
     /// <summary>
@@ -237,9 +267,19 @@ namespace SPPC.Tadbir.Security
         Delete = 0x40,
 
         /// <summary>
+        /// دسترسی غیرفعال کردن یک پروژه فعال
+        /// </summary>
+        Deactivate = 0x80,
+
+        /// <summary>
+        /// دسترسی فعال کردن یک پروژه غیرفعال
+        /// </summary>
+        Reactivate = 0x100,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت پروژه
         /// </summary>
-        All = 0x7f
+        All = 0x1ff
     }
 
     /// <summary>
@@ -346,14 +386,25 @@ namespace SPPC.Tadbir.Security
         Delete = 0x40,
 
         /// <summary>
+        /// دسترسی غیرفعال کردن یک ارز فعال
+        /// </summary>
+        Deactivate = 0x80,
+
+        /// <summary>
+        /// دسترسی فعال کردن یک ارز غیرفعال
+        /// </summary>
+        Reactivate = 0x100,
+
+        // !!!IMPORTANT!!! EXPIRED --- To be deleted soon
+        /// <summary>
         /// دسترسی تغییر وضعیت یک ارز از فعال به غیرفعال یا بالعکس
         /// </summary>
-        ChangeStatus = 0x80,
+        ChangeStatus = 0xffffff,
 
         /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت ارزها
         /// </summary>
-        All = 0xff
+        All = 0x1ff
     }
 
     /// <summary>
@@ -1738,9 +1789,19 @@ namespace SPPC.Tadbir.Security
         AssignCashRegisterUser = 0x80,
 
         /// <summary>
+        /// دسترسی غیرفعال کردن یک صندوق فعال
+        /// </summary>
+        Deactivate = 0x100,
+
+        /// <summary>
+        /// دسترسی فعال کردن یک صندوق غیرفعال
+        /// </summary>
+        Reactivate = 0x200,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت صندوق ها
         /// </summary>
-        All = 0xff
+        All = 0x3ff
     }
     
     /// <summary>
@@ -1885,7 +1946,7 @@ namespace SPPC.Tadbir.Security
         None = 0x0,
 
         /// <summary>
-        /// دسترسی مشاهده لیست منابع و مصارف یا جزییات یک منبع و مصرف
+        /// دسترسی مشاهده لیست منابع و مصارف یا جزییات یک منبع یا مصرف
         /// </summary>
         View = 0x1,
 
@@ -1905,24 +1966,34 @@ namespace SPPC.Tadbir.Security
         Export = 0x8,
 
         /// <summary>
-        /// دسترسی ایجاد یک منبع و مصرف جدید
+        /// دسترسی ایجاد یک منبع یا مصرف جدید
         /// </summary>
         Create = 0x10,
 
         /// <summary>
-        /// دسترسی ویرایش یک منبع و مصرف موجود
+        /// دسترسی ویرایش یک منبع یا مصرف موجود
         /// </summary>
         Edit = 0x20,
 
         /// <summary>
-        /// دسترسی حذف یک منبع و مصرف موجود
+        /// دسترسی حذف یک منبع یا مصرف موجود
         /// </summary>
         Delete = 0x40,
 
         /// <summary>
+        /// دسترسی غیرفعال کردن یک منبع یا مصرف فعال
+        /// </summary>
+        Deactivate = 0x80,
+
+        /// <summary>
+        /// دسترسی فعال کردن یک منبع یا مصرف غیرفعال
+        /// </summary>
+        Reactivate = 0x100,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت منابع و مصارف
         /// </summary>
-        All = 0x7f
+        All = 0x1ff
     }
 
     /// <summary>
@@ -1992,9 +2063,14 @@ namespace SPPC.Tadbir.Security
         UndoApprove = 0x400,
 
         /// <summary>
+        /// دسترسی برگشت از ثبت مالی
+        /// </summary>
+        UndoRegister = 0x800,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت فرم های پرداخت 
         /// </summary>
-        All = 0x7ff
+        All = 0xfff
     }
 
     /// <summary>
@@ -2064,8 +2140,13 @@ namespace SPPC.Tadbir.Security
         UndoApprove = 0x400,
 
         /// <summary>
+        /// دسترسی برگشت از ثبت مالی
+        /// </summary>
+        UndoRegister = 0x800,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت فرم های دریافت 
         /// </summary>
-        All = 0x7ff
+        All = 0xfff
     }
 }

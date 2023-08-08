@@ -109,7 +109,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var outputItem = await _repository.SavePayReceiveAsync(payment);
+            var outputItem = await _repository.SavePayReceiveAsync(payment, (int)PayReceiveType.Payment);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
@@ -130,7 +130,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var outputItem = await _repository.SavePayReceiveAsync(receipt);
+            var outputItem = await _repository.SavePayReceiveAsync(receipt, (int)PayReceiveType.Receipt);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
@@ -154,7 +154,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var outputItem = await _repository.SavePayReceiveAsync(payment);
+            var outputItem = await _repository.SavePayReceiveAsync(payment, (int)PayReceiveType.Payment);
             return OkReadResult(outputItem);
         }
 
@@ -178,7 +178,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            var outputItem = await _repository.SavePayReceiveAsync(receipt);
+            var outputItem = await _repository.SavePayReceiveAsync(receipt, (int)PayReceiveType.Receipt);
             return OkReadResult(outputItem);
         }
 
@@ -587,6 +587,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، آرتیکل‌های فرم پرداخت را ثبت مالی می‌کند
         /// </summary>
+        /// <param name="paymentId">شناسه دیتابیسی فرم پرداخت مورد نظر برای ثبت مالی</param>
         /// <returns>اطلاعات نمایشی سند ثبت شده مرتبط با فرم پرداخت</returns>
         // Post: api/payments/{paymentId:min(1)}/register
         [HttpPost]
@@ -607,6 +608,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <summary>
         /// به روش آسنکرون، آرتیکل‌های فرم دریافت را ثبت مالی می‌کند
         /// </summary>
+        /// <param name="receiptId">شناسه دیتابیسی فرم پرداخت مورد نظر برای ثبت مالی</param>
         /// <returns>اطلاعات نمایشی سند ثبت شده مرتبط با فرم دریافت</returns>
         // Post: api/receipts/{receiptId:min(1)}/register
         [HttpPost]
@@ -622,6 +624,52 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
             var outputItem = await _repository.RegisterAsync(receiptId);
             return StatusCode(StatusCodes.Status201Created, outputItem);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل‌های مالی فرم پرداخت را حذف می‌کند
+        /// </summary>
+        /// <param name="paymentId">شناسه دیتابیسی فرم پرداخت مورد نظر برای برگشت از ثبت مالی</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // Delete: api/payments/{paymentId:min(1)}/register/undo
+        [HttpDelete]
+        [Route(PayReceiveApi.UndoRegisterPaymentUrl)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.UndoRegister)]
+        public async Task<IActionResult> DeleteRegisteredPaymentArticlesAsync(int paymentId)
+        {
+            var result = await PayReceiveActionValidationResultAsync(paymentId, AppStrings.UndoRegister,
+                AppStrings.Payment);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.UndoRegisterAsync(paymentId, (int)PayReceiveType.Payment);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل‌های مالی فرم دریافت را حذف می‌کند
+        /// </summary>
+        /// <param name="receiptId">شناسه دیتابیسی فرم دریافت مورد نظر برای برگشت از ثبت مالی</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // Delete: api/receipts/{receiptId:min(1)}/register/undo
+        [HttpDelete]
+        [Route(PayReceiveApi.UndoRegisterReceiptUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.UndoRegister)]
+        public async Task<IActionResult> DeleteRegisteredReceiptArticlesAsync(int receiptId)
+        {
+            var result = await PayReceiveActionValidationResultAsync(receiptId, AppStrings.UndoRegister,
+                AppStrings.Receipt);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.UndoRegisterAsync(receiptId, (int)PayReceiveType.Receipt);
+            return StatusCode(StatusCodes.Status204NoContent);
         }
 
         /// <summary>
@@ -647,7 +695,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     message = errorResult.Value.ToString();
                 }
 
-                if (payReceive.IsConfirmed || payReceive.IsApproved || await _repository.IsRegisteredAsync(payReceive.Id))
+                if (payReceive.IsConfirmed || payReceive.IsApproved || payReceive.IsRegistered)
                 {
                     message = _strings.Format(AppStrings.CantDeleteEntity, entityNameKey);
                 }
@@ -673,7 +721,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     return result;
                 }
 
-                if (payReceive.IsConfirmed || payReceive.IsApproved || await _repository.IsRegisteredAsync(payReceive.Id))
+                if (payReceive.IsConfirmed || payReceive.IsApproved || payReceive.IsRegistered)
                 {
                     return BadRequestResult(_strings.Format(AppStrings.CantSaveEntity, entityNameKey));
                 }
@@ -729,7 +777,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if ((action == AppStrings.Confirm && payReceive.IsConfirmed)
                 || (action == AppStrings.Approve && payReceive.IsApproved)
-                || await _repository.IsRegisteredAsync(payReceive.Id))
+                || (action == AppStrings.Register && payReceive.IsRegistered))
             {
                 return BadRequestResult(_strings.Format(AppStrings.RepeatedEntityActionMessage, action,
                     entityNameKey));
@@ -761,7 +809,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                         AppStrings.CantActionWithInvalidRows, action, AppStrings.PayReceiveCashAccount));
                 }
 
-                if (await _repository.IsUnbalancedPayReceive(payReceiveId))
+                if (payReceive.AccountAmountsSum != payReceive.CashAmountsSum)
                 {
                     return BadRequestResult(_strings.Format(AppStrings.CantActionUnbalancedForm,
                         AppStrings.PayReceiveAccount, AppStrings.PayReceiveCashAccount, action,entityNameKey));

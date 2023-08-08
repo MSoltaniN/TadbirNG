@@ -120,4 +120,14 @@ export class PayReceiveApi {
     * API client URL for a newly initialized
     */
     public static NewReceipt = environment.BaseUrl + "/receipts/new";
+
+    /**
+     * {paymentId:min(1)}
+     */
+    public static RegisterPayment = environment.BaseUrl + "/payments/{0}/register";
+
+    /**
+     * {paymentId:min(1)}
+     */
+    public static RegisterReceipt = environment.BaseUrl + "/receipts/{0}/register";
 }

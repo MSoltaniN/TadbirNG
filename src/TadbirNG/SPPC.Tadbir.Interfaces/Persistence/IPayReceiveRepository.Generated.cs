@@ -24,8 +24,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک فرم دریافت/پرداخت را ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="payReceive">فرم دریافت/پرداخت مورد نظر برای ایجاد یا اصلاح</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <returns>اطلاعات نمایشی فرم دریافت/پرداخت ایجاد یا اصلاح شده</returns>
-        Task<PayReceiveViewModel> SavePayReceiveAsync(PayReceiveViewModel payReceive);
+        Task<PayReceiveViewModel> SavePayReceiveAsync(PayReceiveViewModel payReceive, int type);
 
         /// <summary>
         /// به روش آسنکرون، فرم دریافت/پرداخت مشخص شده با شناسه عددی را حذف می کند
@@ -128,15 +129,6 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> HasCashAccountArticleAsync(int payReceiveId);
 
         /// <summary>
-        /// به روش آسنکرون، بررسی می کند که آیا فرم دریافت/پرداخت داده شده
-        /// تراز است یا خیر        
-        /// </summary>
-        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
-        /// <returns>در صورت ناترازی مقدار درست و
-        /// در غیر این صورت مقدار نادرست برمی گرداند</returns>
-        Task<bool> IsUnbalancedPayReceive(int payReceiveId);
-
-        /// <summary>
         /// به روش آسنکرون، ثبت مالی فرم دریافت/پرداخت را انجام می‌دهد     
         /// </summary>
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
@@ -144,12 +136,10 @@ namespace SPPC.Tadbir.Persistence
         Task<VoucherViewModel> RegisterAsync(int payReceiveId);
 
         /// <summary>
-        /// به روش آسنکرون، بررسی می کند که آیا فرم دریافت/پرداخت ثبت مالی
-        /// شده است یا خیر        
+        /// به روش آسنکرون، برگشت از ثبت مالی فرم دریافت/پرداخت را انجام می‌دهد     
         /// </summary>
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
-        /// <returns>در صورتی که فرم دریافت/پرداخت ثبت مالی شده باشد مقدار درست و
-        /// در غیر این صورت مقدار نادرست برمی گرداند</returns>
-        Task<bool> IsRegisteredAsync(int payReceiveId);
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
+        Task UndoRegisterAsync(int payReceiveId, int type);
     }
 }

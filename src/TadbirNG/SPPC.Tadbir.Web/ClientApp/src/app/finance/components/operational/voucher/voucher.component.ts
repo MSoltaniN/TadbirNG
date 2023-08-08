@@ -59,6 +59,7 @@ import { ToastrService } from "ngx-toastr";
 import { VoucherEditorComponent } from "./voucher-editor.component";
 import { ServiceLocator } from "@sppc/service.locator";
 import { ShareDataService } from "@sppc/shared/services/share-data.service";
+import { OperationId } from "@sppc/shared/enum/operationId";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -1996,6 +1997,9 @@ export class VoucherComponent
   }
 
   onAdvanceFilterOk() {
+    this.operationId = OperationId.Filter;
+    this.listChanged = true;
+    this.customListChanged = true;
     this.getVouchers();
   }
 

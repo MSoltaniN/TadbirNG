@@ -313,7 +313,7 @@ export class SystemIssueComponent
         this.toDate;
 
       if (
-        this.checkedIssues.findIndex((i) => i == this.selectedSystemIssue.id) ==
+        this.clickedIssues.findIndex((i) => i == this.selectedSystemIssue.id) ==
         -1
       ) {
         this.listChanged = true;

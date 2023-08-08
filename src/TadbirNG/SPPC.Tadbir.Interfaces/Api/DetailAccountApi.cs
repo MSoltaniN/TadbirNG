@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SPPC.Tadbir.Api
 {
@@ -82,5 +80,25 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for detail account full code
         /// </summary>
         public const string DetailAccountFullCodeUrl = "faccounts/{faccountId:int}/fullcode";
+
+        /// <summary>
+        /// API client URL for marking an active detail account as inactive
+        /// </summary>
+        public const string DeactivateDetailAccount = "faccounts/{0}/deactivate";
+
+        /// <summary>
+        /// API server route URL for marking an active detail account as inactive
+        /// </summary>
+        public const string DeactivateDetailAccountUrl = "faccounts/{faccountId:int}/deactivate";
+
+        /// <summary>
+        /// API client URL for marking an inactive detail account as active
+        /// </summary>
+        public const string ReactivateDetailAccount = "faccounts/{0}/reactivate";
+
+        /// <summary>
+        /// API server route URL for marking an inactive detail account as active
+        /// </summary>
+        public const string ReactivateDetailAccountUrl = "faccounts/{faccountId:int}/reactivate";
     }
 }

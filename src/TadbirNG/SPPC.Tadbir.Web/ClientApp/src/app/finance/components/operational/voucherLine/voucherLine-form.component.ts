@@ -72,16 +72,15 @@ export class VoucherLineFormComponent
   errorMsg: string;
   isFullAccountInputFocused = false;
   isPayReciept = false;
-  isBank: 1|0 = 1;
+  isBank: boolean = true;
 
   @Input() public isNew: boolean = false;
 
   @Input() public isNewBalance: boolean = false;
   @Input() public balance: number = 0;
-  @Input() public model: VoucherLine;
+  @Input() public model: VoucherLine | any;
   @Input() public set payReciept(value:boolean) {
     this.isPayReciept = false;
-    this.selectedArticleType = null;
   }
   @Input() public isSourceApp = false;
 
@@ -118,8 +117,10 @@ export class VoucherLineFormComponent
 
     this.getArticleType();
 
-    if (!this.isPayReciept) 
+    if (!this.isPayReciept)
       this.getCurrencies();
+    else
+      this.initPayReceiptData();
 
     if (this.isNewBalance)
       if (this.balance > 0) {
@@ -143,7 +144,6 @@ export class VoucherLineFormComponent
       this.editForm1 = new FormGroup({
         id: new FormControl(),
         amount: new FormControl(),
-        currencyValue: new FormControl(),
         sourceAppId: new FormControl(),
         bankOrderNo: new FormControl(),
         isBank: new FormControl(),
@@ -206,6 +206,13 @@ export class VoucherLineFormComponent
       });
     }
     
+  }
+
+  initPayReceiptData() {
+    if (this.isSourceApp && !this.isNew) {
+      this.selectedArticleType = this.model.sourceAppId?.toString();
+      this.isBank = this.model.isBank;
+    }
   }
 
   public onSave(isOpen: boolean): void {

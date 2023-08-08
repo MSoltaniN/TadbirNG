@@ -399,6 +399,14 @@ export class BalanceByAccountComponent
     this.selectedReferences = balanceAccountParam.selectedReferences;
     this.useClosingTempVoucher = balanceAccountParam.useClosingTempVoucher;
     this.reportType = balanceAccountParam.filterType;
+
+    if (
+      this.isAccess(
+        Entities.BalanceByAccount,
+        BalanceByAccountPermissions.ViewByBranch
+      )
+    )
+      this.isApplyBranchSeparation = true;
   }
 
   ngAfterViewInit() {
@@ -1683,6 +1691,7 @@ export class BalanceByAccountComponent
       this.dialogModel.selectedBranchSeparation = this.selectedBranchSeparation;
       this.dialogModel.isApplyBranchSeparation = this.isApplyBranchSeparation;
 
+      this.dialogModel.initPersistVariables();
       this.dialogModel.getReportData();
     } else {
       this.showMessage(

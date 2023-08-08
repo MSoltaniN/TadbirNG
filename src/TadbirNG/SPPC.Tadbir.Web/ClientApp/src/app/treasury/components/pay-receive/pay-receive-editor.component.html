@@ -37,6 +37,7 @@
             (sppcClick)="removeHandler()"
             class="k-button sh-remove-voucher"
             title="{{ 'Buttons.Delete' | translate }}"
+            [disabled]="isRegistered"
           >
             <span class="k-icon k-i-delete"></span>
           </button>
@@ -105,6 +106,17 @@
           </button>
 
           <button
+            class="k-button sh-check-voucher"
+            SppcPermissionCheck="Register"
+            [EntityName]="entityType"
+            (sppcClick)="registerForm($event)"
+            [disabled]="isRegistered"
+            title="{{ 'Voucher.Commit' | translate }}"
+          >
+            <span class="k-icon k-i-check-outline"></span>
+          </button>
+
+          <button
             kendoButton
             SppcPermissionCheck="Print"
             [EntityName]="entityType"
@@ -137,7 +149,7 @@
                   class="k-textbox"
                   formControlName="payReceiveNo"
                   [OnlyNumber]
-                  [attr.disabled]="isConfirmed ? 'disabled' : null"
+                  [attr.disabled]="isConfirmed || isRegistered? 'disabled' : null"
                 />
 
                 <div
@@ -170,7 +182,7 @@
                   type="text"
                   class="k-textbox"
                   formControlName="reference"
-                  [attr.disabled]="isConfirmed ? 'disabled' : null"
+                  [attr.disabled]="isConfirmed || isRegistered? 'disabled' : null"
                 />
 
                 <div
@@ -194,13 +206,12 @@
                 }}</label>
 
                 <sppc-datepicker
-                  [isReadOnly]="isConfirmed"
+                  [isReadOnly]="isConfirmed || isRegistered"
                   [(ngModel)]="preferedDate"
                   formControlName="date"
                   [minDate]="FiscalPeriodStartDate"
                   [maxDate]="FiscalPeriodEndDate"
                   [displayType]="'voucherDateType'"
-                  دل
                 ></sppc-datepicker>
               </div>
             </div>
@@ -222,18 +233,18 @@
                   </label>
 
                   <payer-receiver
-                    [isConfirmed]="isConfirmed"
-                    [type]="this.type == 1 ? '1' : '2'"
+                    [disableOperations]="isConfirmed || isRegistered"
+                    [type]="this.type == 1 ? '1' : '0'"
                     [payReceiveId]="this.model?.id"
-                    (setTotalCashAmount)="setTotalCashAmount($event)"
+                    (setTotalAmount)="setTotalAmount($event)"
                   >
                   </payer-receiver>
                   <div class="form-group totalAmount">
                     <label for="money" class="control-label">{{ "PayReceipt.TotalAmount" | translate }}</label>
                     <sppc-numericInput
-                      [(ngModel)]="model.accountAmountsSum"
+                      [(ngModel)]="totalAccountAmount"
                       [ngModelOptions]="{ standalone: true }"
-                      [attr.disabled]="isConfirmed ? 'disabled' : null"
+                      [attr.disabled]="isConfirmed || isRegistered? 'disabled' : null"
                       [readOnly]="true"
                     >
                     </sppc-numericInput>
@@ -250,18 +261,18 @@
                     }}
                   </label>
                   <cash-account
-                    [isConfirmed]="isConfirmed"
+                    [disableOperations]="isConfirmed || isRegistered"
                     [payReceiveId]="this.model?.id"
-                    [payReceiptType]="this.type == 1 ? '1' : '2'"
-                    (setTotalCashAmount)="setTotalCashAmount($event)"
+                    [payReceiptType]="this.type == 1 ? '1' : '0'"
+                    (setTotalAmount)="setTotalAmount($event)"
                   >
                   </cash-account>
                   <div class="form-group totalAmount">
                     <label for="money" class="control-label">{{ "PayReceipt.TotalAmount" | translate }}</label>
                     <sppc-numericInput
-                      [(ngModel)]="model.cashAmountsSum"
+                      [(ngModel)]="totalCashAmount"
                       [ngModelOptions]="{ standalone: true }"
-                      [attr.disabled]="isConfirmed ? 'disabled' : null"
+                      [attr.disabled]="isConfirmed || isRegistered? 'disabled' : null"
                       [readOnly]="true"
                     >
                     </sppc-numericInput>
@@ -272,16 +283,16 @@
             </p-accordion>
 
             <div class="totalCashAmount">
-              <!-- <div class="form-group">
-                <label for="money" class="control-label">وجه نقد</label>
+              <div class="form-group">
+                <label for="money" class="control-label">{{ "PayReceipt.AmountDifference" | translate }}</label>
                 <sppc-numericInput
-                  [(ngModel)]="totalCashAmount"
+                  [(ngModel)]="amountDifference"
                   [ngModelOptions]="{ standalone: true }"
-                  [attr.disabled]="isConfirmed ? 'disabled' : null"
+                  [attr.disabled]="isConfirmed || isRegistered? 'disabled' : null"
                   [readOnly]="true"
                 >
                 </sppc-numericInput>
-              </div> -->
+              </div>
               <div class="form-group">
                 <div class="col-xs-12 col-sm-4">
                   <fieldset disabled class="disabled">
@@ -345,7 +356,7 @@
             </div>
 
             <p-accordion class="form-group">
-              <p-accordionTab header="چکها">
+              <p-accordionTab header="{{ 'PayReceipt.Checks' | translate }}">
                 <pay-recive-cheks
                   [urlPath]="urlPath"
                   style="width: 100%"
@@ -381,7 +392,7 @@
                   type="checkbox"
                   id="confirmedByName"
                   class="k-checkbox"
-                  SppcPermissionCheck="Edit"
+                  SppcPermissionCheck="Confirm"
                   [EntityName]="entityType"
                   (sppcClick)="confirmedBy($event)"
                   [checked]="isConfirmed"
@@ -405,7 +416,7 @@
                   id="approvedByName"
                   class="k-checkbox"
                   [checked]="isApproved"
-                  SppcPermissionCheck="Edit"
+                  SppcPermissionCheck="Approve"
                   [EntityName]="entityType"
                   (sppcClick)="approvedBy($event)"
                 />

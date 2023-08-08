@@ -106,7 +106,7 @@ namespace SPPC.Tadbir.Persistence
                     ? null
                     : cashAccountArticle.SourceAppId;
                 cashAccountArticle.BankOrderNo = cashAccountArticle.IsBank
-                    ? cashAccountArticle.BankOrderNo.Trim()
+                    ? cashAccountArticle.BankOrderNo?.Trim()
                     : null;
                 cashAccountArticleModel = Mapper.Map<PayReceiveCashAccount>(cashAccountArticle);
 
@@ -158,18 +158,14 @@ namespace SPPC.Tadbir.Persistence
         /// <inheritdoc/>
         public async Task<PayReceiveViewModel> GetPayReceiveAsync(IList<int> cashAccountArticleIds)
         {
-            PayReceiveViewModel item = null;
             Verify.ArgumentNotNull(cashAccountArticleIds, nameof(cashAccountArticleIds));
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
-            var payReceive = await repository
-                .GetEntityQuery()
+            var item = await repository
+                .GetEntityQuery(pr => pr.PayReceiveVoucherLines)
                 .Where(pr => pr.CashAccounts.Any(
                     ca => cashAccountArticleIds.Any(id => id == ca.Id)))
+                .Select(pr => Mapper.Map<PayReceiveViewModel>(pr))
                 .SingleOrDefaultAsync();
-            if (payReceive != null)
-            {
-                item = Mapper.Map<PayReceiveViewModel>(payReceive);
-            }
 
             return item;
         }
@@ -323,7 +319,7 @@ namespace SPPC.Tadbir.Persistence
             return await repository
                 .GetEntityQuery()
                 .AnyAsync(aca => aca.AccountId == accountId
-                    && aca.CollectionId == (int)AccountCollectionId.Cashier);
+                    && aca.CollectionId == (int)AccountCollectionId.CashFund);
         }
 
         /// <inheritdoc/>

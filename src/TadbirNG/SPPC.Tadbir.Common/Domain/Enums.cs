@@ -74,7 +74,12 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// نوع مفهومی سند بودجه
         /// </summary>
-        Budgeting = 2
+        Budgeting = 2,
+
+        /// <summary>
+        /// فیلد کمکی برای در نظر گرفتن همه انواع مفهومی سند در لیست ها و گزارش ها
+        /// </summary>
+        All = 3
     }
 
     /// <summary>

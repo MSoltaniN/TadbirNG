@@ -386,7 +386,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (payReceive.IsApproved || payReceive.IsConfirmed || await _repository.IsRegisteredAsync(payReceive.Id))
+            if (payReceive.IsApproved || payReceive.IsConfirmed || payReceive.IsRegistered)
             {
                 return BadRequestResult(_strings.Format(
                     AppStrings.CantSaveDetailEntity, entityNameKey, AppStrings.PayReceiveCashAccount));
@@ -549,7 +549,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     return result;
                 }
 
-                if (payReceive.IsApproved || payReceive.IsConfirmed || await _repository.IsRegisteredAsync(payReceive.Id))
+                if (payReceive.IsApproved || payReceive.IsConfirmed || payReceive.IsRegistered)
                 {
                     return BadRequestResult(_strings.Format(
                         AppStrings.CantDeleteDetailEntity, entityNameKey, AppStrings.PayReceiveCashAccount));
@@ -592,7 +592,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (payReceive.IsApproved || payReceive.IsConfirmed || await _repository.IsRegisteredAsync(payReceive.Id))
+            if (payReceive.IsApproved || payReceive.IsConfirmed || payReceive.IsRegistered)
             {
                 return BadRequestResult(_strings.Format(
                     AppStrings.CantDeleteDetailEntity, entityNameKey, AppStrings.PayReceiveCashAccount));
@@ -622,7 +622,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (payReceive.IsApproved || payReceive.IsConfirmed || await _repository.IsRegisteredAsync(payReceive.Id))
+            if (payReceive.IsApproved || payReceive.IsConfirmed || payReceive.IsRegistered)
             {
                 return BadRequestResult(_strings.Format(
                     AppStrings.CantChangeDetailEntity, entityNameKey, AppStrings.PayReceiveCashAccount));

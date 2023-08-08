@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Api
 {
@@ -117,5 +116,25 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for delete selected rates of a currency
         /// </summary>
         public const string DeleteCurrencyRatesUrl = "currency/rates";
+
+        /// <summary>
+        /// API client URL for marking an active currency as inactive
+        /// </summary>
+        public const string DeactivateCurrency = "currencies/{0}/deactivate";
+
+        /// <summary>
+        /// API server route URL for marking an active currency as inactive
+        /// </summary>
+        public const string DeactivateCurrencyUrl = "currencies/{currencyId:min(1)}/deactivate";
+
+        /// <summary>
+        /// API client URL for marking an inactive currency as active
+        /// </summary>
+        public const string ReactivateCurrency = "currencies/{0}/reactivate";
+
+        /// <summary>
+        /// API server route URL for marking an inactive currency as active
+        /// </summary>
+        public const string ReactivateCurrencyUrl = "currencies/{currencyId:min(1)}/reactivate";
     }
 }

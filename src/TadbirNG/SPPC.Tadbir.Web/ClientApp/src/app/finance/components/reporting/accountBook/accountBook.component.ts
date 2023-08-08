@@ -249,7 +249,7 @@ export class AccountBookComponent
 
   @Persist() articleTypeSelected: string;
 
-  @Persist() selectedBranchSeparation: boolean = false;
+  @Persist() selectedBranchSeparation: boolean;
 
   gridColumnsRow: any[] = [];
   ddlEntites: Array<Item> = [];
@@ -418,6 +418,9 @@ export class AccountBookComponent
 
     if (this.selectedBookType == undefined)
       this.selectedBookType = 0;
+
+    if (this.selectedBranchSeparation == undefined)
+      this.selectedBranchSeparation = false;
   }
 
   public ngOnDestroy(): void {
@@ -727,7 +730,7 @@ export class AccountBookComponent
         }
 
         this.tempViewId = ViewName[this.entityTypeName];
-
+        
         this.getDataUrl =
           String.Format(this.getDataUrl, this.selectedModel.id) +
           "?from=" +

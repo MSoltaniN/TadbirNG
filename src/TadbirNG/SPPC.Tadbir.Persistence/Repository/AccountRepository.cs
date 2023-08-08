@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات سرفصل های حسابداری را تعریف می کند.
     /// </summary>
-    public class AccountRepository : EntityLoggingRepository<Account, AccountViewModel>, IAccountRepository
+    public class AccountRepository : ActiveStateRepository<Account, AccountViewModel>, IAccountRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -50,8 +50,8 @@ namespace SPPC.Tadbir.Persistence
                     .OrderBy(item => item.FullCode)
                     .Select(item => Mapper.Map<AccountViewModel>(item))
                     .ToListAsync();
-                await UpdateInactiveAccountsAsync(accounts);
-                Array.ForEach(accounts.ToArray(), acc => acc.TurnoverMode = Context.Localize(acc.TurnoverMode));
+                await UpdateInactiveItemsAsync(accounts);
+                Array.ForEach(accounts.ToArray(), acc => Localize(acc));
             }
 
             await ReadAsync(gridOptions);
@@ -61,10 +61,8 @@ namespace SPPC.Tadbir.Persistence
         /// <inheritdoc/>
         public async Task<PagedList<AccountViewModel>> GetAccountsLookupAsync(GridOptions gridOptions)
         {
-            var inactiveAccountIds = await GetInactiveAccountIdsAsync();
             var accounts = await Repository
                 .GetAllQuery<Account>(ViewId.Account, acc => acc.Children)
-                .Where(acc => !inactiveAccountIds.Contains(acc.Id))
                 .Select(item => Mapper.Map<AccountViewModel>(item))
                 .ToListAsync();
             return new PagedList<AccountViewModel>(accounts, gridOptions);
@@ -75,15 +73,16 @@ namespace SPPC.Tadbir.Persistence
         {
             AccountViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDWithTrackingAsync(accountId);
+            var account = await repository.GetByIDWithTrackingAsync(accountId, acc => acc.Children);
             if (account != null)
             {
                 item = Mapper.Map<AccountViewModel>(account);
                 item.GroupId = GetAccountGroupId(repository, account);
                 item.CurrencyId = await GetAccountCurrencyIdAsync(account.Id);
-
-                var inactiveAccounts = await GetInactiveAccountIdsAsync();
-                item.IsActive = !inactiveAccounts.Contains(account.Id);
+                bool isDeactivated = await IsDeactivatedAsync(item.Id);
+                item.State = isDeactivated
+                    ? Context.Localize(AppStrings.Inactive)
+                    : Context.Localize(AppStrings.Active);
             }
 
             return item;
@@ -106,9 +105,10 @@ namespace SPPC.Tadbir.Persistence
                 item = Mapper.Map<AccountFullDataViewModel>(account);
                 item.Account.GroupId = GetAccountGroupId(repository, account);
                 item.Account.CurrencyId = await GetAccountCurrencyIdAsync(account.Id);
-
-                var inactiveAccounts = await GetInactiveAccountIdsAsync();
-                item.Account.IsActive = !inactiveAccounts.Contains(account.Id);
+                bool isDeactivated = await IsDeactivatedAsync(item.Account.Id);
+                item.Account.State = isDeactivated
+                    ? Context.Localize(AppStrings.Inactive)
+                    : Context.Localize(AppStrings.Active);
             }
 
             if (!await IsCommercialDebtorAndCreditorAsync(accountId))
@@ -173,7 +173,6 @@ namespace SPPC.Tadbir.Persistence
                 await InsertAsync(repository, account);
                 await UpdateLevelUsageAsync(account.Level);
                 await InsertAccountCurrencyAsync(accountView, account);
-                await HandleActiveStateChangeAsync(account);
             }
             else
             {
@@ -188,8 +187,6 @@ namespace SPPC.Tadbir.Persistence
                     }
 
                     await UpdateAccountCurrencyAsync(accountView, account);
-                    await HandleActiveStateChangeAsync(account);
-
                     if (accountFullView.CustomerTaxInfo != null)
                     {
                         customerTax = await _customerTaxInfo.SaveCustomerTaxInfoAsync(accountFullView.CustomerTaxInfo);
@@ -233,7 +230,7 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 account.AccountCurrencies.Clear();
-                await HandleInactiveAccountDeleteAsync(account);
+                await OnDeleteItemAsync(account.Id);
                 await DeleteAsync(repository, account);
                 await UpdateLevelUsageAsync(account.Level);
             }
@@ -266,7 +263,7 @@ namespace SPPC.Tadbir.Persistence
 
                     level = Math.Max(level, account.Level);
                     account.AccountCurrencies.Clear();
-                    await HandleInactiveAccountDeleteAsync(account);
+                    await OnDeleteItemAsync(account.Id);
                     await DeleteNoLogAsync(repository, account);
                 }
             }
@@ -408,7 +405,6 @@ namespace SPPC.Tadbir.Persistence
             account.Name = accountViewModel.Name;
             account.Level = accountViewModel.Level;
             account.Description = accountViewModel.Description;
-            account.IsActive = accountViewModel.IsActive;
             account.IsCurrencyAdjustable = accountViewModel.IsCurrencyAdjustable;
             account.TurnoverMode = (short)Enum.Parse(typeof(TurnoverMode), accountViewModel.TurnoverMode);
         }
@@ -451,8 +447,8 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
             int count = await repository.GetCountByCriteriaAsync(
-                col => (col.CollectionId == (int)AccountCollectionId.BusinessDebtors
-                    || col.CollectionId == (int)AccountCollectionId.BusinessCreditors)
+                col => (col.CollectionId == (int)AccountCollectionId.TradeDebtors
+                    || col.CollectionId == (int)AccountCollectionId.TradeCreditors)
                     && col.AccountId == accountId);
             return count > 0;
         }
@@ -564,61 +560,10 @@ namespace SPPC.Tadbir.Persistence
             return currencyId;
         }
 
-        private async Task HandleActiveStateChangeAsync(Account account)
+        private void Localize(AccountViewModel account)
         {
-            var repository = UnitOfWork.GetAsyncRepository<InactiveAccount>();
-            var inactive = await repository.GetSingleByCriteriaAsync(acc => acc.AccountId == account.Id
-                && acc.FiscalPeriodId == UserContext.FiscalPeriodId);
-            if (inactive != null && account.IsActive)
-            {
-                repository.Delete(inactive);
-                await UnitOfWork.CommitAsync();
-            }
-            else if (inactive == null && !account.IsActive)
-            {
-                inactive = new InactiveAccount()
-                {
-                    AccountId = account.Id,
-                    FiscalPeriodId = UserContext.FiscalPeriodId
-                };
-                repository.Insert(inactive);
-                await UnitOfWork.CommitAsync();
-            }
-        }
-
-        private async Task HandleInactiveAccountDeleteAsync(Account account)
-        {
-            if (!account.IsActive)
-            {
-                var repository = UnitOfWork.GetAsyncRepository<InactiveAccount>();
-                var inactiveItems = await repository.GetByCriteriaAsync(
-                    acc => acc.AccountId == account.Id);
-                foreach (var item in inactiveItems)
-                {
-                    repository.Delete(item);
-                }
-
-                await UnitOfWork.CommitAsync();
-            }
-        }
-
-        private async Task UpdateInactiveAccountsAsync(List<AccountViewModel> accounts)
-        {
-            var inactiveAccountIds = await GetInactiveAccountIdsAsync();
-            foreach (var account in accounts)
-            {
-                account.IsActive = !inactiveAccountIds.Contains(account.Id);
-            }
-        }
-
-        private async Task<List<int>> GetInactiveAccountIdsAsync()
-        {
-            var repository = UnitOfWork.GetAsyncRepository<InactiveAccount>();
-            return await repository
-                .GetEntityQuery()
-                .Where(acc => acc.FiscalPeriodId == UserContext.FiscalPeriodId)
-                .Select(acc => acc.AccountId)
-                .ToListAsync();
+            account.TurnoverMode = Context.Localize(account.TurnoverMode);
+            account.State = Context.Localize(account.State);
         }
 
         private readonly ISystemRepository _system;

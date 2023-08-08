@@ -28,11 +28,7 @@ namespace SPPC.Tadbir.Persistence
             _system = system;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، دسته چک با شناسه عددی مشخص شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="checkBookId">شناسه عددی یکی از دسته چک های موجود</param>
-        /// <returns>دسته چک مشخص شده با شناسه عددی</returns>
+        /// <inheritdoc/>
         public async Task<CheckBookViewModel> GetCheckBookAsync(int checkBookId)
         {
             CheckBookViewModel checkBook = null;
@@ -50,13 +46,10 @@ namespace SPPC.Tadbir.Persistence
             return checkBook;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، دسته چک جدید با مقادیر پیشنهادی را برمی گرداند
-        /// </summary>
-        /// <returns>دسته چک جدید با مقادیر پیشنهادی</returns>
+        /// <inheritdoc/>
         public async Task<CheckBookViewModel> GetNewCheckBookAsync()
         {
-            long lastNo = await GetLastTextNoAsync();
+            long lastNo = await GetLastCheckBookNoAsync();
             lastNo = ++lastNo;
             var newCheckBook = new CheckBookViewModel()
             {
@@ -67,11 +60,7 @@ namespace SPPC.Tadbir.Persistence
             return newCheckBook;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، دسته چک با شماره مشخص شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="textNo">شماره یکی از دسته چک های موجود</param>
-        /// <returns>دسته چک مشخص شده با شماره</returns>
+        /// <inheritdoc/>
         public async Task<CheckBookViewModel> GetCheckBookByNoAsync(string textNo)
         {
             var byNo = default(CheckBookViewModel);
@@ -91,11 +80,7 @@ namespace SPPC.Tadbir.Persistence
             return byNo;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات یک دسته چک را ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="checkBook">دسته چک مورد نظر برای ایجاد یا اصلاح</param>
-        /// <returns>اطلاعات نمایشی دسته چک ایجاد یا اصلاح شده</returns>
+        /// <inheritdoc/>
         public async Task<CheckBookViewModel> SaveCheckBookAsync(CheckBookViewModel checkBook)
         {
             Verify.ArgumentNotNull(checkBook, nameof(checkBook));
@@ -128,10 +113,7 @@ namespace SPPC.Tadbir.Persistence
             return saved;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، دسته چک مشخص شده با شناسه عددی را حذف می کند
-        /// </summary>
-        /// <param name="checkBookId">شناسه عددی دسته چک مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task DeleteCheckBookAsync(int checkBookId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
@@ -143,11 +125,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اولین دسته چک را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>اولین دسته چک</returns>
+        /// <inheritdoc/>
         public async Task<CheckBookViewModel> GetFirstCheckBookAsync(GridOptions gridOptions = null)
         {
             var checkBooks = await Repository.GetAllOperationAsync<CheckBook>(
@@ -167,12 +145,7 @@ namespace SPPC.Tadbir.Persistence
             return firstCheckBook;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دسته چک قبلی را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="checkBookNo">شماره دسته چک در برنامه</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>دسته چک قبلی</returns>
+        /// <inheritdoc/>
         public async Task<CheckBookViewModel> GetPreviousCheckBookAsync(
             string checkBookNo, GridOptions gridOptions = null)
         {
@@ -194,12 +167,7 @@ namespace SPPC.Tadbir.Persistence
             return previousCheckBook;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات دسته چک بعدی را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="checkBookNo">شماره دسته چک در برنامه</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>دسته چک بعدی</returns>
+        /// <inheritdoc/>
         public async Task<CheckBookViewModel> GetNextCheckBookAsync(
             string checkBookNo, GridOptions gridOptions = null)
         {
@@ -221,11 +189,7 @@ namespace SPPC.Tadbir.Persistence
             return nextCheckBook;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، آخرین دسته چک را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>آخرین دسته چک</returns>
+        /// <inheritdoc/>
         public async Task<CheckBookViewModel> GetLastCheckBookAsync(GridOptions gridOptions = null)
         {
             var checkBooks = await Repository.GetAllOperationAsync<CheckBook>(
@@ -245,12 +209,7 @@ namespace SPPC.Tadbir.Persistence
             return lastCheckBook;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا دسته چک دارای برگه هست یا نه
-        /// </summary>
-        /// <param name="checkBookId">شناسه یکی از دسته چک های موجود</param>
-        /// <returns>در حالتی که دسته چک دارای برگه باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
+        /// <inheritdoc/>
         public async Task<bool> HasPagesAsync(int checkBookId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
@@ -258,12 +217,7 @@ namespace SPPC.Tadbir.Persistence
             return count > 0;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که دسته چک وجود دارد یا نه
-        /// </summary>
-        /// <param name="checkBookId">شناسه دسته چک موجود</param>
-        /// <returns>در حالتی که دسته چک وجود داشته باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
+        /// <inheritdoc/>
         public async Task<bool> ExistsCheckBookAsync(int checkBookId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
@@ -271,11 +225,7 @@ namespace SPPC.Tadbir.Persistence
             return count > 0;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا نام دسته چک مورد نظر تکراری است یا نه
-        /// </summary>
-        /// <param name="checkBook">دسته چکی که تکراری بودن نام آن باید بررسی شود</param>
-        /// <returns>مقدار بولی درست در صورت تکراری بودن نام، در غیر این صورت مقدار بولی نادرست</returns>
+        /// <inheritdoc/>
         public async Task<bool> IsDuplicateCheckBookNameAsync(CheckBookViewModel checkBook)
         {
             Verify.ArgumentNotNull(checkBook, nameof(checkBook));
@@ -288,11 +238,7 @@ namespace SPPC.Tadbir.Persistence
             return count > 0;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا شماره صیادی دسته چک مورد نظر تکراری است یا نه
-        /// </summary>
-        /// <param name="checkBook">دسته چکی که تکراری بودن شماره صیادی آن باید بررسی شود</param>
-        /// <returns>مقدار بولی درست در صورت تکراری بودن شماره صیادی، در غیر این صورت مقدار بولی نادرست</returns>
+        /// <inheritdoc/>
         public async Task<bool> IsDuplicateSayyadNumberAsync(CheckBookViewModel checkBook)
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
@@ -313,12 +259,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا حداقل یک برگ از دسته چک با چک ارتباط دارد یا نه
-        /// </summary>
-        /// <param name="checkBookId">شناسه دسته چک موجود</param>
-        /// <returns>در حالتی که حداقل یک برگ از دسته چک ارتباط داشته باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
+        /// <inheritdoc/>
         public async Task<bool> IsConnectedToCheckAsync(int checkBookId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
@@ -329,12 +270,7 @@ namespace SPPC.Tadbir.Persistence
             return count > 0;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا حداقل یک برگ از دسته ابطال شده است یا نه
-        /// </summary>
-        /// <param name="checkBookId">شناسه دسته چک موجود</param>
-        /// <returns>در حالتی که حداقل یک برگ از دسته چک ابطال شد باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
+        /// <inheritdoc/>
         public async Task<bool> ExistsCancelledPage(int checkBookId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBookPage>();
@@ -345,16 +281,22 @@ namespace SPPC.Tadbir.Persistence
             return count > 0;
         }
 
+        /// <inheritdoc/>
+        public bool ValidatePageNo(string pageNo)
+        {
+            Verify.ArgumentNotNullOrEmptyString(pageNo, nameof(pageNo));
+            var reversePageNo = new string(pageNo.Reverse().ToArray());
+            return reversePageNo
+                .TakeWhile(ch => Char.IsDigit(ch))
+                .Any();
+        }
+
         internal override int? EntityType
         {
             get { return (int?)EntityTypeId.CheckBook; }
         }
 
-        /// <summary>
-        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
-        /// </summary>
-        /// <param name="checkBookView">مدل نمایشی شامل آخرین تغییرات</param>
-        /// <param name="checkBook">سطر اطلاعاتی موجود</param>
+        /// <inheritdoc/>
         protected override void UpdateExisting(CheckBookViewModel checkBookView, CheckBook checkBook)
         {
             checkBook.TextNo = Int64.Parse(checkBookView.TextNo.Trim()).ToString();
@@ -379,11 +321,7 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
-        /// <summary>
-        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
-        /// </summary>
-        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
-        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        /// <inheritdoc/>
         protected override string GetState(CheckBook entity)
         {
             return (entity != null)
@@ -398,7 +336,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، شماره آخرین دسته چک موجود را برمی گرداند
         /// </summary>
-        protected async Task<long> GetLastTextNoAsync()
+        private async Task<long> GetLastCheckBookNoAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
             var lastCheckBook = await repository
@@ -411,6 +349,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 lastTextNo = Convert.ToInt64(lastCheckBook.TextNo);
             }
+
             return lastTextNo;
         }
 
