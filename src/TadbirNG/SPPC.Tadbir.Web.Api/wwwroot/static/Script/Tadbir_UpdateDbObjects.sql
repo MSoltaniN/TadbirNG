@@ -1011,3 +1011,16 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (323, 2, 2, NULL, 18, 92, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.2.1566
+SET IDENTITY_INSERT [Metadata].[Operation] ON
+INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description]) 
+	VALUES (93, N'UndoRegister', NULL)
+SET IDENTITY_INSERT [Metadata].[Operation] OFF
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (324, 3, 2, NULL, 24, 93, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (325, 3, 2, NULL, 25, 93, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF

@@ -4272,4 +4272,7 @@
   <data name="PrintPreviewForm" xml:space="preserve">
     <value>پیش نمایش چاپ فرم</value>
   </data>
+  <data name="UndoRegister" xml:space="preserve">
+    <value>لغو ثبت مالی</value>
+  </data>
 </root>
