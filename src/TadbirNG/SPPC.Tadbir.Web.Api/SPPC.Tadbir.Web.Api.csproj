@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\edition" />
-    <Content Remove="wwwroot\edition.Development.json" />
+    <Content Remove="wwwroot\edition.Development.json" Condition="'$(Configuration)' == 'Release'" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,7 +44,7 @@
     <EmbeddedResource Include="Resources\Reporting\Template\QuickReport.A4.Ltr.mrt" />
     <EmbeddedResource Include="Resources\Reporting\Template\QuickReport.A4.Rtl.mrt" />
     <EmbeddedResource Include="wwwroot\edition" />
-    <EmbeddedResource Include="wwwroot\edition.Development.json" />
+    <EmbeddedResource Include="wwwroot\edition.Development.json" Condition="'$(Configuration)' == 'Release'" />
   </ItemGroup>
 
   <ItemGroup>
