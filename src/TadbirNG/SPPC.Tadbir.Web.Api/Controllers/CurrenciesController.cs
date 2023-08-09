@@ -243,11 +243,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PostNewCurrencyRateAsync(
             int currencyId, [FromBody] CurrencyRateViewModel currencyRate)
         {
-            if (currencyRate.CurrencyId != currencyId)
-            {
-                return BadRequestResult(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Currency));
-            }
-
             var result = RateValidationResult(currencyRate);
             if (result is BadRequestObjectResult)
             {
