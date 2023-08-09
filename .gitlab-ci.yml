@@ -8,7 +8,6 @@ variables:
   angular_build_output_server_path: 'C:\inetpub\wwwroot\TadbirNG\TadbirNG.WebNg14'
   CI_COMMIT_REF_NAME: 'key_for_node_modules'
 
-
 stages:
   - build
   - deploy
