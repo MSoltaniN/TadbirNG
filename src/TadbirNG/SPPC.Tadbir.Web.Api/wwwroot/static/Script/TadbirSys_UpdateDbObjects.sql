@@ -1263,5 +1263,20 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Des
     VALUES (283, 42, N'UndoRegister', 2048, NULL)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
-
-
+-- 1.2.1567
+SET IDENTITY_INSERT [Reporting].[Report] ON
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
+    VALUES (104, 98, 1, 0, 3, N'', N'payments/{0}/receiver/articles', 0, 1, 1, 1, NULL)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
+    VALUES (105, 98, 1, 0, 3, N'', N'cash-account-articles', 0, 1, 1, 1, NULL)
+SET IDENTITY_INSERT [Reporting].[Report] OFF
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (299, 1, 104, N'Account Articles List')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (300, 2, 104, N'لیست طرف‌های حساب')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (301, 1, 105, N'Cash Account Articles List')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (302, 2, 105, N'لیست حساب‌های نقدی')
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF

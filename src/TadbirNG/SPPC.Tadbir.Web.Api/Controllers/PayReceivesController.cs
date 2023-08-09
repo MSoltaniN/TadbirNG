@@ -588,12 +588,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، آرتیکل‌های فرم پرداخت را ثبت مالی می‌کند
         /// </summary>
         /// <param name="paymentId">شناسه دیتابیسی فرم پرداخت مورد نظر برای ثبت مالی</param>
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر برای ثبت مالی</param>
         /// <returns>اطلاعات نمایشی سند ثبت شده مرتبط با فرم پرداخت</returns>
-        // Post: api/payments/{paymentId:min(1)}/register
+        // Post: api/payments/{paymentId:min(1)}/register/vouchers/{voucherId:int}
         [HttpPost]
         [Route(PayReceiveApi.RegisterPaymentUrl)]
         [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Register)]
-        public async Task<IActionResult> PostNewRegisterPaymentArticlesAsync(int paymentId)
+        public async Task<IActionResult> PostNewRegisterPaymentArticlesAsync(int paymentId, int voucherId)
         {
             var result = await PayReceiveActionValidationResultAsync(paymentId, AppStrings.Register,
                 AppStrings.Payment);
@@ -601,7 +602,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 return result;
             }
-            var outputItem = await _repository.RegisterAsync(paymentId);
+            var outputItem = await _repository.RegisterAsync(paymentId, voucherId);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
@@ -609,12 +610,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// به روش آسنکرون، آرتیکل‌های فرم دریافت را ثبت مالی می‌کند
         /// </summary>
         /// <param name="receiptId">شناسه دیتابیسی فرم پرداخت مورد نظر برای ثبت مالی</param>
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی مورد نظر برای ثبت مالی</param>
         /// <returns>اطلاعات نمایشی سند ثبت شده مرتبط با فرم دریافت</returns>
-        // Post: api/receipts/{receiptId:min(1)}/register
+        // Post: api/receipts/{receiptId:min(1)}/register/vouchers/{voucherId:int}
         [HttpPost]
         [Route(PayReceiveApi.RegisterReceiptUrl)]
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Register)]
-        public async Task<IActionResult> PostNewRegisterReceiptArticlesAsync(int receiptId)
+        public async Task<IActionResult> PostNewRegisterReceiptArticlesAsync(int receiptId, int voucherId)
         {
             var result = await PayReceiveActionValidationResultAsync(receiptId, AppStrings.Register,            
                 AppStrings.Receipt);
@@ -622,7 +624,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 return result;
             }
-            var outputItem = await _repository.RegisterAsync(receiptId);
+            var outputItem = await _repository.RegisterAsync(receiptId, voucherId);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
