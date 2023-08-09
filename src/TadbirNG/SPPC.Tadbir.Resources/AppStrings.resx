@@ -3970,13 +3970,13 @@
     <value>مبلغ</value>
   </data>
   <data name="CreateAccountLine" xml:space="preserve">
-    <value>ایجاد طرف حساب</value>
+    <value>ایجاد آرتیکل طرف حساب</value>
   </data>
   <data name="DeleteAccountLine" xml:space="preserve">
-    <value>حذف طرف حساب</value>
+    <value>حذف آرتیکل طرف حساب</value>
   </data>
   <data name="EditAccountLine" xml:space="preserve">
-    <value>ویرایش طرف حساب</value>
+    <value>ویرایش آرتیکل طرف حساب</value>
   </data>
   <data name="GroupDeleteAccounts" xml:space="preserve">
     <value>حذف گروهی طرف‌های حساب</value>
@@ -4036,19 +4036,19 @@
     <value>ویرایش آرتیکل حساب نقدی</value>
   </data>
   <data name="ExportCashAccountLines" xml:space="preserve">
-    <value>ارسال آرتیکل‌های حساب نقدی</value>
+    <value>ارسال حساب‌های نقدی</value>
   </data>
   <data name="FilterCashAccountLines" xml:space="preserve">
-    <value>فیلتر آرتیکل‌های حساب نقدی</value>
+    <value>فیلتر حساب‌های نقدی</value>
   </data>
   <data name="GroupDeleteCashAccountLines" xml:space="preserve">
-    <value>حذف گروهی آرتیکل‌های حساب نقدی</value>
+    <value>حذف گروهی حساب‌های نقدی</value>
   </data>
   <data name="PrintCashAccountLines" xml:space="preserve">
-    <value>چاپ آرتیکل‌های حساب نقدی</value>
+    <value>چاپ حساب‌های نقدی</value>
   </data>
   <data name="PrintPreviewCashAccountLines" xml:space="preserve">
-    <value>پیش نمایش چاپ آرتیکل‌های حساب نقدی</value>
+    <value>پیش نمایش چاپ حساب‌های نقدی</value>
   </data>
   <data name="AggregateCashAccountLines" xml:space="preserve">
     <value>تجمیع ردیف‌های حساب نقدی</value>
@@ -4271,5 +4271,8 @@
   </data>
   <data name="PrintPreviewForm" xml:space="preserve">
     <value>پیش نمایش چاپ فرم</value>
+  </data>
+  <data name="UndoRegister" xml:space="preserve">
+    <value>لغو ثبت مالی</value>
   </data>
 </root>

@@ -3162,6 +3162,10 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Des
     VALUES (280, 40, N'Deactivate', 128, N'Mark an active source/application as inactive')
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
     VALUES (281, 40, N'Reactivate', 256, N'Mark an inactive source/application as active')
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (282, 41, N'UndoRegister', 2048, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (283, 42, N'UndoRegister', 2048, NULL)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 SET IDENTITY_INSERT [Metadata].[ShortcutCommand] ON 

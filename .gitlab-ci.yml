@@ -1,0 +1,105 @@
+variables:
+  publish_path: '.\src\TadbirNG\SPPC.Tadbir.Web.Api\publish\$CI_PIPELINE_ID\'
+  published_data_path: '.\src\TadbirNG\SPPC.Tadbir.Web.Api\publish\$CI_PIPELINE_ID\*'
+  publish_path_angular: '.\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\dist\'
+  publish_path_data_angular: '.\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\dist\*'
+  application_pool_name: 'TadbirNG.Api'
+  iis_worker_path: 'C:\inetpub\wwwroot\TadbirNG\TadbirNG.WebApi'
+  angular_build_output_server_path: 'C:\inetpub\wwwroot\TadbirNG\TadbirNG.WebNg14'
+  CI_COMMIT_REF_NAME: 'key_for_node_modules'
+
+
+stages:
+  - build
+  - deploy
+
+# Stage for building the Angular project
+build_angular:
+  stage: build
+  script:
+    - cd .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp
+    - npm install
+    - node .\node_modules\@angular\cli\bin\ng build
+  artifacts:
+    paths:
+      - ${publish_path_angular}
+  only:
+    changes:
+      - "tadbirng/src/TadbirNG/SPPC.Tadbir.Web/**/*"
+      - .gitlab-ci.yml
+    refs:
+        - master
+  
+# Stage for building the .NET Core project
+build_dotnet:
+  stage: build
+  script:
+    - dotnet restore .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj
+    - dotnet build .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj --no-restore
+    - dotnet publish .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj -c Release -o ${publish_path} --verbosity normal
+  artifacts:
+    paths:
+      - ${publish_path}
+    expire_in: '1 hrs'
+  tags:
+    - dotnet
+  only:
+    changes:
+        - 'tadbirng/src/TadbirNG/SPPC.Tadbir.Web.Api/**/*'
+        - .gitlab-ci.yml
+    refs:
+        - master
+
+# Stage for deploy the angular project
+deploy_angular:
+  stage: deploy
+  script:
+       - "Copy-Item ${publish_path_data_angular} -Destination ${angular_build_output_server_path} -Recurse -Force"
+  only:
+    changes:
+      - "tadbirng/src/TadbirNG/SPPC.Tadbir.Web/**/*"
+      - .gitlab-ci.yml
+    refs:
+        - master
+  dependencies:
+    - build_angular  
+
+# Stage for deploy the .NET Core project
+deploy_dotnet:
+  stage: deploy
+  script:
+    - |
+      if((Get-WebSiteState -Name ${application_pool_name}).Value -ne 'Stopped'){
+        Write-Output ('Stopping WebSite: {0}' -f ${application_pool_name})
+        Stop-WebSite -Name ${application_pool_name}
+      }
+    - |
+      if((Get-WebAppPoolState -Name ${application_pool_name}).Value -ne 'Stopped'){
+        Write-Output ('Stopping Application Pool: {0}' -f ${application_pool_name})
+        Stop-WebAppPool -Name ${application_pool_name}
+      }
+    - |
+      while ((Get-WebSiteState -Name ${application_pool_name}).Value -ne 'Stopped' -or (Get-WebAppPoolState -Name ${application_pool_name}).Value -ne 'Stopped') {
+          Start-Sleep -Seconds 1
+      }
+    - Copy-Item ${published_data_path} -Destination ${iis_worker_path} -Recurse -Force
+    - |
+      if((Get-WebAppPoolState -Name ${application_pool_name}).Value -ne 'Started'){
+        Write-Output ('Starting Application Pool: {0}' -f ${application_pool_name})
+        Start-WebAppPool -Name ${application_pool_name}
+      }
+    - |
+      if((Get-WebSiteState -Name ${application_pool_name}).Value -ne 'Started'){
+        Write-Output ('Starting WebSite: {0}' -f ${application_pool_name})
+        Start-WebSite -Name ${application_pool_name}
+      }
+  only:
+    refs:
+        - master
+    changes:
+        - 'tadbirng/src/TadbirNG/SPPC.Tadbir.Web.Api/**/*'
+        - .gitlab-ci.yml
+  tags:
+    - dotnet
+  dependencies:
+    - build_dotnet

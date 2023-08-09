@@ -24,8 +24,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک فرم دریافت/پرداخت را ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="payReceive">فرم دریافت/پرداخت مورد نظر برای ایجاد یا اصلاح</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <returns>اطلاعات نمایشی فرم دریافت/پرداخت ایجاد یا اصلاح شده</returns>
-        Task<PayReceiveViewModel> SavePayReceiveAsync(PayReceiveViewModel payReceive);
+        Task<PayReceiveViewModel> SavePayReceiveAsync(PayReceiveViewModel payReceive, int type);
 
         /// <summary>
         /// به روش آسنکرون، فرم دریافت/پرداخت مشخص شده با شناسه عددی را حذف می کند
@@ -133,5 +134,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
         /// <returns>اطلاعات نمایشی سند مالی به همراه آرتیکل‌های ایجاد شده</returns>
         Task<VoucherViewModel> RegisterAsync(int payReceiveId);
+
+        /// <summary>
+        /// به روش آسنکرون، برگشت از ثبت مالی فرم دریافت/پرداخت را انجام می‌دهد     
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
+        Task UndoRegisterAsync(int payReceiveId, int type);
     }
 }

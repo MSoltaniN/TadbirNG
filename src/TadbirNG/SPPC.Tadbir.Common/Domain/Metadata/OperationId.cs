@@ -465,6 +465,11 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// کد عملیاتی پیش نمایش چاپ یک فرم عملیاتی - مثل سند، دریافت/پرداخت و غیره
         /// </summary>
-        PrintPreviewForm = 92
+        PrintPreviewForm = 92,
+
+        /// <summary>
+        /// کد عملیاتی برگشت از ثبت مالی موجودیت عملیاتی
+        /// </summary>
+        UndoRegister = 93,
     }
 }
