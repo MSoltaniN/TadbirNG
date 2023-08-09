@@ -1,1 +1,14 @@
-
+{
+  "name": "Edition_Enterprise",
+  "maxUsers": 0,
+  "maxCompanies": 0,
+  "maxBranches": 0,
+  "maxBranchDepth": 0,
+  "maxAccountDepth": 0,
+  "maxDetailAccountDepth": 0,
+  "maxCostCenterDepth": 0,
+  "maxProjectDepth": 0,
+  "enableBranchFilter": true,
+  "enableByBranchReporting": true,
+  "enableRowPermissions": true
+}
