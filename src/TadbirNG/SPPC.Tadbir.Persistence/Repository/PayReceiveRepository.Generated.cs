@@ -357,6 +357,21 @@ namespace SPPC.Tadbir.Persistence
             return Mapper.Map<VoucherViewModel>(voucher);
         }
 
+        /// <inheritdoc/>
+        public async Task UndoRegisterAsync(int payReceiveId, int type)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveVoucherLine>();
+            var payReceiveVoucherLines = await GetRegisteredArticlesAsync(repository, payReceiveId);
+            foreach (var item in payReceiveVoucherLines)
+            {
+                DisconnectEntity(item);
+                repository.Delete(item);
+            }
+
+            int entityTypeId = GetEntityTypeId(type);
+            await FinalizeActionAsync(OperationId.UndoRegister, entityTypeId);
+        }
+
         internal override int? EntityType
         {
             get { return (int?)EntityTypeId.Receipt; }
@@ -475,6 +490,15 @@ namespace SPPC.Tadbir.Persistence
 
             payReceive.HasNext = nextCount > 0;
             payReceive.HasPrevious = prevCount > 0;
+        }
+
+        private async Task<IEnumerable<PayReceiveVoucherLine>> GetRegisteredArticlesAsync(
+            IRepository<PayReceiveVoucherLine> repository, int payReceiveId)
+        {
+            return await repository
+                .GetEntityQuery()
+                .Where(item => item.PayReceiveId == payReceiveId)
+                .ToListAsync(); 
         }
 
         private int GetEntityTypeId(int type)

@@ -1253,3 +1253,15 @@ WHERE ReportID = 12
 DELETE FROM [Reporting].[Report]
 WHERE ReportID = 12 AND Code = 'Operation-Logs'
 
+-- 1.2.1566
+
+SET IDENTITY_INSERT [Auth].[Permission] ON
+-- افزودن دسترسی برگشت از ثبت مالی برای فرم دریافت و فرم پرداخت
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (282, 41, N'UndoRegister', 2048, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (283, 42, N'UndoRegister', 2048, NULL)
+SET IDENTITY_INSERT [Auth].[Permission] OFF
+
+
+

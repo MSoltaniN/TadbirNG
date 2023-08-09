@@ -4284,4 +4284,7 @@
   <data name="EntityReference" xml:space="preserve">
     <value>Refrence</value>
   </data>
+  <data name="UndoRegister" xml:space="preserve">
+    <value>Undo register</value>
+  </data>
 </root>

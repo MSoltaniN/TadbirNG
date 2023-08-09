@@ -2063,9 +2063,14 @@ namespace SPPC.Tadbir.Security
         UndoApprove = 0x400,
 
         /// <summary>
+        /// دسترسی برگشت از ثبت مالی
+        /// </summary>
+        UndoRegister = 0x800,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت فرم های پرداخت 
         /// </summary>
-        All = 0x7ff
+        All = 0xfff
     }
 
     /// <summary>
@@ -2135,8 +2140,13 @@ namespace SPPC.Tadbir.Security
         UndoApprove = 0x400,
 
         /// <summary>
+        /// دسترسی برگشت از ثبت مالی
+        /// </summary>
+        UndoRegister = 0x800,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت فرم های دریافت 
         /// </summary>
-        All = 0x7ff
+        All = 0xfff
     }
 }

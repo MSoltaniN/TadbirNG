@@ -134,5 +134,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
         /// <returns>اطلاعات نمایشی سند مالی به همراه آرتیکل‌های ایجاد شده</returns>
         Task<VoucherViewModel> RegisterAsync(int payReceiveId);
+
+        /// <summary>
+        /// به روش آسنکرون، برگشت از ثبت مالی فرم دریافت/پرداخت را انجام می‌دهد     
+        /// </summary>
+        /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
+        Task UndoRegisterAsync(int payReceiveId, int type);
     }
 }
