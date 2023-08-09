@@ -188,7 +188,7 @@ namespace SPPC.Tadbir.Persistence
             var byNo = default(PayReceiveViewModel);
             var viewId = GetViewId((int)type);
             var payReceiveByNo = await Repository.GetAllOperationQuery<PayReceive>(
-                viewId, pr => pr.Accounts, pr => pr.CashAccounts)
+                viewId, pr => pr.Accounts, pr => pr.CashAccounts, pr => pr.PayReceiveVoucherLines)
                 .Where(pr => pr.TextNo == textNo.Trim() && pr.Type == (int)type)
                 .SingleOrDefaultAsync();
 
@@ -452,7 +452,7 @@ namespace SPPC.Tadbir.Persistence
             var options = gridOptions ?? new GridOptions();
             var query = Repository
                 .GetAllOperationQuery<PayReceive>(viewId)
-                .Where(pr => Convert.ToInt64(pr.PayReceiveNo) < Convert.ToInt64(payReceive.PayReceiveNo) &&
+                .Where(pr => Convert.ToInt64(pr.TextNo) < Convert.ToInt64(payReceive.TextNo) &&
                     pr.Type == type);
 
             if (!options.IsEmpty)
@@ -471,7 +471,7 @@ namespace SPPC.Tadbir.Persistence
 
             query = Repository
                 .GetAllOperationQuery<PayReceive>(viewId)
-                .Where(pr => Convert.ToInt64(pr.PayReceiveNo) > Convert.ToInt64(payReceive.PayReceiveNo) &&
+                .Where(pr => Convert.ToInt64(pr.TextNo) > Convert.ToInt64(payReceive.TextNo) &&
                     pr.Type == type);
 
             if (!options.IsEmpty)
@@ -558,7 +558,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private string GetArticleDescription(
-            PayReceive payReceive, string articleRemarks, string bankOrderNo = null)
+            PayReceive payReceive, string Remarks, string bankOrderNo = null)
         {
             string description = string.Empty;
             string currencyText = String.Empty;
@@ -568,9 +568,9 @@ namespace SPPC.Tadbir.Persistence
             }
 
             string ArticleText = String.Empty;
-            if (!String.IsNullOrWhiteSpace(articleRemarks))
+            if (!String.IsNullOrWhiteSpace(Remarks))
             {
-                ArticleText = $" - {articleRemarks.ToLower().Trim()}";
+                ArticleText = $" - {Remarks.ToLower().Trim()}";
             }
 
             string payReceiveText = String.Empty;
@@ -582,7 +582,7 @@ namespace SPPC.Tadbir.Persistence
             if (payReceive.Type == (int)PayReceiveType.Receipt)
             {
                 string bankOrederNoText = String.Empty;
-                if(!String.IsNullOrWhiteSpace(bankOrderNo))
+                if (!String.IsNullOrWhiteSpace(bankOrderNo))
                 {
                     string template = $" - {Context.Localize(AppStrings.DuringOrderOfBankNo)}";
                     bankOrederNoText = String.Format(template, bankOrderNo).ToLower();

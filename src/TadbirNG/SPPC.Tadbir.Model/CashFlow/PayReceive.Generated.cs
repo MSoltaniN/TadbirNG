@@ -67,11 +67,6 @@ namespace SPPC.Tadbir.Model.CashFlow
         public virtual short Type { get; set; }
 
         /// <summary>
-        /// شماره فرم دریافت/پرداخت
-        /// </summary>
-        public virtual string TextNo { get; set; }
-
-        /// <summary>
         /// نرخ ارز
         /// </summary>
         public virtual decimal? CurrencyRate { get; set; }

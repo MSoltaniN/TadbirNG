@@ -49,7 +49,7 @@ namespace SPPC.Tadbir.Persistence
         /// <inheritdoc/>
         public async Task<CheckBookViewModel> GetNewCheckBookAsync()
         {
-            long lastNo = await GetLastTextNoAsync();
+            long lastNo = await GetLastCheckBookNoAsync();
             lastNo = ++lastNo;
             var newCheckBook = new CheckBookViewModel()
             {
@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public async Task<CheckBookViewModel> GetCheckBookByNoAsync(int checkBookNo)
+        public async Task<CheckBookViewModel> GetCheckBookByNoAsync(string textNo)
         {
             var byNo = default(CheckBookViewModel);
             var checkBookByNo = await Repository
@@ -336,7 +336,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، شماره آخرین دسته چک موجود را برمی گرداند
         /// </summary>
-        private async Task<int> GetLastCheckBookNoAsync()
+        private async Task<long> GetLastCheckBookNoAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
             var lastCheckBook = await repository
@@ -349,6 +349,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 lastTextNo = Convert.ToInt64(lastCheckBook.TextNo);
             }
+
             return lastTextNo;
         }
 

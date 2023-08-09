@@ -1156,7 +1156,6 @@ SET [Visibility] = N'AlwaysHidden'
 WHERE ColumnID = 800 AND [Name] = N'SourceAppId'
 
 -- 1.2.1553
-<<<<<<< HEAD
 UPDATE [Reporting].[Report]
 SET [ServiceUrl] = N'fperiods'
 WHERE ReportID = 21 AND [Code] = N'Fiscal-Periods'
@@ -1264,5 +1263,12 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Des
     VALUES (283, 42, N'UndoRegister', 2048, NULL)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
+-- 1.2.1567
 
+UPDATE [Metadata].[Column]
+SET [Name] = N'TextNo', [DotNetType] = 'System.Int64', [StorageType] = 'bigint', [Length] = 0, ScriptType ='number'
+WHERE ColumnID = 764 AND [Name] = N'PayReceiveNo'
 
+UPDATE [Metadata].[Column]
+SET [Name] = N'TextNo', [DotNetType] = 'System.Int64', [StorageType] = 'bigint', [Length] = 0, ScriptType = 'number'
+WHERE (ColumnID = 713 OR ColumnID = 726) AND [Name] = N'CheckBookNo'

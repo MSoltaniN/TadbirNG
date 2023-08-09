@@ -62,8 +62,8 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، فرم دریافت/پرداخت با شماره مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="payReceiveNo">شماره فرم دریافت/پرداخت مورد نظر</param>
-        /// <param name="type">مشخص می کند که درخواست از نوع پرداختی یا دریافتی است</param>
+        /// <param name="textNo">شماره فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="type">مشخص می کند که درخواست از نوع پرداختی یا دریافتی می باشد</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شماره</returns>
         Task<PayReceiveViewModel> GetPayReceiveByNoAsync(string textNo, int type);
 

@@ -630,7 +630,6 @@ CREATE TABLE [CashFlow].[PayReceiveVoucherLine] (
     , CONSTRAINT [FK_CashFlow_PayReceiveVoucherLine_Finance_VoucherLine] FOREIGN KEY ([VoucherLineID]) REFERENCES [Finance].[VoucherLine]([VoucherLineID]))
 GO
 
-<<<<<<< HEAD
 -- 1.2.1557
 -- ترازنامه 
 UPDATE [Finance].[AccountCollectionCategory]
@@ -911,14 +910,6 @@ WHERE [CollectionID] = 50
 UPDATE [Finance].[AccountCollection]
 SET [Name] = N'TransitionalProperty'
 WHERE [CollectionID] = 51
-=======
--- 1.2.1549
-EXEC sp_rename '[CashFlow].[PayReceive].[PayReceiveNo]', 'TextNo', 'COLUMN'
-EXEC sp_rename '[Check].[CheckBook].[CheckBookNo]', 'TextNo', 'COLUMN'
-
-ALTER TABLE [Check].[CheckBook]
-ALTER COLUMN [TextNo] NVARCHAR(16) NOT NULL
->>>>>>> 3552a181ab18cbd7768d210ad78d0e271c1553f4
 
 -- 1.2.1559
 
@@ -1033,3 +1024,10 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (325, 3, 2, NULL, 25, 93, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.2.1567
+EXEC sp_rename '[CashFlow].[PayReceive].[PayReceiveNo]', 'TextNo', 'COLUMN'
+EXEC sp_rename '[Check].[CheckBook].[CheckBookNo]', 'TextNo', 'COLUMN'
+
+ALTER TABLE [Check].[CheckBook]
+ALTER COLUMN [TextNo] NVARCHAR(16) NOT NULL
