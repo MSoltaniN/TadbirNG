@@ -23,6 +23,7 @@ build_angular:
   artifacts:
     paths:
       - ${publish_path_angular}
+      - 'tadbirng\src\TadbirNG\SPPC.Tadbir.Web\ClientApp\src\environments\environment.ts'
   only:
     changes:
       - "tadbirng/src/TadbirNG/SPPC.Tadbir.Web/**/*"
