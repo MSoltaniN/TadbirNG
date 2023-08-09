@@ -1,4 +1,4 @@
-﻿# Ignore conventional output paths for libraries and tests
+# Ignore conventional output paths for libraries and tests
 bin/
 testbin/
 

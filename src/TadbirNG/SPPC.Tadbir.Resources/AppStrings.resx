@@ -136,10 +136,10 @@
     <value>راهبری</value>
   </data>
   <data name="AdminRoleIsReadonly" xml:space="preserve">
-    <value>اصلاح یا حذف نقش راهبر سیستم امکانپذیر نیست.</value>
+    <value>اصلاح یا حذف نقش راهبر سیستم امکان‌پذیر نیست.</value>
   </data>
   <data name="AdminUserIsReadOnly" xml:space="preserve">
-    <value>اصلاح یا حذف کاربر راهبر سیستم امکانپذیر نیست.</value>
+    <value>اصلاح یا حذف کاربر راهبر سیستم امکان‌پذیر نیست.</value>
   </data>
   <data name="CantDeleteAssignedRole" xml:space="preserve">
     <value>نقش {0} به یک یا چند کاربر  تخصیص داده شده و قابل حذف نیست.</value>
@@ -553,7 +553,7 @@
     <value>ورود به شرکت</value>
   </data>
   <data name="OtherBranchEditNotAllowed" xml:space="preserve">
-    <value>تغییر اطلاعات در شعبه غیر جاری امکان پذیر نیست.</value>
+    <value>تغییر اطلاعات در شعبه غیر جاری امکان‌پذیر نیست.</value>
   </data>
   <data name="CompanyDb" xml:space="preserve">
     <value>شرکت</value>
@@ -838,7 +838,7 @@
     <value>حساب {0} به یک مجموعه حساب تخصیص داده شده و قابل حذف نیست.</value>
   </data>
   <data name="CantInsertLeafAccount" xml:space="preserve">
-    <value>با توجه به عضویت والد حساب در یک مجموعه حساب، افزودن حساب در سطح آخر امکانپذیر نیست.</value>
+    <value>با توجه به عضویت والد حساب در یک مجموعه حساب، افزودن حساب در سطح آخر امکان‌پذیر نیست.</value>
   </data>
   <data name="AsQuotedInVoucherLines" xml:space="preserve">
     <value>به شرح ردیف های سند</value>
@@ -1132,7 +1132,7 @@
     <value>عنوان گزارش</value>
   </data>
   <data name="InvalidVoucherAction" xml:space="preserve">
-    <value>عمل '{0}' روی سند با آخرین وضعیت '{1}' امکان پذیر نیست.</value>
+    <value>عمل '{0}' روی سند با آخرین وضعیت '{1}' امکان‌پذیر نیست.</value>
   </data>
   <data name="Approve" xml:space="preserve">
     <value>تصویب</value>
@@ -2611,7 +2611,7 @@
     <value>گزینه های موجود برای محاسبه اطلاعات گزارش های مالی</value>
   </data>
   <data name="InvalidEmptyVoucherAction" xml:space="preserve">
-    <value>عمل {0} روی سند بدون آرتیکل امکان پذیر نیست.</value>
+    <value>عمل {0} روی سند بدون آرتیکل امکان‌پذیر نیست.</value>
   </data>
   <data name="RootBranchAlreadyDefined" xml:space="preserve">
     <value>فقط یک شعبه در بالاترین سطح قابل تعریف است.</value>
@@ -2644,7 +2644,7 @@
     <value>{0} '{1}' در سایر اطلاعات شرکت جاری استفاده شده و قابل حذف نیست.</value>
   </data>
   <data name="CantDeleteCurrentItem" xml:space="preserve">
-    <value>حذف {0} جاری امکانپذیر نیست.</value>
+    <value>حذف {0} جاری امکان‌پذیر نیست.</value>
   </data>
   <data name="CantDeleteItemWithData" xml:space="preserve">
     <value>در {0} '{1}' یک یا چند سطر اطلاعاتی ایجاد شده و قابل حذف نیست.</value>
@@ -3130,16 +3130,16 @@
     <value>برای نقش {0} دسترسی سطری تعریف شده و قابل حذف نیست.</value>
   </data>
   <data name="CantIssueVoucherFromLowerBranch" xml:space="preserve">
-    <value>صدور سند {0} از شعب زیرمجموعه امکان پذیر نیست.</value>
+    <value>صدور سند {0} از شعب زیرمجموعه امکان‌پذیر نیست.</value>
   </data>
   <data name="CurrentClosingVoucherIsChecked" xml:space="preserve">
-    <value>دوره مالی جاری دارای سند اختتامیه ثبت شده است و ثبت یا تغییر تراکنش های مالی در آن امکان پذیر نیست.</value>
+    <value>دوره مالی جاری دارای سند اختتامیه ثبت شده است و ثبت یا تغییر تراکنش های مالی در آن امکان‌پذیر نیست.</value>
   </data>
   <data name="ClosingAccountsVoucherNotIssuedOrChecked" xml:space="preserve">
     <value>سند بستن حساب های موقت صادر نشده یا در وضعیت ثبت نشده است.</value>
   </data>
   <data name="CantIssueClosingVoucherWithUncheckedVouchers" xml:space="preserve">
-    <value>دوره مالی جاری یک یا چند سند ثبت نشده دارد و صدور سند بستن حساب ها امکان پذیر نیست.</value>
+    <value>دوره مالی جاری یک یا چند سند ثبت نشده دارد و صدور سند بستن حساب ها امکان‌پذیر نیست.</value>
   </data>
   <data name="ApproverName" xml:space="preserve">
     <value>کاربر تصویب کننده</value>
@@ -3241,7 +3241,7 @@
     <value>تایید/تصویب گروهی اسناد</value>
   </data>
   <data name="CantGroupConfirm" xml:space="preserve">
-    <value>تأیید گروهی فقط برای اسنادی امکانپذیر است که به صورت گروهی رفع تأیید شده باشند.</value>
+    <value>تأیید گروهی فقط برای اسنادی امکان‌پذیر است که به صورت گروهی رفع تأیید شده باشند.</value>
   </data>
   <data name="GroupApprove" xml:space="preserve">
     <value>تصویب گروهی</value>
@@ -3343,7 +3343,7 @@
     <value>این سند ثبت قطعی یا تأیید شده و قابل تبدیل به سند پیش نویس نیست.</value>
   </data>
   <data name="InvalidDraftVoucherAction" xml:space="preserve">
-    <value>عمل {0} روی سند پیش نویس امکان پذیر نیست.</value>
+    <value>عمل {0} روی سند پیش نویس امکان‌پذیر نیست.</value>
   </data>
   <data name="Budgeting" xml:space="preserve">
     <value>بودجه</value>
@@ -3475,7 +3475,7 @@
     <value>بروز خطا در عملیات. لطفاً دوباره تلاش کنید یا با راهبر سیستم تماس بگیرید.</value>
   </data>
   <data name="AdminRoleIsRequired" xml:space="preserve">
-    <value>حذف نقش راهبر سیستم برای کاربر راهبر سیستم امکانپذیر نیست.</value>
+    <value>حذف نقش راهبر سیستم برای کاربر راهبر سیستم امکان‌پذیر نیست.</value>
   </data>
   <data name="CantDeleteCommittedVouchers" xml:space="preserve">
     <value>برای حذف کامل دوره مالی، کلیه اسناد مالی باید در وضعیت ثبت نشده باشند.</value>
@@ -3508,7 +3508,7 @@
     <value>حساب '{0}' دارای زیرمجموعه است و نمی توان آن را غیرفعال کرد.</value>
   </data>
   <data name="CantManageCollectionFromBranch" xml:space="preserve">
-    <value>تعریف حساب برای این مجموعه حساب فقط از بالاترین شعبه امکانپذیر است.</value>
+    <value>تعریف حساب برای این مجموعه حساب فقط از بالاترین شعبه امکان‌پذیر است.</value>
   </data>
   <data name="PrintPreview" xml:space="preserve">
     <value>پیش نمایش چاپ</value>
@@ -3580,7 +3580,7 @@
     <value>برای فیلتر سطرهای موجودیت {0} رفرنسی تعیین نشده است.</value>
   </data>
   <data name="InventoryModeChangeNotAllowed" xml:space="preserve">
-    <value>تغییر سیستم ثبت دوره مالی زمانی که اسنادی تعریف شده باشند، امکان پذیر نیست.</value>
+    <value>تغییر سیستم ثبت دوره مالی زمانی که اسنادی تعریف شده باشند، امکان‌پذیر نیست.</value>
   </data>
   <data name="Chart_AreaGraph" xml:space="preserve">
     <value>نمودار سطحی</value>
@@ -3760,7 +3760,7 @@
     <value>برگه های دسته چک قبلا ایجاد شده است.</value>
   </data>
   <data name="CantEditCheckbook" xml:space="preserve">
-    <value>برگه های این دسته چک ایجاد شده اند و ویرایش آن امکان پذیر نیست.</value>
+    <value>برگه های این دسته چک ایجاد شده اند و ویرایش آن امکان‌پذیر نیست.</value>
   </data>
   <data name="HasConnectedToCheck" xml:space="preserve">
     <value>حداقل یک برگ از برگه های دسته چک استفاده شده است.</value>
@@ -3931,7 +3931,7 @@
     <value>شماره فرم دریافت</value>
   </data>
   <data name="CantSaveEntity" xml:space="preserve">
-    <value>به دلیل تایید، تصویب و یا ثبت مالی {0}، ذخیره اطلاعات ممکن نمی‌باشد.</value>
+    <value>به دلیل تایید، تصویب و یا ثبت مالی {0}، ذخیره اطلاعات امکان‌پذیر نیست.</value>
   </data>
   <data name="RepeatedEntityActionMessage" xml:space="preserve">
     <value>{1} مورد نظر قبلاً {0} شده است.</value>
@@ -3952,10 +3952,10 @@
     <value>آرتیکل طرف حساب</value>
   </data>
   <data name="CantDeleteDetailEntity" xml:space="preserve">
-    <value>به دلیل تایید، تصویب و یا ثبت مالی این {0}، حذف اطلاعات {1} ممکن نمی‌باشد.</value>
+    <value>به دلیل تایید، تصویب و یا ثبت مالی این {0}، حذف اطلاعات {1} امکان‌پذیر نیست.</value>
   </data>
   <data name="CantSaveDetailEntity" xml:space="preserve">
-    <value>به دلیل تایید، تصویب و یا ثبت مالی این {0}، ذخیره اطلاعات {1} ممکن نمی‌باشد.</value>
+    <value>به دلیل تایید، تصویب و یا ثبت مالی این {0}، ذخیره اطلاعات {1} امکان‌پذیر نیست.</value>
   </data>
   <data name="NegativeAmountNotAllowed" xml:space="preserve">
     <value>مقدار منفی برای مبلغ معتبر نیست.</value>
@@ -3967,13 +3967,13 @@
     <value>مبلغ</value>
   </data>
   <data name="CreateAccountLine" xml:space="preserve">
-    <value>ایجاد طرف حساب</value>
+    <value>ایجاد آرتیکل طرف حساب</value>
   </data>
   <data name="DeleteAccountLine" xml:space="preserve">
-    <value>حذف طرف حساب</value>
+    <value>حذف آرتیکل طرف حساب</value>
   </data>
   <data name="EditAccountLine" xml:space="preserve">
-    <value>ویرایش طرف حساب</value>
+    <value>ویرایش آرتیکل طرف حساب</value>
   </data>
   <data name="GroupDeleteAccounts" xml:space="preserve">
     <value>حذف گروهی طرف‌های حساب</value>
@@ -3991,7 +3991,7 @@
     <value>{0} این {1} دارای هیچ ردیفی برای تجمیع با دیگر ردیف‌ها نیست.</value>
   </data>
   <data name="InvalidEmptyArticleAction" xml:space="preserve">
-    <value>عمل {0} روی {1} بدون {2} امکان پذیر نیست.</value>
+    <value>عمل {0} روی {1} بدون {2} امکان‌پذیر نیست.</value>
   </data>
   <data name="GroupDeleteAccountLines" xml:space="preserve">
     <value>حذف گروهی طرف‌های حساب</value>
@@ -4033,19 +4033,19 @@
     <value>ویرایش آرتیکل حساب نقدی</value>
   </data>
   <data name="ExportCashAccountLines" xml:space="preserve">
-    <value>ارسال آرتیکل‌های حساب نقدی</value>
+    <value>ارسال حساب‌های نقدی</value>
   </data>
   <data name="FilterCashAccountLines" xml:space="preserve">
-    <value>فیلتر آرتیکل‌های حساب نقدی</value>
+    <value>فیلتر حساب‌های نقدی</value>
   </data>
   <data name="GroupDeleteCashAccountLines" xml:space="preserve">
-    <value>حذف گروهی آرتیکل‌های حساب نقدی</value>
+    <value>حذف گروهی حساب‌های نقدی</value>
   </data>
   <data name="PrintCashAccountLines" xml:space="preserve">
-    <value>چاپ آرتیکل‌های حساب نقدی</value>
+    <value>چاپ حساب‌های نقدی</value>
   </data>
   <data name="PrintPreviewCashAccountLines" xml:space="preserve">
-    <value>پیش نمایش چاپ آرتیکل‌های حساب نقدی</value>
+    <value>پیش نمایش چاپ حساب‌های نقدی</value>
   </data>
   <data name="AggregateCashAccountLines" xml:space="preserve">
     <value>تجمیع ردیف‌های حساب نقدی</value>
@@ -4054,10 +4054,10 @@
     <value>حذف ردیف‌های نامعتبر حساب نقدی</value>
   </data>
   <data name="CantChangeDetailEntity" xml:space="preserve">
-    <value>روی این {0} عملیات تایید، تصویب یا ثبت مالی صورت گرفته و تغییر اطلاعات {1} ممکن نمی‌باشد.</value>
+    <value>روی این {0} عملیات تایید، تصویب یا ثبت مالی صورت گرفته و تغییر اطلاعات {1} امکان‌پذیر نیست.</value>
   </data>
   <data name="CantActionWithInvalidRows" xml:space="preserve">
-    <value>{0} فرم با وجود {1} نامعتبر امکان پذیر نیست.</value>
+    <value>{0} فرم با وجود {1} نامعتبر امکان‌پذیر نیست.</value>
   </data>
   <data name="Bank" xml:space="preserve">
     <value>بانک</value>
@@ -4066,7 +4066,7 @@
     <value>به دلیل ناترازی {0} و {1} امکان {2} {3} وجود ندارد.</value>
   </data>
   <data name="SelectedAccountNotInCollection" xml:space="preserve">
-    <value>حساب انتخابی مرتبط با مجموعه حساب {0} نمی‌باشد.</value>
+    <value>حساب انتخابی مرتبط با مجموعه حساب {0} نیست.</value>
   </data>
   <data name="Applications" xml:space="preserve">
     <value>مصارف</value>
@@ -4087,16 +4087,16 @@
     <value>بابت دریافت، طی سند دریافت شماره {0}{1}{2}{3}{4}</value>
   </data>
   <data name="CantDeleteEntity" xml:space="preserve">
-    <value>به دلیل تایید، تصویب و یا ثبت مالی {0}، حذف اطلاعات ممکن نمی‌باشد.</value>
+    <value>به دلیل تایید، تصویب و یا ثبت مالی {0}، حذف اطلاعات امکان‌پذیر نیست.</value>
   </data>
   <data name="CantDeleteSystemicDetailVoucher" xml:space="preserve">
-    <value>به دلیل ایجاد آرتیکل به صورت سیستمی توسط {0}، حذف اطلاعات ممکن نمی‌باشد.</value>
+    <value>به دلیل ایجاد آرتیکل به صورت سیستمی توسط {0}، حذف اطلاعات امکان‌پذیر نیست.</value>
   </data>
   <data name="CantDeleteVoucherWithSystemicArticle" xml:space="preserve">
-    <value>به دلیل ایجاد آرتیکل‌های سیستمی توسط {0} برای این سند، حذف اطلاعات ممکن نمی‌باشد.</value>
+    <value>به دلیل ایجاد آرتیکل‌های سیستمی توسط {0} برای این سند، حذف اطلاعات امکان‌پذیر نیست.</value>
   </data>
   <data name="CantEditSystemicDetailVoucher" xml:space="preserve">
-    <value>به دلیل ایجاد آرتیکل به صورت سیستمی توسط {0}، ویرایش اطلاعات ممکن نمی‌باشد.</value>
+    <value>به دلیل ایجاد آرتیکل به صورت سیستمی توسط {0}، ویرایش اطلاعات امکان‌پذیر نیست.</value>
   </data>
   <data name="BankOrderNo" xml:space="preserve">
     <value>شماره حواله بانکی</value>
@@ -4232,5 +4232,44 @@
   </data>
   <data name="Warehouse" xml:space="preserve">
     <value>انبار</value>
+  </data>
+  <data name="InvalidCheckBookPageNo" xml:space="preserve">
+    <value>انتهای شماره برگه چک باید حداقل یک رقم وجود داشته باشد.</value>
+  </data>
+  <data name="Deactivate" xml:space="preserve">
+    <value>غیرفعال کردن</value>
+  </data>
+  <data name="Reactivate" xml:space="preserve">
+    <value>فعال کردن</value>
+  </data>
+  <data name="ActiveStateBranchError" xml:space="preserve">
+    <value>این {0} در شعبه جاری ایجاد نشده و غیرفعال کردن آن امکان‌پذیر نیست.</value>
+  </data>
+  <data name="ActiveStateFPeriodError" xml:space="preserve">
+    <value>این {0} در یکی از دوره های مالی بعدی ایجاد شده و غیرفعال کردن آن امکان‌پذیر نیست.</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>غیرفعال</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>وضعیت</value>
+  </data>
+  <data name="ActiveStateChildError" xml:space="preserve">
+    <value>برای این {0} یک یا چند زیرمجموعه تعریف شده و غیرفعال کردن آن امکان‌پذیر نیست.</value>
+  </data>
+  <data name="ActiveStateParentError" xml:space="preserve">
+    <value>{0} والد غیرفعال شده و نمی‌توان برای آن زیرمجموعه جدید تعریف کرد.</value>
+  </data>
+  <data name="SourceAppName" xml:space="preserve">
+    <value>منبع یا مصرف</value>
+  </data>
+  <data name="PrintForm" xml:space="preserve">
+    <value>چاپ فرم</value>
+  </data>
+  <data name="PrintPreviewForm" xml:space="preserve">
+    <value>پیش نمایش چاپ فرم</value>
+  </data>
+  <data name="UndoRegister" xml:space="preserve">
+    <value>لغو ثبت مالی</value>
   </data>
 </root>

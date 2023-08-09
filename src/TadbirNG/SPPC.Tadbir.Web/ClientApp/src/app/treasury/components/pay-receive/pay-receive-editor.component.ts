@@ -167,7 +167,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
           if (!this.noQueryParam)
             this.searchConfirm = true;
           else {
-            let baseUrl = this.urlPath == 'payments'? PayReceiveApi.PaymentByNo: PayReceiveApi.ReceiptByNo;
+            let baseUrl = this.type == 1? PayReceiveApi.PaymentByNo: PayReceiveApi.ReceiptByNo;
             this.getDataUrl = String.Format(baseUrl,this.noQueryParam);
             this.getPayReceive(this.getDataUrl);
           }
@@ -197,7 +197,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     if (this.urlMode != 'first' && !this.dialogMode) {
       this.router.navigate([`/treasury/${this.urlPath}/first`]);
     } else {
-      this.getDataUrl = this.urlPath == 'payments'? PayReceiveApi.FirstPayment: PayReceiveApi.FirstReceipt;
+      this.getDataUrl = this.type == 1? PayReceiveApi.FirstPayment: PayReceiveApi.FirstReceipt;
       this.getPayReceive(this.getDataUrl);
     }
   }
@@ -208,13 +208,13 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     if (this.urlMode != 'last' && !this.dialogMode) {
       this.router.navigate([`/treasury/${this.urlPath}/last`]);
     } else {
-      this.getDataUrl = this.urlPath == 'payments'? PayReceiveApi.LastPayment: PayReceiveApi.LastReceipt;
+      this.getDataUrl = this.type == 1? PayReceiveApi.LastPayment: PayReceiveApi.LastReceipt;
       this.getPayReceive(this.getDataUrl);
     }
   }
 
   goNext() {
-    let baseUrl = this.urlPath == 'payments'? PayReceiveApi.NextPayment: PayReceiveApi.NextReceipt;
+    let baseUrl = this.type == 1? PayReceiveApi.NextPayment: PayReceiveApi.NextReceipt;
 
     if (this.urlMode != 'next' && !this.dialogMode) {
       let no = this.model.id > 0? this.model.textNo: '';
@@ -253,7 +253,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   goPrevious() {
-    let baseUrl = this.urlPath == 'payments'? PayReceiveApi.PreviousPayment: PayReceiveApi.PreviousReceipt;
+    let baseUrl = this.type == 1? PayReceiveApi.PreviousPayment: PayReceiveApi.PreviousReceipt;
 
     if (this.urlMode != 'previous' && !this.dialogMode) {
       let no = this.model.id > 0? this.model.textNo: '';
@@ -266,7 +266,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
       if (this.model.id) {
         this.getDataUrl = String.Format(baseUrl,this.model.textNo);
       } else {
-        this.getDataUrl = this.urlPath == 'payments'? PayReceiveApi.LastPayment: PayReceiveApi.LastReceipt;
+        this.getDataUrl = this.type == 1? PayReceiveApi.LastPayment: PayReceiveApi.LastReceipt;
       }
       let no = this.model.id > 0? this.model.textNo: '';
       if (!this.dialogMode)
@@ -301,7 +301,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   searchByNo(searchConfirm = false) {
-    let baseUrl = this.urlPath == 'payments'? PayReceiveApi.PaymentByNo: PayReceiveApi.ReceiptByNo;
+    let baseUrl = this.type == 1? PayReceiveApi.PaymentByNo: PayReceiveApi.ReceiptByNo;
 
     if (searchConfirm) {
       if (this.textNo && !this.dialogMode) {
@@ -380,14 +380,12 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
 
     setTimeout(() => {
       this.editForm.reset(this.model);
-      console.log(this.editForm);
-      
     }, 0);
   }
 
   removeHandler() {
     this.deleteConfirm = true;
-    let ent = this.urlPath == "payments"? "Entity.Payment": "Entity.Receipt";
+    let ent = this.type == 1? "Entity.Payment": "Entity.Receipt";
     this.prepareDeleteConfirm(this.getText(ent));
   }
 
@@ -447,8 +445,8 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   onSave(e?) {
-    let insertUrl = this.urlPath == 'payments'? PayReceiveApi.Payments: PayReceiveApi.Receipts;
-    let editUrl = this.urlPath == 'payments'? PayReceiveApi.Payment: PayReceiveApi.Receipt;
+    let insertUrl = this.type == 1? PayReceiveApi.Payments: PayReceiveApi.Receipts;
+    let editUrl = this.type == 1? PayReceiveApi.Payment: PayReceiveApi.Receipt;
     let value = this.editForm.value;
 
     let request = this.model.id>0?

@@ -2,7 +2,7 @@
 
 namespace SPPC.Tadbir.ViewModel.CashFlow
 {
-    public partial class CashRegisterViewModel : IFiscalEntity
+    public partial class CashRegisterViewModel : IFiscalEntity, IBaseEntityView
     {
         /// <summary>
         /// شناسه دیتابیسی دوره مالی که صندوق در آن تعریف شده است
@@ -23,5 +23,10 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         /// نام دوره مالی که صندوق در آن تعریف شده است
         /// </summary>
         public string FiscalPeriodName { get; set; }
+
+        /// <summary>
+        /// وضعیت فعال یا غیر فعال برای این سطر اطلاعاتی
+        /// </summary>
+        public string State { get; set; }
     }
 }

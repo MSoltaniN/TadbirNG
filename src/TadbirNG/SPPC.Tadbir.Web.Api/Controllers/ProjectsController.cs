@@ -216,6 +216,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، پروژه مشخص شده با شناسه دیتابیسی را غیرفعال می کند
+        /// </summary>
+        /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر برای غیرفعال کردن</param>
+        // PUT: api/projects/{projectId:min(1)}/deactivate
+        [HttpPut]
+        [Route(ProjectApi.DeactivateProjectUrl)]
+        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Deactivate)]
+        public async Task<IActionResult> PutProjectAsDeactivated(int projectId)
+        {
+            return await UpdateActiveStateAsync(projectId, false);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، پروژه مشخص شده با شناسه دیتابیسی را فعال می کند
+        /// </summary>
+        /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر برای فعال کردن</param>
+        // PUT: api/projects/{projectId:min(1)}/reactivate
+        [HttpPut]
+        [Route(ProjectApi.ReactivateProjectUrl)]
+        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Reactivate)]
+        public async Task<IActionResult> PutProjectAsReactivated(int projectId)
+        {
+            return await UpdateActiveStateAsync(projectId, true);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، پروژه مشخص شده با شناسه دیتابیسی را حذف می کند
         /// </summary>
         /// <param name="projectId">شناسه دیتابیسی پروژه مورد نظر برای حذف</param>
@@ -331,6 +357,40 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            result = ActiveStateValidationResult(project);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<ProjectViewModel>;
+            if (project.ParentId != null && await repository.IsDeactivatedAsync(project.ParentId.Value))
+            {
+                var message = _strings.Format(AppStrings.ActiveStateParentError, EntityNameKey);
+                return BadRequestResult(message);
+            }
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> UpdateActiveStateAsync(int projectId, bool isActive)
+        {
+            var project = await _repository.GetProjectAsync(projectId);
+            if (project == null)
+            {
+                string message = _strings.Format(
+                    AppStrings.ItemByIdNotFound, EntityNameKey, projectId.ToString());
+                return BadRequestResult(message);
+            }
+
+            var result = ActiveStateValidationResult(project);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<ProjectViewModel>;
+            await repository.SetActiveStatusAsync(project, isActive);
             return Ok();
         }
 

@@ -221,7 +221,7 @@ export class CheckBookReportComponent
     if (!this.checkEditPermission()) return;
 
     this.dialogRef = this.dialogService.open({
-      title: isNew?this.getText("CheckBook.New"):this.getText("CheckBook.CheckBook"),
+      title: isNew?this.getText("CheckBook.New"):this.getText("CheckBook.Edit"),
       content: CheckBookEditorComponent
     });
     this.dialogModel = this.dialogRef.content.instance;

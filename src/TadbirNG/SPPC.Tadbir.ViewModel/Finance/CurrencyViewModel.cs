@@ -5,7 +5,7 @@ using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class CurrencyViewModel : ViewModelBase, IFiscalEntity
+    public partial class CurrencyViewModel : ViewModelBase, IFiscalEntity, IBaseEntityView
     {
         /// <summary>
         /// شناسه دیتابیسی دوره مالی که ارز در آن تعریف شده است - این فیلد فعلاً استفاده نمی شود
@@ -27,5 +27,10 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public string MinorUnitKey { get; set; }
+
+        /// <summary>
+        /// وضعیت فعال یا غیر فعال برای این سطر اطلاعاتی
+        /// </summary>
+        public string State { get; set; }
     }
 }

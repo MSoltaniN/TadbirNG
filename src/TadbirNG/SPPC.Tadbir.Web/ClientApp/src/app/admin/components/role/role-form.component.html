@@ -1,7 +1,7 @@
 <kendo-dialog [minWidth]="300" [width]="450" *ngIf="active" class="permission-dialog" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (keydown.esc)="escPress()"
               (close)="closeForm()">
     <kendo-dialog-titlebar>
-        {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
+        {{ isNew ?  ('Role.New' | translate) :  ('Role.Edit' | translate) }}
     </kendo-dialog-titlebar>
 
     <div *ngIf="errorMessages">

@@ -115,6 +115,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، صندوق مشخص شده با شناسه دیتابیسی را غیرفعال می کند
+        /// </summary>
+        /// <param name="cashRegisterId">شناسه دیتابیسی صندوق مورد نظر برای غیرفعال کردن</param>
+        // PUT: api/cash-registers/{cashRegisterId:min(1)}/deactivate
+        [HttpPut]
+        [Route(CashRegisterApi.DeactivateCashRegisterUrl)]
+        [AuthorizeRequest(SecureEntity.CashRegister, (int)CashRegisterPermissions.Deactivate)]
+        public async Task<IActionResult> PutCashRegisterAsDeactivated(int cashRegisterId)
+        {
+            return await UpdateActiveStateAsync(cashRegisterId, false);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، صندوق مشخص شده با شناسه دیتابیسی را فعال می کند
+        /// </summary>
+        /// <param name="cashRegisterId">شناسه دیتابیسی صندوق مورد نظر برای فعال کردن</param>
+        // PUT: api/cash-registers/{cashRegisterId:min(1)}/reactivate
+        [HttpPut]
+        [Route(CashRegisterApi.ReactivateCashRegisterUrl)]
+        [AuthorizeRequest(SecureEntity.CashRegister, (int)CashRegisterPermissions.Reactivate)]
+        public async Task<IActionResult> PutCashRegisterAsReactivated(int cashRegisterId)
+        {
+            return await UpdateActiveStateAsync(cashRegisterId, true);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات صندوق مشخص شده با شناسه دیتابیسی را پس از اعتبارسنجی از دیتابیس حذف می کند
         /// </summary>
         /// <param name="cashRegisterId">شناسه دیتابیسی صندوق مورد نظر برای حذف</param>
@@ -189,7 +215,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-
         /// <summary>
         /// به روش آسنکرون، عمل حذف را برای یکی از صندوق ها اعتبارسنجی می کند
         /// </summary>
@@ -245,6 +270,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     AppStrings.DuplicateNameValue, AppStrings.CashRegister, cashRegister.Name));
             }
 
+            return Ok();
+        }
+
+        private async Task<IActionResult> UpdateActiveStateAsync(int cashRegisterId, bool isActive)
+        {
+            var cashRegister = await _repository.GetCashRegisterAsync(cashRegisterId);
+            if (cashRegister == null)
+            {
+                string message = _strings.Format(
+                    AppStrings.ItemByIdNotFound, EntityNameKey, cashRegisterId.ToString());
+                return BadRequestResult(message);
+            }
+
+            var result = ActiveStateValidationResult(cashRegister);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<CashRegisterViewModel>;
+            await repository.SetActiveStatusAsync(cashRegister, isActive);
             return Ok();
         }
 

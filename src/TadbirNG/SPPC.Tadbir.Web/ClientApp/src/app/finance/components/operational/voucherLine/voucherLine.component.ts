@@ -287,7 +287,7 @@ export class VoucherLineComponent
    */
   openEditorDialog(isNew: boolean) {
     this.dialogRef = this.dialogService.open({
-      title: this.getText(isNew ? "Buttons.New" : "Buttons.Edit"),
+      title: this.getText(isNew ? "VoucherLine.New" : "VoucherLine.Edit"),
       content: VoucherLineFormComponent,
     });
 

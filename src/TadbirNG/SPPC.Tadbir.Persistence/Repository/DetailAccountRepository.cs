@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Persistence
     /// عملیات مورد نیاز برای مدیریت اطلاعات تفصیلی های شناور را پیاده سازی می کند.
     /// </summary>
     public class DetailAccountRepository
-        : EntityLoggingRepository<DetailAccount, DetailAccountViewModel>, IDetailAccountRepository
+        : ActiveStateRepository<DetailAccount, DetailAccountViewModel>, IDetailAccountRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -47,6 +47,8 @@ namespace SPPC.Tadbir.Persistence
                     .GetAllQuery<DetailAccount>(ViewId.DetailAccount, facc => facc.Children)
                     .Select(item => Mapper.Map<DetailAccountViewModel>(item))
                     .ToListAsync();
+                await UpdateInactiveItemsAsync(detailAccounts);
+                Array.ForEach(detailAccounts.ToArray(), facc => facc.State = Context.Localize(facc.State));
             }
 
             await ReadAsync(gridOptions);
@@ -58,10 +60,14 @@ namespace SPPC.Tadbir.Persistence
         {
             DetailAccountViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
-            var detailAccount = await repository.GetByIDAsync(faccountId);
+            var detailAccount = await repository.GetByIDAsync(faccountId, facc => facc.Children);
             if (detailAccount != null)
             {
                 item = Mapper.Map<DetailAccountViewModel>(detailAccount);
+                var isDeactivated = await IsDeactivatedAsync(item.Id);
+                item.State = isDeactivated
+                    ? Context.Localize(AppStrings.Inactive)
+                    : Context.Localize(AppStrings.Active);
             }
 
             return item;
@@ -126,6 +132,7 @@ namespace SPPC.Tadbir.Persistence
             var detailAccount = await repository.GetByIDAsync(faccountId);
             if (detailAccount != null)
             {
+                await OnDeleteItemAsync(detailAccount.Id);
                 await DeleteAsync(repository, detailAccount);
                 await UpdateLevelUsageAsync(detailAccount.Level);
             }
@@ -142,6 +149,7 @@ namespace SPPC.Tadbir.Persistence
                 if (detailAccount != null)
                 {
                     level = Math.Max(level, detailAccount.Level);
+                    await OnDeleteItemAsync(detailAccount.Id);
                     await DeleteNoLogAsync(repository, detailAccount);
                 }
             }
@@ -210,12 +218,12 @@ namespace SPPC.Tadbir.Persistence
         /// <inheritdoc/>
         protected override string GetState(DetailAccount entity)
         {
-            return (entity != null)
-                ? String.Format(
-                    "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7}",
-                    AppStrings.Name, entity.Name, AppStrings.Code, entity.Code,
-                    AppStrings.FullCode, entity.FullCode, AppStrings.Description, entity.Description)
-                : null;
+            return entity == null
+                ? String.Empty
+                : $"{AppStrings.Name} : {entity.Name} , " +
+                  $"{AppStrings.Code} : {entity.Code} , " +
+                  $"{AppStrings.FullCode} : {entity.FullCode} , " +
+                  $"{AppStrings.Description} : {entity.Description}";
         }
 
         /// <inheritdoc/>

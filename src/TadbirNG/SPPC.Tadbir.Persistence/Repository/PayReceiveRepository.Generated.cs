@@ -66,15 +66,11 @@ namespace SPPC.Tadbir.Persistence
             return item;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات یک فرم دریافت/پرداخت را ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="payReceive">فرم دریافت/پرداخت مورد نظر برای ایجاد یا اصلاح</param>
-        /// <returns>اطلاعات نمایشی فرم دریافت/پرداخت ایجاد یا اصلاح شده</returns>
-        public async Task<PayReceiveViewModel> SavePayReceiveAsync(PayReceiveViewModel payReceive)
+        /// <inheritdoc/>
+        public async Task<PayReceiveViewModel> SavePayReceiveAsync(PayReceiveViewModel payReceive, int type)
         {
             Verify.ArgumentNotNull(payReceive, nameof(payReceive));
-            int entityTypeId = GetEntityTypeId(payReceive.Type);
+            int entityTypeId = GetEntityTypeId(type);
             string personName = GetCurrentUserFullName();
             PayReceive payReceiveModel;
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
@@ -192,19 +188,14 @@ namespace SPPC.Tadbir.Persistence
             var byNo = default(PayReceiveViewModel);
             var viewId = GetViewId((int)type);
             var payReceiveByNo = await Repository.GetAllOperationQuery<PayReceive>(
-<<<<<<< HEAD
-                viewId, pr => pr.Accounts, pr => pr.CashAccounts, pr => pr.PayReceiveVoucherLines)
-                .Where(pr => pr.PayReceiveNo == payReceiveNo.Trim() && pr.Type == (int)type)
-=======
                 viewId, pr => pr.Accounts, pr => pr.CashAccounts)
                 .Where(pr => pr.TextNo == textNo.Trim() && pr.Type == (int)type)
->>>>>>> 3552a181ab18cbd7768d210ad78d0e271c1553f4
                 .SingleOrDefaultAsync();
 
             if (payReceiveByNo != null)
             {
                 byNo = Mapper.Map<PayReceiveViewModel>(payReceiveByNo);
-                await SetPayReceiveNavigationAsync(byNo);
+                await SetPayReceiveNavigationAsync(byNo, type);
             }
 
             return byNo;
@@ -223,7 +214,7 @@ namespace SPPC.Tadbir.Persistence
             var first = payReceives.FirstOrDefault();
             if (first != null)
             {
-                await SetPayReceiveNavigationAsync(first, gridOptions);
+                await SetPayReceiveNavigationAsync(first, type, gridOptions);
             }
 
             return first;
@@ -242,7 +233,7 @@ namespace SPPC.Tadbir.Persistence
             var last = payReceives.LastOrDefault();
             if (last != null)
             {
-                await SetPayReceiveNavigationAsync(last, gridOptions);
+                await SetPayReceiveNavigationAsync(last, type, gridOptions);
             }
 
             return last;
@@ -263,7 +254,7 @@ namespace SPPC.Tadbir.Persistence
             var next = payReceives.FirstOrDefault();
             if (next != null)
             {
-                await SetPayReceiveNavigationAsync(next, gridOptions);
+                await SetPayReceiveNavigationAsync(next, type, gridOptions);
             }
 
             return next;
@@ -284,7 +275,7 @@ namespace SPPC.Tadbir.Persistence
             var previous = payReceives.LastOrDefault();
             if (previous != null)
             {
-                await SetPayReceiveNavigationAsync(previous, gridOptions);
+                await SetPayReceiveNavigationAsync(previous, type, gridOptions);
             }
 
             return previous;
@@ -312,8 +303,8 @@ namespace SPPC.Tadbir.Persistence
                 Type = (short)type
             };
 
-            newPayReceive = await SavePayReceiveAsync(newPayReceive);
-            await SetPayReceiveNavigationAsync(newPayReceive);
+            newPayReceive = await SavePayReceiveAsync(newPayReceive, type);
+            await SetPayReceiveNavigationAsync(newPayReceive, type);
             return newPayReceive;
         }
 
@@ -364,6 +355,21 @@ namespace SPPC.Tadbir.Persistence
             InsertPayReceiveVoucherLinesRelationAsync(payReceiveId, voucher.Lines);
             await FinalizeActionAsync(OperationId.Register, entityTypeId);
             return Mapper.Map<VoucherViewModel>(voucher);
+        }
+
+        /// <inheritdoc/>
+        public async Task UndoRegisterAsync(int payReceiveId, int type)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<PayReceiveVoucherLine>();
+            var payReceiveVoucherLines = await GetRegisteredArticlesAsync(repository, payReceiveId);
+            foreach (var item in payReceiveVoucherLines)
+            {
+                DisconnectEntity(item);
+                repository.Delete(item);
+            }
+
+            int entityTypeId = GetEntityTypeId(type);
+            await FinalizeActionAsync(OperationId.UndoRegister, entityTypeId);
         }
 
         internal override int? EntityType
@@ -438,16 +444,16 @@ namespace SPPC.Tadbir.Persistence
                 .ToListAsync();
         }
 
-        private async Task SetPayReceiveNavigationAsync(PayReceiveViewModel payReceive,
+        private async Task SetPayReceiveNavigationAsync(PayReceiveViewModel payReceive, int type,
             GridOptions gridOptions = null)
         {
             int nextCount, prevCount;
-            int viewId = GetViewId(payReceive.Type);
+            int viewId = GetViewId(type);
             var options = gridOptions ?? new GridOptions();
             var query = Repository
                 .GetAllOperationQuery<PayReceive>(viewId)
-                .Where(pr => Convert.ToInt64(pr.TextNo) < Convert.ToInt64(payReceive.TextNo) &&
-                    pr.Type == payReceive.Type);
+                .Where(pr => Convert.ToInt64(pr.PayReceiveNo) < Convert.ToInt64(payReceive.PayReceiveNo) &&
+                    pr.Type == type);
 
             if (!options.IsEmpty)
             {
@@ -465,8 +471,8 @@ namespace SPPC.Tadbir.Persistence
 
             query = Repository
                 .GetAllOperationQuery<PayReceive>(viewId)
-                .Where(pr => Convert.ToInt64(pr.TextNo) > Convert.ToInt64(payReceive.TextNo) &&
-                    pr.Type == payReceive.Type);
+                .Where(pr => Convert.ToInt64(pr.PayReceiveNo) > Convert.ToInt64(payReceive.PayReceiveNo) &&
+                    pr.Type == type);
 
             if (!options.IsEmpty)
             {
@@ -484,6 +490,15 @@ namespace SPPC.Tadbir.Persistence
 
             payReceive.HasNext = nextCount > 0;
             payReceive.HasPrevious = prevCount > 0;
+        }
+
+        private async Task<IEnumerable<PayReceiveVoucherLine>> GetRegisteredArticlesAsync(
+            IRepository<PayReceiveVoucherLine> repository, int payReceiveId)
+        {
+            return await repository
+                .GetEntityQuery()
+                .Where(item => item.PayReceiveId == payReceiveId)
+                .ToListAsync(); 
         }
 
         private int GetEntityTypeId(int type)
@@ -543,11 +558,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private string GetArticleDescription(
-<<<<<<< HEAD
-            PayReceive payReceive, string Remarks, string bankOrderNo = null)
-=======
             PayReceive payReceive, string articleRemarks, string bankOrderNo = null)
->>>>>>> 3552a181ab18cbd7768d210ad78d0e271c1553f4
         {
             string description = string.Empty;
             string currencyText = String.Empty;
@@ -557,15 +568,9 @@ namespace SPPC.Tadbir.Persistence
             }
 
             string ArticleText = String.Empty;
-<<<<<<< HEAD
-            if (!String.IsNullOrWhiteSpace(Remarks))
-            {
-                ArticleText = $" - {Remarks.ToLower().Trim()}";
-=======
             if (!String.IsNullOrWhiteSpace(articleRemarks))
             {
                 ArticleText = $" - {articleRemarks.ToLower().Trim()}";
->>>>>>> 3552a181ab18cbd7768d210ad78d0e271c1553f4
             }
 
             string payReceiveText = String.Empty;
@@ -577,11 +582,7 @@ namespace SPPC.Tadbir.Persistence
             if (payReceive.Type == (int)PayReceiveType.Receipt)
             {
                 string bankOrederNoText = String.Empty;
-<<<<<<< HEAD
-                if (!String.IsNullOrWhiteSpace(bankOrderNo))
-=======
                 if(!String.IsNullOrWhiteSpace(bankOrderNo))
->>>>>>> 3552a181ab18cbd7768d210ad78d0e271c1553f4
                 {
                     string template = $" - {Context.Localize(AppStrings.DuringOrderOfBankNo)}";
                     bankOrederNoText = String.Format(template, bankOrderNo).ToLower();

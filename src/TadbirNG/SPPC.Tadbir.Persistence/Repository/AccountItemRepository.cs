@@ -36,8 +36,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetLeafAccountsAsync(
             GridOptions gridOptions = null)
         {
-            var accounts = await FilterInactiveAccountsAsync(
-                await _repository.GetAllAsync<Account>(ViewId.Account, acc => acc.Children));
+            var accounts = await _repository.GetAllAsync<Account>(ViewId.Account, acc => acc.Children);
             var leafAccounts = accounts
                 .Where(acc => acc.Children.Count == 0)
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
@@ -167,19 +166,6 @@ namespace SPPC.Tadbir.Persistence
                 .Apply(gridOptions)
                 .ToList();
             return rootProjects;
-        }
-
-        private async Task<IList<Account>> FilterInactiveAccountsAsync(IList<Account> accounts)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<InactiveAccount>();
-            var inactiveIds = await repository
-                .GetEntityQuery()
-                .Where(acc => acc.FiscalPeriodId == UserContext.FiscalPeriodId)
-                .Select(acc => acc.AccountId)
-                .ToListAsync();
-            return accounts
-                .Where(acc => !inactiveIds.Contains(acc.Id))
-                .ToList();
         }
 
         private readonly ISecureRepository _repository;

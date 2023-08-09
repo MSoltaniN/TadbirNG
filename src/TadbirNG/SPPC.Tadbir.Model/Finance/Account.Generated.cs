@@ -39,11 +39,6 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual int? GroupId { get; set; }
 
         /// <summary>
-        /// مشخص می کند که آیا حساب مورد نظر فعال است یا نه؟
-        /// </summary>
-        public virtual bool IsActive { get; set; }
-
-        /// <summary>
         /// مشخص می کند که آیا تسعیر ارزی برای حساب مورد نظر قابل انجام است یا نه؟
         /// </summary>
         public virtual bool IsCurrencyAdjustable { get; set; }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Api
 {
@@ -37,5 +36,25 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a newly initialized and saved source/application
         /// </summary>
         public const string NewSourceAppUrl = "source-apps/new";
+
+        /// <summary>
+        /// API client URL for marking an active source/application as inactive
+        /// </summary>
+        public const string DeactivateSourceApp = "source-apps/{0}/deactivate";
+
+        /// <summary>
+        /// API server route URL for marking an active source/application as inactive
+        /// </summary>
+        public const string DeactivateSourceAppUrl = "source-apps/{sourceAppId:min(1)}/deactivate";
+
+        /// <summary>
+        /// API client URL for marking an inactive source/application as active
+        /// </summary>
+        public const string ReactivateSourceApp = "source-apps/{0}/reactivate";
+
+        /// <summary>
+        /// API server route URL for marking an inactive source/application as active
+        /// </summary>
+        public const string ReactivateSourceAppUrl = "source-apps/{sourceAppId:min(1)}/reactivate";
     }
 }

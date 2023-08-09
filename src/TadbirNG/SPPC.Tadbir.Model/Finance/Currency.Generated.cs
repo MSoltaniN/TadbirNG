@@ -59,11 +59,6 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual short DecimalCount { get; set; }
 
         /// <summary>
-        /// مشخص می کند که آیا ارز مورد نظر در برنامه فعال است یا نه؟
-        /// </summary>
-        public virtual bool IsActive { get; set; }
-
-        /// <summary>
         /// شرح تکمیلی برای نگهداری جزئیات بیشتر در مورد ارز
         /// </summary>
         public virtual string Description { get; set; }

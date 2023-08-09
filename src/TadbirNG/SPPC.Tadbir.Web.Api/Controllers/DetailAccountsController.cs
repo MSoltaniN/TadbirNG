@@ -219,6 +219,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
+        /// به روش آسنکرون، تفصیلی شناور مشخص شده با شناسه دیتابیسی را غیرفعال می کند
+        /// </summary>
+        /// <param name="faccountId">شناسه دیتابیسی تفصیلی شناور مورد نظر برای غیرفعال کردن</param>
+        // PUT: api/faccounts/{faccountId:min(1)}/deactivate
+        [HttpPut]
+        [Route(DetailAccountApi.DeactivateDetailAccountUrl)]
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.Deactivate)]
+        public async Task<IActionResult> PutDetailAccountAsDeactivated(int faccountId)
+        {
+            return await UpdateActiveStateAsync(faccountId, false);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تفصیلی شناور مشخص شده با شناسه دیتابیسی را فعال می کند
+        /// </summary>
+        /// <param name="faccountId">شناسه دیتابیسی تفصیلی شناور مورد نظر برای فعال کردن</param>
+        // PUT: api/faccounts/{faccountId:min(1)}/reactivate
+        [HttpPut]
+        [Route(DetailAccountApi.ReactivateDetailAccountUrl)]
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.Reactivate)]
+        public async Task<IActionResult> PutDetailAccountAsReactivated(int faccountId)
+        {
+            return await UpdateActiveStateAsync(faccountId, true);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، تفصیلی شناور مشخص شده با شناسه دیتابیسی را حذف می کند
         /// </summary>
         /// <param name="faccountId">شناسه دیتابیسی تفصیلی شناور مورد نظر برای حذف</param>
@@ -339,6 +365,40 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            result = ActiveStateValidationResult(detailAccount);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = (_repository as IActiveStateRepository<DetailAccountViewModel>);
+            if (detailAccount.ParentId != null && await repository.IsDeactivatedAsync(detailAccount.ParentId.Value))
+            {
+                var message = _strings.Format(AppStrings.ActiveStateParentError, EntityNameKey);
+                return BadRequestResult(message);
+            }
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> UpdateActiveStateAsync(int faccountId, bool isActive)
+        {
+            var faccount = await _repository.GetDetailAccountAsync(faccountId);
+            if (faccount == null)
+            {
+                string message = _strings.Format(
+                    AppStrings.ItemByIdNotFound, EntityNameKey, faccountId.ToString());
+                return BadRequestResult(message);
+            }
+
+            var result = ActiveStateValidationResult(faccount);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var repository = _repository as IActiveStateRepository<DetailAccountViewModel>;
+            await repository.SetActiveStatusAsync(faccount, isActive);
             return Ok();
         }
 

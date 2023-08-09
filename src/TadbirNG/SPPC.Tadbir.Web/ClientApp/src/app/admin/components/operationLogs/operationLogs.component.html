@@ -405,20 +405,21 @@
           [value]="entitySelected"
           [(ngModel)]="entitySelected"
         >
-          <ng-template kendoDropDownListValueTemplate let-dataItem>
+          <!-- <ng-template kendoDropDownListValueTemplate let-dataItem>
             {{ dataItem?.value | translate }}
           </ng-template>
           <ng-template kendoDropDownListItemTemplate let-dataItem>
             {{ dataItem?.value | translate }}
-          </ng-template>
+          </ng-template> -->
         </kendo-dropdownlist>
       </div>
       <div class="col-xs-12 col-sm-3">
         <div *ngIf="this.logType != '3'" class="col-xs-12 col-sm-6 form-group">
           <button
+            SppcPermissionCheck="Archive"
+            (sppcClick)="confirmArchiveData()"
             class="k-button k-primary"
             [disabled]="disableButtons"
-            (click)="confirmArchiveData()"
           >
             {{ "OperationLog.Archive" | translate }}
           </button>

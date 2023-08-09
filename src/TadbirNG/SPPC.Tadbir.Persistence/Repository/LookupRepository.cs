@@ -153,10 +153,9 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IEnumerable<KeyValue>> GetCurrenciesAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<Currency>();
-            var inactiveItems = await GetInactiveCurrencyIdsAsync();
             return await Repository
                 .GetAllQuery<Currency>(ViewId.Currency)
-                .Where(curr => !curr.IsDefaultCurrency && !inactiveItems.Contains(curr.Id))
+                .Where(curr => !curr.IsDefaultCurrency)
                 .Select(curr => Mapper.Map<KeyValue>(curr))
                 .ToListAsync();
         }
@@ -167,13 +166,10 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ارز های تعریف شده</returns>
         public async Task<IEnumerable<CurrencyInfoViewModel>> GetCurrenciesInfoAsync(bool withRate)
         {
-            var inactiveItems = await GetInactiveCurrencyIdsAsync();
             Expression<Func<Currency, bool>> filter = curr => !curr.IsDefaultCurrency;
             if (withRate)
             {
-                // NOTE: We assume that when rates are needed, currencies are being used so
-                // inactive currencies must be filtered. This is a fragile logic, but it currently works...
-                filter = curr => !curr.IsDefaultCurrency && !inactiveItems.Contains(curr.Id);
+                filter = curr => !curr.IsDefaultCurrency;
             }
 
             var currencies = await Repository
@@ -777,16 +773,6 @@ namespace SPPC.Tadbir.Persistence
                 .ToList();
             UnitOfWork.UseCompanyContext();
             return lookup;
-        }
-
-        private async Task<List<int>> GetInactiveCurrencyIdsAsync()
-        {
-            var repository = UnitOfWork.GetAsyncRepository<InactiveCurrency>();
-            return await repository
-                .GetEntityQuery()
-                .Where(curr => curr.FiscalPeriodId == UserContext.FiscalPeriodId)
-                .Select(curr => curr.CurrencyId)
-                .ToListAsync();
         }
 
         private readonly ISystemRepository _system;
