@@ -63,40 +63,53 @@ export class RoleDetailFormComponent extends DetailComponent {
 
       this.treeData = new Array<TreeNodeInfo>();
 
-      var indexId: number = 0;
-      var selectAll: boolean = true;
+      enum PermissionsTreeNodeInfoLevel{
+        groupSubsystem='1',
+        groupSourceType='2',
+        group='3'
+      }
+
       var sortedPermission = roleDetails.permissions.sort(function (a: RoleItem, b: RoleItem) {
         return a.groupSourceTypeId - b.groupSourceTypeId;
       });
       
       for (let permissionItem of sortedPermission as RoleItem[]) {
-        
-        let permissionItemGroupSourceTypeId = -parseInt(permissionItem.groupSubsystemId.toString() + permissionItem.groupSourceTypeId.toString() );
-        let permissionItemGroupId = parseInt(Math.abs(permissionItemGroupSourceTypeId).toString() + permissionItem.groupId.toString());
-        let permissionItemId = parseFloat(permissionItemGroupId.toString() + '.' + permissionItem.id.toString());
+
+        let permissionItemGroupSourceTypeId = permissionItem.groupSubsystemId.toString() + "0" + permissionItem.groupSourceTypeId;
        
         if(!groupSubsystemId.includes(permissionItem.groupSubsystemId)){
           groupSubsystemId.push(permissionItem.groupSubsystemId);
-          this.treeData.push(new TreeNodeInfo(-permissionItem.groupSubsystemId,undefined,permissionItem.groupSubsystemName))
+          this.treeData.push(new TreeNodeInfo(parseFloat(
+            permissionItem.groupSubsystemId.toString() + '.' + PermissionsTreeNodeInfoLevel.groupSubsystem ),
+            undefined,
+            permissionItem.groupSubsystemName))
         }
 
-        if(!groupSourceTypeId.includes( permissionItem.groupSubsystemId.toString() + permissionItem.groupSourceTypeId.toString())){
-          groupSourceTypeId.push(permissionItem.groupSubsystemId.toString() + permissionItem.groupSourceTypeId.toString());
-          this.treeData.push(new TreeNodeInfo(permissionItemGroupSourceTypeId,-permissionItem.groupSubsystemId,permissionItem.groupSourceTypeName))
+        if(!groupSourceTypeId.includes(permissionItemGroupSourceTypeId)){
+          groupSourceTypeId.push(permissionItemGroupSourceTypeId)
+          this.treeData.push(
+            new TreeNodeInfo(
+              parseFloat(permissionItemGroupSourceTypeId.toString() + '.' + PermissionsTreeNodeInfoLevel.groupSourceType),
+              parseFloat(permissionItem.groupSubsystemId.toString() + '.' + PermissionsTreeNodeInfoLevel.groupSubsystem ),
+            permissionItem.groupSourceTypeName))
         }
               
         if(!groupId.includes( permissionItem.groupId)){
           groupId.push(permissionItem.groupId)
-          this.treeData.push(new TreeNodeInfo(permissionItem.groupId, permissionItemGroupSourceTypeId, permissionItem.groupName));
+          this.treeData.push(new TreeNodeInfo(
+            parseFloat(permissionItem.groupId.toString() + '.' + PermissionsTreeNodeInfoLevel.group),
+            parseFloat(permissionItemGroupSourceTypeId + '.' + PermissionsTreeNodeInfoLevel.groupSourceType),
+            permissionItem.groupName));
         }
         
         this.treeData.push(
-          new TreeNodeInfo( permissionItemId,
-            permissionItem.groupId,
-          permissionItem.name )
+          new TreeNodeInfo( 
+            permissionItem.id,
+            parseFloat(permissionItem.groupId.toString() + '.' + PermissionsTreeNodeInfoLevel.group),
+            permissionItem.name )
         );
 
-        
+
       }
       //this.gridBranchesData = roleDetails.branches;
       this.gridUsersData = roleDetails.users;
