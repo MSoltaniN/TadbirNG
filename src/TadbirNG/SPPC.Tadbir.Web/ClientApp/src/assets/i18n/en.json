@@ -778,6 +778,7 @@
     "Name": "Name",
     "FullCode": "Full Code",
     "AccountLevel": "Account Level",
+    "AllLevels": "All Levels",
     "SelectedAccounts": "Selected Accounts",
     "SelectableAccounts": "Selectable Accounts",
     "MultiSelectValidation": "For this account set only one account can be selected.",
@@ -1403,7 +1404,9 @@
     "Source": "Source",
     "Application": "Application",
     "Checks":"Checks",
-    "Cash":"Cash"
+    "Cash":"Cash",
+    "PaymentFormNotFound": "The desired payment form was not found",
+    "ReceiptFormNotFound": "The desired receipt form was not found"
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",

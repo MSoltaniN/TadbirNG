@@ -340,8 +340,9 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
         if (err == null || err.statusCode == 404) {
           this.isFirstItem = true;
           if (!isNew) {
+            let msg = this.type == 1? "PayReceipt.PaymentFormNotFound": "PayReceipt.ReceiptFormNotFound";
             this.showMessage(
-              this.getText("CheckBook.CheckBookNotFound"),
+              this.getText(msg),
               MessageType.Warning
             );
             this.addNew();

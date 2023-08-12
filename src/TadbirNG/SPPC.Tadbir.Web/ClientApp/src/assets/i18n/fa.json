@@ -876,6 +876,7 @@
     "Name": "نام حساب",
     "FullCode": "کد حساب",
     "AccountLevel": "سطح حساب",
+    "AllLevels": "تمامی سطوح",
     "SelectedAccounts": "حساب های انتخاب شده",
     "SelectableAccounts": "حساب های قابل انتخاب",
     "MultiSelectValidation": "برای این مجموعه حساب فقط یک حساب قابل انتخاب است.",
@@ -1401,7 +1402,9 @@
     "Source": "منبع",
     "Application": "مصرف",
     "Checks":"چکها",
-    "Cash":"وجه نقد"
+    "Cash":"وجه نقد",
+    "PaymentFormNotFound": "سند پرداخت مورد نظر یافت نشد.",
+    "ReceiptFormNotFound": "سند دریافت مورد نظر یافت نشد."
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",
