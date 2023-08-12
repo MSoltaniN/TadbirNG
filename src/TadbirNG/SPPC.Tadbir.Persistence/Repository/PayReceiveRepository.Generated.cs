@@ -674,7 +674,7 @@ namespace SPPC.Tadbir.Persistence
                     CostCenterId = item.CostCenterId,
                     ProjectId = item.ProjectId,
                     RowNo = ++rowNo,
-                    SourceId = item.SourceAppId,
+                    SourceAppId = item.SourceAppId,
                     Description = GetArticleDescription(payReceive, item.Remarks, item.BankOrderNo),
                     CreatedById = UserContext.Id,
                     TypeId = (int)VoucherLineType.NormalLine,
