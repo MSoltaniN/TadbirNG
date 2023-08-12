@@ -115,6 +115,24 @@
       >
         <span class="k-icon k-i-currency"></span>
       </button>
+      <button
+        SppcPermissionCheck="Reactivate"
+        (sppcClick)="updateActiveState(true)"
+        class="k-button k-button-icon"
+        [disabled]="selectedRows.length != 1"
+        title="{{ 'Buttons.Aactivate' | translate }}"
+      >
+        <span class="k-icon k-i-check-circle"></span>
+      </button>
+      <button
+        SppcPermissionCheck="Deactivate"
+        (sppcClick)="updateActiveState(false)"
+        class="k-button k-button-icon"
+        [disabled]="selectedRows.length != 1"
+        title="{{ 'Buttons.Deactivate' | translate }}"
+      >
+        <span class="k-icon k-i-cancel"></span>
+      </button>
 
       <!-- <label for="file-upload" class="custom-file-upload" title="{{ 'Currency.TaxCurrency' | translate }}">
         <i class="fa fa-cloud-upload" *ngIf="progress == 0 || progress == 100" style="padding:2px 4px 2px !important;"></i>

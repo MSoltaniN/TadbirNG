@@ -108,6 +108,10 @@ kendo-textbox .k-input-icon.k-i-search {
   /* opacity: 0.8; */
 }
 
-.save-changes-box .k-dialog-content{
+.global-confirm-box .k-dialog-content{
   overflow: hidden;
+}
+
+.global-confirm-box .k-window-content {
+  padding: 15px !important;
 }

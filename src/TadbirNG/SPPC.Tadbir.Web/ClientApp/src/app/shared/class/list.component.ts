@@ -13,6 +13,8 @@ import { FilterRow } from "@sppc/shared/models";
 import { MessageType, Entities } from '@sppc/shared/enum/metadata';
 import * as moment from 'jalali-moment';
 import { ViewName } from "@sppc/shared/security";
+import { lastValueFrom } from 'rxjs';
+import { String } from './source';
 
 @Injectable()
 export class ListComponent extends DefaultComponent implements OnDestroy {
@@ -178,5 +180,75 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
 
   onFooterExportToExcel(header:any,footer:any) {
 
+  }
+
+  async changeStateConfirmDialog(toActivate,cb?:{onSave?: Function, onDiscard?: Function}) {
+    let result;
+    let msg = toActivate?
+      String.Format(this.getText("Messages.ChangeStateConfirm"),this.getText("Buttons.Aactivate")):
+      String.Format(this.getText("Messages.ChangeStateConfirm"),this.getText("Buttons.Deactivate"));
+    const dialog: DialogRef = this.dialogService.open({
+      title: this.getText("Form.ChangeStatus"),
+      content: msg,
+      actions: [
+        { text: this.getText("Buttons.Yes"), mode: true, primary: true },
+        { text: this.getText("Buttons.No"), mode: false },
+      ],
+      width: 450,
+      height: 150,
+      minWidth: 250,
+      cssClass: 'global-confirm-box'
+    });
+
+    dialog.dialog.location.nativeElement.classList.add("dialog-padding");
+
+    result = await lastValueFrom(dialog.result);
+    
+    return result?.mode;
+  }
+
+  // updateActiveState(toActivate:boolean);
+  // updateActiveState(toActivate:boolean, args:{apiUrl:string,model:any});
+  updateActiveState(toActivate:boolean,apiUrl?:string,model?:any) {
+
+    let self:any = this;
+
+    if (model.state == this.getText("Form.Active") && toActivate) {
+      this.showMessage(
+        String.Format(
+          this.getText("Messages.StateAlreadyChanged"),
+          this.getText("Form.Activated")
+        )
+      )
+      return;
+    }
+
+    if (model.state == this.getText("Form.Inactive") && !toActivate) {
+      this.showMessage(
+        String.Format(
+          this.getText("Messages.StateAlreadyChanged"),
+          this.getText("Form.Deactivated")
+        )
+      )
+      return;
+    }    
+
+    this.changeStateConfirmDialog(toActivate)
+    .then(confirm => {
+      if (confirm) {
+
+        lastValueFrom(this.settingService.updateActiveState(apiUrl, model))
+          .then(res => {
+            self.reloadGrid();
+          })
+          .catch(error => {
+            if (error && error.statusCode == 400)
+              this.showMessage(
+                self.errorHandlingService.handleError(error),
+                MessageType.Warning
+              );
+          });
+      }
+    })
   }
 }

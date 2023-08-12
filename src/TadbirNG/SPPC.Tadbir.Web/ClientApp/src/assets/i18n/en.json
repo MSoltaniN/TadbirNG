@@ -103,7 +103,9 @@
     "CheckBookPagesCancelConfirm": "Are you sure you want to cancel check book page having number {0}?",
     "CheckBookPagesUndoCancelConfirm": "Are you sure you want to undo previous cancellation of check book page having number {0}?",
     "AggregateConfirm": "Are you sure you want to Aggregation of rows with the same account vector?",
-    "RemoveInvalidRowsConfirm": "Are you sure you want to Delete invalid rows?"
+    "RemoveInvalidRowsConfirm": "Are you sure you want to Delete invalid rows?",
+    "ChangeStateConfirm": "Are you sure you want to {0} this item?",
+    "StateAlreadyChanged": "This item has already been {0}."
   },
   "Report": {
     "ReportViewer": "View of",
@@ -167,7 +169,9 @@
     "NextStep": "Next Step",
     "PreviousStep": "Previous Step",
     "ComingBack": "Return",
-    "Exit": "Exit"
+    "Exit": "Exit",
+    "Deactivate": "Deactivate",
+    "Aactivate": "Activate"
   },
   "Form": {
     "New": "New {0}",
@@ -178,7 +182,12 @@
     "First": "The first {0}",
     "Last": "The last {0}",
     "Delete": "Delete {0}",
-    "SaveChanges": "Save Changes"
+    "SaveChanges": "Save Changes",
+    "ChangeStatus": "Change Status",
+    "Active": "Active",
+    "Inactive": "Inactive",
+    "Activated": "Activated",
+    "Deactivated": "Deactivated"
   },
   "GridSetting": {
     "Visibility": "Visibility",
