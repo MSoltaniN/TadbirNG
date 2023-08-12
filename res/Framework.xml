@@ -4249,81 +4249,81 @@
         <Relation multiplicity="ManyToOne" endpointName="Origin" entityName="VoucherOrigin" hasKey="True" isRequired="True" joinTable="" description="مأخذ این سند مالی" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
-    <Entity name="VoucherLine" area="Finance" identifier="Id" type="FiscalEntity" description="آرتیکل سند مالی که اطلاعات مربوط به بخشی از یک پیشامد مالی را نگهداری می کند" clrType="SPPC.Tools.Model.Entity, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
+    <Entity name="VoucherLine" area="Finance" identifier="Id" type="FiscalEntity" description="آرتیکل سند مالی که اطلاعات مربوط به بخشی از یک پیشامد مالی را نگهداری می کند" clrType="SPPC.Tools.Model.Entity, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
-        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="LineID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
           <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
         </Property>
-        <Property name="RowNo" type="Int32" isValidated="True" description="شماره ردیف آرتیکل" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="RowNo" type="Int32" isValidated="True" description="شماره ردیف آرتیکل" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnRowNo" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="RowNo" type="int" nullable="False" />
           <ColumnView name="Row No" visible="True" width="120" />
           <ValidationRule name="RowNo_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="Debit" type="Decimal" isValidated="False" description="مبلغ بدهکار برای این آرتیکل مالی" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="Debit" type="Decimal" isValidated="False" description="مبلغ بدهکار برای این آرتیکل مالی" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDebit" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Debit" type="money" nullable="False" />
           <ColumnView name="Debit" visible="True" width="120" />
           <ValidationRule name="Debit_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="Credit" type="Decimal" isValidated="False" description="مبلغ بستانکار برای این آرتیکل مالی" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="Credit" type="Decimal" isValidated="False" description="مبلغ بستانکار برای این آرتیکل مالی" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtCredit" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Credit" type="money" nullable="False" />
           <ColumnView name="Credit" visible="True" width="120" />
           <ValidationRule name="Credit_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="Description" type="String" isValidated="True" description="شرح آرتیکل سند مالی برای قرار دادن اطلاعات تکمیلی مرتبط با این بخش" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="Description" type="String" isValidated="True" description="شرح آرتیکل سند مالی برای قرار دادن اطلاعات تکمیلی مرتبط با این بخش" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Description" type="nvarchar(1024)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
           <ValidationRule name="Description_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
         </Property>
-        <Property name="Amount" type="Decimal" isValidated="True" description="مقدار مورد استفاده در عملیات مرتبط با آرتیکل" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="Amount" type="Decimal" isValidated="True" description="مقدار مورد استفاده در عملیات مرتبط با آرتیکل" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtAmount" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Amount" type="float" nullable="True" />
           <ColumnView name="Amount" visible="True" width="120" />
           <ValidationRule name="Amount_Validation" required="False" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="FollowupNo" type="String" isValidated="True" description="شماره پیگیری مورد استفاده برای پیگیری مغایرت های بانکی" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="FollowupNo" type="String" isValidated="True" description="شماره پیگیری مورد استفاده برای پیگیری مغایرت های بانکی" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtFollowupNo" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="FollowupNo" type="nvarchar(64)" nullable="True" />
           <ColumnView name="Followup No" visible="True" width="120" />
           <ValidationRule name="FollowupNo_Validation" required="False" minimum="" maximum="64" format="" type="Length" />
         </Property>
-        <Property name="CurrencyValue" type="Decimal" isValidated="True" description="مبلغ ارز در تراکنش های ارزی" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="CurrencyValue" type="Decimal" isValidated="True" description="مبلغ ارز در تراکنش های ارزی" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtCurrencyValue" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="CurrencyValue" type="money" nullable="True" />
           <ColumnView name="Currency Value" visible="True" width="120" />
           <ValidationRule name="CurrencyValue_Validation" required="False" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="Mark" type="String" isValidated="True" description="علامتگذاری کاربر روی آرتیکل" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="Mark" type="String" isValidated="True" description="علامتگذاری کاربر روی آرتیکل" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtMark" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Mark" type="nvarchar(64)" nullable="True" />
           <ColumnView name="Mark" visible="True" width="120" />
           <ValidationRule name="Mark_Validation" required="False" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="TypeId" type="Int16" isValidated="True" description="شناسه نوع آرتیکل (مانند آرتیکل عادی، مالیات و عوارض و ...)" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="TypeId" type="Int16" isValidated="True" description="شناسه نوع آرتیکل (مانند آرتیکل عادی، مالیات و عوارض و ...)" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnTypeId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="TypeId" type="smallint" nullable="False" />
           <ColumnView name="Type Id" visible="True" width="120" />
           <ValidationRule name="TypeId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="SourceId" type="Int32" isValidated="True" description="شناسه دیتابیسی منابع و مصارف مرتبط با این آرتیکل" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="spnSourceId" format="" type="SpinButton" bindingMember="Value" />
-          <PropertyStorage name="SourceId" type="int" nullable="True" />
-          <ColumnView name="Source Id" visible="True" width="120" />
-          <ValidationRule name="SourceId_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        <Property name="CreatedById" type="Int32" isValidated="True" description="شناسه دیتابیسی کاربر ایجادکننده آرتیکل" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnCreatedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CreatedById" type="int" nullable="False" />
+          <ColumnView name="CreatedById" visible="True" width="120" />
+          <ValidationRule name="CreatedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
           <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
@@ -4331,15 +4331,15 @@
         </Property>
       </Properties>
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Voucher" entityName="Voucher" hasKey="True" isRequired="True" joinTable="" description="سند مالی که این آرتیکل برای آن ایجاد شده است" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" isRequired="True" joinTable="" description="دوره مالی که وضعیت مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" isRequired="True" joinTable="" description="شعبه سازمانی که اطلاعات مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Account" entityName="Account" hasKey="True" isRequired="True" joinTable="" description="مولفه سرفصل حسابداری از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="DetailAccount" entityName="DetailAccount" hasKey="True" isRequired="False" joinTable="" description="مولفه تفصیلی شناور از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="CostCenter" entityName="CostCenter" hasKey="True" isRequired="False" joinTable="" description="مولفه مرکز هزینه از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Project" entityName="Project" hasKey="True" isRequired="False" joinTable="" description="مولفه پروژه از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Currency" entityName="Currency" hasKey="True" isRequired="False" joinTable="" description="پول یا ارز مورد استفاده برای مبلغ بدهکار یا بستانکار این آرتیکل" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="CreatedBy" entityName="User" hasKey="True" isRequired="True" joinTable="" description="شناسه دیتابیسی کاربر ایجاد کننده آرتیکل" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Voucher" entityName="Voucher" hasKey="True" isRequired="True" joinTable="" description="سند مالی که این آرتیکل برای آن ایجاد شده است" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" isRequired="True" joinTable="" description="دوره مالی که وضعیت مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" isRequired="True" joinTable="" description="شعبه سازمانی که اطلاعات مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Account" entityName="Account" hasKey="True" isRequired="True" joinTable="" description="مولفه سرفصل حسابداری از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="DetailAccount" entityName="DetailAccount" hasKey="True" isRequired="False" joinTable="" description="مولفه تفصیلی شناور از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="CostCenter" entityName="CostCenter" hasKey="True" isRequired="False" joinTable="" description="مولفه مرکز هزینه از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Project" entityName="Project" hasKey="True" isRequired="False" joinTable="" description="مولفه پروژه از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Currency" entityName="Currency" hasKey="True" isRequired="False" joinTable="" description="پول یا ارز مورد استفاده برای مبلغ بدهکار یا بستانکار این آرتیکل" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="SourceApp" entityName="SourceApp" hasKey="True" isRequired="False" joinTable="" description="منابع یا مصارفی که  توسط این آرتیکل مورد استفاده قرار می گیرد" clrType="SPPC.Tools.Model.Relation, SPPC.Tools.Model, Version=1.2.1548.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="VoucherOrigin" area="Finance" identifier="Id" type="CoreEntity" description="اطلاعات یکی از ماخذهای تعریف شده برای یک سند مالی را نگهداری می کند" clrType="SPPC.Tools.Model.Entity, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">

@@ -1254,7 +1254,6 @@ DELETE FROM [Reporting].[Report]
 WHERE ReportID = 12 AND Code = 'Operation-Logs'
 
 -- 1.2.1566
-
 SET IDENTITY_INSERT [Auth].[Permission] ON
 -- افزودن دسترسی برگشت از ثبت مالی برای فرم دریافت و فرم پرداخت
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
@@ -1263,5 +1262,15 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Des
     VALUES (283, 42, N'UndoRegister', 2048, NULL)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
+-- 1.2.1567
+SET IDENTITY_INSERT [Metadata].[Column] ON
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (823, 3, 'SourceAppName', NULL, NULL, 'System.String', 'nvarchar', 'string', 128, 0, 0, 0, 1, 1, N'Hidden', 9, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (824, 3, 'SourceAppId', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 1, 1, 1, N'AlwaysHidden', -1, NULL)
+SET IDENTITY_INSERT [Metadata].[Column] OFF
+GO
 
-
+UPDATE [Metadata].[Column]
+SET [DisplayIndex] = [DisplayIndex] + 1
+WHERE [ColumnID] IN (43, 44, 45, 46, 47)

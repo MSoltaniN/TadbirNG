@@ -1538,9 +1538,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 if(!await _lineRepository.IsCashOrBankAccountAsync(article.FullAccount.Account.Id))
                 {
-                    //return BadRequestResult(_strings[AppStrings.InvalidAccountUsedWithSourceApp]);
+                    return BadRequestResult(_strings[AppStrings.InvalidAccountUsedWithSourceApp]);
                 }
-
             }
 
             return Ok();
