@@ -77,8 +77,8 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده متعلق به مجموعه حساب های صندوق یا بانک است یا نه
         /// </summary>
-        /// <param name="accountId">شناسه حساب که باید بررسی شود</param>
+        /// <param name="accountId">شناسه دیتابیسی حساب مورد نظر</param>
         /// <returns>مقدار بولی درست در صورت متعلق بودن شماره حساب، در غیر این صورت مقدار بولی نادرست</returns>
-        Task<bool> IsAccountBelongsCollectionsCashBankAsync(int accountId);
+        Task<bool> IsCashOrBankAccountAsync(int accountId);
     }
 }

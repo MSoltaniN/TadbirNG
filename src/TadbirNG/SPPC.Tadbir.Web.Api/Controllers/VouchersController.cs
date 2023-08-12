@@ -1344,7 +1344,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private async Task<IActionResult> InsertArticleAsync(int voucherId, VoucherLineViewModel article)
         {
-            var result =await VoucherLineValidationResultAsync(article);
+            var result = await VoucherLineValidationResultAsync(article);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -1381,7 +1381,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private async Task<IActionResult> UpdateArticleAsync(int articleId, VoucherLineViewModel article)
         {
-            var result =await VoucherLineValidationResultAsync(article, articleId);
+            var result = await VoucherLineValidationResultAsync(article, articleId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -1509,19 +1509,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if ((article.Debit == 0m) && (article.Credit == 0m))
             {
-                return BadRequestResult(_strings.Format(AppStrings.ZeroDebitAndCreditNotAllowed));
+                return BadRequestResult(_strings[AppStrings.ZeroDebitAndCreditNotAllowed]);
             }
 
             if ((article.Debit > 0m) && (article.Credit > 0m))
             {
-                return BadRequestResult(_strings.Format(AppStrings.DebitAndCreditNotAllowed));
+                return BadRequestResult(_strings[AppStrings.DebitAndCreditNotAllowed]);
             }
 
             if (article.SourceAppId.HasValue)
             {
-                if(!await _lineRepository.IsAccountBelongsCollectionsCashBankAsync(article.FullAccount.Account.Id))
+                if(!await _lineRepository.IsCashOrBankAccountAsync(article.FullAccount.Account.Id))
                 {
-                    return BadRequestResult(_strings.Format(AppStrings.AccountBelongsCollectionsCashBank));
+                    return BadRequestResult(_strings[AppStrings.InvalidAccountUsedWithSourceApp]);
                 }
 
             }

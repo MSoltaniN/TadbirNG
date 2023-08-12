@@ -4080,8 +4080,8 @@
   <data name="Sources" xml:space="preserve">
     <value>منابع</value>
   </data>
-  <data name="AccountBelongsCollectionsCashBank" xml:space="preserve">
-    <value>زمانی که منابع یا مصارف برای یک بردار حساب انتخاب می‌شود، آن حساب باید متعلق به مجموع حساب‌های صندوق بانک باشد.</value>
+  <data name="InvalidAccountUsedWithSourceApp" xml:space="preserve">
+    <value>برای انتخاب منبع یا مصرف باید حساب انتخاب‌شده به یکی از مجموعه حساب‌های صندوق یا بانک تخصیص یافته باشد.</value>
   </data>
   <data name="SourceAppName" xml:space="preserve">
     <value>منبع یا مصرف</value>

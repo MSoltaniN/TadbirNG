@@ -108,12 +108,7 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual Project Project { get; set; }
 
         /// <summary>
-        /// شناسه دیتابیسی کاربر ایجاد کننده آرتیکل
-        /// </summary>
-        public virtual User CreatedBy { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی منابع و مصارف مرتبط با این آرتیکل
+        /// منبع یا مصرف مرتبط با این آرتیکل
         /// </summary>
         public virtual SourceApp SourceApp { get; set; }
     }

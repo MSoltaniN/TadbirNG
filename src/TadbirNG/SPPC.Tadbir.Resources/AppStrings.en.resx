@@ -4095,4 +4095,7 @@
   <data name="SourceAppName" xml:space="preserve">
     <value>Source or application</value>
   </data>
+  <data name="InvalidAccountUsedWithSourceApp" xml:space="preserve">
+    <value>Source or application can only be used when selected account is assigned to cash or bank collection.</value>
+  </data>
 </root>

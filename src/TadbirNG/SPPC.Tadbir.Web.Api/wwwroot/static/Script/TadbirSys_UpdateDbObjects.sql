@@ -1263,16 +1263,8 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (818, 3, 'SourceAppId', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 1, 1, 1, N'AlwaysHidden', -1, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
-Go
-UPDATE [Metadata].[Column]
-SET [DisplayIndex] = 
-    CASE [ColumnID]
-        WHEN 43 THEN 10
-        WHEN 44 THEN 11
-        WHEN 45 THEN 12
-        WHEN 46 THEN 13
-        WHEN 47 THEN 14
-        ELSE [DisplayIndex] 
-    END
-WHERE [ColumnID] IN (43, 44, 45, 46, 47)
+GO
 
+UPDATE [Metadata].[Column]
+SET [DisplayIndex] = [DisplayIndex] + 1
+WHERE [ColumnID] IN (43, 44, 45, 46, 47)

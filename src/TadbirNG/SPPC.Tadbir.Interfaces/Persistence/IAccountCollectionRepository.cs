@@ -42,9 +42,9 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> CanBranchManageCollectionAsync(int branchId, int collectionId);
 
         /// <summary>
-        ///به روش آسنکرون، لیست حساب های  مجموعه حساب صندوق و بانک را برمی گرداند.
+        ///به روش آسنکرون، لیست حساب های تخصیص یافته به مجموعه حساب های صندوق و بانک را برمی گرداند.
         /// </summary>
-        /// <returns>لیست حساب های زیر متعلق به مجموعه حساب صندوق و بانک را بر میگرداند.</returns>
-        Task<IList<AccountCollectionAccountViewModel>> GetCollectionsCashBankAsync();
+        /// <returns>لیست حساب های تخصیص یافته به مجموعه حساب های صندوق و بانک</returns>
+        Task<IList<AccountCollectionAccountViewModel>> GetCashAndBankAccountsAsync();
     }
 }

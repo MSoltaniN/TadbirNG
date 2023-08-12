@@ -597,6 +597,7 @@ CREATE TABLE [Finance].[VoucherLine] (
     [CostCenterID]    INT              NULL,
     [ProjectID]       INT              NULL,
     [CurrencyID]      INT              NULL,
+    [SourceAppID]     INT              NULL,
     [CreatedByID]     INT              NOT NULL,
     [RowNo]           INT              NOT NULL,
     [Debit]           MONEY            NOT NULL,
@@ -607,7 +608,6 @@ CREATE TABLE [Finance].[VoucherLine] (
     [CurrencyValue]   MONEY            NULL,
     [Mark]            NVARCHAR(128)    NULL,
     [TypeID]          SMALLINT         NOT NULL,
-    [SourceID]        INT              NULL,
     [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_VoucherLine_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]    DATETIME         CONSTRAINT [DF_Finance_VoucherLine_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_VoucherLine] PRIMARY KEY CLUSTERED ([VoucherLineID] ASC)
@@ -619,6 +619,7 @@ CREATE TABLE [Finance].[VoucherLine] (
     , CONSTRAINT [FK_Finance_VoucherLine_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailAccountID])
     , CONSTRAINT [FK_Finance_VoucherLine_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
     , CONSTRAINT [FK_Finance_VoucherLine_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project]([ProjectID])
+    , CONSTRAINT [FK_Finance_VoucherLine_CashFlow_SourceApp] FOREIGN KEY ([SourceAppID]) REFERENCES [CashFlow].[SourceApp]([SourceAppID])
 )
 GO
 

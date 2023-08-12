@@ -12,31 +12,31 @@
         /// <summary>
         /// API client URL for account collections
         /// </summary>
-        public const string AccountCollections = "acccollections";
+        public const string AccountCollections = "acc-collections";
 
         /// <summary>
         /// API server route URL for account collections
         /// </summary>
-        public const string AccountCollectionsUrl = "acccollections";
+        public const string AccountCollectionsUrl = "acc-collections";
 
         /// <summary>
         /// API client URL for account collection items
         /// </summary>
-        public const string AccountCollectionAccounts = "acccollections/{0}/accounts";
+        public const string AccountCollectionAccounts = "acc-collections/{0}/accounts";
 
         /// <summary>
         /// API server route URL for account collection items
         /// </summary>
-        public const string AccountCollectionAccountsUrl = "acccollections/{collectionId:min(1)}/accounts";
+        public const string AccountCollectionAccountsUrl = "acc-collections/{collectionId:min(1)}/accounts";
 
         /// <summary>
-        /// API client URL for account collections cash/bank
+        /// API client URL for all accounts currently assigned to Cash or Bank collections
         /// </summary>
-        public const string AccountCollectionsCashBank = "acccollections-cashbank";
+        public const string CashBankAccounts = "acc-collections/cash-bank/accounts";
 
         /// <summary>
-        /// API server route URL for account collections cash/bank
+        /// API server route URL for all accounts currently assigned to Cash or Bank collections
         /// </summary>
-        public const string AccountCollectionsCashBankUrl = "acccollections-cashbank";
+        public const string CashBankAccountsUrl = "acc-collections/cash-bank/accounts";
     }
 }
