@@ -403,6 +403,7 @@
   },
   "CurrencyRate": {
     "New": "New Currency Rate",
+    "Edit": "Edit Currency Rate",
     "Date": "Date",
     "Time": "Time",
     "Rate": "Exchange Rate",
