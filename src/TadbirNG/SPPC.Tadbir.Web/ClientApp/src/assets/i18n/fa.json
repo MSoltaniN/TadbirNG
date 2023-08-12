@@ -107,7 +107,9 @@
     "CheckBookPagesCancelConfirm": "آیا برای ابطال چک به شماره {0} اطمینان دارید؟",
     "CheckBookPagesUndoCancelConfirm": "آیا برای برگشت از ابطال چک به شماره {0} اطمینان دارید؟",
     "AggregateConfirm": "آیا برای تجمیع سطرهای دارای بردار حساب یکسان اطمینان دارید؟",
-    "RemoveInvalidRowsConfirm": "آیا برای حذف ردیفهای نامعتبر اطمینان دارید؟"
+    "RemoveInvalidRowsConfirm": "آیا برای حذف ردیفهای نامعتبر اطمینان دارید؟",
+    "ChangeStateConfirm": "آیا برای {0} این مورد اطمینان دارید؟",
+    "StateAlreadyChanged": "این مورد قبلاً {0} شده است."
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
@@ -189,7 +191,9 @@
     "NextStep": "مرحله بعد",
     "PreviousStep": "مرحله قبل",
     "ComingBack": "بازگشت",
-    "Exit": "خروج"
+    "Exit": "خروج",
+    "Deactivate": "غیرفعال کردن",
+    "Aactivate": "فعال کردن"
   },
   "Form": {
     "New": "{0} جدید",
@@ -200,7 +204,12 @@
     "First": "اولین {0}",
     "Last": "آخرین {0}",
     "Delete": "حذف {0}",
-    "SaveChanges": "ذخیره تغییرات"
+    "SaveChanges": "ذخیره تغییرات",
+    "ChangeStatus": "تغییر وضعیت",
+    "Active": "فعال",
+    "Inactive": "غیرفعال",
+    "Activated": "فعال",
+    "Deactivated": "غیرفعال"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",

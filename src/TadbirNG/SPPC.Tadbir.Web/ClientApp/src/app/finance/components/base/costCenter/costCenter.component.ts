@@ -18,6 +18,7 @@ import { OperationId } from '@sppc/shared/enum/operationId';
 import { GridComponent } from '@progress/kendo-angular-grid';
 import { ServiceLocator } from '@sppc/service.locator';
 import { ShareDataService } from '@sppc/shared/services/share-data.service';
+import { lastValueFrom } from 'rxjs';
 
 
 
@@ -183,7 +184,13 @@ export class CostCenterComponent extends AutoGridExplorerComponent<CostCenter> i
     this.reloadGrid();
   }
 
+  updateActiveState(toActivate:boolean) {
+    let URL = toActivate == true? CostCenterApi.ReactivateCostCenter: CostCenterApi.DeactivateCostCenter;
+    let apiUrl = String.Format(URL,this.selectedRows);
+    let model = this.rowData?.data.find(i => i.id == this.selectedRows[0]);
 
+    super.updateActiveState(toActivate,apiUrl,model);
+  }
 }
 
 

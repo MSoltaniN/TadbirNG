@@ -382,6 +382,17 @@ export class BaseService<T = void | any> extends EnviromentComponent {
   }
 
   /**
+   * برای فعالسازی و غیرفعالسازی موجودیت ها بکار میرود.
+   * @param apiUrl آدرس api
+   * @param model مدل
+   * @returns PUT reguest
+   */
+  updateActiveState(apiUrl:string, model) {
+    let body = JSON.stringify(model);
+    return this.http.put(apiUrl,body);
+  }
+
+  /**
    *
    * @param error
    */
