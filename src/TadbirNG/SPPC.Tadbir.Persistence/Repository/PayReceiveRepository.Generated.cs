@@ -336,25 +336,24 @@ namespace SPPC.Tadbir.Persistence
         public async Task<VoucherViewModel> RegisterAsync(int payReceiveId, int voucherId)
         {
             var voucher = await GetVoucherAsync(voucherId);
-            int rowNo = await GetLastVoucherLineRowNoAsync(voucherId);
-            if(voucher != null) 
+            if (voucher != null)
             {
-                var lineRepository = UnitOfWork.GetAsyncRepository<VoucherLine>();
                 var payReceive = await GetPayReceiveAsync(payReceiveId);
+                int rowNo = await GetLastVoucherLineRowNoAsync(voucher);
                 if (payReceive.Type == (int)PayReceiveType.Receipt)
                 {
-                    AddCashAccountArticlesToVoucher(lineRepository, payReceive, voucher, rowNo);
-                    AddAccountArticlesToVoucher(lineRepository, payReceive, voucher, rowNo);
+                    RgisterCashAccountArticles(payReceive, voucher, rowNo);
+                    rowNo = rowNo + payReceive.CashAccounts.Count;
+                    RegisterAccountArticles(payReceive, voucher, rowNo);
                 }
                 else
                 {
-                    rowNo = (int)(rowNo + voucher.Lines?.Count());
-                    AddAccountArticlesToVoucher(lineRepository, payReceive, voucher, rowNo);
-                    AddCashAccountArticlesToVoucher(lineRepository, payReceive, voucher, rowNo);
+                    RegisterAccountArticles(payReceive, voucher, rowNo);
+                    rowNo = rowNo + payReceive.Accounts.Count;
+                    RgisterCashAccountArticles(payReceive, voucher, rowNo);
                 }
 
                 int entityTypeId = GetEntityTypeId(payReceive.Type);
-                InsertPayReceiveVoucherLinesRelationAsync(payReceiveId, voucher.Lines);
                 await FinalizeActionAsync(OperationId.Register, entityTypeId);
             }
 
@@ -438,7 +437,7 @@ namespace SPPC.Tadbir.Persistence
             var viewId = GetViewId(type);
             var options = gridOptions ?? new GridOptions();
             return await Repository
-                .GetAllOperationQuery<PayReceive>(viewId, 
+                .GetAllOperationQuery<PayReceive>(viewId,
                     pr => pr.Accounts, pr => pr.CashAccounts, pr => pr.PayReceiveVoucherLines)
                 .Where(criteria)
                 .OrderBy(item => Convert.ToInt64(item.PayReceiveNo))
@@ -500,9 +499,9 @@ namespace SPPC.Tadbir.Persistence
             IRepository<PayReceiveVoucherLine> repository, int payReceiveId)
         {
             return await repository
-                .GetEntityQuery()
+                .GetEntityWithTrackingQuery(item => item.VoucherLine)
                 .Where(item => item.PayReceiveId == payReceiveId)
-                .ToListAsync(); 
+                .ToListAsync();
         }
 
         private int GetEntityTypeId(int type)
@@ -568,14 +567,14 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                voucher = await voucherRepository.GetByIDAsync(voucherId); 
+                voucher = await voucherRepository.GetByIDAsync(voucherId);
             }
 
             return voucher;
         }
 
         private string GetArticleDescription(
-            PayReceive payReceive, string Remarks, string bankOrderNo = null)
+            PayReceive payReceive, string remarks, string bankOrderNo = null)
         {
             string description = string.Empty;
             string currencyText = String.Empty;
@@ -585,9 +584,9 @@ namespace SPPC.Tadbir.Persistence
             }
 
             string ArticleText = String.Empty;
-            if (!String.IsNullOrWhiteSpace(Remarks))
+            if (!String.IsNullOrWhiteSpace(remarks))
             {
-                ArticleText = $" - {Remarks.ToLower().Trim()}";
+                ArticleText = $" - {remarks.ToLower().Trim()}";
             }
 
             string payReceiveText = String.Empty;
@@ -679,10 +678,11 @@ namespace SPPC.Tadbir.Persistence
                 pr => pr.Currency);
         }
 
-        private void AddCashAccountArticlesToVoucher(
-            IRepository<VoucherLine> repository,PayReceive payReceive, Voucher voucher, int rowNo)
+        private void RgisterCashAccountArticles(PayReceive payReceive, Voucher voucher, int rowNo)
         {
-            foreach(var item in payReceive.CashAccounts)
+            var lineRepository = UnitOfWork.GetAsyncRepository<VoucherLine>();
+            List<VoucherLine> voucherLines = new List<VoucherLine>();
+            foreach (var item in payReceive.CashAccounts)
             {
                 var voucherArticle = new VoucherLine
                 {
@@ -700,7 +700,7 @@ namespace SPPC.Tadbir.Persistence
                     Voucher = voucher
                 };
 
-                if(payReceive.Type == (int)PayReceiveType.Receipt)
+                if (payReceive.Type == (int)PayReceiveType.Receipt)
                 {
                     voucherArticle.Debit = item.Amount;
                 }
@@ -709,15 +709,20 @@ namespace SPPC.Tadbir.Persistence
                     voucherArticle.Credit = item.Amount;
                 }
 
-                repository.Insert(voucherArticle);
+                voucherLines.Add(voucherArticle);
+                lineRepository.Insert(voucherArticle);
             }
+
+            InsertPayReceiveVoucherLineAsync(payReceive.Id, voucherLines);
         }
 
-        private void AddAccountArticlesToVoucher(
-            IRepository<VoucherLine> repository, PayReceive payReceive, Voucher voucher, int rowNo)
+        private void RegisterAccountArticles(PayReceive payReceive, Voucher voucher, int rowNo)
         {
+            var lineRepository = UnitOfWork.GetAsyncRepository<VoucherLine>();
+            List<VoucherLine> voucherLines = new List<VoucherLine>();
             foreach (var item in payReceive.Accounts)
             {
+
                 var voucherArticle = new VoucherLine
                 {
                     AccountId = (int)item.AccountId,
@@ -742,33 +747,32 @@ namespace SPPC.Tadbir.Persistence
                     voucherArticle.Debit = item.Amount;
                 }
 
-                repository.Insert(voucherArticle);
+                voucherLines.Add(voucherArticle);
+                lineRepository.Insert(voucherArticle);
             }
+
+            InsertPayReceiveVoucherLineAsync(payReceive.Id, voucherLines);
         }
 
-        private async Task<int> GetLastVoucherLineRowNoAsync(int voucherId)
+        private async Task<int> GetLastVoucherLineRowNoAsync(Voucher voucher)
         {
-            if(voucherId == 0)
-            {
-                return 0;
-            }
-            else
+            int lastRowNo = 0;
+            if (voucher.Id > 0)
             {
                 var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
-                int lastRowNo = await repository
+                lastRowNo = await repository
                     .GetEntityQuery()
-                    .Where(line => line.VoucherId == voucherId)
-                    .OrderByDescending(line => line.RowNo)
-                    .Select(line => line.RowNo)
-                    .FirstOrDefaultAsync();
-                return lastRowNo;
+                    .Where(line => line.VoucherId == voucher.Id)
+                        .MaxAsync(line => line.RowNo);
             }
+
+            return lastRowNo;
         }
 
-        private void InsertPayReceiveVoucherLinesRelationAsync(int payReceiveId, List<VoucherLine> voucherLines)
+        private void InsertPayReceiveVoucherLineAsync(int payReceiveId, List<VoucherLine> voucherLines)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveVoucherLine>();
-            foreach(var voucherLine in voucherLines)
+            foreach (var voucherLine in voucherLines)
             {
                 var payReceiveVoucherLine = new PayReceiveVoucherLine
                 {
@@ -777,7 +781,7 @@ namespace SPPC.Tadbir.Persistence
                 };
 
                 repository.Insert(payReceiveVoucherLine);
-            }            
+            }
         }
 
         private ISecureRepository Repository
