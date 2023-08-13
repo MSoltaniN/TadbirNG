@@ -4237,13 +4237,13 @@
     <value>انبار</value>
   </data>
   <data name="CreatedByName" xml:space="preserve">
-    <value>کاربر ایجاد کننده</value>
+    <value>کاربر ایجادکننده</value>
   </data>
   <data name="CreatedDate" xml:space="preserve">
     <value>تاریخ ایجاد</value>
   </data>
   <data name="ModifiedByName" xml:space="preserve">
-    <value>کاربر تغییر دهنده</value>
+    <value>کاربر تغییردهنده</value>
   </data>
   <data name="ModifiedDate" xml:space="preserve">
     <value>تاریخ تغییر</value>

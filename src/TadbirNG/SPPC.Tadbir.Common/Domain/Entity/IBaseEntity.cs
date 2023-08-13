@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Domain
 {
@@ -17,26 +16,26 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         ///شناسه کاربر ایجاد کننده
         /// </summary>
-        public int CreatedById { get; set; }
+        int CreatedById { get; set; }
 
         /// <summary>
         ///نام و نام خانوادگی کاربر ایجاد کننده
         /// </summary>
-        public string CreatedByName { get; set; }
+        string CreatedByName { get; set; }
 
         /// <summary>
         ///تاریخ ایجاد
         /// </summary>
-        public DateTime CreatedDate { get; set; }
+        DateTime CreatedDate { get; set; }
 
         /// <summary>
         ///شناسه آخرین کاربر تغییر دهنده
         /// </summary>
-        public int ModifiedById { get; set; }
+        int ModifiedById { get; set; }
 
         /// <summary>
         ///نام و نام خانوادگی آخرین کاربر تغییر دهنده
         /// </summary>
-        public string ModifiedByName { get; set; }
+        string ModifiedByName { get; set; }
     }
 }
