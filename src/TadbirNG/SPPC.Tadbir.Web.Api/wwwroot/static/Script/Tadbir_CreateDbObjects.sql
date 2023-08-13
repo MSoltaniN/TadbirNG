@@ -1524,9 +1524,9 @@ SET IDENTITY_INSERT [Finance].[AccountGroup] OFF
 
 SET IDENTITY_INSERT [Finance].[AccountCollectionCategory] ON
 INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (1, N'BalanceSheet')
-INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (2, N'ProfitAndLoss')
+INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (2, N'ProfitLoss')
 INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (3, N'Treasury')
-INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (4, N'SalesAndPurchase')
+INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (4, N'SalesPurchase')
 INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (5, N'ClosingAccounts')
 INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (6, N'Warehouse')
 INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (7, N'Property')
