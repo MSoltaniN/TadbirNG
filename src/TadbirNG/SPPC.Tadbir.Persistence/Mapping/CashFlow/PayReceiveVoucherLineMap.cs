@@ -25,8 +25,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey(e => e.PayReceiveId);
             builder.HasOne(e => e.VoucherLine)
                 .WithOne()
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasForeignKey<PayReceiveVoucherLine>(e => e.VoucherLineId);      
+                .HasForeignKey<PayReceiveVoucherLine>(e => e.VoucherLineId);    
         }
     }
 }

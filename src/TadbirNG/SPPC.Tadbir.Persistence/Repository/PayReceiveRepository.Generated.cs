@@ -364,10 +364,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task UndoRegisterAsync(int payReceiveId, int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceiveVoucherLine>();
+            var voucherLineRepository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var payReceiveVoucherLines = await GetRegisteredArticlesAsync(repository, payReceiveId);
             foreach (var item in payReceiveVoucherLines)
             {
-                DisconnectEntity(item);
+                voucherLineRepository.Delete(item.VoucherLine);
                 repository.Delete(item);
             }
 
@@ -499,7 +500,7 @@ namespace SPPC.Tadbir.Persistence
             IRepository<PayReceiveVoucherLine> repository, int payReceiveId)
         {
             return await repository
-                .GetEntityWithTrackingQuery(item => item.VoucherLine)
+                .GetEntityQuery(item => item.VoucherLine)
                 .Where(item => item.PayReceiveId == payReceiveId)
                 .ToListAsync();
         }
