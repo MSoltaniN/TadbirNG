@@ -8,6 +8,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -1525,12 +1526,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if ((article.Debit == 0m) && (article.Credit == 0m))
             {
-                return BadRequestResult(_strings.Format(AppStrings.ZeroDebitAndCreditNotAllowed));
+                return BadRequestResult(_strings[AppStrings.ZeroDebitAndCreditNotAllowed]);
             }
 
             if ((article.Debit > 0m) && (article.Credit > 0m))
             {
-                return BadRequestResult(_strings.Format(AppStrings.DebitAndCreditNotAllowed));
+                return BadRequestResult(_strings[AppStrings.DebitAndCreditNotAllowed]);
+            }
+
+            if (article.SourceAppId.HasValue)
+            {
+                if(!await _lineRepository.IsCashOrBankAccountAsync(article.FullAccount.Account.Id))
+                {
+                    return BadRequestResult(_strings[AppStrings.InvalidAccountUsedWithSourceApp]);
+                }
             }
 
             return Ok();

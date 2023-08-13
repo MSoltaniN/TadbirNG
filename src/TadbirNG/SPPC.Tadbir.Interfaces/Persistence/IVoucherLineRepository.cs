@@ -83,5 +83,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در صورت وجود فرم دریافت/پرداخت مرتبط با آرتیکل‌ داده شده
         /// آن را برمی گرداند</returns>
         Task<PayReceiveViewModel> GetRelatedPayReceiveAsync(int articleId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده متعلق به مجموعه حساب های صندوق یا بانک است یا نه
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی حساب مورد نظر</param>
+        /// <returns>مقدار بولی درست در صورت متعلق بودن شماره حساب، در غیر این صورت مقدار بولی نادرست</returns>
+        Task<bool> IsCashOrBankAccountAsync(int accountId);
     }
 }

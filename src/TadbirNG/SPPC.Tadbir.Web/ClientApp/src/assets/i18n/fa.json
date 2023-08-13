@@ -107,7 +107,9 @@
     "CheckBookPagesCancelConfirm": "آیا برای ابطال چک به شماره {0} اطمینان دارید؟",
     "CheckBookPagesUndoCancelConfirm": "آیا برای برگشت از ابطال چک به شماره {0} اطمینان دارید؟",
     "AggregateConfirm": "آیا برای تجمیع سطرهای دارای بردار حساب یکسان اطمینان دارید؟",
-    "RemoveInvalidRowsConfirm": "آیا برای حذف ردیفهای نامعتبر اطمینان دارید؟"
+    "RemoveInvalidRowsConfirm": "آیا برای حذف ردیفهای نامعتبر اطمینان دارید؟",
+    "ChangeStateConfirm": "آیا برای {0} این مورد اطمینان دارید؟",
+    "StateAlreadyChanged": "این مورد قبلاً {0} شده است."
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
@@ -189,7 +191,9 @@
     "NextStep": "مرحله بعد",
     "PreviousStep": "مرحله قبل",
     "ComingBack": "بازگشت",
-    "Exit": "خروج"
+    "Exit": "خروج",
+    "Deactivate": "غیرفعال کردن",
+    "Aactivate": "فعال کردن"
   },
   "Form": {
     "New": "{0} جدید",
@@ -200,7 +204,12 @@
     "First": "اولین {0}",
     "Last": "آخرین {0}",
     "Delete": "حذف {0}",
-    "SaveChanges": "ذخیره تغییرات"
+    "SaveChanges": "ذخیره تغییرات",
+    "ChangeStatus": "تغییر وضعیت",
+    "Active": "فعال",
+    "Inactive": "غیرفعال",
+    "Activated": "فعال",
+    "Deactivated": "غیرفعال"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
@@ -424,6 +433,7 @@
   },
   "CurrencyRate": {
     "New": "نرخ ارز جدید",
+    "Edit": "ویرایش نرخ ارز",
     "Date": "تاریخ",
     "Time": "زمان",
     "Rate": "نرخ ارز",
@@ -876,6 +886,7 @@
     "Name": "نام حساب",
     "FullCode": "کد حساب",
     "AccountLevel": "سطح حساب",
+    "AllLevels": "تمامی سطوح",
     "SelectedAccounts": "حساب های انتخاب شده",
     "SelectableAccounts": "حساب های قابل انتخاب",
     "MultiSelectValidation": "برای این مجموعه حساب فقط یک حساب قابل انتخاب است.",
@@ -1304,7 +1315,7 @@
   "FiscalPeriod": {
     "New": "دوره مالی جدید",
     "Delete": "حذف دوره مالی",
-    "Edit": ",ویرایش دوره مالی",
+    "Edit": "ویرایش دوره مالی",
     "Name": "نام",
     "StartDate": "تاریخ شروع",
     "EndDate": "تاریخ پایان",
@@ -1322,7 +1333,7 @@
   "CashRegisters": {
     "CashRegisters": "صندوق ها",
     "New": "صندوق جدید",
-    "Edit": "اصلاح صندوق",
+    "Edit": "ویرایش صندوق",
     "Delete": "حذف صندوق",
     "UsersAssigned": "کاربران تخصیص یافته به صندوق",
     "UsersCanBeAssigned": "کاربران قابل تخصیص به صندوق",
@@ -1401,7 +1412,9 @@
     "Source": "منبع",
     "Application": "مصرف",
     "Checks":"چکها",
-    "Cash":"وجه نقد"
+    "Cash":"وجه نقد",
+    "PaymentFormNotFound": "سند پرداخت مورد نظر یافت نشد.",
+    "ReceiptFormNotFound": "سند دریافت مورد نظر یافت نشد."
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",

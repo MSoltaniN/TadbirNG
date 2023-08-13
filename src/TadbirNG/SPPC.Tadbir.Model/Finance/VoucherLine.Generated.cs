@@ -12,7 +12,7 @@
 
 using System;
 using SPPC.Tadbir.Model.Auth;
-using SPPC.Tadbir.Model.Corporate;
+using SPPC.Tadbir.Model.CashFlow;
 
 namespace SPPC.Tadbir.Model.Finance
 {
@@ -76,12 +76,7 @@ namespace SPPC.Tadbir.Model.Finance
         /// شناسه نوع آرتیکل (مانند آرتیکل عادی، مالیات و عوارض و ...)
         /// </summary>
         public virtual short TypeId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی منابع و مصارف مرتبط با این آرتیکل
-        /// </summary>
-        public virtual int? SourceId { get; set; }
-
+                
         /// <summary>
         /// سند مالی که این آرتیکل برای آن ایجاد شده است
         /// </summary>
@@ -113,8 +108,8 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual Project Project { get; set; }
 
         /// <summary>
-        /// شناسه دیتابیسی کاربر ایجاد کننده آرتیکل
+        /// منبع یا مصرف مرتبط با این آرتیکل
         /// </summary>
-        public virtual User CreatedBy { get; set; }
+        public virtual SourceApp SourceApp { get; set; }
     }
 }

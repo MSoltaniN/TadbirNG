@@ -40,5 +40,11 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>برای مجموعه حسابهای تک حسابی، شعبه داده شده باید بالاترین شعبه در ساختار درختی باشد.
         /// ولی برای سایر مجموعه حسابها هر شعبه ای می تواند حسابهای مجموعه حساب را تعیین کند</returns>
         Task<bool> CanBranchManageCollectionAsync(int branchId, int collectionId);
+
+        /// <summary>
+        ///به روش آسنکرون، لیست حساب های تخصیص یافته به مجموعه حساب های صندوق و بانک را برمی گرداند.
+        /// </summary>
+        /// <returns>لیست حساب های تخصیص یافته به مجموعه حساب های صندوق و بانک</returns>
+        Task<IList<AccountCollectionAccountViewModel>> GetCashAndBankAccountsAsync();
     }
 }

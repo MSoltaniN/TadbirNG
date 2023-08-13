@@ -10,7 +10,6 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPPC.Tadbir.Model.Finance;
@@ -44,8 +43,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasMaxLength(64);
             builder.Property(e => e.TypeId)
                 .IsRequired();
-            builder.Property(e => e.SourceId);
-            builder.Property(e => e.CurrencyId);
+            builder.Property(e => e.CreatedById);
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
@@ -93,11 +91,11 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey(e => e.ProjectId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_VoucherLine_Finance_Project");
-            builder.HasOne(e => e.CreatedBy)
+            builder.HasOne(e => e.SourceApp)
                 .WithMany()
-                .HasForeignKey(e => e.CreatedById)
+                .HasForeignKey(e => e.SourceAppId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_VoucherLine_Auth_CreatedBy");
+                .HasConstraintName("FK_Finance_VoucherLine_CashFlow_SourceApp");
         }
     }
 }

@@ -33,7 +33,9 @@ export enum AccountPermissions {
     Create = 16,
     Edit = 32,
     Delete = 64,
-    All = 127
+    Deactivate = 128,
+    Reactivate = 256,
+    All = 511
 }
 
 export enum DetailAccountPermissions {
@@ -45,7 +47,9 @@ export enum DetailAccountPermissions {
     Create = 16,
     Edit = 32,
     Delete = 64,
-    All = 127
+    Deactivate = 128,
+    Reactivate = 256,
+    All = 511
 }
 
 export enum CostCenterPermissions {
@@ -57,7 +61,9 @@ export enum CostCenterPermissions {
     Create = 16,
     Edit = 32,
     Delete = 64,
-    All = 127
+    Deactivate = 128,
+    Reactivate = 256,
+    All = 511
 }
 
 export enum ProjectPermissions {
@@ -69,7 +75,9 @@ export enum ProjectPermissions {
     Create = 16,
     Edit = 32,
     Delete = 64,
-    All = 127
+    Deactivate = 128,
+    Reactivate = 256,
+    All = 511
 }
 
 export enum FiscalPeriodPermissions {
@@ -95,7 +103,9 @@ export enum CurrencyPermissions {
     Edit = 32,
     Delete = 64,
     ChangeStatus = 128,
-    All = 255
+    Deactivate = 128,
+    Reactivate = 256,
+    All = 511
 }
 
 export enum VoucherPermissions {
@@ -415,7 +425,9 @@ export enum CashRegisterPermissions {
   Edit = 32,
   Delete = 64,
   AssignRoles = 128,
-  All = 255
+  Deactivate = 256,
+  Reactivate = 512,
+  All = 1023
 }
 
 export enum CheckBookPermissions {
@@ -456,7 +468,9 @@ export enum SourceAppPermissions {
   Create = 16,
   Edit = 32,
   Delete = 64,
-  All = 127
+  Deactivate = 128,
+  Reactivate = 256,
+  All = 511
 }
 
 export enum PaymentPermissions {

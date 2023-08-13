@@ -35,6 +35,7 @@ import { ShareDataService } from "@sppc/shared/services/share-data.service";
 import { ToastrService } from "ngx-toastr";
 import { AccountFormComponent } from "./account-form.component";
 import { ServiceLocator } from "@sppc/service.locator";
+import { lastValueFrom } from "rxjs";
 
 //#endregion
 
@@ -357,5 +358,13 @@ export class AccountComponent
     this.enableViewListChanged(this.viewId);
     this.operationId = OperationId.Filter;
     this.reloadGrid();
+  }
+
+  updateActiveState(toActivate:boolean) {
+    let URL = toActivate == true? AccountApi.ReactivateAccount: AccountApi.DeactivateAccount;
+    let apiUrl = String.Format(URL,this.selectedRows);
+    let model = this.rowData?.data.find(i => i.id == this.selectedRows[0]);
+
+    super.updateActiveState(toActivate,apiUrl,model);
   }
 }

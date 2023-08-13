@@ -4,7 +4,7 @@
 //     Runtime Version: 1.1.282
 //     Template Version: 1.0
 //     Generation Date: 05/09/2018 09:43:09 ق.ظ
-//  
+//
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
 // </auto-generated>
@@ -24,5 +24,6 @@ export interface VoucherLine extends IEntity {
   debit: number;
   credit: number;
   currencyValue?: number;
-  mark:string;
+  mark: string;
+  sourceAppId?: number;
 }

@@ -14,9 +14,12 @@ import { environment } from "@sppc/env/environment";
 
 export class AccountCollectionApi {
 
-    // acccollections
-    public static AccountCollections = environment.BaseUrl + "/acccollections";
+    // acc-collections
+    public static AccountCollections = environment.BaseUrl + "/acc-collections";
 
-    // acccollections/{collectionId:min(1)}/accounts
-    public static AccountCollectionAccounts = environment.BaseUrl + "/acccollections/{0}/accounts";
+    // acc-collections/{collectionId:min(1)}/accounts
+    public static AccountCollectionAccounts = environment.BaseUrl + "/acc-collections/{0}/accounts";
+
+    // acc-collections/cash-bank/accounts
+    public static CashBankAccounts = environment.BaseUrl + "/acc-collections/cash-bank/accounts";
 }

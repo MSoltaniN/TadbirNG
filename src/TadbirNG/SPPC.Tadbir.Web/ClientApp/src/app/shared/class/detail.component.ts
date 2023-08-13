@@ -236,7 +236,7 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
       width: 450,
       height: 150,
       minWidth: 250,
-      cssClass: 'save-changes-box'
+      cssClass: 'global-confirm-box'
     });
 
     dialog.dialog.location.nativeElement.classList.add("dialog-padding");

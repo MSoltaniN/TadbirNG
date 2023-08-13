@@ -18,6 +18,7 @@ import { OperationId } from '@sppc/shared/enum/operationId';
 import { GridComponent } from '@progress/kendo-angular-grid';
 import { ServiceLocator } from '@sppc/service.locator';
 import { ShareDataService } from '@sppc/shared/services/share-data.service';
+import { lastValueFrom } from 'rxjs';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -175,6 +176,15 @@ export class ProjectComponent extends AutoGridExplorerComponent<Project> impleme
     this.enableViewListChanged(this.viewId);
     this.operationId = OperationId.Filter;
     this.reloadGrid();
+  }
+
+  updateActiveState(toActivate:boolean) {
+
+    let URL = toActivate == true? ProjectApi.ReactivateProject: ProjectApi.DeactivateProject;
+    let apiUrl = String.Format(URL,this.selectedRows);
+    let model = this.rowData?.data.find(i => i.id == this.selectedRows[0]);
+
+    super.updateActiveState(toActivate,apiUrl,model);
   }
 
 }
