@@ -251,4 +251,8 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
       }
     })
   }
+
+  stringFormat(format:string,...args) {
+    return String.Format(format,...args);
+  }
 }

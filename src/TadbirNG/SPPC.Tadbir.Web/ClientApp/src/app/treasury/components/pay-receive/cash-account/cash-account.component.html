@@ -73,7 +73,7 @@
                             (sppcClick)="addNew()"
                             [icon]="'file-add'"
                             type="button"
-                            title="{{ 'Buttons.Add' | translate }}"
+                            title="{{ stringFormat('Form.New' | translate, 'Entity.PayReceiveCashAccount' | translate) }}"
                             [disabled]="disableOperations"
                             ></button>
                     
@@ -83,7 +83,7 @@
                             (sppcClick)="editHandler()"
                             class="k-button k-button-icon"
                             [disabled]="selectedRows.length != 1 || disableOperations"
-                            title="{{ 'Buttons.Edit' | translate }}"
+                            title="{{ stringFormat('Form.Edit' | translate, 'Entity.PayReceiveCashAccount' | translate) }}"
                             >
                             <span class="k-icon k-i-pencil"></span>
                             </button>
@@ -93,7 +93,7 @@
                             (sppcClick)="removeHandler()"
                             class="k-button k-button-icon"
                             [disabled]="selectedRows.length == 0 || disableOperations"
-                            title="{{ 'Buttons.Delete' | translate }}"
+                            title="{{ stringFormat('Form.Delete' | translate, 'Entity.PayReceiveCashAccount' | translate) }}"
                             >
                             <span class="k-icon k-i-delete"></span>
                             </button>
