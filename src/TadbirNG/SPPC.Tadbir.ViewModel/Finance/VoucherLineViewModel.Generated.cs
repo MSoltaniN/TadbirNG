@@ -77,10 +77,5 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public short LineTypeId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی منابع و مصارف مرتبط با این آرتیکل
-        /// </summary>
-        public int? SourceId { get; set; }
     }
 }

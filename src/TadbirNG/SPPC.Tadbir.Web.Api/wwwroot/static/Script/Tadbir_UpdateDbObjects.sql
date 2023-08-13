@@ -1024,3 +1024,20 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (325, 3, 2, NULL, 25, 93, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.2.1567
+ALTER TABLE [Finance].[VoucherLine]
+ADD SourceAppID INT NULL;
+GO
+
+UPDATE [Finance].[VoucherLine]
+SET SourceAppID = SourceID;
+GO
+
+ALTER TABLE [Finance].[VoucherLine]
+DROP COLUMN SourceID;
+GO
+
+ALTER TABLE [Finance].[VoucherLine]
+ADD CONSTRAINT [FK_Finance_VoucherLine_CashFlow_SourceApp] FOREIGN KEY ([SourceAppID])
+    REFERENCES [CashFlow].[SourceApp]([SourceAppID])

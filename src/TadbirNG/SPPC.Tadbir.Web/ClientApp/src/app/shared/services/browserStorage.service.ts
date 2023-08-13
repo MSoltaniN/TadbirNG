@@ -36,6 +36,7 @@ export const SessionKeys = {
   License: "license",
   LicenseInfo: "license-info",
   QuickReportSetting: "quick-report-{0}-{1}-{2}",
+  AccountColletion: "account_collection",
 };
 
 @Injectable()

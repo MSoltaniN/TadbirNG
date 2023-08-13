@@ -30,10 +30,7 @@ namespace SPPC.Tadbir.Persistence
         {
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات نمایشی طبقه بندی های مجموعه حساب را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه ای از اطلاعات نمایشی طبقه بندی های مجموعه حساب</returns>
+        /// <inheritdoc/>
         public async Task<IList<AccountCollectionCategoryViewModel>> GetCollectionCategoriesAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionCategory>();
@@ -44,12 +41,7 @@ namespace SPPC.Tadbir.Persistence
             return categories;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، حساب های انتخاب شده برای یک مجموعه حساب را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="collectionId">شناسه یکتای مجموعه حساب</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از حساب های انتخاب شده در یک مجموعه حساب</returns>
+        /// <inheritdoc/>
         public async Task<IList<AccountCollectionAccountViewModel>> GetCollectionAccountsAsync(
             int collectionId, GridOptions gridOptions)
         {
@@ -63,11 +55,7 @@ namespace SPPC.Tadbir.Persistence
             return accounts;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، حساب های یک مجموعه حساب را اضافه میکند
-        /// </summary>
-        /// <param name="accounts">اطلاعات حساب های یک مجموعه حساب</param>
-        /// <param name="collectionId">شناسه یکتای مجموعه حساب انتخاب شده</param>
+        /// <inheritdoc/>
         public async Task AddCollectionAccountsAsync(
             int collectionId, IList<AccountCollectionAccountViewModel> accounts)
         {
@@ -90,13 +78,7 @@ namespace SPPC.Tadbir.Persistence
             await LogCollectionOperationAsync(OperationId.Save, collectionId);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که شعبه داده شده امکان تعریف حساب برای مجموعه حساب را دارد یا نه
-        /// </summary>
-        /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
-        /// <param name="collectionId">شناسه دیتابیسی مجموعه حساب مورد نظر</param>
-        /// <returns>برای مجموعه حسابهای تک حسابی، شعبه داده شده باید بالاترین شعبه در ساختار درختی باشد.
-        /// ولی برای سایر مجموعه حسابها هر شعبه ای می تواند حسابهای مجموعه حساب را تعیین کند</returns>
+        /// <inheritdoc/>
         public async Task<bool> CanBranchManageCollectionAsync(int branchId, int collectionId)
         {
             bool canManage = true;
@@ -111,6 +93,25 @@ namespace SPPC.Tadbir.Persistence
 
             return canManage;
         }
+
+        /// <inheritdoc/>
+        public async Task<IList<AccountCollectionAccountViewModel>> GetCashAndBankAccountsAsync()
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            var cashBankCollectionIds = new int[] { (int)AccountCollectionId.Bank, (int)AccountCollectionId.CashFund };
+            var userBranchId = UserContext.BranchId;
+            var userFiscalPeriodId = UserContext.FiscalPeriodId;
+            var cashBankAccounts = await repository.GetEntityQuery()
+                .Include(aca => aca.Account)
+                .Where(aca =>
+                    cashBankCollectionIds.Contains(aca.CollectionId) &&
+                    aca.BranchId == userBranchId &&
+                    aca.FiscalPeriodId == userFiscalPeriodId)
+                .Select(aca => Mapper.Map<AccountCollectionAccountViewModel>(aca))
+                .ToListAsync();
+            return cashBankAccounts;
+        }
+
 
         internal override int? EntityType
         {

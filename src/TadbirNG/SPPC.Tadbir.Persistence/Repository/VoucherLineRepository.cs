@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -34,12 +35,7 @@ namespace SPPC.Tadbir.Persistence
             _system = system;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
+        /// <inheritdoc/>
         public async Task<PagedList<VoucherLineViewModel>> GetArticlesAsync(
             int voucherId, GridOptions gridOptions)
         {
@@ -51,11 +47,7 @@ namespace SPPC.Tadbir.Persistence
             return new PagedList<VoucherLineViewModel>(lines, gridOptions);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="articleId">شناسه دیتابیسی آرتیکل موجود</param>
-        /// <returns>اطلاعات آرتیکل مشخص شده با شناسه دیتابیسی</returns>
+        /// <inheritdoc/>
         public async Task<VoucherLineViewModel> GetArticleAsync(int articleId)
         {
             VoucherLineViewModel articleViewModel = null;
@@ -69,14 +61,7 @@ namespace SPPC.Tadbir.Persistence
             return articleViewModel;
         }
 
-        /// <summary>
-        /// به روش آسنکرون، تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
-        /// خوانده و برمی گرداند
-        /// </summary>
-        /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات موجودیت استفاده می شود</typeparam>
-        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد آرتیکل های سند مالی بعد از اعمال فیلتر</returns>
+        /// <inheritdoc/>
         public async Task<int> GetArticleCountAsync<TViewModel>(int voucherId, GridOptions gridOptions = null)
             where TViewModel : class, new()
         {
@@ -92,10 +77,7 @@ namespace SPPC.Tadbir.Persistence
                 .Count();
         }
 
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات یک سطر سند مالی (آرتیکل) را در دیتابیس ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="lineView">آرتیکل برای ایجاد یا اصلاح</param>
+        /// <inheritdoc/>
         public async Task<VoucherLineViewModel> SaveArticleAsync(VoucherLineViewModel lineView)
         {
             Verify.ArgumentNotNull(lineView, "lineView");
@@ -122,10 +104,7 @@ namespace SPPC.Tadbir.Persistence
             return Mapper.Map<VoucherLineViewModel>(line);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، علامتگذاری مشخص شده را روی آرتیکل سند اعمال می کند
-        /// </summary>
-        /// <param name="mark">اطلاعات علامتکذاری آرتیکل</param>
+        /// <inheritdoc/>
         public async Task SaveArticleMarkAsync(VoucherLineMarkViewModel mark)
         {
             Verify.ArgumentNotNull(mark, nameof(mark));
@@ -139,10 +118,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را حذف می کند
-        /// </summary>
-        /// <param name="articleId">شناسه دیتابیسی آرتیکل برای حذف</param>
+        /// <inheritdoc/>
         public async Task DeleteArticleAsync(int articleId)
         {
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
@@ -155,10 +131,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، آرتیکل های مشخص شده با شناسه عددی را حذف می کند
-        /// </summary>
-        /// <param name="items">مجموعه شناسه های دیتابیسی سطرهای مورد نظر برای حذف</param>
+        /// <inheritdoc/>
         public async Task DeleteArticlesAsync(IEnumerable<int> items)
         {
             int voucherId = 0;
@@ -182,10 +155,7 @@ namespace SPPC.Tadbir.Persistence
             await OnEntityGroupDeleted(items, OperationId.GroupDeleteLines);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، تعداد کل آرتیکل های ثبت شده را برمیگرداند
-        /// </summary>
-        /// <returns>تعداد کل آرتیکل ها</returns>
+        /// <inheritdoc/>
         public async Task<int> GetAllArticlesCountAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
@@ -193,11 +163,7 @@ namespace SPPC.Tadbir.Persistence
             return await query.CountAsync();
         }
 
-        /// <summary>
-        /// به روش آسنکرون، نوع مفهومی سند را با توجه به شناسه آرتیکل داده شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="articleId">شناسه دیتابیسی آرتیکل مورد نظر</param>
-        /// <returns>نوع مفهومی سند مرتبط با شناسه آرتیکل داده شده</returns>
+        /// <inheritdoc/>
         public async Task<int> GetLineSubjectTypeAsync(int articleId)
         {
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
@@ -220,6 +186,22 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
+        public async Task<bool> IsCashOrBankAccountAsync(int accountId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
+            var cashBankCollections = new int[] { (int)AccountCollectionId.Bank, (int)AccountCollectionId.CashFund };
+            var userBranchId = UserContext.BranchId;
+            var userFiscalPeriodId = UserContext.FiscalPeriodId;
+            var isAccountInCollection = await repository.GetEntityQuery()
+                .AnyAsync(aca =>
+                    cashBankCollections.Contains(aca.CollectionId) &&
+                    aca.AccountId == accountId &&
+                    aca.BranchId == userBranchId &&
+                    aca.FiscalPeriodId == userFiscalPeriodId);
+            return isAccountInCollection;
+        }
+
+        /// <inheritdoc/>
         protected override async Task FinalizeActionAsync(VoucherLine entity)
         {
             var voucherRepository = UnitOfWork.GetAsyncRepository<Voucher>();
@@ -238,11 +220,7 @@ namespace SPPC.Tadbir.Persistence
             get { return (int)EntityTypeId.Voucher; }
         }
 
-        /// <summary>
-        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
-        /// </summary>
-        /// <param name="lineView">مدل نمایشی شامل آخرین تغییرات</param>
-        /// <param name="line">سطر اطلاعاتی موجود</param>
+        /// <inheritdoc/>
         protected override void UpdateExisting(VoucherLineViewModel lineView, VoucherLine line)
         {
             line.AccountId = lineView.FullAccount.Account.Id;
@@ -254,13 +232,10 @@ namespace SPPC.Tadbir.Persistence
             line.Credit = lineView.Credit;
             line.Description = lineView.Description;
             line.CurrencyValue = lineView.CurrencyValue;
+            line.SourceAppId = lineView.SourceAppId;
         }
 
-        /// <summary>
-        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
-        /// </summary>
-        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
-        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        /// <inheritdoc/>
         protected override string GetState(VoucherLine entity)
         {
             var repository = UnitOfWork.GetRepository<Account>();
@@ -294,7 +269,7 @@ namespace SPPC.Tadbir.Persistence
             var linesQuery = Repository
                 .GetAllOperationQuery<VoucherLine>(ViewId.VoucherLine,
                     line => line.Voucher, line => line.Account, line => line.DetailAccount, line => line.CostCenter,
-                    line => line.Project, line => line.Currency, line => line.Branch)
+                    line => line.Project, line => line.Currency, line => line.Branch, line => line.SourceApp)
                 .Where(line => line.Voucher.Id == voucherId)
                 .OrderBy(line => line.RowNo);
             return linesQuery;
