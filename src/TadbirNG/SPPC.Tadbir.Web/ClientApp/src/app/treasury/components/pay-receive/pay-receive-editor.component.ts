@@ -641,16 +641,9 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     let url = this.type == 1? PayReceiveApi.RegisterPayment: PayReceiveApi.RegisterReceipt;
     let apiUrl = String.Format(url,this.model.id);
 
-    // let permission = 'Register';
-
     lastValueFrom(this.payReceive.registerForm(apiUrl))
       .then((res) => {
         this.model.isRegistered = true;
-        // this.getDataUrl = String.Format(
-        //   this.type == PayReceiveTypes.Payment? PayReceiveApi.PaymentByNo: PayReceiveApi.ReceiptByNo,
-        //   this.model.payReceiveNo
-        // )
-        // this.getPayReceive(this.getDataUrl);
       })
       .catch((err) => {
         if (err)
@@ -717,10 +710,6 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
       .subscribe((msg: string) => {
         this.deleteConfirmMsg = String.Format(msg, text);
       });
-  }
-
-  stringFormat(format:string,...args) {
-    return String.Format(format,...args);
   }
 
   breadCrumbTitleFormat(format:string,...args) {

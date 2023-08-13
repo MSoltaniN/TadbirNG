@@ -273,6 +273,10 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
     });
     return msgText;
   }
+
+  stringFormat(format:string,...args) {
+    return String.Format(format,...args);
+  }
   
   /**
    * برای هندل کردن شورکات های که به یک متد خاص متصل میباشند
