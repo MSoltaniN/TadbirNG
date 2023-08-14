@@ -654,7 +654,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<KeyValue>> GetCitiesAsync(string provinceCode)
         {
             var repository = UnitOfWork.GetAsyncRepository<City>();
-            var cities = await repository.GetByCriteriaAsync(city => city.Province.Code == provinceCode);
+            var cities = await repository.GetByCriteriaAsync(city => city.Province.Code == provinceCode 
+            && !city.Code.Contains("00000") && city.Code.EndsWith("000"));
             return cities
                 .OrderBy(item => item.Name)
                 .Select(item => Mapper.Map<KeyValue>(item))
