@@ -170,15 +170,12 @@
 
           <div class="row">
             <div class="col-xs-12">
-              <div class="form-group row" *ngIf="!isPayReciept || (isPayReciept && isSourceApp)">
+              <div class="form-group row" *ngIf="!isPayReciept">
                 <label
                   class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
                   style="padding: 7px 10px"
                 >
-                  {{ (isSourceApp? 
-                    (creditDebiteMode == '1'?
-                    "PayReceipt.Application": "PayReceipt.Source"
-                    ): "VoucherLine.ArticleType") | translate }}
+                  {{ "VoucherLine.ArticleType" | translate }}
                 </label>
 
                 <kendo-dropdownlist
@@ -191,7 +188,37 @@
                   [value]="selectedArticleType"
                   [(ngModel)]="selectedArticleType"
                   [ngModelOptions]="{ standalone: true }"
-                  [formControlName]="isPayReciept? 'sourceAppId':'typeId'"
+                  [formControlName]="'typeId'"
+                >
+                </kendo-dropdownlist>
+              </div>
+
+              <div class="form-group row" *ngIf="isSourceApp">
+                <label
+                  class="control-label col-xs-4 col-sm-3 col-md-4 sppc-float"
+                  style="padding: 7px 10px"
+                >
+                  {{ (creditDebiteMode == '1'? "PayReceipt.Application": "PayReceipt.Source") | translate }}
+                </label>
+
+                <kendo-dropdownlist
+                  [data]="sourceAppList"
+                  class="col-xs-8 col-sm-9 sppc-float"
+                  style="padding: 0; width: 59%"
+                  [disabled]="
+                    isPayReciept
+                      ? false
+                      : isActiveSourceAppDropDown
+                      ? false
+                      : true
+                  "
+                  [textField]="'value'"
+                  [valueField]="'key'"
+                  [valuePrimitive]="true"
+                  [value]="selectedSourceApp"
+                  [(ngModel)]="selectedSourceApp"
+                  [ngModelOptions]="{ standalone: true }"
+                  [formControlName]="'sourceAppId'"
                 >
                 </kendo-dropdownlist>
               </div>
