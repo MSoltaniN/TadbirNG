@@ -28,5 +28,5 @@ export class MetadataApi {
 
   // acccollections-cashbank
   public static AccountCollectionsCashBankData =
-    environment.BaseUrl + "/acccollections-cashbank";
+    environment.BaseUrl + "/acc-collections/cash-bank/accounts";
 }

@@ -3415,10 +3415,10 @@
     <value>Normal vouchers</value>
   </data>
   <data name="BalanceSheet" xml:space="preserve">
-    <value>Balance sheet</value>
+    <value>Balance Sheet</value>
   </data>
   <data name="BalanceSheetReport" xml:space="preserve">
-    <value>Balance sheet report</value>
+    <value>Balance Sheet Report</value>
   </data>
   <data name="AssetsSum" xml:space="preserve">
     <value>Total assets</value>
@@ -4213,7 +4213,7 @@
     <value>Sales / Purchase</value>
   </data>
   <data name="SalesRefund" xml:space="preserve">
-    <value>Sales Reund</value>
+    <value>Sales Refund</value>
   </data>
   <data name="SalesRefundDiscounts" xml:space="preserve">
     <value>Sales Refund and Discounts</value>

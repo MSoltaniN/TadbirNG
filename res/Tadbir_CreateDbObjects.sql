@@ -585,6 +585,23 @@ CREATE TABLE [Finance].[Project] (
 )
 GO
 
+CREATE TABLE [CashFlow].[SourceApp] (
+    [SourceAppID]    INT              IDENTITY (1, 1) NOT NULL,
+    [BranchID]       INT              NOT NULL,
+    [FiscalPeriodID] INT              NOT NULL,
+    [BranchScope]    SMALLINT         NOT NULL,
+    [Code]           NVARCHAR(16)     NOT NULL,
+    [Name]           NVARCHAR(256)    NOT NULL,
+    [Description]    NVARCHAR(512)    NULL,
+    [Type]           SMALLINT         NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_SourceApp_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_CashFlow_SourceApp_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_CashFlow_SourceApp] PRIMARY KEY CLUSTERED ([SourceAppID] ASC)
+    , CONSTRAINT [FK_CashFlow_SourceApp_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_CashFlow_SourceApp_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+)
+GO
+
 CREATE TABLE [Finance].[VoucherLine] (
     [VoucherLineID]   INT              IDENTITY (1, 1) NOT NULL,
     [VoucherID]       INT              NOT NULL,
@@ -941,23 +958,6 @@ CREATE TABLE [CashFlow].[UserCashRegister] (
     [ModifiedDate]         DATETIME         CONSTRAINT [DF_CashFlow_UserCashRegister_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_CashFlow_UserCashRegister] PRIMARY KEY CLUSTERED ([UserCashRegisterID] ASC)
     , CONSTRAINT [FK_CashFlow_UserCashRegister_CashFlow_CashRegister] FOREIGN KEY ([CashRegisterID]) REFERENCES [CashFlow].[CashRegister]([CashRegisterID])
-)
-GO
-
-CREATE TABLE [CashFlow].[SourceApp] (
-    [SourceAppID]    INT              IDENTITY (1, 1) NOT NULL,
-    [BranchID]       INT              NOT NULL,
-    [FiscalPeriodID] INT              NOT NULL,
-    [BranchScope]    SMALLINT         NOT NULL,
-    [Code]           NVARCHAR(16)     NOT NULL,
-    [Name]           NVARCHAR(256)    NOT NULL,
-    [Description]    NVARCHAR(512)    NULL,
-    [Type]           SMALLINT         NOT NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_SourceApp_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_CashFlow_SourceApp_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_CashFlow_SourceApp] PRIMARY KEY CLUSTERED ([SourceAppID] ASC)
-    , CONSTRAINT [FK_CashFlow_SourceApp_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
-    , CONSTRAINT [FK_CashFlow_SourceApp_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
 )
 GO
 
@@ -1524,9 +1524,9 @@ SET IDENTITY_INSERT [Finance].[AccountGroup] OFF
 
 SET IDENTITY_INSERT [Finance].[AccountCollectionCategory] ON
 INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (1, N'BalanceSheet')
-INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (2, N'ProfitAndLoss')
+INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (2, N'ProfitLoss')
 INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (3, N'Treasury')
-INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (4, N'SalesAndPurchase')
+INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (4, N'SalesPurchase')
 INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (5, N'ClosingAccounts')
 INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (6, N'Warehouse')
 INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (7, N'Property')

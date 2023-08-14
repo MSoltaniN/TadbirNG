@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, Renderer2, OnInit, ElementRef, 
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { LookupService, MetaDataService, BrowserStorageService } from '@sppc/shared/services';
+import { LookupService, MetaDataService, BrowserStorageService, SessionKeys } from '@sppc/shared/services';
 import { VoucherLine, CurrencyInfo } from '@sppc/finance/models';
 import { Entities } from '@sppc/shared/enum/metadata';
 import { DetailComponent, String } from '@sppc/shared/class';
@@ -61,10 +61,12 @@ export class VoucherLineFormComponent
 
   currenciesRows: Array<CurrencyInfo>;
   articleTypeList: Array<Item> = [];
+  sourceAppList: Array<Item> = [];
 
   selectedCurrencyValue: number;
   selectedArticleType: string = "0";
   creditDebiteMode: string = "1";
+  selectedSourceApp: string = null;
 
   isDisplayCurrencyInfo: boolean = false;
   currencyRate: number | undefined;
@@ -73,6 +75,7 @@ export class VoucherLineFormComponent
   isFullAccountInputFocused = false;
   isPayReciept = false;
   isBank: boolean = true;
+  isActiveSourceAppDropDown = false;
 
   @Input() public isNew: boolean = false;
 
@@ -115,10 +118,12 @@ export class VoucherLineFormComponent
     this.initFromGroup();
     this.editForm1.reset(this.model);
 
-    this.getArticleType();
-
-    if (!this.isPayReciept)
+    this.getSourceApps();
+    
+    if (!this.isPayReciept){
+      this.getArticleType();
       this.getCurrencies();
+    }
     else
       this.initPayReceiptData();
 
@@ -180,6 +185,7 @@ export class VoucherLineFormComponent
         credit: new FormControl(),
         currencyValue: new FormControl(),
         typeId: new FormControl(),
+        sourceAppId: new FormControl(),
         description: new FormControl("", Validators.maxLength(512)),
         fullAccount: new FormGroup({
           account: new FormGroup({
@@ -210,17 +216,20 @@ export class VoucherLineFormComponent
 
   initPayReceiptData() {
     if (this.isSourceApp && !this.isNew) {
-      this.selectedArticleType = this.model.sourceAppId?.toString();
+      this.selectedSourceApp = this.model.sourceAppId?.toString();
       this.isBank = this.model.isBank;
+      if (this.model.sourceAppId)
+        this.isActiveSourceAppDropDown = true;
     }
   }
 
   public onSave(isOpen: boolean): void {
     if (this.editForm1.valid) {
       var model = this.editForm1.value;
-
+      
       if (!model.debit) model.debit = 0;
       if (!model.credit) model.credit = 0;
+      if (model.sourceAppId == 0) model.sourceAppId = null;
 
       if (this.creditDebiteMode == "1") model.credit = 0;
       else model.debit = 0;
@@ -260,17 +269,41 @@ export class VoucherLineFormComponent
   }
 
   getArticleType() {
-    let apiUrl = this.isSourceApp? String.Format(LookupApi.SourceApps,
-      this.creditDebiteMode == '1'? 1: 0
-      ): LookupApi.VoucherLineTypes;
     this.lookupService
-      .getModels(apiUrl)
+      .getModels(LookupApi.VoucherLineTypes)
       .subscribe((res) => {
         this.articleTypeList = res;
       });
   }
 
+  getSourceApps() {
+    let apiUrl = String.Format(
+      LookupApi.SourceApps,
+      this.creditDebiteMode
+    );
+
+    this.lookupService.getModels(apiUrl).subscribe((res) => {
+      this.sourceAppList = res;
+    });
+  }
+
+  hasAccountWithId(accountIdToFind: number) {
+    let accountCollections: any = JSON.parse(
+      this.bStorageService.getMetadata(SessionKeys.AccountColletion)
+    );
+
+    return accountCollections.some(
+      (account) => account.accountId === accountIdToFind
+    );
+  }
+
+
   focusHandler(e: any) {
+    let fullAccount = this.editForm1.value.fullAccount;
+    this.isActiveSourceAppDropDown = this.hasAccountWithId(
+      fullAccount.account.id
+    );
+
     setTimeout(() => {
       let costField = document.querySelector('.cost-field input');
       (<HTMLElement>document.activeElement).blur();

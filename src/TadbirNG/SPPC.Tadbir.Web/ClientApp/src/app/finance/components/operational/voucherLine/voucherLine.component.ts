@@ -299,6 +299,7 @@ export class VoucherLineComponent
     this.dialogModel.isNew = isNew;
     this.dialogModel.isNewBalance = this.isNewBalance;
     this.dialogModel.balance = this.balance;
+    this.dialogModel.isSourceApp = true;
 
     this.dialogRef.content.instance.save.subscribe((viewModel) => {
       this.isNewBalance = false;

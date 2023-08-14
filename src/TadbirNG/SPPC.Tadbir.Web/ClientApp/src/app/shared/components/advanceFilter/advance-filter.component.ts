@@ -329,10 +329,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
         (p) => p.key === this.selectedLogicalOperator
       )[0];
       
-      let displayValue =  this.CurrentLanguage == 'fa' &&
-       this.selectedColumn.scriptType == 'Date' &&
-       +this.selectedValue.split('/')[0] > 1600?
-          this.toJalaliDate(this.selectedValue) : this.selectedValue;
+      let displayValue = this.valueToView();
 
       this.filters[this.currentEditIndex].operatorTitle = this.getText(
         selectedOp.value
@@ -785,7 +782,7 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
       var selectedlogOp = this.logicalOperatorList.filter(
         (p) => p.key === this.selectedLogicalOperator
       )[0];
-
+      
       var index = -1;
       if (this.groupFilters) {
         index = this.groupFilters.findIndex(
@@ -794,8 +791,8 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
         this.filters = this.groupFilters[index].filters;
       } else this.filters = new Array<FilterRow>();
 
-      let value = this.selectScriptType === 'Date' && this.CurrentLanguage == 'fa'?
-                    this.toJalaliDate(this.selectedValue) : this.selectedValue;
+      let value = this.valueToView();
+
       var row: FilterRow = new FilterRow();
       row.id = Guid.newGuid();
       row.columnName = this.selectedColumn.name;
@@ -837,6 +834,24 @@ export class AdvanceFilterComponent extends DefaultComponent implements OnInit {
     moment.locale('en');
     let MomentDate = moment(value).locale('fa').format(format);    
     return MomentDate;
+  }
+
+  valueToView() {
+    let value;
+    switch (this.selectScriptType) {
+      case 'Date':
+        value = this.CurrentLanguage == 'fa'? this.toJalaliDate(this.selectedValue): this.selectedValue;
+        break;
+
+      case 'boolean':
+        value = this.selectedValue == true? this.getText("Form.Active"): this.getText("Form.Inactive");
+        break;
+    
+      default:
+        value = this.selectedValue;
+        break;
+    }
+    return value;
   }
 
   computeExpressionWithBraces(filters: Array<FilterRow>) {
