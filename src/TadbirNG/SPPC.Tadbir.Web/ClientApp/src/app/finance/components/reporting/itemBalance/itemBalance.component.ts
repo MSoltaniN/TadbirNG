@@ -619,7 +619,8 @@ export class ItemBalanceComponent
   }
 
   initValue() {
-    this.selectedModelTitle = this.baseModelTitle;
+    if (!this.selectedModelTitle)
+      this.selectedModelTitle = this.baseModelTitle;
     var model = this.bookType.find(
       (f) =>
         f.viewId == this.selectedViewId && f.level == this.selectedModel.level
