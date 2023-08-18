@@ -1,6 +1,6 @@
 ### STAGE 1: Build ### 
  #node:12 node:15.8.0-alpine3.10
-FROM node:15.8.0-alpine3.10 AS build
+FROM node:16-alpine AS build
 EXPOSE 4200
 
 # Create app directory
