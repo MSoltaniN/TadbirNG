@@ -22,7 +22,7 @@ RUN npm install
 RUN npm cache verify
 RUN npm uninstall -g @angular/cli
 RUN npm uninstall @angular/cli
-RUN npm install -g @angular/cli@6.2.9
+RUN npm install -g @angular/cli@14.1.0
 
 # Bundle app source
 # The following COPY operation is a temporary hack to prevent a compile error caused by current webpack version
