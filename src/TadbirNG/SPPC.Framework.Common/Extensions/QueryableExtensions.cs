@@ -26,7 +26,14 @@ namespace SPPC.Framework.Extensions
             var options = gridOptions ?? new GridOptions();
             if (options.Filter != null)
             {
-                queryable = queryable.Where(options.Filter.ToString());
+                string filter = options.Filter.ToString();
+                string OperationlEntityNo = "TextNo";
+                if (filter.ToString().Contains(OperationlEntityNo))
+                {
+                    filter = filter.Replace(OperationlEntityNo, $"Convert.ToInt64({OperationlEntityNo})");
+                }
+
+                queryable = queryable.Where(filter);
                 queryable = withPaging
                     ? ApplyPaging(queryable, options)
                     : queryable;
@@ -35,6 +42,12 @@ namespace SPPC.Framework.Extensions
             if (options.SortColumns.Count > 0)
             {
                 string ordering = String.Join(", ", options.SortColumns.Select(col => col.ToString()));
+                string OperationlEntityNo = "TextNo";
+                if (ordering.Contains(OperationlEntityNo))
+                {
+                    ordering = ordering.Replace(OperationlEntityNo, $"Convert.ToInt64({OperationlEntityNo})");
+                }
+
                 queryable = queryable.OrderBy(ordering);
             }
 

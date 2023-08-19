@@ -32,7 +32,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.ApprovedById);
             builder.Property(e => e.Type)
                 .IsRequired();
-            builder.Property(e => e.PayReceiveNo)
+            builder.Property(e => e.TextNo)
                 .IsRequired()
                 .HasMaxLength(16);
             builder.Property(e => e.Reference)
@@ -60,7 +60,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
-            builder.Ignore(e => e.No);
 
             builder.HasOne(e => e.FiscalPeriod)
                 .WithMany()

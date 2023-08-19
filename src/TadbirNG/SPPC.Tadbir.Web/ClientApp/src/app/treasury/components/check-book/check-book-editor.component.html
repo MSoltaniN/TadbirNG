@@ -127,11 +127,11 @@
       <div class="form-group col-sm-5ths col-xs-12 item">
         <label for="name" class="control-label">{{ 'CheckBook.CheckBookNo' | translate }}</label>
   
-        <input [sppcAutoFocus]="urlMode!='by-no'?100:false" type="text" class="k-textbox" formControlName="checkBookNo" [OnlyNumber] [disabled]="editMode"/>
+        <input [sppcAutoFocus]="urlMode!='by-no'?100:false" type="text" class="k-textbox" formControlName="textNo" [OnlyNumber] [disabled]="editMode"/>
   
-        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.checkBookNo.valid || editForm.controls.checkBookNo.pristine">
-          <span *ngIf="editForm.controls.checkBookNo.errors?.required">{{ 'AllValidations.CheckBook.NoIsRequired' | translate }}</span>
-          <span *ngIf="editForm.controls.checkBookNo.errors?.maxlength">{{ 'AllValidations.CheckBook.NoIsTooLong' | translate }}</span>
+        <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.textNo.valid || editForm.controls.textNo.pristine">
+          <span *ngIf="editForm.controls.textNo.errors?.required">{{ 'AllValidations.CheckBook.NoIsRequired' | translate }}</span>
+          <span *ngIf="editForm.controls.textNo.errors?.maxlength">{{ 'AllValidations.CheckBook.NoIsTooLong' | translate }}</span>
         </div>
       </div>
 
@@ -295,8 +295,8 @@
   [width]="450"
 >
   <div class="form-group" (keydown.enter)="searchByNo(true)">
-    <label class="control-label">{{'CheckBook.CheckBookNo' | translate}}</label>
-    <input type="text" class="k-textbox" [(ngModel)]="checkBookNo" [OnlyNumber] sppcAutoFocus/>
+    <label class="control-label">{{'CheckBook.textNo' | translate}}</label>
+    <input type="text" class="k-textbox" [(ngModel)]="textNo" [OnlyNumber] sppcAutoFocus/>
   </div>
   <kendo-dialog-actions>
     <button class="k-button" (click)="searchByNo(true)" primary="true">

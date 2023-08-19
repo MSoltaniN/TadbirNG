@@ -3753,9 +3753,6 @@
   <data name="CheckBookName" xml:space="preserve">
     <value>Check Book Name</value>
   </data>
-  <data name="CheckBookNo" xml:space="preserve">
-    <value>Check Book No</value>
-  </data>
   <data name="EndNo" xml:space="preserve">
     <value>End Number</value>
   </data>
@@ -3924,7 +3921,7 @@
   <data name="Register" xml:space="preserve">
     <value>Register</value>
   </data>
-  <data name="PayReceiveNo" xml:space="preserve">
+  <data name="TextNo" xml:space="preserve">
     <value>Number</value>
   </data>
   <data name="PaymentNo" xml:space="preserve">

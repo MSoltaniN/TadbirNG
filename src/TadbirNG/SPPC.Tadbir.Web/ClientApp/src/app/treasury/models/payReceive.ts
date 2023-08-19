@@ -8,7 +8,7 @@ export interface PayReceive {
     /**
     * شماره فرم دریافت/پرداخت
     */
-    payReceiveNo: string,
+    textNo: string,
 
     /**
     * شماره رفرنس

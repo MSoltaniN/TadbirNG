@@ -10,9 +10,9 @@ namespace SPPC.Tadbir.Model
     public class OperationalEntity : FiscalEntity, IOperationalEntity
     {
         /// <summary>
-        /// شماره سند عملیاتی که مقداری عددی است
+        /// شماره سند عملیاتی که عددی متنی است
         /// </summary>
-        public int No { get; set; }
+        public string TextNo { get; set; }
 
         /// <summary>
         /// تاریخ وقوع عملیات سازمانی مربوط به این سند عملیاتی

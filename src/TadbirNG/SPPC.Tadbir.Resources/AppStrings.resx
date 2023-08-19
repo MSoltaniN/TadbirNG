@@ -3744,9 +3744,6 @@
   <data name="CheckBookName" xml:space="preserve">
     <value>نام دسته چک</value>
   </data>
-  <data name="CheckBookNo" xml:space="preserve">
-    <value>شماره دسته چک</value>
-  </data>
   <data name="EndNo" xml:space="preserve">
     <value>شماره پایان</value>
   </data>
@@ -3924,7 +3921,7 @@
   <data name="Register" xml:space="preserve">
     <value>ثبت مالی</value>
   </data>
-  <data name="PayReceiveNo" xml:space="preserve">
+  <data name="TextNo" xml:space="preserve">
     <value>شماره</value>
   </data>
   <data name="PaymentNo" xml:space="preserve">

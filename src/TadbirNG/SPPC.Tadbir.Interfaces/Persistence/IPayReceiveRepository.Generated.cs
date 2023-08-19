@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceive">اطلاعات نمایشی فرم دریافت/پرداخت مورد نظر</param>
         /// <returns>در صورت تکراری بودن شماره فرم دریافت/پرداخت مقدار درست و
         /// در غیر اینصورت نادرست برمی گرداند</returns>
-        Task<bool> IsDuplicatePayReceiveNo(PayReceiveViewModel payReceive);
+        Task<bool> IsDuplicateTextNo(PayReceiveViewModel payReceive);
 
         /// <summary>
         /// به روش آسنکرون، وضعیت تایید فرم دریافت/پرداخت مشخص شده را تغییر می دهد
@@ -63,10 +63,10 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، فرم دریافت/پرداخت با شماره مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="payReceiveNo">شماره فرم دریافت/پرداخت مورد نظر</param>
-        /// <param name="type">مشخص می کند که درخواست از نوع پرداختی یا دریافتی است</param>
+        /// <param name="textNo">شماره فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="type">مشخص می کند که درخواست از نوع پرداختی یا دریافتی می باشد</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شماره</returns>
-        Task<PayReceiveViewModel> GetPayReceiveByNoAsync(string payReceiveNo, int type);
+        Task<PayReceiveViewModel> GetPayReceiveByNoAsync(string textNo, int type);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات اولین فرم دریافت/پرداخت را از نوع مشخص شده خوانده و برمی گرداند

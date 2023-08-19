@@ -10,7 +10,7 @@ export class PayReceiveInfo implements PayReceive {
   fiscalPeriodId: number;
   branchId: number;
   date: Date;
-  payReceiveNo: string;
+  textNo: string;
   reference: string;
   confirmedById: number;
   approvedById: number;

@@ -8,9 +8,9 @@ import { map } from "rxjs";
 import { CheckBook, CheckBookPage } from "../models/checkBook";
 import { CheckBooksApi } from "./api/checkBooksApi";
 
-export class CheckBookInfo {
+export class CheckBookInfo implements CheckBook{
   id: number = 0;
-  checkBookNo: number;
+  textNo: number;
   name: string;
   issueDate: Date;
   startNo: string;

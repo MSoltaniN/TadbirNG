@@ -1402,3 +1402,12 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [
 INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (854, 8, 'ModifiedDate', NULL, 'Default', 'System.DateTime', 'datetime', 'Date', 0, 0, 0, 0, 1, 1, 1, N'Hidden', 8, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
+
+-- 1.2.1572
+UPDATE [Metadata].[Column]
+SET [Name] = N'TextNo', [DotNetType] = 'System.Int64', [StorageType] = 'bigint', [Length] = 0, ScriptType ='number'
+WHERE ColumnID IN(764,778) AND [Name] = N'PayReceiveNo'
+
+UPDATE [Metadata].[Column]
+SET [Name] = N'TextNo', [DotNetType] = 'System.Int64', [StorageType] = 'bigint', [Length] = 0, ScriptType = 'number'
+WHERE ColumnID IN(713,726) AND [Name] = N'CheckBookNo'

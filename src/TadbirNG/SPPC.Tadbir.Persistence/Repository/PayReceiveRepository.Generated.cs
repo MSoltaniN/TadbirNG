@@ -77,7 +77,7 @@ namespace SPPC.Tadbir.Persistence
             if (payReceive.Id == 0)
             {
                 payReceiveModel = Mapper.Map<PayReceive>(payReceive);
-                payReceiveModel.PayReceiveNo = Int64.Parse(payReceive.PayReceiveNo).ToString();
+                payReceiveModel.TextNo = Int64.Parse(payReceive.TextNo.Trim()).ToString();
                 payReceiveModel.IssuedById = UserContext.Id;
                 payReceiveModel.ModifiedById = UserContext.Id;
                 payReceiveModel.IssuedByName =
@@ -123,13 +123,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceive">اطلاعات نمایشی فرم دریافت/پرداخت مورد نظر</param>
         /// <returns>در صورت تکراری بودن شماره فرم دریافت/پرداخت مقدار درست و
         /// در غیر اینصورت نادرست برمی گرداند</returns>
-        public async Task<bool> IsDuplicatePayReceiveNo(PayReceiveViewModel payReceive)
+        public async Task<bool> IsDuplicateTextNo(PayReceiveViewModel payReceive)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
             return await repository
                 .GetEntityQuery()
                 .AnyAsync(pr => payReceive.Id != pr.Id
-                    && payReceive.PayReceiveNo == pr.PayReceiveNo
+                    && payReceive.TextNo == pr.TextNo
                     && payReceive.Type == pr.Type
                     && payReceive.FiscalPeriodId == pr.FiscalPeriodId
                     && payReceive.BranchId == pr.BranchId);
@@ -180,16 +180,16 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، فرم دریافت/پرداخت با شماره مشخص شده را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="payReceiveNo">شماره فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="textNo">شماره فرم دریافت/پرداخت مورد نظر</param>
         /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <returns>فرم دریافت/پرداخت مشخص شده با شماره</returns>
-        public async Task<PayReceiveViewModel> GetPayReceiveByNoAsync(string payReceiveNo, int type)
+        public async Task<PayReceiveViewModel> GetPayReceiveByNoAsync(string textNo, int type)
         {
             var byNo = default(PayReceiveViewModel);
             var viewId = GetViewId((int)type);
             var payReceiveByNo = await Repository.GetAllOperationQuery<PayReceive>(
                 viewId, pr => pr.Accounts, pr => pr.CashAccounts, pr => pr.PayReceiveVoucherLines)
-                .Where(pr => pr.PayReceiveNo == payReceiveNo.Trim() && pr.Type == (int)type)
+                .Where(pr => pr.TextNo == textNo.Trim() && pr.Type == (int)type)
                 .SingleOrDefaultAsync();
 
             if (payReceiveByNo != null)
@@ -250,7 +250,7 @@ namespace SPPC.Tadbir.Persistence
             GridOptions gridOptions = null)
         {
             var payReceives = await GetOrderedPayReceiveItemsAsync(type, pr =>
-                Convert.ToInt64(pr.PayReceiveNo) > Convert.ToInt64(currentNo) && pr.Type == type, gridOptions);
+                Convert.ToInt64(pr.TextNo) > Convert.ToInt64(currentNo) && pr.Type == type, gridOptions);
             var next = payReceives.FirstOrDefault();
             if (next != null)
             {
@@ -271,7 +271,7 @@ namespace SPPC.Tadbir.Persistence
             GridOptions gridOptions = null)
         {
             var payReceives = await GetOrderedPayReceiveItemsAsync(type, pr =>
-                Convert.ToInt64(pr.PayReceiveNo) < Convert.ToInt64(currentNo) && pr.Type == type, gridOptions);
+                Convert.ToInt64(pr.TextNo) < Convert.ToInt64(currentNo) && pr.Type == type, gridOptions);
             var previous = payReceives.LastOrDefault();
             if (previous != null)
             {
@@ -299,7 +299,7 @@ namespace SPPC.Tadbir.Persistence
                 BranchId = UserContext.BranchId,
                 FiscalPeriodId = UserContext.FiscalPeriodId,
                 Date = await GetLastPayReceiveDateAsync(type),
-                PayReceiveNo = await GetNewPayReceiveNumberAsync(type),
+                TextNo = await GetNewPayReceiveNumberAsync(type),
                 Type = (short)type
             };
 
@@ -399,7 +399,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceive">سطر اطلاعاتی موجود</param>
         protected override void UpdateExisting(PayReceiveViewModel payReceiveViewModel, PayReceive payReceive)
         {
-            payReceive.PayReceiveNo = Int64.Parse(payReceiveViewModel.PayReceiveNo.Trim()).ToString();
+            payReceive.TextNo = Int64.Parse(payReceiveViewModel.TextNo.Trim()).ToString();
             payReceive.Reference = payReceiveViewModel.Reference;
             payReceive.Date = payReceiveViewModel.Date;
             payReceive.CurrencyId = payReceiveViewModel.CurrencyId;
@@ -415,7 +415,7 @@ namespace SPPC.Tadbir.Persistence
         protected override string GetState(PayReceive entity)
         {
             return entity != null
-                ? $"{AppStrings.PayReceiveNo} : {entity.PayReceiveNo}, " +
+                ? $"{AppStrings.TextNo} : {entity.TextNo}, " +
                     $"{AppStrings.Reference} : {entity.Reference}, {AppStrings.Date} : {entity.Date}, " +
                     $"{AppStrings.CurrencyRate} : {entity.CurrencyRate}, {AppStrings.Description} : {entity.Description}, "
                 : String.Empty;
@@ -452,7 +452,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllOperationQuery<PayReceive>(viewId,
                     pr => pr.Accounts, pr => pr.CashAccounts, pr => pr.PayReceiveVoucherLines)
                 .Where(criteria)
-                .OrderBy(item => Convert.ToInt64(item.PayReceiveNo))
+                .OrderBy(item => Convert.ToInt64(item.TextNo))
                 .Select(item => Mapper.Map<PayReceiveViewModel>(item))
                 .ApplyQuickFilter(options, false)
                 .Apply(options, false)
@@ -467,7 +467,7 @@ namespace SPPC.Tadbir.Persistence
             var options = gridOptions ?? new GridOptions();
             var query = Repository
                 .GetAllOperationQuery<PayReceive>(viewId)
-                .Where(pr => Convert.ToInt64(pr.PayReceiveNo) < Convert.ToInt64(payReceive.PayReceiveNo) &&
+                .Where(pr => Convert.ToInt64(pr.TextNo) < Convert.ToInt64(payReceive.TextNo) &&
                     pr.Type == type);
 
             if (!options.IsEmpty)
@@ -486,7 +486,7 @@ namespace SPPC.Tadbir.Persistence
 
             query = Repository
                 .GetAllOperationQuery<PayReceive>(viewId)
-                .Where(pr => Convert.ToInt64(pr.PayReceiveNo) > Convert.ToInt64(payReceive.PayReceiveNo) &&
+                .Where(pr => Convert.ToInt64(pr.TextNo) > Convert.ToInt64(payReceive.TextNo) &&
                     pr.Type == type);
 
             if (!options.IsEmpty)
@@ -538,7 +538,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(pr => pr.FiscalPeriodId == UserContext.FiscalPeriodId
                     && pr.BranchId == UserContext.BranchId
                     && pr.Type == type)
-                .Select(pr => Convert.ToInt64(pr.PayReceiveNo))
+                .Select(pr => Convert.ToInt64(pr.TextNo))
                 .OrderByDescending(no => no)
                 .FirstOrDefaultAsync();
 
@@ -617,14 +617,14 @@ namespace SPPC.Tadbir.Persistence
 
                 description = String.Format
                     (Context.Localize(AppStrings.ReceiverCashArticleDescriptionTemplate),
-                    payReceive.PayReceiveNo, bankOrederNoText, currencyText,
+                    payReceive.TextNo, bankOrederNoText, currencyText,
                     ArticleText, payReceiveText);
             }
             else
             {
                 description = String.Format
                     (Context.Localize(AppStrings.PayerCashArticleDescriptionTemplate),
-                    payReceive.PayReceiveNo, currencyText,
+                    payReceive.TextNo, currencyText,
                     ArticleText, payReceiveText);
             }
 

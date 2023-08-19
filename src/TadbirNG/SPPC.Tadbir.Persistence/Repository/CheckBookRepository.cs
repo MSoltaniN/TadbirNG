@@ -49,10 +49,11 @@ namespace SPPC.Tadbir.Persistence
         /// <inheritdoc/>
         public async Task<CheckBookViewModel> GetNewCheckBookAsync()
         {
-            int lastNo = await GetLastCheckBookNoAsync();
+            long lastNo = await GetLastCheckBookNoAsync();
+            lastNo = ++lastNo;
             var newCheckBook = new CheckBookViewModel()
             {
-                CheckBookNo = lastNo + 1,
+                TextNo = lastNo.ToString(),
                 BranchId = UserContext.BranchId,
             };
 
@@ -60,13 +61,13 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public async Task<CheckBookViewModel> GetCheckBookByNoAsync(int checkBookNo)
+        public async Task<CheckBookViewModel> GetCheckBookByNoAsync(string textNo)
         {
             var byNo = default(CheckBookViewModel);
             var checkBookByNo = await Repository
                 .GetAllOperationQuery<CheckBook>(ViewId.CheckBook,
                     cb => cb.Account, cb => cb.DetailAccount, cb => cb.CostCenter, cb => cb.Project)
-                .Where(cb => cb.CheckBookNo == checkBookNo)
+                .Where(cb => Convert.ToInt64(cb.TextNo) == Convert.ToInt64(textNo))
                 .FirstOrDefaultAsync();
             if (checkBookByNo != null)
             {
@@ -94,6 +95,7 @@ namespace SPPC.Tadbir.Persistence
                 checkBookModel.CreatedById = UserContext.Id;
                 checkBookModel.ModifiedById = UserContext.Id;
                 checkBookModel.CreatedDate = DateTime.Now;
+                checkBookModel.TextNo = Int64.Parse(checkBook.TextNo.Trim()).ToString();
                 await InsertAsync(repository, checkBookModel);
             }
             else
@@ -131,7 +133,7 @@ namespace SPPC.Tadbir.Persistence
                 cb => cb.Account, cb => cb.DetailAccount, cb => cb.CostCenter, cb => cb.Project);
             var options = gridOptions ?? new GridOptions();
             var firstCheckBook = checkBooks
-                .OrderBy(c => c.IssueDate)
+                .OrderBy(c => Convert.ToInt64(c.TextNo))
                 .Select(cb => Mapper.Map<CheckBookViewModel>(cb))
                 .Apply(options, false)
                 .FirstOrDefault();
@@ -145,17 +147,17 @@ namespace SPPC.Tadbir.Persistence
 
         /// <inheritdoc/>
         public async Task<CheckBookViewModel> GetPreviousCheckBookAsync(
-            DateTime issueDate, GridOptions gridOptions = null)
+            string checkBookNo, GridOptions gridOptions = null)
         {
             var checkBooks = await Repository.GetAllOperationAsync<CheckBook>(
                 ViewId.CheckBook,
                 cb => cb.Account, cb => cb.DetailAccount, cb => cb.CostCenter, cb => cb.Project);
             var options = gridOptions ?? new GridOptions();
             var previousCheckBook = checkBooks
-                .OrderByDescending(c => c.IssueDate)
+                .OrderByDescending(c => Convert.ToInt64(c.TextNo))
                 .Select(cb => Mapper.Map<CheckBookViewModel>(cb))
                 .Apply(options, false)
-                .Where(cb => cb.IssueDate < issueDate)
+                .Where(cb => Convert.ToInt64(cb.TextNo) < Convert.ToInt64(checkBookNo))
                 .FirstOrDefault();
             if (previousCheckBook != null)
             {
@@ -167,17 +169,17 @@ namespace SPPC.Tadbir.Persistence
 
         /// <inheritdoc/>
         public async Task<CheckBookViewModel> GetNextCheckBookAsync(
-            DateTime issueDate, GridOptions gridOptions = null)
+            string checkBookNo, GridOptions gridOptions = null)
         {
             var checkBooks = await Repository.GetAllOperationAsync<CheckBook>(
                 ViewId.CheckBook,
                 cb => cb.Account, cb => cb.DetailAccount, cb => cb.CostCenter, cb => cb.Project);
             var options = gridOptions ?? new GridOptions();
             var nextCheckBook = checkBooks
-                .OrderBy(c => c.IssueDate)
+                .OrderBy(c => Convert.ToInt64(c.TextNo))
                 .Select(cb => Mapper.Map<CheckBookViewModel>(cb))
                 .Apply(options, false)
-                .Where(cb => cb.IssueDate > issueDate)
+                .Where(cb => Convert.ToInt64(cb.TextNo) > Convert.ToInt64(checkBookNo))
                 .FirstOrDefault();
             if (nextCheckBook != null)
             {
@@ -195,7 +197,7 @@ namespace SPPC.Tadbir.Persistence
                 cb => cb.Account, cb => cb.DetailAccount, cb => cb.CostCenter, cb => cb.Project);
             var options = gridOptions ?? new GridOptions();
             var lastCheckBook = checkBooks
-                .OrderByDescending(c => c.IssueDate)
+                .OrderByDescending(c => Convert.ToInt64(c.TextNo))
                 .Select(cb => Mapper.Map<CheckBookViewModel>(cb))
                 .Apply(options, false)
                 .FirstOrDefault();
@@ -297,7 +299,7 @@ namespace SPPC.Tadbir.Persistence
         /// <inheritdoc/>
         protected override void UpdateExisting(CheckBookViewModel checkBookView, CheckBook checkBook)
         {
-            checkBook.CheckBookNo = checkBookView.CheckBookNo;
+            checkBook.TextNo = Int64.Parse(checkBookView.TextNo.Trim()).ToString();
             checkBook.Name = checkBookView.Name;
             checkBook.IssueDate = checkBookView.IssueDate;
             checkBook.StartNo = checkBookView.StartNo;
@@ -325,7 +327,7 @@ namespace SPPC.Tadbir.Persistence
             return (entity != null)
                 ? String.Format(
                     "{0} : {1} , {2} : {3} , {4} : {5} , {6} : {7} , {8} : {9} , {10} : {11}",
-                    AppStrings.CheckBookNo, entity.CheckBookNo, AppStrings.CheckBookName, entity.Name,
+                    AppStrings.TextNo, entity.TextNo, AppStrings.CheckBookName, entity.Name,
                     AppStrings.IssueDate, entity.IssueDate, AppStrings.StartNo, entity.StartNo,
                     AppStrings.EndNo, entity.EndNo, AppStrings.BankName, entity.BankName)
                 : null;
@@ -334,15 +336,21 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، شماره آخرین دسته چک موجود را برمی گرداند
         /// </summary>
-        private async Task<int> GetLastCheckBookNoAsync()
+        private async Task<long> GetLastCheckBookNoAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<CheckBook>();
             var lastCheckBook = await repository
                 .GetEntityQuery()
                 .Where(checkBook => checkBook.BranchId == UserContext.BranchId)
-                .OrderByDescending(checkBook => checkBook.CheckBookNo)
+                .OrderByDescending(checkBook => Convert.ToInt64(checkBook.TextNo))
                 .FirstOrDefaultAsync();
-            return (lastCheckBook != null) ? lastCheckBook.CheckBookNo ?? 0 : 0;
+            long lastTextNo = 0;
+            if(lastCheckBook != null && !String.IsNullOrEmpty(lastCheckBook.TextNo))
+            {
+                lastTextNo = Convert.ToInt64(lastCheckBook.TextNo);
+            }
+
+            return lastTextNo;
         }
 
         private IQueryable<CheckBook> GetCheckBookQuery(int checkBookId)

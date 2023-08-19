@@ -1122,3 +1122,13 @@ ADD [CreatedByID]    INT          CONSTRAINT [DF_Finance_Project_CreatedById] DE
 GO
 UPDATE [Finance].[Project]
 SET [CreatedDate] = [ModifiedDate]
+
+-- 1.2.1572
+EXEC sp_rename '[CashFlow].[PayReceive].[PayReceiveNo]', 'TextNo', 'COLUMN'
+EXEC sp_rename '[Check].[CheckBook].[CheckBookNo]', 'TextNo', 'COLUMN'
+
+ALTER TABLE [CashFlow].[PayReceive]
+ALTER COLUMN [TextNo] NVARCHAR(16) NOT NULL
+
+ALTER TABLE [Check].[CheckBook]
+ALTER COLUMN [TextNo] NVARCHAR(16) NULL

@@ -147,7 +147,7 @@
                 <input
                   type="text"
                   class="k-textbox"
-                  formControlName="payReceiveNo"
+                  formControlName="textNo"
                   [OnlyNumber]
                   [attr.disabled]="isConfirmed || isRegistered? 'disabled' : null"
                 />
@@ -155,18 +155,18 @@
                 <div
                   class="k-tooltip k-tooltip-validation"
                   [hidden]="
-                    editForm.controls.payReceiveNo.valid ||
-                    editForm.controls.payReceiveNo.pristine
+                    editForm.controls.textNo.valid ||
+                    editForm.controls.textNo.pristine
                   "
                 >
                   <span
-                    *ngIf="editForm.controls.payReceiveNo.errors?.required"
+                    *ngIf="editForm.controls.textNo.errors?.required"
                     >{{
                       "AllValidations.Voucher.NoIsRequired" | translate
                     }}</span
                   >
                   <span
-                    *ngIf="editForm.controls.payReceiveNo.errors?.maxlength"
+                    *ngIf="editForm.controls.textNo.errors?.maxlength"
                     >{{
                       "AllValidations.Voucher.NoIsTooLong" | translate
                     }}</span
@@ -454,7 +454,7 @@
     <input
       type="text"
       class="k-textbox"
-      [(ngModel)]="payReceiveNo"
+      [(ngModel)]="textNo"
       [OnlyNumber]
       sppcAutoFocus
     />
