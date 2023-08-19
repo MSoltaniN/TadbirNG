@@ -170,6 +170,7 @@ namespace SPPC.Tadbir.Persistence
             if (accountView.Id == 0)
             {
                 account = Mapper.Map<Account>(accountView);
+                SetBaseEntityInfo(account);
                 await InsertAsync(repository, account);
                 await UpdateLevelUsageAsync(account.Level);
                 await InsertAccountCurrencyAsync(accountView, account);
@@ -180,6 +181,7 @@ namespace SPPC.Tadbir.Persistence
                 if (account != null)
                 {
                     bool needsCascade = (account.Code != accountView.Code);
+                    SetBaseEntityInfo(account);
                     await UpdateAsync(repository, account, accountView);
                     if (needsCascade)
                     {

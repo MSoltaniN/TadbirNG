@@ -9,11 +9,11 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// مجموعه ای از تفصیلی های شناور زیرشاخه (فرزند) در ساختار درختی
         /// </summary>
-        public IList<DetailAccount> Children { get; protected set; }
+        public virtual IList<DetailAccount> Children { get; protected set; }
 
         /// <summary>
         /// شناسه دیتابیسی ارزپایه یا پیش فرض این تفصیلی شناور
         /// </summary>
-        public int? CurrencyId { get; set; }
+        public virtual int? CurrencyId { get; set; }
     }
 }

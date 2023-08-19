@@ -8,6 +8,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// شناسه دیتابیسی ارز مرتبط با این نرخ
         /// </summary>
-        public int CurrencyId { get; set; }
+        public virtual int CurrencyId { get; set; }
     }
 }

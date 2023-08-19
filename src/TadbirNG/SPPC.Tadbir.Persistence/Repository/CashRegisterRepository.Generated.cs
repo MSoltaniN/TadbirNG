@@ -79,6 +79,7 @@ namespace SPPC.Tadbir.Persistence
             if (cashRegister.Id == 0)
             {
                 cashRegisterModel = Mapper.Map<CashRegister>(cashRegister);
+                SetBaseEntityInfo(cashRegisterModel);
                 await InsertAsync(repository, cashRegisterModel);
             }
             else
@@ -86,6 +87,7 @@ namespace SPPC.Tadbir.Persistence
                 cashRegisterModel = await repository.GetByIDAsync(cashRegister.Id);
                 if (cashRegisterModel != null)
                 {
+                    SetBaseEntityInfo(cashRegisterModel);
                     await UpdateAsync(repository, cashRegisterModel, cashRegister);
                 }
             }

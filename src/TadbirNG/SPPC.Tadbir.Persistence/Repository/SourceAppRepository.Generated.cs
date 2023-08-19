@@ -90,6 +90,7 @@ namespace SPPC.Tadbir.Persistence
             if (sourceApp.Id == 0)
             {
                 sourceAppModel = Mapper.Map<SourceApp>(sourceApp);
+                SetBaseEntityInfo(sourceAppModel);
                 await InsertAsync(repository, sourceAppModel);
             }
             else
@@ -97,6 +98,7 @@ namespace SPPC.Tadbir.Persistence
                 sourceAppModel = await repository.GetByIDAsync(sourceApp.Id);
                 if (sourceAppModel != null)
                 {
+                    SetBaseEntityInfo(sourceAppModel);
                     await UpdateAsync(repository, sourceAppModel, sourceApp);
                 }
             }

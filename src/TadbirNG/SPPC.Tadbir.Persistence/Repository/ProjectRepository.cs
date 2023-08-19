@@ -104,6 +104,7 @@ namespace SPPC.Tadbir.Persistence
             if (project.Id == 0)
             {
                 projectModel = Mapper.Map<Project>(project);
+                SetBaseEntityInfo(projectModel);
                 await InsertAsync(repository, projectModel);
                 await UpdateLevelUsageAsync(projectModel.Level);
                 await _relationRepository.OnProjectInsertedAsync(projectModel.Id);
@@ -114,6 +115,7 @@ namespace SPPC.Tadbir.Persistence
                 if (projectModel != null)
                 {
                     bool needsCascade = (projectModel.Code != project.Code);
+                    SetBaseEntityInfo(projectModel);
                     await UpdateAsync(repository, projectModel, project);
                     if (needsCascade)
                     {

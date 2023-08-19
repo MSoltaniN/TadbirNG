@@ -7,6 +7,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// مجموعه ای از مراکز هزینه زیرشاخه (فرزند) در ساختار درختی
         /// </summary>
-        public IList<CostCenter> Children { get; protected set; }
+        public virtual IList<CostCenter> Children { get; protected set; }
     }
 }

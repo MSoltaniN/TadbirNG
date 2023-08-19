@@ -7,6 +7,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// مجموعه نرخ های تعریف شده برای ارز
         /// </summary>
-        public IList<CurrencyRate> Rates { get; }
+        public virtual IList<CurrencyRate> Rates { get; }
     }
 }

@@ -163,19 +163,26 @@ CREATE TABLE [Corporate].[Branch] (
 GO
 
 CREATE TABLE [Finance].[Currency] (
-    [CurrencyID]        INT              IDENTITY (1, 1) NOT NULL,
-	[FiscalPeriodID]    INT              CONSTRAINT [DF_Finance_Currency_FiscalPeriodID] DEFAULT (0) NOT NULL,
-	[BranchID]          INT              NOT NULL,
-	[BranchScope]       SMALLINT         CONSTRAINT [DF_Finance_Currency_BranchScope] DEFAULT (0) NOT NULL,
-    [Name]              NVARCHAR(64)     NOT NULL,
-    [Code]              NVARCHAR(8)      NOT NULL,
-    [TaxCode]           INT              NOT NULL,
-    [MinorUnit]         NVARCHAR(32)     NOT NULL,
-    [DecimalCount]      SMALLINT         NOT NULL,
-	[IsDefaultCurrency] BIT              NOT NULL,
-    [Description]       NVARCHAR(512)    NULL,
-    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Currency_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_Currency_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    [CurrencyID]       INT              IDENTITY (1, 1) NOT NULL,
+	[FiscalPeriodID]   INT              CONSTRAINT [DF_Finance_Currency_FiscalPeriodID] DEFAULT (0) NOT NULL,
+    [BranchID]         INT              NOT NULL,
+    [BranchScope]      SMALLINT         CONSTRAINT [DF_Finance_Currency_BranchScope] DEFAULT (0) NOT NULL,
+    [CreatedByID]      INT              NOT NULL,
+    [CreatedByName]    NVARCHAR(64)     NOT NULL,
+    [CreatedDate]      DATETIME         NOT NULL,
+    [ModifiedByID]     INT              NOT NULL,
+    [ModifiedByName]   NVARCHAR(64)     NOT NULL,
+    [Name]             NVARCHAR(64)     NOT NULL,
+    [Country]          NVARCHAR(64)     NOT NULL,
+    [Code]             NVARCHAR(8)      NOT NULL,
+    [TaxCode]          INT              NOT NULL,
+    [MinorUnit]        NVARCHAR(32)     NOT NULL,
+    [Multiplier]       INT              NOT NULL,
+    [DecimalCount]     SMALLINT         NOT NULL,
+    [IsActive]         BIT              NOT NULL,
+    [Description]      NVARCHAR(512)    NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Currency_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Finance_Currency_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_Currency] PRIMARY KEY CLUSTERED ([CurrencyID] ASC)
     , CONSTRAINT [FK_Finance_Currency_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
 )
@@ -186,11 +193,16 @@ CREATE TABLE [Finance].[CurrencyRate] (
     [CurrencyID]       INT              NOT NULL,
 	[FiscalPeriodID]   INT              CONSTRAINT [DF_Finance_CurrencyRate_FiscalPeriodID] DEFAULT (0) NOT NULL,
     [BranchID]         INT              NOT NULL,
+    [CreatedByID]      INT              NOT NULL,
+    [CreatedByName]    NVARCHAR(64)     NOT NULL,
+    [CreatedDate]      DATETIME         NOT NULL,
+    [ModifiedByID]     INT              NOT NULL,
+    [ModifiedByName]   NVARCHAR(64)     NOT NULL,
     [BranchScope]      SMALLINT         CONSTRAINT [DF_Finance_CurrencyRate_BranchScope] DEFAULT (0) NOT NULL,
     [Date]             DATETIME         NOT NULL,
     [Time]             TIME(7)          NOT NULL,
     [Multiplier]       FLOAT            NOT NULL,
-	[Description]      NVARCHAR(512)    NULL,
+    [Description]      NVARCHAR(512)    NULL,
     [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_CurrencyRate_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]     DATETIME         CONSTRAINT [DF_Finance_CurrencyRate_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_CurrencyRate] PRIMARY KEY CLUSTERED ([CurrencyRateID] ASC)
@@ -418,11 +430,18 @@ CREATE TABLE [Finance].[Account] (
     [FiscalPeriodID]         INT              NOT NULL,
     [BranchID]               INT              NOT NULL,
     [GroupID]                INT              NULL,
+    [CurrencyID]             INT              NULL,
     [BranchScope]            SMALLINT         NOT NULL,
+    [CreatedByID]            INT              NOT NULL,
+    [CreatedByName]          NVARCHAR(64)     NOT NULL,
+    [CreatedDate]            DATETIME         NOT NULL,
+    [ModifiedByID]           INT              NOT NULL,
+    [ModifiedByName]         NVARCHAR(64)     NOT NULL,
     [Code]                   NVARCHAR(16)     NOT NULL,
     [FullCode]               NVARCHAR(256)    NOT NULL,
     [Name]                   NVARCHAR(512)    NOT NULL,
     [Level]                  SMALLINT         NOT NULL,
+    [IsActive]               BIT              CONSTRAINT [DF_Finance_Account_IsActive] DEFAULT (1) NOT NULL,
     [IsCurrencyAdjustable]   BIT              CONSTRAINT [DF_Finance_Account_IsCurrencyAdjustable] DEFAULT (1) NOT NULL,
     [TurnoverMode]           SMALLINT         CONSTRAINT [DF_Finance_Account_TurnoverMode] DEFAULT (-1) NOT NULL,
     [Description]            NVARCHAR(512)    NULL,
@@ -530,6 +549,11 @@ CREATE TABLE [Finance].[DetailAccount] (
 	[CurrencyID]        INT              NULL,
 	[BranchID]          INT              NOT NULL,
 	[BranchScope]       SMALLINT         CONSTRAINT [DF_Finance_DetailAccount_BranchScope] DEFAULT (0) NOT NULL,
+    [CreatedByID]       INT              NOT NULL,
+    [CreatedByName]     NVARCHAR(64)     NOT NULL,
+    [CreatedDate]       DATETIME         NOT NULL,
+    [ModifiedByID]      INT              NOT NULL,
+    [ModifiedByName]    NVARCHAR(64)     NOT NULL,
     [Code]              NVARCHAR(16)     NOT NULL,
     [FullCode]          NVARCHAR(256)    NOT NULL,
     [Name]              NVARCHAR(256)    NOT NULL,
@@ -546,22 +570,27 @@ CREATE TABLE [Finance].[DetailAccount] (
 GO
 
 CREATE TABLE [Finance].[CostCenter] (
-    [CostCenterID]   INT              IDENTITY (1, 1) NOT NULL,
-    [ParentID]       INT              NULL,
-	[FiscalPeriodID] INT              NOT NULL,
-	[BranchID]       INT              NOT NULL,
-	[BranchScope]    SMALLINT         CONSTRAINT [DF_Finance_CostCenter_BranchScope] DEFAULT (0) NOT NULL,
-    [Code]           NVARCHAR(16)     NOT NULL,
-    [FullCode]       NVARCHAR(256)    NOT NULL,
-    [Name]           NVARCHAR(256)    NOT NULL,
-    [Level]          SMALLINT         CONSTRAINT [DF_Finance_CostCenter_Level] DEFAULT (0) NOT NULL,
-    [Description]    NVARCHAR(512)    NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_CostCenter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_CostCenter_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    [CostCenterID]     INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]         INT              NULL,
+    [FiscalPeriodID]   INT              NOT NULL,
+    [BranchID]         INT              NOT NULL,
+	[BranchScope]      SMALLINT         CONSTRAINT [DF_Finance_CostCenter_BranchScope] DEFAULT (0) NOT NULL,
+    [CreatedByID]      INT              NOT NULL,
+    [CreatedByName]    NVARCHAR(64)     NOT NULL,
+    [CreatedDate]      DATETIME         NOT NULL,
+    [ModifiedByID]     INT              NOT NULL,
+    [ModifiedByName]   NVARCHAR(64)     NOT NULL,
+    [Code]             NVARCHAR(16)     NOT NULL,
+    [FullCode]         NVARCHAR(256)    NOT NULL,
+    [Name]             NVARCHAR(256)    NOT NULL,
+    [Level]            SMALLINT         CONSTRAINT [DF_Finance_CostCenter_Level] DEFAULT (0) NOT NULL,
+    [Description]      NVARCHAR(512)    NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_CostCenter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Finance_CostCenter_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_CostCenter] PRIMARY KEY CLUSTERED ([CostCenterID] ASC)
     , CONSTRAINT [FK_Finance_CostCenter_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
-    , CONSTRAINT [FK_Finance_CostCenter_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
-    , CONSTRAINT [FK_Finance_CostCenter_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+    , CONSTRAINT [FK_Finance_CostCenter_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_CostCenter_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
 )
 GO
 
@@ -571,6 +600,11 @@ CREATE TABLE [Finance].[Project] (
 	[FiscalPeriodID] INT              NOT NULL,
 	[BranchID]       INT              NOT NULL,
 	[BranchScope]    SMALLINT         CONSTRAINT [DF_Finance_Project_BranchScope] DEFAULT (0) NOT NULL,
+    [CreatedByID]    INT              NOT NULL,
+    [CreatedByName]  NVARCHAR(64)     NOT NULL,
+    [CreatedDate]    DATETIME         NOT NULL,
+    [ModifiedByID]   INT              NOT NULL,
+    [ModifiedByName] NVARCHAR(64)     NOT NULL,
     [Code]           NVARCHAR(16)     NOT NULL,
     [FullCode]       NVARCHAR(256)    NOT NULL,
     [Name]           NVARCHAR(256)    NOT NULL,
@@ -582,71 +616,6 @@ CREATE TABLE [Finance].[Project] (
     , CONSTRAINT [FK_Finance_Project_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[Project]([ProjectID])
     , CONSTRAINT [FK_Finance_Project_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_Project_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
-)
-GO
-
-CREATE TABLE [CashFlow].[SourceApp] (
-    [SourceAppID]    INT              IDENTITY (1, 1) NOT NULL,
-    [BranchID]       INT              NOT NULL,
-    [FiscalPeriodID] INT              NOT NULL,
-    [BranchScope]    SMALLINT         NOT NULL,
-    [Code]           NVARCHAR(16)     NOT NULL,
-    [Name]           NVARCHAR(256)    NOT NULL,
-    [Description]    NVARCHAR(512)    NULL,
-    [Type]           SMALLINT         NOT NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_SourceApp_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_CashFlow_SourceApp_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_CashFlow_SourceApp] PRIMARY KEY CLUSTERED ([SourceAppID] ASC)
-    , CONSTRAINT [FK_CashFlow_SourceApp_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
-    , CONSTRAINT [FK_CashFlow_SourceApp_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
-)
-GO
-
-CREATE TABLE [Finance].[VoucherLine] (
-    [VoucherLineID]   INT              IDENTITY (1, 1) NOT NULL,
-    [VoucherID]       INT              NOT NULL,
-    [FiscalPeriodID]  INT              NOT NULL,
-    [BranchID]        INT              NOT NULL,
-    [AccountID]       INT              NOT NULL,
-    [DetailAccountID] INT              NULL,
-    [CostCenterID]    INT              NULL,
-    [ProjectID]       INT              NULL,
-    [CurrencyID]      INT              NULL,
-    [SourceAppID]     INT              NULL,
-    [CreatedByID]     INT              NOT NULL,
-    [RowNo]           INT              NOT NULL,
-    [Debit]           MONEY            NOT NULL,
-    [Credit]          MONEY            NOT NULL,
-    [Description]     NVARCHAR(1024)   NULL,
-    [Amount]          FLOAT            NULL,
-    [FollowupNo]      NVARCHAR(64)     NULL,
-    [CurrencyValue]   MONEY            NULL,
-    [Mark]            NVARCHAR(128)    NULL,
-    [TypeID]          SMALLINT         NOT NULL,
-    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_VoucherLine_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Finance_VoucherLine_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_VoucherLine] PRIMARY KEY CLUSTERED ([VoucherLineID] ASC)
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Voucher] FOREIGN KEY ([VoucherID]) REFERENCES [Finance].[Voucher]([VoucherID])
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency]([CurrencyID])
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailAccountID])
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
-    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project]([ProjectID])
-    , CONSTRAINT [FK_Finance_VoucherLine_CashFlow_SourceApp] FOREIGN KEY ([SourceAppID]) REFERENCES [CashFlow].[SourceApp]([SourceAppID])
-)
-GO
-
-CREATE TABLE [Finance].[AccountDetailAccount] (
-    [AccountDetailAccountID] INT              IDENTITY (1, 1) NOT NULL,
-    [AccountID]              INT              NOT NULL,
-    [DetailAccountID]        INT              NOT NULL,
-    [rowguid]                UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_AccountDetailAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]           DATETIME         CONSTRAINT [DF_Finance_AccountDetailAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_AccountDetailAccount] PRIMARY KEY CLUSTERED ([AccountDetailAccountID] ASC)
-    , CONSTRAINT [FK_Finance_AccountDetailAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
-    , CONSTRAINT [FK_Finance_AccountDetailAccount_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount] ([DetailAccountID])
 )
 GO
 
@@ -671,6 +640,30 @@ CREATE TABLE [Finance].[AccountProject] (
     , CONSTRAINT [PK_Finance_AccountProject] PRIMARY KEY CLUSTERED ([AccountProjectID] ASC)
     , CONSTRAINT [FK_Finance_AccountProject_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
     , CONSTRAINT [FK_Finance_AccountProject_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project] ([ProjectID])
+)
+GO
+
+CREATE TABLE [Finance].[InactiveAccount] (
+    [InactiveAccountID]  INT              IDENTITY (1, 1) NOT NULL,
+    [AccountID]          INT              NOT NULL,
+    [FiscalPeriodID]     INT              NOT NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_InactiveAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Finance_InactiveAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_InactiveAccount] PRIMARY KEY CLUSTERED ([InactiveAccountID] ASC)
+    , CONSTRAINT [FK_Finance_InactiveAccount_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
+    , CONSTRAINT [FK_Finance_InactiveAccount_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+)
+GO
+
+CREATE TABLE [Finance].[InactiveCurrency] (
+    [InactiveCurrencyID] INT              IDENTITY (1, 1) NOT NULL,
+    [CurrencyID]         INT              NOT NULL,
+    [FiscalPeriodID]     INT              NOT NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_InactiveCurrency_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Finance_InactiveCurrency_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_InactiveCurrency] PRIMARY KEY CLUSTERED ([InactiveCurrencyID] ASC)
+    , CONSTRAINT [FK_Finance_InactiveCurrency_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
+    , CONSTRAINT [FK_Finance_InactiveCurrency_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
 )
 GO
 
@@ -937,16 +930,21 @@ GO
 
 CREATE TABLE [CashFlow].[CashRegister] (
     [CashRegisterID]   INT              IDENTITY (1, 1) NOT NULL,
-    [BranchID]         INT              NOT NULL,
     [FiscalPeriodID]   INT              NOT NULL,
+    [BranchID]         INT              NOT NULL,
     [BranchScope]      SMALLINT         NOT NULL,
     [Name]             NVARCHAR(256)    NOT NULL,
     [Description]      NVARCHAR(256)    NULL,
+    [CreatedByID]      INT              NOT NULL,
+    [CreatedByName]    NVARCHAR(64)     NOT NULL,
+    [CreatedDate]      DATETIME         NOT NULL,
+    [ModifiedByID]     INT              NOT NULL,
+    [ModifiedByName]   NVARCHAR(64)     NOT NULL,
     [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_CashRegister_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]     DATETIME         CONSTRAINT [DF_CashFlow_CashRegister_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_CashFlow_CashRegister] PRIMARY KEY CLUSTERED ([CashRegisterID] ASC)
-    , CONSTRAINT [FK_CashFlow_CashRegister_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
     , CONSTRAINT [FK_CashFlow_CashRegister_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_CashFlow_CashRegister_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
 )
 GO
 
@@ -958,6 +956,28 @@ CREATE TABLE [CashFlow].[UserCashRegister] (
     [ModifiedDate]         DATETIME         CONSTRAINT [DF_CashFlow_UserCashRegister_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_CashFlow_UserCashRegister] PRIMARY KEY CLUSTERED ([UserCashRegisterID] ASC)
     , CONSTRAINT [FK_CashFlow_UserCashRegister_CashFlow_CashRegister] FOREIGN KEY ([CashRegisterID]) REFERENCES [CashFlow].[CashRegister]([CashRegisterID])
+)
+GO
+
+CREATE TABLE [CashFlow].[SourceApp] (
+    [SourceAppID]      INT              IDENTITY (1, 1) NOT NULL,
+    [BranchID]         INT              NOT NULL,
+    [FiscalPeriodID]   INT              NOT NULL,
+    [BranchScope]      SMALLINT         NOT NULL,
+    [Code]             NVARCHAR(64)     NOT NULL,
+    [Name]             NVARCHAR(256)    NOT NULL,
+    [Description]      NVARCHAR(512)    NULL,
+    [Type]             SMALLINT         NOT NULL,
+    [CreatedByID]      INT              NOT NULL,
+    [CreatedByName]    NVARCHAR(64)     NOT NULL,
+    [CreatedDate]      DATETIME         NOT NULL,
+    [ModifiedByID]     INT              NOT NULL,
+    [ModifiedByName]   NVARCHAR(64)     NOT NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_CashFlow_SourceApp_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_CashFlow_SourceApp_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_CashFlow_SourceApp] PRIMARY KEY CLUSTERED ([SourceAppID] ASC)
+    , CONSTRAINT [FK_CashFlow_SourceApp_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_CashFlow_SourceApp_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
 )
 GO
 
@@ -1043,20 +1063,6 @@ CREATE TABLE [CashFlow].[PayReceiveVoucherLine] (
     , CONSTRAINT [PK_CashFlow_PayReceiveVoucherLine] PRIMARY KEY CLUSTERED ([PayReceiveVoucherLineID] ASC)
     , CONSTRAINT [FK_CashFlow_PayReceiveVoucherLine_CashFlow_PayReceive] FOREIGN KEY ([PayReceiveID]) REFERENCES [CashFlow].[PayReceive]([PayReceiveID])
     , CONSTRAINT [FK_CashFlow_PayReceiveVoucherLine_Finance_VoucherLine] FOREIGN KEY ([VoucherLineID]) REFERENCES [Finance].[VoucherLine]([VoucherLineID]))
-GO
-
-CREATE TABLE [Core].[InactiveEntity] (
-    [InactiveEntityID]   INT              IDENTITY (1, 1) NOT NULL,
-    [BranchID]           INT              NOT NULL,
-    [FiscalPeriodID]     INT              NOT NULL,
-    [EntityID]           INT              NOT NULL,
-    [EntityName]         VARCHAR(64)      NOT NULL,
-    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Core_InactiveEntity_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Core_InactiveEntity_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Core_InactiveEntity] PRIMARY KEY CLUSTERED ([InactiveEntityID] ASC)
-    , CONSTRAINT [FK_Core_InactiveEntity_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
-    , CONSTRAINT [FK_Core_InactiveEntity_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
-)
 GO
 
 -- Insert system records...
@@ -1370,16 +1376,6 @@ INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description])
 	VALUES (87, N'RemoveInvalidCashAccountLines', NULL)
 INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description]) 
 	VALUES (88, N'AggregateCashAccountLines', NULL)
-INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description]) 
-	VALUES (89, N'Deactivate', NULL)
-INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description]) 
-	VALUES (90, N'Reactivate', NULL)
-INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description]) 
-	VALUES (91, N'PrintForm', NULL)
-INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description]) 
-	VALUES (92, N'PrintPreviewForm', NULL)
-INSERT INTO [Metadata].[Operation] ([OperationID], [Name], [Description]) 
-	VALUES (93, N'UndoRegister', NULL)
 SET IDENTITY_INSERT [Metadata].[Operation] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSource] ON
@@ -1524,9 +1520,9 @@ SET IDENTITY_INSERT [Finance].[AccountGroup] OFF
 
 SET IDENTITY_INSERT [Finance].[AccountCollectionCategory] ON
 INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (1, N'BalanceSheet')
-INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (2, N'ProfitLoss')
+INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (2, N'ProfitAndLoss')
 INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (3, N'Treasury')
-INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (4, N'SalesPurchase')
+INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (4, N'SalesAndPurchase')
 INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (5, N'ClosingAccounts')
 INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (6, N'Warehouse')
 INSERT INTO [Finance].[AccountCollectionCategory] ([CategoryID], [Name]) VALUES (7, N'Property')
@@ -2237,52 +2233,4 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
     VALUES (300, 3, 2, NULL, 25, 87, 0)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (301, 3, 2, NULL, 25, 88, 0)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (302, 2, 1, NULL, 1, 89, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (303, 2, 1, NULL, 1, 90, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (304, 2, 1, NULL, 6, 89, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (305, 2, 1, NULL, 6, 90, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (306, 2, 1, NULL, 7, 89, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (307, 2, 1, NULL, 7, 90, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (308, 2, 1, NULL, 9, 89, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (309, 2, 1, NULL, 9, 90, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (310, 2, 1, NULL, 12, 89, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (311, 2, 1, NULL, 12, 90, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (312, 2, 1, NULL, 22, 89, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (313, 2, 1, NULL, 22, 90, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (314, 2, 1, NULL, 23, 89, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (315, 2, 1, NULL, 23, 90, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (316, 2, 2, NULL, 17, 5, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (317, 2, 2, NULL, 17, 54, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (318, 2, 2, NULL, 17, 91, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (319, 2, 2, NULL, 17, 92, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (320, 2, 2, NULL, 18, 5, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (321, 2, 2, NULL, 18, 54, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (322, 2, 2, NULL, 18, 91, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (323, 2, 2, NULL, 18, 92, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (324, 3, 2, NULL, 24, 93, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (325, 3, 2, NULL, 25, 93, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF

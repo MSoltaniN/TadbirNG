@@ -13,6 +13,18 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("ProjectID");
+            builder.Property(e => e.CreatedById)
+                .IsRequired();
+            builder.Property(e => e.CreatedByName)
+                .IsRequired()
+                .HasMaxLength(64);
+            builder.Property(e => e.CreatedDate)
+                .IsRequired();
+            builder.Property(e => e.ModifiedById)
+                .IsRequired();
+            builder.Property(e => e.ModifiedByName)
+                .IsRequired()
+                .HasMaxLength(64);
             builder.Property(e => e.BranchScope)
                 .IsRequired();
             builder.Property(e => e.Code)

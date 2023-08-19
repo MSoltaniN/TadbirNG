@@ -159,6 +159,7 @@ namespace SPPC.Tadbir.Persistence
             if (currency.Id == 0)
             {
                 currencyModel = Mapper.Map<Currency>(currency);
+                SetBaseEntityInfo(currencyModel);
                 await InsertAsync(repository, currencyModel);
             }
             else
@@ -166,6 +167,7 @@ namespace SPPC.Tadbir.Persistence
                 currencyModel = await repository.GetByIDAsync(currency.Id);
                 if (currencyModel != null)
                 {
+                    SetBaseEntityInfo(currencyModel);
                     await UpdateAsync(repository, currencyModel, currency);
                 }
             }

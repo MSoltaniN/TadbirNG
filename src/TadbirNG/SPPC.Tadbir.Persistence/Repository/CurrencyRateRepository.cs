@@ -97,11 +97,13 @@ namespace SPPC.Tadbir.Persistence
             if (currencyRate.Id == 0)
             {
                 rateModel = Mapper.Map<CurrencyRate>(currencyRate);
+                SetBaseEntityInfo(rateModel);
                 await InsertAsync(repository, rateModel, OperationId.CreateRate);
             }
             else
             {
                 rateModel = await repository.GetByIDAsync(currencyRate.Id);
+                SetBaseEntityInfo(rateModel);
                 if (rateModel != null)
                 {
                     await UpdateAsync(repository, rateModel, currencyRate, OperationId.EditRate);

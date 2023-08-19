@@ -104,6 +104,7 @@ namespace SPPC.Tadbir.Persistence
             if (costCenter.Id == 0)
             {
                 costCenterModel = Mapper.Map<CostCenter>(costCenter);
+                SetBaseEntityInfo(costCenterModel);
                 await InsertAsync(repository, costCenterModel);
                 await UpdateLevelUsageAsync(costCenterModel.Level);
                 await _relationRepository.OnCostCenterInsertedAsync(costCenterModel.Id);
@@ -114,6 +115,7 @@ namespace SPPC.Tadbir.Persistence
                 if (costCenterModel != null)
                 {
                     bool needsCascade = (costCenterModel.Code != costCenter.Code);
+                    SetBaseEntityInfo(costCenterModel);
                     await UpdateAsync(repository, costCenterModel, costCenter);
                     if (needsCascade)
                     {
