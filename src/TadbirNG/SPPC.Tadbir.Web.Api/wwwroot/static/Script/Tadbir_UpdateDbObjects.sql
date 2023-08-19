@@ -1025,9 +1025,12 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
     VALUES (325, 3, 2, NULL, 25, 93, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
 
--- 1.2.1567
+-- 1.2.1572
 EXEC sp_rename '[CashFlow].[PayReceive].[PayReceiveNo]', 'TextNo', 'COLUMN'
 EXEC sp_rename '[Check].[CheckBook].[CheckBookNo]', 'TextNo', 'COLUMN'
 
-ALTER TABLE [Check].[CheckBook]
+ALTER TABLE [CashFlow].[PayReceive]
 ALTER COLUMN [TextNo] NVARCHAR(16) NOT NULL
+
+ALTER TABLE [Check].[CheckBook]
+ALTER COLUMN [TextNo] NVARCHAR(16) NULL

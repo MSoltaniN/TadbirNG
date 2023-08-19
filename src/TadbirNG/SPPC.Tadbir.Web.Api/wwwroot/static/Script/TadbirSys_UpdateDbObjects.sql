@@ -1263,12 +1263,12 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Des
     VALUES (283, 42, N'UndoRegister', 2048, NULL)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
--- 1.2.1567
+-- 1.2.1572
 
 UPDATE [Metadata].[Column]
 SET [Name] = N'TextNo', [DotNetType] = 'System.Int64', [StorageType] = 'bigint', [Length] = 0, ScriptType ='number'
-WHERE (ColumnID = 764 or ColumnID = 778) AND [Name] = N'PayReceiveNo'
+WHERE ColumnID IN(764,778) AND [Name] = N'PayReceiveNo'
 
 UPDATE [Metadata].[Column]
 SET [Name] = N'TextNo', [DotNetType] = 'System.Int64', [StorageType] = 'bigint', [Length] = 0, ScriptType = 'number'
-WHERE (ColumnID = 713 OR ColumnID = 726) AND [Name] = N'CheckBookNo'
+WHERE ColumnID IN(713,726) AND [Name] = N'CheckBookNo'
