@@ -9,8 +9,7 @@ export class Filter{
     public braces: Array<Braces> = null, public id: string = null)
     {    
       this.Value = this.Value.toString().replaceBadChars(this.Value);    
-       if(localStorage.getItem('lang')=="fa" && fieldTypeName.toLocaleLowerCase()=="system.date"){
-         debugger;
+       if(localStorage.getItem('lang')=="fa" && (fieldTypeName.toLocaleLowerCase()=="system.date" || fieldTypeName.toLocaleLowerCase()=="system.datetime") ){
          let jalaliDate = this.Value ;
          let gregorianDate = moment.from(jalaliDate, 'fa', 'YYYY/MM/DD').locale('en').format('YYYY/MM/DD');
          this.Value=gregorianDate;
