@@ -1,5 +1,10 @@
-﻿using System;
+﻿using SPPC.Framework.Values;
+using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.ExceptionHandling;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 namespace SPPC.Tadbir.ViewModel.Reporting
 {
@@ -70,5 +75,10 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// شناسه دیتابیسی کاربر صادرکننده سند مالی
         /// </summary>
         public int IssuedById { get; set; }
+
+        /// <summary>
+        /// شرح سند مالی که جزئیات بیشتری را در مورد پیشامد مالی ارائه می دهد
+        /// </summary>
+        public string Description { get; set; }
     }
 }

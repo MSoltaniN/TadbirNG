@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.CashFlow;
 using SPPC.Tadbir.Web.Api.Filters;
 
@@ -597,11 +599,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PostNewRegisterPaymentArticlesAsync(int paymentId, int voucherId)
         {
             var result = await PayReceiveActionValidationResultAsync(paymentId, AppStrings.Register,
-                AppStrings.Payment);
+                AppStrings.Payment, voucherId);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
+
             var outputItem = await _repository.RegisterAsync(paymentId, voucherId);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
@@ -618,12 +621,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Register)]
         public async Task<IActionResult> PostNewRegisterReceiptArticlesAsync(int receiptId, int voucherId)
         {
-            var result = await PayReceiveActionValidationResultAsync(receiptId, AppStrings.Register,            
-                AppStrings.Receipt);
+            var result = await PayReceiveActionValidationResultAsync(receiptId, AppStrings.Register,
+                AppStrings.Receipt, voucherId);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
+
             var outputItem = await _repository.RegisterAsync(receiptId, voucherId);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
@@ -762,7 +766,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private async Task<IActionResult> PayReceiveActionValidationResultAsync(int payReceiveId, string action,
-            string entityNameKey)
+            string entityNameKey, int voucherId = 0)
         {
             var payReceive = await _repository.GetPayReceiveAsync(payReceiveId);
             if (payReceive == null)
@@ -783,6 +787,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 return BadRequestResult(_strings.Format(AppStrings.RepeatedEntityActionMessage, action,
                     entityNameKey));
+            }
+
+            if (action == AppStrings.Register && voucherId > 0)
+            {
+                
+                if (!await _repository.IsValidVoucherForRegisterAsync(voucherId, payReceive.Date))
+                {
+                    return BadRequestResult(_strings.Format(AppStrings.NotValidVoucherForRegister));
+                }
             }
 
             if (action == AppStrings.Confirm || action == AppStrings.Approve || action == AppStrings.Register)
@@ -814,7 +827,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 if (payReceive.AccountAmountsSum != payReceive.CashAmountsSum)
                 {
                     return BadRequestResult(_strings.Format(AppStrings.CantActionUnbalancedForm,
-                        AppStrings.PayReceiveAccount, AppStrings.PayReceiveCashAccount, action,entityNameKey));
+                        AppStrings.PayReceiveAccount, AppStrings.PayReceiveCashAccount, action, entityNameKey));
                 }
             }
 
@@ -843,6 +856,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 return BadRequestResult(_strings.Format(AppStrings.InvalidEntityActionMessage, action,
                     entityNameKey, AppStrings.Approve));
+            }
+
+            if (action == AppStrings.UndoRegister && !payReceive.IsRegistered)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.InvalidEntityActionMessage, action,
+                    entityNameKey, AppStrings.UndoRegister));
             }
 
             return Ok();

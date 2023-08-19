@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
+using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -158,6 +160,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>مجموعه رفرنس های استفاده شده در سندهای مالی</returns>
         Task<IEnumerable<string>> GetVoucherReferencesAsync();
+
+        /// <summary>
+        ///  به روش آسنکرون، لیست خلاصه سندهای باز موجود در تاریخ عملیاتی داده شده را برمی گرداند
+        /// </summary>
+        /// <param name="date">تاریخ مورد نظر</param>
+        /// <returns>لیست خلاصه اسناد</returns>
+        Task<IEnumerable<VoucherSummaryViewModel>> GetVouchersByOperationalDateAsync(DateTime date);
 
         #endregion
 

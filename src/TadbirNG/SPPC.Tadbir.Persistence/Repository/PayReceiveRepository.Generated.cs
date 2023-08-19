@@ -335,10 +335,10 @@ namespace SPPC.Tadbir.Persistence
         /// <inheritdoc/>
         public async Task<VoucherViewModel> RegisterAsync(int payReceiveId, int voucherId)
         {
-            var voucher = await GetVoucherAsync(voucherId);
+            var payReceive = await GetPayReceiveAsync(payReceiveId);
+            var voucher = await GetVoucherAsync(voucherId, payReceive.Date);
             if (voucher != null)
             {
-                var payReceive = await GetPayReceiveAsync(payReceiveId);
                 int rowNo = await GetLastVoucherLineRowNoAsync(voucher);
                 if (payReceive.Type == (int)PayReceiveType.Receipt)
                 {
@@ -374,6 +374,17 @@ namespace SPPC.Tadbir.Persistence
 
             int entityTypeId = GetEntityTypeId(type);
             await FinalizeActionAsync(OperationId.UndoRegister, entityTypeId);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> IsValidVoucherForRegisterAsync(int voucherId, DateTime operationalDate)
+        {
+            return await Repository
+                 .GetAllOperationQuery<Voucher>(ViewId.Voucher)
+                 .AnyAsync(v => v.Id == voucherId
+                     && v.Date.Date == operationalDate.Date
+                     && v.BranchId == UserContext.BranchId
+                     && v.StatusId == (int)DocumentStatusId.NotChecked);
         }
 
         internal override int? EntityType
@@ -534,7 +545,7 @@ namespace SPPC.Tadbir.Persistence
             return Math.Min(lastNumber + 1, Int64.MaxValue).ToString();
         }
 
-        private async Task<Voucher> GetVoucherAsync(int voucherId = 0)
+        private async Task<Voucher> GetVoucherAsync(int voucherId, DateTime operationalDate)
         {
             Voucher voucher = null;
             var voucherRepository = UnitOfWork.GetAsyncRepository<Voucher>();
@@ -542,15 +553,14 @@ namespace SPPC.Tadbir.Persistence
             {
                 var subject = SubjectType.Normal;
                 string fullName = GetCurrentUserFullName();
-                DateTime date = await GetLastVoucherDateAsync();
                 string description = Context.Localize(AppStrings.TreasurySystemicVoucherDefaultDescription);
                 int no = await GetLastVoucherNoAsync();
-                int dailyNo = await GetNextDailyNoAsync(date, subject);
+                int dailyNo = await GetNextDailyNoAsync(operationalDate, subject);
                 voucher = new Voucher()
                 {
                     BranchId = UserContext.BranchId,
                     DailyNo = dailyNo,
-                    Date = date,
+                    Date = operationalDate,
                     Description = description,
                     FiscalPeriodId = UserContext.FiscalPeriodId,
                     IsBalanced = true,
@@ -630,30 +640,6 @@ namespace SPPC.Tadbir.Persistence
                 .OrderByDescending(voucher => voucher.No)
                 .FirstOrDefaultAsync();
             return (lastByNo != null) ? lastByNo.No : 0;
-        }
-
-        private async Task<DateTime> GetLastVoucherDateAsync(SubjectType type = SubjectType.Normal)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var lastByDate = await repository
-                .GetEntityQuery()
-                .Where(voucher => voucher.FiscalPeriodId == UserContext.FiscalPeriodId
-                    && voucher.SubjectType == (short)type)
-                .OrderByDescending(voucher => voucher.Date)
-                .FirstOrDefaultAsync();
-            DateTime lastDate;
-            if (lastByDate != null)
-            {
-                lastDate = lastByDate.Date;
-            }
-            else
-            {
-                var periodRepository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-                var fiscalPeriod = await periodRepository.GetByIDAsync(UserContext.FiscalPeriodId);
-                lastDate = (fiscalPeriod != null) ? fiscalPeriod.StartDate : DateTime.Now;
-            }
-
-            return lastDate;
         }
 
         private async Task<int> GetNextDailyNoAsync(DateTime date, SubjectType subject)

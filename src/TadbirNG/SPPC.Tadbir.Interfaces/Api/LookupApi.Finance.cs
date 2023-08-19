@@ -208,6 +208,16 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string VoucherReferencesUrl = "lookup/vouchers/references";
 
+        /// <summary>
+        /// API client URL for lookup collection of all vouchers created in special date
+        /// </summary>
+        public const string VouchersByDate = "lookup/vouchers/by-date/{0}";
+
+        /// <summary>
+        /// API server route URL for lookup collection of all vouchers created in special date
+        /// </summary>
+        public const string VouchersByDateUrl = "lookup/vouchers/by-date/{date:DateTime}";
+
         #endregion
     }
 }

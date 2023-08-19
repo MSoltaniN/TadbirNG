@@ -4282,12 +4282,15 @@
     <value>Print Preview Form</value>
   </data>
   <data name="EntityReference" xml:space="preserve">
-    <value>Refrence</value>
+    <value>Reference</value>
   </data>
   <data name="UndoRegister" xml:space="preserve">
     <value>Undo register</value>
   </data>
   <data name="InvalidAccountUsedWithSourceApp" xml:space="preserve">
     <value>Source or application can only be used when selected account is assigned to cash or bank collection.</value>
+  </data>
+  <data name="NotValidVoucherForRegister" xml:space="preserve">
+    <value>Selected document is not valid for Register.</value>
   </data>
 </root>

@@ -11,6 +11,7 @@ using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -314,6 +315,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var references = await _repository.GetVoucherReferencesAsync();
             return Json(references);
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/lookup/vouchers/by-date/{date:DateTime}
+        [HttpGet]
+        [Route(LookupApi.VouchersByDateUrl)]
+        public async Task<IActionResult> GetVouchersByOperationalDateAsync(DateTime date)
+        {
+            var vouchers = await _repository.GetVouchersByOperationalDateAsync(date);
+            return Json(vouchers);
         }
 
         #endregion

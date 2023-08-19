@@ -59,7 +59,6 @@ namespace SPPC.Tadbir.Persistence
             }
 
             int entityTypeId = GetEntityTypeId(type);
-            await ReadAsync(gridOptions, null, entityTypeId);
             return new PagedList<PayReceiveAccountViewModel>(accountArticles, gridOptions);
         }
 

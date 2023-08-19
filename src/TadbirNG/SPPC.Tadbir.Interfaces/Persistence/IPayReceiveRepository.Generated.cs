@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.CashFlow;
@@ -142,5 +143,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
         /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         Task UndoRegisterAsync(int payReceiveId, int type);
+
+        /// <summary>
+        /// به روش آسنکرون، شناسه سند داده شده را برای ثبت مالی اعتبار سنجی می کند 
+        /// </summary>
+        /// <param name="voucherId">شناسه سند مورد نظر</param>
+        /// <param name="operationalDate">تاریخ فرم عملیاتی مورد نظر برای ثبت مالی</param>
+        /// <returns>اگر سند دارای شرایط ثبت مالی باشد مقدار درست
+        /// و در غیر اینصورت مقدار نادرست برمی گرداند </returns>
+        Task<bool> IsValidVoucherForRegisterAsync(int voucherId, DateTime operationalDate);
     }
 }

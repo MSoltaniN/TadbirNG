@@ -18,6 +18,7 @@ using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
+using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -490,6 +491,17 @@ namespace SPPC.Tadbir.Persistence
                     && !String.IsNullOrEmpty(v.Reference))
                 .Select(v => v.Reference)
                 .Distinct()
+                .ToListAsync();
+        }
+
+        ///<inheritdoc/>
+        public async Task<IEnumerable<VoucherSummaryViewModel>> GetVouchersByOperationalDateAsync(DateTime date)
+        {
+            return await Repository
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
+                .Where(v => v.Date.Date == date.Date
+                    && v.StatusId == (int)DocumentStatusId.NotChecked)
+                .Select(v => Mapper.Map<VoucherSummaryViewModel>(v))
                 .ToListAsync();
         }
 
