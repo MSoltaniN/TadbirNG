@@ -57,6 +57,36 @@
           <ColumnView name="Description" visible="True" width="120" />
           <ValidationRule name="Description_Validation" required="False" minimum="" maximum="512" format="" type="Length" />
         </Property>
+        <Property name="CreatedById" type="Int32" isValidated="True" description="شناسه کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnCreatedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CreatedById" type="int" nullable="False" />
+          <ColumnView name="CreatedById" visible="True" width="120" />
+          <ValidationRule name="CreatedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="CreatedByName" type="String" isValidated="True" description="نام کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCreatedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="CreatedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="CreatedByName" visible="True" width="120" />
+          <ValidationRule name="CreatedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="CreatedDate" type="DateTime" isValidated="True" description="تاریخ ایجاد" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpCreatedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="CreatedDate" type="datetime" nullable="False" />
+          <ColumnView name="CreatedDate" visible="True" width="120" />
+          <ValidationRule name="CreatedDate_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedById" type="Int32" isValidated="True" description="شناسه آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnModifiedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="ModifiedById" type="int" nullable="False" />
+          <ColumnView name="ModifiedById" visible="True" width="120" />
+          <ValidationRule name="ModifiedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedByName" type="String" isValidated="True" description="نام آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtModifiedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ModifiedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="ModifiedByName" visible="True" width="120" />
+          <ValidationRule name="ModifiedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
@@ -422,6 +452,36 @@
           <PropertyStorage name="Description" type="nvarchar(256)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
           <ValidationRule name="Description_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="CreatedById" type="Int32" isValidated="True" description="شناسه کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnCreatedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CreatedById" type="int" nullable="False" />
+          <ColumnView name="CreatedById" visible="True" width="120" />
+          <ValidationRule name="CreatedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="CreatedByName" type="String" isValidated="True" description="نام کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCreatedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="CreatedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="CreatedByName" visible="True" width="120" />
+          <ValidationRule name="CreatedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="CreatedDate" type="DateTime" isValidated="True" description="تاریخ ایجاد" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpCreatedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="CreatedDate" type="datetime" nullable="False" />
+          <ColumnView name="CreatedDate" visible="True" width="120" />
+          <ValidationRule name="CreatedDate_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedById" type="Int32" isValidated="True" description="شناسه آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnModifiedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="ModifiedById" type="int" nullable="False" />
+          <ColumnView name="ModifiedById" visible="True" width="120" />
+          <ValidationRule name="ModifiedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedByName" type="String" isValidated="True" description="نام آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtModifiedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ModifiedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="ModifiedByName" visible="True" width="120" />
+          <ValidationRule name="ModifiedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
@@ -908,6 +968,36 @@
           <ColumnView name="Description" visible="True" width="120" />
           <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
         </Property>
+        <Property name="CreatedById" type="Int32" isValidated="True" description="شناسه کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnCreatedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CreatedById" type="int" nullable="False" />
+          <ColumnView name="CreatedById" visible="True" width="120" />
+          <ValidationRule name="CreatedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="CreatedByName" type="String" isValidated="True" description="نام کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCreatedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="CreatedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="CreatedByName" visible="True" width="120" />
+          <ValidationRule name="CreatedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="CreatedDate" type="DateTime" isValidated="True" description="تاریخ ایجاد" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpCreatedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="CreatedDate" type="datetime" nullable="False" />
+          <ColumnView name="CreatedDate" visible="True" width="120" />
+          <ValidationRule name="CreatedDate_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedById" type="Int32" isValidated="True" description="شناسه آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnModifiedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="ModifiedById" type="int" nullable="False" />
+          <ColumnView name="ModifiedById" visible="True" width="120" />
+          <ValidationRule name="ModifiedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedByName" type="String" isValidated="True" description="نام آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtModifiedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ModifiedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="ModifiedByName" visible="True" width="120" />
+          <ValidationRule name="ModifiedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
@@ -990,6 +1080,36 @@
           <ColumnView name="Description" visible="True" width="120" />
           <ValidationRule name="Description_Validation" required="False" minimum="" maximum="512" format="" type="Length" />
         </Property>
+        <Property name="CreatedById" type="Int32" isValidated="True" description="شناسه کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnCreatedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CreatedById" type="int" nullable="False" />
+          <ColumnView name="CreatedById" visible="True" width="120" />
+          <ValidationRule name="CreatedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="CreatedByName" type="String" isValidated="True" description="نام کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCreatedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="CreatedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="CreatedByName" visible="True" width="120" />
+          <ValidationRule name="CreatedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="CreatedDate" type="DateTime" isValidated="True" description="تاریخ ایجاد" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpCreatedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="CreatedDate" type="datetime" nullable="False" />
+          <ColumnView name="CreatedDate" visible="True" width="120" />
+          <ValidationRule name="CreatedDate_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedById" type="Int32" isValidated="True" description="شناسه آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnModifiedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="ModifiedById" type="int" nullable="False" />
+          <ColumnView name="ModifiedById" visible="True" width="120" />
+          <ValidationRule name="ModifiedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedByName" type="String" isValidated="True" description="نام آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtModifiedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ModifiedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="ModifiedByName" visible="True" width="120" />
+          <ValidationRule name="ModifiedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
@@ -1045,6 +1165,36 @@
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
           <ValidationRule name="Description_Validation" required="False" minimum="" maximum="512" format="" type="Length" />
+        </Property>
+        <Property name="CreatedById" type="Int32" isValidated="True" description="شناسه کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnCreatedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CreatedById" type="int" nullable="False" />
+          <ColumnView name="CreatedById" visible="True" width="120" />
+          <ValidationRule name="CreatedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="CreatedByName" type="String" isValidated="True" description="نام کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCreatedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="CreatedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="CreatedByName" visible="True" width="120" />
+          <ValidationRule name="CreatedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="CreatedDate" type="DateTime" isValidated="True" description="تاریخ ایجاد" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpCreatedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="CreatedDate" type="datetime" nullable="False" />
+          <ColumnView name="CreatedDate" visible="True" width="120" />
+          <ValidationRule name="CreatedDate_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedById" type="Int32" isValidated="True" description="شناسه آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnModifiedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="ModifiedById" type="int" nullable="False" />
+          <ColumnView name="ModifiedById" visible="True" width="120" />
+          <ValidationRule name="ModifiedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedByName" type="String" isValidated="True" description="نام آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtModifiedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ModifiedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="ModifiedByName" visible="True" width="120" />
+          <ValidationRule name="ModifiedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
@@ -1318,6 +1468,36 @@
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
           <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
+        </Property>
+        <Property name="CreatedById" type="Int32" isValidated="True" description="شناسه کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnCreatedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CreatedById" type="int" nullable="False" />
+          <ColumnView name="CreatedById" visible="True" width="120" />
+          <ValidationRule name="CreatedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="CreatedByName" type="String" isValidated="True" description="نام کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCreatedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="CreatedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="CreatedByName" visible="True" width="120" />
+          <ValidationRule name="CreatedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="CreatedDate" type="DateTime" isValidated="True" description="تاریخ ایجاد" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpCreatedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="CreatedDate" type="datetime" nullable="False" />
+          <ColumnView name="CreatedDate" visible="True" width="120" />
+          <ValidationRule name="CreatedDate_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedById" type="Int32" isValidated="True" description="شناسه آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnModifiedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="ModifiedById" type="int" nullable="False" />
+          <ColumnView name="ModifiedById" visible="True" width="120" />
+          <ValidationRule name="ModifiedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedByName" type="String" isValidated="True" description="نام آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtModifiedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ModifiedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="ModifiedByName" visible="True" width="120" />
+          <ValidationRule name="ModifiedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
@@ -2685,6 +2865,36 @@
           <ColumnView name="Description" visible="True" width="120" />
           <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
         </Property>
+        <Property name="CreatedById" type="Int32" isValidated="True" description="شناسه کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnCreatedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CreatedById" type="int" nullable="False" />
+          <ColumnView name="CreatedById" visible="True" width="120" />
+          <ValidationRule name="CreatedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="CreatedByName" type="String" isValidated="True" description="نام کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCreatedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="CreatedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="CreatedByName" visible="True" width="120" />
+          <ValidationRule name="CreatedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="CreatedDate" type="DateTime" isValidated="True" description="تاریخ ایجاد" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpCreatedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="CreatedDate" type="datetime" nullable="False" />
+          <ColumnView name="CreatedDate" visible="True" width="120" />
+          <ValidationRule name="CreatedDate_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedById" type="Int32" isValidated="True" description="شناسه آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnModifiedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="ModifiedById" type="int" nullable="False" />
+          <ColumnView name="ModifiedById" visible="True" width="120" />
+          <ValidationRule name="ModifiedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedByName" type="String" isValidated="True" description="نام آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtModifiedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ModifiedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="ModifiedByName" visible="True" width="120" />
+          <ValidationRule name="ModifiedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
@@ -3237,6 +3447,36 @@
           <PropertyStorage name="Type" type="smallint" nullable="False" />
           <ColumnView name="Type" visible="True" width="120" />
           <ValidationRule name="Type_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="CreatedById" type="Int32" isValidated="True" description="شناسه کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnCreatedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CreatedById" type="int" nullable="False" />
+          <ColumnView name="CreatedById" visible="True" width="120" />
+          <ValidationRule name="CreatedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="CreatedByName" type="String" isValidated="True" description="نام کاربر ایجادکننده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCreatedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="CreatedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="CreatedByName" visible="True" width="120" />
+          <ValidationRule name="CreatedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="CreatedDate" type="DateTime" isValidated="True" description="تاریخ ایجاد" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpCreatedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="CreatedDate" type="datetime" nullable="False" />
+          <ColumnView name="CreatedDate" visible="True" width="120" />
+          <ValidationRule name="CreatedDate_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedById" type="Int32" isValidated="True" description="شناسه آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnModifiedById" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="ModifiedById" type="int" nullable="False" />
+          <ColumnView name="ModifiedById" visible="True" width="120" />
+          <ValidationRule name="ModifiedById_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedByName" type="String" isValidated="True" description="نام آخرین کاربر تغییردهنده" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1557.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtModifiedByName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ModifiedByName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="ModifiedByName" visible="True" width="120" />
+          <ValidationRule name="ModifiedByName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SPPC.Tools.Model.Property, SPPC.Tools.Model, Version=1.2.1558.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />

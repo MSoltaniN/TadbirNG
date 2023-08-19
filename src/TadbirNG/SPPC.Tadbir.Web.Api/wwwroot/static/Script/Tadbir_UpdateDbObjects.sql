@@ -1041,3 +1041,84 @@ GO
 ALTER TABLE [Finance].[VoucherLine]
 ADD CONSTRAINT [FK_Finance_VoucherLine_CashFlow_SourceApp] FOREIGN KEY ([SourceAppID])
     REFERENCES [CashFlow].[SourceApp]([SourceAppID])
+
+-- 1.2.1571
+ALTER TABLE [CashFlow].[CashRegister]
+ADD [CreatedByID]    INT          CONSTRAINT [DF_CashFlow_CashRegister_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_CashFlow_CashRegister_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_CashFlow_CashRegister_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedByID]   INT          CONSTRAINT [DF_CashFlow_CashRegister_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_CashFlow_CashRegister_ModifiedByName] DEFAULT ('') NOT NULL;
+GO
+UPDATE [CashFlow].[CashRegister]
+SET [CreatedDate] = [ModifiedDate]
+
+ALTER TABLE [CashFlow].[SourceApp]
+ADD [CreatedByID]    INT          CONSTRAINT [DF_CashFlow_SourceApp_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_CashFlow_SourceApp_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_CashFlow_SourceApp_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedByID]   INT          CONSTRAINT [DF_CashFlow_SourceApp_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_CashFlow_SourceApp_ModifiedByName] DEFAULT ('') NOT NULL;
+GO
+UPDATE [CashFlow].[SourceApp]
+SET [CreatedDate] = [ModifiedDate]
+
+ALTER TABLE [Finance].[Currency]
+ADD [CreatedByID]    INT          CONSTRAINT [DF_Finance_Currency_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_Finance_Currency_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_Finance_Currency_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedByID]   INT          CONSTRAINT [DF_Finance_Currency_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_Finance_Currency_ModifiedByName] DEFAULT ('') NOT NULL;
+GO
+UPDATE [Finance].[Currency]
+SET [CreatedDate] = [ModifiedDate]
+
+ALTER TABLE [Finance].[CurrencyRate]
+ADD [CreatedByID]    INT          CONSTRAINT [DF_Finance_CurrencyRate_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_Finance_CurrencyRate_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_Finance_CurrencyRate_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedByID]   INT          CONSTRAINT [DF_Finance_CurrencyRate_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_Finance_CurrencyRate_ModifiedByName] DEFAULT ('') NOT NULL;
+GO
+UPDATE [Finance].[CurrencyRate]
+SET [CreatedDate] = [ModifiedDate]
+
+ALTER TABLE [Finance].[Account]
+ADD [CreatedByID]    INT          CONSTRAINT [DF_Finance_Account_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_Finance_Account_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_Finance_Account_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedByID]   INT          CONSTRAINT [DF_Finance_Account_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_Finance_Account_ModifiedByName] DEFAULT ('') NOT NULL;
+GO
+UPDATE [Finance].[Account]
+SET [CreatedDate] = [ModifiedDate]
+
+ALTER TABLE [Finance].[CostCenter]
+ADD [CreatedByID]    INT          CONSTRAINT [DF_Finance_CostCenter_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_Finance_CostCenter_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_Finance_CostCenter_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedByID]   INT          CONSTRAINT [DF_Finance_CostCenter_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_Finance_CostCenter_ModifiedByName] DEFAULT ('') NOT NULL;
+GO
+UPDATE [Finance].[CostCenter]
+SET [CreatedDate] = [ModifiedDate]
+
+ALTER TABLE [Finance].[DetailAccount]
+ADD [CreatedByID]    INT          CONSTRAINT [DF_Finance_DetailAccount_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_Finance_DetailAccount_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_Finance_DetailAccount_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedByID]   INT          CONSTRAINT [DF_Finance_DetailAccount_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_Finance_DetailAccount_ModifiedByName] DEFAULT ('') NOT NULL;
+GO
+UPDATE [Finance].[DetailAccount]
+SET [CreatedDate] = [ModifiedDate]
+
+ALTER TABLE [Finance].[Project]
+ADD [CreatedByID]    INT          CONSTRAINT [DF_Finance_Project_CreatedById] DEFAULT (0) NOT NULL, 
+	[CreatedByName]  NVARCHAR(64) CONSTRAINT [DF_Finance_Project_CreatedByName] DEFAULT ('') NOT NULL, 
+	[CreatedDate]    DATETIME     CONSTRAINT [DF_Finance_Project_CreatedDate] DEFAULT (getdate()) NOT NULL, 
+	[ModifiedByID]   INT          CONSTRAINT [DF_Finance_Project_ModifiedById] DEFAULT (0) NOT NULL, 
+	[ModifiedByName] NVARCHAR(64) CONSTRAINT [DF_Finance_Project_ModifiedByName] DEFAULT ('') NOT NULL;
+GO
+UPDATE [Finance].[Project]
+SET [CreatedDate] = [ModifiedDate]
