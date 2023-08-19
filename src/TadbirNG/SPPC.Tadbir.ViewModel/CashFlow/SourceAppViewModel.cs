@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.ViewModel.CashFlow
         public string FiscalPeriodName { get; set; }
 
         /// <summary>
-        /// نام نوع مفهومی منبع یا مصرف
+        /// نام نوع منبع یا مصرف
         /// </summary>
         public string TypeName { get; set; }
     }

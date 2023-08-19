@@ -44,6 +44,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// مجموعه ای از سرفصل های حسابداری مرتبط با این مرکز هزینه
         /// </summary>
-        public IList<AccountCostCenter> AccountCostCenters { get; protected set; }
+        public virtual IList<AccountCostCenter> AccountCostCenters { get; protected set; }
     }
 }

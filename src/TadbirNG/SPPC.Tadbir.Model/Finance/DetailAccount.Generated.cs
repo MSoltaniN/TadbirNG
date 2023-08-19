@@ -49,6 +49,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// مجموعه ای از سرفصل های حسابداری مرتبط با این تفصیلی شناور
         /// </summary>
-        public IList<AccountDetailAccount> AccountDetailAccounts { get; protected set; }
+        public virtual IList<AccountDetailAccount> AccountDetailAccounts { get; protected set; }
     }
 }

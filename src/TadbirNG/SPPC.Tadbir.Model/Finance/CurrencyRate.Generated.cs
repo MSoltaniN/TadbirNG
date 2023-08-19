@@ -11,7 +11,6 @@
 // ------------------------------------------------------------------------------
 
 using System;
-using SPPC.Tadbir.Model.Corporate;
 
 namespace SPPC.Tadbir.Model.Finance
 {

@@ -1411,7 +1411,7 @@ UPDATE Metadata.Command set HotKey = NULL Where TitleKey = 'ReportManagement'
 -- 1.2.1557
 UPDATE [Metadata].[ShortcutCommand] Set HotKey = 'Ctrl+Shift+Delete' where [Name] = 'DeleteRecord'
 
--- 1.2.1558
+-- 1.2.1571
 SET IDENTITY_INSERT [Metadata].[Column] ON
 -- افزودن فیلدهای راهبری صندوق اسناد
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])

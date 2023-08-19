@@ -8,6 +8,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// مجموعه ای از پروژه های زیرشاخه (فرزند) در ساختار درختی
         /// </summary>
-        public IList<Project> Children { get; protected set; }
+        public virtual IList<Project> Children { get; protected set; }
     }
 }

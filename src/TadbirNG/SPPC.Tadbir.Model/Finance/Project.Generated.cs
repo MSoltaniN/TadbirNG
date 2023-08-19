@@ -44,6 +44,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// مجموعه ای از سرفصل های حسابداری مرتبط با این پروژه
         /// </summary>
-        public IList<AccountProject> AccountProjects { get; protected set; }
+        public virtual IList<AccountProject> AccountProjects { get; protected set; }
     }
 }
