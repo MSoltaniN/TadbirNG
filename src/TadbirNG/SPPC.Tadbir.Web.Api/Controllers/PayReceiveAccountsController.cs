@@ -386,7 +386,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (payReceive.IsApproved || payReceive.IsConfirmed || payReceive.IsRegistered)
+            if (payReceive.IsRegistered)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RegisteredFormBlocked, entityNameKey));
+            }
+
+            if (payReceive.IsApproved || payReceive.IsConfirmed)
             {
                 return BadRequestResult(_strings.Format(
                     AppStrings.CantSaveDetailEntity, entityNameKey, AppStrings.PayReceiveAccount));
@@ -510,7 +515,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     return result;
                 }
 
-                if (payReceive.IsApproved || payReceive.IsConfirmed || payReceive.IsRegistered)
+                if (payReceive.IsRegistered)
+                {
+                    return BadRequestResult(_strings.Format(AppStrings.RegisteredFormBlocked, entityNameKey));
+                }
+
+                if (payReceive.IsApproved || payReceive.IsConfirmed)
                 {
                     return BadRequestResult(_strings.Format(
                         AppStrings.CantDeleteDetailEntity, entityNameKey, AppStrings.PayReceiveAccount));
@@ -553,7 +563,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (payReceive.IsApproved || payReceive.IsConfirmed || payReceive.IsRegistered)
+            if (payReceive.IsRegistered)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RegisteredFormBlocked, entityNameKey));
+            }
+
+            if (payReceive.IsApproved || payReceive.IsConfirmed)
             {
                 return BadRequestResult(_strings.Format(
                     AppStrings.CantDeleteDetailEntity, entityNameKey, AppStrings.PayReceiveAccount));
@@ -583,7 +598,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (payReceive.IsApproved || payReceive.IsConfirmed || payReceive.IsRegistered)
+            if (payReceive.IsRegistered)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RegisteredFormBlocked, entityNameKey));
+            }
+
+            if (payReceive.IsApproved || payReceive.IsConfirmed)
             {
                 return BadRequestResult(_strings.Format(
                     AppStrings.CantChangeDetailEntity, entityNameKey, AppStrings.PayReceiveAccount));

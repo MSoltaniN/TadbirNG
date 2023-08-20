@@ -1626,6 +1626,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private async Task<IActionResult> VoucherActionValidationResultAsync(int voucherId, string action)
         {
+            var voucher = await _repository.GetVoucherAsync(voucherId);
+            var branchValidateResult = BranchValidationResult(voucher);
+            if (branchValidateResult is BadRequestObjectResult)
+            {
+                return branchValidateResult;
+            }
+
             var error = await _repository.ValidateVoucherActionAsync(voucherId, action);
             if (error != null)
             {

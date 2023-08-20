@@ -7,7 +7,6 @@ using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -386,7 +385,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (payReceive.IsApproved || payReceive.IsConfirmed || payReceive.IsRegistered)
+            if (payReceive.IsRegistered)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RegisteredFormBlocked, entityNameKey));
+            }
+
+            if (payReceive.IsApproved || payReceive.IsConfirmed)
             {
                 return BadRequestResult(_strings.Format(
                     AppStrings.CantSaveDetailEntity, entityNameKey, AppStrings.PayReceiveCashAccount));
@@ -549,7 +553,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     return result;
                 }
 
-                if (payReceive.IsApproved || payReceive.IsConfirmed || payReceive.IsRegistered)
+                if (payReceive.IsRegistered)
+                {
+                    return BadRequestResult(_strings.Format(AppStrings.RegisteredFormBlocked, entityNameKey));
+                }
+
+                if (payReceive.IsApproved || payReceive.IsConfirmed)
                 {
                     return BadRequestResult(_strings.Format(
                         AppStrings.CantDeleteDetailEntity, entityNameKey, AppStrings.PayReceiveCashAccount));
@@ -592,7 +601,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (payReceive.IsApproved || payReceive.IsConfirmed || payReceive.IsRegistered)
+            if (payReceive.IsRegistered)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RegisteredFormBlocked, entityNameKey));
+            }
+
+            if (payReceive.IsApproved || payReceive.IsConfirmed)
             {
                 return BadRequestResult(_strings.Format(
                     AppStrings.CantDeleteDetailEntity, entityNameKey, AppStrings.PayReceiveCashAccount));
@@ -622,7 +636,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (payReceive.IsApproved || payReceive.IsConfirmed || payReceive.IsRegistered)
+            if (payReceive.IsRegistered)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RegisteredFormBlocked, entityNameKey));
+            }
+
+            if (payReceive.IsApproved || payReceive.IsConfirmed)
             {
                 return BadRequestResult(_strings.Format(
                     AppStrings.CantChangeDetailEntity, entityNameKey, AppStrings.PayReceiveCashAccount));

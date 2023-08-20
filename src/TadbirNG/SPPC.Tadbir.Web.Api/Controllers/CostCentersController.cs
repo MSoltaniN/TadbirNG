@@ -386,12 +386,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            result = ActiveStateValidationResult(costCenter);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
             var repository = _repository as IActiveStateRepository<CostCenterViewModel>;
             if (costCenter.ParentId != null && await repository.IsDeactivatedAsync(costCenter.ParentId.Value))
             {
