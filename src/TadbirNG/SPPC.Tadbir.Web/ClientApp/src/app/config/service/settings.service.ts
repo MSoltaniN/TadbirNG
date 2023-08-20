@@ -25,6 +25,7 @@ import {
 import { FormLabelConfig } from "../models/formLabelConfig";
 import { SystemConfig } from "../models/systemConfig";
 import { SettingsApi } from "./api";
+import { BehaviorSubject } from "rxjs";
 
 export class SettingBriefInfo implements SettingBrief {
   modelType: string;
@@ -145,6 +146,8 @@ export class SettingService extends BaseService {
   ) {
     super(http, bStorageService);
   }
+
+  updateGridColumns: BehaviorSubject<any> = new BehaviorSubject('')
 
   setTitle(key: string): void {
     this.translate.get(key).subscribe((msg: string) => {
