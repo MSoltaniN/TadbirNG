@@ -48,6 +48,7 @@ import { ToastrService } from "ngx-toastr";
 import { VoucherEditorComponent } from "../../operational/voucher/voucher-editor.component";
 import { ServiceLocator } from "@sppc/service.locator";
 import { ShareDataService } from "@sppc/shared/services/share-data.service";
+import { OperationId } from "@sppc/shared/enum/operationId";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -549,5 +550,11 @@ export class SystemIssueComponent
           );
       }
     }
+  }
+
+  onAdvanceFilterOk() {
+    this.enableViewListChanged(this.viewId);
+    this.operationId = OperationId.Filter;
+    this.reloadGrid();
   }
 }
