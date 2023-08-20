@@ -12,6 +12,11 @@ export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
 }
 
+enum PermissionsTreeNodeInfoLevel{
+  groupSubsystem='1',
+  groupSourceType='2',
+  group='3'
+}
 
 @Component({
   selector: 'role-detail-form-component',
@@ -62,12 +67,6 @@ export class RoleDetailFormComponent extends DetailComponent {
     if (roleDetails != undefined) {
 
       this.treeData = new Array<TreeNodeInfo>();
-
-      enum PermissionsTreeNodeInfoLevel{
-        groupSubsystem='1',
-        groupSourceType='2',
-        group='3'
-      }
 
       var sortedPermission = roleDetails.permissions.sort(function (a: RoleItem, b: RoleItem) {
         return a.groupSourceTypeId - b.groupSourceTypeId;
