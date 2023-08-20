@@ -53,16 +53,46 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه تفصیلی های شناور قابل دسترس در محیط جاری برنامه را برمی گرداند
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه تفصیلی های شناور فعال را خوانده و برمی گرداند
         /// </summary>
-        /// <returns>لیست صفحه بندی شده تفصیلی های شناور</returns>
+        /// <returns>لیست صفحه بندی شده تفصیلی های شناور فعال</returns>
         // GET: api/faccounts
         [HttpGet]
-        [Route(DetailAccountApi.EnvironmentDetailAccountsUrl)]
+        [Route(DetailAccountApi.DetailAccountsUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
-        public async Task<IActionResult> GetEnvironmentDetailAccountsAsync()
+        public async Task<IActionResult> GetDetailAccountsAsync()
         {
             var detailAccounts = await _repository.GetDetailAccountsAsync(GridOptions);
+            return JsonListResult(detailAccounts);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه تفصیلی های شناور غیر فعال را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده تفصیلی های شناور غیر فعال</returns>
+        // GET: api/faccounts/inactive
+        [HttpGet]
+        [Route(DetailAccountApi.InactiveDetailAccountsUrl)]
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
+        public async Task<IActionResult> GetInactiveDetailAccountsAsync()
+        {
+            var detailAccounts = await _repository.GetDetailAccountsAsync(
+                GridOptions, (int)ActiveState.Inactive);
+            return JsonListResult(detailAccounts);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه تفصیلی های شناور را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده تفصیلی های شناور</returns>
+        // GET: api/faccounts/all
+        [HttpGet]
+        [Route(DetailAccountApi.AllDetailAccountsUrl)]
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
+        public async Task<IActionResult> GetAllDetailAccountsAsync()
+        {
+            var detailAccounts = await _repository.GetDetailAccountsAsync(
+                GridOptions, (int)ActiveState.All);
             return JsonListResult(detailAccounts);
         }
 
@@ -172,7 +202,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns>اطلاعات تفصیلی شناور بعد از ایجاد در دیتابیس</returns>
         // POST: api/faccounts
         [HttpPost]
-        [Route(DetailAccountApi.EnvironmentDetailAccountsUrl)]
+        [Route(DetailAccountApi.DetailAccountsUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.Create)]
         public async Task<IActionResult> PostNewDetailAccountAsync([FromBody] DetailAccountViewModel detailAccount)
         {
@@ -274,7 +304,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // PUT: api/faccounts
         [HttpPut]
-        [Route(DetailAccountApi.EnvironmentDetailAccountsUrl)]
+        [Route(DetailAccountApi.DetailAccountsUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.Delete)]
         public async Task<IActionResult> PutExistingDetailAccountsAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)

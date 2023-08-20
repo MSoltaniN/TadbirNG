@@ -8,14 +8,34 @@ namespace SPPC.Tadbir.Api
     public sealed class CurrencyApi
     {
         /// <summary>
-        /// API client URL for all currency items
+        /// API client URL for all active currency items
         /// </summary>
         public const string Currencies = "currencies";
 
         /// <summary>
-        /// API server route URL for all currency items
+        /// API server route URL for all active currency items
         /// </summary>
         public const string CurrenciesUrl = "currencies";
+
+        /// <summary>
+        /// API client URL for all inactive currency items
+        /// </summary>
+        public const string InactiveCurrencies = "currencies/inactive";
+
+        /// <summary>
+        /// API server route URL for all inactive currency items
+        /// </summary>
+        public const string InactiveCurrenciesUrl = "currencies/inactive";
+
+        /// <summary>
+        /// API client URL for all currency items
+        /// </summary>
+        public const string AllCurrencies = "currencies/all";
+
+        /// <summary>
+        /// API server route URL for all currency items
+        /// </summary>
+        public const string AllCurrenciesUrl = "currencies/all";
 
         /// <summary>
         /// API client URL for a currency item specified by unique identifier

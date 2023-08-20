@@ -12,14 +12,34 @@ namespace SPPC.Tadbir.Api
         }
 
         /// <summary>
-        /// API client URL for detail accounts defined in a current environment
+        /// API client URL for all active detail accounts items
         /// </summary>
-        public const string EnvironmentDetailAccounts = "faccounts";
+        public const string DetailAccounts = "faccounts";
 
         /// <summary>
-        /// API server route URL for detail accounts defined in a current environment
+        /// API server route URL for all active detail account items
         /// </summary>
-        public const string EnvironmentDetailAccountsUrl = "faccounts";
+        public const string DetailAccountsUrl = "faccounts";
+
+        /// <summary>
+        /// API client URL for all inactive detail accounts items
+        /// </summary>
+        public const string InactiveDetailAccounts = "faccounts/inactive";
+
+        /// <summary>
+        /// API server route URL for all inactive detail account items
+        /// </summary>
+        public const string InactiveDetailAccountsUrl = "faccounts/inactive";
+
+        /// <summary>
+        /// API client URL for all detail accounts items
+        /// </summary>
+        public const string AllDetailAccounts = "faccounts/all";
+
+        /// <summary>
+        /// API server route URL for all detail account items
+        /// </summary>
+        public const string AllDetailAccountsUrl = "faccounts/all";
 
         /// <summary>
         /// API client URL for detail account lookups defined in a current environment

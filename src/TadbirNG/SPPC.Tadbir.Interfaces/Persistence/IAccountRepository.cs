@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -17,8 +18,10 @@ namespace SPPC.Tadbir.Persistence
         /// خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="activeState">وضعیت مورد نظر برای نمایش اطلاعات بر اساس وضعیت فعال و غیر فعال</param>
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه جاری برنامه</returns>
-        Task<PagedList<AccountViewModel>> GetAccountsAsync(GridOptions gridOptions);
+        Task<PagedList<AccountViewModel>> GetAccountsAsync(
+            GridOptions gridOptions, int activeState = (int)ActiveState.Active);
 
         /// <summary>
         /// به روش آسنکرون، کلیه حساب های قابل انتخاب در دوره مالی و شعبه جاری برنامه را

@@ -12,14 +12,34 @@ namespace SPPC.Tadbir.Api
         }
 
         /// <summary>
-        /// API client URL for projects defined in current environment
+        /// API client URL for all active project items
         /// </summary>
-        public const string EnvironmentProjects = "projects";
+        public const string Projects = "projects";
 
         /// <summary>
-        /// API server route URL for projects defined in current environment
+        /// API server route URL for all active project items
         /// </summary>
-        public const string EnvironmentProjectsUrl = "projects";
+        public const string ProjectsUrl = "projects";
+
+        /// <summary>
+        /// API client URL for all inactive project items
+        /// </summary>
+        public const string InactiveProjects = "projects/inactive";
+
+        /// <summary>
+        /// API server route URL for all inactive project items
+        /// </summary>
+        public const string InactiveProjectsUrl = "projects/inactive";
+
+        /// <summary>
+        /// API client URL for all project items
+        /// </summary>
+        public const string AllProjects = "projects/all";
+
+        /// <summary>
+        /// API server route URL for all project items
+        /// </summary>
+        public const string AllProjectsUrl = "projects/all";
 
         /// <summary>
         /// API client URL for projects ledger defined in current environment

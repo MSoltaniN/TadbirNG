@@ -8,14 +8,34 @@ namespace SPPC.Tadbir.Api
     public sealed class CashRegisterApi
     {
         /// <summary>
-        /// API client URL for all cash register items
+        /// API client URL for all active cash register items
         /// </summary>
         public const string CashRegisters = "cash-registers";
 
         /// <summary>
-        /// API server route URL for all cash register items
+        /// API server route URL for all active cash register items
         /// </summary>
         public const string CashRegistersUrl = "cash-registers";
+
+        /// <summary>
+        /// API client URL for all inactive cash register items
+        /// </summary>
+        public const string InactiveCashRegisters = "cash-registers/inactive";
+
+        /// <summary>
+        /// API server route URL for all inactive cash register items
+        /// </summary>
+        public const string InactiveCashRegistersUrl = "cash-registers/inactive";
+
+        /// <summary>
+        /// API client URL for all cash register items
+        /// </summary>
+        public const string AllCashRegisters = "cash-registers/all";
+
+        /// <summary>
+        /// API server route URL for all cash register items
+        /// </summary>
+        public const string AllCashRegistersUrl = "cash-registers/all";
 
         /// <summary>
         /// API client URL for a cash register item specified by unique identifier

@@ -12,14 +12,34 @@ namespace SPPC.Tadbir.Api
         }
 
         /// <summary>
-        /// API client URL for cost centers defined in current environment
+        /// API client URL for all active cost center items
         /// </summary>
-        public const string EnvironmentCostCenters = "ccenters";
+        public const string CostCenters = "ccenters";
 
         /// <summary>
-        /// API server route URL for cost centers defined in current environment
+        /// API server route URL for all active cost center items
         /// </summary>
-        public const string EnvironmentCostCentersUrl = "ccenters";
+        public const string CostCentersUrl = "ccenters";
+
+        /// <summary>
+        /// API client URL for all inactive cost center items
+        /// </summary>
+        public const string InactiveCostCenters = "ccenters/inactive";
+
+        /// <summary>
+        /// API server route URL for all inactive cost center items
+        /// </summary>
+        public const string InactiveCostCentersUrl = "ccenters/inactive";
+
+        /// <summary>
+        /// API client URL for all cost center items
+        /// </summary>
+        public const string AllCostCenters = "ccenters/all";
+
+        /// <summary>
+        /// API server route URL for all cost center items
+        /// </summary>
+        public const string AllCostCentersUrl = "ccenters/all";
 
         /// <summary>
         /// API client URL for root cost centers defined in current environment

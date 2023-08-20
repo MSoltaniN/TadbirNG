@@ -39,7 +39,8 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public async Task<PagedList<CurrencyViewModel>> GetCurrenciesAsync(GridOptions gridOptions)
+        public async Task<PagedList<CurrencyViewModel>> GetCurrenciesAsync(
+            GridOptions gridOptions, int activeState = (int)ActiveState.Active)
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var currencies = new List<CurrencyViewModel>();
@@ -50,6 +51,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(item => Mapper.Map<CurrencyViewModel>(item))
                     .ToListAsync();
                 await UpdateInactiveItemsAsync(currencies);
+                currencies = FilterAccountsByActiveState(currencies, activeState);
                 Array.ForEach(currencies.ToArray(), curr => Localize(curr));
             }
 

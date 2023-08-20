@@ -12,14 +12,34 @@ namespace SPPC.Tadbir.Api
         }
 
         /// <summary>
-        /// API client URL for accounts defined in current environment
+        /// API client URL for all active account items
         /// </summary>
-        public const string EnvironmentAccounts = "accounts";
+        public const string Accounts = "accounts";
 
         /// <summary>
-        /// API server route URL for accounts defined in current environment
+        /// API server route URL for all active account items
         /// </summary>
-        public const string EnvironmentAccountsUrl = "accounts";
+        public const string AccountsUrl = "accounts";
+
+        /// <summary>
+        /// API client URL for all inactive account items
+        /// </summary>
+        public const string InactiveAccounts = "accounts/inactive";
+
+        /// <summary>
+        /// API server route URL for all inactive account items
+        /// </summary>
+        public const string InactiveAccountsUrl = "accounts/inactive";
+
+        /// <summary>
+        /// API client URL for all account items
+        /// </summary>
+        public const string AllAccounts = "accounts/all";
+
+        /// <summary>
+        /// API server route URL for all account items
+        /// </summary>
+        public const string AllAccountsUrl = "accounts/all";
 
         /// <summary>
         /// API client URL for ledger accounts defined in current environment

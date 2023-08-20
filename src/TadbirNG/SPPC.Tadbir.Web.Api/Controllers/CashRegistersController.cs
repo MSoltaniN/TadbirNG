@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -42,9 +43,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات صفحه بندی شده صندوق ها را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده صندوق های فعال را خوانده و برمی گرداند
         /// </summary>
-        /// <returns>اطلاعات صفحه بندی شده صندوق ها</returns>
+        /// <returns>اطلاعات صفحه بندی شده صندوق های فعال</returns>
         // GET: api/cash-registers
         [HttpGet]
         [Route(CashRegisterApi.CashRegistersUrl)]
@@ -52,6 +53,36 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCashRegistersAsync()
         {
             var cashRegisters = await _repository.GetCashRegistersAsync(GridOptions);
+            return JsonListResult(cashRegisters);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده صندوق های غیر فعال را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات صفحه بندی شده صندوق ها غیر فعال</returns>
+        // GET: api/cash-registers/inactive
+        [HttpGet]
+        [Route(CashRegisterApi.InactiveCashRegistersUrl)]
+        [AuthorizeRequest(SecureEntity.CashRegister, (int)CashRegisterPermissions.View)]
+        public async Task<IActionResult> GetInactiveCashRegistersAsync()
+        {
+            var cashRegisters = await _repository.GetCashRegistersAsync(
+                GridOptions, (int)ActiveState.Inactive);
+            return JsonListResult(cashRegisters);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه صندوق ها را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات صفحه بندی شده صندوق ها</returns>
+        // GET: api/cash-registers/all
+        [HttpGet]
+        [Route(CashRegisterApi.AllCashRegistersUrl)]
+        [AuthorizeRequest(SecureEntity.CashRegister, (int)CashRegisterPermissions.View)]
+        public async Task<IActionResult> GetAllCashRegistersAsync()
+        {
+            var cashRegisters = await _repository.GetCashRegistersAsync(
+                GridOptions, (int)ActiveState.All);
             return JsonListResult(cashRegisters);
         }
 

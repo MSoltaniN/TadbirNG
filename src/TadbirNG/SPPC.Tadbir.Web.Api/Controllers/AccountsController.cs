@@ -54,16 +54,44 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه سرفصل های حسابداری قابل دسترس در محیط جاری برنامه را برمی گرداند
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه سرفصل های حسابداری فعال را خوانده و برمی گرداند
         /// </summary>
-        /// <returns>لیست صفحه بندی شده سرفصل های حسابداری</returns>
+        /// <returns>لیست صفحه بندی شده سرفصل های حسابداری فعال</returns>
         // GET: api/accounts
         [HttpGet]
-        [Route(AccountApi.EnvironmentAccountsUrl)]
+        [Route(AccountApi.AccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetEnvironmentAccountsAsync()
+        public async Task<IActionResult> GetAccountsAsync()
         {
             var accounts = await _repository.GetAccountsAsync(GridOptions);
+            return JsonListResult(accounts);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه سرفصل های حسابداری غیر فعال را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده سرفصل های حسابداری غیر فعال</returns>
+        // GET: api/accounts/inactive
+        [HttpGet]
+        [Route(AccountApi.InactiveAccountsUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        public async Task<IActionResult> GetInactiveAccountsAsync()
+        {
+            var accounts = await _repository.GetAccountsAsync(GridOptions, (int)ActiveState.Inactive);
+            return JsonListResult(accounts);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه سرفصل های حسابداری را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده سرفصل های حسابداری </returns>
+        // GET: api/accounts/all
+        [HttpGet]
+        [Route(AccountApi.AllAccountsUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        public async Task<IActionResult> GetAllAccountsAsync()
+        {
+            var accounts = await _repository.GetAccountsAsync(GridOptions, (int)ActiveState.All);
             return JsonListResult(accounts);
         }
 
@@ -230,7 +258,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns>اطلاعات سرفصل حسابداری بعد از ایجاد در دیتابیس</returns>
         // POST: api/accounts
         [HttpPost]
-        [Route(AccountApi.EnvironmentAccountsUrl)]
+        [Route(AccountApi.AccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         public async Task<IActionResult> PostNewAccountAsync([FromBody] AccountFullDataViewModel account)
         {
@@ -330,7 +358,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // PUT: api/accounts
         [HttpPut]
-        [Route(AccountApi.EnvironmentAccountsUrl)]
+        [Route(AccountApi.AccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
         public async Task<IActionResult> PutExistingAccountsAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)

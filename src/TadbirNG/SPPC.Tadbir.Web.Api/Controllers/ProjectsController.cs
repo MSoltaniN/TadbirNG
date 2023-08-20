@@ -53,16 +53,44 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه پروژه های قابل دسترس در محیط جاری برنامه را برمی گرداند
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه پروژه‌های فعال را خوانده و برمی گرداند
         /// </summary>
-        /// <returns>لیست صفحه بندی شده پروژه ها</returns>
+        /// <returns>لیست صفحه بندی شده پروژه های فعال</returns>
         // GET: api/projects
         [HttpGet]
-        [Route(ProjectApi.EnvironmentProjectsUrl)]
+        [Route(ProjectApi.ProjectsUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
-        public async Task<IActionResult> GetEnvironmentProjectsAsync()
+        public async Task<IActionResult> GetProjectsAsync()
         {
             var projects = await _repository.GetProjectsAsync(GridOptions);
+            return JsonListResult(projects);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه پروژه‌های غیر فعال را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده پروژه های غیر فعال</returns>
+        // GET: api/projects/inactive
+        [HttpGet]
+        [Route(ProjectApi.InactiveProjectsUrl)]
+        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
+        public async Task<IActionResult> GetInactiveProjectsAsync()
+        {
+            var projects = await _repository.GetProjectsAsync(GridOptions, (int)ActiveState.Inactive);
+            return JsonListResult(projects);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه پروژه‌ها را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده کلیه پروژه ها</returns>
+        // GET: api/projects/all
+        [HttpGet]
+        [Route(ProjectApi.AllProjectsUrl)]
+        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
+        public async Task<IActionResult> GetAllProjectsAsync()
+        {
+            var projects = await _repository.GetProjectsAsync(GridOptions, (int)ActiveState.All);
             return JsonListResult(projects);
         }
 
@@ -172,7 +200,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns>اطلاعات پروژه بعد از ایجاد در دیتابیس</returns>
         // POST: api/projects
         [HttpPost]
-        [Route(ProjectApi.EnvironmentProjectsUrl)]
+        [Route(ProjectApi.ProjectsUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Create)]
         public async Task<IActionResult> PostNewProjectAsync([FromBody] ProjectViewModel project)
         {
@@ -271,7 +299,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // PUT: api/projects
         [HttpPut]
-        [Route(ProjectApi.EnvironmentProjects)]
+        [Route(ProjectApi.ProjectsUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Delete)]
         public async Task<IActionResult> PutExistingProjectsAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)

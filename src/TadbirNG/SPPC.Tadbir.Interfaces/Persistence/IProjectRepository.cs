@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -16,8 +17,10 @@ namespace SPPC.Tadbir.Persistence
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="activeState">وضعیت مورد نظر برای نمایش اطلاعات بر اساس وضعیت فعال و غیر فعال</param>
         /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
-        Task<PagedList<ProjectViewModel>> GetProjectsAsync(GridOptions gridOptions);
+        Task<PagedList<ProjectViewModel>> GetProjectsAsync(
+            GridOptions gridOptions, int activeState = (int)ActiveState.Active);
 
         /// <summary>
         /// به روش آسنکرون، پروژه با شناسه عددی مشخص شده را خوانده و برمی گرداند

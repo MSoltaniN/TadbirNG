@@ -52,7 +52,8 @@ namespace SPPC.Tadbir.Persistence
                 .GetEntityQuery()
                 .Where(item => item.FiscalPeriodId == UserContext.FiscalPeriodId
                     && item.BranchId == UserContext.BranchId
-                    && item.EntityId == itemId)
+                    && item.EntityId == itemId
+                    && item.EntityName == typeof(TEntity).Name)
                 .AnyAsync();
             return isDeactivated;
         }
@@ -77,6 +78,31 @@ namespace SPPC.Tadbir.Persistence
                 {
                     item.State = AppStrings.Inactive;
                 }
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، فهرست ورودی را بر اساس فیلد وضعیت فعال یا غیر فعال اطلاعات پایه فیلتر می‌کند 
+        /// </summary>
+        /// <param name="items">مجموعه سطرهای اطلاعاتی مورد نظر</param>
+        /// <param name="activeState">وضعیت درخواستی مورد نظر بر اساس فیلد فعال و غیر فعال</param>
+        /// <returns>لیست فیلتر شده فهرست اطلاعاتی ورودی</returns>
+        protected List<TEntityView> FilterAccountsByActiveState
+            (List<TEntityView> items, int activeState)
+        {
+            switch (activeState)
+            {
+                case (int)ActiveState.All:
+                    return items;
+                case (int)ActiveState.Inactive:
+                    return items.
+                        Where(a => a.State == AppStrings.Inactive)
+                        .ToList();
+                case (int)ActiveState.Active:
+                default:
+                    return items.
+                        Where(a => a.State == AppStrings.Active)
+                        .ToList();
             }
         }
 

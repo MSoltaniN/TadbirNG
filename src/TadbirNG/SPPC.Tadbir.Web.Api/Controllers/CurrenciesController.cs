@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Common;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -48,9 +49,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        ///
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه ارز های فعال را خوانده و برمی گرداند
         /// </summary>
-        /// <returns></returns>
+        /// <returns>لیست صفحه بندی شده کلیه ارز های فعال</returns>
         // GET: api/currencies
         [HttpGet]
         [Route(CurrencyApi.CurrenciesUrl)]
@@ -58,6 +59,36 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetCurrenciesAsync()
         {
             var currencies = await _repository.GetCurrenciesAsync(GridOptions);
+            return JsonListResult(currencies);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه ارز های غیر فعال را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده کلیه ارز های غیر فعال</returns>
+        // GET: api/currencies/inactive
+        [HttpGet]
+        [Route(CurrencyApi.InactiveCurrenciesUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
+        public async Task<IActionResult> GetInactiveCurrenciesAsync()
+        {
+            var currencies = await _repository.GetCurrenciesAsync(
+                GridOptions, (int)ActiveState.Inactive);
+            return JsonListResult(currencies);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه ارز ها را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده کلیه ارز ها</returns>
+        // GET: api/currencies/all
+        [HttpGet]
+        [Route(CurrencyApi.AllCurrenciesUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
+        public async Task<IActionResult> GetAllCurrenciesAsync()
+        {
+            var currencies = await _repository.GetCurrenciesAsync(
+                GridOptions, (int)ActiveState.All);
             return JsonListResult(currencies);
         }
 

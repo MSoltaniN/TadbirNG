@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -16,8 +17,10 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، کلیه ارزها را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="activeState">وضعیت مورد نظر برای نمایش اطلاعات بر اساس وضعیت فعال و غیر فعال</param>
         /// <returns>مجموعه ای از ارزها تعریف شده</returns>
-        Task<PagedList<CurrencyViewModel>> GetCurrenciesAsync(GridOptions gridOptions);
+        Task<PagedList<CurrencyViewModel>> GetCurrenciesAsync(
+            GridOptions gridOptions, int activeState = (int)ActiveState.Active);
 
         /// <summary>
         /// به روش آسنکرون، ارز با شناسه عددی مشخص شده را خوانده و برمی گرداند

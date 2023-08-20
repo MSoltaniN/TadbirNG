@@ -295,4 +295,25 @@ namespace SPPC.Tadbir.Domain
         /// </summary>
         Payment = 1,
     }
+
+    /// <summary>
+    /// وضعیت فعال بودن فرم‌های اطلاعات پایه
+    /// </summary>
+    public enum ActiveState
+    {
+        /// <summary>
+        /// وضعیت فعال
+        /// </summary>
+        Active = 0,
+
+        /// <summary>
+        /// وضعیت غیر فعال
+        /// </summary>
+        Inactive = 1,
+
+        /// <summary>
+        /// همه وضعیت‌ها
+        /// </summary>
+        All = 2
+    }
 }

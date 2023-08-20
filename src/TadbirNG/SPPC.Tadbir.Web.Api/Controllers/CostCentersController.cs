@@ -53,16 +53,44 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه مراکز هزینه قابل دسترس در محیط جاری برنامه را برمی گرداند
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه مراکز هزینه فعال را خوانده و برمی گرداند
         /// </summary>
-        /// <returns>لیست صفحه بندی شده مراکز هزینه</returns>
+        /// <returns>لیست صفحه بندی شده مراکز هزینه فعال</returns>
         // GET: api/ccenters
         [HttpGet]
-        [Route(CostCenterApi.EnvironmentCostCentersUrl)]
+        [Route(CostCenterApi.CostCentersUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
-        public async Task<IActionResult> GetEnvironmentCostCentersAsync()
+        public async Task<IActionResult> GetCostCentersAsync()
         {
             var costCenters = await _repository.GetCostCentersAsync(GridOptions);
+            return JsonListResult(costCenters);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه مراکز هزینه غیر فعال را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده مراکز هزینه غیر فعال</returns>
+        // GET: api/ccenters/inactive
+        [HttpGet]
+        [Route(CostCenterApi.InactiveCostCentersUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
+        public async Task<IActionResult> GetInactiveCostCentersAsync()
+        {
+            var costCenters = await _repository.GetCostCentersAsync(GridOptions, (int)ActiveState.Inactive);
+            return JsonListResult(costCenters);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه مراکز هزینه را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>لیست صفحه بندی شده مراکز هزینه</returns>
+        // GET: api/ccenters/all
+        [HttpGet]
+        [Route(CostCenterApi.AllCostCentersUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
+        public async Task<IActionResult> GetAllCostCentersAsync()
+        {
+            var costCenters = await _repository.GetCostCentersAsync(GridOptions, (int)ActiveState.All);
             return JsonListResult(costCenters);
         }
 
@@ -171,7 +199,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <returns>اطلاعات مرکز هزینه بعد از ایجاد در دیتابیس</returns>
         // POST: api/ccenters
         [HttpPost]
-        [Route(CostCenterApi.EnvironmentCostCentersUrl)]
+        [Route(CostCenterApi.CostCentersUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Create)]
         public async Task<IActionResult> PostNewCostCenterAsync([FromBody] CostCenterViewModel costCenter)
         {
@@ -270,7 +298,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
         // PUT: api/ccenters
         [HttpPut]
-        [Route(CostCenterApi.EnvironmentCostCentersUrl)]
+        [Route(CostCenterApi.CostCentersUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Delete)]
         public async Task<IActionResult> PutExistingCostCentersAsDeletedAsync(
             [FromBody] ActionDetailViewModel actionDetail)

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
@@ -41,9 +42,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات صفحه بندی شده منابع و مصارف را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده منابع و مصارف فعال را خوانده و برمی گرداند
         /// </summary>
-        /// <returns>اطلاعات صفحه بندی شده منابع و مصارف</returns>
+        /// <returns>اطلاعات صفحه بندی شده منابع و مصارف فعال</returns>
         // GET: api/source-apps
         [HttpGet]
         [Route(SourceAppApi.SourceAppsUrl)]
@@ -51,6 +52,36 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetSourceAppsAsync()
         {
             var sourceApps = await _repository.GetSourceAppsAsync(GridOptions);
+            return JsonListResult(sourceApps);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده منابع و مصارف غیر فعال را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات صفحه بندی شده منابع و مصارف غیر فعال</returns>
+        // GET: api/source-apps/inactive
+        [HttpGet]
+        [Route(SourceAppApi.InactiveSourceAppsUrl)]
+        [AuthorizeRequest(SecureEntity.SourceApp, (int)SourceAppPermissions.View)]
+        public async Task<IActionResult> GetInactiveSourceAppsAsync()
+        {
+            var sourceApps = await _repository.GetSourceAppsAsync(
+                GridOptions, (int)ActiveState.Inactive);
+            return JsonListResult(sourceApps);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات صفحه بندی شده کلیه منابع و مصارف را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات صفحه بندی شده کلیه منابع و مصارف</returns>
+        // GET: api/source-apps/all
+        [HttpGet]
+        [Route(SourceAppApi.AllSourceAppsUrl)]
+        [AuthorizeRequest(SecureEntity.SourceApp, (int)SourceAppPermissions.View)]
+        public async Task<IActionResult> GetAllSourceAppsAsync()
+        {
+            var sourceApps = await _repository.GetSourceAppsAsync(
+                GridOptions, (int)ActiveState.All);
             return JsonListResult(sourceApps);
         }
 

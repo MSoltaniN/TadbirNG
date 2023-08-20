@@ -8,14 +8,34 @@ namespace SPPC.Tadbir.Api
     public sealed class SourceAppApi
     {
         /// <summary>
-        /// API client URL for all source/application items
+        /// API client URL for all active source/application items
         /// </summary>
         public const string SourceApps = "source-apps";
 
         /// <summary>
-        /// API server route URL for all source/application items
+        /// API server route URL for all active source/application items
         /// </summary>
         public const string SourceAppsUrl = "source-apps";
+
+        /// <summary>
+        /// API client URL for all inactive source/application items
+        /// </summary>
+        public const string InactiveSourceApps = "source-apps/inactive";
+
+        /// <summary>
+        /// API server route URL for all inactive source/application items
+        /// </summary>
+        public const string InactiveSourceAppsUrl = "source-apps/inactive";
+
+        /// <summary>
+        /// API client URL for all source/application items
+        /// </summary>
+        public const string AllSourceApps = "source-apps/all";
+
+        /// <summary>
+        /// API server route URL for all source/application items
+        /// </summary>
+        public const string AllSourceAppsUrl = "source-apps/all";
 
         /// <summary>
         /// API client URL for a source/application item specified by unique identifier

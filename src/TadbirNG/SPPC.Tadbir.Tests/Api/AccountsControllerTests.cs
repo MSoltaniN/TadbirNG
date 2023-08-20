@@ -68,7 +68,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act & Assert
-            AssertActionRouteEquals("GetEnvironmentAccountsAsync", AccountApi.EnvironmentAccountsUrl);
+            AssertActionRouteEquals("GetEnvironmentAccountsAsync", AccountApi.AccountsUrl);
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act
-            var result = await _controller.GetEnvironmentAccountsAsync();
+            var result = await _controller.GetAccountsAsync();
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -89,7 +89,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act
-            await _controller.GetEnvironmentAccountsAsync();
+            await _controller.GetAccountsAsync();
 
             // Assert
             _mockRepository.Verify(repo => repo.GetAccountsAsync(It.IsAny<GridOptions>()));
@@ -104,7 +104,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
                 .ReturnsAsync(new PagedList<AccountViewModel>(new List<AccountViewModel>()));
 
             // Act
-            var result = await _controller.GetEnvironmentAccountsAsync() as JsonResult;
+            var result = await _controller.GetAccountsAsync() as JsonResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -117,7 +117,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act
-            await _controller.GetEnvironmentAccountsAsync();
+            await _controller.GetAccountsAsync();
 
             // Assert
             var totalCountValue = _controller.HttpContext.Response.Headers[AppConstants.TotalCountHeaderName];
@@ -284,7 +284,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("PostNewAccountAsync", AccountApi.EnvironmentAccountsUrl);
+            AssertActionRouteEquals("PostNewAccountAsync", AccountApi.AccountsUrl);
         }
 
         [Test]
