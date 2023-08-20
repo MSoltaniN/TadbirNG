@@ -94,7 +94,7 @@
 
         .k-button.k-primary, .k-slider .k-draghandle, .k-switch-on .k-switch-handle {
             color: #ffffff;
-            background-color: #337ab7;
+            background-color: #007bff;
             border-color: #337ab7;
             background-image: linear-gradient(rgba(51, 91, 183, 0), rgba(51, 91, 183, 0.2));
         }
@@ -4525,8 +4525,8 @@ kendo-sortable,
 }
 
 .k-button {
-    border-radius: 2px;
-    padding: 4px 8px;
+    border-radius: 0.25rem;
+    padding: 6px 10px;
     box-sizing: border-box;
     border-width: 1px;
     border-style: solid;

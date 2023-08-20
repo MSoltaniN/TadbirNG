@@ -48,9 +48,6 @@ const matches = (el, selector) => (el.matches || el.msMatchesSelector).call(el, 
 ::ng-deep .k-switch-label-on,::ng-deep .k-switch-label-off { overflow: initial; }
 .journal-type { margin:0 15px 10px; } .journal-type label { margin-top:10px; }
 ::ng-deep.k-footer-template { background-color: #b3b3b3; color: #000;}
-.btn-compute-default {margin-top: 25px; border: 2px solid #337ab7; color: #337ab7; padding: 5px 25px;}
-.btn-compute { color: #fff; transition: All 0.3s 0.1s ease-out;}
-.btn-compute-selectable{ color: #fff; background-image: linear-gradient(#c1e3ff, #337ab7);}
 `],
   providers: [{
     provide: RTL,

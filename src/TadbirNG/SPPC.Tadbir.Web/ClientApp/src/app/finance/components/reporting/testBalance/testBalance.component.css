@@ -1,4 +1,74 @@
+.section-account button {
+  margin: 0 2px;
+}
+.section-account .acc-name {
+  width: calc(100% - 102px);
+}
+.section-account .acc-code {
+  width: calc(100% - 131px);
+  position: absolute;
+  top: -5px;
+}
+.section-account .acc-code-rtl {
+  left: 16px;
+}
+.section-account .acc-code-ltr {
+  right: 16px;
+}
+
+.section-option {
+  margin-top: 15px;
+  background-color: #f6f6f6;
+  border: solid 1px #dadde2;
+  padding: 15px 15px 0;
+}
+.section-option label,
+input[type="text"] {
+  width: 100%;
+}
+::ng-deep.section-option kendo-dropdownlist {
+  width: 100%;
+}
+::ng-deep .k-switch-on .k-switch-handle {
+  left: -8px !important;
+}
+::ng-deep .k-switch-off .k-switch-handle {
+  left: -4px !important;
+}
+::ng-deep .k-switch[dir="rtl"] .k-switch-label-on {
+  right: -22px;
+}
+::ng-deep .k-switch[dir="rtl"] .k-switch-label-off {
+  left: 0;
+}
+::ng-deep .k-switch-label-on,
+::ng-deep .k-switch-label-off {
+  overflow: initial;
+}
+.test-balance {
+  margin: 0 15px 10px;
+}
+.test-balance label {
+  margin-top: 10px;
+}
+::ng-deep.k-footer-template {
+  background-color: #b3b3b3;
+  color: #000;
+}
+
+.acc-options {
+  margin-top: 30px;
+}
+.lm {
+  margin-left: 4px !important;
+}
+::ng-deep .k-header k-grid-draggable-header {
+  text-align: center !important;
+}
 .ref-filter {
   padding-right: 0px !important;
   padding-left: 2px !important;
+}
+.ref-filter .ref {
+  top: -5px;
 }

@@ -112,20 +112,12 @@ export function getLayoutModule(layout: Layout) {
         background-color: #b3b3b3;
         color: #000;
       }
-      .btn-compute-default {
-        margin-top: 25px;
-        border: 2px solid #337ab7;
-        color: #f0f0f0;
-        padding: 5px 25px;
-      }
+
       .btn-compute {
         color: #f0f0f0;
         transition: All 0.3s 0.1s ease-out;
       }
-      .btn-compute-selectable {
-        color: #fff;
-        background-image: linear-gradient(#c1e3ff, #337ab7);
-      }
+
       ::ng-deep sppc-profitlost .k-grid tr.k-alt {
         background-color: rgb(248, 251, 253) !important;
       }
