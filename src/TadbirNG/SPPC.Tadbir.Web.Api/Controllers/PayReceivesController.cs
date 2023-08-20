@@ -700,8 +700,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 {
                     message = errorResult.Value.ToString();
                 }
-
-                if (payReceive.IsConfirmed || payReceive.IsApproved || payReceive.IsRegistered)
+                else if (payReceive.IsRegistered)
+                {
+                    message = _strings.Format(AppStrings.RegisteredFormBlocked, entityNameKey);
+                }
+                else if (payReceive.IsConfirmed || payReceive.IsApproved)
                 {
                     message = _strings.Format(AppStrings.CantDeleteEntity, entityNameKey);
                 }
@@ -727,7 +730,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     return result;
                 }
 
-                if (payReceive.IsConfirmed || payReceive.IsApproved || payReceive.IsRegistered)
+                var currPayReceive = await _repository.GetPayReceiveAsync(payReceiveId);
+
+                if (currPayReceive.IsRegistered)
+                {
+                    return BadRequestResult(_strings.Format(AppStrings.RegisteredFormBlocked, entityNameKey));
+                }
+
+                if (currPayReceive.IsConfirmed || currPayReceive.IsApproved)
                 {
                     return BadRequestResult(_strings.Format(AppStrings.CantSaveEntity, entityNameKey));
                 }
@@ -773,6 +783,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 return BadRequestResult(_strings.Format(AppStrings.ItemByIdNotFound, entityNameKey,
                     payReceiveId.ToString()));
+            }
+
+            if(payReceive.IsRegistered && action != AppStrings.UndoRegister)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.RegisteredFormBlocked, entityNameKey));
             }
 
             var result = BranchValidationResult(payReceive);

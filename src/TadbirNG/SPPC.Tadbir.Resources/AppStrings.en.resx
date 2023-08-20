@@ -3931,7 +3931,7 @@
     <value>Receipt number</value>
   </data>
   <data name="CantSaveEntity" xml:space="preserve">
-    <value>This {0} is either confirmed, approved or register and cannot be saved.</value>
+    <value>This {0} is either confirmed or approved and cannot be saved.</value>
   </data>
   <data name="RepeatedEntityActionMessage" xml:space="preserve">
     <value>Action '{0}' has already been performed on this {1}.</value>
@@ -3961,10 +3961,10 @@
     <value>Account article</value>
   </data>
   <data name="CantDeleteDetailEntity" xml:space="preserve">
-    <value>This {0} is either confirmed, approved or register and {1} data cannot be deleted.</value>
+    <value>This {0} is either confirmed or approved and {1} data cannot be deleted.</value>
   </data>
   <data name="CantSaveDetailEntity" xml:space="preserve">
-    <value>This {0} is either confirmed, approved or register and {1} data cannot be saved.</value>
+    <value>This {0} is either confirmed or approved and {1} data cannot be saved.</value>
   </data>
   <data name="NegativeAmountNotAllowed" xml:space="preserve">
     <value>Negative amount is not allowed.</value>
@@ -4096,7 +4096,7 @@
     <value>For receipt, through receipt document No. {0}{1}{2}{3}{4}</value>
   </data>
   <data name="CantDeleteEntity" xml:space="preserve">
-    <value>This {0} is either confirmed, approved or register and cannot be deleted.</value>
+    <value>This {0} is either confirmed or approved and cannot be deleted.</value>
   </data>
   <data name="CantDeleteSystemicDetailVoucher" xml:space="preserve">
     <value>Because systemic creation of article through {0}, cannot be deleted.</value>
@@ -4301,5 +4301,8 @@
   </data>
   <data name="ModifiedDate" xml:space="preserve">
     <value>Modified Date</value>
+  </data>
+  <data name="RegisteredFormBlocked" xml:space="preserve">
+    <value>This {0} is registered and operation is possible only by undoing registration.</value>
   </data>
 </root>

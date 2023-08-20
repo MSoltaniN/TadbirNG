@@ -3931,7 +3931,7 @@
     <value>شماره فرم دریافت</value>
   </data>
   <data name="CantSaveEntity" xml:space="preserve">
-    <value>به دلیل تایید، تصویب و یا ثبت مالی {0}، ذخیره اطلاعات امکان‌پذیر نیست.</value>
+    <value>به دلیل تایید یا تصویب {0}، ذخیره اطلاعات امکان‌پذیر نیست.</value>
   </data>
   <data name="RepeatedEntityActionMessage" xml:space="preserve">
     <value>{1} مورد نظر قبلاً {0} شده است.</value>
@@ -3952,10 +3952,10 @@
     <value>آرتیکل طرف حساب</value>
   </data>
   <data name="CantDeleteDetailEntity" xml:space="preserve">
-    <value>به دلیل تایید، تصویب و یا ثبت مالی این {0}، حذف اطلاعات {1} امکان‌پذیر نیست.</value>
+    <value>به دلیل تایید یا تصویب این {0}، حذف اطلاعات {1} امکان‌پذیر نیست.</value>
   </data>
   <data name="CantSaveDetailEntity" xml:space="preserve">
-    <value>به دلیل تایید، تصویب و یا ثبت مالی این {0}، ذخیره اطلاعات {1} امکان‌پذیر نیست.</value>
+    <value>به دلیل تایید یا تصویب  این {0}، ذخیره اطلاعات {1} امکان‌پذیر نیست.</value>
   </data>
   <data name="NegativeAmountNotAllowed" xml:space="preserve">
     <value>مقدار منفی برای مبلغ معتبر نیست.</value>
@@ -4087,7 +4087,7 @@
     <value>بابت دریافت، طی سند دریافت شماره {0}{1}{2}{3}{4}</value>
   </data>
   <data name="CantDeleteEntity" xml:space="preserve">
-    <value>به دلیل تایید، تصویب و یا ثبت مالی {0}، حذف اطلاعات امکان‌پذیر نیست.</value>
+    <value>به دلیل تایید یا تصویب {0}، حذف اطلاعات امکان‌پذیر نیست.</value>
   </data>
   <data name="CantDeleteSystemicDetailVoucher" xml:space="preserve">
     <value>به دلیل ایجاد آرتیکل به صورت سیستمی توسط {0}، حذف اطلاعات امکان‌پذیر نیست.</value>
@@ -4289,5 +4289,8 @@
   </data>
   <data name="ModifiedDate" xml:space="preserve">
     <value>تاریخ تغییر</value>
+  </data>
+  <data name="RegisteredFormBlocked" xml:space="preserve">
+    <value>این {0} ثبت مالی شده است، انجام عملیات تنها با بازگشت از ثبت مالی امکان پذیر می‌باشد.</value>
   </data>
 </root>
