@@ -4,7 +4,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { DetailComponent } from '@sppc/shared/class';
 import { Permission } from '@sppc/core';
 import { Layout } from '@sppc/shared/enum/metadata';
-import { RoleDetails } from '@sppc/admin/models';
+import { RoleDetails, RoleItem } from '@sppc/admin/models';
 import { TreeNodeInfo } from '@sppc/shared/models';
 
 
@@ -12,6 +12,11 @@ export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
 }
 
+enum PermissionsTreeNodeInfoLevel{
+  groupSubsystem='1',
+  groupSourceType='2',
+  group='3'
+}
 
 @Component({
   selector: 'role-detail-form-component',
@@ -53,51 +58,58 @@ export class RoleDetailFormComponent extends DetailComponent {
 
   @Input() public set roleDetails(roleDetails: RoleDetails) {
 
-
-    var level0Index: number = -1;
-    var level1Index: number = 0;
+    let groupSubsystemId = [];
+    let groupSourceTypeId = [];
+    let groupId=[];
+    // var level0Index: number = -1;
+    // var level1Index: number = 0;
 
     if (roleDetails != undefined) {
 
-      var groupId = 0;
-
       this.treeData = new Array<TreeNodeInfo>();
 
-      if (this.CurrentLanguage == "fa")
-        this.treeData.push(new TreeNodeInfo(-1, undefined, "حسابداری"));
-      else
-        this.treeData.push(new TreeNodeInfo(-1, undefined, "Accounting"));
-
-      var indexId: number = 0;
-      var selectAll: boolean = true;
-
-      var sortedPermission = roleDetails.permissions.sort(function (a: Permission, b: Permission) {
-        return a.id - b.id;
+      var sortedPermission = roleDetails.permissions.sort(function (a: RoleItem, b: RoleItem) {
+        return a.groupSourceTypeId - b.groupSourceTypeId;
       });
+      
+      for (let permissionItem of sortedPermission as RoleItem[]) {
 
-      for (let permissionItem of sortedPermission) {
-
-
-        if (groupId != permissionItem.groupId) {
-          this.treeData.push(new TreeNodeInfo(permissionItem.groupId, -1, permissionItem.groupName))
-
-          level0Index++;
-          level1Index = -1;
-
-          groupId = permissionItem.groupId;
+        let permissionItemGroupSourceTypeId = permissionItem.groupSubsystemId.toString() + "0" + permissionItem.groupSourceTypeId;
+       
+        if(!groupSubsystemId.includes(permissionItem.groupSubsystemId)){
+          groupSubsystemId.push(permissionItem.groupSubsystemId);
+          this.treeData.push(new TreeNodeInfo(parseFloat(
+            permissionItem.groupSubsystemId.toString() + '.' + PermissionsTreeNodeInfoLevel.groupSubsystem ),
+            undefined,
+            permissionItem.groupSubsystemName))
         }
 
-        if (groupId == permissionItem.groupId) {
-          this.treeData.push(new TreeNodeInfo(parseInt(permissionItem.id.toString() + permissionItem.groupId.toString() + '00')
-            , permissionItem.groupId, permissionItem.name))
-
-          level1Index++;
+        if(!groupSourceTypeId.includes(permissionItemGroupSourceTypeId)){
+          groupSourceTypeId.push(permissionItemGroupSourceTypeId)
+          this.treeData.push(
+            new TreeNodeInfo(
+              parseFloat(permissionItemGroupSourceTypeId.toString() + '.' + PermissionsTreeNodeInfoLevel.groupSourceType),
+              parseFloat(permissionItem.groupSubsystemId.toString() + '.' + PermissionsTreeNodeInfoLevel.groupSubsystem ),
+            permissionItem.groupSourceTypeName))
         }
+              
+        if(!groupId.includes( permissionItem.groupId)){
+          groupId.push(permissionItem.groupId)
+          this.treeData.push(new TreeNodeInfo(
+            parseFloat(permissionItem.groupId.toString() + '.' + PermissionsTreeNodeInfoLevel.group),
+            parseFloat(permissionItemGroupSourceTypeId + '.' + PermissionsTreeNodeInfoLevel.groupSourceType),
+            permissionItem.groupName));
+        }
+        
+        this.treeData.push(
+          new TreeNodeInfo( 
+            permissionItem.id,
+            parseFloat(permissionItem.groupId.toString() + '.' + PermissionsTreeNodeInfoLevel.group),
+            permissionItem.name )
+        );
 
-        this.permissonDictionary['0_' + level0Index.toString() + '_' + level1Index.toString()] = permissionItem;
 
       }
-
       //this.gridBranchesData = roleDetails.branches;
       this.gridUsersData = roleDetails.users;
       this.RoleIsNotAdmin = roleDetails.role.id != 1;
