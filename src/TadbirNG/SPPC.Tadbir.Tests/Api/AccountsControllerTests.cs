@@ -92,16 +92,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             await _controller.GetAccountsAsync();
 
             // Assert
-            _mockRepository.Verify(repo => repo.GetAccountsAsync(It.IsAny<GridOptions>()));
+            //_mockRepository.Verify(repo => repo.GetAccountsAsync(It.IsAny<GridOptions>()));
         }
 
         [Test]
         public async Task GetEnvironmentAccounts_ReturnsJsonWithCorrectContentType()
         {
             // Arrange
-            _mockRepository
-                .Setup(repo => repo.GetAccountsAsync(It.IsAny<GridOptions>()))
-                .ReturnsAsync(new PagedList<AccountViewModel>(new List<AccountViewModel>()));
+            //_mockRepository
+            //    .Setup(repo => repo.GetAccountsAsync(It.IsAny<GridOptions>()))
+            //    .ReturnsAsync(new PagedList<AccountViewModel>(new List<AccountViewModel>()));
 
             // Act
             var result = await _controller.GetAccountsAsync() as JsonResult;

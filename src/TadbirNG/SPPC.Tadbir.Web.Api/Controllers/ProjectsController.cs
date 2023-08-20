@@ -385,12 +385,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            result = ActiveStateValidationResult(project);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
             var repository = _repository as IActiveStateRepository<ProjectViewModel>;
             if (project.ParentId != null && await repository.IsDeactivatedAsync(project.ParentId.Value))
             {
