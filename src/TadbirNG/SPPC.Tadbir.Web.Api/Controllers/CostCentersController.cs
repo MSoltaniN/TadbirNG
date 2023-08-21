@@ -76,7 +76,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetInactiveCostCentersAsync()
         {
-            var costCenters = await _repository.GetCostCentersAsync(GridOptions, (int)ActiveState.Inactive);
+            var costCenters = await _repository.GetCostCentersAsync(GridOptions, ActiveState.Inactive);
             return JsonListResult(costCenters);
         }
 
@@ -90,7 +90,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetAllCostCentersAsync()
         {
-            var costCenters = await _repository.GetCostCentersAsync(GridOptions, (int)ActiveState.All);
+            var costCenters = await _repository.GetCostCentersAsync(GridOptions, ActiveState.All);
             return JsonListResult(costCenters);
         }
 

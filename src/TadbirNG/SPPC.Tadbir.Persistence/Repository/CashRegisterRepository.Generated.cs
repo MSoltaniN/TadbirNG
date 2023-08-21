@@ -35,7 +35,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <inheritdoc/>
         public async Task<PagedList<CashRegisterViewModel>> GetCashRegistersAsync(
-            GridOptions gridOptions, int activeState = (int)ActiveState.Active)
+            GridOptions gridOptions, ActiveState activeState = ActiveState.Active)
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var cashRegisters = new List<CashRegisterViewModel>();
@@ -46,7 +46,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(item => Mapper.Map<CashRegisterViewModel>(item))
                     .ToListAsync();
                 await UpdateInactiveItemsAsync(cashRegisters);
-                cashRegisters = FilterAccountsByActiveState(cashRegisters, activeState);
+                cashRegisters = FilterItemsByActiveState(cashRegisters, activeState);
                 Array.ForEach(cashRegisters.ToArray(), cr => cr.State = Context.Localize(cr.State));
             }
 

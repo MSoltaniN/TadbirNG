@@ -87,14 +87,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="items">مجموعه سطرهای اطلاعاتی مورد نظر</param>
         /// <param name="activeState">وضعیت درخواستی مورد نظر بر اساس فیلد فعال و غیر فعال</param>
         /// <returns>لیست فیلتر شده فهرست اطلاعاتی ورودی</returns>
-        protected List<TEntityView> FilterAccountsByActiveState
-            (List<TEntityView> items, int activeState)
+        protected List<TEntityView> FilterItemsByActiveState(List<TEntityView> items, ActiveState activeState)
         {
             switch (activeState)
             {
-                case (int)ActiveState.All:
+                case ActiveState.All:
                     return items;
-                case (int)ActiveState.Inactive:
+                case ActiveState.Inactive:
                     return items.
                         Where(a => a.State == AppStrings.Inactive)
                         .ToList();

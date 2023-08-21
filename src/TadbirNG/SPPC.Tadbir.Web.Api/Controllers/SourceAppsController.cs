@@ -66,7 +66,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetInactiveSourceAppsAsync()
         {
             var sourceApps = await _repository.GetSourceAppsAsync(
-                GridOptions, (int)ActiveState.Inactive);
+                GridOptions, ActiveState.Inactive);
             return JsonListResult(sourceApps);
         }
 
@@ -81,7 +81,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAllSourceAppsAsync()
         {
             var sourceApps = await _repository.GetSourceAppsAsync(
-                GridOptions, (int)ActiveState.All);
+                GridOptions, ActiveState.All);
             return JsonListResult(sourceApps);
         }
 

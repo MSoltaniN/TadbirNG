@@ -73,7 +73,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetInactiveCurrenciesAsync()
         {
             var currencies = await _repository.GetCurrenciesAsync(
-                GridOptions, (int)ActiveState.Inactive);
+                GridOptions, ActiveState.Inactive);
             return JsonListResult(currencies);
         }
 
@@ -88,7 +88,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAllCurrenciesAsync()
         {
             var currencies = await _repository.GetCurrenciesAsync(
-                GridOptions, (int)ActiveState.All);
+                GridOptions, ActiveState.All);
             return JsonListResult(currencies);
         }
 

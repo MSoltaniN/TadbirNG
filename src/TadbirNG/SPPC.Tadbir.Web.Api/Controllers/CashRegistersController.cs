@@ -67,7 +67,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetInactiveCashRegistersAsync()
         {
             var cashRegisters = await _repository.GetCashRegistersAsync(
-                GridOptions, (int)ActiveState.Inactive);
+                GridOptions, ActiveState.Inactive);
             return JsonListResult(cashRegisters);
         }
 
@@ -82,7 +82,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAllCashRegistersAsync()
         {
             var cashRegisters = await _repository.GetCashRegistersAsync(
-                GridOptions, (int)ActiveState.All);
+                GridOptions, ActiveState.All);
             return JsonListResult(cashRegisters);
         }
 

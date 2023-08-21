@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="activeState">وضعیت مورد نظر برای نمایش اطلاعات بر اساس وضعیت فعال و غیر فعال</param>
         /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
         Task<PagedList<ProjectViewModel>> GetProjectsAsync(
-            GridOptions gridOptions, int activeState = (int)ActiveState.Active);
+            GridOptions gridOptions, ActiveState activeState = ActiveState.Active);
 
         /// <summary>
         /// به روش آسنکرون، پروژه با شناسه عددی مشخص شده را خوانده و برمی گرداند

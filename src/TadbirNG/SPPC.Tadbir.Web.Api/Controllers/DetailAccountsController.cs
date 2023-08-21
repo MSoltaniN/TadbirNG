@@ -77,7 +77,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetInactiveDetailAccountsAsync()
         {
             var detailAccounts = await _repository.GetDetailAccountsAsync(
-                GridOptions, (int)ActiveState.Inactive);
+                GridOptions, ActiveState.Inactive);
             return JsonListResult(detailAccounts);
         }
 
@@ -92,7 +92,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAllDetailAccountsAsync()
         {
             var detailAccounts = await _repository.GetDetailAccountsAsync(
-                GridOptions, (int)ActiveState.All);
+                GridOptions, ActiveState.All);
             return JsonListResult(detailAccounts);
         }
 

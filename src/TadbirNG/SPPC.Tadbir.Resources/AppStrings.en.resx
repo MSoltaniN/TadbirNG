@@ -4288,7 +4288,7 @@
     <value>Source or application can only be used when selected account is assigned to cash or bank collection.</value>
   </data>
   <data name="NotValidVoucherForRegister" xml:space="preserve">
-    <value>Selected document is not valid for Register.</value>
+    <value>Selected voucher cannot be used for Register operation.</value>
   </data>
   <data name="CreatedByName" xml:space="preserve">
     <value>Created By</value>

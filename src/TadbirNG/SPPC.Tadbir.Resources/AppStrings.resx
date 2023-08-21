@@ -4291,6 +4291,6 @@
     <value>تاریخ تغییر</value>
   </data>
   <data name="RegisteredFormBlocked" xml:space="preserve">
-    <value>این {0} ثبت مالی شده است، انجام عملیات تنها با بازگشت از ثبت مالی امکان پذیر می‌باشد.</value>
+    <value>این {0} ثبت مالی شده و انجام عملیات تنها با برگشت از ثبت مالی امکان پذیر است.</value>
   </data>
 </root>

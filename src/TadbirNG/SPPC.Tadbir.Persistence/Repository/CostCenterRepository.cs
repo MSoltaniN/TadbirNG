@@ -38,7 +38,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <inheritdoc/>
         public async Task<PagedList<CostCenterViewModel>> GetCostCentersAsync(
-            GridOptions gridOptions, int activeState = (int)ActiveState.Active)
+            GridOptions gridOptions, ActiveState activeState = ActiveState.Active)
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var costCenters = new List<CostCenterViewModel>();
@@ -49,7 +49,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(item => Mapper.Map<CostCenterViewModel>(item))
                     .ToListAsync();
                 await UpdateInactiveItemsAsync(costCenters);
-                costCenters = FilterAccountsByActiveState(costCenters, activeState);
+                costCenters = FilterItemsByActiveState(costCenters, activeState);
                 Array.ForEach(costCenters.ToArray(), cc => cc.State = Context.Localize(cc.State));
             }
 

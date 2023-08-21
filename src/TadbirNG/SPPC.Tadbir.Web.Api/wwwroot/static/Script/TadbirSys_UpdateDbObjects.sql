@@ -1415,7 +1415,7 @@ WHERE ColumnID IN(713,726) AND [Name] = N'CheckBookNo'
 -- 1.2.1575
 SET IDENTITY_INSERT [Metadata].[View] ON
 INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [EntityType], [FetchUrl], [SearchUrl], [IsHierarchy], [IsCartableIntegrated])
-    VALUES (78, 'VouchersByDate', N'PayReceive', N'Operational', NULL, NULL, 0, 0)
+    VALUES (78, 'VouchersByDate', N'Voucher', N'Operational', NULL, NULL, 0, 0)
 SET IDENTITY_INSERT [Metadata].[View] OFF
 
 SET IDENTITY_INSERT [Metadata].[Column] ON
@@ -1424,14 +1424,28 @@ INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Typ
 INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
     VALUES (858, 78, 'Id', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
 INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
-    VALUES (859, 78, 'No', NULL, 'Default', 'System.Int32', 'int', 'number', 0, 0, 0, 0, 1, 1, 1, N'Hidden', 1, NULL)
+    VALUES (859, 78, 'No', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 0, 1, 1, 1, NULL, 1, NULL)
 INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
-    VALUES (860, 78, 'Date', NULL, 'Default', 'System.DateTime', 'datetime', 'Date', 0, 0, 0, 0, 1, 1, 1, N'Hidden', 2, NULL)
+    VALUES (860, 78, 'Date', NULL, 'Default', 'System.DateTime', 'datetime', 'Date', 0, 0, 0, 0, 1, 1, 1, NULL, 2, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
-    VALUES (861, 78, 'Description', NULL, NULL, 'System.String', 'nvarchar', 'string', 512, 0, 0, 1, 1, 1, N'Hidden', 3, NULL)
+    VALUES (861, 78, 'Description', NULL, NULL, 'System.String', 'nvarchar', 'string', 512, 0, 0, 1, 1, 1, NULL, 3, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 -- 1.2.1576
 UPDATE [Metadata].[Column]
-SET [Visibility] = N'AlwaysHidden' , [DisplayIndex]=-1
-WHERE ColumnID = 100 
+SET [Visibility] = N'AlwaysHidden', [DisplayIndex] = -1
+WHERE ColumnID = 100 AND [Name] = 'Password'
+
+-- 1.2.1577
+UPDATE [Metadata].[Column]
+SET [DisplayIndex] = 5
+WHERE ColumnID = 97 AND [Name] = 'Description'
+
+UPDATE [Metadata].[Column]
+SET [DisplayIndex] = 3
+WHERE ColumnID = 98 AND [Name] = 'Server'
+
+UPDATE [Metadata].[Column]
+SET [DisplayIndex] = 4
+WHERE ColumnID = 99 AND [Name] = 'UserName'
+

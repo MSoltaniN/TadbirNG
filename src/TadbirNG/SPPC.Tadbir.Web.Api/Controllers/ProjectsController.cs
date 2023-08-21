@@ -76,7 +76,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetInactiveProjectsAsync()
         {
-            var projects = await _repository.GetProjectsAsync(GridOptions, (int)ActiveState.Inactive);
+            var projects = await _repository.GetProjectsAsync(GridOptions, ActiveState.Inactive);
             return JsonListResult(projects);
         }
 
@@ -90,7 +90,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetAllProjectsAsync()
         {
-            var projects = await _repository.GetProjectsAsync(GridOptions, (int)ActiveState.All);
+            var projects = await _repository.GetProjectsAsync(GridOptions, ActiveState.All);
             return JsonListResult(projects);
         }
 

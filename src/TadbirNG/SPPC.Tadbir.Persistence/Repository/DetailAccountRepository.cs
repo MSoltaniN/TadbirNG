@@ -38,7 +38,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <inheritdoc/>
         public async Task<PagedList<DetailAccountViewModel>> GetDetailAccountsAsync(
-            GridOptions gridOptions, int activeState = (int)ActiveState.Active)
+            GridOptions gridOptions, ActiveState activeState = ActiveState.Active)
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var detailAccounts = new List<DetailAccountViewModel>();
@@ -49,7 +49,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(item => Mapper.Map<DetailAccountViewModel>(item))
                     .ToListAsync();
                 await UpdateInactiveItemsAsync(detailAccounts);
-                detailAccounts = FilterAccountsByActiveState(detailAccounts, activeState);
+                detailAccounts = FilterItemsByActiveState(detailAccounts, activeState);
                 Array.ForEach(detailAccounts.ToArray(), facc => facc.State = Context.Localize(facc.State));
             }
 

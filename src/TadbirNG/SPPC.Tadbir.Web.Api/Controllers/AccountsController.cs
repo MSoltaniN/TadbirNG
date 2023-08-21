@@ -77,7 +77,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetInactiveAccountsAsync()
         {
-            var accounts = await _repository.GetAccountsAsync(GridOptions, (int)ActiveState.Inactive);
+            var accounts = await _repository.GetAccountsAsync(GridOptions, ActiveState.Inactive);
             return JsonListResult(accounts);
         }
 
@@ -91,7 +91,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetAllAccountsAsync()
         {
-            var accounts = await _repository.GetAccountsAsync(GridOptions, (int)ActiveState.All);
+            var accounts = await _repository.GetAccountsAsync(GridOptions, ActiveState.All);
             return JsonListResult(accounts);
         }
 

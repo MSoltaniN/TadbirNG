@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="activeState">وضعیت مورد نظر برای نمایش اطلاعات بر اساس وضعیت فعال و غیر فعال</param>
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه جاری برنامه</returns>
         Task<PagedList<AccountViewModel>> GetAccountsAsync(
-            GridOptions gridOptions, int activeState = (int)ActiveState.Active);
+            GridOptions gridOptions, ActiveState activeState = ActiveState.Active);
 
         /// <summary>
         /// به روش آسنکرون، کلیه حساب های قابل انتخاب در دوره مالی و شعبه جاری برنامه را

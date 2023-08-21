@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="activeState">وضعیت مورد نظر برای نمایش اطلاعات بر اساس وضعیت فعال و غیر فعال</param>
         /// <returns>مجموعه ای از ارزها تعریف شده</returns>
         Task<PagedList<CurrencyViewModel>> GetCurrenciesAsync(
-            GridOptions gridOptions, int activeState = (int)ActiveState.Active);
+            GridOptions gridOptions, ActiveState activeState = ActiveState.Active);
 
         /// <summary>
         /// به روش آسنکرون، ارز با شناسه عددی مشخص شده را خوانده و برمی گرداند
