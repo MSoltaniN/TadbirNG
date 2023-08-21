@@ -1,7 +1,7 @@
 export enum StatusFilterTypeKey {
-    Active = "Form.Active",
-    Inactive = "Form.Inactive",
-    All = "CheckBookReport.All",
+    Active = "Form.ActiveRows",
+    Inactive = "Form.InactiveRows",
+    All = "Form.AllRows",
 }
 
 export enum StatusFilterTypeValue {

@@ -210,7 +210,10 @@
     "Inactive": "غیرفعال",
     "Activated": "فعال",
     "Deactivated": "غیرفعال",
-    "FilterByStatus": "فیلتر براساس وضعیت"
+    "FilterByStatus": "فیلتر براساس وضعیت",
+    "ActiveRows": "سطرهای فعال",
+    "InactiveRows": "سطرهای غیرفعال",
+    "AllRows": "همه سطرها"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
