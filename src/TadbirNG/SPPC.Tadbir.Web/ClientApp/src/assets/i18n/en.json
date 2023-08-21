@@ -188,7 +188,10 @@
     "Inactive": "Inactive",
     "Activated": "Activated",
     "Deactivated": "Deactivated",
-    "FilterByStatus": "Filter By Status"
+    "FilterByStatus": "Filter By Status",
+    "ActiveRows": "Active Rows",
+    "InactiveRows": "Inactive Rows",
+    "AllRows": "All Rows"
   },
   "GridSetting": {
     "Visibility": "Visibility",
