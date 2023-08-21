@@ -80,6 +80,8 @@
     </ng-template>
 
     <ng-template kendoGridToolbarTemplate>
+      <quick-filters [statusFilter]="true" [parentComponent]="this"></quick-filters>
+
       <button
         kendoGridAddCommand
         SppcPermissionCheck="Create"

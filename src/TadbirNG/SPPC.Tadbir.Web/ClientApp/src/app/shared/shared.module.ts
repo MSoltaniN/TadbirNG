@@ -153,6 +153,7 @@ import { UserValueListComponent } from "./controls/userValueForm/user-value-list
 import { UserValueService } from "./services/userValue.service";
 import { UserValueComponent } from "./controls/userValueForm/user-value.component";
 import { UserValueFilterComponent } from "./controls/userValueForm/user-value-filter.component";
+import { QuickFiltersComponent } from './controls/quick-filters/quick-filters.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -292,7 +293,8 @@ export function loadEcharts(): any {
     WidgetRolesFormComponent,
     UserValueListComponent,
     UserValueComponent,
-    UserValueFilterComponent
+    UserValueFilterComponent,
+    QuickFiltersComponent
   ],
 
   entryComponents: [
@@ -391,7 +393,8 @@ export function loadEcharts(): any {
     TooltipDirective,
     AutoFocusDirective,
     UserValueFilterComponent,
-    SppcFullAccountDetailComponent
+    SppcFullAccountDetailComponent,
+    QuickFiltersComponent
   ],
 })
 export class SharedModule {

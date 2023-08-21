@@ -1,0 +1,27 @@
+::ng-deep quick-filters {
+    width: 100%;
+}
+
+@media screen and (max-width: 620px) {
+  .filter-box {
+    display: flex;
+    flex-direction: column;
+  }
+  .filter-box .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+}
+.disabled {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.filter-box input {
+  vertical-align: middle;
+}
+
+.filter-box label {
+  margin: 5px 0;
+}

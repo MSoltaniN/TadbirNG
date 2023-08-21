@@ -14,8 +14,14 @@ import { environment } from "@sppc/env/environment";
 
 export class ProjectApi {
 
-    // projects
+    // Active projects
     public static EnvironmentProjects = environment.BaseUrl + "/projects";
+
+    // Inactive projects
+    public static InactiveProjects = environment.BaseUrl + "/projects/inactive";
+
+    // All projects
+    public static AllProjects = environment.BaseUrl + "/projects/all";
 
     // projects/root
     public static RootProjects = environment.BaseUrl + "/projects/root";

@@ -14,8 +14,14 @@ import { environment } from "@sppc/env/environment";
 
 export class DetailAccountApi {
 
-    // faccounts
+    // Active faccounts
     public static EnvironmentDetailAccounts = environment.BaseUrl + "/faccounts";
+
+    // Inactive faccounts
+    public static InactiveDetailAccounts = environment.BaseUrl + "/faccounts/inactive";
+
+    // All faccounts
+    public static AllDetailAccounts = environment.BaseUrl + "/faccounts/all";
 
     // faccounts/lookup
     public static EnvironmentDetailAccountsLookup = environment.BaseUrl + "/faccounts/lookup";

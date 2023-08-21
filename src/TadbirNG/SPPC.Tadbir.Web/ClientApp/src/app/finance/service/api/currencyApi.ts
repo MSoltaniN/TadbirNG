@@ -14,8 +14,14 @@ import { environment } from "@sppc/env/environment";
 
 export class CurrencyApi {
 
-    // currencies
+    // Active currencies
     public static Currencies = environment.BaseUrl + "/currencies";
+
+    // Inactive currencies
+    public static InactiveCurrencies = environment.BaseUrl + "/currencies/inactive";
+
+    // All currencies
+    public static AllCurrencies = environment.BaseUrl + "/currencies/all";
 
     // currencies/{currencyId:min(1)}
     public static Currency = environment.BaseUrl + "/currencies/{0}";

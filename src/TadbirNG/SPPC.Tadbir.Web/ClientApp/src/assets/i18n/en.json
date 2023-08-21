@@ -187,7 +187,8 @@
     "Active": "Active",
     "Inactive": "Inactive",
     "Activated": "Activated",
-    "Deactivated": "Deactivated"
+    "Deactivated": "Deactivated",
+    "FilterByStatus": "Filter By Status"
   },
   "GridSetting": {
     "Visibility": "Visibility",

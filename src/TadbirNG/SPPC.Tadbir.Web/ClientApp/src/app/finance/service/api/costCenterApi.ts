@@ -14,8 +14,14 @@ import { environment } from "@sppc/env/environment";
 
 export class CostCenterApi {
 
-    // ccenters
+    // Active ccenters
     public static EnvironmentCostCenters = environment.BaseUrl + "/ccenters";
+
+    // Inactive ccenters
+    public static InactiveCostCenters = environment.BaseUrl + "/ccenters/inactive";
+
+    // All ccenters
+    public static AllCostCenters = environment.BaseUrl + "/ccenters/all";
 
     // ccenters/root
     public static RootCostCenters = environment.BaseUrl + "/ccenters/root";

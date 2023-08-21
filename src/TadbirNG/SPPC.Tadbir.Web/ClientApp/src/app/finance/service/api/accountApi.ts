@@ -14,8 +14,14 @@ import { environment } from "@sppc/env/environment";
 
 export class AccountApi {
 
-    // accounts
+    // Active accounts items
     public static EnvironmentAccounts = environment.BaseUrl + "/accounts";
+
+    // inactive account items
+    public static InactiveAccounts = environment.BaseUrl + "/accounts/inactive";
+
+    // all account items
+    public static AllAccounts = environment.BaseUrl + "/accounts/all";
 
     // accounts/ledger
     public static LedgerAccounts = environment.BaseUrl + "/accounts/ledger";

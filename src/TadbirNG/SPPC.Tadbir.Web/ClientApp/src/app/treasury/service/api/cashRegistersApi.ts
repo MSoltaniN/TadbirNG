@@ -2,8 +2,14 @@ import { environment } from "@sppc/env/environment";
 
 export class CashRegisterApi
 {
-    // API client URL for all cash register items
-    public static AllCashRegisters = environment.BaseUrl + "/cash-registers";
+    // Active cash register items
+    public static CashRegisters = environment.BaseUrl + "/cash-registers";
+
+    // Inactive cash register items
+    public static InactiveCashRegisters = environment.BaseUrl + "/cash-registers/inactive";
+
+    // All cash register items
+    public static AllCashRegisters = environment.BaseUrl + "/cash-registers/all";
 
     // API client URL for a cash register item specified by unique identifier
     public static CashRegister = environment.BaseUrl + "/cash-registers/{0}";

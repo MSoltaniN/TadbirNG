@@ -35,7 +35,6 @@ import { ShareDataService } from "@sppc/shared/services/share-data.service";
 import { ToastrService } from "ngx-toastr";
 import { AccountFormComponent } from "./account-form.component";
 import { ServiceLocator } from "@sppc/service.locator";
-import { lastValueFrom } from "rxjs";
 
 //#endregion
 

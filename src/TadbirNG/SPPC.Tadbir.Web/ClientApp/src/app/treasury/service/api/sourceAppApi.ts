@@ -14,8 +14,14 @@ import { environment } from "@sppc/env/environment";
 
 export class SourceAppApi {
 
-    // source-apps
+    // Active source-apps
     public static SourceApps = environment.BaseUrl + "/source-apps";
+
+    // Inactive source-apps
+    public static InactiveSourceApps = environment.BaseUrl + "/source-apps/inactive";
+
+    // All source-apps
+    public static AllSourceApps = environment.BaseUrl + "/source-apps/all";
 
     // source-apps/{sourceAppId:min(1)}
     public static SourceApp = environment.BaseUrl + "/source-apps/{0}";
