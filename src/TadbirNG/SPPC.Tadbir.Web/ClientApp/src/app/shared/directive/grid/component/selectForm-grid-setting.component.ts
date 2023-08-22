@@ -20,6 +20,7 @@ export function getLayoutModule(layout: Layout) {
   selector: 'selectForm-grid-setting',
   templateUrl: './selectForm-grid-setting.component.html',
 styles:[`
+:host{margin:0}
 .setting-section { padding:0 }
 .setting-section th { border-bottom-color: #e2e2e2; }
 .setting-mid-section { border-left: solid 1px #e2e2e2; border-right: solid 1px #e2e2e2; }

@@ -1,7 +1,3 @@
-﻿.filterMargin {
-    margin-left:4px;
-}
-
-.TLTR.sh-execute-filter{
-    margin-left: 2px;
+:host{
+    margin: 0;
 }
