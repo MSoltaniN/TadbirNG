@@ -4293,4 +4293,7 @@
   <data name="RegisteredFormBlocked" xml:space="preserve">
     <value>این {0} ثبت مالی شده و انجام عملیات تنها با برگشت از ثبت مالی امکان پذیر است.</value>
   </data>
+  <data name="UndoRegisterEnabledForNotCheckedVouchers" xml:space="preserve">
+    <value>برگشت مالی فقط بر روی اسناد ثبت نشده امکان پذیر می‌باشد.</value>
+  </data>
 </root>
