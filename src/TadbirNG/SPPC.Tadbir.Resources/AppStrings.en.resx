@@ -4305,4 +4305,7 @@
   <data name="RegisteredFormBlocked" xml:space="preserve">
     <value>This {0} is registered and operation is possible only by undoing registration.</value>
   </data>
+  <data name="UndoRegisterEnabledForNotCheckedVouchers" xml:space="preserve">
+    <value>Undoing register only possible for not checked vouchers.</value>
+  </data>
 </root>

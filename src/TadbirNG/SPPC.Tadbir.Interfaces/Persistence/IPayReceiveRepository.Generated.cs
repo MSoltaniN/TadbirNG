@@ -152,5 +152,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اگر سند دارای شرایط ثبت مالی باشد مقدار درست
         /// و در غیر اینصورت مقدار نادرست برمی گرداند </returns>
         Task<bool> IsValidVoucherForRegisterAsync(int voucherId, DateTime operationalDate);
+
+        /// <summary>
+        /// به روش آسنکرون، سندی که فرم دریافت/پرداخت ورودی روی آن ثبت مالی شده را برمی گرداند
+        /// </summary>
+        /// <param name="PayReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
+        /// <returns>سندی مرتبط با فرم دریافت/پرداخت داده شده</returns>
+        Task<VoucherViewModel> GetVoucherOfRegisterAsync(int PayReceiveId);
+
     }
 }

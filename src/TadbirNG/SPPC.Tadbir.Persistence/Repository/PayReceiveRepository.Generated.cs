@@ -387,6 +387,23 @@ namespace SPPC.Tadbir.Persistence
                      && v.StatusId == (int)DocumentStatusId.NotChecked);
         }
 
+        ///<inheritdoc/>
+        public async Task<VoucherViewModel> GetVoucherOfRegisterAsync(int PayReceiveId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var payReceiveVoucherLineRepository = UnitOfWork.GetAsyncRepository<PayReceiveVoucherLine>();
+            var voucherId = await payReceiveVoucherLineRepository
+                .GetEntityQuery()
+                .Where(prv => prv.PayReceiveId == PayReceiveId)
+                .Select(prv => prv.VoucherLine.VoucherId)
+                .FirstOrDefaultAsync();
+            return await repository
+                .GetEntityQuery()
+                .Where(v => v.Id == voucherId)
+                .Select(v => Mapper.Map<VoucherViewModel>(v))
+                .SingleOrDefaultAsync();
+        }
+
         internal override int? EntityType
         {
             get { return (int?)EntityTypeId.Receipt; }

@@ -873,10 +873,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     entityNameKey, AppStrings.Approve));
             }
 
-            if (action == AppStrings.UndoRegister && !payReceive.IsRegistered)
+            if (action == AppStrings.UndoRegister)
             {
-                return BadRequestResult(_strings.Format(AppStrings.InvalidEntityActionMessage, action,
-                    entityNameKey, AppStrings.UndoRegister));
+                if(!payReceive.IsRegistered)
+                {
+                    return BadRequestResult(_strings.Format(AppStrings.InvalidEntityActionMessage, action,
+                        entityNameKey, AppStrings.UndoRegister));
+                }
+
+                var voucher = await _repository.GetVoucherOfRegisterAsync(payReceiveId);
+                if (voucher.StatusId != (int)DocumentStatusId.NotChecked) 
+                {
+                    return BadRequestResult(_strings.Format(AppStrings.UndoRegisterEnabledForNotCheckedVouchers));
+                }
             }
 
             return Ok();
