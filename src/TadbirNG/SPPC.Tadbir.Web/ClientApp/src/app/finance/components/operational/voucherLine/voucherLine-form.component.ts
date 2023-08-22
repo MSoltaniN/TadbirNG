@@ -1,15 +1,29 @@
-import { Component, Input, Output, EventEmitter, Renderer2, OnInit, ElementRef, HostListener } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { ToastrService } from 'ngx-toastr';
-import { LookupService, MetaDataService, BrowserStorageService, SessionKeys } from '@sppc/shared/services';
-import { VoucherLine, CurrencyInfo } from '@sppc/finance/models';
-import { Entities } from '@sppc/shared/enum/metadata';
-import { DetailComponent, String } from '@sppc/shared/class';
-import { ViewName } from '@sppc/shared/security';
-import { LookupApi } from '@sppc/shared/services/api';
-import { CurrencyService } from '@sppc/finance/service';
-import { CurrencyApi } from '@sppc/finance/service/api';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  Renderer2,
+  OnInit,
+  ElementRef,
+  HostListener,
+} from "@angular/core";
+import { Validators, FormGroup, FormControl } from "@angular/forms";
+import { TranslateService } from "@ngx-translate/core";
+import { ToastrService } from "ngx-toastr";
+import {
+  LookupService,
+  MetaDataService,
+  BrowserStorageService,
+  SessionKeys,
+} from "@sppc/shared/services";
+import { VoucherLine, CurrencyInfo } from "@sppc/finance/models";
+import { Entities } from "@sppc/shared/enum/metadata";
+import { DetailComponent, String } from "@sppc/shared/class";
+import { ViewName } from "@sppc/shared/security";
+import { LookupApi } from "@sppc/shared/services/api";
+import { CurrencyService } from "@sppc/finance/service";
+import { CurrencyApi } from "@sppc/finance/service/api";
 
 interface Item {
   Key: string;
@@ -82,7 +96,7 @@ export class VoucherLineFormComponent
   @Input() public isNewBalance: boolean = false;
   @Input() public balance: number = 0;
   @Input() public model: VoucherLine | any;
-  @Input() public set payReciept(value:boolean) {
+  @Input() public set payReciept(value: boolean) {
     this.isPayReciept = false;
   }
   @Input() public isSourceApp = false;
@@ -119,13 +133,11 @@ export class VoucherLineFormComponent
     this.editForm1.reset(this.model);
 
     this.getSourceApps();
-    
-    if (!this.isPayReciept){
+
+    if (!this.isPayReciept) {
       this.getArticleType();
       this.getCurrencies();
-    }
-    else
-      this.initPayReceiptData();
+    } else this.initPayReceiptData();
 
     if (this.isNewBalance)
       if (this.balance > 0) {
@@ -139,6 +151,10 @@ export class VoucherLineFormComponent
     if (!this.isNew && !this.isPayReciept) {
       if (this.model.credit > 0) this.creditDebiteMode = "2";
       else this.creditDebiteMode = "1";
+    }
+    if (!this.isNew && this.model.sourceAppId != null) {
+      this.selectedSourceApp = this.model.sourceAppId.toString();
+      this.isActiveSourceAppDropDown = true;
     }
 
     this.onChangeFullAccount();
@@ -175,7 +191,7 @@ export class VoucherLineFormComponent
             fullCode: new FormControl(),
           }),
         }),
-      });  
+      });
     } else {
       this.editForm1 = new FormGroup({
         id: new FormControl(),
@@ -211,22 +227,20 @@ export class VoucherLineFormComponent
         }),
       });
     }
-    
   }
 
   initPayReceiptData() {
     if (this.isSourceApp && !this.isNew) {
       this.selectedSourceApp = this.model.sourceAppId?.toString();
       this.isBank = this.model.isBank;
-      if (this.model.sourceAppId)
-        this.isActiveSourceAppDropDown = true;
+      if (this.model.sourceAppId) this.isActiveSourceAppDropDown = true;
     }
   }
 
   public onSave(isOpen: boolean): void {
     if (this.editForm1.valid) {
       var model = this.editForm1.value;
-      
+
       if (!model.debit) model.debit = 0;
       if (!model.credit) model.credit = 0;
       if (model.sourceAppId == 0) model.sourceAppId = null;
@@ -277,10 +291,7 @@ export class VoucherLineFormComponent
   }
 
   getSourceApps() {
-    let apiUrl = String.Format(
-      LookupApi.SourceApps,
-      this.creditDebiteMode
-    );
+    let apiUrl = String.Format(LookupApi.SourceApps, this.creditDebiteMode);
 
     this.lookupService.getModels(apiUrl).subscribe((res) => {
       this.sourceAppList = res;
@@ -297,7 +308,6 @@ export class VoucherLineFormComponent
     );
   }
 
-
   focusHandler(e: any) {
     let fullAccount = this.editForm1.value.fullAccount;
     this.isActiveSourceAppDropDown = this.hasAccountWithId(
@@ -305,10 +315,10 @@ export class VoucherLineFormComponent
     );
 
     setTimeout(() => {
-      let costField = document.querySelector('.cost-field input');
+      let costField = document.querySelector(".cost-field input");
       (<HTMLElement>document.activeElement).blur();
       (<HTMLElement>costField).focus();
-    },200)
+    }, 200);
     this.setFocus.emit();
   }
 
@@ -388,20 +398,19 @@ export class VoucherLineFormComponent
     }
   }
 
-  @HostListener('document:keydown.enter')
+  @HostListener("document:keydown.enter")
   onEnterKey() {
-    if (!this.isFullAccountInputFocused)
-      this.onSave(true);
+    if (!this.isFullAccountInputFocused) this.onSave(true);
   }
 
-  @HostListener('document:keydown.control.Alt.s')
+  @HostListener("document:keydown.control.Alt.s")
   changeCreditDebiteMode() {
-    this.creditDebiteMode = this.creditDebiteMode == '1'? '2' : '1';
+    this.creditDebiteMode = this.creditDebiteMode == "1" ? "2" : "1";
   }
 
   onCreditDebiteModeChange() {
-    if (this.creditDebiteMode == '1') {
-      if (this.editForm1.value.credit != "") 
+    if (this.creditDebiteMode == "1") {
+      if (this.editForm1.value.credit != "")
         this.editForm1.patchValue({ debit: this.editForm1.value.credit });
     } else {
       if (this.editForm1.value.debit != "")
@@ -502,7 +511,7 @@ export class VoucherLineFormComponent
 
   onBankOrFundChange($e) {}
 
-  fullAccountFocuse(value:boolean) {
+  fullAccountFocuse(value: boolean) {
     this.isFullAccountInputFocused = value;
   }
 }
