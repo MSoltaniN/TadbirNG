@@ -182,11 +182,9 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
 
   }
 
-  async changeStateConfirmDialog(toActivate,cb?:{onSave?: Function, onDiscard?: Function}) {
+  async yesNoConfirmDialog(msg:string) {
     let result;
-    let msg = toActivate?
-      String.Format(this.getText("Messages.ChangeStateConfirm"),this.getText("Buttons.Aactivate")):
-      String.Format(this.getText("Messages.ChangeStateConfirm"),this.getText("Buttons.Deactivate"));
+
     const dialog: DialogRef = this.dialogService.open({
       title: this.getText("Form.ChangeStatus"),
       content: msg,
@@ -233,12 +231,20 @@ export class ListComponent extends DefaultComponent implements OnDestroy {
       return;
     }    
 
-    this.changeStateConfirmDialog(toActivate)
+    let msg = toActivate?
+      String.Format(this.getText("Messages.ChangeStateConfirm"),this.getText("Buttons.Aactivate")):
+      String.Format(this.getText("Messages.ChangeStateConfirm"),this.getText("Buttons.Deactivate"));
+    this.yesNoConfirmDialog(msg)
     .then(confirm => {
       if (confirm) {
 
         lastValueFrom(this.settingService.updateActiveState(apiUrl, model))
           .then(res => {
+            this.showMessage(
+              this.getText("Messages.OperationSuccessful"),
+              MessageType.Succes
+            );
+            self.selectedRows = [];
             self.reloadGrid();
           })
           .catch(error => {

@@ -1,7 +1,9 @@
 import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { DialogRef, DialogService } from '@progress/kendo-angular-dialog';
 import { RTL } from '@progress/kendo-angular-l10n';
+import { VouchersBydateComponent } from '@sppc/finance/components/operational/vouchers-bydate/vouchers-bydate.component';
 import { CurrencyInfo } from '@sppc/finance/models';
 import { DetailComponent, FilterExpression, String } from '@sppc/shared/class';
 import { Persist } from '@sppc/shared/decorator/persist.decorator';
@@ -61,6 +63,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     private route: ActivatedRoute,
     private payReceive: PayReceiveService,
     public lookupService: LookupService,
+    public dialogService: DialogService,
     private router: Router,
     public errorHandlingService: ErrorHandlingService)
   {
@@ -89,6 +92,8 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   totalAccountAmount: number = 0;
   totalCashAmount: number = 0;
   amountDifference: number;
+  public dialogRef: DialogRef;
+  public dialogModel: any;
   @Persist() preferedDate;
 
 
@@ -636,30 +641,6 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     })
   }
 
-  registerForm(e) {
-    let url = this.type == 1? PayReceiveApi.RegisterPayment: PayReceiveApi.RegisterReceipt;
-    let apiUrl = String.Format(url,this.model.id);
-
-    // let permission = 'Register';
-
-    lastValueFrom(this.payReceive.registerForm(apiUrl))
-      .then((res) => {
-        this.model.isRegistered = true;
-        // this.getDataUrl = String.Format(
-        //   this.type == PayReceiveTypes.Payment? PayReceiveApi.PaymentByNo: PayReceiveApi.ReceiptByNo,
-        //   this.model.textNo
-        // )
-        // this.getPayReceive(this.getDataUrl);
-      })
-      .catch((err) => {
-        if (err)
-          this.showMessage(
-            this.errorHandlingService.handleError(err),
-            MessageType.Warning
-          );
-      })
-  }
-
   changeStatus(apiUrl,permission:string, cb?:{next?:Function, error?:Function}) {
     let permissionList = this.type == 1? PaymentPermissions: ReceiptPermissions;
 
@@ -693,6 +674,73 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     } else {
       this.showMessage(this.getText("App.AccessDenied"), MessageType.Warning);
     }
+  }
+
+  register(e) {
+    let url = this.type == 1? PayReceiveApi.RegisterPayment: PayReceiveApi.RegisterReceipt;
+    let apiUrl;
+
+    this.dialogRef = this.dialogService.open({
+      title: this.getText("Voucher.Commit"),
+      content: VouchersBydateComponent,
+    });
+
+    let dialogModel = this.dialogRef.content.instance;
+    dialogModel.vouchreDate = this.model.date;
+
+    this.dialogRef.content.instance.save.subscribe((result) => {
+      apiUrl = String.Format(url, this.model.id, result);
+
+      lastValueFrom(this.payReceive.registerForm(apiUrl))
+        .then((res) => {
+          this.model.isRegistered = true;
+          this.dialogRef.close();
+          this.showMessage(
+            this.getText("Messages.OperationSuccessful"),
+            MessageType.Succes
+          );
+        })
+        .catch((err) => {
+          dialogModel.errorMessages = this.errorHandlingService.handleError(err);
+          if (err)
+            this.showMessage(
+              this.errorHandlingService.handleError(err),
+              MessageType.Warning
+            );
+          this.dialogRef.close();
+        });
+    });
+
+    this.dialogRef.content.instance.cancel.subscribe( c => {
+      this.dialogRef.close();
+    })
+  }
+
+  undoRegister(e) {
+    let url = this.type == 1? PayReceiveApi.UndoRegisterPayment: PayReceiveApi.UndoRegisterReceipt;
+    let apiUrl = String.Format(url, this.model.id);
+    let msg = String.Format(this.getText("Messages.ChangeStateConfirm"),this.getText("PayReceipt.UndoCommit"));
+
+    this.yesNoConfirmDialog(msg).then( confirm => {
+      if (confirm) {
+        lastValueFrom(this.payReceive.undoRegister(apiUrl))
+          .then((res) => {
+            this.model.isRegistered = false;
+            this.showMessage(
+              this.getText("Messages.OperationSuccessful"),
+              MessageType.Succes
+            );
+          })
+          .catch((err) => {
+            if (err)
+              this.showMessage(
+                this.errorHandlingService.handleError(err),
+                MessageType.Warning
+              );
+            this.dialogRef.close();
+          });
+      }
+    })
   }
 
   showReport() {}

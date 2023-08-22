@@ -132,7 +132,8 @@ export const Entities = {
   Receipt: "Receipt",
   PayReceiveAccount: "PayReceiveAccount",
   PayReceiveCashAccount: "PayReceiveCashAccount",
-  LogSetting: "LogSetting"
+  LogSetting: "LogSetting",
+  VouchersByDate: "VouchersByDate"
 }
 
 export const CustomForm =

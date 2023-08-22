@@ -89,6 +89,9 @@ export class LookupApi {
     // lookup/types/voucher-line
     public static VoucherLineTypes = environment.BaseUrl + "/lookup/types/voucher-line";
 
+    // {date:DateTime}
+    public static VouchersByDate = environment.BaseUrl + "/lookup/vouchers/by-date/{0}";
+
     // lookup/accbook/views/{viewId:min(1)}/levels
     public static AccountBookLevels = environment.BaseUrl + "/lookup/accbook/views/{0}/levels";
 

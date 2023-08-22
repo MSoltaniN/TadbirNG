@@ -204,6 +204,7 @@
     "First": "اولین {0}",
     "Last": "آخرین {0}",
     "Delete": "حذف {0}",
+    "Commit": "ثبت {0}",
     "SaveChanges": "ذخیره تغییرات",
     "ChangeStatus": "تغییر وضعیت",
     "Active": "فعال",
@@ -1418,7 +1419,8 @@
     "Checks":"چکها",
     "Cash":"وجه نقد",
     "PaymentFormNotFound": "سند پرداخت مورد نظر یافت نشد.",
-    "ReceiptFormNotFound": "سند دریافت مورد نظر یافت نشد."
+    "ReceiptFormNotFound": "سند دریافت مورد نظر یافت نشد.",
+    "UndoCommit": "برگشت از ثبت"
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",

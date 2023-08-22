@@ -182,6 +182,7 @@
     "First": "The first {0}",
     "Last": "The last {0}",
     "Delete": "Delete {0}",
+    "Commit": "Commit {0}",
     "SaveChanges": "Save Changes",
     "ChangeStatus": "Change Status",
     "Active": "Active",
@@ -1420,7 +1421,8 @@
     "Checks":"Checks",
     "Cash":"Cash",
     "PaymentFormNotFound": "The desired payment form was not found",
-    "ReceiptFormNotFound": "The desired receipt form was not found"
+    "ReceiptFormNotFound": "The desired receipt form was not found",
+    "UndoCommit": "Return From Commit"
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",

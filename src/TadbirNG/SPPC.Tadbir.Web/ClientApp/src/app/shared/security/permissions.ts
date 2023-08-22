@@ -486,6 +486,7 @@ export enum PaymentPermissions {
   UndoConfirm = 256,
   Approve = 512,
   UndoApprove = 1024,
+  UndoRegister = 2048,
   All = 2047
 }
 
@@ -502,6 +503,7 @@ export enum ReceiptPermissions {
   UndoConfirm = 256,
   Approve = 512,
   UndoApprove = 1024,
+  UndoRegister = 2048,
   All = 2047
 }
 

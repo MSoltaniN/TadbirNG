@@ -122,12 +122,23 @@ export class PayReceiveApi {
     public static NewReceipt = environment.BaseUrl + "/receipts/new";
 
     /**
-     * {paymentId:min(1)}
+     * {paymentId:min(1)} ,{voucherId:int} 0 for new voucher
      */
-    public static RegisterPayment = environment.BaseUrl + "/payments/{0}/register";
+    public static RegisterPayment = environment.BaseUrl + "/payments/{0}/register/vouchers/{1}";
+
+    /**
+     * {receiptId:min(1)} ,{voucherId:int} 0 for new voucher
+     */
+    public static RegisterReceipt = environment.BaseUrl + "/receipts/{0}/register/vouchers/{1}";
 
     /**
      * {paymentId:min(1)}
      */
-    public static RegisterReceipt = environment.BaseUrl + "/receipts/{0}/register";
+    public static UndoRegisterPayment = environment.BaseUrl + "/payments/{0}/register/undo";
+
+    /**
+     * {receiptId:min(1)}
+     */
+    public static UndoRegisterReceipt = environment.BaseUrl + "/receipts/{0}/register/undo";
+
 }

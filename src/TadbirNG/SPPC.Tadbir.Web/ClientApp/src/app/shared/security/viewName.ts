@@ -79,5 +79,6 @@ export enum ViewName {
   Payment = 74,
   Receipt = 75,
   PayReceiveAccount = 76,
-  PayReceiveCashAccount = 77
+  PayReceiveCashAccount = 77,
+  VouchersByDate = 78
 }

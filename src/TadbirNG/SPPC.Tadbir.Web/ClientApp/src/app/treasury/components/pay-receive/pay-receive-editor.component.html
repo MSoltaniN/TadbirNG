@@ -106,14 +106,25 @@
           </button>
 
           <button
+            *ngIf="!isRegistered"
             class="k-button sh-check-voucher"
             SppcPermissionCheck="Register"
             [EntityName]="entityType"
-            (sppcClick)="registerForm($event)"
-            [disabled]="isRegistered"
+            (sppcClick)="register($event)"
             title="{{ 'Voucher.Commit' | translate }}"
           >
             <span class="k-icon k-i-check-outline"></span>
+          </button>
+
+          <button
+            *ngIf="isRegistered"
+            class="k-button sh-check-voucher"
+            SppcPermissionCheck="UndoRegister"
+            [EntityName]="entityType"
+            (sppcClick)="undoRegister($event)"
+            title="{{ 'PayReceipt.UndoCommit' | translate }}"
+          >
+            <span class="k-icon k-i-x-outline"></span>
           </button>
 
           <button

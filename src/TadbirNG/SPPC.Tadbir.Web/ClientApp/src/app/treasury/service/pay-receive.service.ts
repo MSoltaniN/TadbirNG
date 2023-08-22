@@ -47,4 +47,8 @@ export class PayReceiveService extends BaseService {
   public registerForm(apiUrl: string) {
     return this.http.post(apiUrl, null, this.option).pipe(map((res) => res));
   }
+
+  public undoRegister(apiUrl: string) {
+    return this.http.delete(apiUrl, this.option).pipe(map((res) => res));
+  }
 }
