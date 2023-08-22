@@ -1449,3 +1449,7 @@ UPDATE [Metadata].[Column]
 SET [DisplayIndex] = 4
 WHERE ColumnID = 99 AND [Name] = 'UserName'
 
+--1.2.1579
+UPDATE [Metadata].[View]
+SET [EntityName] = N'VouchersByDate'
+WHERE ViewId = 78 and [Name] = 'VouchersByDate'

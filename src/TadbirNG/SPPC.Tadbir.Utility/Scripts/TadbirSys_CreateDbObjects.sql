@@ -801,7 +801,7 @@ INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [EntityType], [Fe
 INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [EntityType], [FetchUrl], [SearchUrl], [IsHierarchy], [IsCartableIntegrated])
     VALUES (77, 'PayReceiveCashAccount', N'PayReceiveCashAccount', N'Core', NULL, NULL, 0, 0)
 INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [EntityType], [FetchUrl], [SearchUrl], [IsHierarchy], [IsCartableIntegrated])
-    VALUES (78, 'VouchersByDate', N'Voucher', N'Operational', NULL, NULL, 0, 0)
+    VALUES (78, 'VouchersByDate', N'VouchersByDate', N'Operational', NULL, NULL, 0, 0)
 SET IDENTITY_INSERT [Metadata].[View] OFF
 
 SET IDENTITY_INSERT [Metadata].[Column] ON
