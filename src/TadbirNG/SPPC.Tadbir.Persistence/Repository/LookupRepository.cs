@@ -495,14 +495,18 @@ namespace SPPC.Tadbir.Persistence
         }
 
         ///<inheritdoc/>
-        public async Task<IEnumerable<VoucherSummaryViewModel>> GetVouchersByOperationalDateAsync(DateTime date)
+        public async Task<IEnumerable<VoucherSummaryViewModel>> GetVouchersByOperationalDateAsync(
+            DateTime date, GridOptions gridOptions)
         {
-            return await Repository
+            var vouchers = await Repository
                 .GetAllOperationQuery<Voucher>(ViewId.Voucher)
                 .Where(v => v.Date.Date == date.Date
                     && v.StatusId == (int)DocumentStatusId.NotChecked)
                 .Select(v => Mapper.Map<VoucherSummaryViewModel>(v))
                 .ToListAsync();
+            return vouchers
+                .Apply(gridOptions)
+                .ToList();
         }
 
         #endregion

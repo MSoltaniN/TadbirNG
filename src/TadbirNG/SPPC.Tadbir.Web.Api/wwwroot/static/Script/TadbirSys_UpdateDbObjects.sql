@@ -1449,7 +1449,17 @@ UPDATE [Metadata].[Column]
 SET [DisplayIndex] = 4
 WHERE ColumnID = 99 AND [Name] = 'UserName'
 
---1.2.1579
+-- 1.2.1579
 UPDATE [Metadata].[View]
 SET [EntityName] = N'VouchersByDate'
 WHERE ViewId = 78 and [Name] = 'VouchersByDate'
+
+-- 1.2.1581
+-- آپدیت مشکلات رفع شده متادیتا لوک آپ سند برای ثبت مالی
+UPDATE [Metadata].[Column]
+SET [Visibility] = NULL
+WHERE ColumnID in (859, 860, 861)
+
+UPDATE [Metadata].[Column]
+SET [Type] = NULL
+WHERE ColumnID = 859

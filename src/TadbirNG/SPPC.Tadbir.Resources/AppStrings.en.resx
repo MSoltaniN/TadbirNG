@@ -4308,4 +4308,7 @@
   <data name="UndoRegisterEnabledForNotCheckedVouchers" xml:space="preserve">
     <value>Undoing register only possible for not checked vouchers.</value>
   </data>
+  <data name="ImpossibleRegisterBeforeConfirmAndApprove" xml:space="preserve">
+    <value>Impossible to register {0} before approval and confirmation.</value>
+  </data>
 </root>

@@ -165,8 +165,10 @@ namespace SPPC.Tadbir.Persistence
         ///  به روش آسنکرون، لیست خلاصه سندهای باز موجود در تاریخ عملیاتی داده شده را برمی گرداند
         /// </summary>
         /// <param name="date">تاریخ مورد نظر</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>لیست خلاصه اسناد</returns>
-        Task<IEnumerable<VoucherSummaryViewModel>> GetVouchersByOperationalDateAsync(DateTime date);
+        Task<IEnumerable<VoucherSummaryViewModel>> GetVouchersByOperationalDateAsync(
+            DateTime date, GridOptions gridOptions);
 
         #endregion
 

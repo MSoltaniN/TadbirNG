@@ -804,13 +804,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     entityNameKey));
             }
 
-            if (action == AppStrings.Register && voucherId > 0)
+            if(action == AppStrings.Register && (!payReceive.IsConfirmed || !payReceive.IsApproved)) 
             {
-                
-                if (!await _repository.IsValidVoucherForRegisterAsync(voucherId, payReceive.Date))
-                {
-                    return BadRequestResult(_strings.Format(AppStrings.NotValidVoucherForRegister));
-                }
+                return BadRequestResult(_strings.Format(AppStrings.ImpossibleRegisterBeforeConfirmAndApprove, entityNameKey));
             }
 
             if (action == AppStrings.Confirm || action == AppStrings.Approve || action == AppStrings.Register)
@@ -843,6 +839,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 {
                     return BadRequestResult(_strings.Format(AppStrings.CantActionUnbalancedForm,
                         AppStrings.PayReceiveAccount, AppStrings.PayReceiveCashAccount, action, entityNameKey));
+                }
+            }
+
+            if (action == AppStrings.Register && voucherId > 0)
+            {
+
+                if (!await _repository.IsValidVoucherForRegisterAsync(voucherId, payReceive.Date))
+                {
+                    return BadRequestResult(_strings.Format(AppStrings.NotValidVoucherForRegister));
                 }
             }
 

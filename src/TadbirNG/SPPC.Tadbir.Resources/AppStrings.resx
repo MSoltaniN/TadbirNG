@@ -4270,7 +4270,7 @@
     <value>پیش نمایش چاپ فرم</value>
   </data>
   <data name="UndoRegister" xml:space="preserve">
-    <value>لغو ثبت مالی</value>
+    <value>برگشت از ثبت مالی</value>
   </data>
   <data name="InvalidAccountUsedWithSourceApp" xml:space="preserve">
     <value>برای انتخاب منبع یا مصرف باید حساب انتخاب‌شده به یکی از مجموعه حساب‌های صندوق یا بانک تخصیص یافته باشد.</value>
@@ -4294,6 +4294,9 @@
     <value>این {0} ثبت مالی شده و انجام عملیات تنها با برگشت از ثبت مالی امکان پذیر است.</value>
   </data>
   <data name="UndoRegisterEnabledForNotCheckedVouchers" xml:space="preserve">
-    <value>برگشت مالی فقط بر روی اسناد ثبت نشده امکان پذیر می‌باشد.</value>
+    <value>برگشت از ثبت مالی فقط بر روی اسناد ثبت نشده امکان پذیر می‌باشد.</value>
+  </data>
+  <data name="ImpossibleRegisterBeforeConfirmAndApprove" xml:space="preserve">
+    <value>ثبت مالی پیش از تایید و تصویب {0} امکان‌پذیر نمی‌باشد.</value>
   </data>
 </root>
