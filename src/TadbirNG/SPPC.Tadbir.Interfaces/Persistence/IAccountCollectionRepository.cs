@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using SPPC.Framework.Presentation;
+﻿using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Finance;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -45,6 +45,6 @@ namespace SPPC.Tadbir.Persistence
         ///به روش آسنکرون، لیست حساب های تخصیص یافته به مجموعه حساب های صندوق و بانک را برمی گرداند.
         /// </summary>
         /// <returns>لیست حساب های تخصیص یافته به مجموعه حساب های صندوق و بانک</returns>
-        Task<IList<AccountCollectionAccountViewModel>> GetCashAndBankAccountsAsync();
+        Task<IList<AccountItemBriefViewModel>> GetCashAndBankAccountsAsync();
     }
 }

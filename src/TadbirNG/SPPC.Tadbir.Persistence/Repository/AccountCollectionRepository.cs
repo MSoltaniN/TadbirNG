@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
@@ -11,6 +7,10 @@ using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Finance;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -95,7 +95,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public async Task<IList<AccountCollectionAccountViewModel>> GetCashAndBankAccountsAsync()
+        public async Task<IList<AccountItemBriefViewModel>> GetCashAndBankAccountsAsync()
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountCollectionAccount>();
             var cashBankCollectionIds = new int[] { (int)AccountCollectionId.Bank, (int)AccountCollectionId.CashFund };
@@ -107,7 +107,7 @@ namespace SPPC.Tadbir.Persistence
                     cashBankCollectionIds.Contains(aca.CollectionId) &&
                     aca.BranchId == userBranchId &&
                     aca.FiscalPeriodId == userFiscalPeriodId)
-                .Select(aca => Mapper.Map<AccountCollectionAccountViewModel>(aca))
+                .Select(aca => Mapper.Map<AccountItemBriefViewModel>(aca))
                 .ToListAsync();
             return cashBankAccounts;
         }

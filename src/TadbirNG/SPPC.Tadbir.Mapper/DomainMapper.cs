@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
 using AutoMapper;
 using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
@@ -14,25 +10,29 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Mapper.ModelHelpers;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
-using SPPC.Tadbir.Model.Check;
 using SPPC.Tadbir.Model.CashFlow;
+using SPPC.Tadbir.Model.Check;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Reporting;
+using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
-using SPPC.Tadbir.ViewModel.Check;
 using SPPC.Tadbir.ViewModel.CashFlow;
+using SPPC.Tadbir.ViewModel.Check;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Reporting;
-using SPPC.Tadbir.Resources;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
 
 namespace SPPC.Tadbir.Mapper
 {
@@ -116,7 +116,7 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<PayReceiveViewModel, PayReceive>();
             mapperConfig.CreateMap<PayReceiveAccount, PayReceiveAccountViewModel>()
                 .ForMember(dest => dest.Remarks, opts => opts.NullSubstitute(String.Empty))
-                .ForMember(dest => dest.FullAccount,opts => opts.MapFrom(
+                .ForMember(dest => dest.FullAccount, opts => opts.MapFrom(
                     src => BuildFullAccount(src.Account, src.DetailAccount, src.CostCenter, src.Project)));
             mapperConfig.CreateMap<PayReceiveAccountViewModel, PayReceiveAccount>()
                 .AfterMap((viewModel, model) => model.AccountId = GetNullableId(viewModel.FullAccount.Account))
@@ -236,6 +236,16 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((model, viewModel) => viewModel.FullCode = model.Account.FullCode)
                 .AfterMap((model, viewModel) => viewModel.Level = model.Account.Level)
                 .AfterMap((model, viewModel) => viewModel.Description = model.Account.Description);
+
+            mapperConfig.CreateMap<AccountCollectionAccount, AccountItemBriefViewModel>()
+                .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.Account.Id))
+                .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Account.Children.Count))
+                .ForMember(dest => dest.ParentId, opts => opts.MapFrom(src => src.Account.ParentId))
+                .ForMember(dest => dest.FullCode, opts => opts.MapFrom(src => src.Account.FullCode))
+                .ForMember(dest => dest.Code, opts => opts.MapFrom(src => src.Account.Code))
+                .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Account.Name))
+                .ForMember(dest => dest.GroupId, opts => opts.MapFrom(src => src.Account.GroupId))
+                .ForMember(dest => dest.Level, opts => opts.MapFrom(src => src.Account.Level));
 
             mapperConfig.CreateMap<AccountGroup, AccountGroupViewModel>()
                 .ForMember(dest => dest.Description, opts => opts.NullSubstitute(String.Empty));
