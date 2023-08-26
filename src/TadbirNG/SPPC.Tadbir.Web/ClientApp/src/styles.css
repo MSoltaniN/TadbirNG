@@ -159,3 +159,13 @@ body.tRtl .content-header > .breadcrumb > li > a{
 *:has(.grid-title-container)::before {
   content: none;
 }
+
+.mb-3{
+  margin-bottom: 0.75rem;
+}
+
+.d-flex-wrap-g5{
+  display: flex;
+  gap: 5px;
+  flex-flow: wrap;
+}
