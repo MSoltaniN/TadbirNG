@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Persistence
                     .GetEntityQuery(u => u.Person)
                     .Select(user => Mapper.Map<UserViewModel>(user))
                     .ToListAsync();
-                users = HandleLoginDateFilter(users, gridOptions);
+                //users = HandleLoginDateFilter(users, gridOptions);
             }
 
             await ReadAsync(gridOptions);
