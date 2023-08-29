@@ -1,6 +1,6 @@
 ### STAGE 1: Build ### 
  #node:12 node:15.8.0-alpine3.10
-FROM node:15.8.0-alpine3.10 AS build
+FROM node:16-alpine AS build
 EXPOSE 4200
 
 # Create app directory
@@ -17,12 +17,13 @@ COPY package*.json ./
 # RUN npm ci --only=production
 
 #Update packages according to project.json
-RUN npm cache verify
+#RUN npm cache clean --force
+#RUN npm cache verify
 RUN npm install
-RUN npm cache verify
-RUN npm uninstall -g @angular/cli
-RUN npm uninstall @angular/cli
-RUN npm install -g @angular/cli@6.2.9
+#RUN npm cache verify
+#RUN npm uninstall -g @angular/cli
+#RUN npm uninstall @angular/cli
+RUN npm install -g @angular/cli@14.1.0
 
 # Bundle app source
 # The following COPY operation is a temporary hack to prevent a compile error caused by current webpack version
@@ -30,6 +31,7 @@ COPY src/assets/dist/js/common.js node_modules/@angular-devkit/build-angular/src
 COPY . .
 
 ENV NODE_OPTIONS=--max_old_space_size=8192
+RUN cp /usr/src/app/src/environments/environment.prod.ts /usr/src/app/src/environments/environment.ts
 RUN ng build --configuration=production --output-path=dist
 
 
