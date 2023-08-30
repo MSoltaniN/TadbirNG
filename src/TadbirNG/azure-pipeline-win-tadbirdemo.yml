@@ -10,7 +10,7 @@ variables:
   CICommitRefName: key_for_node_modules
 
 trigger:
-- test-pipeline
+- develop
 
 resources:
 - repo: self
