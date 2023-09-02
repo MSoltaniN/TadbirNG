@@ -13,5 +13,10 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// شماره
         /// </summary>
         public int Number { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی شعبه‌ شماره سند مفقودی
+        /// </summary>
+        public int BranchId { get; set; }
     }
 }

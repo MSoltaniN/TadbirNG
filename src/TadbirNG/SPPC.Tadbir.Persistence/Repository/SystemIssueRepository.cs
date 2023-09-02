@@ -90,9 +90,13 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PagedList<VoucherViewModel>> GetUnbalancedVouchersAsync(
             GridOptions gridOptions, DateTime from, DateTime to)
         {
-            var vouchers = await GetUnbalancedVouchersAsync(from, to);
-            var pagedList = new PagedList<VoucherViewModel>(
-                vouchers.Select(v => Mapper.Map<VoucherViewModel>(v)), gridOptions);
+            var vouchers = new List<VoucherViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                vouchers = Mapper.Map<List<VoucherViewModel>>(await GetUnbalancedVouchersAsync(from, to));
+            }
+
+            var pagedList = new PagedList<VoucherViewModel>(vouchers, gridOptions);
             SortPagedListItems(pagedList);
             await OnSourceActionAsync(gridOptions, SourceListId.UnbalancedVouchers);
             return pagedList;
@@ -108,9 +112,13 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PagedList<VoucherViewModel>> GetVouchersWithNoArticleAsync(
             GridOptions gridOptions, DateTime from, DateTime to)
         {
-            var vouchers = await GetNoArticleVouchersAsync(from, to);
-            var pagedList = new PagedList<VoucherViewModel>(
-                vouchers.Select(v => Mapper.Map<VoucherViewModel>(v)), gridOptions);
+            var vouchers = new List<VoucherViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                vouchers = Mapper.Map <List<VoucherViewModel>>(await GetNoArticleVouchersAsync(from, to));
+            }
+
+            var pagedList = new PagedList<VoucherViewModel>(vouchers, gridOptions);
             SortPagedListItems(pagedList);
             await OnSourceActionAsync(gridOptions, SourceListId.VouchersWithNoArticle);
             return pagedList;
@@ -126,7 +134,12 @@ namespace SPPC.Tadbir.Persistence
         public async Task<PagedList<NumberListViewModel>> GetMissingVoucherNumbersAsync(
             GridOptions gridOptions, DateTime from, DateTime to)
         {
-            var missingNumbers = await GetMissingVoucherNumbersAsync(from, to);
+            IList<NumberListViewModel> missingNumbers = new List<NumberListViewModel>();
+            if (gridOptions.Operation != (int)OperationId.Print)
+            {
+                missingNumbers = await GetMissingVoucherNumbersAsync(from, to);
+            }
+                
             await OnSourceActionAsync(gridOptions, SourceListId.MissingVoucherNumbers);
             return new PagedList<NumberListViewModel>(missingNumbers, gridOptions);
         }
@@ -143,50 +156,61 @@ namespace SPPC.Tadbir.Persistence
             GridOptions gridOptions, string issueType, DateTime from, DateTime to)
         {
             PagedList<VoucherLineDetailViewModel> result;
+            IList<VoucherLine> lines = new List<VoucherLine>();
             SourceListId sourceList;
             switch (issueType)
             {
                 case "miss-acc":
                     {
-                        var lines = await GetMissingAccountArticlesAsync(from, to);
-                        result = new PagedList<VoucherLineDetailViewModel>(
-                            lines.Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl)), gridOptions);
+                        if (gridOptions.Operation != (int)OperationId.Print)
+                        {
+                            lines = await GetMissingAccountArticlesAsync(from, to);
+                        }
+
                         sourceList = SourceListId.ArticlesWithMissingAccount;
                         break;
                     }
 
                 case "zero-amount":
                     {
-                        var lines = await GetZeroAmountArticlesAsync(from, to);
-                        result = new PagedList<VoucherLineDetailViewModel>(
-                            lines.Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl)), gridOptions);
+                        if (gridOptions.Operation != (int)OperationId.Print)
+                        {
+                            lines = await GetZeroAmountArticlesAsync(from, to);
+                        }
+        
                         sourceList = SourceListId.ArticlesHavingZeroAmount;
                         break;
                     }
 
                 case "invalid-acc":
                     {
-                        var lines = await GetInvalidAccountArticlesAsync(from, to);
-                        result = new PagedList<VoucherLineDetailViewModel>(
-                            lines.Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl)), gridOptions);
+                        if (gridOptions.Operation != (int)OperationId.Print)
+                        {
+                            lines = await GetInvalidAccountArticlesAsync(from, to);
+                        }
+
                         sourceList = SourceListId.ArticlesWithInvalidAccountItems;
                         break;
                     }
 
                 case "invalid-acc-balance":
                     {
-                        var lines = await GetInvalidBalanceArticlesAsync(to);
-                        result = new PagedList<VoucherLineDetailViewModel>(
-                            lines.Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl)), gridOptions);
+                        if (gridOptions.Operation != (int)OperationId.Print)
+                        {
+                            lines = await GetInvalidBalanceArticlesAsync(to);
+                        }
+
                         sourceList = SourceListId.AccountsWithInvalidBalance;
                         break;
                     }
 
                 case "invalid-acc-turnover":
                     {
-                        var lines = await GetInvalidTurnoverArticlesAsync(from, to);
-                        result = new PagedList<VoucherLineDetailViewModel>(
-                            lines.Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl)), gridOptions);
+                        if (gridOptions.Operation != (int)OperationId.Print)
+                        {
+                            lines = await GetInvalidTurnoverArticlesAsync(from, to);
+                        }
+
                         sourceList = SourceListId.AccountsWithInvalidPeriodTurnover;
                         break;
                     }
@@ -199,6 +223,8 @@ namespace SPPC.Tadbir.Persistence
                     }
             }
 
+            result = new PagedList<VoucherLineDetailViewModel>(
+                lines.Select(vl => Mapper.Map<VoucherLineDetailViewModel>(vl)), gridOptions);
             await OnSourceActionAsync(gridOptions, sourceList);
             SortPagedListItems(result);
             return result;
@@ -407,7 +433,11 @@ namespace SPPC.Tadbir.Persistence
                 allMissingNumbers = numRange
                     .Where(num => !existingNumbers.Contains(num))
                     .OrderBy(num => num)
-                    .Select(num => new NumberListViewModel() { Number = num })
+                    .Select(num => new NumberListViewModel() 
+                    { 
+                        Number = num, 
+                        BranchId = UserContext.BranchId 
+                    })
                     .ToList();
             }
 

@@ -3246,6 +3246,12 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Des
     VALUES (282, 41, N'UndoRegister', 2048, NULL)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
     VALUES (283, 42, N'UndoRegister', 2048, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (284, 30, N'Filter', 2, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (285, 30, N'Print', 4, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (286, 30, N'Export', 8, NULL)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 SET IDENTITY_INSERT [Metadata].[ShortcutCommand] ON 
@@ -3487,6 +3493,10 @@ INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID
     VALUES (106, 98, 1, 74, 3, N'', N'payments/{0}/cash/articles', 0, 1, 1, 1, NULL)
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
     VALUES (107, 98, 1, 75, 3, N'', N'receipts/{0}/cash/articles', 0, 1, 1, 1, NULL)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
+    VALUES (108, 20, 1, 42, 2, N'', NULL, 0, 1, 1, 1, NULL)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
+    VALUES (109, 20, 1, 41, 2, N'', NULL, 0, 1, 1, 1, NULL)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON
@@ -4070,6 +4080,14 @@ INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], 
     VALUES (305, 1, 107, N'Cash Accounts List')
 INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
     VALUES (306, 2, 107, N'لیست حساب‌های نقدی')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (307, 1, 108, N'Voucher Lines')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (308, 2, 108, N'آرتیکل‌های سند')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (309, 1, 109, N'Missing Voucher Numbers')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (310, 2, 109, N'شماره سندهای مفقود')
 SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
 
 SET IDENTITY_INSERT [Reporting].[Parameter] ON 
