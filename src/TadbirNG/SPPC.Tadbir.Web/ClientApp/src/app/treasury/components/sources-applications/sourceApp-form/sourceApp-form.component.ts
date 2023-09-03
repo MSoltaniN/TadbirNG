@@ -7,6 +7,8 @@ import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { DetailComponent } from '@sppc/shared/class';
 import { ViewName } from '@sppc/shared/security';
 import { soucrceAppType, SourceApp } from '@sppc/treasury/models/soucrceApp';
+import { ShortcutService } from '@sppc/shared/services/shortcut.service';
+import { SourceAppInfo } from '@sppc/treasury/service/source-app.service';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -48,10 +50,11 @@ export class SourceAppFormComponent extends DetailComponent implements OnInit {
      public bStorageService: BrowserStorageService,
      public renderer: Renderer2,
      public metadata: MetaDataService,
-     public elem:ElementRef
+     public elem:ElementRef,
+     public shortcutService:ShortcutService
      )
   {
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.SourceApp, ViewName.SourceApp,elem);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.SourceApp, ViewName.SourceApp,elem,shortcutService,SourceAppInfo.getInstance());
   }
 
   ngOnInit(): void {

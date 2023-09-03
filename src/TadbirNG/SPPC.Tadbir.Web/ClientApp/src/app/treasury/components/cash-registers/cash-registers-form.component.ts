@@ -7,6 +7,8 @@ import { MetaDataService, BrowserStorageService } from '@sppc/shared/services';
 import { DetailComponent } from '@sppc/shared/class';
 import { ViewName } from '@sppc/shared/security';
 import { CashRegisters } from '@sppc/treasury/models/cashRegisters';
+import { CashRegistersInfo } from '@sppc/treasury/service/cash-registers.service';
+import { ShortcutService } from '@sppc/shared/services/shortcut.service';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -43,22 +45,24 @@ export class CashRegistersFormComponent extends DetailComponent implements OnIni
      public bStorageService: BrowserStorageService,
      public renderer: Renderer2,
      public metadata: MetaDataService,
-     public elem:ElementRef)
+     public elem:ElementRef,shortcutService:ShortcutService)
   {
-    super(toastrService, translate, bStorageService, renderer, metadata, Entities.CashRegister, ViewName.CashRegister,elem);
+    super(toastrService, translate, bStorageService, renderer, metadata, Entities.CashRegister, ViewName.CashRegister,elem,shortcutService,CashRegistersInfo.getInstance());
   }
 
   ngOnInit(): void {
     this.editForm.reset();
 
     setTimeout(() => {
-      if (this.model.id == 0) {
+      if (this.isNew) {
+        this.model.id = 0;
         this.model.branchId = this.BranchId;
         this.model.branchScope = this.selectedBranchScope;
         this.model.fiscalPeriodId = this.FiscalPeriodId;
       } else {
-        this.selectedBranchScope = this.model.branchScope;
+        this.selectedBranchScope = this.model.branchScope;                
       }
+      
       this.editForm.reset(this.model);
     })
   }
