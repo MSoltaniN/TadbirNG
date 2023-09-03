@@ -89,7 +89,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.View)]
         public async Task<IActionResult> GetCachAndBankAccountsAsync()
         {
-            var accounts = await _repository.GetCashAndBankAccountsAsync();
+            var accounts = await _repository.GetCashAndBankAccountsAsync(GridOptions);
             return Json(accounts);
         }
 
