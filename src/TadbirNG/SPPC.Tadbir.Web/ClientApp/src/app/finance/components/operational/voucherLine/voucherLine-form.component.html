@@ -203,7 +203,9 @@
                       ? creditDebiteMode == "1"
                         ? ("PayReceipt.Application" | translate)
                         : ("PayReceipt.Source" | translate)
-                      : ("SourceApp.SourceAppType" | translate)
+                      : creditDebiteMode == "2"
+                      ? ("PayReceipt.Application" | translate)
+                      : ("PayReceipt.Source" | translate)
                   }}
                 </label>
 

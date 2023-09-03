@@ -1525,3 +1525,26 @@ WHERE [Name] = 'Edit' and PermissionID = 260
 UPDATE [Auth].[Permission]
 SET [Flag] = 16
 WHERE [Name] = 'Delete' and PermissionID = 261
+
+-- 1.2.1588
+DELETE FROM [Metadata].[Command]
+WHERE [CommandID] >= 62 and [CommandID] <= 69
+
+SET IDENTITY_INSERT [Metadata].[Command] ON
+INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
+    VALUES (62, 52, NULL, N'ReceiptOperations', NULL, 'folder-close', NULL)
+INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
+    VALUES (63, 52, NULL, N'PaymentOperations', NULL, 'folder-close', NULL)
+INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
+    VALUES (64, 62, 259, N'NewReceiptForm', N'/treasury/receipts/new', 'plus', NULL)
+INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
+    VALUES (65, 62, 262, N'LastReceiptForm', N'/treasury/receipts/last', 'list', NULL)
+INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
+    VALUES (66, 62, 257, N'ReceiptFormbyNo', N'/treasury/receipts/by-no', 'search', NULL)
+INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
+    VALUES (67, 63, 248, N'NewPaymentForm', N'/treasury/payments/new', 'plus', NULL)
+INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
+    VALUES (68, 63, 251, N'LastPaymentForm', N'/treasury/payments/last', 'list', NULL)
+INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
+    VALUES (69, 63, 246, N'PaymentFormbyNo', N'/treasury/payments/by-no', 'search', NULL)
+SET IDENTITY_INSERT [Metadata].[Command] OFF
