@@ -23,7 +23,7 @@
     (edit)="editHandler($event)"
     (remove)="removeHandler($event)"
     [loading]="false"
-    [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+    [selectable]="{ checkboxOnly: true, mode: 'single' }"
     [(selectedKeys)]="selectedRows"
     [kendoGridSelectBy]="selectionKey"
     (filterChange)="filterChange($event)"
