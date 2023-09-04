@@ -1623,7 +1623,23 @@ namespace SPPC.Tadbir.Security
         /// <summary>
         /// دسترسی مشاهده کنترل سیستم
         /// </summary>
-        View = 0x1
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی فیلتر کنترل سیستم
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
+        /// دسترسی چاپ اطلاعات کنترل سیستم
+        /// </summary>
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات کنترل سیستم
+        /// </summary>
+        Export = 0x8,
+
     }
 
     /// <summary>

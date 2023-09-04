@@ -1463,3 +1463,32 @@ WHERE ColumnID in (859, 860, 861)
 UPDATE [Metadata].[Column]
 SET [Type] = NULL
 WHERE ColumnID = 859
+
+-- 1.2.1583
+-- افزودن دسترسی ها برای کنترل سیستم
+SET IDENTITY_INSERT [Auth].[Permission] ON
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (284, 30, N'Filter', 2, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (285, 30, N'Print', 4, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (286, 30, N'Export', 8, NULL)
+SET IDENTITY_INSERT [Auth].[Permission] OFF
+
+-- اسکریپت‌های جامانده چاپ گزارش‌ها در کنترل سیستم
+SET IDENTITY_INSERT [Reporting].[Report] ON
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
+    VALUES (108, 20, 1, 42, 2, N'', NULL, 0, 1, 1, 1, NULL)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
+    VALUES (109, 20, 1, 41, 2, N'', NULL, 0, 1, 1, 1, NULL)
+SET IDENTITY_INSERT [Reporting].[Report] OFF
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (307, 1, 108, N'Voucher Lines')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (308, 2, 108, N'آرتیکل‌های سند')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (309, 1, 109, N'Missing Voucher Numbers')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (310, 2, 109, N'شماره سندهای مفقود')
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
