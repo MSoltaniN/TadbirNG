@@ -23,6 +23,25 @@ namespace SPPC.Licensing.Model
             };
         }
 
+        public static LicenseViewModel FromFileModel(LicenseFileModel license)
+        {
+            if (license == null)
+            {
+                return null;
+            }
+
+            return new LicenseViewModel()
+            {
+                ActiveModules = license.ActiveModules,
+                ContactName = license.ContactName,
+                CustomerName = license.CustomerName,
+                Edition = license.Edition,
+                StartDate = license.StartDate,
+                EndDate = license.EndDate,
+                UserCount = license.UserCount
+            };
+        }
+
         public static LicenseViewModel FromContact(string firstName, string lastName)
         {
             return new LicenseViewModel()

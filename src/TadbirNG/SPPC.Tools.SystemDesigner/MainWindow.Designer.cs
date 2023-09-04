@@ -45,6 +45,7 @@
             this.menuGenerateFixDbScript = new System.Windows.Forms.ToolStripMenuItem();
             this.menuManage = new System.Windows.Forms.ToolStripMenuItem();
             this.menuManageSecurityTicket = new System.Windows.Forms.ToolStripMenuItem();
+            this.loginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,7 +62,7 @@
             this.testingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testSuitesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testRunsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuRenewLicense = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -194,7 +195,8 @@
             // 
             this.menuManage.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuManageSecurityTicket,
-            this.loginToolStripMenuItem});
+            this.loginToolStripMenuItem,
+            this.menuRenewLicense});
             this.menuManage.Name = "menuManage";
             this.menuManage.Size = new System.Drawing.Size(62, 24);
             this.menuManage.Text = "&Utility";
@@ -205,6 +207,13 @@
             this.menuManageSecurityTicket.Size = new System.Drawing.Size(224, 26);
             this.menuManageSecurityTicket.Text = "Security Ticket";
             this.menuManageSecurityTicket.Click += new System.EventHandler(this.ManageSecurityTicket_Click);
+            // 
+            // loginToolStripMenuItem
+            // 
+            this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
+            this.loginToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.loginToolStripMenuItem.Text = "Login";
+            this.loginToolStripMenuItem.Click += new System.EventHandler(this.Login_Click);
             // 
             // projectToolStripMenuItem
             // 
@@ -322,12 +331,12 @@
             this.testRunsToolStripMenuItem.Size = new System.Drawing.Size(161, 26);
             this.testRunsToolStripMenuItem.Text = "Test &Runs";
             // 
-            // loginToolStripMenuItem
+            // menuRenewLicense
             // 
-            this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
-            this.loginToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.loginToolStripMenuItem.Text = "Login";
-            this.loginToolStripMenuItem.Click += new System.EventHandler(this.Login_Click);
+            this.menuRenewLicense.Name = "menuRenewLicense";
+            this.menuRenewLicense.Size = new System.Drawing.Size(224, 26);
+            this.menuRenewLicense.Text = "Renew License";
+            this.menuRenewLicense.Click += new System.EventHandler(this.RenewLicense_Click);
             // 
             // MainWindow
             // 
@@ -384,6 +393,7 @@
         private System.Windows.Forms.ToolStripMenuItem testSuitesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testRunsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loginToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuRenewLicense;
     }
 }
 

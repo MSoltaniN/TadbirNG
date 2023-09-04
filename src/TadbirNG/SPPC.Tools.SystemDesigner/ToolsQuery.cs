@@ -41,5 +41,10 @@ SELECT [u].[UserID], [u].[UserName], [p].[FullName]
 FROM [Auth].[User] u INNER JOIN [Contact].[Person] p
     ON [u].[UserID] = [p].[UserID]
 WHERE [u].[IsEnabled] = 1";
+
+        public const string DeactivateLicense = @"
+UPDATE [dbo].[License]
+SET [HardwareKey] = NULL, [ClientKey] = NULL, [Secret] = NULL, [IsActivated] = 0,
+[UserCount] = {0}, [Edition] = '{1}', [StartDate] = '{2}', [EndDate] = '{3}', [OfflineLimit] = {4}";
     }
 }
