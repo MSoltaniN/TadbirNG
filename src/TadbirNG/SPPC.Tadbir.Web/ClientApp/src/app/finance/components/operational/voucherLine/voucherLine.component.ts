@@ -378,16 +378,20 @@ export class VoucherLineComponent
 
   onCellKeydown(event) {
     setTimeout(() => {
-      if (this.grid.activeRow && (event.key === 'ArrowDown' || event.key === 'ArrowUp' || event.key === 'ArrowRight' || event.key === 'ArrowLeft') && this.grid.activeRow.dataItem) {
+      if (this.grid.activeRow && (event.key === 'ArrowDown' || event.key === 'ArrowUp' || event.key === 'ArrowRight' || event.key === 'ArrowLeft')) {
         this.setSelectedModel();
       }
     });
   }
   setSelectedModel(){
-    var index = this.rowData.data.findIndex(
-      (rd) => rd.id === this.grid.activeRow.dataItem.id
-    );
-    this.selectedModel = this.rowData.data[index];
+    if(this.grid.activeRow.dataItem){
+      var index = this.rowData.data.findIndex(
+        (rd) => rd.id === this.grid.activeRow.dataItem.id
+        );
+        this.selectedModel = this.rowData.data[index];
+      }else{
+        this.selectedModel = undefined;
+      }
   }
   
   onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
