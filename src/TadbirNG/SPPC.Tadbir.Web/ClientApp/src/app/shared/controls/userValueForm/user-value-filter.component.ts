@@ -41,19 +41,19 @@ import { UserValueComponent } from './user-value.component';
     ::ng-deep .search-block lable{
         align-self: start;
     }
-    ::ng-deep .tRtl .search-box span {
+    ::ng-deep .tRtl .user-value-filter .search-box span {
         position: absolute;
         top: 4px;
         left: 4px;
         font-size: 22px;
     }
-    ::ng-deep .tLtr .search-box span {
+    ::ng-deep .tLtr .user-value-filter .search-box span {
         position: absolute;
         top: 4px;
         right: 4px;
         font-size: 22px;
     }
-    ::ng-deep .search-box span:hover {
+    ::ng-deep .user-value-filter .search-box span:hover {
         opacity: 0.5;
     }
     .userValueFilters {
