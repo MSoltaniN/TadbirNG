@@ -75,8 +75,11 @@ namespace SPPC.Tools.SystemDesigner.Forms
             // Update current license into deactivated state (update database record) ...
             var dal = new SqlDataLayer(DbConnections.LicenseConnection);
             var query = String.Format(
+                ToolsQuery.LicenseQueryByInstanceKey, license.LicenseKey, license.CustomerKey);
+            int licenseId = Convert.ToInt32(dal.QueryScalar(query));
+            query = String.Format(
                 ToolsQuery.DeactivateLicense, license.UserCount, license.Edition,
-                license.StartDate, license.EndDate, license.OfflineLimit);
+                license.StartDate, license.EndDate, license.OfflineLimit, licenseId);
             dal.ExecuteNonQuery(query);
         }
 
