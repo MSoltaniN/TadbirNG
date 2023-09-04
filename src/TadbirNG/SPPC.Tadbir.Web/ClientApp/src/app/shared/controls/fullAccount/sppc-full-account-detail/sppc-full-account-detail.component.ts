@@ -5,6 +5,8 @@ import { AccountItemBrief, FullAccount } from "@sppc/finance/models";
 import { FullAccountInfo, FullAccountService } from "@sppc/finance/service";
 import { AccountRelationApi } from "@sppc/finance/service/api";
 import { String } from "@sppc/shared/class";
+import { MetadataApi } from "@sppc/shared/services/api";
+import { ShareDataService } from "@sppc/shared/services/share-data.service";
 import { lastValueFrom } from "rxjs";
 
 @Component({
@@ -74,8 +76,11 @@ export class SppcFullAccountDetailComponent implements OnInit {
 
   //#endregion
 
-  constructor(private fullAccountService: FullAccountService,
-    private translate:TranslateService) {}
+  constructor(
+    private fullAccountService: FullAccountService,
+    private translate:TranslateService,
+    public shareService: ShareDataService
+    ) {}
 
   ngOnInit() {
     if (this.accountItem == undefined) {
@@ -479,6 +484,7 @@ export class SppcFullAccountDetailComponent implements OnInit {
       project: fullAccountData.project,
     };
 
+    this.shareService.sharingData = undefined;
     this.save.emit(output);
   }
 
@@ -595,7 +601,11 @@ export class SppcFullAccountDetailComponent implements OnInit {
         if (this.fullAccount.account.id > 0)
           this.accountSelectedId.push(this.fullAccount.account.id);
 
-        this.GetAccounts(AccountRelationApi.EnvironmentAccountsLookup);
+        let accUrl = this.shareService.sharingData?.getCashOrBankAccCollection?
+          MetadataApi.AccountCollectionsCashBankData:
+          AccountRelationApi.EnvironmentAccountsLookup;
+
+        this.GetAccounts(accUrl);
 
         if (!this.isNew) {
           this.GetDetailAccounts(
@@ -693,10 +703,12 @@ export class SppcFullAccountDetailComponent implements OnInit {
     this.costCenterSelectedId = [];
     this.projectSelectedId = [];
 
+    this.shareService.sharingData = undefined;
     this.close.emit();
   }
 
   escPress(e: any) {
+    this.shareService.sharingData = undefined;
     this.close.emit();
   }
 
