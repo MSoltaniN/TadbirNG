@@ -1,45 +1,47 @@
-# Docker
-# Build a Docker image
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+variables:
+  PublishPath: '.\src\TadbirNG\SPPC.Tadbir.Web.Api\publish\${CI_PIPELINE_ID}'
+  PublishAngularPath: '.\src\TadbirNG\SPPC.Tadbir.Web\ClientApp'
+  
+  NgPath: '.\node_modules\@angular\cli\bin\ng'
+  IISWorkerPath: 'C:\inetpub\wwwroot\TadbirNG\TadbirNG.WebApi'
+  AngularBineriesPath: 'C:\inetpub\wwwroot\TadbirNG\TadbirNG.WebNg14'
 
-trigger:
-- master
+  ApplicationPoolName: TadbirNG.Api
+  CICommitRefName: key_for_node_modules
 
 resources:
 - repo: self
 
-variables:
-  tag: '$(Build.BuildId)'
-
 stages:
-- stage: Build
-  displayName: Build image
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      name: Default
-    steps:
-    - task: DockerCompose@0
-      inputs:
-        containerregistrytype: 'Container Registry'
-        dockerComposeFile: '**/docker-compose.yml'
-        action: 'Run a Docker Compose command'
-        dockerComposeCommand: 'build'
-        #arguments: '--build-arg ACCESS_TOKEN'#'--build-arg  --build-arg ACCESS_TOKEN=$(artifactsAccessToken)'
-                                            #ARTIFACTS_ENDPOINT=$(artifactsEndpoint)
-- stage: Deploy
-  displayName: Deploy to docker compose 
-  jobs:
-  - job: Deploy
-    displayName: Deploy
-    pool:
-      name: Default
-    steps:
-    - task: DockerCompose@0
-      inputs:
-         containerregistrytype: 'Container Registry'
-         dockerComposeFile: '**/docker-compose.yml'
-         action: 'Run a Docker Compose command'
-         dockerComposeCommand: 'up -d  --remove-orphans'
+  - stage: build
+    displayName: Build 
+    jobs: 
+    - job: Build_angular
+      displayName: Build angular
+      pool:
+       name: Win-TadbirDemo-Pool
+      steps:
+      - task: PowerShell@2
+        inputs:
+         targetType: 'inline'
+         script: |
+            # Write your PowerShell commands here.
+            cd .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp
+            npm install
+            Copy-Item ".\src\environments\environment.prod.ts"  -Destination ".\src\environments\environment.ts" -Recurse -Force
+            node "$env:NgPath" build  --configuration=production --output-path=dist
 
+    - job: Build_dotnet
+      displayName: Build dotnet
+      dependsOn: Build_angular
+      pool:
+       name: Win-TadbirDemo-Pool
+      steps:
+      - checkout: none
+      - task: PowerShell@2
+        inputs:
+         targetType: 'inline'
+         script: |
+          dotnet restore .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj
+          dotnet build .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj --no-restore
+          dotnet publish .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj -c Release -o "$env:PublishPath" --verbosity normal
