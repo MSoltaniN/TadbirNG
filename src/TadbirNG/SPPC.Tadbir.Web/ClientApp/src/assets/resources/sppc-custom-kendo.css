@@ -6157,8 +6157,10 @@ div.k-grid-footer {
     }
 
     .k-filtercell .k-filtercell-operator > .k-button:not(.k-clear-button-visible) {
-        visibility: hidden;
-        pointer-events: none;
+        /* visibility: hidden;
+        pointer-events: none; */
+        margin: 0 1px;
+        background-color: #f1f1f1;
     }
 
     .k-filtercell .k-filtercell-operator {
