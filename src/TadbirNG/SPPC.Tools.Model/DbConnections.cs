@@ -14,21 +14,26 @@ namespace SPPC.Tools.Model
 
         public static string CompanyConnection
         {
-            get { return GetCompanyConnection(); }
+            get { return GetDbConnection("NGTadbir"); }
+        }
+
+        public static string LicenseConnection
+        {
+            get { return GetDbConnection("NGLicense"); }
         }
 
         private static string GetSystemConnection()
         {
-            string path = Path.Combine(PathConfig.WebApiRoot, "appsettings.Development.json");
+            string path = Path.Combine(PathConfig.WebApiRoot, "appSettings.Development.json");
             var appSettings = JsonHelper.To<AppSettingsModel>(File.ReadAllText(path));
             return appSettings.ConnectionStrings.TadbirSysApi;
         }
 
-        private static string GetCompanyConnection()
+        private static string GetDbConnection(string dbName)
         {
             var builder = new SqlConnectionStringBuilder(SystemConnection)
             {
-                InitialCatalog = "NGTadbir"
+                InitialCatalog = dbName
             };
             return builder.ConnectionString;
         }

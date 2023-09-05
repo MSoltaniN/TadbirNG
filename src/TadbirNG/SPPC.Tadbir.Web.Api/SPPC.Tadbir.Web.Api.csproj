@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\edition" />
+    <Content Remove="wwwroot\edition.Development.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -69,6 +70,10 @@
     <ProjectReference Include="..\SPPC.Tadbir.Persistence\SPPC.Tadbir.Persistence.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Resources\SPPC.Tadbir.Resources.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Service\SPPC.Tadbir.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="wwwroot\edition.Development.json" />
   </ItemGroup>
 
 </Project>

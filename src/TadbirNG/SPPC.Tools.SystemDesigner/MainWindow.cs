@@ -134,5 +134,11 @@ namespace SPPC.Tools.SystemDesigner
             var utility = new LoginUtilityForm();
             utility.ShowDialog(this);
         }
+
+        private void RenewLicense_Click(object sender, EventArgs e)
+        {
+            var utility = new LicenseUtilityForm();
+            utility.ShowDialog(this);
+        }
     }
 }
