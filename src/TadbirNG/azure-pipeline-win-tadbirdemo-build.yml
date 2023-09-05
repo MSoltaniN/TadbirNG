@@ -35,7 +35,7 @@ stages:
       displayName: Build dotnet
       dependsOn: Build_angular
       pool:
-       name: Win-TadbirDemo-Pool
+       name: Win-TadbirDemo-Pool-2
       steps:
       - checkout: none
       - task: PowerShell@2
