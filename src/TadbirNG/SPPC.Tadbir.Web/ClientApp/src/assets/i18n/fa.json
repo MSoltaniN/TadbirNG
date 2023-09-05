@@ -109,7 +109,8 @@
     "AggregateConfirm": "آیا برای تجمیع سطرهای دارای بردار حساب یکسان اطمینان دارید؟",
     "RemoveInvalidRowsConfirm": "آیا برای حذف ردیفهای نامعتبر اطمینان دارید؟",
     "ChangeStateConfirm": "آیا برای {0} این مورد اطمینان دارید؟",
-    "StateAlreadyChanged": "این مورد قبلاً {0} شده است."
+    "StateAlreadyChanged": "این مورد قبلاً {0} شده است.",
+    "ConfirmAndAproveRequired": "ثبت مالی پیش از تایید و تصویب فرم پرداخت امکان‌پذیر نمی‌باشد."
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",

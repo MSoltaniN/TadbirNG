@@ -174,7 +174,6 @@ export class VoucherComponent
     public renderer: Renderer2,
     public metadata: MetaDataService,
     private voucherService: VoucherService,
-    private authenticationService: AuthenticationService,
     public settingService: SettingService,
     public reporingService: ReportingService,
     public ngZone: NgZone,
