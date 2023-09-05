@@ -681,7 +681,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     let apiUrl;
 
     this.dialogRef = this.dialogService.open({
-      title: this.getText("Voucher.Commit"),
+      title: this.stringFormat(this.getText("Form.SelectTitle"),this.getText("Voucher.Voucher")),
       content: VouchersBydateComponent,
     });
 
