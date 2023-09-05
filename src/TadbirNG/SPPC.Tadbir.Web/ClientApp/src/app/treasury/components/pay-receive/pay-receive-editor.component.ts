@@ -677,6 +677,11 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   register(e) {
+    if (!this.isConfirmed || !this.isApproved) {
+        this.showMessage(this.getText("Messages.ConfirmAndAproveRequired"),MessageType.Warning);
+        return;
+    }
+
     let url = this.type == 1? PayReceiveApi.RegisterPayment: PayReceiveApi.RegisterReceipt;
     let apiUrl;
 
@@ -707,7 +712,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
               this.errorHandlingService.handleError(err),
               MessageType.Warning
             );
-          this.dialogRef.close();
+          // this.dialogRef.close();
         });
     });
 
@@ -764,10 +769,6 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
       .subscribe((msg: string) => {
         this.deleteConfirmMsg = String.Format(msg, text);
       });
-  }
-
-  stringFormat(format:string,...args) {
-    return String.Format(format,...args);
   }
 
   breadCrumbTitleFormat(format:string,...args) {
