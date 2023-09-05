@@ -29,19 +29,16 @@ stages:
             cd .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp
             npm install
             Copy-Item ".\src\environments\environment.prod.ts"  -Destination ".\src\environments\environment.ts" -Recurse -Force
-            node "$env:NgPath" build  --configuration=production --output-path=dist
+            node "$env:NgPath" build
 
     - job: Build_dotnet
       displayName: Build dotnet
-      dependsOn: Build_angular
       pool:
        name: Win-TadbirDemo-Pool-2
       steps:
-      - checkout: none
       - task: PowerShell@2
         inputs:
          targetType: 'inline'
          script: |
           dotnet restore .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj
           dotnet build .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj --no-restore
-          dotnet publish .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj -c Release -o "$env:PublishPath" --verbosity normal
