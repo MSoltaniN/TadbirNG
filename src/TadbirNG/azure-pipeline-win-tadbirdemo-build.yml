@@ -12,6 +12,9 @@ variables:
 resources:
 - repo: self
 
+trigger:
+- develop
+
 stages:
   - stage: build
     displayName: Build 
