@@ -1492,3 +1492,60 @@ INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], 
 INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
     VALUES (310, 2, 109, N'شماره سندهای مفقود')
 SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
+
+-- 1.2.1585
+UPDATE [Auth].[Permission]
+SET [Flag] = 128
+WHERE [Name] = 'NavigateEntities,Payments' and PermissionID = 251
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 256
+WHERE [Name] = 'Register' and PermissionID = 252
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 512
+WHERE [Name] = 'Confirm' and PermissionID = 253
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 1024
+WHERE [Name] = 'UndoConfirm' and PermissionID = 254
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 2048
+WHERE [Name] = 'Approve' and PermissionID = 255
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 4096
+WHERE [Name] = 'UndoApprove' and PermissionID = 256
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 8192
+WHERE [Name] = 'UndoRegister' and PermissionID = 282
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 128
+WHERE [Name] = 'NavigateEntities,Receipts' and PermissionID = 262
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 256
+WHERE [Name] = 'Register' and PermissionID = 263
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 512
+WHERE [Name] = 'Confirm' and PermissionID = 264
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 1024
+WHERE [Name] = 'UndoConfirm' and PermissionID = 265
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 2048
+WHERE [Name] = 'Approve' and PermissionID = 266
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 4096
+WHERE [Name] = 'UndoApprove' and PermissionID = 267
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 8192
+WHERE [Name] = 'UndoRegister' and PermissionID = 283
