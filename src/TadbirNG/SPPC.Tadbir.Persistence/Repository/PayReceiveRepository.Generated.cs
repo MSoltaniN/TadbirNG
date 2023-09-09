@@ -767,7 +767,7 @@ namespace SPPC.Tadbir.Persistence
                 var rowNo = await repository
                     .GetEntityQuery()
                     .Where(line => line.VoucherId == voucher.Id)
-                        .MaxAsync(line => (int?)line.RowNo);
+                    .MaxAsync(line => (int?)line.RowNo);
 
                 lastRowNo = rowNo ?? 0;
             }

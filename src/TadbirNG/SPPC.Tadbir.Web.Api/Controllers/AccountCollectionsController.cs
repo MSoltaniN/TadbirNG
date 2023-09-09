@@ -87,7 +87,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpGet]
         [Route(AccountCollectionApi.CashBankAccountsUrl)]
         [AuthorizeRequest(SecureEntity.AccountCollection, (int)AccountCollectionPermissions.View)]
-        public async Task<IActionResult> GetCachAndBankAccountsAsync()
+        public async Task<IActionResult> GetCashAndBankAccountsAsync()
         {
             var accounts = await _repository.GetCashAndBankAccountsAsync(GridOptions);
             return Json(accounts);

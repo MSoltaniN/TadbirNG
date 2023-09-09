@@ -102,7 +102,8 @@ namespace SPPC.Tadbir.Persistence
             var cashBankCollectionIds = new int[] { (int)AccountCollectionId.Bank, (int)AccountCollectionId.CashFund };
             var userBranchId = UserContext.BranchId;
             var userFiscalPeriodId = UserContext.FiscalPeriodId;
-            var cashBankAccounts = await repository.GetEntityQuery()
+            var cashBankAccounts = await repository
+                .GetEntityQuery()
                 .Include(aca => aca.Account)
                 .Where(aca =>
                     cashBankCollectionIds.Contains(aca.CollectionId) &&
@@ -114,7 +115,6 @@ namespace SPPC.Tadbir.Persistence
                 .Apply(gridOptions)
                 .ToList();
         }
-
 
         internal override int? EntityType
         {
