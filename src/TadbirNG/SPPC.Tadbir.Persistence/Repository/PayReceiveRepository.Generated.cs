@@ -764,10 +764,12 @@ namespace SPPC.Tadbir.Persistence
             if (voucher.Id > 0)
             {
                 var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
-                lastRowNo = await repository
+                var rowNo = await repository
                     .GetEntityQuery()
                     .Where(line => line.VoucherId == voucher.Id)
-                        .MaxAsync(line => line.RowNo);
+                    .MaxAsync(line => (int?)line.RowNo);
+
+                lastRowNo = rowNo ?? 0;
             }
 
             return lastRowNo;

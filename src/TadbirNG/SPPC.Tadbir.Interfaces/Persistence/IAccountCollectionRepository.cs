@@ -44,7 +44,8 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         ///به روش آسنکرون، لیست حساب های تخصیص یافته به مجموعه حساب های صندوق و بانک را برمی گرداند.
         /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>لیست حساب های تخصیص یافته به مجموعه حساب های صندوق و بانک</returns>
-        Task<IList<AccountItemBriefViewModel>> GetCashAndBankAccountsAsync();
+        Task<IList<AccountItemBriefViewModel>> GetCashAndBankAccountsAsync(GridOptions gridOptions);
     }
 }
