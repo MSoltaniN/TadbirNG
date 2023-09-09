@@ -136,3 +136,26 @@ kendo-textbox .k-input-icon.k-i-search {
   color: #fff;
   /* background-image: linear-gradient(#c1e3ff, #337ab7); */
 }
+
+
+.breadcrumb>li{
+  display: inline !important;
+}
+body.tRtl .content-header > .breadcrumb > li > a{
+  display: contents !important;
+}
+.grid-title-container{
+  padding-top: 0 !important;
+  display: block;
+}
+.kendo-grid-title{
+  margin: 0 0 7px 0;
+}
+.grid-title-container .breadcrumb{
+  position: unset !important;
+  float: unset !important;
+  padding-top: 0 !important;
+}
+*:has(.grid-title-container)::before {
+  content: none;
+}
