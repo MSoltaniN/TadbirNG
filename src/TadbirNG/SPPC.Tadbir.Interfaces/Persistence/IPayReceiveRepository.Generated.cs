@@ -40,9 +40,10 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، مشخص می کند که آیا شماره فرم دریافت/پرداخت مورد نظر تکراری است یا نه
         /// </summary>
         /// <param name="payReceive">اطلاعات نمایشی فرم دریافت/پرداخت مورد نظر</param>
+        /// <param name="type">نوع فرم مورد نظر برای درخواست جاری - دریافت یا پرداخت</param>
         /// <returns>در صورت تکراری بودن شماره فرم دریافت/پرداخت مقدار درست و
         /// در غیر اینصورت نادرست برمی گرداند</returns>
-        Task<bool> IsDuplicateTextNo(PayReceiveViewModel payReceive);
+        Task<bool> IsDuplicateTextNoAsync(PayReceiveViewModel payReceive, int type);
 
         /// <summary>
         /// به روش آسنکرون، وضعیت تایید فرم دریافت/پرداخت مشخص شده را تغییر می دهد

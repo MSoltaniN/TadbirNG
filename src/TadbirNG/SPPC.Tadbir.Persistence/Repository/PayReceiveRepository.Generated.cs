@@ -117,22 +117,17 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا شماره فرم دریافت/پرداخت مورد نظر تکراری است یا نه
-        /// </summary>
-        /// <param name="payReceive">اطلاعات نمایشی فرم دریافت/پرداخت مورد نظر</param>
-        /// <returns>در صورت تکراری بودن شماره فرم دریافت/پرداخت مقدار درست و
-        /// در غیر اینصورت نادرست برمی گرداند</returns>
-        public async Task<bool> IsDuplicateTextNo(PayReceiveViewModel payReceive)
+        /// <inheritdoc/>
+        public async Task<bool> IsDuplicateTextNoAsync(PayReceiveViewModel payReceive, int type)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
             return await repository
                 .GetEntityQuery()
-                .AnyAsync(pr => payReceive.Id != pr.Id
-                    && payReceive.TextNo == pr.TextNo
-                    && payReceive.Type == pr.Type
-                    && payReceive.FiscalPeriodId == pr.FiscalPeriodId
-                    && payReceive.BranchId == pr.BranchId);
+                .AnyAsync(pr => pr.Id != payReceive.Id
+                    && pr.TextNo == payReceive.TextNo
+                    && pr.Type == type
+                    && pr.FiscalPeriodId == payReceive.FiscalPeriodId
+                    && pr.BranchId == payReceive.BranchId);
         }
 
         /// <summary>
