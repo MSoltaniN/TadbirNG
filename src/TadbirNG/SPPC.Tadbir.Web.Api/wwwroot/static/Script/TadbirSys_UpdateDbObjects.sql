@@ -1488,7 +1488,7 @@ INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [Titl
     VALUES (69, 63, 246, N'PaymentFormbyNo', N'/treasury/payments/by-no', 'search', NULL)
 
 SET IDENTITY_INSERT [Metadata].[Command] OFF
-WHERE ColumnID = 859
+
 
 -- 1.2.1583
 -- افزودن دسترسی ها برای کنترل سیستم
