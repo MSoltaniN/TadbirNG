@@ -1,9 +1,5 @@
 <div class="filter-box">
-  <div class="form-group" *ngIf="statusFilter">
-    <label for="byArchive" class="control-label" style="margin: 0 5px;">
-      {{ 'Form.FilterByStatus' | translate }}
-    </label>
-
+  <div class="" *ngIf="statusFilter">
     <kendo-dropdownlist
       [data]="statusFilters"
       class="mx-1 status-kombo"
