@@ -13,7 +13,6 @@ import { VoucherComponent } from "../voucher/voucher.component";
 import { ActivatedRoute } from "@angular/router";
 import { VoucherService } from "@sppc/finance/service";
 import { ViewVoucherComponent } from "../view-voucher/view-voucher.component";
-
 @Component({
   selector: "app-vouchers-bydate",
   templateUrl: "./vouchers-bydate.component.html",
