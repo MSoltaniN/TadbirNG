@@ -51,18 +51,11 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
 
   scopeService: ShareDataService;
 
-  constructor(
-    public toastrService: ToastrService,
-    public translate: TranslateService,
-    public bStorageService: BrowserStorageService,
-    public renderer: Renderer2,
-    private metadataService: MetaDataService,
-    @Optional() @Inject("empty") public entityType: string,
-    @Optional() @Inject("empty") public viewId: number,
-    public elem: ElementRef,
-    public shortcutService?: ShortcutService
-  ) {
-    super(toastrService, bStorageService);
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
+    public renderer: Renderer2, private metadataService: MetaDataService,
+    @Optional() @Inject('empty') public entityType?: string, @Optional() @Inject('empty') public viewId?: number,public elem?:ElementRef,
+    public shortcutService?:ShortcutService,@Optional() @Inject('empty') private entityInstance?:any) {
+    super(toastrService, bStorageService);  
 
     if (viewId > 0) {
       this.metadataKey = String.Format(
@@ -86,35 +79,11 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
       this.selector = elem.nativeElement.tagName.toLowerCase();
     }
 
-    // this.scopeService = ServiceLocator.injector.get(ShareDataService);
-    // this.scopeService.setScope(this);
-
-    // this.scopeService.getScope().subscribe((component) => {
-    //   if (component) {
-    //     var componentName = component.constructor.name;
-    //     if(ShareDataService.exceptionComponents.findIndex(s=>s == componentName) == -1
-    //     && ShareDataService.components.findIndex(s=>s.constructor.name == componentName) == -1)
-    //     {
-    //       ShareDataService.components.unshift(component);
-    //     }
-    //   }
-    //   else
-    //   {
-    //     if(ShareDataService.removedComponent)
-    //     {
-    //         var findIndex = ShareDataService.components.findIndex(s=>s.constructor.name == ShareDataService.removedComponent.constructor.name);
-    //         if(findIndex >= 0)
-    //         {
-    //           ShareDataService.removedComponent = undefined;
-    //           ShareDataService.components.splice(findIndex,1)
-    //         }
-    //     }
-    //   }
-    // })
+    
   }
 
   ngOnDestroy(): void {
-    //this.scopeService.clearScope(this);
+    
   }
 
   getProperties(metadataKey: string): Array<Property> {
@@ -138,12 +107,19 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
 
   private fillFormValidators() {
     var p: Property | undefined = undefined;
+    const instance = this.entityInstance; 
+    const entityMembers = instance ? Object.keys(instance) : [];
 
     if (this.form == undefined)
       this.form = new FormGroup({ id: new FormControl() });
 
     if (this.getProperties(this.metadataKey)) {
       for (let entry of this.getProperties(this.metadataKey)) {
+        
+        if (instance && !entityMembers.find((em) => em.toLowerCase() === entry.name.toLowerCase())) {
+          continue;
+        }
+
         var name: string =
           entry.name.toLowerCase().substring(0, 1) + entry.name.substring(1);
 

@@ -13,6 +13,19 @@ export class CashRegistersInfo {
   branchId: number;
   branchScope: number;
   description: string;
+
+  static getInstance()
+  {
+    const instance = new CashRegistersInfo();
+    instance.id = 0;
+    instance.branchId = 0;
+    instance.fiscalPeriodId = 0;
+    instance.description = "";
+    instance.name = "";
+    instance.branchScope = 0;
+    
+    return instance;
+  }
 }
 
 @Injectable({

@@ -12,6 +12,20 @@ export class SourceAppInfo {
   fiscalPeriodId: number;
   branchId: number;
   branchScope: number;
+
+  static getInstance() {
+    const instance = new SourceAppInfo();
+    instance.id = 0;
+    instance.Code = "";
+    instance.Name = "";
+    instance.Description = "";
+    instance.Type = 0;
+    instance.fiscalPeriodId = 0;
+    instance.branchId = 0;
+    instance.branchScope = 0;
+
+    return instance;
+  }
 }
 
 @Injectable({
