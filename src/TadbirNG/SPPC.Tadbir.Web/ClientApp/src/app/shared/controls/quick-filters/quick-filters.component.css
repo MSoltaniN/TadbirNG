@@ -1,7 +1,3 @@
-::ng-deep quick-filters {
-    width: 100%;
-}
-
 @media screen and (max-width: 620px) {
   .filter-box {
     display: flex;
@@ -27,5 +23,5 @@
 }
 
 .status-kombo {
-  width: 160px;
+  width: auto;
 }
