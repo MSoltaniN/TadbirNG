@@ -1495,57 +1495,33 @@ SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
 
 -- 1.2.1585
 UPDATE [Auth].[Permission]
-SET [Flag] = 128
-WHERE [Name] = 'NavigateEntities,Payments' and PermissionID = 251
+SET [Flag] = 2
+WHERE [Name] = 'Print' and PermissionID = 247
 
 UPDATE [Auth].[Permission]
-SET [Flag] = 256
-WHERE [Name] = 'Register' and PermissionID = 252
+SET [Flag] = 4
+WHERE [Name] = 'Create' and PermissionID = 248
 
 UPDATE [Auth].[Permission]
-SET [Flag] = 512
-WHERE [Name] = 'Confirm' and PermissionID = 253
+SET [Flag] = 8
+WHERE [Name] = 'Edit' and PermissionID = 249
 
 UPDATE [Auth].[Permission]
-SET [Flag] = 1024
-WHERE [Name] = 'UndoConfirm' and PermissionID = 254
+SET [Flag] = 16
+WHERE [Name] = 'Delete' and PermissionID = 250
 
 UPDATE [Auth].[Permission]
-SET [Flag] = 2048
-WHERE [Name] = 'Approve' and PermissionID = 255
+SET [Flag] = 2
+WHERE [Name] = 'Print' and PermissionID = 258
 
 UPDATE [Auth].[Permission]
-SET [Flag] = 4096
-WHERE [Name] = 'UndoApprove' and PermissionID = 256
+SET [Flag] = 4
+WHERE [Name] = 'Create' and PermissionID = 259
 
 UPDATE [Auth].[Permission]
-SET [Flag] = 8192
-WHERE [Name] = 'UndoRegister' and PermissionID = 282
+SET [Flag] = 8
+WHERE [Name] = 'Edit' and PermissionID = 260
 
 UPDATE [Auth].[Permission]
-SET [Flag] = 128
-WHERE [Name] = 'NavigateEntities,Receipts' and PermissionID = 262
-
-UPDATE [Auth].[Permission]
-SET [Flag] = 256
-WHERE [Name] = 'Register' and PermissionID = 263
-
-UPDATE [Auth].[Permission]
-SET [Flag] = 512
-WHERE [Name] = 'Confirm' and PermissionID = 264
-
-UPDATE [Auth].[Permission]
-SET [Flag] = 1024
-WHERE [Name] = 'UndoConfirm' and PermissionID = 265
-
-UPDATE [Auth].[Permission]
-SET [Flag] = 2048
-WHERE [Name] = 'Approve' and PermissionID = 266
-
-UPDATE [Auth].[Permission]
-SET [Flag] = 4096
-WHERE [Name] = 'UndoApprove' and PermissionID = 267
-
-UPDATE [Auth].[Permission]
-SET [Flag] = 8192
-WHERE [Name] = 'UndoRegister' and PermissionID = 283
+SET [Flag] = 16
+WHERE [Name] = 'Delete' and PermissionID = 261
