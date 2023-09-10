@@ -44,6 +44,7 @@ import { ProfitLostService } from './service/profitLost.service';
 import { ProfitLostLabelsComponent } from './components/reporting/profitLoss/profitLost.labels.components';
 import { BalanceSheetComponent } from './components/reporting/balanceSheet/balanceSheet.component';
 import { VouchersBydateComponent } from './components/operational/vouchers-bydate/vouchers-bydate.component';
+import { ViewVoucherComponent } from './components/operational/view-voucher/view-voucher.component';
 
 @NgModule({
   imports: [
@@ -55,7 +56,7 @@ import { VouchersBydateComponent } from './components/operational/vouchers-bydat
     AccountRelationsFormComponent, CostCenterComponent, CostCenterFormComponent, CurrencyComponent, CurrencyFormComponent, DetailAccountComponent, DetailAccountFormComponent,
     ProjectComponent, ProjectFormComponent, VoucherComponent, VoucherEditorComponent, VoucherLineComponent, VoucherLineFormComponent, AccountBookComponent, JournalComponent,
     currencyRateComponent, CurrencyRateFormComponent, TestBalanceComponent, CurrencyBookComponent, CurrencyBookDetailComponent, SystemIssueComponent, BalanceByAccountComponent,
-    ItemBalanceComponent, ProfitLostComponent, ProfitLostLabelsComponent, BalanceSheetComponent, VouchersBydateComponent],
+    ItemBalanceComponent, ProfitLostComponent, ProfitLostLabelsComponent, BalanceSheetComponent, VouchersBydateComponent, ViewVoucherComponent],
   entryComponents: [AccountFormComponent, AccountGroupsFormComponent, CostCenterFormComponent, CurrencyFormComponent, DetailAccountFormComponent,
     ProjectFormComponent, VoucherEditorComponent, VoucherLineFormComponent, CurrencyRateFormComponent, ProfitLostLabelsComponent],
   providers: [AccountCollectionService, AccountGroupsService, AccountRelationsService, AccountService, CostCenterService, CurrencyService, DetailAccountService,

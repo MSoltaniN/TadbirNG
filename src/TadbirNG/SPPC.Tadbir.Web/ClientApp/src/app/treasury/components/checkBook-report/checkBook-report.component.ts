@@ -226,7 +226,6 @@ export class CheckBookReportComponent
     });
     this.dialogModel = this.dialogRef.content.instance;
     this.dialogModel.checkBookItem = this.editDataItem;
-    this.dialogModel.isOpenFromList = true;
     this.dialogModel.dialogMode = true;
     this.dialogModel.isNew = isNew;
     this.editDataItem = undefined;

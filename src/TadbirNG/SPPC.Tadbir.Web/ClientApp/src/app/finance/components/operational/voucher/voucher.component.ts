@@ -386,7 +386,7 @@ export class VoucherComponent
     });
     this.dialogModel = this.dialogRef.content.instance;
     this.dialogModel.voucherItem = this.editDataItem;
-    this.dialogModel.isOpenFromList = true;
+    this.dialogModel.dialogMode = true;
     this.editDataItem = undefined;
     this.dialogModel.subjectMode = parseInt(this.selectedSubjectType);
 

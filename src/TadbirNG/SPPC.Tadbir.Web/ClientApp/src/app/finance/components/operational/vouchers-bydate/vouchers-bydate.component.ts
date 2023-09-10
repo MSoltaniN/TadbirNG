@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, Renderer2, ViewChild } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import { DialogService } from "@progress/kendo-angular-dialog";
+import { DialogCloseResult, DialogService } from "@progress/kendo-angular-dialog";
 import { GridComponent } from "@progress/kendo-angular-grid";
 import { SettingService } from "@sppc/config/service";
 import { String } from "@sppc/shared/class";
@@ -12,6 +12,7 @@ import { ToastrService } from "ngx-toastr";
 import { VoucherComponent } from "../voucher/voucher.component";
 import { ActivatedRoute } from "@angular/router";
 import { VoucherService } from "@sppc/finance/service";
+import { ViewVoucherComponent } from "../view-voucher/view-voucher.component";
 
 @Component({
   selector: "app-vouchers-bydate",
@@ -78,6 +79,57 @@ export class VouchersBydateComponent extends VoucherComponent
     this.viewId = ViewName[this.entityTypeName];
 
     this.reloadGrid()
+  }
+
+  /**
+   * باز کردن و مقداردهی اولیه به فرم ویرایشگر
+   */
+  openEditorDialog(isNew: boolean) {
+    if (this.selectedSubjectType == "-1" && isNew) {
+      this.showMessage(this.getText("Voucher.AddNewNotPossible"));
+      return;
+    } else {
+      if (!this.checkEditPermission()) return;
+    }
+
+    var subjectType = this.selectedSubjectType;
+    if (!isNew) subjectType = this.editDataItem.subjectType;
+    // VoucherEditorComponent
+    // ViewVoucherComponent
+    this.dialogRef = this.dialogService.open({
+      title:
+        subjectType == "1"
+          ? this.getText("Voucher.DraftVoucherDetail")
+          : this.getText("Voucher.VoucherDetail"),
+      content: ViewVoucherComponent
+    });
+    this.dialogModel = this.dialogRef.content.instance;
+    this.dialogModel.voucherItem = this.editDataItem;
+    this.dialogModel.dialogMode = true;
+    this.editDataItem = undefined;
+    this.dialogModel.subjectMode = parseInt(this.selectedSubjectType);
+
+    if (this.reportFilter) {
+      this.dialogModel.filter = JSON.parse(JSON.stringify(this.reportFilter));
+    }
+
+    if (this.reportQuickFilter) {
+      this.dialogModel.quickFilter = JSON.parse(
+        JSON.stringify(this.reportQuickFilter)
+      );
+    }
+
+    this.dialogRef.result.subscribe((result) => {
+      if (result instanceof DialogCloseResult) {
+        this.selectedRows = [];
+        this.DataArray = [];
+        this.reloadGrid();
+      }
+    });
+
+    this.dialogRef.content.instance.cancel.subscribe((result) => {
+      this.dialogRef.close();
+    });
   }
 
   registerWithSelectedItem() {

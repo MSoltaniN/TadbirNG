@@ -75,6 +75,7 @@
           [icon]="'file-add'"
           type="button"
           title="{{ 'VoucherLine.New' | translate }}"
+          [disabled]="disableOperations"
         ></button>
 
         <button
@@ -86,6 +87,7 @@
           SppcPermissionCheck="CreateLine|Edit"
           [EntityName]="entityNamePermission"
           (sppcClick)="addNewWithBalance()"
+          [disabled]="disableOperations"
         >
           {{ "VoucherLine.NewWithDifference" | translate }}
         </button>
@@ -98,6 +100,7 @@
           class="k-button k-button-icon sh-edit-button"
           [disabled]="selectedRows.length != 1"
           title="{{ 'VoucherLine.Edit' | translate }}"
+          [disabled]="disableOperations"
         >
           <span class="k-icon k-i-pencil"></span>
         </button>
@@ -109,6 +112,7 @@
           class="k-button k-button-icon sh-remove-button"
           [disabled]="selectedRows.length == 0"
           title="{{ 'VoucherLine.Delete' | translate }}"
+          [disabled]="disableOperations"
         >
           <span class="k-icon k-i-delete"></span>
         </button>
@@ -390,6 +394,7 @@
               class="k-checkbox"
               [(ngModel)]="isConfirmed"
               (ngModelChange)="changeVoucherStatus('confirm')"
+              [disabled]="disableOperations"
             />
             <span for="confirmedBy">{{
               "Voucher.ConfirmerName" | translate
@@ -410,6 +415,7 @@
               class="k-checkbox"
               [(ngModel)]="isApproved"
               (ngModelChange)="changeVoucherStatus('approve')"
+              [disabled]="disableOperations"
             />
             <span for="approvedBy">{{
               "Voucher.ApproverName" | translate
