@@ -1492,3 +1492,36 @@ INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], 
 INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
     VALUES (310, 2, 109, N'شماره سندهای مفقود')
 SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
+
+-- 1.2.1585
+UPDATE [Auth].[Permission]
+SET [Flag] = 2
+WHERE [Name] = 'Print' and PermissionID = 247
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 4
+WHERE [Name] = 'Create' and PermissionID = 248
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 8
+WHERE [Name] = 'Edit' and PermissionID = 249
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 16
+WHERE [Name] = 'Delete' and PermissionID = 250
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 2
+WHERE [Name] = 'Print' and PermissionID = 258
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 4
+WHERE [Name] = 'Create' and PermissionID = 259
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 8
+WHERE [Name] = 'Edit' and PermissionID = 260
+
+UPDATE [Auth].[Permission]
+SET [Flag] = 16
+WHERE [Name] = 'Delete' and PermissionID = 261
