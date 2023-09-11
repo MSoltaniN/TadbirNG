@@ -97,16 +97,6 @@ namespace SPPC.Tools.MetaDesigner.Transforms
             return idProperty;
         }
 
-        private static ColumnView GetDefaultColumn(string name)
-        {
-            return new ColumnView()
-            {
-                Name = name,
-                Visible = true,
-                Width = 120
-            };
-        }
-
         private static PropertyStorage GetDefaultStorage(string name, BuiltinType type, int length)
         {
             var mapper = new SqlStorageMapper();
@@ -115,19 +105,6 @@ namespace SPPC.Tools.MetaDesigner.Transforms
                 Name = name,
                 Type = mapper.MapPropertyType(type, length),
                 Nullable = false
-            };
-        }
-
-        private static PropertyView GetDefaultView(string name, BuiltinType type)
-        {
-            var mapper = new BasicPropertyViewMapper();
-            var viewType = mapper.MapPropertyType(type);
-            return new PropertyView()
-            {
-                Name = mapper.GetDefaultName(name, viewType),
-                Type = viewType,
-                BindingMember = mapper.GetDefaultBindingMember(viewType),
-                Format = (type == BuiltinType.DateTime) ? EntityConstants.DateFormat : String.Empty
             };
         }
     }

@@ -52,7 +52,7 @@ namespace SPPC.Tools.MetaDesigner.Engine
         {
             var menuBuilder = new ContextMenuBuilder();
             var contextBuilder = new CommandContextBuilder();
-            var context = contextBuilder.Build(node);
+            var context = contextBuilder.Build(View.Model.Repository, node);
             var contextMenu = menuBuilder.Build(context);
             if (contextMenu.Items.Count > 0)
             {

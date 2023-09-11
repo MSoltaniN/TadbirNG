@@ -16273,8 +16273,8 @@
     }
   ],
   "store": {
-    "name": "Framework.xml",
+    "name": "Framework.json",
     "connection": "..\\..\\..\\res",
-    "media": 0
+    "media": 2
   }
 }

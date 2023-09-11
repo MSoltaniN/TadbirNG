@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using SPPC.Framework.Common;
-using SPPC.Framework.Helpers;
 using SPPC.Tools.Model;
 
 namespace SPPC.Tools.MetaDesigner.Persistence
@@ -21,11 +20,8 @@ namespace SPPC.Tools.MetaDesigner.Persistence
 
         public void Save(Repository repository)
         {
-            // XML serialization is temporarily overridden...
-            var path = GetFileStoragePath(repository.Store).Replace("xml", "json");
-            File.WriteAllText(path, JsonHelper.From(repository));
-            //var serializer = new BasicXmlSerializer();
-            //serializer.Serialize(GetFileStoragePath(repository.Store), repository);
+            var serializer = new BasicXmlSerializer();
+            serializer.Serialize(GetFileStoragePath(repository.Store), repository);
         }
 
         private static void PrepareEntities(Repository repository)

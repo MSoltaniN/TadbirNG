@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using SPPC.Framework.Common;
+﻿using SPPC.Framework.Common;
 using SPPC.Tools.Model;
 
 namespace SPPC.Tools.MetaDesigner.Persistence
@@ -9,10 +7,14 @@ namespace SPPC.Tools.MetaDesigner.Persistence
     {
         public static IRepositoryStorage GetStorage(Storage storage)
         {
-            Verify.ArgumentNotNull(storage, "storage");
+            Verify.ArgumentNotNull(storage, nameof(storage));
             if (storage.Media == StorageMedia.XmlFile)
             {
                 return new XmlRepositoryStorage() { Storage = storage };
+            }
+            if (storage.Media == StorageMedia.JsonFile)
+            {
+                return new JsonRepositoryStorage() { Storage = storage };
             }
             else
             {

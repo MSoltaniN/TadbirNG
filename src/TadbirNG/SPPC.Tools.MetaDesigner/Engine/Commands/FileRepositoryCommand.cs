@@ -92,11 +92,11 @@ namespace SPPC.Tools.MetaDesigner.Engine
             {
                 if (Action == RepositoryCommandType.New || Action == RepositoryCommandType.SaveAs)
                 {
-                    inputCollector = new FileNameCollector(false, FileFilters.XmlRepository);
+                    inputCollector = new FileNameCollector(false);
                 }
                 else if (Action == RepositoryCommandType.Open)
                 {
-                    inputCollector = new FileNameCollector(true, FileFilters.XmlRepository);
+                    inputCollector = new FileNameCollector(true);
                 }
             }
 

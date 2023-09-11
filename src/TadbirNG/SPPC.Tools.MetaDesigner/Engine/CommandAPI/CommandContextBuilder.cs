@@ -9,7 +9,7 @@ namespace SPPC.Tools.MetaDesigner.Engine
 {
     public class CommandContextBuilder
     {
-        public ICommandContext Build(TreeNode node)
+        public ICommandContext Build(Repository repository, TreeNode node)
         {
             var context = new CommandContext
             {
@@ -19,6 +19,10 @@ namespace SPPC.Tools.MetaDesigner.Engine
             {
                 context.Item = node.Tag;
                 context.Collection = node.Parent.Tag as IList;
+                if (node.Tag != null && node.Tag is Entity)
+                {
+                    context.Object = repository;
+                }
             }
             else if (IsMetadataCollectionNode(node))
             {

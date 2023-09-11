@@ -15,12 +15,16 @@ namespace SPPC.Tools.Model
         /// <returns></returns>
         public static Storage CreateFile(string path)
         {
-            Verify.ArgumentNotNullOrWhitespace(path, "path");
+            Verify.ArgumentNotNullOrWhitespace(path, nameof(path));
+            var extension = Path.GetExtension(path);
+            var media = extension == "xml"
+                ? StorageMedia.XmlFile
+                : StorageMedia.JsonFile;    // Database media is totally ignored
             return new Storage()
             {
                 Name = Path.GetFileName(path),
                 Connection = Path.GetDirectoryName(path),
-                Media = StorageMedia.XmlFile
+                Media = media
             };
         }
     }
