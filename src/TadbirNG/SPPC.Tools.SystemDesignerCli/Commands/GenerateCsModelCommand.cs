@@ -3,8 +3,8 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using SPPC.Framework.Common;
-using SPPC.Tools.MetaDesigner.Persistence;
 using SPPC.Tools.Model;
+using SPPC.Tools.Persistence;
 using SPPC.Tools.Transforms.Templates;
 
 namespace SPPC.Tools.SystemDesignerCli
@@ -27,9 +27,9 @@ namespace SPPC.Tools.SystemDesignerCli
             string csModelPath = ConfigurationManager.AppSettings["CsModelPath"];
             string csViewModelPath = ConfigurationManager.AppSettings["CsViewModelPath"];
             string csPersistPath = ConfigurationManager.AppSettings["CsPersistPath"];
-            string xmlRepoPath = ConfigurationManager.AppSettings["XmlRepoPath"];
+            string repoPath = ConfigurationManager.AppSettings["RepoPath"];
             string codeGenPath = ConfigurationManager.AppSettings["CodeGenPath"];
-            var repository = LoadXmlMetadataRepository(xmlRepoPath);
+            var repository = RepositoryHelper.LoadFromFile(repoPath);
             foreach (var entityName in _entities)
             {
                 var entity = repository.Entities
@@ -50,14 +50,6 @@ namespace SPPC.Tools.SystemDesignerCli
             }
 
             GenerateSqlScript(repository, _entities, codeGenPath);
-        }
-
-        private Repository LoadXmlMetadataRepository(string path)
-        {
-            var serializer = new BasicXmlSerializer();
-            var repository = serializer.Deserialize(path, typeof(Repository)) as Repository;
-            //Array.ForEach(repository.Entities.ToArray(), entity => entity.Repository = repository);
-            return repository;
         }
 
         private void GeneratePoco(Repository repository, Entity entity, string directory)

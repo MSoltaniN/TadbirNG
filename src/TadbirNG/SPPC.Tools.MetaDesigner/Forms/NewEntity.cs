@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using SPPC.Tools.MetaDesigner.Common;
-using SPPC.Tools.MetaDesigner.Transforms;
+using SPPC.Tools.Transforms;
 using SPPC.Tools.Model;
+using SPPC.Tools.Presentation;
 
 namespace SPPC.Tools.MetaDesigner.Forms
 {

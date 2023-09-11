@@ -3,7 +3,7 @@ using System.Text;
 using SPPC.Framework.Helpers;
 using SPPC.Tools.Model;
 
-namespace SPPC.Tools.MetaDesigner.Persistence
+namespace SPPC.Tools.Persistence
 {
     public class JsonRepositoryStorage : IRepositoryStorage
     {

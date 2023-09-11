@@ -9,11 +9,11 @@ namespace SPPC.Tools.Model
     public class StorageFactory
     {
         /// <summary>
-        /// Creates a new instance of Storage object for an XML file data storage media.
+        /// Creates a new instance of Storage object for a file storage media.
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static Storage CreateFile(string path)
+        public static Storage CreateFromFile(string path)
         {
             Verify.ArgumentNotNullOrWhitespace(path, nameof(path));
             var extension = Path.GetExtension(path);

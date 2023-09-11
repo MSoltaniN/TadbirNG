@@ -1,7 +1,7 @@
 ﻿using System;
 using SPPC.Framework.Common;
 
-namespace SPPC.Tools.MetaDesigner.Transforms
+namespace SPPC.Tools.Transforms
 {
     public class SqlStorageMapper : IStorageMapper
     {

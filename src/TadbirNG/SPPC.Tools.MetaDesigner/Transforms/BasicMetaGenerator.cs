@@ -3,7 +3,7 @@ using System.Linq;
 using SPPC.Framework.Common;
 using SPPC.Tools.Model;
 
-namespace SPPC.Tools.MetaDesigner.Transforms
+namespace SPPC.Tools.Transforms
 {
     public class BasicMetaGenerator : IMetaGenerator
     {
@@ -15,7 +15,7 @@ namespace SPPC.Tools.MetaDesigner.Transforms
             return new Repository()
             {
                 Name = repoName,
-                Store = StorageFactory.CreateFile(path)
+                Store = StorageFactory.CreateFromFile(path)
             };
         }
 

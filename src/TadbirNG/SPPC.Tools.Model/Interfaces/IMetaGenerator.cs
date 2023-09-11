@@ -2,7 +2,7 @@
 using SPPC.Framework.Common;
 using SPPC.Tools.Model;
 
-namespace SPPC.Tools.MetaDesigner.Transforms
+namespace SPPC.Tools.Transforms
 {
     public interface IMetaGenerator
     {

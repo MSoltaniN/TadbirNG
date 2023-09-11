@@ -2,9 +2,10 @@
 using System.IO;
 using System.Linq;
 using SPPC.Framework.Common;
+using SPPC.Framework.Persistence;
 using SPPC.Tools.Model;
 
-namespace SPPC.Tools.MetaDesigner.Persistence
+namespace SPPC.Tools.Persistence
 {
     public class XmlRepositoryStorage : IRepositoryStorage
     {
@@ -33,7 +34,6 @@ namespace SPPC.Tools.MetaDesigner.Persistence
                 .OrderBy(ent => ent.Name)
                 .ToArray(), entity =>
                 {
-                    //entity.Repository = repository;
                     repository.Entities.Add(entity);
                 });
         }

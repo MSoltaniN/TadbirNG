@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using SPPC.Framework.Common;
 using SPPC.Tools.MetaDesigner.Common;
 using SPPC.Tools.Model;
+using SPPC.Tools.Presentation;
 
 namespace SPPC.Tools.MetaDesigner.Engine
 {

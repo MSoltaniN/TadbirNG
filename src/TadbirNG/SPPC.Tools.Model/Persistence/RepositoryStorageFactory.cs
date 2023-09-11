@@ -1,7 +1,7 @@
 ﻿using SPPC.Framework.Common;
 using SPPC.Tools.Model;
 
-namespace SPPC.Tools.MetaDesigner.Persistence
+namespace SPPC.Tools.Persistence
 {
     public class RepositoryStorageFactory
     {

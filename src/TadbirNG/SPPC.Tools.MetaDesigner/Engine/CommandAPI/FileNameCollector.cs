@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using SPPC.Tools.MetaDesigner.Engine;
 
-namespace SPPC.Tools.MetaDesigner.Engine
+namespace SPPC.Tools.Presentation
 {
     public class FileNameCollector : IUserInputCollector
     {
