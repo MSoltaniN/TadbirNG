@@ -15,7 +15,7 @@ namespace SPPC.Tools.Persistence
         {
             var serializer = new BasicXmlSerializer();
             var repository = serializer.Deserialize(GetFileStoragePath(Storage), typeof(Repository)) as Repository;
-            PrepareEntities(repository);
+            RepositoryHelper.SortEntitiesByName(repository);
             return repository;
         }
 
@@ -23,19 +23,6 @@ namespace SPPC.Tools.Persistence
         {
             var serializer = new BasicXmlSerializer();
             serializer.Serialize(GetFileStoragePath(repository.Store), repository);
-        }
-
-        private static void PrepareEntities(Repository repository)
-        {
-            var entities = new Entity[repository.Entities.Count];
-            repository.Entities.CopyTo(entities, 0);
-            repository.Entities.Clear();
-            Array.ForEach(entities
-                .OrderBy(ent => ent.Name)
-                .ToArray(), entity =>
-                {
-                    repository.Entities.Add(entity);
-                });
         }
 
         private static string GetFileStoragePath(Storage storage)

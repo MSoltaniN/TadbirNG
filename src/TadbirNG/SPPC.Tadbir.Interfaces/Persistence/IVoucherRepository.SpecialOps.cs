@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Inventory;
 
 namespace SPPC.Tadbir.Persistence
 {

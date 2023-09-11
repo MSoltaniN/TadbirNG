@@ -14,6 +14,7 @@ namespace SPPC.Tools.Persistence
             var path = Path.Combine(Storage.Connection, Storage.Name);
             var repository = JsonHelper.To<Repository>(
                 File.ReadAllText(path, Encoding.UTF8));
+            RepositoryHelper.SortEntitiesByName(repository);
             return repository;
         }
 

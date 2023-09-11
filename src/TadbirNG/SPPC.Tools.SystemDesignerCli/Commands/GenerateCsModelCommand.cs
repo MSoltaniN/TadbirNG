@@ -26,7 +26,7 @@ namespace SPPC.Tools.SystemDesignerCli
         {
             string csModelPath = ConfigurationManager.AppSettings["CsModelPath"];
             string csViewModelPath = ConfigurationManager.AppSettings["CsViewModelPath"];
-            string csPersistPath = ConfigurationManager.AppSettings["CsPersistPath"];
+            string csPersistPath = Path.Combine(ConfigurationManager.AppSettings["CsPersistPath"], "Mapping");
             string repoPath = ConfigurationManager.AppSettings["RepoPath"];
             string codeGenPath = ConfigurationManager.AppSettings["CodeGenPath"];
             var repository = RepositoryHelper.LoadFromFile(repoPath);
@@ -52,12 +52,10 @@ namespace SPPC.Tools.SystemDesignerCli
             GenerateSqlScript(repository, _entities, codeGenPath);
         }
 
-        private void GeneratePoco(Repository repository, Entity entity, string directory)
+        private static void GeneratePoco(Repository repository, Entity entity, string directory)
         {
             string fileName = String.Format("{0}.Generated.cs", entity.Name);
-            string path = !String.IsNullOrEmpty(entity.Area)
-                ? Path.Combine(directory, entity.Area, fileName)
-                : Path.Combine(directory, fileName);
+            string path = GetInitializedFilePath(directory, entity.Area, fileName);
 
             Console.WriteLine("    => POCO class in Model project...");
             var template = new CsPocoFromXmlMetadata(repository, entity);
@@ -65,12 +63,10 @@ namespace SPPC.Tools.SystemDesignerCli
             File.WriteAllText(path, transformed);
         }
 
-        private void GenerateViewModel(Repository repository, Entity entity, string directory)
+        private static void GenerateViewModel(Repository repository, Entity entity, string directory)
         {
             string fileName = String.Format("{0}ViewModel.Generated.cs", entity.Name);
-            string path = !String.IsNullOrEmpty(entity.Area)
-                ? Path.Combine(directory, entity.Area, fileName)
-                : Path.Combine(directory, fileName);
+            string path = GetInitializedFilePath(directory, entity.Area, fileName);
 
             Console.WriteLine("    => View model class in ViewModel project...");
             var template = new CsViewModelFromMetadata(repository, entity);
@@ -78,12 +74,10 @@ namespace SPPC.Tools.SystemDesignerCli
             File.WriteAllText(path, transformed);
         }
 
-        private void GenerateEFCoreMapping(Repository repository, Entity entity, string directory)
+        private static void GenerateEFCoreMapping(Repository repository, Entity entity, string directory)
         {
             string fileName = String.Format("{0}Map.Generated.cs", entity.Name);
-            string path = !String.IsNullOrEmpty(entity.Area)
-                ? Path.Combine(directory, "Mapping", entity.Area, fileName)
-                : Path.Combine(directory, "Mapping", fileName);
+            string path = GetInitializedFilePath(directory, entity.Area, fileName);
 
             Console.WriteLine("    => EF Core mapping class in Persistence project...");
             var template = new CsFluentMappingFromMetadata(repository, entity);
@@ -91,7 +85,7 @@ namespace SPPC.Tools.SystemDesignerCli
             File.WriteAllText(path, transformed);
         }
 
-        private void GenerateSqlScript(Repository repository, string[] entityNames, string directory)
+        private static void GenerateSqlScript(Repository repository, string[] entityNames, string directory)
         {
             string fileName = "CreateDbObjects.Generated.sql";
             string path = Path.Combine(directory, fileName);
@@ -101,6 +95,24 @@ namespace SPPC.Tools.SystemDesignerCli
             var template = new SqlCreateTableFromMetadata(repository, entities);
             string transformed = template.TransformText();
             File.WriteAllText(path, transformed);
+        }
+
+        private static string GetInitializedFilePath(string root, string area, string fileName)
+        {
+            if (String.IsNullOrEmpty(area))
+            {
+                return Path.Combine(root, fileName);
+            }
+            else
+            {
+                string directory = Path.Combine(root, area);
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                return Path.Combine(directory, fileName);
+            }
         }
 
         private readonly string[] _entities;
