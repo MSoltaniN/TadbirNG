@@ -79,8 +79,6 @@
     </ng-template>
 
     <ng-template kendoGridToolbarTemplate>
-      <quick-filters [statusFilter]="true" [parentComponent]="this"></quick-filters>
-
       <button
         kendoGridAddCommand
         SppcPermissionCheck="Create"
@@ -135,6 +133,7 @@
       >
         <span class="k-icon k-i-cancel"></span>
       </button>
+      <quick-filters [statusFilter]="true" [parentComponent]="this"></quick-filters>
 
       <!-- <label for="file-upload" class="custom-file-upload" title="{{ 'Currency.TaxCurrency' | translate }}">
         <i class="fa fa-cloud-upload" *ngIf="progress == 0 || progress == 100" style="padding:2px 4px 2px !important;"></i>
