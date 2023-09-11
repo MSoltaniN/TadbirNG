@@ -23,9 +23,9 @@ namespace SPPC.Tools.SystemDesigner.Wizards.NewCrudEntityWizard
         {
             base.OnLoad(e);
             SetupBindings();
-            var repository = LoadXmlMetadataRepository(
+            EntityInfo.Repository = LoadXmlMetadataRepository(
                 ConfigurationManager.AppSettings["XmlRepoPath"]);
-            cmbEntity.DataSource = repository.Entities
+            cmbEntity.DataSource = EntityInfo.Repository.Entities
                 .OrderBy(entity => entity.Name)
                 .ToList();
         }
@@ -42,7 +42,7 @@ namespace SPPC.Tools.SystemDesigner.Wizards.NewCrudEntityWizard
         {
             var serializer = new BasicXmlSerializer();
             var repository = serializer.Deserialize(path, typeof(Repository)) as Repository;
-            Array.ForEach(repository.Entities.ToArray(), entity => entity.Repository = repository);
+            //Array.ForEach(repository.Entities.ToArray(), entity => entity.Repository = repository);
             return repository;
         }
 

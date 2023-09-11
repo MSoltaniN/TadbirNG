@@ -18,9 +18,7 @@ namespace SPPC.Tools.Model
         /// </summary>
         public Property()
         {
-            Column = new ColumnView();
             Storage = new PropertyStorage();
-            View = new PropertyView();
             ValidationRule = new ValidationRule();
             IsValidated = true;
         }
@@ -38,30 +36,6 @@ namespace SPPC.Tools.Model
         public BuiltinType Type { get; set; }
 
         /// <summary>
-        /// Gets or sets the metadata object containing display attributes for this property when managed inside an editor.
-        /// </summary>
-        [Description("Metadata object containing display attributes for this property when managed inside an editor")]
-        public PropertyView View { get; set; }
-
-        /// <summary>
-        /// Gets or sets the metadata object containing persistent storage attributes for this property.
-        /// </summary>
-        [Description("Metadata object containing persistent storage attributes for this property")]
-        public PropertyStorage Storage { get; set; }
-
-        /// <summary>
-        /// Gets or sets the metadata object containing grid display attributes for this property.
-        /// </summary>
-        [Description("Metadata object containing grid display attributes for this property")]
-        public ColumnView Column { get; set; }
-
-        /// <summary>
-        /// Gets or sets the collective set of standard validation rules for this property.
-        /// </summary>
-        [Description("Collective set of standard validation rules for this property")]
-        public ValidationRule ValidationRule { get; set; }
-
-        /// <summary>
         /// Gets or sets a value that specifies if this property needs validation.
         /// </summary>
         [Description("Indicates if this property needs to be validated in user interface views.")]
@@ -75,6 +49,18 @@ namespace SPPC.Tools.Model
         /// </remarks>
         [Description("Short description of purpose and usage of the property.")]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the metadata object containing persistent storage attributes for this property.
+        /// </summary>
+        [Description("Metadata object containing persistent storage attributes for this property")]
+        public PropertyStorage Storage { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collective set of standard validation rules for this property.
+        /// </summary>
+        [Description("Collective set of standard validation rules for this property")]
+        public ValidationRule ValidationRule { get; set; }
 
         /// <summary>
         /// Provides a string representation for this property.

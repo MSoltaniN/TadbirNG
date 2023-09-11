@@ -43,11 +43,11 @@ namespace SPPC.Tools.MetaDesigner.Forms
             var entityName = !String.IsNullOrWhiteSpace(txtEntityName.Text) ? txtEntityName.Text : "NewEntity";
             if (chkDerive.Checked)
             {
-                Entity = generator.GenerateAsIEntity(entityName, MetaDesignerContext.Current.Model.Repository);
+                Entity = generator.GenerateAsIEntity(entityName);
             }
             else
             {
-                Entity = generator.GenerateEntity(entityName, MetaDesignerContext.Current.Model.Repository);
+                Entity = generator.GenerateEntity(entityName);
             }
         }
     }

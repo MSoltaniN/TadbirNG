@@ -15,26 +15,27 @@ namespace SPPC.Tools.SystemDesigner.Commands
 
         public void Execute()
         {
+            var repository = _model.EntityInfo.Repository;
             var entity = _model.EntityInfo.Entity;
             if (_model.Options.HasModel)
             {
-                GeneratePoco(entity);
+                GeneratePoco(repository, entity);
             }
             if (_model.Options.HasViewModel)
             {
-                GenerateViewModel(entity);
+                GenerateViewModel(repository, entity);
             }
             if (_model.Options.HasDbMapping)
             {
-                GenerateEFCoreMapping(entity);
+                GenerateEFCoreMapping(repository, entity);
             }
             if (_model.Options.HasDbScript)
             {
-                GenerateSqlScript(entity);
+                GenerateSqlScript(repository, entity);
             }
         }
 
-        private void GeneratePoco(Entity entity)
+        private void GeneratePoco(Repository repository, Entity entity)
         {
             string csModelPath = ConfigurationManager.AppSettings["CsModelPath"];
             string fileName = String.Format("{0}.Generated.cs", entity.Name);
@@ -42,12 +43,12 @@ namespace SPPC.Tools.SystemDesigner.Commands
                 ? Path.Combine(csModelPath, entity.Area, fileName)
                 : Path.Combine(csModelPath, fileName);
 
-            var template = new CsPocoFromXmlMetadata(entity);
+            var template = new CsPocoFromXmlMetadata(repository, entity);
             string transformed = template.TransformText();
             File.WriteAllText(path, transformed);
         }
 
-        private void GenerateViewModel(Entity entity)
+        private void GenerateViewModel(Repository repository, Entity entity)
         {
             string csViewModelPath = ConfigurationManager.AppSettings["CsViewModelPath"];
             string fileName = String.Format("{0}ViewModel.Generated.cs", entity.Name);
@@ -55,12 +56,12 @@ namespace SPPC.Tools.SystemDesigner.Commands
                 ? Path.Combine(csViewModelPath, entity.Area, fileName)
                 : Path.Combine(csViewModelPath, fileName);
 
-            var template = new CsViewModelFromMetadata(entity);
+            var template = new CsViewModelFromMetadata(repository, entity);
             string transformed = template.TransformText();
             File.WriteAllText(path, transformed);
         }
 
-        private void GenerateEFCoreMapping(Entity entity)
+        private void GenerateEFCoreMapping(Repository repository, Entity entity)
         {
             string csPersistPath = ConfigurationManager.AppSettings["CsPersistPath"];
             string fileName = String.Format("{0}Map.Generated.cs", entity.Name);
@@ -68,19 +69,19 @@ namespace SPPC.Tools.SystemDesigner.Commands
                 ? Path.Combine(csPersistPath, "Mapping", entity.Area, fileName)
                 : Path.Combine(csPersistPath, "Mapping", fileName);
 
-            var template = new CsFluentMappingFromMetadata(entity);
+            var template = new CsFluentMappingFromMetadata(repository, entity);
             string transformed = template.TransformText();
             File.WriteAllText(path, transformed);
         }
 
-        private void GenerateSqlScript(Entity entity)
+        private void GenerateSqlScript(Repository repository, Entity entity)
         {
             string codeGenPath = ConfigurationManager.AppSettings["CodeGenPath"];
             string fileName = "CreateDbObjects.Generated.sql";
             string path = Path.Combine(codeGenPath, fileName);
 
             var entities = new Entity[] { entity };
-            var template = new SqlCreateTableFromMetadata(entities);
+            var template = new SqlCreateTableFromMetadata(repository, entities);
             string transformed = template.TransformText();
             File.WriteAllText(path, transformed);
         }

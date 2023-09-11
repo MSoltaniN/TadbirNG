@@ -8,9 +8,12 @@ namespace SPPC.Tools.Transforms.Templates
 {
     public partial class CsViewModelFromMetadata : ITextTemplate
     {
-        public CsViewModelFromMetadata(Entity entity)
+        public CsViewModelFromMetadata(Repository repository, Entity entity)
         {
-            Verify.ArgumentNotNull(entity);
+            Verify.ArgumentNotNull(repository, nameof(repository));
+            Verify.ArgumentNotNull(entity, nameof(entity));
+
+            _repository = repository;
             _entity = entity;
             _version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
         }
@@ -104,7 +107,8 @@ namespace SPPC.Tools.Transforms.Templates
                 && !String.IsNullOrWhiteSpace(rule.Minimum));
         }
 
-        private Entity _entity;
-        private string _version;
+        private readonly Repository _repository;
+        private readonly Entity _entity;
+        private readonly string _version;
     }
 }

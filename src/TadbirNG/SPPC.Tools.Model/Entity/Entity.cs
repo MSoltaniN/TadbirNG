@@ -45,11 +45,12 @@ namespace SPPC.Tools.Model
         public string Type { get; set; }
 
         /// <summary>
-        /// Gets or sets the metadata repository in which this entity is defined.
+        /// Gets or sets a short description of purpose and usage of the entity in the application.
         /// </summary>
-        [XmlIgnore]
-        [Description("Metadata repository in which this entity is defined")]
-        public Repository Repository { get; set; }
+        /// <remarks>If this property has value, the value will be used as XML documentation for generated POCO class.
+        /// </remarks>
+        [Description("Short description of purpose and usage of the entity in the application.")]
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets a collection of Property items in this entity.
@@ -62,14 +63,6 @@ namespace SPPC.Tools.Model
         /// </summary>
         [Description("A collection of Relation items in this entity")]
         public ICollection<Relation> Relations { get; private set; }
-
-        /// <summary>
-        /// Gets or sets a short description of purpose and usage of the entity in the application.
-        /// </summary>
-        /// <remarks>If this property has value, the value will be used as XML documentation for generated POCO class.
-        /// </remarks>
-        [Description("Short description of purpose and usage of the entity in the application.")]
-        public string Description { get; set; }
 
         /// <summary>
         /// Provides a string representation for this entity.

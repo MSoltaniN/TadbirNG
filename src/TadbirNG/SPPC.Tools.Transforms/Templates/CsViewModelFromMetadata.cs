@@ -58,7 +58,7 @@ using SPPC.Framework.Values;
 ");
             
             #line 22 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsViewModelFromMetadata.tt"
- var codeNamespace = NamespaceUtil.GetNamespace(_entity.Repository, "ViewModel", _entity.Area); 
+ var codeNamespace = NamespaceUtil.GetNamespace(_repository, "ViewModel", _entity.Area); 
             
             #line default
             #line hidden

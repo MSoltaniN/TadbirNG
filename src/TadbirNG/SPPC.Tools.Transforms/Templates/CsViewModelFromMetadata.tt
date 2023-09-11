@@ -19,7 +19,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
 
-<# var codeNamespace = NamespaceUtil.GetNamespace(_entity.Repository, "ViewModel", _entity.Area); #>
+<# var codeNamespace = NamespaceUtil.GetNamespace(_repository, "ViewModel", _entity.Area); #>
 namespace <#= codeNamespace #>
 {
 <#  if(!String.IsNullOrWhiteSpace(_entity.Description))

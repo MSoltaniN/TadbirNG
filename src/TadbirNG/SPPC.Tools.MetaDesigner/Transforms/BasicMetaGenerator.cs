@@ -19,16 +19,16 @@ namespace SPPC.Tools.MetaDesigner.Transforms
             };
         }
 
-        public Entity GenerateEntity(string name, Repository repository)
+        public Entity GenerateEntity(string name)
         {
-            var entity = new Entity() { Name = name, Identifier = "ID", Repository = repository };
+            var entity = new Entity() { Name = name, Identifier = "ID" };
             entity.Properties.Add(GetDefaultIdProperty(name));
             return entity;
         }
 
-        public Entity GenerateAsIEntity(string name, Repository repository)
+        public Entity GenerateAsIEntity(string name)
         {
-            var entity = new Entity() { Name = name, Identifier = "Id", Repository = repository };
+            var entity = new Entity() { Name = name, Identifier = "Id" };
 
             // Generate and add Id property...
             var property = GenerateProperty("Id", BuiltinType.Int32);
@@ -59,9 +59,7 @@ namespace SPPC.Tools.MetaDesigner.Transforms
             {
                 Name = name,
                 Type = type,
-                Column = GetDefaultColumn(name),
-                Storage = GetDefaultStorage(name, type, length),
-                View = GetDefaultView(name, type)
+                Storage = GetDefaultStorage(name, type, length)
             };
             property.ValidationRule = ValidationRuleFactory.CreateDefault(property.Type);
             property.ValidationRule.Name = String.Format("{0}_Validation", property.Name);
@@ -88,9 +86,7 @@ namespace SPPC.Tools.MetaDesigner.Transforms
         private Property GetDefaultIdProperty(string entityName)
         {
             var idProperty = GenerateProperty("ID", BuiltinType.Int32);
-            idProperty.Column.Visible = false;
             idProperty.Storage.Name = String.Format("{0}ID", entityName);
-            idProperty.View = GetDefaultView(String.Format("{0}ID", entityName), BuiltinType.String);
             idProperty.ValidationRule = new ValidationRule()
             {
                 Name = "ID_Validation",

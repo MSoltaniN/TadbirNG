@@ -7,8 +7,11 @@ namespace SPPC.Tools.MetaDesigner.Transforms
     public interface IMetaGenerator
     {
         Repository GenerateFileRepository(string name, string path);
-        Entity GenerateEntity(string name, Repository repository);
+
+        Entity GenerateEntity(string name);
+
         Property GenerateProperty(string name, BuiltinType type, int length);
+
         object GenerateDefaultItem(Type itemType);
     }
 }

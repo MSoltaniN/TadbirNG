@@ -10,11 +10,15 @@ namespace SPPC.Tools.Transforms.Templates
 {
     public partial class CsPocoFromXmlMetadata : ITextTemplate
     {
-        public CsPocoFromXmlMetadata(Entity entity)
+        public CsPocoFromXmlMetadata(Repository repository, Entity entity)
         {
-            Verify.ArgumentNotNull(entity);
+            Verify.ArgumentNotNull(repository, nameof(repository));
+            Verify.ArgumentNotNull(entity, nameof(entity));
+
+            _repository = repository;
             _entity = entity;
             _version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+            _modelAssembly = NamespaceUtil.GetNamespace(_repository, "Model");
         }
 
         private IList<Property> GetNonInheritedProperties()
@@ -55,7 +59,7 @@ namespace SPPC.Tools.Transforms.Templates
             var relations = GetNonInheritedRelations();
             foreach (var relation in relations)
             {
-                var entity = _entity.Repository.Entities
+                var entity = _repository.Entities
                     .Where(ent => ent.Name == relation.EntityName)
                     .SingleOrDefault();
                 if (entity != null && entity.Area != _entity.Area)
@@ -121,7 +125,8 @@ namespace SPPC.Tools.Transforms.Templates
             return alias;
         }
 
-        private const string _modelAssembly = "SPPC.Tadbir.Model";
+        private readonly string _modelAssembly;
+        private readonly Repository _repository;
         private readonly Entity _entity;
         private readonly string _version;
     }
