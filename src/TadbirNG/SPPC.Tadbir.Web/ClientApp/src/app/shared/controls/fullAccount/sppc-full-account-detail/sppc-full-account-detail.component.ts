@@ -707,10 +707,12 @@ export class SppcFullAccountDetailComponent implements OnInit,OnDestroy {
     this.costCenterSelectedId = [];
     this.projectSelectedId = [];
 
+    this.shareService.sharingData = undefined;
     this.close.emit();
   }
 
   escPress(e: any) {
+    this.shareService.sharingData = undefined;
     this.close.emit();
   }
 
