@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { AccountRelationsType } from "@sppc/finance/enum";
 import { AccountItemBrief, FullAccount } from "@sppc/finance/models";
@@ -14,7 +14,7 @@ import { lastValueFrom } from "rxjs";
   templateUrl: "./sppc-full-account-detail.component.html",
   styleUrls: ["./sppc-full-account-detail.component.css"],
 })
-export class SppcFullAccountDetailComponent implements OnInit {
+export class SppcFullAccountDetailComponent implements OnInit,OnDestroy {
   //#region Fields
   isNew: boolean;
   @Input() accountItem: any;
@@ -110,6 +110,10 @@ export class SppcFullAccountDetailComponent implements OnInit {
         this.projectTitle = this.fullAccount.project.name;
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.shareService.sharingData = undefined;
   }
 
   /**
@@ -703,12 +707,10 @@ export class SppcFullAccountDetailComponent implements OnInit {
     this.costCenterSelectedId = [];
     this.projectSelectedId = [];
 
-    this.shareService.sharingData = undefined;
     this.close.emit();
   }
 
   escPress(e: any) {
-    this.shareService.sharingData = undefined;
     this.close.emit();
   }
 
