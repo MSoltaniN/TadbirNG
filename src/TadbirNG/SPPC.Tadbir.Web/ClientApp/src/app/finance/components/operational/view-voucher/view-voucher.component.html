@@ -166,6 +166,7 @@
                   [attr.disabled]="
                     isVoucherConfirmed || !hasEditAccess ? 'disabled' : null
                   "
+                  readonly
                 />
 
                 <div
@@ -197,6 +198,7 @@
                   [attr.disabled]="
                     isVoucherConfirmed || !hasEditAccess ? 'disabled' : null
                   "
+                  readonly
                 />
 
                 <div
@@ -230,6 +232,7 @@
                       ? 'disabled'
                       : null
                   "
+                  readonly
                 />
 
                 <div
@@ -259,6 +262,7 @@
                   [attr.disabled]="
                     isVoucherConfirmed || !hasEditAccess ? 'disabled' : null
                   "
+                  readonly
                 />
 
                 <div
@@ -285,7 +289,7 @@
                 }}</label>
 
                 <sppc-datepicker
-                  [isReadOnly]="isVoucherConfirmed || !hasEditAccess"
+                  [isReadOnly]="true"
                   formControlName="date"
                   [minDate]="FiscalPeriodStartDate"
                   [maxDate]="FiscalPeriodEndDate"

@@ -80,6 +80,11 @@ export class VouchersBydateComponent extends VoucherComponent
     this.reloadGrid()
   }
 
+  viewVoucher(){
+    this.clickedRowItem = this.rowData.data.find(d => d.id == this.selectedRows[0])
+    this.rowDoubleClickHandler();
+  }
+
   /**
    * باز کردن و مقداردهی اولیه به فرم ویرایشگر
    */

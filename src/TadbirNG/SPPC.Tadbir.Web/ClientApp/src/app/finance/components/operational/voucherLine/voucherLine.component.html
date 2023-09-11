@@ -98,9 +98,8 @@
           [EntityName]="entityNamePermission"
           (sppcClick)="editHandler()"
           class="k-button k-button-icon sh-edit-button"
-          [disabled]="selectedRows.length != 1"
+          [disabled]="selectedRows.length != 1 || disableOperations"
           title="{{ 'VoucherLine.Edit' | translate }}"
-          [disabled]="disableOperations"
         >
           <span class="k-icon k-i-pencil"></span>
         </button>
@@ -110,9 +109,8 @@
           [EntityName]="entityNamePermission"
           (sppcClick)="removeHandler()"
           class="k-button k-button-icon sh-remove-button"
-          [disabled]="selectedRows.length == 0"
+          [disabled]="selectedRows.length == 0 || disableOperations"
           title="{{ 'VoucherLine.Delete' | translate }}"
-          [disabled]="disableOperations"
         >
           <span class="k-icon k-i-delete"></span>
         </button>
