@@ -255,7 +255,7 @@ export class SystemIssueComponent
       this.toDate;
 
     var currentFilter = this.getDefaultFilter();
-    var quickFilter = this.getQuickFilter(issue.branchScope);
+    var quickFilter = this.getQuickFilter(true);
 
     this.systemIssueService
       .getAll(
@@ -402,7 +402,7 @@ export class SystemIssueComponent
 
   getQuickFilter(applyBranchScope: boolean): FilterExpression {
     this.quickFilter = [];
-    if (this.selectedBranchScope == "1" && applyBranchScope) {
+    if (this.selectedBranchScope == BranchScopeType.CurrentBranch && applyBranchScope) {
       this.quickFilter.push(
         new Filter(
           "BranchId",
