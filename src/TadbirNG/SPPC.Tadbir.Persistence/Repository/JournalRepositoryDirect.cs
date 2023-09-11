@@ -737,6 +737,10 @@ namespace SPPC.Tadbir.Persistence
             journal.Items.AddRange(result.Rows
                 .Cast<DataRow>()
                 .Select(row => GetJournalItem(row)));
+            foreach (var item in journal.Items)
+            {
+                item.Description = Context.Localize(item.Description);
+            }
 
             query = !byNo
                 ? new ReportQuery(String.Format(JournalQuery.MainByDateByRow,
