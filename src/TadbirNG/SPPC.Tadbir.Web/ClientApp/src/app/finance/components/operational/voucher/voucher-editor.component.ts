@@ -152,7 +152,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit,On
   @Input() quickFilter: FilterExpression;
 
   @Input() voucherItem: Voucher;
-  @Input() isOpenFromList: boolean = false;
+  @Input() dialogMode: boolean = false;
   //@Output() reloadGrid: EventEmitter<any> = new EventEmitter();
   @Output() cancel: EventEmitter<any> = new EventEmitter();
 
@@ -503,7 +503,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit,On
   }
 
   getNewVoucher() {
-    if (this.voucherItem || this.isOpenFromList)
+    if (this.voucherItem || this.dialogMode)
       if (this.subjectMode == 0) this.getVoucher(VoucherApi.NewVoucher);
       else this.getVoucher(VoucherApi.NewDraftVoucher);
     else {
@@ -684,7 +684,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit,On
   }
 
   nextVoucher() {
-    if (this.voucherItem || this.isOpenFromList) {
+    if (this.voucherItem || this.dialogMode) {
       if (this.subjectMode == 0)
         this.getVoucher(
           String.Format(VoucherApi.NextVoucher, this.voucherModel.no)
@@ -708,7 +708,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit,On
   }
 
   previousVoucher() {
-    if (this.voucherItem || this.isOpenFromList) {
+    if (this.voucherItem || this.dialogMode) {
       if (this.subjectMode == 0)
         this.getVoucher(
           String.Format(VoucherApi.PreviousVoucher, this.voucherModel.no)
@@ -732,7 +732,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit,On
   }
 
   firstVoucher() {
-    if (this.voucherItem || this.isOpenFromList) {
+    if (this.voucherItem || this.dialogMode) {
       if (this.subjectMode == 0) this.getVoucher(VoucherApi.FirstVoucher);
       else this.getVoucher(VoucherApi.FirstDraftVoucher);
       this.isFirstVoucher = true;
@@ -745,7 +745,7 @@ export class VoucherEditorComponent extends DetailComponent implements OnInit,On
   }
 
   lastVoucher() {
-    if (this.voucherItem || this.isOpenFromList) {
+    if (this.voucherItem || this.dialogMode) {
       if (this.subjectMode == 0) this.getVoucher(VoucherApi.LastVoucher);
       else this.getVoucher(VoucherApi.LastDraftVoucher);
       this.isFirstVoucher = false;

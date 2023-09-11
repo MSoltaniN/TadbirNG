@@ -171,6 +171,8 @@ export class VoucherLineComponent
 
   @Input() voucherInfo: Voucher;
 
+  @Input() disableOperations = false;
+
   entityNamePermission: string;
 
   @Input() subjectMode: number;

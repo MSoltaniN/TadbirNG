@@ -105,7 +105,8 @@
     "AggregateConfirm": "Are you sure you want to Aggregation of rows with the same account vector?",
     "RemoveInvalidRowsConfirm": "Are you sure you want to Delete invalid rows?",
     "ChangeStateConfirm": "Are you sure you want to {0} this item?",
-    "StateAlreadyChanged": "This item has already been {0}."
+    "StateAlreadyChanged": "This item has already been {0}.",
+    "ConfirmAndAproveRequired": "Impossible to register form before approval and confirmation." 
   },
   "Report": {
     "ReportViewer": "View of",

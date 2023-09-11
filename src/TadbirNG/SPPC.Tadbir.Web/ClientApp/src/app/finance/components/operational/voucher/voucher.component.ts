@@ -174,7 +174,6 @@ export class VoucherComponent
     public renderer: Renderer2,
     public metadata: MetaDataService,
     private voucherService: VoucherService,
-    private authenticationService: AuthenticationService,
     public settingService: SettingService,
     public reporingService: ReportingService,
     public ngZone: NgZone,
@@ -387,7 +386,7 @@ export class VoucherComponent
     });
     this.dialogModel = this.dialogRef.content.instance;
     this.dialogModel.voucherItem = this.editDataItem;
-    this.dialogModel.isOpenFromList = true;
+    this.dialogModel.dialogMode = true;
     this.editDataItem = undefined;
     this.dialogModel.subjectMode = parseInt(this.selectedSubjectType);
 
