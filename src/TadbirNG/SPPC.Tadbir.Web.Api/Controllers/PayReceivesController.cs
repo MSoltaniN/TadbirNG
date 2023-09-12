@@ -757,7 +757,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                    AppStrings.InvalidStringNumber, minNumberString, AppStrings.Number));
             }
 
-            if (await _repository.IsDuplicateTextNo(payReceive))
+            var type = entityNameKey == AppStrings.Payment
+                ? (int)PayReceiveType.Payment
+                : (int)PayReceiveType.Receipt;
+            if (await _repository.IsDuplicateTextNoAsync(payReceive, type))
             {
                 string fieldTitle = entityNameKey == AppStrings.Payment
                     ? AppStrings.PaymentNo
