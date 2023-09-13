@@ -243,12 +243,14 @@
                   {{ "PayReceipt.BankOrderNo" | translate }}
                 </label>
 
-                <sppc-numericInput
-                  id="bankOrderNo"
-                  formControlName="bankOrderNo"
-                  [decimalCount]="decimalCount"
-                  class="sppc-input-num sppc-float"
-                ></sppc-numericInput>
+                <div class="sppc-input-num sppc-float">
+                  <input id="bankOrderNo"
+                    formControlName="bankOrderNo"
+                    type="text"
+                    class="k-textbox"
+                    [OnlyNumber]
+                  />
+                </div>
               </fieldset>
             </div>
           </div>
