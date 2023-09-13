@@ -304,7 +304,7 @@ export class VoucherLineFormComponent
     );
 
     return accountCollections.some(
-      (account) => account.accountId === accountIdToFind
+      (account) => account.id === accountIdToFind
     );
   }
 
