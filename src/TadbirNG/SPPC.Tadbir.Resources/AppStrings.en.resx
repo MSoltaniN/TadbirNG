@@ -4311,13 +4311,4 @@
   <data name="ImpossibleRegisterBeforeConfirmAndApprove" xml:space="preserve">
     <value>Impossible to register {0} before approval and confirmation.</value>
   </data>
-  <data name="ProductScope" xml:space="preserve">
-    <value>Products</value>
-  </data>
-  <data name="ProductScopeOperations" xml:space="preserve">
-    <value>Products Operations</value>
-  </data>
-  <data name="ProductScopeReports" xml:space="preserve">
-    <value>Products Reports</value>
-  </data>
 </root>

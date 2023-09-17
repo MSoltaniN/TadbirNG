@@ -26,11 +26,6 @@ namespace SPPC.Tadbir.Domain
         /// <summary>
         /// زیرسیستم خزانه‌داری
         /// </summary>
-        Treasury = 3,
-
-        /// <summary>
-        /// زیرسیستم محصولات
-        /// </summary>
-        Product = 100000
+        Treasury = 3
     }
 }
