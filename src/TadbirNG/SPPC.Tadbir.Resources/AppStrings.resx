@@ -4299,4 +4299,13 @@
   <data name="ImpossibleRegisterBeforeConfirmAndApprove" xml:space="preserve">
     <value>ثبت مالی پیش از تایید و تصویب {0} امکان‌پذیر نمی‌باشد.</value>
   </data>
+  <data name="ProductScope" xml:space="preserve">
+    <value>محصولات</value>
+  </data>
+  <data name="ProductScopeOperations" xml:space="preserve">
+    <value>عملیات محصولات</value>
+  </data>
+  <data name="ProductScopeReports" xml:space="preserve">
+    <value>گزارشات محصولات</value>
+  </data>
 </root>
