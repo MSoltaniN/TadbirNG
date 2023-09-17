@@ -242,7 +242,7 @@ export class VoucherLineComponent
       elem
     );
 
-    this.scopeService = ServiceLocator.injector.get(ShareDataService);    
+    this.scopeService = ServiceLocator.injector.get(ShareDataService);
     this.scopeService.setScope(this);
   }
 
@@ -279,9 +279,9 @@ export class VoucherLineComponent
     })
   }
 
-  ngOnDestroy(): void {        
-    this.scopeService = ServiceLocator.injector.get(ShareDataService);    
-    this.scopeService.clearScope(this);  
+  ngOnDestroy(): void {
+    this.scopeService = ServiceLocator.injector.get(ShareDataService);
+    this.scopeService.clearScope(this);
   }
 
   /**
@@ -378,6 +378,24 @@ export class VoucherLineComponent
     return context.dataItem.id;
   }
 
+  onCellKeydown(event) {
+    setTimeout(() => {
+      if (this.grid.activeRow && (event.key === 'ArrowDown' || event.key === 'ArrowUp' || event.key === 'ArrowRight' || event.key === 'ArrowLeft')) {
+        this.setSelectedModel();
+      }
+    });
+  }
+  setSelectedModel(){
+    if(this.grid.activeRow.dataItem){
+      var index = this.rowData.data.findIndex(
+        (rd) => rd.id === this.grid.activeRow.dataItem.id
+        );
+        this.selectedModel = this.rowData.data[index];
+      }else{
+        this.selectedModel = undefined;
+      }
+  }
+  
   onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
     if (this.selectedRows.length > 1) this.groupDelete = true;
     else this.groupDelete = false;
@@ -467,7 +485,7 @@ export class VoucherLineComponent
               var pageCount =
                 Math.floor(
                   (this.rowData.total - this.selectedRows.length) /
-                    this.pageSize
+                  this.pageSize
                 ) + 1;
               if (this.pageIndex > 0 && this.pageIndex > pageCount)
                 this.pageIndex =
@@ -593,7 +611,7 @@ export class VoucherLineComponent
 
           this.debitSum = debits;
           this.creditSum = credits;
-  
+
           this.balance = this.debitSum - this.creditSum;
           this.balancedMode = this.balance == 0 ? true : false;
 
@@ -610,7 +628,7 @@ export class VoucherLineComponent
       if (this.voucherInfo) {
         this.debitSum = this.voucherInfo.debitSum;
         this.creditSum = this.voucherInfo.creditSum;
-  
+
         this.balance = this.debitSum - this.creditSum;
         this.balancedMode = this.balance == 0 ? true : false;
         this.grid.loading = false;
@@ -619,13 +637,13 @@ export class VoucherLineComponent
           .getVoucherInfo(this.voucherId)
           .subscribe((res) => {
             this.voucherModel = res;
-  
+
             this.debitSum = res.debitSum;
             this.creditSum = res.creditSum;
-  
+
             this.balance = this.debitSum - this.creditSum;
             this.balancedMode = this.balance == 0 ? true : false;
-  
+
             this.grid.loading = false;
           });
       }
