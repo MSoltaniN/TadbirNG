@@ -184,8 +184,9 @@ namespace SPPC.Tadbir.Persistence
                 repository.Delete(item);
             }
 
+            OperationId operationId = archived.Count > 1 ? OperationId.GroupDelete : OperationId.Delete;
             await UnitOfWork.CommitAsync();
-            await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, OperationId.Delete);
+            await LogOperationAsync<OperationLog>((int)EntityTypeId.OperationLog, operationId);
         }
 
         #endregion
@@ -508,7 +509,7 @@ namespace SPPC.Tadbir.Persistence
                 CompanyId = _utility.ValueOrDefault<int>(row, "CompanyID"),
                 BranchId = _utility.ValueOrDefault<int>(row, "BranchID"),
                 FiscalPeriodId = _utility.ValueOrDefault<int>(row, "FiscalPeriodID"),
-                SourceId = _utility.ValueOrDefault<int>(row,"SourceID")
+                SourceId = _utility.ValueOrDefault<int>(row, "SourceID")
             };
             if (voucherItem.EntityDate == DateTime.MinValue)
             {
