@@ -349,9 +349,10 @@ namespace SPPC.Tadbir.Persistence
                 repository.Delete(item);
             }
 
+            OperationId operationId = archived.Count > 1 ? OperationId.GroupDelete : OperationId.Delete;
             await UnitOfWork.CommitAsync();
             UnitOfWork.UseCompanyContext();
-            await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, OperationId.Delete);
+            await LogOperationAsync<SysOperationLog>((int)SysEntityTypeId.SysOperationLog, operationId);
         }
 
         #endregion

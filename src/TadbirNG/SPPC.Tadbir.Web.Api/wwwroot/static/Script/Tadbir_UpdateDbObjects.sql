@@ -1134,29 +1134,7 @@ ALTER TABLE [Check].[CheckBook]
 ALTER COLUMN [TextNo] NVARCHAR(16) NULL
 
 -- 1.2.1587
-DELETE FROM [Config].[LogSetting]
-WHERE EntityTypeID = 11
-
-
-
-
 SET IDENTITY_INSERT [Config].[LogSetting] ON
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (84, 2, 2, NULL, 11, 1, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (85, 2, 2, NULL, 11, 4, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (86, 2, 2, NULL, 11, 5, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (87, 2, 2, NULL, 11, 6, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (88, 2, 2, NULL, 11, 8, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (89, 2, 2, NULL, 11, 21, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (90, 2, 2, NULL, 11, 30, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (91, 2, 2, NULL, 11, 54, 1)
-INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
-    VALUES (92, 2, 2, NULL, 11, 58, 1)
+    VALUES (326, 2, 2, NULL, 11, 21, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
