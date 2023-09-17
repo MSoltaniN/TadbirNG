@@ -5720,21 +5720,6 @@ namespace SPPC.Tadbir.Resources
         public const string PrintRates = "PrintRates";
 
         /// <summary>
-        /// Default text : محصولات
-        /// </summary>
-        public const string ProductScope = "ProductScope";
-
-        /// <summary>
-        /// Default text : عملیات محصولات
-        /// </summary>
-        public const string ProductScopeOperations = "ProductScopeOperations";
-
-        /// <summary>
-        /// Default text : گزارشات محصولات
-        /// </summary>
-        public const string ProductScopeReports = "ProductScopeReports";
-
-        /// <summary>
         /// Default text : پروفایل
         /// </summary>
         public const string Profile = "Profile";
