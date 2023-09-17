@@ -82,7 +82,7 @@
     title="{{ 'ViewTreeConfig.CodeLength' | translate }}"
   ></kendo-grid-column>
 
-  <kendo-grid-command-column [width]="150">
+  <kendo-grid-command-column width="150" [style]="{'text-align':'center','padding':'0'}">
     <ng-template kendoGridCellTemplate let-level>
       <button
         class="k-button k-primary"

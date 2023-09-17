@@ -413,9 +413,12 @@
           </ng-template> -->
         </kendo-dropdownlist>
       </div>
-      <div class="col-xs-12 col-sm-3">
-        <div *ngIf="this.logType != '3'" class="col-xs-12 col-sm-6 form-group">
+      <div class="col-xs-12 col-sm-3 mb-3 d-flex-wrap-g5">
+        <button class="k-button k-primary" (click)="getReportData()">
+          {{ "OperationLog.ShowLog" | translate }}
+        </button>
           <button
+            *ngIf="this.logType != '3'"
             SppcPermissionCheck="Archive"
             (sppcClick)="confirmArchiveData()"
             class="k-button k-primary"
@@ -423,27 +426,14 @@
           >
             {{ "OperationLog.Archive" | translate }}
           </button>
-        </div>
-        <div *ngIf="this.logType == '3'" class="col-xs-12 col-sm-6 form-group">
           <button
+            *ngIf="this.logType == '3'"
             class="k-button k-primary"
             [disabled]="disableButtons"
             (click)="confirmDeleteArchiveData()"
           >
             {{ "OperationLog.DeleteArchive" | translate }}
           </button>
-        </div>
-        <div
-          class="col-xs-12 form-group sppc-float btn-show-log"
-          [ngClass]="{
-            'col-sm-6': !archiveSelected,
-            'col-sm-7': archiveSelected
-          }"
-        >
-          <button class="k-button k-primary" (click)="getReportData()">
-            {{ "OperationLog.ShowLog" | translate }}
-          </button>
-        </div>
       </div>
     </div>
   </div>

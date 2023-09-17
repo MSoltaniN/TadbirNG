@@ -5821,12 +5821,10 @@ kendo-sortable,
 
 auto-generated-grid-setting,selectform-grid-setting,grid-filter {
     float: left;
-    margin: 0;
 }
 
 .tLtr auto-generated-grid-setting, .tLtr selectform-grid-setting, .tLtr grid-filter {
     float: right;
-    margin: 0;
 }
 
 .k-grid-toolbar .k-button {
@@ -7078,6 +7076,9 @@ th.k-sorted {
         align-self: stretch;
     }
 
+    .k-toolbar button.k-button {
+        margin: 0 2px;
+    }
 .k-overflow-container .k-overflow-tool-group {
     display: block;
 }

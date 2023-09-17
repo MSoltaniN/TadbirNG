@@ -1,10 +1,10 @@
-<button *ngIf="advanceFilterDisabled == false" kendoButton class="hidden-xs lm advance-filter sh-advance-filter" title="{{ 'AdvanceFilter.Title' | translate }}" (click)="showAdvanceFilterComponent()"
+<button *ngIf="advanceFilterDisabled == false" kendoButton class="hidden-xs advance-filter sh-advance-filter" title="{{ 'AdvanceFilter.Title' | translate }}" (click)="showAdvanceFilterComponent()"
         type="button">
         <img src="/assets/advance-filter.svg" style="width:20px;height:20px;cursor:pointer"/>
 </button>
-<button *ngIf="quickReportDisabled == false" kendoButton class="hidden-xs lm report-setting sh-report-setting" title="{{ 'Report.ReportSetting' | translate }}" (click)="showQuickReportSetting()"
+<button *ngIf="quickReportDisabled == false" kendoButton class="hidden-xs report-setting sh-report-setting" title="{{ 'Report.ReportSetting' | translate }}" (click)="showQuickReportSetting()"
         [icon]="'form-element'" type="button"></button>
-<button *ngIf="quickReportDisabled == false" kendoButton class="hidden-xs lm print sh-print" title="{{ 'Report.Print' | translate }}" (click)="showReportManager()"
+<button *ngIf="quickReportDisabled == false" kendoButton class="hidden-xs print sh-print" title="{{ 'Report.Print' | translate }}" (click)="showReportManager()"
         [icon]="'printer'" type="button"></button>
-<button *ngIf="exportDisabled == false" class="hidden-xs lm export-excel sh-export-excel" kendoGridExcelCommand [icon]="'file-excel'"  title="{{ 'Exports.ExportToExcel' | translate }}"></button>
+<button *ngIf="exportDisabled == false" class="hidden-xs export-excel sh-export-excel" kendoGridExcelCommand [icon]="'file-excel'"  title="{{ 'Exports.ExportToExcel' | translate }}"></button>
 
