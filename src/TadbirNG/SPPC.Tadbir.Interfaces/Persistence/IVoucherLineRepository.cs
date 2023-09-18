@@ -90,5 +90,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="accountId">شناسه دیتابیسی حساب مورد نظر</param>
         /// <returns>مقدار بولی درست در صورت متعلق بودن شماره حساب، در غیر این صورت مقدار بولی نادرست</returns>
         Task<bool> IsCashOrBankAccountAsync(int accountId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا منبع یا مصرف انتخاب شده با ماهیت آرتیکل منطبق هست یا خیر
+        /// برای مبالغ بدهکار باید منبع انتخاب شود و برای مبالغ بستانکار باید مصرف انتخاب شود.
+        /// </summary>
+        /// <param name="sourceAppId">شناسه دیتابیسی منبع یا مصرف مورد نظر</param>
+        /// <param name="debit">مبلغ بدهکار برای این آرتیکل مالی</param>
+        /// <param name="credit">مبلغ بستانکار برای این آرتیکل مالی</param>
+        /// <returns>مقدار بولی درست در صورت منطبق بودن ماهیت آرتیکل با منبع یا مصرف انتخاب شده، در غیر این صورت مقدار بولی نادرست</returns>
+        Task<bool> IsValidSourceAppInArticleAsync(int sourceAppId, decimal debit, decimal credit);
     }
 }

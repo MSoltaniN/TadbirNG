@@ -412,6 +412,9 @@ export class VoucherLineFormComponent
   }
 
   onCreditDebiteModeChange() {
+    if (!this.isPayReciept) {
+      this.getSourceApps();
+    }
     if (this.creditDebiteMode == "1") {
       if (this.editForm1.value.credit != "")
         this.editForm1.patchValue({ debit: this.editForm1.value.credit });

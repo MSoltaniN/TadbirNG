@@ -1191,9 +1191,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     message = error.Messages[0];
                 }
             }
-            else if (voucher.SubjectType == (int)SubjectType.Normal && 
+            else if (voucher.SubjectType == (int)SubjectType.Normal &&
                 await _repository.HasSystemicArticleAsync(voucherId))
-            { 
+            {
                 message = _strings.Format(AppStrings.CantDeleteVoucherWithSystemicArticle, AppStrings.Treasury);
             }
             else
@@ -1510,7 +1510,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if(articleId > 0)
+            if (articleId > 0)
             {
                 var payReceive = await _lineRepository.GetRelatedPayReceiveAsync(articleId);
                 if (payReceive != null)
@@ -1534,9 +1534,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (article.SourceAppId.HasValue)
             {
-                if(!await _lineRepository.IsCashOrBankAccountAsync(article.FullAccount.Account.Id))
+                if (!await _lineRepository.IsCashOrBankAccountAsync(article.FullAccount.Account.Id))
                 {
                     return BadRequestResult(_strings[AppStrings.InvalidAccountUsedWithSourceApp]);
+                }
+
+                if (!await _lineRepository.IsValidSourceAppInArticleAsync(article.SourceAppId.Value,
+                    article.Debit, article.Credit))
+                {
+                    return BadRequestResult(_strings[AppStrings.InvalidSourceAppInArticle]);
                 }
             }
 
