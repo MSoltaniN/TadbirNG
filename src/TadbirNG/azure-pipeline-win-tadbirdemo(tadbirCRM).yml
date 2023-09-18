@@ -1,0 +1,100 @@
+variables:
+  PublishPath: '.\src\TadbirNG\SPPC.Tadbir.Web.Api\publish\${CI_PIPELINE_ID}'
+  PublishAngularPath: '.\src\TadbirNG\SPPC.Tadbir.Web\ClientApp'
+  
+  NgPath: '.\node_modules\@angular\cli\bin\ng'
+  IISWorkerPath: 'C:\inetpub\wwwroot\TadbirCRM\TadbirCRM.WebApi'
+  AngularBineriesPath: 'C:\inetpub\wwwroot\TadbirCRM\TadbirCRM.WebNg14'
+
+  ApplicationPoolName: TadbirNG.Api
+  CICommitRefName: key_for_node_modules
+
+trigger:
+- crm
+
+resources:
+- repo: self
+
+stages:
+  - stage: build
+    displayName: Build 
+    jobs: 
+    - job: Build_angular
+      displayName: Build angular
+      pool:
+       name: Win-TadbirDemo-Pool
+      steps:
+      - task: PowerShell@2
+        inputs:
+         targetType: 'inline'
+         script: |
+            # Write your PowerShell commands here.
+            cd .\src\TadbirNG\SPPC.Tadbir.Web\ClientApp
+            npm install
+            Copy-Item ".\src\environments\environment.prod.ts"  -Destination ".\src\environments\environment.ts" -Recurse -Force
+            node "$env:NgPath" build  --configuration=production --output-path=dist
+
+    - job: Build_dotnet
+      displayName: Build dotnet
+      dependsOn: Build_angular
+      pool:
+       name: Win-TadbirDemo-Pool
+      steps:
+      - checkout: none
+      - task: PowerShell@2
+        inputs:
+         targetType: 'inline'
+         script: |
+          dotnet restore .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj
+          dotnet build .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj --no-restore
+          dotnet publish .\src\TadbirNG\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj -c Release -o "$env:PublishPath" --verbosity normal
+
+
+  - stage: Deploy
+    displayName: deploy 
+    dependsOn: build
+    jobs: 
+    - job: Deploy_angular
+      displayName: deploy angular
+      pool:
+       name: Win-TadbirDemo-Pool
+      steps:
+      - checkout: none
+      - task: PowerShell@2
+        inputs:
+         targetType: 'inline'
+         script: |
+          Copy-Item "$env:PublishAngularPath\dist\*" -Destination "$env:AngularBineriesPath" -Recurse -Force
+    
+    - job: Deploy_dotnet
+      displayName: deploy dotnet
+      pool:
+       name: Win-TadbirDemo-Pool
+      steps:
+      - checkout: none
+      - task: PowerShell@2
+        inputs:
+         targetType: 'inline'
+         script: |
+            if((Get-WebSiteState -Name $env:ApplicationPoolName).Value -ne 'Stopped'){
+              Write-Output ('Stopping WebSite: {0}' -f $env:ApplicationPoolName)
+              Stop-WebSite -Name $env:ApplicationPoolName
+            }
+            if((Get-WebAppPoolState -Name $env:ApplicationPoolName).Value -ne 'Stopped'){
+              Write-Output ('Stopping Application Pool: {0}' -f $env:ApplicationPoolName)
+              Stop-WebAppPool -Name $env:ApplicationPoolName
+            }
+            while ((Get-WebSiteState -Name $env:ApplicationPoolName).Value -ne 'Stopped' -or (Get-WebAppPoolState -Name $env:ApplicationPoolName).Value -ne 'Stopped') {
+                Start-Sleep -Seconds 1
+            }
+
+            Copy-Item "$env:PublishPath\*" -Destination "$env:IISWorkerPath" -Recurse -Force
+            
+            if((Get-WebAppPoolState -Name $env:ApplicationPoolName).Value -ne 'Started'){
+              Write-Output ('Starting Application Pool: {0}' -f $env:ApplicationPoolName)
+              Start-WebAppPool -Name $env:ApplicationPoolName
+            }
+              if((Get-WebSiteState -Name $env:ApplicationPoolName).Value -ne 'Started'){
+                Write-Output ('Starting WebSite: {0}' -f $env:ApplicationPoolName)
+                Start-WebSite -Name $env:ApplicationPoolName
+            }
