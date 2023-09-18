@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SPPC.Tadbir.ViewModel.Inventory
+namespace SPPC.Tadbir.ViewModel.Finance
 {
     /// <summary>
     /// اطلاعات نمایشی مانده حساب های موجودی انبار را نگهداری می کند

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using SPPC.Tools.MetaDesigner.Common;
-using SPPC.Tools.MetaDesigner.Transforms;
+using SPPC.Tools.Transforms;
 using SPPC.Tools.Model;
+using SPPC.Tools.Presentation;
 
 namespace SPPC.Tools.MetaDesigner.Forms
 {
@@ -43,11 +43,11 @@ namespace SPPC.Tools.MetaDesigner.Forms
             var entityName = !String.IsNullOrWhiteSpace(txtEntityName.Text) ? txtEntityName.Text : "NewEntity";
             if (chkDerive.Checked)
             {
-                Entity = generator.GenerateAsIEntity(entityName, MetaDesignerContext.Current.Model.Repository);
+                Entity = generator.GenerateAsIEntity(entityName);
             }
             else
             {
-                Entity = generator.GenerateEntity(entityName, MetaDesignerContext.Current.Model.Repository);
+                Entity = generator.GenerateEntity(entityName);
             }
         }
     }

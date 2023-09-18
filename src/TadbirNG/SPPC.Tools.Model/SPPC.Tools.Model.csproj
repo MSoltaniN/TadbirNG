@@ -18,6 +18,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Entity\ColumnView.cs" />
+    <Compile Remove="Entity\PropertyView.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Pkcs\bin-data" />
   </ItemGroup>
 

@@ -16,29 +16,16 @@ namespace SPPC.Tools.MetaDesigner.Engine
         public override void Execute()
         {
             base.Execute();
-            string path = String.Empty;
-            object param = null;
-            string templateFileName = (string)Parameters["fileName"];
-            if (Parameters.ContainsKey("item"))
-            {
-                param = Parameters["item"];
-                var entity = Parameters["item"] as Entity;
-                var fileName = String.Format(templateFileName, entity.Name);
-                path = !String.IsNullOrWhiteSpace(entity.Repository.GenerationOutputPath)
-                    ? Path.Combine(GetTemplatePath(entity, templateFileName), fileName)
-                    : fileName;
-            }
-            else if (Parameters.ContainsKey("object"))
-            {
-                param = Parameters["object"];
-                var repository = Parameters["object"] as Repository;
-                path = !String.IsNullOrWhiteSpace(repository.GenerationOutputPath)
-                    ? Path.Combine(repository.GenerationOutputPath, templateFileName)
-                    : templateFileName;
-            }
+            var repository = Parameters["object"] as Repository;
+            var entity = Parameters["item"] as Entity;
+            string fileNameTemplate = (string)Parameters["fileName"];
+            var fileName = String.Format(fileNameTemplate, entity.Name);
+            var path = !String.IsNullOrWhiteSpace(repository.GenerationOutputPath)
+                ? Path.Combine(GetTemplatePath(repository, entity, fileNameTemplate), fileName)
+                : fileName;
 
             var templateType = Type.GetType((string)Parameters["template"]);
-            var template = Reflector.Instantiate(templateType, param) as ITextTemplate;
+            var template = Reflector.Instantiate(templateType, repository, entity) as ITextTemplate;
             File.WriteAllText(path, template.TransformText());
         }
 
@@ -52,9 +39,9 @@ namespace SPPC.Tools.MetaDesigner.Engine
             return requiredParams;
         }
 
-        private string GetTemplatePath(Entity entity, string templateFileName)
+        private string GetTemplatePath(Repository repository, Entity entity, string templateFileName)
         {
-            string root = entity.Repository.GenerationOutputPath;
+            string root = repository.GenerationOutputPath;
             string templatePath = root;
             if (templateFileName.IndexOf("ViewModel") != -1)
             {

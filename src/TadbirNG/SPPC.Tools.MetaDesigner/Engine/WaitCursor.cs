@@ -1,8 +1,6 @@
-﻿using System;
-using System.Windows.Forms;
-using SPPC.Tools.MetaDesigner.Common;
+﻿using System.Windows.Forms;
 
-namespace SPPC.Tools.MetaDesigner.Engine
+namespace SPPC.Tools.Presentation
 {
     public class WaitCursor : IWaitCursor
     {

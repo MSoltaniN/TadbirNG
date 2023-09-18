@@ -81,7 +81,7 @@ foreach(var ns in GetRequiredNamespaces())
             this.Write("\r\n");
             
             #line 28 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsPocoFromXmlMetadata.tt"
- var codeNamespace = NamespaceUtil.GetNamespace(_entity.Repository, "Model", _entity.Area); 
+ var codeNamespace = NamespaceUtil.GetNamespace(_repository, "Model", _entity.Area); 
             
             #line default
             #line hidden

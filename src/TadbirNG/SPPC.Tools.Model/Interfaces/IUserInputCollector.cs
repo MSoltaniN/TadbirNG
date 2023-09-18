@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace SPPC.Tools.MetaDesigner.Engine
+namespace SPPC.Tools.Presentation
 {
     public interface IUserInputCollector
     {

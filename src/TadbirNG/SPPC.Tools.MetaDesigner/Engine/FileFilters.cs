@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SPPC.Tools.MetaDesigner.Engine
 {
@@ -16,6 +12,11 @@ namespace SPPC.Tools.MetaDesigner.Engine
         public static string XmlRepository
         {
             get { return "XML Repository Files (*.xml)|*.xml"; }
+        }
+
+        public static string JsonRepository
+        {
+            get { return "JSON Repository Files (*.json)|*.json"; }
         }
     }
 }

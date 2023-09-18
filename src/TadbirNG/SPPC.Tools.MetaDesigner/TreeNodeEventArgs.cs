@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using SPPC.Tools.Presentation;
 
 namespace SPPC.Tools.MetaDesigner.Common
 {
@@ -7,7 +7,7 @@ namespace SPPC.Tools.MetaDesigner.Common
     {
         public TreeNodeEventArgs(ITreeViewNode node)
         {
-            this.Node = node;
+            Node = node;
         }
 
         public ITreeViewNode Node { get; private set; }

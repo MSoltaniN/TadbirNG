@@ -12,6 +12,7 @@ using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.<#= _model.EntityArea #>;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;

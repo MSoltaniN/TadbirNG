@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using SPPC.Tools.MetaDesigner.Persistence;
-using SPPC.Tools.MetaDesigner.Transforms;
 using SPPC.Tools.Model;
+using SPPC.Tools.Persistence;
+using SPPC.Tools.Presentation;
+using SPPC.Tools.Transforms;
 
 namespace SPPC.Tools.MetaDesigner.Engine
 {
@@ -68,7 +69,7 @@ namespace SPPC.Tools.MetaDesigner.Engine
             }
             else
             {
-                var repositoryStorage = RepositoryStorageFactory.GetStorage(StorageFactory.CreateFile(path));
+                var repositoryStorage = RepositoryStorageFactory.GetStorage(StorageFactory.CreateFromFile(path));
                 ContextManager.Model = new RepositoryModel(repositoryStorage.Load());
             }
         }
@@ -78,7 +79,7 @@ namespace SPPC.Tools.MetaDesigner.Engine
             var repository = ContextManager.Model.Repository;
             if (!String.IsNullOrEmpty(path))
             {
-                repository.Store = StorageFactory.CreateFile(path);
+                repository.Store = StorageFactory.CreateFromFile(path);
             }
 
             var storage = RepositoryStorageFactory.GetStorage(repository.Store);
@@ -92,11 +93,11 @@ namespace SPPC.Tools.MetaDesigner.Engine
             {
                 if (Action == RepositoryCommandType.New || Action == RepositoryCommandType.SaveAs)
                 {
-                    inputCollector = new FileNameCollector(false, FileFilters.XmlRepository);
+                    inputCollector = new FileNameCollector(false);
                 }
                 else if (Action == RepositoryCommandType.Open)
                 {
-                    inputCollector = new FileNameCollector(true, FileFilters.XmlRepository);
+                    inputCollector = new FileNameCollector(true);
                 }
             }
 

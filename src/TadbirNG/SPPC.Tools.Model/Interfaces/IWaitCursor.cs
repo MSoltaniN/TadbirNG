@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace SPPC.Tools.MetaDesigner.Common
+namespace SPPC.Tools.Presentation
 {
     public interface IWaitCursor
     {
         void Set();
+
         void Reset();
     }
 }

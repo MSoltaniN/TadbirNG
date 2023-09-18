@@ -2,9 +2,10 @@
 using System.IO;
 using System.Linq;
 using SPPC.Framework.Common;
+using SPPC.Framework.Persistence;
 using SPPC.Tools.Model;
 
-namespace SPPC.Tools.MetaDesigner.Persistence
+namespace SPPC.Tools.Persistence
 {
     public class XmlRepositoryStorage : IRepositoryStorage
     {
@@ -14,7 +15,7 @@ namespace SPPC.Tools.MetaDesigner.Persistence
         {
             var serializer = new BasicXmlSerializer();
             var repository = serializer.Deserialize(GetFileStoragePath(Storage), typeof(Repository)) as Repository;
-            PrepareEntities(repository);
+            RepositoryHelper.SortEntitiesByName(repository);
             return repository;
         }
 
@@ -22,20 +23,6 @@ namespace SPPC.Tools.MetaDesigner.Persistence
         {
             var serializer = new BasicXmlSerializer();
             serializer.Serialize(GetFileStoragePath(repository.Store), repository);
-        }
-
-        private static void PrepareEntities(Repository repository)
-        {
-            var entities = new Entity[repository.Entities.Count];
-            repository.Entities.CopyTo(entities, 0);
-            repository.Entities.Clear();
-            Array.ForEach(entities
-                .OrderBy(ent => ent.Name)
-                .ToArray(), entity =>
-                {
-                    entity.Repository = repository;
-                    repository.Entities.Add(entity);
-                });
         }
 
         private static string GetFileStoragePath(Storage storage)

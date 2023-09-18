@@ -8,14 +8,24 @@ namespace SPPC.Tools.Model
     public enum StorageMedia
     {
         /// <summary>
+        /// Unspecified data storage media
+        /// </summary>
+        Unknown = 0,
+
+        /// <summary>
         /// The Extensible Markup Language (XML) data storage media
         /// </summary>
-        XmlFile,
+        XmlFile = 1,
+
+        /// <summary>
+        /// The JavaScript Object Notation (JSON) data storage media
+        /// </summary>
+        JsonFile = 2,
 
         /// <summary>
         /// The generic database storage media
         /// </summary>
-        Database
+        Database = 3
     }
 
     /// <summary>

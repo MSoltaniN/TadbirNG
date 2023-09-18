@@ -10,6 +10,8 @@ namespace SPPC.Tools.Model
             IsFiscalEntity = true;
         }
 
+        public Repository Repository { get; set; }
+
         public Entity Entity { get; set; }
 
         public string SingularName { get; set; }

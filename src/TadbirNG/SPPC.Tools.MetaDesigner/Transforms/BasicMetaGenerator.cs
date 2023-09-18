@@ -3,7 +3,7 @@ using System.Linq;
 using SPPC.Framework.Common;
 using SPPC.Tools.Model;
 
-namespace SPPC.Tools.MetaDesigner.Transforms
+namespace SPPC.Tools.Transforms
 {
     public class BasicMetaGenerator : IMetaGenerator
     {
@@ -15,20 +15,20 @@ namespace SPPC.Tools.MetaDesigner.Transforms
             return new Repository()
             {
                 Name = repoName,
-                Store = StorageFactory.CreateFile(path)
+                Store = StorageFactory.CreateFromFile(path)
             };
         }
 
-        public Entity GenerateEntity(string name, Repository repository)
+        public Entity GenerateEntity(string name)
         {
-            var entity = new Entity() { Name = name, Identifier = "ID", Repository = repository };
+            var entity = new Entity() { Name = name, Identifier = "ID" };
             entity.Properties.Add(GetDefaultIdProperty(name));
             return entity;
         }
 
-        public Entity GenerateAsIEntity(string name, Repository repository)
+        public Entity GenerateAsIEntity(string name)
         {
-            var entity = new Entity() { Name = name, Identifier = "Id", Repository = repository };
+            var entity = new Entity() { Name = name, Identifier = "Id" };
 
             // Generate and add Id property...
             var property = GenerateProperty("Id", BuiltinType.Int32);
@@ -59,9 +59,7 @@ namespace SPPC.Tools.MetaDesigner.Transforms
             {
                 Name = name,
                 Type = type,
-                Column = GetDefaultColumn(name),
-                Storage = GetDefaultStorage(name, type, length),
-                View = GetDefaultView(name, type)
+                Storage = GetDefaultStorage(name, type, length)
             };
             property.ValidationRule = ValidationRuleFactory.CreateDefault(property.Type);
             property.ValidationRule.Name = String.Format("{0}_Validation", property.Name);
@@ -88,9 +86,7 @@ namespace SPPC.Tools.MetaDesigner.Transforms
         private Property GetDefaultIdProperty(string entityName)
         {
             var idProperty = GenerateProperty("ID", BuiltinType.Int32);
-            idProperty.Column.Visible = false;
             idProperty.Storage.Name = String.Format("{0}ID", entityName);
-            idProperty.View = GetDefaultView(String.Format("{0}ID", entityName), BuiltinType.String);
             idProperty.ValidationRule = new ValidationRule()
             {
                 Name = "ID_Validation",
@@ -101,16 +97,6 @@ namespace SPPC.Tools.MetaDesigner.Transforms
             return idProperty;
         }
 
-        private static ColumnView GetDefaultColumn(string name)
-        {
-            return new ColumnView()
-            {
-                Name = name,
-                Visible = true,
-                Width = 120
-            };
-        }
-
         private static PropertyStorage GetDefaultStorage(string name, BuiltinType type, int length)
         {
             var mapper = new SqlStorageMapper();
@@ -119,19 +105,6 @@ namespace SPPC.Tools.MetaDesigner.Transforms
                 Name = name,
                 Type = mapper.MapPropertyType(type, length),
                 Nullable = false
-            };
-        }
-
-        private static PropertyView GetDefaultView(string name, BuiltinType type)
-        {
-            var mapper = new BasicPropertyViewMapper();
-            var viewType = mapper.MapPropertyType(type);
-            return new PropertyView()
-            {
-                Name = mapper.GetDefaultName(name, viewType),
-                Type = viewType,
-                BindingMember = mapper.GetDefaultBindingMember(viewType),
-                Format = (type == BuiltinType.DateTime) ? EntityConstants.DateFormat : String.Empty
             };
         }
     }

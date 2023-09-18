@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 
-namespace SPPC.Tools.MetaDesigner.Persistence
+namespace SPPC.Framework.Persistence
 {
     /// <summary>
     /// Provides a simple implementation for XML serialize/deserialize operations.

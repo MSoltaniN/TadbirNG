@@ -9,7 +9,6 @@ using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Inventory;
 
 namespace SPPC.Tadbir.Persistence
 {

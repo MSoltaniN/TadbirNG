@@ -8,14 +8,12 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Inventory;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers

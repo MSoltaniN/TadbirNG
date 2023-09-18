@@ -59,8 +59,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
             
             #line 22 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsFluentMappingFromMetadata.tt"
 
-var usingNamespace = NamespaceUtil.GetNamespace(_entity.Repository, "Model", _entity.Area);
-var codeNamespace = NamespaceUtil.GetNamespace(_entity.Repository, "Persistence", "Mapping");
+var usingNamespace = NamespaceUtil.GetNamespace(_repository, "Model", _entity.Area);
+var codeNamespace = NamespaceUtil.GetNamespace(_repository, "Persistence", "Mapping");
 var idProperty = _entity.Properties.Where(prop => prop.Name == "Id").First();
 var propNames = new string[] { "Id", "RowGuid", "ModifiedDate" };
 var customProperties = _entity.Properties.Where(prop => !propNames.Contains(prop.Name)).ToArray();

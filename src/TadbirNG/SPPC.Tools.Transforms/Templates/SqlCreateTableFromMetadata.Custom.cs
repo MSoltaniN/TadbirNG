@@ -7,8 +7,9 @@ namespace SPPC.Tools.Transforms.Templates
 {
     public partial class SqlCreateTableFromMetadata : ITextTemplate
     {
-        public SqlCreateTableFromMetadata(Entity[] entities)
+        public SqlCreateTableFromMetadata(Repository repository, Entity[] entities)
         {
+            _repository = repository;
             _entities = entities;
         }
 
@@ -39,7 +40,7 @@ namespace SPPC.Tools.Transforms.Templates
         private string GetRelationArea(Entity entity, Relation relation)
         {
             string area = String.Empty;
-            var relatedEntity = entity.Repository.Entities
+            var relatedEntity = _repository.Entities
                 .Where(ent => ent.Name == relation.EntityName)
                 .SingleOrDefault();
             if (relatedEntity != null)
@@ -50,7 +51,8 @@ namespace SPPC.Tools.Transforms.Templates
             return area;
         }
 
-        private Entity[] _entities;
+        private readonly Repository _repository;
+        private readonly Entity[] _entities;
         private int _maxFieldPadding;
         private int _maxTypePadding;
     }

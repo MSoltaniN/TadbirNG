@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SPPC.Framework.Common;
 using SPPC.Tools.MetaDesigner.Common;
+using SPPC.Tools.Presentation;
 
 namespace SPPC.Tools.MetaDesigner.Engine
 {
@@ -10,8 +11,8 @@ namespace SPPC.Tools.MetaDesigner.Engine
     {
         protected RepositoryCommand()
         {
-            this.Parameters = new Dictionary<string, object>();
-            this.ContextManager = MetaDesignerContext.Current;
+            Parameters = new Dictionary<string, object>();
+            ContextManager = MetaDesignerContext.Current;
         }
 
         public IDictionary<string, object> Parameters { get; private set; }
