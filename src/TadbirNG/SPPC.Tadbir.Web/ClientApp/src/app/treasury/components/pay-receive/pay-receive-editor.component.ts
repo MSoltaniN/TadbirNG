@@ -381,6 +381,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
 
     this.isLastItem = !this.model.hasNext;
     this.isFirstItem = !this.model.hasPrevious;
+    this.type = this.model.type;
     this.errorMessages = [];
 
     setTimeout(() => {
@@ -453,6 +454,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     let insertUrl = this.type == 1? PayReceiveApi.Payments: PayReceiveApi.Receipts;
     let editUrl = this.type == 1? PayReceiveApi.Payment: PayReceiveApi.Receipt;
     let value = this.editForm.value;
+    value.type = this.type;
 
     let request = this.model.id>0?
       this.payReceive.edit(String.Format(editUrl,this.model.id),value):
