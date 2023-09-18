@@ -184,6 +184,7 @@
     "Last": "The last {0}",
     "Delete": "Delete {0}",
     "Commit": "Commit {0}",
+    "View": "View {0}",
     "SaveChanges": "Save Changes",
     "ChangeStatus": "Change Status",
     "Active": "Active",

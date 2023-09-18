@@ -63,7 +63,7 @@
     <ng-template kendoGridToolbarTemplate>
       <button
           class="k-button sh-new-voucher"
-          title="{{ 'Voucher.ViewVoucher' | translate }}"
+          title="{{ stringFormat('Form.View' | translate, 'Voucher.Voucher' | translate ) }}"
           (click)="viewVoucher()"
           [disabled]="selectedRows.length != 1"
       >
