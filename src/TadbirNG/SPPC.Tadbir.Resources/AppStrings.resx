@@ -4320,4 +4320,13 @@
   <data name="IncompatibleRegisterOptions" xml:space="preserve">
     <value>برای جلوگیری از تداخل گزینه‌ها در تنظیمات {0}، انتخاب یکی از گزینه‌های 'ثبت مالی با آخرین سند باز' و 'ثبت مالی با ایجاد سند جدید' امکان‌پذیر است.</value>
   </data>
+  <data name="ProductScope" xml:space="preserve">
+    <value>محصولات</value>
+  </data>
+  <data name="ProductScopeOperations" xml:space="preserve">
+    <value>عملیات محصولات</value>
+  </data>
+  <data name="ProductScopeReports" xml:space="preserve">
+    <value>گزارشات محصولات</value>
+  </data>
 </root>

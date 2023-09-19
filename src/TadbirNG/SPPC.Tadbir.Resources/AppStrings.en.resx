@@ -4311,6 +4311,15 @@
   <data name="ImpossibleRegisterBeforeConfirmAndApprove" xml:space="preserve">
     <value>Impossible to register {0} before approval and confirmation.</value>
   </data>
+  <data name="ProductScope" xml:space="preserve">
+    <value>Product Scope</value>
+  </data>
+  <data name="ProductScopeOperations" xml:space="preserve">
+    <value>Product Scope Operations</value>
+  </data>
+  <data name="ProductScopeReports" xml:space="preserve">
+    <value>ProductScope Reports</value>
+  </data>
   <data name="InvalidSourceAppInArticle" xml:space="preserve">
     <value>Source must be selected for debit amounts and application must be selected for credit amounts.</value>
   </data>
