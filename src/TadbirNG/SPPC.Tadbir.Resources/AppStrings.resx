@@ -4329,4 +4329,22 @@
   <data name="ProductScopeReports" xml:space="preserve">
     <value>گزارشات محصولات</value>
   </data>
+  <data name="Brand" xml:space="preserve">
+    <value>برند</value>
+  </data>
+  <data name="Brands" xml:space="preserve">
+    <value>برندها</value>
+  </data>
+  <data name="EnName" xml:space="preserve">
+    <value>نام لاتین</value>
+  </data>
+  <data name="MetaKeyword" xml:space="preserve">
+    <value>کلمات کلیدی مرتبط</value>
+  </data>
+  <data name="SocialLink" xml:space="preserve">
+    <value>لینک شبکه اجتماعی</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>آدرس وب سایت</value>
+  </data>
 </root>

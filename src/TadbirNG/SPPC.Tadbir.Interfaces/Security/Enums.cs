@@ -2165,4 +2165,56 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         All = 0xfff
     }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به یک برند را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum BrandPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به اطلاعات برندها
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست برندها یا جزییات یک برند
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی فیلتر برندها موجود
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
+        /// دسترسی چاپ برندها موجود
+        /// </summary>
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات برندها موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک برند جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک برند موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک برند موجود
+        /// </summary>
+        Delete = 0x40,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت برندها
+        /// </summary>
+        All = 0x7f
+    }
 }

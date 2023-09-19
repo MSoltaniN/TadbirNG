@@ -220,5 +220,10 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت دریافت
         /// </summary>
         public const string Receipt = "Receipt";
+
+        /// <summary>
+        /// نام موجودیت برند
+        /// </summary>
+        public const string Brand = "Brand";
     }
 }

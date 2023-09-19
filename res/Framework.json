@@ -1442,6 +1442,217 @@
       ]
     },
     {
+      "name": "Brand",
+      "area": "ProductScope",
+      "identifier": "Id",
+      "type": "BaseEntity",
+      "description": "اطلاعات یک برند را نگهداری می کند",
+      "properties": [
+        {
+          "name": "Id",
+          "type": 6,
+          "isValidated": false,
+          "description": "شناسه برند",
+          "storage": {
+            "name": "BrandID",
+            "type": "int",
+            "nullable": false
+          },
+          "validationRule": {
+            "name": "Id_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "",
+            "format": "",
+            "type": 0
+          }
+        },
+        {
+          "name": "Name",
+          "type": 0,
+          "isValidated": true,
+          "description": "نام فارسی برند",
+          "storage": {
+            "name": "Name",
+            "type": "nvarchar(64)",
+            "nullable": false
+          },
+          "validationRule": {
+            "name": "Name_Validation",
+            "required": true,
+            "minimum": "",
+            "maximum": "64",
+            "format": "",
+            "type": 1
+          }
+        },
+        {
+          "name": "EnName",
+          "type": 0,
+          "isValidated": true,
+          "description": "نام لاتین برند",
+          "storage": {
+            "name": "EnName",
+            "type": "nvarchar(64)",
+            "nullable": true
+          },
+          "validationRule": {
+            "name": "EnName_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "64",
+            "format": "",
+            "type": 1
+          }
+        },
+        {
+          "name": "Description",
+          "type": 0,
+          "isValidated": true,
+          "description": "شرح تکمیلی برند",
+          "storage": {
+            "name": "Description",
+            "type": "nvarchar(1024)",
+            "nullable": true
+          },
+          "validationRule": {
+            "name": "Description_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "1024",
+            "format": "",
+            "type": 1
+          }
+        },
+        {
+          "name": "SocialLink",
+          "type": 0,
+          "isValidated": true,
+          "description": "لینک شبکه اجتماعی",
+          "storage": {
+            "name": "SocialLink",
+            "type": "nvarchar(64)",
+            "nullable": true
+          },
+          "validationRule": {
+            "name": "SocialLink_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "64",
+            "format": "",
+            "type": 1
+          }
+        },
+        {
+          "name": "Website",
+          "type": 0,
+          "isValidated": true,
+          "description": "آدرس وب سایت",
+          "storage": {
+            "name": "Website",
+            "type": "nvarchar(64)",
+            "nullable": true
+          },
+          "validationRule": {
+            "name": "Website_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "64",
+            "format": "",
+            "type": 1
+          }
+        },
+        {
+          "name": "MetaKeyword",
+          "type": 0,
+          "isValidated": true,
+          "description": "کلمات کلیدی مرتبط با نام برند",
+          "storage": {
+            "name": "MetaKeyword",
+            "type": "nvarchar(64)",
+            "nullable": true
+          },
+          "validationRule": {
+            "name": "MetaKeyword_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "64",
+            "format": "",
+            "type": 1
+          }
+        },
+        {
+          "name": "IsActive",
+          "type": 15,
+          "isValidated": true,
+          "description": "وضعیت فعال یا غیر فعال ",
+          "storage": {
+            "name": "IsActive",
+            "type": "bit",
+            "nullable": true
+          },
+          "validationRule": {
+            "name": "IsActive_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "",
+            "format": "",
+            "type": 0
+          }
+        },
+        {
+          "name": "RowGuid",
+          "type": 16,
+          "isValidated": false,
+          "description": null,
+          "storage": {
+            "name": "rowguid",
+            "type": "uniqueidentifier",
+            "nullable": false
+          },
+          "validationRule": {
+            "name": "RowGuid_Validation",
+            "required": true,
+            "minimum": "",
+            "maximum": "",
+            "format": "",
+            "type": 0
+          }
+        },
+        {
+          "name": "ModifiedDate",
+          "type": 13,
+          "isValidated": false,
+          "description": null,
+          "storage": {
+            "name": "ModifiedDate",
+            "type": "datetime",
+            "nullable": false
+          },
+          "validationRule": {
+            "name": "ModifiedDate_Validation",
+            "required": true,
+            "minimum": "",
+            "maximum": "",
+            "format": "",
+            "type": 0
+          }
+        }
+      ],
+      "relations": [
+        {
+          "name": "Branch",
+          "multiplicity": 2,
+          "endpointName": "Branch",
+          "entityName": "Branch",
+          "hasKey": true,
+          "isRequired": true,
+          "joinTable": "",
+          "description": "TODO: Add description..."
+        }
+      ]
+    },
+    {
       "name": "CashRegister",
       "area": "CashFlow",
       "identifier": "Id",

@@ -9,6 +9,7 @@ using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.Model.ProductScope;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Persistence.Mapping;
 using SPPC.Tadbir.Persistence.Mapping.Finance;
@@ -107,6 +108,7 @@ namespace SPPC.Tadbir.Persistence
             WidgetFunctionMap.BuildMapping(modelBuilder.Entity<WidgetFunction>());
             WidgetMap.BuildMapping(modelBuilder.Entity<Widget>());
             WidgetTypeMap.BuildMapping(modelBuilder.Entity<WidgetType>());
+            BrandMap.BuildMapping(modelBuilder.Entity<Brand>());
         }
 
         /// <summary>

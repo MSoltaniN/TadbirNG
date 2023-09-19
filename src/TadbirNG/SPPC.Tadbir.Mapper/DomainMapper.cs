@@ -17,6 +17,7 @@ using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.Model.ProductScope;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel;
@@ -28,6 +29,7 @@ using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
+using SPPC.Tadbir.ViewModel.ProductScope;
 using SPPC.Tadbir.ViewModel.Reporting;
 using System;
 using System.Collections.Generic;
@@ -88,6 +90,7 @@ namespace SPPC.Tadbir.Mapper
             MapReportingTypes(mapperConfig);
             MapCashFlowTypes(mapperConfig);
             MapCheckTypes(mapperConfig);
+            MapProductScopeTypes(mapperConfig);
         }
 
         private static void MapCashFlowTypes(IMapperConfigurationExpression mapperConfig)
@@ -695,6 +698,12 @@ namespace SPPC.Tadbir.Mapper
         {
             Verify.ArgumentNotNull(setting, "setting");
             return JsonHelper.To<TConfig>(setting.Values);
+        }
+
+        private static void MapProductScopeTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<Brand, BrandViewModel>();
+            mapperConfig.CreateMap<BrandViewModel, Brand>();
         }
 
         private static int? GetNullableId(AccountItemBriefViewModel item)

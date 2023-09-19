@@ -24,6 +24,7 @@ namespace SPPC.Tadbir.Persistence
         CashRegister = 22,
         SourceApp = 23,
         Receipt = 24,
-        Payment = 25
+        Payment = 25,
+        Brand = 100000
     }
 }

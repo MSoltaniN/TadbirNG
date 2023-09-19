@@ -6,6 +6,7 @@
 //     Template Version: 1.0
 //     Generation Date: 9/19/2023 1:38:54 PM
 //     Generation Date: 9/26/2023 9:35:32 AM
+//     Generation Date: 9/19/2023 2:22:48 PM
 //  
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
@@ -670,6 +671,16 @@ namespace SPPC.Tadbir.Resources
         /// Default text : دسترسی شعبه
         /// </summary>
         public const string BranchScope = "BranchScope";
+
+        /// <summary>
+        /// Default text : برند
+        /// </summary>
+        public const string Brand = "Brand";
+
+        /// <summary>
+        /// Default text : برندها
+        /// </summary>
+        public const string Brands = "Brands";
 
         /// <summary>
         /// Default text : بودجه
@@ -3992,6 +4003,11 @@ namespace SPPC.Tadbir.Resources
         public const string EndNo = "EndNo";
 
         /// <summary>
+        /// Default text : نام لاتین
+        /// </summary>
+        public const string EnName = "EnName";
+
+        /// <summary>
         /// Default text : موجودیت
         /// </summary>
         public const string Entity = "Entity";
@@ -5070,6 +5086,11 @@ namespace SPPC.Tadbir.Resources
         /// Default text : برای فیلتر سطرهای موجودیت {0} سقف مقداری تعیین نشده است.
         /// </summary>
         public const string MaxQuantityValueNotSelected = "MaxQuantityValueNotSelected";
+
+        /// <summary>
+        /// Default text : کلمات کلیدی مرتبط
+        /// </summary>
+        public const string MetaKeyword = "MetaKeyword";
 
         /// <summary>
         /// Default text : ارز جزء
@@ -6337,6 +6358,11 @@ namespace SPPC.Tadbir.Resources
         public const string Settings = "Settings";
 
         /// <summary>
+        /// Default text : لینک شبکه اجتماعی
+        /// </summary>
+        public const string SocialLink = "SocialLink";
+
+        /// <summary>
         /// Default text : بهای تمام شده کالای فروش رفته
         /// </summary>
         public const string SoldProductCost = "SoldProductCost";
@@ -7020,6 +7046,11 @@ namespace SPPC.Tadbir.Resources
         /// Default text : انبار
         /// </summary>
         public const string Warehouse = "Warehouse";
+
+        /// <summary>
+        /// Default text : آدرس وب سایت
+        /// </summary>
+        public const string Website = "Website";
 
         /// <summary>
         /// Default text : هفته {0}

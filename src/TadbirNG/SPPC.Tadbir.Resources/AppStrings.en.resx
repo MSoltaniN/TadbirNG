@@ -4320,6 +4320,24 @@
   <data name="ProductScopeReports" xml:space="preserve">
     <value>ProductScope Reports</value>
   </data>
+  <data name="Brand" xml:space="preserve">
+    <value>Brand</value>
+  </data>
+  <data name="Brands" xml:space="preserve">
+    <value>Brands</value>
+  </data>
+  <data name="EnName" xml:space="preserve">
+    <value>English name</value>
+  </data>
+  <data name="MetaKeyword" xml:space="preserve">
+    <value>Meta Keyword</value>
+  </data>
+  <data name="SocialLink" xml:space="preserve">
+    <value>Social Link</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>Website</value>
+  </data>
   <data name="InvalidSourceAppInArticle" xml:space="preserve">
     <value>Source must be selected for debit amounts and application must be selected for credit amounts.</value>
   </data>

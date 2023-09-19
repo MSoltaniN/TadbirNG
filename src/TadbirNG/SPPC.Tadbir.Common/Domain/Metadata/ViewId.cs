@@ -140,5 +140,10 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی طرف حساب فرم دریافت/پرداخت 
         /// </summary>
         public const int PayReceiveAccount = 76;
+
+        /// <summary>
+        /// نمای اطلاعاتی برندها
+        /// </summary>
+        public const int Brand = 100001;
     }
 }

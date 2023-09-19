@@ -164,6 +164,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IPayReceiveRepository, PayReceiveRepository>();
             _services.AddTransient<IPayReceiveAccountRepository, PayReceiveAccountRepository>();
             _services.AddTransient<IPayReceiveCashAccountRepository, PayReceiveCashAccountRepository>();
+            _services.AddTransient<IBrandRepository, BrandRepository>();
         }
 
         private void AddServiceTypes()
