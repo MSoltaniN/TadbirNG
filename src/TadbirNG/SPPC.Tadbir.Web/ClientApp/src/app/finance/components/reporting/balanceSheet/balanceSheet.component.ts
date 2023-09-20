@@ -253,7 +253,7 @@ export class BalanceSheetComponent
     this.scopeService.setScope(this);
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     if (!this.isAccess(Entities.BalanceSheet, BalanceSheetPermissions.View)) {
       this.showMessage(
         this.getText("App.AccessDenied"),
@@ -264,7 +264,7 @@ export class BalanceSheetComponent
     this.viewId = ViewName[this.entityTypeName];
     this.showloadingMessage = false;
     this.isDefaultBtn = true;
-    this.toDate = this.FiscalPeriodEndDate;
+    this.toDate =  await this.settingService.getDateConfigAsync("end");
 
     this.fillReferences();
 
