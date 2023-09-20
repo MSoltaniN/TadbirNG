@@ -510,5 +510,15 @@ namespace SPPC.Tadbir.Api
         public const string AggregateReceiptCashAccountArticleRowsUrl = "receipts/{receiptId:min(1)}/cash/articles/aggregate";
 
         #endregion Receipt Cash Account Article Resources
+
+        /// <summary>
+        /// API client URL for voucher item related to payment/receipt item specified by unique identifier
+        /// </summary>
+        public const string RelatedVoucher = "pay-receives/{0}/voucher";
+
+        /// <summary>
+        /// API server route URL for voucher item related to payment/receipt item specified by unique identifier
+        /// </summary>
+        public const string RelatedVoucherUrl = "pay-receives/{payReceiveId:min(1)}/voucher";
     }
 }
