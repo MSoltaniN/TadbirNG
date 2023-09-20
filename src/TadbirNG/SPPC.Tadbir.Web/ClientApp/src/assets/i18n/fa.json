@@ -1421,7 +1421,8 @@
     "Cash":"وجه نقد",
     "PaymentFormNotFound": "سند پرداخت مورد نظر یافت نشد.",
     "ReceiptFormNotFound": "سند دریافت مورد نظر یافت نشد.",
-    "UndoCommit": "برگشت از ثبت"
+    "UndoCommit": "برگشت از ثبت",
+    "SaveChangesRequired": "پیش از تایید فرم ذخیره تغییرات الزامی است."
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",

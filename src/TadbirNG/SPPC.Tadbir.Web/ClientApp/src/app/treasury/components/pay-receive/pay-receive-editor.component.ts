@@ -596,6 +596,11 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   confirmedBy(e) {
+    if (super.isFormChanged()) {
+      this.showMessage(this.getText("PayReceipt.SaveChangesRequired"),MessageType.Warning);
+      return false;
+    }
+
     let confirmApiUrl = this.type == 1? PayReceiveApi.ConfirmPayment: PayReceiveApi.ConfirmReceipt;
     let undoConfirmApiUrl = this.type == 1? PayReceiveApi.UndoConfirmPayment: PayReceiveApi.UndoConfirmReceipt;
 
@@ -749,6 +754,12 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   showReport() {}
+
+  isFormChanged() {
+    if (this.isConfirmed) 
+      return false;
+    super.isFormChanged();
+  }
 
   saveChangesHandler() {
     this.onSave();
