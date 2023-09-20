@@ -1648,7 +1648,7 @@
           "hasKey": true,
           "isRequired": true,
           "joinTable": "",
-          "description": "TODO: Add description..."
+          "description": "شعبه ای که برند در آن تعریف شده است"
         }
       ]
     },

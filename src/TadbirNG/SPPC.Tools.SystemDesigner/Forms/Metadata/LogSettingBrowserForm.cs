@@ -527,20 +527,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
             return allSettings;
         }
 
-        private IEnumerable<LogSettingViewModel> GetOrganizedSettings()
-        {
-            var allSettings = GetAllSettings()
-                .OrderBy(log => log.SourceId)
-                .ThenBy(log => log.EntityTypeId)
-                .ThenBy(log => log.OperationId)
-                .ToArray();
-            var organized = new LogSettingViewModel[allSettings.Length];
-            allSettings.CopyTo(organized, 0);
-            int nextId = 1;
-            Array.ForEach(organized, setting => setting.Id = nextId++);
-            return organized;
-        }
-
         private void AddNewSubsystemsTree()
         {
             var dal = new SqlDataLayer(DbConnections.CompanyConnection);
