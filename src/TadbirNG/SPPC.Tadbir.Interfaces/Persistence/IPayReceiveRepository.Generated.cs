@@ -160,5 +160,18 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="PayReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
         /// <returns>سندی مرتبط با فرم دریافت/پرداخت داده شده</returns>
         Task<VoucherViewModel> GetVoucherOfRegisterAsync(int PayReceiveId);
+
+        /// <summary>
+        /// به روش آسنکرون، شناسه آخرین سند باز معتبر برای ثبت مالی را برمی گرداند
+        /// </summary>
+        /// <param name="operationalDate">تاریخ عملیاتی سند مورد نظر</param>
+        /// <returns>شناسه آخرین سند معتبر برای ثبت مالی</returns>
+        Task<int> GetLastVoucherforRegisterAsync(DateTime operationalDate);
+
+        /// <summary>
+        /// به روش آسنکرون، سند مرتبط با شناسه ورودی ثبت می‌شود
+        /// </summary>
+        /// <param name="voucherId">شناسه سند مورد نظر</param>
+        Task SetVoucherCheckedAsync(int voucherId);
     }
 }

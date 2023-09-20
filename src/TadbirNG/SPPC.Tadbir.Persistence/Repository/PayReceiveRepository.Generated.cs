@@ -15,6 +15,7 @@ using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.ViewModel.CashFlow;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -87,7 +88,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                payReceiveModel = await repository.GetByIDAsync(payReceive.Id);
+                payReceiveModel = await repository.GetByIDAsync(payReceive.Id, pr => pr.Accounts, pr => pr.CashAccounts);
                 if (payReceiveModel != null)
                 {
                     payReceiveModel.ModifiedById = UserContext.Id;
@@ -139,7 +140,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task SetPayReceiveConfirmationAsync(int payReceiveId, bool isConfirmed)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
-            var payReceive = await repository.GetByIDAsync(payReceiveId);
+            var payReceive = await repository.GetByIDWithTrackingAsync(payReceiveId);
             if (payReceive != null)
             {
                 payReceive.ConfirmedById = isConfirmed ? UserContext.Id : null;
@@ -397,6 +398,18 @@ namespace SPPC.Tadbir.Persistence
                 .Where(v => v.Id == voucherId)
                 .Select(v => Mapper.Map<VoucherViewModel>(v))
                 .SingleOrDefaultAsync();
+        }
+
+        /// <inheritdoc/>
+        public async Task<int> GetLastVoucherforRegisterAsync(DateTime operationalDate)
+        {
+            return await Repository
+                .GetAllOperationQuery<Voucher>(ViewId.Voucher)
+                .Where(v => v.Date.Date == operationalDate.Date
+                    && v.StatusId == (int)DocumentStatusId.NotChecked)
+                .OrderByDescending(v => Int64.Parse(v.TextNo))
+                .Select(v => v.Id)
+                .FirstOrDefaultAsync();
         }
 
         internal override int? EntityType
@@ -782,6 +795,19 @@ namespace SPPC.Tadbir.Persistence
                 };
 
                 repository.Insert(payReceiveVoucherLine);
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task SetVoucherCheckedAsync(int voucherId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var voucher = repository.GetByID(voucherId);
+            if (voucher != null)
+            {
+                voucher.StatusId = (int)DocumentStatusId.Checked;
+                repository.Update(voucher);
+                await UnitOfWork.CommitAsync();
             }
         }
 

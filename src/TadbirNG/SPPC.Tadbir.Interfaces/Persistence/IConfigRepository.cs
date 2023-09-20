@@ -143,13 +143,5 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="level"></param>
         /// <returns></returns>
         int GetLevelCodeLength(int viewId, int level);
-
-        /// <summary>
-        /// به روش آسنکرون، تنظیمات فرم دریافت را خوانده و برمی گرداند.
-        /// </summary>
-        /// <returns>تنظیمات فرم دریافت</returns>
-        Task<ReceiptConfig> GetRceiptConfigAsync();
-
-        Task SaveReceiptConfigAsync(ReceiptConfig configItems)
     }
 }

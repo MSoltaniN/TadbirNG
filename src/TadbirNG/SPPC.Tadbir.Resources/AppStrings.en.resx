@@ -4314,4 +4314,16 @@
   <data name="InvalidSourceAppInArticle" xml:space="preserve">
     <value>Source must be selected for debit amounts and application must be selected for credit amounts.</value>
   </data>
+  <data name="PaymentConfigsDescription" xml:space="preserve">
+    <value>Available options for convenience of users in payment form workflow</value>
+  </data>
+  <data name="PaymentSettings" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="ReceiptConfigsDescription" xml:space="preserve">
+    <value>Available options for convenience of users in receipt form workflow</value>
+  </data>
+  <data name="ReceiptSettings" xml:space="preserve">
+    <value>Receipt</value>
+  </data>
 </root>

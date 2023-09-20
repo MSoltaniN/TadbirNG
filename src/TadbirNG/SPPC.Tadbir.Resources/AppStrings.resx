@@ -4302,4 +4302,16 @@
   <data name="InvalidSourceAppInArticle" xml:space="preserve">
     <value>برای مبالغ بدهکار باید منبع انتخاب شود و برای مبالغ بستانکار باید مصرف انتخاب شود.</value>
   </data>
+  <data name="PaymentConfigsDescription" xml:space="preserve">
+    <value>گزینه‌های موجود برای سهولت کاربران در گردش کار فرم پرداخت</value>
+  </data>	
+  <data name="PaymentSettings" xml:space="preserve">
+    <value>فرم پرداخت</value>
+  </data>
+  <data name="ReceiptConfigsDescription" xml:space="preserve">
+    <value>گزینه‌های موجود برای سهولت کاربران در گردش کار فرم دریافت</value>
+  </data>
+  <data name="ReceiptSettings" xml:space="preserve">
+    <value>فرم دریافت</value>
+  </data>
 </root>
