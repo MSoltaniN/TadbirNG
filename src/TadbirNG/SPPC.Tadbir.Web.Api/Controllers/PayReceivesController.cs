@@ -5,11 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Domain;
-using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Resources;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.CashFlow;
 using SPPC.Tadbir.Web.Api.Filters;
 
@@ -676,6 +674,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             await _repository.UndoRegisterAsync(receiptId, (int)PayReceiveType.Receipt);
             return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سندی که فرم دریافت/پرداخت ورودی روی آن ثبت مالی شده را برمی گرداند
+        /// </summary>
+        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت/پرداخت مورد نظر</param>
+        /// <returns>سند مرتبط با فرم دریافت/پرداخت</returns>        
+        // GET: api/pay-receives/{payReceiveId:min(1)}/voucher
+        [HttpGet]
+        [Route(PayReceiveApi.RelatedVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetVoucherOfRegisterAsync(int payReceiveId)
+        {
+            var voucher = await _repository.GetVoucherOfRegisterAsync(payReceiveId);
+            return JsonReadResult(voucher);
         }
 
         /// <summary>

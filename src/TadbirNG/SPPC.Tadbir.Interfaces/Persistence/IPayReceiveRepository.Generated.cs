@@ -160,6 +160,5 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="PayReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
         /// <returns>سندی مرتبط با فرم دریافت/پرداخت داده شده</returns>
         Task<VoucherViewModel> GetVoucherOfRegisterAsync(int PayReceiveId);
-
     }
 }
