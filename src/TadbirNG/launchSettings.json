@@ -1,0 +1,17 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "ApiServer",
+      "serviceActions": {
+        "ApiServer": "StartDebugging",
+        "DbServer": "DoNotStart",
+        "LicenseServer": "DoNotStart",
+        "loadBalancer": "DoNotStart",
+        "WebApp": "DoNotStart"
+      }
+    }
+  }
+}

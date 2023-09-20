@@ -5,6 +5,11 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>0fed836d-d98c-4f62-b0db-b55fb80dca52</ProjectGuid>
   </PropertyGroup>
+  <PropertyGroup>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerServiceName>WebApp</DockerServiceName>
+    <DockerServiceUrl>http://localhost:9099</DockerServiceUrl>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
