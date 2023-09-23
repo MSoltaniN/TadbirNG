@@ -80,8 +80,8 @@ export class VouchersBydateComponent extends VoucherComponent
     this.reloadGrid()
   }
 
-  viewVoucher(){
-    this.clickedRowItem = this.rowData.data.find(d => d.id == this.selectedRows[0])
+  viewVoucher(voucher?){
+    this.clickedRowItem = voucher? voucher: this.rowData.data.find(d => d.id == this.selectedRows[0])
     this.rowDoubleClickHandler();
   }
 
