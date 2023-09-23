@@ -424,6 +424,8 @@ export class VoucherLineComponent
   }
 
   removeHandler() {
+    if (this.disableOperations) return false;
+
     this.deleteConfirm = true;
     if (!this.groupDelete) {
       var record = this.selectedRows[0];
@@ -436,6 +438,8 @@ export class VoucherLineComponent
   }
 
   public editHandler() {
+    if (this.disableOperations) return false;
+
     var id = this.selectedRows[0];
     this.grid.loading = true;
     this.voucherLineService
@@ -695,6 +699,8 @@ export class VoucherLineComponent
   }
 
   addNew() {
+    if (this.disableOperations) return false;
+
     if (this.documentStatusId == this.documentStatusNotChecked) {
       this.editDataItem = new VoucherLineInfo();
       this.openEditorDialog(true);
@@ -707,6 +713,8 @@ export class VoucherLineComponent
   }
 
   changeVoucherStatus(mode: string) {
+    if(this.disableOperations) return false;
+
     let apiUrl: string;
     let hasPermission: boolean = false;
 
@@ -775,6 +783,11 @@ export class VoucherLineComponent
       this.showMessage(this.getText("App.AccessDenied"), MessageType.Warning);
       this.getVoucher();
     }
+  }
+
+  setCheckboxvalue(e:Event,value:boolean) {
+    if(this.disableOperations)
+      (<HTMLInputElement>e.target).checked = value;
   }
   //#endregion
 }

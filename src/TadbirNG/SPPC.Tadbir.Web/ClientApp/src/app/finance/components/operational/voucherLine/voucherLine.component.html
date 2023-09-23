@@ -395,7 +395,7 @@
               class="k-checkbox"
               [(ngModel)]="isConfirmed"
               (ngModelChange)="changeVoucherStatus('confirm')"
-              [disabled]="disableOperations"
+              (click)="setCheckboxvalue($event, isConfirmed)"
             />
             <span for="confirmedBy">{{
               "Voucher.ConfirmerName" | translate
@@ -416,7 +416,7 @@
               class="k-checkbox"
               [(ngModel)]="isApproved"
               (ngModelChange)="changeVoucherStatus('approve')"
-              [disabled]="disableOperations"
+              (click)="setCheckboxvalue($event, isApproved)"
             />
             <span for="approvedBy">{{
               "Voucher.ApproverName" | translate
