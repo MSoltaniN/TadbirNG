@@ -26,6 +26,7 @@ export class PayReceiveInfo implements PayReceive {
   hasPrevious: boolean;
   accountAmountsSum: number;
   cashAmountsSum: number;
+  type: number;
   isRegistered: boolean = false;
 }
 
