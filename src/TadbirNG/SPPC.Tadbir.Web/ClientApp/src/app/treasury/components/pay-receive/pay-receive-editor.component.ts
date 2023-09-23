@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Renderer2, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogRef, DialogService } from '@progress/kendo-angular-dialog';
@@ -61,10 +61,11 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     public metadata: MetaDataService,
     public elem:ElementRef,
     private route: ActivatedRoute,
-    private payReceive: PayReceiveService,
+    private payReceiveService: PayReceiveService,
     public lookupService: LookupService,
     public dialogService: DialogService,
     private router: Router,
+    private vcRef: ViewContainerRef,
     public errorHandlingService: ErrorHandlingService)
   {
     super(toastrService, translate, bStorageService, renderer, metadata, Entities.Payment, ViewName.Payment,elem);
@@ -329,7 +330,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   getPayReceive(apiUrl:string,isNew=false) {
-    this.payReceive.getModelsByFilters(apiUrl,this.filter,this.quickFilter)
+    this.payReceiveService.getModelsByFilters(apiUrl,this.filter,this.quickFilter)
     .pipe(
       take(2)
     )
@@ -400,15 +401,15 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
         let deleteURL = String.Format(this.type == 1? PayReceiveApi.Payment: PayReceiveApi.Receipt,this.model.id);
         this.getDataUrl = this.type == 1? PayReceiveApi.NextPayment: PayReceiveApi.NextReceipt;
 
-        this.payReceive.delete(deleteURL)
+        this.payReceiveService.delete(deleteURL)
         .pipe(
           //try for next item
-          exhaustMap( () => this.payReceive.getModels(String.Format(this.getDataUrl, this.model.textNo))
+          exhaustMap( () => this.payReceiveService.getModels(String.Format(this.getDataUrl, this.model.textNo))
             .pipe(
               catchError(() => {
                 //if next voucher not exists try for previous Item
                 this.getDataUrl = this.type == 1? PayReceiveApi.PreviousPayment: PayReceiveApi.PreviousReceipt;
-                return this.payReceive.getModels(String.Format(this.getDataUrl, this.model.textNo))
+                return this.payReceiveService.getModels(String.Format(this.getDataUrl, this.model.textNo))
                 .pipe(
                   catchError(() => {
                     this.deleteConfirm = false;
@@ -455,8 +456,8 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     let value = this.editForm.value;
 
     let request = this.model.id>0?
-      this.payReceive.edit(String.Format(editUrl,this.model.id),value):
-      this.payReceive.insert(insertUrl,value);
+      this.payReceiveService.edit(String.Format(editUrl,this.model.id),value):
+      this.payReceiveService.insert(insertUrl,value);
 
     request
     .pipe(
@@ -650,7 +651,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     );
 
     if (hasPermission) {
-      lastValueFrom(this.payReceive.changeStatus(apiUrl))
+      lastValueFrom(this.payReceiveService.changeStatus(apiUrl))
       .then((res) => {
         if (cb.next)
           cb.next(res);
@@ -696,7 +697,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     this.dialogRef.content.instance.save.subscribe((result) => {
       apiUrl = String.Format(url, this.model.id, result);
 
-      lastValueFrom(this.payReceive.registerForm(apiUrl))
+      lastValueFrom(this.payReceiveService.registerForm(apiUrl))
         .then((res) => {
           this.model.isRegistered = true;
           this.dialogRef.close();
@@ -728,7 +729,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
 
     this.yesNoConfirmDialog(msg).then( confirm => {
       if (confirm) {
-        lastValueFrom(this.payReceive.undoRegister(apiUrl))
+        lastValueFrom(this.payReceiveService.undoRegister(apiUrl))
           .then((res) => {
             this.model.isRegistered = false;
             this.showMessage(
@@ -746,6 +747,13 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
           });
       }
     })
+  }
+
+  async showRelatedVoucher() {
+    let apiUrl = String.Format(PayReceiveApi.RelatedVoucher,this.model.id);
+    let voucher = await lastValueFrom(this.payReceiveService.getRelatedVoucher(apiUrl))
+
+    this.vcRef.createComponent(VouchersBydateComponent).instance.viewVoucher(voucher);
   }
 
   showReport() {}

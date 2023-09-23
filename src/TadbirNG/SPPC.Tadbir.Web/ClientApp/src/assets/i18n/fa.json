@@ -1421,7 +1421,8 @@
     "Cash":"وجه نقد",
     "PaymentFormNotFound": "سند پرداخت مورد نظر یافت نشد.",
     "ReceiptFormNotFound": "سند دریافت مورد نظر یافت نشد.",
-    "UndoCommit": "برگشت از ثبت"
+    "UndoCommit": "برگشت از ثبت",
+    "ViewRelatedVoucher": "مشاهده سند مرتبط با ثبت مالی"
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",
