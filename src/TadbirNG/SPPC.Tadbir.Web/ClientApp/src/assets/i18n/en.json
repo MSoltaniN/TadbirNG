@@ -1423,7 +1423,8 @@
     "Cash":"Cash",
     "PaymentFormNotFound": "The desired payment form was not found",
     "ReceiptFormNotFound": "The desired receipt form was not found",
-    "UndoCommit": "Return From Commit"
+    "UndoCommit": "Return From Commit",
+    "SaveChangesRequired": "It is necessary to save the changes before confirming the form."
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",

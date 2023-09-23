@@ -24,7 +24,7 @@ export class DeactivateGuard implements CanDeactivate<any> {
     component.navigateOperation = true;
     if (component.isFormChanged()) {
       console.log('Form was Changed!');
-      let res = await component.saveChangesConfirmDialog(null,true);
+      let res = await component.saveChangesConfirmDialog();
 
       return res;
 
