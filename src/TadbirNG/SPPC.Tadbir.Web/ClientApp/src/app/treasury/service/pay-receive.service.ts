@@ -51,4 +51,8 @@ export class PayReceiveService extends BaseService {
   public undoRegister(apiUrl: string) {
     return this.http.delete(apiUrl, this.option).pipe(map((res) => res));
   }
+
+  public getRelatedVoucher(apiUrl: string) {
+    return this.http.get(apiUrl, this.option).pipe(map((res) => res));
+  }
 }
