@@ -1,4 +1,6 @@
-﻿namespace SPPC.Tadbir.Persistence
+﻿using System;
+
+namespace SPPC.Tadbir.Persistence
 {
     internal enum EntityTypeId
     {

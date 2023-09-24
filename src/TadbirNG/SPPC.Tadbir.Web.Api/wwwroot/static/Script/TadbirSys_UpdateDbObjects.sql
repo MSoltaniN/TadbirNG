@@ -1464,32 +1464,6 @@ UPDATE [Metadata].[Column]
 SET [Type] = NULL
 WHERE ColumnID = 859
 
-
--- 1.2.1582
-
-Delete [Metadata].[Command] where [CommandID]>=62 and [CommandID]<=69
-
-SET IDENTITY_INSERT [Metadata].[Command] ON
-INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (62, 52, NULL, N'ReceiptOperations', NULL, 'folder-close', NULL)
-INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (63, 52, NULL, N'PaymentOperations', NULL, 'folder-close', NULL)
-INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (64, 62, 259, N'NewReceiptForm', N'/treasury/receipts/new', 'plus', NULL)
-INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (65, 62, 262, N'LastReceiptForm', N'/treasury/receipts/last', 'list', NULL)
-INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (66, 62, 257, N'ReceiptFormbyNo', N'/treasury/receipts/by-no', 'search', NULL)
-INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (67, 63, 248, N'NewPaymentForm', N'/treasury/payments/new', 'plus', NULL)
-INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (68, 63, 251, N'LastPaymentForm', N'/treasury/payments/last', 'list', NULL)
-INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (69, 63, 246, N'PaymentFormbyNo', N'/treasury/payments/by-no', 'search', NULL)
-
-SET IDENTITY_INSERT [Metadata].[Command] OFF
-
-
 -- 1.2.1583
 -- افزودن دسترسی ها برای کنترل سیستم
 SET IDENTITY_INSERT [Auth].[Permission] ON
@@ -1574,3 +1548,70 @@ INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [Titl
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
     VALUES (69, 63, 246, N'PaymentFormbyNo', N'/treasury/payments/by-no', 'search', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
+
+-- 1.2.1589
+UPDATE [Auth].[PermissionGroup] 
+SET [Name] = N'Receipts', [EntityName] = N'Receipt'
+WHERE [PermissionGroupID] = 41
+
+UPDATE [Auth].[PermissionGroup] 
+SET [Name] = N'Payments', [EntityName] = N'Payment'
+WHERE [PermissionGroupID] = 42
+
+UPDATE [Auth].[Permission] 
+SET [Name] = N'NavigateEntities,Receipts'
+WHERE [PermissionID] = 251
+
+UPDATE [Auth].[Permission] 
+SET [Name] = N'NavigateEntities,Payments'
+WHERE [PermissionID] = 262
+
+DELETE [Reporting].[LocalReport]
+WHERE [LocalReportID] >= 299 AND [LocalReportID] <= 306
+
+DELETE [Reporting].[Parameter]
+WHERE [ParamID] >= 182 AND [ParamID] <= 185
+
+DELETE [Reporting].[Report]
+WHERE [ReportID] >= 104 AND [ReportID] <= 107
+
+SET IDENTITY_INSERT [Reporting].[Report] ON
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
+    VALUES (104, 98, 1, 75, 3, N'', N'receipts/{0}/payer/articles', 0, 1, 1, 1, NULL)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
+    VALUES (105, 98, 1, 75, 3, N'', N'receipts/{0}/cash/articles', 0, 1, 1, 1, NULL)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
+    VALUES (106, 98, 1, 74, 3, N'', N'payments/{0}/receiver/articles', 0, 1, 1, 1, NULL)
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
+    VALUES (107, 98, 1, 74, 3, N'', N'payments/{0}/cash/articles', 0, 1, 1, 1, NULL)
+SET IDENTITY_INSERT [Reporting].[Report] OFF
+
+SET IDENTITY_INSERT [Reporting].[Parameter] ON
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [Source])
+    VALUES (182, 104, N'receiptId', N'receiptId', N'EQ', 'System.Int32', N'NumberBox', N'ReceiptId', NULL, 1, NULL, N'ReceiptId', N'Route')
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [Source])
+    VALUES (183, 105, N'receiptId', N'receiptId', N'EQ', 'System.Int32', N'NumberBox', N'ReceiptId', NULL, 1, NULL, N'ReceiptId', N'Route')
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [Source])
+    VALUES (184, 106, N'paymentId', N'paymentId', N'EQ', 'System.Int32', N'NumberBox', N'PaymentId', NULL, 1, NULL, N'PaymentId', N'Route')
+INSERT INTO [Reporting].[Parameter] ([ParamID], [ReportID], [Name], [FieldName], [Operator], [DataType], [ControlType], [CaptionKey], [DefaultValue], [MinValue], [MaxValue], [DescriptionKey], [Source])
+    VALUES (185, 107, N'paymentId', N'paymentId', N'EQ', 'System.Int32', N'NumberBox', N'PaymentId', NULL, 1, NULL, N'PaymentId', N'Route')
+SET IDENTITY_INSERT [Reporting].[Parameter] OFF
+
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (299, 1, 104, N'Payers List')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (300, 2, 104, N'لیست پرداخت کنندگان')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (301, 1, 105, N'Cash Accounts List')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (302, 2, 105, N'لیست حساب‌های نقدی')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (303, 1, 106, N'Recipients List')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (304, 2, 106, N'لیست دریافت کنندگان')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (305, 1, 107, N'Cash Accounts List')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (306, 2, 107, N'لیست حساب‌های نقدی')
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF

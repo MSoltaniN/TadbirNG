@@ -1132,3 +1132,18 @@ ALTER COLUMN [TextNo] NVARCHAR(16) NOT NULL
 
 ALTER TABLE [Check].[CheckBook]
 ALTER COLUMN [TextNo] NVARCHAR(16) NULL
+
+-- 1.2.1587
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (326, 2, 2, NULL, 11, 21, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 1.2.1589
+UPDATE [Metadata].[EntityType]
+SET [Name] = N'Receipt'
+WHERE [EntityTypeID] = 24
+
+UPDATE [Metadata].[EntityType]
+SET [Name] = N'Payment'
+WHERE [EntityTypeID] = 25
