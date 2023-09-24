@@ -1247,9 +1247,9 @@ INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (23, N'SourceApp', NULL)
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
-    VALUES (24, N'Payment', NULL)
+    VALUES (24, N'Receipt', NULL)
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
-    VALUES (25, N'Receipt', NULL)
+    VALUES (25, N'Payment', NULL)
 SET IDENTITY_INSERT [Metadata].[EntityType] OFF
 
 SET IDENTITY_INSERT [Metadata].[Operation] ON

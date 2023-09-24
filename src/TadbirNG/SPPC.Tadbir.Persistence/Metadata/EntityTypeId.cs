@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -24,7 +23,7 @@ namespace SPPC.Tadbir.Persistence
         CheckBook = 21,
         CashRegister = 22,
         SourceApp = 23,
-        Payment = 24,
-        Receipt = 25
+        Receipt = 24,
+        Payment = 25
     }
 }
