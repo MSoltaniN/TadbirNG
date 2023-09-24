@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SPPC.Tadbir.Configuration.Models
+﻿namespace SPPC.Tadbir.Configuration.Models
 {
     /// <summary>
     /// سیاست‌های انتخاب یا ایجاد سند برای ثبت مالی در فرم‌های عملیاتی را نگهداری می‌کند
@@ -14,12 +8,12 @@ namespace SPPC.Tadbir.Configuration.Models
         /// <summary>
         /// ارسال ثبت‌های مالی به آخرین سند باز معتبر
         /// </summary>
-        public bool RegisterOnLastValidVoucher { get; set; }
+        public bool RegisterWithLastValidVoucher { get; set; }
 
         /// <summary>
-        /// ایجاد یک سند حسابداری جدید برای هر فرم عملیاتی
+        /// ایجاد یک سند حسابداری جدید برای ثبت مالی
         /// </summary>
-        public bool RegisterOnCreatedVoucher { get; set; }
+        public bool RegisterWithNewCreatedVoucher { get; set; }
         
         /// <summary>
         /// ثبت خودکار سند حسابداری ایجاد شده

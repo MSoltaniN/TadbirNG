@@ -4326,4 +4326,10 @@
   <data name="ReceiptSettings" xml:space="preserve">
     <value>Receipt</value>
   </data>
+  <data name="CheckedVoucherNotAllowed" xml:space="preserve">
+    <value>Selecting "Checked automatic voucher related to registration" option in {0} settings, possible with selecting "Registration with created new voucher".</value>
+  </data>
+  <data name="ConflictRegisterWithLastVoucherAndRegisterWithNewVoucher" xml:space="preserve">
+    <value>To avoid conflict in {0} settings, select one of options "Registration with last open voucher" and "registration with created new voucher".</value>
+  </data>
 </root>

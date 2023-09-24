@@ -51,7 +51,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت/پرداخت مورد نظر</param>
         /// <param name="isConfirmed"> در صورت تایید فرم دریافت/پرداخت با مقدار درست 
         /// و در غیر این صورت با مقدار نادرست پر می شود</param>
-        Task SetPayReceiveConfirmationAsync(int payReceiveId, bool isConfirmed);
+        /// <returns>فرم دریافت/پرداخت را همراه با تغییرات تایید برمی گرداند</returns>
+        Task<PayReceiveViewModel> SetPayReceiveConfirmationAsync(int payReceiveId, bool isConfirmed);
 
         /// <summary>
         /// به روش آسنکرون، وضعیت تصویب فرم دریافت/پرداخت مشخص شده را تغییر می دهد
@@ -59,7 +60,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت/پرداخت مورد نظر</param>
         /// <param name="isApproved"> در صورت تصویب فرم دریافت/پرداخت با مقدار درست 
         /// و در غیر این صورت با مقدار نادرست پر می شود</param>
-        Task SetPayReceiveApprovalAsync(int payReceiveId, bool isApproved);
+        /// <returns>فرم دریافت/پرداخت را همراه با تغییرات تصویب برمی گرداند</returns>
+        Task<PayReceiveViewModel> SetPayReceiveApprovalAsync(int payReceiveId, bool isApproved);
 
         /// <summary>
         /// به روش آسنکرون، فرم دریافت/پرداخت با شماره مشخص شده را خوانده و برمی گرداند
@@ -136,7 +138,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="payReceiveId">شناسه فرم دریافت/پرداخت مورد نظر</param>
         /// <param name="voucherId">شناسه سندی که ثبت مالی روی آن انجام می‌گیرد‌</param>
         /// <returns>اطلاعات نمایشی سند مالی به همراه آرتیکل‌های ایجاد شده</returns>
-        Task<VoucherViewModel> RegisterAsync(int payReceiveId, int voucherId);
+        Task<VoucherViewModel> RegisterAsync(int payReceiveId, int voucherId = 0);
 
         /// <summary>
         /// به روش آسنکرون، برگشت از ثبت مالی فرم دریافت/پرداخت را انجام می‌دهد     
@@ -167,11 +169,5 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="operationalDate">تاریخ عملیاتی سند مورد نظر</param>
         /// <returns>شناسه آخرین سند معتبر برای ثبت مالی</returns>
         Task<int> GetLastVoucherforRegisterAsync(DateTime operationalDate);
-
-        /// <summary>
-        /// به روش آسنکرون، سند مرتبط با شناسه ورودی ثبت می‌شود
-        /// </summary>
-        /// <param name="voucherId">شناسه سند مورد نظر</param>
-        Task SetVoucherCheckedAsync(int voucherId);
     }
 }

@@ -80,6 +80,16 @@ namespace SPPC.Tadbir.Api
         public const string RegisterPaymentUrl = "payments/{paymentId:min(1)}/register/vouchers/{voucherId:int}";
 
         /// <summary>
+        /// API client URL for automatic register of a single payment specified by identifier
+        /// </summary>
+        public const string AutomaticRegisterPayment = "payments/{0}/register/automatic";
+
+        /// <summary>
+        /// API server route URL for automatic register of a single payment specified by identifier
+        /// </summary>
+        public const string AutomaticeRegisterPaymentUrl = "payments/{paymentId:min(1)}/register/automatic";
+
+        /// <summary>
         /// API client URL for undoing register of a single payment specified by identifier
         /// </summary>
         public const string UndoRegisterPayment = "payments/{0}/register/undo";
@@ -222,6 +232,16 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for register a single receipt specified by identifier
         /// </summary>
         public const string RegisterReceiptUrl = "receipts/{receiptId:min(1)}/register/vouchers/{voucherId:int}";
+
+        /// <summary>
+        /// API client URL for automatic register of a single receipt specified by identifier
+        /// </summary>
+        public const string AutomaticRegisterReceipt = "receipts/{0}/register/automatic";
+
+        /// <summary>
+        /// API server route URL for automatic register of a single receipt specified by identifier
+        /// </summary>
+        public const string AutomaticeRegisterReceiptUrl = "receipts/{receiptId:min(1)}/register/automatic";
 
         /// <summary>
         /// API client URL for undoing register a single receipt specified by identifier

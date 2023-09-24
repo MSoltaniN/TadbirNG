@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
@@ -72,6 +73,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (settings == null)
             {
                 return BadRequestResult(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Settings));
+            }
+
+            var result = SettingsValidationResult(settings);
+            if(result is BadRequestObjectResult)
+            {
+                return result;
             }
 
             await _repository.SaveConfigAsync(settings);
@@ -520,6 +527,48 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
+        private IActionResult SettingsValidationResult(List<SettingBriefViewModel> settings)
+        {
+            var receiptSettings = settings
+                .Where(s => s.ModelType == nameof(ReceiptConfig))
+                .Select(s => JsonHelper.To<ReceiptConfig>(s.Values.ToString()))
+                .SingleOrDefault();
+
+            if(receiptSettings.RegisterConfig.RegisterWithLastValidVoucher 
+                && receiptSettings.RegisterConfig.RegisterWithNewCreatedVoucher)
+            {
+                return BadRequestResult(_strings.Format(
+                    AppStrings.ConflictRegisterWithLastVoucherAndRegisterWithNewVoucher, AppStrings.Receipt));
+            }
+
+            if(receiptSettings.RegisterConfig.CheckedVoucher 
+                && !receiptSettings.RegisterConfig.RegisterWithNewCreatedVoucher)
+            {
+                return BadRequestResult(_strings.Format(
+                    AppStrings.CheckedVoucherNotAllowed, AppStrings.Receipt));
+            }
+
+            var paymentSettings = settings
+                .Where(s => s.ModelType == nameof(PaymentConfig))
+                .Select(s => JsonHelper.To<PaymentConfig>(s.Values.ToString()))
+                .SingleOrDefault();
+
+            if (paymentSettings.RegisterConfig.RegisterWithLastValidVoucher
+                && paymentSettings.RegisterConfig.RegisterWithNewCreatedVoucher)
+            {
+                return BadRequestResult(_strings.Format(
+                    AppStrings.ConflictRegisterWithLastVoucherAndRegisterWithNewVoucher, AppStrings.Payment));
+            }
+
+            if (paymentSettings.RegisterConfig.CheckedVoucher 
+                && !paymentSettings.RegisterConfig.RegisterWithNewCreatedVoucher)
+            {
+                return BadRequestResult(_strings.Format(
+                    AppStrings.CheckedVoucherNotAllowed, AppStrings.Payment));
+            }
+
+            return Ok();
+        }
         private readonly IConfigRepository _repository;
         private readonly ILogConfigRepository _logRepository;
         private readonly ISystemConfigRepository _systemRepository;

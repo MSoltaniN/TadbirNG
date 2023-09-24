@@ -131,13 +131,8 @@ namespace SPPC.Tadbir.Persistence
                     && pr.BranchId == payReceive.BranchId);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، وضعیت تایید فرم دریافت/پرداخت مشخص شده را تغییر می دهد
-        /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت/پرداخت مورد نظر</param>
-        /// <param name="isConfirmed"> در صورت تایید فرم دریافت/پرداخت با مقدار درست 
-        /// و در غیر این صورت با مقدار نادرست پر می شود</param>
-        public async Task SetPayReceiveConfirmationAsync(int payReceiveId, bool isConfirmed)
+        /// <inheritdoc/>
+        public async Task<PayReceiveViewModel> SetPayReceiveConfirmationAsync(int payReceiveId, bool isConfirmed)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
             var payReceive = await repository.GetByIDWithTrackingAsync(payReceiveId);
@@ -150,18 +145,15 @@ namespace SPPC.Tadbir.Persistence
                 OnDocumentConfirmation(isConfirmed, entityTypeId);
                 await FinalizeActionAsync(payReceive);
             }
+
+            return Mapper.Map<PayReceiveViewModel>(payReceive);
         }
 
-        /// <summary>
-        /// به روش آسنکرون، وضعیت تصویب فرم دریافت/پرداخت مشخص شده را تغییر می دهد
-        /// </summary>
-        /// <param name="payReceiveId">شناسه دیتابیسی فرم دریافت/پرداخت مورد نظر</param>
-        /// <param name="isApproved"> در صورت تصویب فرم دریافت/پرداخت با مقدار درست 
-        /// و در غیر این صورت با مقدار نادرست پر می شود</param>
-        public async Task SetPayReceiveApprovalAsync(int payReceiveId, bool isApproved)
+        /// <inheritdoc/>
+        public async Task<PayReceiveViewModel> SetPayReceiveApprovalAsync(int payReceiveId, bool isApproved)
         {
             var repository = UnitOfWork.GetAsyncRepository<PayReceive>();
-            var payReceive = await repository.GetByIDAsync(payReceiveId);
+            var payReceive = await repository.GetByIDWithTrackingAsync(payReceiveId);
             if (payReceive != null)
             {
                 payReceive.ApprovedById = isApproved ? UserContext.Id : null;
@@ -171,6 +163,8 @@ namespace SPPC.Tadbir.Persistence
                 OnDocumentApproval(isApproved, entityTypeId);
                 await FinalizeActionAsync(payReceive);
             }
+
+            return Mapper.Map<PayReceiveViewModel>(payReceive);
         }
 
         /// <summary>
@@ -329,7 +323,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <inheritdoc/>
-        public async Task<VoucherViewModel> RegisterAsync(int payReceiveId, int voucherId)
+        public async Task<VoucherViewModel> RegisterAsync(int payReceiveId, int voucherId = 0)
         {
             var payReceive = await GetPayReceiveAsync(payReceiveId);
             var voucher = await GetVoucherAsync(voucherId, payReceive.Date);
@@ -407,7 +401,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetAllOperationQuery<Voucher>(ViewId.Voucher)
                 .Where(v => v.Date.Date == operationalDate.Date
                     && v.StatusId == (int)DocumentStatusId.NotChecked)
-                .OrderByDescending(v => Int64.Parse(v.TextNo))
+                .OrderByDescending(v => v.No)
                 .Select(v => v.Id)
                 .FirstOrDefaultAsync();
         }
@@ -795,19 +789,6 @@ namespace SPPC.Tadbir.Persistence
                 };
 
                 repository.Insert(payReceiveVoucherLine);
-            }
-        }
-
-        /// <inheritdoc/>
-        public async Task SetVoucherCheckedAsync(int voucherId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var voucher = repository.GetByID(voucherId);
-            if (voucher != null)
-            {
-                voucher.StatusId = (int)DocumentStatusId.Checked;
-                repository.Update(voucher);
-                await UnitOfWork.CommitAsync();
             }
         }
 

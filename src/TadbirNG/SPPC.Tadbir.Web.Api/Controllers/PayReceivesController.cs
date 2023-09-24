@@ -28,6 +28,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="repository">امکان مدیریت اطلاعات فرم های دریافت/پرداخت را فراهم می کند</param>
         /// <param name="accountArticleRepository">امکان مدیریت اطلاعات طرف حساب را فراهم می کند</param>
         /// <param name="cashAccountArtricleRepository">امکان مدیریت اطلاعات حساب نقدی را فراهم می کند</param>
+        /// <param name="voucherRepository">امکان مدیریت اطلاعات فرم سند را فراهم می‌کند</param>
         /// <param name="strings">امکان خواندن متن های چندزبانه را فراهم می کند</param>
         /// <param name="config">امکان مدیریت اطلاعات تنظیمات برنامه را فراهم می کند</param>
         /// <param name="tokenManager">امکان کار با توکن امنیتی برنامه را فراهم می کند</param>
@@ -35,6 +36,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             IPayReceiveRepository repository,
             IPayReceiveAccountRepository accountArticleRepository,
             IPayReceiveCashAccountRepository cashAccountArtricleRepository,
+            IVoucherRepository voucherRepository,
             IStringLocalizer<AppStrings> strings,
             ITokenManager tokenManager,
             IConfigRepository config)
@@ -43,6 +45,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
             _accountArticleRepository = accountArticleRepository;
             _cashAccountArticleRepository = cashAccountArtricleRepository;
+            _voucherRepository = voucherRepository;
             _config = config;
         }
 
@@ -254,7 +257,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SetPayReceiveConfirmationAsync(paymentId, true);
+            payment = await _repository.SetPayReceiveConfirmationAsync(paymentId, true);
             return await ExecuteAutomaticStepsAsync(payment, AppStrings.Payment, OperationId.Confirm);
         }
 
@@ -284,7 +287,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SetPayReceiveConfirmationAsync(receiptId, true);
+            receipt = await _repository.SetPayReceiveConfirmationAsync(receiptId, true);
             return await ExecuteAutomaticStepsAsync(receipt, AppStrings.Receipt, OperationId.Confirm);
         }
 
@@ -390,7 +393,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SetPayReceiveApprovalAsync(paymentId, true);
+            payment = await _repository.SetPayReceiveApprovalAsync(paymentId, true);
             return await ExecuteAutomaticStepsAsync(payment, AppStrings.Payment, OperationId.Approve);
         }
 
@@ -424,12 +427,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 return result;
             }
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
 
-            await _repository.SetPayReceiveApprovalAsync(receiptId, true);
+            receipt = await _repository.SetPayReceiveApprovalAsync(receiptId, true);
             return await ExecuteAutomaticStepsAsync(receipt, AppStrings.Receipt, OperationId.Approve);
         }
 
@@ -711,8 +710,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 return result;
             }
-            var config = await _config.GetConfigByTypeAsync<PaymentConfig>();
-            var outputItem = await RegisterAsync(voucherId, payment, config);
+
+            var outputItem = await _repository.RegisterAsync(payment.Id, voucherId);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
@@ -747,8 +746,79 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            var outputItem = await _repository.RegisterAsync(receipt.Id, voucherId);
+            return StatusCode(StatusCodes.Status201Created, outputItem);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل‌های مالی فرم پرداخت را بر اساس تنظیمات خودکار ایجاد می‌کند 
+        /// </summary>
+        /// <param name="paymentId">شناسه دیتابیسی فرم پرداخت مورد نظر برای ثبت مالی</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // Post: api/payments/{paymentId:min(1)}/register/automatic
+        [HttpPost]
+        [Route(PayReceiveApi.AutomaticeRegisterPaymentUrl)]
+        [AuthorizeRequest(SecureEntity.Payment, (int)PaymentPermissions.Register)]
+        public async Task<IActionResult> PostNewAutomaticeRegisterPaymentArticlesAsync(int paymentId)
+        {
+            var payment = await _repository.GetPayReceiveAsync(paymentId);
+            if (payment == null)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Payment,
+                    paymentId.ToString()));
+            }
+
+            var result = await PayReceiveRegisterValidationAsync(payment, 0, AppStrings.Payment);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = await PayReceiveActionCommonValidationResultAsync(payment, AppStrings.Register, AppStrings.Payment);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             var config = await _config.GetConfigByTypeAsync<PaymentConfig>();
-            var outputItem = await RegisterAsync(voucherId, receipt, config);
+            var outputItem = await RegisterAsync(payment, config);
+            return StatusCode(StatusCodes.Status201Created, outputItem);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل‌های مالی را بر اساس تنظیمات خودکار ایجاد می کند.
+        /// </summary>
+        /// <param name="receiptId">شناسه دیتابیسی فرم دریافت مورد نظر برای ثبت مالی</param>
+        /// <returns>در صورت بروز خطای اعتبارسنجی، کد وضعیتی 400 به همراه پیغام خطا و در غیر این صورت
+        /// کد وضعیتی 204 (به معنی نبود اطلاعات) را برمی گرداند</returns>
+        // Post: api/receipts/{receiptId:min(1)}/register/automatic
+        [HttpPost]
+        [Route(PayReceiveApi.AutomaticeRegisterReceiptUrl)]
+        [AuthorizeRequest(SecureEntity.Receipt, (int)ReceiptPermissions.Register)]
+        public async Task<IActionResult> PostNewAutomaticeRegisterReceiptArticlesAsync(int receiptId)
+        {
+            var receipt = await _repository.GetPayReceiveAsync(receiptId);
+            if (receipt == null)
+            {
+                return BadRequestResult(_strings.Format(AppStrings.ItemByIdNotFound, AppStrings.Receipt,
+                    receiptId.ToString()));
+            }
+
+            var result = await PayReceiveRegisterValidationAsync(receipt, 0, AppStrings.Receipt);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = await PayReceiveActionCommonValidationResultAsync(receipt, AppStrings.Register, AppStrings.Receipt);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var config = await _config.GetConfigByTypeAsync<PaymentConfig>();
+            var outputItem = await RegisterAsync(receipt, config);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
 
@@ -771,7 +841,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     paymentId.ToString()));
             }
 
-            var result = await PayReceiveUndoRegisterValidationAsync(payment, AppStrings.Payment);
+            var result = await PayReceiveUnRegisterValidationAsync(payment, AppStrings.Payment);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -806,13 +876,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     receiptId.ToString()));
             }
 
-            var result = await PayReceiveUndoRegisterValidationAsync(receipt, AppStrings.Receipt);
+            var result = await PayReceiveUnRegisterValidationAsync(receipt, AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
             }
 
-            result = await PayReceiveActionCommonValidationResultAsync(receipt, AppStrings.Approve, AppStrings.Receipt);
+            result = await PayReceiveActionCommonValidationResultAsync(receipt, AppStrings.UndoRegister, AppStrings.Receipt);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -1034,7 +1104,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> PayReceiveRegisterValidationAsync(PayReceiveViewModel payReceive, int voucherId, string entityNameKey)
+        private async Task<IActionResult> PayReceiveRegisterValidationAsync(
+            PayReceiveViewModel payReceive, int voucherId, string entityNameKey)
         {
             if (!payReceive.IsConfirmed || !payReceive.IsApproved)
             {
@@ -1052,7 +1123,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> PayReceiveUndoRegisterValidationAsync(PayReceiveViewModel payReceive, string entityNameKey)
+        private async Task<IActionResult> PayReceiveUnRegisterValidationAsync(
+            PayReceiveViewModel payReceive, string entityNameKey)
         {
             if (!payReceive.IsRegistered)
             {
@@ -1070,8 +1142,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
         private async Task<IActionResult> ExecuteAutomaticStepsAsync(PayReceiveViewModel payReceive, string entityNameKey, OperationId operationId)
         {
-            OperationalFormsConfig config = new OperationalFormsConfig();
-            config = entityNameKey == AppStrings.Receipt
+            OperationalFormsConfig config = entityNameKey == AppStrings.Receipt
                 ? await _config.GetConfigByTypeAsync<ReceiptConfig>()
                 : await _config.GetConfigByTypeAsync<PaymentConfig>();
             if ((operationId == OperationId.Edit && config.RegisterFlowConfig.ConfirmAfterSave)
@@ -1086,8 +1157,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     {
                         return result;
                     }
+
                     int payReceiveId = payReceive.Id;
-                    await _repository.SetPayReceiveConfirmationAsync(payReceiveId, true);
+                    payReceive = await _repository.SetPayReceiveConfirmationAsync(payReceiveId, true);
                 }
 
                 if (config.RegisterFlowConfig.ApproveAfterConfirm
@@ -1100,7 +1172,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                         return result;
                     }
 
-                    await _repository.SetPayReceiveApprovalAsync(payReceive.Id, true);
+                    payReceive = await _repository.SetPayReceiveApprovalAsync(payReceive.Id, true);
                 }
 
                 if (config.RegisterFlowConfig.RegisterAfterApprove 
@@ -1109,10 +1181,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     || (operationId == OperationId.Edit 
                     && config.RegisterFlowConfig.ApproveAfterConfirm)))
                 {
-                    if (config.RegisterConfig.RegisterOnLastValidVoucher || config.RegisterConfig.RegisterOnCreatedVoucher)
+                    int voucherId = 0;
+                    var result = await PayReceiveRegisterValidationAsync(payReceive, voucherId, entityNameKey);
+                    if (result is BadRequestObjectResult)
                     {
-                        int voucherId = 0;
-                        var outputItem = await RegisterAsync(voucherId, payReceive, config);
+                        return result;
+                    }
+
+                    if (config.RegisterConfig.RegisterWithLastValidVoucher || config.RegisterConfig.RegisterWithNewCreatedVoucher)
+                    {
+                        var outputItem = await RegisterAsync(payReceive, config);
                         return StatusCode(StatusCodes.Status201Created, outputItem);
                     }
                 }
@@ -1126,21 +1204,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private async Task<VoucherViewModel> RegisterAsync(int voucherId, PayReceiveViewModel payReceive, OperationalFormsConfig config)
+        private async Task<VoucherViewModel> RegisterAsync(PayReceiveViewModel payReceive, OperationalFormsConfig config)
         {
-            if (config.RegisterConfig.RegisterOnLastValidVoucher)
+            VoucherViewModel outputItem = null;
+            if (config.RegisterConfig.RegisterWithLastValidVoucher)
             {
-                voucherId = await _repository.GetLastVoucherforRegisterAsync(payReceive.Date);
+                var voucherId = await _repository.GetLastVoucherforRegisterAsync(payReceive.Date);
+                if(voucherId > 0)
+                {
+                    outputItem = await _repository.RegisterAsync(payReceive.Id, voucherId);
+                }
             }
-            else if (config.RegisterConfig.RegisterOnCreatedVoucher)
+            else if (config.RegisterConfig.RegisterWithNewCreatedVoucher)
             {
-                voucherId = 0;
-            }
-
-            var outputItem = await _repository.RegisterAsync(payReceive.Id, voucherId);
-            if (config.RegisterConfig.RegisterOnCreatedVoucher && config.RegisterConfig.CheckedVoucher)
-            {
-                await _repository.SetVoucherCheckedAsync(voucherId);
+                outputItem = await _repository.RegisterAsync(payReceive.Id);
+                if (config.RegisterConfig.CheckedVoucher)
+                {
+                    outputItem = await _voucherRepository.SetVoucherStatusAsync(outputItem.Id, DocumentStatusId.Checked);
+                }
             }
 
             return outputItem;
@@ -1149,6 +1230,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private readonly IPayReceiveRepository _repository;
         private readonly IPayReceiveAccountRepository _accountArticleRepository;
         private readonly IPayReceiveCashAccountRepository _cashAccountArticleRepository;
+        private readonly IVoucherRepository _voucherRepository;
         private readonly IConfigRepository _config;
     }
 }
