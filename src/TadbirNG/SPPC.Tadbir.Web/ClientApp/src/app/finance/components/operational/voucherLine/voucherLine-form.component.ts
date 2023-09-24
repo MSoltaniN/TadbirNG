@@ -291,7 +291,12 @@ export class VoucherLineFormComponent
   }
 
   getSourceApps() {
-    let apiUrl = String.Format(LookupApi.SourceApps, this.creditDebiteMode);
+    let apiUrl;
+    if (this.isPayReciept) {
+      apiUrl = String.Format(LookupApi.SourceApps, this.creditDebiteMode);
+    } else {
+      apiUrl = String.Format(LookupApi.SourceApps, +this.creditDebiteMode - 1);
+    }
 
     this.lookupService.getModels(apiUrl).subscribe((res) => {
       this.sourceAppList = res;
@@ -303,9 +308,7 @@ export class VoucherLineFormComponent
       this.bStorageService.getMetadata(SessionKeys.AccountColletion)
     );
 
-    return accountCollections.some(
-      (account) => account.id === accountIdToFind
-    );
+    return accountCollections.some((account) => account.id === accountIdToFind);
   }
 
   focusHandler(e: any) {
@@ -409,6 +412,9 @@ export class VoucherLineFormComponent
   }
 
   onCreditDebiteModeChange() {
+    if (!this.isPayReciept) {
+      this.getSourceApps();
+    }
     if (this.creditDebiteMode == "1") {
       if (this.editForm1.value.credit != "")
         this.editForm1.patchValue({ debit: this.editForm1.value.credit });

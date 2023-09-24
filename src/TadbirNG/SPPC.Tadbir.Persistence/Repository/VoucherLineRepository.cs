@@ -201,6 +201,32 @@ namespace SPPC.Tadbir.Persistence
             return isAccountInCollection;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا منبع یا مصرف انتخاب شده با ماهیت آرتیکل منطبق هست یا خیر
+        /// برای مبالغ بدهکار باید منبع انتخاب شود و برای مبالغ بستانکار باید مصرف انتخاب شود.
+        /// </summary>
+        /// <param name="sourceAppId">شناسه دیتابیسی منبع یا مصرف مورد نظر</param>
+        /// <param name="debit">مبلغ بدهکار برای این آرتیکل مالی</param>
+        /// <param name="credit">مبلغ بستانکار برای این آرتیکل مالی</param>
+        /// <returns>مقدار بولی درست در صورت منطبق بودن ماهیت آرتیکل با منبع یا مصرف انتخاب شده، در غیر این صورت مقدار بولی نادرست</returns>
+        public async Task<bool> IsValidSourceAppInArticleAsync(int sourceAppId, decimal debit, decimal credit)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<SourceApp>();
+            var sourceApp = await repository.GetByIDAsync(sourceAppId);
+            if (sourceApp == null)
+            {
+                return false;
+            }
+
+            if ((sourceApp.Type == (short)SourceAppType.Source && debit != 0)
+                || (sourceApp.Type == (short)SourceAppType.Application && credit != 0))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         /// <inheritdoc/>
         protected override async Task FinalizeActionAsync(VoucherLine entity)
         {

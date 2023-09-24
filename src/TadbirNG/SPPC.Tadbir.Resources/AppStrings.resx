@@ -4299,4 +4299,7 @@
   <data name="ImpossibleRegisterBeforeConfirmAndApprove" xml:space="preserve">
     <value>ثبت مالی پیش از تایید و تصویب {0} امکان‌پذیر نمی‌باشد.</value>
   </data>
+  <data name="InvalidSourceAppInArticle" xml:space="preserve">
+    <value>برای مبالغ بدهکار باید منبع انتخاب شود و برای مبالغ بستانکار باید مصرف انتخاب شود.</value>
+  </data>
 </root>
