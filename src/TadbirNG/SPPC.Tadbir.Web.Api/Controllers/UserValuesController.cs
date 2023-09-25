@@ -46,6 +46,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// </summary>
         /// <returns>مجموعه دسته بندی های تعریف شده</returns>
         // GET: api/user-values/categories
+        [HttpGet]
         [Route(UserValueApi.CategoriesUrl)]
         public async Task<IActionResult> GetCategoriesAsync()
         {
@@ -60,6 +61,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// <param name="categoryId">شناسه دیتابیسی دسته بندی مورد نظر</param>
         /// <returns>اطلاعات صفحه بندی شده مقادیر کاربری</returns>
         // GET: api/user-values/categories/{categoryId:min(1)}/values
+        [HttpGet]
         [Route(UserValueApi.CategoryValuesUrl)]
         public async Task<IActionResult> GetUserValuesAsync(int categoryId)
         {
