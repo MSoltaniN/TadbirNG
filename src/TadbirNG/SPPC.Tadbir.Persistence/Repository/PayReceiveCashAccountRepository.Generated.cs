@@ -104,9 +104,15 @@ namespace SPPC.Tadbir.Persistence
                 cashAccountArticle.SourceAppId = cashAccountArticle.SourceAppId == 0
                     ? null
                     : cashAccountArticle.SourceAppId;
-                cashAccountArticle.BankOrderNo = cashAccountArticle.IsBank
-                    ? cashAccountArticle.BankOrderNo?.Trim()
-                    : null;
+                if(!cashAccountArticle.IsBank || String.IsNullOrEmpty(cashAccountArticle.BankOrderNo))
+                {
+                    cashAccountArticle.BankOrderNo = null;
+                }
+                else
+                {
+                    cashAccountArticle.BankOrderNo = cashAccountArticle.BankOrderNo.Trim();
+                }
+
                 cashAccountArticleModel = Mapper.Map<PayReceiveCashAccount>(cashAccountArticle);
 
                 await InsertAsync(repository, cashAccountArticleModel, OperationId.CreateCashAccountLine, entityTypeId);
@@ -358,9 +364,14 @@ namespace SPPC.Tadbir.Persistence
             cashAccountArticle.SourceAppId = cashAccountArticleView.SourceAppId == 0
                 ? null
                 : cashAccountArticleView.SourceAppId;
-            cashAccountArticle.BankOrderNo = cashAccountArticleView.IsBank
-                ? cashAccountArticleView.BankOrderNo.Trim()
-                : null;
+            if (!cashAccountArticleView.IsBank || String.IsNullOrEmpty(cashAccountArticleView.BankOrderNo))
+            {
+                cashAccountArticle.BankOrderNo = null;
+            }
+            else
+            {
+                cashAccountArticle.BankOrderNo = cashAccountArticleView.BankOrderNo.Trim();
+            }
         }
 
         /// <inheritdoc/>
