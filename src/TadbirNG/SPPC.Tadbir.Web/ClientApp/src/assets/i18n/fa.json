@@ -1424,6 +1424,7 @@
     "ReceiptFormNotFound": "سند دریافت مورد نظر یافت نشد.",
     "UndoCommit": "برگشت از ثبت",
     "SaveChangesRequired": "پیش از تایید فرم ذخیره تغییرات الزامی است."
+    "ViewRelatedVoucher": "مشاهده سند مرتبط با ثبت مالی"
   },
   "UserValueFilter": {
     "Title": "فرم انتخاب شرح های تکراری",

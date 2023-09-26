@@ -141,4 +141,8 @@ export class PayReceiveApi {
      */
     public static UndoRegisterReceipt = environment.BaseUrl + "/receipts/{0}/register/undo";
 
+    /**
+     * {payReceiveId:min(1)}
+     */
+    public static RelatedVoucher = environment.BaseUrl + "/pay-receives/{0}/voucher";
 }
