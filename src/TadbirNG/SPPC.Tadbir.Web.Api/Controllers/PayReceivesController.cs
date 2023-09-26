@@ -1007,8 +1007,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> PayReceiveActionCommonValidationResultAsync(PayReceiveViewModel payReceive, string action,
-            string entityNameKey)
+        private async Task<IActionResult> PayReceiveActionCommonValidationResultAsync(
+            PayReceiveViewModel payReceive, string action, string entityNameKey)
         {
             if (payReceive.IsRegistered && action != AppStrings.UndoRegister)
             {
@@ -1109,7 +1109,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (!payReceive.IsConfirmed || !payReceive.IsApproved)
             {
-                return BadRequestResult(_strings.Format(AppStrings.ImpossibleRegisterBeforeConfirmAndApprove, entityNameKey));
+                return BadRequestResult(
+                    _strings.Format(AppStrings.ImpossibleRegisterBeforeConfirmAndApprove, entityNameKey));
             }
 
             if (voucherId > 0)
@@ -1128,8 +1129,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (!payReceive.IsRegistered)
             {
-                return BadRequestResult(_strings.Format(AppStrings.InvalidEntityActionMessage, AppStrings.UndoRegister,
-                    entityNameKey, AppStrings.Register));
+                return BadRequestResult(_strings.Format(AppStrings.InvalidEntityActionMessage
+                    , AppStrings.UndoRegister,entityNameKey, AppStrings.Register));
             }
 
             var voucher = await _repository.GetVoucherOfRegisterAsync(payReceive.Id);
@@ -1140,7 +1141,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             return Ok();
         }
-        private async Task<IActionResult> ExecuteAutomaticStepsAsync(PayReceiveViewModel payReceive, string entityNameKey, OperationId operationId)
+        private async Task<IActionResult> ExecuteAutomaticStepsAsync(
+            PayReceiveViewModel payReceive, string entityNameKey, OperationId operationId)
         {
             OperationalFormsConfig config = entityNameKey == AppStrings.Receipt
                 ? await _config.GetConfigByTypeAsync<ReceiptConfig>()
@@ -1188,7 +1190,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                         return result;
                     }
 
-                    if (config.RegisterConfig.RegisterWithLastValidVoucher || config.RegisterConfig.RegisterWithNewCreatedVoucher)
+                    if (config.RegisterConfig.RegisterWithLastValidVoucher || 
+                        config.RegisterConfig.RegisterWithNewCreatedVoucher)
                     {
                         var outputItem = await RegisterAsync(payReceive, config);
                         return StatusCode(StatusCodes.Status201Created, outputItem);
@@ -1204,7 +1207,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private async Task<VoucherViewModel> RegisterAsync(PayReceiveViewModel payReceive, OperationalFormsConfig config)
+        private async Task<VoucherViewModel> RegisterAsync(
+            PayReceiveViewModel payReceive, OperationalFormsConfig config)
         {
             VoucherViewModel outputItem = null;
             if (config.RegisterConfig.RegisterWithLastValidVoucher)
@@ -1220,7 +1224,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 outputItem = await _repository.RegisterAsync(payReceive.Id);
                 if (config.RegisterConfig.CheckedVoucher)
                 {
-                    outputItem = await _voucherRepository.SetVoucherStatusAsync(outputItem.Id, DocumentStatusId.Checked);
+                    outputItem = await _voucherRepository.SetVoucherStatusAsync(
+                        outputItem.Id, DocumentStatusId.Checked);
                 }
             }
 

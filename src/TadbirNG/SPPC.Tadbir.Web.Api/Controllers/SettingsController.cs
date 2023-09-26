@@ -538,7 +538,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 && receiptSettings.RegisterConfig.RegisterWithNewCreatedVoucher)
             {
                 return BadRequestResult(_strings.Format(
-                    AppStrings.ConflictRegisterWithLastVoucherAndRegisterWithNewVoucher, AppStrings.Receipt));
+                    AppStrings.IncompatibleRegisterOptions, AppStrings.Receipt));
             }
 
             if(receiptSettings.RegisterConfig.CheckedVoucher 
@@ -557,7 +557,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 && paymentSettings.RegisterConfig.RegisterWithNewCreatedVoucher)
             {
                 return BadRequestResult(_strings.Format(
-                    AppStrings.ConflictRegisterWithLastVoucherAndRegisterWithNewVoucher, AppStrings.Payment));
+                    AppStrings.IncompatibleRegisterOptions, AppStrings.Payment));
             }
 
             if (paymentSettings.RegisterConfig.CheckedVoucher 

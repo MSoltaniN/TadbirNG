@@ -4294,30 +4294,30 @@
     <value>این {0} ثبت مالی شده و انجام عملیات تنها با برگشت از ثبت مالی امکان پذیر است.</value>
   </data>
   <data name="UndoRegisterEnabledForNotCheckedVouchers" xml:space="preserve">
-    <value>برگشت از ثبت مالی فقط بر روی اسناد ثبت نشده امکان پذیر می‌باشد.</value>
+    <value>برگشت از ثبت مالی فقط بر روی اسناد ثبت نشده امکان پذیر است.</value>
   </data>
   <data name="ImpossibleRegisterBeforeConfirmAndApprove" xml:space="preserve">
-    <value>ثبت مالی پیش از تایید و تصویب {0} امکان‌پذیر نمی‌باشد.</value>
+    <value>ثبت مالی پیش از تایید و تصویب {0} امکان‌پذیر نیست.</value>
   </data>
   <data name="InvalidSourceAppInArticle" xml:space="preserve">
     <value>برای مبالغ بدهکار باید منبع انتخاب شود و برای مبالغ بستانکار باید مصرف انتخاب شود.</value>
   </data>
-  <data name="PaymentConfigsDescription" xml:space="preserve">
-    <value>گزینه‌های موجود برای سهولت کاربران در گردش کار فرم پرداخت</value>
+  <data name="PaymentSettingsDescription" xml:space="preserve">
+    <value>گزینه‌های موجود برای مدیریت فرم پرداخت</value>
   </data>	
   <data name="PaymentSettings" xml:space="preserve">
     <value>فرم پرداخت</value>
   </data>
-  <data name="ReceiptConfigsDescription" xml:space="preserve">
-    <value>گزینه‌های موجود برای سهولت کاربران در گردش کار فرم دریافت</value>
+  <data name="ReceiptSettingsDescription" xml:space="preserve">
+    <value>گزینه‌های موجود برای مدیریت فرم دریافت</value>
   </data>
   <data name="ReceiptSettings" xml:space="preserve">
     <value>فرم دریافت</value>
   </data>
   <data name="CheckedVoucherNotAllowed" xml:space="preserve">
-    <value>انتخاب گزینه "ثبت خودکار سند مرتبط با ثبت مالی" در تنظیمات {0}، فقط با انتخاب گزینه "ثبت مالی با ایجاد سند جدید" امکان‌پذیر می‌باشد. </value>
+    <value>انتخاب گزینه 'ثبت خودکار سند مرتبط با ثبت مالی' در تنظیمات {0}، فقط با انتخاب گزینه 'ثبت مالی با ایجاد سند جدید' امکان‌پذیر است. </value>
   </data>
-  <data name="ConflictRegisterWithLastVoucherAndRegisterWithNewVoucher" xml:space="preserve">
-    <value>برای جلوگیری از تداخل گزینه‌ها در تنظیمات {0}، انتخاب یکی از گزینه‌های "ثبت مالی با آخرین سند باز" و "ثبت مالی با ایجاد سند جدید" امکان‌پذیر می‌باشد.</value>
+  <data name="IncompatibleRegisterOptions" xml:space="preserve">
+    <value>برای جلوگیری از تداخل گزینه‌ها در تنظیمات {0}، انتخاب یکی از گزینه‌های 'ثبت مالی با آخرین سند باز' و 'ثبت مالی با ایجاد سند جدید' امکان‌پذیر است.</value>
   </data>
 </root>
