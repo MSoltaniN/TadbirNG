@@ -188,7 +188,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="voucherId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
         /// <param name="status">وضعیت جدید مورد نظر برای سند مالی</param>
-        Task SetVoucherStatusAsync(int voucherId, DocumentStatusId status);
+        /// <returns>سند را همراه با تغییرات وضعیت سند برمی گرداند</returns>
+        Task<VoucherViewModel> SetVoucherStatusAsync(int voucherId, DocumentStatusId status);
 
         /// <summary>
         /// به روش آسنکرون، وضعیت تایید سند مشخص شده را تغییر می دهد

@@ -515,6 +515,10 @@ namespace SPPC.Tadbir.Mapper
                 .ConvertUsing(src => MapConfigType<SystemConfig>(src));
             mapperConfig.CreateMap<Setting, FinanceReportConfig>()
                 .ConvertUsing(src => MapConfigType<FinanceReportConfig>(src));
+            mapperConfig.CreateMap<Setting, ReceiptConfig>()
+                .ConvertUsing(src => MapConfigType<ReceiptConfig>(src));
+            mapperConfig.CreateMap<Setting, PaymentConfig>()
+                .ConvertUsing(src => MapConfigType<PaymentConfig>(src));
             mapperConfig.CreateMap<Column, ColumnViewConfig>()
                 .ConvertUsing(prop => GetDynamicColumnSettings(prop));
             mapperConfig.CreateMap<UserSetting, ListFormViewConfig>()

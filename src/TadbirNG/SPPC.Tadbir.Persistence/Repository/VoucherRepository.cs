@@ -512,16 +512,12 @@ namespace SPPC.Tadbir.Persistence
             return canSave;
         }
 
-        /// <summary>
-        /// وضعیت ثبتی سند مالی را به وضعیت داده شده تغییر می دهد
-        /// </summary>
-        /// <param name="voucherId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
-        /// <param name="status">وضعیت جدید مورد نظر برای سند مالی</param>
-        public async Task SetVoucherStatusAsync(int voucherId, DocumentStatusId status)
+        /// <inheritdoc/>
+        public async Task<VoucherViewModel> SetVoucherStatusAsync(int voucherId, DocumentStatusId status)
         {
             Verify.EnumValueIsDefined(typeof(DocumentStatusId), "status", (int)status);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var voucher = await repository.GetByIDAsync(voucherId);
+            var voucher = await repository.GetByIDWithTrackingAsync(voucherId);
             var oldStatus = (DocumentStatusId)voucher.StatusId;
             if (voucher != null)
             {
@@ -530,6 +526,8 @@ namespace SPPC.Tadbir.Persistence
                 OnDocumentStatus(status, oldStatus);
                 await FinalizeActionAsync(voucher);
             }
+
+            return Mapper.Map<VoucherViewModel>(voucher);
         }
 
         /// <summary>

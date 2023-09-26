@@ -1147,3 +1147,11 @@ WHERE [EntityTypeID] = 24
 UPDATE [Metadata].[EntityType]
 SET [Name] = N'Payment'
 WHERE [EntityTypeID] = 25
+
+-- 1.2.1590
+SET IDENTITY_INSERT [Config].[Setting] ON
+INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
+    VALUES (12, 'ReceiptSettings', 2, 1, 'ReceiptConfig', N'{"registerFlowConfig":{"confirmAfterSave":true, "approveAfterConfirm": true, "registerAfterApprove": true},"registerConfig":{"registerWithLastValidVoucher": true, "registerWithNewCreatedVoucher": false, "checkedVoucher": false}}', N'{"registerFlowConfig":{"confirmAfterSave":true, "approveAfterConfirm": true, "registerAfterApprove": true},"registerConfig":{"registerOnLastValidVoucher": true, "registerOnCreatedVoucher": false, "checkedVoucher": false}}', 'ReceiptSettingsDescription', 1)
+INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
+    VALUES (13, 'PaymentSettings', 2, 1, 'PaymentConfig', N'{"registerFlowConfig":{"confirmAfterSave":true, "approveAfterConfirm": true, "registerAfterApprove": true},"registerConfig":{"registerWithLastValidVoucher": true, "registerWithNewCreatedVoucher": false, "checkedVoucher": false}}', N'{"registerFlowConfig":{"confirmAfterSave":true, "approveAfterConfirm": true, "registerAfterApprove": true},"registerConfig":{"registerOnLastValidVoucher": true, "registerOnCreatedVoucher": false, "checkedVoucher": false}}', 'PaymentSettingsDescription', 1)
+SET IDENTITY_INSERT [Config].[Setting] OFF

@@ -4314,4 +4314,22 @@
   <data name="InvalidSourceAppInArticle" xml:space="preserve">
     <value>Source must be selected for debit amounts and application must be selected for credit amounts.</value>
   </data>
+  <data name="PaymentSettingsDescription" xml:space="preserve">
+    <value>Available options for manage payment form</value>
+  </data>
+  <data name="PaymentSettings" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="ReceiptSettingsDescription" xml:space="preserve">
+    <value>Available options for manage receipt form</value>
+  </data>
+  <data name="ReceiptSettings" xml:space="preserve">
+    <value>Receipt</value>
+  </data>
+  <data name="CheckedVoucherNotAllowed" xml:space="preserve">
+    <value>Selecting 'Checked automatic voucher related to registration' option in {0} settings, possible with selecting 'Registration with created new voucher'.</value>
+  </data>
+  <data name="IncompatibleRegisterOptions" xml:space="preserve">
+    <value>To avoid conflict in {0} settings, select one of options 'Registration with last open voucher' and 'registration with created new voucher'.</value>
+  </data>
 </root>
