@@ -69,6 +69,7 @@ namespace SPPC.Tadbir.Persistence
             if (brand.Id == 0)
             {
                 brandModel = Mapper.Map<Brand>(brand);
+                SetBaseEntityInfo(brandModel);
                 await InsertAsync(repository, brandModel);
             }
             else
