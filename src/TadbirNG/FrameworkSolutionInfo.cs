@@ -1,9 +1,8 @@
+using System.Reflection;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-using System.Reflection;
-
 [assembly: AssemblyDescription("TODO: Add product description")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SPPC")]
@@ -22,5 +21,5 @@ using System.Reflection;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2.1592.0")]
-[assembly: AssemblyFileVersion("1.2.1592.0")]
+[assembly: AssemblyVersion("1.2.1593.0")]
+[assembly: AssemblyFileVersion("1.2.1593.0")]

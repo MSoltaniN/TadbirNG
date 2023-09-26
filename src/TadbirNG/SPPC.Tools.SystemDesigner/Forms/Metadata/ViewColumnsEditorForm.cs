@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.IO;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Common;
 using SPPC.Tadbir.ViewModel.Metadata;
@@ -151,24 +153,10 @@ namespace SPPC.Tools.SystemDesigner.Forms
         {
             SaveViewProperties();
             SetIdValues();
-            var scriptBuilder = new StringBuilder();
-            ScriptUtility.AddSysVersionMarker(scriptBuilder);
-            scriptBuilder.AppendLine(View.ToScript());
-            scriptBuilder.Append(View.Columns
-                .First()
-                .ToScript(true, false));
-            foreach (var column in View.Columns
-                .Skip(1)
-                .Take(View.Columns.Count - 2))
-            {
-                scriptBuilder.Append(column.ToScript(false, false));
-            }
 
-            scriptBuilder.AppendLine(View.Columns
-                .Last()
-                .ToScript(false, true));
-            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptConstants.SysDbUpdateScript);
-            File.AppendAllText(path, scriptBuilder.ToString(), Encoding.UTF8);
+            GenerateCreateScripts();
+            GenerateUpdateScripts();
+
             MessageBox.Show(this, "Scripts were successfully generated.", "Success",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
             DialogResult = DialogResult.OK;
@@ -462,6 +450,83 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 column.Id = nextId++;
                 column.ViewId = View.Id;
             });
+        }
+
+        private void GenerateCreateScripts()
+        {
+            var allViews = GetAllViews();
+            allViews.Add(View);
+            var allColumns = GetAllColumns();
+            allColumns.AddRange(View.Columns);
+            var generated = ScriptUtility.GetInsertScripts(allViews, ViewExtensions.ToScript);
+            ScriptUtility.ReplaceSysScript(generated);
+            generated = ScriptUtility.GetInsertScripts(allColumns, ColumnExtensions.ToScript);
+            ScriptUtility.ReplaceSysScript(generated);
+        }
+
+        private void GenerateUpdateScripts()
+        {
+            var scriptBuilder = new StringBuilder();
+            ScriptUtility.AddSysVersionMarker(scriptBuilder);
+            scriptBuilder.AppendLine(View.ToScript());
+            var generated = ScriptUtility.GetInsertScripts(View.Columns, ColumnExtensions.ToScript);
+            scriptBuilder.AppendLine(generated);
+            var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptConstants.SysDbUpdateScript);
+            File.AppendAllText(path, scriptBuilder.ToString(), Encoding.UTF8);
+        }
+
+        private static List<ViewViewModel> GetAllViews()
+        {
+            var allViews = new List<ViewViewModel>();
+            var dal = new SqlDataLayer(DbConnections.SystemConnection);
+            var query = "SELECT * FROM [Metadata].[View]";
+            var result = dal.Query(query);
+            allViews.AddRange(result.Rows
+                .Cast<DataRow>()
+                .Select(row => new ViewViewModel()
+                {
+                    Id = row.ValueOrDefault<int>("ViewID"),
+                    Name = row.ValueOrDefault("Name"),
+                    EntityName = row.ValueOrDefault("EntityName"),
+                    Entitytype = row.ValueOrDefault("Entitytype"),
+                    FetchUrl = row.ValueOrDefault("FetchUrl"),
+                    SearchUrl = row.ValueOrDefault("SearchUrl"),
+                    IsHierarchy = row.ValueOrDefault<bool>("IsHierarchy"),
+                    IsCartableIntegrated = row.ValueOrDefault<bool>("IsCartableIntegrated")
+                }));
+            return allViews;
+        }
+
+        private static List<ColumnViewModel> GetAllColumns()
+        {
+            var allColumns = new List<ColumnViewModel>();
+            var dal = new SqlDataLayer(DbConnections.SystemConnection);
+            var query = "SELECT * FROM [Metadata].[Column]";
+            var result = dal.Query(query);
+            allColumns.AddRange(result.Rows
+                .Cast<DataRow>()
+                .Select(row => new ColumnViewModel()
+                {
+                    Id = row.ValueOrDefault<int>("ColumnID"),
+                    ViewId = row.ValueOrDefault<int>("ViewID"),
+                    Name = row.ValueOrDefault("Name"),
+                    GroupName = row.ValueOrDefault("GroupName"),
+                    Type = row.ValueOrDefault("Type"),
+                    DotNetType = row.ValueOrDefault("DotNetType"),
+                    StorageType = row.ValueOrDefault("StorageType"),
+                    ScriptType = row.ValueOrDefault("ScriptType"),
+                    Length = row.ValueOrDefault<int>("Length"),
+                    MinLength = row.ValueOrDefault<int>("MinLength"),
+                    IsFixedLength = row.ValueOrDefault<bool>("IsFixedLength"),
+                    IsDynamic = row.ValueOrDefault<bool>("IsDynamic"),
+                    IsNullable = row.ValueOrDefault<bool>("IsNullable"),
+                    AllowSorting = row.ValueOrDefault<bool>("AllowSorting"),
+                    AllowFiltering = row.ValueOrDefault<bool>("AllowFiltering"),
+                    Visibility = row.ValueOrDefault("Visibility"),
+                    DisplayIndex = row.ValueOrDefault<short>("DisplayIndex"),
+                    Expression = row.ValueOrDefault("Expression")
+                }));
+            return allColumns;
         }
 
         private const string _defaultAssembly = "SPPC.Tadbir.ViewModel";

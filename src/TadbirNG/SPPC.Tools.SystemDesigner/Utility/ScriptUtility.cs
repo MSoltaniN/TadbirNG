@@ -53,31 +53,6 @@ namespace SPPC.Tools.Utility
             return value ? 1 : 0;
         }
 
-        private static void AddVersionMarker(string path, StringBuilder builder)
-        {
-            var marker = $"-- {VersionUtility.GetApiVersion()}";
-            var allScript = File.ReadAllText(path, Encoding.UTF8);
-            builder.AppendLine();
-            if (!allScript.Contains(marker))
-            {
-                builder.AppendLine(marker);
-            }
-        }
-
-        private static void OverwriteScriptBlock(string scriptFile, string newScript)
-        {
-            var lines = newScript.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
-            var path = Path.Combine(PathConfig.ResourceRoot, scriptFile);
-            var allScript = File.ReadAllText(path, Encoding.UTF8);
-            var prologue = allScript[0..allScript.IndexOf(lines.First())];
-            var lastLine = lines.Last();
-            int epilogueStart = allScript.IndexOf(lastLine) + lastLine.Length + Environment.NewLine.Length;
-            var epilogue = allScript[epilogueStart..];
-
-            allScript = $"{prologue}{newScript}{epilogue}";
-            File.WriteAllText(path, allScript, Encoding.UTF8);
-        }
-
         public static string GetInsertScripts<TModel>(
             IEnumerable<TModel> scriptables, ToScriptDelegate<TModel> toScript)
             where TModel : class, new()
@@ -110,5 +85,30 @@ namespace SPPC.Tools.Utility
 
         public delegate string ToScriptDelegate<TModel>(
             TModel model, bool withIdentityOn = true, bool withIdentityOff = true);
+
+        private static void AddVersionMarker(string path, StringBuilder builder)
+        {
+            var marker = $"-- {VersionUtility.GetApiVersion()}";
+            var allScript = File.ReadAllText(path, Encoding.UTF8);
+            builder.AppendLine();
+            if (!allScript.Contains(marker))
+            {
+                builder.AppendLine(marker);
+            }
+        }
+
+        private static void OverwriteScriptBlock(string scriptFile, string newScript)
+        {
+            var lines = newScript.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+            var path = Path.Combine(PathConfig.ResourceRoot, scriptFile);
+            var allScript = File.ReadAllText(path, Encoding.UTF8);
+            var prologue = allScript[0..allScript.IndexOf(lines.First())];
+            var lastLine = lines.Last();
+            int epilogueStart = allScript.IndexOf(lastLine) + lastLine.Length + Environment.NewLine.Length;
+            var epilogue = allScript[epilogueStart..];
+
+            allScript = $"{prologue}{newScript}{epilogue}";
+            File.WriteAllText(path, allScript, Encoding.UTF8);
+        }
     }
 }

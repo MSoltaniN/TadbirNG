@@ -593,8 +593,9 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 all.Where(node => node.Tag is EntityTypeViewModel),
                 all.Where(node => node.Tag is OperationSourceViewModel));
 
-            GenerateCreateScripts(GetOrganizedSettings(), entities, sources, operations);
-            GenerateUpdateScripts(GetAllSettings(), entities, sources, operations);
+            var allSettings = GetAllSettings();
+            GenerateCreateScripts(allSettings, entities, sources, operations);
+            GenerateUpdateScripts(allSettings, entities, sources, operations);
         }
 
         private static void GenerateCreateScripts(IEnumerable<LogSettingViewModel> allSettings,
@@ -610,7 +611,8 @@ namespace SPPC.Tools.SystemDesigner.Forms
             generated = ScriptUtility.GetInsertScripts(allOperations, OperationExtensions.ToScript);
             ScriptUtility.ReplaceScript(generated);
 
-            generated = ScriptUtility.GetInsertScripts(allSettings, LogSettingExtensions.ToScript);
+            var orderedSettings = allSettings.OrderBy(setting => setting.Id);
+            generated = ScriptUtility.GetInsertScripts(orderedSettings, LogSettingExtensions.ToScript);
             ScriptUtility.ReplaceScript(generated);
         }
 
@@ -646,14 +648,31 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 scriptBuilder.AppendLine(sourceGroup.First().ToDeleteScript());
             }
 
-            var generated = ScriptUtility.GetInsertScripts(addedEntities, EntityTypeExtensions.ToScript);
-            scriptBuilder.AppendLine(generated);
-            generated = ScriptUtility.GetInsertScripts(addedSources, OperationSourceExtensions.ToScript);
-            scriptBuilder.AppendLine(generated);
-            generated = ScriptUtility.GetInsertScripts(addedOperations, OperationExtensions.ToScript);
-            scriptBuilder.AppendLine(generated);
-            generated = ScriptUtility.GetInsertScripts(addedSettings, LogSettingExtensions.ToScript);
-            scriptBuilder.Append(generated);
+            var generated = String.Empty;
+            if (addedEntities.Any())
+            {
+                generated = ScriptUtility.GetInsertScripts(addedEntities, EntityTypeExtensions.ToScript);
+                scriptBuilder.AppendLine(generated);
+            }
+
+            if (addedSources.Any())
+            {
+                generated = ScriptUtility.GetInsertScripts(addedSources, OperationSourceExtensions.ToScript);
+                scriptBuilder.AppendLine(generated);
+            }
+
+            if (addedOperations.Any())
+            {
+                generated = ScriptUtility.GetInsertScripts(addedOperations, OperationExtensions.ToScript);
+                scriptBuilder.AppendLine(generated);
+            }
+
+            if (addedSettings.Any())
+            {
+                generated = ScriptUtility.GetInsertScripts(addedSettings, LogSettingExtensions.ToScript);
+                scriptBuilder.Append(generated);
+            }
+
             var path = Path.Combine(PathConfig.ApiScriptRoot, ScriptConstants.DbUpdateScript);
             File.AppendAllText(path, scriptBuilder.ToString());
         }
