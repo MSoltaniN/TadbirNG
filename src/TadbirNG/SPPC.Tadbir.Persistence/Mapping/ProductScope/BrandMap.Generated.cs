@@ -41,6 +41,19 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.MetaKeyword)
                 .HasMaxLength(64);
             builder.Property(e => e.IsActive);
+            builder.Property(e => e.FiscalPeriodId);
+            builder.Property(e => e.CreatedById)
+                .IsRequired();
+            builder.Property(e => e.CreatedByName)
+                .IsRequired()
+                .HasMaxLength(64);
+            builder.Property(e => e.CreatedDate)
+                .IsRequired();
+            builder.Property(e => e.ModifiedById)
+                .IsRequired();
+            builder.Property(e => e.ModifiedByName)
+                .IsRequired()
+                .HasMaxLength(64);
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");

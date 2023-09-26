@@ -1102,18 +1102,24 @@ CREATE TABLE [Core].[InactiveEntity] (
 GO
 
 CREATE TABLE [ProductScope].[Brand] (
-    [BrandID]        INT              IDENTITY (1, 1) NOT NULL,
-    [BranchID]       INT              NOT NULL,
-    [BranchScope]    SMALLINT         NOT NULL,
-    [Name]           NVARCHAR(64)     NOT NULL,
-    [EnName]         NVARCHAR(64)     NULL,
-    [Description]    NVARCHAR(1024)   NULL,
-    [SocialLink]     NVARCHAR(64)     NULL,
-    [Website]        NVARCHAR(64)     NULL,
-    [MetaKeyword]    NVARCHAR(64)     NULL,
-    [IsActive]       BIT              NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_ProductScope_Brand_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_ProductScope_Brand_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    [BrandID]           INT              IDENTITY (1, 1) NOT NULL,
+    [BranchID]          INT              NOT NULL,
+    [BranchScope]       SMALLINT         NOT NULL,
+    [Name]              NVARCHAR(64)     NOT NULL,
+    [EnName]            NVARCHAR(64)     NULL,
+    [Description]       NVARCHAR(1024)   NULL,
+    [SocialLink]        NVARCHAR(64)     NULL,
+    [Website]           NVARCHAR(64)     NULL,
+    [MetaKeyword]       NVARCHAR(64)     NULL,
+    [IsActive]          BIT              NULL,
+    [FiscalPeriodID]    INT              NOT NULL,
+    [CreatedByID]       INT              NOT NULL,
+    [CreatedByName]     NVARCHAR(64)     NOT NULL,
+    [CreatedDate]       DATETIME         NOT NULL,
+    [ModifiedByID]      INT              NOT NULL,
+    [ModifiedByName]    NVARCHAR(64)     NOT NULL,
+    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_ProductScope_Brand_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_ProductScope_Brand_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_ProductScope_Brand] PRIMARY KEY CLUSTERED ([BrandID] ASC)
     , CONSTRAINT [FK_ProductScope_Brand_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
 )
