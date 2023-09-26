@@ -1155,3 +1155,8 @@ INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelTyp
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey, IsStandalone)
     VALUES (13, 'PaymentSettings', 2, 1, 'PaymentConfig', N'{"registerFlowConfig":{"confirmAfterSave":true, "approveAfterConfirm": true, "registerAfterApprove": true},"registerConfig":{"registerWithLastValidVoucher": true, "registerWithNewCreatedVoucher": false, "checkedVoucher": false}}', N'{"registerFlowConfig":{"confirmAfterSave":true, "approveAfterConfirm": true, "registerAfterApprove": true},"registerConfig":{"registerOnLastValidVoucher": true, "registerOnCreatedVoucher": false, "checkedVoucher": false}}', 'PaymentSettingsDescription', 1)
 SET IDENTITY_INSERT [Config].[Setting] OFF
+
+-- 1.2.1593
+-- حذف تنظیمات لاگ منابع و مصارف و صندوق اسناد که به اشتباه برای زیرسیستم حسابداری ایجاد شده اند
+DELETE FROM [Config].[LogSetting]
+WHERE [LogSettingID] >= 312 AND [LogSettingID] <= 315
