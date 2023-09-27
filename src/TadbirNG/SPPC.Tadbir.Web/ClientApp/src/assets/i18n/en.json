@@ -838,6 +838,14 @@
     "UserProfile": {
       "ShowDashboardAtStartup": "Show dashboard at startup"
     },
+    "PayReceipt": {
+      "AutoConfirmAfterSave": "Auto confirm the form after saving",
+      "AutoApproveAfterConfirm": "Auto approve the form after confirmation",
+      "AutoRegisterAfterApprove": "Automatic financial registration after approval",
+      "RegisterWithLastOpenVoucher": "Financial register with the last open voucher on the operation date",
+      "RegisterByCreatingNewVoucher": "Financial registration by creating a new document",
+      "AutoRegisterVoucherRelatedToRegistration": "Automatic registration of voucher related to financial registration"
+    },
     "Description": "Description",
     "TitleText": "Settings List",
     "DefaultCalendar": "Default Calendar",
