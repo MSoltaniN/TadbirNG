@@ -51,9 +51,6 @@ input[type="text"] {
 .acc-options {
   margin-top: 30px;
 }
-.lm {
-  margin-left: 4px !important;
-}
 .k-header k-grid-draggable-header {
   text-align: center !important;
 }
