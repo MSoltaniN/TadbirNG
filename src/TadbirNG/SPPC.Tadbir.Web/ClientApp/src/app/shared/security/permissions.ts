@@ -633,6 +633,13 @@ export class Permissions {
       case "sourceapppermissions":
         id = <any>SourceAppPermissions[<any>premissionName];
         break;
+      case "paymentpermissions":
+        id = <any>PaymentPermissions[<any>premissionName];
+        break;
+      case "receiptpermissions":
+        id = <any>ReceiptPermissions[<any>premissionName];
+        break;
+
 
     }
 
