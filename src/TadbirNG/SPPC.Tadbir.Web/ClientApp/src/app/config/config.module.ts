@@ -11,6 +11,7 @@ import { SettingsComponent } from '@sppc/config/components/settings/settings.com
 import { SettingsFormComponent } from '@sppc/config/components/settings/settings-form.component';
 import { ViewTreeConfigComponent } from '@sppc/config/components/viewTreeConfig/viewTreeConfig.component';
 import { SystemConfigurationComponent } from '@sppc/config/components/systemConfiguration/systemConfiguration.component';
+import { PayReceiveSettingsComponent } from './components/payReceive-settings/payReceive-settings.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,7 @@ import { SystemConfigurationComponent } from '@sppc/config/components/systemConf
     ConfigRoutingModule,
     SharedModule    
   ],
-  declarations: [SettingsComponent, SettingsFormComponent, ViewTreeConfigComponent, SystemConfigurationComponent],
+  declarations: [SettingsComponent, SettingsFormComponent, ViewTreeConfigComponent, SystemConfigurationComponent, PayReceiveSettingsComponent],
   providers: [SettingService],
   exports: [ConfigRoutingModule]
 })
