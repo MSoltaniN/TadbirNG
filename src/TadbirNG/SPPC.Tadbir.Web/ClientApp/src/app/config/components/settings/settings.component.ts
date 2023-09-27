@@ -76,6 +76,8 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
     );
   }
 
+  disableDefaultButtons = false;
+
   ngOnInit(): void {
     if (!this.isAccess(Entities.Setting, SettingPermissions.ViewSettings)) {
       this.showMessage(
@@ -171,6 +173,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
       this.updateList(this.lastSelectedType);
     }
     this.lastSelectedType = item.dataItem.modelType;
+    this.disableDefaultButtons = ![1,2,3,9,11].includes(item.dataItem.id);
   }
 
   updateListHandler(model: SettingBriefInfo) {
@@ -181,7 +184,8 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
     let item: SettingBriefInfo = this.settingsCategories.find(
       (f) => f.modelType == type
     );
-    if (item) {
+
+    if (item?.values) {
       item.values = this.itemUpdatedModel.values;
     }
   }
@@ -240,6 +244,11 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
           }
         );
     }
+  }
+
+  saveChanges(item){
+    this.updateListHandler(item);
+    this.onSaveSettingsList();
   }
 
   onDefaultSettings() {

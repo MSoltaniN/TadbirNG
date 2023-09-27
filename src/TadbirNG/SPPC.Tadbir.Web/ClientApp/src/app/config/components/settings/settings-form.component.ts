@@ -97,6 +97,7 @@ export class SettingsFormComponent extends DetailComponent {
   }
 
   @Output() updateList: EventEmitter<SettingBriefInfo> = new EventEmitter();
+  @Output() saveChanges: EventEmitter<SettingBriefInfo> = new EventEmitter();
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public bStorageService: BrowserStorageService,
     public renderer: Renderer2, public metadata: MetaDataService,public elem:ElementRef) {
@@ -126,7 +127,7 @@ export class SettingsFormComponent extends DetailComponent {
     ];
   }
 
-  updateListHandler() {
+  updateListHandler(e?) {
     switch (this.selectedItemModel.modelType) {
 
       case SettingsType.DateRangeConfig:
@@ -165,10 +166,15 @@ export class SettingsFormComponent extends DetailComponent {
         }
       default:
         {
+          if (e) {
+            this.selectedItemModel.values = e.values;
+            this.saveChanges.emit(e);
+          }
+          // this.selectedItemModel.values = e.values;
+          this.updateList.emit(this.selectedItemModel);
           break;
         }
     }
-
   }
 
   defaultSettingsHandler() {
