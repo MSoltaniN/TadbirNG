@@ -19,3 +19,8 @@ export enum PayReceiveTypes {
     Receipt = 0,
     Payment = 1
 }
+
+export enum PayReceiveSetting {
+    Receipt = 12,
+    Payment = 13
+}

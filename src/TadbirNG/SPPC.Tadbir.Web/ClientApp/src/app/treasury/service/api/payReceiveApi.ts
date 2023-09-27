@@ -142,6 +142,16 @@ export class PayReceiveApi {
     public static UndoRegisterReceipt = environment.BaseUrl + "/receipts/{0}/register/undo";
 
     /**
+     * {paymentId:min(1)}
+     */
+    public static AutomaticeRegisterPayment = environment.BaseUrl + "/payments/{0}/register/automatic";
+
+    /**
+     * {receiptId:min(1)}
+     */
+    public static AutomaticeRegisterReceipt = environment.BaseUrl + "/receipts/{0}/register/automatic";
+
+    /**
      * {payReceiveId:min(1)}
      */
     public static RelatedVoucher = environment.BaseUrl + "/pay-receives/{0}/voucher";
