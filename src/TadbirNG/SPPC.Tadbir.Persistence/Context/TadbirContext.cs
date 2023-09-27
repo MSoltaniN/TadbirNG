@@ -28,6 +28,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         public string ConnectionString { get; set; }
 
+        public virtual DbSet<Brand> Brands { get; set; }
+
         /// <summary>
         /// Performs entity mappings required for converting data between object and relational forms
         /// </summary>
@@ -110,6 +112,7 @@ namespace SPPC.Tadbir.Persistence
             WidgetMap.BuildMapping(modelBuilder.Entity<Widget>());
             WidgetTypeMap.BuildMapping(modelBuilder.Entity<WidgetType>());
             BrandMap.BuildMapping(modelBuilder.Entity<Brand>());
+            UnitMap.BuildMapping(modelBuilder.Entity<Unit>());
         }
 
         /// <summary>

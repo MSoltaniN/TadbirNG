@@ -4347,4 +4347,19 @@
   <data name="Website" xml:space="preserve">
     <value>آدرس وب سایت</value>
   </data>
+  <data name="Unit" xml:space="preserve">
+    <value>واحد</value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>واحدها</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>وضعیت</value>
+  </data>
+  <data name="Symbol" xml:space="preserve">
+    <value>آدرس تصویر نماد واحد</value>
+  </data>
+  <data name="UnitName" xml:space="preserve">
+    <value>نام واحد</value>
+  </data>
 </root>

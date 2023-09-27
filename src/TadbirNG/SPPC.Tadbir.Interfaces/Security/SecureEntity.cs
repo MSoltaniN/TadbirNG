@@ -225,5 +225,10 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت برند
         /// </summary>
         public const string Brand = "Brand";
+
+        /// <summary>
+        /// نام موجودیت واحد
+        /// </summary>
+        public const string Unit = "Unit";
     }
 }

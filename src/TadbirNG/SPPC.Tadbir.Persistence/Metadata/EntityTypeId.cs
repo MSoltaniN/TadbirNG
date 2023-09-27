@@ -25,6 +25,7 @@ namespace SPPC.Tadbir.Persistence
         SourceApp = 23,
         Receipt = 24,
         Payment = 25,
-        Brand = 100001
+        Brand = 100001,
+        Unit = 100002
     }
 }

@@ -703,7 +703,10 @@ namespace SPPC.Tadbir.Mapper
         private static void MapProductScopeTypes(IMapperConfigurationExpression mapperConfig)
         {
             mapperConfig.CreateMap<Brand, BrandViewModel>();
-            mapperConfig.CreateMap<BrandViewModel, Brand>();
+            mapperConfig.CreateMap<BrandViewModel, Brand>();  
+            
+            mapperConfig.CreateMap<Unit, UnitViewModel>();
+            mapperConfig.CreateMap<UnitViewModel, Unit>();
         }
 
         private static int? GetNullableId(AccountItemBriefViewModel item)

@@ -14,6 +14,7 @@ using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Persistence.DbUpgrade;
 using SPPC.Tadbir.Persistence.Repository;
+using SPPC.Tadbir.Persistence.Repository.ProductScope;
 using SPPC.Tadbir.Persistence.Utility;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
@@ -165,6 +166,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IPayReceiveAccountRepository, PayReceiveAccountRepository>();
             _services.AddTransient<IPayReceiveCashAccountRepository, PayReceiveCashAccountRepository>();
             _services.AddTransient<IBrandRepository, BrandRepository>();
+            _services.AddTransient<IUnitRepository, UnitRepository>();
         }
 
         private void AddServiceTypes()

@@ -13061,6 +13061,198 @@
       "relations": []
     },
     {
+      "name": "Unit",
+      "area": "ProductScope",
+      "identifier": "Id",
+      "type": "BaseEntity",
+      "description": "اطلاعات یک واحد را نگهدارری می کند",
+      "properties": [
+        {
+          "name": "Id",
+          "type": 6,
+          "isValidated": false,
+          "description": "شناسه واحد",
+          "storage": {
+            "name": "UnitID",
+            "type": "int",
+            "nullable": false
+          },
+          "validationRule": {
+            "name": "Id_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "",
+            "format": "",
+            "type": 0
+          }
+        },
+        {
+          "name": "Name",
+          "type": 0,
+          "isValidated": true,
+          "description": "نام واحد",
+          "storage": {
+            "name": "Name",
+            "type": "nvarchar(64)",
+            "nullable": true
+          },
+          "validationRule": {
+            "name": "Name_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "64",
+            "format": "",
+            "type": 1
+          }
+        },
+        {
+          "name": "EnName",
+          "type": 0,
+          "isValidated": true,
+          "description": "نام لاتین واحد",
+          "storage": {
+            "name": "EnName",
+            "type": "nvarchar(64)",
+            "nullable": true
+          },
+          "validationRule": {
+            "name": "EnName_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "64",
+            "format": "",
+            "type": 1
+          }
+        },
+        {
+          "name": "Description",
+          "type": 0,
+          "isValidated": true,
+          "description": "شرح تکمیلی واحد",
+          "storage": {
+            "name": "Description",
+            "type": "nvarchar(64)",
+            "nullable": true
+          },
+          "validationRule": {
+            "name": "Description_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "64",
+            "format": "",
+            "type": 1
+          }
+        },
+        {
+          "name": "Symbol",
+          "type": 0,
+          "isValidated": true,
+          "description": "آدرس تصویر نماد واحد",
+          "storage": {
+            "name": "Symbol",
+            "type": "nvarchar(64)",
+            "nullable": true
+          },
+          "validationRule": {
+            "name": "Symbol_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "64",
+            "format": "",
+            "type": 1
+          }
+        },
+        {
+          "name": "Status",
+          "type": 4,
+          "isValidated": true,
+          "description": "وضعیت",
+          "storage": {
+            "name": "Status",
+            "type": "smallint",
+            "nullable": true
+          },
+          "validationRule": {
+            "name": "Status_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "",
+            "format": "",
+            "type": 0
+          }
+        },
+        {
+          "name": "IsActive",
+          "type": 15,
+          "isValidated": true,
+          "description": "وضعیت فعال یا غیرفعال",
+          "storage": {
+            "name": "IsActive",
+            "type": "bit",
+            "nullable": true
+          },
+          "validationRule": {
+            "name": "IsActive_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "",
+            "format": "",
+            "type": 0
+          }
+        },
+        {
+          "name": "RowGuid",
+          "type": 16,
+          "isValidated": false,
+          "description": null,
+          "storage": {
+            "name": "rowguid",
+            "type": "uniqueidentifier",
+            "nullable": false
+          },
+          "validationRule": {
+            "name": "RowGuid_Validation",
+            "required": true,
+            "minimum": "",
+            "maximum": "",
+            "format": "",
+            "type": 0
+          }
+        },
+        {
+          "name": "ModifiedDate",
+          "type": 13,
+          "isValidated": false,
+          "description": null,
+          "storage": {
+            "name": "ModifiedDate",
+            "type": "datetime",
+            "nullable": false
+          },
+          "validationRule": {
+            "name": "ModifiedDate_Validation",
+            "required": true,
+            "minimum": "",
+            "maximum": "",
+            "format": "",
+            "type": 0
+          }
+        }
+      ],
+      "relations": [
+        {
+          "name": "Branch",
+          "multiplicity": 2,
+          "endpointName": "Branch",
+          "entityName": "Branch",
+          "hasKey": true,
+          "isRequired": true,
+          "joinTable": "",
+          "description": "شعبه ای که واحد در آن تعریف شده است"
+        }
+      ]
+    },
+    {
       "name": "UsedParameter",
       "area": "Reporting",
       "identifier": "Id",

@@ -7,6 +7,7 @@
 //     Generation Date: 9/19/2023 1:38:54 PM
 //     Generation Date: 9/26/2023 9:35:32 AM
 //     Generation Date: 9/19/2023 2:22:48 PM
+//     Generation Date: 09/26/2023 6:02:25 PM
 //  
 //     Changes to this file may cause incorrect behavior and will be lost if
 //     the code is regenerated.
@@ -6470,6 +6471,11 @@ namespace SPPC.Tadbir.Resources
         /// <summary>
         /// Default text : وضعیت
         /// </summary>
+        public const string Status = "Status";
+
+        /// <summary>
+        /// Default text : وضعیت
+        /// </summary>
         public const string StatusId = "StatusId";
 
         /// <summary>
@@ -6506,6 +6512,11 @@ namespace SPPC.Tadbir.Resources
         /// Default text : تغییر دوره مالی
         /// </summary>
         public const string SwitchFiscalPeriod = "SwitchFiscalPeriod";
+
+        /// <summary>
+        /// Default text : آدرس تصویر نماد واحد
+        /// </summary>
+        public const string Symbol = "Symbol";
 
         /// <summary>
         /// Default text : رویداد سیستمی
@@ -6801,6 +6812,21 @@ namespace SPPC.Tadbir.Resources
         /// Default text : برگشت از ثبت مالی فقط بر روی اسناد ثبت نشده امکان پذیر است.
         /// </summary>
         public const string UndoRegisterEnabledForNotCheckedVouchers = "UndoRegisterEnabledForNotCheckedVouchers";
+
+        /// <summary>
+        /// Default text : واحد
+        /// </summary>
+        public const string Unit = "Unit";
+
+        /// <summary>
+        /// Default text : نام واحد
+        /// </summary>
+        public const string UnitName = "UnitName";
+
+        /// <summary>
+        /// Default text : واحدها
+        /// </summary>
+        public const string Units = "Units";
 
         /// <summary>
         /// Default text : بدون محدودیت

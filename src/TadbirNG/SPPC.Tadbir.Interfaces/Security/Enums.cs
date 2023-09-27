@@ -2217,4 +2217,56 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         All = 0x7f
     }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به یک واحد را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum UnitPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به اطلاعات واحدها
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست واحدها یا جزییات یک واحد
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی فیلتر واحدها موجود
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
+        /// دسترسی چاپ واحدها موجود
+        /// </summary>
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات واحدها موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک واحد جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک واحد موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک واحد موجود
+        /// </summary>
+        Delete = 0x40,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت واحدها
+        /// </summary>
+        All = 0x7f
+    }
 }

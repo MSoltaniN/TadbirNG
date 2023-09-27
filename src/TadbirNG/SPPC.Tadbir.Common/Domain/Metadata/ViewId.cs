@@ -145,5 +145,10 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی برندها
         /// </summary>
         public const int Brand = 100001;
+
+        /// <summary>
+        /// نمای اطلاعاتی واحدها
+        /// </summary>
+        public const int Unit = 100002;
     }
 }
