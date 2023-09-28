@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.CashFlow;
@@ -118,6 +119,7 @@ namespace SPPC.Tadbir.Persistence
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(ConnectionString, sqlServerOptions => sqlServerOptions.CommandTimeout(600));
+            optionsBuilder.LogTo(message => Debug.WriteLine(message));
             base.OnConfiguring(optionsBuilder);
         }
 

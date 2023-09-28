@@ -12,13 +12,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SPPC.Tadbir.Model.ProductScope
 {
     /// <summary>
     /// اطلاعات یک برند را نگهداری می کند
     /// </summary>
-    public partial class Brand : BaseEntity
+    [Table("Brand", Schema = "ProductScope")]
+    public partial class Brand : PBaseEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -31,7 +33,6 @@ namespace SPPC.Tadbir.Model.ProductScope
             SocialLink = String.Empty;
             Website = String.Empty;
             MetaKeyword = String.Empty;
-            ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

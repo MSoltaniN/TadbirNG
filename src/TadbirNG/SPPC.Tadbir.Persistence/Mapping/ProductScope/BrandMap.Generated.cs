@@ -21,51 +21,13 @@ namespace SPPC.Tadbir.Persistence.Mapping
     {
         internal static void BuildMapping(EntityTypeBuilder<Brand> builder)
         {
-            builder.ToTable("Brand", "ProductScope");
-            builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
-                .HasColumnName("BrandID");
-            builder.Property(e => e.BranchScope)
-                .IsRequired();
-            builder.Property(e => e.Name)
-                .IsRequired()
-                .HasMaxLength(64);
-            builder.Property(e => e.EnName)
-                .HasMaxLength(64);
-            builder.Property(e => e.Description)
-                .HasMaxLength(1024);
-            builder.Property(e => e.SocialLink)
-                .HasMaxLength(64);
-            builder.Property(e => e.Website)
-                .HasMaxLength(64);
-            builder.Property(e => e.MetaKeyword)
-                .HasMaxLength(64);
-            builder.Property(e => e.IsActive);
-            builder.Property(e => e.FiscalPeriodId);
-            builder.Property(e => e.CreatedById)
-                .IsRequired();
-            builder.Property(e => e.CreatedByName)
-                .IsRequired()
-                .HasMaxLength(64);
-            builder.Property(e => e.CreatedDate)
-                .IsRequired();
-            builder.Property(e => e.ModifiedById)
-                .IsRequired();
-            builder.Property(e => e.ModifiedByName)
-                .IsRequired()
-                .HasMaxLength(64);
-            builder.Property(e => e.RowGuid)
-                .HasColumnName("rowguid")
-                .HasDefaultValueSql("(newid())");
-            builder.Property(e => e.ModifiedDate)
-                .HasColumnType("datetime")
-                .HasDefaultValueSql("(getdate())");
+                .HasColumnName("CityID");
 
             builder.HasOne(e => e.Branch)
                 .WithMany()
                 .HasForeignKey(e => e.BranchId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProductScope_Brand_Corporate_Branch");
+                .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }
