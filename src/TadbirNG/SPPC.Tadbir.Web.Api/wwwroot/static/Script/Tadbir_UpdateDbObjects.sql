@@ -1578,3 +1578,34 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (100008, 100000, 1, NULL, 100001, 58, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+
+-- 2.2.0
+
+DELETE FROM [Config].[LogSetting]
+WHERE EntityTypeID = 100002
+
+SET IDENTITY_INSERT [Metadata].[EntityType] ON
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
+    VALUES (100002, N'Unit', NULL)
+SET IDENTITY_INSERT [Metadata].[EntityType] OFF
+
+SET IDENTITY_INSERT [Config].[LogSetting] ON
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100009, 100000, 1, NULL, 100002, 1, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100010, 100000, 1, NULL, 100002, 2, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100011, 100000, 1, NULL, 100002, 3, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100012, 100000, 1, NULL, 100002, 4, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100013, 100000, 1, NULL, 100002, 5, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100014, 100000, 1, NULL, 100002, 6, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100015, 100000, 1, NULL, 100002, 21, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100016, 100000, 1, NULL, 100002, 54, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100017, 100000, 1, NULL, 100002, 58, 1)
+SET IDENTITY_INSERT [Config].[LogSetting] OFF
