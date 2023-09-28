@@ -21,47 +21,13 @@ namespace SPPC.Tadbir.Persistence.Mapping
     {
         internal static void BuildMapping(EntityTypeBuilder<Unit> builder)
         {
-            builder.ToTable("Unit", "ProductScope");
-            builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("UnitID");
-            builder.Property(e => e.BranchScope)
-                .IsRequired();
-            builder.Property(e => e.Name)
-                .HasMaxLength(64);
-            builder.Property(e => e.EnName)
-                .HasMaxLength(64);
-            builder.Property(e => e.Description)
-                .HasMaxLength(64);
-            builder.Property(e => e.Symbol)
-                .HasMaxLength(64);
-            builder.Property(e => e.Status);
-            builder.Property(e => e.IsActive);
-            builder.Property(e => e.FiscalPeriodId);
-            builder.Property(e => e.CreatedById)
-                .IsRequired();
-            builder.Property(e => e.CreatedByName)
-                .IsRequired()
-                .HasMaxLength(64);
-            builder.Property(e => e.CreatedDate)
-                .IsRequired();
-            builder.Property(e => e.ModifiedById)
-                .IsRequired();
-            builder.Property(e => e.ModifiedByName)
-                .IsRequired()
-                .HasMaxLength(64);
-            builder.Property(e => e.RowGuid)
-                .HasColumnName("rowguid")
-                .HasDefaultValueSql("(newid())");
-            builder.Property(e => e.ModifiedDate)
-                .HasColumnType("datetime")
-                .HasDefaultValueSql("(getdate())");
 
             builder.HasOne(e => e.Branch)
                 .WithMany()
                 .HasForeignKey(e => e.BranchId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ProductScope_Unit_Corporate_Branch");
+                .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

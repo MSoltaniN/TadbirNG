@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
         internal static void BuildMapping(EntityTypeBuilder<Brand> builder)
         {
             builder.Property(e => e.Id)
-                .HasColumnName("CityID");
+                .HasColumnName("BrandID");
 
             builder.HasOne(e => e.Branch)
                 .WithMany()

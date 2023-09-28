@@ -12,12 +12,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SPPC.Tadbir.Model.ProductScope
 {
     /// <summary>
     /// اطلاعات یک واحد را نگهدارری می کند
     /// </summary>
+    [Table("Unit", Schema = "ProductScope")]
     public partial class Unit : BaseEntity
     {
         /// <summary>
@@ -29,28 +32,31 @@ namespace SPPC.Tadbir.Model.ProductScope
             EnName = String.Empty;
             Description = String.Empty;
             Symbol = String.Empty;
-            ModifiedDate = DateTime.Now;
         }
 
         /// <summary>
         /// نام واحد
         /// </summary>
+        [MaxLength(64)]
         public virtual string Name { get; set; }
 
         /// <summary>
         /// نام لاتین واحد
         /// </summary>
-        public virtual string EnName { get; set; }
+        [MaxLength(64)]
+        public virtual string? EnName { get; set; }
 
         /// <summary>
         /// شرح تکمیلی واحد
         /// </summary>
-        public virtual string Description { get; set; }
+        [MaxLength(1024)]
+        public virtual string? Description { get; set; }
 
         /// <summary>
         /// آدرس تصویر نماد واحد
         /// </summary>
-        public virtual string Symbol { get; set; }
+        [MaxLength(1024)]
+        public virtual string? Symbol { get; set; }
 
         /// <summary>
         /// وضعیت

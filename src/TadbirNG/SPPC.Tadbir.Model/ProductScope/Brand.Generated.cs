@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SPPC.Tadbir.Model.ProductScope
@@ -38,36 +39,42 @@ namespace SPPC.Tadbir.Model.ProductScope
         /// <summary>
         /// نام فارسی برند
         /// </summary>
+        [MaxLength(64)]
         public virtual string Name { get; set; }
 
         /// <summary>
         /// نام لاتین برند
         /// </summary>
-        public virtual string EnName { get; set; }
+        [MaxLength(64)]
+        public virtual string? EnName { get; set; }
 
         /// <summary>
         /// شرح تکمیلی برند
         /// </summary>
-        public virtual string Description { get; set; }
+        [MaxLength(1024)]
+        public virtual string? Description { get; set; }
 
         /// <summary>
         /// لینک شبکه اجتماعی
         /// </summary>
-        public virtual string SocialLink { get; set; }
+        [MaxLength(64)]
+        public virtual string? SocialLink { get; set; }
 
         /// <summary>
         /// آدرس وب سایت
         /// </summary>
-        public virtual string Website { get; set; }
+        [MaxLength(64)]
+        public virtual string? Website { get; set; }
 
         /// <summary>
         /// کلمات کلیدی مرتبط با نام برند
         /// </summary>
-        public virtual string MetaKeyword { get; set; }
+        [MaxLength(64)]
+        public virtual string? MetaKeyword { get; set; }
 
         /// <summary>
         /// وضعیت فعال یا غیر فعال 
         /// </summary>
-        public virtual bool IsActive { get; set; }
+        public virtual bool? IsActive { get; set; }
     }
 }
