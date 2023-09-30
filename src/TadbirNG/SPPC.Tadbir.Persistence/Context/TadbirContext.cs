@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.CashFlow;
 using SPPC.Tadbir.Model.Check;
@@ -14,6 +15,8 @@ using SPPC.Tadbir.Model.ProductScope;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Persistence.Mapping;
 using SPPC.Tadbir.Persistence.Mapping.Finance;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Command = SPPC.Tadbir.Model.Metadata.Command;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -123,7 +126,9 @@ namespace SPPC.Tadbir.Persistence
         {
             optionsBuilder.UseSqlServer(ConnectionString, sqlServerOptions => sqlServerOptions.CommandTimeout(600));
             optionsBuilder.LogTo(message => Debug.WriteLine(message));
-            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseSqlServer(ConnectionString , b => b.MigrationsAssembly("SPPC.Tadbir.Web.Api"));
+
+           base.OnConfiguring(optionsBuilder);
         }
 
         #region IDisposable Support

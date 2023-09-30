@@ -54,11 +54,21 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
 
+            builder.Property(e => e.FiscalPeriodId)
+                .HasDefaultValue(0);
+
+            builder.HasOne(e => e.FiscalPeriod)
+                .WithMany()
+                .HasForeignKey(e => e.FiscalPeriodId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
             builder.HasOne(e => e.Currency)
                 .WithMany(r => r.Rates)
                 .HasForeignKey(e => e.CurrencyId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_Finance_CurrencyRate_Finance_Currency");
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+
             builder.HasOne(d => d.Branch)
                 .WithMany()
                 .HasForeignKey(e => e.BranchId)

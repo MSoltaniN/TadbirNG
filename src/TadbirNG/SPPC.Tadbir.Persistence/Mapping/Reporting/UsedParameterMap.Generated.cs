@@ -23,7 +23,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.ToTable("UsedParameter", "Reporting");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
-                .HasColumnName("UsedParameterID");
+                .HasColumnName("UsedParameterId");
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
@@ -33,12 +33,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.Parameter)
                 .WithMany()
-                .HasForeignKey("ParameterID")
+                .HasForeignKey("ParameterId")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_UsedParameter_Reporting_Parameter");
             builder.HasOne(e => e.Function)
                 .WithMany(e => e.Parameters)
-                .HasForeignKey("FunctionID")
+                .HasForeignKey("FunctionId")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_UsedParameter_Reporting_Function");
         }

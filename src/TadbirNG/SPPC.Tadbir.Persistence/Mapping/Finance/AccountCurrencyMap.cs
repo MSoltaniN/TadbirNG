@@ -11,7 +11,7 @@ namespace SPPC.Tadbir.Persistence.Mapping.Finance
             builder.ToTable("AccountCurrency", "Finance");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
-                .HasColumnName("AccountCurrencyID");
+                .HasColumnName("AccountCurrencyId");
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");

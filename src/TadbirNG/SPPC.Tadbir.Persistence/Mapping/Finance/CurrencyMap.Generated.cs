@@ -24,7 +24,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.ToTable("Currency", "Finance");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
-                .HasColumnName("CurrencyID");
+                .HasColumnName("CurrencyId");
             builder.Property(e => e.CreatedById)
                 .IsRequired();
             builder.Property(e => e.CreatedByName)

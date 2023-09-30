@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
             builder.Property(e => e.RowGuid)
-                .HasColumnType("rowguid")
+                .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
 
             builder.HasOne(e => e.PayReceive)
