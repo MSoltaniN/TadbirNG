@@ -57,6 +57,8 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
     public shortcutService?:ShortcutService,@Optional() @Inject('empty') private entityInstance?:any) {
     super(toastrService, bStorageService);  
 
+    this.properties = new Map<string, Array<Property>>();
+
     if (viewId > 0) {
       this.metadataKey = String.Format(
         SessionKeys.MetadataKey,
@@ -65,6 +67,7 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
       );
       var props = this.getProperties(this.metadataKey);
       if (props != undefined && props.length > 0) {
+        this.properties.set(this.metadataKey, props);
         this.fillFormValidators();
       } else this.form = undefined;
     }
@@ -73,7 +76,6 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
     this.errorMessages = [];
     this.shortcutService = ServiceLocator.injector.get(ShortcutService);
     this.localizeMsg();
-    this.properties = new Map<string, Array<Property>>();
 
     if (elem) {
       this.selector = elem.nativeElement.tagName.toLowerCase();
@@ -88,6 +90,8 @@ export class DetailComponent extends BaseComponent implements OnDestroy {
 
   getProperties(metadataKey: string): Array<Property> {
     var propertiesValue = this.bStorageService.getMetadata(metadataKey);
+    console.log(JSON.parse(propertiesValue));
+    
     if (propertiesValue && propertiesValue != null) {
       var result = JSON.parse(propertiesValue);
       return result.columns;
