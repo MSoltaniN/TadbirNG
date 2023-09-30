@@ -712,10 +712,10 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     BranchId = table.Column<int>(type: "int", nullable: false),
                     BranchScope = table.Column<short>(type: "smallint", nullable: false),
                     CreatedById = table.Column<int>(type: "int", nullable: false),
-                    CreatedByName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedByName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedById = table.Column<int>(type: "int", nullable: false),
-                    ModifiedByName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ModifiedByName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1031,16 +1031,16 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     Symbol = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
                     Status = table.Column<short>(type: "smallint", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: true),
-                    RowGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FiscalPeriodId = table.Column<int>(type: "int", nullable: false),
                     BranchId = table.Column<int>(type: "int", nullable: false),
                     BranchScope = table.Column<short>(type: "smallint", nullable: false),
                     CreatedById = table.Column<int>(type: "int", nullable: false),
-                    CreatedByName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedByName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedById = table.Column<int>(type: "int", nullable: false),
-                    ModifiedByName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ModifiedByName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false)
                 },
                 constraints: table =>
                 {

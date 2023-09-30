@@ -19,6 +19,7 @@ namespace SPPC.Tadbir.Model
 
         /// <inheritdoc/>
         [Required]
+        [MaxLength(64)]
         public virtual string CreatedByName { get; set; }
 
         /// <inheritdoc/>
@@ -31,6 +32,7 @@ namespace SPPC.Tadbir.Model
 
         /// <inheritdoc/>
         [Required]
+        [MaxLength(64)]
         public virtual string ModifiedByName { get; set; }
     }
 }

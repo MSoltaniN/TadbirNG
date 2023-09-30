@@ -10,7 +10,7 @@ using SPPC.Tadbir.Persistence;
 namespace SPPC.Tadbir.Web.Api.Migrations
 {
     [DbContext(typeof(TadbirContext))]
-    [Migration("20230930102055_initial-migration")]
+    [Migration("20230930112043_initial-migration")]
     partial class initialmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -3595,7 +3595,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
 
                     b.Property<string>("CreatedByName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -3623,7 +3624,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
 
                     b.Property<string>("ModifiedByName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
@@ -3671,7 +3673,9 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CreatedByName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -3694,7 +3698,9 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ModifiedByName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
@@ -3704,7 +3710,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<Guid>("RowGuid")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("rowguid");
 
                     b.Property<short?>("Status")
                         .HasColumnType("smallint");

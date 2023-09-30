@@ -10,6 +10,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
+using SPPC.Tadbir.Model.Finance;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -35,6 +36,8 @@ namespace SPPC.Tadbir.Model.ProductScope
             Website = String.Empty;
             MetaKeyword = String.Empty;
         }
+        [NotMapped]
+        public FiscalPeriod FiscalPeriod { get; set; }
 
         /// <summary>
         /// نام فارسی برند

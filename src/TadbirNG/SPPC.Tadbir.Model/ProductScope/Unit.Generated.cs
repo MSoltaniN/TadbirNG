@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.Model.ProductScope
     /// اطلاعات یک واحد را نگهدارری می کند
     /// </summary>
     [Table("Unit", Schema = "ProductScope")]
-    public partial class Unit : BaseEntity
+    public partial class Unit : PBaseEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
