@@ -28,6 +28,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .WithMany()
                 .HasForeignKey(e => e.BranchId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Ignore(e => e.FiscalPeriod);
         }
     }
 }
