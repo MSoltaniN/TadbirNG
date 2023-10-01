@@ -19,129 +19,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.Permission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("PermissionID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<int>("Flag")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValueSql("((0))");
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<Guid>("RowGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("rowguid")
-                        .HasDefaultValueSql("(newid())");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.ToTable("Permission", "Auth");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.PermissionGroup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("PermissionGroupID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<string>("EntityName")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<Guid>("RowGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("rowguid")
-                        .HasDefaultValueSql("(newid())");
-
-                    b.Property<int>("SourceTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubsystemId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SourceTypeId");
-
-                    b.HasIndex("SubsystemId");
-
-                    b.ToTable("PermissionGroup", "Auth");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("RoleID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<Guid>("RowGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("rowguid")
-                        .HasDefaultValueSql("(newid())");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Role", "Auth");
-                });
-
             modelBuilder.Entity("SPPC.Tadbir.Model.Auth.RoleBranch", b =>
                 {
                     b.Property<int>("Id")
@@ -174,34 +51,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.HasIndex("BranchId");
 
                     b.ToTable("RoleBranch", "Auth");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.RoleCompany", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("RowGuid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("RoleCompany");
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.Auth.RoleFiscalPeriod", b =>
@@ -238,40 +87,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.ToTable("RoleFiscalPeriod", "Auth");
                 });
 
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.RolePermission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("RolePermissionID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("RowGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("rowguid")
-                        .HasDefaultValueSql("(newid())");
-
-                    b.HasKey("Id");
-
-                    b.HasAlternateKey("RoleId", "PermissionId");
-
-                    b.HasIndex("PermissionId");
-
-                    b.ToTable("RolePermission", "Auth");
-                });
-
             modelBuilder.Entity("SPPC.Tadbir.Model.Auth.RoleWidget", b =>
                 {
                     b.Property<int>("Id")
@@ -302,134 +117,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.HasIndex("WidgetId");
 
                     b.ToTable("RoleWidget", "Auth");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("UserID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastLoginDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<Guid>("RowGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("rowguid")
-                        .HasDefaultValueSql("(newid())");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User", "Auth");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.UserRole", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("UserRoleID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("RowGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("rowguid")
-                        .HasDefaultValueSql("(newid())");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasAlternateKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("UserRole", "Auth");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.ViewRowPermission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("RowPermissionID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AccessMode")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<string>("Items")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("RowGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("rowguid")
-                        .HasDefaultValueSql("(newid())");
-
-                    b.Property<string>("TextValue")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<double>("Value")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Value2")
-                        .HasColumnType("float");
-
-                    b.Property<int>("ViewID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("ViewID");
-
-                    b.ToTable("ViewRowPermission", "Auth");
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.CashFlow.CashRegister", b =>
@@ -1004,45 +691,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.ToTable("CheckBookPage", "Check");
                 });
 
-            modelBuilder.Entity("SPPC.Tadbir.Model.Config.CompanyDb", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("DbName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("RowGuid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Server")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CompanyDb");
-                });
-
             modelBuilder.Entity("SPPC.Tadbir.Model.Config.LabelSetting", b =>
                 {
                     b.Property<int>("Id")
@@ -1255,13 +903,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
-
                     b.HasIndex("SettingId");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("ViewId");
 
                     b.ToTable("UserSetting", "Config");
                 });
@@ -1370,42 +1012,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ViewSetting", "Config");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Contact.Person", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("PersonID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<Guid>("RowGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("rowguid")
-                        .HasDefaultValueSql("(newid())");
-
-                    b.Property<int?>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserID")
-                        .IsUnique()
-                        .HasFilter("[UserID] IS NOT NULL");
-
-                    b.ToTable("Person", "Contact");
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.Core.DocumentStatus", b =>
@@ -3154,131 +2760,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.ToTable("City", "Metadata");
                 });
 
-            modelBuilder.Entity("SPPC.Tadbir.Model.Metadata.Column", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AllowFiltering")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("AllowSorting")
-                        .HasColumnType("bit");
-
-                    b.Property<short>("DisplayIndex")
-                        .HasColumnType("smallint");
-
-                    b.Property<string>("DotNetType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Expression")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GroupName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDynamic")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsFixedLength")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsNullable")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Length")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MinLength")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("RowGuid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ScriptType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StorageType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ViewId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Visibility")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ViewId");
-
-                    b.ToTable("Column");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Metadata.Command", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("CommandID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("HotKey")
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
-
-                    b.Property<string>("IconName")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<int?>("Index")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PermissionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RouteUrl")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<Guid>("RowGuid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("rowguid")
-                        .HasDefaultValueSql("(newid())");
-
-                    b.Property<string>("TitleKey")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentId");
-
-                    b.HasIndex("PermissionId");
-
-                    b.ToTable("Command", "Metadata");
-                });
-
             modelBuilder.Entity("SPPC.Tadbir.Model.Metadata.CustomForm", b =>
                 {
                     b.Property<int>("Id")
@@ -3535,45 +3016,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.ToTable("Subsystem", "Metadata");
                 });
 
-            modelBuilder.Entity("SPPC.Tadbir.Model.Metadata.View", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("EntityName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EntityType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FetchUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsCartableIntegrated")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsHierarchy")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("RowGuid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("SearchUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("View");
-                });
-
             modelBuilder.Entity("SPPC.Tadbir.Model.ProductScope.Brand", b =>
                 {
                     b.Property<int>("Id")
@@ -3723,6 +3165,39 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.HasIndex("FiscalPeriodId");
 
                     b.ToTable("Unit", "ProductScope");
+                });
+
+            modelBuilder.Entity("SPPC.Tadbir.Model.ProductScope.Version", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("VersionId")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Number")
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<Guid>("RowGuid")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("rowguid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Version", "Core");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ModifiedDate = new DateTime(2022, 8, 27, 13, 56, 52, 150, DateTimeKind.Unspecified),
+                            Number = "2.2.0",
+                            RowGuid = new Guid("26452115-8352-42fe-a7b8-4bd3d32f50f6")
+                        });
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.Reporting.Dashboard", b =>
@@ -4081,36 +3556,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.ToTable("WidgetType", "Reporting");
                 });
 
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.Permission", b =>
-                {
-                    b.HasOne("SPPC.Tadbir.Model.Auth.PermissionGroup", "Group")
-                        .WithMany("Permissions")
-                        .HasForeignKey("GroupId")
-                        .HasConstraintName("FK_Auth_Permission_Auth_PermissionGroup")
-                        .IsRequired();
-
-                    b.Navigation("Group");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.PermissionGroup", b =>
-                {
-                    b.HasOne("SPPC.Tadbir.Model.Metadata.OperationSourceType", "SourceType")
-                        .WithMany()
-                        .HasForeignKey("SourceTypeId")
-                        .HasConstraintName("FK_Auth_PermissionGroup_Metadata_SourceType")
-                        .IsRequired();
-
-                    b.HasOne("SPPC.Tadbir.Model.Metadata.Subsystem", "Subsystem")
-                        .WithMany()
-                        .HasForeignKey("SubsystemId")
-                        .HasConstraintName("FK_Auth_PermissionGroup_Metadata_Subsystem")
-                        .IsRequired();
-
-                    b.Navigation("SourceType");
-
-                    b.Navigation("Subsystem");
-                });
-
             modelBuilder.Entity("SPPC.Tadbir.Model.Auth.RoleBranch", b =>
                 {
                     b.HasOne("SPPC.Tadbir.Model.Corporate.Branch", "Branch")
@@ -4120,25 +3565,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.RoleCompany", b =>
-                {
-                    b.HasOne("SPPC.Tadbir.Model.Config.CompanyDb", "Company")
-                        .WithMany("RoleCompanies")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SPPC.Tadbir.Model.Auth.Role", "Role")
-                        .WithMany("RoleCompanies")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.Auth.RoleFiscalPeriod", b =>
@@ -4152,25 +3578,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Navigation("FiscalPeriod");
                 });
 
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.RolePermission", b =>
-                {
-                    b.HasOne("SPPC.Tadbir.Model.Auth.Permission", "Permission")
-                        .WithMany("RolePermissions")
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SPPC.Tadbir.Model.Auth.Role", "Role")
-                        .WithMany("RolePermissions")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Permission");
-
-                    b.Navigation("Role");
-                });
-
             modelBuilder.Entity("SPPC.Tadbir.Model.Auth.RoleWidget", b =>
                 {
                     b.HasOne("SPPC.Tadbir.Model.Reporting.Widget", "Widget")
@@ -4181,44 +3588,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Widget");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.UserRole", b =>
-                {
-                    b.HasOne("SPPC.Tadbir.Model.Auth.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SPPC.Tadbir.Model.Auth.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.ViewRowPermission", b =>
-                {
-                    b.HasOne("SPPC.Tadbir.Model.Auth.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .HasConstraintName("FK_Auth_ViewRowPermission_Auth_Role")
-                        .IsRequired();
-
-                    b.HasOne("SPPC.Tadbir.Model.Metadata.View", "View")
-                        .WithMany()
-                        .HasForeignKey("ViewID")
-                        .HasConstraintName("FK_Auth_ViewRowPermission_Metadata_View")
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("View");
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.CashFlow.CashRegister", b =>
@@ -4532,34 +3901,13 @@ namespace SPPC.Tadbir.Web.Api.Migrations
 
             modelBuilder.Entity("SPPC.Tadbir.Model.Config.UserSetting", b =>
                 {
-                    b.HasOne("SPPC.Tadbir.Model.Auth.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .HasConstraintName("FK_Config_UserSetting_Auth_Role");
-
                     b.HasOne("SPPC.Tadbir.Model.Config.Setting", "Setting")
                         .WithMany()
                         .HasForeignKey("SettingId")
                         .HasConstraintName("FK_Config_UserSetting_Config_Setting")
                         .IsRequired();
 
-                    b.HasOne("SPPC.Tadbir.Model.Auth.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("FK_Config_UserSetting_Auth_User");
-
-                    b.HasOne("SPPC.Tadbir.Model.Metadata.View", "View")
-                        .WithMany()
-                        .HasForeignKey("ViewId")
-                        .HasConstraintName("FK_Config_UserSetting_Metadata_EntityView");
-
-                    b.Navigation("Role");
-
                     b.Navigation("Setting");
-
-                    b.Navigation("User");
-
-                    b.Navigation("View");
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.Config.UserValue", b =>
@@ -4571,16 +3919,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Contact.Person", b =>
-                {
-                    b.HasOne("SPPC.Tadbir.Model.Auth.User", "User")
-                        .WithOne("Person")
-                        .HasForeignKey("SPPC.Tadbir.Model.Contact.Person", "UserID")
-                        .HasConstraintName("FK_Contact_Person_Auth_User");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.Core.InactiveEntity", b =>
@@ -5150,32 +4488,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Navigation("Province");
                 });
 
-            modelBuilder.Entity("SPPC.Tadbir.Model.Metadata.Column", b =>
-                {
-                    b.HasOne("SPPC.Tadbir.Model.Metadata.View", "View")
-                        .WithMany("Columns")
-                        .HasForeignKey("ViewId");
-
-                    b.Navigation("View");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Metadata.Command", b =>
-                {
-                    b.HasOne("SPPC.Tadbir.Model.Metadata.Command", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId")
-                        .HasConstraintName("FK_Metadata_Command_Metadata_Parent");
-
-                    b.HasOne("SPPC.Tadbir.Model.Auth.Permission", "Permission")
-                        .WithMany()
-                        .HasForeignKey("PermissionId")
-                        .HasConstraintName("FK_Metadata_Command_Auth_Permission");
-
-                    b.Navigation("Parent");
-
-                    b.Navigation("Permission");
-                });
-
             modelBuilder.Entity("SPPC.Tadbir.Model.ProductScope.Brand", b =>
                 {
                     b.HasOne("SPPC.Tadbir.Model.Corporate.Branch", "Branch")
@@ -5314,32 +4626,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Navigation("Widget");
                 });
 
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.Permission", b =>
-                {
-                    b.Navigation("RolePermissions");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.PermissionGroup", b =>
-                {
-                    b.Navigation("Permissions");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.Role", b =>
-                {
-                    b.Navigation("RoleCompanies");
-
-                    b.Navigation("RolePermissions");
-
-                    b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Auth.User", b =>
-                {
-                    b.Navigation("Person");
-
-                    b.Navigation("UserRoles");
-                });
-
             modelBuilder.Entity("SPPC.Tadbir.Model.CashFlow.PayReceive", b =>
                 {
                     b.Navigation("Accounts");
@@ -5352,11 +4638,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             modelBuilder.Entity("SPPC.Tadbir.Model.Check.CheckBook", b =>
                 {
                     b.Navigation("Pages");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Config.CompanyDb", b =>
-                {
-                    b.Navigation("RoleCompanies");
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.Config.UserValueCategory", b =>
@@ -5434,19 +4715,9 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Navigation("Lines");
                 });
 
-            modelBuilder.Entity("SPPC.Tadbir.Model.Metadata.Command", b =>
-                {
-                    b.Navigation("Children");
-                });
-
             modelBuilder.Entity("SPPC.Tadbir.Model.Metadata.Province", b =>
                 {
                     b.Navigation("Cities");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.Metadata.View", b =>
-                {
-                    b.Navigation("Columns");
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.Reporting.Dashboard", b =>

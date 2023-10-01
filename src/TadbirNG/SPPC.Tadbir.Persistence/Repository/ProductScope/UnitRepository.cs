@@ -69,6 +69,7 @@ namespace SPPC.Tadbir.Persistence.Repository.ProductScope
             if (unit.Id == 0)
             {
                 unitModel = Mapper.Map<Unit>(unit);
+                SetBaseEntityInfo(unitModel);
                 await InsertAsync(repository, unitModel);
             }
             else

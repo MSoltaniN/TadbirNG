@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SPPC.Tadbir.Web.Api.Migrations
 {
-    public partial class initialmigration : Migration
+    public partial class initialmigration1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -36,9 +36,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
 
             migrationBuilder.EnsureSchema(
                 name: "Auth");
-
-            migrationBuilder.EnsureSchema(
-                name: "Contact");
 
             migrationBuilder.CreateTable(
                 name: "AccountCollectionCategory",
@@ -99,27 +96,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         principalTable: "Branch",
                         principalColumn: "BranchID",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CompanyDb",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DbName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Server = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RowGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompanyDb", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -348,23 +324,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Role",
-                schema: "Auth",
-                columns: table => new
-                {
-                    RoleID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Role", x => x.RoleID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Setting",
                 schema: "Config",
                 columns: table => new
@@ -430,25 +389,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
-                schema: "Auth",
-                columns: table => new
-                {
-                    UserID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    PasswordHash = table.Column<string>(type: "varchar(256)", unicode: false, maxLength: 256, nullable: false),
-                    LastLoginDate = table.Column<DateTime>(type: "datetime", nullable: true),
-                    IsEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.UserID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserValueCategory",
                 schema: "Config",
                 columns: table => new
@@ -465,24 +405,19 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "View",
+                name: "Version",
+                schema: "Core",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    VersionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EntityName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EntityType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsHierarchy = table.Column<bool>(type: "bit", nullable: false),
-                    IsCartableIntegrated = table.Column<bool>(type: "bit", nullable: false),
-                    FetchUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SearchUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RowGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Number = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: true),
+                    rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_View", x => x.Id);
+                    table.PrimaryKey("PK_Version", x => x.VersionId);
                 });
 
             migrationBuilder.CreateTable(
@@ -579,6 +514,43 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         principalSchema: "Finance",
                         principalTable: "AccountCollectionCategory",
                         principalColumn: "CategoryID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Brand",
+                schema: "ProductScope",
+                columns: table => new
+                {
+                    BrandID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    EnName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
+                    SocialLink = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    Website = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    MetaKeyword = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true),
+                    rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FiscalPeriodId = table.Column<int>(type: "int", nullable: false),
+                    BranchId = table.Column<int>(type: "int", nullable: false),
+                    BranchScope = table.Column<short>(type: "smallint", nullable: false),
+                    CreatedById = table.Column<int>(type: "int", nullable: false),
+                    CreatedByName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedById = table.Column<int>(type: "int", nullable: false),
+                    ModifiedByName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Brand", x => x.BrandID);
+                    table.ForeignKey(
+                        name: "FK_Brand_Branch_BranchId",
+                        column: x => x.BranchId,
+                        principalSchema: "Corporate",
+                        principalTable: "Branch",
+                        principalColumn: "BranchID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -690,50 +662,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         principalTable: "Account",
                         principalColumn: "AccountID",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Brand",
-                schema: "ProductScope",
-                columns: table => new
-                {
-                    BrandID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    EnName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
-                    SocialLink = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    Website = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    MetaKeyword = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: true),
-                    rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FiscalPeriodId = table.Column<int>(type: "int", nullable: false),
-                    BranchId = table.Column<int>(type: "int", nullable: false),
-                    BranchScope = table.Column<short>(type: "smallint", nullable: false),
-                    CreatedById = table.Column<int>(type: "int", nullable: false),
-                    CreatedByName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedById = table.Column<int>(type: "int", nullable: false),
-                    ModifiedByName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Brand", x => x.BrandID);
-                    table.ForeignKey(
-                        name: "FK_Brand_Branch_BranchId",
-                        column: x => x.BranchId,
-                        principalSchema: "Corporate",
-                        principalTable: "Branch",
-                        principalColumn: "BranchID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Brand_FiscalPeriod_FiscalPeriodId",
-                        column: x => x.FiscalPeriodId,
-                        principalSchema: "Finance",
-                        principalTable: "FiscalPeriod",
-                        principalColumn: "FiscalPeriodID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -1239,35 +1167,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleCompany",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    CompanyId = table.Column<int>(type: "int", nullable: false),
-                    RowGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RoleCompany", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RoleCompany_CompanyDb_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "CompanyDb",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RoleCompany_Role_RoleId",
-                        column: x => x.RoleId,
-                        principalSchema: "Auth",
-                        principalTable: "Role",
-                        principalColumn: "RoleID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LabelSetting",
                 schema: "Config",
                 columns: table => new
@@ -1299,6 +1198,34 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         principalSchema: "Metadata",
                         principalTable: "CustomForm",
                         principalColumn: "CustomFormID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserSetting",
+                schema: "Config",
+                columns: table => new
+                {
+                    UserSettingID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    RoleId = table.Column<int>(type: "int", nullable: true),
+                    SettingId = table.Column<int>(type: "int", nullable: false),
+                    ViewId = table.Column<int>(type: "int", nullable: true),
+                    ModelType = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Values = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
+                    rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
+                    ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserSetting", x => x.UserSettingID);
+                    table.ForeignKey(
+                        name: "FK_Config_UserSetting_Config_Setting",
+                        column: x => x.SettingId,
+                        principalSchema: "Config",
+                        principalTable: "Setting",
+                        principalColumn: "SettingID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1359,96 +1286,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PermissionGroup",
-                schema: "Auth",
-                columns: table => new
-                {
-                    PermissionGroupID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SubsystemId = table.Column<int>(type: "int", nullable: false),
-                    SourceTypeId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    EntityName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PermissionGroup", x => x.PermissionGroupID);
-                    table.ForeignKey(
-                        name: "FK_Auth_PermissionGroup_Metadata_SourceType",
-                        column: x => x.SourceTypeId,
-                        principalSchema: "Metadata",
-                        principalTable: "OperationSourceType",
-                        principalColumn: "OperationSourceTypeID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Auth_PermissionGroup_Metadata_Subsystem",
-                        column: x => x.SubsystemId,
-                        principalSchema: "Metadata",
-                        principalTable: "Subsystem",
-                        principalColumn: "SubsystemID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Person",
-                schema: "Contact",
-                columns: table => new
-                {
-                    PersonID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    UserID = table.Column<int>(type: "int", nullable: true),
-                    rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Person", x => x.PersonID);
-                    table.ForeignKey(
-                        name: "FK_Contact_Person_Auth_User",
-                        column: x => x.UserID,
-                        principalSchema: "Auth",
-                        principalTable: "User",
-                        principalColumn: "UserID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserRole",
-                schema: "Auth",
-                columns: table => new
-                {
-                    UserRoleID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRole", x => x.UserRoleID);
-                    table.UniqueConstraint("AK_UserRole_UserId_RoleId", x => new { x.UserId, x.RoleId });
-                    table.ForeignKey(
-                        name: "FK_UserRole_Role_RoleId",
-                        column: x => x.RoleId,
-                        principalSchema: "Auth",
-                        principalTable: "Role",
-                        principalColumn: "RoleID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserRole_User_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "Auth",
-                        principalTable: "User",
-                        principalColumn: "UserID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserValue",
                 schema: "Config",
                 columns: table => new
@@ -1469,126 +1306,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         principalSchema: "Config",
                         principalTable: "UserValueCategory",
                         principalColumn: "CategoryID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Column",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    GroupName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DotNetType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StorageType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ScriptType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Length = table.Column<int>(type: "int", nullable: false),
-                    MinLength = table.Column<int>(type: "int", nullable: false),
-                    IsFixedLength = table.Column<bool>(type: "bit", nullable: false),
-                    IsDynamic = table.Column<bool>(type: "bit", nullable: false),
-                    IsNullable = table.Column<bool>(type: "bit", nullable: false),
-                    AllowSorting = table.Column<bool>(type: "bit", nullable: false),
-                    AllowFiltering = table.Column<bool>(type: "bit", nullable: false),
-                    Visibility = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DisplayIndex = table.Column<short>(type: "smallint", nullable: false),
-                    Expression = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ViewId = table.Column<int>(type: "int", nullable: true),
-                    RowGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Column", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Column_View_ViewId",
-                        column: x => x.ViewId,
-                        principalTable: "View",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserSetting",
-                schema: "Config",
-                columns: table => new
-                {
-                    UserSettingID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    RoleId = table.Column<int>(type: "int", nullable: true),
-                    SettingId = table.Column<int>(type: "int", nullable: false),
-                    ViewId = table.Column<int>(type: "int", nullable: true),
-                    ModelType = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Values = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: false),
-                    rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserSetting", x => x.UserSettingID);
-                    table.ForeignKey(
-                        name: "FK_Config_UserSetting_Auth_Role",
-                        column: x => x.RoleId,
-                        principalSchema: "Auth",
-                        principalTable: "Role",
-                        principalColumn: "RoleID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Config_UserSetting_Auth_User",
-                        column: x => x.UserId,
-                        principalSchema: "Auth",
-                        principalTable: "User",
-                        principalColumn: "UserID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Config_UserSetting_Config_Setting",
-                        column: x => x.SettingId,
-                        principalSchema: "Config",
-                        principalTable: "Setting",
-                        principalColumn: "SettingID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Config_UserSetting_Metadata_EntityView",
-                        column: x => x.ViewId,
-                        principalTable: "View",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ViewRowPermission",
-                schema: "Auth",
-                columns: table => new
-                {
-                    RowPermissionID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    ViewID = table.Column<int>(type: "int", nullable: false),
-                    AccessMode = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Value = table.Column<double>(type: "float", nullable: false),
-                    Value2 = table.Column<double>(type: "float", nullable: false),
-                    TextValue = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    Items = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
-                    rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ViewRowPermission", x => x.RowPermissionID);
-                    table.ForeignKey(
-                        name: "FK_Auth_ViewRowPermission_Auth_Role",
-                        column: x => x.RoleId,
-                        principalSchema: "Auth",
-                        principalTable: "Role",
-                        principalColumn: "RoleID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Auth_ViewRowPermission_Metadata_View",
-                        column: x => x.ViewID,
-                        principalTable: "View",
-                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -2127,32 +1844,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Permission",
-                schema: "Auth",
-                columns: table => new
-                {
-                    PermissionID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    GroupId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Flag = table.Column<int>(type: "int", nullable: false, defaultValueSql: "((0))"),
-                    Description = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Permission", x => x.PermissionID);
-                    table.ForeignKey(
-                        name: "FK_Auth_Permission_Auth_PermissionGroup",
-                        column: x => x.GroupId,
-                        principalSchema: "Auth",
-                        principalTable: "PermissionGroup",
-                        principalColumn: "PermissionGroupID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "RoleWidget",
                 schema: "Auth",
                 columns: table => new
@@ -2619,74 +2310,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Command",
-                schema: "Metadata",
-                columns: table => new
-                {
-                    CommandID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ParentId = table.Column<int>(type: "int", nullable: true),
-                    PermissionId = table.Column<int>(type: "int", nullable: true),
-                    TitleKey = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    RouteUrl = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    IconName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    HotKey = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
-                    Index = table.Column<int>(type: "int", nullable: true),
-                    rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Command", x => x.CommandID);
-                    table.ForeignKey(
-                        name: "FK_Metadata_Command_Auth_Permission",
-                        column: x => x.PermissionId,
-                        principalSchema: "Auth",
-                        principalTable: "Permission",
-                        principalColumn: "PermissionID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Metadata_Command_Metadata_Parent",
-                        column: x => x.ParentId,
-                        principalSchema: "Metadata",
-                        principalTable: "Command",
-                        principalColumn: "CommandID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RolePermission",
-                schema: "Auth",
-                columns: table => new
-                {
-                    RolePermissionID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<int>(type: "int", nullable: false),
-                    PermissionId = table.Column<int>(type: "int", nullable: false),
-                    rowguid = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newid())"),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "(getdate())")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RolePermission", x => x.RolePermissionID);
-                    table.UniqueConstraint("AK_RolePermission_RoleId_PermissionId", x => new { x.RoleId, x.PermissionId });
-                    table.ForeignKey(
-                        name: "FK_RolePermission_Permission_PermissionId",
-                        column: x => x.PermissionId,
-                        principalSchema: "Auth",
-                        principalTable: "Permission",
-                        principalColumn: "PermissionID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RolePermission_Role_RoleId",
-                        column: x => x.RoleId,
-                        principalSchema: "Auth",
-                        principalTable: "Role",
-                        principalColumn: "RoleID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CheckBookPage",
                 schema: "Check",
                 columns: table => new
@@ -2744,6 +2367,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         principalColumn: "VoucherLineID",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                schema: "Core",
+                table: "Version",
+                columns: new[] { "VersionId", "ModifiedDate", "Number", "rowguid" },
+                values: new object[] { 1, new DateTime(2022, 8, 27, 13, 56, 52, 150, DateTimeKind.Unspecified), "2.2.0", new Guid("26452115-8352-42fe-a7b8-4bd3d32f50f6") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Account_BranchId",
@@ -2861,12 +2490,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 column: "BranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Brand_FiscalPeriodId",
-                schema: "ProductScope",
-                table: "Brand",
-                column: "FiscalPeriodId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CashRegister_BranchId",
                 schema: "CashFlow",
                 table: "CashRegister",
@@ -2925,23 +2548,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Metadata",
                 table: "City",
                 column: "ProvinceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Column_ViewId",
-                table: "Column",
-                column: "ViewId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Command_ParentId",
-                schema: "Metadata",
-                table: "Command",
-                column: "ParentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Command_PermissionId",
-                schema: "Metadata",
-                table: "Command",
-                column: "PermissionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CostCenter_BranchId",
@@ -3246,32 +2852,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Permission_GroupId",
-                schema: "Auth",
-                table: "Permission",
-                column: "GroupId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PermissionGroup_SourceTypeId",
-                schema: "Auth",
-                table: "PermissionGroup",
-                column: "SourceTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PermissionGroup_SubsystemId",
-                schema: "Auth",
-                table: "PermissionGroup",
-                column: "SubsystemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Person_UserID",
-                schema: "Contact",
-                table: "Person",
-                column: "UserID",
-                unique: true,
-                filter: "[UserID] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Project_BranchId",
                 schema: "Finance",
                 table: "Project",
@@ -3296,26 +2876,10 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 column: "BranchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleCompany_CompanyId",
-                table: "RoleCompany",
-                column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RoleCompany_RoleId",
-                table: "RoleCompany",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_RoleFiscalPeriod_FiscalPeriodId",
                 schema: "Auth",
                 table: "RoleFiscalPeriod",
                 column: "FiscalPeriodId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RolePermission_PermissionId",
-                schema: "Auth",
-                table: "RolePermission",
-                column: "PermissionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleWidget_WidgetId",
@@ -3384,52 +2948,16 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 column: "CashRegisterId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_RoleId",
-                schema: "Auth",
-                table: "UserRole",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserSetting_RoleId",
-                schema: "Config",
-                table: "UserSetting",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserSetting_SettingId",
                 schema: "Config",
                 table: "UserSetting",
                 column: "SettingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserSetting_UserId",
-                schema: "Config",
-                table: "UserSetting",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserSetting_ViewId",
-                schema: "Config",
-                table: "UserSetting",
-                column: "ViewId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserValue_CategoryId",
                 schema: "Config",
                 table: "UserValue",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ViewRowPermission_RoleId",
-                schema: "Auth",
-                table: "ViewRowPermission",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ViewRowPermission_ViewID",
-                schema: "Auth",
-                table: "ViewRowPermission",
-                column: "ViewID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Voucher_BranchId",
@@ -3591,13 +3119,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Metadata");
 
             migrationBuilder.DropTable(
-                name: "Column");
-
-            migrationBuilder.DropTable(
-                name: "Command",
-                schema: "Metadata");
-
-            migrationBuilder.DropTable(
                 name: "CurrencyRate",
                 schema: "Finance");
 
@@ -3646,22 +3167,11 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "CashFlow");
 
             migrationBuilder.DropTable(
-                name: "Person",
-                schema: "Contact");
-
-            migrationBuilder.DropTable(
                 name: "RoleBranch",
                 schema: "Auth");
 
             migrationBuilder.DropTable(
-                name: "RoleCompany");
-
-            migrationBuilder.DropTable(
                 name: "RoleFiscalPeriod",
-                schema: "Auth");
-
-            migrationBuilder.DropTable(
-                name: "RolePermission",
                 schema: "Auth");
 
             migrationBuilder.DropTable(
@@ -3689,10 +3199,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "CashFlow");
 
             migrationBuilder.DropTable(
-                name: "UserRole",
-                schema: "Auth");
-
-            migrationBuilder.DropTable(
                 name: "UserSetting",
                 schema: "Config");
 
@@ -3701,8 +3207,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Config");
 
             migrationBuilder.DropTable(
-                name: "ViewRowPermission",
-                schema: "Auth");
+                name: "Version",
+                schema: "Core");
 
             migrationBuilder.DropTable(
                 name: "ViewSetting",
@@ -3733,6 +3239,14 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Metadata");
 
             migrationBuilder.DropTable(
+                name: "OperationSourceType",
+                schema: "Metadata");
+
+            migrationBuilder.DropTable(
+                name: "Subsystem",
+                schema: "Metadata");
+
+            migrationBuilder.DropTable(
                 name: "EntityType",
                 schema: "Metadata");
 
@@ -3757,13 +3271,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance");
 
             migrationBuilder.DropTable(
-                name: "CompanyDb");
-
-            migrationBuilder.DropTable(
-                name: "Permission",
-                schema: "Auth");
-
-            migrationBuilder.DropTable(
                 name: "DashboardTab",
                 schema: "Reporting");
 
@@ -3776,23 +3283,12 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "CashFlow");
 
             migrationBuilder.DropTable(
-                name: "User",
-                schema: "Auth");
-
-            migrationBuilder.DropTable(
                 name: "Setting",
                 schema: "Config");
 
             migrationBuilder.DropTable(
                 name: "UserValueCategory",
                 schema: "Config");
-
-            migrationBuilder.DropTable(
-                name: "Role",
-                schema: "Auth");
-
-            migrationBuilder.DropTable(
-                name: "View");
 
             migrationBuilder.DropTable(
                 name: "Widget",
@@ -3827,10 +3323,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                 schema: "Finance");
 
             migrationBuilder.DropTable(
-                name: "PermissionGroup",
-                schema: "Auth");
-
-            migrationBuilder.DropTable(
                 name: "Dashboard",
                 schema: "Reporting");
 
@@ -3857,14 +3349,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
             migrationBuilder.DropTable(
                 name: "VoucherOrigin",
                 schema: "Finance");
-
-            migrationBuilder.DropTable(
-                name: "OperationSourceType",
-                schema: "Metadata");
-
-            migrationBuilder.DropTable(
-                name: "Subsystem",
-                schema: "Metadata");
 
             migrationBuilder.DropTable(
                 name: "FiscalPeriod",

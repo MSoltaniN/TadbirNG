@@ -17,7 +17,7 @@ using SPPC.Tadbir.Model.Config;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal static class UserSettingMap
+    internal static class SysUserSettingMap
     {
         internal static void BuildMapping(EntityTypeBuilder<UserSetting> builder)
         {
@@ -60,6 +60,42 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey(e => e.ViewId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Config_UserSetting_Metadata_EntityView");
+        }
+    }
+
+    internal static class UserSettingMap
+    {
+        internal static void BuildMapping(EntityTypeBuilder<UserSetting> builder)
+        {
+            builder.ToTable("UserSetting", "Config");
+            builder.HasKey(e => e.Id);
+            builder.Property(e => e.Id)
+                .HasColumnName("UserSettingID");
+            builder.Property(e => e.ViewId);
+            builder.Property(e => e.ModelType)
+                .IsRequired()
+                .HasMaxLength(128);
+            builder.Property(e => e.Values)
+                .HasColumnName("Values")
+                .IsRequired()
+                .HasMaxLength(2048);
+            builder.Property(e => e.RowGuid)
+                .HasColumnName("rowguid")
+                .HasDefaultValueSql("(newid())");
+            builder.Property(e => e.ModifiedDate)
+                .HasColumnType("datetime")
+                .HasDefaultValueSql("(getdate())");
+
+            builder.HasOne(e => e.Setting)
+                .WithMany()
+                .HasForeignKey(e => e.SettingId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Config_UserSetting_Config_Setting");
+
+            builder.Ignore(e => e.User);
+            builder.Ignore(e => e.Role);
+            builder.Ignore(e => e.View);
+
         }
     }
 }
