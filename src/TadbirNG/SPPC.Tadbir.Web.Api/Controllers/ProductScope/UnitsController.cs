@@ -11,7 +11,7 @@ using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.ProductScope;
 using SPPC.Tadbir.Web.Api.Filters;
 
-namespace SPPC.Tadbir.Web.Api.Controllers
+namespace SPPC.Tadbir.Web.Api.Controllers.ProductScope
 {
     /// <summary>
     /// عملیات سرویس وب برای مدیریت اطلاعات واحدها را پیاده سازی می کند
@@ -123,7 +123,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> DeleteExistingUnitAsync(int unitId)
         {
             string message = await ValidateDeleteAsync(unitId);
-            if (!String.IsNullOrEmpty(message))
+            if (!string.IsNullOrEmpty(message))
             {
                 return BadRequestResult(message);
             }
@@ -156,7 +156,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         /// و در غیر این صورت رشته خالی را برمی گرداند</returns>
         protected override async Task<string> ValidateDeleteAsync(int item)
         {
-            string message = String.Empty;
+            string message = string.Empty;
             var unit = await _repository.GetUnitAsync(item);
             if (unit == null)
             {
