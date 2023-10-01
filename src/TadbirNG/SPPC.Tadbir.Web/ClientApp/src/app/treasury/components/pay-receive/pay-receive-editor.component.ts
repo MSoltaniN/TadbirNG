@@ -95,6 +95,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   amountDifference: number;
   public dialogRef: DialogRef;
   public dialogModel: any;
+  dateType: string;
   @Persist() preferedDate;
 
 
@@ -129,7 +130,7 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
   }
 
   ngOnInit(): void {
-    // this.getCurrencies();
+    this.setDateDisplayType();
 
     this.route.paramMap.subscribe(param => {
       this.urlMode = param.get('mode');
@@ -779,6 +780,13 @@ export class PayReceiveEditorComponent extends DetailComponent implements OnInit
     if (this.isNew && this.insertedInNew) {
       this.deleteModel(true);
     }
+  }
+
+  setDateDisplayType() {
+    if (this.properties && this.properties.get(this.metadataKey))
+      this.dateType = this.properties
+        .get(this.metadataKey)
+        .filter((p) => p.name == "Date")[0].type;
   }
   /**
    * prepare confim message for delete operation
