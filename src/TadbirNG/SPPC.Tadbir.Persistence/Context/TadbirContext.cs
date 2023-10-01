@@ -37,7 +37,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="modelBuilder">Builder instance used for mapping definitions</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Ignore<Person>();
+            /*modelBuilder.Ignore<Person>();
             modelBuilder.Ignore<User>();
             modelBuilder.Ignore<UserRole>();
             modelBuilder.Ignore<Column>();
@@ -47,7 +47,7 @@ namespace SPPC.Tadbir.Persistence
             modelBuilder.Ignore<Permission>();
             modelBuilder.Ignore<PermissionGroup>();
             modelBuilder.Ignore<RoleCompany>();
-            modelBuilder.Ignore<RolePermission>();
+            modelBuilder.Ignore<RolePermission>();*/
 
             modelBuilder.ApplyConfiguration(new VersionConfiguration());
 
