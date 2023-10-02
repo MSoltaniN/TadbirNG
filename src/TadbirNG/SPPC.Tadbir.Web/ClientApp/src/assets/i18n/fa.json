@@ -936,6 +936,14 @@
     "UserProfile": {
       "ShowDashboardAtStartup": "نمایش داشبورد هنگام ورود به برنامه"
     },
+    "PayReceipt": {
+      "AutoConfirmAfterSave": " تایید خودکار فرم پس از ذخیره",
+      "AutoApproveAfterConfirm": "تصویب خودکار فرم پس از تایید",
+      "AutoRegisterAfterApprove": "ثبت‌ مالی خودکار پس از تصویب",
+      "RegisterWithLastOpenVoucher": "ثبت مالی با آخرین سند باز در تاریخ عملیات",
+      "RegisterByCreatingNewVoucher": "ثبت مالی با ایجاد سند جدید",
+      "AutoRegisterVoucherRelatedToRegistration": "ثبت خودکار سند مرتبط با ثبت مالی "
+    },
     "Description": "توضیحات",
     "TitleText": "لیست تنظیمات",
     "DefaultCalendar": "تقویم پیش فرض",

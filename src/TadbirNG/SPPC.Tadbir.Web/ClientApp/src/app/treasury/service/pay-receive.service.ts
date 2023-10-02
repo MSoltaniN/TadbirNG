@@ -53,7 +53,7 @@ export class PayReceiveService extends BaseService {
     return this.http.delete(apiUrl, this.option).pipe(map((res) => res));
   }
 
-  public getRelatedVoucher(apiUrl: string) {
+  public getAny(apiUrl: string) {
     return this.http.get(apiUrl, this.option).pipe(map((res) => res));
   }
 }

@@ -126,3 +126,9 @@
           </div>
     </form>
 </div>
+
+<!-- Payment & Receipt Settings -->
+<div *ngIf="selectedItemType == 'PaymentConfig' || selectedItemType == 'ReceiptConfig'" class="settings-form">
+    <payReceive-settings [model]="selectedItemModel" (updateList)="updateListHandler($event)"></payReceive-settings>
+</div>
+

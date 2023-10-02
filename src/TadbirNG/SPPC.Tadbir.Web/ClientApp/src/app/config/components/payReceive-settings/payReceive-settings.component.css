@@ -1,0 +1,18 @@
+input[type=checkbox], input[type=radio] {
+    vertical-align: middle;
+}
+
+#btn-section {
+    position: absolute;
+    bottom: 5px;
+    display: flex;
+    gap: 5px;
+}
+
+.btn-setting-rtl{
+    left: 0px;
+}
+
+.btn-setting-ltr{
+    right: 0px;
+}

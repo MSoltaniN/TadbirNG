@@ -53,11 +53,13 @@
 
             <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
 
-              <settings-form-component [model]="itemSelectedModel" (updateList)="updateListHandler($event)"></settings-form-component>
+              <settings-form-component [model]="itemSelectedModel"
+                (updateList)="updateListHandler($event)"
+                (saveChanges)="saveChanges($event)"></settings-form-component>
 
             </div>
 
-            <div *ngIf="lastSelectedType && lastSelectedType != 'SystemConfig'" id="btn-section" class="btn-setting" [ngClass]="{'btn-setting-rtl': currentlang == 'fa', 'btn-setting-ltr' : currentlang == 'en' }">
+            <div *ngIf="lastSelectedType && !disableDefaultButtons" id="btn-section" class="btn-setting" [ngClass]="{'btn-setting-rtl': currentlang == 'fa', 'btn-setting-ltr' : currentlang == 'en' }">
               <button class="k-button k-primary" [EntityName]="entityType" SppcPermissionCheck="SaveSettings" (sppcClick)="onDefaultSettings()">{{ 'Settings.DefaultBtn' | translate }}</button>
               <button class="k-button k-primary" [EntityName]="entityType" SppcPermissionCheck="SaveSettings" (sppcClick)="onSaveSettingsList()">{{ 'ViewTreeConfig.Save' | translate }}</button>
             </div>
