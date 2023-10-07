@@ -326,7 +326,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetVouchersByOperationalDateAsync(DateTime date)
         {
             var vouchers = await _repository.GetVouchersByOperationalDateAsync(date, GridOptions);
-            return Json(vouchers);
+            return JsonListResult(vouchers);
         }
 
         #endregion

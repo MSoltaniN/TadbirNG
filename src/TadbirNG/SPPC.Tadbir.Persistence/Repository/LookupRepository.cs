@@ -16,6 +16,7 @@ using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Resources;
+using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Reporting;
@@ -495,7 +496,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         ///<inheritdoc/>
-        public async Task<IEnumerable<VoucherSummaryViewModel>> GetVouchersByOperationalDateAsync(
+        public async Task<PagedList<VoucherSummaryViewModel>> GetVouchersByOperationalDateAsync(
             DateTime date, GridOptions gridOptions)
         {
             var vouchers = await Repository
@@ -504,9 +505,8 @@ namespace SPPC.Tadbir.Persistence
                     && v.StatusId == (int)DocumentStatusId.NotChecked)
                 .Select(v => Mapper.Map<VoucherSummaryViewModel>(v))
                 .ToListAsync();
-            return vouchers
-                .Apply(gridOptions)
-                .ToList();
+
+            return new PagedList<VoucherSummaryViewModel>(vouchers, gridOptions);
         }
 
         #endregion

@@ -11,7 +11,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
     /// <summary>
     /// اطلاعات نمایشی مورد نیاز در گزارش خلاصه اسناد حسابداری را نگهداری می کند
     /// </summary>
-    public class VoucherSummaryViewModel
+    public class VoucherSummaryViewModel : ViewModelBase
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -19,11 +19,6 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public VoucherSummaryViewModel()
         {
         }
-
-        /// <summary>
-        /// شناسه دیتابیسی سند مالی
-        /// </summary>
-        public int Id { get; set; }
 
         /// <summary>
         /// شماره سند مالی

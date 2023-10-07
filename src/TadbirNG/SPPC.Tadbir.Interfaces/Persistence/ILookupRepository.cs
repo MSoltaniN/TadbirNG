@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Utility;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Reporting;
@@ -167,7 +168,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="date">تاریخ مورد نظر</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>لیست خلاصه اسناد</returns>
-        Task<IEnumerable<VoucherSummaryViewModel>> GetVouchersByOperationalDateAsync(
+        Task<PagedList<VoucherSummaryViewModel>> GetVouchersByOperationalDateAsync(
             DateTime date, GridOptions gridOptions);
 
         #endregion
