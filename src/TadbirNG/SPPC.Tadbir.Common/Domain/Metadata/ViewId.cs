@@ -150,5 +150,10 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی واحدها
         /// </summary>
         public const int Unit = 100002;
+
+        /// <summary>
+        /// نمای اطلاعاتی ویژگی ها
+        /// </summary>
+        public const int Property = 100003;
     }
 }

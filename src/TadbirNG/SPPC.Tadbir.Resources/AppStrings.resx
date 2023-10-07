@@ -4304,7 +4304,7 @@
   </data>
   <data name="PaymentSettingsDescription" xml:space="preserve">
     <value>گزینه‌های موجود برای مدیریت فرم پرداخت</value>
-  </data>	
+  </data>
   <data name="PaymentSettings" xml:space="preserve">
     <value>فرم پرداخت</value>
   </data>
@@ -4361,5 +4361,14 @@
   </data>
   <data name="UnitName" xml:space="preserve">
     <value>نام واحد</value>
+  </data>
+  <data name="Properties" xml:space="preserve">
+    <value>ویژگی ها</value>
+  </data>
+  <data name="Prefix" xml:space="preserve">
+    <value>پیشوند</value>
+  </data>
+  <data name="Suffix" xml:space="preserve">
+    <value>پسوند</value>
   </data>
 </root>
