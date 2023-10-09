@@ -28,6 +28,7 @@ namespace SPPC.Tadbir.Persistence
         Brand = 100001,
         Unit = 100002,
         Property = 100003,
-        Attribute = 100004
+        Attribute = 100004,
+        File = 100005
     }
 }

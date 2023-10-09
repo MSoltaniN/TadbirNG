@@ -160,5 +160,10 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی خصوصیت ها
         /// </summary>
         public const int Attribute = 100004;
+
+        /// <summary>
+        /// نمای اطلاعاتی فایل ها
+        /// </summary>
+        public const int File = 100003;
     }
 }

@@ -4371,19 +4371,34 @@
   <data name="UniteName" xml:space="preserve">
     <value>Unit Name</value>
   </data>
+  <data name="File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="Files" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="FileData" xml:space="preserve">
+    <value>File Data</value>
+  </data>
+  <data name="FileUniqeName" xml:space="preserve">
+    <value>File Uniqe Name</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>File Name</value>
+  </data>
   <data name="Properties" xml:space="preserve">
     <value>Properties</value>
   </data>
-  <data name="Prefix" xml:space="preserve">
+	<data name="Prefix" xml:space="preserve">
     <value>Prefix</value>
   </data>
-  <data name="Suffix" xml:space="preserve">
+	<data name="Suffix" xml:space="preserve">
     <value>Suffix</value>
   </data>
-  <data name="Attribute" xml:space="preserve">
+	<data name="Attribute" xml:space="preserve">
     <value>Attribute</value>
   </data>
-  <data name="Attributes" xml:space="preserve">
+	<data name="Attributes" xml:space="preserve">
     <value>Attributes</value>
   </data>
 </root>

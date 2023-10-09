@@ -2271,6 +2271,58 @@ namespace SPPC.Tadbir.Security
     }
 
     /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به یک فایل را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum FilePermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به اطلاعات فایل ها
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست فایل ها یا جزییات یک فایل
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی فیلتر فایل ها موجود
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
+        /// دسترسی چاپ فایل ها موجود
+        /// </summary>
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات فایل ها موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک فایل جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک فایل موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک فایل موجود
+        /// </summary>
+        Delete = 0x40,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت فایل ها
+        /// </summary>
+        All = 0x7f
+    }
+
+    /// <summary>
     /// فلگ های تعریف شده برای دسترسی های امنیتی به یک ویژگی را تعریف می کند
     /// </summary>
     [Flags]

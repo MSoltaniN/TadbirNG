@@ -120,6 +120,7 @@ namespace SPPC.Tadbir.Persistence
             WidgetTypeMap.BuildMapping(modelBuilder.Entity<WidgetType>());
             BrandMap.BuildMapping(modelBuilder.Entity<Brand>());
             UnitMap.BuildMapping(modelBuilder.Entity<Unit>());
+            FileMap.BuildMapping(modelBuilder.Entity<File>());
             PropertyMap.BuildMapping(modelBuilder.Entity<Property>());
             AttributeMap.BuildMapping(modelBuilder.Entity<Attribute>());
         }

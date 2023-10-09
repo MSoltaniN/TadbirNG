@@ -232,6 +232,11 @@ namespace SPPC.Tadbir.Security
         public const string Unit = "Unit";
 
         /// <summary>
+        /// نام موجودیت فایل
+        /// </summary>
+        public const string File = "File";
+
+        /// <summary>
         /// نام موجودیت ویژگی
         /// </summary>
         public const string Property = "Property";

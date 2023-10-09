@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using SPPC.Framework.Common;
 using SPPC.Framework.Cryptography;
 using SPPC.Framework.Extensions;
@@ -34,7 +35,9 @@ using SPPC.Tadbir.ViewModel.Reporting;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.IO;
 using System.Linq;
+using File = SPPC.Tadbir.Model.ProductScope.File;
 using Attribute = SPPC.Tadbir.Model.ProductScope.Attribute;
 
 namespace SPPC.Tadbir.Mapper
@@ -708,6 +711,13 @@ namespace SPPC.Tadbir.Mapper
             
             mapperConfig.CreateMap<Unit, UnitViewModel>();
             mapperConfig.CreateMap<UnitViewModel, Unit>();
+
+            mapperConfig.CreateMap<File, FileViewModel>();
+            mapperConfig.CreateMap<FileViewModel, File>()
+                .ForMember(dest => dest.UniqeName, opt => opt.MapFrom(src => String.Concat(Convert.ToString(Guid.NewGuid()), "-", Path.GetFileName(src.FormFile.FileName))))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.FormFile.FileName))
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.FormFile.ContentType))
+                .ForMember(dest => dest.Data, opt => opt.MapFrom(src => FileDataFormatter.IFormFileToByteArray(src.FormFile)));
 
             mapperConfig.CreateMap<Property, PropertyViewModel>();
             mapperConfig.CreateMap<PropertyViewModel, Property>();

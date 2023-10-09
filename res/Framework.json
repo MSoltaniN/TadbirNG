@@ -16886,6 +16886,187 @@
       ]
     },
     {
+      "name": "File",
+      "area": "ProductScope",
+      "identifier": "Id",
+      "type": "BaseEntity",
+      "description": "اطلاعات یک فایل را نگهدارری می کند",
+      "properties": [
+        {
+          "name": "Id",
+          "type": 6,
+          "isValidated": false,
+          "description": "شناسه فایل",
+          "storage": {
+            "name": "FileID",
+            "type": "int",
+            "nullable": false
+          },
+          "validationRule": {
+            "name": "Id_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "",
+            "format": "",
+            "type": 0
+          }
+        },
+        {
+          "name": "Name",
+          "type": 0,
+          "isValidated": true,
+          "description": "نام فایل",
+          "storage": {
+            "name": "Name",
+            "type": "nvarchar(2048)",
+            "nullable": false
+          },
+          "validationRule": {
+            "name": "Name_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "2048",
+            "format": "",
+            "type": 1
+          }
+        },
+        {
+          "name": "Description",
+          "type": 0,
+          "isValidated": true,
+          "description": null,
+          "storage": {
+            "name": "Description",
+            "type": "nvarchar(2048)",
+            "nullable": false
+          },
+          "validationRule": {
+            "name": "Description_Validation",
+            "required": true,
+            "minimum": "",
+            "maximum": "2048",
+            "format": "",
+            "type": 1
+          }
+        },
+        {
+          "name": "IsActive",
+          "type": 15,
+          "isValidated": true,
+          "description": null,
+          "storage": {
+            "name": "IsActive",
+            "type": "bit",
+            "nullable": true
+          },
+          "validationRule": {
+            "name": "IsActive_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "",
+            "format": "",
+            "type": 0
+          }
+        },
+        {
+          "name": "UniqeName",
+          "type": 0,
+          "isValidated": true,
+          "description": "نام یکتای فایل",
+          "storage": {
+            "name": "UniqeName",
+            "type": "nvarchar(2048)",
+            "nullable": false
+          },
+          "validationRule": {
+            "name": "UniqeName_Validation",
+            "required": true,
+            "minimum": "",
+            "maximum": "2048",
+            "format": "",
+            "type": 1
+          }
+        },
+        {
+          "name": "Type",
+          "type": 4,
+          "isValidated": true,
+          "description": "نوع فایل",
+          "storage": {
+            "name": "Type",
+            "type": "smallint",
+            "nullable": true
+          },
+          "validationRule": {
+            "name": "Type_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "",
+            "format": "",
+            "type": 0
+          }
+        },
+        {
+          "name": "Data",
+          "type": 2,
+          "isValidated": true,
+          "description": "داده فایل",
+          "storage": {
+            "name": "Data",
+            "type": "tinyint",
+            "nullable": true
+          },
+          "validationRule": {
+            "name": "Data_Validation",
+            "required": false,
+            "minimum": "",
+            "maximum": "",
+            "format": "",
+            "type": 0
+          }
+        },
+        {
+          "name": "RowGuid",
+          "type": 16,
+          "isValidated": false,
+          "description": null,
+          "storage": {
+            "name": "rowguid",
+            "type": "uniqueidentifier",
+            "nullable": false
+          },
+          "validationRule": {
+            "name": "RowGuid_Validation",
+            "required": true,
+            "minimum": "",
+            "maximum": "",
+            "format": "",
+            "type": 0
+          }
+        },
+        {
+          "name": "ModifiedDate",
+          "type": 13,
+          "isValidated": false,
+          "description": null,
+          "storage": {
+            "name": "ModifiedDate",
+            "type": "datetime",
+            "nullable": false
+          },
+          "validationRule": {
+            "name": "ModifiedDate_Validation",
+            "required": true,
+            "minimum": "",
+            "maximum": "",
+            "format": "",
+            "type": 0
+          }
+        }
+      ],
+      "relations": []
+    },
+    {
       "name": "Attribute",
       "area": "ProductScope",
       "identifier": "Id",
