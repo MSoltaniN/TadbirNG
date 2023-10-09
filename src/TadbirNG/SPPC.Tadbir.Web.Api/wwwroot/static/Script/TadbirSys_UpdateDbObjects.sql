@@ -2037,7 +2037,7 @@ SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 SET IDENTITY_INSERT [Reporting].[Report] ON
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
-    VALUES (100007, 100001, 1, 100001, 3, N'', N'brands', 0, 1, 1, 1, NULL)
+    VALUES (100007, 100001, 1, 100001, 100000, N'', N'brands', 0, 1, 1, 1, NULL)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON
@@ -2109,7 +2109,7 @@ SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 SET IDENTITY_INSERT [Reporting].[Report] ON
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
-    VALUES (100008, 100001, 1, 100002, 3, N'', N'units', 0, 1, 1, 1, NULL)
+    VALUES (100008, 100001, 1, 100002, 100000, N'', N'units', 0, 1, 1, 1, NULL)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON
@@ -2125,7 +2125,7 @@ INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [Titl
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
 
--- 2.2.0
+-- 2.2.2
 SET IDENTITY_INSERT [Metadata].[View] ON
 INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [EntityType], [FetchUrl], [SearchUrl], [IsHierarchy], [IsCartableIntegrated])
     VALUES (100003, 'Property', N'Property', N'Base', NULL, NULL, 0, 0)
@@ -2179,7 +2179,7 @@ SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 SET IDENTITY_INSERT [Reporting].[Report] ON
 INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
-    VALUES (100009, 100001, 1, 100003, 3, N'', NULL, 0, 1, 1, 1, NULL)
+    VALUES (100009, 100001, 1, 100003, 100000, N'', N'properties', 0, 1, 1, 1, NULL)
 SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 SET IDENTITY_INSERT [Reporting].[LocalReport] ON
