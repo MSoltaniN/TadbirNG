@@ -2337,6 +2337,6 @@ SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
 
 SET IDENTITY_INSERT [Metadata].[Command] ON
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (100008, 100001, 100029, N'Files', N'/product-scop/files', 'list', NULL)
+    VALUES (100008, 100001, 100029, N'Files', N'/product-scope/files', 'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
