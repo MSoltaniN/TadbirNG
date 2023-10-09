@@ -2272,3 +2272,71 @@ INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [Titl
     VALUES (100007, 100001, 100022, N'Attribute', N'/product-scope/attributes', 'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
+
+-- 2.2.4
+SET IDENTITY_INSERT [Metadata].[View] ON
+INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [EntityType], [FetchUrl], [SearchUrl], [IsHierarchy], [IsCartableIntegrated])
+    VALUES (100005, 'File', N'File', N'Base', NULL, NULL, 0, 0)
+SET IDENTITY_INSERT [Metadata].[View] OFF
+
+SET IDENTITY_INSERT [Metadata].[Column] ON
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (100044, 100005, 'RowNo', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 0, 0, 0, 0, N'AlwaysVisible', 0, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (100045, 100005, 'Name', NULL, NULL, 'System.String', 'nvarchar', 'string', 2048, 0, 0, 0, 0, 1, 1, NULL, 1, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (100046, 100005, 'UniqeName', NULL, NULL, 'System.String', 'nvarchar', 'string', 2048, 0, 0, 0, 0, 1, 1, NULL, 2, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (100047, 100005, 'Description', NULL, NULL, 'System.String', 'nvarchar', 'string', 2048, 0, 0, 0, 0, 1, 1, NULL, 3, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (100048, 100005, 'IsActive', NULL, NULL, 'System.Boolean', 'bit', 'boolean', 0, 0, 0, 0, 0, 1, 1, NULL, 4, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (100049, 100005, 'FormFile', NULL, NULL, 'Microsoft.AspNetCore.Http.IFormFile', '', '', 0, 0, 0, 0, 0, 1, 1, NULL, 5, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (100050, 100005, 'Id', NULL, NULL, 'System.Int32', 'int', 'number', 0, 0, 0, 0, 0, 1, 1, N'AlwaysHidden', -1, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (100051, 100005, 'RowGuid', NULL, NULL, 'System.Guid', '', '', 0, 0, 0, 0, 0, 1, 1, NULL, 6, NULL)
+INSERT INTO [Metadata].[Column] ([ColumnID], [ViewID], [Name], [GroupName], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsDynamic], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Visibility], [DisplayIndex], [Expression])
+    VALUES (100052, 100005, 'ModifiedDate', NULL, 'Default', 'System.DateTime', 'datetime', 'Date', 0, 0, 0, 0, 0, 1, 1, NULL, 7, NULL)
+SET IDENTITY_INSERT [Metadata].[Column] OFF
+
+
+SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
+    VALUES (100005, 100000, 1, N'ManageEntities,files', N'file', NULL)
+SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
+
+SET IDENTITY_INSERT [Auth].[Permission] ON
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (100029, 100005, N'View', 1, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (100030, 100005, N'Filter', 2, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (100031, 100005, N'Print', 4, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (100032, 100005, N'Export', 8, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (100033, 100005, N'Create', 16, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (100034, 100005, N'Edit', 32, NULL)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag], [Description])
+    VALUES (100035, 100005, N'Delete', 64, NULL)
+SET IDENTITY_INSERT [Auth].[Permission] OFF
+
+SET IDENTITY_INSERT [Reporting].[Report] ON
+INSERT INTO [Reporting].[Report] ([ReportID], [ParentID], [CreatedByID], [ViewID], [SubsystemID], [Code], [ServiceUrl], [IsGroup], [IsSystem], [IsDefault], [IsDynamic], [ResourceKeys])
+    VALUES (100011, 100001, 1, 100005, 3, N'', N'Files', 0, 1, 1, 1, NULL)
+SET IDENTITY_INSERT [Reporting].[Report] OFF
+
+SET IDENTITY_INSERT [Reporting].[LocalReport] ON
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (100022, 1, 100011, N'File List')
+INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], [Caption])
+    VALUES (100023, 2, 100011, N'فهرست فایل ها')
+SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
+
+SET IDENTITY_INSERT [Metadata].[Command] ON
+INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
+    VALUES (100008, 100001, 100029, N'Files', N'/product-scop/files', 'list', NULL)
+SET IDENTITY_INSERT [Metadata].[Command] OFF
+

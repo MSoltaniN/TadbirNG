@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SPPC.Tadbir.Persistence;
 
 namespace SPPC.Tadbir.Web.Api.Migrations
 {
     [DbContext(typeof(TadbirContext))]
-    partial class TadbirContextModelSnapshot : ModelSnapshot
+    [Migration("20231008114214_add-file")]
+    partial class addfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -807,8 +809,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(2048)");
 
                     b.Property<string>("DescriptionKey")
-                        .HasMaxLength(1028)
-                        .HasColumnType("nvarchar(1028)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<bool>("IsStandalone")
                         .HasColumnType("bit");
@@ -3016,74 +3018,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.ToTable("Subsystem", "Metadata");
                 });
 
-            modelBuilder.Entity("SPPC.Tadbir.Model.ProductScope.Attribute", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("AttributeID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("int");
-
-                    b.Property<short>("BranchScope")
-                        .HasColumnType("smallint");
-
-                    b.Property<int>("CreatedById")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreatedByName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
-
-                    b.Property<string>("EnName")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ModifiedByName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<Guid>("RowGuid")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("rowguid");
-
-                    b.Property<short?>("Type")
-                        .HasColumnType("smallint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("Attribute", "ProductScope");
-                });
-
             modelBuilder.Entity("SPPC.Tadbir.Model.ProductScope.Brand", b =>
                 {
                     b.Property<int>("Id")
@@ -3230,82 +3164,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("File", "ProductScope");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.ProductScope.Property", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("PropertyID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("int");
-
-                    b.Property<short>("BranchScope")
-                        .HasColumnType("smallint");
-
-                    b.Property<int>("CreatedById")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreatedByName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
-
-                    b.Property<string>("EnName")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ModifiedByName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<string>("Prefix")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<Guid>("RowGuid")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("rowguid");
-
-                    b.Property<string>("Suffix")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<short?>("Type")
-                        .HasColumnType("smallint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.ToTable("Property", "ProductScope");
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.ProductScope.Unit", b =>
@@ -4701,27 +4559,7 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.Navigation("Province");
                 });
 
-            modelBuilder.Entity("SPPC.Tadbir.Model.ProductScope.Attribute", b =>
-                {
-                    b.HasOne("SPPC.Tadbir.Model.Corporate.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
             modelBuilder.Entity("SPPC.Tadbir.Model.ProductScope.Brand", b =>
-                {
-                    b.HasOne("SPPC.Tadbir.Model.Corporate.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.ProductScope.Property", b =>
                 {
                     b.HasOne("SPPC.Tadbir.Model.Corporate.Branch", "Branch")
                         .WithMany()

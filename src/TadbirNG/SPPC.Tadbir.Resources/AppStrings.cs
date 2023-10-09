@@ -4140,6 +4140,31 @@ namespace SPPC.Tadbir.Resources
         public const string FieldsDoNotMatch = "FieldsDoNotMatch";
 
         /// <summary>
+        /// Default text : فایل
+        /// </summary>
+        public const string File = "File";
+
+        /// <summary>
+        /// Default text : داده  فایل
+        /// </summary>
+        public const string FileData = "FileData";
+
+        /// <summary>
+        /// Default text : نام فایل
+        /// </summary>
+        public const string FileName = "FileName";
+
+        /// <summary>
+        /// Default text : فایل ها
+        /// </summary>
+        public const string Files = "Files";
+
+        /// <summary>
+        /// Default text : نام منحصر به فرد فایل
+        /// </summary>
+        public const string FileUniqeName = "FileUniqeName";
+
+        /// <summary>
         /// Default text : فیلتر
         /// </summary>
         public const string Filter = "Filter";
