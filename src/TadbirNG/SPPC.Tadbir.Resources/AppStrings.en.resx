@@ -4389,16 +4389,28 @@
   <data name="Properties" xml:space="preserve">
     <value>Properties</value>
   </data>
-	<data name="Prefix" xml:space="preserve">
+  <data name="Prefix" xml:space="preserve">
     <value>Prefix</value>
   </data>
-	<data name="Suffix" xml:space="preserve">
+  <data name="Suffix" xml:space="preserve">
     <value>Suffix</value>
   </data>
-	<data name="Attribute" xml:space="preserve">
+  <data name="Attribute" xml:space="preserve">
     <value>Attribute</value>
   </data>
-	<data name="Attributes" xml:space="preserve">
+  <data name="Attributes" xml:space="preserve">
     <value>Attributes</value>
+  </data>
+  <data name="ProductAttribute" xml:space="preserve">
+    <value>Product Attribute</value>
+  </data>
+  <data name="ProductAttributes" xml:space="preserve">
+    <value>Product Attributes</value>
+  </data>
+  <data name="ProductProperties" xml:space="preserve">
+    <value>Product Properties</value>
+  </data>
+  <data name="ProductProperty" xml:space="preserve">
+    <value>Product Property</value>
   </data>
 </root>

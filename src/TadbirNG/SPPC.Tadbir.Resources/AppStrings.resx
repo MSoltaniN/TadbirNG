@@ -4392,4 +4392,16 @@
   <data name="Attributes" xml:space="preserve">
     <value>خصوصیت ها</value>
   </data>
+  <data name="ProductAttribute" xml:space="preserve">
+    <value>خصوصیت محصول</value>
+  </data>
+  <data name="ProductAttributes" xml:space="preserve">
+    <value>خصوصیات محصول</value>
+  </data>
+  <data name="ProductProperties" xml:space="preserve">
+    <value>ویژگی های محصول</value>
+  </data>
+  <data name="ProductProperty" xml:space="preserve">
+    <value>ویژگی محصول</value>
+  </data>
 </root>
