@@ -4371,4 +4371,10 @@
   <data name="Suffix" xml:space="preserve">
     <value>پسوند</value>
   </data>
+  <data name="Attribute" xml:space="preserve">
+    <value>خصوصیت</value>
+  </data>
+  <data name="Attributes" xml:space="preserve">
+    <value>خصوصیت ها</value>
+  </data>
 </root>

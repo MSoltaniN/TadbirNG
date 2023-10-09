@@ -170,6 +170,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IBrandRepository, BrandRepository>();
             _services.AddTransient<IUnitRepository, UnitRepository>();
             _services.AddTransient<IPropertyRepository, PropertyRepository>();
+            _services.AddTransient<IAttributeRepository, AttributeRepository>();
         }
 
         private void AddServiceTypes()

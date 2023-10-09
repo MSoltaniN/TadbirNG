@@ -35,6 +35,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using Attribute = SPPC.Tadbir.Model.ProductScope.Attribute;
 
 namespace SPPC.Tadbir.Mapper
 {
@@ -710,6 +711,9 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<Property, PropertyViewModel>();
             mapperConfig.CreateMap<PropertyViewModel, Property>();
+
+            mapperConfig.CreateMap<Attribute, AttributeViewModel>();
+            mapperConfig.CreateMap<AttributeViewModel, Attribute>();
         }
 
         private static int? GetNullableId(AccountItemBriefViewModel item)

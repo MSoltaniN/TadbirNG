@@ -16,6 +16,7 @@ using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Persistence.Mapping;
 using SPPC.Tadbir.Persistence.Mapping.Finance;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Attribute = SPPC.Tadbir.Model.ProductScope.Attribute;
 using Command = SPPC.Tadbir.Model.Metadata.Command;
 
 namespace SPPC.Tadbir.Persistence
@@ -120,6 +121,7 @@ namespace SPPC.Tadbir.Persistence
             BrandMap.BuildMapping(modelBuilder.Entity<Brand>());
             UnitMap.BuildMapping(modelBuilder.Entity<Unit>());
             PropertyMap.BuildMapping(modelBuilder.Entity<Property>());
+            AttributeMap.BuildMapping(modelBuilder.Entity<Attribute>());
         }
 
         /// <summary>

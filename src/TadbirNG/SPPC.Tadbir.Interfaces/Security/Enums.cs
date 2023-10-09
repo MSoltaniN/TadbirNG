@@ -2321,4 +2321,56 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         All = 0x7f
     }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به یک خصوصیت را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum AttributePermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به اطلاعات خصوصیت ها
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست خصوصیت ها یا جزییات یک خصوصیت
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی فیلتر خصوصیت ها موجود
+        /// </summary>
+        Filter = 0x2,
+
+        /// <summary>
+        /// دسترسی چاپ خصوصیت ها موجود
+        /// </summary>
+        Print = 0x4,
+
+        /// <summary>
+        /// دسترسی ارسال اطلاعات خصوصیت ها موجود
+        /// </summary>
+        Export = 0x8,
+
+        /// <summary>
+        /// دسترسی ایجاد یک خصوصیت جدید
+        /// </summary>
+        Create = 0x10,
+
+        /// <summary>
+        /// دسترسی ویرایش یک خصوصیت موجود
+        /// </summary>
+        Edit = 0x20,
+
+        /// <summary>
+        /// دسترسی حذف یک خصوصیت موجود
+        /// </summary>
+        Delete = 0x40,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت خصوصیت ها
+        /// </summary>
+        All = 0x7f
+    }
 }
