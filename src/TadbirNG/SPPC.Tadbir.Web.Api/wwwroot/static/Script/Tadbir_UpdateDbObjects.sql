@@ -1715,11 +1715,11 @@ CREATE TABLE [ProductScope].[Attribute] (
 GO
 
 DELETE FROM [Config].[LogSetting]
-WHERE EntityTypeID = 100002
+WHERE EntityTypeID = 100004
 
 SET IDENTITY_INSERT [Metadata].[EntityType] ON
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
-    VALUES (100002, N'Attribute', NULL)
+    VALUES (100004, N'Attribute', NULL)
 SET IDENTITY_INSERT [Metadata].[EntityType] OFF
 
 

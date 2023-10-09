@@ -2053,7 +2053,7 @@ INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [Titl
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
 
--- 2.2.0
+-- 2.2.1
 SET IDENTITY_INSERT [Metadata].[View] ON
 INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [EntityType], [FetchUrl], [SearchUrl], [IsHierarchy], [IsCartableIntegrated])
     VALUES (100002, 'Unit', N'Unit', N'Base', NULL, NULL, 0, 0)
@@ -2087,7 +2087,7 @@ SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
-    VALUES (100002, 2, 1, N'ManageEntities,Units', N'Unit', NULL)
+    VALUES (100002, 100000, 1, N'ManageEntities,Units', N'Unit', NULL)
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON
@@ -2157,7 +2157,7 @@ SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
-    VALUES (100003, 2, 1, N'ManageEntities,Properties', N'Property', NULL)
+    VALUES (100003, 100000, 1, N'ManageEntities,Properties', N'Property', NULL)
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON
@@ -2190,20 +2190,6 @@ INSERT INTO [Reporting].[LocalReport] ([LocalReportID], [LocaleID], [ReportID], 
 SET IDENTITY_INSERT [Reporting].[LocalReport] OFF
 
 UPDATE [Metadata].[Command]
-SET [PermissionID] = 100001, [TitleKey] = N'Brands', [RouteUrl] = N'/product-scope/brands', [IconName] = 'lis', [HotKey] = NULL
-WHERE [CommandID] = 100004
-
-UPDATE [Metadata].[Command]
-SET [PermissionID] = 100008, [TitleKey] = N'Units', [RouteUrl] = N'/product-scope/units', [IconName] = NULL, [HotKey] = NULL
-WHERE [CommandID] = 100005
-
-SET IDENTITY_INSERT [Metadata].[Command] ON
-INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (100006, 100001, NULL, N'Property', N'/product-scope/prperties', 'list', NULL)
-SET IDENTITY_INSERT [Metadata].[Command] OFF
-
-
-UPDATE [Metadata].[Command]
 SET [PermissionID] = 100001, [TitleKey] = N'Brands', [RouteUrl] = N'/product-scope/brands', [IconName] = 'list', [HotKey] = NULL
 WHERE [CommandID] = 100004
 
@@ -2213,14 +2199,14 @@ WHERE [CommandID] = 100005
 
 SET IDENTITY_INSERT [Metadata].[Command] ON
 INSERT INTO [Metadata].[Command] ([CommandID], [ParentID], [PermissionID], [TitleKey], [RouteUrl], [IconName], [HotKey])
-    VALUES (100006, 100001, 100015, N'Property', N'/product-scope/prperties', 'list', NULL)
+    VALUES (100006, 100001, 100015, N'Property', N'/product-scope/properties', 'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
 
 -- 2.2.3
 SET IDENTITY_INSERT [Metadata].[View] ON
 INSERT INTO [Metadata].[View] ([ViewID], [Name], [EntityName], [EntityType], [FetchUrl], [SearchUrl], [IsHierarchy], [IsCartableIntegrated])
-    VALUES (100004, 'Attribute', N'Attribute', N'Core', NULL, NULL, 0, 0)
+    VALUES (100004, 'Attribute', N'Attribute', N'Base', NULL, NULL, 0, 0)
 SET IDENTITY_INSERT [Metadata].[View] OFF
 
 SET IDENTITY_INSERT [Metadata].[Column] ON
@@ -2249,7 +2235,7 @@ SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
 INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [SubsystemID], [SourceTypeID], [Name], [EntityName], [Description])
-    VALUES (100004, 2, 1, N'ManageEntities,Attributes', N'Attribute', NULL)
+    VALUES (100004, 100000, 1, N'ManageEntities,Attributes', N'Attribute', NULL)
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON
