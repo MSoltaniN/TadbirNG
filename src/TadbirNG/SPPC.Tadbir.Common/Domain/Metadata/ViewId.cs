@@ -155,5 +155,10 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی ویژگی ها
         /// </summary>
         public const int Property = 100003;
+
+        /// <summary>
+        /// نمای اطلاعاتی خصوصیت ها
+        /// </summary>
+        public const int Attribute = 100004;
     }
 }

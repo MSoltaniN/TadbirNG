@@ -235,5 +235,10 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت ویژگی
         /// </summary>
         public const string Property = "Property";
+
+        /// <summary>
+        /// نام موجودیت خصوصیت
+        /// </summary>
+        public const string Attribute = "Attribute";
     }
 }

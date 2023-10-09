@@ -1,19 +1,19 @@
-﻿USE master
+USE master
 GO
 
-CREATE DATABASE NGTadbirSys
+CREATE DATABASE @SysDbName
 GO
 
-ALTER DATABASE [NGTadbirSys] SET COMPATIBILITY_LEVEL = 130
+ALTER DATABASE [@SysDbName] SET COMPATIBILITY_LEVEL = 130
 GO
 
 ALTER DATABASE SCOPED CONFIGURATION SET IDENTITY_CACHE=OFF
 GO
 
-ALTER AUTHORIZATION ON DATABASE::NGTadbirSys TO NgTadbirUser;
+ALTER AUTHORIZATION ON DATABASE::@SysDbName TO @LoginName;
 GO
 
-USE [NGTadbirSys]
+USE [@SysDbName]
 GO
 
 SET ANSI_NULLS ON
@@ -3024,13 +3024,13 @@ SET IDENTITY_INSERT [Config].[Setting] OFF
 
 -- Create system records for security
 
--- admin user is added with password 'Demo1234' (case-sensitive)
+-- @AdminUserName user is added with password '@Password' (case-sensitive)
 SET IDENTITY_INSERT [Auth].[User] ON
-INSERT INTO [Auth].[User] (UserID, UserName, PasswordHash, IsEnabled) VALUES (1, N'admin', 'b22f213ec710f0b0e86297d10279d69171f50f01a04edf40f472a563e7ad8576', 1)
+INSERT INTO [Auth].[User] (UserID, UserName, PasswordHash, IsEnabled) VALUES (1, N'@AdminUserName', '@AdminPasswordHash', 1)
 SET IDENTITY_INSERT [Auth].[User] OFF
 
 SET IDENTITY_INSERT [Contact].[Person] ON
-INSERT INTO [Contact].[Person] (PersonID, UserID, FirstName, LastName) VALUES (1, 1, N'راهبر', N'سیستم')
+INSERT INTO [Contact].[Person] (PersonID, UserID, FirstName, LastName) VALUES (1, 1, N'@AdminFirstName', N'@AdminLastName')
 SET IDENTITY_INSERT [Contact].[Person] OFF
 
 SET IDENTITY_INSERT [Auth].[Role] ON

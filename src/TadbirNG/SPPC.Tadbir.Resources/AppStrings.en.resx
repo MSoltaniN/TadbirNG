@@ -4380,4 +4380,10 @@
   <data name="Suffix" xml:space="preserve">
     <value>Suffix</value>
   </data>
+  <data name="Attribute" xml:space="preserve">
+    <value>Attribute</value>
+  </data>
+  <data name="Attributes" xml:space="preserve">
+    <value>Attributes</value>
+  </data>
 </root>
