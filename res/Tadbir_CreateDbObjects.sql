@@ -34,6 +34,19 @@ GO
 CREATE SCHEMA [Check]
 GO
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 CREATE SCHEMA [ProductScope]
 GO
 
@@ -1101,6 +1114,211 @@ CREATE TABLE [Core].[InactiveEntity] (
 )
 GO
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 CREATE TABLE [ProductScope].[Brand] (
     [BrandID]           INT              IDENTITY (1, 1) NOT NULL,
     [BranchID]          INT              NOT NULL,
@@ -1135,10 +1353,40 @@ CREATE TABLE [ProductScope].[Unit] (
     [Symbol]         NVARCHAR(64)     NULL,
     [Status]         SMALLINT         NULL,
     [IsActive]       BIT              NULL,
+    [FiscalPeriodID]    INT              NOT NULL,
+    [CreatedByID]       INT              NOT NULL,
+    [CreatedByName]     NVARCHAR(64)     NOT NULL,
+    [CreatedDate]       DATETIME         NOT NULL,
+    [ModifiedByID]      INT              NOT NULL,
+    [ModifiedByName]    NVARCHAR(64)     NOT NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_ProductScope_Unit_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_ProductScope_Unit_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_ProductScope_Unit] PRIMARY KEY CLUSTERED ([UnitID] ASC)
     , CONSTRAINT [FK_ProductScope_Unit_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+)
+GO
+
+CREATE TABLE [ProductScope].[Property] (
+    [PropertyID]     INT              IDENTITY (1, 1) NOT NULL,
+    [BranchID]       INT              NOT NULL,
+    [BranchScope]    SMALLINT         NOT NULL,
+    [Name]           NVARCHAR(64)     NOT NULL,
+    [EnName]         NVARCHAR(64)     NULL,
+    [Description]    NVARCHAR(1024)   NULL,
+    [Type]           SMALLINT         NULL,
+    [Prefix]         NVARCHAR(64)     NULL,
+    [Suffix]         NVARCHAR(64)     NULL,
+    [IsActive]       BIT              NULL,
+    [FiscalPeriodID]    INT              NOT NULL,
+    [CreatedByID]       INT              NOT NULL,
+    [CreatedByName]     NVARCHAR(64)     NOT NULL,
+    [CreatedDate]       DATETIME         NOT NULL,
+    [ModifiedByID]      INT              NOT NULL,
+    [ModifiedByName]    NVARCHAR(64)     NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_ProductScope_Property_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_ProductScope_Property_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_ProductScope_Property] PRIMARY KEY CLUSTERED ([PropertyID] ASC)
+    , CONSTRAINT [FK_ProductScope_Property_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
 )
 GO
 
@@ -1293,17 +1541,61 @@ INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (22, N'CashRegister', NULL)
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
-    VALUES (22, N'CashRegister', NULL)
-INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (23, N'SourceApp', NULL)
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (24, N'Receipt', NULL)
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (25, N'Payment', NULL)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (100001, N'Brand', NULL)
 INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
     VALUES (100002, N'Unit', NULL)
+INSERT INTO [Metadata].[EntityType] ([EntityTypeID], [Name], [Description])
+    VALUES (100003, N'Property', NULL)
 SET IDENTITY_INSERT [Metadata].[EntityType] OFF
 
 SET IDENTITY_INSERT [Metadata].[Operation] ON
@@ -1571,6 +1863,11 @@ SET IDENTITY_INSERT [Metadata].[OperationSourceList] OFF
 SET IDENTITY_INSERT [Metadata].[Subsystem] ON
 INSERT INTO [Metadata].[Subsystem] ([SubsystemID], [Name]) VALUES (2, N'Accounting')
 INSERT INTO [Metadata].[Subsystem] ([SubsystemID], [Name]) VALUES (3, N'Treasury')
+
+
+
+
+INSERT INTO [Metadata].[Subsystem] ([SubsystemID], [Name]) VALUES (100000, N'ProductScope')
 SET IDENTITY_INSERT [Metadata].[Subsystem] OFF
 
 SET IDENTITY_INSERT [Metadata].[OperationSourceType] ON
@@ -2809,4 +3106,23 @@ INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID]
     VALUES (100016, 100000, 1, NULL, 100002, 54, 1)
 INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
     VALUES (100017, 100000, 1, NULL, 100002, 58, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100018, 100000, 1, NULL, 100003, 1, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100019, 100000, 1, NULL, 100003, 2, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100020, 100000, 1, NULL, 100003, 3, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100021, 100000, 1, NULL, 100003, 4, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100022, 100000, 1, NULL, 100003, 5, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100023, 100000, 1, NULL, 100003, 6, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100024, 100000, 1, NULL, 100003, 21, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100025, 100000, 1, NULL, 100003, 54, 1)
+INSERT INTO [Config].[LogSetting] ([LogSettingID], [SubsystemID], [SourceTypeID], [SourceID], [EntityTypeID], [OperationID], [IsEnabled])
+    VALUES (100026, 100000, 1, NULL, 100003, 58, 1)
 SET IDENTITY_INSERT [Config].[LogSetting] OFF
+

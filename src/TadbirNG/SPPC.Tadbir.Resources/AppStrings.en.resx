@@ -4371,28 +4371,13 @@
   <data name="UniteName" xml:space="preserve">
     <value>Unit Name</value>
   </data>
-  <data name="Unit" xml:space="preserve">
-    <value>Unit</value>
+  <data name="Properties" xml:space="preserve">
+    <value>Properties</value>
   </data>
-  <data name="Units" xml:space="preserve">
-    <value>Units</value>
+  <data name="Prefix" xml:space="preserve">
+    <value>Prefix</value>
   </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
-  </data>
-  <data name="UniteName" xml:space="preserve">
-    <value>Unit Name</value>
-  </data>
-  <data name="Unit" xml:space="preserve">
-    <value>Unit</value>
-  </data>
-  <data name="Units" xml:space="preserve">
-    <value>Units</value>
-  </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
-  </data>
-  <data name="UniteName" xml:space="preserve">
-    <value>Unit Name</value>
+  <data name="Suffix" xml:space="preserve">
+    <value>Suffix</value>
   </data>
 </root>

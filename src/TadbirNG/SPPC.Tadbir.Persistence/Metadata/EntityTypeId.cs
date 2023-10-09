@@ -26,6 +26,7 @@ namespace SPPC.Tadbir.Persistence
         Receipt = 24,
         Payment = 25,
         Brand = 100001,
-        Unit = 100002
+        Unit = 100002,
+        Property = 100003
     }
 }

@@ -7,15 +7,15 @@ namespace SPPC.Tadbir.ViewModel.ProductScope
     /// <summary>
     /// اطلاعات یک واحد را نگهدارری می کند
     /// </summary>
-    public partial class UnitViewModel : ViewModelBase
+    public partial class PropertyViewModel : ViewModelBase
     {
         /// <summary>
-        /// شناسه یکتای شعبه سازمانی که واحد در آن تعریف می شود
+        /// شناسه یکتای شعبه سازمانی که ویژگی در آن تعریف می شود
         /// </summary>
         public int BranchId { get; set; }
 
         /// <summary>
-        ///نام شعبه ای که واحد در آن تعریف شده است
+        ///نام شعبه ای که ویژگی در آن تعریف شده است
         /// </summary>
         public string BranchName { get; set; }
     }

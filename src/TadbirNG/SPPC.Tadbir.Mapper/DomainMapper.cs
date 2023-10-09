@@ -707,6 +707,9 @@ namespace SPPC.Tadbir.Mapper
             
             mapperConfig.CreateMap<Unit, UnitViewModel>();
             mapperConfig.CreateMap<UnitViewModel, Unit>();
+
+            mapperConfig.CreateMap<Property, PropertyViewModel>();
+            mapperConfig.CreateMap<PropertyViewModel, Property>();
         }
 
         private static int? GetNullableId(AccountItemBriefViewModel item)
