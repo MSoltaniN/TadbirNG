@@ -21,6 +21,7 @@
     <None Remove="Templates\BlankController.tt" />
     <None Remove="Templates\CsApiClass.tt" />
     <None Remove="Templates\CsFluentMappingFromMetadata.tt" />
+    <None Remove="Templates\CsModelSeeder.tt" />
     <None Remove="Templates\CsPermissionsEnum.tt" />
     <None Remove="Templates\CsPocoFromXmlMetadata.tt" />
     <None Remove="Templates\CsViewModelFromMetadata.tt" />
@@ -108,6 +109,11 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>StarterCrudController.cs</LastGenOutput>
     </Content>
+    <Content Include="Templates\CsModelSeeder.tt">
+      <CustomToolNamespace></CustomToolNamespace>
+      <LastGenOutput>CsModelSeeder.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </Content>
     <Content Include="Templates\TsApiFromCsApi.tt">
       <CustomToolNamespace></CustomToolNamespace>
       <Generator>TextTemplatingFilePreprocessor</Generator>
@@ -141,6 +147,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Model\SPPC.Tadbir.Model.csproj" />
     <ProjectReference Include="..\SPPC.Tools.Model\SPPC.Tools.Model.csproj" />
   </ItemGroup>
 
@@ -223,6 +230,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>StarterCrudController.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Templates\CsModelSeeder.cs">
+      <DependentUpon>CsModelSeeder.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Update="Templates\TsApiFromCsApi.cs">
       <DesignTime>True</DesignTime>

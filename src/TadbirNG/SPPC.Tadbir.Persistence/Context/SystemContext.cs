@@ -8,6 +8,7 @@ using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Persistence.Mapping;
 using SPPC.Tadbir.Persistence.Mapping.Reporting;
+using SPPC.Tadbir.Persistence.Seeding;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -32,6 +33,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="modelBuilder">Builder instance used for mapping definitions</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new PermissionGroupViewModelConfiguration());
+            modelBuilder.ApplyConfiguration(new PermissionViewModelConfiguration());
+            modelBuilder.ApplyConfiguration(new SysLogSettingViewModelConfiguration());
+            modelBuilder.ApplyConfiguration(new ColumnViewModelConfiguration());
+            modelBuilder.ApplyConfiguration(new ViewViewModelConfiguration());
+            modelBuilder.ApplyConfiguration(new CommandViewModelConfiguration());
+            modelBuilder.ApplyConfiguration(new LocalReportViewModelConfiguration());
+            modelBuilder.ApplyConfiguration(new ReportViewModelConfiguration());
+
             ColumnMap.BuildMapping(modelBuilder.Entity<Column>());
             CommandMap.BuildMapping(modelBuilder.Entity<Command>());
             CompanyDbMap.BuildMapping(modelBuilder.Entity<CompanyDb>());

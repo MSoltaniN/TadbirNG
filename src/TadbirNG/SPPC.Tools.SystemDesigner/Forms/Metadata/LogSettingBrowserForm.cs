@@ -10,10 +10,12 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Common;
 using SPPC.Tadbir.ViewModel;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
+using SPPC.Tools.SystemDesigner.Commands;
 using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Forms
@@ -598,13 +600,22 @@ namespace SPPC.Tools.SystemDesigner.Forms
             ScriptUtility.ReplaceScript(generated);
 
             var orderedSettings = allSettings.OrderBy(setting => setting.Id);
+
+            GenerateSeeds(orderedSettings);
+
             generated = ScriptUtility.GetInsertScripts(orderedSettings, LogSettingExtensions.ToScript);
             ScriptUtility.ReplaceScript(generated);
         }
 
+        private static void GenerateSeeds(IOrderedEnumerable<LogSettingViewModel> orderedSettings)
+        {
+            var command = new GenerateModelSeedsCommand<LogSettingViewModel>(orderedSettings);
+            command.Execute();
+        }
+
         private static void GenerateUpdateScripts(IEnumerable<LogSettingViewModel> allSettings,
-            IEnumerable<EntityTypeViewModel> allEntities, IEnumerable<OperationSourceViewModel> allSources,
-            IEnumerable<OperationViewModel> allOperations)
+        IEnumerable<EntityTypeViewModel> allEntities, IEnumerable<OperationSourceViewModel> allSources,
+        IEnumerable<OperationViewModel> allOperations)
         {
             var scriptBuilder = new StringBuilder();
             ScriptUtility.AddVersionMarker(scriptBuilder);
@@ -761,9 +772,19 @@ namespace SPPC.Tools.SystemDesigner.Forms
         {
             var orderedSettings = GetAllSysSettings()
                 .OrderBy(setting => setting.Id);
+
+            GenerateSysSeeds(orderedSettings);
+
             GenerateSysCreateScripts(orderedSettings);
             GenerateSysUpdateScripts(orderedSettings);
         }
+
+        private void GenerateSysSeeds(IEnumerable<LogSettingViewModel> orderedSettings)
+        {
+            var command = new GenerateModelSeedsCommand<LogSettingViewModel>(orderedSettings, true);
+            command.Execute();
+        }
+
 
         private static void GenerateSysCreateScripts(IEnumerable<LogSettingViewModel> allSettings)
         {

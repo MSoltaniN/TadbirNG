@@ -12,6 +12,7 @@ using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
+using SPPC.Tools.SystemDesigner.Commands;
 using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Forms
@@ -148,9 +149,16 @@ namespace SPPC.Tools.SystemDesigner.Forms
             // causes Profile commands to be deleted
             ////GenerateCreateScript(orderedMenus);
             GenerateUpdateScript(orderedMenus);
+            GenerateSeeds(orderedMenus);
             this.GetActiveForm().Cursor = Cursors.Default;
             MessageBox.Show(this, "The script was successfully generated.", "Success",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void GenerateSeeds(IEnumerable<CommandViewModel> orderedMenus)
+        {
+            var command = new GenerateModelSeedsCommand<CommandViewModel>(orderedMenus);
+            command.Execute();
         }
 
         private void Refresh_Click(object sender, EventArgs e)

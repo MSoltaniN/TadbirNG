@@ -9,6 +9,7 @@ using SPPC.Framework.Persistence;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
+using SPPC.Tools.SystemDesigner.Commands;
 using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Forms
@@ -106,10 +107,23 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 scriptBuilder.AppendLine(
                     ScriptUtility.GetInsertScripts(allColumns, ColumnExtensions.ToScript));
                 ScriptUtility.ReplaceSysScript(scriptBuilder.ToString());
+
+                GenerateSeeds(allViews, allColumns);
+
                 MessageBox.Show(this, "Scripts were successfully generated.", "Success",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        private void GenerateSeeds(IEnumerable<ViewViewModel> allViews, IEnumerable<ColumnViewModel> allColumns)
+        {
+            var command = new GenerateModelSeedsCommand<ViewViewModel>(allViews);
+            command.Execute();
+
+            var command2 = new GenerateModelSeedsCommand<ColumnViewModel>(allColumns);
+            command2.Execute();
+        }
+
 
         private void Exit_Click(object sender, EventArgs e)
         {
