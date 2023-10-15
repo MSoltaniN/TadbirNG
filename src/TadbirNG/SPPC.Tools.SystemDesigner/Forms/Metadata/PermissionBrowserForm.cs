@@ -9,6 +9,7 @@ using SPPC.Framework.Persistence;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
+using SPPC.Tools.SystemDesigner.Commands;
 using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Forms
@@ -98,6 +99,10 @@ namespace SPPC.Tools.SystemDesigner.Forms
                     allPermissions.AddRange(group.Permissions);
                 }
 
+
+                GenerateSeeds(allGroups, allPermissions);
+
+
                 scriptBuilder.AppendLine(
                     ScriptUtility.GetInsertScripts(allPermissions, PermissionExtensions.ToScript));
                 ScriptUtility.ReplaceSysScript(scriptBuilder.ToString());
@@ -105,6 +110,17 @@ namespace SPPC.Tools.SystemDesigner.Forms
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+
+        private void GenerateSeeds(IEnumerable<PermissionGroupViewModel> allGroups, IEnumerable<PermissionViewModel> allPermissions)
+        {
+            var command = new GenerateModelSeedsCommand<PermissionGroupViewModel>( allGroups.OrderBy(g=> g.Id) );
+            command.Execute();
+
+            var command2 = new GenerateModelSeedsCommand<PermissionViewModel>(allPermissions.OrderBy(p=>p.Id));
+            command2.Execute();
+        }
+
 
         private static List<PermissionGroupViewModel> GetAllPermissionGroups()
         {

@@ -12,6 +12,7 @@ using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
+using SPPC.Tools.SystemDesigner.Commands;
 using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Designers
@@ -205,10 +206,21 @@ WHERE [EntityName] = '{editor.SelectedViewModel}'");
             generated = ScriptUtility.GetInsertScripts(_allLocalReports, LocalReportExtensions.ToScript);
             ScriptUtility.ReplaceSysScript(generated);
 
+            GenerateSeeds(orderedReports, orderedLocals);
+
             // TODO: Add scripting support to ParameterViewModel, then uncomment the following lines...
             ////var orderedParameters = _allParameters.OrderBy(param => param.Id);
             ////generated = ScriptUtility.GetInsertScripts(_allParameters, ParameterExtensions.ToScript);
             ////ScriptUtility.ReplaceSysScript(generated);
+        }
+
+        private void GenerateSeeds(IEnumerable<ReportViewModel> orderedReports, IEnumerable<LocalReportViewModel> orderedLocals)
+        {
+            var command = new GenerateModelSeedsCommand<ReportViewModel>(orderedReports);
+            command.Execute(); 
+            
+            var command2 = new GenerateModelSeedsCommand<LocalReportViewModel>(orderedLocals);
+            command2.Execute();
         }
 
         private void GenerateUpdateScripts()

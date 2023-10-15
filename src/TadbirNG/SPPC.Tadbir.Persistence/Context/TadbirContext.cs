@@ -15,6 +15,7 @@ using SPPC.Tadbir.Model.ProductScope;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Persistence.Mapping;
 using SPPC.Tadbir.Persistence.Mapping.Finance;
+using SPPC.Tadbir.Persistence.Seeding;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using Attribute = SPPC.Tadbir.Model.ProductScope.Attribute;
 using Command = SPPC.Tadbir.Model.Metadata.Command;
@@ -51,6 +52,7 @@ namespace SPPC.Tadbir.Persistence
             modelBuilder.Ignore<RolePermission>();*/
 
             modelBuilder.ApplyConfiguration(new VersionConfiguration());
+            modelBuilder.ApplyConfiguration(new LogSettingViewModelConfiguration());
 
             AccountMap.BuildMapping(modelBuilder.Entity<Account>());
             AccountCollectionMap.BuildMapping(modelBuilder.Entity<AccountCollection>());
