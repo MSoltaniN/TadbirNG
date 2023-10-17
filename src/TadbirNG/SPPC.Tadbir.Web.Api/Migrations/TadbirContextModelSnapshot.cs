@@ -807,8 +807,8 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                         .HasColumnType("nvarchar(2048)");
 
                     b.Property<string>("DescriptionKey")
-                        .HasMaxLength(1028)
-                        .HasColumnType("nvarchar(1028)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<bool>("IsStandalone")
                         .HasColumnType("bit");
@@ -3159,77 +3159,6 @@ namespace SPPC.Tadbir.Web.Api.Migrations
                     b.HasIndex("BranchId");
 
                     b.ToTable("Brand", "ProductScope");
-                });
-
-            modelBuilder.Entity("SPPC.Tadbir.Model.ProductScope.File", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("FileID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("int");
-
-                    b.Property<short>("BranchScope")
-                        .HasColumnType("smallint");
-
-                    b.Property<int>("CreatedById")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CreatedByName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<byte[]>("Data")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
-
-                    b.Property<int>("FiscalPeriodId")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ModifiedById")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ModifiedByName")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
-
-                    b.Property<Guid>("RowGuid")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("rowguid");
-
-                    b.Property<string>("Type")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("UniqeName")
-                        .IsRequired()
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("File", "ProductScope");
                 });
 
             modelBuilder.Entity("SPPC.Tadbir.Model.ProductScope.Property", b =>
