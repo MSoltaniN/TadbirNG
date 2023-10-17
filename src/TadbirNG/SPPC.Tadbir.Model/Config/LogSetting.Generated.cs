@@ -19,7 +19,7 @@ namespace SPPC.Tadbir.Model.Config
     /// <summary>
     /// اطلاعات تنظیمات لاگ را برای یک عملیات یک موجودیت یا یک فرم عملیاتی نگهداری می کند
     /// </summary>
-    public partial class LogSetting : CoreEntity
+    public partial class LogSetting : PCoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

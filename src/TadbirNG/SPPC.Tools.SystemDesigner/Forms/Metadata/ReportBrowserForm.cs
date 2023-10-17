@@ -5,9 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using SPPC.Framework.Cryptography;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Common;
+using SPPC.Tadbir.Mapper;
+using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tools.Extensions;
@@ -24,6 +28,7 @@ namespace SPPC.Tools.SystemDesigner.Designers
             InitializeComponent();
             _sysConnection = DbConnections.SystemConnection;
             _dal = new SqlDataLayer(_sysConnection);
+            _mapper = new DomainMapper(new CryptoService(new CertificateManager()));
         }
 
         protected override void OnLoad(EventArgs e)
@@ -216,10 +221,10 @@ WHERE [EntityName] = '{editor.SelectedViewModel}'");
 
         private void GenerateSeeds(IEnumerable<ReportViewModel> orderedReports, IEnumerable<LocalReportViewModel> orderedLocals)
         {
-            var command = new GenerateModelSeedsCommand<ReportViewModel>(orderedReports);
+            var command = new GenerateModelSeedsCommand<Report>(orderedReports.Select(r=> _mapper.Map<Report>(r) ));
             command.Execute(); 
             
-            var command2 = new GenerateModelSeedsCommand<LocalReportViewModel>(orderedLocals);
+            var command2 = new GenerateModelSeedsCommand<LocalReport>(orderedLocals.Select(l=> _mapper.Map<LocalReport>(l)));
             command2.Execute();
         }
 
@@ -251,5 +256,6 @@ WHERE [EntityName] = '{editor.SelectedViewModel}'");
         private int _nextReportId;
         private int _nextLocalReportId;
         private int _nextParameterId;
+        private IDomainMapper _mapper;
     }
 }

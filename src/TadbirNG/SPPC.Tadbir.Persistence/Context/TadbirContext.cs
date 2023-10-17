@@ -52,7 +52,7 @@ namespace SPPC.Tadbir.Persistence
             modelBuilder.Ignore<RolePermission>();*/
 
             modelBuilder.ApplyConfiguration(new VersionConfiguration());
-            modelBuilder.ApplyConfiguration(new LogSettingViewModelConfiguration());
+            modelBuilder.ApplyConfiguration(new LogSettingConfiguration());
 
             AccountMap.BuildMapping(modelBuilder.Entity<Account>());
             AccountCollectionMap.BuildMapping(modelBuilder.Entity<AccountCollection>());

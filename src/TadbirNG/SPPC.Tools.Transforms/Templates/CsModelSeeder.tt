@@ -23,15 +23,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using SPPC.Tadbir.Model;
-using SPPC.Tadbir.ViewModel.Metadata;
-using SPPC.Tadbir.ViewModel.Auth;
-using SPPC.Tadbir.ViewModel.Config;
-using SPPC.Tadbir.ViewModel.Reporting;
+using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Config;
+using SPPC.Tadbir.Model.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Seeding
 {
 
-    internal class <# if(_modelIsDuplicateInSysDB) { #>Sys<# } #><#= _modelType.Name #>Configuration : IEntityTypeConfiguration<<#= _modelType.Name #>>
+    internal class <#= _modelType.Name #>Configuration : IEntityTypeConfiguration<<#= _modelType.Name #>>
     {
         public void Configure(EntityTypeBuilder<<#= _modelType.Name #>> builder)
         {

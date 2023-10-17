@@ -19,7 +19,7 @@ namespace SPPC.Tadbir.Model.Auth
     /// <summary>
     /// Represents a category used for organizing related permissions.
     /// </summary>
-    public partial class PermissionGroup : CoreEntity
+    public partial class PermissionGroup : PCoreEntity
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PermissionGroup"/> class.

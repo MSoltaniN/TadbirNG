@@ -37,7 +37,7 @@ namespace SPPC.Tools.Transforms.Templates
             }
             else if (property.PropertyType == typeof(Guid))
             {
-                return $"new Guid(\"{(DateTime)property.GetValue(seed)!}\")";
+                return $"new Guid(\"{(Guid)property.GetValue(seed)!}\")";
             }
             else if (property.PropertyType == typeof(bool))
             {
@@ -52,7 +52,7 @@ namespace SPPC.Tools.Transforms.Templates
         private IEnumerable<PropertyInfo> GetFilteredProperties()
         {
             return _modelType.GetProperties()
-                 .Where(p => (p.Name != "Children" && p.Name != "State" && p.Name != "Permissions" && p.Name != "Columns" && p.Name != "ResourceMap"));
+                 .Where(p => !p.PropertyType.FullName!.Contains("SPPC") && p.Name != "Children" && p.Name != "State" && p.Name != "Permissions" && p.Name != "RolePermissions" && p.Name != "Columns" && p.Name != "ResourceMap");
         }
 
         private readonly IEnumerable<TModel> _seeds;

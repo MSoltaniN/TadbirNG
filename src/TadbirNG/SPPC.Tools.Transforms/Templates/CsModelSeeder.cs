@@ -57,28 +57,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using SPPC.Tadbir.Model;
-using SPPC.Tadbir.ViewModel.Metadata;
-using SPPC.Tadbir.ViewModel.Auth;
-using SPPC.Tadbir.ViewModel.Config;
-using SPPC.Tadbir.ViewModel.Reporting;
+using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Config;
+using SPPC.Tadbir.Model.Reporting;
 
 namespace SPPC.Tadbir.Persistence.Seeding
 {
 
     internal class ");
-            
-            #line 34 "C:\Users\Surface\source\repos\TadbirNG\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsModelSeeder.tt"
- if(_modelIsDuplicateInSysDB) { 
-            
-            #line default
-            #line hidden
-            this.Write("Sys");
-            
-            #line 34 "C:\Users\Surface\source\repos\TadbirNG\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsModelSeeder.tt"
- } 
-            
-            #line default
-            #line hidden
             
             #line 34 "C:\Users\Surface\source\repos\TadbirNG\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsModelSeeder.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(_modelType.Name));

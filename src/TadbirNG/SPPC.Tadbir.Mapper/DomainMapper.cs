@@ -201,6 +201,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
 
             mapperConfig.CreateMap<PermissionGroup, PermissionGroupViewModel>();
+            mapperConfig.CreateMap<PermissionGroupViewModel, PermissionGroup>();
             mapperConfig.CreateMap<Permission, PermissionViewModel>()
                 .ForMember(dest => dest.IsEnabled, opts => opts.MapFrom(src => true));
             mapperConfig.CreateMap<PermissionViewModel, Permission>();
@@ -585,6 +586,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<CompanyDb, RelatedItemViewModel>();
 
             mapperConfig.CreateMap<LogSetting, LogSettingViewModel>();
+            mapperConfig.CreateMap<LogSettingViewModel, LogSetting>();
+            mapperConfig.CreateMap<LogSettingViewModel, SysLogSetting>();
             mapperConfig.CreateMap<LogSetting, LogSettingItemViewModel>();
             mapperConfig.CreateMap<SysLogSetting, LogSettingViewModel>();
             mapperConfig.CreateMap<SysLogSetting, LogSettingItemViewModel>();
@@ -600,8 +603,12 @@ namespace SPPC.Tadbir.Mapper
         private static void MapMetadataTypes(IMapperConfigurationExpression mapperConfig)
         {
             mapperConfig.CreateMap<View, ViewViewModel>();
+            mapperConfig.CreateMap<ViewViewModel, View>();
             mapperConfig.CreateMap<View, ViewSummaryViewModel>();
             mapperConfig.CreateMap<Column, ColumnViewModel>();
+            mapperConfig.CreateMap<ColumnViewModel, Column>();
+            mapperConfig.CreateMap<CommandViewModel, Command>()
+                .ForMember(dest => dest.TitleKey, opt => opt.MapFrom(src => src.Title));
             mapperConfig.CreateMap<Command, CommandViewModel>()
                 .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey));
             mapperConfig.CreateMap<View, KeyValue>()
@@ -624,7 +631,9 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<Report, ReportViewModel>()
                 .ForMember(dest => dest.ResourceMap, opts => opts.Ignore());
+            mapperConfig.CreateMap<ReportViewModel, Report>();
             mapperConfig.CreateMap<LocalReport, LocalReportViewModel>();
+            mapperConfig.CreateMap<LocalReportViewModel, LocalReport>();
             mapperConfig.CreateMap<Report, TreeItemViewModel>()
                 .ForMember(dest => dest.ParentId, opts => opts.MapFrom(
                     src => src.Parent != null ? src.Parent.Id : (int?)null));

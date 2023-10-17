@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Model.Metadata
     /// <summary>
     /// اطلاعات فراداده ای یک نمای اطلاعاتی در برنامه را نگهداری می کند
     /// </summary>
-    public partial class View : CoreEntity
+    public partial class View : PCoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Model.Reporting
     /// <summary>
     /// اطلاعات الگوی محلی شده یکی از گزارش های برنامه را نگهداری می کند
     /// </summary>
-    public partial class LocalReport : CoreEntity
+    public partial class LocalReport : PCoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

@@ -33,14 +33,25 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="modelBuilder">Builder instance used for mapping definitions</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new PermissionGroupViewModelConfiguration());
-            modelBuilder.ApplyConfiguration(new PermissionViewModelConfiguration());
-            modelBuilder.ApplyConfiguration(new SysLogSettingViewModelConfiguration());
-            modelBuilder.ApplyConfiguration(new ColumnViewModelConfiguration());
-            modelBuilder.ApplyConfiguration(new ViewViewModelConfiguration());
-            modelBuilder.ApplyConfiguration(new CommandViewModelConfiguration());
-            modelBuilder.ApplyConfiguration(new LocalReportViewModelConfiguration());
-            modelBuilder.ApplyConfiguration(new ReportViewModelConfiguration());
+            
+            modelBuilder.ApplyConfiguration(new SubSystemConfiguration());
+            modelBuilder.ApplyConfiguration(new OperationSourceTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new PermissionGroupConfiguration());
+            modelBuilder.ApplyConfiguration(new PermissionConfiguration());
+            modelBuilder.ApplyConfiguration(new OperationSourceConfiguration());
+            modelBuilder.ApplyConfiguration(new EntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new OperationConfiguration());
+
+            modelBuilder.ApplyConfiguration(new SysLogSettingConfiguration());
+
+            modelBuilder.ApplyConfiguration(new LocaleConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+
+            modelBuilder.ApplyConfiguration(new ViewConfiguration());
+            modelBuilder.ApplyConfiguration(new ColumnConfiguration());
+            modelBuilder.ApplyConfiguration(new CommandConfiguration());
+            modelBuilder.ApplyConfiguration(new ReportConfiguration());
+            modelBuilder.ApplyConfiguration(new LocalReportConfiguration());
 
             ColumnMap.BuildMapping(modelBuilder.Entity<Column>());
             CommandMap.BuildMapping(modelBuilder.Entity<Command>());

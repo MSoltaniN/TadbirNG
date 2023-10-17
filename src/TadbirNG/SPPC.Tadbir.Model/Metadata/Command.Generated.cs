@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Model.Metadata
     /// <summary>
     /// اطلاعات متادیتای دستورات برنامه را نگهداری می کند
     /// </summary>
-    public partial class Command : CoreEntity
+    public partial class Command : PCoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

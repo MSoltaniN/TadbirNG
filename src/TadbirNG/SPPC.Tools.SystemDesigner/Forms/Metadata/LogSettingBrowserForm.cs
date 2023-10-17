@@ -5,10 +5,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using AutoMapper.Internal;
 using SPPC.Framework.Common;
+using SPPC.Framework.Cryptography;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Common;
+using SPPC.Tadbir.Mapper;
+using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Config;
@@ -20,11 +25,12 @@ using SPPC.Tools.Utility;
 
 namespace SPPC.Tools.SystemDesigner.Forms
 {
-    public partial class LogSettingBrowserForm : Form
+    public partial class LogSettingBrowserForm : Form 
     {
         public LogSettingBrowserForm()
         {
             InitializeComponent();
+            _mapper = new DomainMapper(new CryptoService(new CertificateManager()));
         }
 
         protected override void OnLoad(EventArgs e)
@@ -607,9 +613,9 @@ namespace SPPC.Tools.SystemDesigner.Forms
             ScriptUtility.ReplaceScript(generated);
         }
 
-        private static void GenerateSeeds(IOrderedEnumerable<LogSettingViewModel> orderedSettings)
+        private static void GenerateSeeds(IEnumerable<LogSettingViewModel> orderedSettings)
         {
-            var command = new GenerateModelSeedsCommand<LogSettingViewModel>(orderedSettings);
+            var command = new GenerateModelSeedsCommand<LogSetting>(orderedSettings.Select(l=> _mapper.Map<LogSetting>(l)));
             command.Execute();
         }
 
@@ -781,11 +787,10 @@ namespace SPPC.Tools.SystemDesigner.Forms
 
         private void GenerateSysSeeds(IEnumerable<LogSettingViewModel> orderedSettings)
         {
-            var command = new GenerateModelSeedsCommand<LogSettingViewModel>(orderedSettings, true);
+            var command = new GenerateModelSeedsCommand<SysLogSetting>( orderedSettings.Select(s=> _mapper.Map<SysLogSetting>(s)), true);
             command.Execute();
         }
-
-
+        
         private static void GenerateSysCreateScripts(IEnumerable<LogSettingViewModel> allSettings)
         {
             var generated = GetSysInsertScripts(allSettings);
@@ -821,6 +826,11 @@ namespace SPPC.Tools.SystemDesigner.Forms
 
         private static string GetSysInsertScripts(IEnumerable<LogSettingViewModel> newSettings)
         {
+            if (!newSettings.Any())
+            {
+                return string.Empty;
+            }
+
             var scriptBuilder = new StringBuilder();
             scriptBuilder.Append(newSettings.First().ToSysScript(true, false));
 
@@ -841,5 +851,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
         private int _nextEntityId;
         private int _nextSourceId;
         private int _nextOperationId;
+        private static IDomainMapper _mapper;
     }
 }

@@ -36,6 +36,7 @@
     <ProjectReference Include="..\SPPC.Framework.Persistence\SPPC.Framework.Persistence.csproj" />
     <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj" />
     <ProjectReference Include="..\SPPC.Licensing.Model\SPPC.Licensing.Model.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Mapper\SPPC.Tadbir.Mapper.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Model\SPPC.Tadbir.Model.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Service\SPPC.Tadbir.Service.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.ViewModel\SPPC.Tadbir.ViewModel.csproj" />

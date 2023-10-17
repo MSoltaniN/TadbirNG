@@ -4,8 +4,12 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using SPPC.Framework.Cryptography;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Mapper;
+using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
@@ -19,6 +23,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
         public PermissionBrowserForm()
         {
             InitializeComponent();
+            _mapper = new DomainMapper(new CryptoService(new CertificateManager()));
         }
 
         protected override void OnLoad(EventArgs e)
@@ -87,7 +92,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
         private void Generate_Click(object sender, EventArgs e)
         {
             var scriptBuilder = new StringBuilder();
-            var allGroups = grdPermissions.DataSource as List<PermissionGroupViewModel>;
+            var allGroups = _allGroups;
             if (allGroups.Any())
             {
                 scriptBuilder.AppendLine(
@@ -98,11 +103,9 @@ namespace SPPC.Tools.SystemDesigner.Forms
                 {
                     allPermissions.AddRange(group.Permissions);
                 }
-
-
+                
                 GenerateSeeds(allGroups, allPermissions);
-
-
+                
                 scriptBuilder.AppendLine(
                     ScriptUtility.GetInsertScripts(allPermissions, PermissionExtensions.ToScript));
                 ScriptUtility.ReplaceSysScript(scriptBuilder.ToString());
@@ -110,18 +113,16 @@ namespace SPPC.Tools.SystemDesigner.Forms
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
-
+        
         private void GenerateSeeds(IEnumerable<PermissionGroupViewModel> allGroups, IEnumerable<PermissionViewModel> allPermissions)
         {
-            var command = new GenerateModelSeedsCommand<PermissionGroupViewModel>( allGroups.OrderBy(g=> g.Id) );
+            var command = new GenerateModelSeedsCommand<PermissionGroup>( allGroups.OrderBy(g=> g.Id).Select(g=> _mapper.Map<PermissionGroup>(g)) );
             command.Execute();
 
-            var command2 = new GenerateModelSeedsCommand<PermissionViewModel>(allPermissions.OrderBy(p=>p.Id));
+            var command2 = new GenerateModelSeedsCommand<Permission>(allPermissions.OrderBy(p=>p.Id).Select(p => _mapper.Map<Permission>(p)));
             command2.Execute();
         }
-
-
+        
         private static List<PermissionGroupViewModel> GetAllPermissionGroups()
         {
             var allGroups = new List<PermissionGroupViewModel>();
@@ -135,7 +136,9 @@ namespace SPPC.Tools.SystemDesigner.Forms
                     Id = row.ValueOrDefault<int>("PermissionGroupID"),
                     Name = row.ValueOrDefault("Name"),
                     EntityName = row.ValueOrDefault("EntityName"),
-                    Description = row.ValueOrDefault("Description")
+                    Description = row.ValueOrDefault("Description"),
+                    SubsystemId = row.ValueOrDefault<int>("SubsystemID"),
+                    SourceTypeId = row.ValueOrDefault<int>("SourceTypeID"),
                 };
                 var filtered = permissions.Select($"GroupID = {group.Id}");
                 group.Permissions.AddRange(filtered
@@ -161,5 +164,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
         }
 
         private List<PermissionGroupViewModel> _allGroups;
+        private static IDomainMapper _mapper;
     }
 }

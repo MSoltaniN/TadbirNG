@@ -22,6 +22,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
+            builder.Property(e => e.UserId)
+                .HasColumnName("UserID");
 
             builder.HasOne(d => d.User)
                 .WithOne(p => p.Person)

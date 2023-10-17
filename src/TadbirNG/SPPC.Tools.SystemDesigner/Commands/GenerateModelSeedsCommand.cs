@@ -27,7 +27,7 @@ namespace SPPC.Tools.SystemDesigner.Commands
         private void GenerateSeed()
         {
             string csModelPath = ConfigurationManager.AppSettings["CsPersistSeedingPath"];
-            string fileName = string.Format("{0}{1}.config.Generated.cs", _modelIsDuplicateInSysDB ? "Sys":string.Empty, _modelType.Name);
+            string fileName = string.Format("{0}.config.Generated.cs", _modelType.Name);
             string path = GetInitializedFilePath(csModelPath, _modelType.Namespace.Split('.').Last(), fileName);
 
             var template = new CsModelSeeder<TModel>(_seeds , _modelIsDuplicateInSysDB);

@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Model.Auth
     /// <summary>
     /// Represents a potential access grant for a unit of functionality in the application
     /// </summary>
-    public partial class Permission : CoreEntity
+    public partial class Permission : PCoreEntity
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Permission"/> class.

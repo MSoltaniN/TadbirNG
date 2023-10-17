@@ -51,9 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Seeding\Auth\" />
     <Folder Include="Seeding\Config\" />
-    <Folder Include="Seeding\Metadata\" />
     <Folder Include="Seeding\Reporting\" />
   </ItemGroup>
 

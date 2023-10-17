@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Model.Config
     /// <summary>
     /// اطلاعات تنظیمات لاگ سیستمی را برای یک عملیات، یک موجودیت یا یک فرم عملیاتی نگهداری می کند
     /// </summary>
-    public partial class SysLogSetting : CoreEntity
+    public partial class SysLogSetting : PCoreEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد

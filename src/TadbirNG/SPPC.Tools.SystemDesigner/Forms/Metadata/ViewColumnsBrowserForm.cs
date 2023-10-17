@@ -4,13 +4,17 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using SPPC.Framework.Cryptography;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
 using SPPC.Tools.SystemDesigner.Commands;
 using SPPC.Tools.Utility;
+using View = SPPC.Tadbir.Model.Metadata.View;
+using Column = SPPC.Tadbir.Model.Metadata.Column;
 
 namespace SPPC.Tools.SystemDesigner.Forms
 {
@@ -20,6 +24,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
         {
             InitializeComponent();
             _allViews = new List<ViewViewModel>();
+            _mapper = new DomainMapper(new CryptoService(new CertificateManager()));
         }
 
         protected override void OnLoad(EventArgs e)
@@ -117,13 +122,12 @@ namespace SPPC.Tools.SystemDesigner.Forms
 
         private void GenerateSeeds(IEnumerable<ViewViewModel> allViews, IEnumerable<ColumnViewModel> allColumns)
         {
-            var command = new GenerateModelSeedsCommand<ViewViewModel>(allViews);
+            var command = new GenerateModelSeedsCommand<View>(allViews.Select(v=> _mapper.Map<View>(v)));
             command.Execute();
 
-            var command2 = new GenerateModelSeedsCommand<ColumnViewModel>(allColumns);
+            var command2 = new GenerateModelSeedsCommand<Column>(allColumns.Select(c=> _mapper.Map<Column>(c)));
             command2.Execute();
         }
-
 
         private void Exit_Click(object sender, EventArgs e)
         {
@@ -196,5 +200,6 @@ namespace SPPC.Tools.SystemDesigner.Forms
 
         private readonly List<ViewViewModel> _allViews;
         private DataTable _allColumns;
+        private readonly DomainMapper _mapper;
     }
 }

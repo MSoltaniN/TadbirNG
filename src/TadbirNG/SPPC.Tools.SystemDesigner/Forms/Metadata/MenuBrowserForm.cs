@@ -5,15 +5,18 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using SPPC.Framework.Cryptography;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Common;
+using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tools.Extensions;
 using SPPC.Tools.Model;
 using SPPC.Tools.SystemDesigner.Commands;
 using SPPC.Tools.Utility;
+using Command = SPPC.Tadbir.Model.Metadata.Command;
 
 namespace SPPC.Tools.SystemDesigner.Forms
 {
@@ -23,6 +26,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
         {
             InitializeComponent();
             _dal = new SqlDataLayer(DbConnections.SystemConnection);
+            _mapper = new DomainMapper(new CryptoService(new CertificateManager()));
         }
 
         private class PermissionItem
@@ -149,7 +153,9 @@ namespace SPPC.Tools.SystemDesigner.Forms
             // causes Profile commands to be deleted
             ////GenerateCreateScript(orderedMenus);
             GenerateUpdateScript(orderedMenus);
+
             GenerateSeeds(orderedMenus);
+
             this.GetActiveForm().Cursor = Cursors.Default;
             MessageBox.Show(this, "The script was successfully generated.", "Success",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -157,7 +163,7 @@ namespace SPPC.Tools.SystemDesigner.Forms
 
         private void GenerateSeeds(IEnumerable<CommandViewModel> orderedMenus)
         {
-            var command = new GenerateModelSeedsCommand<CommandViewModel>(orderedMenus);
+            var command = new GenerateModelSeedsCommand<Command>(orderedMenus.Select(m=> _mapper.Map<Command>(m)));
             command.Execute();
         }
 
@@ -442,5 +448,6 @@ FROM [Auth].[PermissionGroup]");
         private List<CommandViewModel> _menus;
         private DataTable _groups;
         private DataTable _permissions;
+        private readonly DomainMapper _mapper;
     }
 }
