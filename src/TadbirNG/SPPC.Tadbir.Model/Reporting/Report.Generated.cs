@@ -98,6 +98,6 @@ namespace SPPC.Tadbir.Model.Reporting
         /// <summary>
         /// فرمی که به عنوان منبع داده اصلی این گزارش در برنامه شناخته می شود
         /// </summary>
-        public virtual ReportView View { get; set; }
+        public virtual View View { get; set; }
     }
 }

@@ -59,7 +59,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_Report_Auth_CreatedBy");
             builder.HasOne(e => e.View)
-                .WithMany(d => d.Reports)
+                .WithMany()
                 .HasForeignKey(e => e.ViewId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_Report_Metadata_ReportView");
