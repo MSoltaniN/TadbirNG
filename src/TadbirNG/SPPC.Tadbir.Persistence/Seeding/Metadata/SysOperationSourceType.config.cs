@@ -24,18 +24,16 @@ using SPPC.Tadbir.Model.Reporting;
 namespace SPPC.Tadbir.Persistence.Seeding
 {
 
-    internal class SubSystemConfiguration : IEntityTypeConfiguration<Subsystem>
+    internal class SysOperationSourceTypeConfiguration : IEntityTypeConfiguration<OperationSourceType>
     {
-        public void Configure(EntityTypeBuilder<Subsystem> builder)
+        public void Configure(EntityTypeBuilder<OperationSourceType> builder)
         {
           
-            builder.HasData(new Subsystem { Id = 1 ,  Name = "Administration"  });
+            builder.HasData(new OperationSourceType {    Name = "BaseData",    Id =  1    });
           
-            builder.HasData(new Subsystem { Id = 2,  Name = "Accounting"    });
+            builder.HasData(new OperationSourceType {    Name = "OperationalForms",    Id =  2   });
           
-            builder.HasData(new Subsystem { Id = 3 ,  Name = "Treasury"    });
-          
-            builder.HasData(new Subsystem { Id = 100000  ,   Name = "ProductScope"   });
+            builder.HasData(new OperationSourceType {    Name = "Reports",    Id =  3   });
             
         }
     }

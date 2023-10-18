@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
@@ -34,13 +35,13 @@ namespace SPPC.Tadbir.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             
-            modelBuilder.ApplyConfiguration(new SubSystemConfiguration());
-            modelBuilder.ApplyConfiguration(new OperationSourceTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SysSubSystemConfiguration());
+            modelBuilder.ApplyConfiguration(new SysOperationSourceTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PermissionGroupConfiguration());
             modelBuilder.ApplyConfiguration(new PermissionConfiguration());
-            modelBuilder.ApplyConfiguration(new OperationSourceConfiguration());
-            modelBuilder.ApplyConfiguration(new EntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new OperationConfiguration());
+            modelBuilder.ApplyConfiguration(new SysOperationSourceConfiguration());
+            modelBuilder.ApplyConfiguration(new SysEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SysOperationConfiguration());
 
             modelBuilder.ApplyConfiguration(new SysLogSettingConfiguration());
 
@@ -86,6 +87,19 @@ namespace SPPC.Tadbir.Persistence
             ValidRowPermissionMap.BuildMapping(modelBuilder.Entity<ValidRowPermission>());
             ViewMap.BuildMapping(modelBuilder.Entity<View>());
             ViewRowPermissionMap.BuildMapping(modelBuilder.Entity<ViewRowPermission>());
+        }
+
+        /// <summary>
+        /// Configures this data context
+        /// </summary>
+        /// <param name="optionsBuilder">Builder used for configuring data context</param>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(sqlServerOptions => sqlServerOptions.CommandTimeout(600));
+            optionsBuilder.LogTo(message => Debug.WriteLine(message));
+            optionsBuilder.UseSqlServer(b => b.MigrationsAssembly("SPPC.Tadbir.Web.Api"));
+            optionsBuilder.EnableSensitiveDataLogging();
+            base.OnConfiguring(optionsBuilder);
         }
 
         #region IDisposable Support

@@ -50,6 +50,11 @@ namespace SPPC.Tadbir.Persistence
             modelBuilder.Ignore<PermissionGroup>();
             modelBuilder.Ignore<RoleCompany>();
             modelBuilder.Ignore<RolePermission>();*/
+            modelBuilder.ApplyConfiguration(new SubSystemConfiguration());
+            modelBuilder.ApplyConfiguration(new OperationSourceTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new OperationSourceConfiguration());
+            modelBuilder.ApplyConfiguration(new EntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new OperationConfiguration());
 
             modelBuilder.ApplyConfiguration(new VersionConfiguration());
             modelBuilder.ApplyConfiguration(new LogSettingConfiguration());
@@ -136,7 +141,7 @@ namespace SPPC.Tadbir.Persistence
             optionsBuilder.UseSqlServer(ConnectionString, sqlServerOptions => sqlServerOptions.CommandTimeout(600));
             optionsBuilder.LogTo(message => Debug.WriteLine(message));
             optionsBuilder.UseSqlServer(ConnectionString , b => b.MigrationsAssembly("SPPC.Tadbir.Web.Api"));
-
+            optionsBuilder.EnableSensitiveDataLogging();
            base.OnConfiguring(optionsBuilder);
         }
 

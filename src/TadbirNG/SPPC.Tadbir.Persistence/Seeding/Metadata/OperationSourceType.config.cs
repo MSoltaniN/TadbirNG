@@ -29,11 +29,11 @@ namespace SPPC.Tadbir.Persistence.Seeding
         public void Configure(EntityTypeBuilder<OperationSourceType> builder)
         {
           
-            builder.HasData(new OperationSourceType {    Name = "BaseData",    Id =  1 ,    RowGuid =  new Guid("7a078968-4470-49a7-aaa5-396ae400e02c") ,    ModifiedDate =  DateTime.Parse("01/01/0001 12:00:00 AM")    });
+            builder.HasData(new OperationSourceType { Id = 1 , Name = "BaseData",    });
           
-            builder.HasData(new OperationSourceType {    Name = "OperationalForms",    Id =  2 ,    RowGuid =  new Guid("eb27fb68-0d6c-4e8b-ba88-5f25f518c579") ,    ModifiedDate =  DateTime.Parse("01/01/0001 12:00:00 AM")    });
+            builder.HasData(new OperationSourceType { Id = 2 , Name = "OperationalForms",    });
           
-            builder.HasData(new OperationSourceType {    Name = "Reports",    Id =  3 ,    RowGuid =  new Guid("09d85b66-d12d-4015-bf31-4a8143104598") ,    ModifiedDate =  DateTime.Parse("01/01/0001 12:00:00 AM")    });
+            builder.HasData(new OperationSourceType { Id = 3 ,   Name = "Reports",   });
             
         }
     }

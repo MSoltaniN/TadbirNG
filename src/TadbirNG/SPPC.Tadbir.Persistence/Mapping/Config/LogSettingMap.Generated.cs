@@ -36,29 +36,29 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.Subsystem)
                 .WithMany()
-                .HasForeignKey("SubsystemID")
+                .HasForeignKey(e=>e.SubsystemId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Config_LogSetting_Metadata_Subsystem")
                 .IsRequired();
             builder.HasOne(e => e.SourceType)
                 .WithMany()
-                .HasForeignKey("SourceTypeID")
+                .HasForeignKey(e=>e.SourceTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Config_LogSetting_Metadata_SourceType")
                 .IsRequired();
             builder.HasOne(e => e.Source)
                 .WithMany()
-                .HasForeignKey("SourceID")
+                .HasForeignKey(e=>e.SourceId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Config_LogSetting_Metadata_Source");
             builder.HasOne(e => e.EntityType)
                 .WithMany()
-                .HasForeignKey("EntityTypeID")
+                .HasForeignKey(e=>e.EntityTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Config_LogSetting_Metadata_EntityType");
             builder.HasOne(e => e.Operation)
                 .WithMany()
-                .HasForeignKey("OperationID")
+                .HasForeignKey(e=>e.OperationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Config_LogSetting_Metadata_Operation")
                 .IsRequired();

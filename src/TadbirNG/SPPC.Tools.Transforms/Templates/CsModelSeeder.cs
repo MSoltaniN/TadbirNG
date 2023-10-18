@@ -125,7 +125,7 @@ foreach (var property in GetFilteredProperties()) {
             this.Write(" ");
             
             #line 40 "C:\Users\Surface\source\repos\TadbirNG\src\TadbirNG\SPPC.Tools.Transforms\Templates\CsModelSeeder.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(property != _modelType.GetProperties().Last() ? "," : ""));
+            this.Write(this.ToStringHelper.ToStringWithCulture(property != GetFilteredProperties().Last() ? "," : ""));
             
             #line default
             #line hidden

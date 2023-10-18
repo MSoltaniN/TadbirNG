@@ -52,7 +52,9 @@ namespace SPPC.Tools.Transforms.Templates
         private IEnumerable<PropertyInfo> GetFilteredProperties()
         {
             return _modelType.GetProperties()
-                 .Where(p => !p.PropertyType.FullName!.Contains("SPPC") && p.Name != "Children" && p.Name != "State" && p.Name != "Permissions" && p.Name != "RolePermissions" && p.Name != "Columns" && p.Name != "ResourceMap");
+                 .Where(p => !p.PropertyType.FullName!.Contains("SPPC") && p.Name != "RowGuid" && p.Name != "ModifiedDate" && p.Name != "Children" && p.Name != "State" && p.Name != "Permissions" 
+                                                                                    && p.Name != "RolePermissions" && p.Name != "Columns" && p.Name != "ResourceMap")
+                 .OrderBy(p=>p.Name != "Id").ToList();
         }
 
         private readonly IEnumerable<TModel> _seeds;

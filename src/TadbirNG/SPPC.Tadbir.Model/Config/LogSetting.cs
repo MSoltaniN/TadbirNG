@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using SPPC.Tadbir.Model.Metadata;
 
 namespace SPPC.Tadbir.Model.Config
@@ -24,26 +25,31 @@ namespace SPPC.Tadbir.Model.Config
         /// <summary>
         /// اطلاعات فراداده ای برای زیرسیستم مورد استفاده در عملیات
         /// </summary>
+        [Column("SubsystemID")]
         public virtual int SubsystemId { get; set; }
 
         /// <summary>
         /// اطلاعات فراداده ای نوع فرم عملیاتی مورد استفاده
         /// </summary>
+        [Column("SourceTypeID")]
         public virtual int SourceTypeId { get; set; }
 
         /// <summary>
         /// اطلاعات فراداده ای فرم عملیاتی مورد استفاده
         /// </summary>
+        [Column("SourceID")]
         public virtual int? SourceId { get; set; }
 
         /// <summary>
         /// اطلاعات فراداده ای موجودیت مورد استفاده در عملیات
         /// </summary>
+        [Column("EntityTypeID")]
         public virtual int? EntityTypeId { get; set; }
 
         /// <summary>
         /// اطلاعات فراداده ای عملیات انجام شده
         /// </summary>
+        [Column("OperationID")]
         public virtual int OperationId { get; set; }
     }
 }

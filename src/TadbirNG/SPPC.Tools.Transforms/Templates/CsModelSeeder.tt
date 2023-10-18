@@ -37,7 +37,7 @@ namespace SPPC.Tadbir.Persistence.Seeding
         {
         <#foreach (var seed in _seeds)
         {#>  
-            builder.HasData(new <#= _modelType.Name #> {  <#foreach (var property in GetFilteredProperties()) {  #>  <#= property.Name #> =  <#= GetFormattedValue(property,seed) ?? string.Empty #> <#= property != _modelType.GetProperties().Last() ? "," : "" #>  <# } #> });
+            builder.HasData(new <#= _modelType.Name #> {  <#foreach (var property in GetFilteredProperties()) {  #>  <#= property.Name #> =  <#= GetFormattedValue(property,seed) ?? string.Empty #> <#= property != GetFilteredProperties().Last() ? "," : "" #>  <# } #> });
         <#}#>
 
         }

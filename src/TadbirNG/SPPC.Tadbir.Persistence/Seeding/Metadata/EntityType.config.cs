@@ -29,20 +29,31 @@ namespace SPPC.Tadbir.Persistence.Seeding
         public void Configure(EntityTypeBuilder<EntityType> builder)
         {
           
-            builder.HasData(new EntityType {    Name = "CompanyDb",    Id =  1 ,Description    = "", RowGuid =  new Guid("7a078968-4470-49a7-aaa5-396ae400e02c") ,    ModifiedDate =  DateTime.Parse("01/01/0001 12:00:00 AM")    });
-          
-            builder.HasData(new EntityType {    Name = "Role",    Id =  2, Description = "",    RowGuid =  new Guid("eb27fb68-0d6c-4e8b-ba88-5f25f518c579") ,    ModifiedDate =  DateTime.Parse("01/01/0001 12:00:00 AM")    });
-          
-            builder.HasData(new EntityType {    Name = "Setting",    Id =  4, Description = "",    RowGuid =  new Guid("09d85b66-d12d-4015-bf31-4a8143104598") ,    ModifiedDate =  DateTime.Parse("01/01/0001 12:00:00 AM")    });
-            
-            builder.HasData(new EntityType {    Name = "SysOperationLog",    Id =  5, Description = "",    RowGuid =  new Guid("09d85b66-d12d-4015-bf31-4a8143104598") ,    ModifiedDate =  DateTime.Parse("01/01/0001 12:00:00 AM")    });
-            
-            builder.HasData(new EntityType {    Name = "User",    Id =  6, Description = "",    RowGuid =  new Guid("09d85b66-d12d-4015-bf31-4a8143104598") ,    ModifiedDate =  DateTime.Parse("01/01/0001 12:00:00 AM")    });
-            
-            builder.HasData(new EntityType {    Name = "ViewRowPermission",    Id =  8, Description = "",    RowGuid =  new Guid("09d85b66-d12d-4015-bf31-4a8143104598") ,    ModifiedDate =  DateTime.Parse("01/01/0001 12:00:00 AM")    });
-            
-            builder.HasData(new EntityType {    Name = "UserReport",    Id =  9, Description = "",    RowGuid =  new Guid("09d85b66-d12d-4015-bf31-4a8143104598") ,    ModifiedDate =  DateTime.Parse("01/01/0001 12:00:00 AM")    });
-            
+            builder.HasData(new EntityType { Id = 1,      Name = "Account",   Description    = ""   });
+            builder.HasData(new EntityType { Id = 2,      Name = "AccountCollectionAccount",    Description = "" });
+            builder.HasData(new EntityType { Id = 4,      Name = "AccountGroup",    Description = ""  });
+            builder.HasData(new EntityType { Id = 5,      Name = "Branch",    Description = ""  });
+            builder.HasData(new EntityType { Id = 6,      Name = "CostCenter",     Description = "" });
+            builder.HasData(new EntityType { Id = 7,      Name = "Currency",   Description = ""  });
+            builder.HasData(new EntityType { Id = 9,      Name = "DetailAccount",   Description = ""   });
+            builder.HasData(new EntityType { Id = 10,     Name = "FiscalPeriod",   Description = ""   });
+            builder.HasData(new EntityType { Id = 11,     Name = "OperationLog",   Description = ""   });
+            builder.HasData(new EntityType { Id = 12,     Name = "Project",   Description = ""   });
+            builder.HasData(new EntityType { Id = 15,     Name = "Setting",   Description = ""   });
+            builder.HasData(new EntityType { Id = 17,     Name = "Voucher",   Description = ""   });
+            builder.HasData(new EntityType { Id = 18,     Name = "DraftVoucher",   Description = ""   });
+            builder.HasData(new EntityType { Id = 19,     Name = "DashboardTab",   Description = ""   });
+            builder.HasData(new EntityType { Id = 20,     Name = "Widget",   Description = ""   });
+            builder.HasData(new EntityType { Id = 21,     Name = "CheckBook",   Description = ""   });
+            builder.HasData(new EntityType { Id = 22,     Name = "CashRegister",   Description = ""   });
+            builder.HasData(new EntityType { Id = 23,     Name = "SourceApp",   Description = ""   });
+            builder.HasData(new EntityType { Id = 24,     Name = "Receipt",   Description = ""   });
+            builder.HasData(new EntityType { Id = 25,     Name = "Payment",   Description = ""   });
+            builder.HasData(new EntityType { Id = 100001, Name = "Brand",   Description = ""   });
+            builder.HasData(new EntityType { Id = 100002, Name = "Unit",   Description = ""   });
+            builder.HasData(new EntityType { Id = 100003, Name = "Property",   Description = ""   });
+            builder.HasData(new EntityType { Id = 100004, Name = "Attribute",   Description = ""   });
+
         }
     }
 }

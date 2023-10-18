@@ -29,11 +29,18 @@ namespace SPPC.Tadbir.Persistence.Seeding
         public void Configure(EntityTypeBuilder<OperationSource> builder)
         {
           
-            builder.HasData(new OperationSource {    Name = "AppLogin",    Id =  7 ,Description    = "", RowGuid =  new Guid("7a078968-4470-49a7-aaa5-396ae400e02c") ,    ModifiedDate =  DateTime.Parse("01/01/0001 12:00:00 AM")    });
-          
-            builder.HasData(new OperationSource {    Name = "AppEnvironment",    Id =  8, Description = "",    RowGuid =  new Guid("eb27fb68-0d6c-4e8b-ba88-5f25f518c579") ,    ModifiedDate =  DateTime.Parse("01/01/0001 12:00:00 AM")    });
-          
-            builder.HasData(new OperationSource {    Name = "SystemSettings",    Id =  14, Description = "",    RowGuid =  new Guid("09d85b66-d12d-4015-bf31-4a8143104598") ,    ModifiedDate =  DateTime.Parse("01/01/0001 12:00:00 AM")    });
+            builder.HasData(new OperationSource { Id = 1,  Name = "Journal",    Description = ""  });
+            builder.HasData(new OperationSource { Id = 2,  Name = "AccountBook",    Description = "" });
+            builder.HasData(new OperationSource { Id = 3,  Name = "CurrencyBook",    Description = "" });
+            builder.HasData(new OperationSource { Id = 4,  Name = "TestBalance",    Description = "" });
+            builder.HasData(new OperationSource { Id = 5,  Name = "ItemBalance",    Description = "" });
+            builder.HasData(new OperationSource { Id = 6,  Name = "BalanceByAccount",    Description = "" });
+            builder.HasData(new OperationSource { Id = 9,  Name = "EnvironmentParams",    Description = "" });
+            builder.HasData(new OperationSource { Id = 10, Name = "ProfitLoss",    Description = "" });
+            builder.HasData(new OperationSource { Id = 11, Name = "AccountRelations",    Description = "" });
+            builder.HasData(new OperationSource { Id = 12, Name = "BalanceSheet",    Description = "" });
+            builder.HasData(new OperationSource { Id = 13, Name = "SystemIssue",    Description = "" });
+            builder.HasData(new OperationSource { Id = 15, Name = "CheckBookReport",    Description = "" });
             
         }
     }

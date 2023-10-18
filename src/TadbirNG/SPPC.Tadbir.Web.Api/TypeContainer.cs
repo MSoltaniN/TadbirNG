@@ -85,14 +85,18 @@ namespace SPPC.Tadbir.Web.Api
         {
             _services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             _services.AddDbContext<TadbirContext>();
-            _services.AddDbContext<SystemContext>(options =>
-                options.UseSqlServer(_configuration.GetConnectionString("TadbirSysApi"), b => b.MigrationsAssembly("SPPC.Tadbir.Web.Api")));
-            _services.AddScoped<SystemContext>();
+            _services.AddDbContext<SystemContext>();
+            _services.AddScoped<SystemContext>(provider =>
+            {
+                var builder = new DbContextOptionsBuilder<SystemContext>()
+                    .UseSqlServer(_configuration.GetConnectionString("TadbirSysApi"));
+                 
+                return new SystemContext(builder.Options);
+            });
             _services.AddScoped(provider =>
             {
                 //return GetTadbirContext(provider);
-                var context = new TadbirContext() { ConnectionString = _configuration.GetConnectionString("TadbirApi") };
-                return context;
+                return new TadbirContext() { ConnectionString = _configuration.GetConnectionString("TadbirApi") };
             });
             _services.AddTransient<IDbContextAccessor, DbContextAccessor>();
             _services.AddScoped(provider =>
