@@ -51,7 +51,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Seeding\Config\" />
     <Folder Include="Seeding\Reporting\" />
   </ItemGroup>
 

@@ -56,6 +56,7 @@ namespace SPPC.Tadbir.Persistence
             modelBuilder.ApplyConfiguration(new EntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationConfiguration());
 
+            modelBuilder.ApplyConfiguration(new BranchConfiguration());
             modelBuilder.ApplyConfiguration(new VersionConfiguration());
             modelBuilder.ApplyConfiguration(new LogSettingConfiguration());
 
