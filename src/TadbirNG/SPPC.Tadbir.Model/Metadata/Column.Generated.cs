@@ -31,7 +31,7 @@ namespace SPPC.Tadbir.Model.Metadata
             StorageType = String.Empty;
             ScriptType = String.Empty;
             Expression = String.Empty;
-            ModifiedDate = DateTime.Now;
+            //ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

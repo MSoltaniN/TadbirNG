@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.Model.Corporate
         {
             Name = String.Empty;
             Description = String.Empty;
-            ModifiedDate = DateTime.Now;
+           // ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

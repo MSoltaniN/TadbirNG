@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.Model.Config
         /// </summary>
         public LogSetting()
         {
-            ModifiedDate = DateTime.Now;
+            //ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

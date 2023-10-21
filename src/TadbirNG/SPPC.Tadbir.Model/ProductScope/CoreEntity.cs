@@ -20,11 +20,11 @@ namespace SPPC.Tadbir.Model
         /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
         /// </summary>
         [Column("rowguid")]
-        public Guid RowGuid { get; set; } = System.Guid.NewGuid();
+        public Guid RowGuid { get; set; }/* = System.Guid.NewGuid();*/
 
         /// <summary>
         /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
         /// </summary>
-        public DateTime ModifiedDate { get; set; } = DateTime.Now;
+        public DateTime ModifiedDate { get; set; }/* = DateTime.Now;*/
     }
 }

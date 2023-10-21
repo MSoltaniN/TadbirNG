@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.Model.Auth
             Name = String.Empty;
             EntityName = String.Empty;
             Description = String.Empty;
-            ModifiedDate = DateTime.Now;
+            //ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

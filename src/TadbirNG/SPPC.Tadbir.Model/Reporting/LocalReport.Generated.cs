@@ -27,7 +27,7 @@ namespace SPPC.Tadbir.Model.Reporting
         {
             Caption = String.Empty;
             Template = String.Empty;
-            ModifiedDate = DateTime.Now;
+            //ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

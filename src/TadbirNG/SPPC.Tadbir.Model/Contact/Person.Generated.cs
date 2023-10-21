@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.Model.Contact
         public Person()
         {
             FullName = String.Empty;
-            ModifiedDate = DateTime.Now;
+            //ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

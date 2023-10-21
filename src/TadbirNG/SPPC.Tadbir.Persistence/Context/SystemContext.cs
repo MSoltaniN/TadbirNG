@@ -54,6 +54,8 @@ namespace SPPC.Tadbir.Persistence
             modelBuilder.ApplyConfiguration(new ViewConfiguration());
             modelBuilder.ApplyConfiguration(new ColumnConfiguration());
             modelBuilder.ApplyConfiguration(new CommandConfiguration());
+            modelBuilder.ApplyConfiguration(new ReportParameterConfiguration());
+
             modelBuilder.ApplyConfiguration(new ReportConfiguration());
             modelBuilder.ApplyConfiguration(new LocalReportConfiguration());
 

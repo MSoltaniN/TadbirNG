@@ -28,7 +28,7 @@ namespace SPPC.Tadbir.Model.Metadata
             Name = String.Empty;
             LocalName = String.Empty;
             Code = String.Empty;
-            ModifiedDate = DateTime.Now;
+            //ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

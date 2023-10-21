@@ -28,7 +28,7 @@ namespace SPPC.Tadbir.Model.Auth
         {
             UserName = String.Empty;
             PasswordHash = String.Empty;
-            ModifiedDate = DateTime.Now;
+            //ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

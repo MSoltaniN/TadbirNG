@@ -50,8 +50,4 @@
     <ProjectReference Include="..\SPPC.Tadbir.Resources\SPPC.Tadbir.Resources.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Seeding\Reporting\" />
-  </ItemGroup>
-
 </Project>

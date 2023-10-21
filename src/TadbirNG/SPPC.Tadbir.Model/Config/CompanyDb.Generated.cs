@@ -31,7 +31,7 @@ namespace SPPC.Tadbir.Model.Config
             UserName = String.Empty;
             Password = String.Empty;
             Description = String.Empty;
-            ModifiedDate = DateTime.Now;
+            //ModifiedDate = DateTime.Now;
         }
 
         /// <summary>

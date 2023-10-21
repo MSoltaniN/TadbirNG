@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.Model.Metadata
         public OperationSourceType()
         {
             Name = String.Empty;
-            ModifiedDate = DateTime.Now;
+            //ModifiedDate = DateTime.Now;
         }
 
         /// <summary>
