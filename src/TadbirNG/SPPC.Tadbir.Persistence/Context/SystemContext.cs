@@ -90,6 +90,17 @@ namespace SPPC.Tadbir.Persistence
             ValidRowPermissionMap.BuildMapping(modelBuilder.Entity<ValidRowPermission>());
             ViewMap.BuildMapping(modelBuilder.Entity<View>());
             ViewRowPermissionMap.BuildMapping(modelBuilder.Entity<ViewRowPermission>());
+
+            //foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            //{
+            //    foreach (var property in entityType.ClrType.GetProperties())
+            //    {
+            //        if (property.Name is "RowGuid" or "ModifiedDate")
+            //        {
+            //            modelBuilder.Ignore(property.Name);
+            //        }
+            //    }
+            //}
         }
 
         /// <summary>

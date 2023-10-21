@@ -50,6 +50,8 @@ namespace SPPC.Tadbir.Persistence
             modelBuilder.Ignore<PermissionGroup>();
             modelBuilder.Ignore<RoleCompany>();
             modelBuilder.Ignore<RolePermission>();*/
+
+
             modelBuilder.ApplyConfiguration(new SubSystemConfiguration());
             modelBuilder.ApplyConfiguration(new OperationSourceTypeConfiguration());
             modelBuilder.ApplyConfiguration(new OperationSourceConfiguration());
@@ -131,7 +133,20 @@ namespace SPPC.Tadbir.Persistence
             FileMap.BuildMapping(modelBuilder.Entity<File>());
             PropertyMap.BuildMapping(modelBuilder.Entity<Property>());
             AttributeMap.BuildMapping(modelBuilder.Entity<Attribute>());
+
+            //foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            //{
+            //    foreach (var property in entityType.ClrType.GetProperties())
+            //    {
+            //        if (property.Name is "RowGuid" or "ModifiedDate")
+            //        {
+            //            modelBuilder.Ignore(property.Name);
+            //        }
+            //    }
+            //}
+
         }
+
 
         /// <summary>
         /// Configures this data context
