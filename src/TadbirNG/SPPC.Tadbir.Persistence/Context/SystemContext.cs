@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
@@ -37,7 +39,7 @@ namespace SPPC.Tadbir.Persistence
             modelBuilder.ApplyConfiguration(new VersionConfiguration());
             modelBuilder.ApplyConfiguration(new CompanyDbConfiguration());
             modelBuilder.ApplyConfiguration(new PersonConfiguration());
-            
+
             modelBuilder.ApplyConfiguration(new SysSubSystemConfiguration());
             modelBuilder.ApplyConfiguration(new SysOperationSourceTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PermissionGroupConfiguration());
@@ -93,16 +95,32 @@ namespace SPPC.Tadbir.Persistence
             ViewMap.BuildMapping(modelBuilder.Entity<View>());
             ViewRowPermissionMap.BuildMapping(modelBuilder.Entity<ViewRowPermission>());
 
-            //foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-            //{
-            //    foreach (var property in entityType.ClrType.GetProperties())
-            //    {
-            //        if (property.Name is "RowGuid" or "ModifiedDate")
-            //        {
-            //            modelBuilder.Ignore(property.Name);
-            //        }
-            //    }
-            //}
+            AdjustDBColumnNames(modelBuilder);
+        }
+
+        /// <summary>
+        /// Code to add a specific character to the column names of all properties
+        /// </summary>
+        /// <param name="modelBuilder"></param>
+        public static void AdjustDBColumnNames(ModelBuilder modelBuilder)
+        {
+            var entityTypes = modelBuilder.Model.GetEntityTypes();
+
+            foreach (var entityType in entityTypes)
+            {
+                var properties = entityType.ClrType.GetProperties();
+
+                foreach (var property in properties)
+                {
+                    if (property.Name.EndsWith("Id") && !property.Name.StartsWith("Id"))
+                    {
+                        var columnName = property.Name.Replace("Id", "ID");
+                        modelBuilder.Entity(entityType.ClrType)
+                            .Property(property.Name)
+                            .HasColumnName(columnName);
+                    }
+                }
+            }
         }
 
         /// <summary>
